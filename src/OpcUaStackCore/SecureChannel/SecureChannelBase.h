@@ -20,7 +20,7 @@
 #define __OpUaStackCore_SecureChannelBase_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelCrypto.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
 #include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
@@ -30,13 +30,12 @@
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
 #include "OpcUaStackCore/SecureChannel/CloseSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/CloseSecureChannelResponse.h"
-#include "OpcUaStackCore/Certificate/CryptoManager.h"
-#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT SecureChannelBase
+	: public SecureChannelCrypto
 	{
 	  public:
 		typedef enum
@@ -115,59 +114,7 @@ namespace OpcUaStackCore
 
 		void asyncRead(SecureChannel* secureChannel);
 
-		void cryptoManager(CryptoManager::SPtr& cryptoManager);
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
-
 	  private:
-		OpcUaStatusCode secureReceivedOpenSecureChannelRequest(
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode decryptReceivedOpenSecureChannel(
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode verifyReceivedOpenSecureChannel(
-			SecureChannel* secureChannel
-		);
-
-		OpcUaStatusCode secureSendOpenSecureChannelResponse(
-			MemoryBuffer& plainText,
-			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode signSendOpenSecureChannelResponse(
-			MemoryBuffer& plainText,
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode encryptSendOpenSecureChannelResponse(
-			MemoryBuffer& plainText,
-			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
-		);
-
-		OpcUaStatusCode secureReceivedMessageRequest(
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode decryptReceivedMessage(
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode verifyReceivedMessage(
-			SecureChannel* secureChannel
-		);
-
-		OpcUaStatusCode secureSendMessageResponse(
-			MemoryBuffer& plainText,
-			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode signSendMessageResponse(
-			MemoryBuffer& plainText,
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode encryptSendMessageResponse(
-			MemoryBuffer& plainText,
-			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
-		);
 
 		void asyncReadHello(SecureChannel* secureChannel);
 		void asyncReadAcknowledge(SecureChannel* secureChannel);
@@ -203,23 +150,8 @@ namespace OpcUaStackCore
 		void closeChannel(SecureChannel* secureChannel, bool close = false);
 		void consumeAll(boost::asio::streambuf& streambuf);
 
-		void logMessageInfo(
-			const std::string& message,
-			uint32_t plainTextBlockSize,
-		    uint32_t cryptTextBlockSize,
-			int32_t messageSize,
-			int32_t messageHeaderSize,
-			int32_t securityHeaderSize,
-			int32_t sequenceHeaderSize,
-			int32_t bodySize,
-			int32_t paddingSize,
-			int32_t signatureSize
-		);
 
 		SecureChannelType secureChannelType_;
-
-		CryptoManager::SPtr cryptoManager_;
-		ApplicationCertificate::SPtr applicationCertificate_;
 	};
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -46,6 +46,9 @@ namespace OpcUaStackCore
 		void reconnectTimeout(uint32_t reconnectTimeout);
 		uint32_t reconnectTimeout(void);
 
+		void secureChannelLog(bool secureChannelLog);
+		bool secureChannelLog(void);
+
 	  private:
 		std::string endpointUrl_;
 		SecurityMode securityMode_;
@@ -54,6 +57,8 @@ namespace OpcUaStackCore
 		uint32_t connectTimeout_;
 		uint32_t renewTimeout_;
 		uint32_t reconnectTimeout_;
+
+		bool secureChannelLog_;
 	};
 
 }

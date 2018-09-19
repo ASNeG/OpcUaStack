@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -339,6 +339,7 @@ namespace OpcUaStackClient
 		createSessionRequest.clientNonce((OpcUaStackCore::OpcUaByte*)"\000", 1);
 		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout_);
 		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize_);
+		createSessionRequest.requestHeader()->opcUaBinaryEncode(ios);
 		createSessionRequest.opcUaBinaryEncode(ios);
 
 		Log(Debug, "session send CreateSessionRequest")
@@ -387,6 +388,7 @@ namespace OpcUaStackClient
 		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 		AnonymousIdentityToken::SPtr anonymousIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
 		anonymousIdentityToken->policyId("Anonymous_Policy");
+		activateSessionRequest.requestHeader()->opcUaBinaryEncode(ios);
 		activateSessionRequest.opcUaBinaryEncode(ios);
 
 		Log(Debug, "session send ActivateSessionRequest")

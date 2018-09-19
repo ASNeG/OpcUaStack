@@ -420,7 +420,9 @@ namespace OpcUaStackCore
 		boost::filesystem::path::iterator it;
 		for (it = path.begin(); it != path.end(); it++) {
 			std::string str = it->string();
-			createPath.append(str);
+
+			//createPath.append(str);
+			createPath /= str;
 
 			if (boost::filesystem::exists(createPath)) {
 				continue;

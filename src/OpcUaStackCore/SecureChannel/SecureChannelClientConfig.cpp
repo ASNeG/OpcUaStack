@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,6 +35,8 @@ namespace OpcUaStackCore
 	, connectTimeout_(0)
 	, renewTimeout_(300000)
 	, reconnectTimeout_(0)
+
+	, secureChannelLog_(false)
 	{
 	}
 
@@ -112,6 +114,18 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::reconnectTimeout(void)
 	{
 		return reconnectTimeout_;
+	}
+
+	void
+	SecureChannelClientConfig::secureChannelLog(bool secureChannelLog)
+	{
+		secureChannelLog_ = secureChannelLog;
+	}
+
+	bool
+	SecureChannelClientConfig::secureChannelLog(void)
+	{
+		return secureChannelLog_;
 	}
 
 }

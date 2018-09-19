@@ -348,6 +348,11 @@ namespace OpcUaStackCore
 		OpcUaByte ef = encodingFlag();
 
 		if (type == OpcUaBuildInType_Unknown) {
+			//
+			// The type of the node identifier is unknown. We generate a
+			// default variable.
+			//
+
 			OpcUaUInt32 nodeId = 0;
 			OpcUaUInt16 namespaceIndex = 0;
 			const_cast<OpcUaNodeIdBase*>(this)->set(nodeId, namespaceIndex);
@@ -356,7 +361,13 @@ namespace OpcUaStackCore
 
 		if (namespaceIndex_ == 0 && type == OpcUaBuildInType_OpcUaUInt32) {
 			OpcUaUInt32 identifier = boost::get<OpcUaUInt32>(nodeIdValue_);
+
 			if (identifier <= 0xFF) {
+
+				//
+				// The numeric value fits into the two byte representation
+				//
+
 				OpcUaByte encodingMask = 0x00+ef;
 				OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
 				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaStackCore::OpcUaByte)identifier);
@@ -367,6 +378,11 @@ namespace OpcUaStackCore
 		if (namespaceIndex_ <= 0xFF && type == OpcUaBuildInType_OpcUaUInt32) {
 			OpcUaUInt32 identifier = boost::get<OpcUaUInt32>(nodeIdValue_);
 			if (identifier <= 0xFFFF) {
+
+				//
+				// The numeric value fits into the four byte representation
+				//
+
 				OpcUaByte encodingMask = 0x01+ef;
 				OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
 				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaStackCore::OpcUaByte)namespaceIndex_);
