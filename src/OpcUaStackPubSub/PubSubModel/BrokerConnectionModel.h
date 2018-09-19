@@ -40,8 +40,8 @@ namespace OpcUaStackPubSub
 		BrokerConnectionModel(void);
 		virtual ~BrokerConnectionModel(void);
 
-		virtual void startup(void);
-		virtual void shutdown(void);
+		virtual bool startup(void);
+		virtual bool shutdown(void);
 
 		OpcUaStatusCode addWriterGroup(
 			const OpcUaString& groupName,			// in

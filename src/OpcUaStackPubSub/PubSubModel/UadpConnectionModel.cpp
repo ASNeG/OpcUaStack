@@ -31,16 +31,20 @@ namespace OpcUaStackPubSub
 	{
 	}
 
-	void
+	bool
 	UadpConnectionModel::startup(void)
 	{
 		// FIXME: todo
+
+		return false;
 	}
 
-	void
+	bool
 	UadpConnectionModel::shutdown(void)
 	{
 		// FIXME: todo
+
+		return false;
 	}
 
 	OpcUaStatusCode

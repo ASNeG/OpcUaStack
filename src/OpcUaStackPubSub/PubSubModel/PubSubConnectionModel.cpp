@@ -119,6 +119,18 @@ namespace OpcUaStackPubSub
 	}
 
 	OpcUaStatusCode
+	PubSubConnectionModel::removeGroups(void)
+	{
+		PubSubGroupModel::Map::iterator it;
+		for (it = pubSubGroupModelMap_.begin(); it != pubSubGroupModelMap_.end(); it++) {
+			it->second->shutdown();
+		}
+		pubSubGroupModelMap_.clear();
+
+		return Success;
+	}
+
+	OpcUaStatusCode
 	PubSubConnectionModel::removeGroup(
 		OpcUaNodeId& groupId
 	)
@@ -129,6 +141,9 @@ namespace OpcUaStackPubSub
 		if (it == pubSubGroupModelMap_.end()) {
 			return BadNoEntryExists;
 		}
+
+		// shutdown group
+		it->second->shutdown();
 
 		// remove group
 		pubSubGroupModelMap_.erase(it);

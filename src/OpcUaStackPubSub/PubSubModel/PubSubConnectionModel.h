@@ -43,8 +43,8 @@ namespace OpcUaStackPubSub
 		PubSubConnectionModel(Type type);
 		virtual ~PubSubConnectionModel(void);
 
-		virtual void startup(void) = 0;
-		virtual void shutdown(void) = 0;
+		virtual bool startup(void) = 0;
+		virtual bool shutdown(void) = 0;
 
 		void ioThread(IOThread::SPtr& ioThread);
 		IOThread::SPtr ioThread(void);
@@ -63,6 +63,7 @@ namespace OpcUaStackPubSub
 		void connectionId(const OpcUaNodeId& connectionId);
 		OpcUaNodeId& connectionId(void);
 
+		OpcUaStatusCode removeGroups(void);
 		OpcUaStatusCode removeGroup(
 			OpcUaNodeId& groupId
 		);

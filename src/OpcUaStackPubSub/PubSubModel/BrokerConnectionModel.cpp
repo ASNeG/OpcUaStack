@@ -32,22 +32,46 @@ namespace OpcUaStackPubSub
 	{
 	}
 
-	void
+	bool
 	BrokerConnectionModel::startup(void)
 	{
+		// create mqtt connection instance
 		mqttClientServerBase_ = constructMQTT();
-		mqttClientServerBase_->init();
-		mqttClientServerBase_->startup();
-		// FIXME: todo
+
+		// init mqtt connection instance
+		if (!mqttClientServerBase_->init()) {
+			Log(Error, "init broker connection error");
+			return false;
+		}
+
+		// startup mqtt connection instance
+		if (!mqttClientServerBase_->startup()) {
+			Log(Error, "startup broker connection error");
+			return false;
+		}
+
+		// open connection to mqtt server
+		if (mqttClientServerBase_->connect(address())) {
+			Log(Error, "connect broker connection error");
+			return false;
+		}
+
+		return true;
 	}
 
-	void
+	bool
 	BrokerConnectionModel::shutdown(void)
 	{
-		// FIXME: todo
+		// remove all groups
+		removeGroups();
+
+		// shutdown connection
+		mqttClientServerBase_->disconnect();
 		mqttClientServerBase_->shutdown();
 		mqttClientServerBase_->cleanup();
 		mqttClientServerBase_.reset();
+
+		return true;
 	}
 
 	OpcUaStatusCode
