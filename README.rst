@@ -215,6 +215,34 @@ Columns:
 * *Value Based Interface* - OPC UA Applications are deployed to the OPC UA Server in form of libraries. The value based Interface contains the limited OPC UA functionality. 
   To use the interface OPC UA skills are not necessary.
 
+**Security:**
+
++------------------------+----------------------------+----------+----------+
+|                        | Type                       | Client   |  Server  |
++========================+============================+==========+==========+
+| Security Mode          | None                       | |done|   | |done|   |
++                        +----------------------------+----------+----------+
+|                        | Sign                       | |done|   | |done|   |
++                        +----------------------------+----------+----------+
+|                        | Sign and Encrypt           | |done|   | |done|   | 
++------------------------+----------------------------+----------+----------+
+| Security Policy        | None                       | |done|   | |done|   |
++                        +----------------------------+----------+----------+
+|                        | Basic128Rsa15              | |done|   | |done|   |
++                        +----------------------------+----------+----------+
+|                        | Basic256                   | |done|   | |done|   |
++                        +----------------------------+----------+----------+
+|                        | Basic256Sha256             | |done|   | |done|   | 
++------------------------+----------------------------+----------+----------+
+| User Authentication    | Anonymous                  | |done|   | |done|   |
++ Policy                 +----------------------------+----------+----------+
+|                        | Username                   | |done|   | |done|   |
++                        +----------------------------+----------+----------+
+|                        | IssuedToken                | |done|   | |done|   |
++                        +----------------------------+----------+----------+
+|                        | Certificate                | |done|   | |done|   | 
++------------------------+----------------------------+----------+----------+
+
 
 Installation
 ------------------------------
