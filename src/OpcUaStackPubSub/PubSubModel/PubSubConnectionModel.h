@@ -23,6 +23,8 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 #include "OpcUaStackPubSub/PubSubModel/PubSubState.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubWriterGroupModel.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubReaderGroupModel.h"
 
 using namespace OpcUaStackCore;
 
@@ -47,6 +49,40 @@ namespace OpcUaStackPubSub
 		 * destructor
 		 */
 		virtual ~PubSubConnectionModel(void);
+
+		/**
+		 * This method is used to add a new writer group to a connection
+		 *
+		 * @param[in] configuration			Configuration parameters for the writer group.
+		 * @param[out] groupId				The NodeId of the new writer group
+		 * @return opc ua status code
+		 */
+		OpcUaStatusCode addWriterGroup(
+			PubSubWriterGroupModel::SPtr& configuration,
+			OpcUaNodeId& groupId
+		);
+
+		/**
+		 * This method is used to add a new reader group to a connection
+		 *
+		 * @param[in] configuration			Configuration parameters for the reader group.
+		 * @param[out] groupId				The NodeId of the new reader group.
+		 * @return opc ua status code
+		 */
+		OpcUaStatusCode addReaderGroup(
+			PubSubReaderGroupModel::SPtr& configuration,
+			OpcUaNodeId& groupId
+		);
+
+		/**
+		 * This method is used to remove an existing writer group or reader group
+		 *
+		 * @param[out] groupId				The NodeId of the writer group or reader group to delete.
+		 * @return opc ua status code
+		 */
+		OpcUaStatusCode removeGroup(
+			OpcUaNodeId& groupId
+		);
 
 	  private:
 

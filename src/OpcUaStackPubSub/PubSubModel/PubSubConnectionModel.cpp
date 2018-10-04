@@ -29,4 +29,33 @@ namespace OpcUaStackPubSub
 	{
 	}
 
+	OpcUaStatusCode
+	PubSubConnectionModel::addWriterGroup(
+		PubSubWriterGroupModel::SPtr& configuration,
+		OpcUaNodeId& groupId
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	PubSubConnectionModel::addReaderGroup(
+		PubSubReaderGroupModel::SPtr& configuration,
+		OpcUaNodeId& groupId
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	PubSubConnectionModel::removeGroup(
+		OpcUaNodeId& groupId
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
 }
