@@ -22,6 +22,8 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
+#include "OpcUaStackPubSub/PubSubModel/PubSubState.h"
+
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
@@ -31,6 +33,7 @@ namespace OpcUaStackPubSub
 	 * This class is used to represent the configuration parameters for PubSubConnections.
 	 */
 	class DLLEXPORT PubSubConnectionModel
+	: public PubSubState
 	{
 	  public:
 		typedef boost::shared_ptr<PubSubConnectionModel> SPtr;
@@ -44,6 +47,8 @@ namespace OpcUaStackPubSub
 		 * destructor
 		 */
 		virtual ~PubSubConnectionModel(void);
+
+	  private:
 
 	};
 

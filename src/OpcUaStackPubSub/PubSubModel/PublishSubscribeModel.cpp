@@ -21,6 +21,7 @@ namespace OpcUaStackPubSub
 {
 
 	PublishSubscribeModel::PublishSubscribeModel(void)
+	: PubSubState()
 	{
 	}
 

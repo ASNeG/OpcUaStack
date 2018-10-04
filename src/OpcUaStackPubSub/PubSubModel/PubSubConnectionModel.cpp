@@ -21,6 +21,7 @@ namespace OpcUaStackPubSub
 {
 
 	PubSubConnectionModel::PubSubConnectionModel(void)
+	: PubSubState()
 	{
 	}
 

@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 #include "OpcUaStackPubSub/PubSubModel/PubSubConnectionModel.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubState.h"
 
 using namespace OpcUaStackCore;
 
@@ -34,6 +35,7 @@ namespace OpcUaStackPubSub
 	 * and metadata Objects
 	 */
 	class DLLEXPORT PublishSubscribeModel
+	: public PubSubState
 	{
 	  public:
 		typedef boost::shared_ptr<PublishSubscribeModel> SPtr;
@@ -96,6 +98,8 @@ namespace OpcUaStackPubSub
 		removeConnection(
 			const OpcUaNodeId& connectionId
 		);
+
+	  private:
 	};
 
 }
