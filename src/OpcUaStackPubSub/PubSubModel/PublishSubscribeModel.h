@@ -89,6 +89,17 @@ namespace OpcUaStackPubSub
 		);
 
 		/**
+		 * This Method is used to an existing connection.
+		 *
+		 * @param[in] connectionId			The NodeId of the new connection.
+		 * @return pointer to the connection
+		 */
+		PubSubConnectionModel::SPtr
+		getConnection(
+			OpcUaNodeId& connectionId
+		);
+
+		/**
 		 * This Method is used to remove a PubSubConnection Object from the PublishSubscribe Object.
 		 *
 		 * @param[in] connectionId	 		The NodeId of the new connection.
@@ -100,6 +111,14 @@ namespace OpcUaStackPubSub
 		);
 
 	  private:
+		/**
+		 * This method is a virtual method and is called if the state of the
+		 * component has changed
+		 *
+		 *  @param[in] state new state of the component
+		 */
+		virtual void handleStateChange(State state);
+
 		PubSubConnectionModel::Map connections_;	//!< connection map
 
 		// FIXME:

@@ -112,7 +112,10 @@ namespace OpcUaStackPubSub
 		State parentChangedToOperational(void);
 
 		/**
+		 * This method is a virtual method and is called if the state of the
+		 * component has changed
 		 *
+		 *  @param[in] state new state of the component
 		 */
 		virtual void handleStateChange(State state);
 

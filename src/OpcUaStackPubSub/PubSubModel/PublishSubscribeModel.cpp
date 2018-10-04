@@ -54,6 +54,17 @@ namespace OpcUaStackPubSub
 		return Success;
 	}
 
+	PubSubConnectionModel::SPtr
+	getConnection(
+		OpcUaNodeId& connectionId
+	)
+	{
+		PubSubConnectionModel::SPtr configuration;
+		// FIXME: todo
+
+		return configuration;
+	}
+
 	OpcUaStatusCode
 	PublishSubscribeModel::removeConnection(
 		const OpcUaNodeId& connectionId
@@ -61,6 +72,12 @@ namespace OpcUaStackPubSub
 	{
 		// FIXME: todo
 		return Success;
+	}
+
+	void
+	PublishSubscribeModel::handleStateChange(State state)
+	{
+		// FIXME: todo
 	}
 
 }
