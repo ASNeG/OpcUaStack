@@ -71,4 +71,10 @@ namespace OpcUaStackPubSub
 		return name_;
 	}
 
+	void
+	PubSubConnectionModel::handleStateChange(State state)
+	{
+		// FIXME: todo
+	}
+
 }

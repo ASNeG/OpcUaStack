@@ -23,12 +23,16 @@ namespace OpcUaStackPubSub
 
 	PublishSubscribeModel::PublishSubscribeModel(void)
 	: PubSubState()
+	, connections_()
 	, connectionNames_()
 	{
 	}
 
 	PublishSubscribeModel::~PublishSubscribeModel(void)
 	{
+		disable();
+		connectionNames_.clear();
+		connections_.clear();
 	}
 
 	OpcUaStatusCode
@@ -98,6 +102,9 @@ namespace OpcUaStackPubSub
 		}
 		PubSubConnectionModel::SPtr configuration = it->second;
 
+		// disable connection
+		configuration->disable();
+
 		// remove connection
 		connectionNames_.erase(configuration->name().toStdString());
 		connections_.erase(it);
@@ -113,7 +120,7 @@ namespace OpcUaStackPubSub
 			return;
 		}
 
-		// iterate through map
+		// iterate through connection map
 		PubSubConnectionModel::Map::iterator it;
 		for (it = connections_.begin(); it != connections_.end(); it++) {
 			PubSubConnectionModel::SPtr configuration = it->second;
