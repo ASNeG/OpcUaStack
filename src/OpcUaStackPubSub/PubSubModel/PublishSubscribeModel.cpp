@@ -42,4 +42,24 @@ namespace OpcUaStackPubSub
 		// FIXME: todo
 		return Success;
 	}
+
+	OpcUaStatusCode
+	PublishSubscribeModel::addConnection(
+	    PubSubConnectionModel::SPtr& configuration,
+		OpcUaNodeId& connectionId
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	PublishSubscribeModel::removeConnection(
+		const OpcUaNodeId& connectionId
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
 }

@@ -22,6 +22,8 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
+#include "OpcUaStackPubSub/PubSubModel/PubSubConnectionModel.h"
+
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
@@ -58,7 +60,7 @@ namespace OpcUaStackPubSub
 		 * @param[in] furureKeys			An ordered list of future keys that are used when the KeyLifetime elapses.
 		 * @param[in] timeToNextKey			The time, in milliseconds, before the CurrentKey is expected to expire.
 		 * @param[in] keyLifetime			The lifetime of a key in milliseconds.
-		 * @return Statuscode
+		 * @return opc ua status code
 		 */
 		OpcUaStatusCode
 		setSecurityKeys(
@@ -69,6 +71,30 @@ namespace OpcUaStackPubSub
 			const OpcUaByteStringArray& furureKeys,
 			Duration timeToNextKey,
 			Duration keyLifetime
+		);
+
+		/**
+		 * This Method is used to add a new PubSubConnection Object to the PublishSubscribe Object.
+		 *
+		 * @param[in] configuration			Configuration parameters for the PubSubConnection.
+		 * @param[out] connectionId			The NodeId of the new connection.
+		 * @return opc ua status code
+		 */
+		OpcUaStatusCode
+		addConnection(
+		    PubSubConnectionModel::SPtr& configuration,
+			OpcUaNodeId& connectionId
+		);
+
+		/**
+		 * This Method is used to remove a PubSubConnection Object from the PublishSubscribe Object.
+		 *
+		 * @param[in] connectionId	 		The NodeId of the new connection.
+		 * @return opc ua status code
+		 */
+		OpcUaStatusCode
+		removeConnection(
+			const OpcUaNodeId& connectionId
 		);
 	};
 
