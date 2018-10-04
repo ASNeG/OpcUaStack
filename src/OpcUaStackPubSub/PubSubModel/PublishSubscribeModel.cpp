@@ -16,12 +16,14 @@
  */
 
 #include <OpcUaStackPubSub/PubSubModel/PublishSubscribeModel.h>
+#include <OpcUaStackPubSub/PubSubModel/OpcUaNodeIdGenerator.h>
 
 namespace OpcUaStackPubSub
 {
 
 	PublishSubscribeModel::PublishSubscribeModel(void)
 	: PubSubState()
+	, connectionNames_()
 	{
 	}
 
@@ -50,18 +52,35 @@ namespace OpcUaStackPubSub
 		OpcUaNodeId& connectionId
 	)
 	{
-		// FIXME: todo
+		// check if connection name already exist
+		if (connectionNames_.find(configuration->name().toStdString()) != connectionNames_.end()) {
+			return BadBrowseNameDuplicated;
+		}
+		connectionNames_.insert(configuration->name().toStdString());
+
+		// create new connection identifier and insert new connection
+		OpcUaNodeIdGenerator::instance()->createNodeNodeId(connectionId);
+		connections_.insert(std::make_pair(connectionId, configuration));
+
 		return Success;
 	}
 
 	PubSubConnectionModel::SPtr
-	getConnection(
-		OpcUaNodeId& connectionId
+	PublishSubscribeModel::getConnection(
+		const OpcUaNodeId& connectionId
 	)
 	{
 		PubSubConnectionModel::SPtr configuration;
-		// FIXME: todo
 
+		// find connection
+		PubSubConnectionModel::Map::iterator it;
+		it = connections_.find(connectionId);
+		if (it == connections_.end()) {
+			// connection not found
+			return configuration;
+		}
+
+		configuration = it->second;
 		return configuration;
 	}
 
@@ -70,14 +89,41 @@ namespace OpcUaStackPubSub
 		const OpcUaNodeId& connectionId
 	)
 	{
-		// FIXME: todo
+		// find connection
+		PubSubConnectionModel::Map::iterator it;
+		it = connections_.find(connectionId);
+		if (it == connections_.end()) {
+			// connection not found
+			return BadNodeIdUnknown;
+		}
+		PubSubConnectionModel::SPtr configuration = it->second;
+
+		// remove connection
+		connectionNames_.erase(configuration->name().toStdString());
+		connections_.erase(it);
+
 		return Success;
 	}
 
 	void
 	PublishSubscribeModel::handleStateChange(State state)
 	{
-		// FIXME: todo
+		if (state != Disabled && state != Operational && state != Paused) {
+			// ignore state change
+			return;
+		}
+
+		// iterate through map
+		PubSubConnectionModel::Map::iterator it;
+		for (it = connections_.begin(); it != connections_.end(); it++) {
+			PubSubConnectionModel::SPtr configuration = it->second;
+			if (state == Disabled || state == Paused) {
+				configuration->parentChangedToDisableOrPaused();
+			}
+			else {
+				configuration->parentChangedToOperational();
+			}
+		}
 	}
 
 }

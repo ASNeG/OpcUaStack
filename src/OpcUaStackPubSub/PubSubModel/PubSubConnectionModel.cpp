@@ -22,6 +22,7 @@ namespace OpcUaStackPubSub
 
 	PubSubConnectionModel::PubSubConnectionModel(void)
 	: PubSubState()
+	, name_("")
 	{
 	}
 
@@ -56,6 +57,18 @@ namespace OpcUaStackPubSub
 	{
 		// FIXME: todo
 		return Success;
+	}
+
+	void
+	PubSubConnectionModel::name(const OpcUaString& name)
+	{
+		name_ = name;
+	}
+
+	OpcUaString&
+	PubSubConnectionModel::name(void)
+	{
+		return name_;
 	}
 
 }

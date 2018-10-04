@@ -19,6 +19,9 @@
 #define __OpcUaStackPubSub_PublishSubscribeModel_h__
 
 #include <boost/shared_ptr.hpp>
+
+#include <set>
+
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
@@ -96,7 +99,7 @@ namespace OpcUaStackPubSub
 		 */
 		PubSubConnectionModel::SPtr
 		getConnection(
-			OpcUaNodeId& connectionId
+			const OpcUaNodeId& connectionId
 		);
 
 		/**
@@ -115,13 +118,15 @@ namespace OpcUaStackPubSub
 		 * This method is a virtual method and is called if the state of the
 		 * component has changed
 		 *
-		 *  @param[in] state new state of the component
+		 *  @param[in] state 				new state of the component
 		 */
 		virtual void handleStateChange(State state);
 
 		PubSubConnectionModel::Map connections_;	//!< connection map
+		std::set<std::string> connectionNames_;		//!< set of connection names
 
 		// FIXME:
+		// PublishedDataSets
 		// Diagnostics
 		// SupportedTransportProfiles
 	};

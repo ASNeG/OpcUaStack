@@ -88,7 +88,22 @@ namespace OpcUaStackPubSub
 			OpcUaNodeId& groupId
 		);
 
+		/**
+		 * name getter method
+		 *
+		 * @param[in] name					name of the connection
+		 */
+		void name(const OpcUaString& name);
+
+		/**
+		 * name setter method
+		 *
+		 * @return connection name
+		 */
+		OpcUaString& name(void);
+
 	  private:
+		OpcUaString name_;
 
 	};
 
