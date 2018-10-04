@@ -46,6 +46,7 @@ namespace OpcUaStackPubSub
 	PubSubState::State
 	PubSubState::enable(void)
 	{
+		State oldState = state_;
 		switch (state_)
 		{
 			case Disabled:
@@ -65,12 +66,18 @@ namespace OpcUaStackPubSub
 			default:
 				break;
 		}
+
+		if (oldState != state_) {
+			handleStateChange(state_);
+		}
+
 		return state_;
 	}
 
 	PubSubState::State
 	PubSubState::disable(void)
 	{
+		State oldState = state_;
 		switch (state_)
 		{
 			case Disabled:
@@ -87,12 +94,18 @@ namespace OpcUaStackPubSub
 			default:
 				break;
 		}
+
+		if (oldState != state_) {
+			handleStateChange(state_);
+		}
+
 		return state_;
 	}
 
 	PubSubState::State
 	PubSubState::errorOn(void)
 	{
+		State oldState = state_;
 		switch (state_)
 		{
 			case Disabled:
@@ -107,12 +120,18 @@ namespace OpcUaStackPubSub
 			default:
 				break;
 		}
+
+		if (oldState != state_) {
+			handleStateChange(state_);
+		}
+
 		return state_;
 	}
 
 	PubSubState::State
 	PubSubState::errorOff(void)
 	{
+		State oldState = state_;
 		switch (state_)
 		{
 			case Disabled:
@@ -127,12 +146,18 @@ namespace OpcUaStackPubSub
 			default:
 				break;
 		}
+
+		if (oldState != state_) {
+			handleStateChange(state_);
+		}
+
 		return state_;
 	}
 
 	PubSubState::State
 	PubSubState::parentChangedToDisableOrPaused(void)
 	{
+		State oldState = state_;
 		switch (state_)
 		{
 			case Disabled:
@@ -148,12 +173,18 @@ namespace OpcUaStackPubSub
 			default:
 				break;
 		}
+
+		if (oldState != state_) {
+			handleStateChange(state_);
+		}
+
 		return state_;
 	}
 
 	PubSubState::State
 	PubSubState::parentChangedToOperational(void)
 	{
+		State oldState = state_;
 		switch (state_)
 		{
 			case Disabled:
@@ -168,6 +199,11 @@ namespace OpcUaStackPubSub
 			default:
 				break;
 		}
+
+		if (oldState != state_) {
+			handleStateChange(state_);
+		}
+
 		return state_;
 	}
 
@@ -178,6 +214,12 @@ namespace OpcUaStackPubSub
 			return Operational;
 		}
 		return parent_->state();
+	}
+
+	void
+	PubSubState::handleStateChange(State state)
+	{
+		// nothing to do
 	}
 
 }

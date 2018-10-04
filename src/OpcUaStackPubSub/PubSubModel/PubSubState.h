@@ -111,6 +111,11 @@ namespace OpcUaStackPubSub
 		 */
 		State parentChangedToOperational(void);
 
+		/**
+		 *
+		 */
+		virtual void handleStateChange(State state);
+
 
 	  private:
 		State parentState(void);
