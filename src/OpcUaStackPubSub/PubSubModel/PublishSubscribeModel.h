@@ -100,6 +100,11 @@ namespace OpcUaStackPubSub
 		);
 
 	  private:
+		PubSubConnectionModel::Map connections_;	//!< connection map
+
+		// FIXME:
+		// Diagnostics
+		// SupportedTransportProfiles
 	};
 
 }

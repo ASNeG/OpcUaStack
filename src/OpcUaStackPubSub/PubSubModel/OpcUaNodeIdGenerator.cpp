@@ -20,12 +20,39 @@
 namespace OpcUaStackPubSub
 {
 
+	OpcUaNodeIdGenerator* OpcUaNodeIdGenerator::instance_ = nullptr;
+
 	OpcUaNodeIdGenerator::OpcUaNodeIdGenerator(void)
 	{
+		nodeId_.set((uint32_t)1,(uint16_t)1);
 	}
 
 	OpcUaNodeIdGenerator::~OpcUaNodeIdGenerator(void)
 	{
+	}
+
+	OpcUaNodeIdGenerator*
+	OpcUaNodeIdGenerator::instance(void)
+	{
+		if (instance_ == nullptr) {
+			instance_ = new OpcUaNodeIdGenerator();
+		}
+		return instance_;
+	}
+
+	void
+	OpcUaNodeIdGenerator::createNodeNodeId(
+		OpcUaNodeId& nodeId
+	)
+	{
+		uint32_t identifier;
+		uint16_t namespaceIndex;
+
+		nodeId_.get(identifier, namespaceIndex);
+		identifier++;
+		nodeId_.set(identifier, namespaceIndex);
+
+		nodeId = nodeId_;
 	}
 
 }

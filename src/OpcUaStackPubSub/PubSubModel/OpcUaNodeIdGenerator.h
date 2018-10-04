@@ -19,6 +19,7 @@
 #define __OpcUaStackPubSub_OpcUaNodeIdGenerator_h__
 
 #include <boost/shared_ptr.hpp>
+
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
@@ -46,7 +47,25 @@ namespace OpcUaStackPubSub
 		 */
 		~OpcUaNodeIdGenerator(void);
 
+		/**
+		 * This method is used to create an instance of class OpcUaNodeIdGenerator
+		 *
+		 * @return instance off class OpcUaNodeIdGenerator
+		 */
+		static OpcUaNodeIdGenerator* instance(void);
 
+		/**
+		 * This method is used to create a new node identifier
+		 *
+		 * @parameter[out] nodeId New generated node identifier
+		 */
+		void createNodeNodeId(
+			OpcUaNodeId& nodeId
+		);
+
+	  private:
+		static OpcUaNodeIdGenerator* instance_;		//!< single instance of class OpcUaNodeIdGenerator
+		OpcUaNodeId nodeId_;						//!< actual node identifier
 	};
 
 }

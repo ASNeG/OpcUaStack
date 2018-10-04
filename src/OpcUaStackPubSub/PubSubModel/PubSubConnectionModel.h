@@ -19,6 +19,9 @@
 #define __OpcUaStackPubSub_PubSubConnectionModel_h__
 
 #include <boost/shared_ptr.hpp>
+
+#include <map>
+
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
@@ -39,6 +42,7 @@ namespace OpcUaStackPubSub
 	{
 	  public:
 		typedef boost::shared_ptr<PubSubConnectionModel> SPtr;
+		typedef std::map<OpcUaNodeId, PubSubConnectionModel::SPtr> Map;
 
 		/**
 		 * constructor
