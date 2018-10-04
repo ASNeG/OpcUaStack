@@ -247,6 +247,51 @@ Columns:
 Installation
 ------------------------------
 
+OpcUaStack provides different ways of installing.
+
+Source Code
+==============================
+
+In order to compile and install the stack from source code you should meet
+the following requirements:
+
+* Compiler with C++11 support
+* CMake >= 2.8.9
+* Boost >= 1.54
+* OpenSSL >= 1.0.0
+
+
+**Ubuntu (Debian)**
+
+Ubuntu or Debian users can install the requirements by using *apt-get* command:
+
+::
+
+  sudo apt-get install apt-get install libboost-all-dev cmake libssl-dev  build-essential
+
+
+The next step is the compilation of the source code and its installation. You should run in 
+the root directory of the sources:
+
+::
+
+  sh build.sh local
+
+
+By default the installation path is $HOME/install. You can change it in any moment:
+
+::
+
+  cd local_build
+  make DESTDIR=/path/witch/you/prefer install
+
+
+
+**Windows**
+
+Winidows users should install all requirements manual. 
+
+
 Exmaples
 ------------------------------
 
