@@ -37,6 +37,7 @@ namespace OpcUaStackPubSub
 	{
 	  public:
 		typedef boost::shared_ptr<PubSubReaderGroupModel> SPtr;
+		typedef std::map<OpcUaNodeId, PubSubReaderGroupModel::SPtr> Map;
 
 		/**
 		 * constructor
@@ -48,8 +49,22 @@ namespace OpcUaStackPubSub
 		 */
 		virtual ~PubSubReaderGroupModel(void);
 
+		/**
+		 * setter method for variable name
+		 *
+		 * @param[in] name					name of the reader group
+		 */
+		void name(const OpcUaString& name);
+
+		/**
+		 * getter method for variable name
+		 *
+		 * @return reader group name
+		 */
+		OpcUaString& name(void);
 
 	  private:
+		OpcUaString name_;					//!< name of reader group
 
 	};
 
