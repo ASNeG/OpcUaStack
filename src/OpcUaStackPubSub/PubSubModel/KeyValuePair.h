@@ -29,7 +29,7 @@ namespace OpcUaStackPubSub
 {
 
 	/**
-	 * This class represents a key value pair
+	 * This class is used to provide a key value pair.
 	 */
 	class DLLEXPORT KeyValuePair
 	{
@@ -45,6 +45,38 @@ namespace OpcUaStackPubSub
 		 * destructor
 		 */
 		virtual ~KeyValuePair(void);
+
+		/**
+		 * setter method for the key value
+		 *
+		 * @param[in] key					key of the value
+		 */
+		void key(const OpcUaQualifiedName& key);
+
+		/**
+		 * getter method of the key value
+		 *
+		 * @return key value
+		 */
+		OpcUaQualifiedName& key(void);
+
+		/**
+		 * setter method for the value value
+		 *
+		 * @param[in] value					value
+		 */
+		void value(const OpcUaVariant& value);
+
+		/**
+		 * getter method of the value
+		 *
+		 * @return value
+		 */
+		OpcUaVariant& value(void);
+
+	  private:
+		OpcUaQualifiedName key_;			//!< The key of the value
+		OpcUaVariant value_;				//!< The value associated with the key
 	};
 
 }

@@ -28,4 +28,28 @@ namespace OpcUaStackPubSub
 	{
 	}
 
+	void
+	KeyValuePair::key(const OpcUaQualifiedName& key)
+	{
+		key_ = key;
+	}
+
+	OpcUaQualifiedName&
+	KeyValuePair::key(void)
+	{
+		return key_;
+	}
+
+	void
+	KeyValuePair::value(const OpcUaVariant& value)
+	{
+		value_ = value;
+	}
+
+	OpcUaVariant&
+	KeyValuePair::value(void)
+	{
+		return value_;
+	}
+
 }
