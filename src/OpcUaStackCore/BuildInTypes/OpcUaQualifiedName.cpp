@@ -61,6 +61,13 @@ namespace OpcUaStackCore
 		namespaceIndex = namespaceIndex_;
 	}
 
+	void
+	OpcUaQualifiedName::get(OpcUaString& name, OpcUaUInt16& namespaceIndex)
+	{
+		name = name_;
+		namespaceIndex = namespaceIndex_;
+	}
+
 	void 
 	OpcUaQualifiedName::namespaceIndex(const OpcUaUInt16& namespaceIndex)
 	{
@@ -85,7 +92,7 @@ namespace OpcUaStackCore
 		name_ = name;
 	}
 		
-	OpcUaString& 
+	OpcUaString&
 	OpcUaQualifiedName::name(void)
 	{
 		return name_;
@@ -139,6 +146,13 @@ namespace OpcUaStackCore
 	OpcUaQualifiedName::operator=(const OpcUaUInt16& namespaceIndex)
 	{
 		namespaceIndex_ = namespaceIndex;
+		return *this;
+	}
+
+	OpcUaQualifiedName&
+	OpcUaQualifiedName::operator=(const OpcUaQualifiedName& value)
+	{
+		const_cast<OpcUaQualifiedName&>(value).get(name_, namespaceIndex_);
 		return *this;
 	}
 		
