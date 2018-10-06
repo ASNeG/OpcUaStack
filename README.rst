@@ -261,7 +261,7 @@ the following requirements:
 * OpenSSL >= 1.0.0
 
 
-**Ubuntu (Debian)**
+**Linux (Ubuntu or Debian)**
 
 Ubuntu or Debian users can install the requirements by using *apt-get* command:
 
@@ -278,7 +278,7 @@ the root directory of the sources:
   sh build.sh local
 
 
-By default the installation path is $HOME/install. You can change it in any moment:
+By default the installation path is $HOME/install. You can change it at any moment:
 
 ::
 
@@ -290,6 +290,22 @@ By default the installation path is $HOME/install. You can change it in any mome
 **Windows**
 
 Winidows users should install all requirements manual. 
+
+In order to compile the project you must install MSBuild Tools 2015. Then run in the environment which
+is suitable for your target platform (e.g. Naitve x86) the following command:
+
+::
+
+  build.bat local
+
+
+By default the installation path is C:\install. You can change by typing:
+
+::
+  
+  cd local_build
+  set DESTDIR=C:\path\witch\you\prefer
+  MSBuild INSTALL.vcxproj
 
 
 Exmaples
