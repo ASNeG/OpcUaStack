@@ -54,7 +54,7 @@ Ubuntu or Debian users can install the requirements by using *apt-get* command:
 
 ::
 
-  sudo apt-get install apt-get install libboost-all-dev cmake libssl-dev  build-essential
+  $ sudo apt-get install apt-get install libboost-all-dev cmake libssl-dev  build-essential
 
 
 The next step is the compilation of the source code and its installation. You should run in 
@@ -62,15 +62,15 @@ the root directory of the sources:
 
 ::
 
-  sh build.sh local
+  $ sh build.sh local
 
 
 By default the installation path is $HOME/install. You can change it at any moment:
 
 ::
 
-  cd local_build
-  make DESTDIR=/path/witch/you/prefer install
+  $ cd local_build
+  $ make DESTDIR=/path/witch/you/prefer install
 
 
 **Windows**
@@ -82,16 +82,16 @@ is suitable for your target platform (e.g. Naitve x86) the following command:
 
 ::
 
-  build.bat local
+  $ build.bat local
 
 
 By default the installation path is C:\\install. You can change it by typing:
 
 ::
   
-  cd local_build
-  set DESTDIR=C:\path\witch\you\prefer
-  MSBuild INSTALL.vcxproj
+  $ cd local_build
+  $ set DESTDIR=C:\path\witch\you\prefer
+  $ MSBuild INSTALL.vcxproj
 
 
 Usage 
@@ -101,15 +101,15 @@ In order to create an user application OpcUa Stack provides a project builder:
 
 ::
 
-  OpcUaProjectBuilder3 MyProject ProjectDescription 9012
+  $ OpcUaProjectBuilder3 MyProject ProjectDescription 9012
 
 The builder creates a template of OPC UA application project in directory MyProject. The template is 
 ready to be compiled and installed. Below there is an example for local installation (DEB installation is also possible):
 
 ::
 
-  cd MyPorject
-  sh build.sh local
+  $ cd MyPorject
+  $ sh build.sh local
 
 The user application is installed in directory $HOME/install by default. And you can run it by using OPC UA Server:
 
