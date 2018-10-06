@@ -35,6 +35,7 @@ namespace OpcUaStackPubSub
 	{
 	  public:
 		typedef boost::shared_ptr<KeyValuePair> SPtr;
+		typedef std::vector<KeyValuePair> Vec;
 
 		/**
 		 * constructor
@@ -58,7 +59,7 @@ namespace OpcUaStackPubSub
 		 *
 		 * @return key value
 		 */
-		OpcUaQualifiedName& key(void);
+		const OpcUaQualifiedName& key(void);
 
 		/**
 		 * setter method for the value value
@@ -72,7 +73,16 @@ namespace OpcUaStackPubSub
 		 *
 		 * @return value
 		 */
-		OpcUaVariant& value(void);
+		const OpcUaVariant& value(void);
+
+		/**
+		 * operator
+		 *
+		 * @param[in] value					value
+		 *
+		 * @return value
+		 */
+		KeyValuePair& operator=(const KeyValuePair& value);
 
 	  private:
 		OpcUaQualifiedName key_;			//!< The key of the value

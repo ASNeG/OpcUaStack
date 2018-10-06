@@ -34,7 +34,7 @@ namespace OpcUaStackPubSub
 		key_ = key;
 	}
 
-	OpcUaQualifiedName&
+	const OpcUaQualifiedName&
 	KeyValuePair::key(void)
 	{
 		return key_;
@@ -46,10 +46,18 @@ namespace OpcUaStackPubSub
 		value_ = value;
 	}
 
-	OpcUaVariant&
+	const OpcUaVariant&
 	KeyValuePair::value(void)
 	{
 		return value_;
+	}
+
+	KeyValuePair&
+	KeyValuePair::operator=(const KeyValuePair& value)
+	{
+		key_ = const_cast<KeyValuePair&>(value).key();
+		value_ = const_cast<KeyValuePair&>(value).value();
+		return *this;
 	}
 
 }
