@@ -52,6 +52,23 @@ namespace OpcUaStackPubSub
 		 */
 		virtual ~DataSetReaderModel(void);
 
+		/**
+		 * setter method for variable name
+		 *
+		 * @param[in] name					name of the data set reader
+		 */
+		void name(const OpcUaString& name);
+
+		/**
+		 * getter method for variable name
+		 *
+		 * @return name of the data set reader
+		 */
+		OpcUaString& name(void);
+
+	  private:
+		OpcUaString name_;					//!< name of reader group
+
 	};
 
 }

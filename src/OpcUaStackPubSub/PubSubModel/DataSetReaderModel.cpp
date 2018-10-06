@@ -22,11 +22,24 @@ namespace OpcUaStackPubSub
 
 	DataSetReaderModel::DataSetReaderModel(void)
 	: PubSubState()
+	, name_("")
 	{
 	}
 
 	DataSetReaderModel::~DataSetReaderModel(void)
 	{
+	}
+
+	void
+	DataSetReaderModel::name(const OpcUaString& name)
+	{
+		name_ = name;
+	}
+
+	OpcUaString&
+	DataSetReaderModel::name(void)
+	{
+		return name_;
 	}
 
 }
