@@ -340,8 +340,8 @@ For more information about how to write your own OPC UA application see ASNeG-De
 References
 ------------------------------
 
-* OPC UA Specifications_
-* ASNeG Home Page_ (in German)
+* `OPC UA Specifications`_
+* `ASNeG Home Page`_ (in German)
 * ASNeG-Demo_ 
 
 .. _OPC UA Specifications: https://opcfoundation.org/developer-tools/specifications-unified-architecture
