@@ -28,6 +28,7 @@
 #include "OpcUaStackPubSub/PubSubModel/PubSubState.h"
 #include "OpcUaStackPubSub/PubSubModel/PubSubWriterGroupModel.h"
 #include "OpcUaStackPubSub/PubSubModel/PubSubReaderGroupModel.h"
+#include "OpcUaStackPubSub/PubSubModel/KeyValuePair.h"
 
 using namespace OpcUaStackCore;
 
@@ -79,6 +80,28 @@ namespace OpcUaStackPubSub
 		);
 
 		/**
+		 * This Method is used to find an existing writer group.
+		 *
+		 * @param[in] groupId			The NodeId of the writer group.
+		 * @return pointer to the writer group
+		 */
+		PubSubWriterGroupModel::SPtr
+		getWriterGroup(
+			const OpcUaNodeId& groupId
+		);
+
+		/**
+		 * This Method is used to find an existing reader group.
+		 *
+		 * @param[in] groupId			The NodeId of the reader group.
+		 * @return pointer to the reader group
+		 */
+		PubSubReaderGroupModel::SPtr
+		getReaderGroup(
+			const OpcUaNodeId& groupId
+		);
+
+		/**
 		 * This method is used to remove an existing writer group or reader group
 		 *
 		 * @param[out] groupId				The NodeId of the writer group or reader group to delete.
@@ -89,18 +112,81 @@ namespace OpcUaStackPubSub
 		);
 
 		/**
-		 * name getter method
+		 * setter method for variable name
 		 *
 		 * @param[in] name					name of the connection
 		 */
 		void name(const OpcUaString& name);
 
 		/**
-		 * name setter method
+		 * getter method for variable name
 		 *
 		 * @return connection name
 		 */
 		OpcUaString& name(void);
+
+		/**
+		 * setter method for variable publisherId
+		 *
+		 * @param[in] publisherId			publisher identifier
+		 */
+		void publisherId(const OpcUaString& publisherId);
+
+		/**
+		 * setter method for variable publisherId
+		 *
+		 * @param[in] publisherId			publisher identifier
+		 */
+		void publisherId(uint32_t publisherId);
+
+		/**
+		 * getter method for variable publisherId
+		 *
+		 * @return publisherId
+		 */
+		OpcUaVariant& publisherId(void);
+
+		/**
+		 * setter method for variable transportProfileUri
+		 *
+		 * @param[in] transportProfileUri	transport profile uri
+		 */
+		void transportProfileUri(const OpcUaString& transportProfileUri);
+
+		/**
+		 * getter method for variable transportProfileUri
+		 *
+		 * @return transportProfileUri
+		 */
+		OpcUaString& transportProfileUri(void);
+
+		/**
+		 * setter method for variable address
+		 *
+		 * @param[in] address		network address
+		 */
+		void address(const OpcUaString& address);
+
+		/**
+		 * getter method for variable address
+		 *
+		 * @return address
+		 */
+		OpcUaString& address(void);
+
+		/**
+		 * setter method for variable connectionProperties
+		 *
+		 * @param[in] connectionProperties		connection properties
+		 */
+		void connectionProperties(const KeyValuePair::Vec& connectionProperties);
+
+		/**
+		 * getter method for variable connectionProperties
+		 *
+		 * @return connectionProperties
+		 */
+		KeyValuePair::Vec& connectionProperties(void);
 
 	  private:
 		/**
@@ -111,7 +197,16 @@ namespace OpcUaStackPubSub
 		 */
 		virtual void handleStateChange(State state);
 
-		OpcUaString name_;
+
+		OpcUaString name_;					//!< name of connection
+		OpcUaVariant publisherId_;			//!< The PublisherId is a unique identifier for a Publisher
+		 									//!< within a Message Oriented Middleware
+		OpcUaString transportProfileUri_;	//!< Used transport protocol mapping
+		OpcUaString address_;				//!< network address
+		KeyValuePair::Vec connectionProperties_; //!< Transport mapping specific connection parameters
+		PubSubWriterGroupModel::Map writerGroups_;//!< writer groups contained in the connection
+		PubSubReaderGroupModel::Map readerGroups_;//!< reader groups contained in the connection
+		std::set<std::string> groupNames_;	//!< set of writer and reader group names
 
 	};
 

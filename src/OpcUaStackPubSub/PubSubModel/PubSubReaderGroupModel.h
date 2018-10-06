@@ -19,6 +19,9 @@
 #define __OpcUaStackPubSub_PubSubReaderGroupModel_h__
 
 #include <boost/shared_ptr.hpp>
+
+#include <map>
+
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 

@@ -92,7 +92,7 @@ namespace OpcUaStackPubSub
 		);
 
 		/**
-		 * This Method is used to an existing connection.
+		 * This Method is used to find an existing connection.
 		 *
 		 * @param[in] connectionId			The NodeId of the new connection.
 		 * @return pointer to the connection
@@ -121,6 +121,7 @@ namespace OpcUaStackPubSub
 		 *  @param[in] state 				new state of the component
 		 */
 		virtual void handleStateChange(State state);
+
 
 		PubSubConnectionModel::Map connections_;	//!< connection map
 		std::set<std::string> connectionNames_;		//!< set of connection names
