@@ -289,9 +289,9 @@ By default the installation path is $HOME/install. You can change it at any mome
 
 **Windows**
 
-Winidows users should install all requirements manual. 
+Winidows users should install all requirements manually. 
 
-In order to compile the project you must install MSBuild Tools 2015. Then run in the environment which
+In order to compile the project you must install MSBuild Tools 2015, then run in the environment which
 is suitable for your target platform (e.g. Naitve x86) the following command:
 
 ::
@@ -299,7 +299,7 @@ is suitable for your target platform (e.g. Naitve x86) the following command:
   build.bat local
 
 
-By default the installation path is C:\install. You can change by typing:
+By default the installation path is C:\\install. You can change it by typing:
 
 ::
   
