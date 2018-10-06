@@ -250,7 +250,7 @@ Installation
 OpcUaStack provides different ways of installing.
 
 Source Code
-==============================
+`````````````````````````````
 
 In order to compile and install the stack from source code you should meet
 the following requirements:
@@ -286,7 +286,6 @@ By default the installation path is $HOME/install. You can change it at any mome
   make DESTDIR=/path/witch/you/prefer install
 
 
-
 **Windows**
 
 Winidows users should install all requirements manually. 
@@ -308,8 +307,35 @@ By default the installation path is C:\\install. You can change it by typing:
   MSBuild INSTALL.vcxproj
 
 
-Exmaples
+Usage 
 ------------------------------
+
+In order to create an user application OpcUa Stack provides a project builder:
+
+::
+
+  OpcUaProjectBuilder3 MyProject ProjectDescription 9012
+
+The builder creates a template of OPC UA application project in directory MyProject. The template is 
+ready to be compiled and installed. Below there is an example for local installation (DEB installation is also possible):
+
+::
+
+  cd MyPorject
+  sh build.sh local
+
+The user application is installed in directory $HOME/install by default. And you can run it by using OPC UA Server:
+
+::
+  
+  OpcUaServer3 $HOME/install/etc/OpcUaStack/MyProject/OpcUaServer.xml
+
+The server reads the setting from file **OpcUaServer.xml** and run the user application. 
+Now the application is available via OPC UA protocol on port 9012.
+  
+For more information about how to write your own OPC UA application see ASNeG-Demo_.
+
+.. _ASNeG-Demo: https://github.com/ASNeG/ASNeG-Demo
 
 
 References
