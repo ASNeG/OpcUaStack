@@ -37,6 +37,7 @@ namespace OpcUaStackPubSub
 	{
 	  public:
 		typedef boost::shared_ptr<PubSubWriterGroupModel> SPtr;
+		typedef std::map<OpcUaNodeId, PubSubWriterGroupModel::SPtr> Map;
 
 		/**
 		 * constructor
@@ -48,8 +49,23 @@ namespace OpcUaStackPubSub
 		 */
 		virtual ~PubSubWriterGroupModel(void);
 
+		/**
+		 * setter method for variable name
+		 *
+		 * @param[in] name					name of the writer group
+		 */
+		void name(const OpcUaString& name);
+
+		/**
+		 * getter method for variable name
+		 *
+		 * @return writer group name
+		 */
+		OpcUaString& name(void);
+
 
 	  private:
+		OpcUaString name_;					//!< name of writer group
 
 	};
 

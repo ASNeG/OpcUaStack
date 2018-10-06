@@ -22,11 +22,24 @@ namespace OpcUaStackPubSub
 
 	PubSubWriterGroupModel::PubSubWriterGroupModel(void)
 	: PubSubState()
+	, name_("")
 	{
 	}
 
 	PubSubWriterGroupModel::~PubSubWriterGroupModel(void)
 	{
+	}
+
+	void
+	PubSubWriterGroupModel::name(const OpcUaString& name)
+	{
+		name_ = name;
+	}
+
+	OpcUaString&
+	PubSubWriterGroupModel::name(void)
+	{
+		return name_;
 	}
 
 }
