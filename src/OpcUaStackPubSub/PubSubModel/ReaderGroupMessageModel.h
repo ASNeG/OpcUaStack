@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackPubSub_ReaderGroupTransportModel_h__
-#define __OpcUaStackPubSub_ReaderGroupTransportModel_h__
+#ifndef __OpcUaStackPubSub_ReaderGroupMessageModel_h__
+#define __OpcUaStackPubSub_ReaderGroupMessageModel_h__
 
 #include <boost/shared_ptr.hpp>
 
@@ -26,22 +26,22 @@ namespace OpcUaStackPubSub
 {
 
 	/**
-	 * This class is an abstract base class for transport specific reader group parameters
+	 * This class is an abstract base class for message specific reader group parameters
 	 */
-	class DLLEXPORT ReaderGroupTransportModel
+	class DLLEXPORT ReaderGroupMessageModel
 	{
 	  public:
-		typedef boost::shared_ptr<ReaderGroupTransportModel> SPtr;
+		typedef boost::shared_ptr<ReaderGroupMessageModel> SPtr;
 
 		/**
 		 * constructor
 		 */
-		ReaderGroupTransportModel(void);
+		ReaderGroupMessageModel(void);
 
 		/**
 		 * destructor
 		 */
-		virtual ~ReaderGroupTransportModel(void);
+		virtual ~ReaderGroupMessageModel(void);
 	};
 
 }

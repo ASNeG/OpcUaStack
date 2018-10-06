@@ -12,38 +12,20 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#ifndef __OpcUaStackPubSub_ReaderGroupTransportModel_h__
-#define __OpcUaStackPubSub_ReaderGroupTransportModel_h__
-
-#include <boost/shared_ptr.hpp>
-
-#include "OpcUaStackCore/Base/os.h"
+#include <OpcUaStackPubSub/PubSubModel/ReaderGroupMessageModel.h>
 
 namespace OpcUaStackPubSub
 {
 
-	/**
-	 * This class is an abstract base class for transport specific reader group parameters
-	 */
-	class DLLEXPORT ReaderGroupTransportModel
+	ReaderGroupMessageModel::ReaderGroupMessageModel(void)
 	{
-	  public:
-		typedef boost::shared_ptr<ReaderGroupTransportModel> SPtr;
+	}
 
-		/**
-		 * constructor
-		 */
-		ReaderGroupTransportModel(void);
-
-		/**
-		 * destructor
-		 */
-		virtual ~ReaderGroupTransportModel(void);
-	};
+	ReaderGroupMessageModel::~ReaderGroupMessageModel(void)
+	{
+	}
 
 }
-
-#endif
