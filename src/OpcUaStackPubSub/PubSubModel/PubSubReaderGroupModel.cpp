@@ -21,25 +21,12 @@ namespace OpcUaStackPubSub
 {
 
 	PubSubReaderGroupModel::PubSubReaderGroupModel(void)
-	: PubSubState()
-	, name_()
+	: PubSubGroupModel()
 	{
 	}
 
 	PubSubReaderGroupModel::~PubSubReaderGroupModel(void)
 	{
-	}
-
-	void
-	PubSubReaderGroupModel::name(const OpcUaString& name)
-	{
-		name_ = name;
-	}
-
-	OpcUaString&
-	PubSubReaderGroupModel::name(void)
-	{
-		return name_;
 	}
 
 }

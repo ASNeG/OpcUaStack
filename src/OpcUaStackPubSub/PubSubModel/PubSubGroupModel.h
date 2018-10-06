@@ -21,8 +21,11 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/MessageSecurityMode.h"
+#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 
 #include "OpcUaStackPubSub/PubSubModel/PubSubState.h"
+#include "OpcUaStackPubSub/PubSubModel/KeyValuePair.h"
 
 using namespace OpcUaStackCore;
 
@@ -63,9 +66,83 @@ namespace OpcUaStackPubSub
 		 */
 		OpcUaString& name(void);
 
+		/**
+		 * setter method for variable securityMode
+		 *
+		 * @param[in] securityMode			security mode
+		 */
+		void securityMode(MessageSecurityMode securityMode);
+
+		/**
+		 * getter method for variable securityMode
+		 *
+		 * @return securityMode
+		 */
+		MessageSecurityMode securityMode(void);
+
+		/**
+		 * setter method for variable securityGroupId
+		 *
+		 * @param[in] securityGroupId			security group id
+		 */
+		void securityGroupId(const OpcUaString& securityGroupId);
+
+		/**
+		 * getter method for variable securityGroupId
+		 *
+		 * @return securityGroupId
+		 */
+		OpcUaString& securityGroupId(void);
+
+		/**
+		 * setter method for variable securityKeyService
+		 *
+		 * @param[in] securityKeyService	endpoints of Security KeyServers
+		 */
+		void securityKeyService(const EndpointDescriptionArray::SPtr& securityKeyService);
+
+		/**
+		 * getter method for variable securityKeyService
+		 *
+		 * @return securityKeyService
+		 */
+		EndpointDescriptionArray::SPtr& securityKeyService(void);
+
+		/**
+		 * setter method for variable maxNetworkMessageSize
+		 *
+		 * @param[in] maxNetworkMessageSize_	maximal message size
+		 */
+		void maxNetworkMessageSize(uint32_t maxNetworkMessageSize);
+
+		/**
+		 * getter method for variable maxNetworkMessageSize
+		 *
+		 * @return maxNetworkMessageSize
+		 */
+		uint32_t maxNetworkMessageSize(void);
+
+		/**
+		 * setter method for variable groupProperties
+		 *
+		 * @param[in] groupProperties		connection properties
+		 */
+		void groupProperties(const KeyValuePair::Vec& groupProperties);
+
+		/**
+		 * getter method for variable groupProperties
+		 *
+		 * @return groupProperties
+		 */
+		KeyValuePair::Vec& groupProperties(void);
 
 	  private:
 		OpcUaString name_;					//!< name of writer group
+		MessageSecurityMode securityMode_;  //!< Indicates the level of security to the network message
+		OpcUaString securityGroupId_;		//!< Identifier for the security group in the Security Key Server
+		EndpointDescriptionArray::SPtr securityKeyService_; //!< Defines one or more endpoints of Security KeyServers
+		uint32_t maxNetworkMessageSize_;	//!< maximal size of bytes for network messages
+		KeyValuePair::Vec groupProperties_; //!< group specific properties
 	};
 
 }

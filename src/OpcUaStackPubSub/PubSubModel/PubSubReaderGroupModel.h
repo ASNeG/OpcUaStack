@@ -25,7 +25,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
-#include "OpcUaStackPubSub/PubSubModel/PubSubState.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubGroupModel.h"
 
 using namespace OpcUaStackCore;
 
@@ -36,7 +36,7 @@ namespace OpcUaStackPubSub
 	 * This class is used to represent the configuration parameters for ReaderGroups.
 	 */
 	class DLLEXPORT PubSubReaderGroupModel
-	: public PubSubState
+	: public PubSubGroupModel
 	{
 	  public:
 		typedef boost::shared_ptr<PubSubReaderGroupModel> SPtr;
@@ -52,22 +52,7 @@ namespace OpcUaStackPubSub
 		 */
 		virtual ~PubSubReaderGroupModel(void);
 
-		/**
-		 * setter method for variable name
-		 *
-		 * @param[in] name					name of the reader group
-		 */
-		void name(const OpcUaString& name);
-
-		/**
-		 * getter method for variable name
-		 *
-		 * @return reader group name
-		 */
-		OpcUaString& name(void);
-
 	  private:
-		OpcUaString name_;					//!< name of reader group
 
 	};
 

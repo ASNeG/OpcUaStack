@@ -21,8 +21,8 @@ namespace OpcUaStackPubSub
 {
 
 	PubSubWriterGroupModel::PubSubWriterGroupModel(void)
-	: PubSubState()
-	, name_("")
+	: PubSubGroupModel()
+	, writerGroupId_(0)
 	{
 	}
 
@@ -31,15 +31,15 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubWriterGroupModel::name(const OpcUaString& name)
+	PubSubWriterGroupModel::writerGroupId(uint16_t writerGroupId)
 	{
-		name_ = name;
+		writerGroupId_ = writerGroupId;
 	}
 
-	OpcUaString&
-	PubSubWriterGroupModel::name(void)
+	uint16_t
+	PubSubWriterGroupModel::writerGroupId(void)
 	{
-		return name_;
+		return writerGroupId_;
 	}
 
 }

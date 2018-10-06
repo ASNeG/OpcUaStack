@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
-#include "OpcUaStackPubSub/PubSubModel/PubSubState.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubGroupModel.h"
 
 using namespace OpcUaStackCore;
 
@@ -33,7 +33,7 @@ namespace OpcUaStackPubSub
 	 * This class is used to represent the configuration parameters for WriterGroups.
 	 */
 	class DLLEXPORT PubSubWriterGroupModel
-	: public PubSubState
+	: public PubSubGroupModel
 	{
 	  public:
 		typedef boost::shared_ptr<PubSubWriterGroupModel> SPtr;
@@ -50,22 +50,22 @@ namespace OpcUaStackPubSub
 		virtual ~PubSubWriterGroupModel(void);
 
 		/**
-		 * setter method for variable name
+		 * setter method for variable writerGroupId
 		 *
-		 * @param[in] name					name of the writer group
+		 * @param[in] writerGroupId				unique writer group id
 		 */
-		void name(const OpcUaString& name);
+		void writerGroupId(uint16_t writerGroupId);
 
 		/**
-		 * getter method for variable name
+		 * getter method for variable writerGroupId
 		 *
-		 * @return writer group name
+		 * @return writer group id
 		 */
-		OpcUaString& name(void);
+		uint16_t writerGroupId(void);
 
 
 	  private:
-		OpcUaString name_;					//!< name of writer group
+		uint16_t writerGroupId_;			//!< unique identifier for writer group
 
 	};
 
