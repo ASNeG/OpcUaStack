@@ -31,6 +31,97 @@ In the development stage:
 * Support RPM package type to distribute user applications on Linux
 * Support MSI package type to distribute user applications on Windows
 
+Installation
+------------------------------
+
+OpcUaStack provides different ways of installing.
+
+Source Code
+`````````````````````````````
+
+In order to compile and install the stack from source code you should meet
+the following requirements:
+
+* Compiler with C++11 support
+* CMake >= 2.8.9
+* Boost >= 1.54
+* OpenSSL >= 1.0.0
+
+
+**Linux (Ubuntu or Debian)**
+
+Ubuntu or Debian users can install the requirements by using *apt-get* command:
+
+::
+
+  sudo apt-get install apt-get install libboost-all-dev cmake libssl-dev  build-essential
+
+
+The next step is the compilation of the source code and its installation. You should run in 
+the root directory of the sources:
+
+::
+
+  sh build.sh local
+
+
+By default the installation path is $HOME/install. You can change it at any moment:
+
+::
+
+  cd local_build
+  make DESTDIR=/path/witch/you/prefer install
+
+
+**Windows**
+
+Winidows users should install all requirements manually. 
+
+In order to compile the project you must install MSBuild Tools 2015, then run in the environment which
+is suitable for your target platform (e.g. Naitve x86) the following command:
+
+::
+
+  build.bat local
+
+
+By default the installation path is C:\\install. You can change it by typing:
+
+::
+  
+  cd local_build
+  set DESTDIR=C:\path\witch\you\prefer
+  MSBuild INSTALL.vcxproj
+
+
+Usage 
+------------------------------
+
+In order to create an user application OpcUa Stack provides a project builder:
+
+::
+
+  OpcUaProjectBuilder3 MyProject ProjectDescription 9012
+
+The builder creates a template of OPC UA application project in directory MyProject. The template is 
+ready to be compiled and installed. Below there is an example for local installation (DEB installation is also possible):
+
+::
+
+  cd MyPorject
+  sh build.sh local
+
+The user application is installed in directory $HOME/install by default. And you can run it by using OPC UA Server:
+
+::
+  
+  $ OpcUaServer3 $HOME/install/etc/OpcUaStack/MyProject/OpcUaServer.xml
+
+The server reads the setting from file **OpcUaServer.xml** and run the user application. 
+Now the application is available via OPC UA protocol on port 9012.
+  
+For more information about how to write your own OPC UA application see ASNeG-Demo_.
+
 
 OPC UA Specification Coverage
 ------------------------------
@@ -117,14 +208,10 @@ OPC UA Specification Coverage
 |                        | Delete Subscription        | |done|  | |done|  | |done|  | |done|      |
 +------------------------+----------------------------+---------+---------+---------+-------------+
 
-
-
 Columns:
 
 * *OPC UA Interface* contains the OPC UA interface with full functionality. To use the interface OPC UA skills are necessary
 * *Value Based Interface* contains a value based interface with limited functionality. To use the interface OPC UA skills are not necessary
-
-
 
 **Server Library:**
 
@@ -242,100 +329,6 @@ Columns:
 +                        +----------------------------+----------+----------+
 |                        | Certificate                | |done|   | |done|   | 
 +------------------------+----------------------------+----------+----------+
-
-
-Installation
-------------------------------
-
-OpcUaStack provides different ways of installing.
-
-Source Code
-`````````````````````````````
-
-In order to compile and install the stack from source code you should meet
-the following requirements:
-
-* Compiler with C++11 support
-* CMake >= 2.8.9
-* Boost >= 1.54
-* OpenSSL >= 1.0.0
-
-
-**Linux (Ubuntu or Debian)**
-
-Ubuntu or Debian users can install the requirements by using *apt-get* command:
-
-::
-
-  sudo apt-get install apt-get install libboost-all-dev cmake libssl-dev  build-essential
-
-
-The next step is the compilation of the source code and its installation. You should run in 
-the root directory of the sources:
-
-::
-
-  sh build.sh local
-
-
-By default the installation path is $HOME/install. You can change it at any moment:
-
-::
-
-  cd local_build
-  make DESTDIR=/path/witch/you/prefer install
-
-
-**Windows**
-
-Winidows users should install all requirements manually. 
-
-In order to compile the project you must install MSBuild Tools 2015, then run in the environment which
-is suitable for your target platform (e.g. Naitve x86) the following command:
-
-::
-
-  build.bat local
-
-
-By default the installation path is C:\\install. You can change it by typing:
-
-::
-  
-  cd local_build
-  set DESTDIR=C:\path\witch\you\prefer
-  MSBuild INSTALL.vcxproj
-
-
-Usage 
-------------------------------
-
-In order to create an user application OpcUa Stack provides a project builder:
-
-::
-
-  OpcUaProjectBuilder3 MyProject ProjectDescription 9012
-
-The builder creates a template of OPC UA application project in directory MyProject. The template is 
-ready to be compiled and installed. Below there is an example for local installation (DEB installation is also possible):
-
-::
-
-  cd MyPorject
-  sh build.sh local
-
-The user application is installed in directory $HOME/install by default. And you can run it by using OPC UA Server:
-
-::
-  
-  $ OpcUaServer3 $HOME/install/etc/OpcUaStack/MyProject/OpcUaServer.xml
-
-The server reads the setting from file **OpcUaServer.xml** and run the user application. 
-Now the application is available via OPC UA protocol on port 9012.
-  
-For more information about how to write your own OPC UA application see ASNeG-Demo_.
-
-
 
 References
 ------------------------------
