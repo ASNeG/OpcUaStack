@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/DataSetMessage/DataSetFieldContentMask.h"
+#include "OpcUaStackPubSub/PubSubModel/DataSetFieldContentMask.h"
 
 namespace OpcUaStackPubSub
 {
