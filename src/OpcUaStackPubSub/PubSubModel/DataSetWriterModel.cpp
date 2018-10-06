@@ -24,6 +24,13 @@ namespace OpcUaStackPubSub
 	DataSetWriterModel::DataSetWriterModel(void)
 	: PubSubState()
 	, name_("")
+	, dataSetWriterId_(0)
+	, dataSetFieldContentMask_()
+	, keyFrameCount_(0)
+	, dataSetName_("")
+	, dataSetWriterProperties_()
+	, transportSettings_()
+	, messageSettings_()
 	{
 	}
 
@@ -43,4 +50,87 @@ namespace OpcUaStackPubSub
 		return name_;
 	}
 
+	void
+	DataSetWriterModel::dataSetWriterId(uint16_t dataSetWriterId)
+	{
+		dataSetWriterId_ = dataSetWriterId;
+	}
+
+	uint16_t
+	DataSetWriterModel::dataSetWriterId(void)
+	{
+		return dataSetWriterId_;
+	}
+
+	void
+	DataSetWriterModel::dataSetFieldContentMask(DataSetFieldContentMask& dataSetFieldContentMask)
+	{
+		dataSetFieldContentMask_ = dataSetFieldContentMask;
+	}
+
+	DataSetFieldContentMask&
+	DataSetWriterModel::dataSetFieldContentMask(void)
+	{
+		return dataSetFieldContentMask_;
+	}
+
+	void
+	DataSetWriterModel::keyFrameCount(uint32_t keyFrameCount)
+	{
+		keyFrameCount_ = keyFrameCount;
+	}
+
+	uint32_t&
+	DataSetWriterModel::keyFrameCount(void)
+	{
+		return keyFrameCount_;
+	}
+
+	void
+	DataSetWriterModel::keyFrameCount(const OpcUaString& dataSetName)
+	{
+		dataSetName_ = dataSetName;
+	}
+
+	OpcUaString&
+	DataSetWriterModel::dataSetName(void)
+	{
+		return dataSetName_;
+	}
+
+	void
+	DataSetWriterModel::dataSetWriterProperties(const KeyValuePair::Vec& dataSetWriterProperties)
+	{
+		dataSetWriterProperties_ = dataSetWriterProperties;
+	}
+
+	KeyValuePair::Vec&
+	DataSetWriterModel::dataSetWriterProperties(void)
+	{
+		return dataSetWriterProperties_;
+	}
+
+	void
+	DataSetWriterModel::transportSettings(DataSetWriterTransportModel::SPtr& transportSettings)
+	{
+		transportSettings_ = transportSettings;
+	}
+
+	DataSetWriterTransportModel::SPtr&
+	DataSetWriterModel::transportSettings(void)
+	{
+		return transportSettings_;
+	}
+
+	void
+	DataSetWriterModel::messageSettings(DataSetWriterMessageModel::SPtr& messageSettings)
+	{
+		messageSettings_ = messageSettings;
+	}
+
+	DataSetWriterMessageModel::SPtr&
+	DataSetWriterModel::messageSettings(void)
+	{
+		return messageSettings_;
+	}
 }
