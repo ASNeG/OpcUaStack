@@ -328,15 +328,22 @@ The user application is installed in directory $HOME/install by default. And you
 
 ::
   
-  OpcUaServer3 $HOME/install/etc/OpcUaStack/MyProject/OpcUaServer.xml
+  $ OpcUaServer3 $HOME/install/etc/OpcUaStack/MyProject/OpcUaServer.xml
 
 The server reads the setting from file **OpcUaServer.xml** and run the user application. 
 Now the application is available via OPC UA protocol on port 9012.
   
 For more information about how to write your own OPC UA application see ASNeG-Demo_.
 
-.. _ASNeG-Demo: https://github.com/ASNeG/ASNeG-Demo
 
 
 References
 ------------------------------
+
+* OPC UA Specifications_
+* ASNeG Home Page_ (in German)
+* ASNeG-Demo_ 
+
+.. _OPC UA Specifications: https://opcfoundation.org/developer-tools/specifications-unified-architecture
+.. _ASNeG Home Page: http://asneg.de/
+.. _ASNeG-Demo: https://github.com/ASNeG/ASNeG-Demo
