@@ -23,11 +23,24 @@ namespace OpcUaStackPubSub
 
 	DataSetWriterModel::DataSetWriterModel(void)
 	: PubSubState()
+	, name_("")
 	{
 	}
 
 	DataSetWriterModel::~DataSetWriterModel(void)
 	{
+	}
+
+	void
+	DataSetWriterModel::name(const OpcUaString& name)
+	{
+		name_ = name;
+	}
+
+	OpcUaString&
+	DataSetWriterModel::name(void)
+	{
+		return name_;
 	}
 
 }

@@ -51,6 +51,23 @@ namespace OpcUaStackPubSub
 		 * destructor
 		 */
 		virtual ~DataSetWriterModel(void);
+
+		/**
+		 * setter method for variable name
+		 *
+		 * @param[in] name					name of the data set writer
+		 */
+		void name(const OpcUaString& name);
+
+		/**
+		 * getter method for variable name
+		 *
+		 * @return name of the data set writer
+		 */
+		OpcUaString& name(void);
+
+	  private:
+		OpcUaString name_;					//!< name of writer group
 	};
 
 }
