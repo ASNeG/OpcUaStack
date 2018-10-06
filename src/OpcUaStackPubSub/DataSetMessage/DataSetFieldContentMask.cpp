@@ -21,11 +21,42 @@ namespace OpcUaStackPubSub
 {
 
 	DataSetFieldContentMask::DataSetFieldContentMask(void)
+	: encodingMask_(0)
 	{
 	}
 
 	DataSetFieldContentMask::~DataSetFieldContentMask(void)
 	{
+	}
+
+	void
+	DataSetFieldContentMask::encodingMask(OpcUaByte encodingMask)
+	{
+		encodingMask_ = encodingMask;
+	}
+
+	OpcUaByte
+	DataSetFieldContentMask::encodingMask(void)
+	{
+		return encodingMask_;
+	}
+
+	void
+	DataSetFieldContentMask::set(Flag flag)
+	{
+		encodingMask_ = encodingMask_ | (1 << flag);
+	}
+
+	void
+	DataSetFieldContentMask::unset(Flag flag)
+	{
+		encodingMask_ = encodingMask_ & ~(1 << flag);
+	}
+
+	bool
+	DataSetFieldContentMask::exist(Flag flag)
+	{
+		return (1 << flag) & encodingMask_ == (1 << flag);
 	}
 
 }

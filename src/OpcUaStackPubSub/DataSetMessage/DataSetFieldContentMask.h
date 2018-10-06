@@ -20,6 +20,9 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
@@ -27,6 +30,16 @@ namespace OpcUaStackPubSub
 	class DLLEXPORT DataSetFieldContentMask
 	{
 	  public:
+
+		typedef enum
+		{
+			StatusCode,			//!< The DataValue structure field StatusCode is included in the DataSetMessages.
+			SourceTimestamp,	//!< The DataValue structure field SourceTimestamp is included in the DataSetMessages.
+			ServerTimestamp,	//!< The DataValue structure field ServerTimestamp is included in the DataSetMessages
+			SourcePicoSeconds,	//!< The DataValue structure field SourcePicoSeconds is included in the DataSetMessages
+			ServerPicoSeconds,	//!< The DataValue structure field ServerPicoSeconds is included in the DataSetMessages
+			RawData				//!< The DataValue structure field RawData is included in the DataSetMessages
+		} Flag;
 
 		/**
 		 * constructor
@@ -37,6 +50,45 @@ namespace OpcUaStackPubSub
 		 * destructor
 		 */
 		~DataSetFieldContentMask(void);
+
+		/**
+		 * setter method for value encoding mask
+		 *
+		 * @param[in] value 	encoding mask
+		 */
+		void encodingMask(OpcUaByte encodingMask);
+
+		/**
+		 * getter method for value encoding mask
+		 *
+		 * @return value encoding masj
+		 */
+		OpcUaByte encodingMask(void);
+
+		/**
+		 * set a flag in the encoding mask
+		 *
+		 * @param[in] flag		flag to set in the encoding mask
+		 */
+		void set(Flag flag);
+
+		/**
+		 * unset a flag in the encoding mask
+		 *
+		 * @param[in] flag		flag to unset in the encoding mask
+		 */
+		void unset(Flag flag);
+
+		/**
+		 * check if lag exist in the encoding mask
+		 *
+		 * @param[in] flag		flag to check in the encoding maask
+		 * @return true, if flag exist
+		 */
+		bool exist(Flag flag);
+
+	  private:
+		OpcUaByte encodingMask_;		//!< encoding mask
 
 	};
 }
