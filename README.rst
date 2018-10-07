@@ -26,7 +26,7 @@ Features
 
 In the development stage:
 
-* Code generator to create C++ classes representing OPC UA types, objects and events from XML
+* Code generator to create C++ classes representing OPC UA types, objects and events from XML (Nodesets)
 * Multi-thread model (currently all application modules run in only one thread)
 * Support RPM package type to distribute user applications on Linux
 * Support MSI package type to distribute user applications on Windows
@@ -120,7 +120,7 @@ The user application is installed in directory $HOME/install by default. And you
 The server reads the setting from file **OpcUaServer.xml** and run the user application. 
 Now the application is available via OPC UA protocol on port 9012.
   
-For more information about how to write your own OPC UA application see ASNeG-Demo_.
+For more information about how to write your own OPC UA client server application see ASNeG-Demo_.
 
 
 OPC UA Specification Coverage
@@ -261,17 +261,17 @@ Columns:
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
 |                        | Query Next                 |              |          |         |         |             |
 +------------------------+----------------------------+--------------+----------+---------+---------+-------------+
-| Attribute              | Read                       |              |          |         | |done|  |             |
+| Attribute              | Read                       |  |done|      |  |done|  |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
-|                        | History Read               | |done|       |          |         |         |             |
+|                        | History Read               | |done|       |  |done|  |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
-|                        | Write                      |              |          |         | |done|  |             |
+|                        | Write                      | |done|       |  |done|  |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
 |                        | History Update             |              |          |         |         |             |
 +------------------------+----------------------------+--------------+----------+---------+---------+-------------+
-| Method                 | Call                       | |done|       |          |         |         |             |
+| Method                 | Call                       | |done|       |  |done|  |         |         |             |
 +------------------------+----------------------------+--------------+----------+---------+---------+-------------+
-| Monitored Item         | Create Monitored Items     | |done|       |          |         |         |             |
+| Monitored Item         | Create Monitored Items     | |done|       |  |done|  |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
 |                        | Modify Monitored Items     |              |          |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
@@ -279,19 +279,23 @@ Columns:
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
 |                        | Set Triggering             |              |          |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
-|                        | Delete Monitored Items     | |done|       |          |         |         |             |
+|                        | Delete Monitored Items     | |done|       | |done|   |         |         |             |
 +------------------------+----------------------------+--------------+----------+---------+---------+-------------+
 | Subscription           | Create Subscription        | |done|       |          |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
 |                        | Modify Subscription        |              |          |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
-|                        | Publish/Set                | |done|       |  |done|  |         | |done|  |             |
+|                        | Publish/Set                | |done|       |  |done|  |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
 |                        | Republish                  |              |          |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
 |                        | Transfer Subscription      |              |          |         |         |             |
 +                        +----------------------------+--------------+----------+---------+---------+-------------+
 |                        | Delete Subscription        | |done|       |          |         |         |             |
++------------------------+----------------------------+--------------+----------+---------+---------+-------------+
+| Alarms & Events        | Alarms                     | |done|       |  |done|  |         |         |             |
++                        +----------------------------+--------------+----------+---------+---------+-------------+
+|                        | Events                     | |done|       |  |done|  |         |         |             |
 +------------------------+----------------------------+--------------+----------+---------+---------+-------------+
 
 Columns:
@@ -309,25 +313,25 @@ Columns:
 +========================+============================+==========+==========+
 | Security Mode          | None                       | |done|   | |done|   |
 +                        +----------------------------+----------+----------+
-|                        | Sign                       | |done|   | |done|   |
+|                        | Sign                       |          | |done|   |
 +                        +----------------------------+----------+----------+
-|                        | Sign and Encrypt           | |done|   | |done|   | 
+|                        | Sign and Encrypt           |          | |done|   | 
 +------------------------+----------------------------+----------+----------+
 | Security Policy        | None                       | |done|   | |done|   |
 +                        +----------------------------+----------+----------+
-|                        | Basic128Rsa15              | |done|   | |done|   |
+|                        | Basic128Rsa15              |          | |done|   |
 +                        +----------------------------+----------+----------+
-|                        | Basic256                   | |done|   | |done|   |
+|                        | Basic256                   |          | |done|   |
 +                        +----------------------------+----------+----------+
-|                        | Basic256Sha256             | |done|   | |done|   | 
+|                        | Basic256Sha256             |          | |done|   | 
 +------------------------+----------------------------+----------+----------+
 | User Authentication    | Anonymous                  | |done|   | |done|   |
 + Policy                 +----------------------------+----------+----------+
-|                        | Username                   | |done|   | |done|   |
+|                        | Username                   |          | |done|   |
 +                        +----------------------------+----------+----------+
-|                        | IssuedToken                | |done|   | |done|   |
+|                        | IssuedToken                |          | |done|   |
 +                        +----------------------------+----------+----------+
-|                        | Certificate                | |done|   | |done|   | 
+|                        | Certificate                |          | |done|   | 
 +------------------------+----------------------------+----------+----------+
 
 References
