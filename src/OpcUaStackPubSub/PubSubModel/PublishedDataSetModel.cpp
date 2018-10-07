@@ -22,6 +22,10 @@ namespace OpcUaStackPubSub
 
 	PublishedDataSetModel::PublishedDataSetModel(void)
 	: name_("")
+	, dataSetFolder_()
+	, dataSetMetaData_()
+	, extensionFields_()
+	, dataSetSource_()
 	{
 	}
 
@@ -39,6 +43,54 @@ namespace OpcUaStackPubSub
 	PublishedDataSetModel::name(void)
 	{
 		return name_;
+	}
+
+	void
+	PublishedDataSetModel::dataSetFolder(OpcUaStringArray::SPtr& dataSetFolder)
+	{
+		dataSetFolder_ = dataSetFolder;
+	}
+
+	OpcUaStringArray::SPtr&
+	PublishedDataSetModel::dataSetFolder(void)
+	{
+		return dataSetFolder_;
+	}
+
+	void
+	PublishedDataSetModel::dataSetMetaData(DataSetMetaDataModel::SPtr& dataSetMetaData)
+	{
+		dataSetMetaData_ = dataSetMetaData;
+	}
+
+	DataSetMetaDataModel::SPtr&
+	PublishedDataSetModel::dataSetMetaData(void)
+	{
+		return dataSetMetaData_;
+	}
+
+	void
+	PublishedDataSetModel::extensionFields(const KeyValuePair::Vec& extensionFields)
+	{
+		extensionFields_ = extensionFields;
+	}
+
+	KeyValuePair::Vec&
+	PublishedDataSetModel::extensionFields(void)
+	{
+		return extensionFields_;
+	}
+
+	void
+	PublishedDataSetModel::dataSetSource(PublishedDataSetSourceModel::SPtr& dataSetSource)
+	{
+		dataSetSource_ = dataSetSource;
+	}
+
+	PublishedDataSetSourceModel::SPtr&
+	PublishedDataSetModel::dataSetSource(void)
+	{
+		return dataSetSource_;
 	}
 
 }

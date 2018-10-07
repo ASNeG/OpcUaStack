@@ -26,6 +26,7 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 #include "OpcUaStackPubSub/PubSubModel/PubSubConnectionModel.h"
+#include "OpcUaStackPubSub/PubSubModel/PublishedDataSetModel.h"
 #include "OpcUaStackPubSub/PubSubModel/PubSubState.h"
 
 using namespace OpcUaStackCore;
