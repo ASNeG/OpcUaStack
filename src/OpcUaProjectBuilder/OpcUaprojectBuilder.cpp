@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include <boost/filesystem/fstream.hpp>
@@ -206,10 +206,12 @@ namespace OpcUaProjectBuilder
 		boost::regex regProjectName("ProjectName");
 		boost::regex regProjectDescription("ProjectDescription");
 		boost::regex regProjectPort("ProjectPort");
+		boost::regex regStackVersion("StackVersion");
 
 		result = boost::regex_replace(string, regProjectName, projectName_);
 		result = boost::regex_replace(result, regProjectDescription, projectDescription_);
 		result = boost::regex_replace(result, regProjectPort, projectPort_);
+		result = boost::regex_replace(result, regStackVersion, DOCKER_TAG);
 
 		return result;
 	}
