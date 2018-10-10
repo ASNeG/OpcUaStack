@@ -37,8 +37,15 @@ namespace OpcUaStackCore
 		EnumValueType(void);
 		virtual ~EnumValueType(void);
 
-		void copyTo(EnumValueType& enumTypeDefinition);
-		bool operator==(const EnumValueType& enumTypeDefinition) const;
+		void value(OpcUaInt64 value);
+		OpcUaInt64 value(void);
+		void displayName(OpcUaLocalizedText& displayName);
+		OpcUaLocalizedText& displayName(void);
+		void description(OpcUaLocalizedText& description);
+		OpcUaLocalizedText& description(void);
+
+		void copyTo(EnumValueType& enumValueType);
+		bool operator==(const EnumValueType& enumValueType) const;
 
 		//- ExtensionObjectBase -----------------------------------------------
 		virtual ExtensionObjectBase::SPtr factory(void);

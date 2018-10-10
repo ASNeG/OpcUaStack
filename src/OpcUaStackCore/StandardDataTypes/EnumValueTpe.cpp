@@ -24,6 +24,9 @@ namespace OpcUaStackCore
 
 	EnumValueType::EnumValueType(void)
 	: DataTypeDefinition()
+	, value_(0)
+	, displayName_()
+	, description_()
 	{
 	}
 
@@ -32,15 +35,58 @@ namespace OpcUaStackCore
 	}
 
 	void
-	EnumValueType::copyTo(EnumValueType& enumTypeDefinition)
+	EnumValueType::value(OpcUaInt64 value)
 	{
-		// FIXME: todo
+		value_ = value;
+	}
+
+	OpcUaInt64
+	EnumValueType::value(void)
+	{
+		return value_;
+	}
+
+	void
+	EnumValueType::displayName(OpcUaLocalizedText& displayName)
+	{
+		displayName_ = displayName;
+	}
+
+	OpcUaLocalizedText&
+	EnumValueType::displayName(void)
+	{
+		return displayName_;
+	}
+
+	void
+	EnumValueType::description(OpcUaLocalizedText& description)
+	{
+		description_ = description;
+	}
+
+	OpcUaLocalizedText&
+	EnumValueType::description(void)
+	{
+		return description_;
+	}
+
+	void
+	EnumValueType::copyTo(EnumValueType& enumValueType)
+	{
+		enumValueType.value_ = value_;
+		displayName_.copyTo(enumValueType.displayName_);
+		description_.copyTo(enumValueType.description_);
 	}
 
 	bool
-	EnumValueType::operator==(const EnumValueType& enumTypeDefinition) const
+	EnumValueType::operator==(const EnumValueType& enumValueType) const
 	{
-		// FIXME: todo
+		EnumValueType* dst = const_cast<EnumValueType*>(&enumValueType);
+
+		return
+			value_ == dst->value_ &&
+			displayName_ == dst->displayName_ &&
+			description_ == dst->description_;
 	}
 
 	// ------------------------------------------------------------------------
@@ -71,13 +117,17 @@ namespace OpcUaStackCore
 	void
 	EnumValueType::opcUaBinaryEncode(std::ostream& os) const
 	{
-		// FIXME: todo
+		OpcUaNumber::opcUaBinaryEncode(os, value_);
+		displayName_.opcUaBinaryEncode(os);
+		description_.opcUaBinaryEncode(os);
 	}
 
 	void
 	EnumValueType::opcUaBinaryDecode(std::istream& is)
 	{
-		// FIXME: todo
+		OpcUaNumber::opcUaBinaryDecode(is, value_);
+		displayName_.opcUaBinaryDecode(is);
+		description_.opcUaBinaryDecode(is);
 	}
 
 	bool
@@ -132,7 +182,9 @@ namespace OpcUaStackCore
 	void
 	EnumValueType::out(std::ostream& os)
 	{
-		// FIXME: todo
+		os << "Value=" << value_;
+		os << ", DisplayName="; displayName_.out(os);
+		os << ", Description="; description_.out(os);
 	}
 
 }

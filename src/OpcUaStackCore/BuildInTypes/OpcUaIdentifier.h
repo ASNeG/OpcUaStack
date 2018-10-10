@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -703,6 +703,7 @@
 #define OpcUaId_StructureDefinition_Encoding_DefaultXml 14798
 #define OpcUaId_EnumDefinition_Encoding_DefaultXml 14799
 #define OpcUaId_StructureField_Encoding_DefaultXml 14800
+#define OpcUaId_EnumField_Encoding_DefaultXml 14801
 
 
 #define OpcUaId_Node_Encoding_DefaultBinary 260
@@ -928,6 +929,7 @@
 #define OpcUaId_StructureDefinition_Encoding_DefaultBinary 122
 #define OpcUaId_EnumDefinition_Encoding_DefaultBinary 123
 #define OpcUaId_StructureField_Encoding_DefaultBinary 14844
+#define OpcUaId_EnumField_Encoding_DefaultBinary 14845
 
 #define OpcUaId_BaseObjectType 58
 #define OpcUaId_FolderType 61
