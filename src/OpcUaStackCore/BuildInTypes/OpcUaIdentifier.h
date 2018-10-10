@@ -699,6 +699,12 @@
 #define OpcUaId_XVType_Encoding_DefaultXml 12082
 #define OpcUaId_ProgramDiagnosticDataType_Encoding_DefaultXml 895
 #define OpcUaId_Annotation_Encoding_DefaultXml 892
+#define OpcUaId_DataTypeDefinition_Encoding_DefaultXml 14797
+#define OpcUaId_StructureDefinition_Encoding_DefaultXml 14798
+#define OpcUaId_EnumDefinition_Encoding_DefaultXml 14799
+#define OpcUaId_StructureField_Encoding_DefaultXml 14800
+
+
 #define OpcUaId_Node_Encoding_DefaultBinary 260
 #define OpcUaId_InstanceNode_Encoding_DefaultBinary 11889
 #define OpcUaId_TypeNode_Encoding_DefaultBinary 11890
@@ -918,6 +924,10 @@
 #define OpcUaId_XVType_Encoding_DefaultBinary 12090
 #define OpcUaId_ProgramDiagnosticDataType_Encoding_DefaultBinary 896
 #define OpcUaId_Annotation_Encoding_DefaultBinary 893
+#define OpcUaId_DataTypeDefinition_Encoding_DefaultBinary 121
+#define OpcUaId_StructureDefinition_Encoding_DefaultBinary 122
+#define OpcUaId_EnumDefinition_Encoding_DefaultBinary 123
+#define OpcUaId_StructureField_Encoding_DefaultBinary 14844
 
 #define OpcUaId_BaseObjectType 58
 #define OpcUaId_FolderType 61
