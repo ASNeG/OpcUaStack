@@ -25,6 +25,8 @@ namespace OpcUaStackPubSub
 	: PubSubState()
 	, connections_()
 	, connectionNames_()
+	, publishedDataSets_()
+	, publishedDataSetNames_()
 	{
 	}
 

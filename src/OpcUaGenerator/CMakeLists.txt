@@ -1,6 +1,39 @@
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
+# build OpcUaDataTypeGenerator
+# 
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+include_directories(
+    ${PROJECT_BINARY_DIR}
+    ${Boost_INCLUDE_DIRS}
+)
+
+file(
+    GLOB OpcUaDataTypeGenerator_SRC 
+    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaDataTypeGenerator.cpp
+)
+
+
+add_executable(
+    OpcUaDataTypeGenerator${VERSION_MAJOR}
+    ${OpcUaDataTypeGenerator_SRC}
+    ${PROJECT_BINARY_DIR}
+)
+
+target_link_libraries(
+    OpcUaDataTypeGenerator${VERSION_MAJOR}
+    ${CMAKE_DL_LIBS}
+    ${Boost_LIBRARIES}
+    OpcUaStackCore
+    OpcUaStackClient
+    OpcUaStackServer
+)
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
 # build OpcUaEventTypeGenerator
 # 
 # -----------------------------------------------------------------------------
@@ -107,6 +140,12 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+install(
+    TARGETS OpcUaDataTypeGenerator${VERSION_MAJOR} 
+    DESTINATION /usr/bin
+    COMPONENT tools
+)
+
 install(
     TARGETS OpcUaEventTypeGenerator${VERSION_MAJOR} 
     DESTINATION /usr/bin

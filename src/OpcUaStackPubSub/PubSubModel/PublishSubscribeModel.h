@@ -28,6 +28,7 @@
 #include "OpcUaStackPubSub/PubSubModel/PubSubConnectionModel.h"
 #include "OpcUaStackPubSub/PubSubModel/PublishedDataSetModel.h"
 #include "OpcUaStackPubSub/PubSubModel/PubSubState.h"
+#include "OpcUaStackPubSub/PubSubModel/PublishedDataSetModel.h"
 
 using namespace OpcUaStackCore;
 
@@ -114,6 +115,58 @@ namespace OpcUaStackPubSub
 			const OpcUaNodeId& connectionId
 		);
 
+#if 0
+		/**
+		 * This Method is used to create a published data set of type published data set items
+		 *
+		 * @param[in] name				name of the published data items to create
+		 * @param[in] fieldNameAliases	The names assigned to the selected Variables for the fields
+		 * 								in the DataSetMetaData and in the DataSetMessages for tagged
+		 * 								message encoding.
+		 * @param[in] fieldFlags		The field flags assigned to the selected Variables for the
+		 * 								fields in the DataSetMetaData.
+		 * @param[in] variablesToAdd	Array of Variables to add to PublishedData and the related configuration
+		 * 								settings. Successfully added variables are appended to the end of the list
+		 * 								of published variables configured in the PublishedData Property. Failed
+		 * 								variables are not added to the list.
+		 * @param[out] nodeId			NodeId of the created PublishedDataSets Object.
+		 * @param[out] configurationVersion Returns the initial configuration version of the DataSet.
+		 * @param[out] addResults		The result codes for the variables to add. Variables exceeding the
+		 * 								maximum number of items in the Object are rejected with Bad_TooManyMonitoredItems.
+		 *
+		 * @return opc ua status code
+		 */
+		OpcUaStatusCode
+		addPublishedDataItems(
+			OpcUaString& name,
+			OpcUaStringArray::SPtr& fieldNameAliases,
+			DataSetFieldFlagsArray::SPtr& fieldFlags,
+			PublishedVariableDataArray::SPtr& variablesToAdd,
+			OpcUaNodeId& nodeId,
+			ConfigurationVersion& configurationVersion,
+			OpcUaStatusCodeArray::SPtr addResults
+		);
+
+		/**
+		 * This Method is used to create a published data set of type published data set events
+		 */
+		OpcUaStatusCode
+		addPublishedEvents(
+		);
+
+		OpcUaStatusCode
+		addPublishedDataItemsTemplate(
+		);
+
+		OpcUaStatusCode
+		addPublishedEventsTemplate(
+		);
+
+		OpcUaStatusCode
+		removePublishedDataSets(
+		);
+#endif
+
 	  private:
 		/**
 		 * This method is a virtual method and is called if the state of the
@@ -126,9 +179,10 @@ namespace OpcUaStackPubSub
 
 		PubSubConnectionModel::Map connections_;	//!< connection map
 		std::set<std::string> connectionNames_;		//!< set of connection names
+		PublishedDataSetModel::SPtr publishedDataSets_; //!< published data set
+		std::set<std::string> publishedDataSetNames_;//!< set of published data set names
 
 		// FIXME:
-		// PublishedDataSets
 		// Diagnostics
 		// SupportedTransportProfiles
 	};
