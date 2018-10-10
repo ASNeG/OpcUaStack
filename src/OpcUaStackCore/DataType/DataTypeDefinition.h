@@ -25,15 +25,15 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT DataTypeDefinition
+	class DLLEXPORT DataTypeDefinition1
 	: public Object
 	, public DataTypeFieldIf
 	{
 	  public:
-		typedef boost::shared_ptr<DataTypeDefinition> SPtr;
+		typedef boost::shared_ptr<DataTypeDefinition1> SPtr;
 
-		DataTypeDefinition(void);
-		~DataTypeDefinition(void);
+		DataTypeDefinition1(void);
+		~DataTypeDefinition1(void);
 
 		DataSubType dataSubType(void);
 		void dataSubType(DataSubType dataSubType);
@@ -48,7 +48,7 @@ namespace OpcUaStackCore
 		DataTypeField::Vec& dataFields(void);
 		void dataField(DataTypeField::SPtr& dataField);
 
-		static DataTypeDefinition::SPtr definition(DataTypeField::SPtr& dataField);
+		static DataTypeDefinition1::SPtr definition(DataTypeField::SPtr& dataField);
 
 		bool decode(boost::property_tree::ptree& ptree);
 		bool encode(boost::property_tree::ptree& ptree);

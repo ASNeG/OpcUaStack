@@ -50,8 +50,8 @@ namespace OpcUaStackCore
 		void dataTypeGeneratorIf(DataTypeGeneratorIf* dataTypeGeneratorIf);
 		void projectNamespace(const std::string& projectName);
 		void projectDirectory(const std::string& projectDirectory);
-		void dataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition);
-		void superTypeDataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition);
+		void dataTypeDefinition(DataTypeDefinition1::SPtr& dataTypeDefinition);
+		void superTypeDataTypeDefinition(DataTypeDefinition1::SPtr& dataTypeDefinition);
 		std::string& sourceFileContent(void);
 		std::string& headerFileContent(void);
 
@@ -114,8 +114,8 @@ namespace OpcUaStackCore
 		OpcUaNodeId xmlEncodingNodeId_;
 		std::string projectNamespace_;
 		std::string projectDirectory_;
-		DataTypeDefinition::SPtr dataTypeDefinition_;
-		DataTypeDefinition::SPtr superTypeDataTypeDefinition_;
+		DataTypeDefinition1::SPtr dataTypeDefinition_;
+		DataTypeDefinition1::SPtr superTypeDataTypeDefinition_;
 		std::string sourceContent_;
 		std::string headerContent_;
 	};
