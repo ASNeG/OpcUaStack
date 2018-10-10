@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_DataTypeDefintion_h__
-#define __OpcUaStackCore_DataTypeDefintion_h__
+#ifndef __OpcUaStackCore_DataTypeDefinition_h__
+#define __OpcUaStackCore_DataTypeDefinition_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
@@ -27,15 +27,15 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT DataTypeDefintion
+	class DLLEXPORT DataTypeDefinition
 	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:
-		typedef boost::shared_ptr<DataTypeDefintion> SPtr;
+		typedef boost::shared_ptr<DataTypeDefinition> SPtr;
 
-		DataTypeDefintion(void);
-		virtual ~DataTypeDefintion(void);
+		DataTypeDefinition(void);
+		virtual ~DataTypeDefinition(void);
 
 	  private:
 	};

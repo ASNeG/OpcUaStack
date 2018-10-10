@@ -931,7 +931,7 @@ namespace OpcUaStackServer
 		}
 
 		// find out whether a enum or data strucure exists
-		DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
+		DataTypeDefinition1::SPtr definition = constructSPtr<DataTypeDefinition1>();
 		boost::optional<std::string> value = ptree.get_optional<std::string>("Definition.Field.<xmlattr>.Value");
 		if (value) {
 			definition->dataSubType(Enumeration);
@@ -1571,7 +1571,7 @@ namespace OpcUaStackServer
 	{
 		Object::SPtr definitionObject = dataTypeNodeClass->dataTypeDefinition();
 		if (definitionObject.get() == nullptr) return true;
-		DataTypeDefinition::SPtr definition = boost::static_pointer_cast<DataTypeDefinition>(definitionObject);
+		DataTypeDefinition1::SPtr definition = boost::static_pointer_cast<DataTypeDefinition1>(definitionObject);
 
 		// encode definition
 		if (!definition->encode(ptree)) {
