@@ -206,12 +206,18 @@ namespace OpcUaProjectBuilder
 		boost::regex regProjectName("ProjectName");
 		boost::regex regProjectDescription("ProjectDescription");
 		boost::regex regProjectPort("ProjectPort");
-		boost::regex regStackVersion("StackVersion");
+		boost::regex regDockerTag("DockerTag");
+		boost::regex regVersionMajor("VersionMajor");
+		boost::regex regVersionMinor("VersionMinor");
+		boost::regex regVersionPatch("VersionPatch");
 
 		result = boost::regex_replace(string, regProjectName, projectName_);
 		result = boost::regex_replace(result, regProjectDescription, projectDescription_);
 		result = boost::regex_replace(result, regProjectPort, projectPort_);
-		result = boost::regex_replace(result, regStackVersion, DOCKER_TAG);
+		result = boost::regex_replace(result, regDockerTag, DOCKER_TAG);
+		result = boost::regex_replace(result, regVersionMajor, VERSION_MAJOR);
+		result = boost::regex_replace(result, regVersionMinor, VERSION_MAJOR);
+		result = boost::regex_replace(result, regVersionPatch, VERSION_PATCH);
 
 		return result;
 	}
@@ -271,5 +277,6 @@ int main(int argc, char** argv)
 	OpcUaProjectBuilder::OpcUaProjectBuilder projectBuilder;
 	return projectBuilder.start(argc, argv);
 }
+
 
 
