@@ -1,4 +1,4 @@
-FROM asneg/opcuastack:StackVersion
+FROM asneg/opcuastack:DockerTag
 
 # Prepare workdir
 ADD / /tmp
