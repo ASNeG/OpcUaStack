@@ -200,7 +200,7 @@ namespace OpcUaProjectBuilder
 	}
 
 	std::string
-	OpcUaProjectBuilder::processString(const std::string& string)
+	OpcUaProjectBuilder::substituteString(const std::string& string)
 	{
 		std::string result;
 		boost::regex regProjectName("ProjectName");
@@ -231,7 +231,7 @@ namespace OpcUaProjectBuilder
 			boost::filesystem::path file = *it;
 
 			std::string leaf = file.leaf().string();
-			leaf = processString(leaf);
+			leaf = substituteString(leaf);
 
 			templateDirectory /= file.leaf();
 			projectDirectory /= leaf;
@@ -250,7 +250,7 @@ namespace OpcUaProjectBuilder
 				if (!readProjectFile(templateDirectory, content)) return false;
 
 				// substituate file content
-				content = processString(content);
+				content = substituteString(content);
 
 				// create project file
 				if (!createProjectFile(projectDirectory, content)) return false;
