@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/StandardDataTypes/DataTypeDefinition.h"
+#include "OpcUaStackCore/StandardDataTypes/EnumField.h"
 
 namespace OpcUaStackCore
 {
@@ -36,6 +37,9 @@ namespace OpcUaStackCore
 
 		EnumDefinition(void);
 		virtual ~EnumDefinition(void);
+
+		void enumFields(EnumFieldArray::SPtr& enumFields);
+		EnumFieldArray::SPtr& enumFields(void);
 
 		void copyTo(EnumDefinition& enumTypeDefinition);
 		bool operator==(const EnumDefinition& enumTypeDefinition) const;
@@ -57,6 +61,7 @@ namespace OpcUaStackCore
 		//- ExtensionObjectBase -----------------------------------------------
 
 	  private:
+		EnumFieldArray::SPtr enumFields_;
 
 	};
 

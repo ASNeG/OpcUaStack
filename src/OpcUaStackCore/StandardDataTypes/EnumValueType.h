@@ -70,6 +70,13 @@ namespace OpcUaStackCore
 
 	};
 
+	class EnumValueTypeArray
+	: public OpcUaArray<EnumValueType::SPtr, SPtrTypeCoder<EnumValueType> >
+	{
+	  public:
+		typedef boost::shared_ptr<EnumValueTypeArray> SPtr;
+	};
+
 }
 
 #endif

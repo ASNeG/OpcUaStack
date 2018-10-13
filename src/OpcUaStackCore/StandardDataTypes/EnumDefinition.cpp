@@ -24,6 +24,7 @@ namespace OpcUaStackCore
 
 	EnumDefinition::EnumDefinition(void)
 	: DataTypeDefinition()
+	, enumFields_(constructSPtr<EnumFieldArray>())
 	{
 	}
 
@@ -32,15 +33,30 @@ namespace OpcUaStackCore
 	}
 
 	void
+	EnumDefinition::enumFields(EnumFieldArray::SPtr& enumFields)
+	{
+		if (enumFields_.get() == nullptr) {
+			return;
+		}
+		enumFields_ = enumFields;
+	}
+
+	EnumFieldArray::SPtr&
+	EnumDefinition::enumFields(void)
+	{
+		return enumFields_;
+	}
+
+	void
 	EnumDefinition::copyTo(EnumDefinition& enumTypeDefinition)
 	{
-		// FIXME: todo
+		enumFields_->copyTo(*enumTypeDefinition.enumFields_);
 	}
 
 	bool
 	EnumDefinition::operator==(const EnumDefinition& enumTypeDefinition) const
 	{
-		// FIXME: todo
+		return *enumFields_ == *enumTypeDefinition.enumFields_;
 	}
 
 	// ------------------------------------------------------------------------
@@ -71,13 +87,13 @@ namespace OpcUaStackCore
 	void
 	EnumDefinition::opcUaBinaryEncode(std::ostream& os) const
 	{
-		// FIXME: todo
+		enumFields_->opcUaBinaryEncode(os);
 	}
 
 	void
 	EnumDefinition::opcUaBinaryDecode(std::istream& is)
 	{
-		// FIXME: todo
+		enumFields_->opcUaBinaryDecode(is);
 	}
 
 	bool
@@ -132,7 +148,7 @@ namespace OpcUaStackCore
 	void
 	EnumDefinition::out(std::ostream& os)
 	{
-		// FIXME: todo
+		os << "EnumFields="; enumFields_->out(os);
 	}
 
 }

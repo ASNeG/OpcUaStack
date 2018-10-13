@@ -42,6 +42,10 @@ namespace OpcUaStackCore
 
 		void copyTo(EnumField& enumField);
 		bool operator==(const EnumField& enumField) const;
+		friend std::ostream& operator<<(std::ostream& os, const EnumField& value) {
+			const_cast<EnumField*>(&value)->out(os);
+			return os;
+		}
 
 		//- ExtensionObjectBase -----------------------------------------------
 		virtual ExtensionObjectBase::SPtr factory(void);
@@ -61,6 +65,14 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaString name_;
+	};
+
+
+	class EnumFieldArray
+	: public OpcUaArray<EnumField::SPtr, SPtrTypeCoder<EnumField> >
+	{
+	  public:
+		typedef boost::shared_ptr<EnumFieldArray> SPtr;
 	};
 
 }
