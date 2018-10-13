@@ -43,6 +43,10 @@ namespace OpcUaStackCore
 
 		void copyTo(EnumDefinition& enumTypeDefinition);
 		bool operator==(const EnumDefinition& enumTypeDefinition) const;
+		friend std::ostream& operator<<(std::ostream& os, const EnumDefinition& value) {
+			const_cast<EnumDefinition*>(&value)->out(os);
+			return os;
+		}
 
 		//- ExtensionObjectBase -----------------------------------------------
 		virtual ExtensionObjectBase::SPtr factory(void);

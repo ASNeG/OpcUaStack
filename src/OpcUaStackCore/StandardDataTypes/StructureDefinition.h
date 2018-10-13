@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/StandardDataTypes/DataTypeDefinition.h"
+#include "OpcUaStackCore/StandardDataTypes/StructureField.h"
 
 namespace OpcUaStackCore
 {
@@ -37,8 +38,21 @@ namespace OpcUaStackCore
 		StructureDefinition(void);
 		virtual ~StructureDefinition(void);
 
+		void defaultEncodingId(OpcUaNodeId& defaultEncodingId);
+		OpcUaNodeId& defaultEncodingId(void);
+		void baseDataType(OpcUaNodeId& baseDataType);
+		OpcUaNodeId& baseDataType(void);
+		void structureType(uint32_t structureType);
+		uint32_t structureType(void);
+		void fields(StructureFieldArray::SPtr& fields);
+		StructureFieldArray::SPtr& fields(void);
+
 		void copyTo(StructureDefinition& structureTypeDefinition);
 		bool operator==(const StructureDefinition& structureTypeDefinition) const;
+		friend std::ostream& operator<<(std::ostream& os, const StructureDefinition& value) {
+			const_cast<StructureDefinition*>(&value)->out(os);
+			return os;
+		}
 
 		//- ExtensionObjectBase -----------------------------------------------
 		virtual ExtensionObjectBase::SPtr factory(void);
@@ -57,6 +71,10 @@ namespace OpcUaStackCore
 		//- ExtensionObjectBase -----------------------------------------------
 
 	  private:
+		OpcUaNodeId defaultEncodingId_;
+		OpcUaNodeId baseDataType_;
+		uint32_t structureType_;
+		StructureFieldArray::SPtr fields_;
 
 	};
 
