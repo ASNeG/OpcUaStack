@@ -23,8 +23,14 @@ namespace OpcUaStackCore
 {
 
 	StructureField::StructureField(void)
-	: EnumValueType()
+	: ExtensionObjectBase()
 	, name_()
+	, description_()
+	, dataType_()
+	, valueRank_(-1)
+	, arrayDimensions_(constructSPtr<OpcUaUInt32Array>())
+	, maxStringLength_(0)
+	, isOptional_(false)
 	{
 	}
 
@@ -45,20 +51,102 @@ namespace OpcUaStackCore
 	}
 
 	void
-	StructureField::copyTo(StructureField& enumField)
+	StructureField::description(OpcUaLocalizedText& description)
 	{
-		EnumValueType::copyTo(enumField);
-		enumField.name_ = name_;
+		description_ = description;
+	}
+
+	OpcUaLocalizedText&
+	StructureField::description(void)
+	{
+		return description_;
+	}
+
+	void
+	StructureField::dataType(OpcUaNodeId& dataType)
+	{
+		dataType_ = dataType;
+	}
+
+	OpcUaNodeId&
+	StructureField::dataType(void)
+	{
+		return dataType_;
+	}
+
+	void
+	StructureField::valueRank(int32_t valueRank)
+	{
+		valueRank_ = valueRank;
+	}
+
+	int32_t
+	StructureField::valueRank(void)
+	{
+		return valueRank_;
+	}
+
+	void
+	StructureField::arrayDimensions(OpcUaUInt32Array::SPtr& arrayDimensions)
+	{
+		arrayDimensions_ = arrayDimensions;
+	}
+
+	OpcUaUInt32Array::SPtr&
+	StructureField::arrayDimensions(void)
+	{
+		return arrayDimensions_;
+	}
+
+	void
+	StructureField::maxStringLength(uint32_t maxStringLength)
+	{
+		maxStringLength_ = maxStringLength;
+	}
+
+	uint32_t
+	StructureField::maxStringLength(void)
+	{
+		return maxStringLength_;
+	}
+
+	void
+	StructureField::isOptional(OpcUaBoolean isOptional)
+	{
+		isOptional_ = isOptional;
+	}
+
+	OpcUaBoolean
+	StructureField::isOptional(void)
+	{
+		return isOptional_;
+	}
+
+	void
+	StructureField::copyTo(StructureField& structureField)
+	{
+		name_.copyTo(structureField.name_);
+		description_.copyTo(structureField.description_);
+		dataType_.copyTo(structureField.dataType_);
+		structureField.valueRank_ = valueRank_;
+		arrayDimensions_->copyTo(*structureField.arrayDimensions_);
+		structureField.maxStringLength_ = maxStringLength_;
+		structureField.isOptional_ = isOptional_;
 	}
 
 	bool
-	StructureField::operator==(const StructureField& enumField) const
+	StructureField::operator==(const StructureField& structureField) const
 	{
-		StructureField* dst = const_cast<StructureField*>(&enumField);
+		StructureField* dst = const_cast<StructureField*>(&structureField);
 
 		return
-			this->EnumValueType::operator==(*dst) &&
-			name_ == dst->name_;
+			name_ == dst->name_ &&
+			description_ == dst->description_ &&
+			dataType_ == dst->dataType_ &&
+			valueRank_ == dst->valueRank_ &&
+			*arrayDimensions_ == *dst->arrayDimensions_ &&
+			maxStringLength_ == dst->maxStringLength_ &&
+			isOptional_ == dst->isOptional_;
 	}
 
 	// ------------------------------------------------------------------------
@@ -89,15 +177,25 @@ namespace OpcUaStackCore
 	void
 	StructureField::opcUaBinaryEncode(std::ostream& os) const
 	{
-		EnumValueType::opcUaBinaryEncode(os);
 		name_.opcUaBinaryEncode(os);
+		description_.opcUaBinaryEncode(os);
+		dataType_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, valueRank_);
+		arrayDimensions_->opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, maxStringLength_);
+		OpcUaNumber::opcUaBinaryEncode(os, isOptional_);
 	}
 
 	void
 	StructureField::opcUaBinaryDecode(std::istream& is)
 	{
-		EnumValueType::opcUaBinaryDecode(is);
 		name_.opcUaBinaryDecode(is);
+		description_.opcUaBinaryDecode(is);
+		dataType_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, valueRank_);
+		arrayDimensions_->opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, maxStringLength_);
+		OpcUaNumber::opcUaBinaryDecode(is, isOptional_);
 	}
 
 	bool
@@ -152,8 +250,12 @@ namespace OpcUaStackCore
 	void
 	StructureField::out(std::ostream& os)
 	{
-		EnumValueType::out(os);
-		os << ", Name="; name_.out(os);
+		os << "Name="; name_.out(os);
+		os << ", Description="; description_.out(os);
+		os << ", DataType="; dataType_.out(os);
+		os << ", ArrayDimensions="; arrayDimensions_->out(os);
+		os << ", MaxStringLength=" << maxStringLength_;
+		os << ", IsOptional=" << isOptional_;
 	}
 
 }

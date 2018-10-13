@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT StructureField
-	: public EnumValueType
+	: public ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<StructureField> SPtr;
@@ -39,9 +39,21 @@ namespace OpcUaStackCore
 
 		void name(OpcUaString& name);
 		OpcUaString& name(void);
+		void description(OpcUaLocalizedText& description);
+		OpcUaLocalizedText& description(void);
+		void dataType(OpcUaNodeId& dataType);
+		OpcUaNodeId& dataType(void);
+		void valueRank(int32_t valueRank);
+		int32_t valueRank(void);
+		void arrayDimensions(OpcUaUInt32Array::SPtr& arrayDimensions);
+		OpcUaUInt32Array::SPtr& arrayDimensions(void);
+		void maxStringLength(uint32_t maxStringLength);
+		uint32_t maxStringLength(void);
+		void isOptional(OpcUaBoolean isOptional);
+		OpcUaBoolean isOptional(void);
 
-		void copyTo(StructureField& enumField);
-		bool operator==(const StructureField& enumField) const;
+		void copyTo(StructureField& structureField);
+		bool operator==(const StructureField& structureField) const;
 		friend std::ostream& operator<<(std::ostream& os, const StructureField& value) {
 			const_cast<StructureField*>(&value)->out(os);
 			return os;
@@ -65,6 +77,12 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaString name_;
+		OpcUaLocalizedText description_;
+		OpcUaNodeId dataType_;
+		int32_t valueRank_;
+		OpcUaUInt32Array::SPtr arrayDimensions_;
+		uint32_t maxStringLength_;
+		OpcUaBoolean isOptional_;
 	};
 
 
