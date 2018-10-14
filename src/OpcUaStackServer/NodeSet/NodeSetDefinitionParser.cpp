@@ -71,7 +71,72 @@ namespace OpcUaStackServer
 	bool
 	NodeSetDefinitionParser::decode(
 		boost::property_tree::ptree& ptreeValue,
-		DataTypeDefinition& dataTypeDefinition
+		StructureDefinition::SPtr& structureDefinition
+	)
+	{
+		// create new structure type definition structure
+		structureDefinition = constructSPtr<StructureDefinition>();
+
+		// find Definition element
+		boost::optional<boost::property_tree::ptree&> tree = ptreeValue.get_child_optional("Definition");
+		if (!tree) {
+			Log(Error, "missing element in data type definition")
+				.parameter("Element", "Definition");
+			return false;
+		}
+		ptreeValue = *tree;
+
+		// find Name attribute
+		boost::optional<std::string> name = ptreeValue.get_optional<std::string>("<xmlattr>.Name");
+		if (!name) {
+			Log(Error, "missing attribute in data type definition")
+				.parameter("Attribute", "Name");
+			return false;
+		}
+		structureDefinition->name(*name);
+
+		// find symbolic name attribute
+		boost::optional<std::string> symbolicName = ptreeValue.get_optional<std::string>("<xmlattr>.SymbolicName");
+        if (symbolicName) {
+        	structureDefinition->symbolicName(*symbolicName);
+        }
+
+        // find is union attribute
+        boost::optional<std::string> isUnion = ptreeValue.get_optional<std::string>("<xmlattr>.IsUnion");
+        if (isUnion && *isUnion == "true") {
+        	structureDefinition->structureType(2);
+        }
+        else {
+        	structureDefinition->structureType(0);
+        }
+
+        // find is option attribute
+        boost::optional<std::string> isOption = ptreeValue.get_optional<std::string>("<xmlattr>.IsOption");
+        // nothing to do with this attribute
+
+		// find field elements
+        StructureField::Vec structureFieldVec;
+		boost::property_tree::ptree::iterator it;
+		for (it = ptreeValue.begin(); it != ptreeValue.end(); it++) {
+			if (it->first != "Field") continue;
+
+			StructureField::SPtr field = constructSPtr<StructureField>();
+			//field->dataSubType(dataSubType_);
+			//field->dataTypeFieldIf(this);
+			//if (!field->decode(it->second)) {
+			//	return false;
+			//}
+			//dataFields_.push_back(field);
+		}
+
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	NodeSetDefinitionParser::encode(
+		StructureDefinition::SPtr& structureDefinition,
+		boost::property_tree::ptree& ptreeValue
 	)
 	{
 		// FIXME: todo
@@ -79,9 +144,19 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeSetDefinitionParser::encode(
-		DataTypeDefinition& dataTypeDefinition,
-		boost::property_tree::ptree& ptreeValue
+	NodeSetDefinitionParser::decodeStructureDefinition(
+		boost::property_tree::ptree& ptreeValue,
+		StructureDefinition::SPtr& structureDefinition
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	NodeSetDefinitionParser::decodeStructureField(
+		boost::property_tree::ptree& ptreeValue,
+		StructureField::SPtr& structureField
 	)
 	{
 		// FIXME: todo

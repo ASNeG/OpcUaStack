@@ -21,7 +21,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/StandardDataTypes/DataTypeDefinition.h"
+#include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
 
 using namespace OpcUaStackCore;
 
@@ -41,24 +41,35 @@ namespace OpcUaStackServer
 		 * This method is used to decode the Definition element from an opc ua node set.
 		 *
 		 * @param[in] ptreeValue			property tree with the node set
-		 * @param[out] dataTypeDefinition	data type definition
+		 * @param[out] structureDefinition	structure type definition
 		 * @return true if successful
 		 */
 		bool decode(
 			boost::property_tree::ptree& ptreeValue,
-			DataTypeDefinition& dataTypeDefinition
+			StructureDefinition::SPtr& structureDefinition
 		);
 
 		/**
 		 * This method is used to encode the Definition element from an opc ua node set.
 		 *
-		 * @param[in] dataTypeDefinition	data type definition to encode
+		 * @param[in] structureDefinition	structure type definition to encode
 		 * @param[out] ptreeValue			property tree with the result node set
 		 * @return true if successful
 		 */
 		bool encode(
-			DataTypeDefinition& dataTypeDefinition,
+			StructureDefinition::SPtr& structureDefinition,
 			boost::property_tree::ptree& ptreeValue
+		);
+
+	  private:
+		bool decodeStructureDefinition(
+			boost::property_tree::ptree& ptreeValue,
+			StructureDefinition::SPtr& structureDefinition
+		);
+
+		bool decodeStructureField(
+			boost::property_tree::ptree& ptreeValue,
+			StructureField::SPtr& structureField
 		);
 	};
 
