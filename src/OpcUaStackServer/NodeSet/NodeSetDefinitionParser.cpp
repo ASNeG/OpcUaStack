@@ -86,10 +86,30 @@ namespace OpcUaStackServer
 		}
 		ptreeValue = *tree;
 
+		// decode structure definition
+		return decodeStructureDefinition(*tree, structureDefinition);
+	}
+
+	bool
+	NodeSetDefinitionParser::encode(
+		StructureDefinition::SPtr& structureDefinition,
+		boost::property_tree::ptree& ptreeValue
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	NodeSetDefinitionParser::decodeStructureDefinition(
+		boost::property_tree::ptree& ptreeValue,
+		StructureDefinition::SPtr& structureDefinition
+	)
+	{
 		// find Name attribute
 		boost::optional<std::string> name = ptreeValue.get_optional<std::string>("<xmlattr>.Name");
 		if (!name) {
-			Log(Error, "missing attribute in data type definition")
+			Log(Error, "missing attribute in structure type definition")
 				.parameter("Attribute", "Name");
 			return false;
 		}
@@ -120,36 +140,20 @@ namespace OpcUaStackServer
 		for (it = ptreeValue.begin(); it != ptreeValue.end(); it++) {
 			if (it->first != "Field") continue;
 
-			StructureField::SPtr field = constructSPtr<StructureField>();
-			//field->dataSubType(dataSubType_);
-			//field->dataTypeFieldIf(this);
-			//if (!field->decode(it->second)) {
-			//	return false;
-			//}
-			//dataFields_.push_back(field);
+			StructureField::SPtr structureField = constructSPtr<StructureField>();
+			if (decodeStructureField(it->second, structureField))
+			structureFieldVec.push_back(structureField);
 		}
 
-		// FIXME: todo
-		return true;
-	}
+		if (structureFieldVec.size() == 0) {
+			Log(Error, "missing element in structure type definition")
+				.parameter("Element", "Field");
+			return false;
+		}
 
-	bool
-	NodeSetDefinitionParser::encode(
-		StructureDefinition::SPtr& structureDefinition,
-		boost::property_tree::ptree& ptreeValue
-	)
-	{
-		// FIXME: todo
-		return true;
-	}
+		structureDefinition->fields()->resize(structureFieldVec.size());
+		structureDefinition->fields()->push_back_vec(structureFieldVec);
 
-	bool
-	NodeSetDefinitionParser::decodeStructureDefinition(
-		boost::property_tree::ptree& ptreeValue,
-		StructureDefinition::SPtr& structureDefinition
-	)
-	{
-		// FIXME: todo
 		return true;
 	}
 
