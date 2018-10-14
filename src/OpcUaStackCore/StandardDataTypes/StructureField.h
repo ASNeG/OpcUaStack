@@ -33,6 +33,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<StructureField> SPtr;
+		typedef std::vector<StructureField::SPtr> Vec;
 
 		StructureField(void);
 		virtual ~StructureField(void);
