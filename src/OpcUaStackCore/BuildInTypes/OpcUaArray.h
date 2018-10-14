@@ -428,10 +428,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaArray<T, CODER>::push_back_vec(const std::vector<T>& valueVec)
 	{
-		typename std::vector<T>::iterator it;
-		for (it = valueVec.begin(); it != valueVec.end(); it++) {
-			push_back(*it);
+		for (uint32_t idx = 0; idx<valueVec.size(); idx++) {
+			if (!push_back(valueVec[idx])) {
+				return false;
+			}
 		}
+		return true;
 	}
 
 	template<typename T, typename CODER>

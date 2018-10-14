@@ -167,5 +167,23 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+#if 0
+	  <xs:complexType name="DataTypeField">
+	    <xs:sequence>
+	      <xs:element name="DisplayName" type="LocalizedText" minOccurs="0" maxOccurs="unbounded"></xs:element>
+	      <xs:element name="Description" type="LocalizedText" minOccurs="0" maxOccurs="unbounded"></xs:element>
+	      <xs:element name="Documentation" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+	    </xs:sequence>
+	    <xs:attribute name="Name" type="xs:string" use="required"></xs:attribute>
+	    <xs:attribute name="SymbolicName" type="SymbolicName" use="optional"></xs:attribute>
+	    <xs:attribute name="DataType" type="NodeId" default="i=24"></xs:attribute>
+	    <xs:attribute name="ValueRank" type="ValueRank" default="-1"></xs:attribute>
+	    <xs:attribute name="ArrayDimensions" type="ArrayDimensions" default=""></xs:attribute>
+	    <xs:attribute name="MaxStringLength" type="xs:unsignedInt" default="0"></xs:attribute>
+	    <xs:attribute name="Value" type="xs:int" default="-1"></xs:attribute>
+	    <xs:attribute name="IsOptional" type="xs:boolean" use="optional" default="false"></xs:attribute>
+	  </xs:complexType>
+#endif
+
 
 }
