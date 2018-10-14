@@ -38,6 +38,10 @@ namespace OpcUaStackCore
 		StructureDefinition(void);
 		virtual ~StructureDefinition(void);
 
+		void name(const std::string& name);
+		std::string& name(void);
+		void symbolicName(const std::string& symbolicName);
+		std::string& symbolicName(void);
 		void defaultEncodingId(OpcUaNodeId& defaultEncodingId);
 		OpcUaNodeId& defaultEncodingId(void);
 		void baseDataType(OpcUaNodeId& baseDataType);
@@ -71,6 +75,8 @@ namespace OpcUaStackCore
 		//- ExtensionObjectBase -----------------------------------------------
 
 	  private:
+		std::string name_;
+		std::string symbolicName_;
 		OpcUaNodeId defaultEncodingId_;
 		OpcUaNodeId baseDataType_;
 		uint32_t structureType_;

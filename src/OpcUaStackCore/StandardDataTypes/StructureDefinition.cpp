@@ -24,6 +24,8 @@ namespace OpcUaStackCore
 
 	StructureDefinition::StructureDefinition(void)
 	: DataTypeDefinition()
+	, name_("")
+	, symbolicName_("")
 	, defaultEncodingId_()
 	, baseDataType_()
 	, structureType_(0)
@@ -33,6 +35,30 @@ namespace OpcUaStackCore
 
 	StructureDefinition::~StructureDefinition(void)
 	{
+	}
+
+	void
+	StructureDefinition::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	std::string&
+	StructureDefinition::name(void)
+	{
+		return name_;
+	}
+
+	void
+	StructureDefinition::symbolicName(const std::string& symbolicName)
+	{
+		symbolicName_ = symbolicName;
+	}
+
+	std::string&
+	StructureDefinition::symbolicName(void)
+	{
+		return symbolicName_;
 	}
 
 	void
