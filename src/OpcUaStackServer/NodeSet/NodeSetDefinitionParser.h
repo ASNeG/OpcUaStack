@@ -20,17 +20,46 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/StandardDataTypes/DataTypeDefinition.h"
 
-//using namespace OpcUaStackCore;
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
+	/**
+	 * This class is used to encode end decode the Definition element in a node set
+	 */
 	class DLLEXPORT NodeSetDefinitionParser
 	{
 	  public:
 		NodeSetDefinitionParser(void);
 		~NodeSetDefinitionParser(void);
+
+		/**
+		 * This method is used to decode the Definition element from an opc ua node set.
+		 *
+		 * @param[in] ptreeValue			property tree with the node set
+		 * @param[out] dataTypeDefinition	data type definition
+		 * @return true if successful
+		 */
+		bool decode(
+			boost::property_tree::ptree& ptreeValue,
+			DataTypeDefinition& dataTypeDefinition
+		);
+
+		/**
+		 * This method is used to encode the Definition element from an opc ua node set.
+		 *
+		 * @param[in] dataTypeDefinition	data type definition to encode
+		 * @param[out] ptreeValue			property tree with the result node set
+		 * @return true if successful
+		 */
+		bool encode(
+			DataTypeDefinition& dataTypeDefinition,
+			boost::property_tree::ptree& ptreeValue
+		);
 	};
 
 
