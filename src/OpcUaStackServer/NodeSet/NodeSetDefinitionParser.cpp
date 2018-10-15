@@ -268,7 +268,25 @@ namespace OpcUaStackServer
 		boost::property_tree::ptree& ptreeValue
 	)
 	{
-		// FIXME: todo
+		// encode name attribute
+		ptreeValue.put("<xmlattr>.Name", structureField->name());
+
+		// encode data type attribute
+		ptreeValue.put("<xmlattr>.DataType", structureField->dataType().toString());
+
+		// encode value rank attribute
+		ptreeValue.put("<xmlattr>.ValueRank", structureField->valueRank());
+
+		// encode array dimensions
+
+		// encode max string length attribute
+		ptreeValue.put("<xmlattr>.MaxStringLength", structureField->maxStringLength());
+
+		// encode is optional attribute
+		if (structureField->isOptional()) {
+			ptreeValue.put("<xmlattr>.IsOptional", "true");
+		}
+
 		return true;
 	}
 
