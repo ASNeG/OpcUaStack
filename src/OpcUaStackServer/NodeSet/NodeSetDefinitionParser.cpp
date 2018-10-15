@@ -106,6 +106,11 @@ namespace OpcUaStackServer
 		StructureDefinition::SPtr& structureDefinition
 	)
 	{
+		// create structure definiton if not exist
+		if (structureDefinition.get() == nullptr) {
+			structureDefinition = constructSPtr<StructureDefinition>();
+		}
+
 		// find Name attribute
 		boost::optional<std::string> name = ptreeValue.get_optional<std::string>("<xmlattr>.Name");
 		if (!name) {
@@ -163,27 +168,61 @@ namespace OpcUaStackServer
 		StructureField::SPtr& structureField
 	)
 	{
-		// FIXME: todo
+		// find Name attribute
+		boost::optional<std::string> name = ptreeValue.get_optional<std::string>("<xmlattr>.Name");
+		if (!name) {
+			Log(Error, "missing attribute in structure field")
+				.parameter("Attribute", "Name");
+			return false;
+		}
+		OpcUaString nameValue(*name);
+		structureField->name(nameValue);
+
+		// find symbolic name attribute
+		boost::optional<std::string> symbolicName = ptreeValue.get_optional<std::string>("<xmlattr>.SymbolicName");
+
+        // find data type attribute
+		boost::optional<std::string> dataType = ptreeValue.get_optional<std::string>("<xmlattr>.DataType");
+		if (!dataType) {
+			*dataType = "i=24";
+		}
+		if (!structureField->dataType().fromString(*dataType)) {
+			Log(Error, "invalid attribute in structure field")
+				.parameter("Attribute", "DataType")
+				.parameter("Value", *dataType);
+			return false;
+		}
+
+		// find value rank attribute
+		boost::optional<int32_t> valueRank = ptreeValue.get_optional<int32_t>("<xmlattr>.ValueRank");
+		if (!valueRank) {
+			valueRank = -1;
+		}
+		structureField->valueRank(*valueRank);
+
+		// find array dimension attribute
+
+		// find max string length attribute
+		boost::optional<uint32_t> maxStringLength = ptreeValue.get_optional<uint32_t>("<xmlattr>.MaxStringLength");
+		if (!maxStringLength) {
+			maxStringLength = 0;
+		}
+		structureField->maxStringLength(*maxStringLength);
+
+		// find value attribute
+		boost::optional<int32_t> value = ptreeValue.get_optional<int32_t>("<xmlattr>.Value");
+
+		// find is optional attribute
+        boost::optional<std::string> isOptional = ptreeValue.get_optional<std::string>("<xmlattr>.IsOptional");
+        if (isOptional && *isOptional == "true") {
+        	structureField->isOptional(true);
+        }
+        else {
+        	structureField->isOptional(false);
+        }
+
 		return true;
 	}
-
-#if 0
-	  <xs:complexType name="DataTypeField">
-	    <xs:sequence>
-	      <xs:element name="DisplayName" type="LocalizedText" minOccurs="0" maxOccurs="unbounded"></xs:element>
-	      <xs:element name="Description" type="LocalizedText" minOccurs="0" maxOccurs="unbounded"></xs:element>
-	      <xs:element name="Documentation" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
-	    </xs:sequence>
-	    <xs:attribute name="Name" type="xs:string" use="required"></xs:attribute>
-	    <xs:attribute name="SymbolicName" type="SymbolicName" use="optional"></xs:attribute>
-	    <xs:attribute name="DataType" type="NodeId" default="i=24"></xs:attribute>
-	    <xs:attribute name="ValueRank" type="ValueRank" default="-1"></xs:attribute>
-	    <xs:attribute name="ArrayDimensions" type="ArrayDimensions" default=""></xs:attribute>
-	    <xs:attribute name="MaxStringLength" type="xs:unsignedInt" default="0"></xs:attribute>
-	    <xs:attribute name="Value" type="xs:int" default="-1"></xs:attribute>
-	    <xs:attribute name="IsOptional" type="xs:boolean" use="optional" default="false"></xs:attribute>
-	  </xs:complexType>
-#endif
 
 
 }
