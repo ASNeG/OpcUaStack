@@ -46,16 +46,12 @@
     <xs:attribute name="IsOptional" type="xs:boolean" use="optional" default="false"></xs:attribute>
   </xs:complexType>
 
-
-
  */
 
 #include <boost/date_time/date_facet.hpp>
 #include <locale>
 #include "OpcUaStackServer/NodeSet/NodeSetDefinitionParser.h"
 #include "OpcUaStackCore/Base/Log.h"
-
-//using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -96,7 +92,15 @@ namespace OpcUaStackServer
 		boost::property_tree::ptree& ptreeValue
 	)
 	{
-		// FIXME: todo
+		// encode structure definition
+		boost::property_tree::ptree ptreeChild;
+		if (!encodeStructureDefinition(structureDefinition, ptreeChild)) {
+			return false;
+		}
+
+		// added definition element
+		ptreeValue.add_child("Definition", ptreeChild);
+
 		return true;
 	}
 
@@ -106,12 +110,12 @@ namespace OpcUaStackServer
 		StructureDefinition::SPtr& structureDefinition
 	)
 	{
-		// create structure definiton if not exist
+		// decode structure definiton if not exist
 		if (structureDefinition.get() == nullptr) {
 			structureDefinition = constructSPtr<StructureDefinition>();
 		}
 
-		// find Name attribute
+		// decode Name attribute
 		boost::optional<std::string> name = ptreeValue.get_optional<std::string>("<xmlattr>.Name");
 		if (!name) {
 			Log(Error, "missing attribute in structure type definition")
@@ -120,13 +124,13 @@ namespace OpcUaStackServer
 		}
 		structureDefinition->name(*name);
 
-		// find symbolic name attribute
+		// decode symbolic name attribute
 		boost::optional<std::string> symbolicName = ptreeValue.get_optional<std::string>("<xmlattr>.SymbolicName");
         if (symbolicName) {
         	structureDefinition->symbolicName(*symbolicName);
         }
 
-        // find is union attribute
+        // decode is union attribute
         boost::optional<std::string> isUnion = ptreeValue.get_optional<std::string>("<xmlattr>.IsUnion");
         if (isUnion && *isUnion == "true") {
         	structureDefinition->structureType(2);
@@ -135,18 +139,20 @@ namespace OpcUaStackServer
         	structureDefinition->structureType(0);
         }
 
-        // find is option attribute
+        // decode is option attribute
         boost::optional<std::string> isOption = ptreeValue.get_optional<std::string>("<xmlattr>.IsOption");
         // nothing to do with this attribute
 
-		// find field elements
+		// decode field elements
         StructureField::Vec structureFieldVec;
 		boost::property_tree::ptree::iterator it;
 		for (it = ptreeValue.begin(); it != ptreeValue.end(); it++) {
 			if (it->first != "Field") continue;
 
 			StructureField::SPtr structureField = constructSPtr<StructureField>();
-			if (decodeStructureField(it->second, structureField))
+			if (!decodeStructureField(it->second, structureField)) {
+				return false;
+			}
 			structureFieldVec.push_back(structureField);
 		}
 
@@ -163,12 +169,44 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	NodeSetDefinitionParser::encodeStructureDefinition(
+		StructureDefinition::SPtr& structureDefinition,
+		boost::property_tree::ptree& ptreeValue
+	)
+	{
+		// encode name attribute
+		ptreeValue.put("<xmlattr>.Name", structureDefinition->name());
+
+		// encode is union attribute
+		if (structureDefinition->structureType() == 2) {
+			ptreeValue.put("<xmlattr>.IsUnion", "true");
+		}
+
+		// encode field elements
+		uint32_t size = structureDefinition->fields()->size();
+		for (uint32_t idx = 0; idx<size; idx++) {
+			StructureField::SPtr structureField;
+			structureDefinition->fields()->get(idx, structureField);
+
+			boost::property_tree::ptree ptreeChild;
+			if (!encodeStructureField(structureField, ptreeChild)) {
+				return false;
+			}
+
+			// added field element
+			ptreeValue.add_child("Field", ptreeChild);
+		}
+
+		return true;
+	}
+
+	bool
 	NodeSetDefinitionParser::decodeStructureField(
 		boost::property_tree::ptree& ptreeValue,
 		StructureField::SPtr& structureField
 	)
 	{
-		// find Name attribute
+		// decode Name attribute
 		boost::optional<std::string> name = ptreeValue.get_optional<std::string>("<xmlattr>.Name");
 		if (!name) {
 			Log(Error, "missing attribute in structure field")
@@ -178,10 +216,10 @@ namespace OpcUaStackServer
 		OpcUaString nameValue(*name);
 		structureField->name(nameValue);
 
-		// find symbolic name attribute
+		// decode symbolic name attribute
 		boost::optional<std::string> symbolicName = ptreeValue.get_optional<std::string>("<xmlattr>.SymbolicName");
 
-        // find data type attribute
+        // decode data type attribute
 		boost::optional<std::string> dataType = ptreeValue.get_optional<std::string>("<xmlattr>.DataType");
 		if (!dataType) {
 			*dataType = "i=24";
@@ -193,26 +231,26 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		// find value rank attribute
+		// decode value rank attribute
 		boost::optional<int32_t> valueRank = ptreeValue.get_optional<int32_t>("<xmlattr>.ValueRank");
 		if (!valueRank) {
 			valueRank = -1;
 		}
 		structureField->valueRank(*valueRank);
 
-		// find array dimension attribute
+		// decode array dimension attribute
 
-		// find max string length attribute
+		// decode max string length attribute
 		boost::optional<uint32_t> maxStringLength = ptreeValue.get_optional<uint32_t>("<xmlattr>.MaxStringLength");
 		if (!maxStringLength) {
 			maxStringLength = 0;
 		}
 		structureField->maxStringLength(*maxStringLength);
 
-		// find value attribute
+		// decode value attribute
 		boost::optional<int32_t> value = ptreeValue.get_optional<int32_t>("<xmlattr>.Value");
 
-		// find is optional attribute
+		// decode is optional attribute
         boost::optional<std::string> isOptional = ptreeValue.get_optional<std::string>("<xmlattr>.IsOptional");
         if (isOptional && *isOptional == "true") {
         	structureField->isOptional(true);
@@ -224,5 +262,14 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	NodeSetDefinitionParser::encodeStructureField(
+		StructureField::SPtr& structureField,
+		boost::property_tree::ptree& ptreeValue
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
 
 }

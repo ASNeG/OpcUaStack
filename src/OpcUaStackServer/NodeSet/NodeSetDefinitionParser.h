@@ -67,10 +67,21 @@ namespace OpcUaStackServer
 			StructureDefinition::SPtr& structureDefinition
 		);
 
+		bool encodeStructureDefinition(
+			StructureDefinition::SPtr& structureDefinition,
+			boost::property_tree::ptree& ptreeValue
+		);
+
 		bool decodeStructureField(
 			boost::property_tree::ptree& ptreeValue,
 			StructureField::SPtr& structureField
 		);
+
+		bool encodeStructureField(
+			StructureField::SPtr& structureField,
+			boost::property_tree::ptree& ptreeValue
+		);
+
 	};
 
 
