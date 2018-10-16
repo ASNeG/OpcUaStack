@@ -24,12 +24,24 @@
 namespace OpcUaProjectBuilder
 {
 
+	/**
+	 * The class implements the building an user application template
+	 *
+	 * It takes the project name, the project description and the port as command line arguments and
+	 * substitute them to the user application template
+	 */
 	class OpcUaProjectBuilder
 	{
 	  public:
 		OpcUaProjectBuilder(void);
 		~OpcUaProjectBuilder(void);
 
+		/**
+		 * entry point
+		 * @param[in] number of command line arguments
+		 * @param[in] command line arguments
+		 * @return 0 if no errors happen else 1
+		 */
 		uint32_t start(int argc, char** argv);
 
 	  private:
@@ -41,7 +53,7 @@ namespace OpcUaProjectBuilder
 		bool createProjectFile(boost::filesystem::path& filename, const std::string& content);
 		bool readProjectFile(boost::filesystem::path& filename, std::string& content);
 		bool browseProjectDirectory(boost::filesystem::path& templateDirectory, boost::filesystem::path& projectDirectory);
-		std::string processString(const std::string& string);
+		std::string substituteString(const std::string& string);
 
 		// command line parameter
 		std::string projectName_;

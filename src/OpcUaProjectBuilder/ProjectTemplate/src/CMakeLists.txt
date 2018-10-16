@@ -16,9 +16,9 @@ set(VERSION_MAJOR "1" CACHE STRING "major version")
 set(VERSION_MINOR "0" CACHE STRING "minor version")
 set(VERSION_PATCH "0" CACHE STRING "patch version")
 
-set(OPCUASTACK_VERSION_MAJOR "3" CACHE STRING "major version")
-set(OPCUASTACK_VERSION_MINOR "0" CACHE STRING "minor version")
-set(OPCUASTACK_VERSION_PATCH "1" CACHE STRING "patch version")
+set(OPCUASTACK_VERSION_MAJOR "VersionMajor" CACHE STRING "major version")
+set(OPCUASTACK_VERSION_MINOR "VersionMinor" CACHE STRING "minor version")
+set(OPCUASTACK_VERSION_PATCH "VersionPatch" CACHE STRING "patch version")
 set(OPCUASTACK_INSTALL_PREFIX "/" CACHE PATH "opc ua stack intallation prefix")
 
 
