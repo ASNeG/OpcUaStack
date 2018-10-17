@@ -268,6 +268,12 @@ namespace OpcUaStackServer
         	structureField->isOptional(false);
         }
 
+        // decode description element
+         boost::optional<std::string> description = ptreeValue.get_optional<std::string>("Description");
+         if (description) {
+        	 structureField->description() = OpcUaLocalizedText("", *description);
+         }
+
 		return true;
 	}
 
@@ -300,6 +306,11 @@ namespace OpcUaStackServer
 		// encode is optional attribute
 		if (structureField->isOptional()) {
 			ptreeValue.put("<xmlattr>.IsOptional", "true");
+		}
+
+		// encode description element
+		if (structureField->description().text().size() > 0) {
+			ptreeValue.put("Description", structureField->description().text());
 		}
 
 		return true;
