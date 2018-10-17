@@ -38,17 +38,26 @@ namespace OpcUaStackServer
 		~DataTypeGenerator(void);
 
 		void informationModel(InformationModel::SPtr& informationModel);
-		void dataType(OpcUaNodeId& dataType);
 		void projectNamespace(const std::string& projectNamespace);
 		void parentProjectNamespace(const std::string& parentProjectNamespace);
 		std::string& sourceContent(void);
 		std::string& headerContent(void);
 
-		bool generate(void);
+		bool generate(const OpcUaNodeId& dataType);
 
 	  private:
+		//
+		// header functions
+		//
+		bool generateHeader(void);
+		bool generateHeaderComments(void);
+
+		//
+		// source functions
+		//
+		bool generateSource(void);
+
 		InformationModel::SPtr informationModel_;
-		OpcUaNodeId dataTypeNodeId_;
 		std::string projectNamespace_;
 		std::string parentProjectNamespace_;
 		std::string sourceContent_;

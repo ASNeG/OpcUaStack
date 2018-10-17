@@ -47,14 +47,12 @@ BOOST_AUTO_TEST_CASE(DataTypeGenerator_xx)
 
 
 	// generate data type source
-	OpcUaNodeId dataTypeNodeId(22);
-	DataTypeGenerator variableTypeGenerator;
-	variableTypeGenerator.informationModel(informationModel);
-	variableTypeGenerator.dataType(dataTypeNodeId);
-	BOOST_REQUIRE(variableTypeGenerator.generate() == true);
+	DataTypeGenerator dataTypeGenerator;
+	dataTypeGenerator.informationModel(informationModel);
+	BOOST_REQUIRE(dataTypeGenerator.generate(OpcUaNodeId(376)) == true);
 
-	std::string sourceContent = variableTypeGenerator.sourceContent();
-	std::string headerContent = variableTypeGenerator.headerContent();
+	std::string sourceContent = dataTypeGenerator.sourceContent();
+	std::string headerContent = dataTypeGenerator.headerContent();
 
 	std::cout << std::endl;
 	std::cout << headerContent << std::endl;

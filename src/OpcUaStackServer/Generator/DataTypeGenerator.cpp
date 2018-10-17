@@ -31,6 +31,11 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DataTypeGenerator::DataTypeGenerator(void)
+	: informationModel_()
+	, projectNamespace_("OpcUaStackCore")
+	, parentProjectNamespace_("OpcUaStackCore")
+	, sourceContent_("")
+	, headerContent_("")
 	{
 	}
 
@@ -39,22 +44,20 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	DataTypeGenerator::generate(void)
+	DataTypeGenerator::generate(const OpcUaNodeId& dataType)
 	{
 		// FIXME: todo
-		return true;
+
+		// generate header and source
+		return
+			generateHeader() &&
+			generateSource();
 	}
 
 	void
 	DataTypeGenerator::informationModel(InformationModel::SPtr& informationModel)
 	{
 		informationModel_ = informationModel;
-	}
-
-	void
-	DataTypeGenerator::dataType(OpcUaNodeId& dataType)
-	{
-		dataTypeNodeId_ = dataType;
 	}
 
 	void
@@ -79,6 +82,55 @@ namespace OpcUaStackServer
 	DataTypeGenerator::headerContent(void)
 	{
 		return headerContent_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// header
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	DataTypeGenerator::generateHeader(void)
+	{
+		return
+			generateHeaderComments();
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderComments(void)
+	{
+		std::stringstream ss;
+
+		ss << "/*" << std::endl;
+		ss << "    DataTypeClass: " << "className" << std::endl;
+		ss << std::endl;
+		ss << "    Generated Source Code - please do not change this source code" << std::endl;
+		ss << std::endl;
+		ss << "    DataTypeCodeGenerator Version:"  << std::endl;
+		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
+		ss << std::endl;
+		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
+		ss << "*/" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// source
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	DataTypeGenerator::generateSource(void)
+	{
+		// FIXME: todo
+		return true;
 	}
 
 }
