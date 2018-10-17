@@ -95,7 +95,16 @@ namespace OpcUaStackServer
 	DataTypeGenerator::generateHeader(void)
 	{
 		return
-			generateHeaderComments();
+			generateHeaderComments() &&
+			generateHeaderBegin() &&
+			//	generateHeaderClassBegin("    ") &&
+			//		generateHeaderClassValueGetter("        ") &&
+			//	    generateHeaderClassExtensionInterface("        ") &&
+			//	    generateHeaderClassPublic("        ") &&
+			//	    generateHeaderClassPrivate("    ") &&
+			//	    generateHeaderClassValueDefinition("        ") &&
+			//	generateHeaderClassEnd("    ") &&
+		    generateHeaderEnd();
 	}
 
 	bool
@@ -118,6 +127,58 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	DataTypeGenerator::generateHeaderBegin(void)
+	{
+		std::stringstream ss;
+
+		//
+		// added defines
+		//
+		ss << std::endl;
+		ss << "#ifndef __" << projectNamespace_ << "_" << "className" << "_h__" << std::endl;
+		ss << "#define __" << projectNamespace_ << "_" << "className" << "_h__" << std::endl;
+
+		//
+		// added includes
+		//
+		ss << std::endl;
+		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+
+		//
+		// added namespace
+		//
+		ss << std::endl;
+		ss << "namespace " << projectNamespace_ << std::endl;
+		ss << "{" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderEnd(void)
+	{
+		std::stringstream ss;
+
+		//
+		// added namespace
+		//
+		ss << std::endl;
+		ss << "}" << std::endl;
+
+		//
+		// added defines
+		//
+		ss << std::endl;
+		ss << "#endif" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
