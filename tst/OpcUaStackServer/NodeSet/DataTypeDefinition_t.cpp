@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_)
 }
 
 
-BOOST_AUTO_TEST_CASE(DataTypeDefinition_decode_description)
+BOOST_AUTO_TEST_CASE(DataTypeDefinition_encode_decode_structure_description)
 {
 	ConfigXml configXml, cx1, cx2;
 	NodeSetXmlParser nodeSetXmlParser;
