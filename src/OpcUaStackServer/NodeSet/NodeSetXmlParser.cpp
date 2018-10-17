@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,7 +17,9 @@
 
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
-#include "OpcUaStackCore/DataType/DataTypeDefinition.h"
+#include "OpcUaStackServer/NodeSet/NodeSetDefinitionParser.h"
+#include "OpcUaStackCore/StandardDataTypes/EnumDefinition.h"
+#include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
@@ -924,6 +926,8 @@ namespace OpcUaStackServer
 	bool
 	NodeSetXmlParser::decodeDataTypeDefinition(DataTypeNodeClass::SPtr& dataTypeNodeClass, boost::property_tree::ptree& ptree)
 	{
+		NodeSetDefinitionParser parser;
+
 		// get optional Definition element
 		boost::optional<boost::property_tree::ptree&> definitionTree = ptree.get_child_optional("Definition");
 		if (!definitionTree) {
@@ -931,23 +935,35 @@ namespace OpcUaStackServer
 		}
 
 		// find out whether a enum or data strucure exists
-		DataTypeDefinition1::SPtr definition = constructSPtr<DataTypeDefinition1>();
 		boost::optional<std::string> value = ptree.get_optional<std::string>("Definition.Field.<xmlattr>.Value");
 		if (value) {
-			definition->dataSubType(Enumeration);
+
+			// decode enum definition
+
+			EnumDefinition::SPtr enumDefinition = constructSPtr<EnumDefinition>();
+
+			if (!parser.decode(*definitionTree, enumDefinition)) {
+				Log(Error, "invalid enum definiton - ignore enum definiton section")
+					.parameter("NodeId", dataTypeNodeClass->nodeId().data());
+				return true;
+			}
+
+			//dataTypeNodeClass->dataTypeDefinition(enumDefinition);
 		}
 		else {
-			definition->dataSubType(Structure);
-		}
 
-		// decode definition
-		if (!definition->decode(ptree)) {
-			Log(Error, "invalid definiton - ignore definiton section")
-				.parameter("NodeId", dataTypeNodeClass->nodeId().data());
-			return true;
-		}
+			// decode structure definition
 
-		dataTypeNodeClass->dataTypeDefinition(definition);
+			StructureDefinition::SPtr structureDefinition = constructSPtr<StructureDefinition>();
+
+			if (!parser.decode(*definitionTree, structureDefinition)) {
+				Log(Error, "invalid structure definiton - ignore structure definiton section")
+					.parameter("NodeId", dataTypeNodeClass->nodeId().data());
+				return true;
+			}
+
+			//dataTypeNodeClass->dataTypeDefinition(structureDefinition);
+		}
 
 		return true;
 	}
@@ -1569,17 +1585,37 @@ namespace OpcUaStackServer
 	bool
 	NodeSetXmlParser::encodeDataTypeDefinition(DataTypeNodeClass::SPtr& dataTypeNodeClass, boost::property_tree::ptree& ptree)
 	{
+		NodeSetDefinitionParser parser;
+
 		Object::SPtr definitionObject = dataTypeNodeClass->dataTypeDefinition();
 		if (definitionObject.get() == nullptr) return true;
-		DataTypeDefinition1::SPtr definition = boost::static_pointer_cast<DataTypeDefinition1>(definitionObject);
 
-		// encode definition
-		if (!definition->encode(ptree)) {
-			Log(Error, "invalid definiton - ignore definiton section")
-				.parameter("NodeId", dataTypeNodeClass->nodeId().data());
-			return true;
+		if (dynamic_cast<StructureDefinition*>(definitionObject.get()) != 0) {
+
+			// encode structure definition
+
+			StructureDefinition::SPtr structureDefinition = boost::static_pointer_cast<StructureDefinition>(definitionObject);
+			if (!parser.encode(structureDefinition, ptree)) {
+				Log(Error, "invalid structure definiton - ignore structure definiton section")
+					.parameter("NodeId", dataTypeNodeClass->nodeId().data());
+				return true;
+			}
 		}
 
+		if (dynamic_cast<EnumDefinition*>(definitionObject.get()) != 0) {
+
+			// encode enum definition
+
+			EnumDefinition::SPtr enumDefinition = boost::static_pointer_cast<EnumDefinition>(definitionObject);
+			if (!parser.encode(enumDefinition, ptree)) {
+				Log(Error, "invalid enum definiton - ignore structure enum section")
+					.parameter("NodeId", dataTypeNodeClass->nodeId().data());
+				return true;
+			}
+		}
+
+		Log(Error, "invalid data type definition class found in node set encoder")
+			.parameter("NodeId", dataTypeNodeClass->nodeId().data());
 		return true;
 	}
 
