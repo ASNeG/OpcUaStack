@@ -766,7 +766,7 @@ namespace OpcUaStackServer
 		if (!decodeReferences(dataTypeNodeClassSPtr, ptree)) return false;
 
 		//
-		// decode data type definitons
+		// decode data type definitions
 		//
 		if (enableDefinition_) {
 			if (!decodeDataTypeDefinition(dataTypeNodeClassSPtr, ptree)) return false;
@@ -948,7 +948,7 @@ namespace OpcUaStackServer
 				return true;
 			}
 
-			//dataTypeNodeClass->dataTypeDefinition(enumDefinition);
+			dataTypeNodeClass->dataTypeDefinition(enumDefinition);
 		}
 		else {
 
@@ -962,7 +962,7 @@ namespace OpcUaStackServer
 				return true;
 			}
 
-			//dataTypeNodeClass->dataTypeDefinition(structureDefinition);
+			dataTypeNodeClass->dataTypeDefinition(structureDefinition);
 		}
 
 		return true;
@@ -1455,7 +1455,7 @@ namespace OpcUaStackServer
 			if (!encodeReferences(dataTypeNodeClassSPtr, node)) return false;
 
 			//
-			// encode data type definitons
+			// encode data type definitions
 			//
 			if (enableDefinition_) {
 				if (!encodeDataTypeDefinition(dataTypeNodeClassSPtr, node)) return false;
@@ -1587,8 +1587,11 @@ namespace OpcUaStackServer
 	{
 		NodeSetDefinitionParser parser;
 
+		// get data type definition from node class
 		Object::SPtr definitionObject = dataTypeNodeClass->dataTypeDefinition();
-		if (definitionObject.get() == nullptr) return true;
+		if (definitionObject.get() == nullptr) {
+			return true;
+		}
 
 		if (dynamic_cast<StructureDefinition*>(definitionObject.get()) != 0) {
 
@@ -1614,8 +1617,8 @@ namespace OpcUaStackServer
 			}
 		}
 
-		Log(Error, "invalid data type definition class found in node set encoder")
-			.parameter("NodeId", dataTypeNodeClass->nodeId().data());
+		// Log(Error, "invalid data type definition class found in node set encoder")
+		//	 .parameter("NodeId", dataTypeNodeClass->nodeId().data());
 		return true;
 	}
 
