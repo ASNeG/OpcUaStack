@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -329,6 +329,31 @@ namespace OpcUaStackServer
 		bool isPartMinimumSamplingInterval(void);
 		bool isNullMinimumSamplingInterval(void);
 		boost::optional<OpcUaDouble&> getMinimumSamplingInterval(void);
+
+		//
+		// data type definition
+		//
+		// FIXME: todo
+
+		//
+		// role permissions
+		//
+		// FIXME: todo
+
+		//
+		// user role permissions
+		//
+		// FIXME: todo
+
+		//
+		// access restrictions
+		//
+		// FIXME: todo
+
+		//
+		// access level ex
+		//
+		// FIXME: todo
 
 	  private:
 		boost::shared_mutex mutex_;

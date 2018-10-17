@@ -169,6 +169,11 @@ namespace OpcUaStackServer
 					case AttributeId_Value: return "Value";
 					case AttributeId_ValueRank: return "ValueRank";
 					case AttributeId_WriteMask: return "WriteMask";
+					case AttributeId_DataTypeDefinition: return "DataTypeDefinition";
+					case AttributeId_RolePermissions: return "RolePermissions";
+					case AttributeId_UserRolePermissions: return "UserRolePermissions";
+					case AttributeId_AccessRestrictions: return "AccessRestrictions";
+					case AttributeId_AccessLevelEx: return "AccessLevelEx";
 					default: return "Unknown";
 				}
 			}
@@ -217,6 +222,13 @@ namespace OpcUaStackServer
 	  typedef AttributeMeta<OpcUaBoolean, AttributeId_Executable, OpcUaBuildInType_OpcUaBoolean> ExecutableAttribute;
 	  typedef AttributeMeta<OpcUaBoolean, AttributeId_UserExecutable, OpcUaBuildInType_OpcUaBoolean> UserExecutableAttribute;
 	  typedef AttributeMeta<OpcUaByte, AttributeId_UserAccessLevel, OpcUaBuildInType_OpcUaByte> UserAccessLevelAttribute;
+
+	  // FIXME: todo
+	  typedef AttributeMeta<OpcUaByte, AttributeId_DataTypeDefinition, OpcUaBuildInType_OpcUaExtensionObject> DataTypeDefinitionAttribute;
+	  typedef AttributeMeta<OpcUaByte, AttributeId_RolePermissions, OpcUaBuildInType_OpcUaExtensionObject> RolePermissionsAttribute;
+	  typedef AttributeMeta<OpcUaByte, AttributeId_UserRolePermissions, OpcUaBuildInType_OpcUaExtensionObject> UserRolePermissionsAttribute;
+	  typedef AttributeMeta<OpcUaByte, AttributeId_AccessRestrictions, OpcUaBuildInType_OpcUaExtensionObject> AccessRestrictionsAttribute;
+	  typedef AttributeMeta<OpcUaByte, AttributeId_AccessLevelEx, OpcUaBuildInType_OpcUaExtensionObject> AccessLevelExAttribute;
 
 }
 
