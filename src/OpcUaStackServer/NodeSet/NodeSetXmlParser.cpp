@@ -942,7 +942,7 @@ namespace OpcUaStackServer
 
 			EnumDefinition::SPtr enumDefinition = constructSPtr<EnumDefinition>();
 
-			if (!parser.decode(*definitionTree, enumDefinition)) {
+			if (!parser.decode(*definitionTree, enumDefinition, false)) {
 				Log(Error, "invalid enum definiton - ignore enum definiton section")
 					.parameter("NodeId", dataTypeNodeClass->nodeId().data());
 				return true;
@@ -956,7 +956,7 @@ namespace OpcUaStackServer
 
 			StructureDefinition::SPtr structureDefinition = constructSPtr<StructureDefinition>();
 
-			if (!parser.decode(*definitionTree, structureDefinition)) {
+			if (!parser.decode(*definitionTree, structureDefinition, false)) {
 				Log(Error, "invalid structure definiton - ignore structure definiton section")
 					.parameter("NodeId", dataTypeNodeClass->nodeId().data());
 				return true;
