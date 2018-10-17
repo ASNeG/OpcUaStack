@@ -213,4 +213,10 @@ namespace OpcUaStackCore
 		configIf->addValue("Global.ConfigurationFileName", configFileName_);
 	}
 
+	void
+	ConfigXml::find(const std::string& elementName, std::vector<boost::property_tree::ptree>& ptrees)
+	{
+		// FIXME: todo
+	}
+
 }
