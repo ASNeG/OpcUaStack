@@ -245,8 +245,27 @@ namespace OpcUaStackCore
 	{
 		boost::property_tree::ptree::iterator it;
 		for (it = ptree.begin(); it != ptree.end(); it++) {
-			elementNameSet.insert(it->first);
-			createElementNameSet(it->second, elementNameSet);
+			if (it->first != "<xmlattr>") {
+				elementNameSet.insert(it->first);
+				createElementNameSet(it->second, elementNameSet);
+			}
+		}
+	}
+
+	void
+	ConfigXml::createAttributeNameSet(boost::property_tree::ptree& ptree, std::set<std::string>& attributeNameSet)
+	{
+		boost::property_tree::ptree::iterator it1, it2;
+		for (it1 = ptree.begin(); it1 != ptree.end(); it1++) {
+			if (it1->first != "<xmlattr>") {
+				createAttributeNameSet(it1->second, attributeNameSet);
+			}
+			else {
+				for (it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
+					attributeNameSet.insert(it2->first);
+				}
+			}
+
 		}
 	}
 

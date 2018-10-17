@@ -186,9 +186,17 @@ namespace OpcUaStackCore
 		 * This function is used to create a set of all element names in the given property tree.
 		 *
 		 * @param[in] ptree				property tree
-		 * @param[out] elementNameSet	set of all names in the property tree
+		 * @param[out] elementNameSet	set of all element names in the property tree
 		 */
 		static void createElementNameSet(boost::property_tree::ptree& ptree, std::set<std::string>& elementNameSet);
+
+		/**
+		 * This function is used to create a set of all attribute names in the given property tree.
+		 *
+		 * @param[in] ptree				property tree
+		 * @param[out] attributeNameSet	set of all attribute names in the property tree
+		 */
+		static void createAttributeNameSet(boost::property_tree::ptree& ptree, std::set<std::string>& attributeNameSet);
 
 	  private:
 		void find(
