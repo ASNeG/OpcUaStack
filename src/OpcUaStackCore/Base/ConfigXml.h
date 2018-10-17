@@ -20,6 +20,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <string>
+#include <set>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ConfigIf.h"
 
@@ -158,7 +159,7 @@ namespace OpcUaStackCore
 		std::string errorMessage(void);
 
 		/**
-		 * This function is used to store the propertry tree in a configuration object. The configuration
+		 * This function is used to store the property tree in a configuration object. The configuration
 		 * object (class Config) is a static instance.
 		 *
 		 */
@@ -173,13 +174,21 @@ namespace OpcUaStackCore
 		void writeToConfig(ConfigIf* configIf);
 
 		/**
-		 * This function searches for elements with a given name and returns the propertry
+		 * This function searches for elements with a given name and returns the property
 		 * trees in a vector.
 		 *
 		 * @param[in] elementName		name of the element
 		 * @param[out] ptrees			property trees
 		 */
 		void find(const std::string& elementName, std::vector<boost::property_tree::ptree>& ptrees);
+
+		/**
+		 * This function is used to create a set of all element names in the given property tree.
+		 *
+		 * @param[in] ptree				property tree
+		 * @param[out] elementNameSet	set of all names in the property tree
+		 */
+		static void createElementNameSet(boost::property_tree::ptree& ptree, std::set<std::string>& elementNameSet);
 
 	  private:
 		void find(
@@ -189,7 +198,7 @@ namespace OpcUaStackCore
 		);
 
 		std::string configFileName_;			//!< name of the configuration file
-		boost::property_tree::ptree ptree_;		//! propertry tree
+		boost::property_tree::ptree ptree_;		//! property tree
 		std::string errorMessage_;				//! actual error message
 	};
 

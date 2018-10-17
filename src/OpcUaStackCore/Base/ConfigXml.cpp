@@ -240,4 +240,14 @@ namespace OpcUaStackCore
 		}
 	}
 
+	void
+	ConfigXml::createElementNameSet(boost::property_tree::ptree& ptree, std::set<std::string>& elementNameSet)
+	{
+		boost::property_tree::ptree::iterator it;
+		for (it = ptree.begin(); it != ptree.end(); it++) {
+			elementNameSet.insert(it->first);
+			createElementNameSet(it->second, elementNameSet);
+		}
+	}
+
 }
