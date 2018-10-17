@@ -27,8 +27,6 @@ BOOST_AUTO_TEST_CASE(NodeSet_decode_xml)
 
 	BOOST_REQUIRE(configXml.parse("../tst/data/Opc.Ua.NodeSet2.xml") == true);
 	BOOST_REQUIRE(nodeSetXmlParser.decode(configXml.ptree()) == true);
-
-	std::cout << "Test finish" << std::endl << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END()
