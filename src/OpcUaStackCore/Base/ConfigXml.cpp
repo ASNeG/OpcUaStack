@@ -19,6 +19,9 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/filesystem.hpp>
+
+#include <iostream>
+
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/Log.h"
@@ -227,7 +230,7 @@ namespace OpcUaStackCore
 	)
 	{
 		boost::property_tree::ptree::iterator it;
-		for (it = ptree_.begin(); it != ptree_.end(); it++) {
+		for (it = ptree.begin(); it != ptree.end(); it++) {
 			if (it->first == elementName) {
 				ptrees.push_back(it->second);
 			}
