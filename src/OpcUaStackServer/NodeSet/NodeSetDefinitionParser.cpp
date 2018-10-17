@@ -67,29 +67,33 @@ namespace OpcUaStackServer
 	bool
 	NodeSetDefinitionParser::decode(
 		boost::property_tree::ptree& ptreeValue,
-		StructureDefinition::SPtr& structureDefinition
+		StructureDefinition::SPtr& structureDefinition,
+		bool decodeDefinition
 	)
 	{
 		// create new structure type definition structure
 		structureDefinition = constructSPtr<StructureDefinition>();
 
-		// find Definition element
-		boost::optional<boost::property_tree::ptree&> tree = ptreeValue.get_child_optional("Definition");
-		if (!tree) {
-			Log(Error, "missing element in data type definition")
-				.parameter("Element", "Definition");
-			return false;
+		if (decodeDefinition) {
+			// find Definition element
+			boost::optional<boost::property_tree::ptree&> tree = ptreeValue.get_child_optional("Definition");
+			if (!tree) {
+				Log(Error, "missing element in data type definition")
+					.parameter("Element", "Definition");
+				return false;
+			}
+			return decodeStructureDefinition(*tree, structureDefinition);
 		}
-		ptreeValue = *tree;
 
 		// decode structure definition
-		return decodeStructureDefinition(*tree, structureDefinition);
+		return decodeStructureDefinition(ptreeValue, structureDefinition);
 	}
 
 	bool
 	NodeSetDefinitionParser::encode(
 		StructureDefinition::SPtr& structureDefinition,
-		boost::property_tree::ptree& ptreeValue
+		boost::property_tree::ptree& ptreeValue,
+		bool encodeDefinition
 	)
 	{
 		// encode structure definition
@@ -98,8 +102,13 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		// added definition element
-		ptreeValue.add_child("Definition", ptreeChild);
+		if (encodeDefinition) {
+			// added definition element
+			ptreeValue.add_child("Definition", ptreeChild);
+		}
+		else {
+			ptreeValue = ptreeChild;
+		}
 
 		return true;
 	}
@@ -222,7 +231,7 @@ namespace OpcUaStackServer
         // decode data type attribute
 		boost::optional<std::string> dataType = ptreeValue.get_optional<std::string>("<xmlattr>.DataType");
 		if (!dataType) {
-			*dataType = "i=24";
+			dataType = "i=24";
 		}
 		if (!structureField->dataType().fromString(*dataType)) {
 			Log(Error, "invalid attribute in structure field")
@@ -272,15 +281,21 @@ namespace OpcUaStackServer
 		ptreeValue.put("<xmlattr>.Name", structureField->name());
 
 		// encode data type attribute
-		ptreeValue.put("<xmlattr>.DataType", structureField->dataType().toString());
+		if (structureField->dataType() != OpcUaNodeId(24)) {
+			ptreeValue.put("<xmlattr>.DataType", structureField->dataType().toString());
+		}
 
 		// encode value rank attribute
-		ptreeValue.put("<xmlattr>.ValueRank", structureField->valueRank());
+		if (structureField->valueRank() != -1) {
+			ptreeValue.put("<xmlattr>.ValueRank", structureField->valueRank());
+		}
 
 		// encode array dimensions
 
 		// encode max string length attribute
-		ptreeValue.put("<xmlattr>.MaxStringLength", structureField->maxStringLength());
+		if (structureField->maxStringLength() != 0) {
+			ptreeValue.put("<xmlattr>.MaxStringLength", structureField->maxStringLength());
+		}
 
 		// encode is optional attribute
 		if (structureField->isOptional()) {

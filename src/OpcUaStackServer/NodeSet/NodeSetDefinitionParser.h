@@ -42,11 +42,14 @@ namespace OpcUaStackServer
 		 *
 		 * @param[in] ptreeValue			property tree with the node set
 		 * @param[out] structureDefinition	structure type definition
+		 * @param[in] decodeDefinition		definition element will be decoded or not
+		 *
 		 * @return true if successful
 		 */
 		bool decode(
 			boost::property_tree::ptree& ptreeValue,
-			StructureDefinition::SPtr& structureDefinition
+			StructureDefinition::SPtr& structureDefinition,
+			bool decodeDefinition = true
 		);
 
 		/**
@@ -54,11 +57,14 @@ namespace OpcUaStackServer
 		 *
 		 * @param[in] structureDefinition	structure type definition to encode
 		 * @param[out] ptreeValue			property tree with the result node set
+		 * @param[in] encodeDefinition		definition element will be encoded or not
+		 *
 		 * @return true if successful
 		 */
 		bool encode(
 			StructureDefinition::SPtr& structureDefinition,
-			boost::property_tree::ptree& ptreeValue
+			boost::property_tree::ptree& ptreeValue,
+			bool encodeDefinition = true
 		);
 
 	  private:
