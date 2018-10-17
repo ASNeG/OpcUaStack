@@ -114,6 +114,28 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	NodeSetDefinitionParser::decode(
+		boost::property_tree::ptree& ptreeValue,
+		EnumDefinition::SPtr& enumDefinition,
+		bool decodeDefinition
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	NodeSetDefinitionParser::encode(
+		EnumDefinition::SPtr& enumDefinition,
+		boost::property_tree::ptree& ptreeValue,
+		bool encodeDefinition
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
 	NodeSetDefinitionParser::decodeStructureDefinition(
 		boost::property_tree::ptree& ptreeValue,
 		StructureDefinition::SPtr& structureDefinition
@@ -313,6 +335,46 @@ namespace OpcUaStackServer
 			ptreeValue.put("Description", structureField->description().text());
 		}
 
+		return true;
+	}
+
+	bool
+	NodeSetDefinitionParser::decodeEnumDefinition(
+		boost::property_tree::ptree& ptreeValue,
+		EnumDefinition::SPtr& enumDefinition
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	NodeSetDefinitionParser::encodeEnumDefinition(
+		EnumDefinition::SPtr& enumDefinition,
+		boost::property_tree::ptree& ptreeValue
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	NodeSetDefinitionParser::decodeEnumField(
+		boost::property_tree::ptree& ptreeValue,
+		EnumField::SPtr& enumField
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	NodeSetDefinitionParser::encodeStructureField(
+		EnumField::SPtr& enumField,
+		boost::property_tree::ptree& ptreeValue
+	)
+	{
+		// FIXME: todo
 		return true;
 	}
 

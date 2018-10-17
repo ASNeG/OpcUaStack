@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
+#include "OpcUaStackCore/StandardDataTypes/EnumDefinition.h"
 
 using namespace OpcUaStackCore;
 
@@ -29,7 +30,7 @@ namespace OpcUaStackServer
 {
 
 	/**
-	 * This class is used to encode end decode the Definition element in a node set
+	 * This class is used to encode end decode the structure definition element in a node set
 	 */
 	class DLLEXPORT NodeSetDefinitionParser
 	{
@@ -53,7 +54,7 @@ namespace OpcUaStackServer
 		);
 
 		/**
-		 * This method is used to encode the Definition element from an opc ua node set.
+		 * This method is used to encode the strucure definition element from an opc ua node set.
 		 *
 		 * @param[in] structureDefinition	structure type definition to encode
 		 * @param[out] ptreeValue			property tree with the result node set
@@ -63,6 +64,36 @@ namespace OpcUaStackServer
 		 */
 		bool encode(
 			StructureDefinition::SPtr& structureDefinition,
+			boost::property_tree::ptree& ptreeValue,
+			bool encodeDefinition = true
+		);
+
+		/**
+		 * This method is used to decode the enum definition element from an opc ua node set.
+		 *
+		 * @param[in] ptreeValue			property tree with the node set
+		 * @param[out] enumDefinition		enum type definition
+		 * @param[in] decodeDefinition		definition element will be decoded or not
+		 *
+		 * @return true if successful
+		 */
+		bool decode(
+			boost::property_tree::ptree& ptreeValue,
+			EnumDefinition::SPtr& enumDefinition,
+			bool decodeDefinition = true
+		);
+
+		/**
+		 * This method is used to encode the enum definition element from an opc ua node set.
+		 *
+		 * @param[in] enumDefinition		enum type definition to encode
+		 * @param[out] ptreeValue			property tree with the result node set
+		 * @param[in] encodeDefinition		definition element will be encoded or not
+		 *
+		 * @return true if successful
+		 */
+		bool encode(
+			EnumDefinition::SPtr& enumDefinition,
 			boost::property_tree::ptree& ptreeValue,
 			bool encodeDefinition = true
 		);
@@ -85,6 +116,26 @@ namespace OpcUaStackServer
 
 		bool encodeStructureField(
 			StructureField::SPtr& structureField,
+			boost::property_tree::ptree& ptreeValue
+		);
+
+		bool decodeEnumDefinition(
+			boost::property_tree::ptree& ptreeValue,
+			EnumDefinition::SPtr& enumDefinition
+		);
+
+		bool encodeEnumDefinition(
+			EnumDefinition::SPtr& enumDefinition,
+			boost::property_tree::ptree& ptreeValue
+		);
+
+		bool decodeEnumField(
+			boost::property_tree::ptree& ptreeValue,
+			EnumField::SPtr& enumField
+		);
+
+		bool encodeStructureField(
+			EnumField::SPtr& enumField,
 			boost::property_tree::ptree& ptreeValue
 		);
 
