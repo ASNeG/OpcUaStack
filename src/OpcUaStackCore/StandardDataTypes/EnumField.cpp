@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 	EnumField::EnumField(void)
 	: EnumValueType()
 	, name_()
+	, value_(-1)
 	{
 	}
 
@@ -42,6 +43,18 @@ namespace OpcUaStackCore
 	EnumField::name(void)
 	{
 		return name_;
+	}
+
+	void
+	EnumField::value(int32_t value)
+	{
+		value_ = value;
+	}
+
+	int32_t
+	EnumField::value(void)
+	{
+		return value_;
 	}
 
 	void

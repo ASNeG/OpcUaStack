@@ -24,6 +24,7 @@ namespace OpcUaStackCore
 
 	EnumDefinition::EnumDefinition(void)
 	: DataTypeDefinition()
+	, name_("")
 	, enumFields_(constructSPtr<EnumFieldArray>())
 	{
 	}
@@ -31,6 +32,19 @@ namespace OpcUaStackCore
 	EnumDefinition::~EnumDefinition(void)
 	{
 	}
+
+	void
+	EnumDefinition::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	std::string&
+	EnumDefinition::name(void)
+	{
+		return name_;
+	}
+
 
 	void
 	EnumDefinition::enumFields(EnumFieldArray::SPtr& enumFields)

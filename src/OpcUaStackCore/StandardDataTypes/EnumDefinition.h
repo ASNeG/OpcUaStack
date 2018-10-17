@@ -38,6 +38,8 @@ namespace OpcUaStackCore
 		EnumDefinition(void);
 		virtual ~EnumDefinition(void);
 
+		void name(const std::string& name);
+		std::string& name(void);
 		void enumFields(EnumFieldArray::SPtr& enumFields);
 		EnumFieldArray::SPtr& enumFields(void);
 
@@ -65,6 +67,7 @@ namespace OpcUaStackCore
 		//- ExtensionObjectBase -----------------------------------------------
 
 	  private:
+		std::string name_;
 		EnumFieldArray::SPtr enumFields_;
 
 	};

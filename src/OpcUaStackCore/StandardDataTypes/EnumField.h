@@ -33,12 +33,15 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<EnumField> SPtr;
+		typedef std::vector<EnumField::SPtr> Vec;
 
 		EnumField(void);
 		virtual ~EnumField(void);
 
 		void name(OpcUaString& name);
 		OpcUaString& name(void);
+		void value(int32_t value);
+		int32_t value(void);
 
 		void copyTo(EnumField& enumField);
 		bool operator==(const EnumField& enumField) const;
@@ -65,6 +68,7 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaString name_;
+		int32_t value_;
 	};
 
 
