@@ -134,7 +134,7 @@ namespace OpcUaStackServer
 			EnumField::SPtr& enumField
 		);
 
-		bool encodeStructureField(
+		bool encodeEnumField(
 			EnumField::SPtr& enumField,
 			boost::property_tree::ptree& ptreeValue
 		);

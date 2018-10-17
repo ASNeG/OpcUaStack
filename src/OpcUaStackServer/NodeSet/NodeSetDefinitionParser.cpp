@@ -72,7 +72,9 @@ namespace OpcUaStackServer
 	)
 	{
 		// create new structure type definition structure
-		structureDefinition = constructSPtr<StructureDefinition>();
+		if (structureDefinition.get() == nullptr) {
+			structureDefinition = constructSPtr<StructureDefinition>();
+		}
 
 		if (decodeDefinition) {
 			// find Definition element
@@ -120,8 +122,24 @@ namespace OpcUaStackServer
 		bool decodeDefinition
 	)
 	{
-		// FIXME: todo
-		return true;
+		// create new enum type definition structure
+		if (enumDefinition.get() == nullptr) {
+			enumDefinition = constructSPtr<EnumDefinition>();
+		}
+
+		if (decodeDefinition) {
+			// find Definition element
+			boost::optional<boost::property_tree::ptree&> tree = ptreeValue.get_child_optional("Definition");
+			if (!tree) {
+				Log(Error, "missing element in data type definition")
+					.parameter("Element", "Definition");
+				return false;
+			}
+			return decodeEnumDefinition(*tree, enumDefinition);
+		}
+
+		// decode structure definition
+		return decodeEnumDefinition(ptreeValue, enumDefinition);
 	}
 
 	bool
@@ -131,7 +149,20 @@ namespace OpcUaStackServer
 		bool encodeDefinition
 	)
 	{
-		// FIXME: todo
+		// encode enum definition
+		boost::property_tree::ptree ptreeChild;
+		if (!encodeEnumDefinition(enumDefinition, ptreeChild)) {
+			return false;
+		}
+
+		if (encodeDefinition) {
+			// added definition element
+			ptreeValue.add_child("Definition", ptreeChild);
+		}
+		else {
+			ptreeValue = ptreeChild;
+		}
+
 		return true;
 	}
 
@@ -141,11 +172,6 @@ namespace OpcUaStackServer
 		StructureDefinition::SPtr& structureDefinition
 	)
 	{
-		// decode structure definiton if not exist
-		if (structureDefinition.get() == nullptr) {
-			structureDefinition = constructSPtr<StructureDefinition>();
-		}
-
 		// decode Name attribute
 		boost::optional<std::string> name = ptreeValue.get_optional<std::string>("<xmlattr>.Name");
 		if (!name) {
@@ -344,7 +370,37 @@ namespace OpcUaStackServer
 		EnumDefinition::SPtr& enumDefinition
 	)
 	{
-		// FIXME: todo
+		// decode Name attribute
+		boost::optional<std::string> name = ptreeValue.get_optional<std::string>("<xmlattr>.Name");
+		if (!name) {
+			Log(Error, "missing attribute in enum type definition")
+				.parameter("Attribute", "Name");
+			return false;
+		}
+		enumDefinition->name(*name);
+
+		// decode field elements
+        EnumField::Vec enumFieldVec;
+		boost::property_tree::ptree::iterator it;
+		for (it = ptreeValue.begin(); it != ptreeValue.end(); it++) {
+			if (it->first != "Field") continue;
+
+			EnumField::SPtr enumField = constructSPtr<EnumField>();
+			if (!decodeEnumField(it->second, enumField)) {
+				return false;
+			}
+			enumFieldVec.push_back(enumField);
+		}
+
+		if (enumFieldVec.size() == 0) {
+			Log(Error, "missing element in enum type definition")
+				.parameter("Element", "Field");
+			return false;
+		}
+
+		enumDefinition->enumFields()->resize(enumFieldVec.size());
+		enumDefinition->enumFields()->push_back_vec(enumFieldVec);
+
 		return true;
 	}
 
@@ -354,7 +410,24 @@ namespace OpcUaStackServer
 		boost::property_tree::ptree& ptreeValue
 	)
 	{
-		// FIXME: todo
+		// encode name attribute
+		ptreeValue.put("<xmlattr>.Name", enumDefinition->name());
+
+		// encode field elements
+		uint32_t size = enumDefinition->enumFields()->size();
+		for (uint32_t idx = 0; idx<size; idx++) {
+			EnumField::SPtr enumField;
+			enumDefinition->enumFields()->get(idx, enumField);
+
+			boost::property_tree::ptree ptreeChild;
+			if (!encodeEnumField(enumField, ptreeChild)) {
+				return false;
+			}
+
+			// added field element
+			ptreeValue.add_child("Field", ptreeChild);
+		}
+
 		return true;
 	}
 
@@ -364,17 +437,51 @@ namespace OpcUaStackServer
 		EnumField::SPtr& enumField
 	)
 	{
-		// FIXME: todo
+		// decode Name attribute
+		boost::optional<std::string> name = ptreeValue.get_optional<std::string>("<xmlattr>.Name");
+		if (!name) {
+			Log(Error, "missing attribute in enum field")
+				.parameter("Attribute", "Name");
+			return false;
+		}
+		OpcUaString nameValue(*name);
+		enumField->name(nameValue);
+
+		// decode value rank attribute
+		boost::optional<int32_t> value = ptreeValue.get_optional<int32_t>("<xmlattr>.Value");
+		if (!value) {
+			value = -1;
+		}
+		enumField->value(*value);
+
+        // decode description element
+         boost::optional<std::string> description = ptreeValue.get_optional<std::string>("Description");
+         if (description) {
+        	 enumField->description() = OpcUaLocalizedText("", *description);
+         }
+
 		return true;
 	}
 
 	bool
-	NodeSetDefinitionParser::encodeStructureField(
+	NodeSetDefinitionParser::encodeEnumField(
 		EnumField::SPtr& enumField,
 		boost::property_tree::ptree& ptreeValue
 	)
 	{
-		// FIXME: todo
+		// encode name attribute
+		ptreeValue.put("<xmlattr>.Name", enumField->name());
+
+		// encode value  attribute
+		if (enumField->value() != -1) {
+			ptreeValue.put("<xmlattr>.Value", enumField->value());
+		}
+
+		// encode description element
+		if (enumField->description().text().size() > 0) {
+			ptreeValue.put("Description", enumField->description().text());
+		}
+
 		return true;
 	}
 
