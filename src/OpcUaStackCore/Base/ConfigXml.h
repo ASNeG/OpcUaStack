@@ -182,6 +182,12 @@ namespace OpcUaStackCore
 		void find(const std::string& elementName, std::vector<boost::property_tree::ptree>& ptrees);
 
 	  private:
+		void find(
+			const std::string& elementName,
+			boost::property_tree::ptree& ptree,
+			std::vector<boost::property_tree::ptree>& ptrees
+		);
+
 		std::string configFileName_;			//!< name of the configuration file
 		boost::property_tree::ptree ptree_;		//! propertry tree
 		std::string errorMessage_;				//! actual error message

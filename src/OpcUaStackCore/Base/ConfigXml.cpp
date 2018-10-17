@@ -216,7 +216,25 @@ namespace OpcUaStackCore
 	void
 	ConfigXml::find(const std::string& elementName, std::vector<boost::property_tree::ptree>& ptrees)
 	{
-		// FIXME: todo
+		find(elementName, ptree_, ptrees);
+	}
+
+	void
+	ConfigXml::find(
+		const std::string& elementName,
+		boost::property_tree::ptree& ptree,
+		std::vector<boost::property_tree::ptree>& ptrees
+	)
+	{
+		boost::property_tree::ptree::iterator it;
+		for (it = ptree_.begin(); it != ptree_.end(); it++) {
+			if (it->first == elementName) {
+				ptrees.push_back(it->second);
+			}
+			else {
+				find(elementName, it->second, ptrees);
+			}
+		}
 	}
 
 }
