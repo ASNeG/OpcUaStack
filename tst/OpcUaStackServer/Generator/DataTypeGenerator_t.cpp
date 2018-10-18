@@ -46,19 +46,36 @@ BOOST_AUTO_TEST_CASE(DataTypeGenerator_xx)
 	informationModel->checkForwardReferences();
 
 
-	// generate data type source
-	DataTypeGenerator dataTypeGenerator;
-	dataTypeGenerator.informationModel(informationModel);
-	BOOST_REQUIRE(dataTypeGenerator.generate(OpcUaNodeId(376)) == true);
+	// generate data type source code
+	{
+		DataTypeGenerator dataTypeGenerator;
+		dataTypeGenerator.informationModel(informationModel);
+		BOOST_REQUIRE(dataTypeGenerator.generate(OpcUaNodeId(15618)) == true);
 
-	std::string sourceContent = dataTypeGenerator.sourceContent();
-	std::string headerContent = dataTypeGenerator.headerContent();
+		std::string sourceContent = dataTypeGenerator.sourceContent();
+		std::string headerContent = dataTypeGenerator.headerContent();
 
-	std::cout << std::endl;
-	std::cout << headerContent << std::endl;
-	std::cout << std::endl;
-	std::cout << sourceContent << std::endl;
-	std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << headerContent << std::endl;
+		std::cout << std::endl;
+		std::cout << sourceContent << std::endl;
+		std::cout << std::endl;
+	}
+
+	{
+		DataTypeGenerator dataTypeGenerator;
+		dataTypeGenerator.informationModel(informationModel);
+		BOOST_REQUIRE(dataTypeGenerator.generate(OpcUaNodeId(15007)) == true);
+
+		std::string sourceContent = dataTypeGenerator.sourceContent();
+		std::string headerContent = dataTypeGenerator.headerContent();
+
+		std::cout << std::endl;
+		std::cout << headerContent << std::endl;
+		std::cout << std::endl;
+		std::cout << sourceContent << std::endl;
+		std::cout << std::endl;
+	}
 
 }
 

@@ -100,13 +100,13 @@ namespace OpcUaStackServer
 		return
 			generateHeaderComments() &&
 			generateHeaderBegin() &&
-			//	generateHeaderClassBegin("    ") &&
+				generateHeaderClassBegin("    ") &&
 			//		generateHeaderClassValueGetter("        ") &&
 			//	    generateHeaderClassExtensionInterface("        ") &&
 			//	    generateHeaderClassPublic("        ") &&
 			//	    generateHeaderClassPrivate("    ") &&
 			//	    generateHeaderClassValueDefinition("        ") &&
-			//	generateHeaderClassEnd("    ") &&
+				generateHeaderClassEnd("    ") &&
 		    generateHeaderEnd();
 	}
 
@@ -152,6 +152,11 @@ namespace OpcUaStackServer
 		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
 
 		//
+		// added parent includes
+		//
+		// FIXME: todo
+
+		//
 		// added namespace
 		//
 		ss << std::endl;
@@ -178,6 +183,44 @@ namespace OpcUaStackServer
 		//
 		ss << std::endl;
 		ss << "#endif" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassBegin(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added class
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "class " << nodeInfo_.className() << std::endl;
+		ss << prefix << ": public Object" << std::endl;
+		ss << prefix << ", public ExtensionObjectBase" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "  public:" << std::endl;
+		ss << prefix << "    typedef boost::shared_ptr<" << nodeInfo_.className()  << "> SPtr;" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    " << nodeInfo_.className() << "(void);" << std::endl;
+		ss << prefix << "    virtual ~" << nodeInfo_.className() << "(void);" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassEnd(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added class
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "};" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;

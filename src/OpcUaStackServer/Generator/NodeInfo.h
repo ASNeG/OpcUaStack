@@ -62,6 +62,13 @@ class DLLEXPORT NodeInfo
 	/**
 	 * Getter function
 	 *
+	 * @return opc ua information model
+	 */
+	InformationModel::SPtr& informationModel(void);
+
+	/**
+	 * Getter function
+	 *
 	 * @return data type node identifier
 	 */
 	OpcUaNodeId dataTypeNodeId(void);
@@ -69,9 +76,9 @@ class DLLEXPORT NodeInfo
 	/**
 	 * Getter function
 	 *
-	 * @return opc ua information model
+	 * @return data type node identifier of parent
 	 */
-	InformationModel::SPtr& informationModel(void);
+	OpcUaNodeId parentDataTypeNodeId(void);
 
 	/**
 	 * Getter function
@@ -83,6 +90,13 @@ class DLLEXPORT NodeInfo
 	/**
 	 * Getter function
 	 *
+	 * @return pointer to node of parent
+	 */
+	BaseNodeClass::SPtr& parentBaseNode(void);
+
+	/**
+	 * Getter function
+	 *
 	 * @return namespace name
 	 */
 	std::string& namespaceName(void);
@@ -90,9 +104,51 @@ class DLLEXPORT NodeInfo
 	/**
 	 * Getter function
 	 *
+	 * @return namespace name of parent
+	 */
+	std::string& parentNamespaceName(void);
+
+	/**
+	 * Getter function
+	 *
 	 * @return class name
 	 */
 	std::string& className(void);
+
+	/**
+	 * Getter function
+	 *
+	 * @return class name of parent
+	 */
+	std::string& parentClassName(void);
+
+	/**
+	 * Getter function
+	 *
+	 * @return c++ directory
+	 */
+	std::string& directory(void);
+
+	/**
+	 * Getter function
+	 *
+	 * @return c++ directory of parent
+	 */
+	std::string& parentDirectory(void);
+
+	/**
+	 * Getter function
+	 *
+	 * @return true, if node from type StructureType
+	 */
+	bool isStructureType(void);
+
+	/**
+	 * Getter function
+	 *
+	 * @return true, if parent node from type StructureType
+	 */
+	bool parentIsStructureType(void);
 
 	/**
 	 * This function inits the node info class
@@ -104,12 +160,20 @@ class DLLEXPORT NodeInfo
 
   private:
 	NumberNamespaceMap numberNamespaceMap_;		//!< number to namespace map
-	OpcUaNodeId dataTypeNodeId_;				//!< data type node identifier
 	InformationModel::SPtr informationModel_;	//!< opc ua information model
 
+	OpcUaNodeId dataTypeNodeId_;				//!< data type node identifier
+	OpcUaNodeId parentDataTypeNodeId_;			//!< data type node identifier of parent
 	BaseNodeClass::SPtr baseNode_;				//!< pointer to node
+	BaseNodeClass::SPtr parentBaseNode_;		//!< pointer to node of parent
 	std::string namespaceName_;					//!< namespace name
+	std::string parentNamespaceName_;			//!< namespace name of parent
 	std::string className_;						//!< name of class
+	std::string parentClassName_;				//!< name of class of parent
+	std::string directory_;						//!< C++ directory
+	std::string parentDirectory_;				//!< C++ directory of parent
+	bool isStructureType_;						//!< if node is from type StructureType
+	bool parentIsStructureType_;				//!< if parent node is from type StructureType
 };
 
 }

@@ -18,18 +18,27 @@
 #include <boost/algorithm/string.hpp>
 
 #include <OpcUaStackServer/Generator/NodeInfo.h>
+#include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 
 namespace OpcUaStackServer
 {
 
 	NodeInfo::NodeInfo(void)
 	: numberNamespaceMap_()
-	, dataTypeNodeId_()
 	, informationModel_()
 
+	, dataTypeNodeId_()
+	, parentDataTypeNodeId_()
 	, baseNode_()
+	, parentBaseNode_()
 	, namespaceName_("")
+	, parentNamespaceName_("")
 	, className_("")
+	, parentClassName_("")
+	, directory_("")
+	, parentDirectory_("")
+	, isStructureType_(false)
+	, parentIsStructureType_(false)
 	{
 	}
 
@@ -49,6 +58,12 @@ namespace OpcUaStackServer
 		return dataTypeNodeId_;
 	}
 
+	OpcUaNodeId
+	NodeInfo::parentDataTypeNodeId(void)
+	{
+		return parentDataTypeNodeId_;
+	}
+
 	InformationModel::SPtr&
 	NodeInfo::informationModel(void)
 	{
@@ -61,10 +76,22 @@ namespace OpcUaStackServer
 		return baseNode_;
 	}
 
+	BaseNodeClass::SPtr&
+	NodeInfo::parentBaseNode(void)
+	{
+		return parentBaseNode_;
+	}
+
 	std::string&
 	NodeInfo::namespaceName(void)
 	{
 		return namespaceName_;
+	}
+
+	std::string&
+	NodeInfo::parentNamespaceName(void)
+	{
+		return parentNamespaceName_;
 	}
 
 	std::string&
@@ -73,26 +100,135 @@ namespace OpcUaStackServer
 		return className_;
 	}
 
+	std::string&
+	NodeInfo::parentClassName(void)
+	{
+		return parentClassName_;
+	}
+
+	std::string&
+	NodeInfo::directory(void)
+	{
+		return directory_;
+	}
+
+	std::string&
+	NodeInfo::parentDirectory(void)
+	{
+		return parentDirectory_;
+	}
+
+	bool
+	NodeInfo::isStructureType(void)
+	{
+		return isStructureType_;
+	}
+
+	bool
+	NodeInfo::parentIsStructureType(void)
+	{
+		return parentIsStructureType_;
+	}
+
 	bool
 	NodeInfo::init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel)
 	{
 		dataTypeNodeId_ = dataTypeNodeId;
 		informationModel_ = informationModel;
 
+		//
 		// find node in opc ua information model
+		//
 		baseNode_ = informationModel_->find(dataTypeNodeId);
 		if (baseNode_.get() == nullptr) {
-			Log(Error, "data type node not exist in information model")
+			Log(Error, "data type node identifier not exist in information model")
 				.parameter("DataTypeNode", dataTypeNodeId);
 			return false;
 		}
 
-		// set namesapce name
+		//
+		// find parent node in opc ua information model
+		//
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+		if (!ima.getSubType(baseNode_, parentDataTypeNodeId_)) {
+			Log(Error, "parent data type node identifier do not not exist in information model")
+				.parameter("DataTypeNodeId", dataTypeNodeId_);
+			return false;
+		}
+		parentBaseNode_ = informationModel_->find(parentDataTypeNodeId_);
+		if (!parentBaseNode_) {
+			Log(Error, "parent data type node instance do not not exist in information model")
+				.parameter("DataTypeNodeId", dataTypeNodeId_)
+				.parameter("ParentDataTypeNodeId", parentDataTypeNodeId_);
+			return false;
+		}
+
+		//
+		// set namespace name
+		//
 		namespaceName_ = numberNamespaceMap_.getNamespaceName(dataTypeNodeId_.namespaceIndex());
 
+		//
+		// set namespace name of parent
+		//
+		parentNamespaceName_ = numberNamespaceMap_.getNamespaceName(parentDataTypeNodeId_.namespaceIndex());
+
+		//
 		// set class name
-		className_ = baseNode_->displayName().name();
-		className_ = boost::to_upper_copy(className_.substr(0,1)) + boost::to_lower_copy(className_.substr(1));
+		//
+		boost::optional<OpcUaLocalizedText&> displayName = baseNode_->getDisplayName();
+		if (!displayName) {
+			Log(Error, "display name not found")
+			    .parameter("DataTypeNode", dataTypeNodeId_);
+		}
+		className_ = displayName->text();
+		className_ = boost::to_upper_copy(className_.substr(0,1)) + className_.substr(1);
+
+		//
+		// set class name of parent
+		//
+		boost::optional<OpcUaLocalizedText&> parentDisplayName = parentBaseNode_->getDisplayName();
+		if (!parentDisplayName) {
+			Log(Error, "display name not found")
+			    .parameter("ParentDataTypeNode", parentDataTypeNodeId_);
+		}
+		parentClassName_ = parentDisplayName->text();
+		parentClassName_ = boost::to_upper_copy(parentClassName_.substr(0,1)) + parentClassName_.substr(1);
+
+		//
+		// set directory
+		//
+		if (dataTypeNodeId_.namespaceIndex() == 0) {
+			directory_ = "StandardDataTypes";
+		}
+		else {
+			directory_ = "CustomerDataTypes";
+		}
+
+		//
+		// set directory of parent
+		//
+		if (parentDataTypeNodeId_.namespaceIndex() == 0) {
+			parentDirectory_ = "StandardDataTypes";
+		}
+		else {
+			parentDirectory_ = "CustomerDataTypes";
+		}
+
+		//
+		// set structure type flag
+		//
+		if (dataTypeNodeId_ == OpcUaNodeId(22)) {
+			isStructureType_ = true;
+		}
+
+		//
+		// set structure type flag of parent
+		//
+		if (parentDataTypeNodeId_ == OpcUaNodeId(22)) {
+			parentIsStructureType_ = true;
+		}
 
 		return true;
 	}
