@@ -201,8 +201,19 @@ namespace OpcUaStackServer
 		//
 		ss << prefix << std::endl;
 		ss << prefix << "class " << nodeInfo_.className() << std::endl;
-		ss << prefix << ": public Object" << std::endl;
-		ss << prefix << ", public ExtensionObjectBase" << std::endl;
+
+		//
+		// added base classes
+		//
+		if (!nodeInfo_.parentIsStructureType()) {
+			ss << prefix << ": " << nodeInfo_.parentClassName() << std::endl;
+		}
+		else {
+			ss << prefix << ": public Object" << std::endl;
+			ss << prefix << ", public ExtensionObjectBase" << std::endl;
+		}
+
+
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
 		ss << prefix << "    typedef boost::shared_ptr<" << nodeInfo_.className()  << "> SPtr;" << std::endl;
