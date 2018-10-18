@@ -15,13 +15,15 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <OpcUaStackServer/Generator/NodeInfoDataType.h>
+#include "OpcUaStackServer/Generator/NodeInfoDataType.h"
+#include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
 
 namespace OpcUaStackServer
 {
 
 	NodeInfoDataType::NodeInfoDataType(void)
 	: NodeInfo()
+	, structureDefinition_()
 	{
 	}
 
@@ -37,7 +39,28 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		return false;
+		// cast base node class to data type node class
+		if (dynamic_cast<DataTypeNodeClass*>(baseNode().get()) == nullptr) {
+			Log(Error, "node is not from type data type node")
+				.parameter("DataTypeNodeId", dataTypeNodeId);
+			return false;
+		}
+		DataTypeNodeClass::SPtr dataTypeNodeClass = boost::static_pointer_cast<DataTypeNodeClass>(baseNode());
+
+		// get data type definition from node class
+		Object::SPtr definitionObject = dataTypeNodeClass->dataTypeDefinition();
+		if (definitionObject.get() == nullptr) {
+			return true;
+		}
+
+		if (dynamic_cast<StructureDefinition*>(definitionObject.get()) == nullptr) {
+			Log(Error, "node definiton object is not from type StructureDefinition")
+				.parameter("DataTypeNodeId", dataTypeNodeId);
+			return false;
+		}
+		structureDefinition_ = boost::static_pointer_cast<StructureDefinition>(definitionObject);
+
+		return true;
 	}
 
 }

@@ -18,7 +18,11 @@
 #ifndef __OpcUaStackCore_NodeInfoDataType_h__
 #define __OpcUaStackCore_NodeInfoDataType_h__
 
-#include <OpcUaStackServer/Generator/NodeInfo.h>
+#include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
+
+#include "OpcUaStackServer/Generator/NodeInfo.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -49,6 +53,9 @@ class DLLEXPORT NodeInfoDataType
 	 * @parameter[in] informationModel			opc ua information model
 	 */
 	bool init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel);
+
+  private:
+	StructureDefinition::SPtr structureDefinition_;	//!< structure definition
 
 };
 
