@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OpcUaStackServer/Generator/NodeInfo.h"
+#include "OpcUaStackServer/Generator/NodeInfoDataType.h"
 
 using namespace OpcUaStackCore;
 
@@ -139,7 +139,7 @@ namespace OpcUaStackServer
 		std::string sourceContent_;
 		std::string headerContent_;
 
-		NodeInfo nodeInfo_;							//!< information about the data type node
+		NodeInfoDataType nodeInfo_;						//!< information about the data type node
 	};
 
 

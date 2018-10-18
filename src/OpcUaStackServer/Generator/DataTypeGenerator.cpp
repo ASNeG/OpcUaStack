@@ -311,28 +311,63 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceComments(void)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << "/*" << std::endl;
+		ss << "    DataTypeClass: " << nodeInfo_.className() << std::endl;
+		ss << std::endl;
+		ss << "    Generated Source Code - please do not change this source code" << std::endl;
+		ss << std::endl;
+		ss << "    DataTypeCodeGenerator Version:" << std::endl;
+		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH  << std::endl;
+		ss << std::endl;
+		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
+		ss << "*/" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	DataTypeGenerator::generateSourceIncludes(void)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << std::endl;
+		ss << "#include \"" << nodeInfo_.namespaceName() << "/" << nodeInfo_.directory() << "/" << nodeInfo_.className() << ".h\"" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	DataTypeGenerator::generateSourceClassBegin(void)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		//
+		// namespace
+		//
+		ss << std::endl;
+		ss << "namespace " <<  nodeInfo_.namespaceName() << std::endl;
+		ss << "{" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	DataTypeGenerator::generateSourceClassEnd(void)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		//
+		// namespace
+		//
+		ss << std::endl;
+		ss << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 

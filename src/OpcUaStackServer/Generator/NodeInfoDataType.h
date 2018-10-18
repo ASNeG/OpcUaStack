@@ -42,6 +42,14 @@ class DLLEXPORT NodeInfoDataType
 	 */
 	~NodeInfoDataType(void);
 
+	/**
+	 * This function inits the node info class
+	 *
+	 * @parameter[in] dataTypeNodeId			opc ua data type node identifier
+	 * @parameter[in] informationModel			opc ua information model
+	 */
+	bool init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel);
+
 };
 
 }

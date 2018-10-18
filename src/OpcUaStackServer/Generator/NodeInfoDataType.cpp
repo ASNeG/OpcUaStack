@@ -29,4 +29,15 @@ namespace OpcUaStackServer
 	{
 	}
 
+	bool
+	NodeInfoDataType::init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel)
+	{
+		// init node info
+		if (!NodeInfo::init(dataTypeNodeId, informationModel)) {
+			return false;
+		}
+
+		return false;
+	}
+
 }
