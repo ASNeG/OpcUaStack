@@ -104,10 +104,36 @@ namespace OpcUaStackServer
 		bool generateHeaderClassBegin(const std::string& prefix);
 		bool generateHeaderClassEnd(const std::string& prefix);
 
+		bool generateHeaderClassExtensionInterface(const std::string& prefix);
+		bool generateHeaderClassPublic(const std::string& prefix);
+		bool generateHeaderClassPrivate(const std::string& prefix);
+		bool generateHeaderClassValueGetter(const std::string& prefix);
+		bool generateHeaderClassValueDefinition(const std::string& prefix);
+
 		//
 		// source functions
 		//
 		bool generateSource(void);
+		bool generateSourceComments(void);
+		bool generateSourceIncludes(void);
+		bool generateSourceClassBegin(void);
+		bool generateSourceClassEnd(void);
+		bool generateSourceClassConstructor(const std::string& prefix);
+		bool generateSourceClassDestructor(const std::string& prefix);
+		bool generateSourceClassGetter(const std::string& prefix);
+		bool generateSourceClassPublicEQ(const std::string& prefix);
+		bool generateSourceClassPublicCP(const std::string& prefix);
+		bool generateSourceClassExtensionObjectBase(const std::string& prefix);
+		bool generateSourceClassFactory(const std::string& prefix);
+		bool generateSourceClassBinaryTypeId(const std::string& prefix);
+		bool generateSourceClassXmlTypeId(const std::string& prefix);
+		bool generateSourceClassBinaryEncode(const std::string& prefix);
+		bool generateSourceClassBinaryDecode(const std::string& prefix);
+		bool generateSourceClassXmlEncode(const std::string& prefix);
+		bool generateSourceClassXmlDecode(const std::string& prefix);
+		bool generateSourceClassCopyTo(const std::string& prefix);
+		bool generateSourceClassEqual(const std::string& prefix);
+		bool generateSourceClassOut(const std::string& prefix);
 
 		InformationModel::SPtr informationModel_;
 		std::string sourceContent_;

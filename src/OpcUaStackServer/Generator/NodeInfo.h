@@ -156,6 +156,20 @@ class DLLEXPORT NodeInfo
 	bool parentIsStructureType(void);
 
 	/**
+	 * Getter function
+	 *
+	 * @return true, if node is an abstract data type
+	 */
+	bool isAbstract(void);
+
+	/**
+	 * Getter function
+	 *
+	 * @return true, if parent node is an abstract data type
+	 */
+	bool parentIsAbstract(void);
+
+	/**
 	 * This function inits the node info class
 	 *
 	 * @parameter[in] dataTypeNodeId			opc ua data type node identifier
@@ -179,6 +193,8 @@ class DLLEXPORT NodeInfo
 	std::string parentDirectory_;				//!< C++ directory of parent
 	bool isStructureType_;						//!< if node is from type StructureType
 	bool parentIsStructureType_;				//!< if parent node is from type StructureType
+	bool isAbstract_;							//!< if node is abstract data type
+	bool parentIsAbstract_;						//!< if parent node is abstract data type
 };
 
 }

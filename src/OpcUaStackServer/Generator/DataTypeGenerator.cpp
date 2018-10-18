@@ -102,11 +102,11 @@ namespace OpcUaStackServer
 			generateHeaderComments() &&
 			generateHeaderBegin() &&
 				generateHeaderClassBegin("    ") &&
-			//		generateHeaderClassValueGetter("        ") &&
-			//	    generateHeaderClassExtensionInterface("        ") &&
-			//	    generateHeaderClassPublic("        ") &&
-			//	    generateHeaderClassPrivate("    ") &&
-			//	    generateHeaderClassValueDefinition("        ") &&
+					generateHeaderClassValueGetter("        ") &&
+				    generateHeaderClassExtensionInterface("        ") &&
+				    generateHeaderClassPublic("        ") &&
+				    generateHeaderClassPrivate("    ") &&
+				    generateHeaderClassValueDefinition("        ") &&
 				generateHeaderClassEnd("    ") &&
 		    generateHeaderEnd();
 	}
@@ -141,7 +141,7 @@ namespace OpcUaStackServer
 		//
 		ss << std::endl;
 		ss << "#ifndef __" << nodeInfo_.namespaceName() << "_" << nodeInfo_.className() << "_h__" << std::endl;
-		ss << "#define __" << nodeInfo_.namespaceName() << "_" << nodeInfo_.className() << std::endl;
+		ss << "#define __" << nodeInfo_.namespaceName() << "_" << nodeInfo_.className() << "_h__" << std::endl;
 
 		//
 		// added includes
@@ -240,6 +240,41 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	DataTypeGenerator::generateHeaderClassExtensionInterface(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassPublic(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassValueGetter(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassValueDefinition(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -249,6 +284,165 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	bool
 	DataTypeGenerator::generateSource(void)
+	{
+		return
+			generateSourceComments() &&
+			generateSourceIncludes() &&
+			generateSourceClassBegin() &&
+				generateSourceClassConstructor("    ") &&
+				generateSourceClassDestructor("    ") &&
+				generateSourceClassGetter("    ") &&
+				generateSourceClassPublicEQ("    ") &&
+				generateSourceClassPublicCP("    ") &&
+				generateSourceClassExtensionObjectBase("    ") &&
+				generateSourceClassFactory("    ") &&
+				generateSourceClassBinaryTypeId("    ") &&
+				generateSourceClassXmlTypeId("    ") &&
+				generateSourceClassBinaryEncode("    ") &&
+				generateSourceClassBinaryDecode("    ") &&
+				generateSourceClassXmlEncode("    ") &&
+				generateSourceClassXmlDecode("    ") &&
+				generateSourceClassCopyTo("    ") &&
+				generateSourceClassEqual("    ") &&
+				generateSourceClassOut("    ") &&
+			generateSourceClassEnd();
+	}
+
+	bool
+	DataTypeGenerator::generateSourceComments(void)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceIncludes(void)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassBegin(void)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassEnd(void)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassConstructor(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassDestructor(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassGetter(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassPublicEQ(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassPublicCP(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassExtensionObjectBase(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassFactory(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassBinaryTypeId(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassXmlTypeId(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassBinaryEncode(const std::string& prefix)
+	{
+		// FIXME:_ todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassBinaryDecode(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassXmlEncode(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassXmlDecode(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassCopyTo(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassEqual(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassOut(const std::string& prefix)
 	{
 		// FIXME: todo
 		return true;

@@ -39,6 +39,8 @@ namespace OpcUaStackServer
 	, parentDirectory_("")
 	, isStructureType_(false)
 	, parentIsStructureType_(false)
+	, isAbstract_(false)
+	, parentIsAbstract_(false)
 	{
 	}
 
@@ -59,7 +61,9 @@ namespace OpcUaStackServer
 			.parameter("Directory", directory_)
 			.parameter("ParentDirectory", parentDirectory_)
 			.parameter("IsStructureType", isStructureType_)
-			.parameter("ParentIsStructureType", parentIsStructureType_);
+			.parameter("ParentIsStructureType", parentIsStructureType_)
+			.parameter("IsAbstract", isAbstract_)
+			.parameter("ParentIsAbstract", parentIsAbstract_);
 	}
 
 	bool
@@ -145,6 +149,19 @@ namespace OpcUaStackServer
 	{
 		return parentIsStructureType_;
 	}
+
+	bool
+	NodeInfo::isAbstract(void)
+	{
+		return isAbstract_;
+	}
+
+	bool
+	NodeInfo::parentIsAbstract(void)
+	{
+		return parentIsAbstract_;
+	}
+
 
 	bool
 	NodeInfo::init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel)
@@ -245,6 +262,16 @@ namespace OpcUaStackServer
 		if (parentDataTypeNodeId_ == OpcUaNodeId(22)) {
 			parentIsStructureType_ = true;
 		}
+
+		//
+		// set is abstract
+		//
+		baseNode_->getIsAbstract(isAbstract_);
+
+		//
+		// set is abstract of parent node
+		//
+		parentBaseNode_->getIsAbstract(parentIsAbstract_);
 
 		return true;
 	}
