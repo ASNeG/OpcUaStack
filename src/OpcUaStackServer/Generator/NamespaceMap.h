@@ -19,6 +19,9 @@
 #define __OpcUaStackCore_NamespaceMap_h__
 
 #include <boost/shared_ptr.hpp>
+
+#include <string>
+
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
@@ -28,14 +31,61 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
+	/**
+	 * This class is used to map a namespace index to a namespace name. The
+	 * following entries are fixed.
+	 *
+	 * 0 -> OpcUaStackCore
+	 */
 	class DLLEXPORT NamespaceMap
 	{
 	  public:
 		typedef boost::shared_ptr<NamespaceMap> SPtr;
+		typedef std::map<uint16_t, std::string> NumberStringMap;
 
+		/**
+		 * constructor
+		 */
 		NamespaceMap(void);
+
+		/**
+		 * destructor
+		 */
 		~NamespaceMap(void);
 
+		/**
+		 * This function adds a new namespace entry to the map.
+		 *
+		 * @parameter[in] namespaceEntry		Namespace entry. The string must have
+		 * 										the following format:
+		 * 										<NamespaceIndex>:<NamespaceName>
+		 *
+		 * @return true if successful
+		 */
+		bool addNamespace(const std::string& namespaceEntry);
+
+		/**
+		 * This function results a namespace name for a given namespace index
+		 *
+		 * @param[in] namespaceIndex			namespace index
+		 *
+		 * @return results a namesapce name. if the namespace do not exist, the function
+		 *         results the following string: namespace_<namespaceIndex>
+		 *
+		 */
+		std::string getNamespaceName(uint16_t namespaceIndex);
+
+		/**
+		 * This function checks if the given namespace index exist.
+		 *
+		 * @param[in] namespaceIndex			namespace index
+		 *
+		 * @return true if the namespace index exists
+		 */
+		bool exist(uint16_t namespaceIndex);
+
+	  private:
+		NumberStringMap numberStringMap_;		//!< map namespace index to namespace name
 	};
 
 
