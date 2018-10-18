@@ -19,11 +19,10 @@
 #define __OpcUaStackCore_DataTypeGenerator_h__
 
 #include <boost/shared_ptr.hpp>
-#include <OpcUaStackServer/Generator/NumberNamespaceMap.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OpcUaStackServer/Generator/NodeElement.h"
+#include "OpcUaStackServer/Generator/NodeInfo.h"
 
 using namespace OpcUaStackCore;
 
@@ -112,7 +111,7 @@ namespace OpcUaStackServer
 		std::string sourceContent_;
 		std::string headerContent_;
 
-		NumberNamespaceMap NummberNamespaceMap_;
+		NodeInfo nodeInfo_;							//!< information about the data type node
 	};
 
 

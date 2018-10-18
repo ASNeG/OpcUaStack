@@ -35,7 +35,7 @@ namespace OpcUaStackServer
 	, sourceContent_("")
 	, headerContent_("")
 
-	, NummberNamespaceMap_()
+	, nodeInfo_()
 	{
 	}
 
@@ -46,7 +46,16 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generate(const OpcUaNodeId& dataType)
 	{
-		// FIXME: todo
+		// check parameter
+		if (informationModel_.get() == nullptr) {
+			Log(Error, "invalid parameter - information model is null");
+			return false;
+		}
+
+		// create node infos
+		if (!nodeInfo_.init(dataType, informationModel_)) {
+			return false;
+		}
 
 		// generate header and source content
 		return
@@ -63,7 +72,7 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::setNamespaceEntry(const std::string& namespaceEntry)
 	{
-		return NummberNamespaceMap_.addNamespace(namespaceEntry);
+		return nodeInfo_.setNamespaceEntry(namespaceEntry);
 	}
 
 	std::string&
@@ -107,7 +116,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << "/*" << std::endl;
-		ss << "    DataTypeClass: " << "className" << std::endl;
+		ss << "    DataTypeClass: " << nodeInfo_.className() << std::endl;
 		ss << std::endl;
 		ss << "    Generated Source Code - please do not change this source code" << std::endl;
 		ss << std::endl;
@@ -130,8 +139,8 @@ namespace OpcUaStackServer
 		// added defines
 		//
 		ss << std::endl;
-		ss << "#ifndef __" << "projectNamespace_" << "_" << "className" << "_h__" << std::endl;
-		ss << "#define __" << "projectNamespace_" << "_" << "className" << "_h__" << std::endl;
+		ss << "#ifndef __" << nodeInfo_.namespaceName() << "_" << nodeInfo_.className() << "_h__" << std::endl;
+		ss << "#define __" << nodeInfo_.namespaceName() << "_" << nodeInfo_.className() << std::endl;
 
 		//
 		// added includes
@@ -146,7 +155,7 @@ namespace OpcUaStackServer
 		// added namespace
 		//
 		ss << std::endl;
-		ss << "namespace " << "projectNamespace_" << std::endl;
+		ss << "namespace " << nodeInfo_.namespaceName() << std::endl;
 		ss << "{" << std::endl;
 
 		headerContent_ += ss.str();
