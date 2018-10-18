@@ -56,6 +56,7 @@ namespace OpcUaStackServer
 		if (!nodeInfo_.init(dataType, informationModel_)) {
 			return false;
 		}
+		nodeInfo_.log();
 
 		// generate header and source content
 		return
@@ -154,7 +155,9 @@ namespace OpcUaStackServer
 		//
 		// added parent includes
 		//
-		// FIXME: todo
+		if (!nodeInfo_.parentIsStructureType()) {
+			ss << "#include \"" << nodeInfo_.parentNamespaceName() << "/" << nodeInfo_.parentDirectory()<< "/" << nodeInfo_.parentClassName() << ".h\"" << std::endl;
+		}
 
 		//
 		// added namespace

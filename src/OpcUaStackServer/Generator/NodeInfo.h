@@ -49,6 +49,11 @@ class DLLEXPORT NodeInfo
 	~NodeInfo(void);
 
 	/**
+	 * This function is used to log all parameters of the class
+	 */
+	void log(void);
+
+	/**
 	 * This function sets a new namespace entry
 	 *
 	 * @param[in] namespaceEntry			Set a new namespace entry. The string must have

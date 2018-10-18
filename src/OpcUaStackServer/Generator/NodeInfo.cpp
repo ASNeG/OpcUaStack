@@ -46,6 +46,22 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	NodeInfo::log(void)
+	{
+		Log(Info, "NodeInfo")
+		    .parameter("DataTypeNodeId", dataTypeNodeId_)
+			.parameter("ParentDataTypeNodeId", parentDataTypeNodeId_)
+			.parameter("NamespaceName", namespaceName_)
+			.parameter("ParentNamespaceName", parentNamespaceName_)
+			.parameter("ClassName", className_)
+			.parameter("ParentClassName", parentClassName_)
+			.parameter("Directory", directory_)
+			.parameter("ParentDirectory", parentDirectory_)
+			.parameter("IsStructureType", isStructureType_)
+			.parameter("ParentIsStructureType", parentIsStructureType_);
+	}
+
 	bool
 	NodeInfo::setNamespaceEntry(const std::string& namespaceEntry)
 	{
