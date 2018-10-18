@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_NamespaceMap_h__
-#define __OpcUaStackCore_NamespaceMap_h__
+#ifndef __OpcUaStackCore_NumberNamespaceMap_h__
+#define __OpcUaStackCore_NumberNamespaceMap_h__
 
 #include <boost/shared_ptr.hpp>
 
@@ -37,21 +37,21 @@ namespace OpcUaStackServer
 	 *
 	 * 0 -> OpcUaStackCore
 	 */
-	class DLLEXPORT NamespaceMap
+	class DLLEXPORT NumberNamespaceMap
 	{
 	  public:
-		typedef boost::shared_ptr<NamespaceMap> SPtr;
+		typedef boost::shared_ptr<NumberNamespaceMap> SPtr;
 		typedef std::map<uint16_t, std::string> NumberStringMap;
 
 		/**
 		 * constructor
 		 */
-		NamespaceMap(void);
+		NumberNamespaceMap(void);
 
 		/**
 		 * destructor
 		 */
-		~NamespaceMap(void);
+		~NumberNamespaceMap(void);
 
 		/**
 		 * This function adds a new namespace entry to the map.

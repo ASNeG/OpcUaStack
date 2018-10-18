@@ -15,24 +15,24 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <OpcUaStackServer/Generator/NumberNamespaceMap.h>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackServer/Generator/NamespaceMap.h"
 
 namespace OpcUaStackServer
 {
 
-	NamespaceMap::NamespaceMap(void)
+	NumberNamespaceMap::NumberNamespaceMap(void)
 	: numberStringMap_()
 	{
 		addNamespace("OpcUaStackCore");
 	}
 
-	NamespaceMap::~NamespaceMap(void)
+	NumberNamespaceMap::~NumberNamespaceMap(void)
 	{
 	}
 
 	bool
-	NamespaceMap::addNamespace(const std::string& namespaceEntry)
+	NumberNamespaceMap::addNamespace(const std::string& namespaceEntry)
 	{
 		// split namespace entry into namespace index and namespace name
 		OpcUaQualifiedName namespaceEntryText;
@@ -58,7 +58,7 @@ namespace OpcUaStackServer
 	}
 
 	std::string
-	NamespaceMap::getNamespaceName(uint16_t namespaceIndex)
+	NumberNamespaceMap::getNamespaceName(uint16_t namespaceIndex)
 	{
 		// check if namespace entry already exist
 		NumberStringMap::iterator it;
@@ -74,7 +74,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NamespaceMap::exist(uint16_t namespaceIndex)
+	NumberNamespaceMap::exist(uint16_t namespaceIndex)
 	{
 		// check if namespace entry already exist
 		NumberStringMap::iterator it;
