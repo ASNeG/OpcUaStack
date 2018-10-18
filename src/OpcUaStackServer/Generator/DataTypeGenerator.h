@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_DataTypeGenerator_h__
 
 #include <boost/shared_ptr.hpp>
+#include <OpcUaStackServer/Generator/NumberNamespaceMap.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
@@ -34,15 +35,63 @@ namespace OpcUaStackServer
 	  public:
 		typedef boost::shared_ptr<DataTypeGenerator> SPtr;
 
+		/**
+		 * constructor
+		 */
 		DataTypeGenerator(void);
+
+		/*
+		 * destructor
+		 */
 		~DataTypeGenerator(void);
 
+		/**
+		 * This function passes the information model to the class.The informationModel
+		 * function must be called before generate function.
+		 *
+		 * @param[in] informationModel			information model
+		 */
 		void informationModel(InformationModel::SPtr& informationModel);
-		void projectNamespace(const std::string& projectNamespace);
-		void parentProjectNamespace(const std::string& parentProjectNamespace);
+
+		/**
+		 * This function sets a new namespace entry
+		 *
+		 * @param[in] namespaceEntry			Set a new namespace entry. The string must have
+		 * 										the following format:
+		 * 										<NamespaceIndex>:<NamespaceName>
+		 *
+		 * @return true if successful
+		 */
+		bool setNamespaceEntry(const std::string& namespaceEntry);
+
+		/**
+		 * This function results the C++ source content.
+		 *
+		 * @return C++ source content
+		 */
 		std::string& sourceContent(void);
+
+		/**
+		 * This function results the C++ header content.
+		 *
+		 * @return C++ header content
+		 */
 		std::string& headerContent(void);
 
+		/**
+		 * This function generates the C++ header and source content from a given
+		 * node identifier. The node must be a data type node in the opc ua information
+		 * model. The C++ source content and the header content can be result with
+		 * the functions sourceContent and headerContent.
+		 *
+		 * Conditions:
+		 * - The informationModel function must be called before
+		 *
+		 * @param[in] dataType					data type node id from the opc ua
+		 * 										information model
+		 *
+		 * @return true if successful
+		 */
 		bool generate(const OpcUaNodeId& dataType);
 
 	  private:
@@ -60,10 +109,10 @@ namespace OpcUaStackServer
 		bool generateSource(void);
 
 		InformationModel::SPtr informationModel_;
-		std::string projectNamespace_;
-		std::string parentProjectNamespace_;
 		std::string sourceContent_;
 		std::string headerContent_;
+
+		NumberNamespaceMap NummberNamespaceMap_;
 	};
 
 

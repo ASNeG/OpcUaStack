@@ -32,10 +32,10 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	DataTypeGenerator::DataTypeGenerator(void)
 	: informationModel_()
-	, projectNamespace_("OpcUaStackCore")
-	, parentProjectNamespace_("OpcUaStackCore")
 	, sourceContent_("")
 	, headerContent_("")
+
+	, NummberNamespaceMap_()
 	{
 	}
 
@@ -48,7 +48,7 @@ namespace OpcUaStackServer
 	{
 		// FIXME: todo
 
-		// generate header and source
+		// generate header and source content
 		return
 			generateHeader() &&
 			generateSource();
@@ -60,16 +60,10 @@ namespace OpcUaStackServer
 		informationModel_ = informationModel;
 	}
 
-	void
-	DataTypeGenerator::projectNamespace(const std::string& projectNamespace)
+	bool
+	DataTypeGenerator::setNamespaceEntry(const std::string& namespaceEntry)
 	{
-		projectNamespace_ = projectNamespace;
-	}
-
-	void
-	DataTypeGenerator::parentProjectNamespace(const std::string& parentProjectNamespace)
-	{
-		parentProjectNamespace_ = parentProjectNamespace;
+		return NummberNamespaceMap_.addNamespace(namespaceEntry);
 	}
 
 	std::string&
@@ -136,8 +130,8 @@ namespace OpcUaStackServer
 		// added defines
 		//
 		ss << std::endl;
-		ss << "#ifndef __" << projectNamespace_ << "_" << "className" << "_h__" << std::endl;
-		ss << "#define __" << projectNamespace_ << "_" << "className" << "_h__" << std::endl;
+		ss << "#ifndef __" << "projectNamespace_" << "_" << "className" << "_h__" << std::endl;
+		ss << "#define __" << "projectNamespace_" << "_" << "className" << "_h__" << std::endl;
 
 		//
 		// added includes
@@ -152,7 +146,7 @@ namespace OpcUaStackServer
 		// added namespace
 		//
 		ss << std::endl;
-		ss << "namespace " << projectNamespace_ << std::endl;
+		ss << "namespace " << "projectNamespace_" << std::endl;
 		ss << "{" << std::endl;
 
 		headerContent_ += ss.str();

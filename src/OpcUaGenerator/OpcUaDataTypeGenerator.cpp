@@ -252,8 +252,8 @@ namespace OpcUaDataTypeGenerator
 
 		// generate data type source code
 		DataTypeGenerator dataTypeGenerator;
-		dataTypeGenerator.projectNamespace(projectNamespace_);
-		dataTypeGenerator.parentProjectNamespace(parentProjectNamespace_);
+		//dataTypeGenerator.projectNamespace(projectNamespace_);
+		//dataTypeGenerator.parentProjectNamespace(parentProjectNamespace_);
 		dataTypeGenerator.informationModel(informationModel_);
 		if (!dataTypeGenerator.generate(dataTypeNodeId_)) {
 			std::cout << "source code generator error - " << dataTypeName_ << std::endl;
