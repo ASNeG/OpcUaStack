@@ -89,6 +89,11 @@ namespace OpcUaStackServer
 			variableName = boost::to_upper_copy(variableName.substr(0,1)) + variableName.substr(1) + "_";
 			dataTypeField->variableName(variableName);
 
+			// added parameter name
+			std::string parameterName = structureField->name().toStdString();
+			parameterName = boost::to_upper_copy(parameterName.substr(0,1)) + parameterName.substr(1);
+			dataTypeField->parameterName(parameterName);
+
 			// added variable type
 			bool smartpointer;
 			std::string variableType = getVariableType(structureField, informationModel, smartpointer);

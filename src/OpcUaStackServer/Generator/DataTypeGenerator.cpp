@@ -243,28 +243,85 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateHeaderClassExtensionInterface(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		//
+		// added extension interface
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
+		ss << prefix << "virtual ExtensionObjectBase::SPtr factory(void);" << std::endl;
+		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void);" << std::endl;
+		ss << prefix << "virtual OpcUaNodeId xmlTypeId(void);" << std::endl;
+		ss << prefix << "virtual void opcUaBinaryEncode(std::ostream& os) const;" << std::endl;
+		ss << prefix << "virtual void opcUaBinaryDecode(std::istream& is);" << std::endl;
+		ss << prefix << "virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;" << std::endl;
+		ss << prefix << "virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
+		ss << prefix << "virtual void copyTo(ExtensionObjectBase& extensionObjectBase);" << std::endl;
+		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;" << std::endl;
+		ss << prefix << "virtual void out(std::ostream& os);" << std::endl;
+		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
+
+		headerContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	DataTypeGenerator::generateHeaderClassPublic(const std::string& prefix)
 	{
-		// FIXME: todo
-		return true;
-	}
+		std::stringstream ss;
 
-	bool
-	DataTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
-	{
-		// FIXME: todo
+		ss << prefix << std::endl;
+		ss << prefix << "void copyTo(" << nodeInfo_.className() << "& value);" << std::endl;
+		ss << prefix << "bool operator==(const " << nodeInfo_.className() << "& value) const;" << std::endl;
+
+		headerContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	DataTypeGenerator::generateHeaderClassValueGetter(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+#if 0
+		//
+		// added value definition
+		//
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = dataTypeDefinition_->dataFields();
+
+		ss << prefix << std::endl;
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			std::string variableName;
+			if (!createVariableName(dataTypeField, variableName, true)) return false;
+
+			std::string variableType;
+			if (!createVariableType(dataTypeField, variableType, true)) return false;
+
+			ss << prefix << variableType << "& " << variableName << "(void);" << std::endl;
+		}
+#endif
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added private
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "  private:" << std::endl;
+
+		headerContent_ += ss.str();
 		return true;
 	}
 

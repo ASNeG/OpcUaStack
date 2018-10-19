@@ -78,6 +78,20 @@ class DLLEXPORT DataTypeField
 	/**
 	 * Setter function
 	 *
+	 * @param[in] parameterName			parameter name
+	 */
+	void parameterName(const std::string& parameterName);
+
+	/**
+	 * Getter function
+	 *
+	 * @return parameter name
+	 */
+	std::string& parameterName(void);
+
+	/**
+	 * Setter function
+	 *
 	 * @param[in] variableType			variable type
 	 */
 	void variableType(const std::string& variableType);
@@ -134,6 +148,7 @@ class DLLEXPORT DataTypeField
   private:
 	std::string name_;						//!< field name
 	std::string variableName_;				//!< variable name
+	std::string parameterName_;				//!< parameter name
 	std::string variableType_;				//!< variable type
 	std::string description_;				//!< variable description
 	bool array_;							//!< array flag

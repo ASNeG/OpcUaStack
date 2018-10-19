@@ -23,6 +23,7 @@ namespace OpcUaStackServer
 	DataTypeField::DataTypeField(void)
 	: name_("")
 	, variableName_("")
+	, parameterName_("")
 	, variableType_("")
 	, description_("")
 	, array_(false)
@@ -56,6 +57,18 @@ namespace OpcUaStackServer
 	DataTypeField::variableName(void)
 	{
 		return variableName_;
+	}
+
+	void
+	DataTypeField::parameterName(const std::string& parameterName)
+	{
+		parameterName_ = parameterName;
+	}
+
+	std::string&
+	DataTypeField::parameterName(void)
+	{
+		return parameterName_;
 	}
 
 	void
