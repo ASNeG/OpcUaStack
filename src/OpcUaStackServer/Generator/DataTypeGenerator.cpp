@@ -284,27 +284,19 @@ namespace OpcUaStackServer
 	{
 		std::stringstream ss;
 
-#if 0
 		//
 		// added value definition
 		//
 		DataTypeField::Vec::iterator it;
-		DataTypeField::Vec& dataTypeFields = dataTypeDefinition_->dataFields();
+		DataTypeField::Vec& dataTypeFields =  nodeInfo_.fields();
 
 		ss << prefix << std::endl;
 
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			std::string variableName;
-			if (!createVariableName(dataTypeField, variableName, true)) return false;
-
-			std::string variableType;
-			if (!createVariableType(dataTypeField, variableType, true)) return false;
-
-			ss << prefix << variableType << "& " << variableName << "(void);" << std::endl;
+			ss << prefix << dataTypeField->variableType() << "& " << dataTypeField->parameterName() << "(void);" << std::endl;
 		}
-#endif
 
 		headerContent_ += ss.str();
 		return true;
@@ -328,7 +320,21 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateHeaderClassValueDefinition(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		//
+		// added value definition
+		//
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			ss << prefix << dataTypeField->variableType() << " " << dataTypeField->variableName() << "_;" << std::endl;
+		}
+
+		headerContent_ += ss.str();
 		return true;
 	}
 

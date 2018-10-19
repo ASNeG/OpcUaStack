@@ -86,12 +86,12 @@ namespace OpcUaStackServer
 
 			// added variable name
 			std::string variableName = structureField->name().toStdString();
-			variableName = boost::to_upper_copy(variableName.substr(0,1)) + variableName.substr(1) + "_";
+			variableName = boost::to_lower_copy(variableName.substr(0,1)) + variableName.substr(1) + "_";
 			dataTypeField->variableName(variableName);
 
 			// added parameter name
 			std::string parameterName = structureField->name().toStdString();
-			parameterName = boost::to_upper_copy(parameterName.substr(0,1)) + parameterName.substr(1);
+			parameterName = boost::to_lower_copy(parameterName.substr(0,1)) + parameterName.substr(1);
 			dataTypeField->parameterName(parameterName);
 
 			// added variable type
@@ -139,6 +139,7 @@ namespace OpcUaStackServer
 			typeNodeId.get(type, namespaceIndex);
 			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
 			if (buildInType != "Unknown") {
+				buildInType = "OpcUa" + buildInType;
 
 				if (typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaExtensionObject) {
 					smartpointer = true;
