@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
 
 #include "OpcUaStackServer/Generator/NodeInfo.h"
+#include "OpcUaStackServer/Generator/DataTypeField.h"
 
 using namespace OpcUaStackCore;
 
@@ -46,6 +47,13 @@ class DLLEXPORT NodeInfoDataType
 	 */
 	~NodeInfoDataType(void);
 
+	/*
+	 * results a list of data type fields
+	 *
+	 * @return data type field vecroe
+	 */
+	DataTypeField::Vec& fields(void);
+
 	/**
 	 * This function inits the node info class
 	 *
@@ -55,7 +63,14 @@ class DLLEXPORT NodeInfoDataType
 	bool init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel);
 
   private:
+	std::string getVariableType(
+		StructureField::SPtr& structureField,
+		InformationModel::SPtr& informationModel,
+		bool &smartpointer
+	);
+
 	StructureDefinition::SPtr structureDefinition_;	//!< structure definition
+	DataTypeField::Vec dataTypeFieldVec_;
 
 };
 
