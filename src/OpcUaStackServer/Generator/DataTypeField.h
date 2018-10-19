@@ -46,6 +46,84 @@ class DLLEXPORT DataTypeField
 	 * destructor
 	 */
 	~DataTypeField(void);
+
+	/**
+	 * Setter function
+	 *
+	 * @param[in] name					field name
+	 */
+	void name(const std::string& name);
+
+	/**
+	 * Getter function
+	 *
+	 * @return field name
+	 */
+	std::string& name(void);
+
+	/**
+	 * Setter function
+	 *
+	 * @param[in] variableName			variable name
+	 */
+	void variableName(const std::string& variableName);
+
+	/**
+	 * Getter function
+	 *
+	 * @return variable name
+	 */
+	std::string& variableName(void);
+
+	/**
+	 * Setter function
+	 *
+	 * @param[in] variableType			variable type
+	 */
+	void variableType(const std::string& variableType);
+
+	/**
+	 * Getter function
+	 *
+	 * @return variable type
+	 */
+	std::string& variableType(void);
+
+	/**
+	 * Setter function
+	 *
+	 * @param[in] description			variable description
+	 */
+	void description(const std::string& description);
+
+	/**
+	 * Getter function
+	 *
+	 * @return variable description
+	 */
+	std::string& description(void);
+
+	/**
+	 * Setter function
+	 *
+	 * @param[in] array					array flag
+	 */
+	void array(bool array);
+
+	/**
+	 * Getter function
+	 *
+	 * @return array flag
+	 */
+	bool array(void);
+
+  private:
+	std::string name_;						//!< field name
+	std::string variableName_;				//!< variable name
+	std::string variableType_;				//!< variable type
+	std::string description_;				//!< variable description
+	bool array_;							//!< array flag
+
 };
 
 }

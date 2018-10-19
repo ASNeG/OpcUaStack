@@ -21,11 +21,76 @@ namespace OpcUaStackServer
 {
 
 	DataTypeField::DataTypeField(void)
+	: name_("")
+	, variableName_("")
+	, variableType_("")
+	, description_("")
+	, array_(false)
 	{
 	}
 
 	DataTypeField::~DataTypeField(void)
 	{
+	}
+
+	void
+	DataTypeField::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	std::string&
+	DataTypeField::name(void)
+	{
+		return name_;
+	}
+
+	void
+	DataTypeField::variableName(const std::string& variableName)
+	{
+		variableName_ = variableName;
+	}
+
+	std::string&
+	DataTypeField::variableName(void)
+	{
+		return variableName_;
+	}
+
+	void
+	DataTypeField::variableType(const std::string& variableType)
+	{
+		variableType_ = variableType;
+	}
+
+	std::string&
+	DataTypeField::variableType(void)
+	{
+		return variableType_;
+	}
+
+	void
+	DataTypeField::description(const std::string& description)
+	{
+		description_ = description;
+	}
+
+	std::string&
+	DataTypeField::description(void)
+	{
+		return description_;
+	}
+
+	void
+	DataTypeField::array(bool array)
+	{
+		array_ = array;
+	}
+
+	bool
+	DataTypeField::array(void)
+	{
+		return array_;
 	}
 
 }
