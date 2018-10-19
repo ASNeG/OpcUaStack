@@ -37,9 +37,9 @@ Installation
 OpcUaStack provides different ways of installing.
 
 Source Code
-`````````````````````````````
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In order to compile and install the stack from source code you should meet
+In order to compile and install the stack from the source code you should meet
 the following requirements:
 
 * Compiler with C++11 support
@@ -93,6 +93,28 @@ By default the installation path is C:\\install. You can change it by typing:
   $ set DESTDIR=C:\path\witch\you\prefer
   $ MSBuild INSTALL.vcxproj
 
+
+
+DEB Packets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The stack provides DEB packets, so you can install it into your Ubuntu or Debian.
+Download `the last packeges`_ and install them by using **dpkg** command
+
+If you need only the runtime to run your application, type:
+
+::
+
+  sudo dpkg -i OpcUaStack-x.y.z-x86_64-bin.deb
+
+For development, install *dev* packet too:
+
+::
+
+  sudo dpkg -i OpcUaStack-x.y.z-x86_64-dev.deb
+
+
+.. _`the last packages`:  https://github.com/ASNeG/OpcUaStack/releases/latest
 
 Usage 
 ------------------------------

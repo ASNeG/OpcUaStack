@@ -297,7 +297,6 @@ if (CPACK_BINARY_DEB)
     foreach(lib
         libboost-system libboost-thread libboost-date-time libboost-chrono libboost-regex libboost-program-options)
         BoostDepends(${lib})
-    
         
         set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, ${LIST_OF_LIB_VERSIONS_BIN}")
         set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")            
