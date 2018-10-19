@@ -117,12 +117,27 @@ class DLLEXPORT DataTypeField
 	 */
 	bool array(void);
 
+	/**
+	 * Setter function
+	 *
+	 * @param[in] smartpointer			smartpointer flag
+	 */
+	void smartpointer(bool smartpointer);
+
+	/**
+	 * Getter function
+	 *
+	 * @return smartpointer flag
+	 */
+	bool smartpointer(void);
+
   private:
 	std::string name_;						//!< field name
 	std::string variableName_;				//!< variable name
 	std::string variableType_;				//!< variable type
 	std::string description_;				//!< variable description
 	bool array_;							//!< array flag
+	bool smartpointer_;						//!< smartpointer
 
 };
 

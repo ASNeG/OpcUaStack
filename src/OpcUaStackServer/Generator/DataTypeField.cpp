@@ -26,6 +26,7 @@ namespace OpcUaStackServer
 	, variableType_("")
 	, description_("")
 	, array_(false)
+	, smartpointer_(false)
 	{
 	}
 
@@ -91,6 +92,18 @@ namespace OpcUaStackServer
 	DataTypeField::array(void)
 	{
 		return array_;
+	}
+
+	void
+	DataTypeField::smartpointer(bool smartpointer)
+	{
+		smartpointer_ = smartpointer;
+	}
+
+	bool
+	DataTypeField::smartpointer(void)
+	{
+		return smartpointer_;
 	}
 
 }
