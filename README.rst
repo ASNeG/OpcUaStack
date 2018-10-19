@@ -1,6 +1,9 @@
 OpcUaStack
 ==============================
 
+.. image:: https://img.shields.io/github/downloads/ASNeG/OpcUaStack/total.svg?style=social   :alt: Github All Releases   :target: https://github.com/ASNeG/OpcUaStack
+
+
 About
 ------------------------------
 
