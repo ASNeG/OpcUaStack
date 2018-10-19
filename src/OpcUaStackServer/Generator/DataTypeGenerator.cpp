@@ -437,7 +437,34 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassConstructor(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		//
+		// added constructor
+		//
+		ss << prefix << std::endl;
+		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+
+		std::string delemiter = ": ";
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			std::string variableContent = "";
+			if (dataTypeField->smartpointer() == true) {
+				variableContent = "constructSPtr<" + dataTypeField->name() + ">()";
+			}
+
+			ss << prefix << delemiter << dataTypeField->variableName() << "(" << variableContent << ")" << std::endl;
+			delemiter = ", ";
+		}
+
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
