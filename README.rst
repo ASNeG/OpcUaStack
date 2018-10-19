@@ -99,22 +99,22 @@ DEB Packets
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The stack provides DEB packets, so you can install it into your Ubuntu or Debian.
-Download `the last packeges`_ and install them by using **dpkg** command
+Download `the last packages`_ and install them by using **dpkg** command
 
 If you need only the runtime to run your application, type:
 
 ::
 
-  sudo dpkg -i OpcUaStack-x.y.z-x86_64-bin.deb
+  $ sudo dpkg -i OpcUaStack-x.y.z-x86_64-bin.deb
 
 For development, install *dev* packet too:
 
 ::
 
-  sudo dpkg -i OpcUaStack-x.y.z-x86_64-dev.deb
+  $ sudo dpkg -i OpcUaStack-x.y.z-x86_64-dev.deb
 
 
-.. _`the last packages`:  https://github.com/ASNeG/OpcUaStack/releases/latest
+.. _the last packages: https://github.com/ASNeG/OpcUaStack/releases/latest
 
 Usage 
 ------------------------------
