@@ -586,14 +586,34 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassExtensionObjectBase(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "// ------------------------------------------------------------------------" << std::endl;
+		ss << prefix << "// ------------------------------------------------------------------------" << std::endl;
+		ss << prefix << "//" << std::endl;
+		ss << prefix << "// ExtensionObjectBase" << std::endl;
+		ss << prefix << "//" << std::endl;
+		ss << prefix << "// ------------------------------------------------------------------------" << std::endl;
+		ss << prefix << "// ------------------------------------------------------------------------" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	DataTypeGenerator::generateSourceClassFactory(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "ExtensionObjectBase::SPtr" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::factory(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return constructSPtr<" << nodeInfo_.className() << ">();" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
