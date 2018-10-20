@@ -551,7 +551,35 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassPublicCP(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::copyTo(" << nodeInfo_.className() << "& value)" << std::endl;
+		ss << prefix << "{" << std::endl;
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			if (dataTypeField->array() == true) {
+				ss << prefix << "    if (" << dataTypeField->variableName() << ".get() != nullptr) {" << std::endl;
+				ss << prefix << "	    " << dataTypeField->variableName() << "->copyTo(*value." << dataTypeField->parameterName() << "());" << std::endl;
+				ss << prefix << "    }" << std::endl;
+			}
+			else if (dataTypeField->smartpointer() == true) {
+				ss << prefix << "    " << dataTypeField->variableName() << ".copyTo(value." << dataTypeField->parameterName() << "());" << std::endl;
+			}
+			else {
+				ss << prefix << "    value." << dataTypeField->variableName() << " = " << dataTypeField->variableName() << ";" << std::endl;
+			}
+		}
+
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
