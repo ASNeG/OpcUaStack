@@ -511,7 +511,40 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassPublicEQ(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::operator==(const " << nodeInfo_.className() << "& value) const" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    " << nodeInfo_.className() << "* dst = const_cast<" << nodeInfo_.className() << "*>(&value);" << std::endl;
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			if (dataTypeField->smartpointer() == true) {
+				// object can be null
+
+				ss << prefix << "    if (" << dataTypeField->variableName() << ".get() == nullptr && dst->" << dataTypeField->parameterName() << "().get() != nullptr) return false;" << std::endl;
+				ss << prefix << "    if (" << dataTypeField->variableName() << ".get() != nullptr && dst->" << dataTypeField->parameterName() << "().get() == nullptr) return false;" << std::endl;
+
+				// equal object
+				ss << prefix << "    if (*" << dataTypeField->variableName() << " != *dst->" << dataTypeField->parameterName() << "()) return false;" << std::endl;
+			}
+			else {
+				// equal value
+				ss << prefix << "    if (" << dataTypeField->variableName() << " != dst->" << dataTypeField->parameterName() << "()) return false;" << std::endl;
+			}
+
+		}
+
+		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
