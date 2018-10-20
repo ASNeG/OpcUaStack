@@ -29,6 +29,8 @@ namespace OpcUaStackServer
 	, array_(false)
 	, smartpointer_(false)
 	, number_(false)
+	, boolean_(false)
+	, byte_(false)
 	{
 	}
 
@@ -130,6 +132,30 @@ namespace OpcUaStackServer
 	DataTypeField::number(void)
 	{
 		return number_;
+	}
+
+	void
+	DataTypeField::boolean(bool boolean)
+	{
+		boolean_ = boolean;
+	}
+
+	bool
+	DataTypeField::boolean(void)
+	{
+		return boolean_;
+	}
+
+	void
+	DataTypeField::byte(bool byte)
+	{
+		byte_ = byte;
+	}
+
+	bool
+	DataTypeField::byte(void)
+	{
+		return byte_;
 	}
 
 }

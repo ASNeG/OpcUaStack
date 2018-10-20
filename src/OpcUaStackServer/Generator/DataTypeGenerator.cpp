@@ -673,25 +673,22 @@ namespace OpcUaStackServer
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-#if 0
-
-			if (dataTypeField->valueRank() >= 0) {
-				ss << prefix << "    if (" << variableName << ".get() == nullptr) {" << std::endl;
+			if (dataTypeField->array() == true) {
+				ss << prefix << "    if (" << dataTypeField->variableName() << ".get() == nullptr) {" << std::endl;
 				ss << prefix << "	     OpcUaNumber::opcUaBinaryEncode(os, (OpcUaInt32)-1);" << std::endl;
 				ss << prefix << "    }" << std::endl;
 				ss << prefix << "    else {" << std::endl;
-				ss << prefix << "	     " << variableName << "->opcUaBinaryEncode(os);" << std::endl;
+				ss << prefix << "	     " << dataTypeField->variableName() << "->opcUaBinaryEncode(os);" << std::endl;
 				ss << prefix << "    }" << std::endl;
 			}
-			else if (isNumber(dataTypeField->dataType()) ||
-					 isByte(dataTypeField->dataType()) ||
-					 isBoolean(dataTypeField->dataType())) {
-				ss << prefix << "    OpcUaNumber::opcUaBinaryEncode(os," << variableName << ");" << std::endl;
+			else if ((dataTypeField->number() == true) ||
+					 (dataTypeField->byte() == true) ||
+					 (dataTypeField->boolean() == true)) {
+				ss << prefix << "    OpcUaNumber::opcUaBinaryEncode(os," << dataTypeField->variableName() << ");" << std::endl;
 			}
 			else {
-				ss << prefix << "    " << variableName << ".opcUaBinaryEncode(os);" << std::endl;
+				ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryEncode(os);" << std::endl;
 			}
-#endif
 		}
 
 		ss << prefix << "}" << std::endl;

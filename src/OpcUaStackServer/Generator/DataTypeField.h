@@ -159,6 +159,34 @@ class DLLEXPORT DataTypeField
 	 */
 	bool number(void);
 
+	/**
+	 * Setter function
+	 *
+	 * @param[in] boolean				boolean flag
+	 */
+	void boolean(bool boolean);
+
+	/**
+	 * Getter function
+	 *
+	 * @return boolean flag
+	 */
+	bool boolean(void);
+
+	/**
+	 * Setter function
+	 *
+	 * @param[in] byte					byte flag
+	 */
+	void byte(bool byte);
+
+	/**
+	 * Getter function
+	 *
+	 * @return byte flag
+	 */
+	bool byte(void);
+
   private:
 	std::string name_;						//!< field name
 	std::string variableName_;				//!< variable name
@@ -168,6 +196,8 @@ class DLLEXPORT DataTypeField
 	bool array_;							//!< array flag
 	bool smartpointer_;						//!< smartpointer flag
 	bool number_;							//!< number flag
+	bool boolean_;							//!< boolean flag
+	bool byte_;								//!< byte flag
 
 };
 
