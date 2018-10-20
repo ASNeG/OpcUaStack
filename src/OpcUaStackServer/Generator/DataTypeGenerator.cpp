@@ -620,21 +620,83 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassBinaryTypeId(const std::string& prefix)
 	{
+		std::stringstream ss;
+
 		// FIXME: todo
+		std::string identifier = "0";
+		std::string namespaceName = "0";
+
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaNodeId" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::binaryTypeId(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << namespaceName << ", " << identifier << ");" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	DataTypeGenerator::generateSourceClassXmlTypeId(const std::string& prefix)
 	{
+		std::stringstream ss;
+
 		// FIXME: todo
+		std::string identifier = "0";
+		std::string namespaceName = "0";
+
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaNodeId" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::xmlTypeId(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << namespaceName << ", " << identifier << ");" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	DataTypeGenerator::generateSourceClassBinaryEncode(const std::string& prefix)
 	{
-		// FIXME:_ todo
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::opcUaBinaryEncode(std::ostream& os) const" << std::endl;
+		ss << prefix << "{" << std::endl;
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+#if 0
+
+			if (dataTypeField->valueRank() >= 0) {
+				ss << prefix << "    if (" << variableName << ".get() == nullptr) {" << std::endl;
+				ss << prefix << "	     OpcUaNumber::opcUaBinaryEncode(os, (OpcUaInt32)-1);" << std::endl;
+				ss << prefix << "    }" << std::endl;
+				ss << prefix << "    else {" << std::endl;
+				ss << prefix << "	     " << variableName << "->opcUaBinaryEncode(os);" << std::endl;
+				ss << prefix << "    }" << std::endl;
+			}
+			else if (isNumber(dataTypeField->dataType()) ||
+					 isByte(dataTypeField->dataType()) ||
+					 isBoolean(dataTypeField->dataType())) {
+				ss << prefix << "    OpcUaNumber::opcUaBinaryEncode(os," << variableName << ");" << std::endl;
+			}
+			else {
+				ss << prefix << "    " << variableName << ".opcUaBinaryEncode(os);" << std::endl;
+			}
+#endif
+		}
+
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
