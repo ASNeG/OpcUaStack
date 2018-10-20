@@ -66,7 +66,10 @@ class DLLEXPORT NodeInfoDataType
 	std::string getVariableType(
 		StructureField::SPtr& structureField,
 		InformationModel::SPtr& informationModel,
-		bool &smartpointer
+		bool &smartpointer,
+		bool &number,
+		bool &boolean,
+		bool &byte
 	);
 
 	StructureDefinition::SPtr structureDefinition_;	//!< structure definition

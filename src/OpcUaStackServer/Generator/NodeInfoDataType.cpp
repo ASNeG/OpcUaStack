@@ -95,8 +95,22 @@ namespace OpcUaStackServer
 			dataTypeField->parameterName(parameterName);
 
 			// added variable type
+			// added smartpointer flag
+			// added number flag
+			// added boolean flag
+			// added byte flag
 			bool smartpointer;
-			std::string variableType = getVariableType(structureField, informationModel, smartpointer);
+			bool number;
+			bool boolean;
+			bool byte;
+			std::string variableType = getVariableType(
+				structureField,
+				informationModel,
+				smartpointer,
+				number,
+				boolean,
+				byte
+			);
 			if (variableType == "") {
 				Log(Error, "variable type unknown in StructureDefinition")
 					.parameter("DataTypeNodeId", dataTypeNodeId)
@@ -105,11 +119,14 @@ namespace OpcUaStackServer
 			}
 			dataTypeField->variableType(variableType);
 			dataTypeField->smartpointer(smartpointer);
+			dataTypeField->number(number);
+			dataTypeField->boolean(boolean);
+			dataTypeField->byte(byte);
 
 			// added description
 			dataTypeField->description(structureField->description().text().toStdString());
 
-			// added array flag
+			// added value rank flag
 			if (structureField->valueRank() > -1) {
 				dataTypeField->array(true);
 			}
@@ -124,7 +141,10 @@ namespace OpcUaStackServer
 	NodeInfoDataType::getVariableType(
 		StructureField::SPtr& structureField,
 		InformationModel::SPtr& informationModel,
-		bool &smartpointer
+		bool &smartpointer,
+		bool &number,
+		bool &boolean,
+		bool & byte
 	)
 	{
 		smartpointer = false;
@@ -141,9 +161,25 @@ namespace OpcUaStackServer
 			if (buildInType != "Unknown") {
 				buildInType = "OpcUa" + buildInType;
 
+				// set smartpointer flag
 				if (typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaExtensionObject) {
 					smartpointer = true;
 					buildInType = buildInType + "::SPtr";
+				}
+
+				// set number flag
+				if (OpcUaBuildInTypeClass::isNumber((OpcUaBuildInType)type) == true) {
+					number = true;
+				}
+
+				// set boolean flag
+				if (OpcUaBuildInTypeClass::isBoolean((OpcUaBuildInType)type) == true) {
+					boolean = true;
+				}
+
+				// set byte flag
+				if (OpcUaBuildInTypeClass::isByte((OpcUaBuildInType)type) == true) {
+					byte = true;
 				}
 
 				return buildInType;
