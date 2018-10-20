@@ -22,7 +22,7 @@ All parts of the stack are cross-platform and support Linux and Windows operatio
 Features
 ------------------------------
 
-* SDK for Client\\Server applicaion
+* SDK for Client\\Server application
 * Application Server to run OPC UA application as dynamic libraries
 * Settings and OPC UA information model in XML format
 * Support DEB package type to distribute user applications on Linux
@@ -42,7 +42,7 @@ OpcUaStack provides different ways of installing.
 Source Code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In order to compile and install the stack from the source code you should meet
+In order to compile and install the stack from the source code, you should meet
 the following requirements:
 
 * Compiler with C++11 support
@@ -80,8 +80,8 @@ By default the installation path is $HOME/install. You can change it at any mome
 
 Winidows users should install all requirements manually. 
 
-In order to compile the project you must install MSBuild Tools 2015, then run in the environment which
-is suitable for your target platform (e.g. Naitve x86) the following command:
+In order to compile the project, you should install MSBuild Tools 2015, then run in the environment which
+is suitable for your target platform (e.g. Native x86) the following command:
 
 ::
 
@@ -122,7 +122,7 @@ For development, install *dev* packet too:
 Usage 
 ------------------------------
 
-In order to create an user application OpcUa Stack provides a project builder:
+In order to create a user application OpcUa Stack provides a project builder:
 
 ::
 
