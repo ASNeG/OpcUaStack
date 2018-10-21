@@ -331,7 +331,7 @@ namespace OpcUaStackServer
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			ss << prefix << dataTypeField->variableType() << " " << dataTypeField->variableName() << "_;" << std::endl;
+			ss << prefix << dataTypeField->variableType() << " " << dataTypeField->variableName() << ";" << std::endl;
 		}
 
 		headerContent_ += ss.str();
@@ -722,7 +722,7 @@ namespace OpcUaStackServer
 				ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is," << dataTypeField->variableName() << ");" << std::endl;
 			}
 			else {
-				ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryDecode(os);" << std::endl;
+				ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryDecode(is);" << std::endl;
 			}
 		}
 
@@ -805,7 +805,7 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix << "void" << std::endl;
-		ss << prefix << "Argument::out(std::ostream& os)" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::out(std::ostream& os)" << std::endl;
 		ss << prefix << "{" << std::endl;
 
 		DataTypeField::Vec::iterator it;
