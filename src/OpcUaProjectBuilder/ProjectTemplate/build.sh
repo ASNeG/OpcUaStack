@@ -23,7 +23,7 @@ usage()
    echo " tst   - build unit application"
    echo " clean - delete all build directories"
    echo ""
-   echo "--stack-prefix, -t STACK_PREFIX:  set the path to directory"
+   echo "--stack-prefix, -s STACK_PREFIX:  set the path to directory"
    echo "\twhere the OpcUaStack is installed (default: /)"
    echo ""
    echo "--install-prefix, -i INSTALL_PREFIX:  is the path to directory"
