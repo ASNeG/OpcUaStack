@@ -65,15 +65,14 @@ the root directory of the sources:
 
 ::
 
-  $ sh build.sh local
+  $ sh build.sh -t local 
 
 
-By default the installation path is $HOME/install. You can change it at any moment:
+By default the installation path is $HOME/.ASNeG. You can change it at any moment:
 
 ::
 
-  $ cd local_build
-  $ make DESTDIR=/path/witch/you/prefer install
+  $ sh build.sh -t local -i /path/witch/you/prefer
 
 
 **Windows**
@@ -118,6 +117,14 @@ For development, install *dev* packet too:
 
 
 .. _the last packages: https://github.com/ASNeG/OpcUaStack/releases/latest
+
+Also you can build DEB packets from source by using *build.sh* script:
+
+::
+
+  $ build.sh -t deb
+
+Your packets will be built in *build_deb* directory.
 
 Usage 
 ------------------------------
