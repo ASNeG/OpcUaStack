@@ -735,21 +735,49 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassXmlEncode(const std::string& prefix)
 	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const" << std::endl;
+		ss << prefix << "{" << std::endl;
 		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	DataTypeGenerator::generateSourceClassXmlDecode(const std::string& prefix)
 	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
+		ss << prefix << "{" << std::endl;
 		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	DataTypeGenerator::generateSourceClassCopyTo(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::copyTo(ExtensionObjectBase& extensionObjectBase)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	" << nodeInfo_.className() <<  "* dst = dynamic_cast<" << nodeInfo_.className() << "*>(&extensionObjectBase);" << std::endl;
+		ss << prefix << "	copyTo(*dst);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
