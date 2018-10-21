@@ -390,10 +390,6 @@ case $key in
 esac
 done
 
-echo "${TARGET}"
-echo "${INSTALL_PREFIX}"
-echo "${STACK_PREFIX}"
-
 if [ "${TARGET}" = "info" ] ;
 then
     build_info
