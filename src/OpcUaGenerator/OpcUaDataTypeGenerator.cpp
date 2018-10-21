@@ -42,8 +42,7 @@ namespace OpcUaDataTypeGenerator
 	, informationModel_()
 	, fileName_("")
 	, dataTypeName_("")
-	, projectNamespace_("")
-	, parentProjectNamespace_("")
+	, namespaces_()
 	, buildSubTypes_(false)
 	, dataTypeNameVec_()
 	, ignoreDataTypeNameVec_()
@@ -79,14 +78,9 @@ namespace OpcUaDataTypeGenerator
 				"set data type name (mandatory)"
 			)
 			(
-				"projectNamespace",
-				boost::program_options::value<std::string>()->default_value("OpcUaStackServer"),
-			    "set project namespace"
-			)
-			(
-				"parentProjectNamespace",
-				boost::program_options::value<std::string>()->default_value("OpcUaStackServer"),
-			    "set parent project namespace"
+				"namespaces_",
+				boost::program_options::value< std::vector<std::string> >(),
+			    "set project namespaces"
 			)
 			(
 				"buildSubTypes",
@@ -128,8 +122,9 @@ namespace OpcUaDataTypeGenerator
 
 		fileName_ = vm["nodeset"].as<std::string>();
 		dataTypeName_ = vm["datatype"].as<std::string>();
-		projectNamespace_ = vm["projectNamespace"].as<std::string>();
-		parentProjectNamespace_ = vm["parentProjectNamespace"].as<std::string>();
+		if (vm.count("namespaces") != 0) {
+			namespaces_ = vm["namespaces"].as< std::vector<std::string> >();
+		}
 		buildSubTypes_ = vm["buildSubTypes"].as<bool>();
 		if (vm.count("ignoreEventTypeName") != 0) {
 			ignoreDataTypeNameVec_ = vm["ignoreDataTypeName"].as< std::vector<std::string> >();
@@ -139,8 +134,8 @@ namespace OpcUaDataTypeGenerator
 			return buildAllSubTypes();
 		}
 
-		// ignore BaseEventType
-		if (dataTypeName_ == "BaseDataType") {
+		// ignore structure data type
+		if (dataTypeName_ == "Structure") {
 			return 1;
 		}
 
@@ -235,7 +230,7 @@ namespace OpcUaDataTypeGenerator
 	int32_t
 	OpcUaDataTypeGenerator::generateDataTypeSource(void)
 	{
-		// check event type name
+		// check data type name
 		std::vector<std::string>::iterator it;
 		for (it=ignoreDataTypeNameVec_.begin(); it!=ignoreDataTypeNameVec_.end(); it++) {
 			if (*it == dataTypeName_) {
@@ -245,15 +240,16 @@ namespace OpcUaDataTypeGenerator
 
 		// find node id for data type name
 		dataTypeNodeId_.set(0,0);
-		if (!findNodeId(dataTypeName_, OpcUaNodeId(62))) {
+		if (!findNodeId(dataTypeName_, OpcUaNodeId(22))) {
 			std::cout << "node id not found for data type " << dataTypeName_ << std::endl;
 			return -3;
 		}
 
 		// generate data type source code
 		DataTypeGenerator dataTypeGenerator;
-		//dataTypeGenerator.projectNamespace(projectNamespace_);
-		//dataTypeGenerator.parentProjectNamespace(parentProjectNamespace_);
+		for (it = namespaces_.begin(); it != namespaces_.end(); it++) {
+			dataTypeGenerator.setNamespaceEntry(*it);
+		}
 		dataTypeGenerator.informationModel(informationModel_);
 		if (!dataTypeGenerator.generate(dataTypeNodeId_)) {
 			std::cout << "source code generator error - " << dataTypeName_ << std::endl;
@@ -291,7 +287,7 @@ namespace OpcUaDataTypeGenerator
 
 		// find node id for data type name
 		dataTypeNodeId_.set(0,0);
-		if (!findNodeId(dataTypeName_, OpcUaNodeId(62))) {
+		if (!findNodeId(dataTypeName_, OpcUaNodeId(22))) {
 			std::cout << "node id not found for data type " << dataTypeName_ << std::endl;
 			return -3;
 		}

@@ -38,11 +38,9 @@ namespace OpcUaDataTypeGenerator
 	  private:
 		std::string fileName_;
 		std::string dataTypeName_;
-		std::string projectNamespace_;
-		std::string parentProjectNamespace_;
+		std::vector<std::string> namespaces_;
 		bool buildSubTypes_;
 		std::vector<std::string> ignoreDataTypeNameVec_;
-
 		std::vector<std::string> dataTypeNameVec_;
 		InformationModel::SPtr informationModel_;
 		OpcUaNodeId dataTypeNodeId_;
