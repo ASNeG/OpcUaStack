@@ -700,7 +700,35 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassBinaryDecode(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::opcUaBinaryDecode(std::istream& is)" << std::endl;
+		ss << prefix << "{" << std::endl;
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			if (dataTypeField->array() == true) {
+				ss << prefix << "    " << dataTypeField->variableName() << "->opcUaBinaryDecode(is);" << std::endl;
+			}
+			else if (dataTypeField->number() ||
+					 dataTypeField->byte() ||
+					 dataTypeField->boolean()) {
+				ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is," << dataTypeField->variableName() << ");" << std::endl;
+			}
+			else {
+				ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryDecode(os);" << std::endl;
+			}
+		}
+
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
