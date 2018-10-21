@@ -801,7 +801,50 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassOut(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << "Argument::out(std::ostream& os)" << std::endl;
+		ss << prefix << "{" << std::endl;
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+
+		bool first = true;
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			if (first) {
+				first = false;
+				ss << prefix << "    os << \"" << dataTypeField->name() << "=";
+			}
+			else {
+				ss << prefix << "    os << \", " << dataTypeField->name() << "=";
+			}
+
+			if (dataTypeField->array() == true) {
+				ss << "\"; " << dataTypeField->variableName() << "->out(os);";
+			}
+			else if (dataTypeField->boolean() == true) {
+				ss << "\" << " << dataTypeField->variableName() << ";";
+			}
+			else if (dataTypeField->byte() == true) {
+				ss << "\" << "<< dataTypeField->variableName() << ";";
+			}
+			else if (dataTypeField->number() == true) {
+				ss << "\" << "<< dataTypeField->variableName() << ";";
+			}
+			else {
+				ss << "\"; " << dataTypeField->variableName() << ".out(os);";
+			}
+
+			ss << std::endl;
+		}
+
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
