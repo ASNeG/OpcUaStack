@@ -99,10 +99,10 @@ namespace OpcUaStackServer
 			// added number flag
 			// added boolean flag
 			// added byte flag
-			bool smartpointer;
-			bool number;
-			bool boolean;
-			bool byte;
+			bool smartpointer = false;
+			bool number = false;
+			bool boolean = false;
+			bool byte = false;
 			std::string variableType = getVariableType(
 				structureField,
 				informationModel,
@@ -117,6 +117,7 @@ namespace OpcUaStackServer
 					.parameter("VariableTypeNodeId", structureField->dataType());
 				return false;
 			}
+
 			dataTypeField->variableType(variableType);
 			dataTypeField->smartpointer(smartpointer);
 			dataTypeField->number(number);
@@ -144,7 +145,7 @@ namespace OpcUaStackServer
 		bool &smartpointer,
 		bool &number,
 		bool &boolean,
-		bool & byte
+		bool &byte
 	)
 	{
 		smartpointer = false;
