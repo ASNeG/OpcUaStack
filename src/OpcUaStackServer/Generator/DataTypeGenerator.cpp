@@ -784,7 +784,17 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassEqual(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::equal(ExtensionObjectBase& extensionObjectBase) const" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	" << nodeInfo_.className() << "* dst = dynamic_cast<" << nodeInfo_.className() << "*>(&extensionObjectBase);" << std::endl;
+		ss << prefix << "	return *this == *dst;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
