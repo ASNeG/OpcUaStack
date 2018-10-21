@@ -51,6 +51,7 @@ build_info()
 
 build_info_clean()
 {
+    set -e
     rm -rf build_info
 }
 
@@ -118,6 +119,7 @@ build_local()
 
 build_local_clean()
 {
+    set -e
     rm -rf build_local
 }
 
@@ -193,6 +195,7 @@ build_deb()
 
 build_deb_clean()
 {
+    set -e
     rm -rf build_deb
 }
 
@@ -268,6 +271,7 @@ build_rpm()
 
 build_rpm_clean()
 {
+    set -e
     rm -rf build_rpm
 }
 
@@ -338,6 +342,7 @@ build_tst()
 # -----------------------------------------------------------------------------
 build_tst_clean()
 {
+    set -e
     rm -rf build_tst
 }
 
@@ -348,6 +353,7 @@ clean()
     build_deb_clean
     build_rpm_clean
     build_tst_clean
+    return 0
 }
 
 # -----------------------------------------------------------------------------
@@ -399,6 +405,7 @@ then
 elif [ "${TARGET}" = "clean" ] ;
 then 
     clean 
+    exit $?
 elif [ "${TARGET}" = "local" ] ;
 then 
     build_local
