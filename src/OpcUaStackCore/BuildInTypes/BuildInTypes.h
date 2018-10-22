@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -39,11 +39,11 @@
 namespace OpcUaStackCore
 {
 
-	typedef OpcUaDateTime UtcTime;
-	typedef OpcUaDateTimeArray UtcTimeArray;
-	typedef OpcUaUInt32 IntegerId;
-	typedef OpcUaDouble Duration;
-	typedef OpcUaStringArray LocaleIdArray;
+	typedef OpcUaDateTime OpcUaUtcTime;
+	typedef OpcUaDateTimeArray OpcUaUtcTimeArray;
+	typedef OpcUaUInt32 OpcUaIntegerId;
+	typedef OpcUaDouble OpcUaDuration;
+	typedef OpcUaStringArray OpcUaLocaleIdArray;
 
 };
 

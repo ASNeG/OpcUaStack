@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -86,6 +86,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaDouble: return "Double";
 			case OpcUaBuildInType_OpcUaString: return "String";
 			case OpcUaBuildInType_OpcUaDateTime: return "DateTime";
+			case OpcUaBuildInType_OpcUaUtcTime: return "UtcTime";
 			case OpcUaBuildInType_OpcUaGuid: return "Guid";
 			case OpcUaBuildInType_OpcUaByteString: return "ByteString";
 			case OpcUaBuildInType_OpcUaXmlElement: return "XmlElement";
@@ -122,6 +123,7 @@ namespace OpcUaStackCore
 		else if (type == "DOUBLE") return OpcUaBuildInType_OpcUaDouble;
 		else if (type == "STRING") return OpcUaBuildInType_OpcUaString;
 		else if (type == "DATETIME") return OpcUaBuildInType_OpcUaDateTime;
+		else if (type == "UTCTIME") return OpcUaBuildInType_OpcUaUtcTime;
 		else if (type == "GUID") return OpcUaBuildInType_OpcUaGuid;
 		else if (type == "BYTESTRING") return OpcUaBuildInType_OpcUaByteString;
 		else if (type == "XMLELEMENT") return OpcUaBuildInType_OpcUaXmlElement;
@@ -156,6 +158,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaDouble: return "OpcUaDouble";
 			case OpcUaBuildInType_OpcUaString: return "OpcUaString";
 			case OpcUaBuildInType_OpcUaDateTime: return "OpcUaDateTime";
+			case OpcUaBuildInType_OpcUaUtcTime: return "OpcUaUtcTime";
 			case OpcUaBuildInType_OpcUaGuid: return "OpcUaGuid";
 			case OpcUaBuildInType_OpcUaByteString: return "OpcUaByteString";
 			case OpcUaBuildInType_OpcUaXmlElement: return "OpcUaXmlElement";
