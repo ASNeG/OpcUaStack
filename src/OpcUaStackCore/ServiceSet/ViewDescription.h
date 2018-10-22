@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -38,9 +38,9 @@ namespace OpcUaStackCore
 
 		void viewId(const OpcUaNodeId::SPtr viewId);
 		OpcUaNodeId::SPtr viewId(void);
-		void timestamp(const UtcTime& timestamp);
+		void timestamp(const OpcUaUtcTime& timestamp);
 		void timestamp(const boost::posix_time::ptime& timestamp);
-		UtcTime& timestamp(void);
+		OpcUaUtcTime& timestamp(void);
 		void viewVersion(const OpcUaUInt32& viewVersion);
 		OpcUaUInt32 viewVersion(void);
 
@@ -49,7 +49,7 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaNodeId::SPtr viewIdSPtr_;
-		UtcTime timestamp_;
+		OpcUaUtcTime timestamp_;
 		OpcUaUInt32 viewVersion_;
 	};
 

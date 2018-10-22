@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	ReadProcessedDetails::startTime(const UtcTime& startTime)
+	ReadProcessedDetails::startTime(const OpcUaUtcTime& startTime)
 	{
 		startTime_ = startTime;
 	}
@@ -54,14 +54,14 @@ namespace OpcUaStackCore
 		startTime_.dateTime(startTime);
 	}
 	
-	UtcTime& 
+	OpcUaUtcTime&
 	ReadProcessedDetails::startTime(void)
 	{
 		return startTime_;
 	}
 	
 	void 
-	ReadProcessedDetails::endTime(const UtcTime& endTime)
+	ReadProcessedDetails::endTime(const OpcUaUtcTime& endTime)
 	{
 		endTime_ = endTime;
 	}
@@ -72,7 +72,7 @@ namespace OpcUaStackCore
 		endTime_.dateTime(endTime);
 	}
 	
-	UtcTime& 
+	OpcUaUtcTime&
 	ReadProcessedDetails::endTime(void)
 	{
 		return endTime_;

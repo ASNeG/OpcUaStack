@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	ReadEventDetails::startTime(const UtcTime& startTime)
+	ReadEventDetails::startTime(const OpcUaUtcTime& startTime)
 	{
 		startTime_ = startTime;
 	}
@@ -67,14 +67,14 @@ namespace OpcUaStackCore
 		startTime_.dateTime(startTime);
 	}
 	
-	UtcTime& 
+	OpcUaUtcTime&
 	ReadEventDetails::startTime(void)
 	{
 		return startTime_;
 	}
 	
 	void 
-	ReadEventDetails::endTime(const UtcTime& endTime)
+	ReadEventDetails::endTime(const OpcUaUtcTime& endTime)
 	{
 		endTime_ = endTime;
 	}
@@ -85,7 +85,7 @@ namespace OpcUaStackCore
 		endTime_.dateTime(endTime);
 	}
 	
-	UtcTime& 
+	OpcUaUtcTime&
 	ReadEventDetails::endTime(void)
 	{
 		return endTime_;

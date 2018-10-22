@@ -134,24 +134,24 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubWriterGroupModel::publishingInterval(Duration publishingInterval)
+	PubSubWriterGroupModel::publishingInterval(OpcUaDuration publishingInterval)
 	{
 		publishingInterval_ = publishingInterval;
 	}
 
-	Duration
+	OpcUaDuration
 	PubSubWriterGroupModel::publishingInterval(void)
 	{
 		return publishingInterval_;
 	}
 
 	void
-	PubSubWriterGroupModel::keepAliveTime(Duration keepAliveTime)
+	PubSubWriterGroupModel::keepAliveTime(OpcUaDuration keepAliveTime)
 	{
 		keepAliveTime_ = keepAliveTime;
 	}
 
-	Duration
+	OpcUaDuration
 	PubSubWriterGroupModel::keepAliveTime(void)
 	{
 		return keepAliveTime_;

@@ -116,12 +116,12 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	DataSetReaderModel::messageReceiveTimeout(Duration messageReceiveTimeout)
+	DataSetReaderModel::messageReceiveTimeout(OpcUaDuration messageReceiveTimeout)
 	{
 		messageReceiveTimeout_ = messageReceiveTimeout;
 	}
 
-	Duration
+	OpcUaDuration
 	DataSetReaderModel::messageReceiveTimeout(void)
 	{
 		return messageReceiveTimeout_;

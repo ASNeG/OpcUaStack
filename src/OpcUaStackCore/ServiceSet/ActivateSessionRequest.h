@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -46,8 +46,8 @@ namespace OpcUaStackCore
 		SignatureData::SPtr clientSignature(void) const;
 		void signedSoftwareCertificate(const SignedSoftwareCertificateArray::SPtr signedSoftwareCertificate);
 		SignedSoftwareCertificateArray::SPtr signedSoftwareCertificate(void) const;
-		void localeIds(const LocaleIdArray::SPtr localeIds);
-		LocaleIdArray::SPtr localeIds(void) const;
+		void localeIds(const OpcUaLocaleIdArray::SPtr localeIds);
+		OpcUaLocaleIdArray::SPtr localeIds(void) const;
 		void userIdentityToken(const ExtensibleParameter::SPtr userIdentityToken);
 		ExtensibleParameter::SPtr userIdentityToken(void) const;
 		void userTokenSignature(SignatureData::SPtr userTokenSignature);
@@ -60,7 +60,7 @@ namespace OpcUaStackCore
 		RequestHeader::SPtr requestHeaderSPtr_;
 		SignatureData::SPtr clientSignature_;
 		SignedSoftwareCertificateArray::SPtr signedSoftwareCertificate_;
-		LocaleIdArray::SPtr localeIds_;
+		OpcUaLocaleIdArray::SPtr localeIds_;
 		ExtensibleParameter::SPtr userIdentityToken_;
 		SignatureData::SPtr userTokenSignature_;
 	};

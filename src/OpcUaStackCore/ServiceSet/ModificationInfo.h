@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -47,9 +47,9 @@ namespace OpcUaStackCore
 		void username(const OpcUaString& username);
 		void username(const std::string& username);
 		OpcUaString& username(void);
-		void modificationTime(const UtcTime& modificationTime);
+		void modificationTime(const OpcUaUtcTime& modificationTime);
 		void modificationTime(const boost::posix_time::ptime& modificationTime);
-		UtcTime& modificationTime(void);
+		OpcUaUtcTime& modificationTime(void);
 		void updateType(const HistoryUpdateMode updateType);
 		HistoryUpdateMode updateType(void);
 
@@ -58,7 +58,7 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaString username_;
-		UtcTime modificationTime_;
+		OpcUaUtcTime modificationTime_;
 		HistoryUpdateMode updateType_;
 	};
 

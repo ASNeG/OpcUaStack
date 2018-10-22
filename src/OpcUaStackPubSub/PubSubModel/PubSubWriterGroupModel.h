@@ -106,28 +106,28 @@ namespace OpcUaStackPubSub
 		 *
 		 * @param[in] publishingInterval			publishing interval in milliseconds
 		 */
-		void publishingInterval(Duration publishingInterval);
+		void publishingInterval(OpcUaDuration publishingInterval);
 
 		/**
 		 * getter method for variable publishingInterval
 		 *
 		 * @return publishing interval in milliseconds
 		 */
-		Duration publishingInterval(void);
+		OpcUaDuration publishingInterval(void);
 
 		/**
 		 * setter method for variable keepAliveTime
 		 *
 		 * @param[in] keepAliveTime				keep alive time in milliseconds
 		 */
-		void keepAliveTime(Duration keepAliveTime);
+		void keepAliveTime(OpcUaDuration keepAliveTime);
 
 		/**
 		 * getter method for variable keepAliveTime
 		 *
 		 * @return keep alive time in milliseconds
 		 */
-		Duration keepAliveTime(void);
+		OpcUaDuration keepAliveTime(void);
 
 		/**
 		 * setter method for variable priority
@@ -196,9 +196,9 @@ namespace OpcUaStackPubSub
 		virtual void handleStateChange(State state);
 
 		uint16_t writerGroupId_;				//!< unique identifier for writer group
-		Duration publishingInterval_;			//!< defines the interval in milliseconds for publishing network
+		OpcUaDuration publishingInterval_;		//!< defines the interval in milliseconds for publishing network
 												//!< messages
-		Duration keepAliveTime_;				//!< defines the keep alive time in milliseconds
+		OpcUaDuration keepAliveTime_;			//!< defines the keep alive time in milliseconds
 		OpcUaByte priority_;					//!< defines the priority of the writer group
 		OpcUaStringArray::SPtr localeIds_;		//!< defines a list of locale ids in priority order for localized
 												//!< strings for all data set writers in the writer group

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -37,9 +37,9 @@ namespace OpcUaStackCore
 		AggregateFilterResult(void);
 		virtual ~AggregateFilterResult(void);
 
-		void revisedStartTime(const UtcTime& time);
+		void revisedStartTime(const OpcUaUtcTime& time);
 		void revisedStartTime(const boost::posix_time::ptime& time);
-		UtcTime revisedStartTime(void) const;
+		OpcUaUtcTime revisedStartTime(void) const;
 		void revisedProcessingInterval(const OpcUaDouble& revisedProcessingInterval);
 		OpcUaDouble revisedProcessingInterval(void) const;
 
@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 		//- ExtensibleParameterBase -------------------------------------------
 
 	  private:
-		UtcTime revisedStartTime_;
+		OpcUaUtcTime revisedStartTime_;
 		OpcUaDouble revisedProcessingInterval_;
 	};
 

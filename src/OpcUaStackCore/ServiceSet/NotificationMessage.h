@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -39,7 +39,7 @@ namespace OpcUaStackCore
 		void sequenceNumber(const OpcUaUInt32& sequenceNumber);
 		OpcUaUInt32 sequenceNumber(void);
 		void publishTime(const boost::posix_time::ptime& time);
-		UtcTime& publishTime(void);
+		OpcUaUtcTime& publishTime(void);
 		void notificationData(const ExtensibleParameterArray::SPtr notificationData);
 		ExtensibleParameterArray::SPtr notificationData(void) const;
 
@@ -48,7 +48,7 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaUInt32 sequenceNumber_;
-		UtcTime publishTime_;
+		OpcUaUtcTime publishTime_;
 		ExtensibleParameterArray::SPtr notificationDataArraySPtr_;
 	};
 }

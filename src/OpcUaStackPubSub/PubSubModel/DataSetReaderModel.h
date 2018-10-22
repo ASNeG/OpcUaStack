@@ -156,14 +156,14 @@ namespace OpcUaStackPubSub
 		 *
 		 * @param[in] messageReceiveTimeout		message receive timeout
 		 */
-		void messageReceiveTimeout(Duration messageReceiveTimeout);
+		void messageReceiveTimeout(OpcUaDuration messageReceiveTimeout);
 
 		/**
 		 * getter method for variable messageReceiveTimeout
 		 *
 		 * @return message receive timeout
 		 */
-		Duration messageReceiveTimeout(void);
+		OpcUaDuration messageReceiveTimeout(void);
 
 		/**
 		 * setter method for variable securityMode
@@ -274,7 +274,7 @@ namespace OpcUaStackPubSub
 		DataSetMetaDataModel::SPtr dataSetMetaData_; //!< The parameter DataSetMetaData provides the information
 											//!< necessary to decode DataSetMessages from the Publisher.
 		DataSetFieldContentMask dataSetFieldContentMask_; //!< data set field content mask
-		Duration messageReceiveTimeout_;	//!< The parameter MessageReceiveTimeout is the maximum acceptable
+		OpcUaDuration messageReceiveTimeout_;//!< The parameter MessageReceiveTimeout is the maximum acceptable
 											//!< time between two DataSetMessages.
 		MessageSecurityMode securityMode_;  //!< Indicates the level of security to the network message
 		OpcUaString securityGroupId_;		//!< Identifier for the security group in the Security Key Server

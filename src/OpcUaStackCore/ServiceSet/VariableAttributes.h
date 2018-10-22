@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -62,8 +62,8 @@ namespace OpcUaStackCore
         OpcUaByte accessLevel(void) const;
         void userAccessLevel(const OpcUaByte userAccessLevel);
         OpcUaByte userAccessLevel(void) const;
-        void minimumSamplingInterval(const Duration minimumSamplingInterval);
-        Duration minimumSamplingInterval(void) const;
+        void minimumSamplingInterval(const OpcUaDuration minimumSamplingInterval);
+        OpcUaDuration minimumSamplingInterval(void) const;
         void historizing(const OpcUaBoolean historizing);
         OpcUaBoolean historizing(void) const;
         void writeMask(const WriteableAttribute writeMask);
@@ -81,7 +81,7 @@ namespace OpcUaStackCore
         OpcUaUInt32Array::SPtr arrayDimensions_; 
         OpcUaByte accessLevel_;
         OpcUaByte userAccessLevel_;
-        Duration minimumSamplingInterval_;
+        OpcUaDuration minimumSamplingInterval_;
         OpcUaBoolean historizing_;
         OpcUaUInt32 writeMask_;
 		OpcUaUInt32 userWriteMask_;        

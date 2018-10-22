@@ -73,11 +73,11 @@ namespace OpcUaStackPubSub
 		setSecurityKeys(
 			const OpcUaString& securityGroupId,
 			const OpcUaString& securityPolicyUri,
-			IntegerId currentTokenId,
+			OpcUaIntegerId currentTokenId,
 			const OpcUaString& currentKey,
 			const OpcUaByteStringArray& furureKeys,
-			Duration timeToNextKey,
-			Duration keyLifetime
+			OpcUaDuration timeToNextKey,
+			OpcUaDuration keyLifetime
 		);
 
 		/**

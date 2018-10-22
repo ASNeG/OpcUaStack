@@ -120,7 +120,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 channelId_;
 		OpcUaUInt32 tokenId_;
 		std::vector<OpcUaUInt32> secureTokenVec_;
-		UtcTime createAt_;
+		OpcUaUtcTime createAt_;
 		OpcUaInt32 revisedLifetime_;
 
 		OpcUaNodeId typeId_;

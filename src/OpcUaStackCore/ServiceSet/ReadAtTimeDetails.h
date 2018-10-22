@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -37,8 +37,8 @@ namespace OpcUaStackCore
 		ReadAtTimeDetails(void);
 		virtual ~ReadAtTimeDetails(void);
 
-		void reqTimes(const UtcTimeArray::SPtr reqTime);
-		UtcTimeArray::SPtr reqTimes(void) const;
+		void reqTimes(const OpcUaUtcTimeArray::SPtr reqTime);
+		OpcUaUtcTimeArray::SPtr reqTimes(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -48,7 +48,7 @@ namespace OpcUaStackCore
 		//- ExtensibleParameterBase -------------------------------------------
 
 	  private:
-		UtcTimeArray::SPtr reqTimeArraySPtr_;
+		OpcUaUtcTimeArray::SPtr reqTimeArraySPtr_;
 	};
 
 }

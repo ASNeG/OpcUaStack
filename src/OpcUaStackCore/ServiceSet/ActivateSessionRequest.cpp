@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,7 +24,7 @@ namespace OpcUaStackCore
 	: requestHeaderSPtr_(constructSPtr<RequestHeader>())
 	, clientSignature_(constructSPtr<SignatureData>())
 	, signedSoftwareCertificate_(constructSPtr<SignedSoftwareCertificateArray>())
-	, localeIds_(constructSPtr<LocaleIdArray>())
+	, localeIds_(constructSPtr<OpcUaLocaleIdArray>())
 	, userIdentityToken_(constructSPtr<ExtensibleParameter>())
 	, userTokenSignature_(constructSPtr<SignatureData>())
 	{
@@ -71,12 +71,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	ActivateSessionRequest::localeIds(const LocaleIdArray::SPtr localeIds)
+	ActivateSessionRequest::localeIds(const OpcUaLocaleIdArray::SPtr localeIds)
 	{
 		localeIds_ = localeIds;
 	}
 
-	LocaleIdArray::SPtr 
+	OpcUaLocaleIdArray::SPtr
 	ActivateSessionRequest::localeIds(void) const
 	{
 		return localeIds_;
