@@ -8,15 +8,11 @@ RUN apt-get update \
 
 
 # Prepare workdir
-ADD / /tmp
-RUN mkdir /tmp/build
-WORKDIR /tmp/build
+ADD / /OpcUaStack
+WORKDIR /OpcUaStack
 
 # Build
-RUN cmake ../src
-RUN make -j2
-RUN make install
+RUN sh build.sh -t local -i /
 
-# Clean source and build files
-WORKDIR /
-RUN rm /tmp -rf
+# Clean build files
+RUN sh build.sh -t clean
