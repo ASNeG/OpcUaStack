@@ -29,7 +29,7 @@ namespace OpcUaStackServer
 {
 
 /**
- * This function manages data type field information
+ * This function manages enum type field information
  */
 class DLLEXPORT EnumTypeField
 {
@@ -66,18 +66,18 @@ class DLLEXPORT EnumTypeField
 	 *
 	 * @param[in] value
 	 */
-	void value(int32_t value);
+	void value(uint32_t value);
 
 	/**
 	 * Getter function
 	 *
 	 * @return enum value
 	 */
-	int32_t value(void);
+	uint32_t value(void);
 
   private:
 	std::string name_;						//!< enum field name
-	int32_t value_;							//!< enum value
+	uint32_t value_;						//!< enum value
 };
 
 }
