@@ -257,6 +257,9 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual void opcUaBinaryDecode(std::istream& is);" << std::endl;
 		ss << prefix << "virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;" << std::endl;
 		ss << prefix << "virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
+		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
+		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
+		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual void copyTo(ExtensionObjectBase& extensionObjectBase);" << std::endl;
 		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;" << std::endl;
 		ss << prefix << "virtual void out(std::ostream& os);" << std::endl;
@@ -363,6 +366,8 @@ namespace OpcUaStackServer
 				generateSourceClassXmlTypeId("    ") &&
 				generateSourceClassBinaryEncode("    ") &&
 				generateSourceClassBinaryDecode("    ") &&
+				generateSourceClassEncode("    ") &&
+				generateSourceClassDecode("    ") &&
 				generateSourceClassXmlEncode("    ") &&
 				generateSourceClassXmlDecode("    ") &&
 				generateSourceClassCopyTo("    ") &&
@@ -732,8 +737,10 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+
+
 	bool
-	DataTypeGenerator::generateSourceClassXmlEncode(const std::string& prefix)
+	DataTypeGenerator::generateSourceClassEncode(const std::string& prefix)
 	{
 		std::stringstream ss;
 
@@ -749,13 +756,52 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	DataTypeGenerator::generateSourceClassXmlDecode(const std::string& prefix)
+	DataTypeGenerator::generateSourceClassDecode(const std::string& prefix)
 	{
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassXmlEncode(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix <<  nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassXmlDecode(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		// FIXME: todo
 		ss << prefix << "}" << std::endl;

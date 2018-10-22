@@ -103,7 +103,6 @@ namespace OpcUaStackServer
 		bool generateHeaderEnd(void);
 		bool generateHeaderClassBegin(const std::string& prefix);
 		bool generateHeaderClassEnd(const std::string& prefix);
-
 		bool generateHeaderClassExtensionInterface(const std::string& prefix);
 		bool generateHeaderClassPublic(const std::string& prefix);
 		bool generateHeaderClassPrivate(const std::string& prefix);
@@ -129,6 +128,8 @@ namespace OpcUaStackServer
 		bool generateSourceClassXmlTypeId(const std::string& prefix);
 		bool generateSourceClassBinaryEncode(const std::string& prefix);
 		bool generateSourceClassBinaryDecode(const std::string& prefix);
+		bool generateSourceClassEncode(const std::string& prefix);
+		bool generateSourceClassDecode(const std::string& prefix);
 		bool generateSourceClassXmlEncode(const std::string& prefix);
 		bool generateSourceClassXmlDecode(const std::string& prefix);
 		bool generateSourceClassCopyTo(const std::string& prefix);
