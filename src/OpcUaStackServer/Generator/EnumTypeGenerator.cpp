@@ -187,7 +187,11 @@ namespace OpcUaStackServer
 	bool
 	EnumTypeGenerator::generateHeaderClassBegin(const std::string& prefix)
 	{
+		EnumTypeField::Vec enumTypeFieldVec;
+		EnumTypeField::Vec::iterator it;
 		std::stringstream ss;
+
+		enumTypeFieldVec = nodeInfo_.fields();
 
 		//
 		// added class
@@ -204,7 +208,19 @@ namespace OpcUaStackServer
 
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
+
 		ss << prefix << "    typedef boost::shared_ptr<" << nodeInfo_.className()  << "> SPtr;" << std::endl;
+
+		// added enum
+		ss << prefix << std::endl;
+		ss << prefix << "    typedef enum {" << std::endl;
+		for (it = enumTypeFieldVec.begin(); it != enumTypeFieldVec.end(); it++) {
+			EnumTypeField::SPtr enumTypeField = *it;
+			ss << prefix << "        " << enumTypeField->name() << " = " << enumTypeField->value() << "," << std::endl;
+		}
+		ss << prefix << "    } Enum;" << std::endl;
+
+		// constructor and destructor
 		ss << prefix << std::endl;
 		ss << prefix << "    " << nodeInfo_.className() << "(void);" << std::endl;
 		ss << prefix << "    virtual ~" << nodeInfo_.className() << "(void);" << std::endl;
