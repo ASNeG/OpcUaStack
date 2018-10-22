@@ -485,6 +485,9 @@ namespace OpcUaStackServer
 
 		enumTypeFieldVec = nodeInfo_.fields();
 
+		//
+		// getter function
+		//
 		ss << prefix << std::endl;
 		ss << prefix << "uint32_t&" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::value(void)" << std::endl;
@@ -493,6 +496,9 @@ namespace OpcUaStackServer
 		ss << prefix << "}" << std::endl;
 
 
+		//
+		// setter function
+		//
 		ss << prefix << std::endl;
 		ss << prefix << "void" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::enumeration(" << nodeInfo_.className() << "::Enum enumeration)" << std::endl;
@@ -501,6 +507,9 @@ namespace OpcUaStackServer
 		ss << prefix << "}" << std::endl;
 
 
+		//
+		// getter function
+		//
 		ss << prefix << std::endl;
 		ss << prefix << nodeInfo_.className() << "::Enum" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::enumeration(void)" << std::endl;
@@ -509,6 +518,9 @@ namespace OpcUaStackServer
 		ss << prefix << "}" << std::endl;
 
 
+		//
+		// map string to enum function
+		//
 		ss << prefix << std::endl;
 		ss << prefix << nodeInfo_.className() << "::Enum" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::str2Enum(const std::string& enumerationString)" << std::endl;
@@ -521,6 +533,9 @@ namespace OpcUaStackServer
 		ss << prefix << "}" << std::endl;
 
 
+		//
+		// map enum to string function
+		//
 		ss << prefix << std::endl;
 		ss << prefix << "std::string" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::enum2Str(Enum enumeration)" << std::endl;
@@ -533,6 +548,9 @@ namespace OpcUaStackServer
 		ss << prefix << "}" << std::endl;
 
 
+		//
+		// exist function
+		//
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::exist(const std::string& enumerationString)" << std::endl;
@@ -545,6 +563,9 @@ namespace OpcUaStackServer
 		ss << prefix << "}" << std::endl;
 
 
+		//
+		// exist function
+		//
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::exist(Enum enumeration)" << std::endl;
