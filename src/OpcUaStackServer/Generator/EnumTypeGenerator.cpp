@@ -297,6 +297,12 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "uint32_t& value(void);" << std::endl;
 
+		ss << prefix << std::endl;
+		ss << prefix << "void enumeration(Enum enumeration);" << std::endl;
+
+		ss << prefix << std::endl;
+		ss << prefix << "Enum enumeration(void);" << std::endl;
+
 		headerContent_ += ss.str();
 		return true;
 	}
@@ -480,6 +486,21 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::value(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    return value_;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::enumeration(" << nodeInfo_.className() << "::Enum enumeration)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    value_ = enumeration;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		ss << prefix << std::endl;
+		ss << prefix << nodeInfo_.className() << "::Enum" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::enumeration(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    return (Enum)value_;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
