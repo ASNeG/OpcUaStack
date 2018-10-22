@@ -300,6 +300,8 @@ namespace OpcUaStackServer
 		ss << prefix << "Enum enumeration(void);" << std::endl;
 		ss << prefix << "Enum str2Enum(const std::string& enumerationString);" << std::endl;
 		ss << prefix << "std::string enum2Str(Enum enumeration);" << std::endl;
+		ss << prefix << "bool exist(const std::string& enumerationString);" << std::endl;
+		ss << prefix << "bool exist(Enum enumeration);" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -490,6 +492,7 @@ namespace OpcUaStackServer
 		ss << prefix << "    return value_;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
+
 		ss << prefix << std::endl;
 		ss << prefix << "void" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::enumeration(" << nodeInfo_.className() << "::Enum enumeration)" << std::endl;
@@ -497,12 +500,14 @@ namespace OpcUaStackServer
 		ss << prefix << "    value_ = enumeration;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
+
 		ss << prefix << std::endl;
 		ss << prefix << nodeInfo_.className() << "::Enum" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::enumeration(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    return (Enum)value_;" << std::endl;
 		ss << prefix << "}" << std::endl;
+
 
 		ss << prefix << std::endl;
 		ss << prefix << nodeInfo_.className() << "::Enum" << std::endl;
@@ -515,6 +520,7 @@ namespace OpcUaStackServer
 		ss << prefix << "    return (Enum)0;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
+
 		ss << prefix << std::endl;
 		ss << prefix << "std::string" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::enum2Str(Enum enumeration)" << std::endl;
@@ -525,6 +531,31 @@ namespace OpcUaStackServer
 		}
 		ss << prefix << "    return \"Unknown\";" << std::endl;
 		ss << prefix << "}" << std::endl;
+
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::exist(const std::string& enumerationString)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		for (it = enumTypeFieldVec.begin(); it != enumTypeFieldVec.end(); it++) {
+			EnumTypeField::SPtr enumTypeField = *it;
+			ss << prefix << "    if (enumerationString == \"" << enumTypeField->name() << "\") return true;" << std::endl;
+		}
+		ss << prefix << "    return false;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::exist(Enum enumeration)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		for (it = enumTypeFieldVec.begin(); it != enumTypeFieldVec.end(); it++) {
+			EnumTypeField::SPtr enumTypeField = *it;
+			ss << prefix << "    if (enumeration == " << enumTypeField->value() << ") return true;" << std::endl;
+		}
+		ss << prefix << "    return false;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
 
 		sourceContent_ += ss.str();
 		return true;
