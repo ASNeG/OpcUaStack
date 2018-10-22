@@ -206,7 +206,7 @@ namespace OpcUaStackServer
 		// added base classes
 		//
 		if (!nodeInfo_.parentIsStructureType()) {
-			ss << prefix << ": " << nodeInfo_.parentClassName() << std::endl;
+			ss << prefix << ": public " << nodeInfo_.parentClassName() << std::endl;
 		}
 		else {
 			ss << prefix << ": public Object" << std::endl;
@@ -450,10 +450,17 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
 
+		if (nodeInfo_.parentIsStructureType() == true) {
+			ss << prefix << ": Object()" << std::endl;
+			ss << prefix << ", ExtensionObjectBase()" << std::endl;
+		}
+		else {
+			ss << prefix << ": " << nodeInfo_.parentClassName() << "()" << std::endl;
+		}
+
 		DataTypeField::Vec::iterator it;
 		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 
-		std::string delemiter = ": ";
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
@@ -462,8 +469,7 @@ namespace OpcUaStackServer
 				variableContent = "constructSPtr<" + dataTypeField->name() + ">()";
 			}
 
-			ss << prefix << delemiter << dataTypeField->variableName() << "(" << variableContent << ")" << std::endl;
-			delemiter = ", ";
+			ss << prefix << ", " << dataTypeField->variableName() << "(" << variableContent << ")" << std::endl;
 		}
 
 		ss << prefix << "{" << std::endl;
