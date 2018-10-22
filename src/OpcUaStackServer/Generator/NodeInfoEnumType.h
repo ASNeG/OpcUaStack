@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackCore_NodeInfoEnumType_h__
 #define __OpcUaStackCore_NodeInfoEnumType_h__
 
-#include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
+#include "OpcUaStackCore/StandardDataTypes/EnumDefinition.h"
 
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/EnumTypeField.h"
@@ -63,13 +63,8 @@ class DLLEXPORT NodeInfoEnumType
 	bool init(const OpcUaNodeId& enumTypeNodeId, InformationModel::SPtr& informationModel);
 
   private:
-	std::string getVariableType(
-		StructureField::SPtr& structureField,
-		InformationModel::SPtr& informationModel
-	);
-
-	StructureDefinition::SPtr structureDefinition_;	//!< structure definition
-	EnumTypeField::Vec EnumTypeFieldVec_;
+	EnumDefinition::SPtr enumDefinition_;		//!< enum definition
+	EnumTypeField::Vec enumTypeFieldVec_;
 
 };
 

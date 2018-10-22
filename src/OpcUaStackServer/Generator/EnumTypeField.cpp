@@ -22,7 +22,7 @@ namespace OpcUaStackServer
 
 	EnumTypeField::EnumTypeField(void)
 	: name_("")
-	, value_(0)
+	, value_(-1)
 	{
 	}
 
@@ -43,12 +43,12 @@ namespace OpcUaStackServer
 	}
 
 	void
-	EnumTypeField::value(uint32_t value)
+	EnumTypeField::value(int32_t value)
 	{
 		value_ = value;
 	}
 
-	uint32_t
+	int32_t
 	EnumTypeField::value(void)
 	{
 		return value_;

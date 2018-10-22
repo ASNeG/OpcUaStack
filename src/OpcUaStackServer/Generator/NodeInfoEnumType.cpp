@@ -25,8 +25,8 @@ namespace OpcUaStackServer
 
 	NodeInfoEnumType::NodeInfoEnumType(void)
 	: NodeInfo()
-	, structureDefinition_()
-	, EnumTypeFieldVec_()
+	, enumDefinition_()
+	, enumTypeFieldVec_()
 	{
 	}
 
@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 	EnumTypeField::Vec&
 	NodeInfoEnumType::fields(void)
 	{
-		return EnumTypeFieldVec_;
+		return enumTypeFieldVec_;
 	}
 
 	bool
@@ -64,136 +64,32 @@ namespace OpcUaStackServer
 			return true;
 		}
 
-		if (dynamic_cast<StructureDefinition*>(definitionObject.get()) == nullptr) {
-			Log(Error, "node definiton object is not from type StructureDefinition")
+		if (dynamic_cast<EnumDefinition*>(definitionObject.get()) == nullptr) {
+			Log(Error, "node definiton object is not from type EnumDefinition")
 				.parameter("EnumTypeNodeId", enumTypeNodeId);
 			return false;
 		}
-		structureDefinition_ = boost::static_pointer_cast<StructureDefinition>(definitionObject);
-
-#if 0
+		enumDefinition_ = boost::static_pointer_cast<EnumDefinition>(definitionObject);
 
 		// create field information
-		uint32_t size = structureDefinition_->fields()->size();
+		uint32_t size = enumDefinition_->enumFields()->size();
 		for (uint32_t idx=0; idx<size; idx++) {
-			StructureField::SPtr structureField;
-			structureDefinition_->fields()->get(idx, structureField);
+			EnumField::SPtr enumField;
+			enumDefinition_->enumFields()->get(idx, enumField);
 
 
-			EnumTypeField::SPtr EnumTypeField = constructSPtr<EnumTypeField>();
+			EnumTypeField::SPtr enumTypeField = constructSPtr<EnumTypeField>();
 
 			// added name
-			EnumTypeField->name(structureField->name().toStdString());
+			enumTypeField->name(enumField->name().toStdString());
 
-			// added variable name
-			std::string variableName = structureField->name().toStdString();
-			variableName = boost::to_lower_copy(variableName.substr(0,1)) + variableName.substr(1) + "_";
-			EnumTypeField->variableName(variableName);
+			// added value
+			enumTypeField->value(enumField->value());
 
-			// added parameter name
-			std::string parameterName = structureField->name().toStdString();
-			parameterName = boost::to_lower_copy(parameterName.substr(0,1)) + parameterName.substr(1);
-			EnumTypeField->parameterName(parameterName);
-
-			// added variable type
-			// added smartpointer flag
-			// added number flag
-			// added boolean flag
-			// added byte flag
-			bool smartpointer = false;
-			bool number = false;
-			bool boolean = false;
-			bool byte = false;
-			std::string variableType = getVariableType(
-				structureField,
-				informationModel,
-				smartpointer,
-				number,
-				boolean,
-				byte
-			);
-			if (variableType == "") {
-				Log(Error, "variable type unknown in StructureDefinition")
-					.parameter("DataTypeNodeId", dataTypeNodeId)
-					.parameter("VariableTypeNodeId", structureField->dataType());
-				return false;
-			}
-
-			EnumTypeField->variableType(variableType);
-			EnumTypeField->smartpointer(smartpointer);
-			EnumTypeField->number(number);
-			EnumTypeField->boolean(boolean);
-			EnumTypeField->byte(byte);
-
-			// added description
-			EnumTypeField->description(structureField->description().text().toStdString());
-
-			// added value rank flag
-			if (structureField->valueRank() > -1) {
-				EnumTypeField->array(true);
-			}
-
-			EnumTypeFieldVec_.push_back(EnumTypeField);
+			enumTypeFieldVec_.push_back(enumTypeField);
 		}
-#endif
 
 		return true;
-	}
-
-	std::string
-	NodeInfoEnumType::getVariableType(
-		StructureField::SPtr& structureField,
-		InformationModel::SPtr& informationModel
-	)
-	{
-#if 0
-		smartpointer = false;
-
-		OpcUaNodeId typeNodeId = structureField->dataType();
-		int32_t valueRank = structureField->valueRank();
-
-		// build in type possible
-		if (typeNodeId.namespaceIndex() == 0 && typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
-			uint32_t type;
-			uint16_t namespaceIndex;
-			typeNodeId.get(type, namespaceIndex);
-			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
-			if (buildInType != "Unknown") {
-				buildInType = "OpcUa" + buildInType;
-
-				// set smartpointer flag
-				if (typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaExtensionObject) {
-					smartpointer = true;
-					buildInType = buildInType + "::SPtr";
-				}
-
-				// set number flag
-				if (OpcUaBuildInTypeClass::isNumber((OpcUaBuildInType)type) == true) {
-					number = true;
-				}
-
-				// set boolean flag
-				if (OpcUaBuildInTypeClass::isBoolean((OpcUaBuildInType)type) == true) {
-					boolean = true;
-				}
-
-				// set byte flag
-				if (OpcUaBuildInTypeClass::isByte((OpcUaBuildInType)type) == true) {
-					byte = true;
-				}
-
-				return buildInType;
-			}
-		}
-#endif
-
-		// enum type possible
-		// FIXME: todo
-
-		// structure type possible
-		// FIXME: todo
-
-		return "";
 	}
 
 }

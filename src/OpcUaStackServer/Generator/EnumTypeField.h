@@ -66,18 +66,18 @@ class DLLEXPORT EnumTypeField
 	 *
 	 * @param[in] value
 	 */
-	void value(uint32_t value);
+	void value(int32_t value);
 
 	/**
 	 * Getter function
 	 *
 	 * @return enum value
 	 */
-	uint32_t value(void);
+	int32_t value(void);
 
   private:
 	std::string name_;						//!< enum field name
-	uint32_t value_;						//!< enum value
+	int32_t value_;							//!< enum value
 };
 
 }
