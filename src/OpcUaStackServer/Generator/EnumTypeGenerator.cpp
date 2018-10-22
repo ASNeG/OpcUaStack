@@ -279,7 +279,7 @@ namespace OpcUaStackServer
 		// added value definition
 		//
 		ss << prefix << std::endl;
-		ss << prefix << "uint32_t value(void);" << std::endl;
+		ss << prefix << "uint32_t& value(void);" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -311,7 +311,7 @@ namespace OpcUaStackServer
 		EnumTypeField::Vec::iterator it;
 		EnumTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 
-		ss << prefix << "uint32_t value_" << std::endl;
+		ss << prefix << "uint32_t value_;" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -479,7 +479,7 @@ namespace OpcUaStackServer
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::operator==(const " << nodeInfo_.className() << "& value) const" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    if (value_ != value.value()) return false;" << std::endl;
+		ss << prefix << "    if (value_ != value.value_) return false;" << std::endl;
 		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -602,7 +602,7 @@ namespace OpcUaStackServer
 		ss << prefix << "void" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryDecode(std::istream& is)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(os, value_);" << std::endl;
+		ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is, value_);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

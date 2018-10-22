@@ -34,6 +34,39 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
+# build OpcUaEnumTypeGenerator
+# 
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+include_directories(
+    ${PROJECT_BINARY_DIR}
+    ${Boost_INCLUDE_DIRS}
+)
+
+file(
+    GLOB OpcUaEnumTypeGenerator_SRC 
+    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaEnumTypeGenerator.cpp
+)
+
+
+add_executable(
+    OpcUaEnumTypeGenerator${VERSION_MAJOR}
+    ${OpcUaEnumTypeGenerator_SRC}
+    ${PROJECT_BINARY_DIR}
+)
+
+target_link_libraries(
+    OpcUaEnumTypeGenerator${VERSION_MAJOR}
+    ${CMAKE_DL_LIBS}
+    ${Boost_LIBRARIES}
+    OpcUaStackCore
+    OpcUaStackClient
+    OpcUaStackServer
+)
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
 # build OpcUaEventTypeGenerator
 # 
 # -----------------------------------------------------------------------------
@@ -142,6 +175,12 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 install(
     TARGETS OpcUaDataTypeGenerator${VERSION_MAJOR} 
+    DESTINATION /usr/bin
+    COMPONENT tools
+)
+
+install(
+    TARGETS OpcUaEnumTypeGenerator${VERSION_MAJOR} 
     DESTINATION /usr/bin
     COMPONENT tools
 )
