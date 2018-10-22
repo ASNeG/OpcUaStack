@@ -124,13 +124,20 @@ namespace OpcUaStackServer
 		applicationManager_.serviceComponent(applicationService);
 
 		if (!applicationManager_.startup()) {
+			Log(Error, "server application manager start failed");
 			return false;
 		}
 
 		// startup opc ua stack
 		Log(Info, "start opc ua server stack");
-		ioThread_->startup();
-		if (sessionManager_.startup()) {
+		if (!ioThread_->startup())
+		{
+			Log(Error, "server io thread start failed");
+			return false;
+		}
+		
+		if (!sessionManager_.startup()) {
+			Log(Error, "server session manager start failed");
 			return false;
 		}
 	
