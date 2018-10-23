@@ -12,7 +12,7 @@ ADD / /OpcUaStack
 WORKDIR /OpcUaStack
 
 # Build
-RUN sh build.sh -t local -i /
+RUN sh build.sh -t local -i / -j 4
 
 # Clean build files
 RUN sh build.sh -t clean
