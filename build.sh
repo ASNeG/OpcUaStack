@@ -106,7 +106,7 @@ build_local()
     fi
 
     # install local
-    make DESTDIR="${INSTALL_PREFIX}" install -j${JOBS}
+    make DESTDIR="${INSTALL_PREFIX}" install -j"${JOBS}"
     RESULT=$?
     if [ ${RESULT} -ne 0 ] ;
     then
@@ -183,7 +183,7 @@ build_deb()
         fi     
     fi
 
-    make package -j${JOBS} 
+    make package -j"${JOBS}"
     RESULT=$?
     if [ ${RESULT} -ne 0 ] ;
     then
@@ -258,7 +258,7 @@ build_rpm()
         fi
     fi
 
-    make package -j${JOBS} 
+    make package -j"${JOBS}"
     RESULT=$?
     if [ ${RESULT} -ne 0 ] ;
     then
@@ -322,7 +322,7 @@ build_tst()
         fi
     fi
 
-    make -j${JOBS} 
+    make -j"${JOBS}"
     RESULT=$?
      if [ ${RESULT} -ne 0 ] ;
     then
@@ -370,13 +370,14 @@ then
     exit 1
 fi 
 
-while [ $# -gt 0 ];
-do
-key="$1"
 
 INSTALL_PREFIX="${HOME}/.ASNeG"
 STACK_PREFIX="/"
 JOBS=1
+
+while [ $# -gt 0 ];
+do
+key="$1"
 
 case $key in
     -t|--target)
@@ -404,6 +405,9 @@ case $key in
     ;;
 esac
 done
+
+echo "${INSTALL_PREFIX}"
+echo "${JOBS}"
 
 if [ "${TARGET}" = "info" ] ;
 then
