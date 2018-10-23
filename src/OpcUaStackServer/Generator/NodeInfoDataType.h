@@ -71,7 +71,8 @@ class DLLEXPORT NodeInfoDataType
 		bool &boolean,
 		bool &byte,
 		bool &enumeration,
-		bool &structure
+		bool &structure,
+		bool &optional
 	);
 
 	StructureDefinition::SPtr structureDefinition_;	//!< structure definition

@@ -31,6 +31,9 @@ namespace OpcUaStackServer
 	, number_(false)
 	, boolean_(false)
 	, byte_(false)
+	, enumeration_(false)
+	, structure_(false)
+	, optional_(false)
 	{
 	}
 
@@ -180,6 +183,18 @@ namespace OpcUaStackServer
 	DataTypeField::structure(void)
 	{
 		return structure_;
+	}
+
+	void
+	DataTypeField::optional(bool optional)
+	{
+		optional_ = optional;
+	}
+
+	bool
+	DataTypeField::optional(void)
+	{
+		return optional_;
 	}
 
 }

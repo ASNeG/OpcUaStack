@@ -106,6 +106,7 @@ namespace OpcUaStackServer
 			bool byte = false;
 			bool enumeration = false;
 			bool structure = false;
+			bool optional = false;
 			std::string variableType = getVariableType(
 				structureField,
 				informationModel,
@@ -114,7 +115,8 @@ namespace OpcUaStackServer
 				boolean,
 				byte,
 				enumeration,
-				structure
+				structure,
+				optional
 			);
 			if (variableType == "") {
 				Log(Error, "variable type unknown in StructureDefinition")
@@ -130,6 +132,7 @@ namespace OpcUaStackServer
 			dataTypeField->byte(byte);
 			dataTypeField->enumeration(enumeration);
 			dataTypeField->structure(structure);
+			dataTypeField->optional(optional);
 
 			// added description
 			dataTypeField->description(structureField->description().text().toStdString());
@@ -154,10 +157,12 @@ namespace OpcUaStackServer
 		bool &boolean,
 		bool &byte,
 		bool &enumeration,
-		bool &structure
+		bool &structure,
+		bool &optional
 	)
 	{
 		smartpointer = false;
+		optional = false;
 
 		OpcUaNodeId typeNodeId = structureField->dataType();
 		int32_t valueRank = structureField->valueRank();
@@ -213,7 +218,11 @@ namespace OpcUaStackServer
 
 		// structure type possible
 		structure = ima.isDataTypeStructure(typeNodeId);
-		if (structure) {
+
+		// check optional flag
+		if (structureField->isOptional()) {
+			smartpointer = true;
+			optional = true;
 			dataTypeName = dataTypeName + "::SPtr";
 		}
 

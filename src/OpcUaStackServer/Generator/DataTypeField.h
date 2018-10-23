@@ -215,6 +215,20 @@ class DLLEXPORT DataTypeField
 	 */
 	bool structure(void);
 
+	/**
+	 * Setter function
+	 *
+	 * @param[in] optional				optional flag
+	 */
+	void optional(bool optional);
+
+	/**
+	 * Getter function
+	 *
+	 * @return optional flag
+	 */
+	bool optional(void);
+
   private:
 	std::string name_;						//!< field name
 	std::string variableName_;				//!< variable name
@@ -228,6 +242,7 @@ class DLLEXPORT DataTypeField
 	bool byte_;								//!< byte flag
 	bool enumeration_;						//!< enumeration flag
 	bool structure_;						//!< structure flag
+	bool optional_;							//!< optional flag
 
 };
 
