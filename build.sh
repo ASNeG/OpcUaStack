@@ -28,6 +28,7 @@ usage()
    echo ""
    echo "--install-prefix, -i INSTALL_PREFIX:  is the path to directory"
    echo "\twhere the application should be installed (default: ${HOME}/.ASNeG)"
+   echo "--jobs, -j JOB_COUNT: sets the number of the jobs of make"
 }
 
 
@@ -105,7 +106,7 @@ build_local()
     fi
 
     # install local
-    make DESTDIR="${INSTALL_PREFIX}" install
+    make DESTDIR="${INSTALL_PREFIX}" install -j${JOBS}
     RESULT=$?
     if [ ${RESULT} -ne 0 ] ;
     then
@@ -182,7 +183,7 @@ build_deb()
         fi     
     fi
 
-    make package
+    make package -j${JOBS} 
     RESULT=$?
     if [ ${RESULT} -ne 0 ] ;
     then
@@ -257,7 +258,7 @@ build_rpm()
         fi
     fi
 
-    make package
+    make package -j${JOBS} 
     RESULT=$?
     if [ ${RESULT} -ne 0 ] ;
     then
@@ -321,7 +322,7 @@ build_tst()
         fi
     fi
 
-    make 
+    make -j${JOBS} 
     RESULT=$?
      if [ ${RESULT} -ne 0 ] ;
     then
@@ -375,6 +376,7 @@ key="$1"
 
 INSTALL_PREFIX="${HOME}/.ASNeG"
 STACK_PREFIX="/"
+JOBS=1
 
 case $key in
     -t|--target)
@@ -389,6 +391,11 @@ case $key in
     ;;
     -s|--stack-prefix)
     STACK_PREFIX="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -j|--jobs)
+    JOBS="$2"
     shift # past argument
     shift # past value
     ;;
