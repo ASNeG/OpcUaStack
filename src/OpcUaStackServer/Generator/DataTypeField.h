@@ -39,10 +39,11 @@ class DLLEXPORT DataTypeField
 
 	typedef enum {
 		BuildInType,			//!< build in type
-		Structure,				//!< structure type
-		Enumeration,			//!< enumeration type
-		ArrayType,				//!< array type
-		OptionalType			//!< optional structure type
+		BuildInArrayType,		//!< build in array type
+		StructureType,			//!< structure type
+		StructureArrayType,		//!< structure array type
+		EnumerationType,		//!< enumeration type
+		EnumerationArrayType,	//!< enumaration array type
 	} Type;
 
 	/**
