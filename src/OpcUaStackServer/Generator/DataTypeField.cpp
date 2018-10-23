@@ -158,4 +158,28 @@ namespace OpcUaStackServer
 		return byte_;
 	}
 
+	void
+	DataTypeField::enumeration(bool enumeration)
+	{
+		enumeration_ = enumeration;
+	}
+
+	bool
+	DataTypeField::enumeration(void)
+	{
+		return enumeration_;
+	}
+
+	void
+	DataTypeField::structure(bool structure)
+	{
+		structure_ = structure;
+	}
+
+	bool
+	DataTypeField::structure(void)
+	{
+		return structure_;
+	}
+
 }

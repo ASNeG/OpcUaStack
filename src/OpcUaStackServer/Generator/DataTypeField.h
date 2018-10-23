@@ -187,6 +187,34 @@ class DLLEXPORT DataTypeField
 	 */
 	bool byte(void);
 
+	/**
+	 * Setter function
+	 *
+	 * @param[in] enumeration			enumeration flag
+	 */
+	void enumeration(bool enumeration);
+
+	/**
+	 * Getter function
+	 *
+	 * @return enumeration flag
+	 */
+	bool enumeration(void);
+
+	/**
+	 * Setter function
+	 *
+	 * @param[in] structure				structure flag
+	 */
+	void structure(bool structure);
+
+	/**
+	 * Getter function
+	 *
+	 * @return structure flag
+	 */
+	bool structure(void);
+
   private:
 	std::string name_;						//!< field name
 	std::string variableName_;				//!< variable name
@@ -198,6 +226,8 @@ class DLLEXPORT DataTypeField
 	bool number_;							//!< number flag
 	bool boolean_;							//!< boolean flag
 	bool byte_;								//!< byte flag
+	bool enumeration_;						//!< enumeration flag
+	bool structure_;						//!< structure flag
 
 };
 

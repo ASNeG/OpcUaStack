@@ -69,7 +69,9 @@ class DLLEXPORT NodeInfoDataType
 		bool &smartpointer,
 		bool &number,
 		bool &boolean,
-		bool &byte
+		bool &byte,
+		bool &enumeration,
+		bool &structure
 	);
 
 	StructureDefinition::SPtr structureDefinition_;	//!< structure definition

@@ -19,6 +19,7 @@
 
 #include "OpcUaStackServer/Generator/NodeInfoDataType.h"
 #include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
+#include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 
 namespace OpcUaStackServer
 {
@@ -103,13 +104,17 @@ namespace OpcUaStackServer
 			bool number = false;
 			bool boolean = false;
 			bool byte = false;
+			bool enumeration = false;
+			bool structure = false;
 			std::string variableType = getVariableType(
 				structureField,
 				informationModel,
 				smartpointer,
 				number,
 				boolean,
-				byte
+				byte,
+				enumeration,
+				structure
 			);
 			if (variableType == "") {
 				Log(Error, "variable type unknown in StructureDefinition")
@@ -123,6 +128,8 @@ namespace OpcUaStackServer
 			dataTypeField->number(number);
 			dataTypeField->boolean(boolean);
 			dataTypeField->byte(byte);
+			dataTypeField->enumeration(enumeration);
+			dataTypeField->structure(structure);
 
 			// added description
 			dataTypeField->description(structureField->description().text().toStdString());
@@ -145,7 +152,9 @@ namespace OpcUaStackServer
 		bool &smartpointer,
 		bool &number,
 		bool &boolean,
-		bool &byte
+		bool &byte,
+		bool &enumeration,
+		bool &structure
 	)
 	{
 		smartpointer = false;
@@ -187,13 +196,28 @@ namespace OpcUaStackServer
 			}
 		}
 
+		// get type name
+		BaseNodeClass::SPtr baseNode = informationModel->find(typeNodeId);
+		if (baseNode.get() == nullptr) {
+			Log(Error, "data type node identifier not exist in information model")
+				.parameter("DataTypeNode", typeNodeId);
+			return "";
+		}
+		OpcUaLocalizedText displayName;
+		baseNode->getDisplayName(displayName);
+		std::string dataTypeName = displayName.text().toStdString();
+
 		// enum type possible
-		// FIXME: todo
+		InformationModelAccess ima(informationModel);
+		enumeration = ima.isDataTypeEnum(typeNodeId);
 
 		// structure type possible
-		// FIXME: todo
+		structure = ima.isDataTypeStructure(typeNodeId);
+		if (structure) {
+			dataTypeName = dataTypeName + "::SPtr";
+		}
 
-		return "";
+		return dataTypeName;
 	}
 
 }
