@@ -26,6 +26,7 @@ namespace OpcUaStackServer
 	, parameterName_("")
 	, variableType_("")
 	, description_("")
+	, includePath_("")
 	, array_(false)
 	, smartpointer_(false)
 	, number_(false)
@@ -99,6 +100,30 @@ namespace OpcUaStackServer
 	DataTypeField::description(void)
 	{
 		return description_;
+	}
+
+	void
+	DataTypeField::includePath(const std::string& includePath)
+	{
+		includePath_ = includePath;
+	}
+
+	std::string&
+	DataTypeField::includePath(void)
+	{
+		return includePath_;
+	}
+
+	void
+	DataTypeField::type(Type type)
+	{
+		type_ = type;
+	}
+
+	DataTypeField::Type
+	DataTypeField::type(void)
+	{
+		return type_;
 	}
 
 	void

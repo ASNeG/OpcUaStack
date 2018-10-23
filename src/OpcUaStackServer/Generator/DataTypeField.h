@@ -37,6 +37,14 @@ class DLLEXPORT DataTypeField
 	typedef boost::shared_ptr<DataTypeField> SPtr;
 	typedef std::vector<DataTypeField::SPtr> Vec;
 
+	typedef enum {
+		BuildInType,			//!< build in type
+		Structure,				//!< structure type
+		Enumeration,			//!< enumeration type
+		ArrayType,				//!< array type
+		OptionalType			//!< optional structure type
+	} Type;
+
 	/**
 	 * constructor
 	 */
@@ -116,6 +124,34 @@ class DLLEXPORT DataTypeField
 	 * @return variable description
 	 */
 	std::string& description(void);
+
+	/**
+	 * Setter function
+	 *
+	 * @param[in] includePath			include path
+	 */
+	void includePath(const std::string& includePath);
+
+	/**
+	 * Getter function
+	 *
+	 * @return include path
+	 */
+	std::string& includePath(void);
+
+	/**
+	 * Setter function
+	 *
+	 * @param[in] type					type
+	 */
+	void type(Type type);
+
+	/**
+	 * Getter function
+	 *
+	 * @return type
+	 */
+	Type type(void);
 
 	/**
 	 * Setter function
@@ -235,6 +271,8 @@ class DLLEXPORT DataTypeField
 	std::string parameterName_;				//!< parameter name
 	std::string variableType_;				//!< variable type
 	std::string description_;				//!< variable description
+	std::string includePath_;				//!< include path
+	Type type_;								//!< type
 	bool array_;							//!< array flag
 	bool smartpointer_;						//!< smartpointer flag
 	bool number_;							//!< number flag
