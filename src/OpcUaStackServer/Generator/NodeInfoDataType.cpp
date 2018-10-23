@@ -81,6 +81,7 @@ namespace OpcUaStackServer
 
 
 			DataTypeField::SPtr dataTypeField = constructSPtr<DataTypeField>();
+			OpcUaNodeId dataTypeNodeId = structureField->dataType();
 
 			// added name
 			dataTypeField->name(structureField->name().toStdString());
@@ -95,138 +96,115 @@ namespace OpcUaStackServer
 			parameterName = boost::to_lower_copy(parameterName.substr(0,1)) + parameterName.substr(1);
 			dataTypeField->parameterName(parameterName);
 
-			// added variable type
-			// added smartpointer flag
-			// added number flag
-			// added boolean flag
-			// added byte flag
-			bool smartpointer = false;
-			bool number = false;
-			bool boolean = false;
-			bool byte = false;
-			bool enumeration = false;
-			bool structure = false;
-			bool optional = false;
-			std::string variableType = getVariableType(
-				structureField,
-				informationModel,
-				smartpointer,
-				number,
-				boolean,
-				byte,
-				enumeration,
-				structure,
-				optional
-			);
-			if (variableType == "") {
-				Log(Error, "variable type unknown in StructureDefinition")
-					.parameter("DataTypeNodeId", dataTypeNodeId)
-					.parameter("VariableTypeNodeId", structureField->dataType());
-				return false;
+			// added array flag
+			if (structureField->valueRank() > -1) {
+				dataTypeField->array(true);
 			}
 
-			dataTypeField->variableType(variableType);
-			dataTypeField->smartpointer(smartpointer);
-			dataTypeField->number(number);
-			dataTypeField->boolean(boolean);
-			dataTypeField->byte(byte);
-			dataTypeField->enumeration(enumeration);
-			dataTypeField->structure(structure);
-			dataTypeField->optional(optional);
+			// added optional flag
+			if (structureField->isOptional()) {
+				dataTypeField->optional(true);
+			}
 
 			// added description
 			dataTypeField->description(structureField->description().text().toStdString());
 
-			// added value rank flag
-			if (structureField->valueRank() > -1) {
-				dataTypeField->array(true);
+			// handle build in type
+			bool buildInType = false;
+			if (dataTypeNodeId.namespaceIndex() == 0 && dataTypeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+				uint32_t type;
+				uint16_t namespaceIndex;
+				dataTypeNodeId.get(type, namespaceIndex);
+				std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
+				if (buildInType != "Unknown") {
+					// set number flag
+					if (OpcUaBuildInTypeClass::isNumber((OpcUaBuildInType)type) == true) {
+						dataTypeField->number(true);
+					}
+
+					// set boolean flag
+					if (OpcUaBuildInTypeClass::isBoolean((OpcUaBuildInType)type) == true) {
+						dataTypeField->boolean(true);
+					}
+
+					// set byte flag
+					if (OpcUaBuildInTypeClass::isByte((OpcUaBuildInType)type) == true) {
+						dataTypeField->byte(true);
+					}
+
+					// set build in type name
+					if (dataTypeField->array() == true) {
+						dataTypeField->smartpointer(true);
+						dataTypeField->variableType("OpcUa" + buildInType + "Array::SPtr");
+						dataTypeField->type(DataTypeField::BuildInArrayType);
+					}
+					else {
+						dataTypeField->variableType("OpcUa" + buildInType);
+						dataTypeField->type(DataTypeField::BuildInType);
+					}
+					buildInType = true;
+				}
+			}
+
+			if (buildInType == false) {
+				// get type name
+				BaseNodeClass::SPtr baseNode = informationModel->find(dataTypeNodeId);
+				if (baseNode.get() == nullptr) {
+					Log(Error, "data type node identifier not exist in information model")
+						.parameter("DataTypeNode", dataTypeNodeId);
+					return "";
+				}
+				OpcUaLocalizedText displayName;
+				baseNode->getDisplayName(displayName);
+				std::string dataTypeName = displayName.text().toStdString();
+
+				// enum type possible
+				InformationModelAccess ima(informationModel);
+				dataTypeField->enumeration(ima.isDataTypeEnum(dataTypeNodeId));
+
+				// structure type possible
+				dataTypeField->structure(ima.isDataTypeStructure(dataTypeNodeId));
+
+				// set build in type name
+				if (dataTypeField->enumeration() == true) {
+					// set include
+
+					// set type information
+					if (dataTypeField->array()) {
+						dataTypeField->smartpointer(true);
+						dataTypeField->variableType(dataTypeName + "Array::SPtr");
+						dataTypeField->type(DataTypeField::EnumerationArrayType);
+					}
+					else {
+						dataTypeField->variableType(dataTypeName);
+						dataTypeField->type(DataTypeField::EnumerationType);
+					}
+				}
+				else if (dataTypeField->structure() == true) {
+					// set include
+
+					// set type information
+					if (dataTypeField->array()) {
+						dataTypeField->smartpointer(true);
+						dataTypeField->variableType(dataTypeName + "Array::SPtr");
+						dataTypeField->type(DataTypeField::StructureArrayType);
+					}
+					else {
+						dataTypeField->variableType(dataTypeName);
+						dataTypeField->type(DataTypeField::StructureType);
+					}
+				}
+				else {
+					Log(Error, "data type node invalid")
+						.parameter("DataTypeNodeId", dataTypeNodeId);
+					return false;
+				}
 			}
 
 			dataTypeFieldVec_.push_back(dataTypeField);
 		}
 
 		return true;
-	}
-
-	std::string
-	NodeInfoDataType::getVariableType(
-		StructureField::SPtr& structureField,
-		InformationModel::SPtr& informationModel,
-		bool &smartpointer,
-		bool &number,
-		bool &boolean,
-		bool &byte,
-		bool &enumeration,
-		bool &structure,
-		bool &optional
-	)
-	{
-		smartpointer = false;
-		optional = false;
-
-		OpcUaNodeId typeNodeId = structureField->dataType();
-		int32_t valueRank = structureField->valueRank();
-
-		// build in type possible
-		if (typeNodeId.namespaceIndex() == 0 && typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
-			uint32_t type;
-			uint16_t namespaceIndex;
-			typeNodeId.get(type, namespaceIndex);
-			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
-			if (buildInType != "Unknown") {
-				buildInType = "OpcUa" + buildInType;
-
-				// set smartpointer flag
-				if (typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaExtensionObject) {
-					smartpointer = true;
-					buildInType = buildInType + "::SPtr";
-				}
-
-				// set number flag
-				if (OpcUaBuildInTypeClass::isNumber((OpcUaBuildInType)type) == true) {
-					number = true;
-				}
-
-				// set boolean flag
-				if (OpcUaBuildInTypeClass::isBoolean((OpcUaBuildInType)type) == true) {
-					boolean = true;
-				}
-
-				// set byte flag
-				if (OpcUaBuildInTypeClass::isByte((OpcUaBuildInType)type) == true) {
-					byte = true;
-				}
-
-				return buildInType;
-			}
-		}
-
-		// get type name
-		BaseNodeClass::SPtr baseNode = informationModel->find(typeNodeId);
-		if (baseNode.get() == nullptr) {
-			Log(Error, "data type node identifier not exist in information model")
-				.parameter("DataTypeNode", typeNodeId);
-			return "";
-		}
-		OpcUaLocalizedText displayName;
-		baseNode->getDisplayName(displayName);
-		std::string dataTypeName = displayName.text().toStdString();
-
-		// enum type possible
-		InformationModelAccess ima(informationModel);
-		enumeration = ima.isDataTypeEnum(typeNodeId);
-
-		// structure type possible
-		structure = ima.isDataTypeStructure(typeNodeId);
-
-		// check optional flag
-		if (structureField->isOptional()) {
-			smartpointer = true;
-			optional = true;
-			dataTypeName = dataTypeName + "::SPtr";
-		}
-
-		return dataTypeName;
 	}
 
 }

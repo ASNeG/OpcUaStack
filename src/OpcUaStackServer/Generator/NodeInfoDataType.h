@@ -63,18 +63,6 @@ class DLLEXPORT NodeInfoDataType
 	bool init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel);
 
   private:
-	std::string getVariableType(
-		StructureField::SPtr& structureField,
-		InformationModel::SPtr& informationModel,
-		bool &smartpointer,
-		bool &number,
-		bool &boolean,
-		bool &byte,
-		bool &enumeration,
-		bool &structure,
-		bool &optional
-	);
-
 	StructureDefinition::SPtr structureDefinition_;	//!< structure definition
 	DataTypeField::Vec dataTypeFieldVec_;
 
