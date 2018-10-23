@@ -7,7 +7,7 @@ services:
 before_install:
   - docker build -t asneg/opcuastack:test .
   - docker run --name test_container asneg/opcuastack:test sh build.sh -t tst -j 2
-  - docker commit test_conatainer asneg/opcuastack:test
+  - docker commit test_container asneg/opcuastack:test
 
 script:
   - docker run -w /OpcUaStack/build_tst asneg/opcuastack:test ./OpcUaStackCoreTest
