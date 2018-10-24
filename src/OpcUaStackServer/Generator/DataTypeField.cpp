@@ -35,6 +35,7 @@ namespace OpcUaStackServer
 	, enumeration_(false)
 	, structure_(false)
 	, optional_(false)
+	, type_(BuildInType)
 	{
 	}
 

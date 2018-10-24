@@ -60,7 +60,10 @@ class DLLEXPORT NodeInfoDataType
 	 * @parameter[in] dataTypeNodeId			opc ua data type node identifier
 	 * @parameter[in] informationModel			opc ua information model
 	 */
-	bool init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel);
+	bool init(
+		const OpcUaNodeId& dataTypeNodeId,
+		InformationModel::SPtr& informationModel
+	);
 
   private:
 	StructureDefinition::SPtr structureDefinition_;	//!< structure definition

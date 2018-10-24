@@ -42,7 +42,10 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeInfoDataType::init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel)
+	NodeInfoDataType::init(
+		const OpcUaNodeId& dataTypeNodeId,
+		InformationModel::SPtr& informationModel
+	)
 	{
 		// init node info
 		if (!NodeInfo::init(dataTypeNodeId, informationModel)) {
@@ -167,7 +170,11 @@ namespace OpcUaStackServer
 
 				// set build in type name
 				if (dataTypeField->enumeration() == true) {
+
 					// set include
+					std::string directory = "StandardDataType";
+					if (dataTypeNodeId.namespaceIndex() != 0) directory = "CustomerDataType";
+					std::string includePath = ...
 
 					// set type information
 					if (dataTypeField->array()) {
@@ -181,6 +188,7 @@ namespace OpcUaStackServer
 					}
 				}
 				else if (dataTypeField->structure() == true) {
+
 					// set include
 
 					// set type information
