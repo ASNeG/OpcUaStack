@@ -1,5 +1,5 @@
 /*
-    EnumTypeClass: PerformUpdateType
+    EnumTypeClass: NodeClass
 
     Generated Source Code - please do not change this source code
 
@@ -7,11 +7,11 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 00:50:28.839060
+    BuildDate: 2018-Oct-25 00:50:28.833760
 */
 
-#ifndef __OpcUaStackCore_PerformUpdateType_h__
-#define __OpcUaStackCore_PerformUpdateType_h__
+#ifndef __OpcUaStackCore_NodeClass_h__
+#define __OpcUaStackCore_NodeClass_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
@@ -21,22 +21,27 @@
 namespace OpcUaStackCore
 {
     
-    class PerformUpdateType
+    class NodeClass
     : public Object
     , public ExtensionObjectBase
     {
       public:
-        typedef boost::shared_ptr<PerformUpdateType> SPtr;
+        typedef boost::shared_ptr<NodeClass> SPtr;
     
         typedef enum {
-            EnumInsert = 1,
-            EnumReplace = 2,
-            EnumUpdate = 3,
-            EnumRemove = 4,
+            EnumUnspecified = 0,
+            EnumObject = 1,
+            EnumVariable = 2,
+            EnumMethod = 4,
+            EnumObjectType = 8,
+            EnumVariableType = 16,
+            EnumReferenceType = 32,
+            EnumDataType = 64,
+            EnumView = 128,
         } Enum;
     
-        PerformUpdateType(void);
-        virtual ~PerformUpdateType(void);
+        NodeClass(void);
+        virtual ~NodeClass(void);
         
         uint32_t& value(void);
         void enumeration(Enum enumeration);
@@ -62,9 +67,9 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
-        void copyTo(PerformUpdateType& value);
-        bool operator==(const PerformUpdateType& value) const;
-        bool operator!=(const PerformUpdateType& value) const;
+        void copyTo(NodeClass& value);
+        bool operator==(const NodeClass& value) const;
+        bool operator!=(const NodeClass& value) const;
     
       private:
         uint32_t value_;
