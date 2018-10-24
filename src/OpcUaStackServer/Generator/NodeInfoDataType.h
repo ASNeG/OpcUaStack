@@ -22,6 +22,7 @@
 
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/DataTypeField.h"
+#include "OpcUaStackServer/Generator/NumberNamespaceMap.h"
 
 using namespace OpcUaStackCore;
 
@@ -66,6 +67,13 @@ class DLLEXPORT NodeInfoDataType
 	);
 
   private:
+	void setIncludePath(
+		OpcUaNodeId& dataTypeNodeId,
+		const std::string& dataTypeName,
+		NumberNamespaceMap& numberNamespaceMap,
+		DataTypeField::SPtr& dataTypeField
+	);
+
 	StructureDefinition::SPtr structureDefinition_;	//!< structure definition
 	DataTypeField::Vec dataTypeFieldVec_;
 

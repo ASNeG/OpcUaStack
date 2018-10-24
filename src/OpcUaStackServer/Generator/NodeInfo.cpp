@@ -162,9 +162,17 @@ namespace OpcUaStackServer
 		return parentIsAbstract_;
 	}
 
+	NumberNamespaceMap&
+	NodeInfo::numberNamespaceMap(void)
+	{
+		return numberNamespaceMap_;
+	}
 
 	bool
-	NodeInfo::init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel)
+	NodeInfo::init(
+		const OpcUaNodeId& dataTypeNodeId,
+		InformationModel::SPtr& informationModel
+	)
 	{
 		dataTypeNodeId_ = dataTypeNodeId;
 		informationModel_ = informationModel;

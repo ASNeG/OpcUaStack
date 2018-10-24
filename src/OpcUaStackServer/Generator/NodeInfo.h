@@ -22,7 +22,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include <OpcUaStackServer/Generator/NumberNamespaceMap.h>
+#include "OpcUaStackServer/Generator/NumberNamespaceMap.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
 using namespace OpcUaStackCore;
@@ -170,12 +170,22 @@ class DLLEXPORT NodeInfo
 	bool parentIsAbstract(void);
 
 	/**
+	 * results the number to namespace map
+	 *
+	 * @return number to namespace map
+	 */
+	NumberNamespaceMap& numberNamespaceMap(void);
+
+	/**
 	 * This function inits the node info class
 	 *
 	 * @parameter[in] dataTypeNodeId			opc ua data type node identifier
 	 * @parameter[in] informationModel			opc ua information model
 	 */
-	bool init(const OpcUaNodeId& dataTypeNodeId, InformationModel::SPtr& informationModel);
+	bool init(
+		const OpcUaNodeId& dataTypeNodeId,
+		InformationModel::SPtr& informationModel
+	);
 
   private:
 	NumberNamespaceMap numberNamespaceMap_;		//!< number to namespace map

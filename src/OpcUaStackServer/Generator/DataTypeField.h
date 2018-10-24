@@ -38,6 +38,7 @@ class DLLEXPORT DataTypeField
 	typedef std::vector<DataTypeField::SPtr> Vec;
 
 	typedef enum {
+		NumberType,				//!< number
 		BuildInType,			//!< build in type
 		BuildInArrayType,		//!< build in array type
 		StructureType,			//!< structure type

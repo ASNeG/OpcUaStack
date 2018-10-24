@@ -135,11 +135,16 @@ namespace OpcUaStackServer
 						dataTypeField->byte(true);
 					}
 
-					// set build in type name
 					if (dataTypeField->array() == true) {
 						dataTypeField->smartpointer(true);
 						dataTypeField->variableType("OpcUa" + buildInType + "Array::SPtr");
 						dataTypeField->type(DataTypeField::BuildInArrayType);
+					}
+					else if ((dataTypeField->number() == true) ||
+							 (dataTypeField->byte() == true) ||
+							 (dataTypeField->boolean() == true)) {
+						dataTypeField->variableType("OpcUa" + buildInType);
+						dataTypeField->type(DataTypeField::NumberType);
 					}
 					else {
 						dataTypeField->variableType("OpcUa" + buildInType);
@@ -161,6 +166,9 @@ namespace OpcUaStackServer
 				baseNode->getDisplayName(displayName);
 				std::string dataTypeName = displayName.text().toStdString();
 
+				// set include
+				setIncludePath(dataTypeNodeId, dataTypeName, numberNamespaceMap(), dataTypeField);
+
 				// enum type possible
 				InformationModelAccess ima(informationModel);
 				dataTypeField->enumeration(ima.isDataTypeEnum(dataTypeNodeId));
@@ -170,13 +178,6 @@ namespace OpcUaStackServer
 
 				// set build in type name
 				if (dataTypeField->enumeration() == true) {
-
-					// set include
-					std::string directory = "StandardDataType";
-					if (dataTypeNodeId.namespaceIndex() != 0) directory = "CustomerDataType";
-					std::string includePath = ...
-
-					// set type information
 					if (dataTypeField->array()) {
 						dataTypeField->smartpointer(true);
 						dataTypeField->variableType(dataTypeName + "Array::SPtr");
@@ -188,10 +189,6 @@ namespace OpcUaStackServer
 					}
 				}
 				else if (dataTypeField->structure() == true) {
-
-					// set include
-
-					// set type information
 					if (dataTypeField->array()) {
 						dataTypeField->smartpointer(true);
 						dataTypeField->variableType(dataTypeName + "Array::SPtr");
@@ -213,6 +210,23 @@ namespace OpcUaStackServer
 		}
 
 		return true;
+	}
+
+	void
+	NodeInfoDataType::setIncludePath(
+		OpcUaNodeId& dataTypeNodeId,
+		const std::string& dataTypeName,
+		NumberNamespaceMap& numberNamespaceMap,
+		DataTypeField::SPtr& dataTypeField
+	)
+	{
+		std::string directory = "StandardDataType";
+		if (dataTypeNodeId.namespaceIndex() != 0) directory = "CustomerDataType";
+
+		std::string includePath =
+				numberNamespaceMap.getNamespaceName(dataTypeNodeId.namespaceIndex()) +
+				"/" + directory +
+				"/" + dataTypeName + ".h";
 	}
 
 }
