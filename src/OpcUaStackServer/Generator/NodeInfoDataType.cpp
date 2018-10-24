@@ -221,13 +221,22 @@ namespace OpcUaStackServer
 		DataTypeField::SPtr& dataTypeField
 	)
 	{
-		std::string directory = "StandardDataType";
+		static std::set<std::string> includePathSet;
+
+		std::string directory = "StandardDataTypes";
 		if (dataTypeNodeId.namespaceIndex() != 0) directory = "CustomerDataType";
 
 		std::string includePath =
 				numberNamespaceMap.getNamespaceName(dataTypeNodeId.namespaceIndex()) +
 				"/" + directory +
 				"/" + dataTypeName + ".h";
+
+		if (includePathSet.find(includePath) == includePathSet.end()) {
+			dataTypeField->includePath(includePath);
+			includePathSet.insert(includePath);
+		}
+
+
 	}
 
 }

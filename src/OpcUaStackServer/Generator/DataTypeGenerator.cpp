@@ -161,6 +161,17 @@ namespace OpcUaStackServer
 		}
 
 		//
+		// added field includes
+		//
+		DataTypeField::Vec::iterator it;
+		for (it = nodeInfo_.fields().begin(); it != nodeInfo_.fields().end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+			if (dataTypeField->includePath() != "") {
+				ss << "#include \"" << dataTypeField->includePath() <<  "\"" << std::endl;
+			}
+		}
+
+		//
 		// added namespace
 		//
 		ss << std::endl;
