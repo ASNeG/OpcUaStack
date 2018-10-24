@@ -27,17 +27,17 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	NodeClass::NodeClass(void)
+	NodeClassOld::NodeClassOld(void)
 		: nodeClassType_(NodeClassType_Unspecified)
 	{
 	}
 
-	NodeClass::~NodeClass(void)
+	NodeClassOld::~NodeClassOld(void)
 	{
 	}
 
 	std::string
-	NodeClass::toString(NodeClassType nodeClassType)
+	NodeClassOld::toString(NodeClassType nodeClassType)
 	{
 		switch (nodeClassType)
 		{
@@ -55,7 +55,7 @@ namespace OpcUaStackCore
 	}
 
 	NodeClassType
-	NodeClass::toNodeClassType(const std::string& nodeClassTypeString)
+	NodeClassOld::toNodeClassType(const std::string& nodeClassTypeString)
 	{
 		if (nodeClassTypeString == "Object") return NodeClassType_Object;
 		else if (nodeClassTypeString == "Variable") return NodeClassType_Variable;
@@ -69,27 +69,27 @@ namespace OpcUaStackCore
 	}
 
 	NodeClassType
-    NodeClass::nodeClassType(void) const
+    NodeClassOld::nodeClassType(void) const
 	{
 		return nodeClassType_;
 	}
 
 	void
-	NodeClass::nodeClassType(
+	NodeClassOld::nodeClassType(
 		const NodeClassType nodeClassType)
 	{
 		nodeClassType_ = nodeClassType;		
 	}
 		
 	void 
-	NodeClass::opcUaBinaryEncode(
+	NodeClassOld::opcUaBinaryEncode(
 		std::ostream& os) const
 	{
 		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)nodeClassType_);
 	}
 	
 	void 
-	NodeClass::opcUaBinaryDecode(
+	NodeClassOld::opcUaBinaryDecode(
 		std::istream& is)
 	{
 		OpcUaUInt32 nodeClassType;

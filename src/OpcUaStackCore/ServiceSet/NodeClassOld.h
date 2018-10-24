@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_NodeClass_h__
-#define __OpcUaStackCore_NodeClass_h__
+#ifndef __OpcUaStackCore_NodeClassOld_h__
+#define __OpcUaStackCore_NodeClassOld_h__
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
@@ -38,14 +38,14 @@ namespace OpcUaStackCore
 	} NodeClassType;
 
 
-	class DLLEXPORT NodeClass
+	class DLLEXPORT NodeClassOld
 	: public  Object
 	{
 	  public:
-		typedef boost::shared_ptr<NodeClass> SPtr;
+		typedef boost::shared_ptr<NodeClassOld> SPtr;
 
-		NodeClass(void);
-		virtual ~NodeClass(void);
+		NodeClassOld(void);
+		virtual ~NodeClassOld(void);
 
 		static std::string toString(NodeClassType nodeClassType);
 		static NodeClassType toNodeClassType(const std::string& nodeClassTypeString);
