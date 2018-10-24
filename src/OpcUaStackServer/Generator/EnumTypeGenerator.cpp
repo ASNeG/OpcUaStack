@@ -282,6 +282,7 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "void copyTo(" << nodeInfo_.className() << "& value);" << std::endl;
 		ss << prefix << "bool operator==(const " << nodeInfo_.className() << "& value) const;" << std::endl;
+		ss << prefix << "bool operator!=(const " << nodeInfo_.className() << "& value) const;" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -358,6 +359,7 @@ namespace OpcUaStackServer
 				generateSourceClassDestructor("    ") &&
 				generateSourceClassGetter("    ") &&
 				generateSourceClassPublicEQ("    ") &&
+				generateSourceClassPublicNE("    ") &&
 				generateSourceClassPublicCP("    ") &&
 				generateSourceClassExtensionObjectBase("    ") &&
 				generateSourceClassFactory("    ") &&
