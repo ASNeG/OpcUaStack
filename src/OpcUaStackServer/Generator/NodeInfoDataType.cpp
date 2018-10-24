@@ -113,13 +113,14 @@ namespace OpcUaStackServer
 			dataTypeField->description(structureField->description().text().toStdString());
 
 			// handle build in type
-			bool buildInType = false;
+			bool buildInTypeExist = false;
 			if (dataTypeNodeId.namespaceIndex() == 0 && dataTypeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
 				uint32_t type;
 				uint16_t namespaceIndex;
 				dataTypeNodeId.get(type, namespaceIndex);
-				std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
-				if (buildInType != "Unknown") {
+				std::string buildInTypeName = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
+				if (buildInTypeName != "Unknown") {
+
 					// set number flag
 					if (OpcUaBuildInTypeClass::isNumber((OpcUaBuildInType)type) == true) {
 						dataTypeField->number(true);
@@ -137,24 +138,24 @@ namespace OpcUaStackServer
 
 					if (dataTypeField->array() == true) {
 						dataTypeField->smartpointer(true);
-						dataTypeField->variableType("OpcUa" + buildInType + "Array::SPtr");
+						dataTypeField->variableType("OpcUa" + buildInTypeName + "Array::SPtr");
 						dataTypeField->type(DataTypeField::BuildInArrayType);
 					}
 					else if ((dataTypeField->number() == true) ||
 							 (dataTypeField->byte() == true) ||
 							 (dataTypeField->boolean() == true)) {
-						dataTypeField->variableType("OpcUa" + buildInType);
+						dataTypeField->variableType("OpcUa" + buildInTypeName);
 						dataTypeField->type(DataTypeField::NumberType);
 					}
 					else {
-						dataTypeField->variableType("OpcUa" + buildInType);
+						dataTypeField->variableType("OpcUa" + buildInTypeName);
 						dataTypeField->type(DataTypeField::BuildInType);
 					}
-					buildInType = true;
+					buildInTypeExist = true;
 				}
 			}
 
-			if (buildInType == false) {
+			if (buildInTypeExist == false) {
 				// get type name
 				BaseNodeClass::SPtr baseNode = informationModel->find(dataTypeNodeId);
 				if (baseNode.get() == nullptr) {
