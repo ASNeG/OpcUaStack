@@ -289,6 +289,7 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "void copyTo(" << nodeInfo_.className() << "& value);" << std::endl;
 		ss << prefix << "bool operator==(const " << nodeInfo_.className() << "& value) const;" << std::endl;
+		ss << prefix << "bool operator!=(const " << nodeInfo_.className() << "& value) const;" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -371,6 +372,7 @@ namespace OpcUaStackServer
 				generateSourceClassDestructor("    ") &&
 				generateSourceClassGetter("    ") &&
 				generateSourceClassPublicEQ("    ") &&
+				generateSourceClassPublicNE("    ") &&
 				generateSourceClassPublicCP("    ") &&
 				generateSourceClassExtensionObjectBase("    ") &&
 				generateSourceClassFactory("    ") &&
@@ -565,6 +567,22 @@ namespace OpcUaStackServer
 		}
 
 		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassPublicNE(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::operator!=(const " << nodeInfo_.className() << "& value) const" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    return !this->operator==(value);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
