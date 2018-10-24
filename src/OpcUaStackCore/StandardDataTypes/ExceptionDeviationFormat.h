@@ -1,5 +1,5 @@
 /*
-    EnumTypeClass: ServerState
+    EnumTypeClass: ExceptionDeviationFormat
 
     Generated Source Code - please do not change this source code
 
@@ -7,11 +7,11 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.016561
+    BuildDate: 2018-Oct-24 20:58:47.017179
 */
 
-#ifndef __OpcUaStackCore_ServerState_h__
-#define __OpcUaStackCore_ServerState_h__
+#ifndef __OpcUaStackCore_ExceptionDeviationFormat_h__
+#define __OpcUaStackCore_ExceptionDeviationFormat_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
@@ -21,26 +21,23 @@
 namespace OpcUaStackCore
 {
     
-    class ServerState
+    class ExceptionDeviationFormat
     : public Object
     , public ExtensionObjectBase
     {
       public:
-        typedef boost::shared_ptr<ServerState> SPtr;
+        typedef boost::shared_ptr<ExceptionDeviationFormat> SPtr;
     
         typedef enum {
-            Running = 0,
-            Failed = 1,
-            NoConfiguration = 2,
-            Suspended = 3,
-            Shutdown = 4,
-            Test = 5,
-            CommunicationFault = 6,
-            Unknown = 7,
+            AbsoluteValue = 0,
+            PercentOfValue = 1,
+            PercentOfRange = 2,
+            PercentOfEURange = 3,
+            Unknown = 4,
         } Enum;
     
-        ServerState(void);
-        virtual ~ServerState(void);
+        ExceptionDeviationFormat(void);
+        virtual ~ExceptionDeviationFormat(void);
         
         uint32_t& value(void);
         void enumeration(Enum enumeration);
@@ -66,9 +63,9 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
-        void copyTo(ServerState& value);
-        bool operator==(const ServerState& value) const;
-        bool operator!=(const ServerState& value) const;
+        void copyTo(ExceptionDeviationFormat& value);
+        bool operator==(const ExceptionDeviationFormat& value) const;
+        bool operator!=(const ExceptionDeviationFormat& value) const;
     
       private:
         uint32_t value_;

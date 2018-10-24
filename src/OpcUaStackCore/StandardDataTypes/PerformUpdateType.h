@@ -1,5 +1,5 @@
 /*
-    EnumTypeClass: ServerState
+    EnumTypeClass: PerformUpdateType
 
     Generated Source Code - please do not change this source code
 
@@ -7,11 +7,11 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.016561
+    BuildDate: 2018-Oct-24 20:58:47.018613
 */
 
-#ifndef __OpcUaStackCore_ServerState_h__
-#define __OpcUaStackCore_ServerState_h__
+#ifndef __OpcUaStackCore_PerformUpdateType_h__
+#define __OpcUaStackCore_PerformUpdateType_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
@@ -21,26 +21,22 @@
 namespace OpcUaStackCore
 {
     
-    class ServerState
+    class PerformUpdateType
     : public Object
     , public ExtensionObjectBase
     {
       public:
-        typedef boost::shared_ptr<ServerState> SPtr;
+        typedef boost::shared_ptr<PerformUpdateType> SPtr;
     
         typedef enum {
-            Running = 0,
-            Failed = 1,
-            NoConfiguration = 2,
-            Suspended = 3,
-            Shutdown = 4,
-            Test = 5,
-            CommunicationFault = 6,
-            Unknown = 7,
+            Insert = 1,
+            Replace = 2,
+            Update = 3,
+            Remove = 4,
         } Enum;
     
-        ServerState(void);
-        virtual ~ServerState(void);
+        PerformUpdateType(void);
+        virtual ~PerformUpdateType(void);
         
         uint32_t& value(void);
         void enumeration(Enum enumeration);
@@ -66,9 +62,9 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
-        void copyTo(ServerState& value);
-        bool operator==(const ServerState& value) const;
-        bool operator!=(const ServerState& value) const;
+        void copyTo(PerformUpdateType& value);
+        bool operator==(const PerformUpdateType& value) const;
+        bool operator!=(const PerformUpdateType& value) const;
     
       private:
         uint32_t value_;

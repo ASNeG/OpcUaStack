@@ -1,0 +1,188 @@
+/*
+    EnumTypeClass: OpenFileMode
+
+    Generated Source Code - please do not change this source code
+
+    EnumTypeCodeGenerator Version:
+        OpcUaStackCore - 4.0.1
+
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
+
+#include "OpcUaStackCore/StandardDataTypes/OpenFileMode.h"
+
+namespace OpcUaStackCore
+{
+    
+    OpenFileMode::OpenFileMode(void)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(0)
+    {
+    }
+    
+    OpenFileMode::~OpenFileMode(void)
+    {
+    }
+    
+    uint32_t&
+    OpenFileMode::value(void)
+    {
+        return value_;
+    }
+    
+    void
+    OpenFileMode::enumeration(OpenFileMode::Enum enumeration)
+    {
+        value_ = enumeration;
+    }
+    
+    OpenFileMode::Enum
+    OpenFileMode::enumeration(void)
+    {
+        return (Enum)value_;
+    }
+    
+    OpenFileMode::Enum
+    OpenFileMode::str2Enum(const std::string& enumerationString)
+    {
+        if (enumerationString == "Read") return (Enum)1;
+        if (enumerationString == "Write") return (Enum)2;
+        if (enumerationString == "EraseExisting") return (Enum)4;
+        if (enumerationString == "Append") return (Enum)8;
+        return (Enum)0;
+    }
+    
+    std::string
+    OpenFileMode::enum2Str(Enum enumeration)
+    {
+        if (enumeration == 1) return "Read";
+        if (enumeration == 2) return "Write";
+        if (enumeration == 4) return "EraseExisting";
+        if (enumeration == 8) return "Append";
+        return "Unknown";
+    }
+    
+    bool
+    OpenFileMode::exist(const std::string& enumerationString)
+    {
+        if (enumerationString == "Read") return true;
+        if (enumerationString == "Write") return true;
+        if (enumerationString == "EraseExisting") return true;
+        if (enumerationString == "Append") return true;
+        return false;
+    }
+    
+    bool
+    OpenFileMode::exist(Enum enumeration)
+    {
+        if (enumeration == 1) return true;
+        if (enumeration == 2) return true;
+        if (enumeration == 4) return true;
+        if (enumeration == 8) return true;
+        return false;
+    }
+    
+    bool
+    OpenFileMode::operator==(const OpenFileMode& value) const
+    {
+        if (value_ != value.value_) return false;
+        return true;
+    }
+    
+    bool
+    OpenFileMode::operator!=(const OpenFileMode& value) const
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    OpenFileMode::copyTo(OpenFileMode& value)
+    {
+        value.value_ = value_;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    OpenFileMode::factory(void)
+    {
+    	return constructSPtr<OpenFileMode>();
+    }
+    
+    OpcUaNodeId
+    OpenFileMode::binaryTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    OpcUaNodeId
+    OpenFileMode::xmlTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    void
+    OpenFileMode::opcUaBinaryEncode(std::ostream& os) const
+    {
+        OpcUaNumber::opcUaBinaryEncode(os, value_);
+    }
+    
+    void
+    OpenFileMode::opcUaBinaryDecode(std::istream& is)
+    {
+        OpcUaNumber::opcUaBinaryDecode(is, value_);
+    }
+    
+    bool
+    OpenFileMode::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    OpenFileMode::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    OpenFileMode::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    OpenFileMode::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    OpenFileMode::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    void
+    OpenFileMode::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	OpenFileMode* dst = dynamic_cast<OpenFileMode*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    OpenFileMode::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	OpenFileMode* dst = dynamic_cast<OpenFileMode*>(&extensionObjectBase);
+    	return *this == *dst;
+    }
+    
+    void
+    OpenFileMode::out(std::ostream& os)
+    {
+        os << "Value=" << value_;
+    }
+
+}
