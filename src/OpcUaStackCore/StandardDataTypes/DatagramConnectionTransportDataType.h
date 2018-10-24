@@ -1,5 +1,5 @@
 /*
-    DataTypeClass: BrokerConnectionTransportDataType
+    DataTypeClass: DatagramConnectionTransportDataType
 
     Generated Source Code - please do not change this source code
 
@@ -7,11 +7,11 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:40:43.118158
+    BuildDate: 2018-Oct-24 20:40:48.667078
 */
 
-#ifndef __OpcUaStackCore_BrokerConnectionTransportDataType_h__
-#define __OpcUaStackCore_BrokerConnectionTransportDataType_h__
+#ifndef __OpcUaStackCore_DatagramConnectionTransportDataType_h__
+#define __OpcUaStackCore_DatagramConnectionTransportDataType_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
@@ -22,17 +22,16 @@
 namespace OpcUaStackCore
 {
     
-    class BrokerConnectionTransportDataType
+    class DatagramConnectionTransportDataType
     : public ConnectionTransportDataType
     {
       public:
-        typedef boost::shared_ptr<BrokerConnectionTransportDataType> SPtr;
+        typedef boost::shared_ptr<DatagramConnectionTransportDataType> SPtr;
     
-        BrokerConnectionTransportDataType(void);
-        virtual ~BrokerConnectionTransportDataType(void);
+        DatagramConnectionTransportDataType(void);
+        virtual ~DatagramConnectionTransportDataType(void);
         
-        OpcUaString& resourceUri(void);
-        OpcUaString& authenticationProfileUri(void);
+        OpcUaExtensionObject& discoveryAddress(void);
         
         //- ExtensionObjectBase -----------------------------------------------
         virtual ExtensionObjectBase::SPtr factory(void);
@@ -50,13 +49,12 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
-        void copyTo(BrokerConnectionTransportDataType& value);
-        bool operator==(const BrokerConnectionTransportDataType& value) const;
-        bool operator!=(const BrokerConnectionTransportDataType& value) const;
+        void copyTo(DatagramConnectionTransportDataType& value);
+        bool operator==(const DatagramConnectionTransportDataType& value) const;
+        bool operator!=(const DatagramConnectionTransportDataType& value) const;
     
       private:
-        OpcUaString resourceUri_;
-        OpcUaString authenticationProfileUri_;
+        OpcUaExtensionObject discoveryAddress_;
     
     };
 
