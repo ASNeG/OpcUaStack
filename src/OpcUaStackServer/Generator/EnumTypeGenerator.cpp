@@ -584,6 +584,22 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	EnumTypeGenerator::generateSourceClassPublicNE(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::operator!=(const " << nodeInfo_.className() << "& value) const" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    return !this->operator==(value);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
 	EnumTypeGenerator::generateSourceClassPublicEQ(const std::string& prefix)
 	{
 		std::stringstream ss;
