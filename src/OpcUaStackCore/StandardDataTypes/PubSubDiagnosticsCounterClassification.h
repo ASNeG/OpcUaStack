@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.026846
+    BuildDate: 2018-Oct-24 21:52:50.100765
 */
 
 #ifndef __OpcUaStackCore_PubSubDiagnosticsCounterClassification_h__
@@ -29,8 +29,8 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<PubSubDiagnosticsCounterClassification> SPtr;
     
         typedef enum {
-            Information = 0,
-            Error = 1,
+            EnumInformation = 0,
+            EnumError = 1,
         } Enum;
     
         PubSubDiagnosticsCounterClassification(void);

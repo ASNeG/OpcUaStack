@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.011680
+    BuildDate: 2018-Oct-24 21:52:50.084665
 */
 
 #ifndef __OpcUaStackCore_IdType_h__
@@ -29,10 +29,10 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<IdType> SPtr;
     
         typedef enum {
-            Numeric = 0,
-            String = 1,
-            Guid = 2,
-            Opaque = 3,
+            EnumNumeric = 0,
+            EnumString = 1,
+            EnumGuid = 2,
+            EnumOpaque = 3,
         } Enum;
     
         IdType(void);

@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.010876
+    BuildDate: 2018-Oct-24 21:52:50.083676
 */
 
 #ifndef __OpcUaStackCore_StructureType_h__
@@ -29,9 +29,9 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<StructureType> SPtr;
     
         typedef enum {
-            Structure = 0,
-            StructureWithOptionalFields = 1,
-            Union = 2,
+            EnumStructure = 0,
+            EnumStructureWithOptionalFields = 1,
+            EnumUnion = 2,
         } Enum;
     
         StructureType(void);

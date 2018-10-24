@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.016026
+    BuildDate: 2018-Oct-24 21:52:50.088848
 */
 
 #ifndef __OpcUaStackCore_RedundancySupport_h__
@@ -29,12 +29,12 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<RedundancySupport> SPtr;
     
         typedef enum {
-            None = 0,
-            Cold = 1,
-            Warm = 2,
-            Hot = 3,
-            Transparent = 4,
-            HotAndMirrored = 5,
+            EnumNone = 0,
+            EnumCold = 1,
+            EnumWarm = 2,
+            EnumHot = 3,
+            EnumTransparent = 4,
+            EnumHotAndMirrored = 5,
         } Enum;
     
         RedundancySupport(void);

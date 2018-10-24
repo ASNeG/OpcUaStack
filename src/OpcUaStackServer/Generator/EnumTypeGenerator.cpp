@@ -217,7 +217,7 @@ namespace OpcUaStackServer
 		ss << prefix << "    typedef enum {" << std::endl;
 		for (it = enumTypeFieldVec.begin(); it != enumTypeFieldVec.end(); it++) {
 			EnumTypeField::SPtr enumTypeField = *it;
-			ss << prefix << "        " << enumTypeField->name() << " = " << enumTypeField->value() << "," << std::endl;
+			ss << prefix << "        Enum" << enumTypeField->name() << " = " << enumTypeField->value() << "," << std::endl;
 		}
 		ss << prefix << "    } Enum;" << std::endl;
 

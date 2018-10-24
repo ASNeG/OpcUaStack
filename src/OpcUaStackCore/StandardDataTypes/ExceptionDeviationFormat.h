@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.017179
+    BuildDate: 2018-Oct-24 21:52:50.089959
 */
 
 #ifndef __OpcUaStackCore_ExceptionDeviationFormat_h__
@@ -29,11 +29,11 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<ExceptionDeviationFormat> SPtr;
     
         typedef enum {
-            AbsoluteValue = 0,
-            PercentOfValue = 1,
-            PercentOfRange = 2,
-            PercentOfEURange = 3,
-            Unknown = 4,
+            EnumAbsoluteValue = 0,
+            EnumPercentOfValue = 1,
+            EnumPercentOfRange = 2,
+            EnumPercentOfEURange = 3,
+            EnumUnknown = 4,
         } Enum;
     
         ExceptionDeviationFormat(void);

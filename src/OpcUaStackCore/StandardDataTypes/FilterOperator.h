@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.015488
+    BuildDate: 2018-Oct-24 21:52:50.088285
 */
 
 #ifndef __OpcUaStackCore_FilterOperator_h__
@@ -29,24 +29,24 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<FilterOperator> SPtr;
     
         typedef enum {
-            Equals = 0,
-            IsNull = 1,
-            GreaterThan = 2,
-            LessThan = 3,
-            GreaterThanOrEqual = 4,
-            LessThanOrEqual = 5,
-            Like = 6,
-            Not = 7,
-            Between = 8,
-            InList = 9,
-            And = 10,
-            Or = 11,
-            Cast = 12,
-            InView = 13,
-            OfType = 14,
-            RelatedTo = 15,
-            BitwiseAnd = 16,
-            BitwiseOr = 17,
+            EnumEquals = 0,
+            EnumIsNull = 1,
+            EnumGreaterThan = 2,
+            EnumLessThan = 3,
+            EnumGreaterThanOrEqual = 4,
+            EnumLessThanOrEqual = 5,
+            EnumLike = 6,
+            EnumNot = 7,
+            EnumBetween = 8,
+            EnumInList = 9,
+            EnumAnd = 10,
+            EnumOr = 11,
+            EnumCast = 12,
+            EnumInView = 13,
+            EnumOfType = 14,
+            EnumRelatedTo = 15,
+            EnumBitwiseAnd = 16,
+            EnumBitwiseOr = 17,
         } Enum;
     
         FilterOperator(void);

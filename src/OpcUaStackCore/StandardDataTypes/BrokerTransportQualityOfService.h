@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.022898
+    BuildDate: 2018-Oct-24 21:52:50.096291
 */
 
 #ifndef __OpcUaStackCore_BrokerTransportQualityOfService_h__
@@ -29,11 +29,11 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<BrokerTransportQualityOfService> SPtr;
     
         typedef enum {
-            NotSpecified = 0,
-            BestEffort = 1,
-            AtLeastOnce = 2,
-            AtMostOnce = 3,
-            ExactlyOnce = 4,
+            EnumNotSpecified = 0,
+            EnumBestEffort = 1,
+            EnumAtLeastOnce = 2,
+            EnumAtMostOnce = 3,
+            EnumExactlyOnce = 4,
         } Enum;
     
         BrokerTransportQualityOfService(void);

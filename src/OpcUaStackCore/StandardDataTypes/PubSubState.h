@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.021799
+    BuildDate: 2018-Oct-24 21:52:50.094916
 */
 
 #ifndef __OpcUaStackCore_PubSubState_h__
@@ -29,10 +29,10 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<PubSubState> SPtr;
     
         typedef enum {
-            Disabled = 0,
-            Paused = 1,
-            Operational = 2,
-            Error = 3,
+            EnumDisabled = 0,
+            EnumPaused = 1,
+            EnumOperational = 2,
+            EnumError = 3,
         } Enum;
     
         PubSubState(void);

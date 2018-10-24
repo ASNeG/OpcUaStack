@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.016561
+    BuildDate: 2018-Oct-24 21:52:50.089395
 */
 
 #ifndef __OpcUaStackCore_ServerState_h__
@@ -29,14 +29,14 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<ServerState> SPtr;
     
         typedef enum {
-            Running = 0,
-            Failed = 1,
-            NoConfiguration = 2,
-            Suspended = 3,
-            Shutdown = 4,
-            Test = 5,
-            CommunicationFault = 6,
-            Unknown = 7,
+            EnumRunning = 0,
+            EnumFailed = 1,
+            EnumNoConfiguration = 2,
+            EnumSuspended = 3,
+            EnumShutdown = 4,
+            EnumTest = 5,
+            EnumCommunicationFault = 6,
+            EnumUnknown = 7,
         } Enum;
     
         ServerState(void);

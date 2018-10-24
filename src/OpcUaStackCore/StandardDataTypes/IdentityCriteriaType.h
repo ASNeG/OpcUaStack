@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.024105
+    BuildDate: 2018-Oct-24 21:52:50.097638
 */
 
 #ifndef __OpcUaStackCore_IdentityCriteriaType_h__
@@ -29,12 +29,12 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<IdentityCriteriaType> SPtr;
     
         typedef enum {
-            UserName = 1,
-            Thumbprint = 2,
-            Role = 3,
-            GroupId = 4,
-            Anonymous = 5,
-            AuthenticatedUser = 6,
+            EnumUserName = 1,
+            EnumThumbprint = 2,
+            EnumRole = 3,
+            EnumGroupId = 4,
+            EnumAnonymous = 5,
+            EnumAuthenticatedUser = 6,
         } Enum;
     
         IdentityCriteriaType(void);

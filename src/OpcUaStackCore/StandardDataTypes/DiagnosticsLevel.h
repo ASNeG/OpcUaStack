@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.025645
+    BuildDate: 2018-Oct-24 21:52:50.099977
 */
 
 #ifndef __OpcUaStackCore_DiagnosticsLevel_h__
@@ -29,11 +29,11 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<DiagnosticsLevel> SPtr;
     
         typedef enum {
-            Basic = 0,
-            Advanced = 1,
-            Info = 2,
-            Log = 3,
-            Debug = 4,
+            EnumBasic = 0,
+            EnumAdvanced = 1,
+            EnumInfo = 2,
+            EnumLog = 3,
+            EnumDebug = 4,
         } Enum;
     
         DiagnosticsLevel(void);

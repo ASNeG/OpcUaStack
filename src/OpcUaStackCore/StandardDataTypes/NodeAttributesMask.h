@@ -1,5 +1,5 @@
 /*
-    EnumTypeClass: ApplicationType
+    EnumTypeClass: NodeAttributesMask
 
     Generated Source Code - please do not change this source code
 
@@ -7,11 +7,11 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 21:52:50.086664
+    BuildDate: 2018-Oct-24 21:52:50.087713
 */
 
-#ifndef __OpcUaStackCore_ApplicationType_h__
-#define __OpcUaStackCore_ApplicationType_h__
+#ifndef __OpcUaStackCore_NodeAttributesMask_h__
+#define __OpcUaStackCore_NodeAttributesMask_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
@@ -21,22 +21,53 @@
 namespace OpcUaStackCore
 {
     
-    class ApplicationType
+    class NodeAttributesMask
     : public Object
     , public ExtensionObjectBase
     {
       public:
-        typedef boost::shared_ptr<ApplicationType> SPtr;
+        typedef boost::shared_ptr<NodeAttributesMask> SPtr;
     
         typedef enum {
-            EnumServer = 0,
-            EnumClient = 1,
-            EnumClientAndServer = 2,
-            EnumDiscoveryServer = 3,
+            EnumNone = 0,
+            EnumAccessLevel = 1,
+            EnumArrayDimensions = 2,
+            EnumBrowseName = 4,
+            EnumContainsNoLoops = 8,
+            EnumDataType = 16,
+            EnumDescription = 32,
+            EnumDisplayName = 64,
+            EnumEventNotifier = 128,
+            EnumExecutable = 256,
+            EnumHistorizing = 512,
+            EnumInverseName = 1024,
+            EnumIsAbstract = 2048,
+            EnumMinimumSamplingInterval = 4096,
+            EnumNodeClass = 8192,
+            EnumNodeId = 16384,
+            EnumSymmetric = 32768,
+            EnumUserAccessLevel = 65536,
+            EnumUserExecutable = 131072,
+            EnumUserWriteMask = 262144,
+            EnumValueRank = 524288,
+            EnumWriteMask = 1048576,
+            EnumValue = 2097152,
+            EnumDataTypeDefinition = 4194304,
+            EnumRolePermissions = 8388608,
+            EnumAccessRestrictions = 16777216,
+            EnumAll = 33554431,
+            EnumBaseNode = 26501220,
+            EnumObject = 26501348,
+            EnumObjectType = 26503268,
+            EnumVariable = 26571383,
+            EnumVariableType = 28600438,
+            EnumMethod = 26632548,
+            EnumReferenceType = 26537060,
+            EnumView = 26501356,
         } Enum;
     
-        ApplicationType(void);
-        virtual ~ApplicationType(void);
+        NodeAttributesMask(void);
+        virtual ~NodeAttributesMask(void);
         
         uint32_t& value(void);
         void enumeration(Enum enumeration);
@@ -62,9 +93,9 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
-        void copyTo(ApplicationType& value);
-        bool operator==(const ApplicationType& value) const;
-        bool operator!=(const ApplicationType& value) const;
+        void copyTo(NodeAttributesMask& value);
+        bool operator==(const NodeAttributesMask& value) const;
+        bool operator!=(const NodeAttributesMask& value) const;
     
       private:
         uint32_t value_;

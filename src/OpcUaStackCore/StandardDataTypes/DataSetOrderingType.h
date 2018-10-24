@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.028313
+    BuildDate: 2018-Oct-24 21:52:50.101617
 */
 
 #ifndef __OpcUaStackCore_DataSetOrderingType_h__
@@ -29,9 +29,9 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<DataSetOrderingType> SPtr;
     
         typedef enum {
-            Undefined = 0,
-            AscendingWriterId = 1,
-            AscendingWriterIdSingle = 2,
+            EnumUndefined = 0,
+            EnumAscendingWriterId = 1,
+            EnumAscendingWriterIdSingle = 2,
         } Enum;
     
         DataSetOrderingType(void);

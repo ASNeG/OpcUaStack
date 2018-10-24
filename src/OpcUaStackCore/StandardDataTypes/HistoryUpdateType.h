@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.017953
+    BuildDate: 2018-Oct-24 21:52:50.090535
 */
 
 #ifndef __OpcUaStackCore_HistoryUpdateType_h__
@@ -29,10 +29,10 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<HistoryUpdateType> SPtr;
     
         typedef enum {
-            Insert = 1,
-            Replace = 2,
-            Update = 3,
-            Delete = 4,
+            EnumInsert = 1,
+            EnumReplace = 2,
+            EnumUpdate = 3,
+            EnumDelete = 4,
         } Enum;
     
         HistoryUpdateType(void);

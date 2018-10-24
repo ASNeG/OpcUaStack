@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.024910
+    BuildDate: 2018-Oct-24 21:52:50.098998
 */
 
 #ifndef __OpcUaStackCore_OverrideValueHandling_h__
@@ -29,9 +29,9 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<OverrideValueHandling> SPtr;
     
         typedef enum {
-            Disabled = 0,
-            LastUseableValue = 1,
-            OverrideValue = 2,
+            EnumDisabled = 0,
+            EnumLastUseableValue = 1,
+            EnumOverrideValue = 2,
         } Enum;
     
         OverrideValueHandling(void);

@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:58:47.019880
+    BuildDate: 2018-Oct-24 21:52:50.092589
 */
 
 #ifndef __OpcUaStackCore_AxisScaleEnumeration_h__
@@ -29,9 +29,9 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<AxisScaleEnumeration> SPtr;
     
         typedef enum {
-            Linear = 0,
-            Log = 1,
-            Ln = 2,
+            EnumLinear = 0,
+            EnumLog = 1,
+            EnumLn = 2,
         } Enum;
     
         AxisScaleEnumeration(void);
