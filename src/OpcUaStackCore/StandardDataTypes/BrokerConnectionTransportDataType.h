@@ -6,7 +6,8 @@
     DataTypeCodeGenerator Version:
         OpcUaStackCore - 4.0.1
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
+    BuildDate: 2018-Oct-24 20:31:39.945739
 */
 
 #ifndef __OpcUaStackCore_BrokerConnectionTransportDataType_h__
@@ -51,6 +52,7 @@ namespace OpcUaStackCore
         
         void copyTo(BrokerConnectionTransportDataType& value);
         bool operator==(const BrokerConnectionTransportDataType& value) const;
+        bool operator!=(const BrokerConnectionTransportDataType& value) const;
     
       private:
         OpcUaString resourceUri_;

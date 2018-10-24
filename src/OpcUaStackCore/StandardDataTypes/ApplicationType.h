@@ -6,7 +6,8 @@
     EnumTypeCodeGenerator Version:
         OpcUaStackCore - 4.0.1
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
+    BuildDate: 2018-Oct-24 20:31:45.520128
 */
 
 #ifndef __OpcUaStackCore_ApplicationType_h__
@@ -63,6 +64,7 @@ namespace OpcUaStackCore
         
         void copyTo(ApplicationType& value);
         bool operator==(const ApplicationType& value) const;
+        bool operator!=(const ApplicationType& value) const;
     
       private:
         uint32_t value_;

@@ -1,44 +1,54 @@
 /*
-    DataTypeClass: ServerStatusDataType
+    EnumTypeClass: ServerState
 
     Generated Source Code - please do not change this source code
 
-    DataTypeCodeGenerator Version:
+    EnumTypeCodeGenerator Version:
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:31:57.330378
+    BuildDate: 2018-Oct-24 20:31:51.098661
 */
 
-#ifndef __OpcUaStackCore_ServerStatusDataType_h__
-#define __OpcUaStackCore_ServerStatusDataType_h__
+#ifndef __OpcUaStackCore_ServerState_h__
+#define __OpcUaStackCore_ServerState_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/StandardDataTypes/ServerState.h"
-#include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 
 namespace OpcUaStackCore
 {
     
-    class ServerStatusDataType
+    class ServerState
     : public Object
     , public ExtensionObjectBase
     {
       public:
-        typedef boost::shared_ptr<ServerStatusDataType> SPtr;
+        typedef boost::shared_ptr<ServerState> SPtr;
     
-        ServerStatusDataType(void);
-        virtual ~ServerStatusDataType(void);
+        typedef enum {
+            Running = 0,
+            Failed = 1,
+            NoConfiguration = 2,
+            Suspended = 3,
+            Shutdown = 4,
+            Test = 5,
+            CommunicationFault = 6,
+            Unknown = 7,
+        } Enum;
+    
+        ServerState(void);
+        virtual ~ServerState(void);
         
-        OpcUaUtcTime& startTime(void);
-        OpcUaUtcTime& currentTime(void);
-        ServerState& state(void);
-        BuildInfo& buildInfo(void);
-        OpcUaUInt32& secondsTillShutdown(void);
-        OpcUaLocalizedText& shutdownReason(void);
+        uint32_t& value(void);
+        void enumeration(Enum enumeration);
+        Enum enumeration(void);
+        Enum str2Enum(const std::string& enumerationString);
+        std::string enum2Str(Enum enumeration);
+        bool exist(const std::string& enumerationString);
+        bool exist(Enum enumeration);
         
         //- ExtensionObjectBase -----------------------------------------------
         virtual ExtensionObjectBase::SPtr factory(void);
@@ -56,17 +66,12 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
-        void copyTo(ServerStatusDataType& value);
-        bool operator==(const ServerStatusDataType& value) const;
-        bool operator!=(const ServerStatusDataType& value) const;
+        void copyTo(ServerState& value);
+        bool operator==(const ServerState& value) const;
+        bool operator!=(const ServerState& value) const;
     
       private:
-        OpcUaUtcTime startTime_;
-        OpcUaUtcTime currentTime_;
-        ServerState state_;
-        BuildInfo buildInfo_;
-        OpcUaUInt32 secondsTillShutdown_;
-        OpcUaLocalizedText shutdownReason_;
+        uint32_t value_;
     
     };
 

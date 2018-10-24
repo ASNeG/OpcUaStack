@@ -90,6 +90,12 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    ApplicationType::operator!=(const ApplicationType& value) const
+    {
+        return !this->operator==(value);
+    }
+    
     void
     ApplicationType::copyTo(ApplicationType& value)
     {

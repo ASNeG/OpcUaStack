@@ -31,6 +31,12 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    ConnectionTransportDataType::operator!=(const ConnectionTransportDataType& value) const
+    {
+        return !this->operator==(value);
+    }
+    
     void
     ConnectionTransportDataType::copyTo(ConnectionTransportDataType& value)
     {

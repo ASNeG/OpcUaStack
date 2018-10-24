@@ -46,6 +46,12 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    BrokerConnectionTransportDataType::operator!=(const BrokerConnectionTransportDataType& value) const
+    {
+        return !this->operator==(value);
+    }
+    
     void
     BrokerConnectionTransportDataType::copyTo(BrokerConnectionTransportDataType& value)
     {
