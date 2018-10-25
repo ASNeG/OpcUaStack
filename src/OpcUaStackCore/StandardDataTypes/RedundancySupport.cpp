@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    RedundancySupport::RedundancySupport(RedundancySupport& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     RedundancySupport::~RedundancySupport(void)
     {
     }
@@ -72,6 +79,18 @@ namespace OpcUaStackCore
         if (enumeration == 4) return "Transparent";
         if (enumeration == 5) return "HotAndMirrored";
         return "Unknown";
+    }
+    
+    std::string
+    RedundancySupport::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    RedundancySupport::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:23:30.454977
+    BuildDate: 2018-Oct-25 09:41:46.019354
 */
 
 #ifndef __OpcUaStackCore_NamingRuleType_h__
@@ -36,6 +36,7 @@ namespace OpcUaStackCore
     
         NamingRuleType(void);
         NamingRuleType(Enum enumeration);
+        NamingRuleType(NamingRuleType& value);
         virtual ~NamingRuleType(void);
         
         uint32_t& value(void);
@@ -43,6 +44,8 @@ namespace OpcUaStackCore
         Enum enumeration(void);
         Enum str2Enum(const std::string& enumerationString);
         std::string enum2Str(Enum enumeration);
+        std::string enum2Str(void);
+        std::string toString(void);
         bool exist(const std::string& enumerationString);
         bool exist(Enum enumeration);
         

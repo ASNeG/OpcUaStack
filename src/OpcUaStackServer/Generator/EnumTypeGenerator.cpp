@@ -304,6 +304,8 @@ namespace OpcUaStackServer
 		ss << prefix << "Enum enumeration(void);" << std::endl;
 		ss << prefix << "Enum str2Enum(const std::string& enumerationString);" << std::endl;
 		ss << prefix << "std::string enum2Str(Enum enumeration);" << std::endl;
+		ss << prefix << "std::string enum2Str(void);" << std::endl;
+		ss << prefix << "std::string toString(void);" << std::endl;
 		ss << prefix << "bool exist(const std::string& enumerationString);" << std::endl;
 		ss << prefix << "bool exist(Enum enumeration);" << std::endl;
 
@@ -565,6 +567,21 @@ namespace OpcUaStackServer
 		}
 		ss << prefix << "    return \"Unknown\";" << std::endl;
 		ss << prefix << "}" << std::endl;
+
+		ss << prefix << std::endl;
+		ss << prefix << "std::string" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::enum2Str(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    return enum2Str((Enum)value_);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		ss << prefix << std::endl;
+		ss << prefix << "std::string" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::toString(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    return enum2Str((Enum)value_);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
 
 
 		//

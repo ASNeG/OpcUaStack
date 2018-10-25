@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DiagnosticsLevel::DiagnosticsLevel(DiagnosticsLevel& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     DiagnosticsLevel::~DiagnosticsLevel(void)
     {
     }
@@ -70,6 +77,18 @@ namespace OpcUaStackCore
         if (enumeration == 3) return "Log";
         if (enumeration == 4) return "Debug";
         return "Unknown";
+    }
+    
+    std::string
+    DiagnosticsLevel::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    DiagnosticsLevel::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    FilterOperator::FilterOperator(FilterOperator& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     FilterOperator::~FilterOperator(void)
     {
     }
@@ -96,6 +103,18 @@ namespace OpcUaStackCore
         if (enumeration == 16) return "BitwiseAnd";
         if (enumeration == 17) return "BitwiseOr";
         return "Unknown";
+    }
+    
+    std::string
+    FilterOperator::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    FilterOperator::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

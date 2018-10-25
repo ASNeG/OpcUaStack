@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    BrokerTransportQualityOfService::BrokerTransportQualityOfService(BrokerTransportQualityOfService& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     BrokerTransportQualityOfService::~BrokerTransportQualityOfService(void)
     {
     }
@@ -70,6 +77,18 @@ namespace OpcUaStackCore
         if (enumeration == 3) return "AtMostOnce";
         if (enumeration == 4) return "ExactlyOnce";
         return "Unknown";
+    }
+    
+    std::string
+    BrokerTransportQualityOfService::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    BrokerTransportQualityOfService::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

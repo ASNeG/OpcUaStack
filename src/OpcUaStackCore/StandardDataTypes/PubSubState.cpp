@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    PubSubState::PubSubState(PubSubState& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     PubSubState::~PubSubState(void)
     {
     }
@@ -68,6 +75,18 @@ namespace OpcUaStackCore
         if (enumeration == 2) return "Operational";
         if (enumeration == 3) return "Error";
         return "Unknown";
+    }
+    
+    std::string
+    PubSubState::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    PubSubState::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

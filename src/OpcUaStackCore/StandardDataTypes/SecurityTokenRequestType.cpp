@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    SecurityTokenRequestType::SecurityTokenRequestType(SecurityTokenRequestType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     SecurityTokenRequestType::~SecurityTokenRequestType(void)
     {
     }
@@ -64,6 +71,18 @@ namespace OpcUaStackCore
         if (enumeration == 0) return "Issue";
         if (enumeration == 1) return "Renew";
         return "Unknown";
+    }
+    
+    std::string
+    SecurityTokenRequestType::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    SecurityTokenRequestType::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

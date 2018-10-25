@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ServerState::ServerState(ServerState& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     ServerState::~ServerState(void)
     {
     }
@@ -76,6 +83,18 @@ namespace OpcUaStackCore
         if (enumeration == 6) return "CommunicationFault";
         if (enumeration == 7) return "Unknown";
         return "Unknown";
+    }
+    
+    std::string
+    ServerState::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    ServerState::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

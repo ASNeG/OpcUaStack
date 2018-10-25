@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    NodeAttributesMask::NodeAttributesMask(NodeAttributesMask& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     NodeAttributesMask::~NodeAttributesMask(void)
     {
     }
@@ -130,6 +137,18 @@ namespace OpcUaStackCore
         if (enumeration == 26537060) return "ReferenceType";
         if (enumeration == 26501356) return "View";
         return "Unknown";
+    }
+    
+    std::string
+    NodeAttributesMask::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    NodeAttributesMask::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    OpenFileMode::OpenFileMode(OpenFileMode& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     OpenFileMode::~OpenFileMode(void)
     {
     }
@@ -68,6 +75,18 @@ namespace OpcUaStackCore
         if (enumeration == 4) return "EraseExisting";
         if (enumeration == 8) return "Append";
         return "Unknown";
+    }
+    
+    std::string
+    OpenFileMode::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    OpenFileMode::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

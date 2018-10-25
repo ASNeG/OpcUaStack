@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    UserTokenType::UserTokenType(UserTokenType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     UserTokenType::~UserTokenType(void)
     {
     }
@@ -68,6 +75,18 @@ namespace OpcUaStackCore
         if (enumeration == 2) return "Certificate";
         if (enumeration == 3) return "IssuedToken";
         return "Unknown";
+    }
+    
+    std::string
+    UserTokenType::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    UserTokenType::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

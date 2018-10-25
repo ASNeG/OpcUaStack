@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:23:30.465262
+    BuildDate: 2018-Oct-25 09:41:46.035249
 */
 
 #ifndef __OpcUaStackCore_OverrideValueHandling_h__
@@ -36,6 +36,7 @@ namespace OpcUaStackCore
     
         OverrideValueHandling(void);
         OverrideValueHandling(Enum enumeration);
+        OverrideValueHandling(OverrideValueHandling& value);
         virtual ~OverrideValueHandling(void);
         
         uint32_t& value(void);
@@ -43,6 +44,8 @@ namespace OpcUaStackCore
         Enum enumeration(void);
         Enum str2Enum(const std::string& enumerationString);
         std::string enum2Str(Enum enumeration);
+        std::string enum2Str(void);
+        std::string toString(void);
         bool exist(const std::string& enumerationString);
         bool exist(Enum enumeration);
         

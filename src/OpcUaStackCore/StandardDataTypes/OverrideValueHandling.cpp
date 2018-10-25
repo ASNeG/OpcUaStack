@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    OverrideValueHandling::OverrideValueHandling(OverrideValueHandling& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     OverrideValueHandling::~OverrideValueHandling(void)
     {
     }
@@ -66,6 +73,18 @@ namespace OpcUaStackCore
         if (enumeration == 1) return "LastUseableValue";
         if (enumeration == 2) return "OverrideValue";
         return "Unknown";
+    }
+    
+    std::string
+    OverrideValueHandling::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    OverrideValueHandling::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

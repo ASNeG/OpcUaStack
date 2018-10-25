@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    IdType::IdType(IdType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     IdType::~IdType(void)
     {
     }
@@ -68,6 +75,18 @@ namespace OpcUaStackCore
         if (enumeration == 2) return "Guid";
         if (enumeration == 3) return "Opaque";
         return "Unknown";
+    }
+    
+    std::string
+    IdType::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    IdType::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

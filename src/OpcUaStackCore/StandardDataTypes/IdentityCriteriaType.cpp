@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    IdentityCriteriaType::IdentityCriteriaType(IdentityCriteriaType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     IdentityCriteriaType::~IdentityCriteriaType(void)
     {
     }
@@ -72,6 +79,18 @@ namespace OpcUaStackCore
         if (enumeration == 5) return "Anonymous";
         if (enumeration == 6) return "AuthenticatedUser";
         return "Unknown";
+    }
+    
+    std::string
+    IdentityCriteriaType::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    IdentityCriteriaType::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

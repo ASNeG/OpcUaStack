@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    NamingRuleType::NamingRuleType(NamingRuleType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     NamingRuleType::~NamingRuleType(void)
     {
     }
@@ -66,6 +73,18 @@ namespace OpcUaStackCore
         if (enumeration == 2) return "Optional";
         if (enumeration == 3) return "Constraint";
         return "Unknown";
+    }
+    
+    std::string
+    NamingRuleType::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    NamingRuleType::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

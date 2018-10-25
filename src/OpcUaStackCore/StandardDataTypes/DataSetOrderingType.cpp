@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetOrderingType::DataSetOrderingType(DataSetOrderingType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     DataSetOrderingType::~DataSetOrderingType(void)
     {
     }
@@ -66,6 +73,18 @@ namespace OpcUaStackCore
         if (enumeration == 1) return "AscendingWriterId";
         if (enumeration == 2) return "AscendingWriterIdSingle";
         return "Unknown";
+    }
+    
+    std::string
+    DataSetOrderingType::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    DataSetOrderingType::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

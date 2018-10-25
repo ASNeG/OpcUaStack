@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    TrustListMasks::TrustListMasks(TrustListMasks& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     TrustListMasks::~TrustListMasks(void)
     {
     }
@@ -72,6 +79,18 @@ namespace OpcUaStackCore
         if (enumeration == 8) return "IssuerCrls";
         if (enumeration == 15) return "All";
         return "Unknown";
+    }
+    
+    std::string
+    TrustListMasks::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    TrustListMasks::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

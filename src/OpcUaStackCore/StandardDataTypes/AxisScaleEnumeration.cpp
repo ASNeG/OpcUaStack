@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    AxisScaleEnumeration::AxisScaleEnumeration(AxisScaleEnumeration& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     AxisScaleEnumeration::~AxisScaleEnumeration(void)
     {
     }
@@ -66,6 +73,18 @@ namespace OpcUaStackCore
         if (enumeration == 1) return "Log";
         if (enumeration == 2) return "Ln";
         return "Unknown";
+    }
+    
+    std::string
+    AxisScaleEnumeration::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    AxisScaleEnumeration::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

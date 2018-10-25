@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    MessageSecurityMode::MessageSecurityMode(MessageSecurityMode& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     MessageSecurityMode::~MessageSecurityMode(void)
     {
     }
@@ -68,6 +75,18 @@ namespace OpcUaStackCore
         if (enumeration == 2) return "Sign";
         if (enumeration == 3) return "SignAndEncrypt";
         return "Unknown";
+    }
+    
+    std::string
+    MessageSecurityMode::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    MessageSecurityMode::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

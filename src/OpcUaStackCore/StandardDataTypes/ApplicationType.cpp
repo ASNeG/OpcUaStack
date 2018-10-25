@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ApplicationType::ApplicationType(ApplicationType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     ApplicationType::~ApplicationType(void)
     {
     }
@@ -68,6 +75,18 @@ namespace OpcUaStackCore
         if (enumeration == 2) return "ClientAndServer";
         if (enumeration == 3) return "DiscoveryServer";
         return "Unknown";
+    }
+    
+    std::string
+    ApplicationType::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    ApplicationType::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

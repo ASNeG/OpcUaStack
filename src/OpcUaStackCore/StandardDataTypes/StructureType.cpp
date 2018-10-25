@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    StructureType::StructureType(StructureType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     StructureType::~StructureType(void)
     {
     }
@@ -66,6 +73,18 @@ namespace OpcUaStackCore
         if (enumeration == 1) return "StructureWithOptionalFields";
         if (enumeration == 2) return "Union";
         return "Unknown";
+    }
+    
+    std::string
+    StructureType::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    StructureType::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

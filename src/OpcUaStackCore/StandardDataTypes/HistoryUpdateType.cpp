@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryUpdateType::HistoryUpdateType(HistoryUpdateType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     HistoryUpdateType::~HistoryUpdateType(void)
     {
     }
@@ -68,6 +75,18 @@ namespace OpcUaStackCore
         if (enumeration == 3) return "Update";
         if (enumeration == 4) return "Delete";
         return "Unknown";
+    }
+    
+    std::string
+    HistoryUpdateType::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    HistoryUpdateType::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    Enumeration::Enumeration(Enumeration& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     Enumeration::~Enumeration(void)
     {
     }
@@ -60,6 +67,18 @@ namespace OpcUaStackCore
     Enumeration::enum2Str(Enum enumeration)
     {
         return "Unknown";
+    }
+    
+    std::string
+    Enumeration::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    Enumeration::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

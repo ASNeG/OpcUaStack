@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    PubSubDiagnosticsCounterClassification::PubSubDiagnosticsCounterClassification(PubSubDiagnosticsCounterClassification& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     PubSubDiagnosticsCounterClassification::~PubSubDiagnosticsCounterClassification(void)
     {
     }
@@ -64,6 +71,18 @@ namespace OpcUaStackCore
         if (enumeration == 0) return "Information";
         if (enumeration == 1) return "Error";
         return "Unknown";
+    }
+    
+    std::string
+    PubSubDiagnosticsCounterClassification::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    PubSubDiagnosticsCounterClassification::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

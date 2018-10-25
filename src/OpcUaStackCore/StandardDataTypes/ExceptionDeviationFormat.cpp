@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ExceptionDeviationFormat::ExceptionDeviationFormat(ExceptionDeviationFormat& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     ExceptionDeviationFormat::~ExceptionDeviationFormat(void)
     {
     }
@@ -70,6 +77,18 @@ namespace OpcUaStackCore
         if (enumeration == 3) return "PercentOfEURange";
         if (enumeration == 4) return "Unknown";
         return "Unknown";
+    }
+    
+    std::string
+    ExceptionDeviationFormat::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    ExceptionDeviationFormat::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

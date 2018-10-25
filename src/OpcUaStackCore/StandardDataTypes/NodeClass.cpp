@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    NodeClass::NodeClass(NodeClass& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     NodeClass::~NodeClass(void)
     {
     }
@@ -78,6 +85,18 @@ namespace OpcUaStackCore
         if (enumeration == 64) return "DataType";
         if (enumeration == 128) return "View";
         return "Unknown";
+    }
+    
+    std::string
+    NodeClass::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    NodeClass::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool

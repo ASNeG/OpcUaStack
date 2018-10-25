@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:23:30.463931
+    BuildDate: 2018-Oct-25 09:41:46.032922
 */
 
 #ifndef __OpcUaStackCore_BrokerTransportQualityOfService_h__
@@ -38,6 +38,7 @@ namespace OpcUaStackCore
     
         BrokerTransportQualityOfService(void);
         BrokerTransportQualityOfService(Enum enumeration);
+        BrokerTransportQualityOfService(BrokerTransportQualityOfService& value);
         virtual ~BrokerTransportQualityOfService(void);
         
         uint32_t& value(void);
@@ -45,6 +46,8 @@ namespace OpcUaStackCore
         Enum enumeration(void);
         Enum str2Enum(const std::string& enumerationString);
         std::string enum2Str(Enum enumeration);
+        std::string enum2Str(void);
+        std::string toString(void);
         bool exist(const std::string& enumerationString);
         bool exist(Enum enumeration);
         

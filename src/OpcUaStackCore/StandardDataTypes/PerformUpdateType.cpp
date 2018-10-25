@@ -28,6 +28,13 @@ namespace OpcUaStackCore
     {
     }
     
+    PerformUpdateType::PerformUpdateType(PerformUpdateType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(value.enumeration())
+    {
+    }
+    
     PerformUpdateType::~PerformUpdateType(void)
     {
     }
@@ -68,6 +75,18 @@ namespace OpcUaStackCore
         if (enumeration == 3) return "Update";
         if (enumeration == 4) return "Remove";
         return "Unknown";
+    }
+    
+    std::string
+    PerformUpdateType::enum2Str(void)
+    {
+        return enum2Str((Enum)value_);
+    }
+    
+    std::string
+    PerformUpdateType::toString(void)
+    {
+        return enum2Str((Enum)value_);
     }
     
     bool
