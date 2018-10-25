@@ -285,7 +285,7 @@ namespace OpcUaStackServer
 		ss << prefix << "void copyTo(" << nodeInfo_.className() << "& value);" << std::endl;
 		ss << prefix << "bool operator==(const " << nodeInfo_.className() << "& value) const;" << std::endl;
 		ss << prefix << "bool operator!=(const " << nodeInfo_.className() << "& value) const;" << std::endl;
-		ss << prefix << nodeInfo_.className() << "& operator=(const " << nodeInfo_.className() << "& value);" << std::endl;
+		ss << prefix << nodeInfo_.className() << "& operator=(const " << nodeInfo_.className() << "& value) const;" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
