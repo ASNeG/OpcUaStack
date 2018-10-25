@@ -122,6 +122,7 @@ namespace OpcUaStackServer
 		bool generateSourceClassGetter(const std::string& prefix);
 		bool generateSourceClassPublicEQ(const std::string& prefix);
 		bool generateSourceClassPublicNE(const std::string& prefix);
+		bool generateSourceClassPublicAssign1(const std::string& prefix);
 		bool generateSourceClassPublicCP(const std::string& prefix);
 		bool generateSourceClassExtensionObjectBase(const std::string& prefix);
 		bool generateSourceClassFactory(const std::string& prefix);
