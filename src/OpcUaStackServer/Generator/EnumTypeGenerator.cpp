@@ -225,7 +225,7 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "    " << nodeInfo_.className() << "(void);" << std::endl;
 		ss << prefix << "    " << nodeInfo_.className() << "(Enum enumeration);" << std::endl;
-		ss << prefix << "    " << nodeInfo_.className() << "::" << nodeInfo_.className() << "(const " << nodeInfo_.className() << "& value);" << std::endl;
+		ss << prefix << "    " << nodeInfo_.className() << "(" << nodeInfo_.className() << "& value);" << std::endl;
 		ss << prefix << "    virtual ~" << nodeInfo_.className() << "(void);" << std::endl;
 
 		headerContent_ += ss.str();
@@ -467,7 +467,7 @@ namespace OpcUaStackServer
 		ss << prefix << "}" << std::endl;
 
 		ss << prefix << std::endl;
-		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(const " << nodeInfo_.className() << "& value)" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(" << nodeInfo_.className() << "& value)" << std::endl;
 		ss << prefix << ": Object()" << std::endl;
 		ss << prefix << ", ExtensionObjectBase()" << std::endl;
 		ss << prefix << ", value_(value.enumeration())" << std::endl;
