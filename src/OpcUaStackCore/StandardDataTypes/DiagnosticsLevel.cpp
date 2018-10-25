@@ -126,6 +126,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    DiagnosticsLevel&
+    DiagnosticsLevel::operator=(const DiagnosticsLevel& value)
+    {
+        value_ = const_cast<DiagnosticsLevel&>(value).value();
+        return *this;
+    }
+    
+    DiagnosticsLevel&
+    DiagnosticsLevel::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     DiagnosticsLevel::copyTo(DiagnosticsLevel& value)
     {

@@ -130,6 +130,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    TrustListMasks&
+    TrustListMasks::operator=(const TrustListMasks& value)
+    {
+        value_ = const_cast<TrustListMasks&>(value).value();
+        return *this;
+    }
+    
+    TrustListMasks&
+    TrustListMasks::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     TrustListMasks::copyTo(TrustListMasks& value)
     {

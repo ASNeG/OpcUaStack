@@ -122,6 +122,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    MessageSecurityMode&
+    MessageSecurityMode::operator=(const MessageSecurityMode& value)
+    {
+        value_ = const_cast<MessageSecurityMode&>(value).value();
+        return *this;
+    }
+    
+    MessageSecurityMode&
+    MessageSecurityMode::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     MessageSecurityMode::copyTo(MessageSecurityMode& value)
     {

@@ -126,6 +126,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    BrokerTransportQualityOfService&
+    BrokerTransportQualityOfService::operator=(const BrokerTransportQualityOfService& value)
+    {
+        value_ = const_cast<BrokerTransportQualityOfService&>(value).value();
+        return *this;
+    }
+    
+    BrokerTransportQualityOfService&
+    BrokerTransportQualityOfService::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     BrokerTransportQualityOfService::copyTo(BrokerTransportQualityOfService& value)
     {

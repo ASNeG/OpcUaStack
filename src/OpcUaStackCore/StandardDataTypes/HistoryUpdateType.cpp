@@ -122,6 +122,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    HistoryUpdateType&
+    HistoryUpdateType::operator=(const HistoryUpdateType& value)
+    {
+        value_ = const_cast<HistoryUpdateType&>(value).value();
+        return *this;
+    }
+    
+    HistoryUpdateType&
+    HistoryUpdateType::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     HistoryUpdateType::copyTo(HistoryUpdateType& value)
     {

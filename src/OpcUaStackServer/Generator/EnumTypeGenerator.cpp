@@ -285,7 +285,8 @@ namespace OpcUaStackServer
 		ss << prefix << "void copyTo(" << nodeInfo_.className() << "& value);" << std::endl;
 		ss << prefix << "bool operator==(const " << nodeInfo_.className() << "& value) const;" << std::endl;
 		ss << prefix << "bool operator!=(const " << nodeInfo_.className() << "& value) const;" << std::endl;
-		ss << prefix << nodeInfo_.className() << "& operator=(const " << nodeInfo_.className() << "& value) const;" << std::endl;
+		ss << prefix << nodeInfo_.className() << "& operator=(const " << nodeInfo_.className() << "& value);" << std::endl;
+		ss << prefix << nodeInfo_.className() << "& operator=(const Enum& value);" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -660,9 +661,17 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix << nodeInfo_.className() << "&"<< std::endl;
-		ss << prefix << nodeInfo_.className() << "::operator=(const " << nodeInfo_.className() << "& value) const" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::operator=(const " << nodeInfo_.className() << "& value)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    value_ = const_cast<" << nodeInfo_.className() << "&>(value).value();" << std::endl;
+		ss << prefix << "    return *this;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		ss << prefix << std::endl;
+		ss << prefix << nodeInfo_.className() << "&"<< std::endl;
+		ss << prefix << nodeInfo_.className() << "::operator=(const Enum& value)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    value_ = value;" << std::endl;
 		ss << prefix << "    return *this;" << std::endl;
 		ss << prefix << "}" << std::endl;
 

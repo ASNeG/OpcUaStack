@@ -118,6 +118,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    DataSetOrderingType&
+    DataSetOrderingType::operator=(const DataSetOrderingType& value)
+    {
+        value_ = const_cast<DataSetOrderingType&>(value).value();
+        return *this;
+    }
+    
+    DataSetOrderingType&
+    DataSetOrderingType::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     DataSetOrderingType::copyTo(DataSetOrderingType& value)
     {

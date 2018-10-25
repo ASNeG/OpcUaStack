@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.025820
+    BuildDate: 2018-Oct-25 10:29:57.947325
 */
 
 #ifndef __OpcUaStackCore_ExceptionDeviationFormat_h__
@@ -70,6 +70,8 @@ namespace OpcUaStackCore
         void copyTo(ExceptionDeviationFormat& value);
         bool operator==(const ExceptionDeviationFormat& value) const;
         bool operator!=(const ExceptionDeviationFormat& value) const;
+        ExceptionDeviationFormat& operator=(const ExceptionDeviationFormat& value);
+        ExceptionDeviationFormat& operator=(const Enum& value);
     
       private:
         uint32_t value_;

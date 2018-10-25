@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.022056
+    BuildDate: 2018-Oct-25 10:29:57.944493
 */
 
 #ifndef __OpcUaStackCore_SecurityTokenRequestType_h__
@@ -67,6 +67,8 @@ namespace OpcUaStackCore
         void copyTo(SecurityTokenRequestType& value);
         bool operator==(const SecurityTokenRequestType& value) const;
         bool operator!=(const SecurityTokenRequestType& value) const;
+        SecurityTokenRequestType& operator=(const SecurityTokenRequestType& value);
+        SecurityTokenRequestType& operator=(const Enum& value);
     
       private:
         uint32_t value_;

@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.034368
+    BuildDate: 2018-Oct-25 10:29:57.954103
 */
 
 #ifndef __OpcUaStackCore_IdentityCriteriaType_h__
@@ -71,6 +71,8 @@ namespace OpcUaStackCore
         void copyTo(IdentityCriteriaType& value);
         bool operator==(const IdentityCriteriaType& value) const;
         bool operator!=(const IdentityCriteriaType& value) const;
+        IdentityCriteriaType& operator=(const IdentityCriteriaType& value);
+        IdentityCriteriaType& operator=(const Enum& value);
     
       private:
         uint32_t value_;

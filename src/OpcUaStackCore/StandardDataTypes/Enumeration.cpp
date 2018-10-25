@@ -106,6 +106,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    Enumeration&
+    Enumeration::operator=(const Enumeration& value)
+    {
+        value_ = const_cast<Enumeration&>(value).value();
+        return *this;
+    }
+    
+    Enumeration&
+    Enumeration::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     Enumeration::copyTo(Enumeration& value)
     {

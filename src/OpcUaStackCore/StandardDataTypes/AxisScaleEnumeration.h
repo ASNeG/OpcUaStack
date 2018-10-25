@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.028891
+    BuildDate: 2018-Oct-25 10:29:57.949911
 */
 
 #ifndef __OpcUaStackCore_AxisScaleEnumeration_h__
@@ -68,6 +68,8 @@ namespace OpcUaStackCore
         void copyTo(AxisScaleEnumeration& value);
         bool operator==(const AxisScaleEnumeration& value) const;
         bool operator!=(const AxisScaleEnumeration& value) const;
+        AxisScaleEnumeration& operator=(const AxisScaleEnumeration& value);
+        AxisScaleEnumeration& operator=(const Enum& value);
     
       private:
         uint32_t value_;

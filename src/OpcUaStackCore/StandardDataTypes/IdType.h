@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.019908
+    BuildDate: 2018-Oct-25 10:29:57.941948
 */
 
 #ifndef __OpcUaStackCore_IdType_h__
@@ -69,6 +69,8 @@ namespace OpcUaStackCore
         void copyTo(IdType& value);
         bool operator==(const IdType& value) const;
         bool operator!=(const IdType& value) const;
+        IdType& operator=(const IdType& value);
+        IdType& operator=(const Enum& value);
     
       private:
         uint32_t value_;

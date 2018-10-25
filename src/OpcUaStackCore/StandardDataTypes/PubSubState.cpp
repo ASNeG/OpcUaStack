@@ -122,6 +122,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    PubSubState&
+    PubSubState::operator=(const PubSubState& value)
+    {
+        value_ = const_cast<PubSubState&>(value).value();
+        return *this;
+    }
+    
+    PubSubState&
+    PubSubState::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     PubSubState::copyTo(PubSubState& value)
     {

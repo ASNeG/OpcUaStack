@@ -122,6 +122,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    PerformUpdateType&
+    PerformUpdateType::operator=(const PerformUpdateType& value)
+    {
+        value_ = const_cast<PerformUpdateType&>(value).value();
+        return *this;
+    }
+    
+    PerformUpdateType&
+    PerformUpdateType::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     PerformUpdateType::copyTo(PerformUpdateType& value)
     {

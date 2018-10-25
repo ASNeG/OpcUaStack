@@ -122,6 +122,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    UserTokenType&
+    UserTokenType::operator=(const UserTokenType& value)
+    {
+        value_ = const_cast<UserTokenType&>(value).value();
+        return *this;
+    }
+    
+    UserTokenType&
+    UserTokenType::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     UserTokenType::copyTo(UserTokenType& value)
     {

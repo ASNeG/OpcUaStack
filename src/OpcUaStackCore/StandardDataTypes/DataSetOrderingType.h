@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.037248
+    BuildDate: 2018-Oct-25 10:29:57.958483
 */
 
 #ifndef __OpcUaStackCore_DataSetOrderingType_h__
@@ -68,6 +68,8 @@ namespace OpcUaStackCore
         void copyTo(DataSetOrderingType& value);
         bool operator==(const DataSetOrderingType& value) const;
         bool operator!=(const DataSetOrderingType& value) const;
+        DataSetOrderingType& operator=(const DataSetOrderingType& value);
+        DataSetOrderingType& operator=(const Enum& value);
     
       private:
         uint32_t value_;

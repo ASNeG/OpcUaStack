@@ -246,6 +246,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    NodeAttributesMask&
+    NodeAttributesMask::operator=(const NodeAttributesMask& value)
+    {
+        value_ = const_cast<NodeAttributesMask&>(value).value();
+        return *this;
+    }
+    
+    NodeAttributesMask&
+    NodeAttributesMask::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     NodeAttributesMask::copyTo(NodeAttributesMask& value)
     {

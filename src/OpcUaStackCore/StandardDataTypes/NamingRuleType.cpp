@@ -118,6 +118,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    NamingRuleType&
+    NamingRuleType::operator=(const NamingRuleType& value)
+    {
+        value_ = const_cast<NamingRuleType&>(value).value();
+        return *this;
+    }
+    
+    NamingRuleType&
+    NamingRuleType::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     NamingRuleType::copyTo(NamingRuleType& value)
     {

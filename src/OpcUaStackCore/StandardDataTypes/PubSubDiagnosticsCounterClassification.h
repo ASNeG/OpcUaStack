@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.036592
+    BuildDate: 2018-Oct-25 10:29:57.956981
 */
 
 #ifndef __OpcUaStackCore_PubSubDiagnosticsCounterClassification_h__
@@ -67,6 +67,8 @@ namespace OpcUaStackCore
         void copyTo(PubSubDiagnosticsCounterClassification& value);
         bool operator==(const PubSubDiagnosticsCounterClassification& value) const;
         bool operator!=(const PubSubDiagnosticsCounterClassification& value) const;
+        PubSubDiagnosticsCounterClassification& operator=(const PubSubDiagnosticsCounterClassification& value);
+        PubSubDiagnosticsCounterClassification& operator=(const Enum& value);
     
       private:
         uint32_t value_;

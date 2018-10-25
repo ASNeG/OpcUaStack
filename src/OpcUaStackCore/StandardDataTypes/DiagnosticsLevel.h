@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.035914
+    BuildDate: 2018-Oct-25 10:29:57.955959
 */
 
 #ifndef __OpcUaStackCore_DiagnosticsLevel_h__
@@ -70,6 +70,8 @@ namespace OpcUaStackCore
         void copyTo(DiagnosticsLevel& value);
         bool operator==(const DiagnosticsLevel& value) const;
         bool operator!=(const DiagnosticsLevel& value) const;
+        DiagnosticsLevel& operator=(const DiagnosticsLevel& value);
+        DiagnosticsLevel& operator=(const Enum& value);
     
       private:
         uint32_t value_;

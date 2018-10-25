@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.027773
+    BuildDate: 2018-Oct-25 10:29:57.949228
 */
 
 #ifndef __OpcUaStackCore_OpenFileMode_h__
@@ -69,6 +69,8 @@ namespace OpcUaStackCore
         void copyTo(OpenFileMode& value);
         bool operator==(const OpenFileMode& value) const;
         bool operator!=(const OpenFileMode& value) const;
+        OpenFileMode& operator=(const OpenFileMode& value);
+        OpenFileMode& operator=(const Enum& value);
     
       private:
         uint32_t value_;

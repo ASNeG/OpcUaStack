@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.023103
+    BuildDate: 2018-Oct-25 10:29:57.945617
 */
 
 #ifndef __OpcUaStackCore_FilterOperator_h__
@@ -83,6 +83,8 @@ namespace OpcUaStackCore
         void copyTo(FilterOperator& value);
         bool operator==(const FilterOperator& value) const;
         bool operator!=(const FilterOperator& value) const;
+        FilterOperator& operator=(const FilterOperator& value);
+        FilterOperator& operator=(const Enum& value);
     
       private:
         uint32_t value_;

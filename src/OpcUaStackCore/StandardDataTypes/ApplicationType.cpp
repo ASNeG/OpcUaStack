@@ -122,6 +122,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    ApplicationType&
+    ApplicationType::operator=(const ApplicationType& value)
+    {
+        value_ = const_cast<ApplicationType&>(value).value();
+        return *this;
+    }
+    
+    ApplicationType&
+    ApplicationType::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     ApplicationType::copyTo(ApplicationType& value)
     {

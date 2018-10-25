@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.020329
+    BuildDate: 2018-Oct-25 10:29:57.942501
 */
 
 #ifndef __OpcUaStackCore_NodeClass_h__
@@ -74,6 +74,8 @@ namespace OpcUaStackCore
         void copyTo(NodeClass& value);
         bool operator==(const NodeClass& value) const;
         bool operator!=(const NodeClass& value) const;
+        NodeClass& operator=(const NodeClass& value);
+        NodeClass& operator=(const Enum& value);
     
       private:
         uint32_t value_;

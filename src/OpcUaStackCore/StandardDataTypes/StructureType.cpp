@@ -118,6 +118,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    StructureType&
+    StructureType::operator=(const StructureType& value)
+    {
+        value_ = const_cast<StructureType&>(value).value();
+        return *this;
+    }
+    
+    StructureType&
+    StructureType::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     StructureType::copyTo(StructureType& value)
     {

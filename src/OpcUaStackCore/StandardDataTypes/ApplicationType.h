@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.021614
+    BuildDate: 2018-Oct-25 10:29:57.943991
 */
 
 #ifndef __OpcUaStackCore_ApplicationType_h__
@@ -69,6 +69,8 @@ namespace OpcUaStackCore
         void copyTo(ApplicationType& value);
         bool operator==(const ApplicationType& value) const;
         bool operator!=(const ApplicationType& value) const;
+        ApplicationType& operator=(const ApplicationType& value);
+        ApplicationType& operator=(const Enum& value);
     
       private:
         uint32_t value_;

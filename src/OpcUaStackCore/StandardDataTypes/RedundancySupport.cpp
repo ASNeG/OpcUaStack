@@ -130,6 +130,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    RedundancySupport&
+    RedundancySupport::operator=(const RedundancySupport& value)
+    {
+        value_ = const_cast<RedundancySupport&>(value).value();
+        return *this;
+    }
+    
+    RedundancySupport&
+    RedundancySupport::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     RedundancySupport::copyTo(RedundancySupport& value)
     {

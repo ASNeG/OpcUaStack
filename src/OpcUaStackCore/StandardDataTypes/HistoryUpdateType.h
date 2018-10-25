@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.026405
+    BuildDate: 2018-Oct-25 10:29:57.947921
 */
 
 #ifndef __OpcUaStackCore_HistoryUpdateType_h__
@@ -69,6 +69,8 @@ namespace OpcUaStackCore
         void copyTo(HistoryUpdateType& value);
         bool operator==(const HistoryUpdateType& value) const;
         bool operator!=(const HistoryUpdateType& value) const;
+        HistoryUpdateType& operator=(const HistoryUpdateType& value);
+        HistoryUpdateType& operator=(const Enum& value);
     
       private:
         uint32_t value_;

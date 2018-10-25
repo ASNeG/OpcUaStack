@@ -122,6 +122,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    IdType&
+    IdType::operator=(const IdType& value)
+    {
+        value_ = const_cast<IdType&>(value).value();
+        return *this;
+    }
+    
+    IdType&
+    IdType::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     IdType::copyTo(IdType& value)
     {

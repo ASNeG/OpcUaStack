@@ -178,6 +178,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    FilterOperator&
+    FilterOperator::operator=(const FilterOperator& value)
+    {
+        value_ = const_cast<FilterOperator&>(value).value();
+        return *this;
+    }
+    
+    FilterOperator&
+    FilterOperator::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     FilterOperator::copyTo(FilterOperator& value)
     {

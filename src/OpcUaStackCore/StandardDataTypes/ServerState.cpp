@@ -138,6 +138,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    ServerState&
+    ServerState::operator=(const ServerState& value)
+    {
+        value_ = const_cast<ServerState&>(value).value();
+        return *this;
+    }
+    
+    ServerState&
+    ServerState::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     ServerState::copyTo(ServerState& value)
     {

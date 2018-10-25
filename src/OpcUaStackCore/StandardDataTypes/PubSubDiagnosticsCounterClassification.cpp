@@ -114,6 +114,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    PubSubDiagnosticsCounterClassification&
+    PubSubDiagnosticsCounterClassification::operator=(const PubSubDiagnosticsCounterClassification& value)
+    {
+        value_ = const_cast<PubSubDiagnosticsCounterClassification&>(value).value();
+        return *this;
+    }
+    
+    PubSubDiagnosticsCounterClassification&
+    PubSubDiagnosticsCounterClassification::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     PubSubDiagnosticsCounterClassification::copyTo(PubSubDiagnosticsCounterClassification& value)
     {

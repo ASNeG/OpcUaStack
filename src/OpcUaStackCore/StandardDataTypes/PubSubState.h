@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.031423
+    BuildDate: 2018-Oct-25 10:29:57.951683
 */
 
 #ifndef __OpcUaStackCore_PubSubState_h__
@@ -69,6 +69,8 @@ namespace OpcUaStackCore
         void copyTo(PubSubState& value);
         bool operator==(const PubSubState& value) const;
         bool operator!=(const PubSubState& value) const;
+        PubSubState& operator=(const PubSubState& value);
+        PubSubState& operator=(const Enum& value);
     
       private:
         uint32_t value_;

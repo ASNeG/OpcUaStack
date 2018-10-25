@@ -114,6 +114,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    SecurityTokenRequestType&
+    SecurityTokenRequestType::operator=(const SecurityTokenRequestType& value)
+    {
+        value_ = const_cast<SecurityTokenRequestType&>(value).value();
+        return *this;
+    }
+    
+    SecurityTokenRequestType&
+    SecurityTokenRequestType::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     SecurityTokenRequestType::copyTo(SecurityTokenRequestType& value)
     {

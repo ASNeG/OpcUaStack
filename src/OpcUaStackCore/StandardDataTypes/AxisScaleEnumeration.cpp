@@ -118,6 +118,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    AxisScaleEnumeration&
+    AxisScaleEnumeration::operator=(const AxisScaleEnumeration& value)
+    {
+        value_ = const_cast<AxisScaleEnumeration&>(value).value();
+        return *this;
+    }
+    
+    AxisScaleEnumeration&
+    AxisScaleEnumeration::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     AxisScaleEnumeration::copyTo(AxisScaleEnumeration& value)
     {

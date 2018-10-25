@@ -122,6 +122,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    OpenFileMode&
+    OpenFileMode::operator=(const OpenFileMode& value)
+    {
+        value_ = const_cast<OpenFileMode&>(value).value();
+        return *this;
+    }
+    
+    OpenFileMode&
+    OpenFileMode::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     OpenFileMode::copyTo(OpenFileMode& value)
     {

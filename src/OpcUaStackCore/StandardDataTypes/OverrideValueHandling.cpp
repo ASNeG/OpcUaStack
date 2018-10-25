@@ -118,6 +118,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    OverrideValueHandling&
+    OverrideValueHandling::operator=(const OverrideValueHandling& value)
+    {
+        value_ = const_cast<OverrideValueHandling&>(value).value();
+        return *this;
+    }
+    
+    OverrideValueHandling&
+    OverrideValueHandling::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     OverrideValueHandling::copyTo(OverrideValueHandling& value)
     {

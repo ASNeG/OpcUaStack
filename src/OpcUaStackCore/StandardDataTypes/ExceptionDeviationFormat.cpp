@@ -126,6 +126,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    ExceptionDeviationFormat&
+    ExceptionDeviationFormat::operator=(const ExceptionDeviationFormat& value)
+    {
+        value_ = const_cast<ExceptionDeviationFormat&>(value).value();
+        return *this;
+    }
+    
+    ExceptionDeviationFormat&
+    ExceptionDeviationFormat::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     ExceptionDeviationFormat::copyTo(ExceptionDeviationFormat& value)
     {

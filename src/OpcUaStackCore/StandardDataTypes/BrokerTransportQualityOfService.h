@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.032922
+    BuildDate: 2018-Oct-25 10:29:57.952904
 */
 
 #ifndef __OpcUaStackCore_BrokerTransportQualityOfService_h__
@@ -70,6 +70,8 @@ namespace OpcUaStackCore
         void copyTo(BrokerTransportQualityOfService& value);
         bool operator==(const BrokerTransportQualityOfService& value) const;
         bool operator!=(const BrokerTransportQualityOfService& value) const;
+        BrokerTransportQualityOfService& operator=(const BrokerTransportQualityOfService& value);
+        BrokerTransportQualityOfService& operator=(const Enum& value);
     
       private:
         uint32_t value_;

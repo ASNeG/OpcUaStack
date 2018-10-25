@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 09:41:46.021181
+    BuildDate: 2018-Oct-25 10:29:57.943499
 */
 
 #ifndef __OpcUaStackCore_UserTokenType_h__
@@ -69,6 +69,8 @@ namespace OpcUaStackCore
         void copyTo(UserTokenType& value);
         bool operator==(const UserTokenType& value) const;
         bool operator!=(const UserTokenType& value) const;
+        UserTokenType& operator=(const UserTokenType& value);
+        UserTokenType& operator=(const Enum& value);
     
       private:
         uint32_t value_;

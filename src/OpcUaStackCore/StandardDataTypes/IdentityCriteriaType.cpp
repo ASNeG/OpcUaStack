@@ -130,6 +130,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    IdentityCriteriaType&
+    IdentityCriteriaType::operator=(const IdentityCriteriaType& value)
+    {
+        value_ = const_cast<IdentityCriteriaType&>(value).value();
+        return *this;
+    }
+    
+    IdentityCriteriaType&
+    IdentityCriteriaType::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     IdentityCriteriaType::copyTo(IdentityCriteriaType& value)
     {

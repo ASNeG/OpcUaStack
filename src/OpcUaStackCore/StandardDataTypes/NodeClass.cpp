@@ -142,6 +142,20 @@ namespace OpcUaStackCore
         return !this->operator==(value);
     }
     
+    NodeClass&
+    NodeClass::operator=(const NodeClass& value)
+    {
+        value_ = const_cast<NodeClass&>(value).value();
+        return *this;
+    }
+    
+    NodeClass&
+    NodeClass::operator=(const Enum& value)
+    {
+        value_ = value;
+        return *this;
+    }
+    
     void
     NodeClass::copyTo(NodeClass& value)
     {
