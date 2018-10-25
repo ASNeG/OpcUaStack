@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    StructureType::StructureType(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     StructureType::~StructureType(void)
     {
     }

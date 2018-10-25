@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ExceptionDeviationFormat::ExceptionDeviationFormat(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     ExceptionDeviationFormat::~ExceptionDeviationFormat(void)
     {
     }

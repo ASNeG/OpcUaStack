@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 00:50:28.845124
+    BuildDate: 2018-Oct-25 09:23:30.467292
 */
 
 #ifndef __OpcUaStackCore_PubSubDiagnosticsCounterClassification_h__
@@ -34,6 +34,7 @@ namespace OpcUaStackCore
         } Enum;
     
         PubSubDiagnosticsCounterClassification(void);
+        PubSubDiagnosticsCounterClassification(Enum enumeration);
         virtual ~PubSubDiagnosticsCounterClassification(void);
         
         uint32_t& value(void);

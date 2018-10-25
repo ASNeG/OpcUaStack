@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    RedundancySupport::RedundancySupport(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     RedundancySupport::~RedundancySupport(void)
     {
     }

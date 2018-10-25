@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryUpdateType::HistoryUpdateType(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     HistoryUpdateType::~HistoryUpdateType(void)
     {
     }

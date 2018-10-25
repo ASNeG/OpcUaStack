@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ServerState::ServerState(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     ServerState::~ServerState(void)
     {
     }

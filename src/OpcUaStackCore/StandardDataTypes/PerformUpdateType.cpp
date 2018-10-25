@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    PerformUpdateType::PerformUpdateType(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     PerformUpdateType::~PerformUpdateType(void)
     {
     }

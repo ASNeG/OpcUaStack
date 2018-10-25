@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DiagnosticsLevel::DiagnosticsLevel(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     DiagnosticsLevel::~DiagnosticsLevel(void)
     {
     }

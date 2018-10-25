@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    FilterOperator::FilterOperator(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     FilterOperator::~FilterOperator(void)
     {
     }

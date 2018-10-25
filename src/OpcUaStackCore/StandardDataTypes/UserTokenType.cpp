@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    UserTokenType::UserTokenType(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     UserTokenType::~UserTokenType(void)
     {
     }

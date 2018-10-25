@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    AxisScaleEnumeration::AxisScaleEnumeration(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     AxisScaleEnumeration::~AxisScaleEnumeration(void)
     {
     }

@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    NodeAttributesMask::NodeAttributesMask(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     NodeAttributesMask::~NodeAttributesMask(void)
     {
     }

@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    BrokerTransportQualityOfService::BrokerTransportQualityOfService(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     BrokerTransportQualityOfService::~BrokerTransportQualityOfService(void)
     {
     }

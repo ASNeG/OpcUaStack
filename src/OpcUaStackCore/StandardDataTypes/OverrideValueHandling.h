@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 00:50:28.843195
+    BuildDate: 2018-Oct-25 09:23:30.465262
 */
 
 #ifndef __OpcUaStackCore_OverrideValueHandling_h__
@@ -35,6 +35,7 @@ namespace OpcUaStackCore
         } Enum;
     
         OverrideValueHandling(void);
+        OverrideValueHandling(Enum enumeration);
         virtual ~OverrideValueHandling(void);
         
         uint32_t& value(void);

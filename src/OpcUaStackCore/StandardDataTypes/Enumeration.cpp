@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    Enumeration::Enumeration(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     Enumeration::~Enumeration(void)
     {
     }

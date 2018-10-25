@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    SecurityTokenRequestType::SecurityTokenRequestType(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     SecurityTokenRequestType::~SecurityTokenRequestType(void)
     {
     }

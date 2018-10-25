@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 00:50:28.840159
+    BuildDate: 2018-Oct-25 09:23:30.462163
 */
 
 #ifndef __OpcUaStackCore_AxisScaleEnumeration_h__
@@ -35,6 +35,7 @@ namespace OpcUaStackCore
         } Enum;
     
         AxisScaleEnumeration(void);
+        AxisScaleEnumeration(Enum enumeration);
         virtual ~AxisScaleEnumeration(void);
         
         uint32_t& value(void);

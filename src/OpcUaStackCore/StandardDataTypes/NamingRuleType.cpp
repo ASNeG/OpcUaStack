@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    NamingRuleType::NamingRuleType(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     NamingRuleType::~NamingRuleType(void)
     {
     }

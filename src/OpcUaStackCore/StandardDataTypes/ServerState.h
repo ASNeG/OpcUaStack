@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 00:50:28.837501
+    BuildDate: 2018-Oct-25 09:23:30.459529
 */
 
 #ifndef __OpcUaStackCore_ServerState_h__
@@ -40,6 +40,7 @@ namespace OpcUaStackCore
         } Enum;
     
         ServerState(void);
+        ServerState(Enum enumeration);
         virtual ~ServerState(void);
         
         uint32_t& value(void);

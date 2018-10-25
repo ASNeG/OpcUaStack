@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    PubSubState::PubSubState(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     PubSubState::~PubSubState(void)
     {
     }

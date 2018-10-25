@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetOrderingType::DataSetOrderingType(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     DataSetOrderingType::~DataSetOrderingType(void)
     {
     }

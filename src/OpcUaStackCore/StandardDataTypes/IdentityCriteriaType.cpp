@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    IdentityCriteriaType::IdentityCriteriaType(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     IdentityCriteriaType::~IdentityCriteriaType(void)
     {
     }

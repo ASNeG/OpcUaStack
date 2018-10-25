@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 00:50:28.838008
+    BuildDate: 2018-Oct-25 09:23:30.460036
 */
 
 #ifndef __OpcUaStackCore_ExceptionDeviationFormat_h__
@@ -37,6 +37,7 @@ namespace OpcUaStackCore
         } Enum;
     
         ExceptionDeviationFormat(void);
+        ExceptionDeviationFormat(Enum enumeration);
         virtual ~ExceptionDeviationFormat(void);
         
         uint32_t& value(void);

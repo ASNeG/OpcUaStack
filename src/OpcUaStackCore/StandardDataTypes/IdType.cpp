@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    IdType::IdType(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     IdType::~IdType(void)
     {
     }

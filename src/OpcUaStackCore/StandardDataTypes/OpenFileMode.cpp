@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    OpenFileMode::OpenFileMode(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     OpenFileMode::~OpenFileMode(void)
     {
     }

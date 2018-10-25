@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    OverrideValueHandling::OverrideValueHandling(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     OverrideValueHandling::~OverrideValueHandling(void)
     {
     }

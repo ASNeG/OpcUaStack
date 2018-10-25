@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    MessageSecurityMode::MessageSecurityMode(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     MessageSecurityMode::~MessageSecurityMode(void)
     {
     }

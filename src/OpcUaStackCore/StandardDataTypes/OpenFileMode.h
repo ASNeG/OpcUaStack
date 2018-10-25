@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 00:50:28.839606
+    BuildDate: 2018-Oct-25 09:23:30.461613
 */
 
 #ifndef __OpcUaStackCore_OpenFileMode_h__
@@ -36,6 +36,7 @@ namespace OpcUaStackCore
         } Enum;
     
         OpenFileMode(void);
+        OpenFileMode(Enum enumeration);
         virtual ~OpenFileMode(void);
         
         uint32_t& value(void);

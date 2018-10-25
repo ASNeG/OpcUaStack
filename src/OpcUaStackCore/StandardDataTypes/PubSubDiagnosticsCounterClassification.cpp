@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    PubSubDiagnosticsCounterClassification::PubSubDiagnosticsCounterClassification(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     PubSubDiagnosticsCounterClassification::~PubSubDiagnosticsCounterClassification(void)
     {
     }

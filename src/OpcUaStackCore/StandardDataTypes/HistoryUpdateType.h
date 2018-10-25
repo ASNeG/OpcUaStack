@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 00:50:28.838531
+    BuildDate: 2018-Oct-25 09:23:30.460550
 */
 
 #ifndef __OpcUaStackCore_HistoryUpdateType_h__
@@ -36,6 +36,7 @@ namespace OpcUaStackCore
         } Enum;
     
         HistoryUpdateType(void);
+        HistoryUpdateType(Enum enumeration);
         virtual ~HistoryUpdateType(void);
         
         uint32_t& value(void);

@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.0.1
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 00:50:28.840750
+    BuildDate: 2018-Oct-25 09:23:30.462724
 */
 
 #ifndef __OpcUaStackCore_TrustListMasks_h__
@@ -38,6 +38,7 @@ namespace OpcUaStackCore
         } Enum;
     
         TrustListMasks(void);
+        TrustListMasks(Enum enumeration);
         virtual ~TrustListMasks(void);
         
         uint32_t& value(void);

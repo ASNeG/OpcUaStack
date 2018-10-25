@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    TrustListMasks::TrustListMasks(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     TrustListMasks::~TrustListMasks(void)
     {
     }

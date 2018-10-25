@@ -21,6 +21,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ApplicationType::ApplicationType(Enum enumeration)
+    : Object()
+    , ExtensionObjectBase()
+    , value_(enumeration)
+    {
+    }
+    
     ApplicationType::~ApplicationType(void)
     {
     }
