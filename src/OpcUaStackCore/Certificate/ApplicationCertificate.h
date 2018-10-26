@@ -27,6 +27,10 @@
 namespace OpcUaStackCore
 {
 
+	/**
+	 * This class manages application instance certificates
+	 *
+	 */
 	class DLLEXPORT ApplicationCertificate
 	{
 	  public:
@@ -95,17 +99,18 @@ namespace OpcUaStackCore
 		bool readCertificateAndPrivateKey(void);
 
 		bool enable_;
-		// The folder where certificates of trusted applications and trusted CAs should be stored
-		std::string certificateTrustListLocation_;
-		// The folder where certificates of rejected applications should be stored
-		std::string certificateRejectListLocation_;
-		// The folder where revocation lists for trusted CAs should be stored
-		std::string certificateRevocationListLocation_;
-		// The folder where issuer certificates are stored. Issuer certificates are CA certificates
-		// necessary for the verification of the full trust chain of CA certificates in the trust list
-		std::string issuersCertificatesLocation_;
-		// The folder where revocation lists for issuer CAs should be stored
-		std::string issuersRevocationListLocation_;
+		std::string certificateTrustListLocation_;		//!< The folder where certificates of trusted applications
+														//!< and trusted CAs should be stored
+		std::string certificateRejectListLocation_;		//!< The folder where certificates of rejected applications
+														//!< should be stored
+		std::string certificateRevocationListLocation_;	//!< The folder where revocation lists for trusted CAs
+														//! should be stored
+		std::string issuersCertificatesLocation_;		//!< The folder where issuer certificates are stored. Issuer
+														//!< certificates are CA certificates necessary for the
+														//!< verification of the full trust chain of CA certificates
+														//!< in the trust list
+		std::string issuersRevocationListLocation_;		//!< The folder where revocation lists for issuer CAs should
+														//!< be stored
 
 
 		std::string serverCertificateFile_;
@@ -114,36 +119,25 @@ namespace OpcUaStackCore
 
 		bool generateCertificate_;
 		std::string uri_;
-		// name of the application
-		std::string commonName_;
-		// hostname of the machine
-		std::string domainComponent_;
-		// organization using the opc ua server
-		std::string organization_;
-		// organization unit unsing the opc ua server
-		std::string organizationUnit_;
-		// name of the location where the opc ua server is running
-		std::string locality_;
-		// name of the state where the opc ua server is running
-		std::string state_;
-		// name of the country where the opc ua server is running
-		std::string country_;
-		// number of years the certificate is valid
-		uint32_t yearsValidFor_;
-		// Key length in bits of the certificate to create; valid values
-        // are 1024 and 2048 for RsaMin, and 2048, 3072 and 4096 for RsaSha256
-		uint32_t keyLength_;
-		// Defines the algorithm used to sign the certificate. Valid values are
-		// RsaMin and RsaSha256. Applications that support the Basic128Rsa15 and
-		// Basic256 profiles need a Certificate of type RsaMin. Applications that
-		// support the Basic256Sha256 profile need a Certificate of type RsaSha256.
-		std::string certificateType_;
-		// ip address where the opc ua server is running
-		std::vector<std::string> ipAddress_;
-		// dns name where the opc ua server is running
-		std::vector<std::string> dnsName_;
-		// email of the application owner
-		std::string email_;
+		std::string commonName_;						//!< name of the application
+		std::string domainComponent_;					//!< hostname of the machine
+		std::string organization_;						//!< organization using the opc ua server
+		std::string organizationUnit_;					//!< organization unit unsing the opc ua server
+		std::string locality_;							//!< name of the location where the opc ua server is running
+		std::string state_;								//!< name of the state where the opc ua server is running
+		std::string country_;							//!< name of the country where the opc ua server is running
+		uint32_t yearsValidFor_;						//!< number of years the certificate is valid
+		uint32_t keyLength_;							//!< Key length in bits of the certificate to create; valid
+														//!< values are 1024 and 2048 for RsaMin, and 2048, 3072 and
+														//!< 4096 for RsaSha256
+		std::string certificateType_;					//!< Defines the algorithm used to sign the certificate. Valid
+														//!< values are RsaMin and RsaSha256. Applications that support
+														//!< the Basic128Rsa15 and Basic256 profiles need a Certificate
+														//!< of type RsaMin. Applications that support the Basic256Sha256
+														//!< profile need a Certificate of type RsaSha256.
+		std::vector<std::string> ipAddress_;			//!< ip address where the opc ua server is running
+		std::vector<std::string> dnsName_;				//!< dns name where the opc ua server is running
+		std::string email_;								//!< email of the application owner
 
 		Certificate::SPtr certificate_;
 		PrivateKey::SPtr privateKey_;
