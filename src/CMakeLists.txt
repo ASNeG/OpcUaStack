@@ -244,6 +244,8 @@ endif ()
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+
+
 install(
     FILES icon/asneg.ico 
     DESTINATION /usr/share/icons/OpcUaStack${VERSION_MAJOR}
@@ -263,13 +265,13 @@ install(
 )
 
 install(
-    FILES ${CMAKE_SOURCE_DIR}/Copyright.txt 
+    FILES ${CMAKE_SOURCE_DIR}/../LICENSE
     DESTINATION /usr/share/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
-    FILES ${CMAKE_SOURCE_DIR}/../NOTICE 
+    FILES ${CMAKE_SOURCE_DIR}/../README.rst
     DESTINATION /usr/share/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
@@ -283,7 +285,10 @@ install(
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+include(${CMAKE_SOURCE_DIR}/cmake/CPackHelpers.txt)
+
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/../LICENSE")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/../README.rst")
 set(CPACK_PACKAGE_CONTACT "info@asneg.de")
 set(CPACK_PACKAGE_NAME "OpcUaStack-${VERSION_MAJOR}")
 set(CPACK_PACKAGE_VENDOR "asneg.de")
@@ -299,27 +304,26 @@ set(CPACK_BINARY_TZ "OFF")
 if (CPACK_BINARY_DEB)
     set(CPACK_DEB_COMPONENT_INSTALL "ON")
     set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
-    set(CPACK_DEB_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
 
-    set(DEB_DEPS_DEV "libboost-system${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}-dev")
-    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libboost-test${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}-dev")
-    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libboost-filesystem${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}-dev")
-    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libboost-thread${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}-dev")
-    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libboost-date-time${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}-dev")
-    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libboost-chrono${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}-dev")
-    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libboost-regex${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}-dev")
-    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libssl-dev (>= ${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR})")
-    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, OpcUaStack-${VERSION_MAJOR}-bin (=${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})")
-    set(CPACK_DEBIAN_DEV_PACKAGE_DEPENDS ${DEB_DEPS_DEV})
+    SSLDepends(libssl)         
+    
+    set(DEB_DEPS_DEV "${LIST_OF_LIB_VERSIONS_DEV}")
+    set(DEB_DEPS_BIN "${LIST_OF_LIB_VERSIONS_BIN}")
 
-    set(DEB_DEPS_BIN "libboost-system${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.0")
-    set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, libboost-filesystem${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.0")
-    set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, libboost-thread${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.0")
-    set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, libboost-date-time${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.0")
-    set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, libboost-chrono${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.0")
-    set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, libboost-regex${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.0")
-    set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, libssl${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.0")
-    set(CPACK_DEBIAN_BIN_PACKAGE_DEPENDS ${DEB_DEPS_BIN})
+    foreach(lib
+        libboost-system libboost-thread libboost-date-time libboost-chrono libboost-regex libboost-program-options)
+        BoostDepends(${lib})
+        
+        set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, ${LIST_OF_LIB_VERSIONS_BIN}")
+        set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")            
+    endforeach(lib)
+        
+    BoostDepends(libboost-test)
+    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")
+    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, OpcUaStack-${VERSION_MAJOR}-bin (=${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})")    
+    
+    set(CPACK_DEBIAN_DEV_PACKAGE_DEPENDS ${DEB_DEPS_DEV})       
+    set(CPACK_DEBIAN_BIN_PACKAGE_DEPENDS ${DEB_DEPS_BIN})             
 endif()
 
 if (CPACK_BINARY_RPM)

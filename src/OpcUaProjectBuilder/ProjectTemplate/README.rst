@@ -9,7 +9,7 @@ In order to install ProjectName in your machine type the following command:
 **On Linux** 
 
 ::
-    $ sh build.sh local
+    $ sh build.sh -t local
 	 
 	
 **On Windows**
