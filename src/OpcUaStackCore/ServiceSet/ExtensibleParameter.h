@@ -38,6 +38,8 @@ namespace OpcUaStackCore
 		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::SPtr epSPtr);
 		static bool deleteElement(OpcUaNodeId& opcUaNodeId);
 		static bool existElement(OpcUaNodeId& opcUaNodeId);
+		static bool existElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0);
+		static bool existElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0);
 		static ExtensibleParameterBase::SPtr findElement(OpcUaNodeId& opcUaNodeId);
 		static OpcUaNodeId::Set& getErrorTypeSet(void);
 		static void clearErrorTypeSet(void);

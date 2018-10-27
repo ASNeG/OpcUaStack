@@ -44,7 +44,9 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_DataChangeNotification)
 
 	// build NotificationData, DataChangeNotification
 	notificationDataSPtr = constructSPtr<ExtensibleParameter>();
-	BOOST_REQUIRE(notificationDataSPtr->registerFactoryElement<DataChangeNotification>((OpcUaUInt32)OpcUaId_DataChangeNotification_Encoding_DefaultBinary) == true);
+	if (ExtensibleParameter::existElement((OpcUaUInt32)OpcUaId_DataChangeNotification_Encoding_DefaultBinary) == false) {
+		BOOST_REQUIRE(notificationDataSPtr->registerFactoryElement<DataChangeNotification>((OpcUaUInt32)OpcUaId_DataChangeNotification_Encoding_DefaultBinary) == true);
+	}
 
 	notificationDataSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 	dataChangeNotificationSPtr = notificationDataSPtr->parameter<DataChangeNotification>();
@@ -116,7 +118,9 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_EventNotificationList)
 
 	// build NotificationData, EventNotificationList
 	notificationDataSPtr = constructSPtr<ExtensibleParameter>();
-	BOOST_REQUIRE(notificationDataSPtr->registerFactoryElement<EventNotificationList>((OpcUaUInt32)OpcUaId_EventNotificationList_Encoding_DefaultBinary) == true);
+	if (ExtensibleParameter::existElement((OpcUaUInt32)OpcUaId_EventNotificationList_Encoding_DefaultBinary) == false) {
+		BOOST_REQUIRE(notificationDataSPtr->registerFactoryElement<EventNotificationList>((OpcUaUInt32)OpcUaId_EventNotificationList_Encoding_DefaultBinary) == true);
+	}
 
 	notificationDataSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 	eventNotificationListSPtr = notificationDataSPtr->parameter<EventNotificationList>();
