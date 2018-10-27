@@ -1,6 +1,11 @@
 OpcUaStack
 ==============================
 
+.. image:: https://travis-ci.org/ASNeG/OpcUaStack.svg?branch=master
+    :target: https://travis-ci.org/ASNeG/OpcUaStack
+.. image:: https://img.shields.io/github/downloads/ASNeG/OpcUaStack/total.svg?style=social   :alt: Github All Releases   :target: https://github.com/ASNeG/OpcUaStack
+
+
 About
 ------------------------------
 
@@ -19,7 +24,7 @@ All parts of the stack are cross-platform and support Linux and Windows operatio
 Features
 ------------------------------
 
-* SDK for Client\\Server applicaion
+* SDK for Client\\Server application
 * Application Server to run OPC UA application as dynamic libraries
 * Settings and OPC UA information model in XML format
 * Support DEB package type to distribute user applications on Linux
@@ -37,9 +42,9 @@ Installation
 OpcUaStack provides different ways of installing.
 
 Source Code
-`````````````````````````````
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In order to compile and install the stack from source code you should meet
+In order to compile and install the stack from the source code, you should meet
 the following requirements:
 
 * Compiler with C++11 support
@@ -62,23 +67,22 @@ the root directory of the sources:
 
 ::
 
-  $ sh build.sh local
+  $ sh build.sh -t local 
 
 
-By default the installation path is $HOME/install. You can change it at any moment:
+By default the installation path is $HOME/.ASNeG. You can change it at any moment:
 
 ::
 
-  $ cd local_build
-  $ make DESTDIR=/path/witch/you/prefer install
+  $ sh build.sh -t local -i /path/witch/you/prefer
 
 
 **Windows**
 
 Winidows users should install all requirements manually. 
 
-In order to compile the project you must install MSBuild Tools 2015, then run in the environment which
-is suitable for your target platform (e.g. Naitve x86) the following command:
+In order to compile the project, you should install MSBuild Tools 2015, then run in the environment which
+is suitable for your target platform (e.g. Native x86) the following command:
 
 ::
 
@@ -94,10 +98,40 @@ By default the installation path is C:\\install. You can change it by typing:
   $ MSBuild INSTALL.vcxproj
 
 
+
+DEB Packets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The stack provides DEB packets, so you can install it into your Ubuntu or Debian.
+Download `the last packages`_ and install them by using **dpkg** command
+
+If you need only the runtime to run your application, type:
+
+::
+
+  $ sudo dpkg -i OpcUaStack-x.y.z-x86_64-bin.deb
+
+For development, install *dev* packet too:
+
+::
+
+  $ sudo dpkg -i OpcUaStack-x.y.z-x86_64-dev.deb
+
+
+.. _the last packages: https://github.com/ASNeG/OpcUaStack/releases/latest
+
+Also you can build DEB packets from source by using *build.sh* script:
+
+::
+
+  $ build.sh -t deb
+
+Your packets will be built in *build_deb* directory.
+
 Usage 
 ------------------------------
 
-In order to create an user application OpcUa Stack provides a project builder:
+In order to create a user application OpcUa Stack provides a project builder:
 
 ::
 
