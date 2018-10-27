@@ -1,7 +1,7 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
-
+#include <iostream>
 
 using namespace OpcUaStackCore;
 
