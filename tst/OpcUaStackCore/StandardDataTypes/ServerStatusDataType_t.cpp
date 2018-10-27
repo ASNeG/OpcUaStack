@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(ServerStatusDataType_encode_decode)
 
 	value1.startTime() = now;
 	value1.currentTime() = now;
-	value1.serverState() = 0;
+	value1.state() = ServerState::EnumRunning;
 	value1.secondsTillShutdown() = 123;
 	value1.shutdownReason().set("de", "maintain");
 	value1.buildInfo().productUri() = "ProductUri";
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(ServerStatusDataType_encode_decode)
 
 	BOOST_REQUIRE(value2.startTime() == now);
 	BOOST_REQUIRE(value2.currentTime() == now);
-	BOOST_REQUIRE(value2.serverState() == 0);
+	BOOST_REQUIRE(value2.state() == ServerState::EnumRunning);
 	BOOST_REQUIRE(value2.secondsTillShutdown() == 123);
 	BOOST_REQUIRE(value2.shutdownReason() == OpcUaLocalizedText("de", "maintain"));
 	BOOST_REQUIRE(value2.buildInfo().productUri().value() == "ProductUri");
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(ServerStatusDataType_ExtensionObject)
 	value1.typeId(typeId);
 	value1.parameter<ServerStatusDataType>()->startTime() = now;
 	value1.parameter<ServerStatusDataType>()->currentTime() = now;
-	value1.parameter<ServerStatusDataType>()->serverState() = 0;
+	value1.parameter<ServerStatusDataType>()->state() = ServerState::EnumRunning;
 	value1.parameter<ServerStatusDataType>()->secondsTillShutdown() = 123;
 	value1.parameter<ServerStatusDataType>()->shutdownReason().set("de", "maintain");
 	value1.parameter<ServerStatusDataType>()->buildInfo().productUri() = "ProductUri";
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(ServerStatusDataType_ExtensionObject)
 
 	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->startTime() == now);
 	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->currentTime() == now);
-	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->serverState() == 0);
+	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->state() == ServerState::EnumRunning);
 	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->secondsTillShutdown() == 123);
 	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->shutdownReason() == OpcUaLocalizedText("de", "maintain"));
 	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->buildInfo().productUri().value() == "ProductUri");
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(ServerStatusDataType_ExtensionObject_copyTo)
 	value1.typeId(typeId);
 	value1.parameter<ServerStatusDataType>()->startTime() = now;
 	value1.parameter<ServerStatusDataType>()->currentTime() = now;
-	value1.parameter<ServerStatusDataType>()->serverState() = 0;
+	value1.parameter<ServerStatusDataType>()->state() = ServerState::EnumRunning;
 	value1.parameter<ServerStatusDataType>()->secondsTillShutdown() = 123;
 	value1.parameter<ServerStatusDataType>()->shutdownReason().set("de", "maintain");
 	value1.parameter<ServerStatusDataType>()->buildInfo().productUri() = "ProductUri";
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(ServerStatusDataType_ExtensionObject_copyTo)
 
 	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->startTime() == now);
 	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->currentTime() == now);
-	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->serverState() == 0);
+	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->state() == ServerState::EnumRunning);
 	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->secondsTillShutdown() == 123);
 	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->shutdownReason() == OpcUaLocalizedText("de", "maintain"));
 	BOOST_REQUIRE(value2.parameter<ServerStatusDataType>()->buildInfo().productUri().value() == "ProductUri");
