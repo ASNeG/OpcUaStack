@@ -93,7 +93,6 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_write)
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
-
-#endif
