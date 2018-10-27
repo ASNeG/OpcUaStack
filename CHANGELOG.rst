@@ -2,9 +2,11 @@ Release 3.5.0
 ------------------------------------------------------------
 
 **Features**:
-* add options for *build.sh* to set install path and stack location #28, by @flipback
+
+* add options for *build.sh* to set install path, stack location and job count #28, by @flipback
 
 **Bugs**:
+
 * fix strict versions of dependencies in DEB packet #15, by @flipback
 * fix building DEB packet of a user application #19, by @flipback
 
@@ -13,6 +15,7 @@ Release 3.5.0
 -------------------------------------------------------------
 
 **Bugs**:
+
 * Fix condition check in server start #30, by @antlad
 
 
