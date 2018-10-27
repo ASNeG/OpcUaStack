@@ -37,6 +37,7 @@ namespace OpcUaStackCore
 
 		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::SPtr epSPtr);
 		static bool deleteElement(OpcUaNodeId& opcUaNodeId);
+		static bool existElement(OpcUaNodeId& opcUaNodeId);
 		static ExtensibleParameterBase::SPtr findElement(OpcUaNodeId& opcUaNodeId);
 		static OpcUaNodeId::Set& getErrorTypeSet(void);
 		static void clearErrorTypeSet(void);
@@ -47,10 +48,24 @@ namespace OpcUaStackCore
 		void clear(void);
 
 		template<typename T>
+		  bool existFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
+			  opcUaNodeId.set(nodeId, namespaceIndex);
+			  return existFactoryElement<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
 		  bool registerFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
 			  opcUaNodeId.set(nodeId, namespaceIndex);
 			  return registerFactoryElement<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
+		  bool existFactoryElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
+			  opcUaNodeId.set(nodeId, namespaceIndex);
+			  return existFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
@@ -65,6 +80,11 @@ namespace OpcUaStackCore
 			  OpcUaNodeId opcUaNodeId;
 			  opcUaNodeId.set(buf, bufLen, namespaceIndex);
 			  return registerFactoryElement<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
+		  bool existFactoryElement(OpcUaNodeId& opcUaNodeId) {
+			  return ExtensibleParameter::existElement(opcUaNodeId);
 		  }
 
 		template<typename T>

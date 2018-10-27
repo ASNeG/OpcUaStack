@@ -76,6 +76,17 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	ExtensibleParameter::existElement(OpcUaNodeId& opcUaNodeId)
+	{
+		if (extensibleParameterMap_.find(opcUaNodeId) != extensibleParameterMap_.end()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	ExtensibleParameterBase::SPtr
 	ExtensibleParameter::findElement(OpcUaNodeId& opcUaNodeId)
 	{
