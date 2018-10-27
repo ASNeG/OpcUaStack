@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(UDP_construct_send_and_receive)
 	osServerSend << serverRecvBuf.data();
 	udpServer.sendTo(
 		osServerSendBuffer,
-		udpServer.endpoint()
+		udpServer.remoteEndpoint()
 	);
 
 	// client receive package
