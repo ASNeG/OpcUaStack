@@ -4,6 +4,7 @@ Release 4.1.0
 **Features**:
 
 * Implement enum type code generator #29, by @huebl
+* Processing of type information not possible #22, by @huebl
 
 
 
