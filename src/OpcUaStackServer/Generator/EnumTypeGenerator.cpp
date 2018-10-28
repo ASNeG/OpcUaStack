@@ -876,7 +876,7 @@ namespace OpcUaStackServer
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);" << std::endl;
 		ss << prefix << "    if (!tree) return false;" << std::endl;
-		ss << prefix << "    return xmlDecode(*tree, value, xmlns);" << std::endl;
+		ss << prefix << "    return xmlDecode(*tree, xmlns);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		ss << prefix << std::endl;
