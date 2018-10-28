@@ -9,6 +9,7 @@
 #
 #
 
+OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype BuildInfo --buildSubTypes 0
 OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ServerStatusDataType --buildSubTypes 0
 
 
