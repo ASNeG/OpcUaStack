@@ -201,6 +201,11 @@ namespace OpcUaStackCore
     }
     
     bool
+    StructureType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+    }
+    
+    bool
     StructureType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;

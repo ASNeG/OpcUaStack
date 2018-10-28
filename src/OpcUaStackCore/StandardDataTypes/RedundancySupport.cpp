@@ -213,6 +213,11 @@ namespace OpcUaStackCore
     }
     
     bool
+    RedundancySupport::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+    }
+    
+    bool
     RedundancySupport::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;

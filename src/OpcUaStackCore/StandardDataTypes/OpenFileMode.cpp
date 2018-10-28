@@ -205,6 +205,11 @@ namespace OpcUaStackCore
     }
     
     bool
+    OpenFileMode::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+    }
+    
+    bool
     OpenFileMode::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
