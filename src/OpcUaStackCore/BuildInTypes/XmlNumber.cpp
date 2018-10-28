@@ -285,6 +285,101 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// decoder - element
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaBoolean& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaByte& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaSByte& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaUInt16& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaInt16& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaUInt32& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaInt32& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaUInt64& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaInt64& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaFloat& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	bool
+	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaDouble& value, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return XmlNumber::xmlDecode(*tree, value);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// decoder
 	//
 	// ------------------------------------------------------------------------

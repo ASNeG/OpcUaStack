@@ -53,6 +53,18 @@ namespace OpcUaStackCore
 		static bool xmlEncode(boost::property_tree::ptree& pt, OpcUaFloat& value);
 		static bool xmlEncode(boost::property_tree::ptree& pt, OpcUaDouble& value);
 
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaBoolean& value, const std::string& element);
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaByte& value, const std::string& element);
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaSByte& value, const std::string& element);
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaUInt16& value, const std::string& element);
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaInt16& value, const std::string& element);
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaUInt32& value, const std::string& element);
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaInt32& value, const std::string& element);
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaUInt64& value, const std::string& element);
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaInt64& value, const std::string& element);
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaFloat& value, const std::string& element);
+		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaDouble& value, const std::string& element);
+
 		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaBoolean& value);
 		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaByte& value);
 		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaSByte& value);
