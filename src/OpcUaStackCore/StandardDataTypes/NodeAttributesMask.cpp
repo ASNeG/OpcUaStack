@@ -317,16 +317,22 @@ namespace OpcUaStackCore
     bool
     NodeAttributesMask::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
+        if(!XmlNumber::xmlEncode(pt, value_, element)) return false;
+        return true;
     }
     
     bool
     NodeAttributesMask::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        if(!XmlNumber::xmlEncode(pt, value_, "Int32")) return false;
+        return true;
     }
     
     bool
     NodeAttributesMask::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        if(!XmlNumber::xmlDecode(pt, value_)) return false;
+        return true;
     }
     
     void

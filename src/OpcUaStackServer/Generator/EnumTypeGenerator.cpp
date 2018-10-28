@@ -845,14 +845,16 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix <<  nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+	    ss << prefix << "    if(!XmlNumber::xmlEncode(pt, value_, element)) return false;" << std::endl;
+	    ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+	    ss << prefix << "    if(!XmlNumber::xmlEncode(pt, value_, \"Int32\")) return false;" << std::endl;
+	    ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -868,7 +870,8 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+	    ss << prefix << "    if(!XmlNumber::xmlDecode(pt, value_)) return false;" << std::endl;
+	    ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 12:57:31.093991
+    BuildDate: 2018-Oct-28 13:07:58.114029
 */
 
 #ifndef __OpcUaStackCore_BrokerTransportQualityOfService_h__
