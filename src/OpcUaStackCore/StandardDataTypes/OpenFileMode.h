@@ -7,7 +7,6 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:35:47.167390
 */
 
 #ifndef __OpcUaStackCore_OpenFileMode_h__

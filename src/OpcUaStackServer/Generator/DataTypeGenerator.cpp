@@ -56,7 +56,7 @@ namespace OpcUaStackServer
 		if (!nodeInfo_.init(dataType, informationModel_)) {
 			return false;
 		}
-		nodeInfo_.log();
+		//nodeInfo_.log();
 
 		// generate header and source content
 		return
@@ -125,7 +125,6 @@ namespace OpcUaStackServer
 		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
 		ss << std::endl;
 		ss << "    Autor:     Kai Huebl (kai@huebl-sgh.de)" << std::endl;
-		ss << "    BuildDate: " << boost::posix_time::microsec_clock::local_time() << std::endl;
 		ss << "*/" << std::endl;
 
 		headerContent_ += ss.str();

@@ -4,10 +4,9 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:41:05.834633
 */
 
 #ifndef __OpcUaStackCore_ServerStatusDataType_h__
