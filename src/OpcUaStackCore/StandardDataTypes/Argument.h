@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -56,6 +56,7 @@ namespace OpcUaStackCore
 		virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
 		virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
 		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;

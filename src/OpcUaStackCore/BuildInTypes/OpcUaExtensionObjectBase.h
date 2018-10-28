@@ -41,7 +41,7 @@ namespace OpcUaStackCore
 
 		virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) = 0;
 		virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) = 0;
-		//virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) = 0;
+		virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) = 0;
 		virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) = 0;
 
 		virtual void copyTo(ExtensionObjectBase& extensionObjectBase) = 0;
