@@ -58,6 +58,7 @@ namespace OpcUaStackCore
         void copyTo(ServerStatusDataType& value);
         bool operator==(const ServerStatusDataType& value) const;
         bool operator!=(const ServerStatusDataType& value) const;
+        ServerStatusDataType& operator=(const ServerStatusDataType& value);
     
       private:
         OpcUaUtcTime startTime_;

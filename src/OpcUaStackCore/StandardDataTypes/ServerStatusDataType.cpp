@@ -96,6 +96,13 @@ namespace OpcUaStackCore
         value.shutdownReason_ = shutdownReason_;
     }
     
+    ServerStatusDataType&
+    ServerStatusDataType::operator=(const ServerStatusDataType& value)
+    {
+        const_cast<ServerStatusDataType*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
     //
