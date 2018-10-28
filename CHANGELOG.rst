@@ -1,14 +1,24 @@
-Release 3.5.1
+Release 3.6.0
 ------------------------------------------------------------
 
 **Features**:
+
+* add options for *build.bat* to set install path, stack location and VS version #33, by @flipback
+
+**Bugs**:
+
+* fix OpcUaStackCore/Client/Server tests #31, by @huebl
+* fix too specific params of *build.bat* #16, by @flipback
+
+
+Release 3.5.1
+-----------------------------------------------------------
 
 **Bugs**:
 
 * OpcUaStackCore/Client/Server tests end with errors #31, by @huebl
 * Missing certifcate in opc ua client #40, by @huebl
 * OPC UA client sometimes gets stuck #41, by @huebl  
-
 
 
 Release 3.5.0 (2018-10-27)
