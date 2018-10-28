@@ -211,6 +211,9 @@ namespace OpcUaStackCore
     bool
     BrokerTransportQualityOfService::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
     }
     
     bool

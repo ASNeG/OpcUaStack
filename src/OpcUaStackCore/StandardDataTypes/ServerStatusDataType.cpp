@@ -197,6 +197,14 @@ namespace OpcUaStackCore
     }
     
     bool
+    ServerStatusDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     ServerStatusDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
