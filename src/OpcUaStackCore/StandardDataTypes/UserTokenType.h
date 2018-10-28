@@ -4,10 +4,10 @@
     Generated Source Code - please do not change this source code
 
     EnumTypeCodeGenerator Version:
-        OpcUaStackCore - 4.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-25 10:29:57.943499
+    BuildDate: 2018-Oct-28 12:57:31.086680
 */
 
 #ifndef __OpcUaStackCore_UserTokenType_h__
@@ -17,6 +17,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/XmlNumber.h"
 
 namespace OpcUaStackCore
 {
@@ -40,7 +41,7 @@ namespace OpcUaStackCore
         UserTokenType(UserTokenType& value);
         virtual ~UserTokenType(void);
         
-        uint32_t& value(void);
+        int32_t& value(void);
         void enumeration(Enum enumeration);
         Enum enumeration(void);
         Enum str2Enum(const std::string& enumerationString);
@@ -73,7 +74,7 @@ namespace OpcUaStackCore
         UserTokenType& operator=(const Enum& value);
     
       private:
-        uint32_t value_;
+        int32_t value_;
     
     };
 

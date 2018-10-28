@@ -152,6 +152,7 @@ namespace OpcUaStackServer
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/BuildInTypes/XmlNumber.h\"" << std::endl;
 
 		//
 		// added namespace
@@ -301,7 +302,7 @@ namespace OpcUaStackServer
 		// added value definition
 		//
 		ss << prefix << std::endl;
-		ss << prefix << "uint32_t& value(void);" << std::endl;
+		ss << prefix << "int32_t& value(void);" << std::endl;
 		ss << prefix << "void enumeration(Enum enumeration);" << std::endl;
 		ss << prefix << "Enum enumeration(void);" << std::endl;
 		ss << prefix << "Enum str2Enum(const std::string& enumerationString);" << std::endl;
@@ -341,7 +342,7 @@ namespace OpcUaStackServer
 		EnumTypeField::Vec::iterator it;
 		EnumTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 
-		ss << prefix << "uint32_t value_;" << std::endl;
+		ss << prefix << "int32_t value_;" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -513,7 +514,7 @@ namespace OpcUaStackServer
 		// getter function
 		//
 		ss << prefix << std::endl;
-		ss << prefix << "uint32_t&" << std::endl;
+		ss << prefix << "int32_t&" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::value(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    return value_;" << std::endl;

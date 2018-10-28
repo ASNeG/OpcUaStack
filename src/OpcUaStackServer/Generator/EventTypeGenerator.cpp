@@ -464,7 +464,7 @@ namespace OpcUaStackServer
 			variableElement->localVariableName(localVariableName);
 			variableElement->functionName(functionName);
 			variableElement->dataTypeName(dataTypeName);
-			variableElement->log();
+			//variableElement->log();
 			variableElementVec_.push_back(variableElement);
 
 			if (!createVariableElementVec(fullName, *it)) {
