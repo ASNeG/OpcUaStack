@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/InformationModel/InformationModelManager.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "OpcUaStackServer/InformationModel/NamespaceArray.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -101,6 +102,10 @@ namespace OpcUaStackServer
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
+		bool applicationContextArray = false;
+		if (registerForwardNodeRequest->applicationContextArray()->size() == registerForwardNodeRequest->nodesToRegister()->size()) {
+			applicationContextArray = true;
+		}
 
 		// register forward
 		registerForwardNodeResponse->statusCodeArray()->resize(registerForwardNodeRequest->nodesToRegister()->size());
@@ -131,10 +136,21 @@ namespace OpcUaStackServer
 			// create or update forward info
 			ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
 			if (forwardNodeSync.get() == nullptr) {
-				forwardNodeSync = registerForwardNodeRequest->forwardNodeSync();
+				forwardNodeSync = constructSPtr<ForwardNodeSync>();
 			}
-			else {
-				forwardNodeSync->updateFrom(*registerForwardNodeRequest->forwardNodeSync());
+			forwardNodeSync->updateFrom(*registerForwardNodeRequest->forwardNodeSync());
+			if (applicationContextArray) {
+				BaseClass::SPtr baseClass;
+				registerForwardNodeRequest->applicationContextArray()->get(idx, baseClass);
+				if (baseClass.get() != nullptr) {
+					forwardNodeSync->writeService().applicationContext(baseClass);
+					forwardNodeSync->readService().applicationContext(baseClass);
+					forwardNodeSync->writeService().applicationContext(baseClass);
+					forwardNodeSync->readHService().applicationContext(baseClass);
+					forwardNodeSync->methodService().applicationContext(baseClass);
+					forwardNodeSync->monitoredItemStartService().applicationContext(baseClass);
+					forwardNodeSync->monitoredItemStopService().applicationContext(baseClass);
+				}
 			}
 			baseNodeClass->forwardNodeSync(forwardNodeSync);
 
@@ -296,8 +312,17 @@ namespace OpcUaStackServer
 		Log(Debug, "application service namespace info request")
 			.parameter("Trx", serviceTransaction->transactionId());
 
-		// read global namespaces
+		// register new namespace
 		NodeSetNamespace nodeSetNamespace;
+		if (namespaceInfoRequest->newNamespaceUri() != "") {
+			nodeSetNamespace.addNewGlobalNamespace(namespaceInfoRequest->newNamespaceUri());
+
+			NamespaceArray nsa;
+			nsa.informationModel(informationModel_);
+			nsa.addNamespaceName(namespaceInfoRequest->newNamespaceUri());
+		}
+
+		// read global namespaces
 		for (uint32_t idx = 0; idx < nodeSetNamespace.globalNamespaceVec().size(); idx++) {
 			std::string namespaceName = nodeSetNamespace.globalNamespaceVec()[idx];
 			namespaceInfoResponse->index2NamespaceMap().insert(std::make_pair(idx, namespaceName));
@@ -508,7 +533,8 @@ namespace OpcUaStackServer
 		// check parameter
 		//
 		if (browseName->pathNames()->size() == 0) {
-			nodeIdResult->statusCode(BadInvalidArgument);
+			nodeIdResult->nodeId(browseName->nodeId());
+			nodeIdResult->statusCode(Success);
 			return;
 		}
 

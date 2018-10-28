@@ -72,13 +72,13 @@ namespace OpcUaStackCore
 	}
 
 	void
-	DataTypeGenerator::dataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition)
+	DataTypeGenerator::dataTypeDefinition(DataTypeDefinition1::SPtr& dataTypeDefinition)
 	{
 		dataTypeDefinition_ = dataTypeDefinition;
 	}
 
 	void
-	DataTypeGenerator::superTypeDataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition)
+	DataTypeGenerator::superTypeDataTypeDefinition(DataTypeDefinition1::SPtr& dataTypeDefinition)
 	{
 		superTypeDataTypeDefinition_ = dataTypeDefinition;
 	}

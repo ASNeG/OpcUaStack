@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include <boost/filesystem/fstream.hpp>
@@ -200,16 +200,24 @@ namespace OpcUaProjectBuilder
 	}
 
 	std::string
-	OpcUaProjectBuilder::processString(const std::string& string)
+	OpcUaProjectBuilder::substituteString(const std::string& string)
 	{
 		std::string result;
 		boost::regex regProjectName("ProjectName");
 		boost::regex regProjectDescription("ProjectDescription");
 		boost::regex regProjectPort("ProjectPort");
+		boost::regex regDockerTag("DockerTag");
+		boost::regex regVersionMajor("VersionMajor");
+		boost::regex regVersionMinor("VersionMinor");
+		boost::regex regVersionPatch("VersionPatch");
 
 		result = boost::regex_replace(string, regProjectName, projectName_);
 		result = boost::regex_replace(result, regProjectDescription, projectDescription_);
 		result = boost::regex_replace(result, regProjectPort, projectPort_);
+		result = boost::regex_replace(result, regDockerTag, DOCKER_TAG);
+		result = boost::regex_replace(result, regVersionMajor, VERSION_MAJOR);
+		result = boost::regex_replace(result, regVersionMinor, VERSION_MAJOR);
+		result = boost::regex_replace(result, regVersionPatch, VERSION_PATCH);
 
 		return result;
 	}
@@ -223,7 +231,7 @@ namespace OpcUaProjectBuilder
 			boost::filesystem::path file = *it;
 
 			std::string leaf = file.leaf().string();
-			leaf = processString(leaf);
+			leaf = substituteString(leaf);
 
 			templateDirectory /= file.leaf();
 			projectDirectory /= leaf;
@@ -242,7 +250,7 @@ namespace OpcUaProjectBuilder
 				if (!readProjectFile(templateDirectory, content)) return false;
 
 				// substituate file content
-				content = processString(content);
+				content = substituteString(content);
 
 				// create project file
 				if (!createProjectFile(projectDirectory, content)) return false;
@@ -269,5 +277,6 @@ int main(int argc, char** argv)
 	OpcUaProjectBuilder::OpcUaProjectBuilder projectBuilder;
 	return projectBuilder.start(argc, argv);
 }
+
 
 

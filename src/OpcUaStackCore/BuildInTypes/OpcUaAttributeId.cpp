@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -53,7 +53,7 @@ namespace OpcUaStackCore
     void
     AttributeIdMask::get(AttributeIdMask::Vec& attributeIdMaskVec)
     {
-    	for (uint32_t idx = 0; idx <= 22; idx++) {
+    	for (uint32_t idx = 0; idx <= 27; idx++) {
     		uint32_t tmp = 1 << idx;
     		if ((attributeIdMask_ & tmp) == tmp) {
     			attributeIdMaskVec.push_back((AttributeId)idx);

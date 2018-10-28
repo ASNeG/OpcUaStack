@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 
 	NamespaceInfoRequest::NamespaceInfoRequest(void)
 	: Object()
+	, newNamespaceUri_("")
 	{
 	}
 
@@ -37,6 +38,17 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	NamespaceInfoRequest::newNamespaceUri(const std::string& newNamespaceUri)
+	{
+		newNamespaceUri_ = newNamespaceUri;
+	}
+
+	std::string&
+	NamespaceInfoRequest::newNamespaceUri(void)
+	{
+		return newNamespaceUri_;
+	}
 
 	void
 	NamespaceInfoRequest::opcUaBinaryEncode(std::ostream& os) const

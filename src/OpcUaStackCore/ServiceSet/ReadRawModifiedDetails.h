@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -39,12 +39,12 @@ namespace OpcUaStackCore
 
 		void isReadModified(const OpcUaBoolean& isReadModified);
 		OpcUaBoolean isReadModified(void);
-		void startTime(const UtcTime& startTime);
+		void startTime(const OpcUaUtcTime& startTime);
 		void startTime(const boost::posix_time::ptime& startTime);
-		UtcTime& startTime(void);
-		void endTime(const UtcTime& endTime);
+		OpcUaUtcTime& startTime(void);
+		void endTime(const OpcUaUtcTime& endTime);
 		void endTime(const boost::posix_time::ptime& endTime);
-		UtcTime& endTime(void);
+		OpcUaUtcTime& endTime(void);
 		void numValuesPerNode(const OpcUaUInt32& numValuesPerNode);
 		OpcUaUInt32 numValuesPerNode(void) const;
 		void returnBoolean(const OpcUaBoolean& returnBoolean);
@@ -59,8 +59,8 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaBoolean isReadModified_;
-		UtcTime startTime_;
-		UtcTime endTime_;
+		OpcUaUtcTime startTime_;
+		OpcUaUtcTime endTime_;
 		OpcUaUInt32 numValuesPerNode_;
 		OpcUaBoolean returnBoolean_;
 	};

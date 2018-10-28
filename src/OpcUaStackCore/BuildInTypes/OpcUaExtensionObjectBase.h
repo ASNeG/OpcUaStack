@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -48,6 +48,22 @@ namespace OpcUaStackCore
 		virtual void out(std::ostream& os) = 0;
 		virtual OpcUaNodeId binaryTypeId(void) { return OpcUaNodeId(0, 0); }
 		virtual OpcUaNodeId xmlTypeId(void) { return OpcUaNodeId(0, 0); }
+
+        bool operator==(const ExtensionObjectBase& extensionObjectBase) const
+		{
+        	return this->equal(*const_cast<ExtensionObjectBase*>(&extensionObjectBase));
+		}
+
+        bool operator!=(const ExtensionObjectBase& extensionObjectBase) const
+		{
+        	return !this->operator==(extensionObjectBase);
+		}
+
+        ExtensionObjectBase& operator=(const ExtensionObjectBase& extensionObjectBase)
+        {
+        	const_cast<ExtensionObjectBase*>(&extensionObjectBase)->copyTo(*this);
+        	return *this;
+        }
 	};
 
 }

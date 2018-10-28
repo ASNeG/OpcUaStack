@@ -27,6 +27,7 @@ target_link_libraries(
     ${CMAKE_DL_LIBS}
     ${Boost_LIBRARIES}
     ${OPENSSL_LIBRARIES}
+    ${MOSQUITTO_LIBRARIES}
 )
 
 set_target_properties(
@@ -64,6 +65,13 @@ message(STATUS "  library name: ${OPCUASTACK_PUBSUB_LIB_NAME}")
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 file(GLOB INC_OpcUaStackPubSub_Base OpcUaStackPubSub/Base/*.h OpcUaStackPubSub/Base/*.txx)
+file(GLOB INC_OpcUaStackPubSub_DataSetMessage OpcUaStackPubSub/DataSetMessage/*.h OpcUaStackPubSub/DataSetMessage/*.txx)
+file(GLOB INC_OpcUaStackPubSub_Network OpcUaStackPubSub/Network/*.h OpcUaStackPubSub/Network/*.txx)
+file(GLOB INC_OpcUaStackPubSub_MQTT OpcUaStackPubSub/MQTT/*.h OpcUaStackPubSub/MQTT/*.txx)
+file(GLOB INC_OpcUaStackPubSub_DataSet OpcUaStackPubSub/DataSet/*.h OpcUaStackPubSub/DataSet/*.txx)
+file(GLOB INC_OpcUaStackPubSub_DataSetDispatcher OpcUaStackPubSub/DataSetDispatcher/*.h OpcUaStackPubSub/DataSetDispatcher/*.txx)
+file(GLOB INC_OpcUaStackPubSub_DataSetCollector OpcUaStackPubSub/DataSetCollector/*.h OpcUaStackPubSub/DataSetCollector/*.txx)
+file(GLOB INC_OpcUaStackPubSub_PubSubModel OpcUaStackPubSub/PubSubModel/*.h OpcUaStackPubSub/PubSubModel/*.txx)
 
 install(
     TARGETS OpcUaStackPubSub 
@@ -74,6 +82,48 @@ install(
 install(
     FILES ${INC_OpcUaStackPubSub_Base} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/Base
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackPubSub_DataSetMessage} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/DataSetMessage
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackPubSub_Network} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/Network
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackPubSub_MQTT} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/MQTT
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackPubSub_DataSet} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/DataSet
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackPubSub_DataSetDispatcher} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/DataSetDispatcher
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackPubSub_DataSetCollector} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/DataSetCollector
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackPubSub_PubSubModel} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/PubSubModel
     COMPONENT headers
 )
 

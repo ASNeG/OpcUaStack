@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -41,6 +41,7 @@ namespace OpcUaStackCore
 
 		void start(uint32_t numberThreads = 1);
 		void stop(void);
+		void threadIdVec(std::vector<std::string>& threadIdVec);
 		template<typename HANDLER>
 		  void run(HANDLER handler);
 		boost::asio::io_service& io_service(void);
@@ -60,6 +61,7 @@ namespace OpcUaStackCore
 
 		typedef std::vector<boost::thread*> ThreadVec;
 		ThreadVec threadVec_;
+		std::vector<std::string> threadIdVec_;
 	};
 
 

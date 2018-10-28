@@ -19,7 +19,7 @@
 #ifndef __OpcUaStackCore_SecureChannel_h__
 #define __OpcUaStackCore_SecureChannel_h__
 
-#include "OpcUaStackCore/TCPChannel/TCPConnection.h"
+#include <OpcUaStackCore/Network/TCPConnection.h>
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/Certificate/SecurityKeySet.h"
@@ -120,7 +120,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 channelId_;
 		OpcUaUInt32 tokenId_;
 		std::vector<OpcUaUInt32> secureTokenVec_;
-		UtcTime createAt_;
+		OpcUaUtcTime createAt_;
 		OpcUaInt32 revisedLifetime_;
 
 		OpcUaNodeId typeId_;

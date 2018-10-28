@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadAtTimeDetails)
 	
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
-	UtcTime utcTime;
+	OpcUaUtcTime utcTime;
 	ReadAtTimeDetails details1, details2;
 
 	// encode

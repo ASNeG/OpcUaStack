@@ -64,12 +64,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	CreateSessionResponse::receivedSessionTimeout(const Duration receivedSessionTimeout)
+	CreateSessionResponse::receivedSessionTimeout(const OpcUaDuration receivedSessionTimeout)
 	{
 		receivedSessionTimeout_ = receivedSessionTimeout;
 	}
 
-	Duration 
+	OpcUaDuration
 	CreateSessionResponse::receivedSessionTimeout(void) const
 	{
 		return receivedSessionTimeout_;

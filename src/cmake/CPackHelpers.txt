@@ -1,0 +1,41 @@
+set(BOOST_SUPPORTED_RELEASES_BIN 1.65.1 1.65.0 1.64.0 1.63.0 1.62.0 1.61.0 1.60.0 1.59.0 1.58.0)
+set(BOOST_SUPPORTED_RELEASES_DEV "" 1.65 1.64 1.63 1.62 1.61 1.60 1.59 1.58)
+set(OPEN_SSL_SUPPORTED_RELEASES_BIN 1.0.0 1.0.1 1.0.2 1.1.0)
+set(OPEN_SSL_SUPPORTED_RELEASES_DEV "" 1.0 1.1)
+
+
+function(BoostDepends nameLib)    
+    LibDepends(${nameLib} BOOST_SUPPORTED_RELEASES_BIN "")
+    set(LIST_OF_LIB_VERSIONS_BIN ${FOUT} PARENT_SCOPE)    
+    
+    LibDepends(${nameLib} BOOST_SUPPORTED_RELEASES_DEV "dev")
+    set(LIST_OF_LIB_VERSIONS_DEV ${FOUT} PARENT_SCOPE)
+endfunction(BoostDepends)
+
+function(SSLDepends nameLib)
+    LibDepends(${nameLib} OPEN_SSL_SUPPORTED_RELEASES_BIN "")    
+    set(LIST_OF_LIB_VERSIONS_BIN ${FOUT} PARENT_SCOPE)
+    
+    LibDepends(${nameLib} OPEN_SSL_SUPPORTED_RELEASES_DEV "dev")
+    set(LIST_OF_LIB_VERSIONS_DEV ${FOUT} PARENT_SCOPE)
+endfunction(SSLDepends)
+ 
+function(LibDepends nameLib releaseList prefix)    
+    foreach(release IN LISTS ${releaseList})   
+        if ("${prefix}" STREQUAL "")     
+            set(FULL_VERSION ${nameLib}${release})
+        else()        
+            set(FULL_VERSION "${nameLib}${release}-${prefix}")
+        endif()        
+        
+        
+        if ("${OUT}" STREQUAL "")
+            set(OUT ${FULL_VERSION})            
+        else()
+            set(OUT ${OUT}\ |\ ${FULL_VERSION})
+        endif()
+        
+    endforeach(release)
+    
+    set(FOUT ${OUT} PARENT_SCOPE)    
+endfunction(LibDepends)

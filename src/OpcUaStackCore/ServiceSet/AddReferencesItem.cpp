@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,7 +34,7 @@ namespace OpcUaStackCore
 	, isForward_(false)
 	, targetServerUriSPtr_(constructSPtr<OpcUaString>())
 	, targetNodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
-	, targetNodeClassSPtr_(constructSPtr<NodeClass>())
+	, targetNodeClassSPtr_(constructSPtr<NodeClassOld>())
 	{
 	}
 
@@ -111,12 +111,12 @@ namespace OpcUaStackCore
 
 	void
 	AddReferencesItem::targetNodeClass(
-		const NodeClass::SPtr targetNodeClassSPtr)
+		const NodeClassOld::SPtr targetNodeClassSPtr)
 	{
 		targetNodeClassSPtr_ = targetNodeClassSPtr;
 	}
 	
-	NodeClass::SPtr
+	NodeClassOld::SPtr
 	AddReferencesItem::targetNodeClass(void) const
 	{
 		return targetNodeClassSPtr_;

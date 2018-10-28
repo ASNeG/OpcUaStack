@@ -3,6 +3,7 @@
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include <iostream>
 
 using namespace OpcUaStackCore;
 

@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteAtTimeDetails)
 	
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
-	UtcTime utcTime;
+	OpcUaUtcTime utcTime;
 	DeleteAtTimeDetails details1, details2;
 
 	// encode

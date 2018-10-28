@@ -105,6 +105,42 @@ BOOST_AUTO_TEST_CASE(SecureChannel)
 
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 {
+	//
+	// init certificate
+	//
+	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+	applicationCertificate->enable(true);
+
+	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
+	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
+	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
+	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
+	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
+
+	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
+	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
+
+	applicationCertificate->generateCertificate(true);
+	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
+	applicationCertificate->commonName("ASNeG-Demo");
+	applicationCertificate->domainComponent("127.0.0.1");
+	applicationCertificate->organization("ASNeG");
+	applicationCertificate->organizationUnit("OPC UA Service Department");
+	applicationCertificate->locality("Neukirchen");
+	applicationCertificate->state("Hessen");
+	applicationCertificate->country("DE");
+	applicationCertificate->yearsValidFor(5);
+	applicationCertificate->keyLength(2048);
+	applicationCertificate->certificateType("RsaSha256");
+	applicationCertificate->ipAddress().push_back("127.0.0.1");
+	applicationCertificate->dnsName().push_back("ASNeG.de");
+	applicationCertificate->email("info@ASNeG.de");
+
+	BOOST_REQUIRE(applicationCertificate->init() == true);
+
+	//
+	// secure channel connect / disconnect
+	//
 	OpcUaStackCore::SecureChannel* secureChannel;
 	SecureChannelServerTest secureChannelServerTest;
 	SecureChannelClientTest secureChannelClientTest;
@@ -116,6 +152,8 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	SecureChannelClient secureChannelClient(&ioThread);
 	secureChannelServer.secureChannelServerIf(&secureChannelServerTest);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
+	secureChannelServer.applicationCertificate(applicationCertificate);
+	secureChannelClient.applicationCertificate(applicationCertificate);
 
 	// server open endpoint
 	EndpointDescription::SPtr endpointDescription = constructSPtr<EndpointDescription>();
@@ -158,6 +196,42 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 {
+	//
+	// init certificate
+	//
+	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+	applicationCertificate->enable(true);
+
+	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
+	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
+	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
+	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
+	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
+
+	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
+	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
+
+	applicationCertificate->generateCertificate(true);
+	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
+	applicationCertificate->commonName("ASNeG-Demo");
+	applicationCertificate->domainComponent("127.0.0.1");
+	applicationCertificate->organization("ASNeG");
+	applicationCertificate->organizationUnit("OPC UA Service Department");
+	applicationCertificate->locality("Neukirchen");
+	applicationCertificate->state("Hessen");
+	applicationCertificate->country("DE");
+	applicationCertificate->yearsValidFor(5);
+	applicationCertificate->keyLength(2048);
+	applicationCertificate->certificateType("RsaSha256");
+	applicationCertificate->ipAddress().push_back("127.0.0.1");
+	applicationCertificate->dnsName().push_back("ASNeG.de");
+	applicationCertificate->email("info@ASNeG.de");
+
+	BOOST_REQUIRE(applicationCertificate->init() == true);
+
+	//
+	// connect/disconnect with a second secure channel
+	//
 	OpcUaStackCore::SecureChannel* secureChannel1;
 	OpcUaStackCore::SecureChannel* secureChannel2;
 	SecureChannelClientTest secureChannelClientTest;
@@ -170,6 +244,8 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 	SecureChannelClient secureChannelClient(&ioThread);
 	secureChannelServer.secureChannelServerIf(&secureChannelServerTest);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
+	secureChannelServer.applicationCertificate(applicationCertificate);
+	secureChannelClient.applicationCertificate(applicationCertificate);
 
 	// server open endpoint
 	EndpointDescription::SPtr endpointDescription = constructSPtr<EndpointDescription>();
@@ -229,6 +305,42 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnect)
 {
+	//
+	// init certificate
+	//
+	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+	applicationCertificate->enable(true);
+
+	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
+	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
+	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
+	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
+	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
+
+	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
+	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
+
+	applicationCertificate->generateCertificate(true);
+	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
+	applicationCertificate->commonName("ASNeG-Demo");
+	applicationCertificate->domainComponent("127.0.0.1");
+	applicationCertificate->organization("ASNeG");
+	applicationCertificate->organizationUnit("OPC UA Service Department");
+	applicationCertificate->locality("Neukirchen");
+	applicationCertificate->state("Hessen");
+	applicationCertificate->country("DE");
+	applicationCertificate->yearsValidFor(5);
+	applicationCertificate->keyLength(2048);
+	applicationCertificate->certificateType("RsaSha256");
+	applicationCertificate->ipAddress().push_back("127.0.0.1");
+	applicationCertificate->dnsName().push_back("ASNeG.de");
+	applicationCertificate->email("info@ASNeG.de");
+
+	BOOST_REQUIRE(applicationCertificate->init() == true);
+
+	//
+	// send request, receive response and disconnect
+	//
 	OpcUaStackCore::SecureChannel* secureChannel;
 	SecureChannelClientTest secureChannelClientTest;
 	SecureChannelServerTest secureChannelServerTest;
@@ -240,6 +352,8 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	SecureChannelClient secureChannelClient(&ioThread);
 	secureChannelServer.secureChannelServerIf(&secureChannelServerTest);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
+	secureChannelServer.applicationCertificate(applicationCertificate);
+	secureChannelClient.applicationCertificate(applicationCertificate);
 
 	secureChannelServerTest.secureChannelServer_ = &secureChannelServer;
 

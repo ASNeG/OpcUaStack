@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -41,12 +41,12 @@ namespace OpcUaStackCore
 		OpcUaNodeId& nodeId(void);
 		void isDeleteModified(const OpcUaBoolean& isDeleteModified);
 		OpcUaBoolean isDeleteModified(void);
-		void startTime(const UtcTime& startTime);
+		void startTime(const OpcUaUtcTime& startTime);
 		void startTime(const boost::posix_time::ptime& startTime);
-		UtcTime& startTime(void);
-		void endTime(const UtcTime& endTime);
+		OpcUaUtcTime& startTime(void);
+		void endTime(const OpcUaUtcTime& endTime);
 		void endTime(const boost::posix_time::ptime& endTime);
-		UtcTime& endTime(void);
+		OpcUaUtcTime& endTime(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -58,8 +58,8 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaNodeId nodeId_;
 		OpcUaBoolean isDeleteModified_;
-		UtcTime startTime_;
-		UtcTime endTime_;
+		OpcUaUtcTime startTime_;
+		OpcUaUtcTime endTime_;
 	};
 
 }

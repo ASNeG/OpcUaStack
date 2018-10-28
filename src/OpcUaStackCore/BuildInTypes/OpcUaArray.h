@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,6 +23,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <stdint.h>
 #include <iostream>
+#include <vector>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
@@ -261,6 +262,7 @@ namespace OpcUaStackCore
 		bool set(uint32_t pos, const T& value);
 		bool set(const T& value);
 		bool push_back(const T& value);
+		bool push_back_vec(const std::vector<T>& valueVec);
 		bool get(uint32_t pos, T& value);
 		bool get(T& value);
 
@@ -420,6 +422,18 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::push_back(const T& value)
 	{
 		return set(actArrayLen_, value);
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::push_back_vec(const std::vector<T>& valueVec)
+	{
+		for (uint32_t idx = 0; idx<valueVec.size(); idx++) {
+			if (!push_back(valueVec[idx])) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	template<typename T, typename CODER>

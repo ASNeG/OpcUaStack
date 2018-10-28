@@ -55,8 +55,8 @@ namespace OpcUaStackCore
 		void clientCertificate(OpcUaByte **buf, OpcUaInt32* bufLen) const;
 		void clientCertificate(const OpcUaByte *buf, OpcUaInt32 bufLen);
 		OpcUaByteString& clientCertificate(void);
-		void requestSessionTimeout(const Duration requestSessionTimeout);
-		Duration requestSessionTimeout(void) const;
+		void requestSessionTimeout(const OpcUaDuration requestSessionTimeout);
+		OpcUaDuration requestSessionTimeout(void) const;
 		void maxResponseMessageSize(const OpcUaUInt32& maxResponseMessageSize);
 		OpcUaUInt32 maxResponseMessageSize(void) const;
 
@@ -71,7 +71,7 @@ namespace OpcUaStackCore
 		OpcUaString sessionName_;
 		OpcUaByteString clientNonce_;
 		OpcUaByteString clientCertificate_;
-		Duration requestSessionTimeout_;
+		OpcUaDuration requestSessionTimeout_;
 		OpcUaUInt32 maxResponseMessageSize_;
 	};
 

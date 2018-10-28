@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: Object()
 	, ExtensibleParameterBase()
 	, nodeId_()
-	, reqTimeArraySPtr_(constructSPtr<UtcTimeArray>())
+	, reqTimeArraySPtr_(constructSPtr<OpcUaUtcTimeArray>())
 	{
 	}
 
@@ -53,12 +53,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	DeleteAtTimeDetails::reqTimes(const UtcTimeArray::SPtr reqTimes)
+	DeleteAtTimeDetails::reqTimes(const OpcUaUtcTimeArray::SPtr reqTimes)
 	{
 		reqTimeArraySPtr_ = reqTimes;
 	}
 	
-	UtcTimeArray::SPtr 
+	OpcUaUtcTimeArray::SPtr
 	DeleteAtTimeDetails::reqTimes(void) const
 	{
 		return reqTimeArraySPtr_;

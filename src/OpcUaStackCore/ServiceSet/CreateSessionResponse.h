@@ -45,8 +45,8 @@ namespace OpcUaStackCore
 		ResponseHeader::SPtr responseHeader(void) const;
 		OpcUaNodeId& sessionId(void);
 		OpcUaNodeId& authenticationToken(void);
-		void receivedSessionTimeout(const Duration receivedSessionTimeout);
-		Duration receivedSessionTimeout(void) const;
+		void receivedSessionTimeout(const OpcUaDuration receivedSessionTimeout);
+		OpcUaDuration receivedSessionTimeout(void) const;
 		void serverNonce(OpcUaByte** buf, OpcUaInt32* bufLen) const;
 		void serverNonce(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void serverCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const;
@@ -69,7 +69,7 @@ namespace OpcUaStackCore
 		ResponseHeader::SPtr responseHeader_;
 		OpcUaNodeId sessionId_;
 		OpcUaNodeId authenticationToken_;
-		Duration receivedSessionTimeout_;
+		OpcUaDuration receivedSessionTimeout_;
 		OpcUaByteString serverNonce_;
 		OpcUaByteString serverCertificate_;
 		EndpointDescriptionArray::SPtr serverEndpoints_;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/NodeClass.h"
+#include "OpcUaStackCore/ServiceSet/NodeClassOld.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 
 
@@ -45,8 +45,8 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId::SPtr requestedNewNodeId(void) const;
 		void browseName(const OpcUaQualifiedName::SPtr browseNameSPtr);
 		OpcUaQualifiedName::SPtr browseName(void) const;
-		void nodeClass(const NodeClass::SPtr nodeClassSPtr);
-		NodeClass::SPtr nodeClass(void) const;
+		void nodeClass(const NodeClassOld::SPtr nodeClassSPtr);
+		NodeClassOld::SPtr nodeClass(void) const;
 		ExtensibleParameter& nodeAttributes(void);
 		void typeDefinition(const OpcUaExpandedNodeId::SPtr typeDefinitionSPtr);
 		OpcUaExpandedNodeId::SPtr typeDefinition(void) const;
@@ -59,7 +59,7 @@ namespace OpcUaStackCore
 		OpcUaNodeId::SPtr referenceTypeId_;
 		OpcUaExpandedNodeId::SPtr requestedNewNodeId_;
 		OpcUaQualifiedName::SPtr browseName_;
-		NodeClass::SPtr nodeClass_;
+		NodeClassOld::SPtr nodeClass_;
 		ExtensibleParameter nodeAttributes_;
 		OpcUaExpandedNodeId::SPtr typeDefinition_;
 	};

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -41,7 +41,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaDuration = 11,
 		OpcUaBuildInType_OpcUaString = 12,
 		OpcUaBuildInType_OpcUaDateTime = 13,
-		OpcUaBuildInType_OpcUaUtcTime = 13,
+		OpcUaBuildInType_OpcUaUtcTime = 294,
 		OpcUaBuildInType_OpcUaGuid = 14,
 		OpcUaBuildInType_OpcUaByteString = 15,
 		OpcUaBuildInType_OpcUaXmlElement = 16,

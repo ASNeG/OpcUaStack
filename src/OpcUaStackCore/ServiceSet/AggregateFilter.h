@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -38,9 +38,9 @@ namespace OpcUaStackCore
 		AggregateFilter(void);
 		virtual ~AggregateFilter(void);
 
-		void startTime(const UtcTime& startTime);
+		void startTime(const OpcUaUtcTime& startTime);
 		void startTime(const boost::posix_time::ptime& startTime);
-		UtcTime startTime(void) const;
+		OpcUaUtcTime startTime(void) const;
 		void aggregateType(const OpcUaNodeId& aggregateType);
 		OpcUaNodeId& aggregateType(void);
 		void processingInterval(const OpcUaDouble& processingInterval);
@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 		//- ExtensibleParameterBase -------------------------------------------
 
 	  private:
-		UtcTime startTime_;
+		OpcUaUtcTime startTime_;
 		OpcUaNodeId aggregateType_;
 		OpcUaDouble processingInterval_;
 		AggregateConfiguration aggregateConfiguration_;

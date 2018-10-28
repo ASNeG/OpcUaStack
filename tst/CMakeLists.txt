@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12.2)
-project	(OpcUaStackTest)
+project	(OpcUaStackTest4)
 set (CMAKE_CXX_STANDARD 11)
 
 # -----------------------------------------------------------------------------
@@ -9,7 +9,7 @@ set (CMAKE_CXX_STANDARD 11)
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-set(OPCUASTACK_VERSION_MAJOR "3" CACHE STRING "major version")
+set(OPCUASTACK_VERSION_MAJOR "4" CACHE STRING "major version")
 set(OPCUASTACK_VERSION_MINOR "0" CACHE STRING "minor version")
 set(OPCUASTACK_VERSION_PATCH "1" CACHE STRING "patch version")
 
@@ -53,6 +53,13 @@ option(
     ON
 )
 
+option(
+    USE_OpcUaStackPubSub
+    "build opc ua pub sub library"
+    ON
+)
+
+
 #add_definitions(-DBOOST_ALL_DYN_LINK)
 
 #if (WIN32)
@@ -88,11 +95,6 @@ include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERS
 # -----------------------------------------------------------------------------
 include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERSION_MAJOR}/CMakeOpcUaStack.txt)
 
-#find_package(Boost COMPONENTS system unit_test_framework filesystem thread date_time chrono regex REQUIRED)
-#find_library(OpcUaStackCore_LIBRARY NAMES OpcUaStackCore PATHS ${OpcUaStack_INSTALL_DIR}/usr/lib/OpcUaStack)
-#find_library(OpcUaStackClient_LIBRARY NAMES OpcUaStackClient PATHS ${OpcUaStack_INSTALL_DIR}/usr/lib/OpcUaStack)
-#find_library(OpcUaStackServer_LIBRARY NAMES OpcUaStackServer PATHS ${OpcUaStack_INSTALL_DIR}/usr/lib/OpcUaStack)
-
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
@@ -110,4 +112,8 @@ endif ()
 
 if (USE_OpcUaStackServer)
     include(OpcUaStackServer/CMakeLists.txt) 
+endif ()
+
+if (USE_OpcUaStackPubSub)
+    include(OpcUaStackPubSub/CMakeLists.txt) 
 endif ()

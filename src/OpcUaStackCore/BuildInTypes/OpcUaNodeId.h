@@ -56,8 +56,7 @@ namespace OpcUaStackCore
 	};
 
 	class OpcUaNodeIdArray
-	: public OpcUaArray<OpcUaNodeId::SPtr
-	, SPtrTypeCoder<OpcUaNodeId> >
+	: public OpcUaArray<OpcUaNodeId::SPtr, SPtrTypeCoder<OpcUaNodeId> >
 	, public Object
 	{
 	  public:

@@ -41,12 +41,12 @@ namespace OpcUaStackCore
 
 		void numValuesPerNode(const OpcUaUInt32& numValuesPerNode);
 		OpcUaUInt32 numValuesPerNode(void) const;
-		void startTime(const UtcTime& startTime);
+		void startTime(const OpcUaUtcTime& startTime);
 		void startTime(const boost::posix_time::ptime& startTime);
-		UtcTime& startTime(void);
-		void endTime(const UtcTime& endTime);
+		OpcUaUtcTime& startTime(void);
+		void endTime(const OpcUaUtcTime& endTime);
 		void endTime(const boost::posix_time::ptime& endTime);
-		UtcTime& endTime(void);
+		OpcUaUtcTime& endTime(void);
 		void filter(const EventFilter::SPtr& filter);
 		EventFilter::SPtr& filter(void);
 
@@ -59,8 +59,8 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaUInt32 numValuesPerNode_;
-		UtcTime startTime_;
-		UtcTime endTime_;
+		OpcUaUtcTime startTime_;
+		OpcUaUtcTime endTime_;
 		EventFilter::SPtr filterSPtr_;
 	};
 

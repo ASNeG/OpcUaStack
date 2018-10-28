@@ -41,6 +41,8 @@ namespace OpcUaStackCore
 		OpcUaNodeIdArray::SPtr nodesToRegister(void) const;
 		void forwardNodeSync(ForwardNodeSync::SPtr forwardInfo);
 		ForwardNodeSync::SPtr forwardNodeSync(void);
+		void applicationContextArray(BaseClassArray::SPtr& applicationContextArray);
+		BaseClassArray::SPtr& applicationContextArray(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -48,6 +50,7 @@ namespace OpcUaStackCore
 	  private:
 		ForwardNodeSync::SPtr forwardNodeSync_;
 		OpcUaNodeIdArray::SPtr nodesToRegisterArraySPtr_;
+		BaseClassArray::SPtr applicationContextArray_;
 	};
 
 }

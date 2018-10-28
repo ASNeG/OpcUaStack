@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	//
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
-	DataTypeDefinition::DataTypeDefinition(void)
+	DataTypeDefinition1::DataTypeDefinition1(void)
 	: dataSubType_(None)
 	, nested_(false)
 	, name_()
@@ -38,102 +38,102 @@ namespace OpcUaStackCore
 	{
 	}
 
-	DataTypeDefinition::~DataTypeDefinition(void)
+	DataTypeDefinition1::~DataTypeDefinition1(void)
 	{
 	}
 
 	DataSubType
-	DataTypeDefinition::dataSubType(void)
+	DataTypeDefinition1::dataSubType(void)
 	{
 		return dataSubType_;
 	}
 
 	void
-	DataTypeDefinition::dataSubType(DataSubType dataSubType)
+	DataTypeDefinition1::dataSubType(DataSubType dataSubType)
 	{
 		dataSubType_ = dataSubType;
 	}
 
 	bool
-	DataTypeDefinition::nested(void)
+	DataTypeDefinition1::nested(void)
 	{
 		return nested_;
 	}
 
 	void
-	DataTypeDefinition::nested(bool nested)
+	DataTypeDefinition1::nested(bool nested)
 	{
 		nested_ = nested;
 	}
 
 	OpcUaQualifiedName&
-	DataTypeDefinition::name(void)
+	DataTypeDefinition1::name(void)
 	{
 		return name_;
 	}
 
 	void
-	DataTypeDefinition::name(OpcUaQualifiedName& name)
+	DataTypeDefinition1::name(OpcUaQualifiedName& name)
 	{
 		name.copyTo(name_);
 	}
 
 	OpcUaQualifiedName&
-	DataTypeDefinition::baseType(void)
+	DataTypeDefinition1::baseType(void)
 	{
 		return baseType_;
 	}
 
 	void
-	DataTypeDefinition::baseType(OpcUaQualifiedName& baseType)
+	DataTypeDefinition1::baseType(OpcUaQualifiedName& baseType)
 	{
 		baseType.copyTo(baseType_);
 	}
 
 	OpcUaBoolean
-	DataTypeDefinition::isUnion(void)
+	DataTypeDefinition1::isUnion(void)
 	{
 		return isUnion_;
 	}
 
 	void
-	DataTypeDefinition::isUnion(OpcUaBoolean isUnion)
+	DataTypeDefinition1::isUnion(OpcUaBoolean isUnion)
 	{
 		isUnion_ = isUnion;
 	}
 
 	DataTypeField::Vec&
-	DataTypeDefinition::dataFields(void)
+	DataTypeDefinition1::dataFields(void)
 	{
 		return dataFields_;
 	}
 
 	void
-	DataTypeDefinition::dataField(DataTypeField::SPtr& dataField)
+	DataTypeDefinition1::dataField(DataTypeField::SPtr& dataField)
 	{
 		dataField->dataSubType(dataSubType_);
 		dataField->dataTypeFieldIf(this);
 		dataFields_.push_back(dataField);
 	}
 
-	DataTypeDefinition::SPtr
-	DataTypeDefinition::definition(DataTypeField::SPtr& dataField)
+	DataTypeDefinition1::SPtr
+	DataTypeDefinition1::definition(DataTypeField::SPtr& dataField)
 	{
-		DataTypeDefinition::SPtr definition;
+		DataTypeDefinition1::SPtr definition;
 		if (dataField.get() == nullptr) return definition;
 		if (dataField->dataTypeDefinition().get() == nullptr) return definition;
-		definition = boost::static_pointer_cast<DataTypeDefinition>(dataField->dataTypeDefinition());
+		definition = boost::static_pointer_cast<DataTypeDefinition1>(dataField->dataTypeDefinition());
 		return definition;
 	}
 
 	bool
-	DataTypeDefinition::decode(boost::property_tree::ptree& ptree)
+	DataTypeDefinition1::decode(boost::property_tree::ptree& ptree)
 	{
 		return decode(ptree, true);
 	}
 
 	bool
-	DataTypeDefinition::decode(boost::property_tree::ptree& ptree, bool withDefinitionTag)
+	DataTypeDefinition1::decode(boost::property_tree::ptree& ptree, bool withDefinitionTag)
 	{
 		if (withDefinitionTag) {
 			boost::optional<boost::property_tree::ptree&> tree = ptree.get_child_optional("Definition");
@@ -214,7 +214,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DataTypeDefinition::encode(boost::property_tree::ptree& ptree)
+	DataTypeDefinition1::encode(boost::property_tree::ptree& ptree)
 	{
 		if (nested_) {
 			// encode name
@@ -251,9 +251,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DataTypeDefinition::decode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition)
+	DataTypeDefinition1::decode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition)
 	{
-		DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
+		DataTypeDefinition1::SPtr definition = constructSPtr<DataTypeDefinition1>();
 		definition->nested(true);
 		definition->dataSubType(dataSubType_);
 
@@ -264,9 +264,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DataTypeDefinition::encode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition)
+	DataTypeDefinition1::encode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition)
 	{
-		DataTypeDefinition::SPtr definition = boost::static_pointer_cast<DataTypeDefinition>(dataTypeDefinition);
+		DataTypeDefinition1::SPtr definition = boost::static_pointer_cast<DataTypeDefinition1>(dataTypeDefinition);
 		return definition->encode(ptree);
 	}
 

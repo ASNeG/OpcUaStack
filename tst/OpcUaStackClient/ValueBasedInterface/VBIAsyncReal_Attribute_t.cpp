@@ -4,8 +4,6 @@
 
 using namespace OpcUaStackClient;
 
-#ifdef REAL_SERVER
-
 BOOST_AUTO_TEST_SUITE(VBIAsyncReal_Attribute_)
 
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_)
@@ -13,6 +11,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_)
 	std::cout << "VBIAsyncReal_Attribute_t" << std::endl;
 }
 
+#ifdef REAL_SERVER
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_read)
 {
 	VBIClientHandlerTest vbiClientHandlerTest;
@@ -94,7 +93,6 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_write)
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
-
-#endif

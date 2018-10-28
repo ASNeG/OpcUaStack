@@ -285,6 +285,7 @@ namespace OpcUaStackServer
 
 		// create new session
 		Session::SPtr session = constructSPtr<Session>();
+		session->ioThread(ioThread_);
 		session->sessionIf(this);
 		session->applicationCertificate(applicationCertificate_);
 		session->cryptoManager(cryptoManager_);
