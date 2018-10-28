@@ -70,7 +70,7 @@ the root directory of the sources:
   $ sh build.sh -t local 
 
 
-By default the installation path is $HOME/.ASNeG. You can change it at any moment:
+By default, the installation path is $HOME/.ASNeG. You can change it at any moment:
 
 ::
 
@@ -86,16 +86,14 @@ is suitable for your target platform (e.g. Native x86) the following command:
 
 ::
 
-  $ build.bat local
+  $ build.bat -t local
 
 
-By default the installation path is C:\\install. You can change it by typing:
+By default, the installation path is C:\\ASNeG. You can change it by typing:
 
 ::
   
-  $ cd local_build
-  $ set DESTDIR=C:\path\witch\you\prefer
-  $ MSBuild INSTALL.vcxproj
+  $ build.bat -t local -i C:\path\witch\you\prefer
 
 
 
