@@ -207,6 +207,33 @@ namespace OpcUaStackCore
     bool
     ServerStatusDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("StartTime");
+        if (!tree) return false;
+        if (!startTime_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("CurrentTime");
+        if (!tree) return false;
+        if (!currentTime_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("State");
+        if (!tree) return false;
+        if (!state_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("BuildInfo");
+        if (!tree) return false;
+        if (!buildInfo_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("SecondsTillShutdown");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, secondsTillShutdown_)) return false;
+    
+        tree = pt.get_child_optional("ShutdownReason");
+        if (!tree) return false;
+        if (!shutdownReason_.xmlDecode(*tree, xmlns)) return false;
+    
+        return true;
     }
     
     void

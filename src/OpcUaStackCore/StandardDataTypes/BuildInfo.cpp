@@ -207,6 +207,33 @@ namespace OpcUaStackCore
     bool
     BuildInfo::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("ProductUri");
+        if (!tree) return false;
+        if (!productUri_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("ManufacturerName");
+        if (!tree) return false;
+        if (!manufacturerName_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("ProductName");
+        if (!tree) return false;
+        if (!productName_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("SoftwareVersion");
+        if (!tree) return false;
+        if (!softwareVersion_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("BuildNumber");
+        if (!tree) return false;
+        if (!buildNumber_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("BuildDate");
+        if (!tree) return false;
+        if (!buildDate_.xmlDecode(*tree, xmlns)) return false;
+    
+        return true;
     }
     
     void

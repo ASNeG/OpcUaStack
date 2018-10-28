@@ -883,6 +883,8 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassXmlDecode(const std::string& prefix)
 	{
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 		std::stringstream ss;
 
 		//
@@ -905,7 +907,29 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree;" << std::endl;
+		ss << prefix << std::endl;
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			ss << prefix << "    tree = pt.get_child_optional(\""<< dataTypeField->name() << "\");" << std::endl;
+			ss << prefix << "    if (!tree) return false;" << std::endl;
+
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    if(!XmlNumber::xmlDecode(*tree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
+					break;
+
+				default:
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlDecode(*tree, xmlns)) return false;" << std::endl;
+			}
+
+			ss << prefix << std::endl;
+		}
+
+		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
