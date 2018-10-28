@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:07:58.106534
+    BuildDate: 2018-Oct-28 13:35:47.161847
 */
 
 #ifndef __OpcUaStackCore_UserTokenType_h__
@@ -30,10 +30,10 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<UserTokenType> SPtr;
     
         typedef enum {
-            EnumAnonymous = 0,
-            EnumUserName = 1,
-            EnumCertificate = 2,
-            EnumIssuedToken = 3,
+            EnumAnonymous = 0,     //!< An anonymous user.
+            EnumUserName = 1,     //!< A user identified by a user name and password.
+            EnumCertificate = 2,     //!< A user identified by an X509 certificate.
+            EnumIssuedToken = 3,     //!< A user identified by WS-Security XML token.
         } Enum;
     
         UserTokenType(void);

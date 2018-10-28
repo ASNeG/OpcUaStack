@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:07:58.114670
+    BuildDate: 2018-Oct-28 13:35:47.170458
 */
 
 #ifndef __OpcUaStackCore_IdentityCriteriaType_h__

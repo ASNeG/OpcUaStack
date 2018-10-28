@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:07:58.106101
+    BuildDate: 2018-Oct-28 13:35:47.161407
 */
 
 #ifndef __OpcUaStackCore_MessageSecurityMode_h__
@@ -30,10 +30,10 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<MessageSecurityMode> SPtr;
     
         typedef enum {
-            EnumInvalid = 0,
-            EnumNone = 1,
-            EnumSign = 2,
-            EnumSignAndEncrypt = 3,
+            EnumInvalid = 0,     //!< An invalid mode.
+            EnumNone = 1,     //!< No security is used.
+            EnumSign = 2,     //!< The message is signed.
+            EnumSignAndEncrypt = 3,     //!< The message is signed and encrypted.
         } Enum;
     
         MessageSecurityMode(void);

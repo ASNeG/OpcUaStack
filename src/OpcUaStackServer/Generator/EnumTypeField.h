@@ -75,9 +75,24 @@ class DLLEXPORT EnumTypeField
 	 */
 	int32_t value(void);
 
+	/**
+	 * Setter function
+	 *
+	 * @param[in] description	field description
+	 */
+	void description(const std::string& description);
+
+	/**
+	 * Getter function
+	 *
+	 * @return field description
+	 */
+	std::string& description(void);
+
   private:
 	std::string name_;						//!< enum field name
 	int32_t value_;							//!< enum value
+	std::string description_;				//!< enum description
 };
 
 }

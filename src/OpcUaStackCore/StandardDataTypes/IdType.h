@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:07:58.105247
+    BuildDate: 2018-Oct-28 13:35:47.160541
 */
 
 #ifndef __OpcUaStackCore_IdType_h__
@@ -30,10 +30,10 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<IdType> SPtr;
     
         typedef enum {
-            EnumNumeric = 0,
-            EnumString = 1,
-            EnumGuid = 2,
-            EnumOpaque = 3,
+            EnumNumeric = 0,     //!< The identifier is a numeric value. 0 is a null value.
+            EnumString = 1,     //!< The identifier is a string value. An empty string is a null value.
+            EnumGuid = 2,     //!< The identifier is a 16 byte structure. 16 zero bytes is a null value.
+            EnumOpaque = 3,     //!< The identifier is an array of bytes. A zero length array is a null value.
         } Enum;
     
         IdType(void);

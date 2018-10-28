@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:07:58.107929
+    BuildDate: 2018-Oct-28 13:35:47.163285
 */
 
 #ifndef __OpcUaStackCore_NodeAttributesMask_h__
@@ -30,41 +30,41 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<NodeAttributesMask> SPtr;
     
         typedef enum {
-            EnumNone = 0,
-            EnumAccessLevel = 1,
-            EnumArrayDimensions = 2,
-            EnumBrowseName = 4,
-            EnumContainsNoLoops = 8,
-            EnumDataType = 16,
-            EnumDescription = 32,
-            EnumDisplayName = 64,
-            EnumEventNotifier = 128,
-            EnumExecutable = 256,
-            EnumHistorizing = 512,
-            EnumInverseName = 1024,
-            EnumIsAbstract = 2048,
-            EnumMinimumSamplingInterval = 4096,
-            EnumNodeClass = 8192,
-            EnumNodeId = 16384,
-            EnumSymmetric = 32768,
-            EnumUserAccessLevel = 65536,
-            EnumUserExecutable = 131072,
-            EnumUserWriteMask = 262144,
-            EnumValueRank = 524288,
-            EnumWriteMask = 1048576,
-            EnumValue = 2097152,
-            EnumDataTypeDefinition = 4194304,
-            EnumRolePermissions = 8388608,
-            EnumAccessRestrictions = 16777216,
-            EnumAll = 33554431,
-            EnumBaseNode = 26501220,
-            EnumObject = 26501348,
-            EnumObjectType = 26503268,
-            EnumVariable = 26571383,
-            EnumVariableType = 28600438,
-            EnumMethod = 26632548,
-            EnumReferenceType = 26537060,
-            EnumView = 26501356,
+            EnumNone = 0,     //!< No attribuites provided.
+            EnumAccessLevel = 1,     //!< The access level attribute is specified.
+            EnumArrayDimensions = 2,     //!< The array dimensions attribute is specified.
+            EnumBrowseName = 4,     //!< The browse name attribute is specified.
+            EnumContainsNoLoops = 8,     //!< The contains no loops attribute is specified.
+            EnumDataType = 16,     //!< The data type attribute is specified.
+            EnumDescription = 32,     //!< The description attribute is specified.
+            EnumDisplayName = 64,     //!< The display name attribute is specified.
+            EnumEventNotifier = 128,     //!< The event notifier attribute is specified.
+            EnumExecutable = 256,     //!< The executable attribute is specified.
+            EnumHistorizing = 512,     //!< The historizing attribute is specified.
+            EnumInverseName = 1024,     //!< The inverse name attribute is specified.
+            EnumIsAbstract = 2048,     //!< The is abstract attribute is specified.
+            EnumMinimumSamplingInterval = 4096,     //!< The minimum sampling interval attribute is specified.
+            EnumNodeClass = 8192,     //!< The node class attribute is specified.
+            EnumNodeId = 16384,     //!< The node id attribute is specified.
+            EnumSymmetric = 32768,     //!< The symmetric attribute is specified.
+            EnumUserAccessLevel = 65536,     //!< The user access level attribute is specified.
+            EnumUserExecutable = 131072,     //!< The user executable attribute is specified.
+            EnumUserWriteMask = 262144,     //!< The user write mask attribute is specified.
+            EnumValueRank = 524288,     //!< The value rank attribute is specified.
+            EnumWriteMask = 1048576,     //!< The write mask attribute is specified.
+            EnumValue = 2097152,     //!< The value attribute is specified.
+            EnumDataTypeDefinition = 4194304,     //!< The write mask attribute is specified.
+            EnumRolePermissions = 8388608,     //!< The write mask attribute is specified.
+            EnumAccessRestrictions = 16777216,     //!< The write mask attribute is specified.
+            EnumAll = 33554431,     //!< All attributes are specified.
+            EnumBaseNode = 26501220,     //!< All base attributes are specified.
+            EnumObject = 26501348,     //!< All object attributes are specified.
+            EnumObjectType = 26503268,     //!< All object type attributes are specified.
+            EnumVariable = 26571383,     //!< All variable attributes are specified.
+            EnumVariableType = 28600438,     //!< All variable type attributes are specified.
+            EnumMethod = 26632548,     //!< All method attributes are specified.
+            EnumReferenceType = 26537060,     //!< All reference type attributes are specified.
+            EnumView = 26501356,     //!< All view attributes are specified.
         } Enum;
     
         NodeAttributesMask(void);

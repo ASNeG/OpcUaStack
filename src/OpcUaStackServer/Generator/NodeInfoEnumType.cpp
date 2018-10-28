@@ -86,6 +86,9 @@ namespace OpcUaStackServer
 			// added value
 			enumTypeField->value(enumField->value());
 
+			// added description
+			enumTypeField->description(enumField->description().text().toStdString());
+
 			enumTypeFieldVec_.push_back(enumTypeField);
 		}
 

@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:07:58.107450
+    BuildDate: 2018-Oct-28 13:35:47.162753
 */
 
 #ifndef __OpcUaStackCore_SecurityTokenRequestType_h__
@@ -30,8 +30,8 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<SecurityTokenRequestType> SPtr;
     
         typedef enum {
-            EnumIssue = 0,
-            EnumRenew = 1,
+            EnumIssue = 0,     //!< The channel is being created.
+            EnumRenew = 1,     //!< The channel is being renewed.
         } Enum;
     
         SecurityTokenRequestType(void);

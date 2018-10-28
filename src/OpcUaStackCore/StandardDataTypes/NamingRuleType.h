@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:07:58.104813
+    BuildDate: 2018-Oct-28 13:35:47.160125
 */
 
 #ifndef __OpcUaStackCore_NamingRuleType_h__
@@ -30,9 +30,9 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<NamingRuleType> SPtr;
     
         typedef enum {
-            EnumMandatory = 1,
-            EnumOptional = 2,
-            EnumConstraint = 3,
+            EnumMandatory = 1,     //!< The BrowseName must appear in all instances of the type.
+            EnumOptional = 2,     //!< The BrowseName may appear in an instance of the type.
+            EnumConstraint = 3,     //!< The modelling rule defines a constraint and the BrowseName is not used in an instance of the type.
         } Enum;
     
         NamingRuleType(void);

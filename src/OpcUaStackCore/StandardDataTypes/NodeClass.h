@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:07:58.105666
+    BuildDate: 2018-Oct-28 13:35:47.160968
 */
 
 #ifndef __OpcUaStackCore_NodeClass_h__
@@ -30,15 +30,15 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<NodeClass> SPtr;
     
         typedef enum {
-            EnumUnspecified = 0,
-            EnumObject = 1,
-            EnumVariable = 2,
-            EnumMethod = 4,
-            EnumObjectType = 8,
-            EnumVariableType = 16,
-            EnumReferenceType = 32,
-            EnumDataType = 64,
-            EnumView = 128,
+            EnumUnspecified = 0,     //!< No classes are selected.
+            EnumObject = 1,     //!< The node is an object.
+            EnumVariable = 2,     //!< The node is a variable.
+            EnumMethod = 4,     //!< The node is a method.
+            EnumObjectType = 8,     //!< The node is an object type.
+            EnumVariableType = 16,     //!< The node is an variable type.
+            EnumReferenceType = 32,     //!< The node is a reference type.
+            EnumDataType = 64,     //!< The node is a data type.
+            EnumView = 128,     //!< The node is a view.
         } Enum;
     
         NodeClass(void);

@@ -7,7 +7,7 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:07:58.106992
+    BuildDate: 2018-Oct-28 13:35:47.162294
 */
 
 #ifndef __OpcUaStackCore_ApplicationType_h__
@@ -30,10 +30,10 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<ApplicationType> SPtr;
     
         typedef enum {
-            EnumServer = 0,
-            EnumClient = 1,
-            EnumClientAndServer = 2,
-            EnumDiscoveryServer = 3,
+            EnumServer = 0,     //!< The application is a server.
+            EnumClient = 1,     //!< The application is a client.
+            EnumClientAndServer = 2,     //!< The application is a client and a server.
+            EnumDiscoveryServer = 3,     //!< The application is a discovery server.
         } Enum;
     
         ApplicationType(void);

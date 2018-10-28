@@ -23,6 +23,7 @@ namespace OpcUaStackServer
 	EnumTypeField::EnumTypeField(void)
 	: name_("")
 	, value_(-1)
+	, description_("")
 	{
 	}
 
@@ -52,6 +53,18 @@ namespace OpcUaStackServer
 	EnumTypeField::value(void)
 	{
 		return value_;
+	}
+
+	void
+	EnumTypeField::description(const std::string& description)
+	{
+		description_ = description;
+	}
+
+	std::string&
+	EnumTypeField::description(void)
+	{
+		return description_;
 	}
 
 }
