@@ -190,7 +190,14 @@ message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
 # -----------------------------------------------------------------------------
 if (WIN32)
     include(Tools/CMakeLists.txt) 
+    if (CPACK_BINARY_MSI)
+        set (INSTALL_PREFIX ".")
+    else()
+        set (INSTALL_PREFIX "/usr")        
+    endif()
 endif()
+
+
 include(OpcUaStackCore/CMakeLists.txt)
 include(OpcUaStackPubSub/CMakeLists.txt)
 include(OpcUaStackClient/CMakeLists.txt) 
@@ -200,25 +207,6 @@ include(OpcUaClient/CMakeLists.txt)
 include(OpcUaProjectBuilder/CMakeLists.txt)
 include(OpcUaEventTypeGenerator/CMakeLists.txt)
 include(cmake/CMakeLists.txt)
-
-
-
-
-
-
-
-
-
-
-
-
-
-if (WIN32)
-	set(CMAKE_PREFIX_PATH C:\\local\\boost_1_54_0)
-	set(BOOST_LIBRARYDIR C:\\local\\boost_1_54_0\\lib32-msvc-11.0)
-	#ADD_DEFINITIONS(-DUNICODE)
-	#ADD_DEFINITIONS(-D_UNICODE)
-endif ()
 
 
 # -----------------------------------------------------------------------------
@@ -232,31 +220,31 @@ endif ()
 
 install(
     FILES icon/asneg.ico 
-    DESTINATION /usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/icons/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES icon/asneg_install.ico 
-    DESTINATION /usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/icons/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES icon/asneg_uninstall.ico 
-    DESTINATION /usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/icons/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES ${CMAKE_SOURCE_DIR}/../LICENSE
-    DESTINATION /usr/share/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES ${CMAKE_SOURCE_DIR}/../README.rst
-    DESTINATION /usr/share/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
@@ -350,32 +338,7 @@ set(CPACK_COMPONENT_HEADERS_GROUP "dev")
 set(CPACK_COMPONENT_APPLICATIONS_GROUP "bin")
 set(CPACK_COMPONENT_TOOLS_GROUP "dev")
 
-include(CPack)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#
-# todo
-#
-if (WIN32)
+if (CPACK_BINARY_MSI)
 	include (InstallRequiredSystemLibraries)
 	
 	#set(CPACK_PACKAGE_EXECUTABLES "OpcUaServer" "OpcUaServer")

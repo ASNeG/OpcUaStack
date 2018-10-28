@@ -41,6 +41,6 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 install(
     TARGETS OpcUaEventTypeGenerator${VERSION_MAJOR} 
-    DESTINATION /usr/bin
+    DESTINATION ${INSTALL_PREFIX}/bin
     COMPONENT tools
 )

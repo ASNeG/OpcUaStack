@@ -61,6 +61,13 @@ if "%COMMAND%" == "local" (
 	goto:eof
 )
 
+if "%COMMAND%" == "msi" (
+    call:build_msi
+	
+	pause
+	goto:eof
+)
+
 if "%COMMAND%" == "tst" (
     call:build_tst
 	
@@ -95,6 +102,24 @@ REM ---------------------------------------------------------------------------
 	%CMAKE% --build build_local --target install
 goto:eof
 
+REM ---------------------------------------------------------------------------
+REM
+REM build MSI function
+REM
+REM ---------------------------------------------------------------------------
+:build_msi
+	echo build MSI package
+
+	REM
+	REM build OpcUaStack
+	REM
+	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -H./src/ -B./build_msi
+
+	REM
+	REM package OpcUaStack to MSI
+	REM    	
+	%CMAKE% --build build_msi --target package
+goto:eof
 
 REM ---------------------------------------------------------------------------
 REM
@@ -122,11 +147,12 @@ REM usage function
 REM
 REM ---------------------------------------------------------------------------
 :usage
-   echo "build.bat --target (local | tst)"
+   echo "build.bat --target (local | tst | msi)"
    echo.
    echo --target, -t, /t: sets one of the folowing target:
    echo   local - create local build and install in folder C:/install
    echo   tst   - build unit application
+   echo   msi   - build msi package
    echo.
    echo --stack-prefix, -s, /s STACK_PREFIX:  set the path to directory
    echo \twhere the OpcUaStack is installed (default: C:\ASNeG)

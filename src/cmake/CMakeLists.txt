@@ -33,18 +33,18 @@ configure_file(
 # -----------------------------------------------------------------------------
 install(
     FILES "${PROJECT_BINARY_DIR}/CMakeOpcUaStack.txt" 
-    DESTINATION /usr/share/cmake/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/cmake/OpcUaStack${VERSION_MAJOR}
     COMPONENT tools
 )
 
 install(
     FILES "${PROJECT_BINARY_DIR}/CMakeBoost.txt" 
-    DESTINATION /usr/share/cmake/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/cmake/OpcUaStack${VERSION_MAJOR}
     COMPONENT tools
 )
 
 install(
     FILES "${PROJECT_BINARY_DIR}/CMakeOpenSSL.txt" 
-    DESTINATION /usr/share/cmake/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/cmake/OpcUaStack${VERSION_MAJOR}
     COMPONENT tools
 )
