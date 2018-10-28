@@ -828,8 +828,13 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassXmlEncode(const std::string& prefix)
 	{
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 		std::stringstream ss;
 
+		//
+		// first xml encoder function
+		//
 		ss << prefix << std::endl;
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix <<  nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
@@ -840,11 +845,34 @@ namespace OpcUaStackServer
 		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
+
+		//
+		// second xml encoder function
+		//
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
+		ss << prefix << std::endl;
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    if(!XmlNumber::xmlEncode(elementTree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
+					break;
+
+				default:
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, xmlns)) return false;" << std::endl;
+			}
+			ss << prefix << "    pt.push_back(std::make_pair(\"" << dataTypeField->name() << "\", elementTree));" << std::endl;
+			ss << prefix << std::endl;
+		}
+
+    	ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

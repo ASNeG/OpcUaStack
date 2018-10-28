@@ -173,6 +173,27 @@ namespace OpcUaStackCore
     bool
     BuildInfo::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        boost::property_tree::ptree elementTree;
+    
+        if (!productUri_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("ProductUri", elementTree));
+    
+        if (!manufacturerName_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("ManufacturerName", elementTree));
+    
+        if (!productName_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("ProductName", elementTree));
+    
+        if (!softwareVersion_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("SoftwareVersion", elementTree));
+    
+        if (!buildNumber_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("BuildNumber", elementTree));
+    
+        if (!buildDate_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("BuildDate", elementTree));
+    
+        return true;
     }
     
     bool
