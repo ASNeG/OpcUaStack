@@ -108,6 +108,7 @@ namespace OpcUaStackServer
 				    generateHeaderClassPrivate("    ") &&
 				    generateHeaderClassValueDefinition("        ") &&
 				generateHeaderClassEnd("    ") &&
+				generateHeaderClassValueArray("    ") &&
 		    generateHeaderEnd();
 	}
 
@@ -347,6 +348,24 @@ namespace OpcUaStackServer
 		EnumTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 
 		ss << prefix << "int32_t value_;" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EnumTypeGenerator::generateHeaderClassValueArray(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "class " << nodeInfo_.className() << "Array" << std::endl;
+		ss << prefix << ": public OpcUaArray<" << nodeInfo_.className() << "::SPtr, SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
+		ss << prefix << ", public Object" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "  public:" << std::endl;
+		ss << prefix << "	   typedef boost::shared_ptr<" << nodeInfo_.className() << "Array> SPtr;" << std::endl;
+		ss << prefix << "};" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;

@@ -77,6 +77,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class UserTokenTypeArray
+    : public OpcUaArray<UserTokenType::SPtr, SPtrTypeCoder<UserTokenType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<UserTokenTypeArray> SPtr;
+    };
 
 }
 

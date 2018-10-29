@@ -77,6 +77,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class ApplicationTypeArray
+    : public OpcUaArray<ApplicationType::SPtr, SPtrTypeCoder<ApplicationType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<ApplicationTypeArray> SPtr;
+    };
 
 }
 

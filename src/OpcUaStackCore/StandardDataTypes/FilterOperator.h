@@ -91,6 +91,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class FilterOperatorArray
+    : public OpcUaArray<FilterOperator::SPtr, SPtrTypeCoder<FilterOperator> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<FilterOperatorArray> SPtr;
+    };
 
 }
 

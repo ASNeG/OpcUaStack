@@ -75,6 +75,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class SecurityTokenRequestTypeArray
+    : public OpcUaArray<SecurityTokenRequestType::SPtr, SPtrTypeCoder<SecurityTokenRequestType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<SecurityTokenRequestTypeArray> SPtr;
+    };
 
 }
 

@@ -76,6 +76,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class AxisScaleEnumerationArray
+    : public OpcUaArray<AxisScaleEnumeration::SPtr, SPtrTypeCoder<AxisScaleEnumeration> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<AxisScaleEnumerationArray> SPtr;
+    };
 
 }
 

@@ -108,6 +108,7 @@ namespace OpcUaStackServer
 		bool generateHeaderClassPrivate(const std::string& prefix);
 		bool generateHeaderClassValueGetter(const std::string& prefix);
 		bool generateHeaderClassValueDefinition(const std::string& prefix);
+		bool generateHeaderClassValueArray(const std::string& prefix);
 
 		//
 		// source functions

@@ -81,6 +81,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class ServerStateArray
+    : public OpcUaArray<ServerState::SPtr, SPtrTypeCoder<ServerState> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<ServerStateArray> SPtr;
+    };
 
 }
 

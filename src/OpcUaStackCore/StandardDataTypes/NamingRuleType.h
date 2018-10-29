@@ -76,6 +76,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class NamingRuleTypeArray
+    : public OpcUaArray<NamingRuleType::SPtr, SPtrTypeCoder<NamingRuleType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<NamingRuleTypeArray> SPtr;
+    };
 
 }
 

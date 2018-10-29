@@ -76,6 +76,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class OverrideValueHandlingArray
+    : public OpcUaArray<OverrideValueHandling::SPtr, SPtrTypeCoder<OverrideValueHandling> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<OverrideValueHandlingArray> SPtr;
+    };
 
 }
 

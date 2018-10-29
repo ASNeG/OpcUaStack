@@ -108,6 +108,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class NodeAttributesMaskArray
+    : public OpcUaArray<NodeAttributesMask::SPtr, SPtrTypeCoder<NodeAttributesMask> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<NodeAttributesMaskArray> SPtr;
+    };
 
 }
 

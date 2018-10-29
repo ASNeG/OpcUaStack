@@ -79,6 +79,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class IdentityCriteriaTypeArray
+    : public OpcUaArray<IdentityCriteriaType::SPtr, SPtrTypeCoder<IdentityCriteriaType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<IdentityCriteriaTypeArray> SPtr;
+    };
 
 }
 

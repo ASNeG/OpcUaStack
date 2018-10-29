@@ -77,6 +77,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class MessageSecurityModeArray
+    : public OpcUaArray<MessageSecurityMode::SPtr, SPtrTypeCoder<MessageSecurityMode> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<MessageSecurityModeArray> SPtr;
+    };
 
 }
 

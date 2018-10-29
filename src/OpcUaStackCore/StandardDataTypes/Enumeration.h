@@ -73,6 +73,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class EnumerationArray
+    : public OpcUaArray<Enumeration::SPtr, SPtrTypeCoder<Enumeration> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<EnumerationArray> SPtr;
+    };
 
 }
 

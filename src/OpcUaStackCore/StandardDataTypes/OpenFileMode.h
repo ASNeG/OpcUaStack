@@ -77,6 +77,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class OpenFileModeArray
+    : public OpcUaArray<OpenFileMode::SPtr, SPtrTypeCoder<OpenFileMode> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<OpenFileModeArray> SPtr;
+    };
 
 }
 

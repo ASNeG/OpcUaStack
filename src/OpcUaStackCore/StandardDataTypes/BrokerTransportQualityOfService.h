@@ -78,6 +78,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class BrokerTransportQualityOfServiceArray
+    : public OpcUaArray<BrokerTransportQualityOfService::SPtr, SPtrTypeCoder<BrokerTransportQualityOfService> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<BrokerTransportQualityOfServiceArray> SPtr;
+    };
 
 }
 

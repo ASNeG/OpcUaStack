@@ -77,6 +77,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class IdTypeArray
+    : public OpcUaArray<IdType::SPtr, SPtrTypeCoder<IdType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<IdTypeArray> SPtr;
+    };
 
 }
 

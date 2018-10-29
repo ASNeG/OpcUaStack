@@ -76,6 +76,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class StructureTypeArray
+    : public OpcUaArray<StructureType::SPtr, SPtrTypeCoder<StructureType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<StructureTypeArray> SPtr;
+    };
 
 }
 

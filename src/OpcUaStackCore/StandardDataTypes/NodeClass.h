@@ -82,6 +82,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class NodeClassArray
+    : public OpcUaArray<NodeClass::SPtr, SPtrTypeCoder<NodeClass> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<NodeClassArray> SPtr;
+    };
 
 }
 

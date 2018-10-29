@@ -78,6 +78,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class DiagnosticsLevelArray
+    : public OpcUaArray<DiagnosticsLevel::SPtr, SPtrTypeCoder<DiagnosticsLevel> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<DiagnosticsLevelArray> SPtr;
+    };
 
 }
 

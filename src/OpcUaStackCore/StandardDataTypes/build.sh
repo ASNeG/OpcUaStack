@@ -14,4 +14,4 @@ OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ServerStatusDat
 OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype AddNodesItem --buildSubTypes 0
 OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype AddReferencesItem --buildSubTypes 0
 
-#OpcUaEnumTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --enumtype Enumeration --buildSubTypes 1
+OpcUaEnumTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --enumtype Enumeration --buildSubTypes 1

@@ -75,6 +75,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class PubSubDiagnosticsCounterClassificationArray
+    : public OpcUaArray<PubSubDiagnosticsCounterClassification::SPtr, SPtrTypeCoder<PubSubDiagnosticsCounterClassification> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<PubSubDiagnosticsCounterClassificationArray> SPtr;
+    };
 
 }
 

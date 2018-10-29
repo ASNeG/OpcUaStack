@@ -77,6 +77,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class PubSubStateArray
+    : public OpcUaArray<PubSubState::SPtr, SPtrTypeCoder<PubSubState> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<PubSubStateArray> SPtr;
+    };
 
 }
 

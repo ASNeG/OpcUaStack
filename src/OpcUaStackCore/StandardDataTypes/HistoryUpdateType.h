@@ -77,6 +77,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class HistoryUpdateTypeArray
+    : public OpcUaArray<HistoryUpdateType::SPtr, SPtrTypeCoder<HistoryUpdateType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<HistoryUpdateTypeArray> SPtr;
+    };
 
 }
 

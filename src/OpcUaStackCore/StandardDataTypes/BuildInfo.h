@@ -72,10 +72,10 @@ namespace OpcUaStackCore
     class BuildInfoArray
     : public OpcUaArray<BuildInfo::SPtr, SPtrTypeCoder<BuildInfo> >
     , public Object
-{
-  public:
-	   typedef boost::shared_ptr<BuildInfoArray> SPtr;
-};
+    {
+      public:
+    	   typedef boost::shared_ptr<BuildInfoArray> SPtr;
+    };
 
 }
 

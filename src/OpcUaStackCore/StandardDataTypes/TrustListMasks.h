@@ -79,6 +79,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class TrustListMasksArray
+    : public OpcUaArray<TrustListMasks::SPtr, SPtrTypeCoder<TrustListMasks> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<TrustListMasksArray> SPtr;
+    };
 
 }
 

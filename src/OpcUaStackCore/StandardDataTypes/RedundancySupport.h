@@ -79,6 +79,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class RedundancySupportArray
+    : public OpcUaArray<RedundancySupport::SPtr, SPtrTypeCoder<RedundancySupport> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<RedundancySupportArray> SPtr;
+    };
 
 }
 

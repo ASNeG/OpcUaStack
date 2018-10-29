@@ -369,10 +369,10 @@ namespace OpcUaStackServer
 		ss << prefix << "class " << nodeInfo_.className() << "Array" << std::endl;
 		ss << prefix << ": public OpcUaArray<" << nodeInfo_.className() << "::SPtr, SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
 		ss << prefix << ", public Object" << std::endl;
-		ss << "{" << std::endl;
-		ss << "  public:" << std::endl;
-		ss << "	   typedef boost::shared_ptr<" << nodeInfo_.className() << "Array> SPtr;" << std::endl;
-		ss << "};" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "  public:" << std::endl;
+		ss << prefix << "	   typedef boost::shared_ptr<" << nodeInfo_.className() << "Array> SPtr;" << std::endl;
+		ss << prefix << "};" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;

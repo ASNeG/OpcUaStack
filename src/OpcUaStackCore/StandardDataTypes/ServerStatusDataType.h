@@ -74,10 +74,10 @@ namespace OpcUaStackCore
     class ServerStatusDataTypeArray
     : public OpcUaArray<ServerStatusDataType::SPtr, SPtrTypeCoder<ServerStatusDataType> >
     , public Object
-{
-  public:
-	   typedef boost::shared_ptr<ServerStatusDataTypeArray> SPtr;
-};
+    {
+      public:
+    	   typedef boost::shared_ptr<ServerStatusDataTypeArray> SPtr;
+    };
 
 }
 

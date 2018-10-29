@@ -76,6 +76,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class DataSetOrderingTypeArray
+    : public OpcUaArray<DataSetOrderingType::SPtr, SPtrTypeCoder<DataSetOrderingType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<DataSetOrderingTypeArray> SPtr;
+    };
 
 }
 

@@ -78,6 +78,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class ExceptionDeviationFormatArray
+    : public OpcUaArray<ExceptionDeviationFormat::SPtr, SPtrTypeCoder<ExceptionDeviationFormat> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<ExceptionDeviationFormatArray> SPtr;
+    };
 
 }
 

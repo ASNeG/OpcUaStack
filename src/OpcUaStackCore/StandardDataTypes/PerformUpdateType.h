@@ -77,6 +77,14 @@ namespace OpcUaStackCore
         int32_t value_;
     
     };
+    
+    class PerformUpdateTypeArray
+    : public OpcUaArray<PerformUpdateType::SPtr, SPtrTypeCoder<PerformUpdateType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<PerformUpdateTypeArray> SPtr;
+    };
 
 }
 
