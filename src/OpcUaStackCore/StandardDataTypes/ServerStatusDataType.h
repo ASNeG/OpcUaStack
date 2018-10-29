@@ -70,6 +70,14 @@ namespace OpcUaStackCore
         OpcUaLocalizedText shutdownReason_;
     
     };
+    
+    class ServerStatusDataTypeArray
+    : public OpcUaArray<ServerStatusDataType::SPtr, SPtrTypeCoder<ServerStatusDataType> >
+    , public Object
+{
+  public:
+	   typedef boost::shared_ptr<ServerStatusDataTypeArray> SPtr;
+};
 
 }
 

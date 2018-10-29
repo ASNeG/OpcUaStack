@@ -68,6 +68,14 @@ namespace OpcUaStackCore
         OpcUaUtcTime buildDate_;
     
     };
+    
+    class BuildInfoArray
+    : public OpcUaArray<BuildInfo::SPtr, SPtrTypeCoder<BuildInfo> >
+    , public Object
+{
+  public:
+	   typedef boost::shared_ptr<BuildInfoArray> SPtr;
+};
 
 }
 
