@@ -348,11 +348,11 @@ namespace OpcUaStackServer
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			ss << prefix << dataTypeField->variableType() << " " << dataTypeField->variableName();
+			ss << prefix << dataTypeField->variableType() << " " << dataTypeField->variableName() << ";";
 			if (dataTypeField->description() != "") {
 				ss << " //!< " << dataTypeField->description();
 			}
-			ss << ";" << std::endl;
+			ss << std::endl;
 		}
 
 		headerContent_ += ss.str();
