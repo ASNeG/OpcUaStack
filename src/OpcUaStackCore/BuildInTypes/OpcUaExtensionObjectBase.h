@@ -135,11 +135,18 @@ namespace OpcUaStackCore
 		virtual void out(std::ostream& os) = 0;
 
 		/**
+		 * Function to result the namespace name of the extension object
+		 *
+		 * @return namespace name of the extension object
+		 */
+		virtual std::string namespaceName(void) { return "UnknownNamespace"; }
+
+		/**
 		 * Function to result the type name of the extension object
 		 *
 		 * @return type name of the extension object
 		 */
-		virtual std::string typeName(void) { return "Unknown"; }
+		virtual std::string typeName(void) { return "UnknownType"; }
 
 		/**
 		 * Function to result the type node identifier of the extension object
