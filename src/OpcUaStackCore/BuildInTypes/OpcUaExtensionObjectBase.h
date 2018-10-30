@@ -111,6 +111,44 @@ namespace OpcUaStackCore
 		virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) = 0;
 
 		/**
+		 * Function to encode the structure data to a json tree format.
+		 *
+		 * @param[out] pt					tree for json output
+		 * @param[in] element				element name of the subtree
+		 *
+		 * @return true if successful
+		 */
+		virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return true; }
+
+		/**
+		 * Function to encode the structure data to a json tree format.
+		 *
+		 * @param[out] pt					tree for json output
+		 *
+		 * @return true if successful
+		 */
+		virtual bool jsonEncode(boost::property_tree::ptree& pt) { return true; }
+
+		/**
+		 * Function to decode the json tree format to the structure data.
+		 *
+		 * @param[in] pt					tree for json output
+		 * @param[in] element				element name of the subtree
+		 *
+		 * @return true if successful
+		 */
+		virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return true; }
+
+		/**
+		 * Function to decode the json tree format to the structure data.
+		 *
+		 * @param[in] pt					tree for json output
+		 *
+		 * @return true if successful
+		 */
+		virtual bool jsonDecode(boost::property_tree::ptree& pt) { return true; }
+
+		/**
 		 * Function to create a copy of the extension object
 		 *
 		 * @param[out] extensionObjectBase	target extension object
