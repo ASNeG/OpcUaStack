@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -1584,9 +1584,10 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaExtensionObject:
 			{
+				Xmlns xmlns;
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = boost::static_pointer_cast<OpcUaExtensionObject>(opcUaVariantSPtr.objectSPtr_);
-				if (!opcUaExtensionObjectSPtr->encode(pt)) return false;
+				if (!opcUaExtensionObjectSPtr->xmlEncode(pt, xmlns)) return false;
 				break;
 			}
 			default:
@@ -1804,7 +1805,7 @@ namespace OpcUaStackCore
 				Xmlns xmlns;
 
 				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = constructSPtr<OpcUaExtensionObject>();
-				if (!opcUaExtensionObjectSPtr->decode(pt, xmlns)) return false;
+				if (!opcUaExtensionObjectSPtr->xmlDecode(pt, xmlns)) return false;
 				val.objectSPtr_ = opcUaExtensionObjectSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaExtensionObject;
 				variantValue_ = val;
