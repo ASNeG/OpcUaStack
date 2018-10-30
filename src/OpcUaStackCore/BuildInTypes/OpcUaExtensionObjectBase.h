@@ -83,7 +83,7 @@ namespace OpcUaStackCore
 		 * Function to encode the structure data to a xml tree format.
 		 *
 		 * @param[out] pt					tree for xml output
-		 * @param[in] element				element name of the subtree
+		 * @param[in] xmlns					xml namespaces
 		 *
 		 * @return true if successful
 		 */
@@ -104,7 +104,7 @@ namespace OpcUaStackCore
 		 * Function to decode the xml tree format to the structure data.
 		 *
 		 * @param[in] pt					tree for xml output
-		 * @param[in] element				element name of the subtree
+		 * @param[in] xmlns					xml namespaces
 		 *
 		 * @return true if successful
 		 */
@@ -128,7 +128,7 @@ namespace OpcUaStackCore
 		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const = 0;
 
 		/**
-		 * Funktion to show the parameters of the extension object
+		 * Function to show the parameters of the extension object
 		 *
 		 * @param[out] os					output stream
 		 */

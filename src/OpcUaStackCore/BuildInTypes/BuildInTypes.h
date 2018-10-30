@@ -30,6 +30,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"

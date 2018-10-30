@@ -176,20 +176,20 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	secureChannelClientConfig->endpointUrl("opt.tcp://127.0.0.1:48010");
 	secureChannel = secureChannelClient.connect(secureChannelClientConfig);
 	BOOST_REQUIRE(secureChannel != nullptr);
-	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(2000) == true);
 
 	// disconnect
 	secureChannelClientTest.handleDisconnect_.condition(1,0);
 	secureChannelServerTest.handleDisconnect_.condition(1,0);
 	secureChannelClient.disconnect(secureChannel);
-	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(2000) == true);
 
 	// disconnect server socket
 	secureChannelServerTest.handleEndpointClose_.condition(1,0);
 	secureChannelServer.disconnect();
-	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(2000) == true);
 
 	ioThread.shutdown();
 }
@@ -259,7 +259,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 	secureChannelServerConfig->endpointUrl("opt.tcp://127.0.0.1:48011");
 	secureChannelServerConfig->endpointDescriptionArray(endpointDescriptionArray);
 	secureChannelServer.accept(secureChannelServerConfig);
-	BOOST_REQUIRE(secureChannelServerTest.handleEndpointOpen_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleEndpointOpen_.waitForCondition(2000) == true);
 
 	// set client endpoint
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
@@ -270,35 +270,35 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 	secureChannelServerTest.handleConnect_.condition(1,0);
 	secureChannel1 = secureChannelClient.connect(secureChannelClientConfig);
 	BOOST_REQUIRE(secureChannel1 != nullptr);
-	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(2000) == true);
 
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
 	secureChannelServerTest.handleConnect_.condition(1,0);
 	secureChannel2 = secureChannelClient.connect(secureChannelClientConfig);
 	BOOST_REQUIRE(secureChannel2 != nullptr);
-	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(2000) == true);
 
 	// diconnect
 	secureChannelClientTest.handleDisconnect_.condition(1,0);
 	secureChannelServerTest.handleDisconnect_.condition(1,0);
 	secureChannelClient.disconnect(secureChannel1);
-	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(2000) == true);
 
 	// diconnect
 	secureChannelClientTest.handleDisconnect_.condition(1,0);
 	secureChannelServerTest.handleDisconnect_.condition(1,0);
 	secureChannelClient.disconnect(secureChannel2);
-	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(2000) == true);
 
 	// disconnect server socket
 	secureChannelServerTest.handleEndpointClose_.condition(1,0);
 	secureChannelServer.disconnect();
-	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(2000) == true);
 
 	ioThread.shutdown();
 }
@@ -369,7 +369,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	secureChannelServerConfig->endpointUrl("opt.tcp://127.0.0.1:48012");
 	secureChannelServerConfig->endpointDescriptionArray(endpointDescriptionArray);
 	secureChannelServer.accept(secureChannelServerConfig);
-	BOOST_REQUIRE(secureChannelServerTest.handleEndpointOpen_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleEndpointOpen_.waitForCondition(2000) == true);
 
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
@@ -378,8 +378,8 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	secureChannelClientConfig->endpointUrl("opc.tcp://127.0.0.1:48012");
 	secureChannel = secureChannelClient.connect(secureChannelClientConfig);
 	BOOST_REQUIRE(secureChannel != nullptr);
-	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(2000) == true);
 
 	// send request
 	boost::asio::streambuf sb;
@@ -396,20 +396,20 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	secureChannelClientTest.handleMessageResponse_.condition(1,0);
 	secureChannelServerTest.handleMessageRequest_.condition(1,0);
 	secureChannelClient.asyncWriteMessageRequest(secureChannel, secureChannelTransaction);
-	BOOST_REQUIRE(secureChannelServerTest.handleMessageRequest_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(secureChannelClientTest.handleMessageResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleMessageRequest_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(secureChannelClientTest.handleMessageResponse_.waitForCondition(2000) == true);
 
 	// diconnect
 	secureChannelClientTest.handleDisconnect_.condition(1,0);
 	secureChannelServerTest.handleDisconnect_.condition(1,0);
 	secureChannelClient.disconnect(secureChannel);
-	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(2000) == true);
 
 	// disconnect server socket
 	secureChannelServerTest.handleEndpointClose_.condition(1,0);
 	secureChannelServer.disconnect();
-	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(2000) == true);
 
 	ioThread.shutdown();
 }
