@@ -121,6 +121,10 @@ namespace OpcUaStackServer
 				std::string buildInTypeName = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
 				if (buildInTypeName != "Unknown") {
 
+					if (type == 22) {
+						buildInTypeName = "ExtensibleParameter";
+					}
+
 					// set number flag
 					if (OpcUaBuildInTypeClass::isNumber((OpcUaBuildInType)type) == true) {
 						dataTypeField->number(true);
