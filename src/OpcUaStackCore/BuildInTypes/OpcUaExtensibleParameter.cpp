@@ -29,4 +29,106 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaNodeId&
+	OpcUaExtensibleParameter::parameterTypeId(void)
+	{
+		return parameterTypeId_;
+	}
+
+	ExtensionObjectBase::SPtr&
+	OpcUaExtensibleParameter::eoSPtr(void)
+	{
+		return eoSPtr_;
+	}
+
+
+    ExtensionObjectBase::SPtr
+	OpcUaExtensibleParameter::factory(void)
+    {
+    }
+
+    OpcUaNodeId
+	OpcUaExtensibleParameter::binaryTypeId(void)
+    {
+    }
+
+    OpcUaNodeId
+	OpcUaExtensibleParameter::xmlTypeId(void)
+    {
+    }
+
+    void
+	OpcUaExtensibleParameter::opcUaBinaryEncode(std::ostream& os) const
+    {
+    }
+
+    void
+	OpcUaExtensibleParameter::opcUaBinaryDecode(std::istream& is)
+    {
+    }
+
+    bool
+	OpcUaExtensibleParameter::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+
+    bool
+	OpcUaExtensibleParameter::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+
+    bool
+	OpcUaExtensibleParameter::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+    }
+
+    bool
+	OpcUaExtensibleParameter::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+
+    bool
+	OpcUaExtensibleParameter::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+    }
+
+    bool
+	OpcUaExtensibleParameter::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+
+    void
+	OpcUaExtensibleParameter::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    }
+
+    bool
+	OpcUaExtensibleParameter::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    }
+
+    void
+	OpcUaExtensibleParameter::out(std::ostream& os)
+    {
+    }
+
+    void
+	OpcUaExtensibleParameter::copyTo(OpcUaExtensibleParameter& value)
+    {
+    }
+
+    bool
+	OpcUaExtensibleParameter::operator==(const OpcUaExtensibleParameter& value) const
+    {
+    }
+
+    bool
+	OpcUaExtensibleParameter::operator!=(const OpcUaExtensibleParameter& value) const
+    {
+    }
+
+    OpcUaExtensibleParameter&
+	OpcUaExtensibleParameter::operator=(const OpcUaExtensibleParameter& value)
+    {
+    }
 }

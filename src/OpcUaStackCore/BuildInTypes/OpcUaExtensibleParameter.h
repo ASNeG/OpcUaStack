@@ -28,12 +28,38 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT OpcUaExtensibleParameter
 	: public  Object
+	, public ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaExtensibleParameter> SPtr;
 
 		OpcUaExtensibleParameter(void);
 		~OpcUaExtensibleParameter(void);
+
+		OpcUaNodeId& parameterTypeId(void);
+		ExtensionObjectBase::SPtr& eoSPtr(void);
+
+        //- ExtensionObjectBase -----------------------------------------------
+        virtual ExtensionObjectBase::SPtr factory(void);
+        virtual OpcUaNodeId binaryTypeId(void);
+        virtual OpcUaNodeId xmlTypeId(void);
+        virtual void opcUaBinaryEncode(std::ostream& os) const;
+        virtual void opcUaBinaryDecode(std::istream& is);
+        virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
+        virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+        virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+        virtual void out(std::ostream& os);
+        //- ExtensionObjectBase -----------------------------------------------
+
+        void copyTo(OpcUaExtensibleParameter& value);
+        bool operator==(const OpcUaExtensibleParameter& value) const;
+        bool operator!=(const OpcUaExtensibleParameter& value) const;
+        OpcUaExtensibleParameter& operator=(const OpcUaExtensibleParameter& value);
 
 	  private:
 		OpcUaNodeId parameterTypeId_;
