@@ -117,6 +117,12 @@ namespace OpcUaStackCore
     	return constructSPtr<BuildInfo>();
     }
     
+    std::string
+    BuildInfo::typeName(void)
+    {
+    	return "BuildInfo";
+    }
+    
     OpcUaNodeId
     BuildInfo::binaryTypeId(void)
     {

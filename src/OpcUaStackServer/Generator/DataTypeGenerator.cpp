@@ -263,6 +263,8 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
 		ss << prefix << "virtual ExtensionObjectBase::SPtr factory(void);" << std::endl;
+		ss << prefix << "virtual std::string typeName(void);" << std::endl;
+		//virtual OpcUaNodeId typeId(void);
 		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId xmlTypeId(void);" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryEncode(std::ostream& os) const;" << std::endl;
@@ -401,6 +403,7 @@ namespace OpcUaStackServer
 				generateSourceClassPublicAssign("    ") &&
 				generateSourceClassExtensionObjectBase("    ") &&
 				generateSourceClassFactory("    ") &&
+				generateSourceClassTypeName("    ") &&
 				generateSourceClassBinaryTypeId("    ") &&
 				generateSourceClassXmlTypeId("    ") &&
 				generateSourceClassBinaryEncode("    ") &&
@@ -694,6 +697,22 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::factory(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "	return constructSPtr<" << nodeInfo_.className() << ">();" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassTypeName(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "std::string" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::typeName(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return \"" << nodeInfo_.className() << "\";" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

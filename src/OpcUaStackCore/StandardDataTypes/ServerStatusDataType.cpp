@@ -117,6 +117,12 @@ namespace OpcUaStackCore
     	return constructSPtr<ServerStatusDataType>();
     }
     
+    std::string
+    ServerStatusDataType::typeName(void)
+    {
+    	return "ServerStatusDataType";
+    }
+    
     OpcUaNodeId
     ServerStatusDataType::binaryTypeId(void)
     {

@@ -135,6 +135,20 @@ namespace OpcUaStackCore
 		virtual void out(std::ostream& os) = 0;
 
 		/**
+		 * Function to result the type name of the extension object
+		 *
+		 * @return type name of the extension object
+		 */
+		virtual std::string typeName(void) { return "Unknown"; }
+
+		/**
+		 * Function to result the type node identifier of the extension object
+		 *
+		 * @return type node identifier of the extension object
+		 */
+		virtual OpcUaNodeId typeId(void) { return OpcUaNodeId(0, 0); }
+
+		/**
 		 * Function to result the binary encoding node identifier of the extension object
 		 *
 		 * @return binary encoding node identifier of the extension object
