@@ -17,8 +17,10 @@
 
 #include <boost/algorithm/string.hpp>
 
-#include <OpcUaStackServer/Generator/NodeInfo.h>
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
 namespace OpcUaStackServer
 {
@@ -27,6 +29,7 @@ namespace OpcUaStackServer
 	: numberNamespaceMap_()
 	, informationModel_()
 
+	, dataTypeNamespaceName_("")
 	, dataTypeNodeId_()
 	, parentDataTypeNodeId_()
 	, baseNode_()
@@ -70,6 +73,12 @@ namespace OpcUaStackServer
 	NodeInfo::setNamespaceEntry(const std::string& namespaceEntry)
 	{
 		return numberNamespaceMap_.addNamespace(namespaceEntry);
+	}
+
+	std::string
+	NodeInfo::dataTypeNamespaceName(void)
+	{
+		return dataTypeNamespaceName_;
 	}
 
 	OpcUaNodeId
@@ -281,6 +290,11 @@ namespace OpcUaStackServer
 		//
 		parentBaseNode_->getIsAbstract(parentIsAbstract_);
 
+		//
+		// set data type namespace name
+		//
+		dataTypeNamespaceName_ = getNamespaceName(dataTypeNodeId_);
+
 		return true;
 	}
 
@@ -321,6 +335,19 @@ namespace OpcUaStackServer
        		return "(OpcUaUInt32)0";
        	}
     	return "";
+	}
+
+	std::string
+	NodeInfo::getNamespaceName(OpcUaNodeId& nodeId)
+	{
+		NodeSetNamespace nodeSetNamespace;
+
+		// check namespaces
+		if (nodeId.namespaceIndex() >= nodeSetNamespace.globalNamespaceVec().size()) {
+			return "NamespaceUnknown";
+		}
+
+		return nodeSetNamespace.globalNamespaceVec()[nodeId.namespaceIndex()];
 	}
 
 }

@@ -74,6 +74,13 @@ class DLLEXPORT NodeInfo
 	/**
 	 * Getter function
 	 *
+	 * @return data type namespace name
+	 */
+	std::string dataTypeNamespaceName(void);
+
+	/**
+	 * Getter function
+	 *
 	 * @return data type node identifier
 	 */
 	OpcUaNodeId dataTypeNodeId(void);
@@ -187,12 +194,26 @@ class DLLEXPORT NodeInfo
 		InformationModel::SPtr& informationModel
 	);
 
+	/**
+	 * This function creates a C++ representation of the node identifier part of the node id.
+	 *
+	 * @param[in] nodeId						OPC UA node id
+	 *
+	 * @return C++ representation of the node identifier
+	 */
 	std::string getIdentifierAsString(OpcUaNodeId& nodeId);
+
+	/**
+	 * This function results the namespace name from a given node identifier
+	 */
+	std::string getNamespaceName(OpcUaNodeId& nodeId);
+
 
   private:
 	NumberNamespaceMap numberNamespaceMap_;		//!< number to namespace map
 	InformationModel::SPtr informationModel_;	//!< opc ua information model
 
+	std::string dataTypeNamespaceName_;			//!< name of data type namespace
 	OpcUaNodeId dataTypeNodeId_;				//!< data type node identifier
 	OpcUaNodeId parentDataTypeNodeId_;			//!< data type node identifier of parent
 	BaseNodeClass::SPtr baseNode_;				//!< pointer to node
