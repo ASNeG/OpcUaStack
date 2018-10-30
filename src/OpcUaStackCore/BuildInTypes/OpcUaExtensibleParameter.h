@@ -56,6 +56,7 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
 
+        void reset(void);
         void copyTo(OpcUaExtensibleParameter& value);
         bool operator==(const OpcUaExtensibleParameter& value) const;
         bool operator!=(const OpcUaExtensibleParameter& value) const;
