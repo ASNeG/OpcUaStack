@@ -94,6 +94,8 @@ namespace OpcUaStackServer
 		bool generate(const OpcUaNodeId& dataType);
 
 	  private:
+		std::string getIdentifierAsString(OpcUaNodeId& nodeId);
+
 		//
 		// header functions
 		//
@@ -128,6 +130,7 @@ namespace OpcUaStackServer
 		bool generateSourceClassExtensionObjectBase(const std::string& prefix);
 		bool generateSourceClassFactory(const std::string& prefix);
 		bool generateSourceClassTypeName(const std::string& prefix);
+		bool generateSourceClassTypeId(const std::string& prefix);
 		bool generateSourceClassBinaryTypeId(const std::string& prefix);
 		bool generateSourceClassXmlTypeId(const std::string& prefix);
 		bool generateSourceClassBinaryEncode(const std::string& prefix);

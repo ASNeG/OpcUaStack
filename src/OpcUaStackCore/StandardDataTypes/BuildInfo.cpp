@@ -124,6 +124,12 @@ namespace OpcUaStackCore
     }
     
     OpcUaNodeId
+    BuildInfo::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)338,0);
+    }
+    
+    OpcUaNodeId
     BuildInfo::binaryTypeId(void)
     {
     	return OpcUaNodeId(0, 0);
