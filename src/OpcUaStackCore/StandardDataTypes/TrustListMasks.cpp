@@ -176,6 +176,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    TrustListMasks::typeName(void)
+    {
+    	return "TrustListMasks";
+    }
+    
+    OpcUaNodeId
+    TrustListMasks::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)12552,0);
+    }
+    
     void
     TrustListMasks::opcUaBinaryEncode(std::ostream& os) const
     {

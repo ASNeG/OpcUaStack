@@ -168,6 +168,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    OpenFileMode::typeName(void)
+    {
+    	return "OpenFileMode";
+    }
+    
+    OpcUaNodeId
+    OpenFileMode::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)11939,0);
+    }
+    
     void
     OpenFileMode::opcUaBinaryEncode(std::ostream& os) const
     {

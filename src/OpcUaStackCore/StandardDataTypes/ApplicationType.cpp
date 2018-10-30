@@ -168,6 +168,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    ApplicationType::typeName(void)
+    {
+    	return "ApplicationType";
+    }
+    
+    OpcUaNodeId
+    ApplicationType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)307,0);
+    }
+    
     void
     ApplicationType::opcUaBinaryEncode(std::ostream& os) const
     {

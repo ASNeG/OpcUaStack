@@ -224,6 +224,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    FilterOperator::typeName(void)
+    {
+    	return "FilterOperator";
+    }
+    
+    OpcUaNodeId
+    FilterOperator::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)576,0);
+    }
+    
     void
     FilterOperator::opcUaBinaryEncode(std::ostream& os) const
     {

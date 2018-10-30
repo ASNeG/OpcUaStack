@@ -168,6 +168,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    UserTokenType::typeName(void)
+    {
+    	return "UserTokenType";
+    }
+    
+    OpcUaNodeId
+    UserTokenType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)303,0);
+    }
+    
     void
     UserTokenType::opcUaBinaryEncode(std::ostream& os) const
     {

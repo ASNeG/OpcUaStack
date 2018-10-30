@@ -292,6 +292,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    NodeAttributesMask::typeName(void)
+    {
+    	return "NodeAttributesMask";
+    }
+    
+    OpcUaNodeId
+    NodeAttributesMask::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)348,0);
+    }
+    
     void
     NodeAttributesMask::opcUaBinaryEncode(std::ostream& os) const
     {

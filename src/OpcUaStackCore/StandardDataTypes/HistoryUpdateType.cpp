@@ -168,6 +168,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    HistoryUpdateType::typeName(void)
+    {
+    	return "HistoryUpdateType";
+    }
+    
+    OpcUaNodeId
+    HistoryUpdateType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)11234,0);
+    }
+    
     void
     HistoryUpdateType::opcUaBinaryEncode(std::ostream& os) const
     {

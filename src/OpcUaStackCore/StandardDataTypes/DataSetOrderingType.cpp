@@ -164,6 +164,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    DataSetOrderingType::typeName(void)
+    {
+    	return "DataSetOrderingType";
+    }
+    
+    OpcUaNodeId
+    DataSetOrderingType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)20408,0);
+    }
+    
     void
     DataSetOrderingType::opcUaBinaryEncode(std::ostream& os) const
     {

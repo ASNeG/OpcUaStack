@@ -176,6 +176,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    IdentityCriteriaType::typeName(void)
+    {
+    	return "IdentityCriteriaType";
+    }
+    
+    OpcUaNodeId
+    IdentityCriteriaType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15632,0);
+    }
+    
     void
     IdentityCriteriaType::opcUaBinaryEncode(std::ostream& os) const
     {

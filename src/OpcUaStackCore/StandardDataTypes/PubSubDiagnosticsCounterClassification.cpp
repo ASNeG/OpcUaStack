@@ -160,6 +160,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    PubSubDiagnosticsCounterClassification::typeName(void)
+    {
+    	return "PubSubDiagnosticsCounterClassification";
+    }
+    
+    OpcUaNodeId
+    PubSubDiagnosticsCounterClassification::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)19730,0);
+    }
+    
     void
     PubSubDiagnosticsCounterClassification::opcUaBinaryEncode(std::ostream& os) const
     {

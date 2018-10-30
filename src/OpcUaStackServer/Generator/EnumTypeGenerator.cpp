@@ -263,6 +263,8 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
 		ss << prefix << "virtual ExtensionObjectBase::SPtr factory(void);" << std::endl;
+		ss << prefix << "virtual std::string typeName(void);" << std::endl;
+		ss << prefix << "virtual OpcUaNodeId typeId(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId xmlTypeId(void);" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryEncode(std::ostream& os) const;" << std::endl;
@@ -396,6 +398,8 @@ namespace OpcUaStackServer
 				generateSourceClassFactory("    ") &&
 				generateSourceClassBinaryTypeId("    ") &&
 				generateSourceClassXmlTypeId("    ") &&
+				generateSourceClassTypeName("    ") &&
+				generateSourceClassTypeId("    ") &&
 				generateSourceClassBinaryEncode("    ") &&
 				generateSourceClassBinaryDecode("    ") &&
 				generateSourceClassEncode("    ") &&
@@ -754,6 +758,41 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	EnumTypeGenerator::generateSourceClassTypeName(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "std::string" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::typeName(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return \"" << nodeInfo_.className() << "\";" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EnumTypeGenerator::generateSourceClassTypeId(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		OpcUaNodeId dataTypeNodeId = nodeInfo_.dataTypeNodeId();
+
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaNodeId" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::typeId(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << getIdentifierAsString(dataTypeNodeId) << "," << dataTypeNodeId.namespaceIndex() << ");" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+
+	bool
 	EnumTypeGenerator::generateSourceClassBinaryTypeId(const std::string& prefix)
 	{
 		std::stringstream ss;
@@ -959,5 +998,44 @@ namespace OpcUaStackServer
 		sourceContent_ += ss.str();
 		return true;
 	}
+
+    std::string
+	EnumTypeGenerator::getIdentifierAsString(OpcUaNodeId& nodeId)
+    {
+    	if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+    		uint16_t namespaceIndex;
+    		uint32_t id;
+    		nodeId.get(id, namespaceIndex);
+
+    		std::stringstream ss;
+    		ss << "(OpcUaUInt32)" << id;
+
+    		return ss.str();
+    	}
+    	else if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaString) {
+    		uint16_t namespaceIndex;
+    		std::string id;
+    		nodeId.get(id, namespaceIndex);
+
+       		std::stringstream ss;
+        	ss << "\"" << id << "\"";
+
+        	return ss.str();
+    	}
+       	else if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaGuid) {
+    		uint16_t namespaceIndex;
+    		std::string id;
+    		nodeId.get(id, namespaceIndex);
+
+       		std::stringstream ss;
+        	ss << "\"" << id << "\"";
+
+        	return ss.str();
+        }
+       	else {
+       		return "(OpcUaUInt32)0";
+       	}
+    	return "";
+    }
 
 }

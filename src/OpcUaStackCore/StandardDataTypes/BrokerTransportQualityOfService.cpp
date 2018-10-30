@@ -172,6 +172,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    BrokerTransportQualityOfService::typeName(void)
+    {
+    	return "BrokerTransportQualityOfService";
+    }
+    
+    OpcUaNodeId
+    BrokerTransportQualityOfService::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15008,0);
+    }
+    
     void
     BrokerTransportQualityOfService::opcUaBinaryEncode(std::ostream& os) const
     {

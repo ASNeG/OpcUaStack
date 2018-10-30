@@ -176,6 +176,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    RedundancySupport::typeName(void)
+    {
+    	return "RedundancySupport";
+    }
+    
+    OpcUaNodeId
+    RedundancySupport::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)851,0);
+    }
+    
     void
     RedundancySupport::opcUaBinaryEncode(std::ostream& os) const
     {

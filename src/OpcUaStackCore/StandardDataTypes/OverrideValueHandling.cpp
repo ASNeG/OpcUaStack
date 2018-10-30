@@ -164,6 +164,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    OverrideValueHandling::typeName(void)
+    {
+    	return "OverrideValueHandling";
+    }
+    
+    OpcUaNodeId
+    OverrideValueHandling::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15874,0);
+    }
+    
     void
     OverrideValueHandling::opcUaBinaryEncode(std::ostream& os) const
     {

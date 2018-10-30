@@ -172,6 +172,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    ExceptionDeviationFormat::typeName(void)
+    {
+    	return "ExceptionDeviationFormat";
+    }
+    
+    OpcUaNodeId
+    ExceptionDeviationFormat::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)890,0);
+    }
+    
     void
     ExceptionDeviationFormat::opcUaBinaryEncode(std::ostream& os) const
     {

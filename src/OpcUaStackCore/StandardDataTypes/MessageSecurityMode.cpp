@@ -168,6 +168,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    MessageSecurityMode::typeName(void)
+    {
+    	return "MessageSecurityMode";
+    }
+    
+    OpcUaNodeId
+    MessageSecurityMode::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)302,0);
+    }
+    
     void
     MessageSecurityMode::opcUaBinaryEncode(std::ostream& os) const
     {

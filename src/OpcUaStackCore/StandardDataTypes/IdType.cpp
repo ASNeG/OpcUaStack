@@ -168,6 +168,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    IdType::typeName(void)
+    {
+    	return "IdType";
+    }
+    
+    OpcUaNodeId
+    IdType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)256,0);
+    }
+    
     void
     IdType::opcUaBinaryEncode(std::ostream& os) const
     {

@@ -184,6 +184,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    ServerState::typeName(void)
+    {
+    	return "ServerState";
+    }
+    
+    OpcUaNodeId
+    ServerState::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)852,0);
+    }
+    
     void
     ServerState::opcUaBinaryEncode(std::ostream& os) const
     {

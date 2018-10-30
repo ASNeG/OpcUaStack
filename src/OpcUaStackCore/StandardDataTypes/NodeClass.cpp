@@ -188,6 +188,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    NodeClass::typeName(void)
+    {
+    	return "NodeClass";
+    }
+    
+    OpcUaNodeId
+    NodeClass::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)257,0);
+    }
+    
     void
     NodeClass::opcUaBinaryEncode(std::ostream& os) const
     {

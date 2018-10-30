@@ -168,6 +168,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    PubSubState::typeName(void)
+    {
+    	return "PubSubState";
+    }
+    
+    OpcUaNodeId
+    PubSubState::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)14647,0);
+    }
+    
     void
     PubSubState::opcUaBinaryEncode(std::ostream& os) const
     {

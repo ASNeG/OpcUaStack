@@ -164,6 +164,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    AxisScaleEnumeration::typeName(void)
+    {
+    	return "AxisScaleEnumeration";
+    }
+    
+    OpcUaNodeId
+    AxisScaleEnumeration::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)12077,0);
+    }
+    
     void
     AxisScaleEnumeration::opcUaBinaryEncode(std::ostream& os) const
     {

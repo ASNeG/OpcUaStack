@@ -172,6 +172,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    DiagnosticsLevel::typeName(void)
+    {
+    	return "DiagnosticsLevel";
+    }
+    
+    OpcUaNodeId
+    DiagnosticsLevel::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)19723,0);
+    }
+    
     void
     DiagnosticsLevel::opcUaBinaryEncode(std::ostream& os) const
     {

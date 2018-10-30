@@ -152,6 +152,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    Enumeration::typeName(void)
+    {
+    	return "Enumeration";
+    }
+    
+    OpcUaNodeId
+    Enumeration::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)29,0);
+    }
+    
     void
     Enumeration::opcUaBinaryEncode(std::ostream& os) const
     {

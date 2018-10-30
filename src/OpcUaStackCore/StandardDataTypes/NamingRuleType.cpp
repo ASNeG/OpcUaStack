@@ -164,6 +164,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    NamingRuleType::typeName(void)
+    {
+    	return "NamingRuleType";
+    }
+    
+    OpcUaNodeId
+    NamingRuleType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)120,0);
+    }
+    
     void
     NamingRuleType::opcUaBinaryEncode(std::ostream& os) const
     {

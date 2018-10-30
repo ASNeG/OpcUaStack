@@ -168,6 +168,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    PerformUpdateType::typeName(void)
+    {
+    	return "PerformUpdateType";
+    }
+    
+    OpcUaNodeId
+    PerformUpdateType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)11293,0);
+    }
+    
     void
     PerformUpdateType::opcUaBinaryEncode(std::ostream& os) const
     {

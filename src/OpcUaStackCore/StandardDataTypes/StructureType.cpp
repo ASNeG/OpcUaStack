@@ -164,6 +164,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    StructureType::typeName(void)
+    {
+    	return "StructureType";
+    }
+    
+    OpcUaNodeId
+    StructureType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)98,0);
+    }
+    
     void
     StructureType::opcUaBinaryEncode(std::ostream& os) const
     {

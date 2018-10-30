@@ -160,6 +160,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    SecurityTokenRequestType::typeName(void)
+    {
+    	return "SecurityTokenRequestType";
+    }
+    
+    OpcUaNodeId
+    SecurityTokenRequestType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)315,0);
+    }
+    
     void
     SecurityTokenRequestType::opcUaBinaryEncode(std::ostream& os) const
     {
