@@ -86,6 +86,13 @@ namespace OpcUaStackCore
 	    OpcUaExtensionObject(void);
 
 	    /**
+	     * Constructor
+	     *
+	     * @param[in] typeId					type node identifier
+	     */
+	    OpcUaExtensionObject(OpcUaNodeId& typeId);
+
+	    /**
 	     * Destructor
 	     */
 		~OpcUaExtensionObject(void);
