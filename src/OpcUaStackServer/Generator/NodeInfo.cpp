@@ -44,6 +44,10 @@ namespace OpcUaStackServer
 	, parentIsStructureType_(false)
 	, isAbstract_(false)
 	, parentIsAbstract_(false)
+
+	, defaultBinaryNodeId_()
+	, defaultXMLNodeId_()
+	, defaultJSONNodeId_()
 	{
 	}
 
@@ -177,6 +181,24 @@ namespace OpcUaStackServer
 		return numberNamespaceMap_;
 	}
 
+	OpcUaNodeId&
+	NodeInfo::defaultBinaryNodeId(void)
+	{
+		return defaultBinaryNodeId_;
+	}
+
+	OpcUaNodeId&
+	NodeInfo::defaultXMLNodeId(void)
+	{
+		return defaultBinaryNodeId_;
+	}
+
+	OpcUaNodeId&
+	NodeInfo::defaultJSONNodeId(void)
+	{
+		return defaultJSONNodeId_;
+	}
+
 	bool
 	NodeInfo::init(
 		const OpcUaNodeId& dataTypeNodeId,
@@ -294,6 +316,18 @@ namespace OpcUaStackServer
 		// set data type namespace name
 		//
 		dataTypeNamespaceName_ = getNamespaceName(dataTypeNodeId_);
+
+		//
+		// set default binary encoding node identifier
+		//
+
+		//
+		// set default XML encoding node identifier
+		//
+
+		//
+		// set default JSON encoding node identifier
+		//
 
 		return true;
 	}
