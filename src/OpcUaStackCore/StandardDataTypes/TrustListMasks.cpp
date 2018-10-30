@@ -177,6 +177,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    TrustListMasks::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     TrustListMasks::typeName(void)
     {
     	return "TrustListMasks";

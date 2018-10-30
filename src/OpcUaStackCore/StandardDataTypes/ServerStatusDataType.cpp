@@ -118,6 +118,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    ServerStatusDataType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     ServerStatusDataType::typeName(void)
     {
     	return "ServerStatusDataType";

@@ -189,6 +189,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    NodeClass::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     NodeClass::typeName(void)
     {
     	return "NodeClass";

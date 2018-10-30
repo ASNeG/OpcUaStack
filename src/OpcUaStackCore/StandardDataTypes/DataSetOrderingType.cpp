@@ -165,6 +165,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    DataSetOrderingType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     DataSetOrderingType::typeName(void)
     {
     	return "DataSetOrderingType";

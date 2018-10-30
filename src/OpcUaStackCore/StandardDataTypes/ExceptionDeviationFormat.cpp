@@ -173,6 +173,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    ExceptionDeviationFormat::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     ExceptionDeviationFormat::typeName(void)
     {
     	return "ExceptionDeviationFormat";

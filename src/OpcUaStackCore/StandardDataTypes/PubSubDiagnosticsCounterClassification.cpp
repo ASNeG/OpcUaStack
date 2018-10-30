@@ -161,6 +161,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    PubSubDiagnosticsCounterClassification::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     PubSubDiagnosticsCounterClassification::typeName(void)
     {
     	return "PubSubDiagnosticsCounterClassification";

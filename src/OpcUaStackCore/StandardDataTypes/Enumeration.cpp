@@ -153,6 +153,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    Enumeration::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     Enumeration::typeName(void)
     {
     	return "Enumeration";

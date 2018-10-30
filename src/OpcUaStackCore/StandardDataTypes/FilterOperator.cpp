@@ -225,6 +225,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    FilterOperator::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     FilterOperator::typeName(void)
     {
     	return "FilterOperator";

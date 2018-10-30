@@ -173,6 +173,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    DiagnosticsLevel::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     DiagnosticsLevel::typeName(void)
     {
     	return "DiagnosticsLevel";

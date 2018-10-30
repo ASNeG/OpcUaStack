@@ -169,6 +169,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    OpenFileMode::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     OpenFileMode::typeName(void)
     {
     	return "OpenFileMode";

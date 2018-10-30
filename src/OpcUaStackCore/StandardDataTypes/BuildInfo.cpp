@@ -118,6 +118,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    BuildInfo::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     BuildInfo::typeName(void)
     {
     	return "BuildInfo";

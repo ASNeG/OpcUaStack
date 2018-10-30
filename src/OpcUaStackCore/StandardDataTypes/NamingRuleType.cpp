@@ -165,6 +165,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    NamingRuleType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     NamingRuleType::typeName(void)
     {
     	return "NamingRuleType";

@@ -177,6 +177,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    IdentityCriteriaType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     IdentityCriteriaType::typeName(void)
     {
     	return "IdentityCriteriaType";

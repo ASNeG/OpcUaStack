@@ -165,6 +165,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    OverrideValueHandling::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     OverrideValueHandling::typeName(void)
     {
     	return "OverrideValueHandling";

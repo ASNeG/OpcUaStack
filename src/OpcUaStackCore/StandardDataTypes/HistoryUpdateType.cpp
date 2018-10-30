@@ -169,6 +169,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    HistoryUpdateType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     HistoryUpdateType::typeName(void)
     {
     	return "HistoryUpdateType";

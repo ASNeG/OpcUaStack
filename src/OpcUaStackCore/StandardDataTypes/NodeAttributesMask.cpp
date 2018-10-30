@@ -293,6 +293,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    NodeAttributesMask::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     NodeAttributesMask::typeName(void)
     {
     	return "NodeAttributesMask";

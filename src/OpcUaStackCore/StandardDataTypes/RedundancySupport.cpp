@@ -177,6 +177,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    RedundancySupport::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     RedundancySupport::typeName(void)
     {
     	return "RedundancySupport";

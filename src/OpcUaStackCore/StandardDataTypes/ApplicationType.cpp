@@ -169,6 +169,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    ApplicationType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     ApplicationType::typeName(void)
     {
     	return "ApplicationType";

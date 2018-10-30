@@ -169,6 +169,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    PubSubState::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     PubSubState::typeName(void)
     {
     	return "PubSubState";

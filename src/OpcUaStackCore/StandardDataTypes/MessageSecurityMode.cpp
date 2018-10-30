@@ -169,6 +169,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    MessageSecurityMode::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     MessageSecurityMode::typeName(void)
     {
     	return "MessageSecurityMode";

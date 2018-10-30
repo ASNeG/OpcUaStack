@@ -185,6 +185,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    ServerState::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     ServerState::typeName(void)
     {
     	return "ServerState";

@@ -165,6 +165,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    AxisScaleEnumeration::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     AxisScaleEnumeration::typeName(void)
     {
     	return "AxisScaleEnumeration";

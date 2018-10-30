@@ -161,6 +161,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    SecurityTokenRequestType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     SecurityTokenRequestType::typeName(void)
     {
     	return "SecurityTokenRequestType";

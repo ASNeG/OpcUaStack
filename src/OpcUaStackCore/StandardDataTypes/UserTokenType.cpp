@@ -169,6 +169,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    UserTokenType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     UserTokenType::typeName(void)
     {
     	return "UserTokenType";

@@ -263,6 +263,7 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
 		ss << prefix << "virtual ExtensionObjectBase::SPtr factory(void);" << std::endl;
+		ss << prefix << "virtual std::string namespaceName(void);" << std::endl;
 		ss << prefix << "virtual std::string typeName(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId typeId(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void);" << std::endl;
@@ -398,6 +399,7 @@ namespace OpcUaStackServer
 				generateSourceClassFactory("    ") &&
 				generateSourceClassBinaryTypeId("    ") &&
 				generateSourceClassXmlTypeId("    ") &&
+				generateSourceClassNamespaceName("    ") &&
 				generateSourceClassTypeName("    ") &&
 				generateSourceClassTypeId("    ") &&
 				generateSourceClassBinaryEncode("    ") &&
@@ -751,6 +753,22 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::factory(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "	return constructSPtr<" << nodeInfo_.className() << ">();" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EnumTypeGenerator::generateSourceClassNamespaceName(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "std::string" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::namespaceName(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return \"" << nodeInfo_.dataTypeNamespaceName() << "\";" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

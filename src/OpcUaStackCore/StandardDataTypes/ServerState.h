@@ -56,6 +56,7 @@ namespace OpcUaStackCore
         
         //- ExtensionObjectBase -----------------------------------------------
         virtual ExtensionObjectBase::SPtr factory(void);
+        virtual std::string namespaceName(void);
         virtual std::string typeName(void);
         virtual OpcUaNodeId typeId(void);
         virtual OpcUaNodeId binaryTypeId(void);

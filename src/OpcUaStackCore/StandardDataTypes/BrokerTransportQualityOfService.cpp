@@ -173,6 +173,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    BrokerTransportQualityOfService::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     BrokerTransportQualityOfService::typeName(void)
     {
     	return "BrokerTransportQualityOfService";

@@ -169,6 +169,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    IdType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     IdType::typeName(void)
     {
     	return "IdType";

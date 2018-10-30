@@ -169,6 +169,12 @@ namespace OpcUaStackCore
     }
     
     std::string
+    PerformUpdateType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
     PerformUpdateType::typeName(void)
     {
     	return "PerformUpdateType";
