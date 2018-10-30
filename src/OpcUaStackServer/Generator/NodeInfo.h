@@ -187,6 +187,8 @@ class DLLEXPORT NodeInfo
 		InformationModel::SPtr& informationModel
 	);
 
+	std::string getIdentifierAsString(OpcUaNodeId& nodeId);
+
   private:
 	NumberNamespaceMap numberNamespaceMap_;		//!< number to namespace map
 	InformationModel::SPtr informationModel_;	//!< opc ua information model

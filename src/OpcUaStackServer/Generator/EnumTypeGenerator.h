@@ -94,7 +94,6 @@ namespace OpcUaStackServer
 		bool generate(const OpcUaNodeId& enumType);
 
 	  private:
-		std::string getIdentifierAsString(OpcUaNodeId& nodeId);
 
 		//
 		// header functions

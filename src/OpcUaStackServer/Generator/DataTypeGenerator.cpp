@@ -731,7 +731,7 @@ namespace OpcUaStackServer
 		ss << prefix << "OpcUaNodeId" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::typeId(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "	return OpcUaNodeId(" << getIdentifierAsString(dataTypeNodeId) << "," << dataTypeNodeId.namespaceIndex() << ");" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << nodeInfo_.getIdentifierAsString(dataTypeNodeId) << "," << dataTypeNodeId.namespaceIndex() << ");" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -1080,44 +1080,5 @@ namespace OpcUaStackServer
 		sourceContent_ += ss.str();
 		return true;
 	}
-
-    std::string
-    DataTypeGenerator::getIdentifierAsString(OpcUaNodeId& nodeId)
-    {
-    	if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
-    		uint16_t namespaceIndex;
-    		uint32_t id;
-    		nodeId.get(id, namespaceIndex);
-
-    		std::stringstream ss;
-    		ss << "(OpcUaUInt32)" << id;
-
-    		return ss.str();
-    	}
-    	else if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaString) {
-    		uint16_t namespaceIndex;
-    		std::string id;
-    		nodeId.get(id, namespaceIndex);
-
-       		std::stringstream ss;
-        	ss << "\"" << id << "\"";
-
-        	return ss.str();
-    	}
-       	else if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaGuid) {
-    		uint16_t namespaceIndex;
-    		std::string id;
-    		nodeId.get(id, namespaceIndex);
-
-       		std::stringstream ss;
-        	ss << "\"" << id << "\"";
-
-        	return ss.str();
-        }
-       	else {
-       		return "(OpcUaUInt32)0";
-       	}
-    	return "";
-    }
 
 }
