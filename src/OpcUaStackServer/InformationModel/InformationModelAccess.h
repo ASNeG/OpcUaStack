@@ -133,6 +133,8 @@ namespace OpcUaStackServer
 		// --------------------------------------------------------------------
 		bool getBinaryEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass);
 		bool getBinaryEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId);
+		bool getXMLEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass);
+		bool getXMLEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId);
 
 
 		// --------------------------------------------------------------------

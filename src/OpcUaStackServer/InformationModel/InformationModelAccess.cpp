@@ -982,6 +982,92 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	InformationModelAccess::getXMLEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass)
+	{
+		// get all encoding reference items
+		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
+		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
+		if (it.first == it.second) {
+			Log(Warning, "HasEncodingTypeDefinition reference not exist in node")
+				.parameter("NodeId", baseNodeClass->nodeId());
+			return false;
+		}
+
+		// go through all encoding reference items
+		ReferenceItemMultiMap::iterator itl;
+		for (itl = it.first; itl != it.second; itl++) {
+			ReferenceItem::SPtr referenceItem  = itl->second;
+
+			if (!referenceItem->isForward_) continue;
+
+			// get node class
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (baseNodeClass.get() == nullptr) {
+				continue;
+			}
+
+			// get display name
+			boost::optional<OpcUaLocalizedText&> displayName = baseNodeClass->getDisplayName();
+			if (!displayName) {
+				continue;
+			}
+
+			// check display name
+			if ((*displayName).text().toStdString() == "Default XML") {
+				encodingNodeClass = baseNodeClass;
+				return true;
+			}
+		}
+
+		Log(Warning, "xml encoding node class not found")
+			.parameter("NodeId", baseNodeClass->nodeId());
+		return false;
+	}
+
+	bool
+	InformationModelAccess::getXMLEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId)
+	{
+		// get all encoding reference items
+		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
+		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
+		if (it.first == it.second) {
+			Log(Warning, "HasEncodingTypeDefinition reference not exist in node")
+				.parameter("NodeId", baseNodeClass->nodeId());
+			return false;
+		}
+
+		// go through all encoding reference items
+		ReferenceItemMultiMap::iterator itl;
+		for (itl = it.first; itl != it.second; itl++) {
+			ReferenceItem::SPtr referenceItem  = itl->second;
+
+			if (!referenceItem->isForward_) continue;
+
+			// get node class
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (baseNodeClass.get() == nullptr) {
+				continue;
+			}
+
+			// get display name
+			boost::optional<OpcUaLocalizedText&> displayName = baseNodeClass->getDisplayName();
+			if (!displayName) {
+				continue;
+			}
+
+			// check display name
+			if ((*displayName).text().toStdString() == "Default XML") {
+				encodingNodeId = referenceItem->nodeId_;
+				return true;
+			}
+		}
+
+		Log(Warning, "xml encoding node id not found")
+			.parameter("NodeId", baseNodeClass->nodeId());
+		return false;
+	}
+
+	bool
 	InformationModelAccess::isDataType(BaseNodeClass::SPtr baseNodeClass)
 	{
 		// check node id
