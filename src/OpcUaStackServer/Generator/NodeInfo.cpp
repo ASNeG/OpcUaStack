@@ -337,10 +337,24 @@ namespace OpcUaStackServer
 		//
 		// set default XML encoding node identifier
 		//
+		if (isStructureType) {
+			if (!ima.getXMLEncodingNode(baseNode_, defaultXMLNodeId_)) {
+				Log(Error, "default xml encoding node identifier do not not exist in information model")
+					.parameter("DataTypeNodeId", dataTypeNodeId_);
+				return false;
+			}
+		}
 
 		//
 		// set default JSON encoding node identifier
 		//
+		if (isStructureType) {
+			if (!ima.getJSONEncodingNode(baseNode_, defaultJSONNodeId_)) {
+				Log(Error, "default json encoding node identifier do not not exist in information model")
+					.parameter("DataTypeNodeId", dataTypeNodeId_);
+				return false;
+			}
+		}
 
 		return true;
 	}
