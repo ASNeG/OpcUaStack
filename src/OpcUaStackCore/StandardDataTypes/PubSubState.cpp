@@ -243,6 +243,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    PubSubState::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    PubSubState::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    PubSubState::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    PubSubState::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     PubSubState::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

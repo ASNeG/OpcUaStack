@@ -235,6 +235,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    PubSubDiagnosticsCounterClassification::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    PubSubDiagnosticsCounterClassification::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    PubSubDiagnosticsCounterClassification::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    PubSubDiagnosticsCounterClassification::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     PubSubDiagnosticsCounterClassification::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

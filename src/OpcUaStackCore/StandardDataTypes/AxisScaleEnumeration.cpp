@@ -239,6 +239,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    AxisScaleEnumeration::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    AxisScaleEnumeration::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    AxisScaleEnumeration::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    AxisScaleEnumeration::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     AxisScaleEnumeration::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

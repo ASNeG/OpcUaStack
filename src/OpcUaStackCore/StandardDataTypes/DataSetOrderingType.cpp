@@ -239,6 +239,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    DataSetOrderingType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    DataSetOrderingType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    DataSetOrderingType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    DataSetOrderingType::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     DataSetOrderingType::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

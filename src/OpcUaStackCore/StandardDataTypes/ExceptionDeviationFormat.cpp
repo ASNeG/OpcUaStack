@@ -247,6 +247,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    ExceptionDeviationFormat::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    ExceptionDeviationFormat::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    ExceptionDeviationFormat::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    ExceptionDeviationFormat::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     ExceptionDeviationFormat::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

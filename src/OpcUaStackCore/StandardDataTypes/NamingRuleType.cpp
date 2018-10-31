@@ -239,6 +239,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    NamingRuleType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    NamingRuleType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    NamingRuleType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    NamingRuleType::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     NamingRuleType::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

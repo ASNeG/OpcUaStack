@@ -367,6 +367,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    NodeAttributesMask::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    NodeAttributesMask::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    NodeAttributesMask::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    NodeAttributesMask::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     NodeAttributesMask::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

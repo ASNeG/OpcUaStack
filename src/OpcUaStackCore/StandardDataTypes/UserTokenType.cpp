@@ -243,6 +243,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    UserTokenType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    UserTokenType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    UserTokenType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    UserTokenType::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     UserTokenType::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

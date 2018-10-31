@@ -247,6 +247,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    BrokerTransportQualityOfService::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    BrokerTransportQualityOfService::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    BrokerTransportQualityOfService::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    BrokerTransportQualityOfService::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     BrokerTransportQualityOfService::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

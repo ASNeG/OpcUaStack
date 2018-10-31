@@ -235,6 +235,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    SecurityTokenRequestType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    SecurityTokenRequestType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    SecurityTokenRequestType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    SecurityTokenRequestType::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     SecurityTokenRequestType::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

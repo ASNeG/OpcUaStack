@@ -247,6 +247,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    DiagnosticsLevel::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    DiagnosticsLevel::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    DiagnosticsLevel::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    DiagnosticsLevel::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     DiagnosticsLevel::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

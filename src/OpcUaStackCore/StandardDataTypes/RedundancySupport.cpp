@@ -251,6 +251,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    RedundancySupport::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    RedundancySupport::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    RedundancySupport::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    RedundancySupport::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     RedundancySupport::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

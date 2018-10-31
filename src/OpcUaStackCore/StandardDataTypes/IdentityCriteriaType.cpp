@@ -251,6 +251,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    IdentityCriteriaType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    IdentityCriteriaType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    IdentityCriteriaType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    IdentityCriteriaType::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     IdentityCriteriaType::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

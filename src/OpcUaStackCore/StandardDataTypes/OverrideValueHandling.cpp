@@ -239,6 +239,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    OverrideValueHandling::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    OverrideValueHandling::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    OverrideValueHandling::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    OverrideValueHandling::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     OverrideValueHandling::copyTo(ExtensionObjectBase& extensionObjectBase)
     {

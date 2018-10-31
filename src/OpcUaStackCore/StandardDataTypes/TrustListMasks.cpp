@@ -251,6 +251,26 @@ namespace OpcUaStackCore
         return true;
     }
     
+    bool
+    TrustListMasks::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    TrustListMasks::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    TrustListMasks::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    TrustListMasks::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
     void
     TrustListMasks::copyTo(ExtensionObjectBase& extensionObjectBase)
     {
