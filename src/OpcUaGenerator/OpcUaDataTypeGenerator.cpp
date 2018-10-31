@@ -301,6 +301,12 @@ namespace OpcUaDataTypeGenerator
 		std::vector<std::string>::iterator it;
 		for (it = dataTypeNameVec_.begin(); it != dataTypeNameVec_.end(); it++) {
 			dataTypeName_ = *it;
+
+			// ignore structure data type
+			if (dataTypeName_ == "Structure") {
+				continue;
+			}
+
 			int32_t rc = generateDataTypeSource();
 			if (rc < 0) return rc;
 		}

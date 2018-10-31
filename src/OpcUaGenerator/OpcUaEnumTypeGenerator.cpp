@@ -301,6 +301,9 @@ namespace OpcUaEnumTypeGenerator
 		std::vector<std::string>::iterator it;
 		for (it = enumTypeNameVec_.begin(); it != enumTypeNameVec_.end(); it++) {
 			enumTypeName_ = *it;
+			if (enumTypeName_ == "Enumeration") {
+				continue;
+			}
 			int32_t rc = generateEnumTypeSource();
 			if (rc < 0) return rc;
 		}
