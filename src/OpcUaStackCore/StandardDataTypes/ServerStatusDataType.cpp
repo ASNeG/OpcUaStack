@@ -138,7 +138,7 @@ namespace OpcUaStackCore
     OpcUaNodeId
     ServerStatusDataType::binaryTypeId(void)
     {
-    	return OpcUaNodeId(0, 0);
+    	return OpcUaNodeId((OpcUaUInt32)864, 0);
     }
     
     OpcUaNodeId

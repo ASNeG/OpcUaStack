@@ -208,6 +208,9 @@ namespace OpcUaStackServer
 		dataTypeNodeId_ = dataTypeNodeId;
 		informationModel_ = informationModel;
 
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+
 		//
 		// find node in opc ua information model
 		//
@@ -221,8 +224,6 @@ namespace OpcUaStackServer
 		//
 		// find parent node in opc ua information model
 		//
-		InformationModelAccess ima;
-		ima.informationModel(informationModel_);
 		if (!ima.getSubType(baseNode_, parentDataTypeNodeId_)) {
 			Log(Error, "parent data type node identifier do not not exist in information model")
 				.parameter("DataTypeNodeId", dataTypeNodeId_);
@@ -318,8 +319,20 @@ namespace OpcUaStackServer
 		dataTypeNamespaceName_ = getNamespaceName(dataTypeNodeId_);
 
 		//
+		// check if base class is a structure
+		//
+		bool isStructureType = ima.isDataTypeStructure(baseNode_);
+
+		//
 		// set default binary encoding node identifier
 		//
+		if (isStructureType) {
+			if (!ima.getBinaryEncodingNode(baseNode_, defaultBinaryNodeId_)) {
+				Log(Error, "default binary encoding node identifier do not not exist in information model")
+					.parameter("DataTypeNodeId", dataTypeNodeId_);
+				return false;
+			}
+		}
 
 		//
 		// set default XML encoding node identifier

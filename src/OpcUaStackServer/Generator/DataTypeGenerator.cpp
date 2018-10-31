@@ -761,15 +761,14 @@ namespace OpcUaStackServer
 	{
 		std::stringstream ss;
 
-		// FIXME: todo
-		std::string identifier = "0";
-		std::string namespaceName = "0";
+		std::string identifier = nodeInfo_.getIdentifierAsString(nodeInfo_.defaultBinaryNodeId());
+		int16_t namespaceId = nodeInfo_.defaultBinaryNodeId().namespaceIndex();
 
 		ss << prefix << std::endl;
 		ss << prefix << "OpcUaNodeId" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::binaryTypeId(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "	return OpcUaNodeId(" << namespaceName << ", " << identifier << ");" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << identifier << ", " << namespaceId << ");" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
