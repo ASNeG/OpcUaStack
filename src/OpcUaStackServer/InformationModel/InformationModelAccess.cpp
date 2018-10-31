@@ -896,7 +896,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	InformationModelAccess::getBinaryEncodingNodeId(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass)
+	InformationModelAccess::getBinaryEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass)
 	{
 		// get all encoding reference items
 		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
@@ -939,7 +939,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	InformationModelAccess::getBinaryEncodingNodeId(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId)
+	InformationModelAccess::getBinaryEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId)
 	{
 		// get all encoding reference items
 		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
