@@ -144,7 +144,7 @@ namespace OpcUaStackCore
     OpcUaNodeId
     ServerStatusDataType::xmlTypeId(void)
     {
-    	return OpcUaNodeId(0, 0);
+    	return OpcUaNodeId((OpcUaUInt32)863, 0);
     }
     
     void

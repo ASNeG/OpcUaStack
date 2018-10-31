@@ -190,7 +190,7 @@ namespace OpcUaStackServer
 	OpcUaNodeId&
 	NodeInfo::defaultXMLNodeId(void)
 	{
-		return defaultBinaryNodeId_;
+		return defaultXMLNodeId_;
 	}
 
 	OpcUaNodeId&

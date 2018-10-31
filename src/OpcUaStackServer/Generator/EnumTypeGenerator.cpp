@@ -831,15 +831,11 @@ namespace OpcUaStackServer
 	{
 		std::stringstream ss;
 
-		// FIXME: todo
-		std::string identifier = "0";
-		std::string namespaceName = "0";
-
 		ss << prefix << std::endl;
 		ss << prefix << "OpcUaNodeId" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlTypeId(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "	return OpcUaNodeId(" << namespaceName << ", " << identifier << ");" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(0, 0);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

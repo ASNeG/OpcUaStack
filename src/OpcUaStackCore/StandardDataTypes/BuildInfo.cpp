@@ -144,7 +144,7 @@ namespace OpcUaStackCore
     OpcUaNodeId
     BuildInfo::xmlTypeId(void)
     {
-    	return OpcUaNodeId(0, 0);
+    	return OpcUaNodeId((OpcUaUInt32)339, 0);
     }
     
     void
