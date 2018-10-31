@@ -1068,6 +1068,92 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	InformationModelAccess::getJSONEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass)
+	{
+		// get all encoding reference items
+		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
+		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
+		if (it.first == it.second) {
+			Log(Warning, "HasEncodingTypeDefinition reference not exist in node")
+				.parameter("NodeId", baseNodeClass->nodeId());
+			return false;
+		}
+
+		// go through all encoding reference items
+		ReferenceItemMultiMap::iterator itl;
+		for (itl = it.first; itl != it.second; itl++) {
+			ReferenceItem::SPtr referenceItem  = itl->second;
+
+			if (!referenceItem->isForward_) continue;
+
+			// get node class
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (baseNodeClass.get() == nullptr) {
+				continue;
+			}
+
+			// get display name
+			boost::optional<OpcUaLocalizedText&> displayName = baseNodeClass->getDisplayName();
+			if (!displayName) {
+				continue;
+			}
+
+			// check display name
+			if ((*displayName).text().toStdString() == "Default JSON") {
+				encodingNodeClass = baseNodeClass;
+				return true;
+			}
+		}
+
+		Log(Warning, "json encoding node class not found")
+			.parameter("NodeId", baseNodeClass->nodeId());
+		return false;
+	}
+
+	bool
+	InformationModelAccess::getJSONEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId)
+	{
+		// get all encoding reference items
+		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
+		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
+		if (it.first == it.second) {
+			Log(Warning, "HasEncodingTypeDefinition reference not exist in node")
+				.parameter("NodeId", baseNodeClass->nodeId());
+			return false;
+		}
+
+		// go through all encoding reference items
+		ReferenceItemMultiMap::iterator itl;
+		for (itl = it.first; itl != it.second; itl++) {
+			ReferenceItem::SPtr referenceItem  = itl->second;
+
+			if (!referenceItem->isForward_) continue;
+
+			// get node class
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (baseNodeClass.get() == nullptr) {
+				continue;
+			}
+
+			// get display name
+			boost::optional<OpcUaLocalizedText&> displayName = baseNodeClass->getDisplayName();
+			if (!displayName) {
+				continue;
+			}
+
+			// check display name
+			if ((*displayName).text().toStdString() == "Default JSON") {
+				encodingNodeId = referenceItem->nodeId_;
+				return true;
+			}
+		}
+
+		Log(Warning, "json encoding node id not found")
+			.parameter("NodeId", baseNodeClass->nodeId());
+		return false;
+	}
+
+	bool
 	InformationModelAccess::isDataType(BaseNodeClass::SPtr baseNodeClass)
 	{
 		// check node id
