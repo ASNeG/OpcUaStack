@@ -168,6 +168,12 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    UserTokenType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
     std::string
     UserTokenType::namespaceName(void)
     {

@@ -176,6 +176,12 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    TrustListMasks::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
     std::string
     TrustListMasks::namespaceName(void)
     {

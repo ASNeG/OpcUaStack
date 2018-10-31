@@ -164,6 +164,12 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    NamingRuleType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
     std::string
     NamingRuleType::namespaceName(void)
     {

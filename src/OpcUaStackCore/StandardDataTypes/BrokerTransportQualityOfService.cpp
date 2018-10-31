@@ -172,6 +172,12 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    BrokerTransportQualityOfService::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
     std::string
     BrokerTransportQualityOfService::namespaceName(void)
     {

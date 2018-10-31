@@ -172,6 +172,12 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    ExceptionDeviationFormat::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
     std::string
     ExceptionDeviationFormat::namespaceName(void)
     {

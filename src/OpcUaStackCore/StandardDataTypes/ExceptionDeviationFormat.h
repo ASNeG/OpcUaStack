@@ -58,6 +58,7 @@ namespace OpcUaStackCore
         virtual OpcUaNodeId typeId(void);
         virtual OpcUaNodeId binaryTypeId(void);
         virtual OpcUaNodeId xmlTypeId(void);
+        virtual OpcUaNodeId jsonTypeId(void);
         virtual void opcUaBinaryEncode(std::ostream& os) const;
         virtual void opcUaBinaryDecode(std::istream& is);
         virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;

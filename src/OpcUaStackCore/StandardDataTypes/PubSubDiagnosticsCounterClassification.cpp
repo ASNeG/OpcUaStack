@@ -160,6 +160,12 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    PubSubDiagnosticsCounterClassification::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
     std::string
     PubSubDiagnosticsCounterClassification::namespaceName(void)
     {

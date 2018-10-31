@@ -147,6 +147,12 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)339, 0);
     }
     
+    OpcUaNodeId
+    BuildInfo::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15361, 0);
+    }
+    
     void
     BuildInfo::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -252,6 +258,28 @@ namespace OpcUaStackCore
         if (!buildDate_.xmlDecode(*tree, xmlns)) return false;
     
         return true;
+    }
+    
+    bool
+    BuildInfo::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    BuildInfo::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    BuildInfo::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    BuildInfo::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

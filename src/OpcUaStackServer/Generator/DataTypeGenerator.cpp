@@ -277,6 +277,10 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
+		ss << prefix << "virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);" << std::endl;
+		ss << prefix << "virtual bool jsonEncode(boost::property_tree::ptree& pt);" << std::endl;
+		ss << prefix << "virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);" << std::endl;
+		ss << prefix << "virtual bool jsonDecode(boost::property_tree::ptree& pt);" << std::endl;
 		ss << prefix << "virtual void copyTo(ExtensionObjectBase& extensionObjectBase);" << std::endl;
 		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;" << std::endl;
 		ss << prefix << "virtual void out(std::ostream& os);" << std::endl;
@@ -417,6 +421,8 @@ namespace OpcUaStackServer
 				generateSourceClassDecode("    ") &&
 				generateSourceClassXmlEncode("    ") &&
 				generateSourceClassXmlDecode("    ") &&
+				generateSourceClassJsonEncode("    ") &&
+				generateSourceClassJsonDecode("    ") &&
 				generateSourceClassCopyTo("    ") &&
 				generateSourceClassEqual("    ") &&
 				generateSourceClassOut("    ") &&
@@ -1028,6 +1034,72 @@ namespace OpcUaStackServer
 		}
 
 		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassJsonEncode(const std::string& prefix)
+	{
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+		std::stringstream ss;
+
+		//
+		// first xml encoder function
+		//
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix <<  nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+
+		//
+		// second xml encoder function
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+    	ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassJsonDecode(const std::string& prefix)
+	{
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+		std::stringstream ss;
+
+		//
+		// first xml decoder function
+		//
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix <<  nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+
+		//
+		// second xml decoder function
+		//
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

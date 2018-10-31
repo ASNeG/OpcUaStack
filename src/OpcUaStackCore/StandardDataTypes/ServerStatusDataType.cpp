@@ -147,6 +147,12 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)863, 0);
     }
     
+    OpcUaNodeId
+    ServerStatusDataType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15367, 0);
+    }
+    
     void
     ServerStatusDataType::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -252,6 +258,28 @@ namespace OpcUaStackCore
         if (!shutdownReason_.xmlDecode(*tree, xmlns)) return false;
     
         return true;
+    }
+    
+    bool
+    ServerStatusDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    ServerStatusDataType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    ServerStatusDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    ServerStatusDataType::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

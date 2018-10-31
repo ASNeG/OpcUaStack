@@ -140,6 +140,8 @@ namespace OpcUaStackServer
 		bool generateSourceClassDecode(const std::string& prefix);
 		bool generateSourceClassXmlEncode(const std::string& prefix);
 		bool generateSourceClassXmlDecode(const std::string& prefix);
+		bool generateSourceClassJsonEncode(const std::string& prefix);
+		bool generateSourceClassJsonDecode(const std::string& prefix);
 		bool generateSourceClassCopyTo(const std::string& prefix);
 		bool generateSourceClassEqual(const std::string& prefix);
 		bool generateSourceClassOut(const std::string& prefix);
