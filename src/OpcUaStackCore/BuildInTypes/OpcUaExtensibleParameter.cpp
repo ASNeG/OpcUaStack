@@ -48,6 +48,18 @@ namespace OpcUaStackCore
     	return constructSPtr<OpcUaExtensibleParameter>();
     }
 
+	std::string
+	OpcUaExtensibleParameter::namespaceName(void)
+	{
+		return "UnknownNamespace";
+	}
+
+	std::string
+	OpcUaExtensibleParameter::typeName(void)
+	{
+		return "UnknownType";
+	}
+
     OpcUaNodeId
 	OpcUaExtensibleParameter::binaryTypeId(void)
     {
@@ -56,6 +68,12 @@ namespace OpcUaStackCore
 
     OpcUaNodeId
 	OpcUaExtensibleParameter::xmlTypeId(void)
+    {
+    	return OpcUaNodeId(0,0);
+    }
+
+    OpcUaNodeId
+	OpcUaExtensibleParameter::jsonTypeId(void)
     {
     	return OpcUaNodeId(0,0);
     }
@@ -115,6 +133,30 @@ namespace OpcUaStackCore
 
     bool
 	OpcUaExtensibleParameter::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    	// FIXME: todo
+    }
+
+    bool
+	OpcUaExtensibleParameter::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    	// FIXME: todo
+    }
+
+    bool
+	OpcUaExtensibleParameter::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    	// FIXME: todo
+    }
+
+    bool
+	OpcUaExtensibleParameter::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    	// FIXME: todo
+    }
+
+    bool
+	OpcUaExtensibleParameter::jsonDecode(boost::property_tree::ptree& pt)
     {
     	// FIXME: todo
     }
