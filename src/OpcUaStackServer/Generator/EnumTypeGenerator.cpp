@@ -199,6 +199,12 @@ namespace OpcUaStackServer
 		// added class
 		//
 		ss << prefix << std::endl;
+		if (nodeInfo_.description() != "") {
+			ss << prefix << "/**" << std::endl;
+			ss << prefix << " * " << nodeInfo_.description() << std::endl;
+			ss << prefix << " */" << std::endl;
+		}
+
 		ss << prefix << "class " << nodeInfo_.className() << std::endl;
 
 		//

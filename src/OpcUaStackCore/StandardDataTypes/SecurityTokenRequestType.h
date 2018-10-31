@@ -21,6 +21,9 @@
 namespace OpcUaStackCore
 {
     
+    /**
+     * Indicates whether a token if being created or renewed.
+     */
     class SecurityTokenRequestType
     : public Object
     , public ExtensionObjectBase

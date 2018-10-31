@@ -21,6 +21,9 @@
 namespace OpcUaStackCore
 {
     
+    /**
+     * The type of security to use on a message.
+     */
     class MessageSecurityMode
     : public Object
     , public ExtensionObjectBase

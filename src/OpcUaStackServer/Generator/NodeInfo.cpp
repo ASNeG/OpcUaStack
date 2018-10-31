@@ -44,10 +44,10 @@ namespace OpcUaStackServer
 	, parentIsStructureType_(false)
 	, isAbstract_(false)
 	, parentIsAbstract_(false)
-
 	, defaultBinaryNodeId_()
 	, defaultXMLNodeId_()
 	, defaultJSONNodeId_()
+	, description_("")
 	{
 	}
 
@@ -197,6 +197,12 @@ namespace OpcUaStackServer
 	NodeInfo::defaultJSONNodeId(void)
 	{
 		return defaultJSONNodeId_;
+	}
+
+	std::string&
+	NodeInfo::description(void)
+	{
+		return description_;
 	}
 
 	bool
@@ -355,6 +361,13 @@ namespace OpcUaStackServer
 				return false;
 			}
 		}
+
+		//
+		// set description
+		//
+		OpcUaLocalizedText description;
+		baseNode_->getDescription(description);
+		description_ = description.text().toStdString();
 
 		return true;
 	}

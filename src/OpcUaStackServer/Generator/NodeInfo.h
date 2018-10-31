@@ -205,6 +205,13 @@ class DLLEXPORT NodeInfo
 	OpcUaNodeId& defaultJSONNodeId(void);
 
 	/**
+	 * Getter function
+	 *
+	 * @return node description
+	 */
+	std::string& description(void);
+
+	/**
 	 * This function inits the node info class
 	 *
 	 * @parameter[in] dataTypeNodeId			opc ua data type node identifier
@@ -256,6 +263,7 @@ class DLLEXPORT NodeInfo
 	OpcUaNodeId defaultBinaryNodeId_;			//!< default binary encoding node identifier
 	OpcUaNodeId defaultXMLNodeId_;				//!< default xml encoding node identifier
 	OpcUaNodeId defaultJSONNodeId_;				//!< default json encoding node identifier
+	std::string description_;					//!< node description
 };
 
 }

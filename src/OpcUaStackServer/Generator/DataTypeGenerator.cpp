@@ -501,6 +501,12 @@ namespace OpcUaStackServer
 		// added constructor
 		//
 		ss << prefix << std::endl;
+		if (nodeInfo_.description() != "") {
+			ss << prefix << "/**" << std::endl;
+			ss << prefix << " * " << nodeInfo_.description() << std::endl;
+			ss << prefix << " */" << std::endl;
+		}
+
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
 
 		if (nodeInfo_.parentIsStructureType() == true) {

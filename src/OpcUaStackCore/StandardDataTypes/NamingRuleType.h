@@ -21,6 +21,9 @@
 namespace OpcUaStackCore
 {
     
+    /**
+     * Describes a value that specifies the significance of the BrowseName for an instance declaration.
+     */
     class NamingRuleType
     : public Object
     , public ExtensionObjectBase

@@ -21,6 +21,9 @@
 namespace OpcUaStackCore
 {
     
+    /**
+     * The bits used to specify default attributes for a new node.
+     */
     class NodeAttributesMask
     : public Object
     , public ExtensionObjectBase

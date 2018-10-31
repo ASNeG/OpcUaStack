@@ -21,6 +21,9 @@
 namespace OpcUaStackCore
 {
     
+    /**
+     * The type of identifier used in a node id.
+     */
     class IdType
     : public Object
     , public ExtensionObjectBase

@@ -21,6 +21,9 @@
 namespace OpcUaStackCore
 {
     
+    /**
+     * The possible user token types.
+     */
     class UserTokenType
     : public Object
     , public ExtensionObjectBase

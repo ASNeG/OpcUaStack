@@ -21,6 +21,9 @@
 namespace OpcUaStackCore
 {
     
+    /**
+     * The types of applications.
+     */
     class ApplicationType
     : public Object
     , public ExtensionObjectBase
