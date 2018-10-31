@@ -76,7 +76,7 @@ namespace OpcUaStackClient
 			const AttributeId& attributeId4,
 			const AttributeId& attributeId5
 		);
-		void attributeIds(NodeClassType nodeClassType);
+		void attributeIds(NodeClass::Enum nodeClassType);
 
 		void asyncReadNode(void);
 

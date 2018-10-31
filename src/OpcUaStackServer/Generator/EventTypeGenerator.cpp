@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -403,9 +403,9 @@ namespace OpcUaStackServer
 			}
 
 			// use only variable class
-			NodeClassType nodeClassType;
+			NodeClass::Enum nodeClassType;
 			childNodeClass->getNodeClass(nodeClassType);
-			if (nodeClassType != NodeClassType_Variable) {
+			if (nodeClassType != NodeClass::EnumVariable) {
 				continue;
 			}
 

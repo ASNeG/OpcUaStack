@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	NodeClassOld::NodeClassOld(void)
-		: nodeClassType_(NodeClassType_Unspecified)
+		: nodeClassType_(NodeClass::EnumUnspecified)
 	{
 	}
 
@@ -37,38 +37,38 @@ namespace OpcUaStackCore
 	}
 
 	std::string
-	NodeClassOld::toString(NodeClassType nodeClassType)
+	NodeClassOld::toString(NodeClass::Enum nodeClassType)
 	{
 		switch (nodeClassType)
 		{
-			case NodeClassType_Object: return "Object";
-			case NodeClassType_Variable: return "Variable";
-			case NodeClassType_Method: return "Method";
-			case NodeClassType_ObjectType: return "ObjectType";
-			case NodeClassType_VariableType: return "VariableType";
-			case NodeClassType_ReferenceType: return "ReferenceType";
-			case NodeClassType_DataType: return "DataType";
-			case NodeClassType_View: return "View";
+			case NodeClass::EnumObject: return "Object";
+			case NodeClass::EnumVariable: return "Variable";
+			case NodeClass::EnumMethod: return "Method";
+			case NodeClass::EnumObjectType: return "ObjectType";
+			case NodeClass::EnumVariableType: return "VariableType";
+			case NodeClass::EnumReferenceType: return "ReferenceType";
+			case NodeClass::EnumDataType: return "DataType";
+			case NodeClass::EnumView: return "View";
 			default: return "Unspecified";
 		}
 		return "Unspecified";
 	}
 
-	NodeClassType
+	NodeClass::Enum
 	NodeClassOld::toNodeClassType(const std::string& nodeClassTypeString)
 	{
-		if (nodeClassTypeString == "Object") return NodeClassType_Object;
-		else if (nodeClassTypeString == "Variable") return NodeClassType_Variable;
-		else if (nodeClassTypeString == "Method") return NodeClassType_Method;
-		else if (nodeClassTypeString == "ObjectType") return NodeClassType_ObjectType;
-		else if (nodeClassTypeString == "VariableType") return NodeClassType_VariableType;
-		else if (nodeClassTypeString == "ReferenceType") return NodeClassType_ReferenceType;
-		else if (nodeClassTypeString == "DataType") return NodeClassType_DataType;
-		else if (nodeClassTypeString == "View") return NodeClassType_View;
-		return NodeClassType_Unspecified;
+		if (nodeClassTypeString == "Object") return NodeClass::EnumObject;
+		else if (nodeClassTypeString == "Variable") return NodeClass::EnumVariable;
+		else if (nodeClassTypeString == "Method") return NodeClass::EnumMethod;
+		else if (nodeClassTypeString == "ObjectType") return NodeClass::EnumObjectType;
+		else if (nodeClassTypeString == "VariableType") return NodeClass::EnumVariableType;
+		else if (nodeClassTypeString == "ReferenceType") return NodeClass::EnumReferenceType;
+		else if (nodeClassTypeString == "DataType") return NodeClass::EnumDataType;
+		else if (nodeClassTypeString == "View") return NodeClass::EnumView;
+		return NodeClass::EnumUnspecified;
 	}
 
-	NodeClassType
+	NodeClass::Enum
     NodeClassOld::nodeClassType(void) const
 	{
 		return nodeClassType_;
@@ -76,7 +76,7 @@ namespace OpcUaStackCore
 
 	void
 	NodeClassOld::nodeClassType(
-		const NodeClassType nodeClassType)
+		const NodeClass::Enum nodeClassType)
 	{
 		nodeClassType_ = nodeClassType;		
 	}
@@ -94,7 +94,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaUInt32 nodeClassType;
 		OpcUaNumber::opcUaBinaryDecode(is, nodeClassType);
-		nodeClassType_ = (NodeClassType)nodeClassType;
+		nodeClassType_ = (NodeClass::Enum)nodeClassType;
 	}
 
 }

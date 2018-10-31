@@ -37,7 +37,7 @@ namespace OpcUaStackCore
 		virtual ~CreateNodeInstanceRequest(void);
 
 		std::string& name(void);
-		NodeClassType& nodeClassType(void);
+		NodeClass::Enum& nodeClassType(void);
 		OpcUaNodeId& parentNodeId(void);
 		OpcUaNodeId& nodeId(void);
 		OpcUaLocalizedText& displayName(void);
@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 
 	  private:
 		std::string name_;
-		NodeClassType nodeClassType_;
+		NodeClass::Enum nodeClassType_;
 		OpcUaNodeId parentNodeId_;
 		OpcUaNodeId nodeId_;
 		OpcUaLocalizedText displayName_;

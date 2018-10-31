@@ -420,7 +420,7 @@ namespace OpcUaStackServer
 		// decode NodeBase 
 		//
 		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
-		objectNodeClassSPtr->nodeClass().data(NodeClassType_Object);
+		objectNodeClassSPtr->nodeClass().data(NodeClass::EnumObject);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -456,7 +456,7 @@ namespace OpcUaStackServer
 		// decode NodeBase 
 		//
 		if (!decodeNodeBase(objectTypeNodeClassSPtr, ptree)) return false;
-		objectTypeNodeClassSPtr->nodeClass().data(NodeClassType_ObjectType);
+		objectTypeNodeClassSPtr->nodeClass().data(NodeClass::EnumObjectType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -492,7 +492,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(variableNodeClassSPtr, ptree)) return false;
-		variableNodeClassSPtr->nodeClass().data(NodeClassType_Variable);
+		variableNodeClassSPtr->nodeClass().data(NodeClass::EnumVariable);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -631,7 +631,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(variableTypeNodeClassSPtr, ptree)) return false;
-		variableTypeNodeClassSPtr->nodeClass().data(NodeClassType_VariableType);
+		variableTypeNodeClassSPtr->nodeClass().data(NodeClass::EnumVariableType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -745,7 +745,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(dataTypeNodeClassSPtr, ptree)) return false;
-		dataTypeNodeClassSPtr->nodeClass().data(NodeClassType_DataType);
+		dataTypeNodeClassSPtr->nodeClass().data(NodeClass::EnumDataType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -789,7 +789,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(referenceTypeNodeClassSPtr, ptree)) return false;
-		referenceTypeNodeClassSPtr->nodeClass().data(NodeClassType_ReferenceType);
+		referenceTypeNodeClassSPtr->nodeClass().data(NodeClass::EnumReferenceType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -852,7 +852,7 @@ namespace OpcUaStackServer
 		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
 		//
 		if (!decodeNodeBase(methodeNodeClassSPtr, ptree)) return false;
-		methodeNodeClassSPtr->nodeClass().data(NodeClassType_Method);
+		methodeNodeClassSPtr->nodeClass().data(NodeClass::EnumMethod);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//

@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -202,7 +202,7 @@ namespace OpcUaClient
 	OpcUaStatusCode
 	ClientServiceNodeSetFilter::readNodeAttributes(
 		OpcUaNodeId::SPtr& parentNodeId,
-		NodeClassType nodeClassType
+		NodeClass::Enum nodeClassType
 	)
 	{
 		// check if node already exist
@@ -211,42 +211,42 @@ namespace OpcUaClient
 
 		switch (nodeClassType)
 		{
-			case NodeClassType_Object:
+			case NodeClass::EnumObject:
 			{
 				baseNodeClass_ = constructSPtr<ObjectNodeClass>();
 				break;
 			}
-			case NodeClassType_Variable:
+			case NodeClass::EnumVariable:
 			{
 				baseNodeClass_ = constructSPtr<VariableNodeClass>();
 				break;
 			}
-			case NodeClassType_Method:
+			case NodeClass::EnumMethod:
 			{
 				baseNodeClass_ = constructSPtr<MethodNodeClass>();
 				break;
 			}
-			case NodeClassType_ObjectType:
+			case NodeClass::EnumObjectType:
 			{
 				baseNodeClass_ = constructSPtr<ObjectTypeNodeClass>();
 				break;
 			}
-			case NodeClassType_VariableType:
+			case NodeClass::EnumVariableType:
 			{
 				baseNodeClass_ = constructSPtr<VariableTypeNodeClass>();
 				break;
 			}
-			case NodeClassType_ReferenceType:
+			case NodeClass::EnumReferenceType:
 			{
 				baseNodeClass_ = constructSPtr<ReferenceTypeNodeClass>();
 				break;
 			}
-			case NodeClassType_DataType:
+			case NodeClass::EnumDataType:
 			{
 				baseNodeClass_ = constructSPtr<DataTypeNodeClass>();
 				break;
 			}
-			case NodeClassType_View:
+			case NodeClass::EnumView:
 			{
 				baseNodeClass_ = constructSPtr<ViewNodeClass>();
 				break;

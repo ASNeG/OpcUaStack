@@ -246,7 +246,7 @@ BOOST_AUTO_TEST_CASE(Browse_Response)
 	referenceDescriptionSPtr->browseName(browseName);
 	displayName.locale("local");
 	referenceDescriptionSPtr->displayName(displayName);
-	referenceDescriptionSPtr->nodeClass(NodeClassType_DataType);
+	referenceDescriptionSPtr->nodeClass(NodeClass::EnumDataType);
 	referenceDescriptionSPtr->typeDefinition()->namespaceIndex(2);
 	referenceDescriptionSPtr->typeDefinition()->nodeId<OpcUaUInt32>(123);
 	
@@ -331,7 +331,7 @@ BOOST_AUTO_TEST_CASE(Browse_Response)
 	BOOST_REQUIRE(referenceDescriptionSPtr->browseName().name().value() == "ABC");
 	BOOST_REQUIRE(referenceDescriptionSPtr->browseName().namespaceIndex() == 2);
 	BOOST_REQUIRE(referenceDescriptionSPtr->displayName().locale().value() == "local");
-	BOOST_REQUIRE(referenceDescriptionSPtr->nodeClass() == NodeClassType_DataType);
+	BOOST_REQUIRE(referenceDescriptionSPtr->nodeClass() == NodeClass::EnumDataType);
 	BOOST_REQUIRE(referenceDescriptionSPtr->typeDefinition()->namespaceIndex() == 2);
 	BOOST_REQUIRE(referenceDescriptionSPtr->typeDefinition()->nodeId<OpcUaUInt32>() == 123);
 }

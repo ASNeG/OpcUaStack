@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -172,16 +172,15 @@ namespace OpcUaStackServer
 	{
 		switch (addNodesItem->nodeClass()->nodeClassType())
 		{
-			case NodeClassType_Object: return addNodeObject(pos, addNodesItem, addNodesResult);
-			case NodeClassType_Variable:
-			case NodeClassType_Method:
-			case NodeClassType_ObjectType:
-			case NodeClassType_VariableType:
-			case NodeClassType_ReferenceType:
-			case NodeClassType_DataType:
-			case NodeClassType_View:
-			case NodeClassType_Unspecified:
-			case NodeClassType_Dummy:
+			case NodeClass::EnumObject: return addNodeObject(pos, addNodesItem, addNodesResult);
+			case NodeClass::EnumVariable:
+			case NodeClass::EnumMethod:
+			case NodeClass::EnumObjectType:
+			case NodeClass::EnumVariableType:
+			case NodeClass::EnumReferenceType:
+			case NodeClass::EnumDataType:
+			case NodeClass::EnumView:
+			case NodeClass::EnumUnspecified:
 			default:
 			{
 				Log(Error, "invalid node class")
@@ -215,7 +214,7 @@ namespace OpcUaStackServer
 		nodeId.namespaceIndex(addNodesItem->requestedNewNodeId()->namespaceIndex());
 		nodeId.nodeIdValue(addNodesItem->requestedNewNodeId()->nodeIdValue());
 		baseNodeClass->setNodeId(nodeId);
-		NodeClassType nodeClassType = addNodesItem->nodeClass()->nodeClassType();
+		NodeClass::Enum nodeClassType = addNodesItem->nodeClass()->nodeClassType();
 		baseNodeClass->setNodeClass(nodeClassType);
 		baseNodeClass->setBrowseName(*addNodesItem->browseName());
 

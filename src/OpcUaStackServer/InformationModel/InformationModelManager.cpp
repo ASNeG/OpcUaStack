@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -228,7 +228,7 @@ namespace OpcUaStackServer
 
 	bool
 	InformationModelManager::addNode(
-		NodeClassType nodeClassType,
+		NodeClass::Enum nodeClassType,
 		AddNodeRule& addNodeRule,
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& nodeId,
@@ -240,7 +240,7 @@ namespace OpcUaStackServer
 	{
 		switch (nodeClassType)
 		{
-			case NodeClassType_Object:
+			case NodeClass::EnumObject:
 			{
 				return addObjectNode(
 					addNodeRule,
@@ -253,7 +253,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClassType_Variable:
+			case NodeClass::EnumVariable:
 			{
 				return addVariableNode(
 					addNodeRule,
@@ -266,7 +266,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClassType_Method:
+			case NodeClass::EnumMethod:
 			{
 				return addMethodNode(
 					parentNodeId,
@@ -276,7 +276,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClassType_ObjectType:
+			case NodeClass::EnumObjectType:
 			{
 				return addObjectTypeNode(
 					parentNodeId,
@@ -286,7 +286,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClassType_VariableType:
+			case NodeClass::EnumVariableType:
 			{
 				return addVariableTypeNode(
 					parentNodeId,
@@ -296,7 +296,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClassType_DataType:
+			case NodeClass::EnumDataType:
 			{
 				return addDataTypeNode(
 					parentNodeId,
@@ -306,7 +306,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClassType_ReferenceType:
+			case NodeClass::EnumReferenceType:
 			{
 				return addReferenceTypeNode(
 					parentNodeId,
@@ -999,12 +999,12 @@ namespace OpcUaStackServer
 		for (uint32_t idx=0; idx<childBaseNodeClassVec.size(); idx++) {
 			BaseNodeClass::SPtr childBaseNodeClass = childBaseNodeClassVec[idx];
 
-			NodeClassType nodeClassType;
+			NodeClass::Enum nodeClassType;
 			childBaseNodeClass->getNodeClass(nodeClassType);
 
-			if (nodeClassType != NodeClassType_Object &&
-				nodeClassType != NodeClassType_Variable &&
-				nodeClassType != NodeClassType_Method) {
+			if (nodeClassType != NodeClass::EnumObject &&
+				nodeClassType != NodeClass::EnumVariable &&
+				nodeClassType != NodeClass::EnumMethod) {
 				continue;
 			}
 
@@ -1033,7 +1033,7 @@ namespace OpcUaStackServer
 
 			switch (nodeClassType)
 			{
-				case NodeClassType_Object:
+				case NodeClass::EnumObject:
 				{
 					bool success = addObjectNode(
 						addNodeRule,
@@ -1044,7 +1044,7 @@ namespace OpcUaStackServer
 					if (!success) return false;
 					break;
 				}
-				case NodeClassType_Variable:
+				case NodeClass::EnumVariable:
 				{
 					bool success = addVariableNode(
 						addNodeRule,
@@ -1055,7 +1055,7 @@ namespace OpcUaStackServer
 					if (!success) return false;
 					break;
 				}
-				case NodeClassType_Method:
+				case NodeClass::EnumMethod:
 				{
 					bool success = addMethodNode(
 						addNodeRule,
