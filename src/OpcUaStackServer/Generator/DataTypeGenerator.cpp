@@ -268,6 +268,7 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual OpcUaNodeId typeId(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId xmlTypeId(void);" << std::endl;
+		ss << prefix << "virtual OpcUaNodeId jsonTypeId(void);" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryEncode(std::ostream& os) const;" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryDecode(std::istream& is);" << std::endl;
 		ss << prefix << "virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;" << std::endl;
@@ -409,6 +410,7 @@ namespace OpcUaStackServer
 				generateSourceClassTypeId("    ") &&
 				generateSourceClassBinaryTypeId("    ") &&
 				generateSourceClassXmlTypeId("    ") &&
+				generateSourceClassJsonTypeId("    ") &&
 				generateSourceClassBinaryEncode("    ") &&
 				generateSourceClassBinaryDecode("    ") &&
 				generateSourceClassEncode("    ") &&
@@ -786,6 +788,25 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "OpcUaNodeId" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlTypeId(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << identifier << ", " << namespaceId << ");" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassJsonTypeId(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string identifier = nodeInfo_.getIdentifierAsString(nodeInfo_.defaultJSONNodeId());
+		int16_t namespaceId = nodeInfo_.defaultJSONNodeId().namespaceIndex();
+
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaNodeId" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonTypeId(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "	return OpcUaNodeId(" << identifier << ", " << namespaceId << ");" << std::endl;
 		ss << prefix << "}" << std::endl;

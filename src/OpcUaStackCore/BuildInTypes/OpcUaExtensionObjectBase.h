@@ -208,6 +208,13 @@ namespace OpcUaStackCore
 		virtual OpcUaNodeId xmlTypeId(void) { return OpcUaNodeId(0, 0); }
 
 		/**
+		 * Function to result the json encoding node identifier of the extension object
+		 *
+		 * @return json encoding node identifier of the extension object
+		 */
+		virtual OpcUaNodeId jsonTypeId(void) { return OpcUaNodeId(0, 0); }
+
+		/**
 		 * Function to compare two extension objects
 		 *
 		 * @param[in] extensionObjectBase	extension object
