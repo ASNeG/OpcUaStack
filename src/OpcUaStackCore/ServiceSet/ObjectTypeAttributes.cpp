@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	ObjectTypeAttributes::ObjectTypeAttributes(void)
 	: Object()
-	, ExtensibleParameterBase()
+	, ExtensionObjectBase()
 	, specifiedAttributes_()
 	, displayName_(constructSPtr<OpcUaLocalizedText>())
 	, description_(constructSPtr<OpcUaLocalizedText>())
@@ -117,7 +117,29 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::SPtr
+	void
+	ObjectTypeAttributes::copyTo(ObjectTypeAttributes& objectTypeAttributes)
+	{
+		specifiedAttributes_ = objectTypeAttributes.specifiedAttributes_;
+		displayName_->copyTo(*objectTypeAttributes.displayName_);
+		description_->copyTo(*objectTypeAttributes.description_);
+		isAbstract_ = objectTypeAttributes.isAbstract_;
+		writeMask_ = objectTypeAttributes.writeMask_;
+		userWriteMask_ = objectTypeAttributes.userWriteMask_;
+	}
+
+	bool
+	ObjectTypeAttributes::operator==(const ObjectTypeAttributes& objectTypeAttributes) const
+	{
+		return specifiedAttributes_ == objectTypeAttributes.specifiedAttributes_ &&
+			*displayName_ == *objectTypeAttributes.displayName_ &&
+			*description_ == *objectTypeAttributes.description_ &&
+			isAbstract_ == objectTypeAttributes.isAbstract_ &&
+			writeMask_ == objectTypeAttributes.writeMask_ &&
+			userWriteMask_ == objectTypeAttributes.userWriteMask_;
+	}
+
+	ExtensionObjectBase::SPtr
 	ObjectTypeAttributes::factory(void)
 	{
 		return constructSPtr<ObjectTypeAttributes>();
@@ -145,6 +167,31 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, isAbstract_);
 		OpcUaNumber::opcUaBinaryDecode(is, writeMask_);
 		OpcUaNumber::opcUaBinaryDecode(is, userWriteMask_);
+	}
+
+	void
+	ObjectTypeAttributes::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		ObjectTypeAttributes* dst = dynamic_cast<ObjectTypeAttributes*>(&extensionObjectBase);
+		copyTo(*dst);
+	}
+
+	bool
+	ObjectTypeAttributes::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		ObjectTypeAttributes* dst = dynamic_cast<ObjectTypeAttributes*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	ObjectTypeAttributes::out(std::ostream& os)
+	{
+		os << "SpecificAttributes=" << specifiedAttributes_;
+		os << ", DisplayName="; displayName_->out(os);
+		os << ", Description="; description_->out(os);
+		os << ", IsAbstract=" <<  isAbstract_;
+		os << ", WriteMask=" << writeMask_;
+		os << ", UserWriteMask=" << userWriteMask_;
 	}
 
 }
