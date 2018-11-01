@@ -190,8 +190,8 @@ namespace OpcUaStackCore
 		os << ", DisplayName="; displayName_->out(os);
 		os << ", Description="; description_->out(os);
 		os << ", IsAbstract=" <<  isAbstract_;
-		os << ", WriteMask=" << isAbstract_;
-		os << ", UserWriteMask=" << isAbstract_;
+		os << ", WriteMask=" << writeMask_;
+		os << ", UserWriteMask=" << userWriteMask_;
 	}
 
 }

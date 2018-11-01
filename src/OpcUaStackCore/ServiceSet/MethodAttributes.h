@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,6 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 #include "OpcUaStackCore/ServiceSet/AttributesDescription.h"
 
 
@@ -29,19 +28,25 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT MethodAttributes
-	: public  Object
-	, public ExtensibleParameterBase
+	: public Object
+	, public ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<MethodAttributes> SPtr;
 
 		MethodAttributes(void);
 		virtual ~MethodAttributes(void);
+
+		void copyTo(MethodAttributes& methodAttributes);
+		bool operator==(const MethodAttributes& methodAttributes) const;
  		
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::SPtr factory(void);
+		virtual ExtensionObjectBase::SPtr factory(void);
 		virtual void opcUaBinaryEncode(std::ostream& os) const;
 		virtual void opcUaBinaryDecode(std::istream& is);
+		virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+		virtual void out(std::ostream& os);
 		//- ExtensibleParameterBase -------------------------------------------
 
         OpcUaUInt32 specifiedAttributes(void) const;
