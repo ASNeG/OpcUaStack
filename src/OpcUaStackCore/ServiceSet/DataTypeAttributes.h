@@ -21,7 +21,6 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 #include "OpcUaStackCore/ServiceSet/AttributesDescription.h"
 
 
@@ -30,7 +29,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT DataTypeAttributes
 	: public Object
-	, public ExtensibleParameterBase
+	, public ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<DataTypeAttributes> SPtr;
@@ -38,11 +37,16 @@ namespace OpcUaStackCore
 		DataTypeAttributes(void);
 		virtual ~DataTypeAttributes(void);
 
+		void copyTo(DataTypeAttributes& dataTypeAttributes);
+		bool operator==(const DataTypeAttributes& dataTypeAttributes) const;
 		
-		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::SPtr factory(void);
+		//- ExtensionObjectBase -------------------------------------------
+		virtual ExtensionObjectBase::SPtr factory(void);
 		virtual void opcUaBinaryEncode(std::ostream& os) const;
 		virtual void opcUaBinaryDecode(std::istream& is);
+		virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+		virtual void out(std::ostream& os);
 		//- ExtensibleParameterBase -------------------------------------------
 		        
         OpcUaUInt32 specifiedAttributes(void) const;

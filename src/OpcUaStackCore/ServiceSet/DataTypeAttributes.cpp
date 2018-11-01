@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	DataTypeAttributes::DataTypeAttributes(void)
 	: Object()
-	, ExtensibleParameterBase()
+	, ExtensionObjectBase()
 	, specifiedAttributes_()
 	, displayName_(constructSPtr<OpcUaLocalizedText>())
 	, description_(constructSPtr<OpcUaLocalizedText>())
@@ -117,7 +117,29 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::SPtr
+	void
+	DataTypeAttributes::copyTo(DataTypeAttributes& dataTypeAttributes)
+	{
+		specifiedAttributes_ = dataTypeAttributes.specifiedAttributes_;
+		displayName_->copyTo(*dataTypeAttributes.displayName_);
+		description_->copyTo(*dataTypeAttributes.description_);
+		isAbstract_ = dataTypeAttributes.isAbstract_;
+		writeMask_ = dataTypeAttributes.writeMask_;
+		userWriteMask_ = dataTypeAttributes.userWriteMask_;
+	}
+
+	bool
+	DataTypeAttributes::operator==(const DataTypeAttributes& dataTypeAttributes) const
+	{
+		return specifiedAttributes_ == dataTypeAttributes.specifiedAttributes_ &&
+			*displayName_ == *dataTypeAttributes.displayName_ &&
+			*description_ == *dataTypeAttributes.description_ &&
+			isAbstract_ == dataTypeAttributes.isAbstract_ &&
+			writeMask_ == dataTypeAttributes.writeMask_ &&
+			userWriteMask_ == dataTypeAttributes.userWriteMask_;
+	}
+
+	ExtensionObjectBase::SPtr
 	DataTypeAttributes::factory(void)
 	{
 		return constructSPtr<DataTypeAttributes>();
@@ -145,6 +167,31 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, isAbstract_);
 		OpcUaNumber::opcUaBinaryDecode(is, writeMask_);
 		OpcUaNumber::opcUaBinaryDecode(is, userWriteMask_);
+	}
+
+	void
+	DataTypeAttributes::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		DataTypeAttributes* dst = dynamic_cast<DataTypeAttributes*>(&extensionObjectBase);
+		copyTo(*dst);
+	}
+
+	bool
+	DataTypeAttributes::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		DataTypeAttributes* dst = dynamic_cast<DataTypeAttributes*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	DataTypeAttributes::out(std::ostream& os)
+	{
+		os << "SpecificAttributes=" << specifiedAttributes_;
+		os << ", DisplayName="; displayName_->out(os);
+		os << ", Description="; description_->out(os);
+		os << ", IsAbstract=" <<  isAbstract_;
+		os << ", WriteMask=" << isAbstract_;
+		os << ", UserWriteMask=" << isAbstract_;
 	}
 
 }
