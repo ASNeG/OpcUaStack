@@ -77,7 +77,7 @@ namespace OpcUaStackCore
 		 *
 		 * @return true if successful
 		 */
-		virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) = 0;
+		virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
 
 		/**
 		 * Function to encode the structure data to a xml tree format.
@@ -87,7 +87,7 @@ namespace OpcUaStackCore
 		 *
 		 * @return true if successful
 		 */
-		virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) = 0;
+		virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
 
 		/**
 		 * Function to decode the xml tree format to the structure data.
@@ -98,7 +98,7 @@ namespace OpcUaStackCore
 		 *
 		 * @return true if successful
 		 */
-		virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) = 0;
+		virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
 
 		/**
 		 * Function to decode the xml tree format to the structure data.
@@ -108,7 +108,7 @@ namespace OpcUaStackCore
 		 *
 		 * @return true if successful
 		 */
-		virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) = 0;
+		virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
 
 		/**
 		 * Function to encode the structure data to a json tree format.
