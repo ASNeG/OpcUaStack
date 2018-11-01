@@ -126,7 +126,6 @@ namespace OpcUaStackCore
 
 		ep.registerFactoryElement<VariableAttributes>(OpcUaId_VariableAttributes);
 		ep.registerFactoryElement<VariableTypeAttributes>(OpcUaId_VariableTypeAttributes);
-		ep.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes);
 
 		ep.registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		ep.registerFactoryElement<ReadEventDetails>(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
@@ -160,6 +159,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<MethodAttributes>(OpcUaId_MethodAttributes);
 		eo.registerFactoryElement<ObjectTypeAttributes>(OpcUaId_ObjectTypeAttributes);
 		eo.registerFactoryElement<ReferenceTypeAttributes>(OpcUaId_ReferenceTypeAttributes);
+		eo.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -185,7 +185,6 @@ namespace OpcUaStackCore
 
 		ep.deregisterFactoryElement(OpcUaId_VariableAttributes);
 		ep.deregisterFactoryElement(OpcUaId_VariableTypeAttributes);
-		ep.deregisterFactoryElement(OpcUaId_ViewAttributes);
 
 		ep.deregisterFactoryElement(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
@@ -219,6 +218,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_MethodAttributes);
 		eo.deregisterFactoryElement(OpcUaId_ObjectTypeAttributes);
 		eo.deregisterFactoryElement(OpcUaId_ReferenceTypeAttributes);
+		eo.deregisterFactoryElement(OpcUaId_ViewAttributes);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

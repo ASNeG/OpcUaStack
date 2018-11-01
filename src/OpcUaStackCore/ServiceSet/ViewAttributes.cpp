@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	ViewAttributes::ViewAttributes(void)
 	: Object()
-	, ExtensibleParameterBase()
+	, ExtensionObjectBase()
 	, specifiedAttributes_()
 	, displayName_(constructSPtr<OpcUaLocalizedText>())
 	, description_(constructSPtr<OpcUaLocalizedText>())
@@ -132,7 +132,32 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::SPtr
+	void
+	ViewAttributes::copyTo(ViewAttributes& viewAttributes)
+	{
+		specifiedAttributes_ = viewAttributes.specifiedAttributes_;
+		displayName_->copyTo(*viewAttributes.displayName_);
+		description_->copyTo(*viewAttributes.description_);
+		containsNoLoops_ = viewAttributes.containsNoLoops_;
+		eventNotifier_ = viewAttributes.eventNotifier_;
+		writeMask_ = viewAttributes.writeMask_;
+		userWriteMask_ = viewAttributes.userWriteMask_;
+	}
+
+	bool
+	ViewAttributes::operator==(const ViewAttributes& viewAttributes) const
+	{
+		return specifiedAttributes_ == viewAttributes.specifiedAttributes_ &&
+			*displayName_ == *viewAttributes.displayName_ &&
+			*description_ == *viewAttributes.description_ &&
+			containsNoLoops_ == viewAttributes.containsNoLoops_ &&
+			eventNotifier_ == viewAttributes.eventNotifier_ &&
+			writeMask_ == viewAttributes.writeMask_ &&
+			userWriteMask_ == viewAttributes.userWriteMask_;
+	}
+
+
+    ExtensionObjectBase::SPtr
 	ViewAttributes::factory(void)
 	{
 		return constructSPtr<ViewAttributes>();
@@ -162,6 +187,32 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, eventNotifier_);
 		OpcUaNumber::opcUaBinaryDecode(is, writeMask_);
 		OpcUaNumber::opcUaBinaryDecode(is, userWriteMask_);
+	}
+
+	void
+	ViewAttributes::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		ViewAttributes* dst = dynamic_cast<ViewAttributes*>(&extensionObjectBase);
+		copyTo(*dst);
+	}
+
+	bool
+	ViewAttributes::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		ViewAttributes* dst = dynamic_cast<ViewAttributes*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	ViewAttributes::out(std::ostream& os)
+	{
+		os << "SpecificAttributes=" << specifiedAttributes_;
+		os << ", DisplayName="; displayName_->out(os);
+		os << ", Description="; description_->out(os);
+		os << ", containsNoLoops=" <<  containsNoLoops_;
+		os << ", EventNotifier=" <<  eventNotifier_;
+		os << ", WriteMask=" << writeMask_;
+		os << ", UserWriteMask=" << userWriteMask_;
 	}
 
 }
