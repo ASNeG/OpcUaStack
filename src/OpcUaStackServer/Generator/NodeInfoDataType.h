@@ -71,7 +71,8 @@ class DLLEXPORT NodeInfoDataType
 		OpcUaNodeId& dataTypeNodeId,
 		const std::string& dataTypeName,
 		NumberNamespaceMap& numberNamespaceMap,
-		DataTypeField::SPtr& dataTypeField
+		DataTypeField::SPtr& dataTypeField,
+		std::set<std::string>& includePathSet
 	);
 
 	StructureDefinition::SPtr structureDefinition_;	//!< structure definition

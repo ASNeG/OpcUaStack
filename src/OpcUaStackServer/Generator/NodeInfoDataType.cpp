@@ -47,6 +47,8 @@ namespace OpcUaStackServer
 		InformationModel::SPtr& informationModel
 	)
 	{
+		static std::set<std::string> includePathSet;
+
 		// init node info
 		if (!NodeInfo::init(dataTypeNodeId, informationModel)) {
 			return false;
@@ -123,6 +125,8 @@ namespace OpcUaStackServer
 
 					if (type == 22) {
 						buildInTypeName = "ExtensibleParameter";
+						dataTypeField->includePath("OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h");
+						includePathSet.insert("OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h");
 					}
 
 					// set number flag
@@ -172,7 +176,7 @@ namespace OpcUaStackServer
 				std::string dataTypeName = displayName.text().toStdString();
 
 				// set include
-				setIncludePath(dataTypeNodeId, dataTypeName, numberNamespaceMap(), dataTypeField);
+				setIncludePath(dataTypeNodeId, dataTypeName, numberNamespaceMap(), dataTypeField, includePathSet);
 
 				// enum type possible
 				InformationModelAccess ima(informationModel);
@@ -222,11 +226,10 @@ namespace OpcUaStackServer
 		OpcUaNodeId& dataTypeNodeId,
 		const std::string& dataTypeName,
 		NumberNamespaceMap& numberNamespaceMap,
-		DataTypeField::SPtr& dataTypeField
+		DataTypeField::SPtr& dataTypeField,
+		std::set<std::string>& includePathSet
 	)
 	{
-		static std::set<std::string> includePathSet;
-
 		std::string directory = "StandardDataTypes";
 		if (dataTypeNodeId.namespaceIndex() != 0) directory = "CustomerDataType";
 
