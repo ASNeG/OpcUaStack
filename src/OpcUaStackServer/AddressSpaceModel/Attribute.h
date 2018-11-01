@@ -21,7 +21,7 @@
 #include <boost/optional.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/NodeClassOld.h"
+#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
 
 using namespace OpcUaStackCore;

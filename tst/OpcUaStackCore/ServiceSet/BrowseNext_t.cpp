@@ -2,7 +2,7 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/ServiceSet/BrowseNextRequest.h"
 #include "OpcUaStackCore/ServiceSet/BrowseNextResponse.h"
-#include "OpcUaStackCore/ServiceSet/NodeClassOld.h"
+#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"

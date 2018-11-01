@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
-#include "OpcUaStackCore/ServiceSet/NodeClassOld.h"
+#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 
 namespace OpcUaStackCore
 {

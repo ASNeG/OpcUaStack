@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 	, referenceTypeId_(constructSPtr<OpcUaNodeId>())
 	, requestedNewNodeId_(constructSPtr<OpcUaExpandedNodeId>())
 	, browseName_(constructSPtr<OpcUaQualifiedName>())
-	, nodeClass_(constructSPtr<NodeClassOld>())
+	, nodeClass_(constructSPtr<NodeClass>())
 	, nodeAttributes_()
 	, typeDefinition_(constructSPtr<OpcUaExpandedNodeId>())
 	{
@@ -96,12 +96,12 @@ namespace OpcUaStackCore
 
 	void
 	AddNodesItem::nodeClass(
-		const NodeClassOld::SPtr nodeClassSPtr)
+		const NodeClass::SPtr nodeClassSPtr)
 	{
 		nodeClass_ = nodeClassSPtr;
 	}
 
-	NodeClassOld::SPtr
+	NodeClass::SPtr
 	AddNodesItem::nodeClass(void) const
 	{
 		return nodeClass_;

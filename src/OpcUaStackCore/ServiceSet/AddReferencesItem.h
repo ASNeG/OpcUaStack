@@ -21,7 +21,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/NodeClassOld.h"
+#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 
 
 namespace OpcUaStackCore
@@ -46,8 +46,8 @@ namespace OpcUaStackCore
 		OpcUaString::SPtr targetServerUri(void) const;
 		void targetNodeId(const OpcUaExpandedNodeId::SPtr targetNodeIdSPtr);
 		OpcUaExpandedNodeId::SPtr targetNodeId(void) const;
-		void targetNodeClass(const NodeClassOld::SPtr targetNodeClassSPtr);
-		NodeClassOld::SPtr targetNodeClass(void) const;
+		void targetNodeClass(const NodeClass::SPtr targetNodeClassSPtr);
+		NodeClass::SPtr targetNodeClass(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -58,7 +58,7 @@ namespace OpcUaStackCore
 		OpcUaBoolean isForward_;
 		OpcUaString::SPtr targetServerUriSPtr_;
 		OpcUaExpandedNodeId::SPtr targetNodeIdSPtr_;
-		NodeClassOld::SPtr targetNodeClassSPtr_;
+		NodeClass::SPtr targetNodeClassSPtr_;
 	};
 
 	class AddReferencesItemArray

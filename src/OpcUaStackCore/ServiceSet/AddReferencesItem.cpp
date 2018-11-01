@@ -34,7 +34,7 @@ namespace OpcUaStackCore
 	, isForward_(false)
 	, targetServerUriSPtr_(constructSPtr<OpcUaString>())
 	, targetNodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
-	, targetNodeClassSPtr_(constructSPtr<NodeClassOld>())
+	, targetNodeClassSPtr_(constructSPtr<NodeClass>())
 	{
 	}
 
@@ -111,12 +111,12 @@ namespace OpcUaStackCore
 
 	void
 	AddReferencesItem::targetNodeClass(
-		const NodeClassOld::SPtr targetNodeClassSPtr)
+		const NodeClass::SPtr targetNodeClassSPtr)
 	{
 		targetNodeClassSPtr_ = targetNodeClassSPtr;
 	}
 	
-	NodeClassOld::SPtr
+	NodeClass::SPtr
 	AddReferencesItem::targetNodeClass(void) const
 	{
 		return targetNodeClassSPtr_;

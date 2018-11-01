@@ -114,7 +114,7 @@ namespace OpcUaStackServer
 			case AttributeId_NodeClass:
 			{
 				if (!isPartNodeClass()) return false;
-			    NodeClass::Enum nodeClassType = variant->variantSPtr<NodeClassOld>()->nodeClassType();
+			    NodeClass::Enum nodeClassType = variant->variantSPtr<NodeClass>()->enumeration();
 				return setNodeClass(nodeClassType);
 			}
 			case AttributeId_BrowseName:

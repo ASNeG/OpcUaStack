@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
 		addNodesItemSPtr->browseName()->name("browsename");
-		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClass::EnumDataType);
+		addNodesItemSPtr->nodeClass()->enumeration(NodeClass::EnumDataType);
 
 		DataTypeAttributes::SPtr dataTypeAttributes;
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12345);
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
 		addNodesItemSPtr->browseName()->name("browsename");
-		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClass::EnumObject);
+		addNodesItemSPtr->nodeClass()->enumeration(NodeClass::EnumObject);
 
 		ObjectAttributes::SPtr objectAttributes;
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12347);
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
 		addNodesItemSPtr->browseName()->name("browsename");
-		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClass::EnumMethod);
+		addNodesItemSPtr->nodeClass()->enumeration(NodeClass::EnumMethod);
 
 		MethodAttributes::SPtr methodAttributes;
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12346);
@@ -169,7 +169,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
 		addNodesItemSPtr->browseName()->name("browsename");
-		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClass::EnumObjectType);
+		addNodesItemSPtr->nodeClass()->enumeration(NodeClass::EnumObjectType);
 
 		ObjectTypeAttributes::SPtr objectTypeAttributes;
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12348);
@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
 		addNodesItemSPtr->browseName()->name("browsename");
-		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClass::EnumReferenceType);
+		addNodesItemSPtr->nodeClass()->enumeration(NodeClass::EnumReferenceType);
 
 		ReferenceTypeAttributes::SPtr referenceTypeAttributes;
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12349);
@@ -218,7 +218,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
 		addNodesItemSPtr->browseName()->name("browsename");
-		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClass::EnumView);
+		addNodesItemSPtr->nodeClass()->enumeration(NodeClass::EnumView);
 
 		ViewAttributes::SPtr viewAttributes;
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12352);
@@ -243,7 +243,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
 		addNodesItemSPtr->browseName()->name("browsename");
-		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClass::EnumVariable);
+		addNodesItemSPtr->nodeClass()->enumeration(NodeClass::EnumVariable);
 
 		VariableAttributes::SPtr variableAttributes;
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12350);
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
 		addNodesItemSPtr->browseName()->name("browsename");
-		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClass::EnumVariableType);
+		addNodesItemSPtr->nodeClass()->enumeration(NodeClass::EnumVariableType);
 
 		VariableTypeAttributes::SPtr variableTypeAttributes;
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12351);
@@ -401,7 +401,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->parentNodeId()->nodeId<OpcUaUInt32>() == 12);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
-		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->nodeClassType() == NodeClass::EnumDataType);
+		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->enumeration() == NodeClass::EnumDataType);
 
 		DataTypeAttributes::SPtr dataTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<DataTypeAttributes>();
 		BOOST_REQUIRE(dataTypeAttributes.get() != NULL);
@@ -426,7 +426,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->parentNodeId()->nodeId<OpcUaUInt32>() == 12);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
-		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->nodeClassType() == NodeClass::EnumObject);
+		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->enumeration() == NodeClass::EnumObject);
 
 		ObjectAttributes::SPtr objectAttributes = addNodesItemSPtr->nodeAttributes().parameter<ObjectAttributes>();
 		BOOST_REQUIRE(objectAttributes.get() != NULL);
@@ -449,7 +449,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->parentNodeId()->nodeId<OpcUaUInt32>() == 12);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
-		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->nodeClassType() == NodeClass::EnumMethod);
+		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->enumeration() == NodeClass::EnumMethod);
 
 		MethodAttributes::SPtr methodAttributes = addNodesItemSPtr->nodeAttributes().parameter<MethodAttributes>();
 		BOOST_REQUIRE(methodAttributes.get() != NULL);
@@ -475,7 +475,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->parentNodeId()->nodeId<OpcUaUInt32>() == 12);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
-		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->nodeClassType() == NodeClass::EnumObjectType);
+		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->enumeration() == NodeClass::EnumObjectType);
 
 		ObjectTypeAttributes::SPtr objectTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<ObjectTypeAttributes>();
 		BOOST_REQUIRE(objectTypeAttributes.get() != NULL);
@@ -501,7 +501,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->parentNodeId()->nodeId<OpcUaUInt32>() == 12);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
-		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->nodeClassType() == NodeClass::EnumReferenceType);
+		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->enumeration() == NodeClass::EnumReferenceType);
 
 		ReferenceTypeAttributes::SPtr referenceTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<ReferenceTypeAttributes>();
 		BOOST_REQUIRE(referenceTypeAttributes.get() != NULL);
@@ -530,7 +530,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->parentNodeId()->nodeId<OpcUaUInt32>() == 12);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
-		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->nodeClassType() == NodeClass::EnumView);
+		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->enumeration() == NodeClass::EnumView);
 
 		ViewAttributes::SPtr viewAttributes = addNodesItemSPtr->nodeAttributes().parameter<ViewAttributes>();
 		BOOST_REQUIRE(viewAttributes.get() != NULL);
@@ -556,7 +556,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->parentNodeId()->nodeId<OpcUaUInt32>() == 12);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
-		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->nodeClassType() == NodeClass::EnumVariable);
+		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->enumeration() == NodeClass::EnumVariable);
 
 		VariableAttributes::SPtr variableAttributes = addNodesItemSPtr->nodeAttributes().parameter<VariableAttributes>();
 		BOOST_REQUIRE(variableAttributes.get() != NULL);
@@ -595,7 +595,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->parentNodeId()->nodeId<OpcUaUInt32>() == 12);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
-		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->nodeClassType() == NodeClass::EnumVariableType);
+		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->enumeration() == NodeClass::EnumVariableType);
 
 		BOOST_REQUIRE(addNodesItemSPtr->nodeAttributes().parameterTypeId().namespaceIndex() == 0);
 		BOOST_REQUIRE(addNodesItemSPtr->nodeAttributes().parameterTypeId().nodeId<OpcUaUInt32>() == 12351);

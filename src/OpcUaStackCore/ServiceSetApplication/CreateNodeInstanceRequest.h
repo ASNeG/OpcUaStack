@@ -21,7 +21,7 @@
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/ServiceSet/NodeClassOld.h"
+#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore

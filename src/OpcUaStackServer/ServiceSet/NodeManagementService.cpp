@@ -170,7 +170,7 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	NodeManagementService::addNode(uint32_t pos, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult)
 	{
-		switch (addNodesItem->nodeClass()->nodeClassType())
+		switch (addNodesItem->nodeClass()->enumeration())
 		{
 			case NodeClass::EnumObject: return addNodeObject(pos, addNodesItem, addNodesResult);
 			case NodeClass::EnumVariable:
@@ -214,7 +214,7 @@ namespace OpcUaStackServer
 		nodeId.namespaceIndex(addNodesItem->requestedNewNodeId()->namespaceIndex());
 		nodeId.nodeIdValue(addNodesItem->requestedNewNodeId()->nodeIdValue());
 		baseNodeClass->setNodeId(nodeId);
-		NodeClass::Enum nodeClassType = addNodesItem->nodeClass()->nodeClassType();
+		NodeClass::Enum nodeClassType = addNodesItem->nodeClass()->enumeration();
 		baseNodeClass->setNodeClass(nodeClassType);
 		baseNodeClass->setBrowseName(*addNodesItem->browseName());
 
