@@ -22,7 +22,7 @@
 namespace OpcUaStackCore
 {
     
-    class AddNodesItem
+    class DLLEXPORT AddNodesItem
     : public Object
     , public ExtensionObjectBase
     {
