@@ -69,6 +69,33 @@ namespace OpcUaStackCore
         bool operator!=(const OpcUaExtensibleParameter& value) const;
         OpcUaExtensibleParameter& operator=(const OpcUaExtensibleParameter& value);
 
+		template<typename T>
+		   typename T::SPtr parameter(OpcUaUInt32 parameterTypeId) {
+				parameterTypeId_.set(parameterTypeId);
+				return parameter<T>();
+			}
+		template<typename T>
+		   typename T::SPtr parameter(const OpcUaNodeId& typeNodeId) {
+				parameterTypeId_ = typeNodeId;
+				return parameter<T>();
+			}
+		template<typename T>
+		   typename T::SPtr parameter(void) {
+			   if (eoSPtr_.get() != NULL) {
+				   return boost::static_pointer_cast<T>(eoSPtr_);
+			   }
+
+			   eoSPtr_ = OpcUaExtensionObject::findElement(parameterTypeId_);
+			   if (eoSPtr_.get() == NULL) {
+				   typename T::SPtr epSPtr;
+				   return epSPtr;
+			   }
+
+			   typename T::SPtr epSPtr = constructSPtr<T>();
+			   eoSPtr_ = epSPtr;
+			   return epSPtr;
+		   }
+
 	  private:
 		OpcUaNodeId parameterTypeId_;
 		ExtensionObjectBase::SPtr eoSPtr_;

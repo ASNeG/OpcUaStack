@@ -127,8 +127,8 @@ namespace OpcUaStackServer
 
 		// set parent node identifier
 		OpcUaNodeId parentNodeId;
-		parentNodeId.namespaceIndex(addNodesItem->parentNodeId()->namespaceIndex());
-		parentNodeId.nodeIdValue(addNodesItem->parentNodeId()->nodeIdValue());
+		parentNodeId.namespaceIndex(addNodesItem->parentNodeId().namespaceIndex());
+		parentNodeId.nodeIdValue(addNodesItem->parentNodeId().nodeIdValue());
 
 		// find parent node
 		BaseNodeClass::SPtr parentBaseNodeClass = informationModel_->find(parentNodeId);
@@ -138,14 +138,14 @@ namespace OpcUaStackServer
 
 		// create hierarchical reference
 		rc = parentBaseNodeClass->referenceItemMap().add(
-			*addNodesItem->referenceTypeId(),
+			addNodesItem->referenceTypeId(),
 			true,
 			*baseNodeClass->getNodeId()
 		);
 		if (!rc) return BadReferenceTypeIdInvalid;
 
 		rc = baseNodeClass->referenceItemMap().add(
-			*addNodesItem->referenceTypeId(),
+			addNodesItem->referenceTypeId(),
 			false,
 			*baseNodeClass->getNodeId()
 		);
@@ -170,7 +170,7 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	NodeManagementService::addNode(uint32_t pos, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult)
 	{
-		switch (addNodesItem->nodeClass()->enumeration())
+		switch (addNodesItem->nodeClass().enumeration())
 		{
 			case NodeClass::EnumObject: return addNodeObject(pos, addNodesItem, addNodesResult);
 			case NodeClass::EnumVariable:
@@ -185,7 +185,7 @@ namespace OpcUaStackServer
 			{
 				Log(Error, "invalid node class")
 					.parameter("Pos", pos)
-					.parameter("BrowseName", *addNodesItem->browseName());
+					.parameter("BrowseName", addNodesItem->browseName());
 				addNodesResult->statusCode(BadInternalError);
 			}
 		}
@@ -211,12 +211,12 @@ namespace OpcUaStackServer
 		//
 
 		OpcUaNodeId nodeId;
-		nodeId.namespaceIndex(addNodesItem->requestedNewNodeId()->namespaceIndex());
-		nodeId.nodeIdValue(addNodesItem->requestedNewNodeId()->nodeIdValue());
+		nodeId.namespaceIndex(addNodesItem->requestedNewNodeId().namespaceIndex());
+		nodeId.nodeIdValue(addNodesItem->requestedNewNodeId().nodeIdValue());
 		baseNodeClass->setNodeId(nodeId);
-		NodeClass::Enum nodeClassType = addNodesItem->nodeClass()->enumeration();
+		NodeClass::Enum nodeClassType = addNodesItem->nodeClass().enumeration();
 		baseNodeClass->setNodeClass(nodeClassType);
-		baseNodeClass->setBrowseName(*addNodesItem->browseName());
+		baseNodeClass->setBrowseName(addNodesItem->browseName());
 
 		return Success;
 	}
@@ -239,7 +239,7 @@ namespace OpcUaStackServer
 		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_ObjectAttributes) {
 			Log(Error, "invalid attribute type")
 				.parameter("Pos", pos)
-				.parameter("BrowseName", *addNodesItem->browseName())
+				.parameter("BrowseName", addNodesItem->browseName())
 				.parameter("AttributeType", addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>());
 			addNodesResult->statusCode(BadInvalidArgument);
 			return Success;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,6 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 #include "OpcUaStackCore/ServiceSet/AttributesDescription.h"
 
 
@@ -29,8 +28,8 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ObjectAttributes
-	: public  Object
-	, public ExtensibleParameterBase
+	: public Object
+	, public ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<ObjectAttributes> SPtr;
@@ -40,9 +39,27 @@ namespace OpcUaStackCore
 
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::SPtr factory(void);
-		virtual void opcUaBinaryEncode(std::ostream& os) const;
-		virtual void opcUaBinaryDecode(std::istream& is);
+	    virtual ExtensionObjectBase::SPtr factory(void);
+		virtual std::string namespaceName(void) { return ""; }
+		virtual std::string typeName(void) { return ""; }
+	    virtual OpcUaNodeId binaryTypeId(void) { return OpcUaNodeId(0); }
+	    virtual OpcUaNodeId xmlTypeId(void) { return OpcUaNodeId(0); }
+	    virtual OpcUaNodeId jsonTypeId(void) { return OpcUaNodeId(0); }
+	    virtual void opcUaBinaryEncode(std::ostream& os) const;
+	    virtual void opcUaBinaryDecode(std::istream& is);
+	    virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const { return true; }
+	    virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+	    virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
+	    virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+	    virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
+	    virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+	    virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return true; }
+	    virtual bool jsonEncode(boost::property_tree::ptree& pt) { return true; }
+	    virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return true; }
+	    virtual bool jsonDecode(boost::property_tree::ptree& pt) { return true; }
+	    virtual void copyTo(ExtensionObjectBase& extensionObjectBase) {}
+	    virtual bool equal(ExtensionObjectBase& extensionObjectBase) const { return true; }
+	    virtual void out(std::ostream& os) {}
 		//- ExtensibleParameterBase -------------------------------------------
 
         OpcUaUInt32 specifiedAttributes(void) const;

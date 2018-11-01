@@ -124,7 +124,6 @@ namespace OpcUaStackCore
 		ep.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
-		ep.registerFactoryElement<ObjectAttributes>(OpcUaId_ObjectAttributes);
 		ep.registerFactoryElement<VariableAttributes>(OpcUaId_VariableAttributes);
 		ep.registerFactoryElement<MethodAttributes>(OpcUaId_MethodAttributes);
 		ep.registerFactoryElement<ObjectTypeAttributes>(OpcUaId_ObjectTypeAttributes);
@@ -160,6 +159,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<SubscriptionDiagnosticsDataType>(OpcUaId_SubscriptionDiagnosticsDataType_Encoding_DefaultBinary);
 		eo.registerFactoryElement<ServerDiagnosticsSummaryDataType>(OpcUaId_ServerDiagnosticsSummaryDataType_Encoding_DefaultBinary);
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
+		eo.registerFactoryElement<ObjectAttributes>(OpcUaId_ObjectAttributes);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -183,7 +183,6 @@ namespace OpcUaStackCore
 		ep.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
-		ep.deregisterFactoryElement(OpcUaId_ObjectAttributes);
 		ep.deregisterFactoryElement(OpcUaId_VariableAttributes);
 		ep.deregisterFactoryElement(OpcUaId_MethodAttributes);
 		ep.deregisterFactoryElement(OpcUaId_ObjectTypeAttributes);
@@ -219,6 +218,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_SubscriptionDiagnosticsDataType_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_ServerDiagnosticsSummaryDataType_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_ObjectAttributes);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);
