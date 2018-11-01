@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT VariableAttributes
 	: public Object
-	, public ExtensibleParameterBase
+	, public ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<VariableAttributes> SPtr;
@@ -38,11 +38,17 @@ namespace OpcUaStackCore
 		VariableAttributes(void);
 		virtual ~VariableAttributes(void);
 
-		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::SPtr factory(void);
+		void copyTo(VariableAttributes& variableAttributes);
+		bool operator==(const VariableAttributes& variableAttributes) const;
+
+		//- ExtensionObjectBase -------------------------------------------
+		virtual ExtensionObjectBase::SPtr factory(void);
 		virtual void opcUaBinaryEncode(std::ostream& os) const;
 		virtual void opcUaBinaryDecode(std::istream& is);
-		//- ExtensibleParameterBase -------------------------------------------
+		virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+		virtual void out(std::ostream& os);
+		//- ExtensionObjectBase -------------------------------------------
 
 
         OpcUaUInt32 specifiedAttributes(void) const;
