@@ -147,15 +147,18 @@ namespace OpcUaStackServer
 					if (dataTypeField->array() == true) {
 						dataTypeField->smartpointer(true);
 						dataTypeField->variableType("OpcUa" + buildInTypeName + "Array::SPtr");
+						dataTypeField->variableTypeWithoutPtr("OpcUa" + buildInTypeName + "Array");
 						dataTypeField->type(DataTypeField::BuildInArrayType);
 					}
 					else if ((dataTypeField->number() == true) ||
 							 (dataTypeField->byte() == true) ||
 							 (dataTypeField->boolean() == true)) {
 						dataTypeField->variableType("OpcUa" + buildInTypeName);
+						dataTypeField->variableTypeWithoutPtr("OpcUa" + buildInTypeName);
 						dataTypeField->type(DataTypeField::NumberType);
 					}
 					else {
+						dataTypeField->variableTypeWithoutPtr("OpcUa" + buildInTypeName);
 						dataTypeField->variableType("OpcUa" + buildInTypeName);
 						dataTypeField->type(DataTypeField::BuildInType);
 					}
@@ -190,10 +193,12 @@ namespace OpcUaStackServer
 					if (dataTypeField->array()) {
 						dataTypeField->smartpointer(true);
 						dataTypeField->variableType(dataTypeName + "Array::SPtr");
+						dataTypeField->variableTypeWithoutPtr(dataTypeName + "Array");
 						dataTypeField->type(DataTypeField::EnumerationArrayType);
 					}
 					else {
 						dataTypeField->variableType(dataTypeName);
+						dataTypeField->variableTypeWithoutPtr(dataTypeName);
 						dataTypeField->type(DataTypeField::EnumerationType);
 					}
 				}
@@ -201,10 +206,12 @@ namespace OpcUaStackServer
 					if (dataTypeField->array()) {
 						dataTypeField->smartpointer(true);
 						dataTypeField->variableType(dataTypeName + "Array::SPtr");
+						dataTypeField->variableTypeWithoutPtr(dataTypeName + "Array");
 						dataTypeField->type(DataTypeField::StructureArrayType);
 					}
 					else {
 						dataTypeField->variableType(dataTypeName);
+						dataTypeField->variableTypeWithoutPtr(dataTypeName);
 						dataTypeField->type(DataTypeField::StructureType);
 					}
 				}

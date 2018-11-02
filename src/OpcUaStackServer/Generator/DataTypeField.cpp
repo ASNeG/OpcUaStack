@@ -92,6 +92,18 @@ namespace OpcUaStackServer
 	}
 
 	void
+	DataTypeField::variableTypeWithoutPtr(const std::string& variableTypeWithoutPtr)
+	{
+		variableTypeWithoutPtr_ = variableTypeWithoutPtr;
+	}
+
+	std::string&
+	DataTypeField::variableTypeWithoutPtr(void)
+	{
+		return variableTypeWithoutPtr_;
+	}
+
+	void
 	DataTypeField::description(const std::string& description)
 	{
 		description_ = description;

@@ -525,7 +525,7 @@ namespace OpcUaStackServer
 
 			std::string variableContent = "";
 			if (dataTypeField->smartpointer() == true) {
-				variableContent = "constructSPtr<" + dataTypeField->name() + ">()";
+				variableContent = "constructSPtr<" + dataTypeField->variableTypeWithoutPtr() + ">()";
 			}
 
 			ss << prefix << ", " << dataTypeField->variableName() << "(" << variableContent << ")" << std::endl;

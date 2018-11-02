@@ -116,6 +116,21 @@ class DLLEXPORT DataTypeField
 	/**
 	 * Setter function
 	 *
+	 * @param[in] variableTypeWithoutPtr variable type without pointer
+	 */
+	void variableTypeWithoutPtr(const std::string& variableTypeWithoutPtr);
+
+	/**
+	 * Getter function
+	 *
+	 * @return variable type without pointer
+	 */
+	std::string& variableTypeWithoutPtr(void);
+
+
+	/**
+	 * Setter function
+	 *
 	 * @param[in] description			variable description
 	 */
 	void description(const std::string& description);
@@ -272,6 +287,7 @@ class DLLEXPORT DataTypeField
 	std::string variableName_;				//!< variable name
 	std::string parameterName_;				//!< parameter name
 	std::string variableType_;				//!< variable type
+	std::string variableTypeWithoutPtr_;	//!< variable type without pointer
 	std::string description_;				//!< variable description
 	std::string includePath_;				//!< include path
 	Type type_;								//!< type
