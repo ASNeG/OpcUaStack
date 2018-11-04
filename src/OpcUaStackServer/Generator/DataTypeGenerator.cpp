@@ -667,17 +667,15 @@ namespace OpcUaStackServer
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			if (dataTypeField->array() == true) {
-				ss << prefix << "    if (" << dataTypeField->variableName() << ".get() != nullptr) {" << std::endl;
-				ss << prefix << "	    " << dataTypeField->variableName() << "->copyTo(*value." << dataTypeField->parameterName() << "());" << std::endl;
-				ss << prefix << "    }" << std::endl;
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    value." << dataTypeField->variableName() << " = " << dataTypeField->variableName() << ";" << std::endl;
+					break;
+				default:
+					ss << prefix << "    " << dataTypeField->variableName() << ".copyTo(value." << dataTypeField->parameterName() << "());" << std::endl;
 			}
-			else if (dataTypeField->smartpointer() == true) {
-				ss << prefix << "    " << dataTypeField->variableName() << ".copyTo(value." << dataTypeField->parameterName() << "());" << std::endl;
-			}
-			else {
-				ss << prefix << "    value." << dataTypeField->variableName() << " = " << dataTypeField->variableName() << ";" << std::endl;
-			}
+
 		}
 
 		ss << prefix << "}" << std::endl;
@@ -843,21 +841,13 @@ namespace OpcUaStackServer
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			if (dataTypeField->array() == true) {
-				ss << prefix << "    if (" << dataTypeField->variableName() << ".get() == nullptr) {" << std::endl;
-				ss << prefix << "	     OpcUaNumber::opcUaBinaryEncode(os, (OpcUaInt32)-1);" << std::endl;
-				ss << prefix << "    }" << std::endl;
-				ss << prefix << "    else {" << std::endl;
-				ss << prefix << "	     " << dataTypeField->variableName() << "->opcUaBinaryEncode(os);" << std::endl;
-				ss << prefix << "    }" << std::endl;
-			}
-			else if ((dataTypeField->number() == true) ||
-					 (dataTypeField->byte() == true) ||
-					 (dataTypeField->boolean() == true)) {
-				ss << prefix << "    OpcUaNumber::opcUaBinaryEncode(os," << dataTypeField->variableName() << ");" << std::endl;
-			}
-			else {
-				ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryEncode(os);" << std::endl;
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    OpcUaNumber::opcUaBinaryEncode(os," << dataTypeField->variableName() << ");" << std::endl;
+					break;
+				default:
+					ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryEncode(os);" << std::endl;
 			}
 		}
 
@@ -882,17 +872,13 @@ namespace OpcUaStackServer
 
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
-
-			if (dataTypeField->array() == true) {
-				ss << prefix << "    " << dataTypeField->variableName() << "->opcUaBinaryDecode(is);" << std::endl;
-			}
-			else if (dataTypeField->number() ||
-					 dataTypeField->byte() ||
-					 dataTypeField->boolean()) {
-				ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is," << dataTypeField->variableName() << ");" << std::endl;
-			}
-			else {
-				ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryDecode(is);" << std::endl;
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is," << dataTypeField->variableName() << ");" << std::endl;
+					break;
+				default:
+					ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryDecode(is);" << std::endl;
 			}
 		}
 
@@ -1171,20 +1157,13 @@ namespace OpcUaStackServer
 				ss << prefix << "    os << \", " << dataTypeField->name() << "=";
 			}
 
-			if (dataTypeField->array() == true) {
-				ss << "\"; " << dataTypeField->variableName() << "->out(os);";
-			}
-			else if (dataTypeField->boolean() == true) {
-				ss << "\" << " << dataTypeField->variableName() << ";";
-			}
-			else if (dataTypeField->byte() == true) {
-				ss << "\" << "<< dataTypeField->variableName() << ";";
-			}
-			else if (dataTypeField->number() == true) {
-				ss << "\" << "<< dataTypeField->variableName() << ";";
-			}
-			else {
-				ss << "\"; " << dataTypeField->variableName() << ".out(os);";
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << "\" << " << dataTypeField->variableName() << ";";
+					break;
+				default:
+					ss << "\"; " << dataTypeField->variableName() << ".out(os);";
 			}
 
 			ss << std::endl;
