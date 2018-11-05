@@ -20,6 +20,7 @@ set INSTALL_PREFIX=C:\ASNeG
 set COMMAND="local"
 set STACK_PREFIX=C:\ASNeG
 set VS_GENERATOR=""
+set BUILD_TYPE="Debug"
 
 :parse
     if "%~1"=="" goto :execute
@@ -40,6 +41,9 @@ set VS_GENERATOR=""
     if /i "%~1"=="-vs"               set VS_GENERATOR="-G%~2"
     if /i "%~1"=="--vs-generator"    set VS_GENERATOR="-G%~2"
 
+    if /i "%~1"=="/B"               set BUILD_TYPE=%~2
+    if /i "%~1"=="-B"               set BUILD_TYPE=%~2
+    if /i "%~1"=="--build-type"     set BUILD_TYPE=%~2
 
     shift
     shift
@@ -99,7 +103,7 @@ REM ---------------------------------------------------------------------------
 	REM
     
 	set DESTDIR=%INSTALL_PREFIX%
-	%CMAKE% --build build_local --target install
+	%CMAKE% --build build_local --target install --config %BUILD_TYPE%
 goto:eof
 
 REM ---------------------------------------------------------------------------
@@ -117,8 +121,8 @@ REM ---------------------------------------------------------------------------
 
 	REM
 	REM package OpcUaStack to MSI
-	REM    	
-	%CMAKE% --build build_msi --target package
+	REM    		
+    %CMAKE% --build build_msi --target package --config %BUILD_TYPE%
 goto:eof
 
 REM ---------------------------------------------------------------------------
@@ -137,7 +141,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM install OpcUaStack
 	REM    
-	%CMAKE% --build build_tst
+	%CMAKE% --build build_tst --config %BUILD_TYPE%
 goto:eof
 
 
@@ -163,4 +167,7 @@ REM ---------------------------------------------------------------------------
    echo --vs-generator, -vs, /vs VS_GENERATOR:  is the name of cmake generator
    echo \t witch cmake uses during the building of the project. By default, cmake tries to figure out the generator from the environment.
    echo.
+   echo --build-type, -B, /B BUILD_TYPE:  is on of build types (Debug | Release)
+   echo.
+
 goto:eof
