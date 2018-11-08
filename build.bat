@@ -21,6 +21,7 @@ set COMMAND="local"
 set STACK_PREFIX=C:\ASNeG
 set VS_GENERATOR=""
 set BUILD_TYPE="Debug"
+set PACKAGE_TYPE="Bin"
 
 :parse
     if "%~1"=="" goto :execute
@@ -45,12 +46,20 @@ set BUILD_TYPE="Debug"
     if /i "%~1"=="-B"               set BUILD_TYPE=%~2
     if /i "%~1"=="--build-type"     set BUILD_TYPE=%~2
 
+    if /i "%~1"=="/P"               set PACKAGE_TYPE=%~2
+    if /i "%~1"=="-P"               set PACKAGE_TYPE=%~2
+    if /i "%~1"=="--package-type"   set PACKAGE_TYPE=%~2
+
     shift
     shift
     goto :parse
 
 :execute
-set BUILD_DIR_SUFFIX=%VSCMD_ARG_TGT_ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
+
+set ARCH="x86"
+if /i "%VS_GENERATOR:~-6,-1%"=="Win64" set ARCH="x64"
+if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"
+set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
 
 if "%COMMAND%" == "" (
     call:build_local
@@ -118,7 +127,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DCPACK_PACKAGE_TYPE=%PACKAGE_TYPE%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM package OpcUaStack to MSI
@@ -168,7 +177,9 @@ REM ---------------------------------------------------------------------------
    echo --vs-generator, -vs, /vs VS_GENERATOR:  is the name of cmake generator
    echo \t witch cmake uses during the building of the project. By default, cmake tries to figure out the generator from the environment.
    echo.
-   echo --build-type, -B, /B BUILD_TYPE:  is on of build types (Debug | Release)
+   echo --build-type, -B, /B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type.
+   echo.
+   echo --package-type, -B, /B PACKAGE_TYPE:  set the MSI package type (Bin | Dev). By default, it is Bin type.
    echo.
 
 goto:eof
