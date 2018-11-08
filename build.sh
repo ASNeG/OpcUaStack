@@ -55,7 +55,7 @@ build_info()
 build_info_clean()
 {
     set -e
-    rm -rf build_info
+    rm -rf build_info*
 }
 
 
@@ -74,12 +74,13 @@ build_local()
     if [ ! -d "build_local" ] ;
     then
         BUILD_FIRST=1
-        rm -rf build_local
-        mkdir build_local
+        rm -rf build_local_${BUILD_TYPE}
+        mkdir build_local_${BUILD_TYPE}
+
     else
         BUILD_FIRST=0
     fi
-    cd build_local
+    cd build_local_${BUILD_TYPE}
 
     # build local
     if [ ${BUILD_FIRST} -eq 1 ] ;
@@ -124,7 +125,7 @@ build_local()
 build_local_clean()
 {
     set -e
-    rm -rf build_local
+    rm -rf build_local*
 }
 
 
@@ -152,12 +153,13 @@ build_deb()
     if [ ! -d "build_deb" ] ;
     then
         BUILD_FIRST=1
-        rm -rf build_deb
-        mkdir build_deb
+        rm -rf build_deb_${BUILD_TYPE}
+        mkdir build_deb_${BUILD_TYPE}
     else
         BUILD_FIRST=0
     fi
-    cd build_deb
+    cd build_deb_${BUILD_TYPE}
+
 
     # build package
     if [ ${BUILD_FIRST} -eq 1 ] ;
@@ -201,7 +203,7 @@ build_deb()
 build_deb_clean()
 {
     set -e
-    rm -rf build_deb
+    rm -rf build_deb*
 }
 
 
@@ -229,8 +231,8 @@ build_rpm()
     if [ ! -d "build_rpm" ] ;
     then
         BUILD_FIRST=1
-        rm -rf build_rpm
-        mkdir build_rpm
+        rm -rf build_rpm_${BUILD_TYPE}
+        mkdir build_rpm_${BUILD_TYPE}
     else
         BUILD_FIRST=0
     fi
@@ -278,10 +280,8 @@ build_rpm()
 build_rpm_clean()
 {
     set -e
-    rm -rf build_rpm
+    rm -rf build_rpm*
 }
-
-
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -298,12 +298,12 @@ build_tst()
     if [ ! -d "build_tst" ] ;
     then
         BUILD_FIRST=1
-        rm -rf build_tst
-        mkdir build_tst
+        rm -rf build_tst_${BUILD_TYPE}
+        mkdir build_tst_${BUILD_TYPE}
     else
         BUILD_FIRST=0
     fi
-    cd build_tst
+    cd build_tst_${BUILD_TYPE}
 
     # build tst
     if [ ${BUILD_FIRST} -eq 1 ] ;
@@ -350,7 +350,7 @@ build_tst()
 build_tst_clean()
 {
     set -e
-    rm -rf build_tst
+    rm -rf build_tst*
 }
 
 clean()
@@ -417,9 +417,6 @@ case $key in
     ;;
 esac
 done
-
-echo "${INSTALL_PREFIX}"
-echo "${JOBS}"
 
 if [ "${TARGET}" = "info" ] ;
 then
