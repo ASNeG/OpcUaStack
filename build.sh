@@ -87,7 +87,7 @@ build_local()
         set -x
         cmake ../src \
               "${CMAKE_GENERATOR_LOCAL}" \
-              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" 
         RESULT=$?
         set +x
         if [ ${RESULT} -ne 0 ] ;
@@ -165,7 +165,7 @@ build_deb()
  
         cmake ../src \
             "${CMAKE_GENERATOR_LOCAL}" \
-            -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"\
+            -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
             "-DCPACK_BINARY_DEB=1" \
             "-DCPACK_BINARY_RPM=0" \
 	    "-DCPACK_BINARY_STGZ=0" \
