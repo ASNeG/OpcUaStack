@@ -137,8 +137,8 @@ message(STATUS "Boost library")
 message(STATUS "  version major: ${Boost_MAJOR_VERSION}")
 message(STATUS "  version minor: ${Boost_MINOR_VERSION}")
 message(STATUS "  version subminor: ${Boost_SUBMINOR_VERSION}")
-message(STATUS "  include directory: ${Boost_INCLUDE_DIR}")
-message(STATUS "  library directory: ${Boost_LIBRARY_DIR}")
+message(STATUS "  include directory: ${Boost_INCLUDE_DIRS}")
+message(STATUS "  library directory: ${Boost_LIBRARY_DIRS}")
 message(STATUS "  system debug library: ${Boost_SYSTEM_LIBRARY_DEBUG}")
 message(STATUS "  system release library: ${Boost_SYSTEM_LIBRARY_RELEASE}")
 message(STATUS "  unit_test_framework debug library: ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY_DEBUG}")
@@ -316,7 +316,7 @@ endif()
 # refers to the fact that this is the set of components that
 # will be included when CPack is instructed to put everything
 # into the binary installer (the default behavior).
-set(CPACK_COMPONENTS_ALL libraries headers applications tools dependencies)
+set(CPACK_COMPONENTS_ALL libraries headers applications tools)
 
 # Set the displayed names for each of the components to install.
 # These will be displayed in the list of components inside the installer.
@@ -324,7 +324,8 @@ set(CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "C++ OPC UA Stack Libraries")
 set(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "C++ OPC UA Stack Headers")
 set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "C++ OPC UA Applications Server")
 set(CPACK_COMPONENT_TOOLS_DISPLAY_NAME "OPC UA Stack Tools")
-set(CPACK_COMPONENT_DEPENDENCIES_DISPLAY_NAME "C++ OPC UA Stack Dependencies" )
+set(CPACK_COMPONENT_DEPENDENCIES_DISPLAY_NAME "C++ OPC UA Stack Dependencies")
+set(CPACK_COMPONENT_DEPENDENCY_HEADERS_DISPLAY_NAME "Headers of C++ OPC UA Stack Dependencies")
 
 # Provide descriptions for each of the components to install.
 # When the user hovers the mouse over the name of a component, 
@@ -341,50 +342,63 @@ set(CPACK_COMPONENT_TOOLS_DESCRIPTION
   "C/C++ development tools")
 set(CPACK_COMPONENT_DEPENDENCIES_DESCRIPTION
     "Dependencies (boost-${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION} and opennssl-${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}")
+set(CPACK_COMPONENT_DEPENDENCY_HEADERS_DESCRIPTION
+    "Headers of (boost-${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION} and opennssl-${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}")
 
 # Put the components into two different groups: "Runtime" and "Development"
 set(CPACK_COMPONENT_LIBRARIES_GROUP "bin")
-set(CPACK_COMPONENT_HEADERS_GROUP "dev")
 set(CPACK_COMPONENT_APPLICATIONS_GROUP "bin")
-set(CPACK_COMPONENT_TOOLS_GROUP "dev")
 set(CPACK_COMPONENT_DEPENDENCIES_GROUP "bin" )
+set(CPACK_COMPONENT_TOOLS_GROUP "bin")
+
+if (CPACK_PACKAGE_TYPE STREQUAL "Dev")
+    set(CPACK_COMPONENT_HEADERS_GROUP "dev")    
+    set(CPACK_COMPONENT_DEPENDENCY_HEADERS_GROUP "dev" )
+endif()
 
 if (CPACK_BINARY_MSI)
-    set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}")
+    set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-${CPACK_PACKAGE_TYPE}")
 
-    file(GLOB DEPS_DLL ${OPENSSL_INCLUDE_DIR}/../bin/libssl* ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto* )  
+    file (GLOB DEPS_DLL ${OPENSSL_INCLUDE_DIR}/../bin/libssl* ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto*)
     
-    if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")        
-        foreach(lib ${Boost_SYSTEM_LIBRARY_DEBUG}
-            ${Boost_SYSTEM_LIBRARY_DEBUG}
-            ${Boost_FILESYSTEM_LIBRARY_DEBUG}
-            ${Boost_THREAD_LIBRARY_DEBUG}
-            ${Boost_DATE_TIME_LIBRARY_DEBUG}
-            ${Boost_CHRONO_LIBRARY_DEBUG}
-            ${Boost_REGEX_LIBRARY_DEBUG}
-            ${Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG})
+    if (CPACK_PACKAGE_TYPE STREQUAL "Dev")
+        set(CPACK_COMPONENTS_ALL libraries headers applications tools dependencies dependency_headers)
+        file(GLOB ALL_DEP_LIBS ${OPENSSL_LIBRARIES}/* ${Boost_LIBRARY_DIRS}/*)
+        install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)             
+        install(FILES ${ALL_DEP_LIBS} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
 
-            GetBoostDLLPath(lib)
-            set(DEPS_DLL "${DEPS_DLL};${BOOST_DLL_PATH}")  
-        endforeach()
-            
-        
+        install(DIRECTORY ${Boost_INCLUDE_DIRS}/boost DESTINATION ${INSTALL_PREFIX}/include COMPONENT dependency_headers)
+        install(DIRECTORY ${OPENSSL_INCLUDE_DIR}/openssl DESTINATION ${INSTALL_PREFIX}/include COMPONENT dependency_headers)
     else()
-         foreach(lib ${Boost_SYSTEM_LIBRARY_RELEASE}
-            ${Boost_FILESYSTEM_LIBRARY_RELEASE}
-            ${Boost_THREAD_LIBRARY_RELEASE}
-            ${Boost_DATE_TIME_LIBRARY_RELEASE}
-            ${Boost_CHRONO_LIBRARY_RELEASE}
-            ${Boost_REGEX_LIBRARY_RELEASE}
-            ${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE})
-
+        set(CPACK_COMPONENTS_ALL libraries applications tools dependencies)
+        if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")         
+             set (BOOST_LIBS  ${Boost_SYSTEM_LIBRARY_DEBUG}
+                ${Boost_SYSTEM_LIBRARY_DEBUG}
+                ${Boost_FILESYSTEM_LIBRARY_DEBUG}
+                ${Boost_THREAD_LIBRARY_DEBUG}
+                ${Boost_DATE_TIME_LIBRARY_DEBUG}
+                ${Boost_CHRONO_LIBRARY_DEBUG}
+                ${Boost_REGEX_LIBRARY_DEBUG}
+                ${Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG})   
+        else()
+             set (BOOST_LIBS  ${Boost_SYSTEM_LIBRARY_RELEASE}
+                ${Boost_FILESYSTEM_LIBRARY_RELEASE}
+                ${Boost_THREAD_LIBRARY_RELEASE}
+                ${Boost_DATE_TIME_LIBRARY_RELEASE}
+                ${Boost_CHRONO_LIBRARY_RELEASE}
+                ${Boost_REGEX_LIBRARY_RELEASE}
+                ${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE})
+        endif()
+        message(${BOOST_LIBS})
+        foreach(lib ${BOOST_LIBS})
             GetBoostDLLPath(${lib})
-            set(DEPS_DLL "${DEPS_DLL};${BOOST_DLL_PATH}")
-          endforeach()
+            set(DEPS_DLL "${DEPS_DLL};${BOOST_DLL_PATH}")             
+        endforeach()           
+
+        install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
     endif()
 
-    message(STATUS "Include in MSI packet ${DEPS_DLL}")    
-    install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
+
     
 	include (InstallRequiredSystemLibraries)
 	set(CPACK_GENERATOR NSIS)	
