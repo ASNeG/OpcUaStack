@@ -310,7 +310,7 @@ build_tst()
     then
         cmake ../tst \
   	     "${CMAKE_GENERATOR_LOCAL}" \
-	     -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}"
+	     -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}" \
          -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
