@@ -49,8 +49,9 @@ set BUILD_TYPE="Debug"
     shift
     goto :parse
 
-
 :execute
+set BUILD_DIR_SUFFIX=%VSCMD_ARG_TGT_ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
+
 if "%COMMAND%" == "" (
     call:build_local
 	
@@ -96,14 +97,14 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -H./src/ -B./build_local
+	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
 	REM
     
 	set DESTDIR=%INSTALL_PREFIX%
-	%CMAKE% --build build_local --target install --config %BUILD_TYPE%
+	%CMAKE% --build build_local_%BUILD_DIR_SUFFIX% --target install --config %BUILD_TYPE%
 goto:eof
 
 REM ---------------------------------------------------------------------------
@@ -117,12 +118,12 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -H./src/ -B./build_msi
+	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM package OpcUaStack to MSI
 	REM    		
-    %CMAKE% --build build_msi --target package --config %BUILD_TYPE%
+    %CMAKE% --build build_msi_%BUILD_DIR_SUFFIX% --target package --config %BUILD_TYPE%
 goto:eof
 
 REM ---------------------------------------------------------------------------
@@ -136,12 +137,12 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build unittest
 	REM
-	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX="%STACK_PREFIX%" -H./tst/ -B./build_tst
+	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX="%STACK_PREFIX%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
 	REM    
-	%CMAKE% --build build_tst --config %BUILD_TYPE%
+	%CMAKE% --build build_tst_%BUILD_DIR_SUFFIX% --config %BUILD_TYPE%
 goto:eof
 
 

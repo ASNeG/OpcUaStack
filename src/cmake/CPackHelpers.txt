@@ -39,3 +39,8 @@ function(LibDepends nameLib releaseList prefix)
     
     set(FOUT ${OUT} PARENT_SCOPE)    
 endfunction(LibDepends)
+
+function(GetBoostDLLPath libPath)
+    string(REPLACE ".lib" ".dll" DLL ${libPath})
+    set(BOOST_DLL_PATH ${DLL} PARENT_SCOPE)
+endfunction(GetBoostDLLPath)

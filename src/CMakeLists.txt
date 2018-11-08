@@ -116,6 +116,13 @@ message(STATUS "  host system: ${CMAKE_HOST_SYSTEM}")
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+ if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")    
+    set(Boost_USE_DEBUG_LIBS     ON)
+    set(Boost_USE_RELEASE_LIBS   OFF)
+ else()
+    set(Boost_USE_DEBUG_LIBS     OFF)
+    set(Boost_USE_RELEASE_LIBS   ON)
+ endif()
 add_definitions(-DBOOST_ALL_DYN_LINK)
 find_package(
     Boost 
@@ -262,7 +269,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/CPackHelpers.txt)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/../LICENSE")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/../README.rst")
 set(CPACK_PACKAGE_CONTACT "info@asneg.de")
-set(CPACK_PACKAGE_NAME "OpcUaStack-${VERSION_MAJOR}")
+set(CPACK_PACKAGE_NAME "OpcUaStack")
 set(CPACK_PACKAGE_VENDOR "asneg.de")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "OpcUaStack - Opc Ua client server application framework")
 set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
@@ -309,7 +316,7 @@ endif()
 # refers to the fact that this is the set of components that
 # will be included when CPack is instructed to put everything
 # into the binary installer (the default behavior).
-set(CPACK_COMPONENTS_ALL libraries headers applications tools)
+set(CPACK_COMPONENTS_ALL libraries headers applications tools dependencies)
 
 # Set the displayed names for each of the components to install.
 # These will be displayed in the list of components inside the installer.
@@ -317,6 +324,7 @@ set(CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "C++ OPC UA Stack Libraries")
 set(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "C++ OPC UA Stack Headers")
 set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "C++ OPC UA Applications Server")
 set(CPACK_COMPONENT_TOOLS_DISPLAY_NAME "OPC UA Stack Tools")
+set(CPACK_COMPONENT_DEPENDENCIES_DISPLAY_NAME "C++ OPC UA Stack Dependencies" )
 
 # Provide descriptions for each of the components to install.
 # When the user hovers the mouse over the name of a component, 
@@ -331,23 +339,61 @@ set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION
   "C/C++ opc ua application server")
 set(CPACK_COMPONENT_TOOLS_DESCRIPTION
   "C/C++ development tools")
+set(CPACK_COMPONENT_DEPENDENCIES_DESCRIPTION
+    "Dependencies (boost-${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION} and opennssl-${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}")
 
 # Put the components into two different groups: "Runtime" and "Development"
 set(CPACK_COMPONENT_LIBRARIES_GROUP "bin")
 set(CPACK_COMPONENT_HEADERS_GROUP "dev")
 set(CPACK_COMPONENT_APPLICATIONS_GROUP "bin")
 set(CPACK_COMPONENT_TOOLS_GROUP "dev")
+set(CPACK_COMPONENT_DEPENDENCIES_GROUP "bin" )
 
 if (CPACK_BINARY_MSI)
+    set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}")
+
+    file(GLOB DEPS_DLL ${OPENSSL_INCLUDE_DIR}/../bin/libssl* ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto* )  
+    
+    if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")        
+        foreach(lib ${Boost_SYSTEM_LIBRARY_DEBUG}
+            ${Boost_SYSTEM_LIBRARY_DEBUG}
+            ${Boost_FILESYSTEM_LIBRARY_DEBUG}
+            ${Boost_THREAD_LIBRARY_DEBUG}
+            ${Boost_DATE_TIME_LIBRARY_DEBUG}
+            ${Boost_CHRONO_LIBRARY_DEBUG}
+            ${Boost_REGEX_LIBRARY_DEBUG}
+            ${Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG})
+
+            GetBoostDLLPath(lib)
+            set(DEPS_DLL "${DEPS_DLL};${BOOST_DLL_PATH}")  
+        endforeach()
+            
+        
+    else()
+         foreach(lib ${Boost_SYSTEM_LIBRARY_RELEASE}
+            ${Boost_FILESYSTEM_LIBRARY_RELEASE}
+            ${Boost_THREAD_LIBRARY_RELEASE}
+            ${Boost_DATE_TIME_LIBRARY_RELEASE}
+            ${Boost_CHRONO_LIBRARY_RELEASE}
+            ${Boost_REGEX_LIBRARY_RELEASE}
+            ${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE})
+
+            GetBoostDLLPath(${lib})
+            set(DEPS_DLL "${DEPS_DLL};${BOOST_DLL_PATH}")
+          endforeach()
+    endif()
+
+    message(STATUS "Include in MSI packet ${DEPS_DLL}")    
+    install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
+    
 	include (InstallRequiredSystemLibraries)
-	set(CPACK_GENERATOR NSIS)
-	#set(CPACK_PACKAGE_EXECUTABLES "OpcUaServer" "OpcUaServer")
+	set(CPACK_GENERATOR NSIS)	
 	set(CPACK_PACKAGE_INSTALL_DIRECTORY "OpcUaStack")
 	set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\\\\\icon\\\\asneg.ico")
 	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
 	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg_install.ico")
 	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")   
-	#set(CPACK_NSIS_INSTALLED_ICON_NAME "asneg.ico")
+	set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 	
 	set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
 		"
