@@ -29,6 +29,8 @@ usage()
    echo "--install-prefix, -i INSTALL_PREFIX:  is the path to directory"
    echo "\twhere the application should be installed (default: ${HOME}/.ASNeG)"
    echo "--jobs, -j JOB_COUNT: sets the number of the jobs of make"
+   echo ""
+   echo "--build-type, -B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type"
 }
 
 
@@ -84,7 +86,8 @@ build_local()
     then
         set -x
         cmake ../src \
-              "${CMAKE_GENERATOR_LOCAL}" 
+              "${CMAKE_GENERATOR_LOCAL}" \
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
         RESULT=$?
         set +x
         if [ ${RESULT} -ne 0 ] ;
@@ -162,6 +165,7 @@ build_deb()
  
         cmake ../src \
             "${CMAKE_GENERATOR_LOCAL}" \
+            -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"\
             "-DCPACK_BINARY_DEB=1" \
             "-DCPACK_BINARY_RPM=0" \
 	    "-DCPACK_BINARY_STGZ=0" \
@@ -237,6 +241,7 @@ build_rpm()
     then
         cmake ../src \
             "${CMAKE_GENERATOR_LOCAL}" \
+            -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
             "-DCPACK_BINARY_DEB=0" \
             "-DCPACK_BINARY_RPM=1" \
   	    "-DCPACK_BINARY_STGZ=0" \
@@ -306,6 +311,7 @@ build_tst()
         cmake ../tst \
   	     "${CMAKE_GENERATOR_LOCAL}" \
 	     -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}"
+         -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
@@ -374,6 +380,7 @@ fi
 INSTALL_PREFIX="${HOME}/.ASNeG"
 STACK_PREFIX="/"
 JOBS=1
+BUILD_TYPE="Debug"
 
 while [ $# -gt 0 ];
 do
@@ -397,6 +404,11 @@ case $key in
     ;;
     -j|--jobs)
     JOBS="$2"
+    shift # past argument
+    shift # past value
+    ;;
+    -B|--build-type)
+    BUILD_TYPE="$2"
     shift # past argument
     shift # past value
     ;;
