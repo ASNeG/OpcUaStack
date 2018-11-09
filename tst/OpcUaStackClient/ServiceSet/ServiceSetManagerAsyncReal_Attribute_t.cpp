@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read)
 	WriteRequest::SPtr req = trx->request();
 
 	OpcUaBoolean value = 1;
-	WriteValue::SPtr writeValue = WriteValue::construct();
+	WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
 	writeValue->nodeId()->set("Demo.Static.Scalar.Boolean", 2);
 	writeValue->attributeId((OpcUaInt32) 13);
 	writeValue->dataValue().variant()->set(value);
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write)
 	ServiceTransactionRead::SPtr trx;
 	trx = constructSPtr<ServiceTransactionRead>();
 	ReadRequest::SPtr req = trx->request();
-	ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
+	ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
 	readValueIdSPtr->nodeId((OpcUaInt16)0, (OpcUaInt32)2259);
 	readValueIdSPtr->attributeId((OpcUaInt32) 13);
 	readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);

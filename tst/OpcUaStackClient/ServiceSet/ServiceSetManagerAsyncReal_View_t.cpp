@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints)
 	BrowseRequest::SPtr req = trx->request();
 	req->nodesToBrowse()->resize(1);
 
-	BrowseDescription::SPtr browseDescription = BrowseDescription::construct();
+	BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
 	browseDescription->nodeId()->set(84, 0);
 	browseDescription->browseDirection(BrowseDirection_Both);
 	browseDescription->nodeClassMask(0xFFFFFFFF);

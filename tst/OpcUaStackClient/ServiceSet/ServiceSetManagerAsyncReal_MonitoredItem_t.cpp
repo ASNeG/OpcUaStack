@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 	subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	ServiceTransactionCreateSubscription::SPtr subCreateTrx = ServiceTransactionCreateSubscription::construct();
+	ServiceTransactionCreateSubscription::SPtr subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
 	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
 	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
 	subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
@@ -60,12 +60,12 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 	monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
-	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = ServiceTransactionCreateMonitoredItems::construct();
+	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
 	CreateMonitoredItemsRequest::SPtr monCreateReq = monCreateTrx->request();
 	CreateMonitoredItemsResponse::SPtr monCreateRes = monCreateTrx->response();
 	monCreateReq->subscriptionId(subscriptionId);
 
-	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = MonitoredItemCreateRequest::construct();
+	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
 	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(2258,0);
 	monitoredItemCreateRequest->requestedParameters().clientHandle(2258);
 
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 
 
 	// delete monitored item
-	ServiceTransactionDeleteMonitoredItems::SPtr monDeleteTrx = ServiceTransactionDeleteMonitoredItems::construct();
+	ServiceTransactionDeleteMonitoredItems::SPtr monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
 	DeleteMonitoredItemsRequest::SPtr monDeleteReq = monDeleteTrx->request();
 	monDeleteReq->subscriptionId(subscriptionId);
 
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 	BOOST_REQUIRE(statusCode == Success);
 
 	// delete subscription
-	ServiceTransactionDeleteSubscriptions::SPtr subDeleteTrx = ServiceTransactionDeleteSubscriptions::construct();
+	ServiceTransactionDeleteSubscriptions::SPtr subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
 	DeleteSubscriptionsRequest::SPtr subDeleteReq = subDeleteTrx->request();
 	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change)
 	subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	ServiceTransactionCreateSubscription::SPtr subCreateTrx = ServiceTransactionCreateSubscription::construct();
+	ServiceTransactionCreateSubscription::SPtr subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
 	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
 	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
 	subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
@@ -174,12 +174,12 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change)
 	monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
-	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = ServiceTransactionCreateMonitoredItems::construct();
+	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
 	CreateMonitoredItemsRequest::SPtr monCreateReq = monCreateTrx->request();
 	CreateMonitoredItemsResponse::SPtr monCreateRes = monCreateTrx->response();
 	monCreateReq->subscriptionId(subscriptionId);
 
-	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = MonitoredItemCreateRequest::construct();
+	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
 	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(2258,0);
 	monitoredItemCreateRequest->requestedParameters().clientHandle(2258);
 
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change)
 
 
 	// delete monitored item
-	ServiceTransactionDeleteMonitoredItems::SPtr monDeleteTrx = ServiceTransactionDeleteMonitoredItems::construct();
+	ServiceTransactionDeleteMonitoredItems::SPtr monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
 	DeleteMonitoredItemsRequest::SPtr monDeleteReq = monDeleteTrx->request();
 	monDeleteReq->subscriptionId(subscriptionId);
 
@@ -226,7 +226,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change)
 	BOOST_REQUIRE(statusCode == Success);
 
 	// delete subscription
-	ServiceTransactionDeleteSubscriptions::SPtr subDeleteTrx = ServiceTransactionDeleteSubscriptions::construct();
+	ServiceTransactionDeleteSubscriptions::SPtr subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
 	DeleteSubscriptionsRequest::SPtr subDeleteReq = subDeleteTrx->request();
 	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);

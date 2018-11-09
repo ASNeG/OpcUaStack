@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "os.h"
 
-#undef REAL_SERVER
+#define REAL_SERVER
 #define REAL_SERVER_URI "opt.tcp://127.0.0.1:8889"
 //#define REAL_SERVER_URI "opt.tcp://192.168.0.142:48010"
 //#define REAL_SERVER_URI "opt.tcp://192.168.129.1:48010"

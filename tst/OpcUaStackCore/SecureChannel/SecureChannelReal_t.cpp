@@ -57,8 +57,7 @@ BOOST_AUTO_TEST_CASE(SecureChannelReal_Connect_Disconnect)
 	secureChannelClientTest.handleConnect_.condition(1,0);
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl("opt.tcp://192.168.122.99:48010");
-	secureChannelClientConfig->debug(false);
-	secureChannelClientConfig->debugHeader(true);
+	secureChannelClientConfig->secureChannelLog(true);
 	secureChannel = secureChannelClient.connect(secureChannelClientConfig);
 	BOOST_REQUIRE(secureChannel != nullptr);
 	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
@@ -85,8 +84,7 @@ BOOST_AUTO_TEST_CASE(SecureChannelReal_Connect_Disconnect_with_a_second_channel)
 
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl("opt.tcp://192.168.122.99:48010");
-	secureChannelClientConfig->debug(false);
-	secureChannelClientConfig->debugHeader(true);
+	secureChannelClientConfig->secureChannelLog(true);
 
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
@@ -128,8 +126,7 @@ BOOST_AUTO_TEST_CASE(SecureChannelReal_Connect_SendRequest_ReceiveResponse_Disco
 	secureChannelClientTest.handleConnect_.condition(1,0);
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl("opt.tcp://192.168.122.99:48010");
-	secureChannelClientConfig->debug(true);
-	secureChannelClientConfig->debugHeader(true);
+	secureChannelClientConfig->secureChannelLog(true);
 	secureChannel = secureChannelClient.connect(secureChannelClientConfig);
 	BOOST_REQUIRE(secureChannel != nullptr);
 	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
@@ -141,7 +138,7 @@ BOOST_AUTO_TEST_CASE(SecureChannelReal_Connect_SendRequest_ReceiveResponse_Disco
 	getEndpointsRequest.endpointUrl("opt.tcp://192.168.122.99:48010");
 	getEndpointsRequest.opcUaBinaryEncode(os);
 
-	SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
+	SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 	secureChannelTransaction->requestTypeNodeId_. nodeId((uint32_t)OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary);
 	secureChannelTransaction->requestId_ = 123;
 	secureChannelTransaction->osAppend(sb);
