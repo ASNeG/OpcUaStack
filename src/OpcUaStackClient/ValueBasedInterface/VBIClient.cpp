@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -112,6 +112,8 @@ namespace OpcUaStackClient
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
+		sessionServiceConfig.secureChannelClient_->applicationCertificate(connectContext.applicationCertificate_);
+		sessionServiceConfig.secureChannelClient_->cryptoManager(connectContext.cryptoManager_);
 		sessionServiceConfig.session_->sessionName(connectContext.sessionName_);
 		sessionServiceConfig.ioThreadName(ioThreadName_);
 

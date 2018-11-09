@@ -63,6 +63,9 @@ namespace OpcUaStackCore
 		// FIXME: only test code
 		// secureChannelClientConfig->secureChannelLog(true);
 
+		this->applicationCertificate(secureChannelClientConfig->applicationCertificate());
+		this->cryptoManager(secureChannelClientConfig->cryptoManager());
+
 		if (secureChannelClientIf_ == nullptr) {
 			Log(Error, "secure channel client interface invalid")
 				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl());
