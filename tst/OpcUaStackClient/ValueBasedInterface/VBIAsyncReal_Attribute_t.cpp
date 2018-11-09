@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_write)
 	OpcUaNodeId nodeId;
 	OpcUaDataValue dataValue;
 	dataValue.variant()->set((OpcUaBoolean)1);
-	nodeId.set("Demo.Static.Scalar.Boolean", 2);
+	nodeId.set(220, 1);
 	vbiClientHandlerTest.writeComplete_.initEvent();
 	client.asyncWrite(
 		nodeId,
