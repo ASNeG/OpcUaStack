@@ -48,6 +48,7 @@ namespace OpcUaStackClient
 		void reset(void);
 		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
+		bool secureChannelLog_;
 		std::string endpointUrl_;
 		std::string sessionName_;
 		ApplicationCertificate::SPtr applicationCertificate_;
