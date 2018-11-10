@@ -349,7 +349,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SessionService::recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionService::recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr& responseHeader)
 	{
 		std::iostream ios(&secureChannelTransaction->is_);
 		CreateSessionResponse createSessionResponse;
@@ -399,7 +399,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SessionService::recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionService::recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr responseHeader)
 	{
 		std::iostream ios(&secureChannelTransaction->is_);
 		ActivateSessionResponse activateSessionResponse;
@@ -527,21 +527,27 @@ namespace OpcUaStackClient
 	void
 	SessionService::handleMessageResponse(SecureChannel* secureChannel)
 	{
+
+		// decode response header
+		std::iostream ios(&secureChannel->secureChannelTransaction_->is_);
+		ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
+		responseHeader->opcUaBinaryDecode(ios);
+
 		switch (secureChannel->secureChannelTransaction_->responseTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
 			{
-				recvCreateSessionResponse(secureChannel->secureChannelTransaction_);
+				recvCreateSessionResponse(secureChannel->secureChannelTransaction_, responseHeader);
 				return;
 			}
 			case OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary:
 			{
-				recvActivateSessionResponse(secureChannel->secureChannelTransaction_);
+				recvActivateSessionResponse(secureChannel->secureChannelTransaction_, responseHeader);
 				return;
 			}
 		}
 
-		receiveMessage(secureChannel->secureChannelTransaction_);
+		receiveMessage(secureChannel->secureChannelTransaction_, responseHeader);
 	}
 
 	// ------------------------------------------------------------------------
@@ -626,11 +632,9 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SessionService::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionService::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr responseHeader)
 	{
 		std::iostream ios(&secureChannelTransaction->is_);
-		ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
-		responseHeader->opcUaBinaryDecode(ios);
 
 		Object::SPtr objectSPtr = pendingQueue_.remove(secureChannelTransaction->requestId_);
 		if (objectSPtr.get() == nullptr) {
