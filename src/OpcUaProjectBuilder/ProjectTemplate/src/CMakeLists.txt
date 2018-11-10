@@ -155,19 +155,19 @@ if (CPACK_BINARY_MSI)
 	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")	
     set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 	
-#    set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
-#            "
-#                    ExecWait '\\\"${OPCUASTACK_INSTALL_PREFIX}\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack'
-#                    ExecWait '\\\"${OPCUASTACK_INSTALL_PREFIX}\\\\usr\\\\bin\\\\OpcUaStackService.exe\\\" INSTALL \\\"ProjectName\\\" \\\"ProjectDescription\\\"'
-#            "
-#    )
+    set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
+            "
+                    ExecWait '\\\"UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib'
+                    ExecWait '\\\"OpcUaStackService.exe\\\" INSTALL \\\"ProjectName\\\" \\\"ProjectDescription\\\" \\\"$INSTDIR\\\\etc\\\\OpcUaStack\\\\ProjectName\\\\OpcUaServer.xml\\\"'
+            "
+    )
 
-#    set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
-#            "
-#                    ExecWait '\\\"${OPCUASTACK_INSTALL_PREFIX}\\\\bin\\\\OpcUaStackService.exe\\\" UNINSTALL \\\"ProjectName\\\"'
-#                    ExecWait '\\\"${OPCUASTACK_INSTALL_PREFIX}\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack'
-#            "
-#    )
+    set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
+            "
+                    ExecWait '\\\"OpcUaStackService.exe\\\" UNINSTALL \\\"ProjectName\\\"'
+                    ExecWait '\\\"UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib'
+            "
+    )
 endif ()
 
 if (CPACK_BINARY_DEB)
