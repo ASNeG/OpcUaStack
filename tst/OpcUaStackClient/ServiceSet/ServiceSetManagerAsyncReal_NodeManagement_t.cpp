@@ -5,7 +5,7 @@ using namespace OpcUaStackClient;
 
 #ifdef REAL_SERVER
 
-BOOST_AUTO_TEST_SUITE()
+BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_NodeManagement_)
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_)
 {
