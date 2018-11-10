@@ -57,6 +57,7 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Attribute_read)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
+	connectContext.secureChannelLog_ = true;
 	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
 
 	// read
@@ -114,6 +115,7 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Attribute_write)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
+	connectContext.secureChannelLog_ = true;
 	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
 
 	// write

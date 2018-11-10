@@ -59,6 +59,7 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Session_session_connect_disconnect)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
+	connectContext.secureChannelLog_ = true;
 	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
 
 	// disconnect session
@@ -111,6 +112,7 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Session_session_connect_disconnect_two_times)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
+	connectContext.secureChannelLog_ = true;
 	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
 
 	// disconnect session

@@ -303,6 +303,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
+	connectContext.secureChannelLog_ = true;
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
