@@ -401,6 +401,8 @@ if (CPACK_BINARY_MSI)
 
     
 	include (InstallRequiredSystemLibraries)
+    install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
+
 	set(CPACK_GENERATOR NSIS)	
 	set(CPACK_PACKAGE_INSTALL_DIRECTORY "OpcUaStack")
 	set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\\\\\icon\\\\asneg.ico")
@@ -411,13 +413,13 @@ if (CPACK_BINARY_MSI)
 	
 	set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
 		"
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\lib;$INSTDIR\\\\bin\\\"'          
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib;$INSTDIR\\\\usr\\\\bin\\\"'          
 		"
 	) 
 	
 	set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
 		"			
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\lib;$INSTDIR\\\\bin\\\"'
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib;$INSTDIR\\\\usr\\\\bin\\\"'
 		"
 	)     
 endif ()
