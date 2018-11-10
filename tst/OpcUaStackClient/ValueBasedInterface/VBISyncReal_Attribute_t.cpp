@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Attribute_write)
 	OpcUaNodeId nodeId;
 	OpcUaDataValue dataValue;
 	dataValue.variant()->set((OpcUaBoolean)1);
-	nodeId.set("Demo.Static.Scalar.Boolean", 2);
+	nodeId.set(220, 1);
 	BOOST_REQUIRE(client.syncWrite(nodeId, dataValue) == Success);
 
 	// disconnect session
