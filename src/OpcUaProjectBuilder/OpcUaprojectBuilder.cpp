@@ -216,7 +216,7 @@ namespace OpcUaProjectBuilder
 		result = boost::regex_replace(result, regProjectPort, projectPort_);
 		result = boost::regex_replace(result, regDockerTag, DOCKER_TAG);
 		result = boost::regex_replace(result, regVersionMajor, VERSION_MAJOR);
-		result = boost::regex_replace(result, regVersionMinor, VERSION_MAJOR);
+		result = boost::regex_replace(result, regVersionMinor, VERSION_MINOR);
 		result = boost::regex_replace(result, regVersionPatch, VERSION_PATCH);
 
 		return result;
