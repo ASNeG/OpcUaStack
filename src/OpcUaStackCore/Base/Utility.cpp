@@ -81,6 +81,18 @@ namespace OpcUaStackCore
 		return count;
 	}
 
+	uint32_t count(std::istream& is)
+	{
+		std::streambuf* sb = is.rdbuf();
+		return sb->in_avail();
+	}
+
+	uint32_t count(std::ostream& os)
+	{
+		std::streambuf* sb = os.rdbuf();
+		return sb->in_avail();
+	}
+
 	uint32_t count(boost::asio::streambuf& sb)
 	{
 		uint32_t size = 0;
