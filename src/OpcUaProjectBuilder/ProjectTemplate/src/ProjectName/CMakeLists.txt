@@ -69,15 +69,15 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS ProjectName DESTINATION /usr/lib)
-
-install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/OpcUaServer.xml DESTINATION /etc/OpcUaStack/ProjectName) 
-install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/Opc.Ua.NodeSet.xml DESTINATION /etc/OpcUaStack/ProjectName)
-install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/log/README DESTINATION /var/log/OpcUaStack/ProjectName)
-install(DIRECTORY DESTINATION /var/log/OpcUaStack/ProjectName)
+install(TARGETS ProjectName DESTINATION ${INSTALL_PREFIX}/lib)
 
 if (WIN32)
 else() 
+    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/OpcUaServer.xml DESTINATION /etc/OpcUaStack/ProjectName) 
+    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/Opc.Ua.NodeSet.xml DESTINATION /etc/OpcUaStack/ProjectName)
+    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/log/README DESTINATION /var/log/OpcUaStack/ProjectName)
+    install(DIRECTORY DESTINATION /var/log/OpcUaStack/ProjectName)
+
     install(PROGRAMS ${PROJECT_BINARY_DIR}/ProjectName DESTINATION /etc/init.d)
     install(FILES ${PROJECT_BINARY_DIR}/ProjectName.conf DESTINATION /etc/init)
     install(FILES ${PROJECT_BINARY_DIR}/ProjectName.service DESTINATION /usr/lib/systemd/system)
