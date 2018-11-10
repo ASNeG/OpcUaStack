@@ -130,9 +130,23 @@ install(FILES ${CMAKE_SOURCE_DIR}/../NOTICE DESTINATION ${INSTALL_PREFIX}/share/
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+set(CPACK_PACKAGE_CONTACT "info@asneg.de")
+set(CPACK_PACKAGE_NAME "ProjectName")
+set(CPACK_PACKAGE_VENDOR "asneg.de")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "ProjectName - ProjectDescription")
+set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+set(CPACK_BINARY_STGZ "OFF")
+set(CPACK_BINARY_TGZ "OFF")
+set(CPACK_BINARY_TZ "OFF")
+
 if (CPACK_BINARY_MSI)
 	include (InstallRequiredSystemLibraries)
-		
+	set(CPACK_PACKAGE_FILE_NAME "ProjectName-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}")
+
     set(CPACK_GENERATOR NSIS)
 	set(CPACK_PACKAGE_INSTALL_DIRECTORY "ProjectName")	
 	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
@@ -154,25 +168,7 @@ if (CPACK_BINARY_MSI)
 #                    ExecWait '\\\"${OPCUASTACK_INSTALL_PREFIX}\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack'
 #            "
 #    )
-
-
-
-	
 endif ()
-
-
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
-set(CPACK_PACKAGE_CONTACT "info@asneg.de")
-set(CPACK_PACKAGE_NAME "ProjectName")
-set(CPACK_PACKAGE_VENDOR "asneg.de")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "ProjectName - ProjectDescription")
-set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
-set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
-set(CPACK_BINARY_STGZ "OFF")
-set(CPACK_BINARY_TGZ "OFF")
-set(CPACK_BINARY_TZ "OFF")
 
 if (CPACK_BINARY_DEB)
     set(CPACK_PACKAGE_FILE_NAME "ProjectName-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
