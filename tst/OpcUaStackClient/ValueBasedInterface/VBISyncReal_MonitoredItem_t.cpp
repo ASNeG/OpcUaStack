@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_MonitoredItem_data_change)
 	// create monitored item
 	uint32_t clientHandle = 3344;
 	OpcUaNodeId nodeId;
-	nodeId.set((OpcUaUInt32)2258);
+	nodeId.set(218,2);
 	uint32_t monitoredItemId;
 	vbiClientHandlerTest.dataChangeCallback_.initEvent();
 	BOOST_REQUIRE(client.syncCreateMonitoredItem(nodeId, subscriptionId, clientHandle, monitoredItemId) == Success);

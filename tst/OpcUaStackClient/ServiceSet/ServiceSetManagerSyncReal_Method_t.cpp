@@ -77,13 +77,13 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Method_discovery_GetEndpoints)
 
 	// call method
 	OpcUaVariant::SPtr inArgument1 = constructSPtr<OpcUaVariant>();
-	inArgument1->set((OpcUaDouble)1.1);
+	inArgument1->set((uint32_t)1);
 	OpcUaVariant::SPtr inArgument2 = constructSPtr<OpcUaVariant>();
-	inArgument2->set((OpcUaDouble)2.2);
+	inArgument2->set((uint32_t)2);
 
 	CallMethodRequest::SPtr callMethodRequest = constructSPtr<CallMethodRequest>();
-	callMethodRequest->objectId()->set("Demo.Method" ,2);
-	callMethodRequest->methodId()->set("Demo.Method.Multiply" ,2);
+	callMethodRequest->objectId()->set("Function" ,5);
+	callMethodRequest->methodId()->set("funcMult" ,5);
 	callMethodRequest->inputArguments()->resize(2);
 	callMethodRequest->inputArguments()->set(0, inArgument1);
 	callMethodRequest->inputArguments()->set(1, inArgument2);
@@ -106,9 +106,9 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Method_discovery_GetEndpoints)
 	BOOST_REQUIRE(callMethodResult->outputArguments()->size() == 1);
 	OpcUaVariant::SPtr outArgument1;
 	callMethodResult->outputArguments()->get(0, outArgument1);
-	BOOST_REQUIRE(outArgument1->variantType() == OpcUaId_Double);
+	BOOST_REQUIRE(outArgument1->variantType() == OpcUaId_UInt32);
 
-	OpcUaDouble doubleNumber = outArgument1->get<OpcUaDouble>();
+	uint32_t number = outArgument1->get<uint32_t>();
 
 	// disconnect secure channel
 	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
