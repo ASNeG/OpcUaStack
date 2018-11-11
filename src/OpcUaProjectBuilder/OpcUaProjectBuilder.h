@@ -66,7 +66,7 @@ namespace OpcUaProjectBuilder
 		boost::filesystem::path templateDirectory_;
 		boost::filesystem::path projectDirectory_;
 
-        const std::set<std::string> noSubstitueExtensions_ = { ".ico" };
+        const std::set<std::string> noSubstitueExtensions_;
 	};
 
 }

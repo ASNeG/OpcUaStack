@@ -36,6 +36,7 @@ namespace OpcUaProjectBuilder
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaProjectBuilder::OpcUaProjectBuilder(void)
+	: noSubstitueExtensions_({ ".ico" })
 	{
 	}
 
