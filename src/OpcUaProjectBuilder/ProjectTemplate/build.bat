@@ -26,31 +26,31 @@ set STANDALONE=OFF
 :parse
     if "%~1"=="" goto :execute
 
-    if /i "%~1"=="/t"               set COMMAND=%2
-    if /i "%~1"=="-t"               set COMMAND=%2
-    if /i "%~1"=="--target"         set COMMAND=%2
+    if "%~1"=="/t"               set COMMAND=%2
+    if "%~1"=="-t"               set COMMAND=%2
+    if "%~1"=="--target"         set COMMAND=%2
 
-    if /i "%~1"=="/i"               set INSTALL_PREFIX=%~2
-    if /i "%~1"=="-i"               set INSTALL_PREFIX=%~2
-    if /i "%~1"=="--install-prefix" set INSTALL_PREFIX=%~2
+    if "%~1"=="/i"               set INSTALL_PREFIX=%~2
+    if "%~1"=="-i"               set INSTALL_PREFIX=%~2
+    if "%~1"=="--install-prefix" set INSTALL_PREFIX=%~2
 
-    if /i "%~1"=="/s"               set STACK_PREFIX=%~2
-    if /i "%~1"=="-s"               set STACK_PREFIX=%~2
-    if /i "%~1"=="--stack-prefix"   set STACK_PREFIX=%~2
+    if "%~1"=="/s"               set STACK_PREFIX=%~2
+    if "%~1"=="-s"               set STACK_PREFIX=%~2
+    if "%~1"=="--stack-prefix"   set STACK_PREFIX=%~2
 
-    if /i "%~1"=="/vs"               set VS_GENERATOR="-G%~2"
-    if /i "%~1"=="-vs"               set VS_GENERATOR="-G%~2"
-    if /i "%~1"=="--vs-generator"    set VS_GENERATOR="-G%~2"
+    if "%~1"=="/vs"               set VS_GENERATOR="-G%~2"
+    if "%~1"=="-vs"               set VS_GENERATOR="-G%~2"
+    if "%~1"=="--vs-generator"    set VS_GENERATOR="-G%~2"
 
-    if /i "%~1"=="/B"               set BUILD_TYPE=%~2
-    if /i "%~1"=="-B"               set BUILD_TYPE=%~2
-    if /i "%~1"=="--build-type"     set BUILD_TYPE=%~2
+    if "%~1"=="/B"               set BUILD_TYPE=%~2
+    if "%~1"=="-B"               set BUILD_TYPE=%~2
+    if "%~1"=="--build-type"     set BUILD_TYPE=%~2
     shift
 
     REM flags
-    if /i "%~1"=="/S"               set STANDALONE=ON
-    if /i "%~1"=="-S"               set STANDALONE=ON
-    if /i "%~1"=="--standalone"     set STANDALONE=ON
+    if "%~2"=="/S"               set STANDALONE=ON
+    if "%~2"=="-S"               set STANDALONE=ON
+    if "%~2"=="--standalone"     set STANDALONE=ON
 
     
     shift
