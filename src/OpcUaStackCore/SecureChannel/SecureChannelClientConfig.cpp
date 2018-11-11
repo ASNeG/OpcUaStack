@@ -36,6 +36,9 @@ namespace OpcUaStackCore
 	, renewTimeout_(300000)
 	, reconnectTimeout_(0)
 
+	, applicationCertificate_()
+	, cryptoManager_()
+
 	, secureChannelLog_(false)
 	{
 	}
@@ -114,6 +117,30 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::reconnectTimeout(void)
 	{
 		return reconnectTimeout_;
+	}
+
+	void
+	SecureChannelClientConfig::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
+	}
+
+	ApplicationCertificate::SPtr&
+	SecureChannelClientConfig::applicationCertificate(void)
+	{
+		return applicationCertificate_;
+	}
+
+	void
+	SecureChannelClientConfig::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
+	}
+
+	CryptoManager::SPtr&
+	SecureChannelClientConfig::cryptoManager(void)
+	{
+		return cryptoManager_;
 	}
 
 	void

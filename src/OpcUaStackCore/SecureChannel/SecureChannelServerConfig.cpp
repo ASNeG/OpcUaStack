@@ -33,6 +33,8 @@ namespace OpcUaStackCore
 	, endpointDescriptionArray_()
 	, endpointDescription_()
 	, endpointUrl_("")
+	, applicationCertificate_()
+	, cryptoManager_()
 
 	, secureChannelLog_(false)
 	{
@@ -76,6 +78,30 @@ namespace OpcUaStackCore
 	SecureChannelServerConfig::endpointUrl(void)
 	{
 		return endpointUrl_;
+	}
+
+	void
+	SecureChannelServerConfig::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
+	}
+
+	ApplicationCertificate::SPtr&
+	SecureChannelServerConfig::applicationCertificate(void)
+	{
+		return applicationCertificate_;
+	}
+
+	void
+	SecureChannelServerConfig::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
+	}
+
+	CryptoManager::SPtr&
+	SecureChannelServerConfig::cryptoManager(void)
+	{
+		return cryptoManager_;
 	}
 
 	void

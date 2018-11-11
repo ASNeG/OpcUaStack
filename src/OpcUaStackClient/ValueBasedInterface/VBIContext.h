@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -48,8 +48,11 @@ namespace OpcUaStackClient
 		void reset(void);
 		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
+		bool secureChannelLog_;
 		std::string endpointUrl_;
 		std::string sessionName_;
+		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoManager::SPtr cryptoManager_;
 	};
 
 

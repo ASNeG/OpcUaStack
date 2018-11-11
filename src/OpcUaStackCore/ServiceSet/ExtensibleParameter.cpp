@@ -76,6 +76,33 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	ExtensibleParameter::existElement(OpcUaNodeId& opcUaNodeId)
+	{
+		if (extensibleParameterMap_.find(opcUaNodeId) != extensibleParameterMap_.end()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	bool
+	ExtensibleParameter::existElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex)
+	{
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.set(nodeId, namespaceIndex);
+		return existElement(opcUaNodeId);
+	}
+
+	bool
+	ExtensibleParameter::existElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex)
+	{
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.set(nodeId, namespaceIndex);
+		return existElement(opcUaNodeId);
+	}
+
 	ExtensibleParameterBase::SPtr
 	ExtensibleParameter::findElement(OpcUaNodeId& opcUaNodeId)
 	{

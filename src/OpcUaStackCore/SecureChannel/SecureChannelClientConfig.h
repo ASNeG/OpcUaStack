@@ -20,6 +20,8 @@
 #define __OpUaStackCore_SecureChannelClientConfig_h__
 
 #include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
 
 namespace OpcUaStackCore
 {
@@ -45,6 +47,10 @@ namespace OpcUaStackCore
 		uint32_t renewTimeout(void);
 		void reconnectTimeout(uint32_t reconnectTimeout);
 		uint32_t reconnectTimeout(void);
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		ApplicationCertificate::SPtr& applicationCertificate(void);
+		void cryptoManager(CryptoManager::SPtr& cryptoManager);
+		CryptoManager::SPtr& cryptoManager(void);
 
 		void secureChannelLog(bool secureChannelLog);
 		bool secureChannelLog(void);
@@ -53,6 +59,9 @@ namespace OpcUaStackCore
 		std::string endpointUrl_;
 		SecurityMode securityMode_;
 		SecurityPolicy securityPolicy_;
+
+		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoManager::SPtr cryptoManager_;
 
 		uint32_t connectTimeout_;
 		uint32_t renewTimeout_;
