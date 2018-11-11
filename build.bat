@@ -179,7 +179,7 @@ REM ---------------------------------------------------------------------------
    echo.
    echo --build-type, -B, /B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type.
    echo.
-   echo --package-type, -B, /B PACKAGE_TYPE:  set the MSI package type (Bin | Dev). By default, it is Bin type.
+   echo --package-type, -P, /P PACKAGE_TYPE:  set the MSI package type (Bin | Dev). By default, it is Bin type.
    echo.
 
 goto:eof
