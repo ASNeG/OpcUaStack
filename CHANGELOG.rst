@@ -16,6 +16,8 @@ Release 3.5.1
 **Bugs**:
 
 * OpcUaStackCore/Client/Server tests end with errors #31, by @huebl
+* Missing certifcate in opc ua client #40, by @huebl
+* OPC UA client sometimes gets stuck #41, by @huebl  
 
 
 

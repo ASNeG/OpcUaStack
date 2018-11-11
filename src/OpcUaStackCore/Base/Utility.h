@@ -30,6 +30,8 @@ namespace OpcUaStackCore
 	DLLEXPORT void duplicate(std::iostream& ios1, std::iostream& ios2);
 	DLLEXPORT uint32_t count(boost::asio::streambuf& sb);
 	DLLEXPORT uint32_t count(std::iostream& ios);
+	DLLEXPORT uint32_t count(std::istream& is);
+	DLLEXPORT uint32_t count(std::ostream& os);
 	DLLEXPORT void clear(std::iostream& ios);
 
 	DLLEXPORT void dumpHex(std::istream& is, std::ostream& os = std::cout);
