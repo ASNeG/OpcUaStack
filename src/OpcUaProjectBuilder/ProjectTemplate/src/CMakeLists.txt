@@ -155,17 +155,38 @@ if (CPACK_BINARY_MSI)
 	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")	
     set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 	
+	if (STANDALONE)
+		find_program (PATH_TO_STACK_SERVICE_TOOL OpcUaStackService.exe ONLY_CMAKE_FIND_ROOT_PATH)
+		get_filename_component(PATH_TO_STACK_BIN ${PATH_TO_STACK_SERVICE_TOOL} DIRECTORY)
+		if (NOT PATH_TO_STACK_BIN)
+			message(FATAL_ERROR "OpcUaStack is not installed. You can not build a stadalone MSI-packet for your application.")
+		endif()
+
+		file(GLOB STACK_BINS ${PATH_TO_STACK_BIN}/*)
+		install(FILES ${STACK_BINS} DESTINATION ${INSTALL_PREFIX}/bin)
+		
+		set(PATH_TO_STACK_LIB ${PATH_TO_STACK_BIN}/../lib/)
+		file(GLOB DEPS_DLL ${PATH_TO_STACK_LIB}/../lib/*)
+		install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib)
+
+		set(UPDATE_REGISTRY "$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe")
+		set(OPC_UA_STACK_SERVICE "$INSTDIR\\\\usr\\\\bin\\\\OpcUaStackService.exe")
+	else()
+		set(UPDATE_REGISTRY "UpdateRegistry.exe")
+		set(OPC_UA_STACK_SERVICE "OpcUaStackService.exe")
+	endif()
+
     set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
             "
-                    ExecWait '\\\"UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib'
-                    ExecWait '\\\"OpcUaStackService.exe\\\" INSTALL \\\"ProjectName\\\" \\\"ProjectDescription\\\" \\\"$INSTDIR\\\\etc\\\\OpcUaStack\\\\ProjectName\\\\OpcUaServer.xml\\\"'
+                    ExecWait '\\\"${UPDATE_REGISTRY}\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib'
+                    ExecWait '\\\"${OPC_UA_STACK_SERVICE}\\\" INSTALL \\\"ProjectName\\\" \\\"ProjectDescription\\\" \\\"$INSTDIR\\\\etc\\\\OpcUaStack\\\\ProjectName\\\\OpcUaServer.xml\\\"'
             "
     )
 
     set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
             "
-                    ExecWait '\\\"OpcUaStackService.exe\\\" UNINSTALL \\\"ProjectName\\\"'
-                    ExecWait '\\\"UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib'
+                    ExecWait '\\\"${OPC_UA_STACK_SERVICE}\\\" UNINSTALL \\\"ProjectName\\\"'
+                    ExecWait '\\\"${UPDATE_REGISTRY}\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib'
             "
     )
 endif ()
