@@ -113,13 +113,13 @@ namespace OpcUaStackClient
 		void asyncCancelInternal(uint32_t requestHandle);
 
 		void sendCreateSessionRequest(void);
-		void recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr& responseHeader);
 		void sendActivateSessionRequest(void);
-		void recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr responseHeader);
 		void sendCloseSessionRequest(bool deleteSubscriptions);
 		void sendCancelRequest(uint32_t requestHandle);
 		void pendingQueueTimeout(Object::SPtr object);
-		void receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr responseHeader);
 		void reconnectTimeout(void);
 
 		// configuration
