@@ -11,14 +11,14 @@ Release 3.6.0
 * fix too specific params of *build.bat* #16, by @flipback
 
 
-Release 3.5.1
+Release 3.5.1 (2018-11-11)
 -----------------------------------------------------------
 
 **Bugs**:
 
-* OpcUaStackCore/Client/Server tests end with errors #31, by @huebl
-* Missing certifcate in opc ua client #40, by @huebl
-* OPC UA client sometimes gets stuck #41, by @huebl  
+* fix OpcUaStackCore/Client/Server tests #31, by @huebl
+* fix missing certificate in OPC UA Client #40, by @huebl
+* fix unstable OPC UA Client test #41, by @huebl
 
 
 Release 3.5.0 (2018-10-27)
