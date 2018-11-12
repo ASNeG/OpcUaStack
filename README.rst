@@ -28,13 +28,13 @@ Features
 * Application Server to run OPC UA application as dynamic libraries
 * Settings and OPC UA information model in XML format
 * Support DEB package type to distribute user applications on Linux
+* Support MSI package type to distribute user applications on Windows
 
 In the development stage:
 
 * Code generator to create C++ classes representing OPC UA types, objects and events from XML (Nodesets)
 * Multi-thread model (currently all application modules run in only one thread)
 * Support RPM package type to distribute user applications on Linux
-* Support MSI package type to distribute user applications on Windows
 
 Installation
 ------------------------------
@@ -125,6 +125,14 @@ Also you can build DEB packets from source by using *build.sh* script:
   $ build.sh -t deb
 
 Your packets will be built in *build_deb* directory.
+
+
+MSI Packets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On Windows, the stack is available for installing with MSI packets. As DEB packets, the MSI packets belong to two kinds.
+The packet, that ends with *-Bin* suffix, provides the stack and its dependencies (OpenSSL and Boost) and it is suitable to run user applications. If you are going to develop your own OPC UA user applications, you can use the development packet (ending with *-Dev* suffix). The development packet installs not only the stack and its headers but the whole Boost and OpenSSL with headers. So you do not need to install something more.
+
 
 Usage 
 ------------------------------
