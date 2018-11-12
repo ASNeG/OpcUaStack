@@ -25,29 +25,29 @@ set PACKAGE_TYPE="Bin"
 :parse
     if "%~1"=="" goto :execute
 
-    if /i "%~1"=="/t"               set COMMAND=%2
-    if /i "%~1"=="-t"               set COMMAND=%2
-    if /i "%~1"=="--target"         set COMMAND=%2
+    if "%~1"=="/t"               set COMMAND=%2
+    if "%~1"=="-t"               set COMMAND=%2
+    if "%~1"=="--target"         set COMMAND=%2
 
-    if /i "%~1"=="/i"               set INSTALL_PREFIX=%~2
-    if /i "%~1"=="-i"               set INSTALL_PREFIX=%~2
-    if /i "%~1"=="--install-prefix" set INSTALL_PREFIX=%~2
+    if "%~1"=="/i"               set INSTALL_PREFIX="%~2"
+    if "%~1"=="-i"               set INSTALL_PREFIX="%~2"
+    if "%~1"=="--install-prefix" set INSTALL_PREFIX="%~2"
 
-    if /i "%~1"=="/s"               set STACK_PREFIX=%~2
-    if /i "%~1"=="-s"               set STACK_PREFIX=%~2
-    if /i "%~1"=="--stack-prefix"   set STACK_PREFIX=%~2
+    if "%~1"=="/s"               set STACK_PREFIX="%~2"
+    if "%~1"=="-s"               set STACK_PREFIX="%~2"
+    if "%~1"=="--stack-prefix"   set STACK_PREFIX="%~2"
 
-    if /i "%~1"=="/vs"               set VS_GENERATOR="-G%~2"
-    if /i "%~1"=="-vs"               set VS_GENERATOR="-G%~2"
-    if /i "%~1"=="--vs-generator"    set VS_GENERATOR="-G%~2"
+    if "%~1"=="/vs"               set VS_GENERATOR="-G%~2"
+    if "%~1"=="-vs"               set VS_GENERATOR="-G%~2"
+    if "%~1"=="--vs-generator"    set VS_GENERATOR="-G%~2"
 
-    if /i "%~1"=="/B"               set BUILD_TYPE=%~2
-    if /i "%~1"=="-B"               set BUILD_TYPE=%~2
-    if /i "%~1"=="--build-type"     set BUILD_TYPE=%~2
+    if "%~1"=="/B"               set BUILD_TYPE=%~2
+    if "%~1"=="-B"               set BUILD_TYPE=%~2
+    if "%~1"=="--build-type"     set BUILD_TYPE=%~2
 
-    if /i "%~1"=="/P"               set PACKAGE_TYPE=%~2
-    if /i "%~1"=="-P"               set PACKAGE_TYPE=%~2
-    if /i "%~1"=="--package-type"   set PACKAGE_TYPE=%~2
+    if "%~1"=="/P"               set PACKAGE_TYPE=%~2
+    if "%~1"=="-P"               set PACKAGE_TYPE=%~2
+    if "%~1"=="--package-type"   set PACKAGE_TYPE=%~2
 
     shift
     shift
@@ -149,7 +149,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build unittest
 	REM
-	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX="%STACK_PREFIX%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack

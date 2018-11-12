@@ -30,13 +30,13 @@ set STANDALONE=OFF
     if "%~1"=="-t"               set COMMAND=%2
     if "%~1"=="--target"         set COMMAND=%2
 
-    if "%~1"=="/i"               set INSTALL_PREFIX=%~2
-    if "%~1"=="-i"               set INSTALL_PREFIX=%~2
-    if "%~1"=="--install-prefix" set INSTALL_PREFIX=%~2
+    if "%~1"=="/i"               set INSTALL_PREFIX="%~2"
+    if "%~1"=="-i"               set INSTALL_PREFIX="%~2"
+    if "%~1"=="--install-prefix" set INSTALL_PREFIX="%~2"
 
-    if "%~1"=="/s"               set STACK_PREFIX=%~2
-    if "%~1"=="-s"               set STACK_PREFIX=%~2
-    if "%~1"=="--stack-prefix"   set STACK_PREFIX=%~2
+    if "%~1"=="/s"               set STACK_PREFIX="%~2"
+    if "%~1"=="-s"               set STACK_PREFIX="%~2"
+    if "%~1"=="--stack-prefix"   set STACK_PREFIX="%~2"
 
     if "%~1"=="/vs"               set VS_GENERATOR="-G%~2"
     if "%~1"=="-vs"               set VS_GENERATOR="-G%~2"
@@ -59,8 +59,12 @@ set STANDALONE=OFF
 :execute
 
 set ARCH="x86"
+if %VS_GENERATOR%=="" goto :set_build_suffix
+
 if /i "%VS_GENERATOR:~-6,-1%"=="Win64" set ARCH="x64"
-if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"
+if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"	
+
+:set_build_suffix
 set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
 
 if "%COMMAND%" == "" (
