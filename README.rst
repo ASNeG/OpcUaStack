@@ -143,13 +143,13 @@ ready to be compiled and installed. Below there is an example for local installa
   $ cd MyPorject
   $ sh build.sh local
 
-The user application is installed in directory $HOME/install by default. And you can run it by using OPC UA Server:
+The user application is installed in directory $HOME/.ASNeG or C:\ASNeG by default. And you can run it by using OPC UA Server:
 
 ::
   
   $ OpcUaServer3 $HOME/install/etc/OpcUaStack/MyProject/OpcUaServer.xml
 
-The server reads the setting from file **OpcUaServer.xml** and run the user application. 
+The server reads the setting from file **OpcUaServer.xml** and runs the user application. 
 Now the application is available via OPC UA protocol on port 9012.
   
 For more information about how to write your own OPC UA client server application see ASNeG-Demo_.
