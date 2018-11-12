@@ -19,7 +19,6 @@ if %ARG_COUNT% LSS 2 goto :usage
 set INSTALL_PREFIX=C:\ASNeG
 set COMMAND="local"
 set STACK_PREFIX=C:\ASNeG
-set VS_GENERATOR=""
 set BUILD_TYPE="Debug"
 set PACKAGE_TYPE="Bin"
 
@@ -57,8 +56,12 @@ set PACKAGE_TYPE="Bin"
 :execute
 
 set ARCH="x86"
+if %VS_GENERATOR%=="" goto :set_build_suffix
+
 if /i "%VS_GENERATOR:~-6,-1%"=="Win64" set ARCH="x64"
-if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"
+if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"	
+
+:set_build_suffix
 set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
 
 if "%COMMAND%" == "" (
@@ -163,23 +166,23 @@ REM ---------------------------------------------------------------------------
 :usage
    echo "build.bat --target (local | tst | msi)"
    echo.
-   echo --target, -t, /t: sets one of the folowing target:
-   echo   local - create local build and install in folder C:/install
-   echo   tst   - build unit application
-   echo   msi   - build msi package
+   echo "--target, -t, /t: sets one of the folowing target:"
+   echo "  local - create local build and install in folder C:/install"
+   echo "  tst   - build unit application"
+   echo "  msi   - build msi package"
    echo.
-   echo --stack-prefix, -s, /s STACK_PREFIX:  set the path to directory
-   echo \twhere the OpcUaStack is installed (default: C:\ASNeG)
+   echo "--stack-prefix, -s, /s STACK_PREFIX:  set the path to directory"
+   echo "\twhere the OpcUaStack is installed (default: C:\ASNeG)"
    echo.
-   echo --install-prefix, -i, /i INSTALL_PREFIX:  is the path to directory
-   echo \twhere the application should be installed (default: C:\ASNeG)
+   echo "--install-prefix, -i, /i INSTALL_PREFIX:  is the path to directory"
+   echo "\twhere the application should be installed (default: C:\ASNeG)"
    echo.
-   echo --vs-generator, -vs, /vs VS_GENERATOR:  is the name of cmake generator
-   echo \t witch cmake uses during the building of the project. By default, cmake tries to figure out the generator from the environment.
+   echo "--vs-generator, -vs, /vs VS_GENERATOR:  is the name of cmake generator"
+   echo "\t witch cmake uses during the building of the project. By default, cmake tries to figure out the generator from the environment."
    echo.
-   echo --build-type, -B, /B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type.
+   echo "--build-type, -B, /B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type."
    echo.
-   echo --package-type, -P, /P PACKAGE_TYPE:  set the MSI package type (Bin | Dev). By default, it is Bin type.
+   echo "--package-type, -P, /P PACKAGE_TYPE:  set the MSI package type (Bin | Dev). By default, it is Bin type."
    echo.
 
 goto:eof
