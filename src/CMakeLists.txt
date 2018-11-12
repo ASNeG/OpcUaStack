@@ -357,11 +357,10 @@ if (CPACK_PACKAGE_TYPE STREQUAL "Dev")
 endif()
 
 if (CPACK_BINARY_MSI)
-    set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-${CPACK_PACKAGE_TYPE}")
-
-    file (GLOB DEPS_DLL ${OPENSSL_INCLUDE_DIR}/../bin/libssl* ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto*)
+    set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-${CPACK_PACKAGE_TYPE}")    
     
     if (CPACK_PACKAGE_TYPE STREQUAL "Dev")
+		file (GLOB DEPS_DLL ${OPENSSL_INCLUDE_DIR}/../bin/libssl* ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto*)
         set(CPACK_COMPONENTS_ALL libraries headers applications tools dependencies dependency_headers)
         file(GLOB ALL_DEP_LIBS ${OPENSSL_LIBRARIES}/* ${Boost_LIBRARY_DIRS}/*)
         install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)             
@@ -371,29 +370,7 @@ if (CPACK_BINARY_MSI)
         install(DIRECTORY ${OPENSSL_INCLUDE_DIR}/openssl DESTINATION ${INSTALL_PREFIX}/include COMPONENT dependency_headers)
     else()
         set(CPACK_COMPONENTS_ALL libraries applications tools dependencies)
-        if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")         
-             set (BOOST_LIBS  ${Boost_SYSTEM_LIBRARY_DEBUG}
-                ${Boost_SYSTEM_LIBRARY_DEBUG}
-                ${Boost_FILESYSTEM_LIBRARY_DEBUG}
-                ${Boost_THREAD_LIBRARY_DEBUG}
-                ${Boost_DATE_TIME_LIBRARY_DEBUG}
-                ${Boost_CHRONO_LIBRARY_DEBUG}
-                ${Boost_REGEX_LIBRARY_DEBUG}
-                ${Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG})   
-        else()
-             set (BOOST_LIBS  ${Boost_SYSTEM_LIBRARY_RELEASE}
-                ${Boost_FILESYSTEM_LIBRARY_RELEASE}
-                ${Boost_THREAD_LIBRARY_RELEASE}
-                ${Boost_DATE_TIME_LIBRARY_RELEASE}
-                ${Boost_CHRONO_LIBRARY_RELEASE}
-                ${Boost_REGEX_LIBRARY_RELEASE}
-                ${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE})
-        endif()
-        message(${BOOST_LIBS})
-        foreach(lib ${BOOST_LIBS})
-            GetBoostDLLPath(${lib})
-            set(DEPS_DLL "${DEPS_DLL};${BOOST_DLL_PATH}")             
-        endforeach()           
+        GetStackDependencies()   
 
         install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
     endif()

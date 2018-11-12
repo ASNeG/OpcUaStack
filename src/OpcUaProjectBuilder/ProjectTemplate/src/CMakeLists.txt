@@ -106,7 +106,7 @@ if (WIN32)
     endif()   
 endif()
 
-include(ProjectName/CMakeLists.txt) 
+include(ProjectName/CMakeLists.txt)
 
 
 # -----------------------------------------------------------------------------
@@ -144,7 +144,6 @@ set(CPACK_BINARY_TGZ "OFF")
 set(CPACK_BINARY_TZ "OFF")
 
 if (CPACK_BINARY_MSI)
-	include (InstallRequiredSystemLibraries)
 	set(CPACK_PACKAGE_FILE_NAME "ProjectName-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}")
 
     set(CPACK_GENERATOR NSIS)
@@ -155,19 +154,21 @@ if (CPACK_BINARY_MSI)
 	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")	
     set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 	
-	if (STANDALONE)
-		find_program (PATH_TO_STACK_SERVICE_TOOL OpcUaStackService.exe ONLY_CMAKE_FIND_ROOT_PATH)
-		get_filename_component(PATH_TO_STACK_BIN ${PATH_TO_STACK_SERVICE_TOOL} DIRECTORY)
-		if (NOT PATH_TO_STACK_BIN)
-			message(FATAL_ERROR "OpcUaStack is not installed. You can not build a stadalone MSI-packet for your application.")
-		endif()
+	if (STANDALONE)	
+		set(CPACK_PACKAGE_FILE_NAME "ProjectName-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-Standalone")
 
-		file(GLOB STACK_BINS ${PATH_TO_STACK_BIN}/*)
-		install(FILES ${STACK_BINS} DESTINATION ${INSTALL_PREFIX}/bin)
-		
-		set(PATH_TO_STACK_LIB ${PATH_TO_STACK_BIN}/../lib/)
-		file(GLOB DEPS_DLL ${PATH_TO_STACK_LIB}/../lib/*)
+		include (InstallRequiredSystemLibraries)
+		install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_PREFIX}/lib)
+
+		include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERSION_MAJOR}/CPackHelpers.txt)
+		GetStackDependencies()
 		install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib)
+
+		file(TO_CMAKE_PATH ${OPCUASTACK_INSTALL_PREFIX} OPCUASTACK_INSTALL_PREFIX)
+		file(GLOB STACK_BINARIES ${OPCUASTACK_INSTALL_PREFIX}/usr/bin/*)
+		install(FILES ${STACK_BINARIES} DESTINATION ${INSTALL_PREFIX}/bin)		
+		file(GLOB STACK_DLLS ${OPCUASTACK_INSTALL_PREFIX}/usr/lib/OpcUaStack*.dll)
+		install(FILES ${STACK_DLLS} DESTINATION ${INSTALL_PREFIX}/lib)
 
 		set(UPDATE_REGISTRY "$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe")
 		set(OPC_UA_STACK_SERVICE "$INSTDIR\\\\usr\\\\bin\\\\OpcUaStackService.exe")

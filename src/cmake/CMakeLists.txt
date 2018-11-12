@@ -48,3 +48,9 @@ install(
     DESTINATION ${INSTALL_PREFIX}/share/cmake/OpcUaStack${VERSION_MAJOR}
     COMPONENT tools
 )
+
+install(
+    FILES "${PROJECT_SOURCE_DIR}/cmake/CPackHelpers.txt" 
+    DESTINATION ${INSTALL_PREFIX}/share/cmake/OpcUaStack${VERSION_MAJOR}
+    COMPONENT tools
+)

@@ -44,3 +44,33 @@ function(GetBoostDLLPath libPath)
     string(REPLACE ".lib" ".dll" DLL ${libPath})
     set(BOOST_DLL_PATH ${DLL} PARENT_SCOPE)
 endfunction(GetBoostDLLPath)
+
+
+function(GetStackDependencies)
+	file (GLOB DEPS_DLL ${OPENSSL_INCLUDE_DIR}/../bin/libssl*.dll ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto*.dll ${OPENSSL_INCLUDE_DIR}/../lib/libssl*.dll ${OPENSSL_INCLUDE_DIR}/../lib/libcrypto*.dll)
+	if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")         
+            set (STACK_BOOST_LIBS  ${Boost_SYSTEM_LIBRARY_DEBUG}
+            ${Boost_SYSTEM_LIBRARY_DEBUG}
+            ${Boost_FILESYSTEM_LIBRARY_DEBUG}
+            ${Boost_THREAD_LIBRARY_DEBUG}
+            ${Boost_DATE_TIME_LIBRARY_DEBUG}
+            ${Boost_CHRONO_LIBRARY_DEBUG}
+            ${Boost_REGEX_LIBRARY_DEBUG}
+            ${Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG})   
+    else()
+            set (STACK_BOOST_LIBS  ${Boost_SYSTEM_LIBRARY_RELEASE}
+            ${Boost_FILESYSTEM_LIBRARY_RELEASE}
+            ${Boost_THREAD_LIBRARY_RELEASE}
+            ${Boost_DATE_TIME_LIBRARY_RELEASE}
+            ${Boost_CHRONO_LIBRARY_RELEASE}
+            ${Boost_REGEX_LIBRARY_RELEASE}
+            ${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE})
+    endif()
+    message(${STACK_BOOST_LIBS})
+    foreach(lib ${STACK_BOOST_LIBS})
+        GetBoostDLLPath(${lib})
+        set(DEPS_DLL "${DEPS_DLL};${BOOST_DLL_PATH}")             
+    endforeach()
+	
+	set(DEPS_DLL ${DEPS_DLL} PARENT_SCOPE)
+endfunction()
