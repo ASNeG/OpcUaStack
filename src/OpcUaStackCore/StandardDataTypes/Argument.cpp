@@ -286,7 +286,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		if (!arrayDimensions_->xmlEncode(argumentTree, "ArrayDimensions", "UInt32")) {
+		if (!arrayDimensions_->xmlEncode(argumentTree, "ArrayDimensions", "UInt32", xmlns)) {
 			Log(Error, "Argument xml encoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "ArrayDimensions");
@@ -375,7 +375,7 @@ namespace OpcUaStackCore
 				.parameter("Element", "ArrayDimensions");
 			return false;
 		}
-		if (!arrayDimensions_->xmlDecode(*tmpTree, "UInt32")) {
+		if (!arrayDimensions_->xmlDecode(*tmpTree, "UInt32", xmlns)) {
 			Log(Error, "Argument xml decoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "ArrayDimensions");

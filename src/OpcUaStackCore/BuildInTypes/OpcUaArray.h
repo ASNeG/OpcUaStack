@@ -282,10 +282,28 @@ namespace OpcUaStackCore
 		bool encode(boost::property_tree::ptree& pt) const;
 		bool decode(boost::property_tree::ptree& pt);
 
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, const std::string& listElement) const;
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element) const;
-		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, const std::string& listElement);
-		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& listElement);
+		bool xmlEncode(
+			boost::property_tree::ptree& pt,
+			const std::string& element,
+			const std::string& listElement,
+			Xmlns& xmlns
+		) const;
+		bool xmlEncode(
+			boost::property_tree::ptree& pt,
+			const std::string& element,
+			Xmlns& xmlns
+		) const;
+		bool xmlDecode(
+			boost::property_tree::ptree& pt,
+			const std::string& element,
+			const std::string& listElement,
+			Xmlns& xmlns
+		);
+		bool xmlDecode(
+			boost::property_tree::ptree& pt,
+			const std::string& listElement,
+			Xmlns& xmlns
+		);
 
 	  private:
 		void initArray(void);
@@ -571,14 +589,19 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, const std::string& listElement) const
+	OpcUaArray<T, CODER>::xmlEncode(
+		boost::property_tree::ptree& pt,
+		const std::string& element,
+		const std::string& listElement,
+		Xmlns& xmlns
+	) const
 	{
 		if (isNull_) {
 			return true;
 		}
 
 		boost::property_tree::ptree tmpTree;
-		if (!xmlEncode(tmpTree, listElement)) {
+		if (!xmlEncode(tmpTree, listElement, xmlns)) {
 			Log(Error, "OpcUaArray xml encoder error")
 				.parameter("Element", element)
 				.parameter("ListElement", listElement);
@@ -591,7 +614,11 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& listElement) const
+	OpcUaArray<T, CODER>::xmlEncode(
+		boost::property_tree::ptree& pt,
+		const std::string& listElement,
+		Xmlns& xmlns
+	) const
 	{
 		if (isNull_) {
 			return true;
@@ -609,16 +636,25 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, const std::string& listElement)
+	OpcUaArray<T, CODER>::xmlDecode(
+		boost::property_tree::ptree& pt,
+		const std::string& element,
+		const std::string& listElement,
+		Xmlns& xmlns
+	)
 	{
         boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
         if (!tree) return false;
-        return xmlDecode(*tree, listElement);
+        return xmlDecode(*tree, listElement, xmlns);
 	}
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::xmlDecode(boost::property_tree::ptree& pt, const std::string& listElement)
+	OpcUaArray<T, CODER>::xmlDecode(
+		boost::property_tree::ptree& pt,
+		const std::string& listElement,
+		Xmlns& xmlns
+	)
 	{
 		int32_t arrayLength = 0;
 		arrayLength = pt.size();
