@@ -63,12 +63,22 @@ namespace OpcUaStackCore
 			  return Json::decode(pt, value);
 		  }
 
-		  static bool xmlEncode(boost::property_tree::ptree& pt, T& value, const std::string& element)
+		  static bool xmlEncode(
+		      boost::property_tree::ptree& pt,
+			  T& value,
+			  const std::string& element,
+			  Xmlns& xmlns
+		  )
 		  {
 			  return XmlNumber::xmlEncode(pt, value, element);
 		  }
 
-		  static bool xmlDecode(boost::property_tree::ptree& pt, T& value, const std::string& element)
+		  static bool xmlDecode(
+			  boost::property_tree::ptree& pt,
+			  T& value, const
+			  std::string& element,
+			  Xmlns& xmlns
+		  )
 		  {
 			  return XmlNumber::xmlDecode(pt, value);
 		  }
@@ -109,12 +119,21 @@ namespace OpcUaStackCore
 			  return value.decode(pt);
 		  }
 
-		  static bool xmlEncode(boost::property_tree::ptree& pt, T& value, const std::string& element)
+		  static bool xmlEncode(
+			  boost::property_tree::ptree& pt,
+			  T& value,
+			  const std::string& element,
+			  Xmlns& xmlns
+		  )
 		  {
 			  return value.xmlEncode(pt, element);
 		  }
 
-		  static bool xmlDecode(boost::property_tree::ptree& pt, T& value, const std::string& element)
+		  static bool xmlDecode(
+			  boost::property_tree::ptree& pt, T& value,
+			  const std::string& element,
+			  Xmlns& xmlns
+		  )
 		  {
 			  return value.xmlDecode(pt, element);
 		  }
@@ -163,13 +182,23 @@ namespace OpcUaStackCore
 			  return true;
 		  }
 
-		  static bool xmlEncode(boost::property_tree::ptree& pt, T& value, const std::string& element)
+		  static bool xmlEncode(
+		      boost::property_tree::ptree& pt,
+			  T& value,
+			  const std::string& element,
+			  Xmlns& xmlns
+		  )
 		  {
 			  // FIXME: todo
 			  return true;
 		  }
 
-		  static bool xmlDecode(boost::property_tree::ptree& pt, T& value, const std::string& element)
+		  static bool xmlDecode(
+			  boost::property_tree::ptree& pt,
+			  T& value,
+			  const std::string& element,
+			  Xmlns& xmlns
+		  )
 		  {
 			  // FIXME: todo
 			  return true;
@@ -625,7 +654,7 @@ namespace OpcUaStackCore
 		}
 
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
-			if (!CODER::xmlEncode(pt, valueArray_[idx], listElement)) {
+			if (!CODER::xmlEncode(pt, valueArray_[idx], listElement, xmlns)) {
 				Log(Error, "OpcUaArray xml encoder error")
 					.parameter("ListElement", listElement);
 				return false;
@@ -669,7 +698,7 @@ namespace OpcUaStackCore
 			boost::property_tree::ptree arrayElement = it->second;
 
 			T value;
-			if (!CODER::xmlDecode(arrayElement, value, listElement)) {
+			if (!CODER::xmlDecode(arrayElement, value, listElement, xmlns)) {
 				Log(Error, "OpcUaArray xml decoder error")
 					.parameter("ListElement", listElement);
 				return false;
