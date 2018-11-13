@@ -4,10 +4,10 @@ Release 3.6.0
 **Features**:
 
 * add options for *build.bat* to set install path, stack location and VS version #33, by @flipback
+* implement MSI distribution for the stack and user applications #14, @flipback
 
 **Bugs**:
-
-* fix OpcUaStackCore/Client/Server tests #31, by @huebl
+ 
 * fix too specific params of *build.bat* #16, by @flipback
 
 
