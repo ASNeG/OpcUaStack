@@ -99,13 +99,13 @@ namespace OpcUaStackCore
     void
     AddNodesItem::copyTo(AddNodesItem& value)
     {
-        value.parentNodeId_ = parentNodeId_;
-        value.referenceTypeId_ = referenceTypeId_;
-        value.requestedNewNodeId_ = requestedNewNodeId_;
-        value.browseName_ = browseName_;
-        value.nodeClass_ = nodeClass_;
-        value.nodeAttributes_ = nodeAttributes_;
-        value.typeDefinition_ = typeDefinition_;
+        parentNodeId_.copyTo(value.parentNodeId());
+        referenceTypeId_.copyTo(value.referenceTypeId());
+        requestedNewNodeId_.copyTo(value.requestedNewNodeId());
+        browseName_.copyTo(value.browseName());
+        nodeClass_.copyTo(value.nodeClass());
+        nodeAttributes_.copyTo(value.nodeAttributes());
+        typeDefinition_.copyTo(value.typeDefinition());
     }
     
     AddNodesItem&

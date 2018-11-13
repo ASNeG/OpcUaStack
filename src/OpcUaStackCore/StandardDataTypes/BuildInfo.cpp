@@ -88,12 +88,12 @@ namespace OpcUaStackCore
     void
     BuildInfo::copyTo(BuildInfo& value)
     {
-        value.productUri_ = productUri_;
-        value.manufacturerName_ = manufacturerName_;
-        value.productName_ = productName_;
-        value.softwareVersion_ = softwareVersion_;
-        value.buildNumber_ = buildNumber_;
-        value.buildDate_ = buildDate_;
+        productUri_.copyTo(value.productUri());
+        manufacturerName_.copyTo(value.manufacturerName());
+        productName_.copyTo(value.productName());
+        softwareVersion_.copyTo(value.softwareVersion());
+        buildNumber_.copyTo(value.buildNumber());
+        buildDate_.copyTo(value.buildDate());
     }
     
     BuildInfo&

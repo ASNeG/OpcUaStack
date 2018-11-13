@@ -64,9 +64,9 @@ namespace OpcUaStackCore
     void
     Annotation::copyTo(Annotation& value)
     {
-        value.message_ = message_;
-        value.userName_ = userName_;
-        value.annotationTime_ = annotationTime_;
+        message_.copyTo(value.message());
+        userName_.copyTo(value.userName());
+        annotationTime_.copyTo(value.annotationTime());
     }
     
     Annotation&

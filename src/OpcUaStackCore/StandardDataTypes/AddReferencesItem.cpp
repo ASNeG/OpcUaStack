@@ -91,12 +91,12 @@ namespace OpcUaStackCore
     void
     AddReferencesItem::copyTo(AddReferencesItem& value)
     {
-        value.sourceNodeId_ = sourceNodeId_;
-        value.referenceTypeId_ = referenceTypeId_;
+        sourceNodeId_.copyTo(value.sourceNodeId());
+        referenceTypeId_.copyTo(value.referenceTypeId());
         value.isForward_ = isForward_;
-        value.targetServerUri_ = targetServerUri_;
-        value.targetNodeId_ = targetNodeId_;
-        value.targetNodeClass_ = targetNodeClass_;
+        targetServerUri_.copyTo(value.targetServerUri());
+        targetNodeId_.copyTo(value.targetNodeId());
+        targetNodeClass_.copyTo(value.targetNodeClass());
     }
     
     AddReferencesItem&

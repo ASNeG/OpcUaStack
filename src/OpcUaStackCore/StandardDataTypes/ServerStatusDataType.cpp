@@ -88,12 +88,12 @@ namespace OpcUaStackCore
     void
     ServerStatusDataType::copyTo(ServerStatusDataType& value)
     {
-        value.startTime_ = startTime_;
-        value.currentTime_ = currentTime_;
-        value.state_ = state_;
-        value.buildInfo_ = buildInfo_;
+        startTime_.copyTo(value.startTime());
+        currentTime_.copyTo(value.currentTime());
+        state_.copyTo(value.state());
+        buildInfo_.copyTo(value.buildInfo());
         value.secondsTillShutdown_ = secondsTillShutdown_;
-        value.shutdownReason_ = shutdownReason_;
+        shutdownReason_.copyTo(value.shutdownReason());
     }
     
     ServerStatusDataType&
