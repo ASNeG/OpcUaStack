@@ -269,7 +269,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/CPackHelpers.txt)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/../LICENSE")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/../README.rst")
 set(CPACK_PACKAGE_CONTACT "info@asneg.de")
-set(CPACK_PACKAGE_NAME "OpcUaStack")
+set(CPACK_PACKAGE_NAME "OpcUaStack-${VERSION_MAJOR}")
 set(CPACK_PACKAGE_VENDOR "asneg.de")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "OpcUaStack - Opc Ua client server application framework")
 set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
@@ -279,38 +279,6 @@ set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSIO
 set(CPACK_BINARY_STGZ "OFF")
 set(CPACK_BINARY_TGZ "OFF")
 set(CPACK_BINARY_TZ "OFF")
-
-if (CPACK_BINARY_DEB)
-    set(CPACK_DEB_COMPONENT_INSTALL "ON")
-    set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
-
-    SSLDepends(libssl)         
-    
-    set(DEB_DEPS_DEV "${LIST_OF_LIB_VERSIONS_DEV}")
-    set(DEB_DEPS_BIN "${LIST_OF_LIB_VERSIONS_BIN}")
-
-    foreach(lib
-        libboost-system libboost-thread libboost-date-time libboost-chrono libboost-regex libboost-program-options)
-        BoostDepends(${lib})
-        
-        set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, ${LIST_OF_LIB_VERSIONS_BIN}")
-        set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")            
-    endforeach(lib)
-        
-    BoostDepends(libboost-test)
-    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")
-    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, OpcUaStack-${VERSION_MAJOR}-bin (=${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})")    
-    
-    set(CPACK_DEBIAN_DEV_PACKAGE_DEPENDS ${DEB_DEPS_DEV})       
-    set(CPACK_DEBIAN_BIN_PACKAGE_DEPENDS ${DEB_DEPS_BIN})             
-endif()
-
-if (CPACK_BINARY_RPM)
-    set(CPACK_RPM_COMPONENT_INSTALL "ON")
- #   set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
-    set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
-endif()
-
 
 # Tell CPack all of the components to install. The "ALL"
 # refers to the fact that this is the set of components that
@@ -351,12 +319,47 @@ set(CPACK_COMPONENT_APPLICATIONS_GROUP "bin")
 set(CPACK_COMPONENT_DEPENDENCIES_GROUP "bin" )
 set(CPACK_COMPONENT_TOOLS_GROUP "bin")
 
-if (CPACK_PACKAGE_TYPE STREQUAL "Dev")
+if (CPACK_BINARY_DEB)
     set(CPACK_COMPONENT_HEADERS_GROUP "dev")    
     set(CPACK_COMPONENT_DEPENDENCY_HEADERS_GROUP "dev" )
+    
+    set(CPACK_DEB_COMPONENT_INSTALL "ON")
+    set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+
+    SSLDepends(libssl)         
+    
+    set(DEB_DEPS_DEV "${LIST_OF_LIB_VERSIONS_DEV}")
+    set(DEB_DEPS_BIN "${LIST_OF_LIB_VERSIONS_BIN}")
+
+    foreach(lib
+        libboost-system libboost-thread libboost-date-time libboost-chrono libboost-regex libboost-program-options)
+        BoostDepends(${lib})
+        
+        set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, ${LIST_OF_LIB_VERSIONS_BIN}")
+        set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")            
+    endforeach(lib)
+        
+    BoostDepends(libboost-test)
+    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")
+    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, OpcUaStack-${VERSION_MAJOR}-bin (=${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})")    
+    
+    set(CPACK_DEBIAN_DEV_PACKAGE_DEPENDS ${DEB_DEPS_DEV})       
+    set(CPACK_DEBIAN_BIN_PACKAGE_DEPENDS ${DEB_DEPS_BIN})             
 endif()
 
+if (CPACK_BINARY_RPM)
+    set(CPACK_RPM_COMPONENT_INSTALL "ON")
+ #   set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+    set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+endif()
+
+
 if (CPACK_BINARY_MSI)
+    if (CPACK_PACKAGE_TYPE STREQUAL "Dev")
+        set(CPACK_COMPONENT_HEADERS_GROUP "dev")    
+        set(CPACK_COMPONENT_DEPENDENCY_HEADERS_GROUP "dev" )
+    endif()
+
     set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-${CPACK_PACKAGE_TYPE}")    
     
     if (CPACK_PACKAGE_TYPE STREQUAL "Dev")
