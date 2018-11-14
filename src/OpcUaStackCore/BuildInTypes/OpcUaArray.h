@@ -241,15 +241,25 @@ namespace OpcUaStackCore
 			  value = constructSPtr<T>();
 			  return value->decode(pt);
 		  }
-		  static bool xmlEncode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value, const std::string& element)
+		  static bool xmlEncode(
+		      boost::property_tree::ptree& pt,
+			  boost::shared_ptr<T>& value,
+			  const std::string& element,
+			  Xmlns& xmlns
+		  )
 		  {
-			  return value->xmlEncode(pt);
+			  return value->xmlEncode(pt, xmlns);
 		  }
 
-		  static bool xmlDecode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value, const std::string& element)
+		  static bool xmlDecode(
+		      boost::property_tree::ptree& pt,
+			  boost::shared_ptr<T>& value,
+			  const std::string& element,
+			  Xmlns& xmlns
+		  )
 		  {
 			  value = constructSPtr<T>();
-			  return value->xmlDecode(pt);
+			  return value->xmlDecode(pt, xmlns);
 		  }
 
 		  static boost::shared_ptr<T> copy( boost::shared_ptr<T>& sourceValue, boost::shared_ptr<T>& destValue)
