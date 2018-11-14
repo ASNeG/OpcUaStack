@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(RegisterServer_Request)
 	registerServerRequestSPtr->server().productUri("Uri2");
 	registerServerRequestSPtr->server().serverNames(serverNames);
 	registerServerRequestSPtr->server().serverNames()->set(localizedTextSPtr);
-	registerServerRequestSPtr->server().serverType(AT_Server);
+	registerServerRequestSPtr->server().serverType().enumeration(ApplicationType::EnumServer);
 	registerServerRequestSPtr->server().gatewayServerUri("Uri3");
 	registerServerRequestSPtr->server().discoveryUrls()->set(stringSPtr);
 	registerServerRequestSPtr->server().semaphoreFilePath("Path123");
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(RegisterServer_Request)
 	registerServerRequestSPtr->server().serverNames()->get(localizedTextSPtr);
 	BOOST_REQUIRE(localizedTextSPtr->text().value() == "TestString");
 
-	BOOST_REQUIRE(registerServerRequestSPtr->server().serverType() == AT_Server);
+	BOOST_REQUIRE(registerServerRequestSPtr->server().serverType().enumeration() == ApplicationType::EnumServer);
 	BOOST_REQUIRE(registerServerRequestSPtr->server().gatewayServerUri().value() == "Uri3");
 
 	BOOST_REQUIRE(registerServerRequestSPtr->server().discoveryUrls()->size() == 1);

@@ -2,7 +2,7 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/Utility.h"
-#include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
 
 #include <streambuf>
 #include <iostream>
@@ -25,14 +25,14 @@ BOOST_AUTO_TEST_CASE(ApplicationDescription_)
 
 	// encode ApplicationDescription
 	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
-	applicationDescriptionSPtr->applicationUri("urn:localhost:compyny:Unittest");
-	applicationDescriptionSPtr->productUri("urn:company:Unittest");
+	applicationDescriptionSPtr->applicationUri().value("urn:localhost:compyny:Unittest");
+	applicationDescriptionSPtr->productUri().value("urn:company:Unittest");
 	applicationDescriptionSPtr->applicationName().text("company Unittest");
-	applicationDescriptionSPtr->applicationType(AT_Server);
-	applicationDescriptionSPtr->discoveryUrls()->resize(1);
+	applicationDescriptionSPtr->applicationType().enumeration(ApplicationType::EnumServer);
+	applicationDescriptionSPtr->discoveryUrls().resize(1);
 	opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
-	applicationDescriptionSPtr->discoveryUrls()->set(0, opcUaStringSPtr);
+	applicationDescriptionSPtr->discoveryUrls().set(0, opcUaStringSPtr);
 	applicationDescriptionSPtr->opcUaBinaryEncode(ios);
 
 	OpcUaStackCore::dumpHex(ios);
@@ -51,11 +51,11 @@ BOOST_AUTO_TEST_CASE(ApplicationDescription_)
 	// decode ApplicationDescription
 	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
 	applicationDescriptionSPtr->opcUaBinaryDecode(ios);
-	BOOST_REQUIRE(applicationDescriptionSPtr->applicationUri() == "urn:localhost:compyny:Unittest");
-	BOOST_REQUIRE(applicationDescriptionSPtr->productUri() == "urn:company:Unittest");
+	BOOST_REQUIRE(applicationDescriptionSPtr->applicationUri().value() == "urn:localhost:compyny:Unittest");
+	BOOST_REQUIRE(applicationDescriptionSPtr->productUri().value() == "urn:company:Unittest");
 	BOOST_REQUIRE(applicationDescriptionSPtr->applicationName().text().value() == "company Unittest");
-	BOOST_REQUIRE(applicationDescriptionSPtr->applicationType() == AT_Server);
-	applicationDescriptionSPtr->discoveryUrls()->get(0, opcUaStringSPtr);
+	BOOST_REQUIRE(applicationDescriptionSPtr->applicationType().enumeration() == ApplicationType::EnumServer);
+	applicationDescriptionSPtr->discoveryUrls().get(0, opcUaStringSPtr);
 	BOOST_REQUIRE(opcUaStringSPtr->value() == "opt.tcp://localhost:4841/0.0.0.0");
 
 }
