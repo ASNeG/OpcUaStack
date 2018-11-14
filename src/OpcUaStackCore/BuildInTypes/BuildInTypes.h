@@ -42,6 +42,7 @@ namespace OpcUaStackCore
 	typedef OpcUaDateTime OpcUaUtcTime;
 	typedef OpcUaDateTimeArray OpcUaUtcTimeArray;
 	typedef OpcUaUInt32 OpcUaIntegerId;
+	typedef OpcUaUInt32 OpcUaVersionTime;
 	typedef OpcUaDouble OpcUaDuration;
 	typedef OpcUaStringArray OpcUaLocaleIdArray;
 
