@@ -297,8 +297,8 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix << "void copyTo(" << nodeInfo_.className() << "& value);" << std::endl;
-		ss << prefix << "bool operator==(const " << nodeInfo_.className() << "& value) const;" << std::endl;
-		ss << prefix << "bool operator!=(const " << nodeInfo_.className() << "& value) const;" << std::endl;
+		ss << prefix << "bool operator==(const " << nodeInfo_.className() << "& value);" << std::endl;
+		ss << prefix << "bool operator!=(const " << nodeInfo_.className() << "& value);" << std::endl;
 		ss << prefix << nodeInfo_.className() << "& operator=(const " << nodeInfo_.className() << "& value);" << std::endl;
 
 		headerContent_ += ss.str();
@@ -585,7 +585,7 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::operator==(const " << nodeInfo_.className() << "& value) const" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::operator==(const " << nodeInfo_.className() << "& value)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    " << nodeInfo_.className() << "* dst = const_cast<" << nodeInfo_.className() << "*>(&value);" << std::endl;
 
@@ -625,7 +625,7 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::operator!=(const " << nodeInfo_.className() << "& value) const" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::operator!=(const " << nodeInfo_.className() << "& value)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    return !this->operator==(value);" << std::endl;
 		ss << prefix << "}" << std::endl;
@@ -962,6 +962,12 @@ namespace OpcUaStackServer
 					ss << prefix << "    if(!XmlNumber::xmlEncode(elementTree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
 					break;
 
+				case DataTypeField::BuildInArrayType:
+				case DataTypeField::StructureArrayType:
+				//case DataTypeField::EnumerationArrayType:
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) return false;" << std::endl;
+					break;
+
 				default:
 					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, xmlns)) return false;" << std::endl;
 			}
@@ -1016,6 +1022,12 @@ namespace OpcUaStackServer
 			{
 				case DataTypeField::NumberType:
 					ss << prefix << "    if(!XmlNumber::xmlDecode(*tree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
+					break;
+
+				case DataTypeField::BuildInArrayType:
+				case DataTypeField::StructureArrayType:
+				//case DataTypeField::EnumerationArrayType:
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlDecode(*tree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) return false;" << std::endl;
 					break;
 
 				default:
@@ -1125,7 +1137,7 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::equal(ExtensionObjectBase& extensionObjectBase) const" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "	" << nodeInfo_.className() << "* dst = dynamic_cast<" << nodeInfo_.className() << "*>(&extensionObjectBase);" << std::endl;
-		ss << prefix << "	return *this == *dst;" << std::endl;
+		ss << prefix << "	return *const_cast<" << nodeInfo_.className() << "*>(this) == *dst;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
