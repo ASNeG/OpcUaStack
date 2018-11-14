@@ -229,7 +229,7 @@ namespace OpcUaStackServer
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
 		ss << prefix << "    typedef boost::shared_ptr<" << nodeInfo_.className()  << "> SPtr;" << std::endl;
-		ss << prefix << "typedef std::vector<" << nodeInfo_.className() << "::SPtr> Vec;" << std::endl;
+		ss << prefix << "    typedef std::vector<" << nodeInfo_.className() << "::SPtr> Vec;" << std::endl;
 		ss << prefix << std::endl;
 		ss << prefix << "    " << nodeInfo_.className() << "(void);" << std::endl;
 		ss << prefix << "    virtual ~" << nodeInfo_.className() << "(void);" << std::endl;
