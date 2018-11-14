@@ -4,10 +4,9 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-24 20:40:43.118158
 */
 
 #ifndef __OpcUaStackCore_BrokerConnectionTransportDataType_h__
@@ -22,11 +21,12 @@
 namespace OpcUaStackCore
 {
     
-    class BrokerConnectionTransportDataType
+    class DLLEXPORT BrokerConnectionTransportDataType
     : public ConnectionTransportDataType
     {
       public:
         typedef boost::shared_ptr<BrokerConnectionTransportDataType> SPtr;
+        typedef std::vector<BrokerConnectionTransportDataType::SPtr> Vec;
     
         BrokerConnectionTransportDataType(void);
         virtual ~BrokerConnectionTransportDataType(void);
@@ -36,29 +36,46 @@ namespace OpcUaStackCore
         
         //- ExtensionObjectBase -----------------------------------------------
         virtual ExtensionObjectBase::SPtr factory(void);
+        virtual std::string namespaceName(void);
+        virtual std::string typeName(void);
+        virtual OpcUaNodeId typeId(void);
         virtual OpcUaNodeId binaryTypeId(void);
         virtual OpcUaNodeId xmlTypeId(void);
+        virtual OpcUaNodeId jsonTypeId(void);
         virtual void opcUaBinaryEncode(std::ostream& os) const;
         virtual void opcUaBinaryDecode(std::istream& is);
         virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
         virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
         virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
         virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
         virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
+        virtual bool jsonEncode(boost::property_tree::ptree& pt);
+        virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
+        virtual bool jsonDecode(boost::property_tree::ptree& pt);
         virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
         virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
         void copyTo(BrokerConnectionTransportDataType& value);
-        bool operator==(const BrokerConnectionTransportDataType& value) const;
-        bool operator!=(const BrokerConnectionTransportDataType& value) const;
+        bool operator==(const BrokerConnectionTransportDataType& value);
+        bool operator!=(const BrokerConnectionTransportDataType& value);
+        BrokerConnectionTransportDataType& operator=(const BrokerConnectionTransportDataType& value);
     
       private:
         OpcUaString resourceUri_;
         OpcUaString authenticationProfileUri_;
     
+    };
+    
+    class BrokerConnectionTransportDataTypeArray
+    : public OpcUaArray<BrokerConnectionTransportDataType::SPtr, SPtrTypeCoder<BrokerConnectionTransportDataType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<BrokerConnectionTransportDataTypeArray> SPtr;
     };
 
 }

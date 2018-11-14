@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -24,14 +24,14 @@ namespace OpcUaStackCore
     {
     }
     
-    OpcUaExtensionObject&
+    OpcUaExtensibleParameter&
     DatagramConnectionTransportDataType::discoveryAddress(void)
     {
         return discoveryAddress_;
     }
     
     bool
-    DatagramConnectionTransportDataType::operator==(const DatagramConnectionTransportDataType& value) const
+    DatagramConnectionTransportDataType::operator==(const DatagramConnectionTransportDataType& value)
     {
         DatagramConnectionTransportDataType* dst = const_cast<DatagramConnectionTransportDataType*>(&value);
         if (discoveryAddress_ != dst->discoveryAddress()) return false;
@@ -39,7 +39,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    DatagramConnectionTransportDataType::operator!=(const DatagramConnectionTransportDataType& value) const
+    DatagramConnectionTransportDataType::operator!=(const DatagramConnectionTransportDataType& value)
     {
         return !this->operator==(value);
     }
@@ -47,7 +47,14 @@ namespace OpcUaStackCore
     void
     DatagramConnectionTransportDataType::copyTo(DatagramConnectionTransportDataType& value)
     {
-        value.discoveryAddress_ = discoveryAddress_;
+        discoveryAddress_.copyTo(value.discoveryAddress());
+    }
+    
+    DatagramConnectionTransportDataType&
+    DatagramConnectionTransportDataType::operator=(const DatagramConnectionTransportDataType& value)
+    {
+        const_cast<DatagramConnectionTransportDataType*>(&value)->copyTo(*this);
+        return *this;
     }
     
     // ------------------------------------------------------------------------
@@ -64,16 +71,40 @@ namespace OpcUaStackCore
     	return constructSPtr<DatagramConnectionTransportDataType>();
     }
     
+    std::string
+    DatagramConnectionTransportDataType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    DatagramConnectionTransportDataType::typeName(void)
+    {
+    	return "DatagramConnectionTransportDataType";
+    }
+    
+    OpcUaNodeId
+    DatagramConnectionTransportDataType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)17467,0);
+    }
+    
     OpcUaNodeId
     DatagramConnectionTransportDataType::binaryTypeId(void)
     {
-    	return OpcUaNodeId(0, 0);
+    	return OpcUaNodeId((OpcUaUInt32)17468, 0);
     }
     
     OpcUaNodeId
     DatagramConnectionTransportDataType::xmlTypeId(void)
     {
-    	return OpcUaNodeId(0, 0);
+    	return OpcUaNodeId((OpcUaUInt32)17472, 0);
+    }
+    
+    OpcUaNodeId
+    DatagramConnectionTransportDataType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)17476, 0);
     }
     
     void
@@ -101,15 +132,62 @@ namespace OpcUaStackCore
     bool
     DatagramConnectionTransportDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
     }
     
     bool
     DatagramConnectionTransportDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        boost::property_tree::ptree elementTree;
+    
+        if (!discoveryAddress_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("DiscoveryAddress", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    DatagramConnectionTransportDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
     }
     
     bool
     DatagramConnectionTransportDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("DiscoveryAddress");
+        if (!tree) return false;
+        if (!discoveryAddress_.xmlDecode(*tree, xmlns)) return false;
+    
+        return true;
+    }
+    
+    bool
+    DatagramConnectionTransportDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    DatagramConnectionTransportDataType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    DatagramConnectionTransportDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    DatagramConnectionTransportDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
     }
     
@@ -124,7 +202,7 @@ namespace OpcUaStackCore
     DatagramConnectionTransportDataType::equal(ExtensionObjectBase& extensionObjectBase) const
     {
     	DatagramConnectionTransportDataType* dst = dynamic_cast<DatagramConnectionTransportDataType*>(&extensionObjectBase);
-    	return *this == *dst;
+    	return *const_cast<DatagramConnectionTransportDataType*>(this) == *dst;
     }
     
     void
