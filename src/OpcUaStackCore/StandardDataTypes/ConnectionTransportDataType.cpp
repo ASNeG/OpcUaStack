@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -25,14 +25,14 @@ namespace OpcUaStackCore
     }
     
     bool
-    ConnectionTransportDataType::operator==(const ConnectionTransportDataType& value) const
+    ConnectionTransportDataType::operator==(const ConnectionTransportDataType& value)
     {
         ConnectionTransportDataType* dst = const_cast<ConnectionTransportDataType*>(&value);
         return true;
     }
     
     bool
-    ConnectionTransportDataType::operator!=(const ConnectionTransportDataType& value) const
+    ConnectionTransportDataType::operator!=(const ConnectionTransportDataType& value)
     {
         return !this->operator==(value);
     }
@@ -40,6 +40,13 @@ namespace OpcUaStackCore
     void
     ConnectionTransportDataType::copyTo(ConnectionTransportDataType& value)
     {
+    }
+    
+    ConnectionTransportDataType&
+    ConnectionTransportDataType::operator=(const ConnectionTransportDataType& value)
+    {
+        const_cast<ConnectionTransportDataType*>(&value)->copyTo(*this);
+        return *this;
     }
     
     // ------------------------------------------------------------------------
@@ -56,16 +63,40 @@ namespace OpcUaStackCore
     	return constructSPtr<ConnectionTransportDataType>();
     }
     
+    std::string
+    ConnectionTransportDataType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    ConnectionTransportDataType::typeName(void)
+    {
+    	return "ConnectionTransportDataType";
+    }
+    
+    OpcUaNodeId
+    ConnectionTransportDataType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15618,0);
+    }
+    
     OpcUaNodeId
     ConnectionTransportDataType::binaryTypeId(void)
     {
-    	return OpcUaNodeId(0, 0);
+    	return OpcUaNodeId((OpcUaUInt32)15695, 0);
     }
     
     OpcUaNodeId
     ConnectionTransportDataType::xmlTypeId(void)
     {
-    	return OpcUaNodeId(0, 0);
+    	return OpcUaNodeId((OpcUaUInt32)15993, 0);
+    }
+    
+    OpcUaNodeId
+    ConnectionTransportDataType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)16282, 0);
     }
     
     void
@@ -91,15 +122,55 @@ namespace OpcUaStackCore
     bool
     ConnectionTransportDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
     }
     
     bool
     ConnectionTransportDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        boost::property_tree::ptree elementTree;
+    
+        return true;
+    }
+    
+    bool
+    ConnectionTransportDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
     }
     
     bool
     ConnectionTransportDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        return true;
+    }
+    
+    bool
+    ConnectionTransportDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    ConnectionTransportDataType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    ConnectionTransportDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    ConnectionTransportDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
     }
     
@@ -114,7 +185,7 @@ namespace OpcUaStackCore
     ConnectionTransportDataType::equal(ExtensionObjectBase& extensionObjectBase) const
     {
     	ConnectionTransportDataType* dst = dynamic_cast<ConnectionTransportDataType*>(&extensionObjectBase);
-    	return *this == *dst;
+    	return *const_cast<ConnectionTransportDataType*>(this) == *dst;
     }
     
     void

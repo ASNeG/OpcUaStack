@@ -1,7 +1,6 @@
 #!/bin/bash
 
 
-#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ConnectionTransportDataType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype BrokerConnectionTransportDataType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype DatagramConnectionTransportDataType --buildSubTypes 0
 #
@@ -20,7 +19,8 @@
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype AxisInformation --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype BuildInfo --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ComplexNumberType --buildSubTypes 0
-OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ConfigurationVersionDataType --buildSubTypes 0
+#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ConfigurationVersionDataType --buildSubTypes 0
+OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ConnectionTransportDataType --buildSubTypes 0
 
 
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype EUInformation --buildSubTypes 0
