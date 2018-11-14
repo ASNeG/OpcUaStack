@@ -44,7 +44,7 @@ class DLLEXPORT DataTypeField
 		StructureType,			//!< structure type
 		StructureArrayType,		//!< structure array type
 		EnumerationType,		//!< enumeration type
-		EnumerationArrayType,	//!< enumaration array type
+		EnumerationArrayType,	//!< enumeration array type
 	} Type;
 
 	/**
