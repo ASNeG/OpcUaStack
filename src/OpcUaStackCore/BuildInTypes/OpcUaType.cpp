@@ -51,7 +51,8 @@ namespace OpcUaStackCore
 			   buildInType == OpcUaBuildInType_OpcUaInt64 ||
 			   buildInType == OpcUaBuildInType_OpcUaUInt64 ||
 			   buildInType == OpcUaBuildInType_OpcUaFloat ||
-			   buildInType == OpcUaBuildInType_OpcUaDouble;
+			   buildInType == OpcUaBuildInType_OpcUaDouble ||
+			   buildInType == OpcUaBuildInType_OpcUaVersionTime;
 	}
 
 	bool
