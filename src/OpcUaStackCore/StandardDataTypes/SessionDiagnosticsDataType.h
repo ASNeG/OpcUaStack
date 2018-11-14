@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
 
 namespace OpcUaStackCore
 {

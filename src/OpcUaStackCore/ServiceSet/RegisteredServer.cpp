@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -171,7 +171,7 @@ namespace OpcUaStackCore
 		serverUri_.opcUaBinaryEncode(os);
 		productUri_.opcUaBinaryEncode(os);
 		serverNameArraySPtr_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)serverType_);
+		serverType_.opcUaBinaryEncode(os);
 		gatewayServerUri_.opcUaBinaryEncode(os);
 		discoveryUrlArraySPtr_->opcUaBinaryEncode(os);
 		semaphoreFilePath_.opcUaBinaryEncode(os);
@@ -181,12 +181,10 @@ namespace OpcUaStackCore
 	void 
 	RegisteredServer::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaUInt32 tmp;
 		serverUri_.opcUaBinaryDecode(is);
 		productUri_.opcUaBinaryDecode(is);
 		serverNameArraySPtr_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, tmp);
-		serverType_ = (ApplicationType)tmp;
+		serverType_.opcUaBinaryDecode(is);
 		gatewayServerUri_.opcUaBinaryDecode(is);
 		discoveryUrlArraySPtr_->opcUaBinaryDecode(is);
 		semaphoreFilePath_.opcUaBinaryDecode(is);

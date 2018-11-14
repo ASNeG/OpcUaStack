@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -213,7 +213,7 @@ namespace OpcUaServer
 		serverNames->resize(1);
 		serverNames->push_back(serverName);
 		registeredServer->serverNames(serverNames);
-		registeredServer->serverType(AT_Server);
+		registeredServer->serverType().enumeration(ApplicationType::EnumServer);
 		registeredServer->gatewayServerUri(gatewayServerUri);
 		registeredServer->isOnline(true);
 

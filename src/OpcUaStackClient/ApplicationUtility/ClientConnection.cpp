@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -435,10 +435,9 @@ namespace OpcUaStackClient
     			.parameter("ServerUrn", ad->applicationUri())
     			.parameter("DiscoveryUrls", ad->discoveryUrls());
 
-    		OpcUaStringArray::SPtr discoeryUrls = ad->discoveryUrls();
-    		for (uint32_t idx = 0; idx < discoeryUrls->size(); idx++) {
+    		for (uint32_t idx = 0; idx < ad->discoveryUrls().size(); idx++) {
     			OpcUaString::SPtr str;
-    			discoeryUrls->get(idx, str);
+    			ad->discoveryUrls().get(idx, str);
     			endpointUrl = str->value();
     			break;
     		}

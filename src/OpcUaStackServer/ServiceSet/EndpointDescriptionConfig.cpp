@@ -74,7 +74,7 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "ApplicationUri");
 				return false;
 			}
-			endpointDescription->applicationDescription()->applicationUri(stringValue);
+			endpointDescription->applicationDescription()->applicationUri().value(stringValue);
 
 			if (config->getConfigParameter("ProductUri", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
@@ -83,7 +83,7 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "ProductUri");
 				return false;
 			}
-			endpointDescription->applicationDescription()->productUri(stringValue);
+			endpointDescription->applicationDescription()->productUri().value(stringValue);
 
 			if (config->getConfigParameter("ApplicationName", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
@@ -94,14 +94,14 @@ namespace OpcUaStackServer
 			}
 			endpointDescription->applicationDescription()->applicationName().text(stringValue);
 
-			endpointDescription->applicationDescription()->applicationType(AT_Server);
+			endpointDescription->applicationDescription()->applicationType().enumeration(ApplicationType::EnumServer);
 
 			if (config->getConfigParameter("GatewayServerUri", stringValue) == true) {
-				endpointDescription->applicationDescription()->gatewayServerUri(stringValue);
+				endpointDescription->applicationDescription()->gatewayServerUri().value(stringValue);
 			}
 
 			if (config->getConfigParameter("DiscoveryProfileUri", stringValue) == true) {
-				endpointDescription->applicationDescription()->discoveryProfileUri(stringValue);
+				endpointDescription->applicationDescription()->discoveryProfileUri().value(stringValue);
 			}
 
 			std::vector<std::string> discoveryUrls;
@@ -113,11 +113,11 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "DiscoveryUrl");
 				return false;
 			}
-			endpointDescription->applicationDescription()->discoveryUrls()->resize(discoveryUrls.size());
+			endpointDescription->applicationDescription()->discoveryUrls().resize(discoveryUrls.size());
 			for (std::vector<std::string>::iterator it = discoveryUrls.begin(); it != discoveryUrls.end(); it++) {
 				OpcUaString::SPtr url = constructSPtr<OpcUaString>();
 				*url = *it;
-				endpointDescription->applicationDescription()->discoveryUrls()->push_back(url);
+				endpointDescription->applicationDescription()->discoveryUrls().push_back(url);
 			}
 
 			if (config->getConfigParameter("TransportProfileUri", stringValue) == false) {

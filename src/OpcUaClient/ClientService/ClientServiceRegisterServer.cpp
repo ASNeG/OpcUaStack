@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -92,13 +92,13 @@ namespace OpcUaClient
 			req->server().serverNames()->push_back(serverName);
 		}
 		if (commandRegisterServer->serverType() == "CLIENT") {
-			req->server().serverType(AT_Client);
+			req->server().serverType().enumeration(ApplicationType::EnumClient);
 		}
 		if (commandRegisterServer->serverType() == "SERVER") {
-			req->server().serverType(AT_Server);
+			req->server().serverType().enumeration(ApplicationType::EnumServer);
 		}
 		else {
-			req->server().serverType(AT_ClientAndServer);
+			req->server().serverType().enumeration(ApplicationType::EnumClientAndServer);
 		}
 		req->server().gatewayServerUri(commandRegisterServer->gatewayServerUri());
 		req->server().discoveryUrls(constructSPtr<OpcUaStringArray>());
