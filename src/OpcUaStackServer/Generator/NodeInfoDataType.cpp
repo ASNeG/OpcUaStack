@@ -145,6 +145,7 @@ namespace OpcUaStackServer
 					}
 
 					if (dataTypeField->array() == true) {
+						dataTypeField->arrayElementName(buildInTypeName);
 						dataTypeField->variableType("OpcUa" + buildInTypeName + "Array");
 						dataTypeField->variableTypeWithoutPtr("OpcUa" + buildInTypeName + "Array");
 						dataTypeField->type(DataTypeField::BuildInArrayType);
@@ -190,6 +191,7 @@ namespace OpcUaStackServer
 				// set build in type name
 				if (dataTypeField->enumeration() == true) {
 					if (dataTypeField->array()) {
+						dataTypeField->arrayElementName(dataTypeName);
 						dataTypeField->variableType(dataTypeName + "Array");
 						dataTypeField->variableTypeWithoutPtr(dataTypeName + "Array");
 						dataTypeField->type(DataTypeField::EnumerationArrayType);
@@ -203,6 +205,7 @@ namespace OpcUaStackServer
 				else if (dataTypeField->structure() == true) {
 					if (dataTypeField->array()) {
 						dataTypeField->smartpointer(true);
+						dataTypeField->arrayElementName(dataTypeName);
 						dataTypeField->variableType(dataTypeName + "Array");
 						dataTypeField->variableTypeWithoutPtr(dataTypeName + "Array");
 						dataTypeField->type(DataTypeField::StructureArrayType);
