@@ -77,7 +77,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    AddNodesItem::operator==(const AddNodesItem& value) const
+    AddNodesItem::operator==(const AddNodesItem& value)
     {
         AddNodesItem* dst = const_cast<AddNodesItem*>(&value);
         if (parentNodeId_ != dst->parentNodeId()) return false;
@@ -91,7 +91,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    AddNodesItem::operator!=(const AddNodesItem& value) const
+    AddNodesItem::operator!=(const AddNodesItem& value)
     {
         return !this->operator==(value);
     }
@@ -314,7 +314,7 @@ namespace OpcUaStackCore
     AddNodesItem::equal(ExtensionObjectBase& extensionObjectBase) const
     {
     	AddNodesItem* dst = dynamic_cast<AddNodesItem*>(&extensionObjectBase);
-    	return *this == *dst;
+    	return *const_cast<AddNodesItem*>(this) == *dst;
     }
     
     void

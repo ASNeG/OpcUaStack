@@ -46,7 +46,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    Annotation::operator==(const Annotation& value) const
+    Annotation::operator==(const Annotation& value)
     {
         Annotation* dst = const_cast<Annotation*>(&value);
         if (message_ != dst->message()) return false;
@@ -56,7 +56,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    Annotation::operator!=(const Annotation& value) const
+    Annotation::operator!=(const Annotation& value)
     {
         return !this->operator==(value);
     }
@@ -239,7 +239,7 @@ namespace OpcUaStackCore
     Annotation::equal(ExtensionObjectBase& extensionObjectBase) const
     {
     	Annotation* dst = dynamic_cast<Annotation*>(&extensionObjectBase);
-    	return *this == *dst;
+    	return *const_cast<Annotation*>(this) == *dst;
     }
     
     void

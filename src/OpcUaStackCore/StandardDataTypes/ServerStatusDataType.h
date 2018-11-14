@@ -28,6 +28,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<ServerStatusDataType> SPtr;
+    typedef std::vector<ServerStatusDataType::SPtr> Vec;
     
         ServerStatusDataType(void);
         virtual ~ServerStatusDataType(void);
@@ -65,8 +66,8 @@ namespace OpcUaStackCore
         //- ExtensionObjectBase -----------------------------------------------
         
         void copyTo(ServerStatusDataType& value);
-        bool operator==(const ServerStatusDataType& value) const;
-        bool operator!=(const ServerStatusDataType& value) const;
+        bool operator==(const ServerStatusDataType& value);
+        bool operator!=(const ServerStatusDataType& value);
         ServerStatusDataType& operator=(const ServerStatusDataType& value);
     
       private:

@@ -60,7 +60,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    AggregateConfiguration::operator==(const AggregateConfiguration& value) const
+    AggregateConfiguration::operator==(const AggregateConfiguration& value)
     {
         AggregateConfiguration* dst = const_cast<AggregateConfiguration*>(&value);
         if (useServerCapabilitiesDefaults_ != dst->useServerCapabilitiesDefaults()) return false;
@@ -72,7 +72,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    AggregateConfiguration::operator!=(const AggregateConfiguration& value) const
+    AggregateConfiguration::operator!=(const AggregateConfiguration& value)
     {
         return !this->operator==(value);
     }
@@ -275,7 +275,7 @@ namespace OpcUaStackCore
     AggregateConfiguration::equal(ExtensionObjectBase& extensionObjectBase) const
     {
     	AggregateConfiguration* dst = dynamic_cast<AggregateConfiguration*>(&extensionObjectBase);
-    	return *this == *dst;
+    	return *const_cast<AggregateConfiguration*>(this) == *dst;
     }
     
     void

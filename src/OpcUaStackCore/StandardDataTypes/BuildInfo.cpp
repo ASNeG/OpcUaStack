@@ -67,7 +67,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    BuildInfo::operator==(const BuildInfo& value) const
+    BuildInfo::operator==(const BuildInfo& value)
     {
         BuildInfo* dst = const_cast<BuildInfo*>(&value);
         if (productUri_ != dst->productUri()) return false;
@@ -80,7 +80,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    BuildInfo::operator!=(const BuildInfo& value) const
+    BuildInfo::operator!=(const BuildInfo& value)
     {
         return !this->operator==(value);
     }
@@ -293,7 +293,7 @@ namespace OpcUaStackCore
     BuildInfo::equal(ExtensionObjectBase& extensionObjectBase) const
     {
     	BuildInfo* dst = dynamic_cast<BuildInfo*>(&extensionObjectBase);
-    	return *this == *dst;
+    	return *const_cast<BuildInfo*>(this) == *dst;
     }
     
     void

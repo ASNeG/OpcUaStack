@@ -67,7 +67,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    ServerStatusDataType::operator==(const ServerStatusDataType& value) const
+    ServerStatusDataType::operator==(const ServerStatusDataType& value)
     {
         ServerStatusDataType* dst = const_cast<ServerStatusDataType*>(&value);
         if (startTime_ != dst->startTime()) return false;
@@ -80,7 +80,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    ServerStatusDataType::operator!=(const ServerStatusDataType& value) const
+    ServerStatusDataType::operator!=(const ServerStatusDataType& value)
     {
         return !this->operator==(value);
     }
@@ -293,7 +293,7 @@ namespace OpcUaStackCore
     ServerStatusDataType::equal(ExtensionObjectBase& extensionObjectBase) const
     {
     	ServerStatusDataType* dst = dynamic_cast<ServerStatusDataType*>(&extensionObjectBase);
-    	return *this == *dst;
+    	return *const_cast<ServerStatusDataType*>(this) == *dst;
     }
     
     void

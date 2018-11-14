@@ -26,6 +26,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<Annotation> SPtr;
+    typedef std::vector<Annotation::SPtr> Vec;
     
         Annotation(void);
         virtual ~Annotation(void);
@@ -60,8 +61,8 @@ namespace OpcUaStackCore
         //- ExtensionObjectBase -----------------------------------------------
         
         void copyTo(Annotation& value);
-        bool operator==(const Annotation& value) const;
-        bool operator!=(const Annotation& value) const;
+        bool operator==(const Annotation& value);
+        bool operator!=(const Annotation& value);
         Annotation& operator=(const Annotation& value);
     
       private:

@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    AddReferencesItem::operator==(const AddReferencesItem& value) const
+    AddReferencesItem::operator==(const AddReferencesItem& value)
     {
         AddReferencesItem* dst = const_cast<AddReferencesItem*>(&value);
         if (sourceNodeId_ != dst->sourceNodeId()) return false;
@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    AddReferencesItem::operator!=(const AddReferencesItem& value) const
+    AddReferencesItem::operator!=(const AddReferencesItem& value)
     {
         return !this->operator==(value);
     }
@@ -296,7 +296,7 @@ namespace OpcUaStackCore
     AddReferencesItem::equal(ExtensionObjectBase& extensionObjectBase) const
     {
     	AddReferencesItem* dst = dynamic_cast<AddReferencesItem*>(&extensionObjectBase);
-    	return *this == *dst;
+    	return *const_cast<AddReferencesItem*>(this) == *dst;
     }
     
     void

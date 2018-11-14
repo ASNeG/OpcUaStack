@@ -26,6 +26,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<AggregateConfiguration> SPtr;
+    typedef std::vector<AggregateConfiguration::SPtr> Vec;
     
         AggregateConfiguration(void);
         virtual ~AggregateConfiguration(void);
@@ -62,8 +63,8 @@ namespace OpcUaStackCore
         //- ExtensionObjectBase -----------------------------------------------
         
         void copyTo(AggregateConfiguration& value);
-        bool operator==(const AggregateConfiguration& value) const;
-        bool operator!=(const AggregateConfiguration& value) const;
+        bool operator==(const AggregateConfiguration& value);
+        bool operator!=(const AggregateConfiguration& value);
         AggregateConfiguration& operator=(const AggregateConfiguration& value);
     
       private:

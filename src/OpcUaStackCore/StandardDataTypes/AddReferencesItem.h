@@ -27,6 +27,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<AddReferencesItem> SPtr;
+    typedef std::vector<AddReferencesItem::SPtr> Vec;
     
         AddReferencesItem(void);
         virtual ~AddReferencesItem(void);
@@ -64,8 +65,8 @@ namespace OpcUaStackCore
         //- ExtensionObjectBase -----------------------------------------------
         
         void copyTo(AddReferencesItem& value);
-        bool operator==(const AddReferencesItem& value) const;
-        bool operator!=(const AddReferencesItem& value) const;
+        bool operator==(const AddReferencesItem& value);
+        bool operator!=(const AddReferencesItem& value);
         AddReferencesItem& operator=(const AddReferencesItem& value);
     
       private:
