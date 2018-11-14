@@ -371,10 +371,10 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_ExtensionObject)
 	argument1 = value1.parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
 	argument1->name().value("ArgumentName");
 	argument1->dataType().set("NodeName", 23);
-	argument1->arrayDimensions()->resize(3);
-	argument1->arrayDimensions()->set(0, 123);
-	argument1->arrayDimensions()->set(1, 456);
-	argument1->arrayDimensions()->set(2, 789);
+	argument1->arrayDimensions().resize(3);
+	argument1->arrayDimensions().set(0, 123);
+	argument1->arrayDimensions().set(1, 456);
+	argument1->arrayDimensions().set(2, 789);
 	argument1->description().set("de", "Description");
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
@@ -755,10 +755,10 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExtensionObject)
 	argument1 = extentionObject1->parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
 	argument1->name().value("ArgumentName");
 	argument1->dataType().set("NodeName", 23);
-	argument1->arrayDimensions()->resize(3);
-	argument1->arrayDimensions()->set(0, 123);
-	argument1->arrayDimensions()->set(1, 456);
-	argument1->arrayDimensions()->set(2, 789);
+	argument1->arrayDimensions().resize(3);
+	argument1->arrayDimensions().set(0, 123);
+	argument1->arrayDimensions().set(1, 456);
+	argument1->arrayDimensions().set(2, 789);
 	argument1->description().set("de", "Description");
 	value1.variant(extentionObject1);
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
@@ -1252,10 +1252,10 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_ExtensionObject)
 		argument = extentionObject->parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
 		argument->name().value("ArgumentName");
 		argument->dataType().set("NodeName", 23);
-		argument->arrayDimensions()->resize(3);
-		argument->arrayDimensions()->set(0, 123);
-		argument->arrayDimensions()->set(1, 456);
-		argument->arrayDimensions()->set(2, 789);
+		argument->arrayDimensions().resize(3);
+		argument->arrayDimensions().set(0, 123);
+		argument->arrayDimensions().set(1, 456);
+		argument->arrayDimensions().set(2, 789);
 		argument->description().set("de", "Description");
 		value1.pushBack(extentionObject);
 	}
