@@ -271,7 +271,7 @@ namespace OpcUaStackCore
 
 		  static void out(std::ostream& os,  const boost::shared_ptr<T>& value) 
 		  {
-			  os << *value;
+			  value->out(os);
 		  }
 	};
 
