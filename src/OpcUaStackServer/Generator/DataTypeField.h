@@ -159,6 +159,21 @@ class DLLEXPORT DataTypeField
 	/**
 	 * Setter function
 	 *
+	 * @param[in] arrayElementName		opc ua array element name
+	 */
+	void arrayElementName(const std::string& arrayElementName);
+
+	/**
+	 * Getter function
+	 *
+	 * @return opc ua array element name
+	 */
+	std::string& arrayElementName(void);
+
+
+	/**
+	 * Setter function
+	 *
 	 * @param[in] type					type
 	 */
 	void type(Type type);
@@ -290,6 +305,7 @@ class DLLEXPORT DataTypeField
 	std::string variableTypeWithoutPtr_;	//!< variable type without pointer
 	std::string description_;				//!< variable description
 	std::string includePath_;				//!< include path
+	std::string arrayElementName_;			//!< opc ua array element name
 	Type type_;								//!< type
 	bool array_;							//!< array flag
 	bool smartpointer_;						//!< smartpointer flag
