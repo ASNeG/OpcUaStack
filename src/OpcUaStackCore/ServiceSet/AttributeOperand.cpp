@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 
 	AttributeOperand::AttributeOperand(void)
 	: Object()
+	, ExtensionObjectBase()
 	, nodeIdSPtr_(constructSPtr<OpcUaNodeId>())
 	, alias_()
 	, browsePath_()
@@ -102,7 +103,7 @@ namespace OpcUaStackCore
 		return indexRange_;
 	}
 
-	ExtensibleParameterBase::SPtr
+	ExtensionObjectBase::SPtr
 	AttributeOperand::factory(void)
 	{
 		return constructSPtr<AttributeOperand>();

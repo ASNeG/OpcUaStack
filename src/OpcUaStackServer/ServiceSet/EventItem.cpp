@@ -101,7 +101,7 @@ namespace OpcUaStackServer
 		// construct where filter
 		whereFilter_ = constructSPtr<FilterStack>();
 		whereFilter_->simpleAttributeIf(this);
-		if (eventFilter->whereClause().elements()->size() != 0) {
+		if (eventFilter->whereClause().elements().size() != 0) {
 			bool whereFilterIsValid = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
 			if (!whereFilterIsValid) {
 				statusCode = OpcUaStatusCode::BadMonitoredItemFilterInvalid;
@@ -257,7 +257,7 @@ namespace OpcUaStackServer
 			// get variant value from event
 			OpcUaVariant::SPtr value;
 			EventResult::Code resultCode = eventBase->get(
-				simpleAttributeOperand->typeId(),
+				simpleAttributeOperand->typeIdx(),
 				browseNameList,
 				value
 			);

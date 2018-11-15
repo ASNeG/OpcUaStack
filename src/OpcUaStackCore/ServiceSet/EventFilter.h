@@ -24,7 +24,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/SimpleAttributeOperand.h"
-#include "OpcUaStackCore/ServiceSet/ContentFilter.h"
+#include "OpcUaStackCore/StandardDataTypes/ContentFilter.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
 
 namespace OpcUaStackCore

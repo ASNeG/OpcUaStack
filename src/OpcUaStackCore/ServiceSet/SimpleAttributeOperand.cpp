@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 
 	SimpleAttributeOperand::SimpleAttributeOperand(void)
 	: Object()
+	, ExtensionObjectBase()
 	, typeId_()
 	, browsePathArraySPtr_(constructSPtr<OpcUaQualifiedNameArray>())
 	, attributeId_()
@@ -42,13 +43,13 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	SimpleAttributeOperand::typeId(const OpcUaNodeId& typeId)
+	SimpleAttributeOperand::typeIdx(const OpcUaNodeId& typeId)
 	{
 		typeId_ = typeId;
 	}
 	
 	OpcUaNodeId&
-	SimpleAttributeOperand::typeId(void)
+	SimpleAttributeOperand::typeIdx(void)
 	{
 		return typeId_;
 	}
@@ -89,7 +90,7 @@ namespace OpcUaStackCore
 		return indexRange_;
 	}
 
-	ExtensibleParameterBase::SPtr
+	ExtensionObjectBase::SPtr
 	SimpleAttributeOperand::factory(void)
 	{
 		return constructSPtr<SimpleAttributeOperand>();

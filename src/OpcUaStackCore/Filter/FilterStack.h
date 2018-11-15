@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
+   Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru), Kai Huebl (kai@huebl-sgh.de)
  */
 
 #ifndef __OpcUaStackCore_FilterStack_h__
@@ -40,7 +40,7 @@ namespace OpcUaStackCore
 
         void attributeIf(AttributeIf* attributeIf);
         void simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf);
-        bool receive(const ContentFilter& contentFilter, ContentFilterResult& contentilterResult);
+        bool receive(ContentFilter& contentFilter, ContentFilterResult& contentilterResult);
         bool process(bool& filterResult) const;
 
       private:
@@ -48,7 +48,7 @@ namespace OpcUaStackCore
         AttributeIf* attributeIf_;
         SimpleAttributeIf* simpleAttributeIf_;
 
-        bool buildOperatorNode(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult, int idx, FilterNode::SPtr& node);
+        bool buildOperatorNode(ContentFilter& contentFilter, ContentFilterResult& contentFilterResult, int idx, FilterNode::SPtr& node);
     };
 
 }

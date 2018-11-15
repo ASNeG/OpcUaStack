@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
 #include "OpcUaStackCore/ServiceSet/RelativePath.h"
 
 namespace OpcUaStackCore
@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT AttributeOperand
 	: public Object
-	, public ExtensibleParameterBase
+	, public ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<AttributeOperand> SPtr;
@@ -49,12 +49,14 @@ namespace OpcUaStackCore
 		void indexRange(const std::string& indexRange);
 		OpcUaString& indexRange(void);
 
-		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::SPtr factory(void);
-		//- ExtensibleParameterBase -------------------------------------------
-		
+		//- ExtensionObjectBase -------------------------------------------
+		virtual ExtensionObjectBase::SPtr factory(void);
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		virtual void copyTo(ExtensionObjectBase& extensionObjectBase) {}						// FIXME: todo
+		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const { return false; }	// FIXME: todo
+		virtual void out(std::ostream& os) {}													// FIXME: todo
+		//- ExtensionObjectBase -------------------------------------------
 
 	  private:
 		OpcUaNodeId::SPtr nodeIdSPtr_;

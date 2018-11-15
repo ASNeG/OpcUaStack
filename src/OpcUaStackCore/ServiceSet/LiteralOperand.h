@@ -22,14 +22,14 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT LiteralOperand
-	: public  Object
-	, public ExtensibleParameterBase
+	: public Object
+	, public ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<LiteralOperand> SPtr;
@@ -41,11 +41,13 @@ namespace OpcUaStackCore
 		OpcUaVariant& value(void);
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::SPtr factory(void);
-		//- ExtensibleParameterBase -------------------------------------------
-		
+		virtual ExtensionObjectBase::SPtr factory(void);
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		virtual void copyTo(ExtensionObjectBase& extensionObjectBase) {}						// FIXME: todo
+		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const { return false; }	// FIXME: todo
+		virtual void out(std::ostream& os) {}													// FIXME: todo
+		//- ExtensibleParameterBase -------------------------------------------
 
 	  private:
 		OpcUaVariant variant_;

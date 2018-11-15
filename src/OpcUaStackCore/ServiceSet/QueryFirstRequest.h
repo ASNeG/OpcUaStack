@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,7 +25,7 @@
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/NodeTypeDescription.h"
 #include "OpcUaStackCore/ServiceSet/ViewDescription.h"
-#include "OpcUaStackCore/ServiceSet/ContentFilter.h"
+#include "OpcUaStackCore/StandardDataTypes/ContentFilter.h"
 
 namespace OpcUaStackCore
 {
