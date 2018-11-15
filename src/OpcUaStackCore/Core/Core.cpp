@@ -116,11 +116,6 @@ namespace OpcUaStackCore
 		ep.registerFactoryElement<IssuedIdentityToken>(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
-		ep.registerFactoryElement<ElementOperand>(OpcUaId_ElementOperand_Encoding_DefaultBinary);
-		ep.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
-		ep.registerFactoryElement<AttributeOperand>(OpcUaId_AttributeOperand_Encoding_DefaultBinary);
-		ep.registerFactoryElement<SimpleAttributeOperand>(OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary);
-		ep.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
 		ep.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
@@ -136,6 +131,12 @@ namespace OpcUaStackCore
 	Core::initExtensionObject(void)
 	{
 		OpcUaExtensionObject eo;
+
+		// objects
+		eo.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand);
+		eo.registerFactoryElement<LiteralOperand>(OpcUaId_ElementOperand);
+		eo.registerFactoryElement<LiteralOperand>(OpcUaId_AttributeOperand);
+		eo.registerFactoryElement<LiteralOperand>(OpcUaId_SimpleAttributeOperand);
 
 		// binary
 		eo.registerFactoryElement<BuildInfo>(OpcUaId_BuildInfo_Encoding_DefaultBinary);
@@ -159,9 +160,15 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes);
 		eo.registerFactoryElement<VariableAttributes>(OpcUaId_VariableAttributes);
 		eo.registerFactoryElement<VariableTypeAttributes>(OpcUaId_VariableTypeAttributes);
+		eo.registerFactoryElement<ElementOperand>(OpcUaId_ElementOperand_Encoding_DefaultBinary);
+		eo.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
+		eo.registerFactoryElement<AttributeOperand>(OpcUaId_AttributeOperand_Encoding_DefaultBinary);
+		eo.registerFactoryElement<SimpleAttributeOperand>(OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
+
+		// json
 	}
 
 	void
@@ -172,13 +179,8 @@ namespace OpcUaStackCore
 		ep.deregisterFactoryElement(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_ElementOperand_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_AttributeOperand_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
@@ -194,6 +196,11 @@ namespace OpcUaStackCore
 	Core::cleanupExtensionObject(void)
 	{
 		OpcUaExtensionObject eo;
+
+		eo.deregisterFactoryElement(OpcUaId_LiteralOperand);
+		eo.deregisterFactoryElement(OpcUaId_ElementOperand);
+		eo.deregisterFactoryElement(OpcUaId_AttributeOperand);
+		eo.deregisterFactoryElement(OpcUaId_SimpleAttributeOperand);
 
 		// binary
 		eo.deregisterFactoryElement(OpcUaId_BuildInfo_Encoding_DefaultBinary);
@@ -217,9 +224,15 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_ViewAttributes);
 		eo.deregisterFactoryElement(OpcUaId_VariableAttributes);
 		eo.deregisterFactoryElement(OpcUaId_VariableTypeAttributes);
+		eo.deregisterFactoryElement(OpcUaId_ElementOperand_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_AttributeOperand_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);
+
+		// json
 	}
 
 }
