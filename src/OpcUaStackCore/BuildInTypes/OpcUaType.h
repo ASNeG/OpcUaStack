@@ -32,6 +32,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaByte = 3,
 		OpcUaBuildInType_OpcUaInt16 = 4,
 		OpcUaBuildInType_OpcUaUInt16 = 5,
+		OpcUaBuildInType_OpcUaDataSetFieldFlag = 15904,
 		OpcUaBuildInType_OpcUaInt32 = 6,
 		OpcUaBuildInType_OpcUaUInt32 = 7,
 		OpcUaBuildInType_OpcUaVersionTime = 20998,
