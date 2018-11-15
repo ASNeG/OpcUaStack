@@ -191,18 +191,23 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if (!name_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("Name", elementTree));
     
+        elementTree.clear();
         if (!dataType_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("DataType", elementTree));
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, valueRank_)) return false;
         pt.push_back(std::make_pair("ValueRank", elementTree));
     
+        elementTree.clear();
         if (!arrayDimensions_.xmlEncode(elementTree, "UInt32", xmlns)) return false;
         pt.push_back(std::make_pair("ArrayDimensions", elementTree));
     
+        elementTree.clear();
         if (!description_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("Description", elementTree));
     

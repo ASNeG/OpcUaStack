@@ -960,16 +960,19 @@ namespace OpcUaStackServer
 			switch (dataTypeField->type())
 			{
 				case DataTypeField::NumberType:
+					ss << prefix << "    elementTree.clear();" << std::endl;
 					ss << prefix << "    if(!XmlNumber::xmlEncode(elementTree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
 					break;
 
 				case DataTypeField::BuildInArrayType:
 				case DataTypeField::StructureArrayType:
 				//case DataTypeField::EnumerationArrayType:
+					ss << prefix << "    elementTree.clear();" << std::endl;
 					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) return false;" << std::endl;
 					break;
 
 				default:
+					ss << prefix << "    elementTree.clear();" << std::endl;
 					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, xmlns)) return false;" << std::endl;
 			}
 			ss << prefix << "    pt.push_back(std::make_pair(\"" << dataTypeField->name() << "\", elementTree));" << std::endl;
