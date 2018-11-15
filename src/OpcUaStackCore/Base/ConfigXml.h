@@ -46,6 +46,11 @@ namespace OpcUaStackCore
 		 */
 		~ConfigXml(void);
 
+		/**
+		 * clear all data variables in class
+		 */
+		void clear(void);
+
 		/*
 		 * This method returns the property tree with the structure of the xml
 		 * document. Before that, the read function must be executed.
