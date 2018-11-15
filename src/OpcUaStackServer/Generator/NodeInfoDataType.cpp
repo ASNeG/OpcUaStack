@@ -204,7 +204,6 @@ namespace OpcUaStackServer
 				}
 				else if (dataTypeField->structure() == true) {
 					if (dataTypeField->array()) {
-						dataTypeField->smartpointer(true);
 						dataTypeField->arrayElementName(dataTypeName);
 						dataTypeField->variableType(dataTypeName + "Array");
 						dataTypeField->variableTypeWithoutPtr(dataTypeName + "Array");
