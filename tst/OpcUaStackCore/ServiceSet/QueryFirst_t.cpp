@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	BOOST_REQUIRE(queryDataDescriptionSPtr->attributeId() == 123);
 	BOOST_REQUIRE(queryDataDescriptionSPtr->indexRange().value() == "1:3");
 
-	BOOST_REQUIRE(queryFirstRequestSPtr->filter().elements()->size() == 0);
+	BOOST_REQUIRE(queryFirstRequestSPtr->filter().elements().size() == 0);
 	BOOST_REQUIRE(queryFirstRequestSPtr->maxDataSetsToReturn() == 2);
 	BOOST_REQUIRE(queryFirstRequestSPtr->maxReferencesToReturn() == 2);
 }

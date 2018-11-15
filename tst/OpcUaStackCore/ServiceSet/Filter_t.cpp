@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	ElementOperand::SPtr elementOperandSPtr;
 	SimpleAttributeOperand::SPtr simpleAttributeOperandSPtr;
 	ContentFilterElement::SPtr contentFilterElementSPtr;
-	ExtensibleParameter::SPtr filterOperandSPtr;
+	OpcUaExtensibleParameter::SPtr filterOperandSPtr;
 	EventFilter filter1, filter2;
 
 	// encode
@@ -64,23 +64,22 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	qualifiedNameSPtr->name(string);
 
 	simpleAttributeOperandSPtr = constructSPtr<SimpleAttributeOperand>();
-	simpleAttributeOperandSPtr->typeId(typeId);
+	simpleAttributeOperandSPtr->typeIdx(typeId);
 	simpleAttributeOperandSPtr->browsePath()->set(qualifiedNameSPtr);
 	simpleAttributeOperandSPtr->attributeId((OpcUaUInt32)123);
 	simpleAttributeOperandSPtr->indexRange("1:2");
 
-	filterOperandSPtr = constructSPtr<ExtensibleParameter>();
-	BOOST_REQUIRE(filterOperandSPtr->registerFactoryElement<ElementOperand>((OpcUaUInt32)OpcUaId_OpcUa_XmlSchema_ElementOperand) == true);
-	filterOperandSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_OpcUa_XmlSchema_ElementOperand);
+	filterOperandSPtr = constructSPtr<OpcUaExtensibleParameter>();
+	filterOperandSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand_Encoding_DefaultBinary);
 	elementOperandSPtr = filterOperandSPtr->parameter<ElementOperand>();
 	elementOperandSPtr->index((OpcUaUInt32)123);
 
 	contentFilterElementSPtr = constructSPtr<ContentFilterElement>();
-	contentFilterElementSPtr->filterOperator(BasicFilterOperator_And);
-	contentFilterElementSPtr->filterOperands()->set(filterOperandSPtr);
+	contentFilterElementSPtr->filterOperator().enumeration(FilterOperator::EnumAnd);
+	contentFilterElementSPtr->filterOperands().set(filterOperandSPtr);
 
 	filter1.selectClauses()->set(simpleAttributeOperandSPtr);
-	filter1.whereClause().elements()->set(contentFilterElementSPtr);
+	filter1.whereClause().elements().set(contentFilterElementSPtr);
 	filter1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -89,7 +88,7 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	BOOST_REQUIRE(filter2.selectClauses()->size() == 1);
 	filter2.selectClauses()->get(simpleAttributeOperandSPtr);
 
-	BOOST_REQUIRE(simpleAttributeOperandSPtr->typeId() == OpcUaNodeId(321, 123));
+	BOOST_REQUIRE(simpleAttributeOperandSPtr->typeIdx() == OpcUaNodeId(321, 123));
 	BOOST_REQUIRE(simpleAttributeOperandSPtr->attributeId() == 123);
 	BOOST_REQUIRE(simpleAttributeOperandSPtr->indexRange().value() == "1:2");
 	BOOST_REQUIRE(simpleAttributeOperandSPtr->browsePath()->size() == 1);
@@ -97,12 +96,12 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	BOOST_REQUIRE(qualifiedNameSPtr->namespaceIndex() == 123);
 	BOOST_REQUIRE(qualifiedNameSPtr->name().value() == "ABC");
 
-	BOOST_REQUIRE(filter2.whereClause().elements()->size() == 1);
-	filter2.whereClause().elements()->get(contentFilterElementSPtr);
-	BOOST_REQUIRE(contentFilterElementSPtr->filterOperator() == BasicFilterOperator_And);
-	BOOST_REQUIRE(contentFilterElementSPtr->filterOperands()->size() == 1);
-	contentFilterElementSPtr->filterOperands()->get(filterOperandSPtr);
-	filterOperandSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_OpcUa_XmlSchema_ElementOperand);
+	BOOST_REQUIRE(filter2.whereClause().elements().size() == 1);
+	filter2.whereClause().elements().get(contentFilterElementSPtr);
+	BOOST_REQUIRE(contentFilterElementSPtr->filterOperator().enumeration() == FilterOperator::EnumAnd);
+	BOOST_REQUIRE(contentFilterElementSPtr->filterOperands().size() == 1);
+	contentFilterElementSPtr->filterOperands().get(filterOperandSPtr);
+	filterOperandSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand_Encoding_DefaultBinary);
 	elementOperandSPtr = filterOperandSPtr->parameter<ElementOperand>();
 	BOOST_REQUIRE(elementOperandSPtr->index() == 123);
 }

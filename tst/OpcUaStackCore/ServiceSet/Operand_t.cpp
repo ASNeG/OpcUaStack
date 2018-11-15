@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(Operand_SimpleAttribute)
 	qualifiedNameSPtr->name(string);
 	qualifiedNameSPtr->namespaceIndex(12);
 
-	simpleAttributeOperand1.typeId(OpcUaNodeId((OpcUaUInt32)11, 123));
+	simpleAttributeOperand1.typeIdx(OpcUaNodeId((OpcUaUInt32)11, 123));
 	simpleAttributeOperand1.browsePath()->set(qualifiedNameSPtr);
 	simpleAttributeOperand1.attributeId((OpcUaUInt32)123);
 	simpleAttributeOperand1.indexRange("1:2");
@@ -80,8 +80,8 @@ BOOST_AUTO_TEST_CASE(Operand_SimpleAttribute)
 	// decode
 	simpleAttributeOperand2.opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(simpleAttributeOperand2.typeId().namespaceIndex() == 123);
-	BOOST_REQUIRE(simpleAttributeOperand2.typeId().nodeId<OpcUaUInt32>() == 11);
+	BOOST_REQUIRE(simpleAttributeOperand2.typeIdx().namespaceIndex() == 123);
+	BOOST_REQUIRE(simpleAttributeOperand2.typeIdx().nodeId<OpcUaUInt32>() == 11);
 
 	BOOST_REQUIRE(simpleAttributeOperand2.browsePath()->size() == 1);
 	simpleAttributeOperand2.browsePath()->get(qualifiedNameSPtr);
