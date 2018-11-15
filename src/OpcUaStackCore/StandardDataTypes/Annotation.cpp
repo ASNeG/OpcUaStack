@@ -166,12 +166,15 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if (!message_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("Message", elementTree));
     
+        elementTree.clear();
         if (!userName_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("UserName", elementTree));
     
+        elementTree.clear();
         if (!annotationTime_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("AnnotationTime", elementTree));
     

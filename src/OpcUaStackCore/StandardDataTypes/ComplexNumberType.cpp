@@ -155,9 +155,11 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, real_)) return false;
         pt.push_back(std::make_pair("Real", elementTree));
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, imaginary_)) return false;
         pt.push_back(std::make_pair("Imaginary", elementTree));
     

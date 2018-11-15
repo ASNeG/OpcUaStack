@@ -26,7 +26,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<AggregateConfiguration> SPtr;
-    typedef std::vector<AggregateConfiguration::SPtr> Vec;
+        typedef std::vector<AggregateConfiguration::SPtr> Vec;
     
         AggregateConfiguration(void);
         virtual ~AggregateConfiguration(void);

@@ -27,7 +27,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<AddReferencesItem> SPtr;
-    typedef std::vector<AddReferencesItem::SPtr> Vec;
+        typedef std::vector<AddReferencesItem::SPtr> Vec;
     
         AddReferencesItem(void);
         virtual ~AddReferencesItem(void);

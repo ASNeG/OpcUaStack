@@ -155,9 +155,11 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, majorVersion_)) return false;
         pt.push_back(std::make_pair("MajorVersion", elementTree));
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, minorVersion_)) return false;
         pt.push_back(std::make_pair("MinorVersion", elementTree));
     

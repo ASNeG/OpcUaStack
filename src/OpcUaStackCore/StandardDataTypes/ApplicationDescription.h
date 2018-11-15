@@ -27,7 +27,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<ApplicationDescription> SPtr;
-    typedef std::vector<ApplicationDescription::SPtr> Vec;
+        typedef std::vector<ApplicationDescription::SPtr> Vec;
     
         ApplicationDescription(void);
         virtual ~ApplicationDescription(void);

@@ -188,18 +188,23 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if (!engineeringUnits_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("EngineeringUnits", elementTree));
     
+        elementTree.clear();
         if (!eURange_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("EURange", elementTree));
     
+        elementTree.clear();
         if (!title_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("Title", elementTree));
     
+        elementTree.clear();
         if (!axisScaleType_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("AxisScaleType", elementTree));
     
+        elementTree.clear();
         if (!axisSteps_.xmlEncode(elementTree, "Double", xmlns)) return false;
         pt.push_back(std::make_pair("AxisSteps", elementTree));
     

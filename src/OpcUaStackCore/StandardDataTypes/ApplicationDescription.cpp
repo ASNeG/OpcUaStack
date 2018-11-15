@@ -213,24 +213,31 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if (!applicationUri_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ApplicationUri", elementTree));
     
+        elementTree.clear();
         if (!productUri_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ProductUri", elementTree));
     
+        elementTree.clear();
         if (!applicationName_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ApplicationName", elementTree));
     
+        elementTree.clear();
         if (!applicationType_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ApplicationType", elementTree));
     
+        elementTree.clear();
         if (!gatewayServerUri_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("GatewayServerUri", elementTree));
     
+        elementTree.clear();
         if (!discoveryProfileUri_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("DiscoveryProfileUri", elementTree));
     
+        elementTree.clear();
         if (!discoveryUrls_.xmlEncode(elementTree, "String", xmlns)) return false;
         pt.push_back(std::make_pair("DiscoveryUrls", elementTree));
     

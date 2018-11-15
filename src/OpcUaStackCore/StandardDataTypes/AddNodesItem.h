@@ -28,7 +28,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<AddNodesItem> SPtr;
-    typedef std::vector<AddNodesItem::SPtr> Vec;
+        typedef std::vector<AddNodesItem::SPtr> Vec;
     
         AddNodesItem(void);
         virtual ~AddNodesItem(void);

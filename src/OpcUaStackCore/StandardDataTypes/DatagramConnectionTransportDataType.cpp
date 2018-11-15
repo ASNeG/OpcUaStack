@@ -143,6 +143,7 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if (!discoveryAddress_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("DiscoveryAddress", elementTree));
     

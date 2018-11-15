@@ -154,9 +154,11 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if (!resourceUri_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ResourceUri", elementTree));
     
+        elementTree.clear();
         if (!authenticationProfileUri_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("AuthenticationProfileUri", elementTree));
     

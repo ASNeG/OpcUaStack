@@ -28,7 +28,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<ServerStatusDataType> SPtr;
-    typedef std::vector<ServerStatusDataType::SPtr> Vec;
+        typedef std::vector<ServerStatusDataType::SPtr> Vec;
     
         ServerStatusDataType(void);
         virtual ~ServerStatusDataType(void);

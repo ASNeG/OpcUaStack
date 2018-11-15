@@ -213,24 +213,31 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if (!parentNodeId_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ParentNodeId", elementTree));
     
+        elementTree.clear();
         if (!referenceTypeId_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
     
+        elementTree.clear();
         if (!requestedNewNodeId_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("RequestedNewNodeId", elementTree));
     
+        elementTree.clear();
         if (!browseName_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("BrowseName", elementTree));
     
+        elementTree.clear();
         if (!nodeClass_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("NodeClass", elementTree));
     
+        elementTree.clear();
         if (!nodeAttributes_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("NodeAttributes", elementTree));
     
+        elementTree.clear();
         if (!typeDefinition_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("TypeDefinition", elementTree));
     

@@ -199,21 +199,27 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if (!productUri_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ProductUri", elementTree));
     
+        elementTree.clear();
         if (!manufacturerName_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ManufacturerName", elementTree));
     
+        elementTree.clear();
         if (!productName_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ProductName", elementTree));
     
+        elementTree.clear();
         if (!softwareVersion_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("SoftwareVersion", elementTree));
     
+        elementTree.clear();
         if (!buildNumber_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("BuildNumber", elementTree));
     
+        elementTree.clear();
         if (!buildDate_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("BuildDate", elementTree));
     

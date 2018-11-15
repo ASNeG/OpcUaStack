@@ -188,18 +188,23 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, useServerCapabilitiesDefaults_)) return false;
         pt.push_back(std::make_pair("UseServerCapabilitiesDefaults", elementTree));
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, treatUncertainAsBad_)) return false;
         pt.push_back(std::make_pair("TreatUncertainAsBad", elementTree));
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, percentDataBad_)) return false;
         pt.push_back(std::make_pair("PercentDataBad", elementTree));
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, percentDataGood_)) return false;
         pt.push_back(std::make_pair("PercentDataGood", elementTree));
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, useSlopedExtrapolation_)) return false;
         pt.push_back(std::make_pair("UseSlopedExtrapolation", elementTree));
     

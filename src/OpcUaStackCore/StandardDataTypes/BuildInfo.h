@@ -26,7 +26,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<BuildInfo> SPtr;
-    typedef std::vector<BuildInfo::SPtr> Vec;
+        typedef std::vector<BuildInfo::SPtr> Vec;
     
         BuildInfo(void);
         virtual ~BuildInfo(void);

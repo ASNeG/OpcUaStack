@@ -26,7 +26,7 @@ namespace OpcUaStackCore
     {
       public:
         typedef boost::shared_ptr<Annotation> SPtr;
-    typedef std::vector<Annotation::SPtr> Vec;
+        typedef std::vector<Annotation::SPtr> Vec;
     
         Annotation(void);
         virtual ~Annotation(void);

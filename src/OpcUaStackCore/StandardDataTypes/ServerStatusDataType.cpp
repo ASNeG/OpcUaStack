@@ -199,21 +199,27 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if (!startTime_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("StartTime", elementTree));
     
+        elementTree.clear();
         if (!currentTime_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("CurrentTime", elementTree));
     
+        elementTree.clear();
         if (!state_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("State", elementTree));
     
+        elementTree.clear();
         if (!buildInfo_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("BuildInfo", elementTree));
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, secondsTillShutdown_)) return false;
         pt.push_back(std::make_pair("SecondsTillShutdown", elementTree));
     
+        elementTree.clear();
         if (!shutdownReason_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("ShutdownReason", elementTree));
     
