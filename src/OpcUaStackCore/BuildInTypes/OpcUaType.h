@@ -40,7 +40,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaUInt64 = 9,
 		OpcUaBuildInType_OpcUaFloat = 10,
 		OpcUaBuildInType_OpcUaDouble = 11,
-		OpcUaBuildInType_OpcUaDuration = 11,
+		OpcUaBuildInType_OpcUaDuration = 290,
 		OpcUaBuildInType_OpcUaString = 12,
 		OpcUaBuildInType_OpcUaDateTime = 13,
 		OpcUaBuildInType_OpcUaUtcTime = 294,

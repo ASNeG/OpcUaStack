@@ -53,7 +53,8 @@ namespace OpcUaStackCore
 			   buildInType == OpcUaBuildInType_OpcUaFloat ||
 			   buildInType == OpcUaBuildInType_OpcUaDouble ||
 			   buildInType == OpcUaBuildInType_OpcUaVersionTime ||
-			   buildInType == OpcUaBuildInType_OpcUaDataSetFieldContentMask;
+			   buildInType == OpcUaBuildInType_OpcUaDataSetFieldContentMask ||
+			   buildInType == OpcUaBuildInType_OpcUaDuration;
 	}
 
 	bool
@@ -88,6 +89,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaUInt64: return "UInt64";
 			case OpcUaBuildInType_OpcUaFloat: return "Float";
 			case OpcUaBuildInType_OpcUaDouble: return "Double";
+			case OpcUaBuildInType_OpcUaDuration: return "Duration";
 			case OpcUaBuildInType_OpcUaString: return "String";
 			case OpcUaBuildInType_OpcUaDateTime: return "DateTime";
 			case OpcUaBuildInType_OpcUaUtcTime: return "UtcTime";
@@ -127,6 +129,7 @@ namespace OpcUaStackCore
 		else if (type == "UINT64") return OpcUaBuildInType_OpcUaUInt64;
 		else if (type == "FLOAT") return OpcUaBuildInType_OpcUaFloat;
 		else if (type == "DOUBLE") return OpcUaBuildInType_OpcUaDouble;
+		else if (type == "DURATION") return OpcUaBuildInType_OpcUaDuration;
 		else if (type == "STRING") return OpcUaBuildInType_OpcUaString;
 		else if (type == "DATETIME") return OpcUaBuildInType_OpcUaDateTime;
 		else if (type == "UTCTIME") return OpcUaBuildInType_OpcUaUtcTime;
@@ -164,6 +167,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaUInt64: return "OpcUaUInt64";
 			case OpcUaBuildInType_OpcUaFloat: return "OpcUaFloat";
 			case OpcUaBuildInType_OpcUaDouble: return "OpcUaDouble";
+			case OpcUaBuildInType_OpcUaDuration: return "OpcUaDuration";
 			case OpcUaBuildInType_OpcUaString: return "OpcUaString";
 			case OpcUaBuildInType_OpcUaDateTime: return "OpcUaDateTime";
 			case OpcUaBuildInType_OpcUaUtcTime: return "OpcUaUtcTime";
