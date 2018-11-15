@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,7 +40,7 @@ namespace OpcUaDataTypeGenerator
 	OpcUaDataTypeGenerator::OpcUaDataTypeGenerator(void)
 	: dataTypeNodeId_(0)
 	, informationModel_()
-	, fileName_("")
+	, fileNames_()
 	, dataTypeName_("")
 	, namespaces_()
 	, buildSubTypes_(false)
@@ -69,7 +69,7 @@ namespace OpcUaDataTypeGenerator
 			)
 		    (
 		    	"nodeset",
-				boost::program_options::value<std::string>(),
+				boost::program_options::value< std::vector<std::string> >(),
 				"set nodeset file name (mandatory)"
 			)
 			(
@@ -118,9 +118,10 @@ namespace OpcUaDataTypeGenerator
 		    return 1;
 		}
 
-		// vm["input-file"].as< vector<string> >()
+		if (vm.count("nodeset") != 0) {
+			fileNames_ = vm["nodeset"].as< std::vector<std::string> >();
+		}
 
-		fileName_ = vm["nodeset"].as<std::string>();
 		dataTypeName_ = vm["datatype"].as<std::string>();
 		if (vm.count("namespaces") != 0) {
 			namespaces_ = vm["namespaces"].as< std::vector<std::string> >();
@@ -202,26 +203,36 @@ namespace OpcUaDataTypeGenerator
 	int32_t
 	OpcUaDataTypeGenerator::loadInformationModel(void)
 	{
-		// read opc ua nodeset
-		ConfigXml configXml;
-	    if (!configXml.parse(fileName_)) {
-	    	std::cout << configXml.errorMessage() << std::endl;
-	    	return -1;
-	    }
-
-	    // parse node set file
-	    NodeSetXmlParser nodeSetXmlParser;
-	    if (!nodeSetXmlParser.decode(configXml.ptree())) {
-	    	std::cout << "node set parser error" << std::endl;
-	    	return -2;
-	    }
-
-	    // init information model
+		// create a new information model
 		informationModel_ = constructSPtr<InformationModel>();
-		if (!InformationModelNodeSet::initial(informationModel_, nodeSetXmlParser)) {
-			std::cout << "init information model error" << std::endl;
-			return -3;
+
+		std::vector<std::string>::iterator it;
+		for (it = fileNames_.begin(); it != fileNames_.end(); it++) {
+
+			std::string fileName = *it;
+
+			// read opc ua nodeset
+			ConfigXml configXml;
+			if (!configXml.parse(fileName)) {
+				std::cout << configXml.errorMessage() << std::endl;
+				return -1;
+			}
+
+			// parse node set file
+			NodeSetXmlParser nodeSetXmlParser;
+			if (!nodeSetXmlParser.decode(configXml.ptree())) {
+				std::cout << "node set parser error" << std::endl;
+				return -2;
+			}
+
+			// init information model
+			if (!InformationModelNodeSet::initial(informationModel_, nodeSetXmlParser)) {
+				std::cout << "init information model error" << std::endl;
+				return -3;
+			}
+
 		}
+
 		informationModel_->checkForwardReferences();
 
 		return 0;

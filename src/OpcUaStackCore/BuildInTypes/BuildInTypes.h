@@ -43,6 +43,7 @@ namespace OpcUaStackCore
 	typedef OpcUaDateTimeArray OpcUaUtcTimeArray;
 	typedef OpcUaUInt32 OpcUaIntegerId;
 	typedef OpcUaUInt32 OpcUaVersionTime;
+	typedef OpcUaUInt32 DataSetFieldContentMask;
 	typedef OpcUaDouble OpcUaDuration;
 	typedef OpcUaStringArray OpcUaLocaleIdArray;
 

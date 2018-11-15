@@ -1,9 +1,6 @@
 #!/bin/bash
 
 
-#OpcUaEnumTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --enumtype ApplicationType --buildSubTypes 0
-#OpcUaEnumTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --enumtype ServerState --buildSubTypes 0
-
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ServerStatusDataType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype AddNodesItem --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype AddReferencesItem --buildSubTypes 0
@@ -18,9 +15,11 @@
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ConnectionTransportDataType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype BrokerConnectionTransportDataType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype DatagramConnectionTransportDataType --buildSubTypes 0
+#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ContentFilter --buildSubTypes 0
+#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ContentFilterElement --buildSubTypes 0
+OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype DataSetReaderDataType --buildSubTypes 0
 
-OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ContentFilter --buildSubTypes 0
-OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype ContentFilterElement --buildSubTypes 0
+
 
 
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype EUInformation --buildSubTypes 0

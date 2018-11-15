@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -36,7 +36,7 @@ namespace OpcUaDataTypeGenerator
 		uint32_t start(int argc, char** argv);
 
 	  private:
-		std::string fileName_;
+		std::vector<std::string> fileNames_;
 		std::string dataTypeName_;
 		std::vector<std::string> namespaces_;
 		bool buildSubTypes_;

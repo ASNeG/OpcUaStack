@@ -52,7 +52,8 @@ namespace OpcUaStackCore
 			   buildInType == OpcUaBuildInType_OpcUaUInt64 ||
 			   buildInType == OpcUaBuildInType_OpcUaFloat ||
 			   buildInType == OpcUaBuildInType_OpcUaDouble ||
-			   buildInType == OpcUaBuildInType_OpcUaVersionTime;
+			   buildInType == OpcUaBuildInType_OpcUaVersionTime ||
+			   buildInType == OpcUaBuildInType_OpcUaDataSetFieldContentMask;
 	}
 
 	bool
@@ -82,6 +83,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaInt32: return "Int32";
 			case OpcUaBuildInType_OpcUaUInt32: return "UInt32";
 			case OpcUaBuildInType_OpcUaVersionTime: return "VersionTime";
+			case OpcUaBuildInType_OpcUaDataSetFieldContentMask: return "DataSetFieldContentMask";
 			case OpcUaBuildInType_OpcUaInt64: return "Int64";
 			case OpcUaBuildInType_OpcUaUInt64: return "UInt64";
 			case OpcUaBuildInType_OpcUaFloat: return "Float";
@@ -120,6 +122,7 @@ namespace OpcUaStackCore
 		else if (type == "INT32") return OpcUaBuildInType_OpcUaInt32;
 		else if (type == "UINT32") return OpcUaBuildInType_OpcUaUInt32;
 		else if (type == "VERSIONTIME") return OpcUaBuildInType_OpcUaVersionTime;
+		else if (type == "DATASETFIELDCONTENTMASK") return OpcUaBuildInType_OpcUaDataSetFieldContentMask;
 		else if (type == "INT64") return OpcUaBuildInType_OpcUaInt64;
 		else if (type == "UINT64") return OpcUaBuildInType_OpcUaUInt64;
 		else if (type == "FLOAT") return OpcUaBuildInType_OpcUaFloat;
@@ -156,6 +159,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaInt32: return "OpcUaInt32";
 			case OpcUaBuildInType_OpcUaUInt32: return "OpcUaUInt32";
 			case OpcUaBuildInType_OpcUaVersionTime: return "OpcUaVersionTime";
+			case OpcUaBuildInType_OpcUaDataSetFieldContentMask: return "DataSetFieldContentMask";
 			case OpcUaBuildInType_OpcUaInt64: return "OpcUaInt64";
 			case OpcUaBuildInType_OpcUaUInt64: return "OpcUaUInt64";
 			case OpcUaBuildInType_OpcUaFloat: return "OpcUaFloat";

@@ -35,6 +35,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaInt32 = 6,
 		OpcUaBuildInType_OpcUaUInt32 = 7,
 		OpcUaBuildInType_OpcUaVersionTime = 20998,
+		OpcUaBuildInType_OpcUaDataSetFieldContentMask = 15583,
 		OpcUaBuildInType_OpcUaInt64 = 8,
 		OpcUaBuildInType_OpcUaUInt64 = 9,
 		OpcUaBuildInType_OpcUaFloat = 10,
