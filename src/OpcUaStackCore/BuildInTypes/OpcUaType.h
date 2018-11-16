@@ -47,6 +47,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaUtcTime = 294,
 		OpcUaBuildInType_OpcUaGuid = 14,
 		OpcUaBuildInType_OpcUaByteString = 15,
+		OpcUaBuildInType_OpcUaApplicationInstanceCertificate = 311,
 		OpcUaBuildInType_OpcUaXmlElement = 16,
 		OpcUaBuildInType_OpcUaNodeId = 17,
 		OpcUaBuildInType_OpcUaExpandedNodeId = 18,

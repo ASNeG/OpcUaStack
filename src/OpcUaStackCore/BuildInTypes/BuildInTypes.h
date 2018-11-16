@@ -44,9 +44,10 @@ namespace OpcUaStackCore
 	typedef OpcUaUInt16 OpcUaDataSetFieldFlag;
 	typedef OpcUaUInt32 OpcUaIntegerId;
 	typedef OpcUaUInt32 OpcUaVersionTime;
-	typedef OpcUaUInt32 DataSetFieldContentMask;
+	typedef OpcUaUInt32 OpcUaDataSetFieldContentMask;
 	typedef OpcUaDouble OpcUaDuration;
 	typedef OpcUaStringArray OpcUaLocaleIdArray;
+	typedef OpcUaByteString OpcUaApplicationInstanceCertificate;
 
 };
 

@@ -97,6 +97,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaUtcTime: return "UtcTime";
 			case OpcUaBuildInType_OpcUaGuid: return "Guid";
 			case OpcUaBuildInType_OpcUaByteString: return "ByteString";
+			case OpcUaBuildInType_OpcUaApplicationInstanceCertificate: return "ApplicationInstanceCertificate";
 			case OpcUaBuildInType_OpcUaXmlElement: return "XmlElement";
 			case OpcUaBuildInType_OpcUaNodeId: return "NodeId";
 			case OpcUaBuildInType_OpcUaExpandedNodeId: return "ExpandedNodeId";
@@ -138,6 +139,7 @@ namespace OpcUaStackCore
 		else if (type == "UTCTIME") return OpcUaBuildInType_OpcUaUtcTime;
 		else if (type == "GUID") return OpcUaBuildInType_OpcUaGuid;
 		else if (type == "BYTESTRING") return OpcUaBuildInType_OpcUaByteString;
+		else if (type == "APPLICATIONINSTANCECERTIFICATE") return OpcUaBuildInType_OpcUaApplicationInstanceCertificate;
 		else if (type == "XMLELEMENT") return OpcUaBuildInType_OpcUaXmlElement;
 		else if (type == "NODEID") return OpcUaBuildInType_OpcUaNodeId;
 		else if (type == "EXPANDEDNODEID") return OpcUaBuildInType_OpcUaExpandedNodeId;
@@ -173,6 +175,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaDouble: return "OpcUaDouble";
 			case OpcUaBuildInType_OpcUaDuration: return "OpcUaDuration";
 			case OpcUaBuildInType_OpcUaString: return "OpcUaString";
+			case OpcUaBuildInType_OpcUaApplicationInstanceCertificate: return "OpcUaApplicationInstanceCertificate";
 			case OpcUaBuildInType_OpcUaDateTime: return "OpcUaDateTime";
 			case OpcUaBuildInType_OpcUaUtcTime: return "OpcUaUtcTime";
 			case OpcUaBuildInType_OpcUaGuid: return "OpcUaGuid";
