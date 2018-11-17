@@ -22,7 +22,8 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/MessageSecurityMode.h"
-#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/MessageSecurityMode.h"
 
 #include "OpcUaStackPubSub/PubSubModel/PubSubState.h"
 #include "OpcUaStackPubSub/PubSubModel/KeyValuePair.h"

@@ -86,11 +86,11 @@ namespace OpcUaStackServer
 			EndpointDescription::SPtr endpointDescription;
 			endpointDescriptionArray_->get(idx, endpointDescription);
 
-			if (!endpointDescription->needSecurity()) {
-				continue;
-			}
+			//if (!endpointDescription->needSecurity()) {
+			//	continue;
+			//}
 
-			endpointDescription->serverCertificate((const unsigned char*)certBuf, certLen);
+			endpointDescription->serverCertificate().value((const unsigned char*)certBuf, certLen);
 		}
 
 		delete [] certBuf;

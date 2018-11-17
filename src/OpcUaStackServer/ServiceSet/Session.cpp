@@ -235,7 +235,7 @@ namespace OpcUaStackServer
 
 		// check token policy
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_Anonymous, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumAnonymous, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -277,7 +277,7 @@ namespace OpcUaStackServer
 
 		// check token policy
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_Username, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumUserName, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -393,7 +393,7 @@ namespace OpcUaStackServer
 
 		// check token policy
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_Certificate, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumCertificate, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -477,7 +477,7 @@ namespace OpcUaStackServer
 
 		// check token policy
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_IssuedToken, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumIssuedToken, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -558,7 +558,7 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::checkUserTokenPolicy(
 		const std::string& policyId,
-		UserIdentityTokenType userIdentityTokenType,
+		UserTokenType::Enum userIdentityTokenType,
 		UserTokenPolicy::SPtr& userTokenPolicy
 	)
 	{
@@ -567,15 +567,15 @@ namespace OpcUaStackServer
 			return BadIdentityTokenInvalid;
 		}
 
-		if (endpointDescription_->userIdentityTokens().get() == nullptr) {
+		if (endpointDescription_->userIdentityTokens().size() == 0) {
 			Log(Debug, "user identity token not exist");
 			return BadIdentityTokenInvalid;
 		}
 
 		// find related identity token
 		bool found = false;
-		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens()->size(); idx++) {
-			if (!endpointDescription_->userIdentityTokens()->get(idx, userTokenPolicy)) {
+		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens().size(); idx++) {
+			if (!endpointDescription_->userIdentityTokens().get(idx, userTokenPolicy)) {
 				continue;
 			}
 

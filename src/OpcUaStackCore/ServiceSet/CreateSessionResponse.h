@@ -25,7 +25,7 @@
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.h"
 #include "OpcUaStackCore/SecureChannel/SessionAuthenticationToken.h"
-#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 #include "OpcUaStackCore/ServiceSet/SignatureData.h"
 #include "OpcUaStackCore/ServiceSet/SignedSoftwareCertificate.h"
 

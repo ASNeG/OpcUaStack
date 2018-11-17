@@ -20,7 +20,7 @@
 #define __OpUaStackCore_SecureChannelServerConfig_h__
 
 #include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
-#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Base/os.h"
