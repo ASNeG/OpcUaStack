@@ -1,0 +1,196 @@
+/*
+    DataTypeClass: DataSetWriterTransportDataType
+
+    Generated Source Code - please do not change this source code
+
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
+
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
+
+#include "OpcUaStackCore/StandardDataTypes/DataSetWriterTransportDataType.h"
+
+namespace OpcUaStackCore
+{
+    
+    DataSetWriterTransportDataType::DataSetWriterTransportDataType(void)
+    : Object()
+    , ExtensionObjectBase()
+    {
+    }
+    
+    DataSetWriterTransportDataType::~DataSetWriterTransportDataType(void)
+    {
+    }
+    
+    bool
+    DataSetWriterTransportDataType::operator==(const DataSetWriterTransportDataType& value)
+    {
+        DataSetWriterTransportDataType* dst = const_cast<DataSetWriterTransportDataType*>(&value);
+        return true;
+    }
+    
+    bool
+    DataSetWriterTransportDataType::operator!=(const DataSetWriterTransportDataType& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    DataSetWriterTransportDataType::copyTo(DataSetWriterTransportDataType& value)
+    {
+    }
+    
+    DataSetWriterTransportDataType&
+    DataSetWriterTransportDataType::operator=(const DataSetWriterTransportDataType& value)
+    {
+        const_cast<DataSetWriterTransportDataType*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    DataSetWriterTransportDataType::factory(void)
+    {
+    	return constructSPtr<DataSetWriterTransportDataType>();
+    }
+    
+    std::string
+    DataSetWriterTransportDataType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    DataSetWriterTransportDataType::typeName(void)
+    {
+    	return "DataSetWriterTransportDataType";
+    }
+    
+    OpcUaNodeId
+    DataSetWriterTransportDataType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15598,0);
+    }
+    
+    OpcUaNodeId
+    DataSetWriterTransportDataType::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15683, 0);
+    }
+    
+    OpcUaNodeId
+    DataSetWriterTransportDataType::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15956, 0);
+    }
+    
+    OpcUaNodeId
+    DataSetWriterTransportDataType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)16157, 0);
+    }
+    
+    void
+    DataSetWriterTransportDataType::opcUaBinaryEncode(std::ostream& os) const
+    {
+    }
+    
+    void
+    DataSetWriterTransportDataType::opcUaBinaryDecode(std::istream& is)
+    {
+    }
+    
+    bool
+    DataSetWriterTransportDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    DataSetWriterTransportDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    DataSetWriterTransportDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    DataSetWriterTransportDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        return true;
+    }
+    
+    bool
+    DataSetWriterTransportDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    DataSetWriterTransportDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        return true;
+    }
+    
+    bool
+    DataSetWriterTransportDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    DataSetWriterTransportDataType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    DataSetWriterTransportDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    DataSetWriterTransportDataType::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    DataSetWriterTransportDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	DataSetWriterTransportDataType* dst = dynamic_cast<DataSetWriterTransportDataType*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    DataSetWriterTransportDataType::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	DataSetWriterTransportDataType* dst = dynamic_cast<DataSetWriterTransportDataType*>(&extensionObjectBase);
+    	return *const_cast<DataSetWriterTransportDataType*>(this) == *dst;
+    }
+    
+    void
+    DataSetWriterTransportDataType::out(std::ostream& os)
+    {
+    }
+
+}
