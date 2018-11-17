@@ -37,7 +37,10 @@
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype DataSetReaderTransportDataType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype BrokerDataSetReaderTransportDataType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype DataSetWriterDataType --buildSubTypes 0
-OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype DataSetWriterMessageDataType --buildSubTypes 0
+#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype DataSetWriterMessageDataType --buildSubTypes 0
+OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype JsonDataSetWriterMessageDataType --buildSubTypes 0
+
+
 
 
 
