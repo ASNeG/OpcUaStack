@@ -1,36 +1,196 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: DataTypeDefinition
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
-
-#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/StandardDataTypes/DataTypeDefinition.h"
 
 namespace OpcUaStackCore
 {
-
-	DataTypeDefinition::DataTypeDefinition(void)
-	: Object()
-	, ExtensionObjectBase()
-	{
-	}
-
-	DataTypeDefinition::~DataTypeDefinition(void)
-	{
-	}
+    
+    DataTypeDefinition::DataTypeDefinition(void)
+    : Object()
+    , ExtensionObjectBase()
+    {
+    }
+    
+    DataTypeDefinition::~DataTypeDefinition(void)
+    {
+    }
+    
+    bool
+    DataTypeDefinition::operator==(const DataTypeDefinition& value)
+    {
+        DataTypeDefinition* dst = const_cast<DataTypeDefinition*>(&value);
+        return true;
+    }
+    
+    bool
+    DataTypeDefinition::operator!=(const DataTypeDefinition& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    DataTypeDefinition::copyTo(DataTypeDefinition& value)
+    {
+    }
+    
+    DataTypeDefinition&
+    DataTypeDefinition::operator=(const DataTypeDefinition& value)
+    {
+        const_cast<DataTypeDefinition*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    DataTypeDefinition::factory(void)
+    {
+    	return constructSPtr<DataTypeDefinition>();
+    }
+    
+    std::string
+    DataTypeDefinition::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    DataTypeDefinition::typeName(void)
+    {
+    	return "DataTypeDefinition";
+    }
+    
+    OpcUaNodeId
+    DataTypeDefinition::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)97,0);
+    }
+    
+    OpcUaNodeId
+    DataTypeDefinition::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)121, 0);
+    }
+    
+    OpcUaNodeId
+    DataTypeDefinition::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)14797, 0);
+    }
+    
+    OpcUaNodeId
+    DataTypeDefinition::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15063, 0);
+    }
+    
+    void
+    DataTypeDefinition::opcUaBinaryEncode(std::ostream& os) const
+    {
+    }
+    
+    void
+    DataTypeDefinition::opcUaBinaryDecode(std::istream& is)
+    {
+    }
+    
+    bool
+    DataTypeDefinition::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    DataTypeDefinition::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    DataTypeDefinition::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    DataTypeDefinition::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        return true;
+    }
+    
+    bool
+    DataTypeDefinition::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    DataTypeDefinition::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        return true;
+    }
+    
+    bool
+    DataTypeDefinition::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    DataTypeDefinition::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    DataTypeDefinition::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    DataTypeDefinition::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    DataTypeDefinition::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	DataTypeDefinition* dst = dynamic_cast<DataTypeDefinition*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    DataTypeDefinition::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	DataTypeDefinition* dst = dynamic_cast<DataTypeDefinition*>(&extensionObjectBase);
+    	return *const_cast<DataTypeDefinition*>(this) == *dst;
+    }
+    
+    void
+    DataTypeDefinition::out(std::ostream& os)
+    {
+    }
 
 }
-
-
