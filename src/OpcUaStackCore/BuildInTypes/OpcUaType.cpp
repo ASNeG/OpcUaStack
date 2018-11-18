@@ -52,6 +52,7 @@ namespace OpcUaStackCore
 			   buildInType == OpcUaBuildInType_OpcUaUInt64 ||
 			   buildInType == OpcUaBuildInType_OpcUaFloat ||
 			   buildInType == OpcUaBuildInType_OpcUaDouble ||
+			   buildInType == OpcUaBuildInType_OpcUaIntegerId ||
 			   buildInType == OpcUaBuildInType_OpcUaVersionTime ||
 			   buildInType == OpcUaBuildInType_OpcUaDataSetFieldContentMask ||
 			   buildInType == OpcUaBuildInType_OpcUaDuration ||
@@ -90,6 +91,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaInt32: return "Int32";
 			case OpcUaBuildInType_OpcUaUInt32: return "UInt32";
 			case OpcUaBuildInType_OpcUaVersionTime: return "VersionTime";
+			case OpcUaBuildInType_OpcUaIntegerId: return "IntegerId";
 			case OpcUaBuildInType_OpcUaDataSetFieldContentMask: return "DataSetFieldContentMask";
 			case OpcUaBuildInType_OpcUaJsonNetworkMessageContentMask: return "JsonNetworkMessageContentMask";
 			case OpcUaBuildInType_OpcUaUadpNetworkMessageContentMask: return "UadpNetworkMessageContentMask";
@@ -101,6 +103,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaDouble: return "Double";
 			case OpcUaBuildInType_OpcUaDuration: return "Duration";
 			case OpcUaBuildInType_OpcUaString: return "String";
+			case OpcUaBuildInType_OpcUaNumericRange: return "NumericRange";
 			case OpcUaBuildInType_OpcUaDateTime: return "DateTime";
 			case OpcUaBuildInType_OpcUaUtcTime: return "UtcTime";
 			case OpcUaBuildInType_OpcUaGuid: return "Guid";
@@ -136,6 +139,7 @@ namespace OpcUaStackCore
 		else if (type == "INT32") return OpcUaBuildInType_OpcUaInt32;
 		else if (type == "UINT32") return OpcUaBuildInType_OpcUaUInt32;
 		else if (type == "VERSIONTIME") return OpcUaBuildInType_OpcUaVersionTime;
+		else if (type == "INTEGERID") return OpcUaBuildInType_OpcUaIntegerId;
 		else if (type == "DATASETFIELDCONTENTMASK") return OpcUaBuildInType_OpcUaDataSetFieldContentMask;
 		else if (type == "JSONNETWORKMESSAGECONTENTMASK") return OpcUaBuildInType_OpcUaJsonNetworkMessageContentMask;
 		else if (type == "UADPNETWORKMESSAGECONTENTMASK") return OpcUaBuildInType_OpcUaUadpNetworkMessageContentMask;
@@ -147,6 +151,7 @@ namespace OpcUaStackCore
 		else if (type == "DOUBLE") return OpcUaBuildInType_OpcUaDouble;
 		else if (type == "DURATION") return OpcUaBuildInType_OpcUaDuration;
 		else if (type == "STRING") return OpcUaBuildInType_OpcUaString;
+		else if (type == "NUMERICRANGE") return OpcUaBuildInType_OpcUaNumericRange;
 		else if (type == "DATETIME") return OpcUaBuildInType_OpcUaDateTime;
 		else if (type == "UTCTIME") return OpcUaBuildInType_OpcUaUtcTime;
 		else if (type == "GUID") return OpcUaBuildInType_OpcUaGuid;
@@ -180,6 +185,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaInt32: return "OpcUaInt32";
 			case OpcUaBuildInType_OpcUaUInt32: return "OpcUaUInt32";
 			case OpcUaBuildInType_OpcUaVersionTime: return "OpcUaVersionTime";
+			case OpcUaBuildInType_OpcUaIntegerId: return "OpcUaIntegerId";
 			case OpcUaBuildInType_OpcUaDataSetFieldContentMask: return "DataSetFieldContentMask";
 			case OpcUaBuildInType_OpcUaJsonNetworkMessageContentMask: return "OpcUaJsonNetworkMessageContentMask";
 			case OpcUaBuildInType_OpcUaUadpNetworkMessageContentMask: return "OpcUaUadpNetworkMessageContentMask";
@@ -191,6 +197,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaDouble: return "OpcUaDouble";
 			case OpcUaBuildInType_OpcUaDuration: return "OpcUaDuration";
 			case OpcUaBuildInType_OpcUaString: return "OpcUaString";
+			case OpcUaBuildInType_OpcUaNumericRange: return "OpcUaNumericRange";
 			case OpcUaBuildInType_OpcUaApplicationInstanceCertificate: return "OpcUaApplicationInstanceCertificate";
 			case OpcUaBuildInType_OpcUaDateTime: return "OpcUaDateTime";
 			case OpcUaBuildInType_OpcUaUtcTime: return "OpcUaUtcTime";
