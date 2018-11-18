@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackCore_NodeInfoDataType_h__
 #define __OpcUaStackCore_NodeInfoDataType_h__
 
-#include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
+#include "OpcUaStackCore/StandardDataTypes/StructureDefinitionExpand.h"
 
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/DataTypeField.h"
@@ -75,7 +75,7 @@ class DLLEXPORT NodeInfoDataType
 		std::set<std::string>& includePathSet
 	);
 
-	StructureDefinition::SPtr structureDefinition_;	//!< structure definition
+	StructureDefinitionExpand::SPtr structureDefinition_;	//!< structure definition
 	DataTypeField::Vec dataTypeFieldVec_;
 
 };

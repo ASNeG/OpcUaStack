@@ -67,13 +67,13 @@ namespace OpcUaStackServer
 	bool
 	NodeSetDefinitionParser::decode(
 		boost::property_tree::ptree& ptreeValue,
-		StructureDefinition::SPtr& structureDefinition,
+		StructureDefinitionExpand::SPtr& structureDefinition,
 		bool decodeDefinition
 	)
 	{
 		// create new structure type definition structure
 		if (structureDefinition.get() == nullptr) {
-			structureDefinition = constructSPtr<StructureDefinition>();
+			structureDefinition = constructSPtr<StructureDefinitionExpand>();
 		}
 
 		if (decodeDefinition) {
@@ -93,7 +93,7 @@ namespace OpcUaStackServer
 
 	bool
 	NodeSetDefinitionParser::encode(
-		StructureDefinition::SPtr& structureDefinition,
+		StructureDefinitionExpand::SPtr& structureDefinition,
 		boost::property_tree::ptree& ptreeValue,
 		bool encodeDefinition
 	)
@@ -118,13 +118,13 @@ namespace OpcUaStackServer
 	bool
 	NodeSetDefinitionParser::decode(
 		boost::property_tree::ptree& ptreeValue,
-		EnumDefinition::SPtr& enumDefinition,
+		EnumDefinitionExpand::SPtr& enumDefinition,
 		bool decodeDefinition
 	)
 	{
 		// create new enum type definition structure
 		if (enumDefinition.get() == nullptr) {
-			enumDefinition = constructSPtr<EnumDefinition>();
+			enumDefinition = constructSPtr<EnumDefinitionExpand>();
 		}
 
 		if (decodeDefinition) {
@@ -144,7 +144,7 @@ namespace OpcUaStackServer
 
 	bool
 	NodeSetDefinitionParser::encode(
-		EnumDefinition::SPtr& enumDefinition,
+		EnumDefinitionExpand::SPtr& enumDefinition,
 		boost::property_tree::ptree& ptreeValue,
 		bool encodeDefinition
 	)
@@ -169,7 +169,7 @@ namespace OpcUaStackServer
 	bool
 	NodeSetDefinitionParser::decodeStructureDefinition(
 		boost::property_tree::ptree& ptreeValue,
-		StructureDefinition::SPtr& structureDefinition
+		StructureDefinitionExpand::SPtr& structureDefinition
 	)
 	{
 		// decode Name attribute
@@ -227,7 +227,7 @@ namespace OpcUaStackServer
 
 	bool
 	NodeSetDefinitionParser::encodeStructureDefinition(
-		StructureDefinition::SPtr& structureDefinition,
+		StructureDefinitionExpand::SPtr& structureDefinition,
 		boost::property_tree::ptree& ptreeValue
 	)
 	{
@@ -367,7 +367,7 @@ namespace OpcUaStackServer
 	bool
 	NodeSetDefinitionParser::decodeEnumDefinition(
 		boost::property_tree::ptree& ptreeValue,
-		EnumDefinition::SPtr& enumDefinition
+		EnumDefinitionExpand::SPtr& enumDefinition
 	)
 	{
 		// decode Name attribute
@@ -406,7 +406,7 @@ namespace OpcUaStackServer
 
 	bool
 	NodeSetDefinitionParser::encodeEnumDefinition(
-		EnumDefinition::SPtr& enumDefinition,
+		EnumDefinitionExpand::SPtr& enumDefinition,
 		boost::property_tree::ptree& ptreeValue
 	)
 	{

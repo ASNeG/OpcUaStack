@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_encode_decode_structure_description)
 	for (it1 = ptrees.begin(); it1 != ptrees.end(); it1++) {
 		std::stringstream s1, s2;
 		NodeSetDefinitionParser parser;
-		StructureDefinition::SPtr structureDefinition;
+		StructureDefinitionExpand::SPtr structureDefinition;
 
 		cx1.ptree(*it1);
 		BOOST_REQUIRE(cx1.write(s1) == true);
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_encode_decode_enum_description)
 	for (it1 = ptrees.begin(); it1 != ptrees.end(); it1++) {
 		std::stringstream s1, s2;
 		NodeSetDefinitionParser parser;
-		EnumDefinition::SPtr enumDefinition;
+		EnumDefinitionExpand::SPtr enumDefinition;
 
 		cx1.ptree(*it1);
 		BOOST_REQUIRE(cx1.write(s1) == true);

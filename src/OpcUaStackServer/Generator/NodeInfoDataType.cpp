@@ -70,12 +70,12 @@ namespace OpcUaStackServer
 			return true;
 		}
 
-		if (dynamic_cast<StructureDefinition*>(definitionObject.get()) == nullptr) {
+		if (dynamic_cast<StructureDefinitionExpand*>(definitionObject.get()) == nullptr) {
 			Log(Error, "node definiton object is not from type StructureDefinition")
 				.parameter("DataTypeNodeId", dataTypeNodeId);
 			return false;
 		}
-		structureDefinition_ = boost::static_pointer_cast<StructureDefinition>(definitionObject);
+		structureDefinition_ = boost::static_pointer_cast<StructureDefinitionExpand>(definitionObject);
 
 
 		// create field information

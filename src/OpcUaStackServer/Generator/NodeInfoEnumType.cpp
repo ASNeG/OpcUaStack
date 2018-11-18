@@ -64,19 +64,18 @@ namespace OpcUaStackServer
 			return true;
 		}
 
-		if (dynamic_cast<EnumDefinition*>(definitionObject.get()) == nullptr) {
+		if (dynamic_cast<EnumDefinitionExpand*>(definitionObject.get()) == nullptr) {
 			Log(Error, "node definiton object is not from type EnumDefinition")
 				.parameter("EnumTypeNodeId", enumTypeNodeId);
 			return false;
 		}
-		enumDefinition_ = boost::static_pointer_cast<EnumDefinition>(definitionObject);
+		enumDefinition_ = boost::static_pointer_cast<EnumDefinitionExpand>(definitionObject);
 
 		// create field information
 		uint32_t size = enumDefinition_->enumFields()->size();
 		for (uint32_t idx=0; idx<size; idx++) {
 			EnumField::SPtr enumField;
 			enumDefinition_->enumFields()->get(idx, enumField);
-
 
 			EnumTypeField::SPtr enumTypeField = constructSPtr<EnumTypeField>();
 
