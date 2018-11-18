@@ -445,14 +445,14 @@ namespace OpcUaStackServer
 			return false;
 		}
 		OpcUaString nameValue(*name);
-		enumField->name(nameValue);
+		enumField->name().value(nameValue);
 
 		// decode value rank attribute
 		boost::optional<int32_t> value = ptreeValue.get_optional<int32_t>("<xmlattr>.Value");
 		if (!value) {
 			value = -1;
 		}
-		enumField->value(*value);
+		enumField->value() = *value;
 
         // decode description element
          boost::optional<std::string> description = ptreeValue.get_optional<std::string>("Description");

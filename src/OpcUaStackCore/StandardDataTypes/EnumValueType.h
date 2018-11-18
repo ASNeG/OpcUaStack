@@ -1,19 +1,13 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: EnumValueType
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
-
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
+*/
 
 #ifndef __OpcUaStackCore_EnumValueType_h__
 #define __OpcUaStackCore_EnumValueType_h__
@@ -21,62 +15,70 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/StandardDataTypes/DataTypeDefinition.h"
 
 namespace OpcUaStackCore
 {
-
-	class DLLEXPORT EnumValueType
-	: public DataTypeDefinition
-	{
-	  public:
-		typedef boost::shared_ptr<EnumValueType> SPtr;
-
-		EnumValueType(void);
-		virtual ~EnumValueType(void);
-
-		void value(OpcUaInt64 value);
-		OpcUaInt64 value(void);
-		void displayName(OpcUaLocalizedText& displayName);
-		OpcUaLocalizedText& displayName(void);
-		void description(OpcUaLocalizedText& description);
-		OpcUaLocalizedText& description(void);
-
-		void copyTo(EnumValueType& enumValueType);
-		bool operator==(const EnumValueType& enumValueType) const;
-
-		//- ExtensionObjectBase -----------------------------------------------
-		virtual ExtensionObjectBase::SPtr factory(void);
-		virtual OpcUaNodeId binaryTypeId(void);
-		virtual OpcUaNodeId xmlTypeId(void);
-		virtual void opcUaBinaryEncode(std::ostream& os) const;
-		virtual void opcUaBinaryDecode(std::istream& is);
-		virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
-		virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
-		virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
-		virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
-		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
-		virtual void out(std::ostream& os);
-		//- ExtensionObjectBase -----------------------------------------------
-
-	  private:
-		OpcUaInt64 value_;
-		OpcUaLocalizedText displayName_;
-		OpcUaLocalizedText description_;
-
-	};
-
-	class EnumValueTypeArray
-	: public OpcUaArray<EnumValueType::SPtr, SPtrTypeCoder<EnumValueType> >
-	{
-	  public:
-		typedef boost::shared_ptr<EnumValueTypeArray> SPtr;
-	};
+    
+    class DLLEXPORT EnumValueType
+    : public Object
+    , public ExtensionObjectBase
+    {
+      public:
+        typedef boost::shared_ptr<EnumValueType> SPtr;
+        typedef std::vector<EnumValueType::SPtr> Vec;
+    
+        EnumValueType(void);
+        virtual ~EnumValueType(void);
+        
+        OpcUaInt64& value(void);
+        OpcUaLocalizedText& displayName(void);
+        OpcUaLocalizedText& description(void);
+        
+        //- ExtensionObjectBase -----------------------------------------------
+        virtual ExtensionObjectBase::SPtr factory(void);
+        virtual std::string namespaceName(void);
+        virtual std::string typeName(void);
+        virtual OpcUaNodeId typeId(void);
+        virtual OpcUaNodeId binaryTypeId(void);
+        virtual OpcUaNodeId xmlTypeId(void);
+        virtual OpcUaNodeId jsonTypeId(void);
+        virtual void opcUaBinaryEncode(std::ostream& os) const;
+        virtual void opcUaBinaryDecode(std::istream& is);
+        virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
+        virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
+        virtual bool jsonEncode(boost::property_tree::ptree& pt);
+        virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
+        virtual bool jsonDecode(boost::property_tree::ptree& pt);
+        virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+        virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+        virtual void out(std::ostream& os);
+        //- ExtensionObjectBase -----------------------------------------------
+        
+        void copyTo(EnumValueType& value);
+        bool operator==(const EnumValueType& value);
+        bool operator!=(const EnumValueType& value);
+        EnumValueType& operator=(const EnumValueType& value);
+    
+      private:
+        OpcUaInt64 value_; //!< The value of the enumeration.
+        OpcUaLocalizedText displayName_; //!< Human readable name for the value.
+        OpcUaLocalizedText description_; //!< A description of the value.
+    
+    };
+    
+    class EnumValueTypeArray
+    : public OpcUaArray<EnumValueType::SPtr, SPtrTypeCoder<EnumValueType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<EnumValueTypeArray> SPtr;
+    };
 
 }
 
