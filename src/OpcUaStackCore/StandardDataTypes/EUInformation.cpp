@@ -177,15 +177,19 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if (!namespaceUri_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("NamespaceUri", elementTree));
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, unitId_)) return false;
         pt.push_back(std::make_pair("UnitId", elementTree));
     
+        elementTree.clear();
         if (!displayName_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("DisplayName", elementTree));
     
+        elementTree.clear();
         if (!description_.xmlEncode(elementTree, xmlns)) return false;
         pt.push_back(std::make_pair("Description", elementTree));
     
