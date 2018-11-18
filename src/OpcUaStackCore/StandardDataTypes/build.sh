@@ -55,7 +55,10 @@
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype DiscoveryConfiguration --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype MdnsDiscoveryConfiguration --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype DoubleComplexNumberType --buildSubTypes 0
-OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype EUInformation --buildSubTypes 0
+#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype EUInformation --buildSubTypes 0
+OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype EndpointConfiguration --buildSubTypes 0
+
+
 
 
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype Range --buildSubTypes 0
