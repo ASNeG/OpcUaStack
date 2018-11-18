@@ -1,170 +1,215 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: EnumDefinition
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
-
-#include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/StandardDataTypes/EnumDefinition.h"
 
 namespace OpcUaStackCore
 {
-
-	EnumDefinition::EnumDefinition(void)
-	: DataTypeDefinition()
-	, name_("")
-	, enumFields_(constructSPtr<EnumFieldArray>())
-	{
-	}
-
-	EnumDefinition::~EnumDefinition(void)
-	{
-	}
-
-	void
-	EnumDefinition::name(const std::string& name)
-	{
-		name_ = name;
-	}
-
-	std::string&
-	EnumDefinition::name(void)
-	{
-		return name_;
-	}
-
-
-	void
-	EnumDefinition::enumFields(EnumFieldArray::SPtr& enumFields)
-	{
-		if (enumFields_.get() == nullptr) {
-			return;
-		}
-		enumFields_ = enumFields;
-	}
-
-	EnumFieldArray::SPtr&
-	EnumDefinition::enumFields(void)
-	{
-		return enumFields_;
-	}
-
-	void
-	EnumDefinition::copyTo(EnumDefinition& enumTypeDefinition)
-	{
-		enumFields_->copyTo(*enumTypeDefinition.enumFields_);
-	}
-
-	bool
-	EnumDefinition::operator==(const EnumDefinition& enumTypeDefinition) const
-	{
-		return *enumFields_ == *enumTypeDefinition.enumFields_;
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// ExtensionObjectBase
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	ExtensionObjectBase::SPtr
-	EnumDefinition::factory(void)
-	{
-		return constructSPtr<EnumDefinition>();
-	}
-
-	OpcUaNodeId
-	EnumDefinition::binaryTypeId(void)
-	{
-		return OpcUaNodeId((OpcUaUInt32)OpcUaId_EnumDefinition_Encoding_DefaultBinary);
-	}
-
-	OpcUaNodeId
-	EnumDefinition::xmlTypeId(void)
-	{
-		return OpcUaNodeId((OpcUaUInt32)OpcUaId_EnumDefinition_Encoding_DefaultXml);
-	}
-
-	void
-	EnumDefinition::opcUaBinaryEncode(std::ostream& os) const
-	{
-		enumFields_->opcUaBinaryEncode(os);
-	}
-
-	void
-	EnumDefinition::opcUaBinaryDecode(std::istream& is)
-	{
-		enumFields_->opcUaBinaryDecode(is);
-	}
-
-	bool
-	EnumDefinition::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	bool
-	EnumDefinition::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return true;
-	}
-
-	bool
-	EnumDefinition::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return true;
-	}
-
-	bool
-	EnumDefinition::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return true;
-	}
-
-	bool
-	EnumDefinition::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return true;
-	}
-
-	void
-	EnumDefinition::copyTo(ExtensionObjectBase& extensionObjectBase)
-	{
-		EnumDefinition* dst = dynamic_cast<EnumDefinition*>(&extensionObjectBase);
-		copyTo(*dst);
-	}
-
-	bool
-	EnumDefinition::equal(ExtensionObjectBase& extensionObjectBase) const
-	{
-		EnumDefinition* dst = dynamic_cast<EnumDefinition*>(&extensionObjectBase);
-		return *this == *dst;
-	}
-
-	void
-	EnumDefinition::out(std::ostream& os)
-	{
-		os << "EnumFields="; enumFields_->out(os);
-	}
+    
+    EnumDefinition::EnumDefinition(void)
+    : DataTypeDefinition()
+    , fields_()
+    {
+    }
+    
+    EnumDefinition::~EnumDefinition(void)
+    {
+    }
+    
+    EnumFieldArray&
+    EnumDefinition::fields(void)
+    {
+        return fields_;
+    }
+    
+    bool
+    EnumDefinition::operator==(const EnumDefinition& value)
+    {
+        EnumDefinition* dst = const_cast<EnumDefinition*>(&value);
+        if (fields_ != dst->fields()) return false;
+        return true;
+    }
+    
+    bool
+    EnumDefinition::operator!=(const EnumDefinition& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    EnumDefinition::copyTo(EnumDefinition& value)
+    {
+        fields_.copyTo(value.fields());
+    }
+    
+    EnumDefinition&
+    EnumDefinition::operator=(const EnumDefinition& value)
+    {
+        const_cast<EnumDefinition*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    EnumDefinition::factory(void)
+    {
+    	return constructSPtr<EnumDefinition>();
+    }
+    
+    std::string
+    EnumDefinition::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    EnumDefinition::typeName(void)
+    {
+    	return "EnumDefinition";
+    }
+    
+    OpcUaNodeId
+    EnumDefinition::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)100,0);
+    }
+    
+    OpcUaNodeId
+    EnumDefinition::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)123, 0);
+    }
+    
+    OpcUaNodeId
+    EnumDefinition::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)14799, 0);
+    }
+    
+    OpcUaNodeId
+    EnumDefinition::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15067, 0);
+    }
+    
+    void
+    EnumDefinition::opcUaBinaryEncode(std::ostream& os) const
+    {
+        fields_.opcUaBinaryEncode(os);
+    }
+    
+    void
+    EnumDefinition::opcUaBinaryDecode(std::istream& is)
+    {
+        fields_.opcUaBinaryDecode(is);
+    }
+    
+    bool
+    EnumDefinition::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    EnumDefinition::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    EnumDefinition::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    EnumDefinition::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!fields_.xmlEncode(elementTree, "EnumField", xmlns)) return false;
+        pt.push_back(std::make_pair("Fields", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    EnumDefinition::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    EnumDefinition::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("Fields");
+        if (!tree) return false;
+        if (!fields_.xmlDecode(*tree, "EnumField", xmlns)) return false;
+    
+        return true;
+    }
+    
+    bool
+    EnumDefinition::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    EnumDefinition::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    EnumDefinition::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    EnumDefinition::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    EnumDefinition::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	EnumDefinition* dst = dynamic_cast<EnumDefinition*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    EnumDefinition::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	EnumDefinition* dst = dynamic_cast<EnumDefinition*>(&extensionObjectBase);
+    	return *const_cast<EnumDefinition*>(this) == *dst;
+    }
+    
+    void
+    EnumDefinition::out(std::ostream& os)
+    {
+        os << "Fields="; fields_.out(os);
+    }
 
 }
-
-
