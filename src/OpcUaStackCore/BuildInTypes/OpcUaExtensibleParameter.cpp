@@ -15,7 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/asio/streambuf.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
+#include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
 {
@@ -81,16 +83,34 @@ namespace OpcUaStackCore
     void
 	OpcUaExtensibleParameter::opcUaBinaryEncode(std::ostream& os) const
     {
-    	if (eoSPtr_.get() == nullptr) return;
+    	if (eoSPtr_.get() == nullptr) {
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+    		return;
+    	}
 
     	parameterTypeId_.opcUaBinaryEncode(os);
-    	eoSPtr_->opcUaBinaryEncode(os);
+
+		boost::asio::streambuf sb;
+		std::ostream osb(&sb);
+		eoSPtr_->opcUaBinaryEncode(osb);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
+
+		OpcUaUInt32 bufferLength = OpcUaStackCore::count(sb);
+		OpcUaNumber::opcUaBinaryEncode(os, bufferLength);
+		os << osb.rdbuf();
     }
 
     void
 	OpcUaExtensibleParameter::opcUaBinaryDecode(std::istream& is)
     {
+    	OpcUaByte encodingMask;
     	parameterTypeId_.opcUaBinaryDecode(is);
+    	OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
+
+    	OpcUaUInt32 bufferLength;
+    	OpcUaNumber::opcUaBinaryDecode(is, bufferLength);
 
     	OpcUaExtensionObject eo(parameterTypeId_);
     	if (!eo.createObject()) return;

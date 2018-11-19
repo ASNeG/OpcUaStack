@@ -26,7 +26,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/ServiceSet/TimestampsToReturn.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
-#include "OpcUaStackCore/ServiceSet/HistoryEventFieldList.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryEventFieldList.h"
 
 namespace OpcUaStackCore
 {

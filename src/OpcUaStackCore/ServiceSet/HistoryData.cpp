@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 		return dataValueArraySPtr_;
 	}
 
-	ExtensibleParameterBase::SPtr
+	ExtensionObjectBase::SPtr
 	HistoryData::factory(void)
 	{
 		return constructSPtr<HistoryData>();

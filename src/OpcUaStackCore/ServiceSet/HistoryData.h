@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,14 +22,14 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT HistoryData
-	: public  Object
-	, public ExtensibleParameterBase
+	: public Object
+	, public ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryData> SPtr;
@@ -43,9 +43,12 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
-		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::SPtr factory(void);
-		//- ExtensibleParameterBase -------------------------------------------
+		//- ExtensionObjectBase -------------------------------------------
+		virtual ExtensionObjectBase::SPtr factory(void);
+		virtual void copyTo(ExtensionObjectBase& extensionObjectBase) {}						// FIXME: todo
+		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const { return true; }		// FIXME: todo
+		virtual void out(std::ostream& os) {}													// FIXME: todo
+		//- ExtensionObjectBase -------------------------------------------
 
 	  private:
 		OpcUaDataValueArray::SPtr dataValueArraySPtr_;

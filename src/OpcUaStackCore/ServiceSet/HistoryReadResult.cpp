@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: Object()
 	, statusCode_()
 	, continuationPoint_()
-	, historyData_(constructSPtr<ExtensibleParameter>())
+	, historyData_(constructSPtr<OpcUaExtensibleParameter>())
 	{
 	}
 
@@ -66,12 +66,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	HistoryReadResult::historyData(const ExtensibleParameter::SPtr historyData)
+	HistoryReadResult::historyData(const OpcUaExtensibleParameter::SPtr historyData)
 	{
 		historyData_ = historyData;
 	}
 	
-	ExtensibleParameter::SPtr 
+	OpcUaExtensibleParameter::SPtr
 	HistoryReadResult::historyData(void) const
 	{
 		return historyData_;
