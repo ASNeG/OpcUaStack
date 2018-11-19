@@ -21,8 +21,8 @@
 
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
-#include "OpcUaStackCore/ServiceSet/AttributeOperand.h"
 
+#include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/ContentFilterElement.h"
 
 #include "OpcUaStackCore/Filter/FilterStack.h"
@@ -154,7 +154,7 @@ namespace OpcUaStackCore
             	{
             	    AttributeOperand::SPtr attributeOperand = operand->parameter<AttributeOperand>();
             	    AttributeFilterNode::SPtr attributeNode(new AttributeFilterNode(
-            	            *attributeOperand->nodeId(),
+            	            attributeOperand->nodeId(),
             	            attributeOperand->alias(),
             	            attributeOperand->browsePath(),
             	            attributeOperand->attributeId(),

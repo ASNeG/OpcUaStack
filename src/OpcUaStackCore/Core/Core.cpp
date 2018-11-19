@@ -26,7 +26,6 @@
 #include "OpcUaStackCore/ServiceSet/IssuedIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
-#include "OpcUaStackCore/ServiceSet/AttributeOperand.h"
 #include "OpcUaStackCore/ServiceSet/SimpleAttributeOperand.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
@@ -47,6 +46,7 @@
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
 #include "OpcUaStackCore/ServiceSet/HistoryEvent.h"
 
+#include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 #include "OpcUaStackCore/StandardDataTypes/ServerStatusDataType.h"
 #include "OpcUaStackCore/StandardDataTypes/ModelChangeStructureDataType.h"

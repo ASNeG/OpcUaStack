@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	BOOST_REQUIRE(nodeTypeDescriptionSPtr->dataToReturn()->size() == 1);
 	queryDataDescriptionSPtr = constructSPtr<QueryDataDescription>();
 	nodeTypeDescriptionSPtr->dataToReturn()->get(queryDataDescriptionSPtr);
-	BOOST_REQUIRE(queryDataDescriptionSPtr->relativePath().elements()->size() == 0);
+	BOOST_REQUIRE(queryDataDescriptionSPtr->relativePath().elements().size() == 0);
 	BOOST_REQUIRE(queryDataDescriptionSPtr->attributeId() == 123);
 	BOOST_REQUIRE(queryDataDescriptionSPtr->indexRange().value() == "1:3");
 
