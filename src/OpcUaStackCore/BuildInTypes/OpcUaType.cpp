@@ -103,6 +103,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaDouble: return "Double";
 			case OpcUaBuildInType_OpcUaDuration: return "Duration";
 			case OpcUaBuildInType_OpcUaString: return "String";
+			case OpcUaBuildInType_OpcUaLocaleId: return "LocaleId";
 			case OpcUaBuildInType_OpcUaNumericRange: return "NumericRange";
 			case OpcUaBuildInType_OpcUaDateTime: return "DateTime";
 			case OpcUaBuildInType_OpcUaUtcTime: return "UtcTime";
@@ -151,6 +152,7 @@ namespace OpcUaStackCore
 		else if (type == "DOUBLE") return OpcUaBuildInType_OpcUaDouble;
 		else if (type == "DURATION") return OpcUaBuildInType_OpcUaDuration;
 		else if (type == "STRING") return OpcUaBuildInType_OpcUaString;
+		else if (type == "LOCALEID") return OpcUaBuildInType_OpcUaLocaleId;
 		else if (type == "NUMERICRANGE") return OpcUaBuildInType_OpcUaNumericRange;
 		else if (type == "DATETIME") return OpcUaBuildInType_OpcUaDateTime;
 		else if (type == "UTCTIME") return OpcUaBuildInType_OpcUaUtcTime;
@@ -197,6 +199,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaDouble: return "OpcUaDouble";
 			case OpcUaBuildInType_OpcUaDuration: return "OpcUaDuration";
 			case OpcUaBuildInType_OpcUaString: return "OpcUaString";
+			case OpcUaBuildInType_OpcUaLocaleId: return "OpcUaLocaleId";
 			case OpcUaBuildInType_OpcUaNumericRange: return "OpcUaNumericRange";
 			case OpcUaBuildInType_OpcUaApplicationInstanceCertificate: return "OpcUaApplicationInstanceCertificate";
 			case OpcUaBuildInType_OpcUaDateTime: return "OpcUaDateTime";

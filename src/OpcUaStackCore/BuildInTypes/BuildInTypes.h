@@ -51,6 +51,7 @@ namespace OpcUaStackCore
 	typedef OpcUaUInt32 OpcUaUadpDataSetMessageContentMask;
 	typedef OpcUaDouble OpcUaDuration;
 	typedef OpcUaString OpcUaNumericRange;
+	typedef OpcUaString OpcUaLocaleId;
 	typedef OpcUaStringArray OpcUaLocaleIdArray;
 	typedef OpcUaByteString OpcUaApplicationInstanceCertificate;
 

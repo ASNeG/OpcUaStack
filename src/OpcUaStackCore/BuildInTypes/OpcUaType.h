@@ -48,6 +48,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaDouble = 11,
 		OpcUaBuildInType_OpcUaDuration = 290,
 		OpcUaBuildInType_OpcUaString = 12,
+		OpcUaBuildInType_OpcUaLocaleId = 295,
 		OpcUaBuildInType_OpcUaNumericRange = 291,
 		OpcUaBuildInType_OpcUaDateTime = 13,
 		OpcUaBuildInType_OpcUaUtcTime = 294,
