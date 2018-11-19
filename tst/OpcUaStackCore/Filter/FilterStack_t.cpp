@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_attribute_operand)
     RelativePathElement::SPtr expectedPathElement, actualPathElement;
     someAttribute.browsePath().elements().get(expectedPathElement);
     mockAttrIf.calledBrowsePath_->elements().get(actualPathElement);
-    //BOOST_REQUIRE_EQUAL(expectedPathElement, actualPathElement);
+    BOOST_REQUIRE(*expectedPathElement.get() == *actualPathElement.get());
 
     BOOST_REQUIRE_EQUAL(someAttribute.attributeId(), mockAttrIf.calledAttributeId_);
     BOOST_REQUIRE_EQUAL(someAttribute.indexRange(), mockAttrIf.calledNumericRange_);
@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_simple_attribute_operand)
     OpcUaQualifiedName::SPtr expectedPathElement, actualPathElement;
     someAttribute.browsePath().get(expectedPathElement);
     actualPathElement = mockAttrIf.calledBrowsePath_.front();
-    //BOOST_REQUIRE_EQUAL(expectedPathElement, actualPathElement);
+    BOOST_REQUIRE(*expectedPathElement.get() == *actualPathElement.get());
 
     BOOST_REQUIRE_EQUAL(someAttribute.attributeId(), mockAttrIf.calledAttributeId_);
     BOOST_REQUIRE_EQUAL(someAttribute.indexRange(), mockAttrIf.calledNumericRange_);
