@@ -64,10 +64,10 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	qualifiedNameSPtr->name(string);
 
 	simpleAttributeOperandSPtr = constructSPtr<SimpleAttributeOperand>();
-	simpleAttributeOperandSPtr->typeIdx(typeId);
-	simpleAttributeOperandSPtr->browsePath()->set(qualifiedNameSPtr);
-	simpleAttributeOperandSPtr->attributeId((OpcUaUInt32)123);
-	simpleAttributeOperandSPtr->indexRange("1:2");
+	simpleAttributeOperandSPtr->typeDefinitionId() = OpcUaNodeId(typeId);
+	simpleAttributeOperandSPtr->browsePath().set(qualifiedNameSPtr);
+	simpleAttributeOperandSPtr->attributeId() = ((OpcUaUInt32)123);
+	simpleAttributeOperandSPtr->indexRange().value("1:2");
 
 	filterOperandSPtr = constructSPtr<OpcUaExtensibleParameter>();
 	filterOperandSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand_Encoding_DefaultBinary);
@@ -88,11 +88,11 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	BOOST_REQUIRE(filter2.selectClauses()->size() == 1);
 	filter2.selectClauses()->get(simpleAttributeOperandSPtr);
 
-	BOOST_REQUIRE(simpleAttributeOperandSPtr->typeIdx() == OpcUaNodeId(321, 123));
+	BOOST_REQUIRE(simpleAttributeOperandSPtr->typeDefinitionId() == OpcUaNodeId(321, 123));
 	BOOST_REQUIRE(simpleAttributeOperandSPtr->attributeId() == 123);
 	BOOST_REQUIRE(simpleAttributeOperandSPtr->indexRange().value() == "1:2");
-	BOOST_REQUIRE(simpleAttributeOperandSPtr->browsePath()->size() == 1);
-	simpleAttributeOperandSPtr->browsePath()->get(qualifiedNameSPtr);
+	BOOST_REQUIRE(simpleAttributeOperandSPtr->browsePath().size() == 1);
+	simpleAttributeOperandSPtr->browsePath().get(qualifiedNameSPtr);
 	BOOST_REQUIRE(qualifiedNameSPtr->namespaceIndex() == 123);
 	BOOST_REQUIRE(qualifiedNameSPtr->name().value() == "ABC");
 

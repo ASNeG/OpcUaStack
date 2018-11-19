@@ -1,11 +1,10 @@
 #ifndef OPCUASTACKCORE_FILTER_FILTEROPERATORHELPERS_H_
 #define OPCUASTACKCORE_FILTER_FILTEROPERATORHELPERS_H_
 
-
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackCore/ServiceSet/SimpleAttributeOperand.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
+#include "OpcUaStackCore/StandardDataTypes/SimpleAttributeOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/LiteralOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"

@@ -170,7 +170,7 @@ namespace OpcUaStackCore
             	    SimpleAttributeOperand::SPtr simpleAttributeOperand = operand->parameter<SimpleAttributeOperand>();
             	    SimpleAttributeFilterNode::SPtr simpleAttributeNode(new SimpleAttributeFilterNode(
             	            simpleAttributeOperand->typeId(),
-            	            *simpleAttributeOperand->browsePath(),
+            	            simpleAttributeOperand->browsePath(),
             	            simpleAttributeOperand->attributeId(),
             	            simpleAttributeOperand->indexRange()));
 

@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/SimpleAttributeOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/SimpleAttributeOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/ContentFilter.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
 

@@ -248,16 +248,17 @@ namespace OpcUaStackServer
 			selectClauses_->get(idx, simpleAttributeOperand);
 
 			std::list<OpcUaQualifiedName::SPtr> browseNameList;
-			for (uint32_t j=0; j<simpleAttributeOperand->browsePath()->size(); j++) {
+			for (uint32_t j=0; j<simpleAttributeOperand->browsePath().size(); j++) {
 				OpcUaQualifiedName::SPtr browseName;
-				simpleAttributeOperand->browsePath()->get(j, browseName);
+				simpleAttributeOperand->browsePath().get(j, browseName);
 				browseNameList.push_back(browseName);
 			}
 
 			// get variant value from event
+			OpcUaNodeId typeId = simpleAttributeOperand->typeId();
 			OpcUaVariant::SPtr value;
 			EventResult::Code resultCode = eventBase->get(
-				simpleAttributeOperand->typeIdx(),
+				typeId,
 				browseNameList,
 				value
 			);
