@@ -3,7 +3,7 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
-#include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/LiteralOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"
 #include "OpcUaStackCore/ServiceSet/SimpleAttributeOperand.h"
 
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(Operand_Literal)
 	// encode
 	variant.variant((OpcUaUInt32)123);
 
-	literalOperand1.value(variant);
+	literalOperand1.value() = variant;
 	literalOperand1.opcUaBinaryEncode(ios);
 
 	// decode

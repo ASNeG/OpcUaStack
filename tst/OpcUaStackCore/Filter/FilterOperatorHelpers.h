@@ -7,7 +7,7 @@
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
-#include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/LiteralOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/FilterOperator.h"
 #include "OpcUaStackCore/StandardDataTypes/ContentFilterElement.h"
