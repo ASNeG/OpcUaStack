@@ -255,7 +255,7 @@ namespace OpcUaStackServer
 			}
 
 			// get variant value from event
-			OpcUaNodeId typeId = simpleAttributeOperand->typeId();
+			OpcUaNodeId typeId = simpleAttributeOperand->typeDefinitionId();
 			OpcUaVariant::SPtr value;
 			EventResult::Code resultCode = eventBase->get(
 				typeId,
@@ -304,7 +304,8 @@ namespace OpcUaStackServer
 			return BadContentFilterInvalid;
 		}
 
-		selectClauses_ = selectClauses;
+		selectClauses.copyTo(selectClauses_);
+
 		statusCodeArray = constructSPtr<OpcUaStatusCodeArray>();
 		statusCodeArray->resize(selectClauses.size());
 		for (uint32_t idx=0; idx<selectClauses.size(); idx++) {
