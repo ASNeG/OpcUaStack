@@ -17,7 +17,7 @@
 
 #include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/ServiceSet/EventFilter.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardEventType/BaseEventType.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
@@ -90,7 +90,7 @@ namespace OpcUaStackServer
 		EventFilterResult::SPtr eventFilterResult = constructSPtr<EventFilterResult>();
 
 		// select clause
-		SimpleAttributeOperandArray::SPtr selectClauses = eventFilter->selectClauses();
+		SimpleAttributeOperandArray& selectClauses = eventFilter->selectClauses();
 		OpcUaStatusCodeArray::SPtr selectClauseResults = eventFilterResult->selectClauseResults();
 		statusCode = receive(selectClauses, selectClauseResults);
 		if (statusCode != Success) {
@@ -239,13 +239,13 @@ namespace OpcUaStackServer
 		// process where clause
 		EventFieldList::SPtr eventFieldList = constructSPtr<EventFieldList>();
 		eventFieldList->clientHandle(clientHandle_);
-		eventFieldList->eventFields()->resize(selectClauses_->size());
+		eventFieldList->eventFields()->resize(selectClauses_.size());
 
-		for (uint32_t idx=0; idx<selectClauses_->size(); idx++) {
+		for (uint32_t idx=0; idx<selectClauses_.size(); idx++) {
 
 			// get simple attribute operand
 			SimpleAttributeOperand::SPtr simpleAttributeOperand;
-			selectClauses_->get(idx, simpleAttributeOperand);
+			selectClauses_.get(idx, simpleAttributeOperand);
 
 			std::list<OpcUaQualifiedName::SPtr> browseNameList;
 			for (uint32_t j=0; j<simpleAttributeOperand->browsePath().size(); j++) {
@@ -298,19 +298,16 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	EventItem::receive(SimpleAttributeOperandArray::SPtr& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray)
+	EventItem::receive(SimpleAttributeOperandArray& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray)
 	{
-		if (selectClauses.get() == nullptr) {
-			return BadContentFilterInvalid;
-		}
-		if (selectClauses->size() == 0) {
+		if (selectClauses.size() == 0) {
 			return BadContentFilterInvalid;
 		}
 
 		selectClauses_ = selectClauses;
 		statusCodeArray = constructSPtr<OpcUaStatusCodeArray>();
-		statusCodeArray->resize(selectClauses->size());
-		for (uint32_t idx=0; idx<selectClauses->size(); idx++) {
+		statusCodeArray->resize(selectClauses.size());
+		for (uint32_t idx=0; idx<selectClauses.size(); idx++) {
 			// FIXME: check if attributes exist in type system
 
 			statusCodeArray->set(idx, (OpcUaStatusCode)Success);

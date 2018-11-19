@@ -36,6 +36,7 @@ namespace OpcUaStackCore
 		OpcUaExtensibleParameter(void);
 		~OpcUaExtensibleParameter(void);
 
+		void clear(void);
 		OpcUaNodeId& parameterTypeId(void);
 		ExtensionObjectBase::SPtr& eoSPtr(void);
 

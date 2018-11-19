@@ -3,10 +3,10 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/ServiceSet/DataChangeFilter.h"
-#include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
 #include "OpcUaStackCore/ServiceSet/AggregateFilterResult.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
 
 #include <streambuf>
@@ -78,15 +78,15 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	contentFilterElementSPtr->filterOperator().enumeration(FilterOperator::EnumAnd);
 	contentFilterElementSPtr->filterOperands().set(filterOperandSPtr);
 
-	filter1.selectClauses()->set(simpleAttributeOperandSPtr);
+	filter1.selectClauses().set(simpleAttributeOperandSPtr);
 	filter1.whereClause().elements().set(contentFilterElementSPtr);
 	filter1.opcUaBinaryEncode(ios);
 
 	// decode
 	filter2.opcUaBinaryDecode(ios);
 	
-	BOOST_REQUIRE(filter2.selectClauses()->size() == 1);
-	filter2.selectClauses()->get(simpleAttributeOperandSPtr);
+	BOOST_REQUIRE(filter2.selectClauses().size() == 1);
+	filter2.selectClauses().get(simpleAttributeOperandSPtr);
 
 	BOOST_REQUIRE(simpleAttributeOperandSPtr->typeDefinitionId() == OpcUaNodeId(321, 123));
 	BOOST_REQUIRE(simpleAttributeOperandSPtr->attributeId() == 123);

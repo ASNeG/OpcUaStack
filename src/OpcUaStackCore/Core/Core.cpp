@@ -24,7 +24,6 @@
 #include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/X509IdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/IssuedIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
 #include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
 #include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
@@ -41,6 +40,7 @@
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
 
+#include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardDataTypes/HistoryEvent.h"
 #include "OpcUaStackCore/StandardDataTypes/SimpleAttributeOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
@@ -113,7 +113,6 @@ namespace OpcUaStackCore
 		ep.registerFactoryElement<UserNameIdentityToken>(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
 		ep.registerFactoryElement<X509IdentityToken>(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
 		ep.registerFactoryElement<IssuedIdentityToken>(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
-		ep.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
 		ep.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
@@ -121,7 +120,6 @@ namespace OpcUaStackCore
 		ep.registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		ep.registerFactoryElement<ReadEventDetails>(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
 		ep.registerFactoryElement<UpdateStructureDataDetails>(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
-		ep.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
 	}
 
 	void
@@ -163,6 +161,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<SimpleAttributeOperand>(OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary);
 		eo.registerFactoryElement<HistoryEvent>(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 		eo.registerFactoryElement<HistoryData>(OpcUaId_HistoryData_Encoding_DefaultBinary);
+		eo.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -186,7 +185,6 @@ namespace OpcUaStackCore
 		ep.deregisterFactoryElement(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
 	}
 
 	void
@@ -227,6 +225,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_HistoryData_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

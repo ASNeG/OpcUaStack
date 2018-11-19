@@ -118,7 +118,7 @@ namespace OpcUaStackClient
 		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
 		OpcUaDouble samplingInterval_;
-		ExtensibleParameter filter_;
+		OpcUaExtensibleParameter filter_;
 		OpcUaUInt32 queueSize_;
 		OpcUaBoolean discardOldest_;
 		OpcUaUInt32 attributeId_;

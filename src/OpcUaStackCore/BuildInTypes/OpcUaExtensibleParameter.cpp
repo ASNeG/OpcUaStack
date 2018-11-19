@@ -31,6 +31,13 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	OpcUaExtensibleParameter::clear(void)
+	{
+		eoSPtr_.reset();
+		parameterTypeId_ = OpcUaNodeId();
+	}
+
 	OpcUaNodeId&
 	OpcUaExtensibleParameter::parameterTypeId(void)
 	{

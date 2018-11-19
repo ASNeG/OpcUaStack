@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 
 namespace OpcUaStackCore
 {
@@ -40,8 +40,8 @@ namespace OpcUaStackCore
 		OpcUaUInt32 clientHandle(void) const;
 		void samplingInterval(const OpcUaDouble& samplingInterval);
 		OpcUaDouble samplingInterval(void) const;
-		void filter(const ExtensibleParameter filter);
-		ExtensibleParameter filter(void);
+		void filter(OpcUaExtensibleParameter& filter);
+		OpcUaExtensibleParameter& filter(void);
 		void queueSize(const OpcUaUInt32 queueSize);
 		OpcUaUInt32 queueSize(void) const;
 		void discardOldest(const OpcUaBoolean discardOldest);
@@ -53,7 +53,7 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaUInt32 clientHandle_;
 		OpcUaDouble samplingInterval_;
-		ExtensibleParameter filter_;
+		OpcUaExtensibleParameter filter_;
 		OpcUaUInt32 queueSize_;
 		OpcUaBoolean discardOldest_;
 	};
