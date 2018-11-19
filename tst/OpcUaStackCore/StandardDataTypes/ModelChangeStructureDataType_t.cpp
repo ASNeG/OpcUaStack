@@ -81,7 +81,6 @@ BOOST_AUTO_TEST_CASE(ModelChangeStructureDataType_ExtensionObject_copyTo)
 	value1.typeId(typeId);
 	value1.parameter<ModelChangeStructureDataType>()->affected() = nodeId1;
 	value1.parameter<ModelChangeStructureDataType>()->affectedType() = nodeId2;
-	value1.parameter<ModelChangeStructureDataType>()->verb() = (OpcUaByte)1;
 
 	value1.copyTo(value2);
 
