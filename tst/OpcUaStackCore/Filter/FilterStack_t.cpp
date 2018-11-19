@@ -4,7 +4,7 @@
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/StandardDataTypes/LiteralOperand.h"
-#include "OpcUaStackCore/ServiceSet/ElementOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
 #include "OpcUaStackCore/Filter/FilterStack.h"
 
 using namespace OpcUaStackCore;

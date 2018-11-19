@@ -7,7 +7,7 @@
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
 #include "OpcUaStackCore/ServiceSet/AggregateFilterResult.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackCore/ServiceSet/ElementOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
 
 #include <streambuf>
 #include <iostream>
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	filterOperandSPtr = constructSPtr<OpcUaExtensibleParameter>();
 	filterOperandSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand_Encoding_DefaultBinary);
 	elementOperandSPtr = filterOperandSPtr->parameter<ElementOperand>();
-	elementOperandSPtr->index((OpcUaUInt32)123);
+	elementOperandSPtr->index() = ((OpcUaUInt32)123);
 
 	contentFilterElementSPtr = constructSPtr<ContentFilterElement>();
 	contentFilterElementSPtr->filterOperator().enumeration(FilterOperator::EnumAnd);

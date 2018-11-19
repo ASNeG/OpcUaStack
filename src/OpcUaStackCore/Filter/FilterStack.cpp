@@ -20,7 +20,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaTypeConversion.h"
 
 #include "OpcUaStackCore/StandardDataTypes/LiteralOperand.h"
-#include "OpcUaStackCore/ServiceSet/ElementOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/ContentFilterElement.h"
 

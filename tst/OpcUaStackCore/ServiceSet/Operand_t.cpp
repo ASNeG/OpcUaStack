@@ -2,7 +2,7 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/Utility.h"
-#include "OpcUaStackCore/ServiceSet/ElementOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/LiteralOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"
 #include "OpcUaStackCore/ServiceSet/SimpleAttributeOperand.h"
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(Operand_Element)
 	ElementOperand elementOperand1, elementOperand2;
 	
 	// encode
-	elementOperand1.index((OpcUaUInt32)123);
+	elementOperand1.index() = ((OpcUaUInt32)123);
 	elementOperand1.opcUaBinaryEncode(ios);
 
 	// decode

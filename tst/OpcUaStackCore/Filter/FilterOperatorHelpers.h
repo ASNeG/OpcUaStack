@@ -4,9 +4,9 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/SimpleAttributeOperand.h"
-#include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
+#include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/LiteralOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/FilterOperator.h"
@@ -110,11 +110,11 @@ static ContentFilterElement::SPtr makeOperatorWith2ElementOperands(FilterOperato
 
     OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
-    arg1_->parameter<ElementOperand>()->index(idx1);
+    arg1_->parameter<ElementOperand>()->index() = idx1;
 
     OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
-    arg2_->parameter<ElementOperand>()->index(idx2);
+    arg2_->parameter<ElementOperand>()->index() = idx2;
 
     eqElement->filterOperator().enumeration(op);
     eqElement->filterOperands().resize(2);
@@ -131,7 +131,7 @@ static ContentFilterElement::SPtr makeOperatorWithElementAndLiteralOperands(Filt
 
     OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
-    arg1_->parameter<ElementOperand>()->index(idx1);
+    arg1_->parameter<ElementOperand>()->index() = idx1;
 
     OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
