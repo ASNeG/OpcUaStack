@@ -105,7 +105,10 @@
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype RegisteredServer --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype RolePermissionType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype SamplingIntervalDiagnosticsDataType --buildSubTypes 0
-OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype SemanticChangeStructureDataType --buildSubTypes 0
+#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype SemanticChangeStructureDataType --buildSubTypes 0
+OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype ServerDiagnosticsSummaryDataType --buildSubTypes 0
+
+
 
 
 
