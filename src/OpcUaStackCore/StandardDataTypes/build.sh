@@ -119,7 +119,10 @@
 
 
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype StructureField --buildSubTypes 0
-OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype SubscribedDataSetDataType --buildSubTypes 0
+#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype SubscribedDataSetDataType --buildSubTypes 0
+OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype SubscribedDataSetMirrorDataType --buildSubTypes 0
+
+
 
 
 
