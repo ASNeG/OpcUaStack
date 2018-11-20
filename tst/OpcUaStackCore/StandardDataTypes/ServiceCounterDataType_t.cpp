@@ -19,8 +19,8 @@ BOOST_AUTO_TEST_CASE(ServiceCounterDataType_encode_decode)
 	ServiceCounterDataType value1;
 	ServiceCounterDataType value2;
 
-	value1.totalCount(1);
-	value1.errorCount(2);
+	value1.totalCount() = 1;
+	value1.errorCount() = 2;
 
 	std::stringstream ss;
 	value1.opcUaBinaryEncode(ss);
@@ -41,8 +41,8 @@ BOOST_AUTO_TEST_CASE(ServiceCounterDataType_ExtensionObject)
 	OpcUaNodeId typeId;
 	typeId.set(OpcUaId_ServiceCounterDataType_Encoding_DefaultBinary);
 	value1.typeId(typeId);
-	value1.parameter<ServiceCounterDataType>()->totalCount(1);
-	value1.parameter<ServiceCounterDataType>()->errorCount(2);
+	value1.parameter<ServiceCounterDataType>()->totalCount() = 1;
+	value1.parameter<ServiceCounterDataType>()->errorCount() = 2;
 
 	std::stringstream ss;
 	value1.opcUaBinaryEncode(ss);
@@ -63,8 +63,8 @@ BOOST_AUTO_TEST_CASE(ServiceCounterDataType_ExtensionObject_copyTo)
 	OpcUaNodeId typeId;
 	typeId.set(OpcUaId_ServiceCounterDataType_Encoding_DefaultBinary);
 	value1.typeId(typeId);
-	value1.parameter<ServiceCounterDataType>()->totalCount(1);
-	value1.parameter<ServiceCounterDataType>()->errorCount(2);
+	value1.parameter<ServiceCounterDataType>()->totalCount() = 1;
+	value1.parameter<ServiceCounterDataType>()->errorCount() = 2;
 
 	value1.copyTo(value2);
 
