@@ -52,6 +52,7 @@ namespace OpcUaStackCore
 			   buildInType == OpcUaBuildInType_OpcUaUInt64 ||
 			   buildInType == OpcUaBuildInType_OpcUaFloat ||
 			   buildInType == OpcUaBuildInType_OpcUaDouble ||
+			   buildInType == OpcUaBuildInType_OpcUaStatusCode ||
 			   buildInType == OpcUaBuildInType_OpcUaIntegerId ||
 			   buildInType == OpcUaBuildInType_OpcUaVersionTime ||
 			   buildInType == OpcUaBuildInType_OpcUaDataSetFieldContentMask ||

@@ -271,7 +271,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 		OpcUaString nameValue(*name);
-		structureField->name(nameValue);
+		structureField->name() = nameValue;
 
 		// decode symbolic name attribute
 		boost::optional<std::string> symbolicName = ptreeValue.get_optional<std::string>("<xmlattr>.SymbolicName");
@@ -293,7 +293,7 @@ namespace OpcUaStackServer
 		if (!valueRank) {
 			valueRank = -1;
 		}
-		structureField->valueRank(*valueRank);
+		structureField->valueRank() = *valueRank;
 
 		// decode array dimension attribute
 
@@ -302,7 +302,7 @@ namespace OpcUaStackServer
 		if (!maxStringLength) {
 			maxStringLength = 0;
 		}
-		structureField->maxStringLength(*maxStringLength);
+		structureField->maxStringLength() = *maxStringLength;
 
 		// decode value attribute
 		boost::optional<int32_t> value = ptreeValue.get_optional<int32_t>("<xmlattr>.Value");
@@ -310,10 +310,10 @@ namespace OpcUaStackServer
 		// decode is optional attribute
         boost::optional<std::string> isOptional = ptreeValue.get_optional<std::string>("<xmlattr>.IsOptional");
         if (isOptional && *isOptional == "true") {
-        	structureField->isOptional(true);
+        	structureField->isOptional() = true;
         }
         else {
-        	structureField->isOptional(false);
+        	structureField->isOptional() =  false;
         }
 
         // decode description element

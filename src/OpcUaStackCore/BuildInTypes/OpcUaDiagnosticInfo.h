@@ -51,6 +51,9 @@ namespace OpcUaStackCore
 		OpcUaStatusCode getInnerStatusCode() const;
 
 		void copyTo(OpcUaDiagnosticInfo& opcUaDiagnosticInfo);
+        bool operator==(const OpcUaDiagnosticInfo& value);
+        bool operator!=(const OpcUaDiagnosticInfo& value);
+        OpcUaDiagnosticInfo& operator=(const OpcUaDiagnosticInfo& value);
 
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaDiagnosticInfo& value) {
