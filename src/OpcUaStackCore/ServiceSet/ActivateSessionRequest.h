@@ -24,9 +24,9 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/SignatureData.h"
-#include "OpcUaStackCore/ServiceSet/SignedSoftwareCertificate.h"
 #include "OpcUaStackCore/ServiceSet/UserIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/StandardDataTypes/SignedSoftwareCertificate.h"
 
 namespace OpcUaStackCore
 {
