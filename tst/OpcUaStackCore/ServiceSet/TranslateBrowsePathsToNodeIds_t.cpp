@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	requestSPtr->browsePaths()->get(browsePathSPtr);
 	BOOST_REQUIRE(browsePathSPtr->startingNode()->namespaceIndex() == 2);
 	BOOST_REQUIRE(browsePathSPtr->startingNode()->nodeId<OpcUaUInt32>() == 123);
-	BOOST_REQUIRE(browsePathSPtr->relativePath().elements()->size() == 0);
+	BOOST_REQUIRE(browsePathSPtr->relativePath().elements().size() == 0);
 }
 
 

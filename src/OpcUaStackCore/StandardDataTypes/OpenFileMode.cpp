@@ -168,6 +168,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    OpenFileMode::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    std::string
+    OpenFileMode::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    OpenFileMode::typeName(void)
+    {
+    	return "OpenFileMode";
+    }
+    
+    OpcUaNodeId
+    OpenFileMode::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)11939,0);
+    }
+    
     void
     OpenFileMode::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -205,10 +229,38 @@ namespace OpcUaStackCore
     }
     
     bool
+    OpenFileMode::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     OpenFileMode::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
         return true;
+    }
+    
+    bool
+    OpenFileMode::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    OpenFileMode::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    OpenFileMode::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    OpenFileMode::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

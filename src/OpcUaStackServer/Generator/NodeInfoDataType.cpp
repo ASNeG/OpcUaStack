@@ -47,6 +47,8 @@ namespace OpcUaStackServer
 		InformationModel::SPtr& informationModel
 	)
 	{
+		static std::set<std::string> includePathSet;
+
 		// init node info
 		if (!NodeInfo::init(dataTypeNodeId, informationModel)) {
 			return false;
@@ -68,12 +70,12 @@ namespace OpcUaStackServer
 			return true;
 		}
 
-		if (dynamic_cast<StructureDefinition*>(definitionObject.get()) == nullptr) {
+		if (dynamic_cast<StructureDefinitionExpand*>(definitionObject.get()) == nullptr) {
 			Log(Error, "node definiton object is not from type StructureDefinition")
 				.parameter("DataTypeNodeId", dataTypeNodeId);
 			return false;
 		}
-		structureDefinition_ = boost::static_pointer_cast<StructureDefinition>(definitionObject);
+		structureDefinition_ = boost::static_pointer_cast<StructureDefinitionExpand>(definitionObject);
 
 
 		// create field information
@@ -121,6 +123,12 @@ namespace OpcUaStackServer
 				std::string buildInTypeName = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
 				if (buildInTypeName != "Unknown") {
 
+					if (type == 22) {
+						buildInTypeName = "ExtensibleParameter";
+						dataTypeField->includePath("OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h");
+						includePathSet.insert("OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h");
+					}
+
 					// set number flag
 					if (OpcUaBuildInTypeClass::isNumber((OpcUaBuildInType)type) == true) {
 						dataTypeField->number(true);
@@ -137,17 +145,20 @@ namespace OpcUaStackServer
 					}
 
 					if (dataTypeField->array() == true) {
-						dataTypeField->smartpointer(true);
-						dataTypeField->variableType("OpcUa" + buildInTypeName + "Array::SPtr");
+						dataTypeField->arrayElementName(buildInTypeName);
+						dataTypeField->variableType("OpcUa" + buildInTypeName + "Array");
+						dataTypeField->variableTypeWithoutPtr("OpcUa" + buildInTypeName + "Array");
 						dataTypeField->type(DataTypeField::BuildInArrayType);
 					}
 					else if ((dataTypeField->number() == true) ||
 							 (dataTypeField->byte() == true) ||
 							 (dataTypeField->boolean() == true)) {
 						dataTypeField->variableType("OpcUa" + buildInTypeName);
+						dataTypeField->variableTypeWithoutPtr("OpcUa" + buildInTypeName);
 						dataTypeField->type(DataTypeField::NumberType);
 					}
 					else {
+						dataTypeField->variableTypeWithoutPtr("OpcUa" + buildInTypeName);
 						dataTypeField->variableType("OpcUa" + buildInTypeName);
 						dataTypeField->type(DataTypeField::BuildInType);
 					}
@@ -168,7 +179,7 @@ namespace OpcUaStackServer
 				std::string dataTypeName = displayName.text().toStdString();
 
 				// set include
-				setIncludePath(dataTypeNodeId, dataTypeName, numberNamespaceMap(), dataTypeField);
+				setIncludePath(dataTypeNodeId, dataTypeName, numberNamespaceMap(), dataTypeField, includePathSet);
 
 				// enum type possible
 				InformationModelAccess ima(informationModel);
@@ -180,23 +191,27 @@ namespace OpcUaStackServer
 				// set build in type name
 				if (dataTypeField->enumeration() == true) {
 					if (dataTypeField->array()) {
-						dataTypeField->smartpointer(true);
-						dataTypeField->variableType(dataTypeName + "Array::SPtr");
+						dataTypeField->arrayElementName(dataTypeName);
+						dataTypeField->variableType(dataTypeName + "Array");
+						dataTypeField->variableTypeWithoutPtr(dataTypeName + "Array");
 						dataTypeField->type(DataTypeField::EnumerationArrayType);
 					}
 					else {
 						dataTypeField->variableType(dataTypeName);
+						dataTypeField->variableTypeWithoutPtr(dataTypeName);
 						dataTypeField->type(DataTypeField::EnumerationType);
 					}
 				}
 				else if (dataTypeField->structure() == true) {
 					if (dataTypeField->array()) {
-						dataTypeField->smartpointer(true);
-						dataTypeField->variableType(dataTypeName + "Array::SPtr");
+						dataTypeField->arrayElementName(dataTypeName);
+						dataTypeField->variableType(dataTypeName + "Array");
+						dataTypeField->variableTypeWithoutPtr(dataTypeName + "Array");
 						dataTypeField->type(DataTypeField::StructureArrayType);
 					}
 					else {
 						dataTypeField->variableType(dataTypeName);
+						dataTypeField->variableTypeWithoutPtr(dataTypeName);
 						dataTypeField->type(DataTypeField::StructureType);
 					}
 				}
@@ -218,11 +233,10 @@ namespace OpcUaStackServer
 		OpcUaNodeId& dataTypeNodeId,
 		const std::string& dataTypeName,
 		NumberNamespaceMap& numberNamespaceMap,
-		DataTypeField::SPtr& dataTypeField
+		DataTypeField::SPtr& dataTypeField,
+		std::set<std::string>& includePathSet
 	)
 	{
-		static std::set<std::string> includePathSet;
-
 		std::string directory = "StandardDataTypes";
 		if (dataTypeNodeId.namespaceIndex() != 0) directory = "CustomerDataType";
 

@@ -1,19 +1,13 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: DataTypeDefinition
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
-
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
+*/
 
 #ifndef __OpcUaStackCore_DataTypeDefinition_h__
 #define __OpcUaStackCore_DataTypeDefinition_h__
@@ -21,24 +15,64 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
-
-	class DLLEXPORT DataTypeDefinition
-	: public Object
-	, public ExtensionObjectBase
-	{
-	  public:
-		typedef boost::shared_ptr<DataTypeDefinition> SPtr;
-
-		DataTypeDefinition(void);
-		virtual ~DataTypeDefinition(void);
-
-	  private:
-	};
+    
+    class DLLEXPORT DataTypeDefinition
+    : public Object
+    , public ExtensionObjectBase
+    {
+      public:
+        typedef boost::shared_ptr<DataTypeDefinition> SPtr;
+        typedef std::vector<DataTypeDefinition::SPtr> Vec;
+    
+        DataTypeDefinition(void);
+        virtual ~DataTypeDefinition(void);
+        
+        
+        //- ExtensionObjectBase -----------------------------------------------
+        virtual ExtensionObjectBase::SPtr factory(void);
+        virtual std::string namespaceName(void);
+        virtual std::string typeName(void);
+        virtual OpcUaNodeId typeId(void);
+        virtual OpcUaNodeId binaryTypeId(void);
+        virtual OpcUaNodeId xmlTypeId(void);
+        virtual OpcUaNodeId jsonTypeId(void);
+        virtual void opcUaBinaryEncode(std::ostream& os) const;
+        virtual void opcUaBinaryDecode(std::istream& is);
+        virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
+        virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
+        virtual bool jsonEncode(boost::property_tree::ptree& pt);
+        virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
+        virtual bool jsonDecode(boost::property_tree::ptree& pt);
+        virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+        virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+        virtual void out(std::ostream& os);
+        //- ExtensionObjectBase -----------------------------------------------
+        
+        void copyTo(DataTypeDefinition& value);
+        bool operator==(const DataTypeDefinition& value);
+        bool operator!=(const DataTypeDefinition& value);
+        DataTypeDefinition& operator=(const DataTypeDefinition& value);
+    
+      private:
+    
+    };
+    
+    class DataTypeDefinitionArray
+    : public OpcUaArray<DataTypeDefinition::SPtr, SPtrTypeCoder<DataTypeDefinition> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<DataTypeDefinitionArray> SPtr;
+    };
 
 }
 

@@ -176,6 +176,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    IdentityCriteriaType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    std::string
+    IdentityCriteriaType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    IdentityCriteriaType::typeName(void)
+    {
+    	return "IdentityCriteriaType";
+    }
+    
+    OpcUaNodeId
+    IdentityCriteriaType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15632,0);
+    }
+    
     void
     IdentityCriteriaType::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -213,10 +237,38 @@ namespace OpcUaStackCore
     }
     
     bool
+    IdentityCriteriaType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     IdentityCriteriaType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
         return true;
+    }
+    
+    bool
+    IdentityCriteriaType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    IdentityCriteriaType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    IdentityCriteriaType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    IdentityCriteriaType::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

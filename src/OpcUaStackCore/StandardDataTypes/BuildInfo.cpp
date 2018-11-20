@@ -1,187 +1,316 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: BuildInfo
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
-
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
 
 #include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 
 namespace OpcUaStackCore
 {
-
-	BuildInfo::BuildInfo(void)
-	: Object()
-	, productUri_()
-	, manufacturerName_()
-	, productName_()
-	, softwareVersion_()
-	, buildNumber_()
-	, buildDate_()
-	{
-	}
-
-	BuildInfo::~BuildInfo(void)
-	{
-	}
-
-	OpcUaString&
-	BuildInfo::productUri(void)
-	{
-		return productUri_;
-	}
-
-	OpcUaString&
-	BuildInfo::manufacturerName(void)
-	{
-		return manufacturerName_;
-	}
-
-	OpcUaString&
-	BuildInfo::productName(void)
-	{
-		return productName_;
-	}
-
-	OpcUaString&
-	BuildInfo::softwareVersion(void)
-	{
-		return softwareVersion_;
-	}
-
-	OpcUaString&
-	BuildInfo::buildNumber(void)
-	{
-		return buildNumber_;
-	}
-
-	OpcUaDateTime&
-	BuildInfo::buildDate(void)
-	{
-		return buildDate_;
-	}
-
-	void
-	BuildInfo::copyTo(BuildInfo& buildInfo)
-	{
-		productUri_.copyTo(buildInfo.productUri_);
-		manufacturerName_.copyTo(buildInfo.manufacturerName_);
-		productName_.copyTo(buildInfo.productName_);
-		softwareVersion_.copyTo(buildInfo.softwareVersion_);
-		buildNumber_.copyTo(buildInfo.buildNumber_);
-		buildDate_.copyTo(buildInfo.buildDate_);
-	}
-
-	bool
-	BuildInfo::operator!=(const BuildInfo& buildInfo) const
-	{
-		return !this->operator==(buildInfo);
-	}
-
-	bool
-	BuildInfo::operator==(const BuildInfo& buildInfo) const
-	{
-		BuildInfo* dst = const_cast<BuildInfo*>(&buildInfo);
-		return
-			productUri_ == dst->productUri() &&
-			manufacturerName_ == dst->manufacturerName() &&
-			productName_ == dst->productName() &&
-			softwareVersion_ == dst->softwareVersion() &&
-			buildNumber_ == dst->buildNumber() &&
-			buildDate_ == dst->buildDate();
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// ExtensionObjectBase
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	ExtensionObjectBase::SPtr
-	BuildInfo::factory(void)
-	{
-		return constructSPtr<BuildInfo>();
-	}
-
-	void
-	BuildInfo::opcUaBinaryEncode(std::ostream& os) const
-	{
-		productUri_.opcUaBinaryEncode(os);
-		manufacturerName_.opcUaBinaryEncode(os);
-		productName_.opcUaBinaryEncode(os);
-		softwareVersion_.opcUaBinaryEncode(os);
-		buildNumber_.opcUaBinaryEncode(os);
-		buildDate_.opcUaBinaryEncode(os);
-	}
-
-	void
-	BuildInfo::opcUaBinaryDecode(std::istream& is)
-	{
-		productUri_.opcUaBinaryDecode(is);
-		manufacturerName_.opcUaBinaryDecode(is);
-		productName_.opcUaBinaryDecode(is);
-		softwareVersion_.opcUaBinaryDecode(is);
-		buildNumber_.opcUaBinaryDecode(is);
-		buildDate_.opcUaBinaryDecode(is);
-	}
-
-	bool
-	BuildInfo::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	bool
-	BuildInfo::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	bool
-	BuildInfo::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	void
-	BuildInfo::copyTo(ExtensionObjectBase& extensionObjectBase)
-	{
-		BuildInfo* dst = dynamic_cast<BuildInfo*>(&extensionObjectBase);
-		copyTo(*dst);
-	}
-
-	bool
-	BuildInfo::equal(ExtensionObjectBase& extensionObjectBase) const
-	{
-		BuildInfo* dst = dynamic_cast<BuildInfo*>(&extensionObjectBase);
-		return *this == *dst;
-	}
-
-	void
-	BuildInfo::out(std::ostream& os)
-	{
-		os << "ProductUri="; productUri_.out(os);
-		os << ", ManufacturerName="; manufacturerName_.out(os);
-		os << ", ProductName="; productName_.out(os);
-		os << ", SoftwareVersion="; softwareVersion_.out(os);
-		os << ", BuildNumber="; buildNumber_.out(os);
-		os << ", BuildDate="; buildDate_.out(os);
-	}
+    
+    BuildInfo::BuildInfo(void)
+    : Object()
+    , ExtensionObjectBase()
+    , productUri_()
+    , manufacturerName_()
+    , productName_()
+    , softwareVersion_()
+    , buildNumber_()
+    , buildDate_()
+    {
+    }
+    
+    BuildInfo::~BuildInfo(void)
+    {
+    }
+    
+    OpcUaString&
+    BuildInfo::productUri(void)
+    {
+        return productUri_;
+    }
+    
+    OpcUaString&
+    BuildInfo::manufacturerName(void)
+    {
+        return manufacturerName_;
+    }
+    
+    OpcUaString&
+    BuildInfo::productName(void)
+    {
+        return productName_;
+    }
+    
+    OpcUaString&
+    BuildInfo::softwareVersion(void)
+    {
+        return softwareVersion_;
+    }
+    
+    OpcUaString&
+    BuildInfo::buildNumber(void)
+    {
+        return buildNumber_;
+    }
+    
+    OpcUaUtcTime&
+    BuildInfo::buildDate(void)
+    {
+        return buildDate_;
+    }
+    
+    bool
+    BuildInfo::operator==(const BuildInfo& value)
+    {
+        BuildInfo* dst = const_cast<BuildInfo*>(&value);
+        if (productUri_ != dst->productUri()) return false;
+        if (manufacturerName_ != dst->manufacturerName()) return false;
+        if (productName_ != dst->productName()) return false;
+        if (softwareVersion_ != dst->softwareVersion()) return false;
+        if (buildNumber_ != dst->buildNumber()) return false;
+        if (buildDate_ != dst->buildDate()) return false;
+        return true;
+    }
+    
+    bool
+    BuildInfo::operator!=(const BuildInfo& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    BuildInfo::copyTo(BuildInfo& value)
+    {
+        productUri_.copyTo(value.productUri());
+        manufacturerName_.copyTo(value.manufacturerName());
+        productName_.copyTo(value.productName());
+        softwareVersion_.copyTo(value.softwareVersion());
+        buildNumber_.copyTo(value.buildNumber());
+        buildDate_.copyTo(value.buildDate());
+    }
+    
+    BuildInfo&
+    BuildInfo::operator=(const BuildInfo& value)
+    {
+        const_cast<BuildInfo*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    BuildInfo::factory(void)
+    {
+    	return constructSPtr<BuildInfo>();
+    }
+    
+    std::string
+    BuildInfo::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    BuildInfo::typeName(void)
+    {
+    	return "BuildInfo";
+    }
+    
+    OpcUaNodeId
+    BuildInfo::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)338,0);
+    }
+    
+    OpcUaNodeId
+    BuildInfo::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)340, 0);
+    }
+    
+    OpcUaNodeId
+    BuildInfo::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)339, 0);
+    }
+    
+    OpcUaNodeId
+    BuildInfo::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15361, 0);
+    }
+    
+    void
+    BuildInfo::opcUaBinaryEncode(std::ostream& os) const
+    {
+        productUri_.opcUaBinaryEncode(os);
+        manufacturerName_.opcUaBinaryEncode(os);
+        productName_.opcUaBinaryEncode(os);
+        softwareVersion_.opcUaBinaryEncode(os);
+        buildNumber_.opcUaBinaryEncode(os);
+        buildDate_.opcUaBinaryEncode(os);
+    }
+    
+    void
+    BuildInfo::opcUaBinaryDecode(std::istream& is)
+    {
+        productUri_.opcUaBinaryDecode(is);
+        manufacturerName_.opcUaBinaryDecode(is);
+        productName_.opcUaBinaryDecode(is);
+        softwareVersion_.opcUaBinaryDecode(is);
+        buildNumber_.opcUaBinaryDecode(is);
+        buildDate_.opcUaBinaryDecode(is);
+    }
+    
+    bool
+    BuildInfo::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    BuildInfo::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    BuildInfo::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    BuildInfo::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!productUri_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("ProductUri", elementTree));
+    
+        elementTree.clear();
+        if (!manufacturerName_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("ManufacturerName", elementTree));
+    
+        elementTree.clear();
+        if (!productName_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("ProductName", elementTree));
+    
+        elementTree.clear();
+        if (!softwareVersion_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("SoftwareVersion", elementTree));
+    
+        elementTree.clear();
+        if (!buildNumber_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("BuildNumber", elementTree));
+    
+        elementTree.clear();
+        if (!buildDate_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("BuildDate", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    BuildInfo::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    BuildInfo::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("ProductUri");
+        if (!tree) return false;
+        if (!productUri_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("ManufacturerName");
+        if (!tree) return false;
+        if (!manufacturerName_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("ProductName");
+        if (!tree) return false;
+        if (!productName_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("SoftwareVersion");
+        if (!tree) return false;
+        if (!softwareVersion_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("BuildNumber");
+        if (!tree) return false;
+        if (!buildNumber_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("BuildDate");
+        if (!tree) return false;
+        if (!buildDate_.xmlDecode(*tree, xmlns)) return false;
+    
+        return true;
+    }
+    
+    bool
+    BuildInfo::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    BuildInfo::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    BuildInfo::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    BuildInfo::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    BuildInfo::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	BuildInfo* dst = dynamic_cast<BuildInfo*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    BuildInfo::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	BuildInfo* dst = dynamic_cast<BuildInfo*>(&extensionObjectBase);
+    	return *const_cast<BuildInfo*>(this) == *dst;
+    }
+    
+    void
+    BuildInfo::out(std::ostream& os)
+    {
+        os << "ProductUri="; productUri_.out(os);
+        os << ", ManufacturerName="; manufacturerName_.out(os);
+        os << ", ProductName="; productName_.out(os);
+        os << ", SoftwareVersion="; softwareVersion_.out(os);
+        os << ", BuildNumber="; buildNumber_.out(os);
+        os << ", BuildDate="; buildDate_.out(os);
+    }
 
 }
-
-

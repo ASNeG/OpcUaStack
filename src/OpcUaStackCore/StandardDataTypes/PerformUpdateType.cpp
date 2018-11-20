@@ -168,6 +168,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    PerformUpdateType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    std::string
+    PerformUpdateType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    PerformUpdateType::typeName(void)
+    {
+    	return "PerformUpdateType";
+    }
+    
+    OpcUaNodeId
+    PerformUpdateType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)11293,0);
+    }
+    
     void
     PerformUpdateType::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -205,10 +229,38 @@ namespace OpcUaStackCore
     }
     
     bool
+    PerformUpdateType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     PerformUpdateType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
         return true;
+    }
+    
+    bool
+    PerformUpdateType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    PerformUpdateType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    PerformUpdateType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    PerformUpdateType::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

@@ -56,7 +56,7 @@ namespace OpcUaStackServer
 		if (!nodeInfo_.init(dataType, informationModel_)) {
 			return false;
 		}
-		nodeInfo_.log();
+		//nodeInfo_.log();
 
 		// generate header and source content
 		return
@@ -108,6 +108,7 @@ namespace OpcUaStackServer
 				    generateHeaderClassPrivate("    ") &&
 				    generateHeaderClassValueDefinition("        ") &&
 				generateHeaderClassEnd("    ") &&
+				generateHeaderClassValueArray("    ") &&
 		    generateHeaderEnd();
 	}
 
@@ -125,7 +126,6 @@ namespace OpcUaStackServer
 		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
 		ss << std::endl;
 		ss << "    Autor:     Kai Huebl (kai@huebl-sgh.de)" << std::endl;
-		ss << "    BuildDate: " << boost::posix_time::microsec_clock::local_time() << std::endl;
 		ss << "*/" << std::endl;
 
 		headerContent_ += ss.str();
@@ -212,7 +212,7 @@ namespace OpcUaStackServer
 		// added class
 		//
 		ss << prefix << std::endl;
-		ss << prefix << "class " << nodeInfo_.className() << std::endl;
+		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << std::endl;
 
 		//
 		// added base classes
@@ -229,6 +229,7 @@ namespace OpcUaStackServer
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
 		ss << prefix << "    typedef boost::shared_ptr<" << nodeInfo_.className()  << "> SPtr;" << std::endl;
+		ss << prefix << "    typedef std::vector<" << nodeInfo_.className() << "::SPtr> Vec;" << std::endl;
 		ss << prefix << std::endl;
 		ss << prefix << "    " << nodeInfo_.className() << "(void);" << std::endl;
 		ss << prefix << "    virtual ~" << nodeInfo_.className() << "(void);" << std::endl;
@@ -263,15 +264,24 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
 		ss << prefix << "virtual ExtensionObjectBase::SPtr factory(void);" << std::endl;
+		ss << prefix << "virtual std::string namespaceName(void);" << std::endl;
+		ss << prefix << "virtual std::string typeName(void);" << std::endl;
+		ss << prefix << "virtual OpcUaNodeId typeId(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId xmlTypeId(void);" << std::endl;
+		ss << prefix << "virtual OpcUaNodeId jsonTypeId(void);" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryEncode(std::ostream& os) const;" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryDecode(std::istream& is);" << std::endl;
 		ss << prefix << "virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;" << std::endl;
 		ss << prefix << "virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
+		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
+		ss << prefix << "virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);" << std::endl;
+		ss << prefix << "virtual bool jsonEncode(boost::property_tree::ptree& pt);" << std::endl;
+		ss << prefix << "virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);" << std::endl;
+		ss << prefix << "virtual bool jsonDecode(boost::property_tree::ptree& pt);" << std::endl;
 		ss << prefix << "virtual void copyTo(ExtensionObjectBase& extensionObjectBase);" << std::endl;
 		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;" << std::endl;
 		ss << prefix << "virtual void out(std::ostream& os);" << std::endl;
@@ -288,8 +298,9 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix << "void copyTo(" << nodeInfo_.className() << "& value);" << std::endl;
-		ss << prefix << "bool operator==(const " << nodeInfo_.className() << "& value) const;" << std::endl;
-		ss << prefix << "bool operator!=(const " << nodeInfo_.className() << "& value) const;" << std::endl;
+		ss << prefix << "bool operator==(const " << nodeInfo_.className() << "& value);" << std::endl;
+		ss << prefix << "bool operator!=(const " << nodeInfo_.className() << "& value);" << std::endl;
+		ss << prefix << nodeInfo_.className() << "& operator=(const " << nodeInfo_.className() << "& value);" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -347,8 +358,30 @@ namespace OpcUaStackServer
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			ss << prefix << dataTypeField->variableType() << " " << dataTypeField->variableName() << ";" << std::endl;
+			ss << prefix << dataTypeField->variableType() << " " << dataTypeField->variableName() << ";";
+			if (dataTypeField->description() != "") {
+				ss << " //!< " << dataTypeField->description();
+			}
+			ss << std::endl;
 		}
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassValueArray(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "class " << nodeInfo_.className() << "Array" << std::endl;
+		ss << prefix << ": public OpcUaArray<" << nodeInfo_.className() << "::SPtr, SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
+		ss << prefix << ", public Object" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "  public:" << std::endl;
+		ss << prefix << "	   typedef boost::shared_ptr<" << nodeInfo_.className() << "Array> SPtr;" << std::endl;
+		ss << prefix << "};" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -374,16 +407,23 @@ namespace OpcUaStackServer
 				generateSourceClassPublicEQ("    ") &&
 				generateSourceClassPublicNE("    ") &&
 				generateSourceClassPublicCP("    ") &&
+				generateSourceClassPublicAssign("    ") &&
 				generateSourceClassExtensionObjectBase("    ") &&
 				generateSourceClassFactory("    ") &&
+				generateSourceClassNamespaceName("    ") &&
+				generateSourceClassTypeName("    ") &&
+				generateSourceClassTypeId("    ") &&
 				generateSourceClassBinaryTypeId("    ") &&
 				generateSourceClassXmlTypeId("    ") &&
+				generateSourceClassJsonTypeId("    ") &&
 				generateSourceClassBinaryEncode("    ") &&
 				generateSourceClassBinaryDecode("    ") &&
 				generateSourceClassEncode("    ") &&
 				generateSourceClassDecode("    ") &&
 				generateSourceClassXmlEncode("    ") &&
 				generateSourceClassXmlDecode("    ") &&
+				generateSourceClassJsonEncode("    ") &&
+				generateSourceClassJsonDecode("    ") &&
 				generateSourceClassCopyTo("    ") &&
 				generateSourceClassEqual("    ") &&
 				generateSourceClassOut("    ") &&
@@ -462,6 +502,12 @@ namespace OpcUaStackServer
 		// added constructor
 		//
 		ss << prefix << std::endl;
+		if (nodeInfo_.description() != "") {
+			ss << prefix << "/**" << std::endl;
+			ss << prefix << " * " << nodeInfo_.description() << std::endl;
+			ss << prefix << " */" << std::endl;
+		}
+
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
 
 		if (nodeInfo_.parentIsStructureType() == true) {
@@ -480,7 +526,7 @@ namespace OpcUaStackServer
 
 			std::string variableContent = "";
 			if (dataTypeField->smartpointer() == true) {
-				variableContent = "constructSPtr<" + dataTypeField->name() + ">()";
+				variableContent = "constructSPtr<" + dataTypeField->variableTypeWithoutPtr() + ">()";
 			}
 
 			ss << prefix << ", " << dataTypeField->variableName() << "(" << variableContent << ")" << std::endl;
@@ -540,7 +586,7 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::operator==(const " << nodeInfo_.className() << "& value) const" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::operator==(const " << nodeInfo_.className() << "& value)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    " << nodeInfo_.className() << "* dst = const_cast<" << nodeInfo_.className() << "*>(&value);" << std::endl;
 
@@ -580,9 +626,26 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::operator!=(const " << nodeInfo_.className() << "& value) const" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::operator!=(const " << nodeInfo_.className() << "& value)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    return !this->operator==(value);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassPublicAssign(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << nodeInfo_.className() << "&" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::operator=(const " << nodeInfo_.className() << "& value)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    const_cast<" << nodeInfo_.className() << "*>(&value)->copyTo(*this);" << std::endl;
+		ss << prefix << "    return *this;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -605,17 +668,15 @@ namespace OpcUaStackServer
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			if (dataTypeField->array() == true) {
-				ss << prefix << "    if (" << dataTypeField->variableName() << ".get() != nullptr) {" << std::endl;
-				ss << prefix << "	    " << dataTypeField->variableName() << "->copyTo(*value." << dataTypeField->parameterName() << "());" << std::endl;
-				ss << prefix << "    }" << std::endl;
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    value." << dataTypeField->variableName() << " = " << dataTypeField->variableName() << ";" << std::endl;
+					break;
+				default:
+					ss << prefix << "    " << dataTypeField->variableName() << ".copyTo(value." << dataTypeField->parameterName() << "());" << std::endl;
 			}
-			else if (dataTypeField->smartpointer() == true) {
-				ss << prefix << "    " << dataTypeField->variableName() << ".copyTo(value." << dataTypeField->parameterName() << "());" << std::endl;
-			}
-			else {
-				ss << prefix << "    value." << dataTypeField->variableName() << " = " << dataTypeField->variableName() << ";" << std::endl;
-			}
+
 		}
 
 		ss << prefix << "}" << std::endl;
@@ -659,19 +720,68 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	DataTypeGenerator::generateSourceClassNamespaceName(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "std::string" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::namespaceName(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return \"" << nodeInfo_.dataTypeNamespaceName() << "\";" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassTypeName(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "std::string" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::typeName(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return \"" << nodeInfo_.className() << "\";" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassTypeId(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		OpcUaNodeId dataTypeNodeId = nodeInfo_.dataTypeNodeId();
+
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaNodeId" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::typeId(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << nodeInfo_.getIdentifierAsString(dataTypeNodeId) << "," << dataTypeNodeId.namespaceIndex() << ");" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
 	DataTypeGenerator::generateSourceClassBinaryTypeId(const std::string& prefix)
 	{
 		std::stringstream ss;
 
-		// FIXME: todo
-		std::string identifier = "0";
-		std::string namespaceName = "0";
+		std::string identifier = nodeInfo_.getIdentifierAsString(nodeInfo_.defaultBinaryNodeId());
+		int16_t namespaceId = nodeInfo_.defaultBinaryNodeId().namespaceIndex();
 
 		ss << prefix << std::endl;
 		ss << prefix << "OpcUaNodeId" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::binaryTypeId(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "	return OpcUaNodeId(" << namespaceName << ", " << identifier << ");" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << identifier << ", " << namespaceId << ");" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -683,15 +793,33 @@ namespace OpcUaStackServer
 	{
 		std::stringstream ss;
 
-		// FIXME: todo
-		std::string identifier = "0";
-		std::string namespaceName = "0";
+		std::string identifier = nodeInfo_.getIdentifierAsString(nodeInfo_.defaultXMLNodeId());
+		int16_t namespaceId = nodeInfo_.defaultXMLNodeId().namespaceIndex();
 
 		ss << prefix << std::endl;
 		ss << prefix << "OpcUaNodeId" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlTypeId(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "	return OpcUaNodeId(" << namespaceName << ", " << identifier << ");" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << identifier << ", " << namespaceId << ");" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassJsonTypeId(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string identifier = nodeInfo_.getIdentifierAsString(nodeInfo_.defaultJSONNodeId());
+		int16_t namespaceId = nodeInfo_.defaultJSONNodeId().namespaceIndex();
+
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaNodeId" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonTypeId(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << identifier << ", " << namespaceId << ");" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -708,27 +836,23 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryEncode(std::ostream& os) const" << std::endl;
 		ss << prefix << "{" << std::endl;
 
+		if (nodeInfo_.parentClassName() != "Structure") {
+			ss << prefix << "    " << nodeInfo_.parentClassName() << "::opcUaBinaryEncode(os);" << std::endl;
+		}
+
 		DataTypeField::Vec::iterator it;
 		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			if (dataTypeField->array() == true) {
-				ss << prefix << "    if (" << dataTypeField->variableName() << ".get() == nullptr) {" << std::endl;
-				ss << prefix << "	     OpcUaNumber::opcUaBinaryEncode(os, (OpcUaInt32)-1);" << std::endl;
-				ss << prefix << "    }" << std::endl;
-				ss << prefix << "    else {" << std::endl;
-				ss << prefix << "	     " << dataTypeField->variableName() << "->opcUaBinaryEncode(os);" << std::endl;
-				ss << prefix << "    }" << std::endl;
-			}
-			else if ((dataTypeField->number() == true) ||
-					 (dataTypeField->byte() == true) ||
-					 (dataTypeField->boolean() == true)) {
-				ss << prefix << "    OpcUaNumber::opcUaBinaryEncode(os," << dataTypeField->variableName() << ");" << std::endl;
-			}
-			else {
-				ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryEncode(os);" << std::endl;
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    OpcUaNumber::opcUaBinaryEncode(os," << dataTypeField->variableName() << ");" << std::endl;
+					break;
+				default:
+					ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryEncode(os);" << std::endl;
 			}
 		}
 
@@ -748,22 +872,22 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryDecode(std::istream& is)" << std::endl;
 		ss << prefix << "{" << std::endl;
 
+		if (nodeInfo_.parentClassName() != "Structure") {
+			ss << prefix << "    " << nodeInfo_.parentClassName() << "::opcUaBinaryDecode(is);" << std::endl;
+		}
+
 		DataTypeField::Vec::iterator it;
 		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
-
-			if (dataTypeField->array() == true) {
-				ss << prefix << "    " << dataTypeField->variableName() << "->opcUaBinaryDecode(is);" << std::endl;
-			}
-			else if (dataTypeField->number() ||
-					 dataTypeField->byte() ||
-					 dataTypeField->boolean()) {
-				ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is," << dataTypeField->variableName() << ");" << std::endl;
-			}
-			else {
-				ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryDecode(is);" << std::endl;
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is," << dataTypeField->variableName() << ");" << std::endl;
+					break;
+				default:
+					ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryDecode(is);" << std::endl;
 			}
 		}
 
@@ -810,20 +934,60 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassXmlEncode(const std::string& prefix)
 	{
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 		std::stringstream ss;
 
+		//
+		// first xml encoder function
+		//
 		ss << prefix << std::endl;
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix <<  nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
+		ss << prefix << "    if (!xmlEncode(elementTree, xmlns)) return false;" << std::endl;
+		ss << prefix << "    pt.push_back(std::make_pair(element, elementTree));" << std::endl;
+		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
+
+		//
+		// second xml encoder function
+		//
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
+		ss << prefix << std::endl;
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    elementTree.clear();" << std::endl;
+					ss << prefix << "    if(!XmlNumber::xmlEncode(elementTree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
+					break;
+
+				case DataTypeField::BuildInArrayType:
+				case DataTypeField::StructureArrayType:
+				//case DataTypeField::EnumerationArrayType:
+					ss << prefix << "    elementTree.clear();" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) return false;" << std::endl;
+					break;
+
+				default:
+					ss << prefix << "    elementTree.clear();" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, xmlns)) return false;" << std::endl;
+			}
+			ss << prefix << "    pt.push_back(std::make_pair(\"" << dataTypeField->name() << "\", elementTree));" << std::endl;
+			ss << prefix << std::endl;
+		}
+
+    	ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -833,11 +997,123 @@ namespace OpcUaStackServer
 	bool
 	DataTypeGenerator::generateSourceClassXmlDecode(const std::string& prefix)
 	{
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 		std::stringstream ss;
 
+		//
+		// first xml decoder function
+		//
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix <<  nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);" << std::endl;
+		ss << prefix << "    if (!tree) return false;" << std::endl;
+		ss << prefix << "    return xmlDecode(*tree, xmlns);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+
+		//
+		// second xml decoder function
+		//
 		ss << prefix << std::endl;
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree;" << std::endl;
+		ss << prefix << std::endl;
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			ss << prefix << "    tree = pt.get_child_optional(\""<< dataTypeField->name() << "\");" << std::endl;
+			ss << prefix << "    if (!tree) return false;" << std::endl;
+
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    if(!XmlNumber::xmlDecode(*tree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
+					break;
+
+				case DataTypeField::BuildInArrayType:
+				case DataTypeField::StructureArrayType:
+				//case DataTypeField::EnumerationArrayType:
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlDecode(*tree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) return false;" << std::endl;
+					break;
+
+				default:
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlDecode(*tree, xmlns)) return false;" << std::endl;
+			}
+
+			ss << prefix << std::endl;
+		}
+
+		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassJsonEncode(const std::string& prefix)
+	{
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+		std::stringstream ss;
+
+		//
+		// first xml encoder function
+		//
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix <<  nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+
+		//
+		// second xml encoder function
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+    	ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassJsonDecode(const std::string& prefix)
+	{
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
+		std::stringstream ss;
+
+		//
+		// first xml decoder function
+		//
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix <<  nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+
+		//
+		// second xml decoder function
+		//
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		// FIXME: todo
 		ss << prefix << "}" << std::endl;
@@ -873,7 +1149,7 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::equal(ExtensionObjectBase& extensionObjectBase) const" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "	" << nodeInfo_.className() << "* dst = dynamic_cast<" << nodeInfo_.className() << "*>(&extensionObjectBase);" << std::endl;
-		ss << prefix << "	return *this == *dst;" << std::endl;
+		ss << prefix << "	return *const_cast<" << nodeInfo_.className() << "*>(this) == *dst;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -905,20 +1181,13 @@ namespace OpcUaStackServer
 				ss << prefix << "    os << \", " << dataTypeField->name() << "=";
 			}
 
-			if (dataTypeField->array() == true) {
-				ss << "\"; " << dataTypeField->variableName() << "->out(os);";
-			}
-			else if (dataTypeField->boolean() == true) {
-				ss << "\" << " << dataTypeField->variableName() << ";";
-			}
-			else if (dataTypeField->byte() == true) {
-				ss << "\" << "<< dataTypeField->variableName() << ";";
-			}
-			else if (dataTypeField->number() == true) {
-				ss << "\" << "<< dataTypeField->variableName() << ";";
-			}
-			else {
-				ss << "\"; " << dataTypeField->variableName() << ".out(os);";
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << "\" << " << dataTypeField->variableName() << ";";
+					break;
+				default:
+					ss << "\"; " << dataTypeField->variableName() << ".out(os);";
 			}
 
 			ss << std::endl;

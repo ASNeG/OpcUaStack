@@ -2,10 +2,10 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/Utility.h"
-#include "OpcUaStackCore/ServiceSet/ElementOperand.h"
-#include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
-#include "OpcUaStackCore/ServiceSet/AttributeOperand.h"
-#include "OpcUaStackCore/ServiceSet/SimpleAttributeOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/LiteralOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/SimpleAttributeOperand.h"
 
 #include <streambuf>
 #include <iostream>
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(Operand_Element)
 	ElementOperand elementOperand1, elementOperand2;
 	
 	// encode
-	elementOperand1.index((OpcUaUInt32)123);
+	elementOperand1.index() = ((OpcUaUInt32)123);
 	elementOperand1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(Operand_Literal)
 	// encode
 	variant.variant((OpcUaUInt32)123);
 
-	literalOperand1.value(variant);
+	literalOperand1.value() = variant;
 	literalOperand1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -71,20 +71,20 @@ BOOST_AUTO_TEST_CASE(Operand_SimpleAttribute)
 	qualifiedNameSPtr->name(string);
 	qualifiedNameSPtr->namespaceIndex(12);
 
-	simpleAttributeOperand1.typeId(OpcUaNodeId((OpcUaUInt32)11, 123));
-	simpleAttributeOperand1.browsePath()->set(qualifiedNameSPtr);
-	simpleAttributeOperand1.attributeId((OpcUaUInt32)123);
-	simpleAttributeOperand1.indexRange("1:2");
+	simpleAttributeOperand1.typeDefinitionId() = OpcUaNodeId((OpcUaUInt32)11, 123);
+	simpleAttributeOperand1.browsePath().set(qualifiedNameSPtr);
+	simpleAttributeOperand1.attributeId() = ((OpcUaUInt32)123);
+	simpleAttributeOperand1.indexRange().value("1:2");
 	simpleAttributeOperand1.opcUaBinaryEncode(ios);
 
 	// decode
 	simpleAttributeOperand2.opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(simpleAttributeOperand2.typeId().namespaceIndex() == 123);
-	BOOST_REQUIRE(simpleAttributeOperand2.typeId().nodeId<OpcUaUInt32>() == 11);
+	BOOST_REQUIRE(simpleAttributeOperand2.typeDefinitionId().namespaceIndex() == 123);
+	BOOST_REQUIRE(simpleAttributeOperand2.typeDefinitionId().nodeId<OpcUaUInt32>() == 11);
 
-	BOOST_REQUIRE(simpleAttributeOperand2.browsePath()->size() == 1);
-	simpleAttributeOperand2.browsePath()->get(qualifiedNameSPtr);
+	BOOST_REQUIRE(simpleAttributeOperand2.browsePath().size() == 1);
+	simpleAttributeOperand2.browsePath().get(qualifiedNameSPtr);
 	BOOST_REQUIRE(qualifiedNameSPtr->name().value() == "ABC");
 	BOOST_REQUIRE(qualifiedNameSPtr->namespaceIndex() == 12);
 
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(Operand_Attribute)
 	std::iostream ios(&sb);
 
 	OpcUaQualifiedName qualifiedName;
-	OpcUaNodeId::SPtr nodeIdSPtr;
+	OpcUaNodeId nodeId;
 	RelativePathElement::SPtr relativePathElementSPtr;
 	AttributeOperand attributeOperand1, attributeOperand2;
 	
@@ -108,32 +108,31 @@ BOOST_AUTO_TEST_CASE(Operand_Attribute)
 	qualifiedName = "ABC";
 	qualifiedName.namespaceIndex(12);
 
-	nodeIdSPtr = attributeOperand1.nodeId();
-	nodeIdSPtr->namespaceIndex(123);
-	nodeIdSPtr->nodeId((OpcUaUInt32)11);
+	attributeOperand1.nodeId().namespaceIndex(123);
+	attributeOperand1.nodeId().nodeId((OpcUaUInt32)11);
 
 	relativePathElementSPtr = constructSPtr<RelativePathElement>();
-	relativePathElementSPtr->referenceTypeId(nodeIdSPtr);
-	relativePathElementSPtr->isInverse(false);
-	relativePathElementSPtr->includeSubtypes(false);
-	relativePathElementSPtr->targetName(qualifiedName);
-	attributeOperand1.browsePath().elements()->set(relativePathElementSPtr);
+	relativePathElementSPtr->referenceTypeId() = attributeOperand1.nodeId();
+	relativePathElementSPtr->isInverse() = false;
+	relativePathElementSPtr->includeSubtypes() = false;
+	relativePathElementSPtr->targetName() = qualifiedName;
+	attributeOperand1.browsePath().elements().set(relativePathElementSPtr);
 
-	attributeOperand1.attributeId((OpcUaUInt32)123);
-	attributeOperand1.indexRange("1:2");
+	attributeOperand1.attributeId() = 123;
+	attributeOperand1.indexRange().value("1:2");
 
 	attributeOperand1.opcUaBinaryEncode(ios);
 
 	// decode
 	attributeOperand2.opcUaBinaryDecode(ios);
 	
-	BOOST_REQUIRE(attributeOperand2.nodeId()->namespaceIndex() == 123);
-	BOOST_REQUIRE(attributeOperand2.nodeId()->nodeId<OpcUaUInt32>() == 11);
+	BOOST_REQUIRE(attributeOperand2.nodeId().namespaceIndex() == 123);
+	BOOST_REQUIRE(attributeOperand2.nodeId().nodeId<OpcUaUInt32>() == 11);
 	
-	BOOST_REQUIRE(attributeOperand2.browsePath().elements()->size() == 1);
-	attributeOperand2.browsePath().elements()->get(relativePathElementSPtr);
-	BOOST_REQUIRE(relativePathElementSPtr->referenceTypeId()->namespaceIndex() == 123);
-	BOOST_REQUIRE(relativePathElementSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
+	BOOST_REQUIRE(attributeOperand2.browsePath().elements().size() == 1);
+	attributeOperand2.browsePath().elements().get(relativePathElementSPtr);
+	BOOST_REQUIRE(relativePathElementSPtr->referenceTypeId().namespaceIndex() == 123);
+	BOOST_REQUIRE(relativePathElementSPtr->referenceTypeId().nodeId<OpcUaUInt32>() == 11);
 	BOOST_REQUIRE(relativePathElementSPtr->isInverse() == false);
 	BOOST_REQUIRE(relativePathElementSPtr->includeSubtypes() == false);
 	BOOST_REQUIRE(relativePathElementSPtr->targetName().name().value() == "ABC");

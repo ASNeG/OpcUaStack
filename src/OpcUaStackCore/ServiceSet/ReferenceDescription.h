@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
-#include "OpcUaStackCore/ServiceSet/NodeClassOld.h"
+#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 
 namespace OpcUaStackCore
 {
@@ -48,8 +48,8 @@ namespace OpcUaStackCore
 		OpcUaQualifiedName& browseName(void);
 		void displayName(const OpcUaLocalizedText& displayName);
 		OpcUaLocalizedText& displayName(void);
-		void nodeClass(const NodeClassType nodeClass);
-		NodeClassType nodeClass(void);
+		void nodeClass(const NodeClass::Enum nodeClass);
+		NodeClass::Enum nodeClass(void);
 		void typeDefinition(const OpcUaExpandedNodeId::SPtr typeDefinition);
 		OpcUaExpandedNodeId::SPtr typeDefinition(void) const;
 		
@@ -62,7 +62,7 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId::SPtr nodeIdSPtr_;
 		OpcUaQualifiedName browseName_;
 		OpcUaLocalizedText displayName_;
-		NodeClassType nodeClass_;
+		NodeClass::Enum nodeClass_;
 		OpcUaExpandedNodeId::SPtr typeDefinitionSPtr_;
 	};
 

@@ -17,8 +17,10 @@
 
 #include <boost/algorithm/string.hpp>
 
-#include <OpcUaStackServer/Generator/NodeInfo.h>
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
 namespace OpcUaStackServer
 {
@@ -27,6 +29,7 @@ namespace OpcUaStackServer
 	: numberNamespaceMap_()
 	, informationModel_()
 
+	, dataTypeNamespaceName_("")
 	, dataTypeNodeId_()
 	, parentDataTypeNodeId_()
 	, baseNode_()
@@ -41,6 +44,10 @@ namespace OpcUaStackServer
 	, parentIsStructureType_(false)
 	, isAbstract_(false)
 	, parentIsAbstract_(false)
+	, defaultBinaryNodeId_()
+	, defaultXMLNodeId_()
+	, defaultJSONNodeId_()
+	, description_("")
 	{
 	}
 
@@ -70,6 +77,12 @@ namespace OpcUaStackServer
 	NodeInfo::setNamespaceEntry(const std::string& namespaceEntry)
 	{
 		return numberNamespaceMap_.addNamespace(namespaceEntry);
+	}
+
+	std::string
+	NodeInfo::dataTypeNamespaceName(void)
+	{
+		return dataTypeNamespaceName_;
 	}
 
 	OpcUaNodeId
@@ -168,6 +181,30 @@ namespace OpcUaStackServer
 		return numberNamespaceMap_;
 	}
 
+	OpcUaNodeId&
+	NodeInfo::defaultBinaryNodeId(void)
+	{
+		return defaultBinaryNodeId_;
+	}
+
+	OpcUaNodeId&
+	NodeInfo::defaultXMLNodeId(void)
+	{
+		return defaultXMLNodeId_;
+	}
+
+	OpcUaNodeId&
+	NodeInfo::defaultJSONNodeId(void)
+	{
+		return defaultJSONNodeId_;
+	}
+
+	std::string&
+	NodeInfo::description(void)
+	{
+		return description_;
+	}
+
 	bool
 	NodeInfo::init(
 		const OpcUaNodeId& dataTypeNodeId,
@@ -176,6 +213,9 @@ namespace OpcUaStackServer
 	{
 		dataTypeNodeId_ = dataTypeNodeId;
 		informationModel_ = informationModel;
+
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
 
 		//
 		// find node in opc ua information model
@@ -190,8 +230,6 @@ namespace OpcUaStackServer
 		//
 		// find parent node in opc ua information model
 		//
-		InformationModelAccess ima;
-		ima.informationModel(informationModel_);
 		if (!ima.getSubType(baseNode_, parentDataTypeNodeId_)) {
 			Log(Error, "parent data type node identifier do not not exist in information model")
 				.parameter("DataTypeNodeId", dataTypeNodeId_);
@@ -281,7 +319,109 @@ namespace OpcUaStackServer
 		//
 		parentBaseNode_->getIsAbstract(parentIsAbstract_);
 
+		//
+		// set data type namespace name
+		//
+		dataTypeNamespaceName_ = getNamespaceName(dataTypeNodeId_);
+
+		//
+		// check if base class is a structure
+		//
+		bool isStructureType = ima.isDataTypeStructure(baseNode_);
+
+		//
+		// set default binary encoding node identifier
+		//
+		if (isStructureType) {
+			if (!ima.getBinaryEncodingNode(baseNode_, defaultBinaryNodeId_)) {
+				Log(Error, "default binary encoding node identifier do not not exist in information model")
+					.parameter("DataTypeNodeId", dataTypeNodeId_);
+				return false;
+			}
+		}
+
+		//
+		// set default XML encoding node identifier
+		//
+		if (isStructureType) {
+			if (!ima.getXMLEncodingNode(baseNode_, defaultXMLNodeId_)) {
+				Log(Error, "default xml encoding node identifier do not not exist in information model")
+					.parameter("DataTypeNodeId", dataTypeNodeId_);
+				return false;
+			}
+		}
+
+		//
+		// set default JSON encoding node identifier
+		//
+		if (isStructureType) {
+			if (!ima.getJSONEncodingNode(baseNode_, defaultJSONNodeId_)) {
+				Log(Error, "default json encoding node identifier do not not exist in information model")
+					.parameter("DataTypeNodeId", dataTypeNodeId_);
+				return false;
+			}
+		}
+
+		//
+		// set description
+		//
+		OpcUaLocalizedText description;
+		baseNode_->getDescription(description);
+		description_ = description.text().toStdString();
+
 		return true;
+	}
+
+	std::string
+	NodeInfo::getIdentifierAsString(OpcUaNodeId& nodeId)
+	{
+    	if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+    		uint16_t namespaceIndex;
+    		uint32_t id;
+    		nodeId.get(id, namespaceIndex);
+
+    		std::stringstream ss;
+    		ss << "(OpcUaUInt32)" << id;
+
+    		return ss.str();
+    	}
+    	else if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaString) {
+    		uint16_t namespaceIndex;
+    		std::string id;
+    		nodeId.get(id, namespaceIndex);
+
+       		std::stringstream ss;
+        	ss << "\"" << id << "\"";
+
+        	return ss.str();
+    	}
+       	else if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaGuid) {
+    		uint16_t namespaceIndex;
+    		std::string id;
+    		nodeId.get(id, namespaceIndex);
+
+       		std::stringstream ss;
+        	ss << "\"" << id << "\"";
+
+        	return ss.str();
+        }
+       	else {
+       		return "(OpcUaUInt32)0";
+       	}
+    	return "";
+	}
+
+	std::string
+	NodeInfo::getNamespaceName(OpcUaNodeId& nodeId)
+	{
+		NodeSetNamespace nodeSetNamespace;
+
+		// check namespaces
+		if (nodeId.namespaceIndex() >= nodeSetNamespace.globalNamespaceVec().size()) {
+			return "NamespaceUnknown";
+		}
+
+		return nodeSetNamespace.globalNamespaceVec()[nodeId.namespaceIndex()];
 	}
 
 }

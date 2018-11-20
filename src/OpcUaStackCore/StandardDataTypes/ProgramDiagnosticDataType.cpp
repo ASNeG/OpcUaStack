@@ -1,0 +1,396 @@
+/*
+    DataTypeClass: ProgramDiagnosticDataType
+
+    Generated Source Code - please do not change this source code
+
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
+
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
+
+#include "OpcUaStackCore/StandardDataTypes/ProgramDiagnosticDataType.h"
+
+namespace OpcUaStackCore
+{
+    
+    ProgramDiagnosticDataType::ProgramDiagnosticDataType(void)
+    : Object()
+    , ExtensionObjectBase()
+    , createSessionId_()
+    , createClientName_()
+    , invocationCreationTime_()
+    , lastTransitionTime_()
+    , lastMethodCall_()
+    , lastMethodSessionId_()
+    , lastMethodInputArguments_()
+    , lastMethodOutputArguments_()
+    , lastMethodCallTime_()
+    , lastMethodReturnStatus_()
+    {
+    }
+    
+    ProgramDiagnosticDataType::~ProgramDiagnosticDataType(void)
+    {
+    }
+    
+    OpcUaNodeId&
+    ProgramDiagnosticDataType::createSessionId(void)
+    {
+        return createSessionId_;
+    }
+    
+    OpcUaString&
+    ProgramDiagnosticDataType::createClientName(void)
+    {
+        return createClientName_;
+    }
+    
+    OpcUaUtcTime&
+    ProgramDiagnosticDataType::invocationCreationTime(void)
+    {
+        return invocationCreationTime_;
+    }
+    
+    OpcUaUtcTime&
+    ProgramDiagnosticDataType::lastTransitionTime(void)
+    {
+        return lastTransitionTime_;
+    }
+    
+    OpcUaString&
+    ProgramDiagnosticDataType::lastMethodCall(void)
+    {
+        return lastMethodCall_;
+    }
+    
+    OpcUaNodeId&
+    ProgramDiagnosticDataType::lastMethodSessionId(void)
+    {
+        return lastMethodSessionId_;
+    }
+    
+    ArgumentArray&
+    ProgramDiagnosticDataType::lastMethodInputArguments(void)
+    {
+        return lastMethodInputArguments_;
+    }
+    
+    ArgumentArray&
+    ProgramDiagnosticDataType::lastMethodOutputArguments(void)
+    {
+        return lastMethodOutputArguments_;
+    }
+    
+    OpcUaUtcTime&
+    ProgramDiagnosticDataType::lastMethodCallTime(void)
+    {
+        return lastMethodCallTime_;
+    }
+    
+    StatusResult&
+    ProgramDiagnosticDataType::lastMethodReturnStatus(void)
+    {
+        return lastMethodReturnStatus_;
+    }
+    
+    bool
+    ProgramDiagnosticDataType::operator==(const ProgramDiagnosticDataType& value)
+    {
+        ProgramDiagnosticDataType* dst = const_cast<ProgramDiagnosticDataType*>(&value);
+        if (createSessionId_ != dst->createSessionId()) return false;
+        if (createClientName_ != dst->createClientName()) return false;
+        if (invocationCreationTime_ != dst->invocationCreationTime()) return false;
+        if (lastTransitionTime_ != dst->lastTransitionTime()) return false;
+        if (lastMethodCall_ != dst->lastMethodCall()) return false;
+        if (lastMethodSessionId_ != dst->lastMethodSessionId()) return false;
+        if (lastMethodInputArguments_ != dst->lastMethodInputArguments()) return false;
+        if (lastMethodOutputArguments_ != dst->lastMethodOutputArguments()) return false;
+        if (lastMethodCallTime_ != dst->lastMethodCallTime()) return false;
+        if (lastMethodReturnStatus_ != dst->lastMethodReturnStatus()) return false;
+        return true;
+    }
+    
+    bool
+    ProgramDiagnosticDataType::operator!=(const ProgramDiagnosticDataType& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    ProgramDiagnosticDataType::copyTo(ProgramDiagnosticDataType& value)
+    {
+        createSessionId_.copyTo(value.createSessionId());
+        createClientName_.copyTo(value.createClientName());
+        invocationCreationTime_.copyTo(value.invocationCreationTime());
+        lastTransitionTime_.copyTo(value.lastTransitionTime());
+        lastMethodCall_.copyTo(value.lastMethodCall());
+        lastMethodSessionId_.copyTo(value.lastMethodSessionId());
+        lastMethodInputArguments_.copyTo(value.lastMethodInputArguments());
+        lastMethodOutputArguments_.copyTo(value.lastMethodOutputArguments());
+        lastMethodCallTime_.copyTo(value.lastMethodCallTime());
+        lastMethodReturnStatus_.copyTo(value.lastMethodReturnStatus());
+    }
+    
+    ProgramDiagnosticDataType&
+    ProgramDiagnosticDataType::operator=(const ProgramDiagnosticDataType& value)
+    {
+        const_cast<ProgramDiagnosticDataType*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    ProgramDiagnosticDataType::factory(void)
+    {
+    	return constructSPtr<ProgramDiagnosticDataType>();
+    }
+    
+    std::string
+    ProgramDiagnosticDataType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    ProgramDiagnosticDataType::typeName(void)
+    {
+    	return "ProgramDiagnosticDataType";
+    }
+    
+    OpcUaNodeId
+    ProgramDiagnosticDataType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)894,0);
+    }
+    
+    OpcUaNodeId
+    ProgramDiagnosticDataType::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)896, 0);
+    }
+    
+    OpcUaNodeId
+    ProgramDiagnosticDataType::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)895, 0);
+    }
+    
+    OpcUaNodeId
+    ProgramDiagnosticDataType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15381, 0);
+    }
+    
+    void
+    ProgramDiagnosticDataType::opcUaBinaryEncode(std::ostream& os) const
+    {
+        createSessionId_.opcUaBinaryEncode(os);
+        createClientName_.opcUaBinaryEncode(os);
+        invocationCreationTime_.opcUaBinaryEncode(os);
+        lastTransitionTime_.opcUaBinaryEncode(os);
+        lastMethodCall_.opcUaBinaryEncode(os);
+        lastMethodSessionId_.opcUaBinaryEncode(os);
+        lastMethodInputArguments_.opcUaBinaryEncode(os);
+        lastMethodOutputArguments_.opcUaBinaryEncode(os);
+        lastMethodCallTime_.opcUaBinaryEncode(os);
+        lastMethodReturnStatus_.opcUaBinaryEncode(os);
+    }
+    
+    void
+    ProgramDiagnosticDataType::opcUaBinaryDecode(std::istream& is)
+    {
+        createSessionId_.opcUaBinaryDecode(is);
+        createClientName_.opcUaBinaryDecode(is);
+        invocationCreationTime_.opcUaBinaryDecode(is);
+        lastTransitionTime_.opcUaBinaryDecode(is);
+        lastMethodCall_.opcUaBinaryDecode(is);
+        lastMethodSessionId_.opcUaBinaryDecode(is);
+        lastMethodInputArguments_.opcUaBinaryDecode(is);
+        lastMethodOutputArguments_.opcUaBinaryDecode(is);
+        lastMethodCallTime_.opcUaBinaryDecode(is);
+        lastMethodReturnStatus_.opcUaBinaryDecode(is);
+    }
+    
+    bool
+    ProgramDiagnosticDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    ProgramDiagnosticDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    ProgramDiagnosticDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    ProgramDiagnosticDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!createSessionId_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("CreateSessionId", elementTree));
+    
+        elementTree.clear();
+        if (!createClientName_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("CreateClientName", elementTree));
+    
+        elementTree.clear();
+        if (!invocationCreationTime_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("InvocationCreationTime", elementTree));
+    
+        elementTree.clear();
+        if (!lastTransitionTime_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("LastTransitionTime", elementTree));
+    
+        elementTree.clear();
+        if (!lastMethodCall_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("LastMethodCall", elementTree));
+    
+        elementTree.clear();
+        if (!lastMethodSessionId_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("LastMethodSessionId", elementTree));
+    
+        elementTree.clear();
+        if (!lastMethodInputArguments_.xmlEncode(elementTree, "Argument", xmlns)) return false;
+        pt.push_back(std::make_pair("LastMethodInputArguments", elementTree));
+    
+        elementTree.clear();
+        if (!lastMethodOutputArguments_.xmlEncode(elementTree, "Argument", xmlns)) return false;
+        pt.push_back(std::make_pair("LastMethodOutputArguments", elementTree));
+    
+        elementTree.clear();
+        if (!lastMethodCallTime_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("LastMethodCallTime", elementTree));
+    
+        elementTree.clear();
+        if (!lastMethodReturnStatus_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("LastMethodReturnStatus", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    ProgramDiagnosticDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    ProgramDiagnosticDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("CreateSessionId");
+        if (!tree) return false;
+        if (!createSessionId_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("CreateClientName");
+        if (!tree) return false;
+        if (!createClientName_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("InvocationCreationTime");
+        if (!tree) return false;
+        if (!invocationCreationTime_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("LastTransitionTime");
+        if (!tree) return false;
+        if (!lastTransitionTime_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("LastMethodCall");
+        if (!tree) return false;
+        if (!lastMethodCall_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("LastMethodSessionId");
+        if (!tree) return false;
+        if (!lastMethodSessionId_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("LastMethodInputArguments");
+        if (!tree) return false;
+        if (!lastMethodInputArguments_.xmlDecode(*tree, "Argument", xmlns)) return false;
+    
+        tree = pt.get_child_optional("LastMethodOutputArguments");
+        if (!tree) return false;
+        if (!lastMethodOutputArguments_.xmlDecode(*tree, "Argument", xmlns)) return false;
+    
+        tree = pt.get_child_optional("LastMethodCallTime");
+        if (!tree) return false;
+        if (!lastMethodCallTime_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("LastMethodReturnStatus");
+        if (!tree) return false;
+        if (!lastMethodReturnStatus_.xmlDecode(*tree, xmlns)) return false;
+    
+        return true;
+    }
+    
+    bool
+    ProgramDiagnosticDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    ProgramDiagnosticDataType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    ProgramDiagnosticDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    ProgramDiagnosticDataType::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    ProgramDiagnosticDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	ProgramDiagnosticDataType* dst = dynamic_cast<ProgramDiagnosticDataType*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    ProgramDiagnosticDataType::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	ProgramDiagnosticDataType* dst = dynamic_cast<ProgramDiagnosticDataType*>(&extensionObjectBase);
+    	return *const_cast<ProgramDiagnosticDataType*>(this) == *dst;
+    }
+    
+    void
+    ProgramDiagnosticDataType::out(std::ostream& os)
+    {
+        os << "CreateSessionId="; createSessionId_.out(os);
+        os << ", CreateClientName="; createClientName_.out(os);
+        os << ", InvocationCreationTime="; invocationCreationTime_.out(os);
+        os << ", LastTransitionTime="; lastTransitionTime_.out(os);
+        os << ", LastMethodCall="; lastMethodCall_.out(os);
+        os << ", LastMethodSessionId="; lastMethodSessionId_.out(os);
+        os << ", LastMethodInputArguments="; lastMethodInputArguments_.out(os);
+        os << ", LastMethodOutputArguments="; lastMethodOutputArguments_.out(os);
+        os << ", LastMethodCallTime="; lastMethodCallTime_.out(os);
+        os << ", LastMethodReturnStatus="; lastMethodReturnStatus_.out(os);
+    }
+
+}

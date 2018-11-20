@@ -30,10 +30,10 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
 #include "OpcUaStackCore/Application/ApplicationCloseSessionContext.h"
-#include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/IssuedIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/X509IdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/UserNameIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/IssuedIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/X509IdentityToken.h"
 
 using namespace OpcUaStackCore;
 
@@ -177,7 +177,7 @@ namespace OpcUaStackServer
 		}
 
 		else {
-			ExtensibleParameter::SPtr parameter = activateSessionRequest.userIdentityToken();
+			OpcUaExtensibleParameter::SPtr parameter = activateSessionRequest.userIdentityToken();
 			if (!parameter->exist()) {
 				// user identity token is invalid
 				Log(Error, "authentication error, because user identity token not exist");
@@ -226,7 +226,7 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	Session::authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	Session::authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter)
 	{
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationAnonymous");
@@ -235,7 +235,7 @@ namespace OpcUaStackServer
 
 		// check token policy
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_Anonymous, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumAnonymous, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -262,7 +262,7 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	Session::authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	Session::authenticationUserName(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter)
 	{
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationUserName");
@@ -277,7 +277,7 @@ namespace OpcUaStackServer
 
 		// check token policy
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_Username, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumUserName, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -288,7 +288,7 @@ namespace OpcUaStackServer
 			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
 			.parameter("EncyptionAlgorithmus", token->encryptionAlgorithm());
 
-		if (token->encryptionAlgorithm() == "") {
+		if (token->encryptionAlgorithm() == OpcUaString("")) {
 			// we use a plain password
 
 			// create application context
@@ -327,7 +327,7 @@ namespace OpcUaStackServer
 		// decrypt password
 		char* encryptedTextBuf;
 		int32_t encryptedTextLen;
-		token->password((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
+		token->password().value((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
 		if (encryptedTextLen <= 0) {
 			Log(Debug, "password format invalid");
 			return BadIdentityTokenRejected;;
@@ -358,7 +358,7 @@ namespace OpcUaStackServer
 			Log(Debug, "decrypt password server nonce error");
 				return BadIdentityTokenRejected;;
 		}
-		token->password((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
+		token->password().value((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
 
 		// create application context
 		ApplicationAuthenticationContext context;
@@ -378,7 +378,7 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	Session::authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	Session::authenticationX509(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter)
 	{
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationX509");
@@ -393,7 +393,7 @@ namespace OpcUaStackServer
 
 		// check token policy
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_Certificate, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumCertificate, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -462,7 +462,7 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	Session::authenticationIssued(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	Session::authenticationIssued(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter)
 	{
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationIssued");
@@ -477,7 +477,7 @@ namespace OpcUaStackServer
 
 		// check token policy
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_IssuedToken, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumIssuedToken, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -505,7 +505,7 @@ namespace OpcUaStackServer
 		// decrypt token data
 		char* encryptedTextBuf;
 		int32_t encryptedTextLen;
-		token->tokenData((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
+		token->tokenData().value((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
 		if (encryptedTextLen <= 0) {
 			Log(Debug, "token data format invalid");
 			return BadIdentityTokenRejected;;
@@ -536,7 +536,7 @@ namespace OpcUaStackServer
 			Log(Debug, "decrypt token data server nonce error");
 				return BadIdentityTokenRejected;;
 		}
-		token->tokenData((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
+		token->tokenData().value((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
 
 		// create application context
 		ApplicationAuthenticationContext context;
@@ -558,7 +558,7 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::checkUserTokenPolicy(
 		const std::string& policyId,
-		UserIdentityTokenType userIdentityTokenType,
+		UserTokenType::Enum userIdentityTokenType,
 		UserTokenPolicy::SPtr& userTokenPolicy
 	)
 	{
@@ -567,15 +567,15 @@ namespace OpcUaStackServer
 			return BadIdentityTokenInvalid;
 		}
 
-		if (endpointDescription_->userIdentityTokens().get() == nullptr) {
+		if (endpointDescription_->userIdentityTokens().size() == 0) {
 			Log(Debug, "user identity token not exist");
 			return BadIdentityTokenInvalid;
 		}
 
 		// find related identity token
 		bool found = false;
-		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens()->size(); idx++) {
-			if (!endpointDescription_->userIdentityTokens()->get(idx, userTokenPolicy)) {
+		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens().size(); idx++) {
+			if (!endpointDescription_->userIdentityTokens().get(idx, userTokenPolicy)) {
 				continue;
 			}
 

@@ -67,13 +67,13 @@ namespace OpcUaStackServer
 	bool
 	NodeSetDefinitionParser::decode(
 		boost::property_tree::ptree& ptreeValue,
-		StructureDefinition::SPtr& structureDefinition,
+		StructureDefinitionExpand::SPtr& structureDefinition,
 		bool decodeDefinition
 	)
 	{
 		// create new structure type definition structure
 		if (structureDefinition.get() == nullptr) {
-			structureDefinition = constructSPtr<StructureDefinition>();
+			structureDefinition = constructSPtr<StructureDefinitionExpand>();
 		}
 
 		if (decodeDefinition) {
@@ -93,7 +93,7 @@ namespace OpcUaStackServer
 
 	bool
 	NodeSetDefinitionParser::encode(
-		StructureDefinition::SPtr& structureDefinition,
+		StructureDefinitionExpand::SPtr& structureDefinition,
 		boost::property_tree::ptree& ptreeValue,
 		bool encodeDefinition
 	)
@@ -118,13 +118,13 @@ namespace OpcUaStackServer
 	bool
 	NodeSetDefinitionParser::decode(
 		boost::property_tree::ptree& ptreeValue,
-		EnumDefinition::SPtr& enumDefinition,
+		EnumDefinitionExpand::SPtr& enumDefinition,
 		bool decodeDefinition
 	)
 	{
 		// create new enum type definition structure
 		if (enumDefinition.get() == nullptr) {
-			enumDefinition = constructSPtr<EnumDefinition>();
+			enumDefinition = constructSPtr<EnumDefinitionExpand>();
 		}
 
 		if (decodeDefinition) {
@@ -144,7 +144,7 @@ namespace OpcUaStackServer
 
 	bool
 	NodeSetDefinitionParser::encode(
-		EnumDefinition::SPtr& enumDefinition,
+		EnumDefinitionExpand::SPtr& enumDefinition,
 		boost::property_tree::ptree& ptreeValue,
 		bool encodeDefinition
 	)
@@ -169,7 +169,7 @@ namespace OpcUaStackServer
 	bool
 	NodeSetDefinitionParser::decodeStructureDefinition(
 		boost::property_tree::ptree& ptreeValue,
-		StructureDefinition::SPtr& structureDefinition
+		StructureDefinitionExpand::SPtr& structureDefinition
 	)
 	{
 		// decode Name attribute
@@ -227,7 +227,7 @@ namespace OpcUaStackServer
 
 	bool
 	NodeSetDefinitionParser::encodeStructureDefinition(
-		StructureDefinition::SPtr& structureDefinition,
+		StructureDefinitionExpand::SPtr& structureDefinition,
 		boost::property_tree::ptree& ptreeValue
 	)
 	{
@@ -271,7 +271,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 		OpcUaString nameValue(*name);
-		structureField->name(nameValue);
+		structureField->name() = nameValue;
 
 		// decode symbolic name attribute
 		boost::optional<std::string> symbolicName = ptreeValue.get_optional<std::string>("<xmlattr>.SymbolicName");
@@ -293,7 +293,7 @@ namespace OpcUaStackServer
 		if (!valueRank) {
 			valueRank = -1;
 		}
-		structureField->valueRank(*valueRank);
+		structureField->valueRank() = *valueRank;
 
 		// decode array dimension attribute
 
@@ -302,7 +302,7 @@ namespace OpcUaStackServer
 		if (!maxStringLength) {
 			maxStringLength = 0;
 		}
-		structureField->maxStringLength(*maxStringLength);
+		structureField->maxStringLength() = *maxStringLength;
 
 		// decode value attribute
 		boost::optional<int32_t> value = ptreeValue.get_optional<int32_t>("<xmlattr>.Value");
@@ -310,10 +310,10 @@ namespace OpcUaStackServer
 		// decode is optional attribute
         boost::optional<std::string> isOptional = ptreeValue.get_optional<std::string>("<xmlattr>.IsOptional");
         if (isOptional && *isOptional == "true") {
-        	structureField->isOptional(true);
+        	structureField->isOptional() = true;
         }
         else {
-        	structureField->isOptional(false);
+        	structureField->isOptional() =  false;
         }
 
         // decode description element
@@ -367,7 +367,7 @@ namespace OpcUaStackServer
 	bool
 	NodeSetDefinitionParser::decodeEnumDefinition(
 		boost::property_tree::ptree& ptreeValue,
-		EnumDefinition::SPtr& enumDefinition
+		EnumDefinitionExpand::SPtr& enumDefinition
 	)
 	{
 		// decode Name attribute
@@ -406,7 +406,7 @@ namespace OpcUaStackServer
 
 	bool
 	NodeSetDefinitionParser::encodeEnumDefinition(
-		EnumDefinition::SPtr& enumDefinition,
+		EnumDefinitionExpand::SPtr& enumDefinition,
 		boost::property_tree::ptree& ptreeValue
 	)
 	{
@@ -445,14 +445,14 @@ namespace OpcUaStackServer
 			return false;
 		}
 		OpcUaString nameValue(*name);
-		enumField->name(nameValue);
+		enumField->name().value(nameValue);
 
 		// decode value rank attribute
 		boost::optional<int32_t> value = ptreeValue.get_optional<int32_t>("<xmlattr>.Value");
 		if (!value) {
 			value = -1;
 		}
-		enumField->value(*value);
+		enumField->value() = *value;
 
         // decode description element
          boost::optional<std::string> description = ptreeValue.get_optional<std::string>("Description");

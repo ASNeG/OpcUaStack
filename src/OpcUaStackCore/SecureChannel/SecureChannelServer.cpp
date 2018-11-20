@@ -51,6 +51,9 @@ namespace OpcUaStackCore
 	bool
 	SecureChannelServer::accept(SecureChannelServerConfig::SPtr secureChannelServerConfig)
 	{
+		applicationCertificate(secureChannelServerConfig->applicationCertificate());
+		cryptoManager(secureChannelServerConfig->cryptoManager());
+
 		// check interface
 		if (secureChannelServerIf_ == nullptr) {
 			Log(Error, "secure channel server interface invalid; please register interface")

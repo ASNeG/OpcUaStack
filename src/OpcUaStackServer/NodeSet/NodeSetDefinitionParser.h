@@ -21,8 +21,8 @@
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
-#include "OpcUaStackCore/StandardDataTypes/EnumDefinition.h"
+#include "OpcUaStackCore/StandardDataTypes/EnumDefinitionExpand.h"
+#include "OpcUaStackCore/StandardDataTypes/StructureDefinitionExpand.h"
 
 using namespace OpcUaStackCore;
 
@@ -49,7 +49,7 @@ namespace OpcUaStackServer
 		 */
 		bool decode(
 			boost::property_tree::ptree& ptreeValue,
-			StructureDefinition::SPtr& structureDefinition,
+			StructureDefinitionExpand::SPtr& structureDefinition,
 			bool decodeDefinition = true
 		);
 
@@ -63,7 +63,7 @@ namespace OpcUaStackServer
 		 * @return true if successful
 		 */
 		bool encode(
-			StructureDefinition::SPtr& structureDefinition,
+			StructureDefinitionExpand::SPtr& structureDefinition,
 			boost::property_tree::ptree& ptreeValue,
 			bool encodeDefinition = true
 		);
@@ -79,7 +79,7 @@ namespace OpcUaStackServer
 		 */
 		bool decode(
 			boost::property_tree::ptree& ptreeValue,
-			EnumDefinition::SPtr& enumDefinition,
+			EnumDefinitionExpand::SPtr& enumDefinition,
 			bool decodeDefinition = true
 		);
 
@@ -93,7 +93,7 @@ namespace OpcUaStackServer
 		 * @return true if successful
 		 */
 		bool encode(
-			EnumDefinition::SPtr& enumDefinition,
+			EnumDefinitionExpand::SPtr& enumDefinition,
 			boost::property_tree::ptree& ptreeValue,
 			bool encodeDefinition = true
 		);
@@ -101,11 +101,11 @@ namespace OpcUaStackServer
 	  private:
 		bool decodeStructureDefinition(
 			boost::property_tree::ptree& ptreeValue,
-			StructureDefinition::SPtr& structureDefinition
+			StructureDefinitionExpand::SPtr& structureDefinition
 		);
 
 		bool encodeStructureDefinition(
-			StructureDefinition::SPtr& structureDefinition,
+			StructureDefinitionExpand::SPtr& structureDefinition,
 			boost::property_tree::ptree& ptreeValue
 		);
 
@@ -121,11 +121,11 @@ namespace OpcUaStackServer
 
 		bool decodeEnumDefinition(
 			boost::property_tree::ptree& ptreeValue,
-			EnumDefinition::SPtr& enumDefinition
+			EnumDefinitionExpand::SPtr& enumDefinition
 		);
 
 		bool encodeEnumDefinition(
-			EnumDefinition::SPtr& enumDefinition,
+			EnumDefinitionExpand::SPtr& enumDefinition,
 			boost::property_tree::ptree& ptreeValue
 		);
 

@@ -1,0 +1,196 @@
+/*
+    DataTypeClass: WriterGroupTransportDataType
+
+    Generated Source Code - please do not change this source code
+
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
+
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
+
+#include "OpcUaStackCore/StandardDataTypes/WriterGroupTransportDataType.h"
+
+namespace OpcUaStackCore
+{
+    
+    WriterGroupTransportDataType::WriterGroupTransportDataType(void)
+    : Object()
+    , ExtensionObjectBase()
+    {
+    }
+    
+    WriterGroupTransportDataType::~WriterGroupTransportDataType(void)
+    {
+    }
+    
+    bool
+    WriterGroupTransportDataType::operator==(const WriterGroupTransportDataType& value)
+    {
+        WriterGroupTransportDataType* dst = const_cast<WriterGroupTransportDataType*>(&value);
+        return true;
+    }
+    
+    bool
+    WriterGroupTransportDataType::operator!=(const WriterGroupTransportDataType& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    WriterGroupTransportDataType::copyTo(WriterGroupTransportDataType& value)
+    {
+    }
+    
+    WriterGroupTransportDataType&
+    WriterGroupTransportDataType::operator=(const WriterGroupTransportDataType& value)
+    {
+        const_cast<WriterGroupTransportDataType*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    WriterGroupTransportDataType::factory(void)
+    {
+    	return constructSPtr<WriterGroupTransportDataType>();
+    }
+    
+    std::string
+    WriterGroupTransportDataType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    WriterGroupTransportDataType::typeName(void)
+    {
+    	return "WriterGroupTransportDataType";
+    }
+    
+    OpcUaNodeId
+    WriterGroupTransportDataType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15611,0);
+    }
+    
+    OpcUaNodeId
+    WriterGroupTransportDataType::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15691, 0);
+    }
+    
+    OpcUaNodeId
+    WriterGroupTransportDataType::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15990, 0);
+    }
+    
+    OpcUaNodeId
+    WriterGroupTransportDataType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)16161, 0);
+    }
+    
+    void
+    WriterGroupTransportDataType::opcUaBinaryEncode(std::ostream& os) const
+    {
+    }
+    
+    void
+    WriterGroupTransportDataType::opcUaBinaryDecode(std::istream& is)
+    {
+    }
+    
+    bool
+    WriterGroupTransportDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    WriterGroupTransportDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    WriterGroupTransportDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    WriterGroupTransportDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        return true;
+    }
+    
+    bool
+    WriterGroupTransportDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    WriterGroupTransportDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        return true;
+    }
+    
+    bool
+    WriterGroupTransportDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    WriterGroupTransportDataType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    WriterGroupTransportDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    WriterGroupTransportDataType::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    WriterGroupTransportDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	WriterGroupTransportDataType* dst = dynamic_cast<WriterGroupTransportDataType*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    WriterGroupTransportDataType::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	WriterGroupTransportDataType* dst = dynamic_cast<WriterGroupTransportDataType*>(&extensionObjectBase);
+    	return *const_cast<WriterGroupTransportDataType*>(this) == *dst;
+    }
+    
+    void
+    WriterGroupTransportDataType::out(std::ostream& os)
+    {
+    }
+
+}

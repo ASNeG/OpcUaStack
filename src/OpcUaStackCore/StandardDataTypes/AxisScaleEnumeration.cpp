@@ -164,6 +164,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    AxisScaleEnumeration::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    std::string
+    AxisScaleEnumeration::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    AxisScaleEnumeration::typeName(void)
+    {
+    	return "AxisScaleEnumeration";
+    }
+    
+    OpcUaNodeId
+    AxisScaleEnumeration::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)12077,0);
+    }
+    
     void
     AxisScaleEnumeration::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -201,10 +225,38 @@ namespace OpcUaStackCore
     }
     
     bool
+    AxisScaleEnumeration::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     AxisScaleEnumeration::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
         return true;
+    }
+    
+    bool
+    AxisScaleEnumeration::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    AxisScaleEnumeration::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    AxisScaleEnumeration::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    AxisScaleEnumeration::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

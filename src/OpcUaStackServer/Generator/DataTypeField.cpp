@@ -27,6 +27,7 @@ namespace OpcUaStackServer
 	, variableType_("")
 	, description_("")
 	, includePath_("")
+	, arrayElementName_("")
 	, array_(false)
 	, smartpointer_(false)
 	, number_(false)
@@ -92,6 +93,18 @@ namespace OpcUaStackServer
 	}
 
 	void
+	DataTypeField::variableTypeWithoutPtr(const std::string& variableTypeWithoutPtr)
+	{
+		variableTypeWithoutPtr_ = variableTypeWithoutPtr;
+	}
+
+	std::string&
+	DataTypeField::variableTypeWithoutPtr(void)
+	{
+		return variableTypeWithoutPtr_;
+	}
+
+	void
 	DataTypeField::description(const std::string& description)
 	{
 		description_ = description;
@@ -113,6 +126,18 @@ namespace OpcUaStackServer
 	DataTypeField::includePath(void)
 	{
 		return includePath_;
+	}
+
+	void
+	DataTypeField::arrayElementName(const std::string& arrayElementName)
+	{
+		arrayElementName_ = arrayElementName;
+	}
+
+	std::string&
+	DataTypeField::arrayElementName(void)
+	{
+		return arrayElementName_;
 	}
 
 	void

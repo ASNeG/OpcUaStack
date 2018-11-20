@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	VariableAttributes::VariableAttributes(void)
 	: Object()
-	, ExtensibleParameterBase()
+	, ExtensionObjectBase()
 	, specifiedAttributes_()
 	, displayName_(constructSPtr<OpcUaLocalizedText>())
 	, description_(constructSPtr<OpcUaLocalizedText>())
@@ -229,7 +229,44 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::SPtr
+	void
+	VariableAttributes::copyTo(VariableAttributes& variableAttributes)
+	{
+		specifiedAttributes_ = variableAttributes.specifiedAttributes_;
+		displayName_->copyTo(*variableAttributes.displayName_);
+		description_->copyTo(*variableAttributes.description_);
+		value_->copyTo(*variableAttributes.value_);
+		dataType_->copyTo(*variableAttributes.dataType_);
+		valueRank_ = variableAttributes.valueRank_;
+		arrayDimensions_->copyTo(*variableAttributes.arrayDimensions_);
+		accessLevel_ = variableAttributes.accessLevel_;
+		userAccessLevel_ = variableAttributes.userAccessLevel_;
+		minimumSamplingInterval_ = variableAttributes.minimumSamplingInterval_;
+		historizing_ = variableAttributes.historizing_;
+		writeMask_ = variableAttributes.writeMask_;
+		userWriteMask_ = variableAttributes.userWriteMask_;
+	}
+
+	bool
+	VariableAttributes::operator==(const VariableAttributes& variableAttributes) const
+	{
+		return specifiedAttributes_ == variableAttributes.specifiedAttributes_ &&
+			*displayName_ == *variableAttributes.displayName_ &&
+			*description_ == *variableAttributes.description_ &&
+			*value_ == *variableAttributes.value_ &&
+			*dataType_ == *variableAttributes.dataType_ &&
+			valueRank_ == variableAttributes.valueRank_ &&
+			*arrayDimensions_ == *variableAttributes.arrayDimensions_ &&
+			accessLevel_ == variableAttributes.accessLevel_ &&
+			userAccessLevel_ == variableAttributes.userAccessLevel_ &&
+			minimumSamplingInterval_ == variableAttributes.minimumSamplingInterval_ &&
+			historizing_ == variableAttributes.historizing_ &&
+
+			writeMask_ == variableAttributes.writeMask_ &&
+			userWriteMask_ == variableAttributes.userWriteMask_;
+	}
+
+    ExtensionObjectBase::SPtr
 	VariableAttributes::factory(void)
 	{
 		return constructSPtr<VariableAttributes>();
@@ -272,5 +309,38 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, writeMask_);
 		OpcUaNumber::opcUaBinaryDecode(is, userWriteMask_);
 	}
+
+	void
+	VariableAttributes::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		VariableAttributes* dst = dynamic_cast<VariableAttributes*>(&extensionObjectBase);
+		copyTo(*dst);
+	}
+
+	bool
+	VariableAttributes::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		VariableAttributes* dst = dynamic_cast<VariableAttributes*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	VariableAttributes::out(std::ostream& os)
+	{
+		os << "SpecificAttributes=" << specifiedAttributes_;
+		os << ", DisplayName="; displayName_->out(os);
+		os << ", Description="; description_->out(os);
+		os << ", Value="; value_->out(os);
+		os << ", DataType="; dataType_->out(os);
+		os << ", ValueRank=" << valueRank_;
+		os << ", ArrayDimensions="; arrayDimensions_->out(os);
+		os << ", AccessLevel=" << accessLevel_;
+		os << ", UserAccessLevel=" << userAccessLevel_;
+		os << ", MinimumSamplingInterval=" << minimumSamplingInterval_;
+		os << ", Historizing=" << historizing_;
+		os << ", WriteMask=" << writeMask_;
+		os << ", UserWriteMask=" << userWriteMask_;
+	}
+
 
 }

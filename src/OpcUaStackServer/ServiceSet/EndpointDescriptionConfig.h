@@ -20,7 +20,8 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
+#include "OpcUaStackCore/ServiceSet/EndpointDescriptionSet.h"
 #include <string>
 
 using namespace OpcUaStackCore;

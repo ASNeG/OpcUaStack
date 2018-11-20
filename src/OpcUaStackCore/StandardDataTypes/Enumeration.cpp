@@ -152,6 +152,24 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    std::string
+    Enumeration::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    Enumeration::typeName(void)
+    {
+    	return "Enumeration";
+    }
+    
+    OpcUaNodeId
+    Enumeration::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)29,0);
+    }
+    
     void
     Enumeration::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -186,6 +204,14 @@ namespace OpcUaStackCore
     {
         if(!XmlNumber::xmlEncode(pt, value_, "Int32")) return false;
         return true;
+    }
+    
+    bool
+    Enumeration::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
     }
     
     bool

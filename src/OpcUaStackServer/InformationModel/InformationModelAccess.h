@@ -129,6 +129,17 @@ namespace OpcUaStackServer
 		bool getSubType(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& subTypeNodeId);
 
 		// --------------------------------------------------------------------
+		// encoding functions
+		// --------------------------------------------------------------------
+		bool getBinaryEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass);
+		bool getBinaryEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId);
+		bool getXMLEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass);
+		bool getXMLEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId);
+		bool getJSONEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass);
+		bool getJSONEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId);
+
+
+		// --------------------------------------------------------------------
 		// data type functions
 		// --------------------------------------------------------------------
 		bool isDataType(BaseNodeClass::SPtr baseNodeClass);

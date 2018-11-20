@@ -3,6 +3,7 @@ Release 4.1.0
 
 **Features**:
 
+* Implement data type code generator #8, by @huebl
 * Implement enum type code generator #29, by @huebl
 * Processing of type information not possible #22, by @huebl
 
@@ -16,6 +17,8 @@ Release 3.5.1
 **Bugs**:
 
 * OpcUaStackCore/Client/Server tests end with errors #31, by @huebl
+* Missing certifcate in opc ua client #40, by @huebl
+* OPC UA client sometimes gets stuck #41, by @huebl  
 
 
 

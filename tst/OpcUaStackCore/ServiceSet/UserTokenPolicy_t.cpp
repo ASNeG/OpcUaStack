@@ -2,7 +2,7 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/Utility.h"
-#include "OpcUaStackCore/ServiceSet/UserTokenPolicy.h"
+#include "OpcUaStackCore/StandardDataTypes/UserTokenPolicy.h"
 
 #include <streambuf>
 #include <iostream>
@@ -24,8 +24,8 @@ BOOST_AUTO_TEST_CASE(UserTokenPolicy_)
 
 	// encode UserTokenPolicy
 	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
-	userTokenPolicySPtr->policyId("OpcUaStack");
-	userTokenPolicySPtr->tokenType(UserIdentityTokenType_Anonymous);
+	userTokenPolicySPtr->policyId().value("OpcUaStack");
+	userTokenPolicySPtr->tokenType().enumeration(UserTokenType::EnumAnonymous);
 	userTokenPolicySPtr->opcUaBinaryEncode(ios);
 
 	OpcUaStackCore::dumpHex(ios);
@@ -37,8 +37,8 @@ BOOST_AUTO_TEST_CASE(UserTokenPolicy_)
 	// decode UserTokenPolicy
 	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
 	userTokenPolicySPtr->opcUaBinaryDecode(ios);
-	BOOST_REQUIRE(userTokenPolicySPtr->policyId() == "OpcUaStack");
-	BOOST_REQUIRE(userTokenPolicySPtr->tokenType() == UserIdentityTokenType_Anonymous);
+	BOOST_REQUIRE(userTokenPolicySPtr->policyId().value() == "OpcUaStack");
+	BOOST_REQUIRE(userTokenPolicySPtr->tokenType().enumeration() == UserTokenType::EnumAnonymous);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

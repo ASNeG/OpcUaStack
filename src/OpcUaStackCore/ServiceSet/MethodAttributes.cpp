@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	MethodAttributes::MethodAttributes(void)
 	: Object()
-	, ExtensibleParameterBase()
+	, ExtensionObjectBase()
 	, specifiedAttributes_()
 	, displayName_(constructSPtr<OpcUaLocalizedText>())
 	, description_(constructSPtr<OpcUaLocalizedText>())
@@ -132,10 +132,34 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::SPtr
+	void
+	MethodAttributes::copyTo(MethodAttributes& methodAttributes)
+	{
+		specifiedAttributes_ = methodAttributes.specifiedAttributes_;
+		displayName_->copyTo(*methodAttributes.displayName_);
+		description_->copyTo(*methodAttributes.description_);
+		executable_ = methodAttributes.executable_;
+		userExecutable_ = methodAttributes.userExecutable_;
+		writeMask_ = methodAttributes.writeMask_;
+		userWriteMask_ = methodAttributes.userWriteMask_;
+	}
+
+	ExtensionObjectBase::SPtr
 	MethodAttributes::factory(void)
 	{
 		return constructSPtr<MethodAttributes>();
+	}
+
+	bool
+	MethodAttributes::operator==(const MethodAttributes& methodAttributes) const
+	{
+		return specifiedAttributes_ == methodAttributes.specifiedAttributes_ &&
+			*displayName_ == *methodAttributes.displayName_ &&
+			*description_ == *methodAttributes.description_ &&
+			executable_ == methodAttributes.executable_ &&
+			userExecutable_ == methodAttributes.userExecutable_ &&
+			writeMask_ == methodAttributes.writeMask_ &&
+			userWriteMask_ == methodAttributes.userWriteMask_;
 	}
 			
 	void 
@@ -162,6 +186,32 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, userExecutable_);
 		OpcUaNumber::opcUaBinaryDecode(is, writeMask_);
 		OpcUaNumber::opcUaBinaryDecode(is, userWriteMask_);
+	}
+
+	void
+	MethodAttributes::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		MethodAttributes* dst = dynamic_cast<MethodAttributes*>(&extensionObjectBase);
+		copyTo(*dst);
+	}
+
+	bool
+	MethodAttributes::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		MethodAttributes* dst = dynamic_cast<MethodAttributes*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	MethodAttributes::out(std::ostream& os)
+	{
+		os << "SpecificAttributes=" << specifiedAttributes_;
+		os << ", DisplayName="; displayName_->out(os);
+		os << ", Description="; description_->out(os);
+		os << ", Executable=" <<  executable_;
+		os << ", UserExecutable=" <<  userExecutable_;
+		os << ", WriteMask=" << writeMask_;
+		os << ", UserWriteMask=" << userWriteMask_;
 	}
 
 }

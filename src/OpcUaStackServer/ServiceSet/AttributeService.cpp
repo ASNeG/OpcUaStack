@@ -24,8 +24,8 @@
 #include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackCore/Application/ApplicationHWriteContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryEvent.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
-#include "OpcUaStackCore/ServiceSet/HistoryEvent.h"
 #include "OpcUaStackCore/ServiceSet/ReadEventDetails.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -704,7 +704,7 @@ namespace OpcUaStackServer
 			HistoryEvent::SPtr historyEvent;
 			readResult->historyData()->parameterTypeId().set((OpcUaUInt32)OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 			historyEvent = readResult->historyData()->parameter<HistoryEvent>();
-			historyEvent->events(applicationReadContext.eventFieldArray_);
+			applicationReadContext.eventFieldArray_->copyTo(historyEvent->events());
 		}
 
 		trx->statusCode(Success);

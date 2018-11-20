@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,7 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
+#include "OpcUaStackCore/StandardDataTypes/RegisteredServer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
@@ -28,6 +28,8 @@ using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
+
+	typedef std::map<std::string, RegisteredServer::SPtr> RegisteredServerMap;
 
 	class DLLEXPORT DiscoveryClientRegisteredServers
 	: public SessionServiceIf
@@ -67,7 +69,7 @@ namespace OpcUaStackClient
 		IOThread::SPtr ioThread_;
 		SlotTimerElement::SPtr slotTimerElement_;
 		boost::mutex mutex_;
-		RegisteredServer::Map registeredServerMap_;
+		RegisteredServerMap registeredServerMap_;
 
 		std::string discoveryUri_;
 		uint32_t registerInterval_;

@@ -7,7 +7,6 @@
         OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
-    BuildDate: 2018-Oct-28 13:35:47.158676
 */
 
 #ifndef __OpcUaStackCore_Enumeration_h__
@@ -49,6 +48,9 @@ namespace OpcUaStackCore
         
         //- ExtensionObjectBase -----------------------------------------------
         virtual ExtensionObjectBase::SPtr factory(void);
+        virtual std::string namespaceName(void);
+        virtual std::string typeName(void);
+        virtual OpcUaNodeId typeId(void);
         virtual OpcUaNodeId binaryTypeId(void);
         virtual OpcUaNodeId xmlTypeId(void);
         virtual void opcUaBinaryEncode(std::ostream& os) const;
@@ -57,6 +59,7 @@ namespace OpcUaStackCore
         virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
         virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
         virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
         virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
         virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
         virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
@@ -72,6 +75,14 @@ namespace OpcUaStackCore
       private:
         int32_t value_;
     
+    };
+    
+    class EnumerationArray
+    : public OpcUaArray<Enumeration::SPtr, SPtrTypeCoder<Enumeration> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<EnumerationArray> SPtr;
     };
 
 }

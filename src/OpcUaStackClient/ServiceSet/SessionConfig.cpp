@@ -30,7 +30,7 @@ namespace OpcUaStackClient
 	, maxResponseMessageSize_(16777216)
 	, requestTimeout_(3000)
 	{
-		applicationDescription_->applicationType(AT_Client);
+		applicationDescription_->applicationType().enumeration(ApplicationType::EnumClient);
 	}
 
 	SessionConfig::~SessionConfig(void)

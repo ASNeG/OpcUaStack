@@ -22,11 +22,11 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/SignatureData.h"
-#include "OpcUaStackCore/ServiceSet/SignedSoftwareCertificate.h"
-#include "OpcUaStackCore/ServiceSet/UserIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/StandardDataTypes/UserIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/SignedSoftwareCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -48,8 +48,8 @@ namespace OpcUaStackCore
 		SignedSoftwareCertificateArray::SPtr signedSoftwareCertificate(void) const;
 		void localeIds(const OpcUaLocaleIdArray::SPtr localeIds);
 		OpcUaLocaleIdArray::SPtr localeIds(void) const;
-		void userIdentityToken(const ExtensibleParameter::SPtr userIdentityToken);
-		ExtensibleParameter::SPtr userIdentityToken(void) const;
+		void userIdentityToken(const OpcUaExtensibleParameter::SPtr userIdentityToken);
+		OpcUaExtensibleParameter::SPtr userIdentityToken(void) const;
 		void userTokenSignature(SignatureData::SPtr userTokenSignature);
 		SignatureData::SPtr userTokenSignature(void) const;
 
@@ -61,7 +61,7 @@ namespace OpcUaStackCore
 		SignatureData::SPtr clientSignature_;
 		SignedSoftwareCertificateArray::SPtr signedSoftwareCertificate_;
 		OpcUaLocaleIdArray::SPtr localeIds_;
-		ExtensibleParameter::SPtr userIdentityToken_;
+		OpcUaExtensibleParameter::SPtr userIdentityToken_;
 		SignatureData::SPtr userTokenSignature_;
 	};
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -42,7 +42,7 @@ namespace OpcUaStackServer
 		typedef std::vector<BaseNodeClass::SPtr> Vec;
 
 		BaseNodeClass(void);
-		BaseNodeClass(NodeClassType nodeClass);
+		BaseNodeClass(NodeClass::Enum nodeClass);
 		virtual ~BaseNodeClass(void);
 
 		NodeIdAttribute& nodeId(void);

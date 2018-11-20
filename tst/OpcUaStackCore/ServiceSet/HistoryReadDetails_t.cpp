@@ -82,11 +82,11 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadProcessedDetails)
 	details1.endTime(ptime);
 	details1.resampleInterval(123);
 	details1.aggregateType()->set(nodeIdSPtr);
-	details1.aggregateConfiguration().useServerCapabilitiesDefaults(false);
-	details1.aggregateConfiguration().treatUncertainAsBad(false);
-	details1.aggregateConfiguration().percentDataBad((OpcUaByte)0x50);
-	details1.aggregateConfiguration().percentDataGood((OpcUaByte)0x50);
-	details1.aggregateConfiguration().steppedSlopedExtrapolation(false);
+	details1.aggregateConfiguration().useServerCapabilitiesDefaults() = false;
+	details1.aggregateConfiguration().treatUncertainAsBad() = false;
+	details1.aggregateConfiguration().percentDataBad() = (OpcUaByte)0x50;
+	details1.aggregateConfiguration().percentDataGood() = (OpcUaByte)0x50;
+	details1.aggregateConfiguration().useSlopedExtrapolation() = false;
 	details1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadProcessedDetails)
 	BOOST_REQUIRE(details2.aggregateConfiguration().treatUncertainAsBad() == false);
 	BOOST_REQUIRE(details2.aggregateConfiguration().percentDataBad() == (OpcUaByte)0x50);
 	BOOST_REQUIRE(details2.aggregateConfiguration().percentDataGood() == (OpcUaByte)0x50);
-	BOOST_REQUIRE(details2.aggregateConfiguration().steppedSlopedExtrapolation() == false);
+	BOOST_REQUIRE(details2.aggregateConfiguration().useSlopedExtrapolation() == false);
 }
 
 BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadAtTimeDetails)

@@ -178,6 +178,32 @@ namespace OpcUaStackCore
 		}
 	}
 
+	bool
+	OpcUaDiagnosticInfo::operator==(const OpcUaDiagnosticInfo& value)
+	{
+		OpcUaDiagnosticInfo* dst = const_cast<OpcUaDiagnosticInfo*>(&value);
+	    if (symbolicId_ != dst->symbolicId_) return false;
+	    if (namespaceUri_ != dst->namespaceUri_) return false;
+	    if (localizedText_ != dst->localizedText_) return false;
+	    if (locale_ != dst->locale_) return false;
+	    if (additionalInfo_ != dst->additionalInfo_) return false;
+	    if (innerStatusCode_ != dst->innerStatusCode_) return false;
+	    return true;
+	}
+
+	bool
+	OpcUaDiagnosticInfo::operator!=(const OpcUaDiagnosticInfo& value)
+	{
+	    return !this->operator==(value);
+	}
+
+	OpcUaDiagnosticInfo&
+	OpcUaDiagnosticInfo::operator=(const OpcUaDiagnosticInfo& value)
+	{
+	    const_cast<OpcUaDiagnosticInfo*>(&value)->copyTo(*this);
+	    return *this;
+	}
+
 	void 
 	OpcUaDiagnosticInfo::opcUaBinaryEncode(std::ostream& os) const
 	{

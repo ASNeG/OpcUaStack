@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 
 namespace OpcUaStackCore
 {
@@ -41,8 +41,8 @@ namespace OpcUaStackCore
 		OpcUaStatusCode& statusCode(void);
 		void continuationPoint(const OpcUaByteString& continuationPoint);
 		OpcUaByteString& continuationPoint(void);
-		void historyData(const ExtensibleParameter::SPtr historyData);
-		ExtensibleParameter::SPtr historyData(void) const;
+		void historyData(const OpcUaExtensibleParameter::SPtr historyData);
+		OpcUaExtensibleParameter::SPtr historyData(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaStatusCode statusCode_;
 		OpcUaByteString continuationPoint_;
-		ExtensibleParameter::SPtr historyData_;
+		OpcUaExtensibleParameter::SPtr historyData_;
 	};
 
 	class HistoryReadResultArray

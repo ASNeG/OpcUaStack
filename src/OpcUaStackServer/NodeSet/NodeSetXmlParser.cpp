@@ -15,10 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <OpcUaStackCore/StandardDataTypes/EnumDefinitionExpand.h>
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetDefinitionParser.h"
-#include "OpcUaStackCore/StandardDataTypes/EnumDefinition.h"
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
@@ -420,7 +420,7 @@ namespace OpcUaStackServer
 		// decode NodeBase 
 		//
 		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
-		objectNodeClassSPtr->nodeClass().data(NodeClassType_Object);
+		objectNodeClassSPtr->nodeClass().data(NodeClass::EnumObject);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -456,7 +456,7 @@ namespace OpcUaStackServer
 		// decode NodeBase 
 		//
 		if (!decodeNodeBase(objectTypeNodeClassSPtr, ptree)) return false;
-		objectTypeNodeClassSPtr->nodeClass().data(NodeClassType_ObjectType);
+		objectTypeNodeClassSPtr->nodeClass().data(NodeClass::EnumObjectType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -492,7 +492,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(variableNodeClassSPtr, ptree)) return false;
-		variableNodeClassSPtr->nodeClass().data(NodeClassType_Variable);
+		variableNodeClassSPtr->nodeClass().data(NodeClass::EnumVariable);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -631,7 +631,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(variableTypeNodeClassSPtr, ptree)) return false;
-		variableTypeNodeClassSPtr->nodeClass().data(NodeClassType_VariableType);
+		variableTypeNodeClassSPtr->nodeClass().data(NodeClass::EnumVariableType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -745,7 +745,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(dataTypeNodeClassSPtr, ptree)) return false;
-		dataTypeNodeClassSPtr->nodeClass().data(NodeClassType_DataType);
+		dataTypeNodeClassSPtr->nodeClass().data(NodeClass::EnumDataType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -789,7 +789,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(referenceTypeNodeClassSPtr, ptree)) return false;
-		referenceTypeNodeClassSPtr->nodeClass().data(NodeClassType_ReferenceType);
+		referenceTypeNodeClassSPtr->nodeClass().data(NodeClass::EnumReferenceType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -852,7 +852,7 @@ namespace OpcUaStackServer
 		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
 		//
 		if (!decodeNodeBase(methodeNodeClassSPtr, ptree)) return false;
-		methodeNodeClassSPtr->nodeClass().data(NodeClassType_Method);
+		methodeNodeClassSPtr->nodeClass().data(NodeClass::EnumMethod);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -940,7 +940,7 @@ namespace OpcUaStackServer
 
 			// decode enum definition
 
-			EnumDefinition::SPtr enumDefinition = constructSPtr<EnumDefinition>();
+			EnumDefinitionExpand::SPtr enumDefinition = constructSPtr<EnumDefinitionExpand>();
 
 			if (!parser.decode(*definitionTree, enumDefinition, false)) {
 				Log(Error, "invalid enum definiton - ignore enum definiton section")
@@ -954,7 +954,7 @@ namespace OpcUaStackServer
 
 			// decode structure definition
 
-			StructureDefinition::SPtr structureDefinition = constructSPtr<StructureDefinition>();
+			StructureDefinitionExpand::SPtr structureDefinition = constructSPtr<StructureDefinitionExpand>();
 
 			if (!parser.decode(*definitionTree, structureDefinition, false)) {
 				Log(Error, "invalid structure definiton - ignore structure definiton section")
@@ -1597,7 +1597,7 @@ namespace OpcUaStackServer
 
 			// encode structure definition
 
-			StructureDefinition::SPtr structureDefinition = boost::static_pointer_cast<StructureDefinition>(definitionObject);
+			StructureDefinitionExpand::SPtr structureDefinition = boost::static_pointer_cast<StructureDefinitionExpand>(definitionObject);
 			if (!parser.encode(structureDefinition, ptree)) {
 				Log(Error, "invalid structure definiton - ignore structure definiton section")
 					.parameter("NodeId", dataTypeNodeClass->nodeId().data());
@@ -1605,11 +1605,11 @@ namespace OpcUaStackServer
 			}
 		}
 
-		if (dynamic_cast<EnumDefinition*>(definitionObject.get()) != 0) {
+		if (dynamic_cast<EnumDefinitionExpand*>(definitionObject.get()) != 0) {
 
 			// encode enum definition
 
-			EnumDefinition::SPtr enumDefinition = boost::static_pointer_cast<EnumDefinition>(definitionObject);
+			EnumDefinitionExpand::SPtr enumDefinition = boost::static_pointer_cast<EnumDefinitionExpand>(definitionObject);
 			if (!parser.encode(enumDefinition, ptree)) {
 				Log(Error, "invalid enum definiton - ignore structure enum section")
 					.parameter("NodeId", dataTypeNodeClass->nodeId().data());

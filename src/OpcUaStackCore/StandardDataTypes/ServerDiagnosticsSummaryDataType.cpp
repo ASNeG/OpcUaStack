@@ -1,342 +1,436 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: ServerDiagnosticsSummaryDataType
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
-
-   Autor: Samuel Huebl (samuel.huebl@asneg.de)
- */
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
 
 #include "OpcUaStackCore/StandardDataTypes/ServerDiagnosticsSummaryDataType.h"
 
 namespace OpcUaStackCore
 {
-
-	ServerDiagnosticsSummaryDataType::ServerDiagnosticsSummaryDataType(void)
-	: Object()
-	, serverViewCount_()
-	, currentSessionCount_()
-	, cumulatedSessionCount_()
-	, securityRejectedSessionCount_()
-	, rejectedSessionCount_()
-	, sessionTimeoutCount_()
-	, sessionAbortCount_()
-	, samplingRateCount_()
-	, publishingIntervalCount_()
-	, currentSubscriptionCount_()
-	, cumulatedSubscriptionCount_()
-	, securityRejectedRequestsCount_()
-	, rejectedRequestsCount_()
-	{
-	}
-
-	ServerDiagnosticsSummaryDataType::~ServerDiagnosticsSummaryDataType(void)
-	{
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::serverViewCount(void)
-	{
-		return serverViewCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::serverViewCount(OpcUaUInt32 serverViewCount)
-	{
-		serverViewCount_ = serverViewCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::currentSessionCount(void)
-	{
-		return currentSessionCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::currentSessionCount(OpcUaUInt32 currentSessionCount)
-	{
-		currentSessionCount_ = currentSessionCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::cumulatedSessionCount(void)
-	{
-		return cumulatedSessionCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::cumulatedSessionCount(OpcUaUInt32 cumulatedSessionCount)
-	{
-		cumulatedSessionCount_ = cumulatedSessionCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::securityRejectedSessionCount(void)
-	{
-		return securityRejectedSessionCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::securityRejectedSessionCount(OpcUaUInt32 securityRejectedSessionCount)
-	{
-		securityRejectedSessionCount_ = securityRejectedSessionCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::rejectedSessionCount(void)
-	{
-		return rejectedSessionCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::rejectedSessionCount(OpcUaUInt32 rejectedSessionCount)
-	{
-		rejectedSessionCount_ = rejectedSessionCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::sessionTimeoutCount(void)
-	{
-		return sessionTimeoutCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::sessionTimeoutCount(OpcUaUInt32 sessionTimeoutCount)
-	{
-		sessionTimeoutCount_ = sessionTimeoutCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::sessionAbortCount(void)
-	{
-		return sessionAbortCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::sessionAbortCount(OpcUaUInt32 sessionAbortCount)
-	{
-		sessionAbortCount_ = sessionAbortCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::samplingRateCount(void)
-	{
-		return samplingRateCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::samplingRateCount(OpcUaUInt32 samplingRateCount)
-	{
-		samplingRateCount_ = samplingRateCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::publishingIntervalCount(void)
-	{
-		return publishingIntervalCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::publishingIntervalCount(OpcUaUInt32 publishingIntervalCount)
-	{
-		publishingIntervalCount_ = publishingIntervalCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::currentSubscriptionCount(void)
-	{
-		return currentSubscriptionCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::currentSubscriptionCount(OpcUaUInt32 currentSubscriptionCount)
-	{
-		currentSubscriptionCount_ = currentSubscriptionCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::cumulatedSubscriptionCount(void)
-	{
-		return cumulatedSubscriptionCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::cumulatedSubscriptionCount(OpcUaUInt32 cumulatedSubscriptionCount)
-	{
-		cumulatedSubscriptionCount_ = cumulatedSubscriptionCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::securityRejectedRequestsCount(void)
-	{
-		return securityRejectedRequestsCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::securityRejectedRequestsCount(OpcUaUInt32 securityRejectedRequestsCount)
-	{
-		securityRejectedRequestsCount_ = securityRejectedRequestsCount;
-	}
-
-	OpcUaUInt32&
-	ServerDiagnosticsSummaryDataType::rejectedRequestsCount(void)
-	{
-		return rejectedRequestsCount_;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::rejectedRequestsCount(OpcUaUInt32 rejectedRequestsCount)
-	{
-		rejectedRequestsCount_ = rejectedRequestsCount;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::copyTo(ServerDiagnosticsSummaryDataType& serverDiagnosticsSummaryDataType)
-	{
-		serverDiagnosticsSummaryDataType.serverViewCount(serverViewCount_);
-		serverDiagnosticsSummaryDataType.currentSessionCount(currentSessionCount_);
-		serverDiagnosticsSummaryDataType.cumulatedSessionCount(cumulatedSessionCount_);
-		serverDiagnosticsSummaryDataType.securityRejectedSessionCount(securityRejectedSessionCount_);
-		serverDiagnosticsSummaryDataType.rejectedSessionCount(rejectedSessionCount_);
-		serverDiagnosticsSummaryDataType.sessionTimeoutCount(sessionTimeoutCount_);
-		serverDiagnosticsSummaryDataType.sessionAbortCount(sessionAbortCount_);
-		serverDiagnosticsSummaryDataType.samplingRateCount(samplingRateCount_);
-		serverDiagnosticsSummaryDataType.publishingIntervalCount(publishingIntervalCount_);
-		serverDiagnosticsSummaryDataType.currentSubscriptionCount(currentSubscriptionCount_);
-		serverDiagnosticsSummaryDataType.cumulatedSubscriptionCount(cumulatedSubscriptionCount_);
-		serverDiagnosticsSummaryDataType.securityRejectedRequestsCount(securityRejectedRequestsCount_);
-		serverDiagnosticsSummaryDataType.rejectedRequestsCount(rejectedRequestsCount_);
-	}
-
-	bool
-	ServerDiagnosticsSummaryDataType::operator==(const ServerDiagnosticsSummaryDataType& serverDiagnosticsSummaryDataType) const
-	{
-		ServerDiagnosticsSummaryDataType* dst = const_cast<ServerDiagnosticsSummaryDataType*>(&serverDiagnosticsSummaryDataType);
-		return
-			serverViewCount_ == dst->serverViewCount() &&
-			currentSessionCount_ == dst->currentSessionCount() &&
-			cumulatedSessionCount_ == dst->cumulatedSessionCount() &&
-			securityRejectedSessionCount_ == dst->securityRejectedSessionCount() &&
-			rejectedSessionCount_ == dst->rejectedSessionCount() &&
-			sessionTimeoutCount_ == dst->sessionTimeoutCount() &&
-			sessionAbortCount_ == dst->sessionAbortCount() &&
-			samplingRateCount_ == dst->samplingRateCount() &&
-			publishingIntervalCount_ == dst->publishingIntervalCount() &&
-			currentSessionCount_ == dst->currentSubscriptionCount() &&
-			cumulatedSubscriptionCount_ == dst->cumulatedSubscriptionCount() &&
-			securityRejectedRequestsCount_ == dst->securityRejectedRequestsCount() &&
-			rejectedRequestsCount_ == dst->rejectedRequestsCount();
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// ExtensionObjectBase
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	ExtensionObjectBase::SPtr
-	ServerDiagnosticsSummaryDataType::factory(void)
-	{
-		return constructSPtr<ServerDiagnosticsSummaryDataType>();
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::opcUaBinaryEncode(std::ostream& os) const
-	{
-		OpcUaNumber::opcUaBinaryEncode(os, serverViewCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, currentSessionCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, cumulatedSessionCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, securityRejectedSessionCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, rejectedSessionCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, sessionTimeoutCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, sessionAbortCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, samplingRateCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, publishingIntervalCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, currentSubscriptionCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, cumulatedSubscriptionCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, securityRejectedRequestsCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, rejectedRequestsCount_);
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::opcUaBinaryDecode(std::istream& is)
-	{
-		OpcUaNumber::opcUaBinaryDecode(is, serverViewCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, currentSessionCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, cumulatedSessionCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, securityRejectedSessionCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, rejectedSessionCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, sessionTimeoutCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, sessionAbortCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, samplingRateCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, publishingIntervalCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, currentSubscriptionCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, cumulatedSubscriptionCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, securityRejectedRequestsCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, rejectedRequestsCount_);
-	}
-
-	bool
-	ServerDiagnosticsSummaryDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	bool
-	ServerDiagnosticsSummaryDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	bool
-	ServerDiagnosticsSummaryDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
-	{
-		ServerDiagnosticsSummaryDataType* dst = dynamic_cast<ServerDiagnosticsSummaryDataType*>(&extensionObjectBase);
-		copyTo(*dst);
-	}
-
-	bool
-	ServerDiagnosticsSummaryDataType::equal(ExtensionObjectBase& extensionObjectBase) const
-	{
-		ServerDiagnosticsSummaryDataType* dst = dynamic_cast<ServerDiagnosticsSummaryDataType*>(&extensionObjectBase);
-		return *this == *dst;
-	}
-
-	void
-	ServerDiagnosticsSummaryDataType::out(std::ostream& os)
-	{
-		os << "ServerViewCount=" << serverViewCount_;
-		os << ", CurrentSessionCount=" << currentSessionCount_;
-		os << ", CumulatedSessionCount=" << cumulatedSessionCount_;
-		os << ", SecurityRejectedSessionCount=" << securityRejectedSessionCount_;
-		os << ", RejectedSessionCount=" << rejectedSessionCount_;
-		os << ", SessionTimeoutCount=" << sessionTimeoutCount_;
-		os << ", SessionAbortCount=" << sessionAbortCount_;
-		os << ", SamplingRateCount=" << samplingRateCount_;
-		os << ", PublishingIntervalCount=" << publishingIntervalCount_;
-		os << ", CurrentSubscriptionCount=" << currentSubscriptionCount_;
-		os << ", CumulatedSubscriptionCount=" << cumulatedSubscriptionCount_;
-		os << ", SecurityRejectedRequestCount=" << securityRejectedRequestsCount_;
-		os << ", RejectedRequestCount=" << rejectedRequestsCount_;
-	}
+    
+    ServerDiagnosticsSummaryDataType::ServerDiagnosticsSummaryDataType(void)
+    : Object()
+    , ExtensionObjectBase()
+    , serverViewCount_()
+    , currentSessionCount_()
+    , cumulatedSessionCount_()
+    , securityRejectedSessionCount_()
+    , rejectedSessionCount_()
+    , sessionTimeoutCount_()
+    , sessionAbortCount_()
+    , currentSubscriptionCount_()
+    , cumulatedSubscriptionCount_()
+    , publishingIntervalCount_()
+    , securityRejectedRequestsCount_()
+    , rejectedRequestsCount_()
+    {
+    }
+    
+    ServerDiagnosticsSummaryDataType::~ServerDiagnosticsSummaryDataType(void)
+    {
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::serverViewCount(void)
+    {
+        return serverViewCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::currentSessionCount(void)
+    {
+        return currentSessionCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::cumulatedSessionCount(void)
+    {
+        return cumulatedSessionCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::securityRejectedSessionCount(void)
+    {
+        return securityRejectedSessionCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::rejectedSessionCount(void)
+    {
+        return rejectedSessionCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::sessionTimeoutCount(void)
+    {
+        return sessionTimeoutCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::sessionAbortCount(void)
+    {
+        return sessionAbortCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::currentSubscriptionCount(void)
+    {
+        return currentSubscriptionCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::cumulatedSubscriptionCount(void)
+    {
+        return cumulatedSubscriptionCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::publishingIntervalCount(void)
+    {
+        return publishingIntervalCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::securityRejectedRequestsCount(void)
+    {
+        return securityRejectedRequestsCount_;
+    }
+    
+    OpcUaUInt32&
+    ServerDiagnosticsSummaryDataType::rejectedRequestsCount(void)
+    {
+        return rejectedRequestsCount_;
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::operator==(const ServerDiagnosticsSummaryDataType& value)
+    {
+        ServerDiagnosticsSummaryDataType* dst = const_cast<ServerDiagnosticsSummaryDataType*>(&value);
+        if (serverViewCount_ != dst->serverViewCount()) return false;
+        if (currentSessionCount_ != dst->currentSessionCount()) return false;
+        if (cumulatedSessionCount_ != dst->cumulatedSessionCount()) return false;
+        if (securityRejectedSessionCount_ != dst->securityRejectedSessionCount()) return false;
+        if (rejectedSessionCount_ != dst->rejectedSessionCount()) return false;
+        if (sessionTimeoutCount_ != dst->sessionTimeoutCount()) return false;
+        if (sessionAbortCount_ != dst->sessionAbortCount()) return false;
+        if (currentSubscriptionCount_ != dst->currentSubscriptionCount()) return false;
+        if (cumulatedSubscriptionCount_ != dst->cumulatedSubscriptionCount()) return false;
+        if (publishingIntervalCount_ != dst->publishingIntervalCount()) return false;
+        if (securityRejectedRequestsCount_ != dst->securityRejectedRequestsCount()) return false;
+        if (rejectedRequestsCount_ != dst->rejectedRequestsCount()) return false;
+        return true;
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::operator!=(const ServerDiagnosticsSummaryDataType& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    ServerDiagnosticsSummaryDataType::copyTo(ServerDiagnosticsSummaryDataType& value)
+    {
+        value.serverViewCount_ = serverViewCount_;
+        value.currentSessionCount_ = currentSessionCount_;
+        value.cumulatedSessionCount_ = cumulatedSessionCount_;
+        value.securityRejectedSessionCount_ = securityRejectedSessionCount_;
+        value.rejectedSessionCount_ = rejectedSessionCount_;
+        value.sessionTimeoutCount_ = sessionTimeoutCount_;
+        value.sessionAbortCount_ = sessionAbortCount_;
+        value.currentSubscriptionCount_ = currentSubscriptionCount_;
+        value.cumulatedSubscriptionCount_ = cumulatedSubscriptionCount_;
+        value.publishingIntervalCount_ = publishingIntervalCount_;
+        value.securityRejectedRequestsCount_ = securityRejectedRequestsCount_;
+        value.rejectedRequestsCount_ = rejectedRequestsCount_;
+    }
+    
+    ServerDiagnosticsSummaryDataType&
+    ServerDiagnosticsSummaryDataType::operator=(const ServerDiagnosticsSummaryDataType& value)
+    {
+        const_cast<ServerDiagnosticsSummaryDataType*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    ServerDiagnosticsSummaryDataType::factory(void)
+    {
+    	return constructSPtr<ServerDiagnosticsSummaryDataType>();
+    }
+    
+    std::string
+    ServerDiagnosticsSummaryDataType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    ServerDiagnosticsSummaryDataType::typeName(void)
+    {
+    	return "ServerDiagnosticsSummaryDataType";
+    }
+    
+    OpcUaNodeId
+    ServerDiagnosticsSummaryDataType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)859,0);
+    }
+    
+    OpcUaNodeId
+    ServerDiagnosticsSummaryDataType::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)861, 0);
+    }
+    
+    OpcUaNodeId
+    ServerDiagnosticsSummaryDataType::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)860, 0);
+    }
+    
+    OpcUaNodeId
+    ServerDiagnosticsSummaryDataType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15366, 0);
+    }
+    
+    void
+    ServerDiagnosticsSummaryDataType::opcUaBinaryEncode(std::ostream& os) const
+    {
+        OpcUaNumber::opcUaBinaryEncode(os,serverViewCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,currentSessionCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,cumulatedSessionCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,securityRejectedSessionCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,rejectedSessionCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,sessionTimeoutCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,sessionAbortCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,currentSubscriptionCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,cumulatedSubscriptionCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,publishingIntervalCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,securityRejectedRequestsCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,rejectedRequestsCount_);
+    }
+    
+    void
+    ServerDiagnosticsSummaryDataType::opcUaBinaryDecode(std::istream& is)
+    {
+        OpcUaNumber::opcUaBinaryDecode(is,serverViewCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,currentSessionCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,cumulatedSessionCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,securityRejectedSessionCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,rejectedSessionCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,sessionTimeoutCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,sessionAbortCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,currentSubscriptionCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,cumulatedSubscriptionCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,publishingIntervalCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,securityRejectedRequestsCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,rejectedRequestsCount_);
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, serverViewCount_)) return false;
+        pt.push_back(std::make_pair("ServerViewCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, currentSessionCount_)) return false;
+        pt.push_back(std::make_pair("CurrentSessionCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, cumulatedSessionCount_)) return false;
+        pt.push_back(std::make_pair("CumulatedSessionCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, securityRejectedSessionCount_)) return false;
+        pt.push_back(std::make_pair("SecurityRejectedSessionCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, rejectedSessionCount_)) return false;
+        pt.push_back(std::make_pair("RejectedSessionCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, sessionTimeoutCount_)) return false;
+        pt.push_back(std::make_pair("SessionTimeoutCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, sessionAbortCount_)) return false;
+        pt.push_back(std::make_pair("SessionAbortCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, currentSubscriptionCount_)) return false;
+        pt.push_back(std::make_pair("CurrentSubscriptionCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, cumulatedSubscriptionCount_)) return false;
+        pt.push_back(std::make_pair("CumulatedSubscriptionCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, publishingIntervalCount_)) return false;
+        pt.push_back(std::make_pair("PublishingIntervalCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, securityRejectedRequestsCount_)) return false;
+        pt.push_back(std::make_pair("SecurityRejectedRequestsCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, rejectedRequestsCount_)) return false;
+        pt.push_back(std::make_pair("RejectedRequestsCount", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("ServerViewCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, serverViewCount_)) return false;
+    
+        tree = pt.get_child_optional("CurrentSessionCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, currentSessionCount_)) return false;
+    
+        tree = pt.get_child_optional("CumulatedSessionCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, cumulatedSessionCount_)) return false;
+    
+        tree = pt.get_child_optional("SecurityRejectedSessionCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, securityRejectedSessionCount_)) return false;
+    
+        tree = pt.get_child_optional("RejectedSessionCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, rejectedSessionCount_)) return false;
+    
+        tree = pt.get_child_optional("SessionTimeoutCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, sessionTimeoutCount_)) return false;
+    
+        tree = pt.get_child_optional("SessionAbortCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, sessionAbortCount_)) return false;
+    
+        tree = pt.get_child_optional("CurrentSubscriptionCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, currentSubscriptionCount_)) return false;
+    
+        tree = pt.get_child_optional("CumulatedSubscriptionCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, cumulatedSubscriptionCount_)) return false;
+    
+        tree = pt.get_child_optional("PublishingIntervalCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, publishingIntervalCount_)) return false;
+    
+        tree = pt.get_child_optional("SecurityRejectedRequestsCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, securityRejectedRequestsCount_)) return false;
+    
+        tree = pt.get_child_optional("RejectedRequestsCount");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, rejectedRequestsCount_)) return false;
+    
+        return true;
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    ServerDiagnosticsSummaryDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	ServerDiagnosticsSummaryDataType* dst = dynamic_cast<ServerDiagnosticsSummaryDataType*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    ServerDiagnosticsSummaryDataType::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	ServerDiagnosticsSummaryDataType* dst = dynamic_cast<ServerDiagnosticsSummaryDataType*>(&extensionObjectBase);
+    	return *const_cast<ServerDiagnosticsSummaryDataType*>(this) == *dst;
+    }
+    
+    void
+    ServerDiagnosticsSummaryDataType::out(std::ostream& os)
+    {
+        os << "ServerViewCount=" << serverViewCount_;
+        os << ", CurrentSessionCount=" << currentSessionCount_;
+        os << ", CumulatedSessionCount=" << cumulatedSessionCount_;
+        os << ", SecurityRejectedSessionCount=" << securityRejectedSessionCount_;
+        os << ", RejectedSessionCount=" << rejectedSessionCount_;
+        os << ", SessionTimeoutCount=" << sessionTimeoutCount_;
+        os << ", SessionAbortCount=" << sessionAbortCount_;
+        os << ", CurrentSubscriptionCount=" << currentSubscriptionCount_;
+        os << ", CumulatedSubscriptionCount=" << cumulatedSubscriptionCount_;
+        os << ", PublishingIntervalCount=" << publishingIntervalCount_;
+        os << ", SecurityRejectedRequestsCount=" << securityRejectedRequestsCount_;
+        os << ", RejectedRequestsCount=" << rejectedRequestsCount_;
+    }
 
 }
-

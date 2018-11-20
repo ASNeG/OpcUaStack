@@ -292,6 +292,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    NodeAttributesMask::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    std::string
+    NodeAttributesMask::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    NodeAttributesMask::typeName(void)
+    {
+    	return "NodeAttributesMask";
+    }
+    
+    OpcUaNodeId
+    NodeAttributesMask::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)348,0);
+    }
+    
     void
     NodeAttributesMask::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -329,10 +353,38 @@ namespace OpcUaStackCore
     }
     
     bool
+    NodeAttributesMask::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     NodeAttributesMask::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
         return true;
+    }
+    
+    bool
+    NodeAttributesMask::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    NodeAttributesMask::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    NodeAttributesMask::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    NodeAttributesMask::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

@@ -172,6 +172,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    DiagnosticsLevel::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    std::string
+    DiagnosticsLevel::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    DiagnosticsLevel::typeName(void)
+    {
+    	return "DiagnosticsLevel";
+    }
+    
+    OpcUaNodeId
+    DiagnosticsLevel::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)19723,0);
+    }
+    
     void
     DiagnosticsLevel::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -209,10 +233,38 @@ namespace OpcUaStackCore
     }
     
     bool
+    DiagnosticsLevel::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     DiagnosticsLevel::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
         return true;
+    }
+    
+    bool
+    DiagnosticsLevel::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    DiagnosticsLevel::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    DiagnosticsLevel::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    DiagnosticsLevel::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

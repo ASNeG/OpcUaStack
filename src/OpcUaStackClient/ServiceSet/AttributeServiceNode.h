@@ -20,7 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
-#include "OpcUaStackCore/ServiceSet/NodeClassOld.h"
+#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
 
 using namespace OpcUaStackCore;
@@ -76,7 +76,7 @@ namespace OpcUaStackClient
 			const AttributeId& attributeId4,
 			const AttributeId& attributeId5
 		);
-		void attributeIds(NodeClassType nodeClassType);
+		void attributeIds(NodeClass::Enum nodeClassType);
 
 		void asyncReadNode(void);
 

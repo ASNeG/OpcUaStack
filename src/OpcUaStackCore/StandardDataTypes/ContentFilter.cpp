@@ -1,0 +1,216 @@
+/*
+    DataTypeClass: ContentFilter
+
+    Generated Source Code - please do not change this source code
+
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
+
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
+
+#include "OpcUaStackCore/StandardDataTypes/ContentFilter.h"
+
+namespace OpcUaStackCore
+{
+    
+    ContentFilter::ContentFilter(void)
+    : Object()
+    , ExtensionObjectBase()
+    , elements_()
+    {
+    }
+    
+    ContentFilter::~ContentFilter(void)
+    {
+    }
+    
+    ContentFilterElementArray&
+    ContentFilter::elements(void)
+    {
+        return elements_;
+    }
+    
+    bool
+    ContentFilter::operator==(const ContentFilter& value)
+    {
+        ContentFilter* dst = const_cast<ContentFilter*>(&value);
+        if (elements_ != dst->elements()) return false;
+        return true;
+    }
+    
+    bool
+    ContentFilter::operator!=(const ContentFilter& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    ContentFilter::copyTo(ContentFilter& value)
+    {
+        elements_.copyTo(value.elements());
+    }
+    
+    ContentFilter&
+    ContentFilter::operator=(const ContentFilter& value)
+    {
+        const_cast<ContentFilter*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    ContentFilter::factory(void)
+    {
+    	return constructSPtr<ContentFilter>();
+    }
+    
+    std::string
+    ContentFilter::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    ContentFilter::typeName(void)
+    {
+    	return "ContentFilter";
+    }
+    
+    OpcUaNodeId
+    ContentFilter::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)586,0);
+    }
+    
+    OpcUaNodeId
+    ContentFilter::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)588, 0);
+    }
+    
+    OpcUaNodeId
+    ContentFilter::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)587, 0);
+    }
+    
+    OpcUaNodeId
+    ContentFilter::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15205, 0);
+    }
+    
+    void
+    ContentFilter::opcUaBinaryEncode(std::ostream& os) const
+    {
+        elements_.opcUaBinaryEncode(os);
+    }
+    
+    void
+    ContentFilter::opcUaBinaryDecode(std::istream& is)
+    {
+        elements_.opcUaBinaryDecode(is);
+    }
+    
+    bool
+    ContentFilter::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    ContentFilter::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    ContentFilter::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    ContentFilter::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!elements_.xmlEncode(elementTree, "ContentFilterElement", xmlns)) return false;
+        pt.push_back(std::make_pair("Elements", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    ContentFilter::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    ContentFilter::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("Elements");
+        if (!tree) return false;
+        if (!elements_.xmlDecode(*tree, "ContentFilterElement", xmlns)) return false;
+    
+        return true;
+    }
+    
+    bool
+    ContentFilter::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    ContentFilter::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    ContentFilter::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    ContentFilter::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    ContentFilter::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	ContentFilter* dst = dynamic_cast<ContentFilter*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    ContentFilter::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	ContentFilter* dst = dynamic_cast<ContentFilter*>(&extensionObjectBase);
+    	return *const_cast<ContentFilter*>(this) == *dst;
+    }
+    
+    void
+    ContentFilter::out(std::ostream& os)
+    {
+        os << "Elements="; elements_.out(os);
+    }
+
+}

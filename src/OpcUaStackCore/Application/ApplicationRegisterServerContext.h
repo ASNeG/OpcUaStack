@@ -20,7 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
-#include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
+#include "OpcUaStackCore/StandardDataTypes/RegisteredServer.h"
 
 namespace OpcUaStackCore
 {

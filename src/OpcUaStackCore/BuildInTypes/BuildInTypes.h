@@ -41,9 +41,21 @@ namespace OpcUaStackCore
 
 	typedef OpcUaDateTime OpcUaUtcTime;
 	typedef OpcUaDateTimeArray OpcUaUtcTimeArray;
+	typedef OpcUaUInt16 OpcUaDataSetFieldFlag;
 	typedef OpcUaUInt32 OpcUaIntegerId;
+	typedef OpcUaUInt32 OpcUaVersionTime;
+	typedef OpcUaUInt32 OpcUaDataSetFieldContentMask;
+	typedef OpcUaUInt32 OpcUaJsonNetworkMessageContentMask;
+	typedef OpcUaUInt32 OpcUaUadpNetworkMessageContentMask;
+	typedef OpcUaUInt32 OpcUaJsonDataSetMessageContentMask;
+	typedef OpcUaUInt32 OpcUaUadpDataSetMessageContentMask;
+	typedef OpcUaUInt32 OpcUaPermissionType;
 	typedef OpcUaDouble OpcUaDuration;
+	typedef OpcUaDoubleArray OpcUaDurationArray;
+	typedef OpcUaString OpcUaNumericRange;
+	typedef OpcUaString OpcUaLocaleId;
 	typedef OpcUaStringArray OpcUaLocaleIdArray;
+	typedef OpcUaByteString OpcUaApplicationInstanceCertificate;
 
 };
 

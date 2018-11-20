@@ -1,235 +1,275 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: StructureDefinition
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
-
-#include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
 
 namespace OpcUaStackCore
 {
-
-	StructureDefinition::StructureDefinition(void)
-	: DataTypeDefinition()
-	, name_("")
-	, symbolicName_("")
-	, defaultEncodingId_()
-	, baseDataType_()
-	, structureType_(0)
-	, fields_(constructSPtr<StructureFieldArray>())
-	{
-	}
-
-	StructureDefinition::~StructureDefinition(void)
-	{
-	}
-
-	void
-	StructureDefinition::name(const std::string& name)
-	{
-		name_ = name;
-	}
-
-	std::string&
-	StructureDefinition::name(void)
-	{
-		return name_;
-	}
-
-	void
-	StructureDefinition::symbolicName(const std::string& symbolicName)
-	{
-		symbolicName_ = symbolicName;
-	}
-
-	std::string&
-	StructureDefinition::symbolicName(void)
-	{
-		return symbolicName_;
-	}
-
-	void
-	StructureDefinition::defaultEncodingId(OpcUaNodeId& defaultEncodingId)
-	{
-		defaultEncodingId_ = defaultEncodingId;
-	}
-
-	OpcUaNodeId&
-	StructureDefinition::defaultEncodingId(void)
-	{
-		return defaultEncodingId_;
-	}
-
-	void
-	StructureDefinition::baseDataType(OpcUaNodeId& baseDataType)
-	{
-		baseDataType_ = baseDataType;
-	}
-
-	OpcUaNodeId&
-	StructureDefinition::baseDataType(void)
-	{
-		return baseDataType_;
-	}
-
-	void
-	StructureDefinition::structureType(uint32_t structureType)
-	{
-		structureType_ = structureType;
-	}
-
-	uint32_t
-	StructureDefinition::structureType(void)
-	{
-		return structureType_;
-	}
-
-	void
-	StructureDefinition::fields(StructureFieldArray::SPtr& fields)
-	{
-		if (fields_.get() == nullptr) return;
-		fields_ = fields;
-	}
-
-	StructureFieldArray::SPtr&
-	StructureDefinition::fields(void)
-	{
-		return fields_;
-	}
-
-	void
-	StructureDefinition::copyTo(StructureDefinition& structureTypeDefinition)
-	{
-		defaultEncodingId_.copyTo(structureTypeDefinition.defaultEncodingId_);
-		baseDataType_.copyTo(structureTypeDefinition.baseDataType_);
-		structureTypeDefinition.structureType_ = structureType_;
-		fields_->copyTo(*structureTypeDefinition.fields_);
-	}
-
-	bool
-	StructureDefinition::operator==(const StructureDefinition& structureTypeDefinition) const
-	{
-		return
-			defaultEncodingId_ == structureTypeDefinition.defaultEncodingId_ &&
-			baseDataType_ == structureTypeDefinition.baseDataType_ &&
-			structureType_ == structureTypeDefinition.structureType_ &&
-			*fields_ == *structureTypeDefinition.fields_;
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// ExtensionObjectBase
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	ExtensionObjectBase::SPtr
-	StructureDefinition::factory(void)
-	{
-		return constructSPtr<StructureDefinition>();
-	}
-
-	OpcUaNodeId
-	StructureDefinition::binaryTypeId(void)
-	{
-		return OpcUaNodeId((OpcUaUInt32)OpcUaId_StructureDefinition_Encoding_DefaultBinary);
-	}
-
-	OpcUaNodeId
-	StructureDefinition::xmlTypeId(void)
-	{
-		return OpcUaNodeId((OpcUaUInt32)OpcUaId_StructureDefinition_Encoding_DefaultXml);
-	}
-
-	void
-	StructureDefinition::opcUaBinaryEncode(std::ostream& os) const
-	{
-		defaultEncodingId_.opcUaBinaryEncode(os);
-		baseDataType_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, structureType_);
-		fields_->opcUaBinaryEncode(os);
-	}
-
-	void
-	StructureDefinition::opcUaBinaryDecode(std::istream& is)
-	{
-		defaultEncodingId_.opcUaBinaryDecode(is);
-		baseDataType_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, structureType_);
-		fields_->opcUaBinaryDecode(is);
-	}
-
-	bool
-	StructureDefinition::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	bool
-	StructureDefinition::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return true;
-	}
-
-	bool
-	StructureDefinition::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return true;
-	}
-
-	bool
-	StructureDefinition::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return true;
-	}
-
-	bool
-	StructureDefinition::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return true;
-	}
-
-	void
-	StructureDefinition::copyTo(ExtensionObjectBase& extensionObjectBase)
-	{
-		StructureDefinition* dst = dynamic_cast<StructureDefinition*>(&extensionObjectBase);
-		copyTo(*dst);
-	}
-
-	bool
-	StructureDefinition::equal(ExtensionObjectBase& extensionObjectBase) const
-	{
-		StructureDefinition* dst = dynamic_cast<StructureDefinition*>(&extensionObjectBase);
-		return *this == *dst;
-	}
-
-	void
-	StructureDefinition::out(std::ostream& os)
-	{
-		os << "DefaultEncodingId="; defaultEncodingId_.out(os);
-		os << ", BaseDataType="; baseDataType_.out(os);
-		os << ", StructureType=" << structureType_;
-		os << ", Fields="; fields_->out(os);
-	}
+    
+    StructureDefinition::StructureDefinition(void)
+    : DataTypeDefinition()
+    , defaultEncodingId_()
+    , baseDataType_()
+    , structureType_()
+    , fields_()
+    {
+    }
+    
+    StructureDefinition::~StructureDefinition(void)
+    {
+    }
+    
+    OpcUaNodeId&
+    StructureDefinition::defaultEncodingId(void)
+    {
+        return defaultEncodingId_;
+    }
+    
+    OpcUaNodeId&
+    StructureDefinition::baseDataType(void)
+    {
+        return baseDataType_;
+    }
+    
+    StructureType&
+    StructureDefinition::structureType(void)
+    {
+        return structureType_;
+    }
+    
+    StructureFieldArray&
+    StructureDefinition::fields(void)
+    {
+        return fields_;
+    }
+    
+    bool
+    StructureDefinition::operator==(const StructureDefinition& value)
+    {
+        StructureDefinition* dst = const_cast<StructureDefinition*>(&value);
+        if (defaultEncodingId_ != dst->defaultEncodingId()) return false;
+        if (baseDataType_ != dst->baseDataType()) return false;
+        if (structureType_ != dst->structureType()) return false;
+        if (fields_ != dst->fields()) return false;
+        return true;
+    }
+    
+    bool
+    StructureDefinition::operator!=(const StructureDefinition& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    StructureDefinition::copyTo(StructureDefinition& value)
+    {
+        defaultEncodingId_.copyTo(value.defaultEncodingId());
+        baseDataType_.copyTo(value.baseDataType());
+        structureType_.copyTo(value.structureType());
+        fields_.copyTo(value.fields());
+    }
+    
+    StructureDefinition&
+    StructureDefinition::operator=(const StructureDefinition& value)
+    {
+        const_cast<StructureDefinition*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    StructureDefinition::factory(void)
+    {
+    	return constructSPtr<StructureDefinition>();
+    }
+    
+    std::string
+    StructureDefinition::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    StructureDefinition::typeName(void)
+    {
+    	return "StructureDefinition";
+    }
+    
+    OpcUaNodeId
+    StructureDefinition::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)99,0);
+    }
+    
+    OpcUaNodeId
+    StructureDefinition::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)122, 0);
+    }
+    
+    OpcUaNodeId
+    StructureDefinition::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)14798, 0);
+    }
+    
+    OpcUaNodeId
+    StructureDefinition::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15066, 0);
+    }
+    
+    void
+    StructureDefinition::opcUaBinaryEncode(std::ostream& os) const
+    {
+        defaultEncodingId_.opcUaBinaryEncode(os);
+        baseDataType_.opcUaBinaryEncode(os);
+        structureType_.opcUaBinaryEncode(os);
+        fields_.opcUaBinaryEncode(os);
+    }
+    
+    void
+    StructureDefinition::opcUaBinaryDecode(std::istream& is)
+    {
+        defaultEncodingId_.opcUaBinaryDecode(is);
+        baseDataType_.opcUaBinaryDecode(is);
+        structureType_.opcUaBinaryDecode(is);
+        fields_.opcUaBinaryDecode(is);
+    }
+    
+    bool
+    StructureDefinition::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    StructureDefinition::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    StructureDefinition::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    StructureDefinition::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!defaultEncodingId_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("DefaultEncodingId", elementTree));
+    
+        elementTree.clear();
+        if (!baseDataType_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("BaseDataType", elementTree));
+    
+        elementTree.clear();
+        if (!structureType_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("StructureType", elementTree));
+    
+        elementTree.clear();
+        if (!fields_.xmlEncode(elementTree, "StructureField", xmlns)) return false;
+        pt.push_back(std::make_pair("Fields", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    StructureDefinition::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    StructureDefinition::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("DefaultEncodingId");
+        if (!tree) return false;
+        if (!defaultEncodingId_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("BaseDataType");
+        if (!tree) return false;
+        if (!baseDataType_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("StructureType");
+        if (!tree) return false;
+        if (!structureType_.xmlDecode(*tree, xmlns)) return false;
+    
+        tree = pt.get_child_optional("Fields");
+        if (!tree) return false;
+        if (!fields_.xmlDecode(*tree, "StructureField", xmlns)) return false;
+    
+        return true;
+    }
+    
+    bool
+    StructureDefinition::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    StructureDefinition::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    StructureDefinition::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    StructureDefinition::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    StructureDefinition::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	StructureDefinition* dst = dynamic_cast<StructureDefinition*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    StructureDefinition::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	StructureDefinition* dst = dynamic_cast<StructureDefinition*>(&extensionObjectBase);
+    	return *const_cast<StructureDefinition*>(this) == *dst;
+    }
+    
+    void
+    StructureDefinition::out(std::ostream& os)
+    {
+        os << "DefaultEncodingId="; defaultEncodingId_.out(os);
+        os << ", BaseDataType="; baseDataType_.out(os);
+        os << ", StructureType="; structureType_.out(os);
+        os << ", Fields="; fields_.out(os);
+    }
 
 }
-
-

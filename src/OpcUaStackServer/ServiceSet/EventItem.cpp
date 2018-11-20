@@ -17,7 +17,7 @@
 
 #include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/ServiceSet/EventFilter.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardEventType/BaseEventType.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
@@ -90,7 +90,7 @@ namespace OpcUaStackServer
 		EventFilterResult::SPtr eventFilterResult = constructSPtr<EventFilterResult>();
 
 		// select clause
-		SimpleAttributeOperandArray::SPtr selectClauses = eventFilter->selectClauses();
+		SimpleAttributeOperandArray& selectClauses = eventFilter->selectClauses();
 		OpcUaStatusCodeArray::SPtr selectClauseResults = eventFilterResult->selectClauseResults();
 		statusCode = receive(selectClauses, selectClauseResults);
 		if (statusCode != Success) {
@@ -101,7 +101,7 @@ namespace OpcUaStackServer
 		// construct where filter
 		whereFilter_ = constructSPtr<FilterStack>();
 		whereFilter_->simpleAttributeIf(this);
-		if (eventFilter->whereClause().elements()->size() != 0) {
+		if (eventFilter->whereClause().elements().size() != 0) {
 			bool whereFilterIsValid = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
 			if (!whereFilterIsValid) {
 				statusCode = OpcUaStatusCode::BadMonitoredItemFilterInvalid;
@@ -239,25 +239,26 @@ namespace OpcUaStackServer
 		// process where clause
 		EventFieldList::SPtr eventFieldList = constructSPtr<EventFieldList>();
 		eventFieldList->clientHandle(clientHandle_);
-		eventFieldList->eventFields()->resize(selectClauses_->size());
+		eventFieldList->eventFields()->resize(selectClauses_.size());
 
-		for (uint32_t idx=0; idx<selectClauses_->size(); idx++) {
+		for (uint32_t idx=0; idx<selectClauses_.size(); idx++) {
 
 			// get simple attribute operand
 			SimpleAttributeOperand::SPtr simpleAttributeOperand;
-			selectClauses_->get(idx, simpleAttributeOperand);
+			selectClauses_.get(idx, simpleAttributeOperand);
 
 			std::list<OpcUaQualifiedName::SPtr> browseNameList;
-			for (uint32_t j=0; j<simpleAttributeOperand->browsePath()->size(); j++) {
+			for (uint32_t j=0; j<simpleAttributeOperand->browsePath().size(); j++) {
 				OpcUaQualifiedName::SPtr browseName;
-				simpleAttributeOperand->browsePath()->get(j, browseName);
+				simpleAttributeOperand->browsePath().get(j, browseName);
 				browseNameList.push_back(browseName);
 			}
 
 			// get variant value from event
+			OpcUaNodeId typeId = simpleAttributeOperand->typeDefinitionId();
 			OpcUaVariant::SPtr value;
 			EventResult::Code resultCode = eventBase->get(
-				simpleAttributeOperand->typeId(),
+				typeId,
 				browseNameList,
 				value
 			);
@@ -297,19 +298,17 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	EventItem::receive(SimpleAttributeOperandArray::SPtr& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray)
+	EventItem::receive(SimpleAttributeOperandArray& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray)
 	{
-		if (selectClauses.get() == nullptr) {
-			return BadContentFilterInvalid;
-		}
-		if (selectClauses->size() == 0) {
+		if (selectClauses.size() == 0) {
 			return BadContentFilterInvalid;
 		}
 
-		selectClauses_ = selectClauses;
+		selectClauses.copyTo(selectClauses_);
+
 		statusCodeArray = constructSPtr<OpcUaStatusCodeArray>();
-		statusCodeArray->resize(selectClauses->size());
-		for (uint32_t idx=0; idx<selectClauses->size(); idx++) {
+		statusCodeArray->resize(selectClauses.size());
+		for (uint32_t idx=0; idx<selectClauses.size(); idx++) {
 			// FIXME: check if attributes exist in type system
 
 			statusCodeArray->set(idx, (OpcUaStatusCode)Success);

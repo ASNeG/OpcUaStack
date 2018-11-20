@@ -62,13 +62,13 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* nodeClassAttribute(void);
 		bool unsetNodeClass(void);
-		bool setNodeClassSync(NodeClassType& nodeClass);
-		bool setNodeClass(NodeClassType& nodeClass);
-		bool getNodeClassSync(NodeClassType& nodeClass);
-		bool getNodeClass(NodeClassType& nodeClass);
+		bool setNodeClassSync(NodeClass::Enum& nodeClass);
+		bool setNodeClass(NodeClass::Enum& nodeClass);
+		bool getNodeClassSync(NodeClass::Enum& nodeClass);
+		bool getNodeClass(NodeClass::Enum& nodeClass);
 		bool isPartNodeClass(void);
 		bool isNullNodeClass(void);
-		boost::optional<NodeClassType&> getNodeClass(void);
+		boost::optional<NodeClass::Enum&> getNodeClass(void);
 
 		//
 		// attribute browse name

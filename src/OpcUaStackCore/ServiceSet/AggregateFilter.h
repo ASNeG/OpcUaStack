@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/AggregateConfiguration.h"
+#include "OpcUaStackCore/StandardDataTypes/AggregateConfiguration.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
 
 namespace OpcUaStackCore

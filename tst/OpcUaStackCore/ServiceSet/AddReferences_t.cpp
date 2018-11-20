@@ -81,12 +81,12 @@ BOOST_AUTO_TEST_CASE(AddReferences_Request)
 	// add AddReferencesItem node
 	{
 		AddReferencesItem::SPtr addReferencesItemSPtr = constructSPtr<AddReferencesItem>();
-		addReferencesItemSPtr->sourceNodeId()->set(11, 130);
-		addReferencesItemSPtr->referenceTypeId()->set(12, 130);
-		addReferencesItemSPtr->isForward(false);
-		addReferencesItemSPtr->targetServerUri()->value("sample uri");
-		addReferencesItemSPtr->targetNodeId()->set(13,130);
-		addReferencesItemSPtr->targetNodeClass()->nodeClassType(NodeClassType_DataType);
+		addReferencesItemSPtr->sourceNodeId().set(11, 130);
+		addReferencesItemSPtr->referenceTypeId().set(12, 130);
+		addReferencesItemSPtr->isForward() = false;
+		addReferencesItemSPtr->targetServerUri().value("sample uri");
+		addReferencesItemSPtr->targetNodeId().set(13,130);
+		addReferencesItemSPtr->targetNodeClass().enumeration(NodeClass::EnumDataType);
 
 		addReferencesRequestSPtr->referencesToAdd()->set(0, addReferencesItemSPtr);
 	}
@@ -174,21 +174,17 @@ BOOST_AUTO_TEST_CASE(AddReferences_Request)
 		BOOST_REQUIRE(addReferencesRequestSPtr->referencesToAdd()->get(0, addReferencesItemSPtr));
 		BOOST_REQUIRE(addReferencesItemSPtr.get() != 0);
 
-		BOOST_REQUIRE(addReferencesItemSPtr->sourceNodeId().get() != NULL);
-		BOOST_REQUIRE(addReferencesItemSPtr->referenceTypeId().get() != NULL);
-		BOOST_REQUIRE(addReferencesItemSPtr->targetNodeId().get() != NULL);
-	
-		BOOST_REQUIRE(addReferencesItemSPtr->sourceNodeId()->namespaceIndex() == 130);
-		BOOST_REQUIRE(addReferencesItemSPtr->sourceNodeId()->nodeId<OpcUaUInt32>() == 11);
-		BOOST_REQUIRE(addReferencesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
-		BOOST_REQUIRE(addReferencesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 12);
+		BOOST_REQUIRE(addReferencesItemSPtr->sourceNodeId().namespaceIndex() == 130);
+		BOOST_REQUIRE(addReferencesItemSPtr->sourceNodeId().nodeId<OpcUaUInt32>() == 11);
+		BOOST_REQUIRE(addReferencesItemSPtr->referenceTypeId().namespaceIndex() == 130);
+		BOOST_REQUIRE(addReferencesItemSPtr->referenceTypeId().nodeId<OpcUaUInt32>() == 12);
 
 		BOOST_REQUIRE(addReferencesItemSPtr->isForward() == false);
-		BOOST_REQUIRE(addReferencesItemSPtr->targetServerUri()->value() == "sample uri");
-		BOOST_REQUIRE(addReferencesItemSPtr->targetNodeId()->namespaceIndex() == 130);
-		BOOST_REQUIRE(addReferencesItemSPtr->targetNodeId()->nodeId<OpcUaUInt32>() == 13);		
+		BOOST_REQUIRE(addReferencesItemSPtr->targetServerUri().value() == "sample uri");
+		BOOST_REQUIRE(addReferencesItemSPtr->targetNodeId().namespaceIndex() == 130);
+		BOOST_REQUIRE(addReferencesItemSPtr->targetNodeId().nodeId<OpcUaUInt32>() == 13);
 
-		BOOST_REQUIRE(addReferencesItemSPtr->targetNodeClass()->nodeClassType() == NodeClassType_DataType);
+		BOOST_REQUIRE(addReferencesItemSPtr->targetNodeClass().enumeration() == NodeClass::EnumDataType);
 	}
 
 }

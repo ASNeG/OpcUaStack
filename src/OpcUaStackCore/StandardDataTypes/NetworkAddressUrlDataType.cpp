@@ -1,0 +1,215 @@
+/*
+    DataTypeClass: NetworkAddressUrlDataType
+
+    Generated Source Code - please do not change this source code
+
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
+
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
+
+#include "OpcUaStackCore/StandardDataTypes/NetworkAddressUrlDataType.h"
+
+namespace OpcUaStackCore
+{
+    
+    NetworkAddressUrlDataType::NetworkAddressUrlDataType(void)
+    : NetworkAddressDataType()
+    , url_()
+    {
+    }
+    
+    NetworkAddressUrlDataType::~NetworkAddressUrlDataType(void)
+    {
+    }
+    
+    OpcUaString&
+    NetworkAddressUrlDataType::url(void)
+    {
+        return url_;
+    }
+    
+    bool
+    NetworkAddressUrlDataType::operator==(const NetworkAddressUrlDataType& value)
+    {
+        NetworkAddressUrlDataType* dst = const_cast<NetworkAddressUrlDataType*>(&value);
+        if (url_ != dst->url()) return false;
+        return true;
+    }
+    
+    bool
+    NetworkAddressUrlDataType::operator!=(const NetworkAddressUrlDataType& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    NetworkAddressUrlDataType::copyTo(NetworkAddressUrlDataType& value)
+    {
+        url_.copyTo(value.url());
+    }
+    
+    NetworkAddressUrlDataType&
+    NetworkAddressUrlDataType::operator=(const NetworkAddressUrlDataType& value)
+    {
+        const_cast<NetworkAddressUrlDataType*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    NetworkAddressUrlDataType::factory(void)
+    {
+    	return constructSPtr<NetworkAddressUrlDataType>();
+    }
+    
+    std::string
+    NetworkAddressUrlDataType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    NetworkAddressUrlDataType::typeName(void)
+    {
+    	return "NetworkAddressUrlDataType";
+    }
+    
+    OpcUaNodeId
+    NetworkAddressUrlDataType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15510,0);
+    }
+    
+    OpcUaNodeId
+    NetworkAddressUrlDataType::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)21152, 0);
+    }
+    
+    OpcUaNodeId
+    NetworkAddressUrlDataType::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)21176, 0);
+    }
+    
+    OpcUaNodeId
+    NetworkAddressUrlDataType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)21200, 0);
+    }
+    
+    void
+    NetworkAddressUrlDataType::opcUaBinaryEncode(std::ostream& os) const
+    {
+        url_.opcUaBinaryEncode(os);
+    }
+    
+    void
+    NetworkAddressUrlDataType::opcUaBinaryDecode(std::istream& is)
+    {
+        url_.opcUaBinaryDecode(is);
+    }
+    
+    bool
+    NetworkAddressUrlDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    NetworkAddressUrlDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    NetworkAddressUrlDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    NetworkAddressUrlDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!url_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("Url", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    NetworkAddressUrlDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    NetworkAddressUrlDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("Url");
+        if (!tree) return false;
+        if (!url_.xmlDecode(*tree, xmlns)) return false;
+    
+        return true;
+    }
+    
+    bool
+    NetworkAddressUrlDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    NetworkAddressUrlDataType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    NetworkAddressUrlDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    NetworkAddressUrlDataType::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    NetworkAddressUrlDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	NetworkAddressUrlDataType* dst = dynamic_cast<NetworkAddressUrlDataType*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    NetworkAddressUrlDataType::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	NetworkAddressUrlDataType* dst = dynamic_cast<NetworkAddressUrlDataType*>(&extensionObjectBase);
+    	return *const_cast<NetworkAddressUrlDataType*>(this) == *dst;
+    }
+    
+    void
+    NetworkAddressUrlDataType::out(std::ostream& os)
+    {
+        os << "Url="; url_.out(os);
+    }
+
+}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,16 +31,19 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool OpcUaExtensionObject::init_ = false;
-	ExtensionObjectMap OpcUaExtensionObject::extentionObjectMap_;
+	ExtensionObjectBase::Map OpcUaExtensionObject::extentionObjectMap_;
 
 	bool
 	OpcUaExtensionObject::insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::SPtr epSPtr)
 	{
-		ExtensionObjectMap::iterator it;
+		// check if extension object already exist
+		ExtensionObjectBase::Map::iterator it;
 		it = extentionObjectMap_.find(opcUaNodeId);
 		if (it != extentionObjectMap_.end()) {
 			return false;
 		}
+
+		// added extension object to extension object map
 		extentionObjectMap_.insert(std::make_pair(opcUaNodeId, epSPtr));
 		return true;
 	}
@@ -48,11 +51,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaExtensionObject::deleteElement(OpcUaNodeId& opcUaNodeId)
 	{
-		ExtensionObjectMap::iterator it;
+		// check if extension object exists
+		ExtensionObjectBase::Map::iterator it;
 		it = extentionObjectMap_.find(opcUaNodeId);
 		if (it == extentionObjectMap_.end()) {
 			return false;
 		}
+
+		// remove extension object from extension object map
 		extentionObjectMap_.erase(it);
 		return true;
 	}
@@ -61,7 +67,7 @@ namespace OpcUaStackCore
 	OpcUaExtensionObject::findElement(OpcUaNodeId& opcUaNodeId)
 	{
 		ExtensionObjectBase::SPtr epSPtr;
-		ExtensionObjectMap::iterator it;
+		ExtensionObjectBase::Map::iterator it;
 		it = extentionObjectMap_.find(opcUaNodeId);
 		if (it != extentionObjectMap_.end()) {
 			epSPtr = it->second;
@@ -73,6 +79,15 @@ namespace OpcUaStackCore
 	: Object()
 	, style_(S_None)
 	, typeId_()
+	, epSPtr_()
+	, byteString_()
+	{
+	}
+
+	OpcUaExtensionObject::OpcUaExtensionObject(OpcUaNodeId& typeId)
+	: Object()
+	, style_(S_None)
+	, typeId_(typeId)
 	, epSPtr_()
 	, byteString_()
 	{
@@ -159,11 +174,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaExtensionObject::createObject(void)
 	{
-		ExtensionObjectMap::iterator it;
+		// find extension object
+		ExtensionObjectBase::Map::iterator it;
 		it = extentionObjectMap_.find(typeId_);
 		if (it == extentionObjectMap_.end()) {
 			return false;
 		}
+
+		// create new extension object
 		style_ = S_Type;
 		epSPtr_ = it->second->factory();
 		return true;
@@ -295,7 +313,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		ExtensionObjectMap::iterator it;
+		ExtensionObjectBase::Map::iterator it;
 		it = extentionObjectMap_.find(typeId_);
 		if (it == extentionObjectMap_.end()) {
 
@@ -316,75 +334,6 @@ namespace OpcUaStackCore
 	}
 	
 	bool
-	OpcUaExtensionObject::encode(boost::property_tree::ptree& pt) const
-	{
-		boost::property_tree::ptree typeId;
-		if (!typeId_.encode(typeId)) return false;
-		pt.put_child("TypeId", typeId);
-
-		return true;
-	}
-
-	bool
-	OpcUaExtensionObject::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// get typeId
-		boost::optional<boost::property_tree::ptree&> typeId = pt.get_child_optional(xmlns.addxmlns("TypeId"));
-		if (!typeId) typeId = pt.get_child_optional("TypeId");
-		if (!typeId) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addxmlns("TypeId"));
-			return false;
-		}
-
-		// get identifier
-		boost::optional<std::string> identifier = typeId->get_optional<std::string>(xmlns.addxmlns("Identifier"));
-		if (!identifier) identifier = typeId->get_optional<std::string>("Identifier");
-		if (!identifier) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addxmlns("Identifier"));
-			return false;
-		}
-
-		OpcUaNodeId xmlNodeIdType;
-		std::string s = *identifier;
-		s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-		bool rc = xmlNodeIdType.fromString(s);
-		if (!rc) {
-			Log(Error, "value format error")
-				.parameter("Tag", xmlns.addxmlns("Identifier"))
-				.parameter("Identifier", s);
-			return false;
-		}
-
-		// get body
-		boost::optional<boost::property_tree::ptree&> body = pt.get_child_optional(xmlns.addxmlns("Body"));
-		if (!body) body = pt.get_child_optional("Body");
-		if (!body) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addxmlns("Body"))
-				.parameter("NodeIdType", xmlNodeIdType);
-			return false;
-		}
-
-		this->typeId(xmlNodeIdType);
-		if (!createObject()) {
-			// Extension object unknown
-			logExtensionObjectMap();
-			Log(Error, "extension object unknown")
-				.parameter("NodeIdType", xmlNodeIdType);
-			return false;
-		}
-
-		// Currently the XML type ist stored in the object. Now we determine
-		// the binary type by the XMl type.
-		typeId_ = epSPtr_->binaryTypeId();
-
-		// decode extension object from xml file
-		return epSPtr_->decode(*body, xmlns);
-	}
-
-	bool
 	OpcUaExtensionObject::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;
@@ -393,6 +342,7 @@ namespace OpcUaStackCore
 				.parameter("Element", element);
 			return false;
 		}
+
 		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
 		return true;
 	}
@@ -429,6 +379,14 @@ namespace OpcUaStackCore
 		pt.add_child(xmlns.addxmlns("Body"), bodyTree);
 
 		return true;
+	}
+
+	bool
+	OpcUaExtensionObject::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
 	}
 
 	bool
@@ -496,7 +454,7 @@ namespace OpcUaStackCore
 	{
 		Log(Debug, "extension object map entries");
 
-		ExtensionObjectMap::iterator it;
+		ExtensionObjectBase::Map::iterator it;
 		for (it=extentionObjectMap_.begin(); it!=extentionObjectMap_.end(); it++) {
 			Log(Debug, "  ").parameter(" ", it->first);
 		}

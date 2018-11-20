@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	VariableTypeAttributes::VariableTypeAttributes(void)
 	: Object()
-	, ExtensibleParameterBase()
+	, ExtensionObjectBase()
 	, specifiedAttributes_()
 	, displayName_(constructSPtr<OpcUaLocalizedText>())
 	, description_(constructSPtr<OpcUaLocalizedText>())
@@ -182,7 +182,37 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::SPtr
+	void
+	VariableTypeAttributes::copyTo(VariableTypeAttributes& variableTypeAttributes)
+	{
+		specifiedAttributes_ = variableTypeAttributes.specifiedAttributes_;
+		displayName_->copyTo(*variableTypeAttributes.displayName_);
+		description_->copyTo(*variableTypeAttributes.description_);
+		isAbstract_ = variableTypeAttributes.isAbstract_;
+		value_->copyTo(*variableTypeAttributes.value_);
+		dataType_->copyTo(*variableTypeAttributes.dataType_);
+		valueRank_ = variableTypeAttributes.valueRank_;
+		arrayDimensions_->copyTo(*variableTypeAttributes.arrayDimensions_);
+		writeMask_ = variableTypeAttributes.writeMask_;
+		userWriteMask_ = variableTypeAttributes.userWriteMask_;
+	}
+
+	bool
+	VariableTypeAttributes::operator==(const VariableTypeAttributes& variableTypeAttributes) const
+	{
+		return specifiedAttributes_ == variableTypeAttributes.specifiedAttributes_ &&
+			*displayName_ == *variableTypeAttributes.displayName_ &&
+			*description_ == *variableTypeAttributes.description_ &&
+			isAbstract_ == variableTypeAttributes.isAbstract_ &&
+			*value_ == *variableTypeAttributes.value_ &&
+			*dataType_ == *variableTypeAttributes.dataType_ &&
+			valueRank_ == variableTypeAttributes.valueRank_ &&
+			*arrayDimensions_ == *variableTypeAttributes.arrayDimensions_ &&
+			writeMask_ == variableTypeAttributes.writeMask_ &&
+			userWriteMask_ == variableTypeAttributes.userWriteMask_;
+	}
+
+	ExtensionObjectBase::SPtr
 	VariableTypeAttributes::factory(void)
 	{
 		return constructSPtr<VariableTypeAttributes>();
@@ -218,6 +248,35 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, isAbstract_);
 		OpcUaNumber::opcUaBinaryDecode(is, writeMask_);
 		OpcUaNumber::opcUaBinaryDecode(is, userWriteMask_);
+	}
+
+	void
+	VariableTypeAttributes::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		VariableTypeAttributes* dst = dynamic_cast<VariableTypeAttributes*>(&extensionObjectBase);
+		copyTo(*dst);
+	}
+
+	bool
+	VariableTypeAttributes::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		VariableTypeAttributes* dst = dynamic_cast<VariableTypeAttributes*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	VariableTypeAttributes::out(std::ostream& os)
+	{
+		os << "SpecificAttributes=" << specifiedAttributes_;
+		os << ", DisplayName="; displayName_->out(os);
+		os << ", Description="; description_->out(os);
+		os << ", Value="; value_->out(os);
+		os << ", DataType="; dataType_->out(os);
+		os << ", ValueRank=" << valueRank_;
+		os << ", ArrayDimensions="; arrayDimensions_->out(os);
+		os << ", IsAbstract=" <<  isAbstract_;
+		os << ", WriteMask=" << writeMask_;
+		os << ", UserWriteMask=" << userWriteMask_;
 	}
 
 }

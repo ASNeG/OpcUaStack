@@ -56,7 +56,7 @@ namespace OpcUaStackServer
 		if (!nodeInfo_.init(enumType, informationModel_)) {
 			return false;
 		}
-		nodeInfo_.log();
+		//nodeInfo_.log();
 
 		// generate header and source content
 		return
@@ -108,6 +108,7 @@ namespace OpcUaStackServer
 				    generateHeaderClassPrivate("    ") &&
 				    generateHeaderClassValueDefinition("        ") &&
 				generateHeaderClassEnd("    ") &&
+				generateHeaderClassValueArray("    ") &&
 		    generateHeaderEnd();
 	}
 
@@ -125,7 +126,6 @@ namespace OpcUaStackServer
 		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
 		ss << std::endl;
 		ss << "    Autor:     Kai Huebl (kai@huebl-sgh.de)" << std::endl;
-		ss << "    BuildDate: " << boost::posix_time::microsec_clock::local_time() << std::endl;
 		ss << "*/" << std::endl;
 
 		headerContent_ += ss.str();
@@ -199,6 +199,12 @@ namespace OpcUaStackServer
 		// added class
 		//
 		ss << prefix << std::endl;
+		if (nodeInfo_.description() != "") {
+			ss << prefix << "/**" << std::endl;
+			ss << prefix << " * " << nodeInfo_.description() << std::endl;
+			ss << prefix << " */" << std::endl;
+		}
+
 		ss << prefix << "class " << nodeInfo_.className() << std::endl;
 
 		//
@@ -263,15 +269,24 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
 		ss << prefix << "virtual ExtensionObjectBase::SPtr factory(void);" << std::endl;
+		ss << prefix << "virtual std::string namespaceName(void);" << std::endl;
+		ss << prefix << "virtual std::string typeName(void);" << std::endl;
+		ss << prefix << "virtual OpcUaNodeId typeId(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void);" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId xmlTypeId(void);" << std::endl;
+		ss << prefix << "virtual OpcUaNodeId jsonTypeId(void);" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryEncode(std::ostream& os) const;" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryDecode(std::istream& is);" << std::endl;
 		ss << prefix << "virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;" << std::endl;
 		ss << prefix << "virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
+		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
+		ss << prefix << "virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);" << std::endl;
+		ss << prefix << "virtual bool jsonEncode(boost::property_tree::ptree& pt);" << std::endl;
+		ss << prefix << "virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);" << std::endl;
+		ss << prefix << "virtual bool jsonDecode(boost::property_tree::ptree& pt);" << std::endl;
 		ss << prefix << "virtual void copyTo(ExtensionObjectBase& extensionObjectBase);" << std::endl;
 		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;" << std::endl;
 		ss << prefix << "virtual void out(std::ostream& os);" << std::endl;
@@ -352,6 +367,24 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	EnumTypeGenerator::generateHeaderClassValueArray(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "class " << nodeInfo_.className() << "Array" << std::endl;
+		ss << prefix << ": public OpcUaArray<" << nodeInfo_.className() << "::SPtr, SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
+		ss << prefix << ", public Object" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "  public:" << std::endl;
+		ss << prefix << "	   typedef boost::shared_ptr<" << nodeInfo_.className() << "Array> SPtr;" << std::endl;
+		ss << prefix << "};" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -377,12 +410,18 @@ namespace OpcUaStackServer
 				generateSourceClassFactory("    ") &&
 				generateSourceClassBinaryTypeId("    ") &&
 				generateSourceClassXmlTypeId("    ") &&
+				generateSourceClassJsonTypeId("    ") &&
+				generateSourceClassNamespaceName("    ") &&
+				generateSourceClassTypeName("    ") &&
+				generateSourceClassTypeId("    ") &&
 				generateSourceClassBinaryEncode("    ") &&
 				generateSourceClassBinaryDecode("    ") &&
 				generateSourceClassEncode("    ") &&
 				generateSourceClassDecode("    ") &&
 				generateSourceClassXmlEncode("    ") &&
 				generateSourceClassXmlDecode("    ") &&
+				generateSourceClassJsonEncode("    ") &&
+				generateSourceClassJsonDecode("    ") &&
 				generateSourceClassCopyTo("    ") &&
 				generateSourceClassEqual("    ") &&
 				generateSourceClassOut("    ") &&
@@ -735,19 +774,66 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	EnumTypeGenerator::generateSourceClassBinaryTypeId(const std::string& prefix)
+	EnumTypeGenerator::generateSourceClassNamespaceName(const std::string& prefix)
 	{
 		std::stringstream ss;
 
-		// FIXME: todo
-		std::string identifier = "0";
-		std::string namespaceName = "0";
+		ss << prefix << std::endl;
+		ss << prefix << "std::string" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::namespaceName(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return \"" << nodeInfo_.dataTypeNamespaceName() << "\";" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EnumTypeGenerator::generateSourceClassTypeName(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "std::string" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::typeName(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return \"" << nodeInfo_.className() << "\";" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EnumTypeGenerator::generateSourceClassTypeId(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		OpcUaNodeId dataTypeNodeId = nodeInfo_.dataTypeNodeId();
+
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaNodeId" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::typeId(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << nodeInfo_.getIdentifierAsString(dataTypeNodeId) << "," << dataTypeNodeId.namespaceIndex() << ");" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+
+	bool
+	EnumTypeGenerator::generateSourceClassBinaryTypeId(const std::string& prefix)
+	{
+		std::stringstream ss;
 
 		ss << prefix << std::endl;
 		ss << prefix << "OpcUaNodeId" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::binaryTypeId(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "	return OpcUaNodeId(" << namespaceName << ", " << identifier << ");" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(0, 0);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -759,15 +845,27 @@ namespace OpcUaStackServer
 	{
 		std::stringstream ss;
 
-		// FIXME: todo
-		std::string identifier = "0";
-		std::string namespaceName = "0";
-
 		ss << prefix << std::endl;
 		ss << prefix << "OpcUaNodeId" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlTypeId(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "	return OpcUaNodeId(" << namespaceName << ", " << identifier << ");" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(0, 0);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EnumTypeGenerator::generateSourceClassJsonTypeId(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaNodeId" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonTypeId(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(0, 0);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -872,10 +970,65 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix <<  "bool" << std::endl;
+		ss << prefix <<  nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);" << std::endl;
+		ss << prefix << "    if (!tree) return false;" << std::endl;
+		ss << prefix << "    return xmlDecode(*tree, xmlns);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
 	    ss << prefix << "    if(!XmlNumber::xmlDecode(pt, value_)) return false;" << std::endl;
 	    ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EnumTypeGenerator::generateSourceClassJsonEncode(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix <<  nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt)" << std::endl;
+		ss << prefix << "{" << std::endl;
+	    // FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EnumTypeGenerator::generateSourceClassJsonDecode(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix <<  nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+		ss << prefix << std::endl;
+		ss << prefix <<  "bool" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt)" << std::endl;
+		ss << prefix << "{" << std::endl;
+	    // FIXME: todo
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

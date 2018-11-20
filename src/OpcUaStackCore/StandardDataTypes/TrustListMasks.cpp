@@ -176,6 +176,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    TrustListMasks::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    std::string
+    TrustListMasks::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    TrustListMasks::typeName(void)
+    {
+    	return "TrustListMasks";
+    }
+    
+    OpcUaNodeId
+    TrustListMasks::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)12552,0);
+    }
+    
     void
     TrustListMasks::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -213,10 +237,38 @@ namespace OpcUaStackCore
     }
     
     bool
+    TrustListMasks::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     TrustListMasks::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
         return true;
+    }
+    
+    bool
+    TrustListMasks::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    TrustListMasks::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    TrustListMasks::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    TrustListMasks::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

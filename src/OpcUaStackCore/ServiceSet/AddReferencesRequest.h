@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
-#include "OpcUaStackCore/ServiceSet/AddReferencesItem.h"
+#include "OpcUaStackCore/StandardDataTypes/AddReferencesItem.h"
 
 namespace OpcUaStackCore
 {

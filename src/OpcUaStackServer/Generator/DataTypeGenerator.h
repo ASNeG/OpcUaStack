@@ -94,6 +94,7 @@ namespace OpcUaStackServer
 		bool generate(const OpcUaNodeId& dataType);
 
 	  private:
+
 		//
 		// header functions
 		//
@@ -108,6 +109,7 @@ namespace OpcUaStackServer
 		bool generateHeaderClassPrivate(const std::string& prefix);
 		bool generateHeaderClassValueGetter(const std::string& prefix);
 		bool generateHeaderClassValueDefinition(const std::string& prefix);
+		bool generateHeaderClassValueArray(const std::string& prefix);
 
 		//
 		// source functions
@@ -123,16 +125,23 @@ namespace OpcUaStackServer
 		bool generateSourceClassPublicEQ(const std::string& prefix);
 		bool generateSourceClassPublicNE(const std::string& prefix);
 		bool generateSourceClassPublicCP(const std::string& prefix);
+		bool generateSourceClassPublicAssign(const std::string& prefix);
 		bool generateSourceClassExtensionObjectBase(const std::string& prefix);
 		bool generateSourceClassFactory(const std::string& prefix);
+		bool generateSourceClassNamespaceName(const std::string& prefix);
+		bool generateSourceClassTypeName(const std::string& prefix);
+		bool generateSourceClassTypeId(const std::string& prefix);
 		bool generateSourceClassBinaryTypeId(const std::string& prefix);
 		bool generateSourceClassXmlTypeId(const std::string& prefix);
+		bool generateSourceClassJsonTypeId(const std::string& prefix);
 		bool generateSourceClassBinaryEncode(const std::string& prefix);
 		bool generateSourceClassBinaryDecode(const std::string& prefix);
 		bool generateSourceClassEncode(const std::string& prefix);
 		bool generateSourceClassDecode(const std::string& prefix);
 		bool generateSourceClassXmlEncode(const std::string& prefix);
 		bool generateSourceClassXmlDecode(const std::string& prefix);
+		bool generateSourceClassJsonEncode(const std::string& prefix);
+		bool generateSourceClassJsonDecode(const std::string& prefix);
 		bool generateSourceClassCopyTo(const std::string& prefix);
 		bool generateSourceClassEqual(const std::string& prefix);
 		bool generateSourceClassOut(const std::string& prefix);

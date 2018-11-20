@@ -217,7 +217,7 @@ namespace OpcUaStackServer
 		CreateNodeInstanceResponse::SPtr res = trx->response();
 
 		req->name() = name;
-		req->nodeClassType() = NodeClassType_Variable;
+		req->nodeClassType() = NodeClass::EnumVariable;
 		req->parentNodeId() = parentNodeId;
 		req->nodeId() = nodeId;
 		req->displayName() = displayName;

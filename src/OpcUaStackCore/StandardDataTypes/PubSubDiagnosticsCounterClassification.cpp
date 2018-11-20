@@ -160,6 +160,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    PubSubDiagnosticsCounterClassification::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    std::string
+    PubSubDiagnosticsCounterClassification::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    PubSubDiagnosticsCounterClassification::typeName(void)
+    {
+    	return "PubSubDiagnosticsCounterClassification";
+    }
+    
+    OpcUaNodeId
+    PubSubDiagnosticsCounterClassification::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)19730,0);
+    }
+    
     void
     PubSubDiagnosticsCounterClassification::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -197,10 +221,38 @@ namespace OpcUaStackCore
     }
     
     bool
+    PubSubDiagnosticsCounterClassification::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     PubSubDiagnosticsCounterClassification::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
         return true;
+    }
+    
+    bool
+    PubSubDiagnosticsCounterClassification::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    PubSubDiagnosticsCounterClassification::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    PubSubDiagnosticsCounterClassification::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    PubSubDiagnosticsCounterClassification::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

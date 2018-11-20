@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	ReferenceTypeAttributes::ReferenceTypeAttributes(void)
 	: Object()
-	, ExtensibleParameterBase()
+	, ExtensionObjectBase()
 	, specifiedAttributes_()
 	, displayName_(constructSPtr<OpcUaLocalizedText>())
 	, description_(constructSPtr<OpcUaLocalizedText>())
@@ -148,7 +148,34 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::SPtr
+	void
+	ReferenceTypeAttributes::copyTo(ReferenceTypeAttributes& referenceTypeAttributes)
+	{
+		specifiedAttributes_ = referenceTypeAttributes.specifiedAttributes_;
+		displayName_->copyTo(*referenceTypeAttributes.displayName_);
+		description_->copyTo(*referenceTypeAttributes.description_);
+		isAbstract_ = referenceTypeAttributes.isAbstract_;
+		symmetric_ = referenceTypeAttributes.symmetric_;
+		inverseName_->copyTo(*referenceTypeAttributes.inverseName_);
+		writeMask_ = referenceTypeAttributes.writeMask_;
+		userWriteMask_ = referenceTypeAttributes.userWriteMask_;
+	}
+
+	bool
+	ReferenceTypeAttributes::operator==(const ReferenceTypeAttributes& referenceTypeAttributes) const
+	{
+		return specifiedAttributes_ == referenceTypeAttributes.specifiedAttributes_ &&
+			*displayName_ == *referenceTypeAttributes.displayName_ &&
+			*description_ == *referenceTypeAttributes.description_ &&
+			isAbstract_ == referenceTypeAttributes.isAbstract_ &&
+			symmetric_ == referenceTypeAttributes.symmetric_ &&
+			*inverseName_ == *referenceTypeAttributes.inverseName_ &&
+			writeMask_ == referenceTypeAttributes.writeMask_ &&
+			userWriteMask_ == referenceTypeAttributes.userWriteMask_;
+	}
+
+
+    ExtensionObjectBase::SPtr
 	ReferenceTypeAttributes::factory(void)
 	{
 		return constructSPtr<ReferenceTypeAttributes>();
@@ -180,6 +207,33 @@ namespace OpcUaStackCore
 		inverseName_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, writeMask_);		
 		OpcUaNumber::opcUaBinaryDecode(is, userWriteMask_);
+	}
+
+	void
+	ReferenceTypeAttributes::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		ReferenceTypeAttributes* dst = dynamic_cast<ReferenceTypeAttributes*>(&extensionObjectBase);
+		copyTo(*dst);
+	}
+
+	bool
+	ReferenceTypeAttributes::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		ReferenceTypeAttributes* dst = dynamic_cast<ReferenceTypeAttributes*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	ReferenceTypeAttributes::out(std::ostream& os)
+	{
+		os << "SpecificAttributes=" << specifiedAttributes_;
+		os << ", DisplayName="; displayName_->out(os);
+		os << ", Description="; description_->out(os);
+		os << ", IsAbstract=" <<  isAbstract_;
+		os << ", Symmetric=" << symmetric_;
+		os << ", InverseName="; inverseName_->out(os);
+		os << ", WriteMask=" << writeMask_;
+		os << ", UserWriteMask=" << userWriteMask_;
 	}
 
 }

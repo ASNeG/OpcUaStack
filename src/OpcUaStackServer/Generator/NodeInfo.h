@@ -74,6 +74,13 @@ class DLLEXPORT NodeInfo
 	/**
 	 * Getter function
 	 *
+	 * @return data type namespace name
+	 */
+	std::string dataTypeNamespaceName(void);
+
+	/**
+	 * Getter function
+	 *
 	 * @return data type node identifier
 	 */
 	OpcUaNodeId dataTypeNodeId(void);
@@ -177,6 +184,34 @@ class DLLEXPORT NodeInfo
 	NumberNamespaceMap& numberNamespaceMap(void);
 
 	/**
+	 * results the default binary encoding node identifier
+	 *
+	 * @return default binary encoding node identifier
+	 */
+	OpcUaNodeId& defaultBinaryNodeId(void);
+
+	/**
+	 * results the default XML encoding node identifier
+	 *
+	 * @return default XML encoding node identifier
+	 */
+	OpcUaNodeId& defaultXMLNodeId(void);
+
+	/**
+	 * results the default JSON encoding node identifier
+	 *
+	 * @return default JSON encoding node identifier
+	 */
+	OpcUaNodeId& defaultJSONNodeId(void);
+
+	/**
+	 * Getter function
+	 *
+	 * @return node description
+	 */
+	std::string& description(void);
+
+	/**
 	 * This function inits the node info class
 	 *
 	 * @parameter[in] dataTypeNodeId			opc ua data type node identifier
@@ -187,10 +222,30 @@ class DLLEXPORT NodeInfo
 		InformationModel::SPtr& informationModel
 	);
 
+	/**
+	 * This function creates a C++ representation of the node identifier part of the node id.
+	 *
+	 * @param[in] nodeId						OPC UA node id
+	 *
+	 * @return C++ representation of the node identifier
+	 */
+	std::string getIdentifierAsString(OpcUaNodeId& nodeId);
+
+	/**
+	 * This function results the namespace name from a given node identifier
+	 *
+	 * @param[in]								data type node identifier
+	 *
+	 * @return namespace name of the data type node identifier
+	 */
+	std::string getNamespaceName(OpcUaNodeId& nodeId);
+
+
   private:
 	NumberNamespaceMap numberNamespaceMap_;		//!< number to namespace map
 	InformationModel::SPtr informationModel_;	//!< opc ua information model
 
+	std::string dataTypeNamespaceName_;			//!< name of data type namespace
 	OpcUaNodeId dataTypeNodeId_;				//!< data type node identifier
 	OpcUaNodeId parentDataTypeNodeId_;			//!< data type node identifier of parent
 	BaseNodeClass::SPtr baseNode_;				//!< pointer to node
@@ -205,6 +260,10 @@ class DLLEXPORT NodeInfo
 	bool parentIsStructureType_;				//!< if parent node is from type StructureType
 	bool isAbstract_;							//!< if node is abstract data type
 	bool parentIsAbstract_;						//!< if parent node is abstract data type
+	OpcUaNodeId defaultBinaryNodeId_;			//!< default binary encoding node identifier
+	OpcUaNodeId defaultXMLNodeId_;				//!< default xml encoding node identifier
+	OpcUaNodeId defaultJSONNodeId_;				//!< default json encoding node identifier
+	std::string description_;					//!< node description
 };
 
 }

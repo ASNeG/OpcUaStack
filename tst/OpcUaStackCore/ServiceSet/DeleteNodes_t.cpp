@@ -80,8 +80,8 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 	// add DeleteNodesItem node
 	{
 		DeleteNodesItem::SPtr deleteNodesItemSPtr = constructSPtr<DeleteNodesItem>();
-		deleteNodesItemSPtr->nodeId()->set(11, 130);
-		deleteNodesItemSPtr->deleteTargetReferences(true);
+		deleteNodesItemSPtr->nodeId().set(11, 130);
+		deleteNodesItemSPtr->deleteTargetReferences() = true;
 
 		deleteNodesRequestSPtr->nodesToDelete()->set(0, deleteNodesItemSPtr);
 	}
@@ -168,11 +168,9 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 		DeleteNodesItem::SPtr deleteNodesItemSPtr;
 		BOOST_REQUIRE(deleteNodesRequestSPtr->nodesToDelete()->get(0, deleteNodesItemSPtr));
 		BOOST_REQUIRE(deleteNodesItemSPtr.get() != 0);
-
-		BOOST_REQUIRE(deleteNodesItemSPtr->nodeId().get() != NULL);
 	
-		BOOST_REQUIRE(deleteNodesItemSPtr->nodeId()->namespaceIndex() == 130);
-		BOOST_REQUIRE(deleteNodesItemSPtr->nodeId()->nodeId<OpcUaUInt32>() == 11);
+		BOOST_REQUIRE(deleteNodesItemSPtr->nodeId().namespaceIndex() == 130);
+		BOOST_REQUIRE(deleteNodesItemSPtr->nodeId().nodeId<OpcUaUInt32>() == 11);
 
 		BOOST_REQUIRE(deleteNodesItemSPtr->deleteTargetReferences() == true);
 	}

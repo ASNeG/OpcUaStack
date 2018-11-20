@@ -168,6 +168,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    MessageSecurityMode::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    std::string
+    MessageSecurityMode::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    MessageSecurityMode::typeName(void)
+    {
+    	return "MessageSecurityMode";
+    }
+    
+    OpcUaNodeId
+    MessageSecurityMode::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)302,0);
+    }
+    
     void
     MessageSecurityMode::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -205,10 +229,38 @@ namespace OpcUaStackCore
     }
     
     bool
+    MessageSecurityMode::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     MessageSecurityMode::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
         return true;
+    }
+    
+    bool
+    MessageSecurityMode::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    MessageSecurityMode::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    MessageSecurityMode::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    MessageSecurityMode::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void

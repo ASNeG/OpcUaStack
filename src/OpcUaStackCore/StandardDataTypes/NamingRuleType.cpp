@@ -164,6 +164,30 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0, 0);
     }
     
+    OpcUaNodeId
+    NamingRuleType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId(0, 0);
+    }
+    
+    std::string
+    NamingRuleType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    NamingRuleType::typeName(void)
+    {
+    	return "NamingRuleType";
+    }
+    
+    OpcUaNodeId
+    NamingRuleType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)120,0);
+    }
+    
     void
     NamingRuleType::opcUaBinaryEncode(std::ostream& os) const
     {
@@ -201,10 +225,38 @@ namespace OpcUaStackCore
     }
     
     bool
+    NamingRuleType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
     NamingRuleType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlDecode(pt, value_)) return false;
         return true;
+    }
+    
+    bool
+    NamingRuleType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    NamingRuleType::jsonEncode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    bool
+    NamingRuleType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    NamingRuleType::jsonDecode(boost::property_tree::ptree& pt)
+    {
     }
     
     void
