@@ -39,6 +39,7 @@ namespace OpcUaStackCore
 		void clear(void);
 		OpcUaNodeId& parameterTypeId(void);
 		ExtensionObjectBase::SPtr& eoSPtr(void);
+		bool exist(void);
 
         //- ExtensionObjectBase -----------------------------------------------
         virtual ExtensionObjectBase::SPtr factory(void);

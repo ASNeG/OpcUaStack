@@ -1,0 +1,220 @@
+/*
+    DataTypeClass: X509IdentityToken
+
+    Generated Source Code - please do not change this source code
+
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
+
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
+
+#include "OpcUaStackCore/StandardDataTypes/X509IdentityToken.h"
+
+namespace OpcUaStackCore
+{
+    
+    /**
+     * A token representing a user identified by an X509 certificate.
+     */
+    X509IdentityToken::X509IdentityToken(void)
+    : UserIdentityToken()
+    , certificateData_()
+    {
+    }
+    
+    X509IdentityToken::~X509IdentityToken(void)
+    {
+    }
+    
+    OpcUaByteString&
+    X509IdentityToken::certificateData(void)
+    {
+        return certificateData_;
+    }
+    
+    bool
+    X509IdentityToken::operator==(const X509IdentityToken& value)
+    {
+        X509IdentityToken* dst = const_cast<X509IdentityToken*>(&value);
+        if (certificateData_ != dst->certificateData()) return false;
+        return true;
+    }
+    
+    bool
+    X509IdentityToken::operator!=(const X509IdentityToken& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    X509IdentityToken::copyTo(X509IdentityToken& value)
+    {
+        certificateData_.copyTo(value.certificateData());
+    }
+    
+    X509IdentityToken&
+    X509IdentityToken::operator=(const X509IdentityToken& value)
+    {
+        const_cast<X509IdentityToken*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    X509IdentityToken::factory(void)
+    {
+    	return constructSPtr<X509IdentityToken>();
+    }
+    
+    std::string
+    X509IdentityToken::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    X509IdentityToken::typeName(void)
+    {
+    	return "X509IdentityToken";
+    }
+    
+    OpcUaNodeId
+    X509IdentityToken::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)325,0);
+    }
+    
+    OpcUaNodeId
+    X509IdentityToken::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)327, 0);
+    }
+    
+    OpcUaNodeId
+    X509IdentityToken::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)326, 0);
+    }
+    
+    OpcUaNodeId
+    X509IdentityToken::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15143, 0);
+    }
+    
+    void
+    X509IdentityToken::opcUaBinaryEncode(std::ostream& os) const
+    {
+       UserIdentityToken::opcUaBinaryEncode(os);
+        certificateData_.opcUaBinaryEncode(os);
+    }
+    
+    void
+    X509IdentityToken::opcUaBinaryDecode(std::istream& is)
+    {
+       UserIdentityToken::opcUaBinaryDecode(is);
+        certificateData_.opcUaBinaryDecode(is);
+    }
+    
+    bool
+    X509IdentityToken::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    X509IdentityToken::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    X509IdentityToken::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    X509IdentityToken::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!certificateData_.xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair("CertificateData", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    X509IdentityToken::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    X509IdentityToken::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("CertificateData");
+        if (!tree) return false;
+        if (!certificateData_.xmlDecode(*tree, xmlns)) return false;
+    
+        return true;
+    }
+    
+    bool
+    X509IdentityToken::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    X509IdentityToken::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    X509IdentityToken::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    X509IdentityToken::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    X509IdentityToken::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	X509IdentityToken* dst = dynamic_cast<X509IdentityToken*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    X509IdentityToken::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	X509IdentityToken* dst = dynamic_cast<X509IdentityToken*>(&extensionObjectBase);
+    	return *const_cast<X509IdentityToken*>(this) == *dst;
+    }
+    
+    void
+    X509IdentityToken::out(std::ostream& os)
+    {
+        os << "CertificateData="; certificateData_.out(os);
+    }
+
+}

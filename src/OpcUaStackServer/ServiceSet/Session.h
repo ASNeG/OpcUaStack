@@ -100,10 +100,10 @@ namespace OpcUaStackServer
 
 		OpcUaStatusCode authentication(ActivateSessionRequest& activateSessionRequest);
 		OpcUaStatusCode authenticationCloseSession(void);
-		OpcUaStatusCode authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
-		OpcUaStatusCode authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
-		OpcUaStatusCode authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
-		OpcUaStatusCode authenticationIssued(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode authenticationUserName(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode authenticationX509(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode authenticationIssued(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter);
 		OpcUaStatusCode checkUserTokenPolicy(const std::string& policyId, UserTokenType::Enum tokenType, UserTokenPolicy::SPtr& userTokenPolicy);
 
 		void activateSessionRequestError(

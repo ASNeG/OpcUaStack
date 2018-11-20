@@ -25,8 +25,8 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
-#include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
+#include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
 
 using namespace OpcUaStackCore;
 
@@ -387,7 +387,7 @@ namespace OpcUaStackClient
 		// user identity token
 		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 		AnonymousIdentityToken::SPtr anonymousIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
-		anonymousIdentityToken->policyId("Anonymous_Policy");
+		anonymousIdentityToken->policyId() = "Anonymous_Policy";
 		activateSessionRequest.requestHeader()->opcUaBinaryEncode(ios);
 		activateSessionRequest.opcUaBinaryEncode(ios);
 

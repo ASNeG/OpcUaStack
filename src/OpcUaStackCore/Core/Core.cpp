@@ -20,10 +20,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 
-#include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/X509IdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/IssuedIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
 #include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
 #include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
@@ -40,6 +36,10 @@
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
 
+#include "OpcUaStackCore/StandardDataTypes/UserNameIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/X509IdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/IssuedIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardDataTypes/HistoryEvent.h"
 #include "OpcUaStackCore/StandardDataTypes/SimpleAttributeOperand.h"
@@ -109,10 +109,6 @@ namespace OpcUaStackCore
 	Core::initExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
-		ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
-		ep.registerFactoryElement<UserNameIdentityToken>(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
-		ep.registerFactoryElement<X509IdentityToken>(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
-		ep.registerFactoryElement<IssuedIdentityToken>(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
 		ep.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
@@ -162,6 +158,10 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<HistoryEvent>(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 		eo.registerFactoryElement<HistoryData>(OpcUaId_HistoryData_Encoding_DefaultBinary);
 		eo.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
+		eo.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+		eo.registerFactoryElement<UserNameIdentityToken>(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
+		eo.registerFactoryElement<X509IdentityToken>(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
+		eo.registerFactoryElement<IssuedIdentityToken>(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -173,10 +173,6 @@ namespace OpcUaStackCore
 	Core::cleanupExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
-		ep.deregisterFactoryElement(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
@@ -226,6 +222,10 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_HistoryData_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

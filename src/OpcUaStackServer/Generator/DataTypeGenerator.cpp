@@ -836,6 +836,10 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryEncode(std::ostream& os) const" << std::endl;
 		ss << prefix << "{" << std::endl;
 
+		if (nodeInfo_.parentClassName() != "Structure") {
+			ss << prefix << "    " << nodeInfo_.parentClassName() << "::opcUaBinaryEncode(os);" << std::endl;
+		}
+
 		DataTypeField::Vec::iterator it;
 		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();
 
@@ -867,6 +871,10 @@ namespace OpcUaStackServer
 		ss << prefix << "void" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryDecode(std::istream& is)" << std::endl;
 		ss << prefix << "{" << std::endl;
+
+		if (nodeInfo_.parentClassName() != "Structure") {
+			ss << prefix << "    " << nodeInfo_.parentClassName() << "::opcUaBinaryDecode(is);" << std::endl;
+		}
 
 		DataTypeField::Vec::iterator it;
 		DataTypeField::Vec& dataTypeFields = nodeInfo_.fields();

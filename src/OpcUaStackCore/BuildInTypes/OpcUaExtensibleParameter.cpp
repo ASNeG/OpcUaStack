@@ -50,6 +50,11 @@ namespace OpcUaStackCore
 		return eoSPtr_;
 	}
 
+	bool
+	OpcUaExtensibleParameter::exist(void)
+	{
+		return eoSPtr_.get() != nullptr;
+	}
 
     ExtensionObjectBase::SPtr
 	OpcUaExtensibleParameter::factory(void)
@@ -98,11 +103,11 @@ namespace OpcUaStackCore
     	}
 
     	parameterTypeId_.opcUaBinaryEncode(os);
+    	OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
 
 		boost::asio::streambuf sb;
 		std::ostream osb(&sb);
 		eoSPtr_->opcUaBinaryEncode(osb);
-		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
 
 		OpcUaUInt32 bufferLength = OpcUaStackCore::count(sb);
 		OpcUaNumber::opcUaBinaryEncode(os, bufferLength);
