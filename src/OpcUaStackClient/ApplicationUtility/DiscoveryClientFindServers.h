@@ -20,8 +20,8 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackCore/StandardDataTypes/RegisteredServer.h"
 #include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientFindServersIf.h"

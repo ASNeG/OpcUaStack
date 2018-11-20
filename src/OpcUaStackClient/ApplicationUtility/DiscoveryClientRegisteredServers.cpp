@@ -122,7 +122,7 @@ namespace OpcUaStackClient
 		boost::mutex::scoped_lock g(mutex_);
 
 		// check existing registered server entry
-		RegisteredServer::Map::iterator it;
+		RegisteredServerMap::iterator it;
 		it = registeredServerMap_.find(name);
 		if (it != registeredServerMap_.end()) {
 			// remove existing registered server entry
@@ -139,7 +139,7 @@ namespace OpcUaStackClient
 		boost::mutex::scoped_lock g(mutex_);
 
 		// check existing registered server entry
-		RegisteredServer::Map::iterator it;
+		RegisteredServerMap::iterator it;
 		it = registeredServerMap_.find(name);
 		if (it == registeredServerMap_.end()) {
 			return;
@@ -147,7 +147,7 @@ namespace OpcUaStackClient
 
 		// set online flag off
 		RegisteredServer::SPtr registeredServer = it->second;
-		registeredServer->isOnline(false);
+		registeredServer->isOnline() = false;
 	}
 
     void
@@ -186,7 +186,7 @@ namespace OpcUaStackClient
 			sessionService_->asyncDisconnect();
 		}
 
-		RegisteredServer::Map::iterator it;
+		RegisteredServerMap::iterator it;
 		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
 
 			ServiceTransactionRegisterServer::SPtr trx;
@@ -217,10 +217,10 @@ namespace OpcUaStackClient
 	{
 		// all server entries must be deregister from dicovery server. We must
 		// disable the isOnline flag
-		RegisteredServer::Map::iterator it;
+		RegisteredServerMap::iterator it;
 		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
 			RegisteredServer::SPtr rs = it->second;
-			rs->isOnline(false);
+			rs->isOnline() = false;
 		}
 
 		;
