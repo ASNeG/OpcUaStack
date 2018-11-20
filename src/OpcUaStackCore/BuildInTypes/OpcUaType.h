@@ -42,6 +42,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaUadpNetworkMessageContentMask = 15642,
 		OpcUaBuildInType_OpcUaJsonDataSetMessageContentMask = 15658,
 		OpcUaBuildInType_OpcUaUadpDataSetMessageContentMask = 15646,
+		OpcUaBuildInType_OpcUaPermissionType = 94,
 		OpcUaBuildInType_OpcUaInt64 = 8,
 		OpcUaBuildInType_OpcUaUInt64 = 9,
 		OpcUaBuildInType_OpcUaFloat = 10,

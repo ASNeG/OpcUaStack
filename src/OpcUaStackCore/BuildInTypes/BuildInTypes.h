@@ -49,6 +49,7 @@ namespace OpcUaStackCore
 	typedef OpcUaUInt32 OpcUaUadpNetworkMessageContentMask;
 	typedef OpcUaUInt32 OpcUaJsonDataSetMessageContentMask;
 	typedef OpcUaUInt32 OpcUaUadpDataSetMessageContentMask;
+	typedef OpcUaUInt32 OpcUaPermissionType;
 	typedef OpcUaDouble OpcUaDuration;
 	typedef OpcUaString OpcUaNumericRange;
 	typedef OpcUaString OpcUaLocaleId;
