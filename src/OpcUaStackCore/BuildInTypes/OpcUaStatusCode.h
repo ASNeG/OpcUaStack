@@ -260,6 +260,8 @@ namespace OpcUaStackCore
 		static std::string longString(OpcUaStatusCode statusCode);
 		static OpcUaStatusCode statusCode(const std::string& statusCodeString);
 		static void getStatusCodeVec(std::vector<std::string>& statusCodeVec);
+		static bool exist(OpcUaStatusCode statusCode);
+		static bool exist(const std::string& statusCodeString);
 
 	  private:
 		static void initial(void);
