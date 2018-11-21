@@ -232,6 +232,10 @@ namespace OpcUaServer
 	}
 
 
+	/**
+	 * @param[in]		ServiceName
+	 * @param[in]		ConfigurationFile
+	 */
 	bool 
 	WindowsService::installService(const std::string& serviceName, const std::string& serviceDescription)
 	{
