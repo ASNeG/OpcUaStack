@@ -28,7 +28,7 @@ namespace OpcUaStackCore
     {
     }
     
-    OpcUaStatus::OpcUaStatus(Enum enumeration)
+    OpcUaStatus::OpcUaStatus(OpcUaStatusCode enumeration)
     : Object()
     , ExtensionObjectBase()
     , value_(enumeration)
@@ -53,25 +53,25 @@ namespace OpcUaStackCore
     }
     
     void
-    OpcUaStatus::enumeration(OpcUaStatus::Enum enumeration)
+    OpcUaStatus::enumeration(OpcUaStatusCode enumeration)
     {
         value_ = enumeration;
     }
     
-    OpcUaStatus::Enum
+    OpcUaStatusCode
     OpcUaStatus::enumeration(void)
     {
-        return (Enum)value_;
+        return (OpcUaStatusCode)value_;
     }
     
-    OpcUaStatus::Enum
+    OpcUaStatusCode
     OpcUaStatus::str2Enum(const std::string& enumerationString)
     {
-    	return (Enum)OpcUaStatusCodeMap::statusCode(enumerationString);
+    	return (OpcUaStatusCode)OpcUaStatusCodeMap::statusCode(enumerationString);
     }
     
     std::string
-    OpcUaStatus::enum2Str(Enum enumeration)
+    OpcUaStatus::enum2Str(OpcUaStatusCode enumeration)
     {
     	return OpcUaStatusCodeMap::shortString((OpcUaStatusCode)enumeration);
     }
@@ -79,13 +79,13 @@ namespace OpcUaStackCore
     std::string
     OpcUaStatus::enum2Str(void)
     {
-        return enum2Str((Enum)value_);
+        return enum2Str((OpcUaStatusCode)value_);
     }
     
     std::string
     OpcUaStatus::toString(void)
     {
-        return enum2Str((Enum)value_);
+        return enum2Str((OpcUaStatusCode)value_);
     }
     
     bool
@@ -96,7 +96,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    OpcUaStatus::exist(Enum enumeration)
+    OpcUaStatus::exist(OpcUaStatusCode enumeration)
     {
         // FIXME: todo
     	return true;
@@ -123,7 +123,7 @@ namespace OpcUaStackCore
     }
     
     OpcUaStatus&
-    OpcUaStatus::operator=(const Enum& value)
+    OpcUaStatus::operator=(const OpcUaStatusCode& value)
     {
         value_ = value;
         return *this;
