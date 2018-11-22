@@ -173,7 +173,6 @@ namespace OpcUaStackCore
 	Core::cleanupExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
-		ep.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
