@@ -1,38 +1,53 @@
 /*
-    DataTypeClass: StatusResult
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
-    Generated Source Code - please do not change this source code
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
 
-    DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-    Autor:     Kai Huebl (kai@huebl-sgh.de)
-*/
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
 
-#ifndef __OpcUaStackCore_StatusResult_h__
-#define __OpcUaStackCore_StatusResult_h__
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+ */
+
+#ifndef __OpcUaStackCore_OpcUaStatus_h__
+#define __OpcUaStackCore_OpcUaStatus_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/XmlNumber.h"
 
 namespace OpcUaStackCore
 {
     
-    class DLLEXPORT StatusResult
+    class OpcUaStatus
     : public Object
     , public ExtensionObjectBase
     {
       public:
-        typedef boost::shared_ptr<StatusResult> SPtr;
-        typedef std::vector<StatusResult::SPtr> Vec;
-    
-        StatusResult(void);
-        virtual ~StatusResult(void);
+        typedef boost::shared_ptr<OpcUaStatus> SPtr;
+
+        OpcUaStatus(void);
+        OpcUaStatus(OpcUaStatusCode enumeration);
+        OpcUaStatus(OpcUaStatus& value);
+        virtual ~OpcUaStatus(void);
         
-        OpcUaStatus& statusCode(void);
-        OpcUaDiagnosticInfo& diagnosticInfo(void);
+        int32_t& value(void);
+        void enumeration(OpcUaStatusCode enumeration);
+        OpcUaStatusCode enumeration(void);
+        OpcUaStatusCode str2Enum(const std::string& enumerationString);
+        std::string enum2Str(OpcUaStatusCode enumeration);
+        std::string enum2Str(void);
+        std::string toString(void);
+        bool exist(const std::string& enumerationString);
+        bool exist(OpcUaStatusCode enumeration);
         
         //- ExtensionObjectBase -----------------------------------------------
         virtual ExtensionObjectBase::SPtr factory(void);
@@ -59,23 +74,23 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
-        void copyTo(StatusResult& value);
-        bool operator==(const StatusResult& value);
-        bool operator!=(const StatusResult& value);
-        StatusResult& operator=(const StatusResult& value);
+        void copyTo(OpcUaStatus& value);
+        bool operator==(const OpcUaStatus& value) const;
+        bool operator!=(const OpcUaStatus& value) const;
+        OpcUaStatus& operator=(const OpcUaStatus& value);
+        OpcUaStatus& operator=(const OpcUaStatusCode& value);
     
       private:
-        OpcUaStatus statusCode_;
-        OpcUaDiagnosticInfo diagnosticInfo_;
+        int32_t value_;
     
     };
     
-    class StatusResultArray
-    : public OpcUaArray<StatusResult::SPtr, SPtrTypeCoder<StatusResult> >
+    class OpcUaStatusArray
+    : public OpcUaArray<OpcUaStatus::SPtr, SPtrTypeCoder<OpcUaStatus> >
     , public Object
     {
       public:
-    	   typedef boost::shared_ptr<StatusResultArray> SPtr;
+    	   typedef boost::shared_ptr<OpcUaStatusArray> SPtr;
     };
 
 }

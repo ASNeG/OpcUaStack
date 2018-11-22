@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(OpcUaExtensionObject_reset)
 
 	StatusResult::SPtr statusResult;
 	statusResult = value.parameter<StatusResult>(OpcUaId_StatusResult_Encoding_DefaultBinary);
-	statusResult->statusCode(3494);
+	statusResult->statusCode().enumeration((OpcUaStatusCode)3494);
 	BOOST_REQUIRE(value.style() == OpcUaExtensionObject::S_Type);
 	value.reset();
 
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(OpcUaExtensionObject_body_type)
 	StatusResult::SPtr statusResult1, statusResult2;
 
 	statusResult1 = value1.parameter<StatusResult>(OpcUaId_StatusResult_Encoding_DefaultBinary);
-	statusResult1->statusCode(3494);
+	statusResult1->statusCode().enumeration((OpcUaStatusCode)3494);
 	BOOST_REQUIRE(value1.style() == OpcUaExtensionObject::S_Type);
 
 	value1.opcUaBinaryEncode(ss);
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(OpcUaExtensionObject_body_type)
 	BOOST_REQUIRE(value2.typeId().nodeId<OpcUaUInt32>() == OpcUaId_StatusResult_Encoding_DefaultBinary);
 	statusResult2 = value2.parameter<StatusResult>();
 	BOOST_REQUIRE(statusResult2.get() != nullptr);
-	BOOST_REQUIRE(statusResult1->statusCode() == 3494);
+	BOOST_REQUIRE(statusResult1->statusCode().enumeration() == 3494);
 }
 
 BOOST_AUTO_TEST_CASE(OpcUaExtensionObject_body_byteString)

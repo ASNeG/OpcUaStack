@@ -66,6 +66,24 @@ namespace OpcUaStackCore
 		return it->second;
 	}
 
+	bool
+	OpcUaStatusCodeMap::exist(OpcUaStatusCode statusCode)
+	{
+		initial();
+		StatusCodeMap::iterator it = longStatusCodeMap_.find(statusCode);
+		if (it == longStatusCodeMap_.end()) return false;
+		return true;
+	}
+
+	bool
+	OpcUaStatusCodeMap::exist(const std::string& statusCodeString)
+	{
+		initial();
+		StatusCodeReverseMap::iterator it = reverseStatusCodeMap_.find(statusCodeString);
+		if (it == reverseStatusCodeMap_.end()) return false;
+		return true;
+	}
+
 	void
 	OpcUaStatusCodeMap::getStatusCodeVec(std::vector<std::string>& statusCodeVec)
 	{
