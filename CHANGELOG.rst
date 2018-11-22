@@ -3,6 +3,7 @@ Release 4.1.0
 
 **Features**:
 
+* Rework OpcUaStackCore #47, by @huebl
 * Implement data type code generator #8, by @huebl
 * Implement enum type code generator #29, by @huebl
 * Processing of type information not possible #22, by @huebl
