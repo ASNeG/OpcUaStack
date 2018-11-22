@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
-#include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilterResult.h"
 #include "OpcUaStackCore/Filter/FilterNode.h"
 #include "OpcUaStackCore/Filter/AttributeIf.h"
 #include "OpcUaStackCore/Filter/SimpleAttributeIf.h"

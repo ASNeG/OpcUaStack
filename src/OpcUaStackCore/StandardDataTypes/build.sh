@@ -1,5 +1,6 @@
 #!/bin/bash
 
+NODESETS="--nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --nodeset Opc.Ua.NodeSet2.Services.xml"
 
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype ServerStatusDataType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype AddNodesItem --buildSubTypes 0
@@ -114,7 +115,7 @@
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype SignedSoftwareCertificate --buildSubTypes 0
 
 
-OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype StatusResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype StatusResult --buildSubTypes 0
 
 
 
@@ -144,7 +145,15 @@ OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.
 
 
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype Range --buildSubTypes 0
-
-
-
 #OpcUaEnumTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --enumtype Enumeration --buildSubTypes 1
+
+
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype EventFilterResult --buildSubTypes 0
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoringFilterResult --buildSubTypes 0
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype ContentFilterResult --buildSubTypes 0
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype ContentFilterElementResult --buildSubTypes 0
+
+
+
+
+

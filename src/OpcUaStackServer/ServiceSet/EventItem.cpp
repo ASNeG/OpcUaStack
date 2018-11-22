@@ -91,7 +91,7 @@ namespace OpcUaStackServer
 
 		// select clause
 		SimpleAttributeOperandArray& selectClauses = eventFilter->selectClauses();
-		OpcUaStatusCodeArray::SPtr selectClauseResults = eventFilterResult->selectClauseResults();
+		OpcUaStatusArray& selectClauseResults = eventFilterResult->selectClauseResults();
 		statusCode = receive(selectClauses, selectClauseResults);
 		if (statusCode != Success) {
 			monitoredItemCreateResult->statusCode(statusCode);
@@ -298,7 +298,7 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	EventItem::receive(SimpleAttributeOperandArray& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray)
+	EventItem::receive(SimpleAttributeOperandArray& selectClauses, OpcUaStatusArray& statusArray)
 	{
 		if (selectClauses.size() == 0) {
 			return BadContentFilterInvalid;
@@ -306,12 +306,13 @@ namespace OpcUaStackServer
 
 		selectClauses.copyTo(selectClauses_);
 
-		statusCodeArray = constructSPtr<OpcUaStatusCodeArray>();
-		statusCodeArray->resize(selectClauses.size());
+		statusArray.resize(selectClauses.size());
 		for (uint32_t idx=0; idx<selectClauses.size(); idx++) {
 			// FIXME: check if attributes exist in type system
 
-			statusCodeArray->set(idx, (OpcUaStatusCode)Success);
+			OpcUaStatus::SPtr status = constructSPtr<OpcUaStatus>();
+			status->enumeration(Success);
+			statusArray.set(idx, status);
 		}
 
 		return Success;

@@ -77,7 +77,7 @@ namespace OpcUaStackServer
 	  private:
 		void clear(void);
 		void fireEvent(EventBase::SPtr eventBase);
-		OpcUaStatusCode receive(SimpleAttributeOperandArray& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray);
+		OpcUaStatusCode receive(SimpleAttributeOperandArray& selectClauses, OpcUaStatusArray& statusArray);
 
 		OpcUaNodeId nodeId_;
 		OpcUaQualifiedName browseName_;

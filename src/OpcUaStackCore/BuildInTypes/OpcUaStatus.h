@@ -79,6 +79,10 @@ namespace OpcUaStackCore
         bool operator!=(const OpcUaStatus& value) const;
         OpcUaStatus& operator=(const OpcUaStatus& value);
         OpcUaStatus& operator=(const OpcUaStatusCode& value);
+		friend std::ostream& operator<<(std::ostream& os, const OpcUaStatus& value) {
+			const_cast<OpcUaStatus*>(&value)->out(os);
+			return os;
+		}
     
       private:
         int32_t value_;

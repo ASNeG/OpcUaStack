@@ -3,9 +3,9 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/ServiceSet/DataChangeFilter.h"
-#include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
 #include "OpcUaStackCore/ServiceSet/AggregateFilterResult.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilterResult.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
 
@@ -114,33 +114,33 @@ BOOST_AUTO_TEST_CASE(Filter_EventResult)
 	std::iostream ios(&sb);
 
 	ContentFilterElementResult::SPtr elementResultSPtr;
-	OpcUaStatusCode statusCode1, statusCode2;
+	OpcUaStatus::SPtr statusCode1, statusCode2;
 	EventFilterResult eventFilterResult1, eventFilterResult2;
 
 	// encode
-	eventFilterResult1.selectClauseResults()->set((OpcUaStatusCode)Success);
+	eventFilterResult1.selectClauseResults().set(constructSPtr<OpcUaStatus>(Success));
 	
 	elementResultSPtr = constructSPtr<ContentFilterElementResult>();
-	elementResultSPtr->statusCode((OpcUaStatusCode)Success);
-	elementResultSPtr->operandStatusCodes()->set((OpcUaStatusCode)Success);
-	eventFilterResult1.whereClauseResult().elementResults()->set(elementResultSPtr);
+	elementResultSPtr->statusCode().enumeration(Success);
+	elementResultSPtr->operandStatusCodes().set(constructSPtr<OpcUaStatus>(Success));
+	eventFilterResult1.whereClauseResult().elementResults().set(elementResultSPtr);
 	
 	eventFilterResult1.opcUaBinaryEncode(ios);
 
 	// decode
 	eventFilterResult2.opcUaBinaryDecode(ios);
-	BOOST_REQUIRE(eventFilterResult2.selectClauseResults()->size() == 1);
-	eventFilterResult2.selectClauseResults()->get(statusCode1);
-	BOOST_REQUIRE(statusCode1 == Success);
+	BOOST_REQUIRE(eventFilterResult2.selectClauseResults().size() == 1);
+	eventFilterResult2.selectClauseResults().get(statusCode1);
+	BOOST_REQUIRE(statusCode1->enumeration() == Success);
 
-	BOOST_REQUIRE(eventFilterResult2.whereClauseResult().elementResults()->size() == 1);
+	BOOST_REQUIRE(eventFilterResult2.whereClauseResult().elementResults().size() == 1);
 	elementResultSPtr = constructSPtr<ContentFilterElementResult>();
-	eventFilterResult2.whereClauseResult().elementResults()->get(elementResultSPtr);
-	BOOST_REQUIRE(elementResultSPtr->statusCode() == Success);
+	eventFilterResult2.whereClauseResult().elementResults().get(elementResultSPtr);
+	BOOST_REQUIRE(elementResultSPtr->statusCode().enumeration() == Success);
 
-	BOOST_REQUIRE(elementResultSPtr->operandStatusCodes()->size() == 1);
-	elementResultSPtr->operandStatusCodes()->get(statusCode2);
-	BOOST_REQUIRE(statusCode2 == Success);
+	BOOST_REQUIRE(elementResultSPtr->operandStatusCodes().size() == 1);
+	elementResultSPtr->operandStatusCodes().get(statusCode2);
+	BOOST_REQUIRE(statusCode2->enumeration() == Success);
 }
 
 BOOST_AUTO_TEST_CASE(Filter_Aggregate)

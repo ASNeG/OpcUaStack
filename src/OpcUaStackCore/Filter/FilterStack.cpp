@@ -72,22 +72,25 @@ namespace OpcUaStackCore
     bool
 	FilterStack::receive(ContentFilter& contentFilter, ContentFilterResult& contentFilterResult)
     {
-    	contentFilterResult.elementResults()->resize(contentFilter.elements().size());
-        buildOperatorNode(contentFilter, contentFilterResult, 0, root_);
+    	contentFilterResult.elementResults().resize(contentFilter.elements().size());
+    	for (uint32_t idx=0; idx<contentFilter.elements().size(); idx++) {
+    		buildOperatorNode(contentFilter, contentFilterResult, idx, root_);
+    	}
 
         // check if all statuses are success
-        for (int i = 0; i < contentFilterResult.elementResults()->size(); ++i) {
+        for (int i = 0; i < contentFilterResult.elementResults().size(); ++i) {
         	ContentFilterElementResult::SPtr elementResult;
-        	contentFilterResult.elementResults()->get(i, elementResult);
+        	contentFilterResult.elementResults().get(i, elementResult);
+        	assert(elementResult.get() != nullptr);
 
-        	if (elementResult->statusCode() != OpcUaStatusCode::Success)
+        	if (elementResult->statusCode().enumeration() != OpcUaStatusCode::Success)
         		return false;
 
-        	for (int j = 0; j < elementResult->operandStatusCodes()->size(); ++j) {
-        		OpcUaStatusCode operandStatus;
-        		elementResult->operandStatusCodes()->get(j, operandStatus);
+        	for (int j = 0; j < elementResult->operandStatusCodes().size(); ++j) {
+        		OpcUaStatus::SPtr operandStatus;
+        		elementResult->operandStatusCodes().get(j, operandStatus);
 
-        		if (operandStatus != OpcUaStatusCode::Success)
+        		if (operandStatus->enumeration() != OpcUaStatusCode::Success)
         			return false;
         	}
         }
@@ -275,13 +278,20 @@ namespace OpcUaStackCore
 				}
 			}
         } else { // hasOperandError == true
-        	elementResult->operandStatusCodes(operandStatuses);
+        	elementResult->operandStatusCodes().resize(operandStatuses->size());
+        	for (uint32_t j = 0; j < operandStatuses->size(); j++) {
+        		OpcUaStatusCode statusCode;
+        		operandStatuses->get(j, statusCode);
+        		OpcUaStatus::SPtr status = constructSPtr<OpcUaStatus>();
+        		status->enumeration(statusCode);
+        		elementResult->operandStatusCodes().push_back(status);
+        	}
         	operatorStatus = OpcUaStatusCode::BadFilterOperandInvalid;
         }
 
 
-        elementResult->statusCode(operatorStatus);
-        contentFilterResult.elementResults()->set(idx, elementResult);
+        elementResult->statusCode().enumeration(operatorStatus);
+        contentFilterResult.elementResults().set(idx, elementResult);
 
         return operatorStatus == OpcUaStatusCode::Success;
     }

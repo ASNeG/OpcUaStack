@@ -20,7 +20,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 
-#include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
 #include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
 #include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
 #include "OpcUaStackCore/ServiceSet/ObjectAttributes.h"
@@ -36,6 +35,7 @@
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
 
+#include "OpcUaStackCore/StandardDataTypes/EventFilterResult.h"
 #include "OpcUaStackCore/StandardDataTypes/UserNameIdentityToken.h"
 #include "OpcUaStackCore/StandardDataTypes/X509IdentityToken.h"
 #include "OpcUaStackCore/StandardDataTypes/IssuedIdentityToken.h"
@@ -109,7 +109,6 @@ namespace OpcUaStackCore
 	Core::initExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
-		ep.registerFactoryElement<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
 		ep.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
@@ -125,9 +124,9 @@ namespace OpcUaStackCore
 
 		// objects
 		eo.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand);
-		eo.registerFactoryElement<LiteralOperand>(OpcUaId_ElementOperand);
-		eo.registerFactoryElement<LiteralOperand>(OpcUaId_AttributeOperand);
-		eo.registerFactoryElement<LiteralOperand>(OpcUaId_SimpleAttributeOperand);
+		eo.registerFactoryElement<ElementOperand>(OpcUaId_ElementOperand);
+		eo.registerFactoryElement<AttributeOperand>(OpcUaId_AttributeOperand);
+		eo.registerFactoryElement<SimpleAttributeOperand>(OpcUaId_SimpleAttributeOperand);
 
 		// binary
 		eo.registerFactoryElement<BuildInfo>(OpcUaId_BuildInfo_Encoding_DefaultBinary);
@@ -162,6 +161,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<UserNameIdentityToken>(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
 		eo.registerFactoryElement<X509IdentityToken>(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
 		eo.registerFactoryElement<IssuedIdentityToken>(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
+		eo.registerFactoryElement<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -174,7 +174,6 @@ namespace OpcUaStackCore
 	{
 		ExtensibleParameter ep;
 		ep.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
@@ -226,6 +225,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);
