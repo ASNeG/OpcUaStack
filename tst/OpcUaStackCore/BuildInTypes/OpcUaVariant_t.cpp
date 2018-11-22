@@ -1083,8 +1083,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_extensionObject)
 
 	StatusResult::SPtr statusResult;
 	statusResult = v1.parameter<StatusResult>(OpcUaId_StatusResult_Encoding_DefaultBinary);
-	statusResult->statusCode(3494);
-
+	statusResult->statusCode().enumeration((OpcUaStatusCode)3494);
 	value1.setValue(v1);
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);
