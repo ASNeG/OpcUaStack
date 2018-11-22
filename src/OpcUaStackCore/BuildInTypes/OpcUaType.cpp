@@ -52,7 +52,6 @@ namespace OpcUaStackCore
 			   buildInType == OpcUaBuildInType_OpcUaUInt64 ||
 			   buildInType == OpcUaBuildInType_OpcUaFloat ||
 			   buildInType == OpcUaBuildInType_OpcUaDouble ||
-			   buildInType == OpcUaBuildInType_OpcUaStatusCode ||
 			   buildInType == OpcUaBuildInType_OpcUaIntegerId ||
 			   buildInType == OpcUaBuildInType_OpcUaVersionTime ||
 			   buildInType == OpcUaBuildInType_OpcUaDataSetFieldContentMask ||
@@ -116,7 +115,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaXmlElement: return "XmlElement";
 			case OpcUaBuildInType_OpcUaNodeId: return "NodeId";
 			case OpcUaBuildInType_OpcUaExpandedNodeId: return "ExpandedNodeId";
-			case OpcUaBuildInType_OpcUaStatusCode: return "StatusCode";
+			case OpcUaBuildInType_OpcUaStatusCode: return "Status";
 			case OpcUaBuildInType_OpcUaQualifiedName: return "QualifiedName";
 			case OpcUaBuildInType_OpcUaLocalizedText: return "LocalizedText";
 			case OpcUaBuildInType_OpcUaExtensionObject: return "ExtensionObject";
@@ -166,7 +165,7 @@ namespace OpcUaStackCore
 		else if (type == "XMLELEMENT") return OpcUaBuildInType_OpcUaXmlElement;
 		else if (type == "NODEID") return OpcUaBuildInType_OpcUaNodeId;
 		else if (type == "EXPANDEDNODEID") return OpcUaBuildInType_OpcUaExpandedNodeId;
-		else if (type == "STATUSCODE") return OpcUaBuildInType_OpcUaStatusCode;
+		else if (type == "STATUS") return OpcUaBuildInType_OpcUaStatusCode;
 		else if (type == "QUALIFIEDNAME") return OpcUaBuildInType_OpcUaQualifiedName;
 		else if (type == "LOCALIZEDTEXT") return OpcUaBuildInType_OpcUaLocalizedText;
 		else if (type == "EXTENSIONOBJECT") return OpcUaBuildInType_OpcUaExtensionObject;
@@ -214,7 +213,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaXmlElement: return "OpcUaXmlElement";
 			case OpcUaBuildInType_OpcUaNodeId: return "OpcUaNodeId";
 			case OpcUaBuildInType_OpcUaExpandedNodeId: return "OpcUaExpandedNodeId";
-			case OpcUaBuildInType_OpcUaStatusCode: return "OpcUaStatusCode";
+			case OpcUaBuildInType_OpcUaStatusCode: return "OpcUaStatus";
 			case OpcUaBuildInType_OpcUaQualifiedName: return "OpcUaQualifiedName";
 			case OpcUaBuildInType_OpcUaLocalizedText: return "OpcUaLocalizedText";
 			case OpcUaBuildInType_OpcUaExtensionObject: return "OpcUaExtensionObject";

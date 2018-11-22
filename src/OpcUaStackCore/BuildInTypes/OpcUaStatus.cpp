@@ -91,15 +91,13 @@ namespace OpcUaStackCore
     bool
     OpcUaStatus::exist(const std::string& enumerationString)
     {
-    	// FIXME: todo
-    	return true;
+    	return OpcUaStatusCodeMap::exist(enumerationString);
     }
     
     bool
     OpcUaStatus::exist(OpcUaStatusCode enumeration)
     {
-        // FIXME: todo
-    	return true;
+    	return OpcUaStatusCodeMap::exist(enumeration);
     }
     
     bool

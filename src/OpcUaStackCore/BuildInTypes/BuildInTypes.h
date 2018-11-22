@@ -34,6 +34,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDiagnosticInfo.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatus.h"
 
 
 namespace OpcUaStackCore
