@@ -36,6 +36,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaInt32 = 6,
 		OpcUaBuildInType_OpcUaUInt32 = 7,
 		OpcUaBuildInType_OpcUaIntegerId = 288,
+		OpcUaBuildInType_OpcUaCounter = 289,
 		OpcUaBuildInType_OpcUaVersionTime = 20998,
 		OpcUaBuildInType_OpcUaDataSetFieldContentMask = 15583,
 		OpcUaBuildInType_OpcUaJsonNetworkMessageContentMask = 15654,

@@ -61,7 +61,8 @@ namespace OpcUaStackCore
 			   buildInType == OpcUaBuildInType_OpcUaUadpNetworkMessageContentMask ||
 			   buildInType == OpcUaBuildInType_OpcUaJsonDataSetMessageContentMask ||
 			   buildInType == OpcUaBuildInType_OpcUaUadpDataSetMessageContentMask ||
-			   buildInType == OpcUaBuildInType_OpcUaPermissionType;
+			   buildInType == OpcUaBuildInType_OpcUaPermissionType ||
+			   buildInType == OpcUaBuildInType_OpcUaCounter;
 	}
 
 	bool
@@ -91,6 +92,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaDataSetFieldFlag: return "DataSetFieldFlag";
 			case OpcUaBuildInType_OpcUaInt32: return "Int32";
 			case OpcUaBuildInType_OpcUaUInt32: return "UInt32";
+			case OpcUaBuildInType_OpcUaCounter: return "Counter";
 			case OpcUaBuildInType_OpcUaVersionTime: return "VersionTime";
 			case OpcUaBuildInType_OpcUaIntegerId: return "IntegerId";
 			case OpcUaBuildInType_OpcUaDataSetFieldContentMask: return "DataSetFieldContentMask";
@@ -142,6 +144,7 @@ namespace OpcUaStackCore
 		else if (type == "INT32") return OpcUaBuildInType_OpcUaInt32;
 		else if (type == "UINT32") return OpcUaBuildInType_OpcUaUInt32;
 		else if (type == "VERSIONTIME") return OpcUaBuildInType_OpcUaVersionTime;
+		else if (type == "COUNTER") return OpcUaBuildInType_OpcUaCounter;
 		else if (type == "INTEGERID") return OpcUaBuildInType_OpcUaIntegerId;
 		else if (type == "DATASETFIELDCONTENTMASK") return OpcUaBuildInType_OpcUaDataSetFieldContentMask;
 		else if (type == "JSONNETWORKMESSAGECONTENTMASK") return OpcUaBuildInType_OpcUaJsonNetworkMessageContentMask;
@@ -189,6 +192,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaDataSetFieldFlag: return "OpcUaDataSetFieldFlag";
 			case OpcUaBuildInType_OpcUaInt32: return "OpcUaInt32";
 			case OpcUaBuildInType_OpcUaUInt32: return "OpcUaUInt32";
+			case OpcUaBuildInType_OpcUaCounter: return "OpcUaCounter";
 			case OpcUaBuildInType_OpcUaVersionTime: return "OpcUaVersionTime";
 			case OpcUaBuildInType_OpcUaIntegerId: return "OpcUaIntegerId";
 			case OpcUaBuildInType_OpcUaDataSetFieldContentMask: return "DataSetFieldContentMask";

@@ -148,10 +148,13 @@ NODESETS="--nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --n
 #OpcUaEnumTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --enumtype Enumeration --buildSubTypes 1
 
 
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype EventFilterResult --buildSubTypes 0
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoringFilterResult --buildSubTypes 0
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype ContentFilterResult --buildSubTypes 0
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype ContentFilterElementResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype EventFilterResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoringFilterResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ContentFilterResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ContentFilterElementResult --buildSubTypes 0
+
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype NotificationMessage --buildSubTypes 0
+
 
 
 
