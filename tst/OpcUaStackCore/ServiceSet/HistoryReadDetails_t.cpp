@@ -2,7 +2,7 @@
 #include "OpcUaStackCore/StandardDataTypes/ReadEventDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/ReadProcessedDetails.h"
-#include "OpcUaStackCore/ServiceSet/ReadAtTimeDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadAtTimeDetails.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <boost/iostreams/stream.hpp>
 
@@ -121,13 +121,14 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadAtTimeDetails)
 
 	// encode
 	utcTime.dateTime(ptime);
-	details1.reqTimes()->set(utcTime);
+	details1.reqTimes().resize(1);
+	details1.reqTimes().set(0, utcTime);
 	details1.opcUaBinaryEncode(ios);
 
 	// decode
 	details2.opcUaBinaryDecode(ios);
-	BOOST_REQUIRE(details2.reqTimes()->size() == 1);
-	details2.reqTimes()->get(utcTime);
+	BOOST_REQUIRE(details2.reqTimes().size() == 1);
+	details2.reqTimes().get(0, utcTime);
 	BOOST_REQUIRE(utcTime.dateTime() == ptime);
 }
 

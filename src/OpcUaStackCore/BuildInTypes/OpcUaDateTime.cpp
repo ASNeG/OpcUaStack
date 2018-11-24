@@ -216,6 +216,13 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	OpcUaDateTime::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
 	OpcUaDateTime::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
