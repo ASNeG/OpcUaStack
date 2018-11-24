@@ -19,7 +19,6 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardEventType/BaseEventType.h"
-#include "OpcUaStackCore/ServiceSet/EventField.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItemId.h"
@@ -265,15 +264,11 @@ namespace OpcUaStackServer
 			);
 
 			// insert variant into event field list
-			EventField::SPtr eventField;
-			eventField = constructSPtr<EventField>();
 			if (resultCode != EventResult::Success) {
 				value = constructSPtr<OpcUaVariant>();
-
 			}
 			else {
 			}
-			eventField->variant(value);
 			eventFieldList->eventFields().push_back(value);
 		}
 
