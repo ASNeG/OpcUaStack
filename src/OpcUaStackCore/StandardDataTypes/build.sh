@@ -167,7 +167,16 @@ NODESETS="--nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --n
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype ReadRawModifiedDetails --buildSubTypes 0
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype ReadProcessedDetails --buildSubTypes 0
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype ReadAtTimeDetails --buildSubTypes 0
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype HistoryData --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype HistoryData --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype HistoryModifiedData --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ModificationInfo --buildSubTypes 0
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype HistoryEvent --buildSubTypes 0
+
+
+
+
+
+
 
 
 
