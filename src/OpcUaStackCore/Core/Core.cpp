@@ -19,7 +19,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 
-#include "OpcUaStackCore/ServiceSet/ObjectAttributes.h"
 #include "OpcUaStackCore/ServiceSet/VariableAttributes.h"
 #include "OpcUaStackCore/ServiceSet/MethodAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ObjectTypeAttributes.h"
@@ -71,6 +70,8 @@
 #include "OpcUaStackCore/StandardDataTypes/DeleteRawModifiedDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/DeleteAtTimeDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/DeleteEventDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/ObjectAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/NodeAttributes.h"
 
 namespace OpcUaStackCore
 {
@@ -179,6 +180,8 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<DeleteRawModifiedDetails>(OpcUaId_DeleteRawModifiedDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<DeleteAtTimeDetails>(OpcUaId_DeleteAtTimeDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<DeleteEventDetails>(OpcUaId_DeleteEventDetails_Encoding_DefaultBinary);
+		eo.registerFactoryElement<ObjectAttributes>(OpcUaId_ObjectAttributes_Encoding_DefaultBinary);
+		eo.registerFactoryElement<NodeAttributes>(OpcUaId_NodeAttributes_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -249,6 +252,8 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_DeleteRawModifiedDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_DeleteAtTimeDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_DeleteEventDetails_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_ObjectAttributes_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_NodeAttributes_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

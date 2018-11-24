@@ -247,8 +247,8 @@ namespace OpcUaStackServer
 		ObjectAttributes::SPtr objectAttributes = addNodesItem->nodeAttributes().parameter<ObjectAttributes>(); 
 
 		// set additional object attributes
-		objectNodeClass->setDisplayName(*objectAttributes->displayName());
-		objectNodeClass->setDescription(*objectAttributes->description());
+		objectNodeClass->setDisplayName(objectAttributes->displayName());
+		objectNodeClass->setDescription(objectAttributes->description());
 		objectNodeClass->setEventNotifier(objectAttributes->eventNotifier());
 		objectNodeClass->setWriteMask(objectAttributes->writeMask());
 		objectNodeClass->setUserWriteMask(objectAttributes->userWriteMask());

@@ -127,12 +127,12 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12347);
 		objectAttributes = addNodesItemSPtr->nodeAttributes().parameter<ObjectAttributes>();
 		BOOST_REQUIRE(objectAttributes.get() != NULL);
-		objectAttributes->displayName()->set("de", "Mein Haus");
-		objectAttributes->displayName()->text();
-		objectAttributes->description()->set("de", "Mein Auto");
-		objectAttributes->eventNotifier(EventNotifierAttribute_SubscribeToEvents);
-		objectAttributes->writeMask(WriteableAttribute_WriteMask);
-		objectAttributes->userWriteMask(WriteableAttribute_WriteMask);
+		objectAttributes->displayName().set("de", "Mein Haus");
+		objectAttributes->displayName().text();
+		objectAttributes->description().set("de", "Mein Auto");
+		objectAttributes->eventNotifier() = EventNotifierAttribute_SubscribeToEvents;
+		objectAttributes->writeMask() = WriteableAttribute_WriteMask;
+		objectAttributes->userWriteMask() = WriteableAttribute_WriteMask;
 
 		addNodesRequestSPtr->nodesToAdd()->set(1, addNodesItemSPtr);
 	}
@@ -426,10 +426,10 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 		ObjectAttributes::SPtr objectAttributes = addNodesItemSPtr->nodeAttributes().parameter<ObjectAttributes>();
 		BOOST_REQUIRE(objectAttributes.get() != NULL);
-		BOOST_REQUIRE(objectAttributes->displayName()->locale().value() == "de");
-		BOOST_REQUIRE(objectAttributes->displayName()->text().value() == "Mein Haus");
-		BOOST_REQUIRE(objectAttributes->description()->locale().value() == "de");
-		BOOST_REQUIRE(objectAttributes->description()->text().value() == "Mein Auto");
+		BOOST_REQUIRE(objectAttributes->displayName().locale().value() == "de");
+		BOOST_REQUIRE(objectAttributes->displayName().text().value() == "Mein Haus");
+		BOOST_REQUIRE(objectAttributes->description().locale().value() == "de");
+		BOOST_REQUIRE(objectAttributes->description().text().value() == "Mein Auto");
 	}
 
 	
