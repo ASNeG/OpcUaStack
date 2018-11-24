@@ -29,7 +29,7 @@
 #include "OpcUaStackCore/StandardDataTypes/VariableTypeAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/MethodAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/ObjectTypeAttributes.h"
-#include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/DataTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ReferenceTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
 

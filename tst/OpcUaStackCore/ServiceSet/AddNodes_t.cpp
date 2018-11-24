@@ -104,11 +104,11 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12345);
 		dataTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<DataTypeAttributes>();
 		BOOST_REQUIRE(dataTypeAttributes.get() != NULL);
-		dataTypeAttributes->displayName()->set("de", "Computer");
-		dataTypeAttributes->description()->set("de", "Hilfsmittel fuer die Programmerstellung");
-		dataTypeAttributes->isAbstract(false);
-		dataTypeAttributes->writeMask(WriteableAttribute_DataType);
-		dataTypeAttributes->userWriteMask(WriteableAttribute_DataType);
+		dataTypeAttributes->displayName().set("de", "Computer");
+		dataTypeAttributes->description().set("de", "Hilfsmittel fuer die Programmerstellung");
+		dataTypeAttributes->isAbstract() = false;
+		dataTypeAttributes->writeMask() = WriteableAttribute_DataType;
+		dataTypeAttributes->userWriteMask() = WriteableAttribute_DataType;
 
 		addNodesRequestSPtr->nodesToAdd()->set(0, addNodesItemSPtr);
 	}
@@ -393,10 +393,10 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 		DataTypeAttributes::SPtr dataTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<DataTypeAttributes>();
 		BOOST_REQUIRE(dataTypeAttributes.get() != NULL);
-		BOOST_REQUIRE(dataTypeAttributes->displayName()->locale().value() == "de");
-		BOOST_REQUIRE(dataTypeAttributes->displayName()->text().value() == "Computer");
-		BOOST_REQUIRE(dataTypeAttributes->description()->locale().value() == "de");
-		BOOST_REQUIRE(dataTypeAttributes->description()->text().value() == "Hilfsmittel fuer die Programmerstellung");
+		BOOST_REQUIRE(dataTypeAttributes->displayName().locale().value() == "de");
+		BOOST_REQUIRE(dataTypeAttributes->displayName().text().value() == "Computer");
+		BOOST_REQUIRE(dataTypeAttributes->description().locale().value() == "de");
+		BOOST_REQUIRE(dataTypeAttributes->description().text().value() == "Hilfsmittel fuer die Programmerstellung");
 		BOOST_REQUIRE(dataTypeAttributes->isAbstract() == false);
 		BOOST_REQUIRE(dataTypeAttributes->writeMask() == WriteableAttribute_DataType);
 		BOOST_REQUIRE(dataTypeAttributes->userWriteMask() == WriteableAttribute_DataType);
