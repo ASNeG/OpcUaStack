@@ -1,5 +1,5 @@
 #include "unittest.h"
-#include "OpcUaStackCore/ServiceSet/UpdateDataDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/UpdateDataDetails.h"
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/ServiceSet/UpdateEventDetails.h"
 #include "OpcUaStackCore/ServiceSet/DeleteRawModifiedDetails.h"
@@ -32,19 +32,20 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateDataDetails)
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.performInsertReplace(PerformUpdateEnumeration_Insert);
-	details1.updateValue()->set(valueSPtr);
+	details1.performInsertReplace().enumeration(PerformUpdateType::EnumInsert);
+	details1.updateValues().resize(1);
+	details1.updateValues().set(0, valueSPtr);
 	details1.opcUaBinaryEncode(ios);
 	
 	// decode
 	details2.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(details2.nodeId().namespaceIndex() == 1);
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
-	BOOST_REQUIRE(details2.performInsertReplace() == PerformUpdateEnumeration_Insert);
+	BOOST_REQUIRE(details2.performInsertReplace().enumeration() == PerformUpdateType::EnumInsert);
 	
-	BOOST_REQUIRE(details2.updateValue()->size() == 1);
+	BOOST_REQUIRE(details2.updateValues().size() == 1);
 	valueSPtr = constructSPtr<OpcUaDataValue>();;
-	details2.updateValue()->get(valueSPtr);
+	details2.updateValues().get(valueSPtr);
 	BOOST_REQUIRE(valueSPtr->statusCode() == Success);
 }
 
