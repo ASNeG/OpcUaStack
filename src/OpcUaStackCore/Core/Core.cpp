@@ -71,6 +71,7 @@
 #include "OpcUaStackCore/StandardDataTypes/DataTypeAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/ReferenceTypeAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/ViewAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/AggregateFilter.h"
 
 namespace OpcUaStackCore
 {
@@ -186,6 +187,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<DataTypeAttributes>(OpcUaId_DataTypeAttributes_Encoding_DefaultBinary);
 		eo.registerFactoryElement<ReferenceTypeAttributes>(OpcUaId_ReferenceTypeAttributes_Encoding_DefaultBinary);
 		eo.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes_Encoding_DefaultBinary);
+		eo.registerFactoryElement<AggregateFilter>(OpcUaId_AggregateFilter_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -263,6 +265,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_DataTypeAttributes_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_ReferenceTypeAttributes_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_ViewAttributes_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_AggregateFilter_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

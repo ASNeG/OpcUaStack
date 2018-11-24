@@ -186,7 +186,10 @@ NODESETS="--nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --n
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype ObjectTypeAttributes --buildSubTypes 0
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype DataTypeAttributes --buildSubTypes 0
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype ReferenceTypeAttributes --buildSubTypes 0
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype ViewAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ViewAttributes --buildSubTypes 0
+
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype AggregateFilter --buildSubTypes 0
+
 
 
 
