@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardEventType/BaseEventType.h"
+#include "OpcUaStackCore/ServiceSet/EventField.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItemId.h"
@@ -238,8 +239,8 @@ namespace OpcUaStackServer
 
 		// process where clause
 		EventFieldList::SPtr eventFieldList = constructSPtr<EventFieldList>();
-		eventFieldList->clientHandle(clientHandle_);
-		eventFieldList->eventFields()->resize(selectClauses_.size());
+		eventFieldList->clientHandle() = clientHandle_;
+		eventFieldList->eventFields().resize(selectClauses_.size());
 
 		for (uint32_t idx=0; idx<selectClauses_.size(); idx++) {
 
@@ -273,7 +274,7 @@ namespace OpcUaStackServer
 			else {
 			}
 			eventField->variant(value);
-			eventFieldList->eventFields()->push_back(eventField);
+			eventFieldList->eventFields().push_back(value);
 		}
 
 		boost::mutex::scoped_lock g(eventFieldListListMutex_);
@@ -281,16 +282,16 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	EventItem::receive(EventFieldListArray::SPtr eventFieldListArray)
+	EventItem::receive(EventFieldListArray& eventFieldListArray)
 	{
 		boost::mutex::scoped_lock g(eventFieldListListMutex_);
-		uint32_t freeSize = eventFieldListArray->freeSize();
+		uint32_t freeSize = eventFieldListArray.freeSize();
 		do {
 			if (eventFieldListList_.size() == 0) return Success;
 			if (freeSize == 0) return BadOutOfMemory;
 			freeSize--;
 
-			eventFieldListArray->push_back(eventFieldListList_.front());
+			eventFieldListArray.push_back(eventFieldListList_.front());
 			eventFieldListList_.pop_front();
 		} while (true);
 

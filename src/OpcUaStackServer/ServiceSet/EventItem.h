@@ -18,12 +18,14 @@
 #ifndef __OpcUaStackServer_EventItem_h__
 #define __OpcUaStackServer_EventItem_h__
 
+#include <list>
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/EventType/EventHandler.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
-#include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
+#include "OpcUaStackCore/StandardDataTypes/EventNotificationList.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFieldList.h"
 #include "OpcUaStackCore/Filter/FilterStack.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
@@ -55,7 +57,7 @@ namespace OpcUaStackServer
 			MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
 		);
 		OpcUaStatusCode receive(
-			EventFieldListArray::SPtr eventFieldListArray
+			EventFieldListArray& eventFieldListArray
 		);
 
 		void userContext(UserContext::SPtr& userContext);

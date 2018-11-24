@@ -20,8 +20,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 
-#include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
-#include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
 #include "OpcUaStackCore/ServiceSet/ObjectAttributes.h"
 #include "OpcUaStackCore/ServiceSet/VariableAttributes.h"
 #include "OpcUaStackCore/ServiceSet/MethodAttributes.h"
@@ -35,6 +33,9 @@
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
 
+#include "OpcUaStackCore/StandardDataTypes/EventNotificationList.h"
+#include "OpcUaStackCore/StandardDataTypes/DataChangeNotification.h"
+#include "OpcUaStackCore/StandardDataTypes/StatusChangeNotification.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilterResult.h"
 #include "OpcUaStackCore/StandardDataTypes/UserNameIdentityToken.h"
 #include "OpcUaStackCore/StandardDataTypes/X509IdentityToken.h"
@@ -109,9 +110,6 @@ namespace OpcUaStackCore
 	Core::initExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
-		ep.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
-		ep.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
-
 		ep.registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		ep.registerFactoryElement<ReadEventDetails>(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
 		ep.registerFactoryElement<UpdateStructureDataDetails>(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
@@ -162,6 +160,9 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<X509IdentityToken>(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
 		eo.registerFactoryElement<IssuedIdentityToken>(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
 		eo.registerFactoryElement<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
+		eo.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
+		eo.registerFactoryElement<StatusChangeNotification>(OpcUaId_StatusChangeNotification_Encoding_DefaultBinary);
+		eo.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -173,8 +174,6 @@ namespace OpcUaStackCore
 	Core::cleanupExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
-		ep.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
 		ep.deregisterFactoryElement(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
@@ -225,6 +224,9 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_StatusChangeNotification_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

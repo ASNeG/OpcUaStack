@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include <list>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 
 using namespace OpcUaStackCore;
 
@@ -38,12 +38,12 @@ namespace OpcUaStackServer
 
 		void sequenceNumber(uint32_t sequenceNumber);
 		uint32_t sequenceNumber(void);
-		void notification(ExtensibleParameter::SPtr& notification);
-		ExtensibleParameter::SPtr notification(void);
+		void notification(OpcUaExtensibleParameter::SPtr& notification);
+		OpcUaExtensibleParameter::SPtr notification(void);
 
 	  private:
 		uint32_t sequenceNumber_;
-		ExtensibleParameter::SPtr notification_;
+		OpcUaExtensibleParameter::SPtr notification_;
 
 	};
 
@@ -64,18 +64,18 @@ namespace OpcUaStackServer
 		uint32_t maxListSize(void);
 		void addNotification(
 			uint32_t sequenceNumber,
-			ExtensibleParameter::SPtr& notification
+			OpcUaExtensibleParameter::SPtr& notification
 		);
 		void deleteNotification(
 			uint32_t sequenceNumber
 		);
 		bool firstNotification(
 			uint32_t& sequenceNumber,
-			ExtensibleParameter::SPtr& notification
+			OpcUaExtensibleParameter::SPtr& notification
 		);
 		bool getNotification(
 			uint32_t sequenceNumber,
-			ExtensibleParameter::SPtr& notification
+			OpcUaExtensibleParameter::SPtr& notification
 		);
 		void availableSequenceNumbers(
 			OpcUaUInt32Array::SPtr& availableSequenceNumbers

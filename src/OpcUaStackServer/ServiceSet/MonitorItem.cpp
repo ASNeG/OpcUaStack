@@ -128,36 +128,36 @@ namespace OpcUaStackServer
 			Log(Debug, "read value error, because value not exist")
 				.parameter("Node", monitoredItemCreateRequest->itemToMonitor().nodeId())
 				.parameter("Attr", monitoredItemCreateRequest->itemToMonitor().attributeId());
-			monitoredItemNotification->dataValue().statusCode(BadDataUnavailable);
+			monitoredItemNotification->value().statusCode(BadDataUnavailable);
 			monitorItemListPushBack(monitoredItemNotification);
 			return Success;
 		}
 
 		// read attribute
-		if (!AttributeAccess::copy(*attribute_, monitoredItemNotification->dataValue())) {
+		if (!AttributeAccess::copy(*attribute_, monitoredItemNotification->value())) {
 			Log(Debug, "read value error, because value error")
 				.parameter("Node", monitoredItemCreateRequest->itemToMonitor().nodeId())
 				.parameter("Attr", monitoredItemCreateRequest->itemToMonitor().attributeId());
-			monitoredItemNotification->dataValue().statusCode(BadDataUnavailable);
+			monitoredItemNotification->value().statusCode(BadDataUnavailable);
 			monitorItemListPushBack(monitoredItemNotification);
 			return Success;
 		}
 
-		monitoredItemNotification->dataValue().statusCode(Success);
+		monitoredItemNotification->value().statusCode(Success);
 		monitorItemListPushBack(monitoredItemNotification);
 		return Success;
 	}
 
 	OpcUaStatusCode 
-	MonitorItem::receive(MonitoredItemNotificationArray::SPtr monitoredItemNotificationArray)
+	MonitorItem::receive(MonitoredItemNotificationArray& monitoredItemNotificationArray)
 	{
-		uint32_t freeSize = monitoredItemNotificationArray->freeSize();
+		uint32_t freeSize = monitoredItemNotificationArray.freeSize();
 		do {
 			if (monitorItemList_.size() == 0) return Success;
 			if (freeSize == 0) return BadOutOfMemory;
 			freeSize--;
 
-			monitoredItemNotificationArray->push_back(monitorItemList_.front());
+			monitoredItemNotificationArray.push_back(monitorItemList_.front());
 
 			monitorItemList_.pop_front();
 		} while (true);
@@ -176,7 +176,7 @@ namespace OpcUaStackServer
 
 			// insert notification into queue
 			MonitoredItemNotification::SPtr monitoredItemNotification = constructSPtr<MonitoredItemNotification>();
-			monitoredItemNotification->dataValue().statusCode(BadNodeClassInvalid);
+			monitoredItemNotification->value().statusCode(BadNodeClassInvalid);
 			monitorItemListPushBack(monitoredItemNotification);
 			return NodeNoLongerExist;
 		}
@@ -187,12 +187,12 @@ namespace OpcUaStackServer
 		if (!AttributeAccess::trigger(dataValue_, *attribute_)) return Ok; 
 		
 		MonitoredItemNotification::SPtr monitoredItemNotification = constructSPtr<MonitoredItemNotification>();
-		if (!AttributeAccess::copy(*attribute_, monitoredItemNotification->dataValue())) {
+		if (!AttributeAccess::copy(*attribute_, monitoredItemNotification->value())) {
 			// data value is not available
 			if (dataValue_.statusCode() == BadDataUnavailable) return Ok;
 
 			// insert notification
-			monitoredItemNotification->dataValue().statusCode(BadDataUnavailable);
+			monitoredItemNotification->value().statusCode(BadDataUnavailable);
 			monitorItemListPushBack(monitoredItemNotification);
 			return Ok;
 		}
@@ -221,7 +221,7 @@ namespace OpcUaStackServer
 		    }
 		}
 
-		monitoredItemNotification->clientHandle(clientHandle_);
+		monitoredItemNotification->clientHandle() = clientHandle_;
 		monitorItemList_.push_back(monitoredItemNotification);
 	}
 

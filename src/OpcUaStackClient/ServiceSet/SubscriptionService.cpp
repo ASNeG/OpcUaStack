@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,7 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
+#include "OpcUaStackCore/StandardDataTypes/DataChangeNotification.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
 
 using namespace OpcUaStackCore;
@@ -348,10 +348,10 @@ namespace OpcUaStackClient
     void
     SubscriptionService::receivePublishResponse(const PublishResponse::SPtr& publishResponse)
     {
-    	uint32_t count = publishResponse->notificationMessage()->notificationData()->size();
+    	uint32_t count = publishResponse->notificationMessage()->notificationData().size();
     	for (uint32_t idx=0; idx<count; idx++) {
-    		ExtensibleParameter::SPtr notify;
-    		publishResponse->notificationMessage()->notificationData()->get(idx, notify);
+    		OpcUaExtensibleParameter::SPtr notify;
+    		publishResponse->notificationMessage()->notificationData().get(idx, notify);
 
     		switch (notify->parameterTypeId().nodeId<uint32_t>())
     		{
@@ -369,15 +369,15 @@ namespace OpcUaStackClient
     }
 
     void
-    SubscriptionService::dataChangeNotification(const ExtensibleParameter::SPtr& extensibleParameter)
+    SubscriptionService::dataChangeNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter)
     {
     	DataChangeNotification::SPtr dataChange;
     	dataChange = extensibleParameter->parameter<DataChangeNotification>();
 
-    	uint32_t count = dataChange->monitoredItems()->size();
+    	uint32_t count = dataChange->monitoredItems().size();
     	for (uint32_t idx=0; idx<count; idx++) {
     		MonitoredItemNotification::SPtr monitoredItem;
-    		dataChange->monitoredItems()->get(idx, monitoredItem);
+    		dataChange->monitoredItems().get(idx, monitoredItem);
 
     		if (subscriptionServiceIf_ != NULL) {
     			subscriptionServiceIf_->dataChangeNotification(monitoredItem);

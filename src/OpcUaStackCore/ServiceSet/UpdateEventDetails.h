@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,7 +24,7 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
-#include "OpcUaStackCore/ServiceSet/EventFieldList.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFieldList.h"
 #include "OpcUaStackCore/ServiceSet/PerformUpdateEnumeration.h"
 
 namespace OpcUaStackCore

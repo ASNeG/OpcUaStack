@@ -425,7 +425,7 @@ namespace OpcUaStackClient
 
 		clientSubscriptionIf_->dataChangeNotification(
 			cmi,
-			monitoredItem->dataValue()
+			monitoredItem->value()
 		);
     }
 

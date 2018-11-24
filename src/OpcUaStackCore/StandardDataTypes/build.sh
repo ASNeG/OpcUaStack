@@ -153,7 +153,30 @@ NODESETS="--nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --n
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype ContentFilterResult --buildSubTypes 0
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype ContentFilterElementResult --buildSubTypes 0
 
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype NotificationMessage --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype NotificationMessage --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype DataChangeNotification --buildSubTypes 0
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype StatusChangeNotification --buildSubTypes 0
+
+
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype NotificationData --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoredItemNotification --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype EventNotificationList --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype EventFieldList --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype EventField --buildSubTypes 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
