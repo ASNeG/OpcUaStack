@@ -1,15 +1,17 @@
 #include "unittest.h"
 #include "boost/asio.hpp"
+#include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
-#include "OpcUaStackCore/ServiceSet/AddNodesRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
-#include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/ServiceSet/AddNodesRequest.h"
 #include "OpcUaStackCore/ServiceSet/AddNodesResponse.h"
+#include "OpcUaStackCore/ServiceSet/AttributesDescription.h"
+#include "OpcUaStackCore/Base/Utility.h"
 
 #include <streambuf>
 #include <iostream>
@@ -23,18 +25,14 @@ BOOST_AUTO_TEST_CASE(AddNodes_)
 	std::cout << "AddNodes_t" << std::endl;
 }
 
+BOOST_AUTO_TEST_CASE(AddNodes_init)
+{
+	Core core;
+	core.init();
+}
+
 BOOST_AUTO_TEST_CASE(AddNodes_Request)
 {
-	OpcUaExtensionObject eo;
-	BOOST_REQUIRE(eo.registerFactoryElement<ObjectAttributes>((OpcUaUInt32)12347) == true);
-	BOOST_REQUIRE(eo.registerFactoryElement<DataTypeAttributes>((OpcUaUInt32)12345) == true);
-	BOOST_REQUIRE(eo.registerFactoryElement<MethodAttributes>((OpcUaUInt32)12346) == true);
-	BOOST_REQUIRE(eo.registerFactoryElement<ObjectTypeAttributes>((OpcUaUInt32)12348) == true);
-	BOOST_REQUIRE(eo.registerFactoryElement<ReferenceTypeAttributes>((OpcUaUInt32)12349) == true);
-	BOOST_REQUIRE(eo.registerFactoryElement<ViewAttributes>((OpcUaUInt32)12352) == true);
-	BOOST_REQUIRE(eo.registerFactoryElement<VariableAttributes>((OpcUaUInt32)12350) == true);
-	BOOST_REQUIRE(eo.registerFactoryElement<VariableTypeAttributes>((OpcUaUInt32)12351) == true);
-
 	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
@@ -42,7 +40,6 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	AddNodesRequest::SPtr addNodesRequestSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
 	OpcUaNodeId typeId;
-
 
 	// stream
 	boost::asio::streambuf sb1;
@@ -101,9 +98,9 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeClass().enumeration(NodeClass::EnumDataType);
 
 		DataTypeAttributes::SPtr dataTypeAttributes;
-		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12345);
+		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)OpcUaId_DataTypeAttributes_Encoding_DefaultBinary);
 		dataTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<DataTypeAttributes>();
-		BOOST_REQUIRE(dataTypeAttributes.get() != NULL);
+		BOOST_REQUIRE(dataTypeAttributes.get() != nullptr);
 		dataTypeAttributes->displayName().set("de", "Computer");
 		dataTypeAttributes->description().set("de", "Hilfsmittel fuer die Programmerstellung");
 		dataTypeAttributes->isAbstract() = false;
@@ -124,7 +121,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeClass().enumeration(NodeClass::EnumObject);
 
 		ObjectAttributes::SPtr objectAttributes;
-		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12347);
+		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)OpcUaId_ObjectAttributes_Encoding_DefaultBinary);
 		objectAttributes = addNodesItemSPtr->nodeAttributes().parameter<ObjectAttributes>();
 		BOOST_REQUIRE(objectAttributes.get() != NULL);
 		objectAttributes->displayName().set("de", "Mein Haus");
@@ -148,7 +145,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeClass().enumeration(NodeClass::EnumMethod);
 
 		MethodAttributes::SPtr methodAttributes;
-		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12346);
+		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)OpcUaId_MethodAttributes_Encoding_DefaultBinary);
 		methodAttributes = addNodesItemSPtr->nodeAttributes().parameter<MethodAttributes>();
 		BOOST_REQUIRE(methodAttributes.get() != NULL);
 		methodAttributes->displayName().set("de", "kaufen");
@@ -172,7 +169,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeClass().enumeration(NodeClass::EnumObjectType);
 
 		ObjectTypeAttributes::SPtr objectTypeAttributes;
-		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12348);
+		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)OpcUaId_ObjectTypeAttributes_Encoding_DefaultBinary);
 		objectTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<ObjectTypeAttributes>();
 		BOOST_REQUIRE(objectTypeAttributes.get() != NULL);
 		objectTypeAttributes->displayName().set("de", "Reservierung");
@@ -196,7 +193,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeClass().enumeration(NodeClass::EnumReferenceType);
 
 		ReferenceTypeAttributes::SPtr referenceTypeAttributes;
-		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12349);
+		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)OpcUaId_ReferenceTypeAttributes_Encoding_DefaultBinary);
 		referenceTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<ReferenceTypeAttributes>();
 		BOOST_REQUIRE(referenceTypeAttributes.get() != NULL);
 		referenceTypeAttributes->displayName().set("de", "ReservationsRef");
@@ -221,15 +218,15 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeClass().enumeration(NodeClass::EnumView);
 
 		ViewAttributes::SPtr viewAttributes;
-		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12352);
+		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)OpcUaId_ViewAttributes_Encoding_DefaultBinary);
 		viewAttributes = addNodesItemSPtr->nodeAttributes().parameter<ViewAttributes>();
 		BOOST_REQUIRE(viewAttributes.get() != NULL);
-		viewAttributes->displayName()->set("de", "reservationsAtStation");
-		viewAttributes->description()->set("de", "Ausgabe der Sitzplatzreservierungen");
-		viewAttributes->containsNoLoops(true);
-		viewAttributes->eventNotifier(EventNotifierAttribute_SubscribeToEvents);
-		viewAttributes->writeMask(WriteableAttribute_DataType);
-		viewAttributes->userWriteMask(WriteableAttribute_DataType);
+		viewAttributes->displayName().set("de", "reservationsAtStation");
+		viewAttributes->description().set("de", "Ausgabe der Sitzplatzreservierungen");
+		viewAttributes->containsNoLoops() = true;
+		viewAttributes->eventNotifier() = EventNotifierAttribute_SubscribeToEvents;
+		viewAttributes->writeMask() = WriteableAttribute_DataType;
+		viewAttributes->userWriteMask() = WriteableAttribute_DataType;
 
 		addNodesRequestSPtr->nodesToAdd()->set(5, addNodesItemSPtr);
 	}
@@ -246,7 +243,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeClass().enumeration(NodeClass::EnumVariable);
 
 		VariableAttributes::SPtr variableAttributes;
-		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12350);
+		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)OpcUaId_VariableAttributes_Encoding_DefaultBinary);
 		variableAttributes = addNodesItemSPtr->nodeAttributes().parameter<VariableAttributes>();
 		BOOST_REQUIRE(variableAttributes.get() != NULL);
 		variableAttributes->displayName().set("de", "resInfo");
@@ -281,7 +278,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeClass().enumeration(NodeClass::EnumVariableType);
 
 		VariableTypeAttributes::SPtr variableTypeAttributes;
-		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12351);
+		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)OpcUaId_VariableTypeAttributes_Encoding_DefaultBinary);
 		variableTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<VariableTypeAttributes>();
 		BOOST_REQUIRE(variableTypeAttributes.get() != NULL);
 		variableTypeAttributes->displayName().set("de", "resInfo");
@@ -512,10 +509,10 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 		ViewAttributes::SPtr viewAttributes = addNodesItemSPtr->nodeAttributes().parameter<ViewAttributes>();
 		BOOST_REQUIRE(viewAttributes.get() != NULL);
-		BOOST_REQUIRE(viewAttributes->displayName()->locale().value() == "de");
-		BOOST_REQUIRE(viewAttributes->displayName()->text().value() == "reservationsAtStation");
-		BOOST_REQUIRE(viewAttributes->description()->locale().value() == "de");
-		BOOST_REQUIRE(viewAttributes->description()->text().value() == "Ausgabe der Sitzplatzreservierungen");
+		BOOST_REQUIRE(viewAttributes->displayName().locale().value() == "de");
+		BOOST_REQUIRE(viewAttributes->displayName().text().value() == "reservationsAtStation");
+		BOOST_REQUIRE(viewAttributes->description().locale().value() == "de");
+		BOOST_REQUIRE(viewAttributes->description().text().value() == "Ausgabe der Sitzplatzreservierungen");
 		BOOST_REQUIRE(viewAttributes->containsNoLoops() == true);
 		BOOST_REQUIRE(viewAttributes->eventNotifier() == EventNotifierAttribute_SubscribeToEvents);
 		BOOST_REQUIRE(viewAttributes->writeMask() == WriteableAttribute_DataType);
@@ -572,7 +569,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->nodeClass().enumeration() == NodeClass::EnumVariableType);
 
 		BOOST_REQUIRE(addNodesItemSPtr->nodeAttributes().parameterTypeId().namespaceIndex() == 0);
-		BOOST_REQUIRE(addNodesItemSPtr->nodeAttributes().parameterTypeId().nodeId<OpcUaUInt32>() == 12351);
+		BOOST_REQUIRE(addNodesItemSPtr->nodeAttributes().parameterTypeId().nodeId<OpcUaUInt32>() == OpcUaId_VariableTypeAttributes_Encoding_DefaultBinary);
 		VariableTypeAttributes::SPtr variableTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<VariableTypeAttributes>();
 		BOOST_REQUIRE(variableTypeAttributes.get() != NULL);
 		BOOST_REQUIRE(variableTypeAttributes->displayName().locale().value() == "de");
@@ -594,14 +591,14 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(variableTypeAttributes->userWriteMask() == WriteableAttribute_DataType);
 	}
 
-	BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12345));
-	BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12346));
-	BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12347));
-	BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12348));
-	BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12349));
-	BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12350));
-	BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12351));
-	BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12352));
+	//BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12345));
+	//BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12346));
+	//BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12347));
+	//BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12348));
+	//BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12349));
+	//BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12350));
+	//BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12351));
+	//BOOST_REQUIRE(eo.deregisterFactoryElement((OpcUaUInt32)12352));
 }
 
 
