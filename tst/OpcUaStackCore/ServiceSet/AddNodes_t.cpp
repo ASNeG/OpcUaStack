@@ -175,11 +175,11 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12348);
 		objectTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<ObjectTypeAttributes>();
 		BOOST_REQUIRE(objectTypeAttributes.get() != NULL);
-		objectTypeAttributes->displayName()->set("de", "Reservierung");
-		objectTypeAttributes->description()->set("de", "Beschreibt den Anspruch auf eine Leistung");
-		objectTypeAttributes->isAbstract(false);
-		objectTypeAttributes->writeMask(WriteableAttribute_DataType);
-		objectTypeAttributes->userWriteMask(WriteableAttribute_DataType);
+		objectTypeAttributes->displayName().set("de", "Reservierung");
+		objectTypeAttributes->description().set("de", "Beschreibt den Anspruch auf eine Leistung");
+		objectTypeAttributes->isAbstract() = false;
+		objectTypeAttributes->writeMask() = WriteableAttribute_DataType;
+		objectTypeAttributes->userWriteMask() = WriteableAttribute_DataType;
 
 		addNodesRequestSPtr->nodesToAdd()->set(3, addNodesItemSPtr);
 	}
@@ -461,10 +461,10 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 		ObjectTypeAttributes::SPtr objectTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<ObjectTypeAttributes>();
 		BOOST_REQUIRE(objectTypeAttributes.get() != NULL);
-		BOOST_REQUIRE(objectTypeAttributes->displayName()->locale().value() == "de");
-		BOOST_REQUIRE(objectTypeAttributes->displayName()->text().value() == "Reservierung");
-		BOOST_REQUIRE(objectTypeAttributes->description()->locale().value() == "de");
-		BOOST_REQUIRE(objectTypeAttributes->description()->text().value() == "Beschreibt den Anspruch auf eine Leistung");
+		BOOST_REQUIRE(objectTypeAttributes->displayName().locale().value() == "de");
+		BOOST_REQUIRE(objectTypeAttributes->displayName().text().value() == "Reservierung");
+		BOOST_REQUIRE(objectTypeAttributes->description().locale().value() == "de");
+		BOOST_REQUIRE(objectTypeAttributes->description().text().value() == "Beschreibt den Anspruch auf eine Leistung");
 		BOOST_REQUIRE(objectTypeAttributes->isAbstract() == false);
 		BOOST_REQUIRE(objectTypeAttributes->writeMask() == WriteableAttribute_DataType);
 		BOOST_REQUIRE(objectTypeAttributes->userWriteMask() == WriteableAttribute_DataType);
