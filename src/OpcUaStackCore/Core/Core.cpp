@@ -70,6 +70,7 @@
 #include "OpcUaStackCore/StandardDataTypes/UpdateEventDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/DeleteRawModifiedDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/DeleteAtTimeDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/DeleteEventDetails.h"
 
 namespace OpcUaStackCore
 {
@@ -177,6 +178,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<UpdateEventDetails>(OpcUaId_UpdateEventDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<DeleteRawModifiedDetails>(OpcUaId_DeleteRawModifiedDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<DeleteAtTimeDetails>(OpcUaId_DeleteAtTimeDetails_Encoding_DefaultBinary);
+		eo.registerFactoryElement<DeleteEventDetails>(OpcUaId_DeleteEventDetails_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -246,6 +248,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_UpdateEventDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_DeleteRawModifiedDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_DeleteAtTimeDetails_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_DeleteEventDetails_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

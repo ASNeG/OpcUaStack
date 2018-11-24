@@ -4,8 +4,7 @@
 #include "OpcUaStackCore/StandardDataTypes/UpdateEventDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/DeleteRawModifiedDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/DeleteAtTimeDetails.h"
-#include "OpcUaStackCore/ServiceSet/DeleteEventDetails.h"
-#include "OpcUaStackCore/ServiceSet/PerformUpdateEnumeration.h"
+#include "OpcUaStackCore/StandardDataTypes/DeleteEventDetails.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <boost/iostreams/stream.hpp>
 
@@ -168,7 +167,8 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteEventDetails)
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.eventId()->set(byteStringSPtr);
+	details1.eventIds().resize(1);
+	details1.eventIds().set(0, byteStringSPtr);
 	details1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -176,9 +176,9 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteEventDetails)
 	BOOST_REQUIRE(details2.nodeId().namespaceIndex() == 1);
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
 
-	BOOST_REQUIRE(details2.eventId()->size() == 1);
+	BOOST_REQUIRE(details2.eventIds().size() == 1);
 	byteStringSPtr = constructSPtr<OpcUaByteString>();
-	details2.eventId()->get(byteStringSPtr);
+	details2.eventIds().get(0, byteStringSPtr);
 	BOOST_REQUIRE(byteStringSPtr->exist() == true);
 	BOOST_REQUIRE(byteStringSPtr->size() == 0);
 }
