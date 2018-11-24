@@ -249,28 +249,23 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12350);
 		variableAttributes = addNodesItemSPtr->nodeAttributes().parameter<VariableAttributes>();
 		BOOST_REQUIRE(variableAttributes.get() != NULL);
-		variableAttributes->displayName()->set("de", "resInfo");
-		variableAttributes->description()->set("de", "Reservierungsart");
+		variableAttributes->displayName().set("de", "resInfo");
+		variableAttributes->description().set("de", "Reservierungsart");
 
 		boost::posix_time::ptime ptime1 = boost::posix_time::from_iso_string("20140506T102013.123456789");
 		OpcUaDateTime dateTime;
 		dateTime.dateTime(ptime1);
-		variableAttributes->value()->variant()->variant((OpcUaUInt16)1234);
-		variableAttributes->value()->statusCode((OpcUaStatusCode)12);
-		variableAttributes->value()->sourceTimestamp(dateTime);
-		variableAttributes->value()->sourcePicoseconds(1234);
-		variableAttributes->value()->serverTimestamp(dateTime);
-		variableAttributes->value()->serverPicoseconds(5678);
-		variableAttributes->dataType()->set(12, 130);
-		variableAttributes->valueRank(10);
-		variableAttributes->arrayDimensions()->resize(1);
-		variableAttributes->arrayDimensions()->set(0, 12);
-		variableAttributes->accessLevel(2);
-		variableAttributes->userAccessLevel(3);
-		variableAttributes->minimumSamplingInterval(100);
-		variableAttributes->historizing(false);
-		variableAttributes->writeMask(WriteableAttribute_DataType);
-		variableAttributes->userWriteMask(WriteableAttribute_DataType);
+		variableAttributes->value().variant((OpcUaUInt16)1234);
+		variableAttributes->dataType().set(12, 130);
+		variableAttributes->valueRank() = 10;
+		variableAttributes->arrayDimensions().resize(1);
+		variableAttributes->arrayDimensions().set(0, 12);
+		variableAttributes->accessLevel()  = 2;
+		variableAttributes->userAccessLevel()  = 3;
+		variableAttributes->minimumSamplingInterval() = 100;
+		variableAttributes->historizing() =  false;
+		variableAttributes->writeMask() = WriteableAttribute_DataType;
+		variableAttributes->userWriteMask() = WriteableAttribute_DataType;
 
 		addNodesRequestSPtr->nodesToAdd()->set(6, addNodesItemSPtr);
 	}
@@ -289,25 +284,20 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12351);
 		variableTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<VariableTypeAttributes>();
 		BOOST_REQUIRE(variableTypeAttributes.get() != NULL);
-		variableTypeAttributes->displayName()->set("de", "resInfo");
-		variableTypeAttributes->description()->set("de", "Reservierungsart12345");
+		variableTypeAttributes->displayName().set("de", "resInfo");
+		variableTypeAttributes->description().set("de", "Reservierungsart12345");
 
 		boost::posix_time::ptime ptime1 = boost::posix_time::from_iso_string("20140506T102013.123456789");
 		OpcUaDateTime dateTime;
 		dateTime.dateTime(ptime1);
-		variableTypeAttributes->value()->variant()->variant((OpcUaUInt16)1234);
-		variableTypeAttributes->value()->statusCode((OpcUaStatusCode)12);
-		variableTypeAttributes->value()->sourceTimestamp(dateTime);
-		variableTypeAttributes->value()->sourcePicoseconds(1234);
-		variableTypeAttributes->value()->serverTimestamp(dateTime);
-		variableTypeAttributes->value()->serverPicoseconds(5678);
-		variableTypeAttributes->dataType()->set(12, 130);
-		variableTypeAttributes->valueRank(10);
-		variableTypeAttributes->arrayDimensions()->resize(1);
-		variableTypeAttributes->arrayDimensions()->set(0, 12);
-		variableTypeAttributes->isAbstract(false);
-		variableTypeAttributes->writeMask(WriteableAttribute_DataType);
-		variableTypeAttributes->userWriteMask(WriteableAttribute_DataType);
+		variableTypeAttributes->value().variant((OpcUaUInt16)1234);
+		variableTypeAttributes->dataType().set(12, 130);
+		variableTypeAttributes->valueRank() = 10;
+		variableTypeAttributes->arrayDimensions().resize(1);
+		variableTypeAttributes->arrayDimensions().set(0, 12);
+		variableTypeAttributes->isAbstract() = false;
+		variableTypeAttributes->writeMask()  = WriteableAttribute_DataType;
+		variableTypeAttributes->userWriteMask() = WriteableAttribute_DataType;
 
 		addNodesRequestSPtr->nodesToAdd()->set(7, addNodesItemSPtr);
 	}
@@ -546,19 +536,19 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 		VariableAttributes::SPtr variableAttributes = addNodesItemSPtr->nodeAttributes().parameter<VariableAttributes>();
 		BOOST_REQUIRE(variableAttributes.get() != NULL);
-		BOOST_REQUIRE(variableAttributes->displayName()->locale().value() == "de");
-		BOOST_REQUIRE(variableAttributes->displayName()->text().value() == "resInfo");
-		BOOST_REQUIRE(variableAttributes->description()->locale().value() == "de");
-		BOOST_REQUIRE(variableAttributes->description()->text().value() == "Reservierungsart");
-		BOOST_REQUIRE(variableAttributes->value()->variant()->variant<OpcUaUInt16>() == 1234);
+		BOOST_REQUIRE(variableAttributes->displayName().locale().value() == "de");
+		BOOST_REQUIRE(variableAttributes->displayName().text().value() == "resInfo");
+		BOOST_REQUIRE(variableAttributes->description().locale().value() == "de");
+		BOOST_REQUIRE(variableAttributes->description().text().value() == "Reservierungsart");
+		BOOST_REQUIRE(variableAttributes->value().variant<OpcUaUInt16>() == 1234);
 
-		BOOST_REQUIRE(variableAttributes->dataType()->namespaceIndex() == 130);
-		BOOST_REQUIRE(variableAttributes->dataType()->nodeId<OpcUaUInt32>() == 12);
+		BOOST_REQUIRE(variableAttributes->dataType().namespaceIndex() == 130);
+		BOOST_REQUIRE(variableAttributes->dataType().nodeId<OpcUaUInt32>() == 12);
 
 		BOOST_REQUIRE(variableAttributes->valueRank() == 10);
-		BOOST_REQUIRE(variableAttributes->arrayDimensions()->size() == 1);
+		BOOST_REQUIRE(variableAttributes->arrayDimensions().size() == 1);
 		OpcUaUInt32 arrayDimension;
-		variableAttributes->arrayDimensions()->get(arrayDimension);
+		variableAttributes->arrayDimensions().get(0, arrayDimension);
 		BOOST_REQUIRE(arrayDimension == 12);
 
 		BOOST_REQUIRE(variableAttributes->accessLevel() == 2);
@@ -585,19 +575,19 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->nodeAttributes().parameterTypeId().nodeId<OpcUaUInt32>() == 12351);
 		VariableTypeAttributes::SPtr variableTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<VariableTypeAttributes>();
 		BOOST_REQUIRE(variableTypeAttributes.get() != NULL);
-		BOOST_REQUIRE(variableTypeAttributes->displayName()->locale().value() == "de");
-		BOOST_REQUIRE(variableTypeAttributes->displayName()->text().value() == "resInfo");
-		BOOST_REQUIRE(variableTypeAttributes->description()->locale().value() == "de");
-		BOOST_REQUIRE(variableTypeAttributes->description()->text().value() == "Reservierungsart12345");
-		BOOST_REQUIRE(variableTypeAttributes->value()->variant()->variant<OpcUaUInt16>() == 1234);
+		BOOST_REQUIRE(variableTypeAttributes->displayName().locale().value() == "de");
+		BOOST_REQUIRE(variableTypeAttributes->displayName().text().value() == "resInfo");
+		BOOST_REQUIRE(variableTypeAttributes->description().locale().value() == "de");
+		BOOST_REQUIRE(variableTypeAttributes->description().text().value() == "Reservierungsart12345");
+		BOOST_REQUIRE(variableTypeAttributes->value().variant<OpcUaUInt16>() == 1234);
 
-		BOOST_REQUIRE(variableTypeAttributes->dataType()->namespaceIndex() == 130);
-		BOOST_REQUIRE(variableTypeAttributes->dataType()->nodeId<OpcUaUInt32>() == 12);
+		BOOST_REQUIRE(variableTypeAttributes->dataType().namespaceIndex() == 130);
+		BOOST_REQUIRE(variableTypeAttributes->dataType().nodeId<OpcUaUInt32>() == 12);
 
 		BOOST_REQUIRE(variableTypeAttributes->valueRank() == 10);
-		BOOST_REQUIRE(variableTypeAttributes->arrayDimensions()->size() == 1);
+		BOOST_REQUIRE(variableTypeAttributes->arrayDimensions().size() == 1);
 		OpcUaUInt32 arrayDimension;
-		variableTypeAttributes->arrayDimensions()->get(arrayDimension);
+		variableTypeAttributes->arrayDimensions().get(0, arrayDimension);
 		BOOST_REQUIRE(arrayDimension == 12);
 		BOOST_REQUIRE(variableTypeAttributes->isAbstract() == false);
 		BOOST_REQUIRE(variableTypeAttributes->writeMask() == WriteableAttribute_DataType);

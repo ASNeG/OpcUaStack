@@ -178,7 +178,11 @@ NODESETS="--nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --n
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype DeleteAtTimeDetails --buildSubTypes 0
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype DeleteEventDetails --buildSubTypes 0
 
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype ObjectAttributes --buildSubTypes 0
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype NodeAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ObjectAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype NodeAttributes --buildSubTypes 0
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype VariableAttributes --buildSubTypes 0
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype VariableTypeAttributes --buildSubTypes 0
+
+
 
 

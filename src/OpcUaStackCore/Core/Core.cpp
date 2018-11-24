@@ -19,10 +19,8 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 
-#include "OpcUaStackCore/ServiceSet/VariableAttributes.h"
 #include "OpcUaStackCore/ServiceSet/MethodAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ObjectTypeAttributes.h"
-#include "OpcUaStackCore/ServiceSet/VariableTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ReferenceTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
@@ -72,6 +70,8 @@
 #include "OpcUaStackCore/StandardDataTypes/DeleteEventDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/ObjectAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/NodeAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/VariableAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/VariableTypeAttributes.h"
 
 namespace OpcUaStackCore
 {
@@ -147,8 +147,6 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<ObjectTypeAttributes>(OpcUaId_ObjectTypeAttributes);
 		eo.registerFactoryElement<ReferenceTypeAttributes>(OpcUaId_ReferenceTypeAttributes);
 		eo.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes);
-		eo.registerFactoryElement<VariableAttributes>(OpcUaId_VariableAttributes);
-		eo.registerFactoryElement<VariableTypeAttributes>(OpcUaId_VariableTypeAttributes);
 		eo.registerFactoryElement<ElementOperand>(OpcUaId_ElementOperand_Encoding_DefaultBinary);
 		eo.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
 		eo.registerFactoryElement<AttributeOperand>(OpcUaId_AttributeOperand_Encoding_DefaultBinary);
@@ -182,6 +180,8 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<DeleteEventDetails>(OpcUaId_DeleteEventDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<ObjectAttributes>(OpcUaId_ObjectAttributes_Encoding_DefaultBinary);
 		eo.registerFactoryElement<NodeAttributes>(OpcUaId_NodeAttributes_Encoding_DefaultBinary);
+		eo.registerFactoryElement<VariableAttributes>(OpcUaId_VariableAttributes_Encoding_DefaultBinary);
+		eo.registerFactoryElement<VariableTypeAttributes>(OpcUaId_VariableTypeAttributes_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -219,8 +219,6 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_ObjectTypeAttributes);
 		eo.deregisterFactoryElement(OpcUaId_ReferenceTypeAttributes);
 		eo.deregisterFactoryElement(OpcUaId_ViewAttributes);
-		eo.deregisterFactoryElement(OpcUaId_VariableAttributes);
-		eo.deregisterFactoryElement(OpcUaId_VariableTypeAttributes);
 		eo.deregisterFactoryElement(OpcUaId_ElementOperand_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_AttributeOperand_Encoding_DefaultBinary);
@@ -254,6 +252,8 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_DeleteEventDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_ObjectAttributes_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_NodeAttributes_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_VariableAttributes_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_VariableTypeAttributes_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);
