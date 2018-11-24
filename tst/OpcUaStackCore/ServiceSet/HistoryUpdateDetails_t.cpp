@@ -2,7 +2,7 @@
 #include "OpcUaStackCore/StandardDataTypes/UpdateDataDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/UpdateEventDetails.h"
-#include "OpcUaStackCore/ServiceSet/DeleteRawModifiedDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/DeleteRawModifiedDetails.h"
 #include "OpcUaStackCore/ServiceSet/DeleteAtTimeDetails.h"
 #include "OpcUaStackCore/ServiceSet/DeleteEventDetails.h"
 #include "OpcUaStackCore/ServiceSet/PerformUpdateEnumeration.h"
@@ -112,9 +112,9 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteRawModifiedDetails)
 	// encode
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.isDeleteModified(true);
-	details1.startTime(ptime);
-	details1.endTime(ptime);
+	details1.isDeleteModified() = true;
+	details1.startTime() = ptime;
+	details1.endTime() =  ptime;
 	details1.opcUaBinaryEncode(ios);
 
 	// decode

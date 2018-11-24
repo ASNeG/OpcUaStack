@@ -68,6 +68,7 @@
 #include "OpcUaStackCore/StandardDataTypes/HistoryUpdateDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/UpdateEventDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/DeleteRawModifiedDetails.h"
 
 namespace OpcUaStackCore
 {
@@ -173,6 +174,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<HistoryUpdateDetails>(OpcUaId_HistoryUpdateDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<UpdateStructureDataDetails>(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<UpdateEventDetails>(OpcUaId_UpdateEventDetails_Encoding_DefaultBinary);
+		eo.registerFactoryElement<DeleteRawModifiedDetails>(OpcUaId_DeleteRawModifiedDetails_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -240,6 +242,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_HistoryUpdateDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_UpdateEventDetails_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_DeleteRawModifiedDetails_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);
