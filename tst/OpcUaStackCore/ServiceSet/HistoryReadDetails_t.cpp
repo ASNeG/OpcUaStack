@@ -1,7 +1,7 @@
 #include "unittest.h"
 #include "OpcUaStackCore/StandardDataTypes/ReadEventDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
-#include "OpcUaStackCore/ServiceSet/ReadProcessedDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadProcessedDetails.h"
 #include "OpcUaStackCore/ServiceSet/ReadAtTimeDetails.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <boost/iostreams/stream.hpp>
@@ -78,10 +78,11 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadProcessedDetails)
 	nodeIdSPtr->namespaceIndex((OpcUaInt16)1);
 	nodeIdSPtr->nodeId<OpcUaUInt32>(123);
 
-	details1.startTime(ptime);
-	details1.endTime(ptime);
-	details1.resampleInterval(123);
-	details1.aggregateType()->set(nodeIdSPtr);
+	details1.startTime() = ptime;
+	details1.endTime()  = ptime;
+	details1.processingInterval() = 123;
+	details1.aggregateType().resize(1);
+	details1.aggregateType().set(0, nodeIdSPtr);
 	details1.aggregateConfiguration().useServerCapabilitiesDefaults() = false;
 	details1.aggregateConfiguration().treatUncertainAsBad() = false;
 	details1.aggregateConfiguration().percentDataBad() = (OpcUaByte)0x50;
@@ -93,11 +94,11 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadProcessedDetails)
 	details2.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(details2.startTime().dateTime() == ptime);
 	BOOST_REQUIRE(details2.endTime().dateTime() == ptime);
-	BOOST_REQUIRE(details2.resampleInterval() == 123);
+	BOOST_REQUIRE(details2.processingInterval() == 123);
 
-	BOOST_REQUIRE(details2.aggregateType()->size() == 1);
+	BOOST_REQUIRE(details2.aggregateType().size() == 1);
 	nodeIdSPtr = constructSPtr<OpcUaNodeId>();
-	details2.aggregateType()->get(nodeIdSPtr);
+	details2.aggregateType().get(0, nodeIdSPtr);
 	BOOST_REQUIRE(nodeIdSPtr->namespaceIndex() == 1);
 	BOOST_REQUIRE(nodeIdSPtr->nodeId<OpcUaUInt32>() == 123);
 
