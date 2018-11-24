@@ -769,7 +769,7 @@ namespace OpcUaStackServer
 			updateResponse->results()->push_back(writeResult);
 
 			// check type of history update details
-			ExtensibleParameter::SPtr extensibleParameter;
+			OpcUaExtensibleParameter::SPtr extensibleParameter;
 			updateRequest->historyUpdateDetails()->get(idx, extensibleParameter);
 
 			OpcUaNodeId parameterTypeId;
@@ -793,18 +793,18 @@ namespace OpcUaStackServer
 			}
 
 			// check operation type
-			if (dataDetails->performInsertReplace() != PerformUpdateEnumeration_Insert) {
+			if (dataDetails->performInsertReplace().enumeration() != PerformUpdateType::EnumInsert) {
 				writeResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "history write value error, because invalid operation type")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
 					.parameter("Node", dataDetails->nodeId())
-					.parameter("OperationType", dataDetails->performInsertReplace());
+					.parameter("OperationType", dataDetails->performInsertReplace().toString());
 				continue;
 			}
 
 			// check data array
-			if (dataDetails->updateValue()->size() == 0) {
+			if (dataDetails->updateValues().size() == 0) {
 				writeResult->statusCode(BadNothingToDo);
 				continue;
 			}
@@ -842,7 +842,7 @@ namespace OpcUaStackServer
 			// call forward callback
 			ApplicationHWriteContext applicationWriteContext;
 			applicationWriteContext.nodeId_ = dataDetails->nodeId();
-			applicationWriteContext.dataValueArray_ = dataDetails->updateValue();
+			dataDetails->updateValues().copyTo(*applicationWriteContext.dataValueArray_);
 			applicationWriteContext.statusCode_ = Success;
 			applicationWriteContext.applicationContext_ = forwardNodeSync->writeHService().applicationContext();
 			applicationWriteContext.userContext_ = serviceTransaction->userContext();

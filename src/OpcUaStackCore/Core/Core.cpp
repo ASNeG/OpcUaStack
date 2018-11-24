@@ -16,7 +16,6 @@
  */
 
 #include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 
@@ -28,7 +27,6 @@
 #include "OpcUaStackCore/ServiceSet/ReferenceTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
-#include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 
 #include "OpcUaStackCore/StandardDataTypes/EventNotificationList.h"
 #include "OpcUaStackCore/StandardDataTypes/DataChangeNotification.h"
@@ -68,6 +66,7 @@
 #include "OpcUaStackCore/StandardDataTypes/HistoryEvent.h"
 #include "OpcUaStackCore/StandardDataTypes/UpdateDataDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/HistoryUpdateDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
 
 namespace OpcUaStackCore
 {
@@ -118,7 +117,6 @@ namespace OpcUaStackCore
 	Core::initExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
-		ep.registerFactoryElement<UpdateStructureDataDetails>(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 	}
 
 	void
@@ -180,6 +178,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<HistoryEvent>(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 		eo.registerFactoryElement<UpdateDataDetails>(OpcUaId_UpdateDataDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<HistoryUpdateDetails>(OpcUaId_HistoryUpdateDetails_Encoding_DefaultBinary);
+		eo.registerFactoryElement<UpdateStructureDataDetails>(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -191,7 +190,7 @@ namespace OpcUaStackCore
 	Core::cleanupExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
-		ep.deregisterFactoryElement(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
+
 	}
 
 	void
@@ -252,6 +251,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_UpdateDataDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_HistoryUpdateDetails_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

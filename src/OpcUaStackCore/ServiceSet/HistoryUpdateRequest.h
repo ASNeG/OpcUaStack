@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,9 +22,9 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/HistoryReadValueId.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 
 namespace OpcUaStackCore
 {
@@ -40,14 +40,14 @@ namespace OpcUaStackCore
 
 		void requestHeader(const RequestHeader::SPtr requestHeaderSPtr);
 		RequestHeader::SPtr requestHeader(void) const;
-		ExtensibleParameterArray::SPtr& historyUpdateDetails(void);
+		OpcUaExtensibleParameterArray::SPtr& historyUpdateDetails(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		RequestHeader::SPtr requestHeaderSPtr_;
-		ExtensibleParameterArray::SPtr historyUpdateDetailsSPtr_;
+		OpcUaExtensibleParameterArray::SPtr historyUpdateDetailsSPtr_;
 	};
 
 }
