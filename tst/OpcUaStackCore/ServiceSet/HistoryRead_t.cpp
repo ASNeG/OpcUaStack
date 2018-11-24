@@ -3,7 +3,7 @@
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/ServiceSet/HistoryReadRequest.h"
 #include "OpcUaStackCore/ServiceSet/HistoryReadResponse.h"
-#include "OpcUaStackCore/ServiceSet/HistoryData.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"

@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
-#include "OpcUaStackCore/ServiceSet/HistoryData.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaClient/ClientCommand/CommandReadH.h"
 #include "OpcUaClient/ClientService/ClientServiceReadH.h"
 
@@ -159,14 +159,14 @@ namespace OpcUaClient
 			}
 
 			HistoryData::SPtr historyData = readResult->historyData()->parameter<HistoryData>();
-			for (uint32_t idxv=0; idxv<historyData->dataValues()->size(); idxv++) {
+			for (uint32_t idxv=0; idxv<historyData->dataValues().size(); idxv++) {
 				OpcUaDataValue::SPtr dataValue;
-				historyData->dataValues()->get(idxv, dataValue);
+				historyData->dataValues().get(idxv, dataValue);
 				output(*dataValue, commandReadH);
 			}
 
 
-			if (readResult->continuationPoint().exist()  && historyData->dataValues()->size() > 0) {
+			if (readResult->continuationPoint().exist()  && historyData->dataValues().size() > 0) {
 				HistoryReadValueId::SPtr readValueId;
 				req->nodesToRead()->get(idx, readValueId);
 
@@ -272,14 +272,14 @@ namespace OpcUaClient
 			}
 
 			HistoryData::SPtr historyData = readResult->historyData()->parameter<HistoryData>();
-			for (uint32_t idxv=0; idxv<historyData->dataValues()->size(); idxv++) {
+			for (uint32_t idxv=0; idxv<historyData->dataValues().size(); idxv++) {
 				OpcUaDataValue::SPtr dataValue;
-				historyData->dataValues()->get(idxv, dataValue);
+				historyData->dataValues().get(idxv, dataValue);
 				output(*dataValue, commandReadH);
 			}
 
 
-			if (readResult->continuationPoint().exist() && historyData->dataValues()->size() > 0) {
+			if (readResult->continuationPoint().exist() && historyData->dataValues().size() > 0) {
 				HistoryReadValueId::SPtr readValueId;
 				req->nodesToRead()->get(idx, readValueId);
 

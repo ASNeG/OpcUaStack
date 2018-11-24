@@ -1,6 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackCore/ServiceSet/HistoryModifiedData.h"
-#include "OpcUaStackCore/ServiceSet/HistoryData.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <boost/iostreams/stream.hpp>
 
@@ -27,14 +27,15 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryData)
 	value = constructSPtr<OpcUaDataValue>();;
 	value->statusCode((OpcUaStatusCode)Success);
 
-	data1.dataValues()->set(value);
+	data1.dataValues().resize(1);
+	data1.dataValues().set(0, value);
 	data1.opcUaBinaryEncode(ios);
 
 	// decode
 	data2.opcUaBinaryDecode(ios);
-	BOOST_REQUIRE(data2.dataValues()->size() == 1);
+	BOOST_REQUIRE(data2.dataValues().size() == 1);
 	value = constructSPtr<OpcUaDataValue>();;
-	data2.dataValues()->get(value);
+	data2.dataValues().get(0, value);
 	BOOST_REQUIRE(value->statusCode() == Success);
 
 }

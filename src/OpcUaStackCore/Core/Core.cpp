@@ -29,7 +29,6 @@
 #include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
-#include "OpcUaStackCore/ServiceSet/HistoryData.h"
 
 #include "OpcUaStackCore/StandardDataTypes/EventNotificationList.h"
 #include "OpcUaStackCore/StandardDataTypes/DataChangeNotification.h"
@@ -63,6 +62,7 @@
 #include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/ReadProcessedDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/ReadAtTimeDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 
 namespace OpcUaStackCore
 {
@@ -169,6 +169,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<ReadProcessedDetails>(OpcUaId_ReadProcessedDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<ReadAtTimeDetails>(OpcUaId_ReadAtTimeDetails_Encoding_DefaultBinary);
+		eo.registerFactoryElement<HistoryData>(OpcUaId_HistoryData_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -235,6 +236,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_ReadProcessedDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_ReadAtTimeDetails_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_HistoryData_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);
