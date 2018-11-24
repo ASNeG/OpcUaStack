@@ -1,6 +1,6 @@
 #include "unittest.h"
-#include "OpcUaStackCore/ServiceSet/ReadEventDetails.h"
-#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadEventDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/ServiceSet/ReadProcessedDetails.h"
 #include "OpcUaStackCore/ServiceSet/ReadAtTimeDetails.h"
 #include "OpcUaStackCore/Base/Utility.h"
@@ -25,9 +25,9 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadEventDetails)
 	ReadEventDetails details1, details2;
 
 	// encode
-	details1.numValuesPerNode(123);
-	details1.startTime(ptime);
-	details1.endTime(ptime);
+	details1.numValuesPerNode() = 123;
+	details1.startTime() =  ptime;
+	details1.endTime() = ptime;
 	details1.opcUaBinaryEncode(ios);
 	
 	// decode
@@ -47,11 +47,11 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadRawModifiedDetails)
 	ReadRawModifiedDetails details1, details2;
 
 	// encode
-	details1.isReadModified(true);
-	details1.startTime(ptime);
-	details1.endTime(ptime);
-	details1.numValuesPerNode(123);
-	details1.returnBoolean(false);
+	details1.isReadModified() = true;
+	details1.startTime() =  ptime;
+	details1.endTime() = ptime;
+	details1.numValuesPerNode() = 123;
+	details1.returnBounds() = false;
 	details1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadRawModifiedDetails)
 	BOOST_REQUIRE(details2.startTime().dateTime() == ptime);
 	BOOST_REQUIRE(details2.endTime().dateTime() == ptime);
 	BOOST_REQUIRE(details2.numValuesPerNode() == 123);
-	BOOST_REQUIRE(details2.returnBoolean() == false);
+	BOOST_REQUIRE(details2.returnBounds() == false);
 }
 
 BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadProcessedDetails)

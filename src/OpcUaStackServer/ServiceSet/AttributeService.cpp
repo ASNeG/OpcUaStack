@@ -25,8 +25,9 @@
 #include "OpcUaStackCore/Application/ApplicationHWriteContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/StandardDataTypes/HistoryEvent.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadEventDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
-#include "OpcUaStackCore/ServiceSet/ReadEventDetails.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 

@@ -17,7 +17,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
 #include "OpcUaClient/ClientCommand/CommandReadH.h"
 #include "OpcUaClient/ClientService/ClientServiceReadH.h"
@@ -102,9 +102,9 @@ namespace OpcUaClient
 		req->historyReadDetails()->parameterTypeId().set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		req->timestampsToReturn(commandReadH->timestampsToReturn());
 		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
-		readDetails->startTime(commandReadH->startTime());
-		readDetails->endTime(commandReadH->endTime());
-		readDetails->numValuesPerNode(commandReadH->maxNumResultValuesPerNode());
+		readDetails->startTime() = commandReadH->startTime();
+		readDetails->endTime() = commandReadH->endTime();
+		readDetails->numValuesPerNode() = commandReadH->maxNumResultValuesPerNode();
 
 		req->nodesToRead()->resize(commandReadH->nodeIdVec().size());
 		for (uint32_t idx=0; idx<commandReadH->nodeIdVec().size(); idx++) {
@@ -210,9 +210,9 @@ namespace OpcUaClient
 		req->historyReadDetails()->parameterTypeId().set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		req->timestampsToReturn(commandReadH->timestampsToReturn());
 		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
-		readDetails->startTime(commandReadH->startTime());
-		readDetails->endTime(commandReadH->endTime());
-		readDetails->numValuesPerNode(commandReadH->maxNumResultValuesPerNode());
+		readDetails->startTime() = commandReadH->startTime();
+		readDetails->endTime() = commandReadH->endTime();
+		readDetails->numValuesPerNode() = commandReadH->maxNumResultValuesPerNode();
 
 		req->nodesToRead()->resize(readNextNodeVec.size());
 		for (uint32_t idx=0; idx<readNextNodeVec.size(); idx++) {
@@ -318,9 +318,9 @@ namespace OpcUaClient
 		req->timestampsToReturn(commandReadH->timestampsToReturn());
 		req->releaseContinuationPoints(true);
 		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
-		readDetails->startTime(commandReadH->startTime());
-		readDetails->endTime(commandReadH->endTime());
-		readDetails->numValuesPerNode(commandReadH->maxNumResultValuesPerNode());
+		readDetails->startTime() = commandReadH->startTime();
+		readDetails->endTime() = commandReadH->endTime();
+		readDetails->numValuesPerNode() = commandReadH->maxNumResultValuesPerNode();
 
 		req->nodesToRead()->resize(readNextNodeVec.size());
 		for (uint32_t idx=0; idx<readNextNodeVec.size(); idx++) {

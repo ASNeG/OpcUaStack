@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Request)
 	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
 	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
 	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
-	
+
 	BOOST_REQUIRE(historyReadRequestSPtr->timestampsToReturn() == TimestampsToReturn_Both);
 	BOOST_REQUIRE(historyReadRequestSPtr->releaseContinuationPoints() == true);
 

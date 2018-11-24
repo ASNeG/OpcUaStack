@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	HistoryReadRequest::HistoryReadRequest(void)
 	: Object()
-	, historyReadDetailsSPtr_(constructSPtr<ExtensibleParameter>())
+	, historyReadDetailsSPtr_(constructSPtr<OpcUaExtensibleParameter>())
 	, timestampsToReturn_()
 	, releaseContinuationPoints_()
 	, nodesToReadArraySPtr_(constructSPtr<HistoryReadValueIdArray>())
@@ -42,12 +42,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	HistoryReadRequest::historyReadDetails(const ExtensibleParameter::SPtr historyReadDetails)
+	HistoryReadRequest::historyReadDetails(const OpcUaExtensibleParameter::SPtr historyReadDetails)
 	{
 		historyReadDetailsSPtr_ = historyReadDetails;
 	}
 	
-	ExtensibleParameter::SPtr 
+	OpcUaExtensibleParameter::SPtr
 	HistoryReadRequest::historyReadDetails(void) const
 	{
 		return historyReadDetailsSPtr_;

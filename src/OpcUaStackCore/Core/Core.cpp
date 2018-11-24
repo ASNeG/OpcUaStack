@@ -28,8 +28,6 @@
 #include "OpcUaStackCore/ServiceSet/ReferenceTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
-#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
-#include "OpcUaStackCore/ServiceSet/ReadEventDetails.h"
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
 
@@ -60,6 +58,9 @@
 #include "OpcUaStackCore/StandardDataTypes/SubscriptionDiagnosticsDataType.h"
 #include "OpcUaStackCore/StandardDataTypes/ServerDiagnosticsSummaryDataType.h"
 #include "OpcUaStackCore/StandardDataTypes/Argument.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadEventDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryReadDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
 
 namespace OpcUaStackCore
 {
@@ -110,8 +111,6 @@ namespace OpcUaStackCore
 	Core::initExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
-		ep.registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
-		ep.registerFactoryElement<ReadEventDetails>(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
 		ep.registerFactoryElement<UpdateStructureDataDetails>(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 	}
 
@@ -163,6 +162,9 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		eo.registerFactoryElement<StatusChangeNotification>(OpcUaId_StatusChangeNotification_Encoding_DefaultBinary);
 		eo.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
+		eo.registerFactoryElement<ReadEventDetails>(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
+		eo.registerFactoryElement<HistoryReadDetails>(OpcUaId_HistoryReadDetails_Encoding_DefaultBinary);
+		eo.registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -174,9 +176,6 @@ namespace OpcUaStackCore
 	Core::cleanupExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
-
-		ep.deregisterFactoryElement(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
-		ep.deregisterFactoryElement(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 	}
 
@@ -227,6 +226,9 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_StatusChangeNotification_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_HistoryReadDetails_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

@@ -42,7 +42,7 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime startTime_;		// IN - Start time of variables
 		boost::posix_time::ptime stopTime_;			// IN - stop time of variables
 		TimestampsToReturn timestampsToReturn_;		// IN - what timestamps are to be returned
-		EventFilter::SPtr filter_;					// IN - event filter
+		EventFilter filter_;						// IN - event filter
 		OpcUaBoolean releaseContinuationPoints_;	// IN - info about whether the continous
 													//      point schould be deleted
 		UserContext::SPtr userContext_;				// IN - user context
