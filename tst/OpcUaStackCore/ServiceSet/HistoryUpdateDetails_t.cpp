@@ -3,7 +3,7 @@
 #include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/UpdateEventDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/DeleteRawModifiedDetails.h"
-#include "OpcUaStackCore/ServiceSet/DeleteAtTimeDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/DeleteAtTimeDetails.h"
 #include "OpcUaStackCore/ServiceSet/DeleteEventDetails.h"
 #include "OpcUaStackCore/ServiceSet/PerformUpdateEnumeration.h"
 #include "OpcUaStackCore/Base/Utility.h"
@@ -140,7 +140,8 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteAtTimeDetails)
 	utcTime.dateTime(ptime);
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.reqTimes()->set(utcTime);
+	details1.reqTimes().resize(1);
+	details1.reqTimes().set(utcTime);
 	details1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -148,8 +149,8 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteAtTimeDetails)
 	BOOST_REQUIRE(details2.nodeId().namespaceIndex() == 1);
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
 
-	BOOST_REQUIRE(details2.reqTimes()->size() == 1);
-	details2.reqTimes()->get(utcTime);
+	BOOST_REQUIRE(details2.reqTimes().size() == 1);
+	details2.reqTimes().get(0, utcTime);
 	BOOST_REQUIRE(utcTime.dateTime() == ptime);
 }
 
