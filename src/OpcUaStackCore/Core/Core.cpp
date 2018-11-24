@@ -19,7 +19,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 
-#include "OpcUaStackCore/ServiceSet/MethodAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ObjectTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ReferenceTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
@@ -72,6 +71,7 @@
 #include "OpcUaStackCore/StandardDataTypes/NodeAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/VariableAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/VariableTypeAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/MethodAttributes.h"
 
 namespace OpcUaStackCore
 {
@@ -182,6 +182,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<NodeAttributes>(OpcUaId_NodeAttributes_Encoding_DefaultBinary);
 		eo.registerFactoryElement<VariableAttributes>(OpcUaId_VariableAttributes_Encoding_DefaultBinary);
 		eo.registerFactoryElement<VariableTypeAttributes>(OpcUaId_VariableTypeAttributes_Encoding_DefaultBinary);
+		eo.registerFactoryElement<MethodAttributes>(OpcUaId_MethodAttributes_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -254,6 +255,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_NodeAttributes_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_VariableAttributes_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_VariableTypeAttributes_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_MethodAttributes_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

@@ -151,12 +151,12 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12346);
 		methodAttributes = addNodesItemSPtr->nodeAttributes().parameter<MethodAttributes>();
 		BOOST_REQUIRE(methodAttributes.get() != NULL);
-		methodAttributes->displayName()->set("de", "kaufen");
-		methodAttributes->description()->set("de", "Der Erwerb einer Lizenz oder dem Besitz an einem Gegenstand");
-		methodAttributes->executable(true);
-		methodAttributes->userExecutable(false);
-		methodAttributes->writeMask(WriteableAttribute_DataType);
-		methodAttributes->userWriteMask(WriteableAttribute_DataType);
+		methodAttributes->displayName().set("de", "kaufen");
+		methodAttributes->description().set("de", "Der Erwerb einer Lizenz oder dem Besitz an einem Gegenstand");
+		methodAttributes->executable() = true;
+		methodAttributes->userExecutable() = false;
+		methodAttributes->writeMask() = WriteableAttribute_DataType;
+		methodAttributes->userWriteMask() = WriteableAttribute_DataType;
 
 		addNodesRequestSPtr->nodesToAdd()->set(2, addNodesItemSPtr);
 	}
@@ -437,10 +437,10 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 		MethodAttributes::SPtr methodAttributes = addNodesItemSPtr->nodeAttributes().parameter<MethodAttributes>();
 		BOOST_REQUIRE(methodAttributes.get() != NULL);
-		BOOST_REQUIRE(methodAttributes->displayName()->locale().value() == "de");
-		BOOST_REQUIRE(methodAttributes->displayName()->text().value() == "kaufen");
-		BOOST_REQUIRE(methodAttributes->description()->locale().value() == "de");
-		BOOST_REQUIRE(methodAttributes->description()->text().value() == "Der Erwerb einer Lizenz oder dem Besitz an einem Gegenstand");
+		BOOST_REQUIRE(methodAttributes->displayName().locale().value() == "de");
+		BOOST_REQUIRE(methodAttributes->displayName().text().value() == "kaufen");
+		BOOST_REQUIRE(methodAttributes->description().locale().value() == "de");
+		BOOST_REQUIRE(methodAttributes->description().text().value() == "Der Erwerb einer Lizenz oder dem Besitz an einem Gegenstand");
 		BOOST_REQUIRE(methodAttributes->executable() == true);
 		BOOST_REQUIRE(methodAttributes->userExecutable() == false);
 		BOOST_REQUIRE(methodAttributes->writeMask() == WriteableAttribute_DataType);
