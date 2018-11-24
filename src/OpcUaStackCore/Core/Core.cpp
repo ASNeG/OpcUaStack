@@ -67,6 +67,7 @@
 #include "OpcUaStackCore/StandardDataTypes/UpdateDataDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/HistoryUpdateDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/UpdateEventDetails.h"
 
 namespace OpcUaStackCore
 {
@@ -99,7 +100,6 @@ namespace OpcUaStackCore
 	{
 		if (init_) return true;
 		init_ = true;
-		initExtensibleParameter();
 		initExtensionObject();
 		return true;
 	}
@@ -108,15 +108,8 @@ namespace OpcUaStackCore
 	Core::cleanup(void)
 	{
 		cleanupExtensionObject();
-		cleanupExtensibleParameter();
 
 		init_ = false;
-	}
-
-	void
-	Core::initExtensibleParameter(void)
-	{
-		ExtensibleParameter ep;
 	}
 
 	void
@@ -179,18 +172,12 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<UpdateDataDetails>(OpcUaId_UpdateDataDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<HistoryUpdateDetails>(OpcUaId_HistoryUpdateDetails_Encoding_DefaultBinary);
 		eo.registerFactoryElement<UpdateStructureDataDetails>(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
+		eo.registerFactoryElement<UpdateEventDetails>(OpcUaId_UpdateEventDetails_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
 
 		// json
-	}
-
-	void
-	Core::cleanupExtensibleParameter(void)
-	{
-		ExtensibleParameter ep;
-
 	}
 
 	void
@@ -252,6 +239,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_UpdateDataDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_HistoryUpdateDetails_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_UpdateEventDetails_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);

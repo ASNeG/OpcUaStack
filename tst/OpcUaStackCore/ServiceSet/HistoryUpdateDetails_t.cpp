@@ -1,7 +1,7 @@
 #include "unittest.h"
 #include "OpcUaStackCore/StandardDataTypes/UpdateDataDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
-#include "OpcUaStackCore/ServiceSet/UpdateEventDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/UpdateEventDetails.h"
 #include "OpcUaStackCore/ServiceSet/DeleteRawModifiedDetails.h"
 #include "OpcUaStackCore/ServiceSet/DeleteAtTimeDetails.h"
 #include "OpcUaStackCore/ServiceSet/DeleteEventDetails.h"
@@ -90,14 +90,14 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateEventDetails)
 	// encode
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.performInsertReplace(PerformUpdateEnumeration_Update);
+	details1.performInsertReplace().enumeration(PerformUpdateType::EnumUpdate);
 	details1.opcUaBinaryEncode(ios);
 
 	// decode
 	details2.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(details2.nodeId().namespaceIndex() == 1);
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
-	BOOST_REQUIRE(details2.performInsertReplace() == PerformUpdateEnumeration_Update);
+	BOOST_REQUIRE(details2.performInsertReplace().enumeration() == PerformUpdateType::EnumUpdate);
 }
 
 BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteRawModifiedDetails)
