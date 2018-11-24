@@ -30,7 +30,7 @@
 #include "OpcUaStackCore/StandardDataTypes/MethodAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/ObjectTypeAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/DataTypeAttributes.h"
-#include "OpcUaStackCore/ServiceSet/ReferenceTypeAttributes.h"
+#include "OpcUaStackCore/StandardDataTypes/ReferenceTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
 
 namespace OpcUaStackCore

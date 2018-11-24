@@ -199,13 +199,13 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12349);
 		referenceTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<ReferenceTypeAttributes>();
 		BOOST_REQUIRE(referenceTypeAttributes.get() != NULL);
-		referenceTypeAttributes->displayName()->set("de", "ReservationsRef");
-		referenceTypeAttributes->description()->set("de", "Verweis auf Sitzplatzreservierungen");
-		referenceTypeAttributes->isAbstract(true);
-		referenceTypeAttributes->symmetric(false);
-		referenceTypeAttributes->inverseName()->set("de", "SeatRef");
-		referenceTypeAttributes->writeMask(WriteableAttribute_DataType);
-		referenceTypeAttributes->userWriteMask(WriteableAttribute_DataType);
+		referenceTypeAttributes->displayName().set("de", "ReservationsRef");
+		referenceTypeAttributes->description().set("de", "Verweis auf Sitzplatzreservierungen");
+		referenceTypeAttributes->isAbstract() = true;
+		referenceTypeAttributes->symmetric() = false;
+		referenceTypeAttributes->inverseName().set("de", "SeatRef");
+		referenceTypeAttributes->writeMask() = WriteableAttribute_DataType;
+		referenceTypeAttributes->userWriteMask() = WriteableAttribute_DataType;
 
 		addNodesRequestSPtr->nodesToAdd()->set(4, addNodesItemSPtr);
 	}
@@ -485,14 +485,14 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 		ReferenceTypeAttributes::SPtr referenceTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<ReferenceTypeAttributes>();
 		BOOST_REQUIRE(referenceTypeAttributes.get() != NULL);
-		BOOST_REQUIRE(referenceTypeAttributes->displayName()->locale().value() == "de");
-		BOOST_REQUIRE(referenceTypeAttributes->displayName()->text().value() == "ReservationsRef");
-		BOOST_REQUIRE(referenceTypeAttributes->description()->locale().value() == "de");
-		BOOST_REQUIRE(referenceTypeAttributes->description()->text().value() == "Verweis auf Sitzplatzreservierungen");
+		BOOST_REQUIRE(referenceTypeAttributes->displayName().locale().value() == "de");
+		BOOST_REQUIRE(referenceTypeAttributes->displayName().text().value() == "ReservationsRef");
+		BOOST_REQUIRE(referenceTypeAttributes->description().locale().value() == "de");
+		BOOST_REQUIRE(referenceTypeAttributes->description().text().value() == "Verweis auf Sitzplatzreservierungen");
 		BOOST_REQUIRE(referenceTypeAttributes->isAbstract() == true);
 		BOOST_REQUIRE(referenceTypeAttributes->symmetric() == false);
-		BOOST_REQUIRE(referenceTypeAttributes->inverseName()->locale().value() == "de");
-		BOOST_REQUIRE(referenceTypeAttributes->inverseName()->text().value() == "SeatRef");
+		BOOST_REQUIRE(referenceTypeAttributes->inverseName().locale().value() == "de");
+		BOOST_REQUIRE(referenceTypeAttributes->inverseName().text().value() == "SeatRef");
 		BOOST_REQUIRE(referenceTypeAttributes->writeMask() == WriteableAttribute_DataType);
 		BOOST_REQUIRE(referenceTypeAttributes->userWriteMask() == WriteableAttribute_DataType);
 	}
