@@ -179,7 +179,7 @@ namespace OpcUaStackServer
 		// get request parameter
 		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
 		if (!createMonitorItemRequest->itemsToCreate()->get(idx, monitoredItemCreateRequest)) {
-			monitoredItemCreateResult->statusCode(BadInvalidArgument);
+			monitoredItemCreateResult->statusCode().enumeration(BadInvalidArgument);
 			return;
 		}
 
@@ -188,7 +188,7 @@ namespace OpcUaStackServer
 		ReadValueId& readValueId = monitoredItemCreateRequest->itemToMonitor();
 		statusCode = forwardAutorizationCreateMonitoredItem(serviceTransaction->userContext(), readValueId);
 		if (statusCode != Success) {
-			monitoredItemCreateResult->statusCode(statusCode);
+			monitoredItemCreateResult->statusCode().enumeration(statusCode);
 			return;
 		}
 
@@ -196,7 +196,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr baseNodeClass;
 		baseNodeClass = informationModel_->find(monitoredItemCreateRequest->itemToMonitor().nodeId());
 		if (baseNodeClass.get() == nullptr) {
-			monitoredItemCreateResult->statusCode(BadNodeIdUnknown);
+			monitoredItemCreateResult->statusCode().enumeration(BadNodeIdUnknown);
 			return;
 		}
 
@@ -214,15 +214,15 @@ namespace OpcUaStackServer
 		statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
 
 		if (statusCode != Success) {
-			monitoredItemCreateResult->statusCode(statusCode);
+			monitoredItemCreateResult->statusCode().enumeration(statusCode);
 			return;
 		}
 
 		// insert monitor item into monitor item map
-		monitoredItemCreateResult->statusCode(Success);
-		monitoredItemCreateResult->monitoredItemId(monitorItem->monitorItemId());
-		monitoredItemCreateResult->revisedSamplingInterval(monitorItem->samplingInterval());
-		monitoredItemCreateResult->revisedQueueSize(monitorItem->queSize());
+		monitoredItemCreateResult->statusCode().enumeration(Success);
+		monitoredItemCreateResult->monitoredItemId() = monitorItem->monitorItemId();
+		monitoredItemCreateResult->revisedSamplingInterval() = monitorItem->samplingInterval();
+		monitoredItemCreateResult->revisedQueueSize() = monitorItem->queSize();
 		monitorItemMap_.insert(std::make_pair(monitorItem->monitorItemId(), monitorItem));
 
 		// forward start monitored item
@@ -263,7 +263,7 @@ namespace OpcUaStackServer
 		// get request parameter
 		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
 		if (!createMonitorItemRequest->itemsToCreate()->get(idx, monitoredItemCreateRequest)) {
-			monitoredItemCreateResult->statusCode(BadInvalidArgument);
+			monitoredItemCreateResult->statusCode().enumeration(BadInvalidArgument);
 			return;
 		}
 
@@ -272,7 +272,7 @@ namespace OpcUaStackServer
 		ReadValueId& readValueId = monitoredItemCreateRequest->itemToMonitor();
 		statusCode = forwardAutorizationCreateEventItem(serviceTransaction->userContext(), readValueId);
 		if (statusCode != Success) {
-			monitoredItemCreateResult->statusCode(statusCode);
+			monitoredItemCreateResult->statusCode().enumeration(statusCode);
 			return;
 		}
 
@@ -280,7 +280,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr baseNodeClass;
 		baseNodeClass = informationModel_->find(monitoredItemCreateRequest->itemToMonitor().nodeId());
 		if (baseNodeClass.get() == nullptr) {
-			monitoredItemCreateResult->statusCode(BadNodeIdUnknown);
+			monitoredItemCreateResult->statusCode().enumeration(BadNodeIdUnknown);
 			return;
 		}
 		OpcUaQualifiedName browseName;
@@ -297,15 +297,15 @@ namespace OpcUaStackServer
 		);
 
 		if (statusCode != Success) {
-			monitoredItemCreateResult->statusCode(statusCode);
+			monitoredItemCreateResult->statusCode().enumeration(statusCode);
 			return;
 		}
 
 		// insert event item into event item map
-		monitoredItemCreateResult->statusCode(Success);
-		monitoredItemCreateResult->monitoredItemId(eventItem->eventItemId());
-		monitoredItemCreateResult->revisedSamplingInterval(0);
-		monitoredItemCreateResult->revisedQueueSize(0);
+		monitoredItemCreateResult->statusCode().enumeration(Success);
+		monitoredItemCreateResult->monitoredItemId() = eventItem->eventItemId();
+		monitoredItemCreateResult->revisedSamplingInterval() = 0;
+		monitoredItemCreateResult->revisedQueueSize() = 0;
 		eventItemMap_.insert(std::make_pair(eventItem->eventItemId(), eventItem));
 
 		// forward start event item

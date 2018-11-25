@@ -94,7 +94,7 @@ namespace OpcUaStackServer
 		OpcUaStatusArray& selectClauseResults = eventFilterResult->selectClauseResults();
 		statusCode = receive(selectClauses, selectClauseResults);
 		if (statusCode != Success) {
-			monitoredItemCreateResult->statusCode(statusCode);
+			monitoredItemCreateResult->statusCode().enumeration(statusCode);
 			return statusCode;
 		}
 
@@ -105,7 +105,7 @@ namespace OpcUaStackServer
 			bool whereFilterIsValid = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
 			if (!whereFilterIsValid) {
 				statusCode = OpcUaStatusCode::BadMonitoredItemFilterInvalid;
-				monitoredItemCreateResult->statusCode(statusCode);
+				monitoredItemCreateResult->statusCode().enumeration(statusCode);
 				return statusCode;
 			}
 		}
@@ -119,7 +119,7 @@ namespace OpcUaStackServer
 		boost::mutex::scoped_lock g(eventHandlerMap.mutex());
 		eventHandlerMap.registerEvent(nodeId_, eventHandlerBase);
 
-		monitoredItemCreateResult->statusCode(Success);
+		monitoredItemCreateResult->statusCode().enumeration(Success);
 
 		return Success;
 	}

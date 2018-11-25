@@ -239,10 +239,10 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Response)
 	
 	// build MonitoredItemCreateResult
 	monitoredItemCreateResultSPtr = constructSPtr<MonitoredItemCreateResult>();
-	monitoredItemCreateResultSPtr->statusCode((OpcUaStatusCode)Success);
-	monitoredItemCreateResultSPtr->monitoredItemId(1);
-	monitoredItemCreateResultSPtr->revisedSamplingInterval(500);
-	monitoredItemCreateResultSPtr->revisedQueueSize(1);
+	monitoredItemCreateResultSPtr->statusCode().enumeration(Success);
+	monitoredItemCreateResultSPtr->monitoredItemId() = 1;
+	monitoredItemCreateResultSPtr->revisedSamplingInterval() = 500;
+	monitoredItemCreateResultSPtr->revisedQueueSize() = 1;
 	createMonitoredItemsResponseSPtr->results()->set(monitoredItemCreateResultSPtr);
 
 	// encode CreateMonitoredItemsResponse

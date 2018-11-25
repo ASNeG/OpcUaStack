@@ -193,7 +193,10 @@ NODESETS="--nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --n
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype AggregateFilter --buildSubTypes 0
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype DataChangeFilter --buildSubTypes 0
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype AggregateFilterResult --buildSubTypes 0
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoredItemModifyResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoredItemModifyResult --buildSubTypes 0
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoredItemCreateResult --buildSubTypes 0
+
+
 
 
 
