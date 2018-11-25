@@ -226,9 +226,9 @@ BOOST_AUTO_TEST_CASE(ModifyMonitoredItems_Response)
 	
 	// build MonitoredItemModifyResult
 	monitoredItemModifyResultSPtr = constructSPtr<MonitoredItemModifyResult>();
-	monitoredItemModifyResultSPtr->statusCode((OpcUaStatusCode)Success);
-	monitoredItemModifyResultSPtr->revisedSamplingInterval(500);
-	monitoredItemModifyResultSPtr->revisedQueueSize(1);
+	monitoredItemModifyResultSPtr->statusCode().enumeration(Success);
+	monitoredItemModifyResultSPtr->revisedSamplingInterval() = 500;
+	monitoredItemModifyResultSPtr->revisedQueueSize() = 1;
 	modifyMonitoredItemsResponseSPtr->results()->set(monitoredItemModifyResultSPtr);
 
 	// encode ModifyMonitoredItemsResponse
