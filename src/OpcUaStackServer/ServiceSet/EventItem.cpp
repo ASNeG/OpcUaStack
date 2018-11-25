@@ -91,10 +91,10 @@ namespace OpcUaStackServer
 
 		// select clause
 		SimpleAttributeOperandArray& selectClauses = eventFilter->selectClauses();
-		OpcUaStatusCodeArray::SPtr selectClauseResults = eventFilterResult->selectClauseResults();
+		OpcUaStatusArray& selectClauseResults = eventFilterResult->selectClauseResults();
 		statusCode = receive(selectClauses, selectClauseResults);
 		if (statusCode != Success) {
-			monitoredItemCreateResult->statusCode(statusCode);
+			monitoredItemCreateResult->statusCode().enumeration(statusCode);
 			return statusCode;
 		}
 
@@ -105,7 +105,7 @@ namespace OpcUaStackServer
 			bool whereFilterIsValid = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
 			if (!whereFilterIsValid) {
 				statusCode = OpcUaStatusCode::BadMonitoredItemFilterInvalid;
-				monitoredItemCreateResult->statusCode(statusCode);
+				monitoredItemCreateResult->statusCode().enumeration(statusCode);
 				return statusCode;
 			}
 		}
@@ -119,7 +119,7 @@ namespace OpcUaStackServer
 		boost::mutex::scoped_lock g(eventHandlerMap.mutex());
 		eventHandlerMap.registerEvent(nodeId_, eventHandlerBase);
 
-		monitoredItemCreateResult->statusCode(Success);
+		monitoredItemCreateResult->statusCode().enumeration(Success);
 
 		return Success;
 	}
@@ -238,8 +238,8 @@ namespace OpcUaStackServer
 
 		// process where clause
 		EventFieldList::SPtr eventFieldList = constructSPtr<EventFieldList>();
-		eventFieldList->clientHandle(clientHandle_);
-		eventFieldList->eventFields()->resize(selectClauses_.size());
+		eventFieldList->clientHandle() = clientHandle_;
+		eventFieldList->eventFields().resize(selectClauses_.size());
 
 		for (uint32_t idx=0; idx<selectClauses_.size(); idx++) {
 
@@ -264,16 +264,12 @@ namespace OpcUaStackServer
 			);
 
 			// insert variant into event field list
-			EventField::SPtr eventField;
-			eventField = constructSPtr<EventField>();
 			if (resultCode != EventResult::Success) {
 				value = constructSPtr<OpcUaVariant>();
-
 			}
 			else {
 			}
-			eventField->variant(value);
-			eventFieldList->eventFields()->push_back(eventField);
+			eventFieldList->eventFields().push_back(value);
 		}
 
 		boost::mutex::scoped_lock g(eventFieldListListMutex_);
@@ -281,16 +277,16 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	EventItem::receive(EventFieldListArray::SPtr eventFieldListArray)
+	EventItem::receive(EventFieldListArray& eventFieldListArray)
 	{
 		boost::mutex::scoped_lock g(eventFieldListListMutex_);
-		uint32_t freeSize = eventFieldListArray->freeSize();
+		uint32_t freeSize = eventFieldListArray.freeSize();
 		do {
 			if (eventFieldListList_.size() == 0) return Success;
 			if (freeSize == 0) return BadOutOfMemory;
 			freeSize--;
 
-			eventFieldListArray->push_back(eventFieldListList_.front());
+			eventFieldListArray.push_back(eventFieldListList_.front());
 			eventFieldListList_.pop_front();
 		} while (true);
 
@@ -298,7 +294,7 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	EventItem::receive(SimpleAttributeOperandArray& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray)
+	EventItem::receive(SimpleAttributeOperandArray& selectClauses, OpcUaStatusArray& statusArray)
 	{
 		if (selectClauses.size() == 0) {
 			return BadContentFilterInvalid;
@@ -306,12 +302,13 @@ namespace OpcUaStackServer
 
 		selectClauses.copyTo(selectClauses_);
 
-		statusCodeArray = constructSPtr<OpcUaStatusCodeArray>();
-		statusCodeArray->resize(selectClauses.size());
+		statusArray.resize(selectClauses.size());
 		for (uint32_t idx=0; idx<selectClauses.size(); idx++) {
 			// FIXME: check if attributes exist in type system
 
-			statusCodeArray->set(idx, (OpcUaStatusCode)Success);
+			OpcUaStatus::SPtr status = constructSPtr<OpcUaStatus>();
+			status->enumeration(Success);
+			statusArray.set(idx, status);
 		}
 
 		return Success;

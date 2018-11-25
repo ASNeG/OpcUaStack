@@ -1,6 +1,6 @@
 #include "unittest.h"
-#include "OpcUaStackCore/ServiceSet/HistoryModifiedData.h"
-#include "OpcUaStackCore/ServiceSet/HistoryData.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryModifiedData.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <boost/iostreams/stream.hpp>
 
@@ -27,14 +27,15 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryData)
 	value = constructSPtr<OpcUaDataValue>();;
 	value->statusCode((OpcUaStatusCode)Success);
 
-	data1.dataValues()->set(value);
+	data1.dataValues().resize(1);
+	data1.dataValues().set(0, value);
 	data1.opcUaBinaryEncode(ios);
 
 	// decode
 	data2.opcUaBinaryDecode(ios);
-	BOOST_REQUIRE(data2.dataValues()->size() == 1);
+	BOOST_REQUIRE(data2.dataValues().size() == 1);
 	value = constructSPtr<OpcUaDataValue>();;
-	data2.dataValues()->get(value);
+	data2.dataValues().get(0, value);
 	BOOST_REQUIRE(value->statusCode() == Success);
 
 }
@@ -55,28 +56,30 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryModifiedData)
 	value->statusCode((OpcUaStatusCode)Success);
 
 	modificationInfo = constructSPtr<ModificationInfo>();
-	modificationInfo->username("username");
-	modificationInfo->modificationTime(ptime);
-	modificationInfo->updateType(HistoryUpdateMode_Insert);
+	modificationInfo->userName() = OpcUaString("username");
+	modificationInfo->modificationTime() = ptime;
+	modificationInfo->updateType().enumeration(HistoryUpdateType::EnumInsert);
 
-	data1.dataValues()->set(value);
-	data1.modificationInfos()->set(modificationInfo);
+	data1.dataValues().resize(1);
+	data1.dataValues().set(0, value);
+	data1.modificationInfos().resize(1);
+	data1.modificationInfos().set(modificationInfo);
 	data1.opcUaBinaryEncode(ios);
 
 	// decode
 	data2.opcUaBinaryDecode(ios);
 	
-	BOOST_REQUIRE(data2.dataValues()->size() == 1);
+	BOOST_REQUIRE(data2.dataValues().size() == 1);
 	value = constructSPtr<OpcUaDataValue>();;
-	data2.dataValues()->get(value);
+	data2.dataValues().get(0, value);
 	BOOST_REQUIRE(value->statusCode() == Success);
 
-	BOOST_REQUIRE(data2.modificationInfos()->size() == 1);
+	BOOST_REQUIRE(data2.modificationInfos().size() == 1);
 	modificationInfo = constructSPtr<ModificationInfo>();
-	data2.modificationInfos()->get(modificationInfo);
-	BOOST_REQUIRE(modificationInfo->username().value() == "username");
+	data2.modificationInfos().get(0, modificationInfo);
+	BOOST_REQUIRE(modificationInfo->userName().value() == "username");
 	BOOST_REQUIRE(modificationInfo->modificationTime().dateTime() == ptime);
-	BOOST_REQUIRE(modificationInfo->updateType() == HistoryUpdateMode_Insert);
+	BOOST_REQUIRE(modificationInfo->updateType().enumeration() == HistoryUpdateType::EnumInsert);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

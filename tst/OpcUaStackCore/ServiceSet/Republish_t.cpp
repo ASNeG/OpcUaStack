@@ -190,8 +190,8 @@ BOOST_AUTO_TEST_CASE(Republish_Response)
 
 	// build NotificationMessage (empty NotificationData)
 	notificationMessageSPtr = republishResponseSPtr->notificationMessage();
-	notificationMessageSPtr->sequenceNumber(1);
-	notificationMessageSPtr->publishTime(ptime);
+	notificationMessageSPtr->sequenceNumber() = 1;
+	notificationMessageSPtr->publishTime() = ptime;
 
 	// encode PublishResponse
 	responseHeader->opcUaBinaryEncode(ios1);

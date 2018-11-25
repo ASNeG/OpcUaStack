@@ -1,0 +1,216 @@
+/*
+    DataTypeClass: HistoryData
+
+    Generated Source Code - please do not change this source code
+
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
+
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
+
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
+
+namespace OpcUaStackCore
+{
+    
+    HistoryData::HistoryData(void)
+    : Object()
+    , ExtensionObjectBase()
+    , dataValues_()
+    {
+    }
+    
+    HistoryData::~HistoryData(void)
+    {
+    }
+    
+    OpcUaDataValueArray&
+    HistoryData::dataValues(void)
+    {
+        return dataValues_;
+    }
+    
+    bool
+    HistoryData::operator==(const HistoryData& value)
+    {
+        HistoryData* dst = const_cast<HistoryData*>(&value);
+        if (dataValues_ != dst->dataValues()) return false;
+        return true;
+    }
+    
+    bool
+    HistoryData::operator!=(const HistoryData& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    HistoryData::copyTo(HistoryData& value)
+    {
+        dataValues_.copyTo(value.dataValues());
+    }
+    
+    HistoryData&
+    HistoryData::operator=(const HistoryData& value)
+    {
+        const_cast<HistoryData*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    HistoryData::factory(void)
+    {
+    	return constructSPtr<HistoryData>();
+    }
+    
+    std::string
+    HistoryData::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    HistoryData::typeName(void)
+    {
+    	return "HistoryData";
+    }
+    
+    OpcUaNodeId
+    HistoryData::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)656,0);
+    }
+    
+    OpcUaNodeId
+    HistoryData::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)658, 0);
+    }
+    
+    OpcUaNodeId
+    HistoryData::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)657, 0);
+    }
+    
+    OpcUaNodeId
+    HistoryData::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15270, 0);
+    }
+    
+    void
+    HistoryData::opcUaBinaryEncode(std::ostream& os) const
+    {
+        dataValues_.opcUaBinaryEncode(os);
+    }
+    
+    void
+    HistoryData::opcUaBinaryDecode(std::istream& is)
+    {
+        dataValues_.opcUaBinaryDecode(is);
+    }
+    
+    bool
+    HistoryData::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    HistoryData::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    HistoryData::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    HistoryData::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!dataValues_.xmlEncode(elementTree, "DataValue", xmlns)) return false;
+        pt.push_back(std::make_pair("DataValues", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    HistoryData::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    HistoryData::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("DataValues");
+        if (!tree) return false;
+        if (!dataValues_.xmlDecode(*tree, "DataValue", xmlns)) return false;
+    
+        return true;
+    }
+    
+    bool
+    HistoryData::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    HistoryData::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    HistoryData::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    HistoryData::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    HistoryData::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	HistoryData* dst = dynamic_cast<HistoryData*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    HistoryData::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	HistoryData* dst = dynamic_cast<HistoryData*>(&extensionObjectBase);
+    	return *const_cast<HistoryData*>(this) == *dst;
+    }
+    
+    void
+    HistoryData::out(std::ostream& os)
+    {
+        os << "DataValues="; dataValues_.out(os);
+    }
+
+}

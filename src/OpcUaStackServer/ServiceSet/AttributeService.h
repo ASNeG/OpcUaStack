@@ -22,8 +22,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
-#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
-#include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
 using namespace OpcUaStackCore;

@@ -1,11 +1,10 @@
 #include "unittest.h"
-#include "OpcUaStackCore/ServiceSet/UpdateDataDetails.h"
-#include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
-#include "OpcUaStackCore/ServiceSet/UpdateEventDetails.h"
-#include "OpcUaStackCore/ServiceSet/DeleteRawModifiedDetails.h"
-#include "OpcUaStackCore/ServiceSet/DeleteAtTimeDetails.h"
-#include "OpcUaStackCore/ServiceSet/DeleteEventDetails.h"
-#include "OpcUaStackCore/ServiceSet/PerformUpdateEnumeration.h"
+#include "OpcUaStackCore/StandardDataTypes/UpdateDataDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/UpdateEventDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/DeleteRawModifiedDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/DeleteAtTimeDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/DeleteEventDetails.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <boost/iostreams/stream.hpp>
 
@@ -32,19 +31,20 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateDataDetails)
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.performInsertReplace(PerformUpdateEnumeration_Insert);
-	details1.updateValue()->set(valueSPtr);
+	details1.performInsertReplace().enumeration(PerformUpdateType::EnumInsert);
+	details1.updateValues().resize(1);
+	details1.updateValues().set(0, valueSPtr);
 	details1.opcUaBinaryEncode(ios);
 	
 	// decode
 	details2.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(details2.nodeId().namespaceIndex() == 1);
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
-	BOOST_REQUIRE(details2.performInsertReplace() == PerformUpdateEnumeration_Insert);
+	BOOST_REQUIRE(details2.performInsertReplace().enumeration() == PerformUpdateType::EnumInsert);
 	
-	BOOST_REQUIRE(details2.updateValue()->size() == 1);
+	BOOST_REQUIRE(details2.updateValues().size() == 1);
 	valueSPtr = constructSPtr<OpcUaDataValue>();;
-	details2.updateValue()->get(valueSPtr);
+	details2.updateValues().get(valueSPtr);
 	BOOST_REQUIRE(valueSPtr->statusCode() == Success);
 }
 
@@ -62,19 +62,20 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateStructureDataDetails)
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.performInsertReplace(PerformUpdateEnumeration_Remove);
-	details1.updateValue()->set(valueSPtr);
+	details1.performInsertReplace().enumeration(PerformUpdateType::EnumInsert);
+	details1.updateValues().resize(1);
+	details1.updateValues().set(0, valueSPtr);
 	details1.opcUaBinaryEncode(ios);
 	
 	// decode
 	details2.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(details2.nodeId().namespaceIndex() == 1);
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
-	BOOST_REQUIRE(details2.performInsertReplace() == PerformUpdateEnumeration_Remove);
+	BOOST_REQUIRE(details2.performInsertReplace().enumeration() == PerformUpdateType::EnumInsert);
 	
-	BOOST_REQUIRE(details2.updateValue()->size() == 1);
+	BOOST_REQUIRE(details2.updateValues().size() == 1);
 	valueSPtr = constructSPtr<OpcUaDataValue>();;
-	details2.updateValue()->get(valueSPtr);
+	details2.updateValues().get(valueSPtr);
 	BOOST_REQUIRE(valueSPtr->statusCode() == Success);
 }
 
@@ -88,14 +89,14 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateEventDetails)
 	// encode
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.performInsertReplace(PerformUpdateEnumeration_Update);
+	details1.performInsertReplace().enumeration(PerformUpdateType::EnumUpdate);
 	details1.opcUaBinaryEncode(ios);
 
 	// decode
 	details2.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(details2.nodeId().namespaceIndex() == 1);
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
-	BOOST_REQUIRE(details2.performInsertReplace() == PerformUpdateEnumeration_Update);
+	BOOST_REQUIRE(details2.performInsertReplace().enumeration() == PerformUpdateType::EnumUpdate);
 }
 
 BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteRawModifiedDetails)
@@ -110,9 +111,9 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteRawModifiedDetails)
 	// encode
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.isDeleteModified(true);
-	details1.startTime(ptime);
-	details1.endTime(ptime);
+	details1.isDeleteModified() = true;
+	details1.startTime() = ptime;
+	details1.endTime() =  ptime;
 	details1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -138,7 +139,8 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteAtTimeDetails)
 	utcTime.dateTime(ptime);
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.reqTimes()->set(utcTime);
+	details1.reqTimes().resize(1);
+	details1.reqTimes().set(utcTime);
 	details1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -146,8 +148,8 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteAtTimeDetails)
 	BOOST_REQUIRE(details2.nodeId().namespaceIndex() == 1);
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
 
-	BOOST_REQUIRE(details2.reqTimes()->size() == 1);
-	details2.reqTimes()->get(utcTime);
+	BOOST_REQUIRE(details2.reqTimes().size() == 1);
+	details2.reqTimes().get(0, utcTime);
 	BOOST_REQUIRE(utcTime.dateTime() == ptime);
 }
 
@@ -165,7 +167,8 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteEventDetails)
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
 	details1.nodeId().nodeId<OpcUaUInt32>(123);
-	details1.eventId()->set(byteStringSPtr);
+	details1.eventIds().resize(1);
+	details1.eventIds().set(0, byteStringSPtr);
 	details1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -173,9 +176,9 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteEventDetails)
 	BOOST_REQUIRE(details2.nodeId().namespaceIndex() == 1);
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
 
-	BOOST_REQUIRE(details2.eventId()->size() == 1);
+	BOOST_REQUIRE(details2.eventIds().size() == 1);
 	byteStringSPtr = constructSPtr<OpcUaByteString>();
-	details2.eventId()->get(byteStringSPtr);
+	details2.eventIds().get(0, byteStringSPtr);
 	BOOST_REQUIRE(byteStringSPtr->exist() == true);
 	BOOST_REQUIRE(byteStringSPtr->size() == 0);
 }

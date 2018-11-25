@@ -1,5 +1,8 @@
 #!/bin/bash
 
+NODESETS="--nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --nodeset Opc.Ua.NodeSet2.Services.xml"
+
+#OpcUaEnumTypeGenerator4 ${NODESETS} --enumtype DataChangeTrigger
 
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype ServerStatusDataType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype AddNodesItem --buildSubTypes 0
@@ -70,7 +73,6 @@
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype LiteralOperand --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype SimpleAttributeOperand --buildSubTypes 0
 
-#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype HistoryEvent --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype HistoryEventFieldList --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype IdentityMappingRuleType --buildSubTypes 0
 
@@ -114,7 +116,7 @@
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype SignedSoftwareCertificate --buildSubTypes 0
 
 
-OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype StatusResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype StatusResult --buildSubTypes 0
 
 
 
@@ -144,7 +146,70 @@ OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.
 
 
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --datatype Range --buildSubTypes 0
-
-
-
 #OpcUaEnumTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --enumtype Enumeration --buildSubTypes 1
+
+
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype EventFilterResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoringFilterResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ContentFilterResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ContentFilterElementResult --buildSubTypes 0
+
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype NotificationMessage --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype DataChangeNotification --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype StatusChangeNotification --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype NotificationData --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoredItemNotification --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype EventNotificationList --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype EventFieldList --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype EventField --buildSubTypes 0
+
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ReadEventDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype HistoryReadDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ReadRawModifiedDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ReadProcessedDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ReadAtTimeDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype HistoryData --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype HistoryModifiedData --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ModificationInfo --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype HistoryEvent --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype UpdateDataDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype HistoryUpdateDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype UpdateStructureDataDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype UpdateEventDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype DeleteRawModifiedDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype DeleteAtTimeDetails --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype DeleteEventDetails --buildSubTypes 0
+
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ObjectAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype NodeAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype VariableAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype VariableTypeAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype MethodAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ObjectTypeAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype DataTypeAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ReferenceTypeAttributes --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype ViewAttributes --buildSubTypes 0
+
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype AggregateFilter --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype DataChangeFilter --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype AggregateFilterResult --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoredItemModifyResult --buildSubTypes 0
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype MonitoredItemCreateResult --buildSubTypes 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

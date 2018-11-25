@@ -2,7 +2,7 @@
 #define OPCUASTACKCORE_FILTER_FILTEROPERATORHELPERS_H_
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilterResult.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardDataTypes/SimpleAttributeOperand.h"
 #include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
@@ -43,7 +43,7 @@ public:
     OpcUaString calledAlias_;
     RelativePath::SPtr calledBrowsePath_;
     OpcUaUInt32 calledAttributeId_;
-    OpcUaString calledNumericRange_;
+    OpcUaNumericRange calledNumericRange_;
 
     OpcUaVariant expectedValue_;
     OpcUaBoolean expectedResult_;

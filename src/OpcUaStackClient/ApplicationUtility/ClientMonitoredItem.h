@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,7 +25,7 @@
 #include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/BuildInTypes/DataChangeTrigger.h"
+#include "OpcUaStackCore/StandardDataTypes/DataChangeTrigger.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
 using namespace OpcUaStackCore;

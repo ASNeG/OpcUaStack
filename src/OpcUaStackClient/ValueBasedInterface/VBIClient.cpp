@@ -412,7 +412,7 @@ namespace OpcUaStackClient
 	VBIClient::dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem)
 	{
 		if (dataChangeCallback_.exist()) {
-			dataChangeCallback_(monitoredItem->clientHandle(), monitoredItem->dataValue());
+			dataChangeCallback_(monitoredItem->clientHandle(), monitoredItem->value());
 		}
 	}
 

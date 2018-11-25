@@ -119,7 +119,11 @@ namespace OpcUaStackCore
     {
     	OpcUaByte encodingMask;
     	parameterTypeId_.opcUaBinaryDecode(is);
+
     	OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
+    	if (encodingMask == 0x00) {
+    		return;
+    	}
 
     	OpcUaUInt32 bufferLength;
     	OpcUaNumber::opcUaBinaryDecode(is, bufferLength);

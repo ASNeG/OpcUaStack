@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
-#include "OpcUaStackCore/ServiceSet/MonitoredItemNotification.h"
+#include "OpcUaStackCore/StandardDataTypes/MonitoredItemNotification.h"
 #include <list>
 
 using namespace OpcUaStackCore;
@@ -48,7 +48,7 @@ namespace OpcUaStackServer
 		~MonitorItem(void);
 
 		OpcUaStatusCode receive(BaseNodeClass::SPtr baseNodeClass, MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest);
-		OpcUaStatusCode receive(MonitoredItemNotificationArray::SPtr monitoredItemNotificationArray);
+		OpcUaStatusCode receive(MonitoredItemNotificationArray& monitoredItemNotificationArray);
 
 		uint32_t monitorItemId(void);
 		uint32_t samplingInterval(void);

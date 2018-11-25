@@ -13,7 +13,7 @@ using namespace OpcUaStackCore;
 	ContentFilterResult result;														\
 	BOOST_REQUIRE(stack.receive(filter, result));                                   \
 	ContentFilterElementResult::SPtr elementResult;                                 \
-	result.elementResults()->get(0, elementResult);                                 \
+	result.elementResults().get(0, elementResult);                                 \
 	BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);     \
 	bool filterResult;                                                              \
 	BOOST_REQUIRE(stack.process(filterResult));                                     \
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_FilterOperatorUnsupported)
     BOOST_REQUIRE(stack.receive(filter, result) == false);
 
     ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
+    result.elementResults().get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperatorUnsupported);
 }
 
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_BadFilterOperandCountMismatch)
     BOOST_REQUIRE(stack.receive(filter, result) == false);
 
     ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
+    result.elementResults().get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperandCountMismatch);
 }
 
@@ -114,11 +114,11 @@ BOOST_AUTO_TEST_CASE(FilterStack_2_level_tree)
 
     ContentFilterElementResult::SPtr elementResult;
 
-    result.elementResults()->get(0, elementResult);
+    result.elementResults().get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-    result.elementResults()->get(1, elementResult);
+    result.elementResults().get(1, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-    result.elementResults()->get(2, elementResult);
+    result.elementResults().get(2, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
 
     bool filterResult;
@@ -151,9 +151,9 @@ BOOST_AUTO_TEST_CASE(FilterStack_2_level_half_tree)
 
     ContentFilterElementResult::SPtr elementResult;
 
-    result.elementResults()->get(0, elementResult);
+    result.elementResults().get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-    result.elementResults()->get(1, elementResult);
+    result.elementResults().get(1, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
 
     bool filterResult;
@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_attribute_operand)
     BOOST_REQUIRE(*expectedPathElement.get() == *actualPathElement.get());
 
     BOOST_REQUIRE_EQUAL(someAttribute.attributeId(), mockAttrIf.calledAttributeId_);
-    BOOST_REQUIRE_EQUAL(someAttribute.indexRange(), mockAttrIf.calledNumericRange_);
+    BOOST_REQUIRE(someAttribute.indexRange() == mockAttrIf.calledNumericRange_);
 
     // "someAttribute=11" == 10 => false
     mockAttrIf.expectedValue_.set<OpcUaUInt32>(11);
@@ -295,38 +295,37 @@ BOOST_AUTO_TEST_CASE(FilterStack_loop)
     filter.elements().push_back(eqElement3);
 
     ContentFilterResult result;
-
     BOOST_REQUIRE(stack.receive(filter, result) == false);
+    BOOST_REQUIRE(true == true);
 
     ContentFilterElementResult::SPtr elementResult;
 
     // First operator result
-    result.elementResults()->get(0, elementResult);
+    result.elementResults().get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperandInvalid);
 
-    OpcUaStatusCode operandStatus;
-    elementResult->operandStatusCodes()->get(0, operandStatus);
-    BOOST_REQUIRE_EQUAL(operandStatus, OpcUaStatusCode::Success);
+    OpcUaStatus::SPtr operandStatus;
+    elementResult->operandStatusCodes().get(0, operandStatus);
+    BOOST_REQUIRE_EQUAL(operandStatus->enumeration(), OpcUaStatusCode::Success);
 
-    elementResult->operandStatusCodes()->get(1, operandStatus);
-    BOOST_REQUIRE_EQUAL(operandStatus, OpcUaStatusCode::BadFilterOperandInvalid);
+    elementResult->operandStatusCodes().get(1, operandStatus);
+    BOOST_REQUIRE_EQUAL(operandStatus->enumeration(), OpcUaStatusCode::BadFilterOperandInvalid);
 
     // Second operator result
-    result.elementResults()->get(1, elementResult);
+    result.elementResults().get(1, elementResult);
 	BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-	BOOST_REQUIRE_EQUAL(elementResult->operandStatusCodes()->size(), 0);
+	BOOST_REQUIRE_EQUAL(elementResult->operandStatusCodes().size(), 0);
 
 
 	// Third operator result
-	result.elementResults()->get(2, elementResult);
+	result.elementResults().get(2, elementResult);
 	BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperandInvalid);
 
-	elementResult->operandStatusCodes()->get(0, operandStatus);
-	BOOST_REQUIRE_EQUAL(operandStatus, OpcUaStatusCode::BadFilterElementInvalid);
+	elementResult->operandStatusCodes().get(0, operandStatus);
+	BOOST_REQUIRE_EQUAL(operandStatus->enumeration(), OpcUaStatusCode::BadFilterElementInvalid);
 
-	elementResult->operandStatusCodes()->get(1, operandStatus);
-	BOOST_REQUIRE_EQUAL(operandStatus, OpcUaStatusCode::BadFilterElementInvalid);
-
+	elementResult->operandStatusCodes().get(1, operandStatus);
+	BOOST_REQUIRE_EQUAL(operandStatus->enumeration(), OpcUaStatusCode::BadFilterElementInvalid);
 }
 
 BOOST_AUTO_TEST_CASE(IsNullFilterNode_supports_IsNullOperator)
@@ -360,8 +359,8 @@ BOOST_AUTO_TEST_CASE(IsNullFilterNode_supports_IsNullOperator)
     BOOST_REQUIRE(stack.receive(filter, result));
 
     ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+    result.elementResults().get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode().enumeration(), OpcUaStatusCode::Success);
 
     bool filterResult;
     BOOST_REQUIRE(stack.process(filterResult));

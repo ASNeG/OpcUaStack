@@ -1,0 +1,220 @@
+/*
+    DataTypeClass: ObjectTypeAttributes
+
+    Generated Source Code - please do not change this source code
+
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
+
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
+
+#include "OpcUaStackCore/StandardDataTypes/ObjectTypeAttributes.h"
+
+namespace OpcUaStackCore
+{
+    
+    /**
+     * The attributes for an object type node.
+     */
+    ObjectTypeAttributes::ObjectTypeAttributes(void)
+    : NodeAttributes()
+    , isAbstract_()
+    {
+    }
+    
+    ObjectTypeAttributes::~ObjectTypeAttributes(void)
+    {
+    }
+    
+    OpcUaBoolean&
+    ObjectTypeAttributes::isAbstract(void)
+    {
+        return isAbstract_;
+    }
+    
+    bool
+    ObjectTypeAttributes::operator==(const ObjectTypeAttributes& value)
+    {
+        ObjectTypeAttributes* dst = const_cast<ObjectTypeAttributes*>(&value);
+        if (isAbstract_ != dst->isAbstract()) return false;
+        return true;
+    }
+    
+    bool
+    ObjectTypeAttributes::operator!=(const ObjectTypeAttributes& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    ObjectTypeAttributes::copyTo(ObjectTypeAttributes& value)
+    {
+        value.isAbstract_ = isAbstract_;
+    }
+    
+    ObjectTypeAttributes&
+    ObjectTypeAttributes::operator=(const ObjectTypeAttributes& value)
+    {
+        const_cast<ObjectTypeAttributes*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    ObjectTypeAttributes::factory(void)
+    {
+    	return constructSPtr<ObjectTypeAttributes>();
+    }
+    
+    std::string
+    ObjectTypeAttributes::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    ObjectTypeAttributes::typeName(void)
+    {
+    	return "ObjectTypeAttributes";
+    }
+    
+    OpcUaNodeId
+    ObjectTypeAttributes::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)361,0);
+    }
+    
+    OpcUaNodeId
+    ObjectTypeAttributes::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)363, 0);
+    }
+    
+    OpcUaNodeId
+    ObjectTypeAttributes::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)362, 0);
+    }
+    
+    OpcUaNodeId
+    ObjectTypeAttributes::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15158, 0);
+    }
+    
+    void
+    ObjectTypeAttributes::opcUaBinaryEncode(std::ostream& os) const
+    {
+        NodeAttributes::opcUaBinaryEncode(os);
+        OpcUaNumber::opcUaBinaryEncode(os,isAbstract_);
+    }
+    
+    void
+    ObjectTypeAttributes::opcUaBinaryDecode(std::istream& is)
+    {
+        NodeAttributes::opcUaBinaryDecode(is);
+        OpcUaNumber::opcUaBinaryDecode(is,isAbstract_);
+    }
+    
+    bool
+    ObjectTypeAttributes::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+    {
+    }
+    
+    bool
+    ObjectTypeAttributes::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+    }
+    
+    bool
+    ObjectTypeAttributes::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) return false;
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    ObjectTypeAttributes::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, isAbstract_)) return false;
+        pt.push_back(std::make_pair("IsAbstract", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    ObjectTypeAttributes::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    ObjectTypeAttributes::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        tree = pt.get_child_optional("IsAbstract");
+        if (!tree) return false;
+        if(!XmlNumber::xmlDecode(*tree, isAbstract_)) return false;
+    
+        return true;
+    }
+    
+    bool
+    ObjectTypeAttributes::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+        return true;
+    }
+    
+    bool
+    ObjectTypeAttributes::jsonEncode(boost::property_tree::ptree& pt)
+    {
+        return true;
+    }
+    
+    bool
+    ObjectTypeAttributes::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+    {
+    }
+    
+    bool
+    ObjectTypeAttributes::jsonDecode(boost::property_tree::ptree& pt)
+    {
+    }
+    
+    void
+    ObjectTypeAttributes::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	ObjectTypeAttributes* dst = dynamic_cast<ObjectTypeAttributes*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    ObjectTypeAttributes::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	ObjectTypeAttributes* dst = dynamic_cast<ObjectTypeAttributes*>(&extensionObjectBase);
+    	return *const_cast<ObjectTypeAttributes*>(this) == *dst;
+    }
+    
+    void
+    ObjectTypeAttributes::out(std::ostream& os)
+    {
+        os << "IsAbstract=" << isAbstract_;
+    }
+
+}

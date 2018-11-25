@@ -278,12 +278,13 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss << "4d 53 47 46 60 00 00 00  d9 7a 25 09 01 00 00 00"
+	ss << "4d 53 47 46 64 00 00 00  d9 7a 25 09 01 00 00 00"
 	   << "36 00 00 00 04 00 00 00  01 00 6a 02 00 00 00 00"
 	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
 	   << "00 00 00 00 01 00 00 00  01 02 7b 00 01 02 7b 00"
 	   << "00 00 00 00 00 00 00 00  01 00 00 00 00 00 00 00"
-	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00";
+	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
+	   << "00 00 00 00";
 
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
@@ -336,7 +337,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	BOOST_REQUIRE(parsingResultSPtr->dataStatusCodes()->size() == 0);
 	BOOST_REQUIRE(parsingResultSPtr->dataDiagnosticInfos()->size() == 0);
 
-	BOOST_REQUIRE(queryFirstResponseSPtr->filterResult().elementResults()->size() == 0);
+	BOOST_REQUIRE(queryFirstResponseSPtr->filterResult().elementResults().size() == 0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

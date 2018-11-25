@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -425,7 +425,7 @@ namespace OpcUaStackClient
 
 		clientSubscriptionIf_->dataChangeNotification(
 			cmi,
-			monitoredItem->dataValue()
+			monitoredItem->value()
 		);
     }
 
@@ -513,7 +513,7 @@ namespace OpcUaStackClient
 					.parameter("Idx", idx)
 				    .parameter("NodeId", cmi->nodeId().toString())
 				    .parameter("ClientHandle", clientHandle)
-				    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(monitoredItemCreateResult->statusCode()));
+				    .parameter("StatusCode", monitoredItemCreateResult->statusCode().toString());
 				continue;
 			}
 

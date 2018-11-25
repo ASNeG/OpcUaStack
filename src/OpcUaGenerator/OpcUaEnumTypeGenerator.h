@@ -36,16 +36,18 @@ namespace OpcUaEnumTypeGenerator
 		uint32_t start(int argc, char** argv);
 
 	  private:
-		std::string fileName_;
+		std::vector<std::string> fileNames_;
 		std::string enumTypeName_;
 		std::vector<std::string> namespaces_;
 		bool buildSubTypes_;
 		std::vector<std::string> ignoreEnumTypeNameVec_;
 		std::vector<std::string> enumTypeNameVec_;
+		std::string nodeId_;
 		InformationModel::SPtr informationModel_;
 		OpcUaNodeId enumTypeNodeId_;
 
 		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
+		bool existNodeId(const OpcUaNodeId& nodeId);
 		int32_t loadInformationModel(void);
 		int32_t generateEnumTypeSource(void);
 		int32_t buildAllSubTypes(void);

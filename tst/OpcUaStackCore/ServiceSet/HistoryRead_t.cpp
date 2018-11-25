@@ -3,7 +3,7 @@
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/ServiceSet/HistoryReadRequest.h"
 #include "OpcUaStackCore/ServiceSet/HistoryReadResponse.h"
-#include "OpcUaStackCore/ServiceSet/HistoryData.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Request)
 	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
 	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
 	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
-	
+
 	BOOST_REQUIRE(historyReadRequestSPtr->timestampsToReturn() == TimestampsToReturn_Both);
 	BOOST_REQUIRE(historyReadRequestSPtr->releaseContinuationPoints() == true);
 

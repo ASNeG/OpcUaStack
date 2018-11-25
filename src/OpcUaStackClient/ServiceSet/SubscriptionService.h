@@ -80,7 +80,7 @@ namespace OpcUaStackClient
 	    void sendPublishRequests(void);
 
 	    void receivePublishResponse(const PublishResponse::SPtr& publishResponse);
-	    void dataChangeNotification(const ExtensibleParameter::SPtr& extensibleParameter);
+	    void dataChangeNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter);
 
 	    uint32_t publishCount_;
 	    uint32_t actPublishCount_;

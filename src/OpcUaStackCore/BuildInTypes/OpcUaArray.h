@@ -126,7 +126,7 @@ namespace OpcUaStackCore
 			  Xmlns& xmlns
 		  )
 		  {
-			  return value.xmlEncode(pt, element);
+			  return value.xmlEncode(pt, element, xmlns);
 		  }
 
 		  static bool xmlDecode(
@@ -135,7 +135,7 @@ namespace OpcUaStackCore
 			  Xmlns& xmlns
 		  )
 		  {
-			  return value.xmlDecode(pt, element);
+			  return value.xmlDecode(pt, element, xmlns);
 		  }
 
 		  static T& copy(T& sourceValue, T& destValue)

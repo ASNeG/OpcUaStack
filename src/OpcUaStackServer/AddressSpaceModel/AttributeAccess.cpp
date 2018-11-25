@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/ServiceSet/DataValueTrigger.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
 namespace OpcUaStackServer
@@ -393,11 +394,15 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	AttributeAccess::trigger(OpcUaDataValue& dataValue, Attribute& attribute, DataChangeTrigger dataChangeTrigger)
+	AttributeAccess::trigger(
+		OpcUaDataValue& dataValue,
+		Attribute& attribute,
+		DataChangeTrigger::Enum dataChangeTrigger
+	)
 	{
 		if (attribute.id() == AttributeId_Value) {
 			ValueAttribute* valueAttribute = reinterpret_cast<ValueAttribute*>(&attribute);
-			return valueAttribute->data().trigger(dataValue, dataChangeTrigger);
+			return DataValueTrigger::run(valueAttribute->data(), dataValue, dataChangeTrigger);
 		}
 		
 		OpcUaVariant::SPtr variant = dataValue.variant();
