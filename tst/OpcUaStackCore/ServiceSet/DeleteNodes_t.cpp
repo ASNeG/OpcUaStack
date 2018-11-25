@@ -4,7 +4,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 #include "OpcUaStackCore/ServiceSet/DeleteNodesRequest.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/ServiceSet/DeleteNodesResponse.h"
