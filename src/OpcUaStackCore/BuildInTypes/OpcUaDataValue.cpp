@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -126,37 +126,6 @@ namespace OpcUaStackCore
 	OpcUaDataValue::serverPicoseconds(void)
 	{
 		return serverPicoseconds_;
-	}
-
-	bool 
-	OpcUaDataValue::trigger(OpcUaDataValue::SPtr dataValue, DataChangeTrigger dataChangeTrigger)
-	{
-		return trigger(*dataValue, dataChangeTrigger);
-	}
-
-	bool 
-	OpcUaDataValue::trigger(OpcUaDataValue& dataValue, DataChangeTrigger dataChangeTrigger)
-	{
-		switch (dataChangeTrigger) 
-		{
-			case DCT_StatusValueTimestamp:
-			{
-				if (dataValue.sourceTimestamp() != sourceTimestamp()) return true;
-			}
-			case DCT_StatusValue:
-			{
-				if (dataValue.isNullVariant() && !isNullVariant()) return true;
-				if (!dataValue.isNullVariant() && isNullVariant()) return true;
-				if (!dataValue.isNullVariant() && !isNullVariant()) {
-					if (*dataValue.variant() != *variant()) return true;
-				}
-			}
-			case DCT_Status:
-			{
-				if (dataValue.statusCode() != statusCode()) return true;
-			}
-		}
-		return false;
 	}
 
 	void 

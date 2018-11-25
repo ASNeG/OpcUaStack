@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,28 +15,35 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_AttributeAccess_h__
-#define __OpcUaStackServer_AttributeAccess_h__
+#ifndef __OpcUaStackCore_DataValueTrigger_h__
+#define __OpcUaStackCore_DataValueTrigger_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/StandardDataTypes/DataChangeTrigger.h"
-#include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
 
-	class DLLEXPORT AttributeAccess
+	class DLLEXPORT DataValueTrigger
+	: public  Object
 	{
 	  public:
-		static bool copy(Attribute& attribute, OpcUaVariant& variant);
-		static bool copy(OpcUaVariant& variant, Attribute& attribute);
-		static bool copy(Attribute& attribute, OpcUaDataValue& dataValue);
-		static bool copy(OpcUaDataValue& dataValue, Attribute& attribute);
+		typedef boost::shared_ptr<DataValueTrigger> SPtr;
 
-		static bool trigger(
-			OpcUaDataValue& dataValue,
-			Attribute& attribute,
-			DataChangeTrigger::Enum dataChangeTrigger = DataChangeTrigger::EnumStatusValue);
+		DataValueTrigger(void);
+		virtual ~DataValueTrigger(void);
+
+		static bool run(
+			OpcUaDataValue::SPtr& dataValue1,
+			OpcUaDataValue::SPtr& dataValue2,
+			DataChangeTrigger::Enum dataChangeTrigger = DataChangeTrigger::EnumStatusValue
+		);
+		static bool run(
+			OpcUaDataValue& dataValue1,
+			OpcUaDataValue& dataValue2,
+			DataChangeTrigger::Enum dataChangeTrigger = DataChangeTrigger::EnumStatusValue
+		);
 	};
 
 }

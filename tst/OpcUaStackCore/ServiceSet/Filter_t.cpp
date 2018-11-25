@@ -2,9 +2,9 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/Utility.h"
-#include "OpcUaStackCore/ServiceSet/DataChangeFilter.h"
 #include "OpcUaStackCore/ServiceSet/AggregateFilterResult.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/StandardDataTypes/DataChangeFilter.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilterResult.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
 #include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
@@ -26,14 +26,14 @@ BOOST_AUTO_TEST_CASE(Filter_DataChange)
 	DataChangeFilter filter1, filter2;
 
 	// encode
-	filter1.trigger(DCT_StatusValue);
-	filter1.deadbandType((OpcUaUInt32)1);
-	filter1.deadbandValue((OpcUaDouble)123);
+	filter1.trigger().enumeration(DataChangeTrigger::EnumStatusValue);
+	filter1.deadbandType() = (OpcUaUInt32)1;
+	filter1.deadbandValue() = (OpcUaDouble)123;
 	filter1.opcUaBinaryEncode(ios);
 
 	// decode
 	filter2.opcUaBinaryDecode(ios);
-	BOOST_REQUIRE(filter2.trigger() == DCT_StatusValue);
+	BOOST_REQUIRE(filter2.trigger() == DataChangeTrigger::EnumStatusValue);
 	BOOST_REQUIRE(filter2.deadbandType() == 1);
 	BOOST_REQUIRE(filter2.deadbandValue() == 123);
 }
