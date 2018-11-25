@@ -2,8 +2,8 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/Utility.h"
-#include "OpcUaStackCore/ServiceSet/AggregateFilterResult.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/StandardDataTypes/AggregateFilterResult.h"
 #include "OpcUaStackCore/StandardDataTypes/DataChangeFilter.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilterResult.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
@@ -160,8 +160,8 @@ BOOST_AUTO_TEST_CASE(Filter_AggregateResult)
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	
 	// encode
-	filter1.revisedStartTime(ptime);
-	filter1.revisedProcessingInterval((OpcUaDouble)123);
+	filter1.revisedStartTime() = ptime;
+	filter1.revisedProcessingInterval() = (OpcUaDouble)123;
 	filter1.opcUaBinaryEncode(ios);
 
 	// decode

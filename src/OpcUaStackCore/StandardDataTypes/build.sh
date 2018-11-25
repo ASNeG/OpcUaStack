@@ -2,7 +2,7 @@
 
 NODESETS="--nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --nodeset Opc.Ua.NodeSet2.Services.xml"
 
-OpcUaEnumTypeGenerator4 ${NODESETS} --enumtype DataChangeTrigger
+#OpcUaEnumTypeGenerator4 ${NODESETS} --enumtype DataChangeTrigger
 
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype ServerStatusDataType --buildSubTypes 0
 #OpcUaDataTypeGenerator4 --nodeset Opc.Ua.NodeSet2.xml --nodeset Opc.Ua.NodeSet2.Part14.xml --datatype AddNodesItem --buildSubTypes 0
@@ -191,7 +191,10 @@ OpcUaEnumTypeGenerator4 ${NODESETS} --enumtype DataChangeTrigger
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype ViewAttributes --buildSubTypes 0
 
 #OpcUaDataTypeGenerator4 ${NODESETS} --datatype AggregateFilter --buildSubTypes 0
-OpcUaDataTypeGenerator4 ${NODESETS} --datatype DataChangeFilter --buildSubTypes 0
+#OpcUaDataTypeGenerator4 ${NODESETS} --datatype DataChangeFilter --buildSubTypes 0
+OpcUaDataTypeGenerator4 ${NODESETS} --datatype AggregateFilterResult --buildSubTypes 0
+
+
 
 
 
