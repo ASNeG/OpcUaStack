@@ -21,6 +21,8 @@
 #include <stdint.h>
 #include <sstream>
 #include <lmerr.h>
+#include <atlstr.h>
+
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -39,7 +41,7 @@ VOID WINAPI ServiceMain(DWORD dwArgc, LPTSTR *lpszArgv)
 
 	OpcUaServer::WindowsService* windowsService = OpcUaServer::WindowsService::instance();
 	windowsService->eventLog("Info", "Global ServiceMain");
-	windowsService->serviceMain(dwArgc, lpszArgv);
+	windowsService->serviceMain();
 }
 
 VOID WINAPI ServiceHandler(DWORD fdwControl)
@@ -268,7 +270,7 @@ namespace OpcUaServer
 			SERVICE_WIN32_OWN_PROCESS|SERVICE_INTERACTIVE_PROCESS , /* service type            */ 
 			SERVICE_AUTO_START,										/* start type              */ 
 			SERVICE_ERROR_NORMAL,									/* error control type      */ 
-            serviceBinary.c_str(),								/* service's binary        */
+            serviceBinary.c_str(),								    /* service's binary        */
 			NULL,													/* no load ordering group  */ 
 			NULL,													/* no tag identifier       */ 
 			NULL,													/* no dependencies         */ 
@@ -506,17 +508,31 @@ namespace OpcUaServer
 
 
 	void 
-	WindowsService::serviceMain(unsigned int argc, char** argv)
-	{
-		std::string serviceName(argv[0]);
-		std::string pathToConfiguration(argv[1]);
+	WindowsService::serviceMain()
+	{		
+		std::string commandLine(GetCommandLine());
+		eventLog("Debug", "Parse the command line of the process: " + commandLine);
+
+		int argc;
+		LPWSTR *argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+
+		if (argc != 4) {
+			eventLog("Error", "Wrong number of parameters. Should be 2 instead of " + std::to_string(argc));
+			return;
+		}
 
 		std::stringstream ss;
+
 		ss << "ServiceMain:" << std::endl;
-		for (uint32_t idx=0; idx<argc; idx++) {
-			ss << "P[" << idx << "] = " << argv[idx] << std::endl;
+		for (uint32_t idx=0; idx< argc; idx++) {
+			ss << "P[" << idx << "] = " << CW2A(argv[idx]) << std::endl;
 		}
+
+	
 		eventLog("Info", ss.str());
+
+		std::string serviceName = CW2A(argv[2]);
+		std::string pathToConfiguration = CW2A(argv[3]);
 
 		//
 		// This function does not return until the service has stopped. 
@@ -539,7 +555,7 @@ namespace OpcUaServer
 			return; 
 		} 
 
-		serverApplicationIf_->serviceCommandLine(pathToConfiguration, argc, argv);
+		serverApplicationIf_->serviceCommandLine(pathToConfiguration, 0, NULL);
 
 		// startup service
 		serviceStatus_.dwCurrentState		= SERVICE_START_PENDING;

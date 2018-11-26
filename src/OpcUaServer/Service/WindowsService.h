@@ -38,7 +38,7 @@ namespace OpcUaServer
 
 		void usage(void);
 		void main(unsigned int argc, char** argv);
-		void serviceMain(unsigned int argc, char** argv);
+		void serviceMain();
 		void serviceHandler(DWORD fdwControl);
 		bool installService(const std::string& serviceName, const std::string& serviceDescription, const std::string& pathToConfiguration);
 		bool uninstallService(const std::string& serviceName);
