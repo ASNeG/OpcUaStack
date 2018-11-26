@@ -399,11 +399,13 @@ namespace OpcUaStackServer
 				return false;
 			}
 
-			if (!nodeSetAlias_.insert(*aliasName, opcUaNodeId)) {
-				Log(Error, "alias already exist")
-					.parameter("AliasName", *aliasName)
-					.parameter("NodeId", opcUaNodeId);
-				return false;
+			if (!nodeSetAlias_.aliasExist(*aliasName, opcUaNodeId)) {
+				if (!nodeSetAlias_.insert(*aliasName, opcUaNodeId)) {
+					Log(Error, "alias already exist")
+						.parameter("AliasName", *aliasName)
+						.parameter("NodeId", opcUaNodeId);
+					return false;
+				}
 			}
 			
 		}

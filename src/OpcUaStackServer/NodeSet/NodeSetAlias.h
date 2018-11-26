@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,6 +33,7 @@ namespace OpcUaStackServer
 		NodeSetAlias(void);
 		~NodeSetAlias(void);
 
+		bool aliasExist(const std::string& aliasString, OpcUaNodeId& nodeId);
 		bool insert(const std::string& aliasString, OpcUaNodeId& nodeId);
 		bool map(const std::string& aliasString, OpcUaNodeId& nodeId);
 		bool encodeAliases(boost::property_tree::ptree& ptree);
