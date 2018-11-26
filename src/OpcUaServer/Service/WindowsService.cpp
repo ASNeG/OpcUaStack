@@ -515,19 +515,16 @@ namespace OpcUaServer
 
 		int argc;
 		LPWSTR *argv = CommandLineToArgvW(GetCommandLineW(), &argc);
-
 		if (argc != 4) {
-			eventLog("Error", "Wrong number of parameters. Should be 2 instead of " + std::to_string(argc));
+			eventLog("Error", "Wrong number of parameters. Should be 4 instead of " + std::to_string(argc));
 			return;
 		}
 
 		std::stringstream ss;
-
 		ss << "ServiceMain:" << std::endl;
 		for (uint32_t idx=0; idx< argc; idx++) {
 			ss << "P[" << idx << "] = " << CW2A(argv[idx]) << std::endl;
 		}
-
 	
 		eventLog("Info", ss.str());
 
