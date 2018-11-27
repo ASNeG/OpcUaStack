@@ -529,8 +529,8 @@
         <Value>
             <uax:ListOfString>
                 <uax:String>String1</uax:String>
-                <uax:String> String2</uax:String>
-                <uax:String> String3</uax:String>
+                <uax:String>String2</uax:String>
+                <uax:String>String3</uax:String>
             </uax:ListOfString>
         </Value>
     </UAVariable>
@@ -541,18 +541,14 @@
             <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
         </References>
     </UAVariable>
-    <UAVariable DataType="UInt16" ValueRank="1" NodeId="ns=1;s=UInt16" ArrayDimensions="3" BrowseName="1:UInt16" UserAccessLevel="3" AccessLevel="3">
+    <UAVariable DataType="UInt16" ValueRank="1" NodeId="ns=1;s=UInt16" BrowseName="1:UInt16" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>UInt16</DisplayName>
         <References>
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
             <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
         </References>
         <Value>
-            <uax:ListOfUInt16>
-                <uax:UInt16>1</uax:UInt16>
-                <uax:UInt16>2</uax:UInt16>
-                <uax:UInt16>3</uax:UInt16>
-            </uax:ListOfUInt16>
+          <uax:UInt16>3</uax:UInt16>
         </Value>
     </UAVariable>
     <UAVariable DataType="UInt16" ValueRank="1" NodeId="ns=1;s=UInt16Array" ArrayDimensions="4" BrowseName="1:UInt16Array" UserAccessLevel="3" AccessLevel="3">

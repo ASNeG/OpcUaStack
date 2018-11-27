@@ -13,6 +13,14 @@ BOOST_AUTO_TEST_CASE(NodeSet_)
 	std::cout << "NodeSet_t" << std::endl;
 }
 
+BOOST_AUTO_TEST_CASE(NodeSet_clear)
+{
+	NodeSetNamespace nodeSetNamespace;
+
+	nodeSetNamespace.clear();
+	nodeSetNamespace.clearGlobal();
+}
+
 BOOST_AUTO_TEST_CASE(NodeSet_read_xml)
 {
 	ConfigXml configXml;
