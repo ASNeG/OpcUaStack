@@ -55,11 +55,21 @@ namespace OpcUaStackServer
 		//
 		// --------------------------------------------------------------------------
 		// --------------------------------------------------------------------------
-		bool decodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& opcUaVariant, const std::string& xmls = "");
+		bool decodeValue(
+			const std::string& nodeId,
+			boost::property_tree::ptree& ptree,
+			OpcUaVariant& opcUaVariant,
+			const std::string& xmls = ""
+		);
 
 		template<typename T>
 			bool 
-			decode(DataTypeElement& dataTypeElement, boost::property_tree::ptree& ptreeValue, OpcUaVariant& variant, const std::string& tag)
+			decode(
+				DataTypeElement& dataTypeElement,
+				boost::property_tree::ptree& ptreeValue,
+				OpcUaVariant& variant,
+				const std::string& tag
+			)
 			{
 				bool rc;
 				if (dataTypeElement.isArray_) {
@@ -77,7 +87,12 @@ namespace OpcUaStackServer
 
 		template<typename T>
 			bool 
-			decodeSPtr(DataTypeElement& dataTypeElement, boost::property_tree::ptree& ptreeValue, OpcUaVariant& variant, const std::string& tag)
+			decodeSPtr(
+				DataTypeElement& dataTypeElement,
+				boost::property_tree::ptree& ptreeValue,
+				OpcUaVariant& variant,
+				const std::string& tag
+			)
 			{
 				bool rc;
 				if (dataTypeElement.isArray_) {
@@ -96,7 +111,11 @@ namespace OpcUaStackServer
 			}
 
 		template<typename T>
-			bool decode(boost::property_tree::ptree& ptree, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
+			bool decode(
+				boost::property_tree::ptree& ptree,
+				OpcUaVariantValue::Vec& variantValueVec,
+				const std::string& tag
+			)
 			{
 				if (ptree.size() == 0) {
 					Log(Error, "tag empty")
@@ -130,7 +149,11 @@ namespace OpcUaStackServer
 		}
 
 		template<typename T>
-			bool decodeSPtr(boost::property_tree::ptree& ptree, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
+			bool decodeSPtr(
+				boost::property_tree::ptree& ptree,
+				OpcUaVariantValue::Vec& variantValueVec,
+				const std::string& tag
+			)
 			{
 	
 				if (ptree.size() == 0) {
@@ -165,7 +188,11 @@ namespace OpcUaStackServer
 		}
 
 		template<typename T>
-			bool decode(boost::property_tree::ptree& ptree, T& destValue, const std::string& tag)
+			bool decode(
+				boost::property_tree::ptree& ptree,
+				T& destValue,
+				const std::string& tag
+			)
 			{
 				std::string sourceValue = ptree.get_value<std::string>();
 				try {
@@ -204,7 +231,11 @@ namespace OpcUaStackServer
 
 		template<typename T>
 			bool 
-			encode(boost::property_tree::ptree& ptreeValue, OpcUaVariant& variant, const std::string& tag)
+			encode(
+				boost::property_tree::ptree& ptreeValue,
+				OpcUaVariant& variant,
+				const std::string& tag
+			)
 			{
 				boost::property_tree::ptree ptree;
 				if (variant.isArray()) {
@@ -230,7 +261,11 @@ namespace OpcUaStackServer
 
 		template<typename T>
 			bool 
-			encodeSPtr(boost::property_tree::ptree& ptreeValue, OpcUaVariant& variant, const std::string& tag)
+			encodeSPtr(
+				boost::property_tree::ptree& ptreeValue,
+				OpcUaVariant& variant,
+				const std::string& tag
+			)
 			{
 				boost::property_tree::ptree ptree;
 				if (variant.isArray()) {
@@ -256,7 +291,11 @@ namespace OpcUaStackServer
 
 		template<typename T>
 	        bool
-			encode(boost::property_tree::ptree& ptreeValue, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
+			encode(
+				boost::property_tree::ptree& ptreeValue,
+				OpcUaVariantValue::Vec& variantValueVec,
+				const std::string& tag
+			)
 			{
 				std::string listTag = addxmls("ListOf" + tag);
 
@@ -282,7 +321,11 @@ namespace OpcUaStackServer
 
 		template<typename T>
 	        bool
-			encodeSPtr(boost::property_tree::ptree& ptreeValue, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
+			encodeSPtr(
+				boost::property_tree::ptree& ptreeValue,
+				OpcUaVariantValue::Vec& variantValueVec,
+				const std::string& tag
+			)
 			{
 				std::string listTag = addxmls("ListOf" + tag);
 
@@ -307,7 +350,11 @@ namespace OpcUaStackServer
 			}
 
 		template<typename T>
-			bool encode(boost::property_tree::ptree& ptree, T& value, const std::string& tag)
+			bool encode(
+				boost::property_tree::ptree& ptree,
+				T& value,
+				const std::string& tag
+			)
 			{
 				std::stringstream ss;
 				ss << value;

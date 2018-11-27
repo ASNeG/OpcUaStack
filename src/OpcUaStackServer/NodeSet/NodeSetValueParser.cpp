@@ -140,7 +140,12 @@ namespace OpcUaStackServer
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
 	bool 
-	NodeSetValueParser::decodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& variant, const std::string& xmls)
+	NodeSetValueParser::decodeValue(
+		const std::string& nodeId,
+		boost::property_tree::ptree& ptree,
+		OpcUaVariant& variant,
+		const std::string& xmls
+	)
 	{
 		xmls_ = xmls;
 
@@ -405,7 +410,12 @@ namespace OpcUaStackServer
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
 	bool 
-	NodeSetValueParser::encodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& opcUaVariant, const std::string& xmls)
+	NodeSetValueParser::encodeValue(
+		const std::string& nodeId,
+		boost::property_tree::ptree& ptree,
+		OpcUaVariant& opcUaVariant,
+		const std::string& xmls
+	)
 	{
 		xmls_ = xmls;
 
