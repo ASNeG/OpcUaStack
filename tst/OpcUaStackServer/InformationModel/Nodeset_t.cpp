@@ -21,6 +21,15 @@ BOOST_AUTO_TEST_CASE(Nodeset_)
 	std::cout << "Nodeset_t" << std::endl;
 }
 
+BOOST_AUTO_TEST_CASE(Nodeset_clear)
+{
+	NodeSetNamespace nodeSetNamespace;
+
+	nodeSetNamespace.clear();
+	nodeSetNamespace.clearGlobal();
+}
+
+
 BOOST_AUTO_TEST_CASE(Nodeset_NodeSet_Decode_Endode)
 {
 	bool success;

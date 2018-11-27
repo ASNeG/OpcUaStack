@@ -64,7 +64,7 @@ namespace OpcUaStackServer
 
 		template<typename T>
 			bool 
-			decode(
+			xmlDecode(
 				DataTypeElement& dataTypeElement,
 				boost::property_tree::ptree& ptreeValue,
 				OpcUaVariant& variant,
@@ -87,7 +87,7 @@ namespace OpcUaStackServer
 
 		template<typename T>
 			bool 
-			decodeSPtr(
+			xmlDecodeSPtr(
 				DataTypeElement& dataTypeElement,
 				boost::property_tree::ptree& ptreeValue,
 				OpcUaVariant& variant,
@@ -231,7 +231,7 @@ namespace OpcUaStackServer
 
 		template<typename T>
 			bool 
-			encode(
+			xmlEncode(
 				boost::property_tree::ptree& ptreeValue,
 				OpcUaVariant& variant,
 				const std::string& tag
@@ -261,7 +261,7 @@ namespace OpcUaStackServer
 
 		template<typename T>
 			bool 
-			encodeSPtr(
+			xmlEncodeSPtr(
 				boost::property_tree::ptree& ptreeValue,
 				OpcUaVariant& variant,
 				const std::string& tag

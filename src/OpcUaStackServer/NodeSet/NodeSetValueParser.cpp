@@ -176,25 +176,25 @@ namespace OpcUaStackServer
 		bool rc;
 		switch (dataTypeElement.buildInType_)
 		{
-			case OpcUaBuildInType_OpcUaBoolean: rc = decode<OpcUaBoolean>(dataTypeElement, *ptreeValue, variant, "Boolean"); break;
-			case OpcUaBuildInType_OpcUaSByte: rc = decode<OpcUaSByte>(dataTypeElement, *ptreeValue, variant, "SByte"); break;
-			case OpcUaBuildInType_OpcUaByte: rc = decode<OpcUaByte>(dataTypeElement, *ptreeValue, variant, "Byte"); break;
-			case OpcUaBuildInType_OpcUaUInt16: rc = decode<OpcUaUInt16>(dataTypeElement, *ptreeValue, variant, "UInt16"); break;
-			case OpcUaBuildInType_OpcUaInt16: rc = decode<OpcUaInt16>(dataTypeElement, *ptreeValue, variant, "Int16"); break;
-			case OpcUaBuildInType_OpcUaUInt32: rc = decode<OpcUaUInt32>(dataTypeElement, *ptreeValue, variant, "UInt32"); break;
-			case OpcUaBuildInType_OpcUaInt32: rc = decode<OpcUaInt32>(dataTypeElement, *ptreeValue, variant, "Int32"); break;
-			case OpcUaBuildInType_OpcUaUInt64: rc = decode<OpcUaUInt64>(dataTypeElement, *ptreeValue, variant, "UInt64"); break;
-			case OpcUaBuildInType_OpcUaInt64: rc = decode<OpcUaInt64>(dataTypeElement, *ptreeValue, variant, "Int64"); break;
-			case OpcUaBuildInType_OpcUaFloat: rc = decode<OpcUaFloat>(dataTypeElement, *ptreeValue, variant, "Float"); break;
-			case OpcUaBuildInType_OpcUaDouble: rc = decode<OpcUaDouble>(dataTypeElement, *ptreeValue, variant, "Double"); break;
-			case OpcUaBuildInType_OpcUaDateTime: rc = decode<OpcUaDateTime>(dataTypeElement, *ptreeValue, variant, "DateTime"); break;
-			case OpcUaBuildInType_OpcUaString: rc = decodeSPtr<OpcUaString>(dataTypeElement, *ptreeValue, variant, "String"); break;
-			case OpcUaBuildInType_OpcUaByteString: rc = decodeSPtr<OpcUaByteString>(dataTypeElement, *ptreeValue, variant, "ByteString"); break;
-			case OpcUaBuildInType_OpcUaLocalizedText: rc = decodeSPtr<OpcUaLocalizedText>(dataTypeElement, *ptreeValue, variant, "LocalizedText"); break;
-			case OpcUaBuildInType_OpcUaGuid: rc = decodeSPtr<OpcUaGuid>(dataTypeElement, *ptreeValue, variant, "Guid"); break;
-			case OpcUaBuildInType_OpcUaNodeId: rc = decodeSPtr<OpcUaNodeId>(dataTypeElement, *ptreeValue, variant, "NodeId"); break;
-			case OpcUaBuildInType_OpcUaQualifiedName: rc = decodeSPtr<OpcUaQualifiedName>(dataTypeElement, *ptreeValue, variant, "QualifiedName"); break;
-			case OpcUaBuildInType_OpcUaExtensionObject: rc = decodeSPtr<OpcUaExtensionObject>(dataTypeElement, *ptreeValue, variant, "ExtensionObject"); break;
+			case OpcUaBuildInType_OpcUaBoolean: rc = xmlDecode<OpcUaBoolean>(dataTypeElement, *ptreeValue, variant, "Boolean"); break;
+			case OpcUaBuildInType_OpcUaSByte: rc = xmlDecode<OpcUaSByte>(dataTypeElement, *ptreeValue, variant, "SByte"); break;
+			case OpcUaBuildInType_OpcUaByte: rc = xmlDecode<OpcUaByte>(dataTypeElement, *ptreeValue, variant, "Byte"); break;
+			case OpcUaBuildInType_OpcUaUInt16: rc = xmlDecode<OpcUaUInt16>(dataTypeElement, *ptreeValue, variant, "UInt16"); break;
+			case OpcUaBuildInType_OpcUaInt16: rc = xmlDecode<OpcUaInt16>(dataTypeElement, *ptreeValue, variant, "Int16"); break;
+			case OpcUaBuildInType_OpcUaUInt32: rc = xmlDecode<OpcUaUInt32>(dataTypeElement, *ptreeValue, variant, "UInt32"); break;
+			case OpcUaBuildInType_OpcUaInt32: rc = xmlDecode<OpcUaInt32>(dataTypeElement, *ptreeValue, variant, "Int32"); break;
+			case OpcUaBuildInType_OpcUaUInt64: rc = xmlDecode<OpcUaUInt64>(dataTypeElement, *ptreeValue, variant, "UInt64"); break;
+			case OpcUaBuildInType_OpcUaInt64: rc = xmlDecode<OpcUaInt64>(dataTypeElement, *ptreeValue, variant, "Int64"); break;
+			case OpcUaBuildInType_OpcUaFloat: rc = xmlDecode<OpcUaFloat>(dataTypeElement, *ptreeValue, variant, "Float"); break;
+			case OpcUaBuildInType_OpcUaDouble: rc = xmlDecode<OpcUaDouble>(dataTypeElement, *ptreeValue, variant, "Double"); break;
+			case OpcUaBuildInType_OpcUaDateTime: rc = xmlDecode<OpcUaDateTime>(dataTypeElement, *ptreeValue, variant, "DateTime"); break;
+			case OpcUaBuildInType_OpcUaString: rc = xmlDecodeSPtr<OpcUaString>(dataTypeElement, *ptreeValue, variant, "String"); break;
+			case OpcUaBuildInType_OpcUaByteString: rc = xmlDecodeSPtr<OpcUaByteString>(dataTypeElement, *ptreeValue, variant, "ByteString"); break;
+			case OpcUaBuildInType_OpcUaLocalizedText: rc = xmlDecodeSPtr<OpcUaLocalizedText>(dataTypeElement, *ptreeValue, variant, "LocalizedText"); break;
+			case OpcUaBuildInType_OpcUaGuid: rc = xmlDecodeSPtr<OpcUaGuid>(dataTypeElement, *ptreeValue, variant, "Guid"); break;
+			case OpcUaBuildInType_OpcUaNodeId: rc = xmlDecodeSPtr<OpcUaNodeId>(dataTypeElement, *ptreeValue, variant, "NodeId"); break;
+			case OpcUaBuildInType_OpcUaQualifiedName: rc = xmlDecodeSPtr<OpcUaQualifiedName>(dataTypeElement, *ptreeValue, variant, "QualifiedName"); break;
+			case OpcUaBuildInType_OpcUaExtensionObject: rc = xmlDecodeSPtr<OpcUaExtensionObject>(dataTypeElement, *ptreeValue, variant, "ExtensionObject"); break;
 			default:
 			{
 				Log(Error, "data type unknown in node set value decoder")
@@ -427,109 +427,109 @@ namespace OpcUaStackServer
 			case OpcUaBuildInType_OpcUaBoolean:
 			{
 				dataTypeString = "Boolean";
-				rc = encode<OpcUaBoolean>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaBoolean>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaSByte:
 			{
 				dataTypeString = "SByte";
-				rc = encode<OpcUaSByte>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaSByte>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaByte:
 			{
 				dataTypeString = "Byte";
-				rc = encode<OpcUaByte>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaByte>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaInt16:
 			{
 				dataTypeString = "Int16";
-				rc = encode<OpcUaInt16>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaInt16>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaUInt16:
 			{
 				dataTypeString = "UInt16";
-				rc = encode<OpcUaUInt16>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaUInt16>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaInt32:
 			{
 				dataTypeString = "Int32";
-				rc = encode<OpcUaInt32>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaInt32>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaUInt32:
 			{
 				dataTypeString = "UInt32";
-				rc = encode<OpcUaUInt32>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaUInt32>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaInt64:
 			{
 				dataTypeString = "Int64";
-				rc = encode<OpcUaInt64>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaInt64>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaUInt64:
 			{
 				dataTypeString = "UInt64";
-				rc = encode<OpcUaUInt64>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaUInt64>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaFloat:
 			{
 				dataTypeString = "Float";
-				rc = encode<OpcUaFloat>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaFloat>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaDouble:
 			{
 				dataTypeString = "Double";
-				rc = encode<OpcUaDouble>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaDouble>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaDateTime:
 			{
 				dataTypeString = "DateTime";
-				rc = encode<OpcUaDateTime>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaDateTime>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaString:
 			{
 				dataTypeString = "String";
-				rc = encodeSPtr<OpcUaString>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaString>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaGuid:
 			{
 				dataTypeString = "Guid";
-				rc = encodeSPtr<OpcUaGuid>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaGuid>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaByteString:
 			{
 				dataTypeString = "ByteString";
-				rc = encodeSPtr<OpcUaByteString>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaByteString>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaNodeId:
 			{
 				dataTypeString = "NodeId";
-				rc = encodeSPtr<OpcUaNodeId>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaNodeId>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaQualifiedName:
 			{
 				dataTypeString = "QualifiedName";
-				rc = encodeSPtr<OpcUaQualifiedName>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaQualifiedName>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaLocalizedText:
 			{
 				dataTypeString = "LocalizedText";
-				rc = encodeSPtr<OpcUaLocalizedText>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaLocalizedText>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			default:
