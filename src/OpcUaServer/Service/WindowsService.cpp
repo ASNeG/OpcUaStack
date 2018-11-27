@@ -516,7 +516,7 @@ namespace OpcUaServer
 		int argc;
 		LPWSTR *argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 		if (argc != 4) {
-			eventLog("Error", "Wrong number of parameters. Should be 4 instead of " + std::to_string(argc));
+			eventLog("Error", "Wrong number of parameters. Should be 3 instead of " + std::to_string(argc - 1));
 			return;
 		}
 
