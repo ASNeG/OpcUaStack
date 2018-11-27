@@ -214,32 +214,19 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag)
 	{
-		std::string sourceValue = ptree.get_value<std::string>();
-		if (sourceValue == "true") destValue = true;
-		else destValue = false;
-		return true;
+		return XmlNumber::xmlDecode(ptree, destValue);
 	}
 
 	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag)
 	{
-		std::string sourceValue = ptree.get_value<std::string>();
-		try {
-			destValue = (OpcUaByte)boost::lexical_cast<OpcUaUInt16>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
-			Log(Error, "bad_lexical_cast in decode")
-				.parameter("Tag", tag)
-				.parameter("SourceValue", sourceValue)
-				.parameter("What", e.what());
-			return false;
-		}
-		return true;
+		return XmlNumber::xmlDecode(ptree, destValue);
 	}
 		
 	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag)
 	{
 		std::string sourceValue = ptree.get_value<std::string>();
 		try {
@@ -255,7 +242,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaDateTime& destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaDateTime& destValue, const std::string& tag)
 	{
 		std::string sourceValue = ptree.get_value<std::string>();
 		if (sourceValue.empty()) {
@@ -269,7 +256,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag)
 	{
 		std::string sourceValue = ptree.get_value<std::string>();
 		destValue->value(sourceValue);
@@ -277,7 +264,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr destValue, const std::string& tag)
 	{
 		std::string sourceValue = ptree.get_value<std::string>();
 		destValue->value(sourceValue.c_str(), sourceValue.length()); 
@@ -285,7 +272,7 @@ namespace OpcUaStackServer
 	}
 	
 	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr destValue, const std::string& tag)
 	{
 		boost::optional<std::string> locale = ptree.get_optional<std::string>(addxmls("Locale"));
 		boost::optional<std::string> text = ptree.get_optional<std::string>(addxmls("Text"));
@@ -309,7 +296,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr destValue, const std::string& tag)
 	{
 		boost::optional<std::string> sourceValue = ptree.get_optional<std::string>(addxmls("String"));
 		
@@ -324,7 +311,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr destValue, const std::string& tag)
 	{
 		boost::optional<std::string> sourceValue = ptree.get_optional<std::string>(addxmls("Identifier"));
 		if (!sourceValue) {
@@ -345,7 +332,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& tag)
 	{
 		boost::optional<std::string> namespaceIndex = ptree.get_optional<std::string>(addxmls("NamespaceIndex"));
 		if (namespaceIndex) {
@@ -370,7 +357,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr destValue, const std::string& tag)
 	{
 		Xmlns xmlns;
 		xmlns.xmlns("uax");

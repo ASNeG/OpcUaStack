@@ -74,12 +74,12 @@ namespace OpcUaStackServer
 				bool rc;
 				if (dataTypeElement.isArray_) {
 					OpcUaVariantValue::Vec variantValueVec;
-					rc = decode<T>(ptreeValue.front().second, variantValueVec, tag);
+					rc = xmlDecode<T>(ptreeValue.front().second, variantValueVec, tag);
 					if (rc) variant.variant(variantValueVec);
 				}
 				else {
 					T value;
-					rc = decode(ptreeValue.front().second, value, tag);
+					rc = xmlDecode(ptreeValue.front().second, value, tag);
 					if (rc) variant.variant(value);
 				}
 				return rc;
@@ -104,14 +104,14 @@ namespace OpcUaStackServer
 				}
 				else {
 					typename T::SPtr value = constructSPtr<T>();
-					rc = decode(ptreeValue.front().second, value, tag);
+					rc = xmlDecode(ptreeValue.front().second, value, tag);
 					if (rc) variant.variant(value);
 				}
 				return rc;
 			}
 
 		template<typename T>
-			bool decode(
+			bool xmlDecode(
 				boost::property_tree::ptree& ptree,
 				OpcUaVariantValue::Vec& variantValueVec,
 				const std::string& tag
@@ -135,7 +135,7 @@ namespace OpcUaStackServer
 					}
 
 					T value;
-					if (!decode(it->second, value, tag)) {
+					if (!xmlDecode(it->second, value, tag)) {
 						Log(Error, "decode error")
 							.parameter("Tag", tag);
 						return false;
@@ -174,7 +174,7 @@ namespace OpcUaStackServer
 					}
 
 					typename T::SPtr value = constructSPtr<T>();
-					if (!decode(it->second, value, tag)) {
+					if (!xmlDecode(it->second, value, tag)) {
 						Log(Error, "decode error")
 							.parameter("Tag", tag);
 						return false;
@@ -188,7 +188,7 @@ namespace OpcUaStackServer
 		}
 
 		template<typename T>
-			bool decode(
+			bool xmlDecode(
 				boost::property_tree::ptree& ptree,
 				T& destValue,
 				const std::string& tag
@@ -207,17 +207,17 @@ namespace OpcUaStackServer
 				return true;
 			}
 
-		bool decode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaDateTime& destValue, const std::string& tag);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr destValue, const std::string& tag);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr destValue, const std::string& tag);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr destValue, const std::string& tag);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr destValue, const std::string& tag);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& tag);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaDateTime& destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& tag);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr destValue, const std::string& tag);
 
 
 		// --------------------------------------------------------------------------
