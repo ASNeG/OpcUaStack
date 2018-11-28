@@ -253,11 +253,10 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode_decode)
 	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaString>(2) == OpcUaString("String3"));
 
 	// check date time variable
-	//nodeClass = informationModel->find(OpcUaNodeId("DateTime", 1));
-	//BOOST_REQUIRE(nodeClass.get() != nullptr);
-	//BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
-	//BOOST_REQUIRE(dataValue.variant()->get<OpcUaDateTime>() == OpcUaDateTime());
-	// 2018-11-26T17:54:21Z
+	nodeClass = informationModel->find(OpcUaNodeId("DateTime", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->get<OpcUaDateTime>() == OpcUaDateTime("2000-01-02T00:00:09"));
 
 }
 

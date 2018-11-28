@@ -188,7 +188,6 @@ namespace OpcUaStackCore
 			ss << dateString;
 			boost::posix_time::time_input_facet* facet = new boost::posix_time::time_input_facet("%Y-%m-%dT%H:%M:%S");
 			ss.imbue(std::locale(ss.getloc(), facet));
-			ss.str(dateTimeString);
 			ss >> ptime;
 			ptime += boost::posix_time::seconds(offset);
 			dateTime(ptime);
@@ -203,8 +202,19 @@ namespace OpcUaStackCore
 	std::string
 	OpcUaDateTime::toISO8601(void)
 	{
-		// FIXME: todo
-		return "";
+		try {
+			boost::posix_time::ptime ptime = dateTime();
+			std::stringstream ss;
+			boost::posix_time::time_facet* facet = new boost::posix_time::time_facet("%Y-%m-%dT%H:%M:%S");
+			ss.imbue(std::locale(ss.getloc(), facet));
+			ss << ptime;
+			return ss.str() + "Z";
+		} catch(...)
+		{
+			return "ERROR";
+		}
+
+		return "ERROR";
 	}
 
 	std::string

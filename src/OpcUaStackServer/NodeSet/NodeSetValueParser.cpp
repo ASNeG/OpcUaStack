@@ -228,31 +228,14 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag)
 	{
-		std::string sourceValue = ptree.get_value<std::string>();
-		try {
-			destValue = (OpcUaSByte)boost::lexical_cast<OpcUaInt16>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
-			Log(Error, "bad_lexical_cast in decode")
-				.parameter("Tag", tag)
-				.parameter("SourceValue", sourceValue)
-				.parameter("What", e.what());
-			return false;
-		}
-		return true;
+		return XmlNumber::xmlDecode(ptree, destValue);
 	}
 
 	bool 
 	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaDateTime& destValue, const std::string& tag)
 	{
-		std::string sourceValue = ptree.get_value<std::string>();
-		if (sourceValue.empty()) {
-			Log(Error, "time format error")
-				.parameter("Tag", tag)
-				.parameter("SourceValue", sourceValue);
-			return false;
-		}
-
-		return destValue.fromISOString(sourceValue);
+		Xmlns xmlns;
+		return destValue.xmlDecode(ptree, xmlns);
 	}
 
 	bool 
