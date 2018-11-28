@@ -307,7 +307,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaDateTime::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		pt.put_value(toISOString());
+		pt.put_value(toISO8601());
 		return true;
 	}
 
