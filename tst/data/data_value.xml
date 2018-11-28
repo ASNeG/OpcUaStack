@@ -267,6 +267,16 @@
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
             <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
         </References>
+        <Value>
+           <uax:ListOfDateTime>
+              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
+           </uax:ListOfDateTime>
+        </Value>
     </UAVariable>
     <UAVariable DataType="Double" NodeId="ns=1;s=Double" BrowseName="1:Double" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>Double</DisplayName>
