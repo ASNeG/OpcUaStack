@@ -241,17 +241,15 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag)
 	{
-		std::string sourceValue = ptree.get_value<std::string>();
-		destValue->value(sourceValue);
-		return true;
+		Xmlns xmlns;
+		return destValue->xmlDecode(ptree, xmlns);
 	}
 
 	bool 
 	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr destValue, const std::string& tag)
 	{
-		std::string sourceValue = ptree.get_value<std::string>();
-		destValue->value(sourceValue.c_str(), sourceValue.length()); 
-		return true;
+		Xmlns xmlns;
+		return destValue->xmlDecode(ptree, xmlns);
 	}
 	
 	bool 

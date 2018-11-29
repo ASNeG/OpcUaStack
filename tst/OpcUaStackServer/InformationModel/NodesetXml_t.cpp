@@ -281,6 +281,32 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode_decode)
 	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
 	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaGuid>(0) == OpcUaGuid("33b1ea35-7ebc-48c1-acdf-e8aac1579cd9"));
 	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaGuid>(1) == OpcUaGuid("33b1ea35-7ebc-48c1-acdf-e8aac1579cd0"));
+
+	// check byte string variable
+	nodeClass = informationModel->find(OpcUaNodeId("ByteString", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaByteString>() == OpcUaByteString("ByteString"));
+
+	// check byte string array variable
+	nodeClass = informationModel->find(OpcUaNodeId("ByteStringArray", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaByteString>(0) == OpcUaByteString("ByteString"));
+	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaByteString>(1) == OpcUaByteString("ByteString"));
+
+	// check node id variable
+	nodeClass = informationModel->find(OpcUaNodeId("NodeId", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaNodeId>() == OpcUaNodeId(123, 1));
+
+	// check node id array variable
+	nodeClass = informationModel->find(OpcUaNodeId("NodeIdArray", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaNodeId>(0) == OpcUaNodeId(123, 1));
+	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaNodeId>(1) == OpcUaNodeId(456, 1));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

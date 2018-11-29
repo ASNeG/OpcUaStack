@@ -222,6 +222,12 @@
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
             <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
         </References>
+       <Value>
+            <uax:ListOfByteString>
+                <uax:ByteString>Qnl0ZVN0cmluZw==</uax:ByteString>
+                <uax:ByteString>Qnl0ZVN0cmluZw==</uax:ByteString>
+            </uax:ListOfByteString>
+        </Value>
     </UAVariable>
     <UAVariable DataType="Double" ValueRank="1" NodeId="ns=1;s=DoubleArray" ArrayDimensions="3" BrowseName="1:DaoubleArray" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>DaoubleArray</DisplayName>
@@ -462,16 +468,26 @@
         </References>
         <Value>
             <uax:NodeId>
-                <uax:Identifier>ns=1;i=0</uax:Identifier>
+                <uax:Identifier>ns=1;i=123</uax:Identifier>
             </uax:NodeId>
         </Value>
     </UAVariable>
-    <UAVariable DataType="NodeId" ValueRank="1" NodeId="ns=1;s=NodeIdArray" BrowseName="1:NodeIdArray" UserAccessLevel="3" AccessLevel="3">
+    <UAVariable DataType="NodeId" ValueRank="1" NodeId="ns=1;s=NodeIdArray" ArrayDimensions="2" BrowseName="1:NodeIdArray" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>NodeIdArray</DisplayName>
         <References>
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
             <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
         </References>
+        <Value>
+            <uax:ListOfNodeId>
+                <uax:NodeId>
+                    <uax:Identifier>ns=1;i=123</uax:Identifier>
+                </uax:NodeId>
+                <uax:NodeId>
+                    <uax:Identifier>ns=1;i=456</uax:Identifier>
+                </uax:NodeId>
+            </uax:ListOfNodeId>
+        </Value>
     </UAVariable>
     <UAVariable DataType="QualifiedName" NodeId="ns=1;s=QualifiedName" BrowseName="1:QualifiedNaame" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>QualifiedNaame</DisplayName>
