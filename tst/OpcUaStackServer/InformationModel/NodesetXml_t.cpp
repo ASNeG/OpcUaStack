@@ -258,6 +258,29 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode_decode)
 	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
 	BOOST_REQUIRE(dataValue.variant()->get<OpcUaDateTime>() == OpcUaDateTime("2000-01-02T00:00:09"));
 
+	// check date time array variable
+	nodeClass = informationModel->find(OpcUaNodeId("DateTimeArray", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->get<OpcUaDateTime>(0) == OpcUaDateTime("2000-01-02T10:00:09"));
+	BOOST_REQUIRE(dataValue.variant()->get<OpcUaDateTime>(1) == OpcUaDateTime("2000-01-02T09:00:09"));
+	BOOST_REQUIRE(dataValue.variant()->get<OpcUaDateTime>(2) == OpcUaDateTime("2000-01-02T11:00:09"));
+	BOOST_REQUIRE(dataValue.variant()->get<OpcUaDateTime>(3) == OpcUaDateTime("2000-01-02T09:00:09"));
+	BOOST_REQUIRE(dataValue.variant()->get<OpcUaDateTime>(4) == OpcUaDateTime("2000-01-02T09:00:09"));
+	BOOST_REQUIRE(dataValue.variant()->get<OpcUaDateTime>(5) == OpcUaDateTime("2000-01-02T11:00:09"));
+
+	// check guid variable
+	nodeClass = informationModel->find(OpcUaNodeId("Guid", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaGuid>() == OpcUaGuid("33b1ea35-7ebc-48c1-acdf-e8aac1579cd9"));
+
+	// check guid array variable
+	nodeClass = informationModel->find(OpcUaNodeId("GuidArray", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaGuid>(0) == OpcUaGuid("33b1ea35-7ebc-48c1-acdf-e8aac1579cd9"));
+	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaGuid>(1) == OpcUaGuid("33b1ea35-7ebc-48c1-acdf-e8aac1579cd0"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

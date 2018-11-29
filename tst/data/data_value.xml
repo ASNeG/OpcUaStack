@@ -261,7 +261,7 @@
             <uax:DateTime>2000-01-02T00:00:09Z</uax:DateTime>
         </Value>
     </UAVariable>
-    <UAVariable DataType="DateTime" ValueRank="1" NodeId="ns=1;i=6009" ArrayDimensions="2" BrowseName="1:DateTimeArray" UserAccessLevel="3" AccessLevel="3">
+    <UAVariable DataType="DateTime" ValueRank="1" NodeId="ns=1;s=DateTimeArray" ArrayDimensions="2" BrowseName="1:DateTimeArray" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>DateTimeArray</DisplayName>
         <References>
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
@@ -270,11 +270,11 @@
         <Value>
            <uax:ListOfDateTime>
               <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
-              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
-              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
-              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
-              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
-              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09+01</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09-01</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09+0100</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09+01:00</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09-01:00</uax:DateTime>
            </uax:ListOfDateTime>
         </Value>
     </UAVariable>
@@ -330,6 +330,16 @@
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
             <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
         </References>
+        <Value>
+            <uax:ListOfGuid>
+                <uax:Guid>
+                    <uax:String>33b1ea35-7ebc-48c1-acdf-e8aac1579cd9</uax:String>
+                </uax:Guid>
+                <uax:Guid>
+                    <uax:String>33b1ea35-7ebc-48c1-acdf-e8aac1579cd0</uax:String>
+                </uax:Guid>
+            </uax:ListOfGuid>
+        </Value>
     </UAVariable>
     <UAVariable DataType="Int16" NodeId="ns=1;s=Int16" BrowseName="1:Int16" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>Int16</DisplayName>

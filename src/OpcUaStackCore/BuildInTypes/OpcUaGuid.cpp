@@ -36,6 +36,15 @@ namespace OpcUaStackCore
 	{
 		memset((char*)data4_, 0x00, sizeof(data4_));
 	}
+
+	OpcUaGuid::OpcUaGuid(const std::string& opcUaGuid)
+	: Object()
+	, data1_(0)
+	, data2_(0)
+	, data3_(0)
+	{
+		value(opcUaGuid);
+	}
 		
 	OpcUaGuid::~OpcUaGuid(void)
 	{
