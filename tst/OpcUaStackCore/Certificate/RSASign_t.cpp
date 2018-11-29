@@ -2,6 +2,7 @@
 
 #include "OpcUaStackCore/Certificate/RSAKey.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
+#include "OpcUaStackCore/Certificate/OpenSSLCompat.h"
 #include "unittest.h"
 #include <openssl/bio.h>
 #include <openssl/rsa.h>
@@ -24,7 +25,7 @@ BOOST_AUTO_TEST_CASE(RSASign_sign)
 	RSAKey rsaKey(2048);
 	PrivateKey privateKey = rsaKey.privateKey();
 	EVP_PKEY* key = privateKey;
-	RSA* r = key->pkey.rsa;
+	RSA* r = EVP_PKEY_get0_RSA(key);
 
 	unsigned char *sig = NULL;
 	unsigned int sig_len = 0;
