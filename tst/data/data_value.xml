@@ -249,6 +249,13 @@
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
             <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
         </References>
+        <Value>
+            <uax:DataValue>
+                <uax:Value><uax:Double>1</uax:Double></uax:Value>
+		<uax:SourceTimestamp>2018-11-26T17:54:21Z</uax:SourceTimestamp>
+                <uax:ServerTimestamp>2018-11-26T17:54:21Z</uax:ServerTimestamp>
+            </uax:DataValue>     
+	</Value>
     </UAVariable>
     <UAVariable DataType="DataValue" ValueRank="1" NodeId="ns=1;s=DataValueArray" ArrayDimensions="2" BrowseName="1:DataValueArray" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>DataValueArray</DisplayName>
@@ -256,6 +263,20 @@
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
             <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
         </References>
+        <Value>
+            <uax:ListOfDataValue>
+                <uax:DataValue>
+                    <uax:Value><uax:Double>1</uax:Double></uax:Value>
+		    <uax:SourceTimestamp>2018-11-26T17:54:21Z</uax:SourceTimestamp>
+                    <uax:ServerTimestamp>2018-11-26T17:54:21Z</uax:ServerTimestamp>
+                </uax:DataValue>     
+                <uax:DataValue>
+                    <uax:Value><uax:Double>1</uax:Double></uax:Value>
+		    <uax:SourceTimestamp>2018-11-26T17:54:21Z</uax:SourceTimestamp>
+                    <uax:ServerTimestamp>2018-11-26T17:54:21Z</uax:ServerTimestamp>
+                </uax:DataValue>
+            </uax:ListOfDataValue>  
+	</Value>
     </UAVariable>
     <UAVariable DataType="DateTime" NodeId="ns=1;s=DateTime" BrowseName="1:DateTime" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>DateTime</DisplayName>
@@ -437,7 +458,7 @@
         <Value>
             <uax:LocalizedText>
                 <uax:Locale>de</uax:Locale>
-                <uax:Text>LocalizedText</uax:Text>
+                <uax:Text>Text1</uax:Text>
             </uax:LocalizedText>
         </Value>
     </UAVariable>
@@ -498,7 +519,7 @@
         <Value>
             <uax:QualifiedName>
                 <uax:NamespaceIndex>1</uax:NamespaceIndex>
-                <uax:Name>QualifiedName</uax:Name>
+                <uax:Name>QualifiedName1</uax:Name>
             </uax:QualifiedName>
         </Value>
     </UAVariable>
@@ -508,6 +529,20 @@
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
             <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
         </References>
+        <Value>
+            <uax:ListOfQualifiedName>
+                <uax:QualifiedName>
+                    <uax:NamespaceIndex>1</uax:NamespaceIndex>
+                    <uax:Name>QualifiedName1</uax:Name>
+                </uax:QualifiedName>
+                <uax:QualifiedName>
+                    <uax:NamespaceIndex>2</uax:NamespaceIndex>
+                    <uax:Name>QualifiedName2</uax:Name>
+                </uax:QualifiedName>
+
+            </uax:ListOfQualifiedName>
+        </Value>
+
     </UAVariable>
     <UAVariable DataType="SByte" NodeId="ns=1;s=SByte" BrowseName="1:SByte" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>SByte</DisplayName>

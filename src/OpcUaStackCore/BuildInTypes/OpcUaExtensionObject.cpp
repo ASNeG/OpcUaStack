@@ -343,7 +343,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
 		return true;
 	}
 
@@ -365,7 +365,7 @@ namespace OpcUaStackCore
 				.parameter("Element", "TypeId");
 			return false;
 		}
-		pt.add_child(xmlns.addxmlns("TypeId"), typeIdTree);
+		pt.add_child(xmlns.addPrefix("TypeId"), typeIdTree);
 
 		//
 		// encode body
@@ -376,7 +376,7 @@ namespace OpcUaStackCore
 				.parameter("Element", "Body");
 			return false;
 		}
-		pt.add_child(xmlns.addxmlns("Body"), bodyTree);
+		pt.add_child(xmlns.addPrefix("Body"), bodyTree);
 
 		return true;
 	}
@@ -395,7 +395,7 @@ namespace OpcUaStackCore
 		//
 		// get typeIdTree tree
 		//
-		boost::optional<boost::property_tree::ptree&> typeIdTree = pt.get_child_optional(xmlns.addxmlns("TypeId"));
+		boost::optional<boost::property_tree::ptree&> typeIdTree = pt.get_child_optional(xmlns.addPrefix("TypeId"));
 		if (!typeIdTree) {
 			Log(Error, "OpcUaExtensionObject xml decoder error - element not exist in xml document")
 				.parameter("Element", "TypeId");
@@ -415,7 +415,7 @@ namespace OpcUaStackCore
 		//
 		// get body tree
 		//
-		boost::optional<boost::property_tree::ptree&> bodyTree = pt.get_child_optional(xmlns.addxmlns("Body"));
+		boost::optional<boost::property_tree::ptree&> bodyTree = pt.get_child_optional(xmlns.addPrefix("Body"));
 		if (!bodyTree) {
 			Log(Error, "OpcUaExtensionObject xml decoder error - element not exist in xml document")
 				.parameter("Element", "Body")

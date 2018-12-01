@@ -224,7 +224,7 @@ namespace OpcUaStackCore
     bool
     OpcUaStatus::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(xmlns.addxmlns(element));
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(xmlns.addPrefix(element));
         if (!tree) {
         	Log(Error, "xml element not exist")
         		.parameter("XmlElement", element);
@@ -236,10 +236,9 @@ namespace OpcUaStackCore
     bool
     OpcUaStatus::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
-    	boost::optional<std::string> codeString = pt.get_optional<std::string>(xmlns.addxmlns("Code"));
+    	boost::optional<std::string> codeString = pt.get_optional<std::string>(xmlns.addPrefix("Code"));
     	if (!codeString) {
-    		xmlns.xmlns("uax");
-    		codeString = pt.get_optional<std::string>(xmlns.addxmlns("Code"));
+    		codeString = pt.get_optional<std::string>(xmlns.addPrefix("Code"));
     		if (!codeString) {
     			Log(Error, "xml element not exist")
         			.parameter("XmlElement", "Code");

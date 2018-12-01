@@ -60,7 +60,6 @@ namespace OpcUaStackServer
 	bool NodeSetValueParser::initial_ = false;
 
 	NodeSetValueParser::NodeSetValueParser(void)
-	: xmls_("")
 	{
 		start();
 	}
@@ -132,6 +131,8 @@ namespace OpcUaStackServer
 		insertDataTypeElement("ListOfQualifiedName", DataTypeElement(OpcUaBuildInType_OpcUaQualifiedName, true));
 		insertDataTypeElement("ExtensionObject", DataTypeElement(OpcUaBuildInType_OpcUaExtensionObject, false));
 		insertDataTypeElement("ListOfExtensionObject", DataTypeElement(OpcUaBuildInType_OpcUaExtensionObject, true));
+		insertDataTypeElement("DataValue", DataTypeElement(OpcUaBuildInType_OpcUaDataValue, false));
+		insertDataTypeElement("ListOfDataValue", DataTypeElement(OpcUaBuildInType_OpcUaDataValue, true));
 	}
 
 
@@ -143,33 +144,25 @@ namespace OpcUaStackServer
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
 	bool 
-	NodeSetValueParser::decodeValue(
+	NodeSetValueParser::xmlDecodeValue(
 		const std::string& nodeId,
 		boost::property_tree::ptree& ptree,
 		OpcUaVariant& variant,
-		const std::string& xmls
+		Xmlns& xmlns
 	)
 	{
-		xmls_ = xmls;
-
 		// Test whether the value tag exist. If not exit function
 		boost::optional<boost::property_tree::ptree&> ptreeValue = ptree.get_child_optional("Value");
 		if (!ptreeValue) return false;
 		if (ptreeValue->begin() == ptreeValue->end()) return false;
 
-		// xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd"
-		boost::optional<std::string> xmlSchema = ptreeValue->front().second.get_optional<std::string>("<xmlattr>.xmlns");
-		if (xmlSchema) {
-			if (*xmlSchema == "http://opcfoundation.org/UA/2008/02/Types.xsd") {
-				xmls_ = "";
-			}
-		}
-
 		// Test whether the data type of the value exist in data type element list. If not exit function
-		std::string dataTypeString = cutxmls(ptreeValue->front().first);
+		std::string dataTypeString;
+		dataTypeString = xmlns.cutPrefix(ptreeValue->front().first);
 		DataTypeElement dataTypeElement;
 		if (!findDataTypeElement(dataTypeString, dataTypeElement)) {
 			Log(Warning, "data type unknown in node set value parser")
+				.parameter("Element", ptreeValue->front().first)
 				.parameter("DataType", dataTypeString)
 				.parameter("NodeId", nodeId);
 			return false;
@@ -179,26 +172,69 @@ namespace OpcUaStackServer
 		bool rc;
 		switch (dataTypeElement.buildInType_)
 		{
-			case OpcUaBuildInType_OpcUaBoolean: rc = xmlDecode<OpcUaBoolean>(dataTypeElement, *ptreeValue, variant, "Boolean"); break;
-			case OpcUaBuildInType_OpcUaSByte: rc = xmlDecode<OpcUaSByte>(dataTypeElement, *ptreeValue, variant, "SByte"); break;
-			case OpcUaBuildInType_OpcUaByte: rc = xmlDecode<OpcUaByte>(dataTypeElement, *ptreeValue, variant, "Byte"); break;
-			case OpcUaBuildInType_OpcUaUInt16: rc = xmlDecode<OpcUaUInt16>(dataTypeElement, *ptreeValue, variant, "UInt16"); break;
-			case OpcUaBuildInType_OpcUaInt16: rc = xmlDecode<OpcUaInt16>(dataTypeElement, *ptreeValue, variant, "Int16"); break;
-			case OpcUaBuildInType_OpcUaUInt32: rc = xmlDecode<OpcUaUInt32>(dataTypeElement, *ptreeValue, variant, "UInt32"); break;
-			case OpcUaBuildInType_OpcUaInt32: rc = xmlDecode<OpcUaInt32>(dataTypeElement, *ptreeValue, variant, "Int32"); break;
-			case OpcUaBuildInType_OpcUaUInt64: rc = xmlDecode<OpcUaUInt64>(dataTypeElement, *ptreeValue, variant, "UInt64"); break;
-			case OpcUaBuildInType_OpcUaInt64: rc = xmlDecode<OpcUaInt64>(dataTypeElement, *ptreeValue, variant, "Int64"); break;
-			case OpcUaBuildInType_OpcUaFloat: rc = xmlDecode<OpcUaFloat>(dataTypeElement, *ptreeValue, variant, "Float"); break;
-			case OpcUaBuildInType_OpcUaStatusCode: rc = xmlDecode<OpcUaStatusCode>(dataTypeElement, *ptreeValue, variant, "StatusCode"); break;
-			case OpcUaBuildInType_OpcUaDouble: rc = xmlDecode<OpcUaDouble>(dataTypeElement, *ptreeValue, variant, "Double"); break;
-			case OpcUaBuildInType_OpcUaDateTime: rc = xmlDecode<OpcUaDateTime>(dataTypeElement, *ptreeValue, variant, "DateTime"); break;
-			case OpcUaBuildInType_OpcUaString: rc = xmlDecodeSPtr<OpcUaString>(dataTypeElement, *ptreeValue, variant, "String"); break;
-			case OpcUaBuildInType_OpcUaByteString: rc = xmlDecodeSPtr<OpcUaByteString>(dataTypeElement, *ptreeValue, variant, "ByteString"); break;
-			case OpcUaBuildInType_OpcUaLocalizedText: rc = xmlDecodeSPtr<OpcUaLocalizedText>(dataTypeElement, *ptreeValue, variant, "LocalizedText"); break;
-			case OpcUaBuildInType_OpcUaGuid: rc = xmlDecodeSPtr<OpcUaGuid>(dataTypeElement, *ptreeValue, variant, "Guid"); break;
-			case OpcUaBuildInType_OpcUaNodeId: rc = xmlDecodeSPtr<OpcUaNodeId>(dataTypeElement, *ptreeValue, variant, "NodeId"); break;
-			case OpcUaBuildInType_OpcUaQualifiedName: rc = xmlDecodeSPtr<OpcUaQualifiedName>(dataTypeElement, *ptreeValue, variant, "QualifiedName"); break;
-			case OpcUaBuildInType_OpcUaExtensionObject: rc = xmlDecodeSPtr<OpcUaExtensionObject>(dataTypeElement, *ptreeValue, variant, "ExtensionObject"); break;
+			case OpcUaBuildInType_OpcUaBoolean:
+				rc = xmlDecode<OpcUaBoolean>(dataTypeElement, *ptreeValue, variant, "Boolean", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaSByte:
+				rc = xmlDecode<OpcUaSByte>(dataTypeElement, *ptreeValue, variant, "SByte", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaByte:
+				rc = xmlDecode<OpcUaByte>(dataTypeElement, *ptreeValue, variant, "Byte", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaUInt16:
+				rc = xmlDecode<OpcUaUInt16>(dataTypeElement, *ptreeValue, variant, "UInt16", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaInt16:
+				rc = xmlDecode<OpcUaInt16>(dataTypeElement, *ptreeValue, variant, "Int16", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaUInt32:
+				rc = xmlDecode<OpcUaUInt32>(dataTypeElement, *ptreeValue, variant, "UInt32", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaInt32:
+				rc = xmlDecode<OpcUaInt32>(dataTypeElement, *ptreeValue, variant, "Int32", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaUInt64:
+				rc = xmlDecode<OpcUaUInt64>(dataTypeElement, *ptreeValue, variant, "UInt64", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaInt64:
+				rc = xmlDecode<OpcUaInt64>(dataTypeElement, *ptreeValue, variant, "Int64", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaFloat:
+				rc = xmlDecode<OpcUaFloat>(dataTypeElement, *ptreeValue, variant, "Float", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaStatusCode:
+				rc = xmlDecode<OpcUaStatusCode>(dataTypeElement, *ptreeValue, variant, "StatusCode", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaDouble:
+				rc = xmlDecode<OpcUaDouble>(dataTypeElement, *ptreeValue, variant, "Double", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaDateTime:
+				rc = xmlDecode<OpcUaDateTime>(dataTypeElement, *ptreeValue, variant, "DateTime", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaString:
+				rc = xmlDecodeSPtr<OpcUaString>(dataTypeElement, *ptreeValue, variant, "String", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaByteString:
+				rc = xmlDecodeSPtr<OpcUaByteString>(dataTypeElement, *ptreeValue, variant, "ByteString", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaLocalizedText:
+				rc = xmlDecodeSPtr<OpcUaLocalizedText>(dataTypeElement, *ptreeValue, variant, "LocalizedText", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaGuid:
+				rc = xmlDecodeSPtr<OpcUaGuid>(dataTypeElement, *ptreeValue, variant, "Guid", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaNodeId:
+				rc = xmlDecodeSPtr<OpcUaNodeId>(dataTypeElement, *ptreeValue, variant, "NodeId", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaQualifiedName:
+				rc = xmlDecodeSPtr<OpcUaQualifiedName>(dataTypeElement, *ptreeValue, variant, "QualifiedName", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaExtensionObject:
+				rc = xmlDecodeSPtr<OpcUaExtensionObject>(dataTypeElement, *ptreeValue, variant, "ExtensionObject", xmlns);
+				break;
+			//case OpcUaBuildInType_OpcUaDataValue:
+			//	rc = xmlDecodeSPtr<OpcUaDataValue>(dataTypeElement, *ptreeValue, variant, "DataValue", xmlns);
+			//	break;
 			default:
 			{
 				Log(Error, "data type unknown in node set value decoder")
@@ -218,10 +254,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaStatusCode& destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaStatusCode& destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
 		OpcUaStatus status;
-		Xmlns xmlns;
 		if (!status.xmlDecode(ptree, xmlns)) {
 			return false;
 		}
@@ -230,49 +270,81 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaBoolean& destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
 		return XmlNumber::xmlDecode(ptree, destValue);
 	}
 
 	bool 
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaByte& destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
 		return XmlNumber::xmlDecode(ptree, destValue);
 	}
 		
 	bool 
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaSByte& destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
 		return XmlNumber::xmlDecode(ptree, destValue);
 	}
 
 	bool 
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaDateTime& destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaDateTime& destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		Xmlns xmlns;
 		return destValue.xmlDecode(ptree, xmlns);
 	}
 
 	bool 
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaString::SPtr destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		Xmlns xmlns;
 		return destValue->xmlDecode(ptree, xmlns);
 	}
 
 	bool 
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaByteString::SPtr destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		Xmlns xmlns;
 		return destValue->xmlDecode(ptree, xmlns);
 	}
 	
 	bool 
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaLocalizedText::SPtr destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		boost::optional<std::string> locale = ptree.get_optional<std::string>(addxmls("Locale"));
-		boost::optional<std::string> text = ptree.get_optional<std::string>(addxmls("Text"));
+		boost::optional<std::string> locale = ptree.get_optional<std::string>(xmlns.addPrefix("Locale"));
+		boost::optional<std::string> text = ptree.get_optional<std::string>(xmlns.addPrefix("Text"));
 
 		if (!locale) {
 			destValue->locale("");
@@ -293,13 +365,17 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaGuid::SPtr destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		boost::optional<std::string> sourceValue = ptree.get_optional<std::string>(addxmls("String"));
+		boost::optional<std::string> sourceValue = ptree.get_optional<std::string>(xmlns.addPrefix("String"));
 		
 		if (!sourceValue) {
 			Log(Error, "value empty")
-				.parameter("Tag", tag)
 				.parameter("SourceValue", sourceValue);
 			return false;
 		}
@@ -308,12 +384,17 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaNodeId::SPtr destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		boost::optional<std::string> sourceValue = ptree.get_optional<std::string>(addxmls("Identifier"));
+		boost::optional<std::string> sourceValue = ptree.get_optional<std::string>(xmlns.addPrefix("Identifier"));
 		if (!sourceValue) {
 			Log(Error, "value empty")
-				.parameter("Tag", addxmls("Identifier"));
+				.parameter("Tag", xmlns.addPrefix("Identifier"));
 			return false;
 		}
 
@@ -329,23 +410,27 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaQualifiedName::SPtr destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		boost::optional<std::string> namespaceIndex = ptree.get_optional<std::string>(addxmls("NamespaceIndex"));
+		boost::optional<std::string> namespaceIndex = ptree.get_optional<std::string>(xmlns.addPrefix("NamespaceIndex"));
 		if (namespaceIndex) {
 			try {
 				OpcUaUInt16 ns = boost::lexical_cast<OpcUaInt16>(*namespaceIndex);
 				destValue->namespaceIndex(ns);
 			} catch(boost::bad_lexical_cast& e) {
 				Log(Error, "bad_lexical_cast in decode")
-					.parameter("Tag", tag)
 					.parameter("SourceValue", *namespaceIndex)
 					.parameter("What", e.what());
 				return false;
 			}
 		}
 
-		boost::optional<std::string> name = ptree.get_optional<std::string>(addxmls("Name"));
+		boost::optional<std::string> name = ptree.get_optional<std::string>(xmlns.addPrefix("Name"));
 		if (name) {
 			destValue->name(*name);
 		}
@@ -354,37 +439,34 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr destValue, const std::string& tag)
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaExtensionObject::SPtr destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		Xmlns xmlns;
-		xmlns.xmlns("uax");
 		if (!destValue->xmlDecode(ptree, xmlns)) {
-			Log(Error, "invalid value in decode")
-				.parameter("Tag", tag);
 			return false;
 		}
-		//destValue->out(std::cout); std::cout << std::endl;
+
 		return true;
 	}
 
-	std::string
-	NodeSetValueParser::cutxmls(const std::string& tag)
+	bool
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaDataValue::SPtr destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		std::string newTag = tag;
-		size_t pos = newTag.find(":");
-		if (pos != std::string::npos) {
-			newTag = newTag.substr(pos+1);
+		if (!destValue->xmlDecode(ptree, xmlns)) {
+			return false;
 		}
-		return newTag;
-	}
 
-	std::string 
-	NodeSetValueParser::addxmls(const std::string& tag)
-	{
-		if (xmls_ == "") return tag;
-		return xmls_ + std::string(":") + tag;
+		return false;
 	}
-
 
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
@@ -394,15 +476,13 @@ namespace OpcUaStackServer
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
 	bool 
-	NodeSetValueParser::encodeValue(
+	NodeSetValueParser::xmlEncodeValue(
 		const std::string& nodeId,
 		boost::property_tree::ptree& ptree,
 		OpcUaVariant& opcUaVariant,
-		const std::string& xmls
+		Xmlns& xmlns
 	)
 	{
-		xmls_ = xmls;
-
 		bool rc = false;
 		std::string dataTypeString;
 
@@ -411,109 +491,109 @@ namespace OpcUaStackServer
 			case OpcUaBuildInType_OpcUaBoolean:
 			{
 				dataTypeString = "Boolean";
-				rc = xmlEncode<OpcUaBoolean>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaBoolean>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaSByte:
 			{
 				dataTypeString = "SByte";
-				rc = xmlEncode<OpcUaSByte>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaSByte>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaByte:
 			{
 				dataTypeString = "Byte";
-				rc = xmlEncode<OpcUaByte>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaByte>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaInt16:
 			{
 				dataTypeString = "Int16";
-				rc = xmlEncode<OpcUaInt16>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaInt16>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaUInt16:
 			{
 				dataTypeString = "UInt16";
-				rc = xmlEncode<OpcUaUInt16>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaUInt16>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaInt32:
 			{
 				dataTypeString = "Int32";
-				rc = xmlEncode<OpcUaInt32>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaInt32>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaUInt32:
 			{
 				dataTypeString = "UInt32";
-				rc = xmlEncode<OpcUaUInt32>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaUInt32>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaInt64:
 			{
 				dataTypeString = "Int64";
-				rc = xmlEncode<OpcUaInt64>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaInt64>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaUInt64:
 			{
 				dataTypeString = "UInt64";
-				rc = xmlEncode<OpcUaUInt64>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaUInt64>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaFloat:
 			{
 				dataTypeString = "Float";
-				rc = xmlEncode<OpcUaFloat>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaFloat>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaDouble:
 			{
 				dataTypeString = "Double";
-				rc = xmlEncode<OpcUaDouble>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaDouble>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaDateTime:
 			{
 				dataTypeString = "DateTime";
-				rc = xmlEncode<OpcUaDateTime>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncode<OpcUaDateTime>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaString:
 			{
 				dataTypeString = "String";
-				rc = xmlEncodeSPtr<OpcUaString>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaString>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaGuid:
 			{
 				dataTypeString = "Guid";
-				rc = xmlEncodeSPtr<OpcUaGuid>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaGuid>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaByteString:
 			{
 				dataTypeString = "ByteString";
-				rc = xmlEncodeSPtr<OpcUaByteString>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaByteString>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaNodeId:
 			{
 				dataTypeString = "NodeId";
-				rc = xmlEncodeSPtr<OpcUaNodeId>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaNodeId>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaQualifiedName:
 			{
 				dataTypeString = "QualifiedName";
-				rc = xmlEncodeSPtr<OpcUaQualifiedName>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaQualifiedName>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			case OpcUaBuildInType_OpcUaLocalizedText:
 			{
 				dataTypeString = "LocalizedText";
-				rc = xmlEncodeSPtr<OpcUaLocalizedText>(ptree, opcUaVariant, dataTypeString);
+				rc = xmlEncodeSPtr<OpcUaLocalizedText>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
 			default:
@@ -537,109 +617,109 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& element, Xmlns& xmlns)
 	{
 		if (value) {
-			ptree.put(tag, "true");
+			ptree.put(element, "true");
 		}
 		else {
-			ptree.put(tag, "false");
+			ptree.put(element, "false");
 		}
 		return true;
 	}
 
 	bool 
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& element, Xmlns& xmlns)
 	{
 		std::stringstream ss;
 		ss << (int16_t)value;
-		ptree.put(tag, ss.str());
+		ptree.put(element, ss.str());
 		return true;
 	}
 		
 	bool 
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& element, Xmlns& xmlns)
 	{
 		std::stringstream ss;
 		ss << (int16_t)value;
-		ptree.put(tag, ss.str());
+		ptree.put(element, ss.str());
 		return true;
 	}
 
 	bool 
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaDateTime& value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaDateTime& value, const std::string& element, Xmlns& xmlns)
 	{
-		ptree.put(tag, value.toISOString());
+		ptree.put(element, value.toISOString());
 		return true;
 	}
 
 	bool 
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaString::SPtr value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaString::SPtr value, const std::string& element, Xmlns& xmlns)
 	{
-		ptree.put(tag, value->value());
+		ptree.put(element, value->value());
 		return true;
 	}
 
 	bool 
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr value, const std::string& element, Xmlns& xmlns)
 	{
 		OpcUaByte *data;
 		OpcUaInt32 dataLen;
 		value->value(&data, &dataLen);
 		if (dataLen < 0) {
-			ptree.put(tag, std::string(""));
+			ptree.put(element, std::string(""));
 			return true;
 		}
 		std::string byteString((char*)data, dataLen);
-		ptree.put(tag, byteString);
+		ptree.put(element, byteString);
 		return true;
 	}
 	
 	bool 
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr value, const std::string& element, Xmlns& xmlns)
 	{
 		std::string text = value->text().value();
-		ptree.put(tag + std::string(".") + addxmls("Text"), text);
+		ptree.put(element + std::string(".") + xmlns.addPrefix("Text"), text);
 
 		std::string locale = value->locale().value();
-		ptree.put(tag + std::string(".") + addxmls("Locale"), locale);
+		ptree.put(element + std::string(".") + xmlns.addPrefix("Locale"), locale);
 		return true;
 	}
 
 	bool 
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr value, const std::string& element, Xmlns& xmlns)
 	{
 		std::string guidString = *value;
-		std::string localTag = tag + std::string(".") + addxmls(std::string("String"));
+		std::string localTag = element + std::string(".") + xmlns.addPrefix(std::string("String"));
 		ptree.put(localTag, guidString);
 		return true;
 	}
 
 	bool 
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& element, Xmlns& xmlns)
 	{
-		std::string localTag = tag + std::string(".") + addxmls(std::string("Identifier"));
+		std::string localTag = element + std::string(".") + xmlns.addPrefix(std::string("Identifier"));
 		ptree.put(localTag, value->toString());
 		return true;
 	}
 
 	bool 
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr value, const std::string& element, Xmlns& xmlns)
 	{
 		if (value->namespaceIndex() != 0 ) {
 			std::stringstream ss;
-			ss << value->namespaceIndex();;
-			std::string localTag = tag + std::string(".") + addxmls(std::string("NamespaceIndex"));
+			ss << value->namespaceIndex();
+			std::string localTag = element + std::string(".") + xmlns.addPrefix(std::string("NamespaceIndex"));
 			ptree.put(localTag, ss.str());
 		}
 
-		std::string localTag = tag + std::string(".") + addxmls(std::string("Name"));
+		std::string localTag = element + std::string(".") + xmlns.addPrefix(std::string("Name"));
 		ptree.put(localTag, value->name().value());
 		return true;
 	}
 
 	bool
-	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr value, const std::string& tag)
+	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr value, const std::string& tag, Xmlns& xmlns)
 	{
 		// FIXME: todo
 		return false;

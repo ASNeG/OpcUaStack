@@ -320,6 +320,38 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode_decode)
 	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
 	BOOST_REQUIRE(dataValue.variant()->get<OpcUaStatusCode>(0) == (OpcUaStatusCode)1);
 	BOOST_REQUIRE(dataValue.variant()->get<OpcUaStatusCode>(1) == (OpcUaStatusCode)2);
+
+	// check qualified name variable
+	nodeClass = informationModel->find(OpcUaNodeId("QualifiedName", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaQualifiedName>()->namespaceIndex() == 1);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaQualifiedName>()->name() == OpcUaString("QualifiedName1"));
+
+	// check status code array variable
+	nodeClass = informationModel->find(OpcUaNodeId("QualifiedNameArray", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaQualifiedName>(0)->namespaceIndex() == 1);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaQualifiedName>(0)->name() == OpcUaString("QualifiedName1"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaQualifiedName>(1)->namespaceIndex() == 2);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaQualifiedName>(1)->name() == OpcUaString("QualifiedName2"));
+
+	// check localized text variable
+	nodeClass = informationModel->find(OpcUaNodeId("LocalizedText", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaLocalizedText>()->locale() == OpcUaString("de"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaLocalizedText>()->text() == OpcUaString("Text1"));
+
+	// check localized text array variable
+	nodeClass = informationModel->find(OpcUaNodeId("LocalizedTextArray", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaLocalizedText>(0)->locale() == OpcUaString("de"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaLocalizedText>(0)->text() == OpcUaString("Text1"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaLocalizedText>(1)->locale() == OpcUaString("de"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaLocalizedText>(1)->text() == OpcUaString("Text2"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

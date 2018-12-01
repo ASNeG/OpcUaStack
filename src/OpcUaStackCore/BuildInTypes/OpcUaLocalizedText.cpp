@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -241,15 +241,15 @@ namespace OpcUaStackCore
 				.parameter("Element", element);
 			return false;
 		}
-		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
 		return true;
 	}
 
 	bool
 	OpcUaLocalizedText::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		pt.put(xmlns.addxmlns("Locale"), locale().toStdString());
-		pt.put(xmlns.addxmlns("Text"), text().toStdString());
+		pt.put(xmlns.addPrefix("Locale"), locale().toStdString());
+		pt.put(xmlns.addPrefix("Text"), text().toStdString());
 		return true;
 	}
 
@@ -259,7 +259,7 @@ namespace OpcUaStackCore
 		//
 		// name
 		//
-		boost::optional<std::string> localeString = pt.get_optional<std::string>(xmlns.addxmlns("Locale"));
+		boost::optional<std::string> localeString = pt.get_optional<std::string>(xmlns.addPrefix("Locale"));
 		if (!localeString) {
 			locale("");
 		}
@@ -270,7 +270,7 @@ namespace OpcUaStackCore
 		//
 		// text
 		//
-		boost::optional<std::string> textString = pt.get_optional<std::string>(xmlns.addxmlns("Text"));
+		boost::optional<std::string> textString = pt.get_optional<std::string>(xmlns.addPrefix("Text"));
 		if (!textString) {
 			text("");
 		}
