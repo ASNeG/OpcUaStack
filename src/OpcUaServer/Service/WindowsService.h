@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaServer_WindowsService_h__
@@ -38,11 +38,11 @@ namespace OpcUaServer
 
 		void usage(void);
 		void main(unsigned int argc, char** argv);
-		void serviceMain(unsigned int argc, char** argv);
+		void serviceMain();
 		void serviceHandler(DWORD fdwControl);
-		bool installService(const std::string& serviceName, const std::string& serviceDescription);
+		bool installService(const std::string& serviceName, const std::string& serviceDescription, const std::string& pathToConfiguration);
 		bool uninstallService(const std::string& serviceName);
-		bool startService(const std::string& serviceName);
+		bool startService(const std::string& serviceName, const std::string& pathToConfiguration);
 		bool stopService(const std::string& serviceName);
 		bool runService(unsigned int argc, char** argv);
 		bool runConsole(const std::string& serviceName, unsigned int argc, char** argv);

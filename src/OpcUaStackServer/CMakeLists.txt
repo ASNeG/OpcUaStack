@@ -70,66 +70,66 @@ file(GLOB INC_OpcUaStackServer_ApplicationUtility OpcUaStackServer/ApplicationUt
 
 install(
     TARGETS OpcUaStackServer 
-    DESTINATION /usr/lib
+    DESTINATION ${INSTALL_PREFIX}/lib
     COMPONENT libraries
 )
 
 install(
     FILES ${INC_OpcUaStackServer_Server} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Server
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Server
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackServer_AddressSpaceModel} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/AddressSpaceModel
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/AddressSpaceModel
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackServer_Application} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Application
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Application
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackServer_InformationModel} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/InformationModel
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/InformationModel
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackServer_NodeSet} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/NodeSet
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/NodeSet
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackServer_SecureChannel} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/SecureChannel
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/SecureChannel
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackServer_ServiceManager} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceManager
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceManager
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackServer_ServiceSet} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceSet
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceSet
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackServer_ServiceSetApplication} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceSetApplication
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceSetApplication
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackServer_ApplicationUtility} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ApplicationUtility
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ApplicationUtility
     COMPONENT headers
 )

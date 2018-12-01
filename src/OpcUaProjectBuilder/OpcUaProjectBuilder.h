@@ -12,13 +12,14 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaProjectBuilder_OpcUaProjectBuilder_h__
 #define __OpcUaProjectBuilder_OpcUaProjectBuilder_h__
 
 #include <boost/filesystem.hpp>
+#include <set>
 #include <stdint.h>
 
 namespace OpcUaProjectBuilder
@@ -54,6 +55,7 @@ namespace OpcUaProjectBuilder
 		bool readProjectFile(boost::filesystem::path& filename, std::string& content);
 		bool browseProjectDirectory(boost::filesystem::path& templateDirectory, boost::filesystem::path& projectDirectory);
 		std::string substituteString(const std::string& string);
+        bool isFileToSubstitute(const boost::filesystem::path& file) const;
 
 		// command line parameter
 		std::string projectName_;
@@ -63,6 +65,8 @@ namespace OpcUaProjectBuilder
 
 		boost::filesystem::path templateDirectory_;
 		boost::filesystem::path projectDirectory_;
+
+        const std::set<std::string> noSubstitueExtensions_;
 	};
 
 }

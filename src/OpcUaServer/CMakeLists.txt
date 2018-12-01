@@ -59,6 +59,6 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 install(
     TARGETS OpcUaServer${VERSION_MAJOR} 
-    DESTINATION /usr/bin
+    DESTINATION ${INSTALL_PREFIX}/bin
     COMPONENT applications
 )

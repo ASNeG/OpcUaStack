@@ -29,6 +29,8 @@ usage()
    echo "--install-prefix, -i INSTALL_PREFIX:  is the path to directory"
    echo "\twhere the application should be installed (default: ${HOME}/.ASNeG)"
    echo "--jobs, -j JOB_COUNT: sets the number of the jobs of make"
+   echo ""
+   echo "--build-type, -B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type"
 }
 
 
@@ -53,7 +55,7 @@ build_info()
 build_info_clean()
 {
     set -e
-    rm -rf build_info
+    rm -rf build_info*
 }
 
 
@@ -72,19 +74,21 @@ build_local()
     if [ ! -d "build_local" ] ;
     then
         BUILD_FIRST=1
-        rm -rf build_local
-        mkdir build_local
+        rm -rf build_local_${BUILD_TYPE}
+        mkdir build_local_${BUILD_TYPE}
+
     else
         BUILD_FIRST=0
     fi
-    cd build_local
+    cd build_local_${BUILD_TYPE}
 
     # build local
     if [ ${BUILD_FIRST} -eq 1 ] ;
     then
         set -x
         cmake ../src \
-              "${CMAKE_GENERATOR_LOCAL}" 
+              "${CMAKE_GENERATOR_LOCAL}" \
+              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" 
         RESULT=$?
         set +x
         if [ ${RESULT} -ne 0 ] ;
@@ -121,7 +125,7 @@ build_local()
 build_local_clean()
 {
     set -e
-    rm -rf build_local
+    rm -rf build_local*
 }
 
 
@@ -149,12 +153,13 @@ build_deb()
     if [ ! -d "build_deb" ] ;
     then
         BUILD_FIRST=1
-        rm -rf build_deb
-        mkdir build_deb
+        rm -rf build_deb_${BUILD_TYPE}
+        mkdir build_deb_${BUILD_TYPE}
     else
         BUILD_FIRST=0
     fi
-    cd build_deb
+    cd build_deb_${BUILD_TYPE}
+
 
     # build package
     if [ ${BUILD_FIRST} -eq 1 ] ;
@@ -162,6 +167,7 @@ build_deb()
  
         cmake ../src \
             "${CMAKE_GENERATOR_LOCAL}" \
+            -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
             "-DCPACK_BINARY_DEB=1" \
             "-DCPACK_BINARY_RPM=0" \
 	    "-DCPACK_BINARY_STGZ=0" \
@@ -197,7 +203,7 @@ build_deb()
 build_deb_clean()
 {
     set -e
-    rm -rf build_deb
+    rm -rf build_deb*
 }
 
 
@@ -225,8 +231,8 @@ build_rpm()
     if [ ! -d "build_rpm" ] ;
     then
         BUILD_FIRST=1
-        rm -rf build_rpm
-        mkdir build_rpm
+        rm -rf build_rpm_${BUILD_TYPE}
+        mkdir build_rpm_${BUILD_TYPE}
     else
         BUILD_FIRST=0
     fi
@@ -237,6 +243,7 @@ build_rpm()
     then
         cmake ../src \
             "${CMAKE_GENERATOR_LOCAL}" \
+            -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
             "-DCPACK_BINARY_DEB=0" \
             "-DCPACK_BINARY_RPM=1" \
   	    "-DCPACK_BINARY_STGZ=0" \
@@ -273,10 +280,8 @@ build_rpm()
 build_rpm_clean()
 {
     set -e
-    rm -rf build_rpm
+    rm -rf build_rpm*
 }
-
-
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -293,19 +298,20 @@ build_tst()
     if [ ! -d "build_tst" ] ;
     then
         BUILD_FIRST=1
-        rm -rf build_tst
-        mkdir build_tst
+        rm -rf build_tst_${BUILD_TYPE}
+        mkdir build_tst_${BUILD_TYPE}
     else
         BUILD_FIRST=0
     fi
-    cd build_tst
+    cd build_tst_${BUILD_TYPE}
 
     # build tst
     if [ ${BUILD_FIRST} -eq 1 ] ;
     then
         cmake ../tst \
   	     "${CMAKE_GENERATOR_LOCAL}" \
-	     -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}"
+	     -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}" \
+         -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
@@ -344,7 +350,7 @@ build_tst()
 build_tst_clean()
 {
     set -e
-    rm -rf build_tst
+    rm -rf build_tst*
 }
 
 clean()
@@ -374,6 +380,7 @@ fi
 INSTALL_PREFIX="${HOME}/.ASNeG"
 STACK_PREFIX="/"
 JOBS=1
+BUILD_TYPE="Debug"
 
 while [ $# -gt 0 ];
 do
@@ -400,14 +407,16 @@ case $key in
     shift # past argument
     shift # past value
     ;;
+    -B|--build-type)
+    BUILD_TYPE="$2"
+    shift # past argument
+    shift # past value
+    ;;
     *)    # unknown option
     shift # past argument
     ;;
 esac
 done
-
-echo "${INSTALL_PREFIX}"
-echo "${JOBS}"
 
 if [ "${TARGET}" = "info" ] ;
 then

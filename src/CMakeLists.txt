@@ -12,8 +12,8 @@ cmake_policy(SET CMP0053 OLD)
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 set(VERSION_MAJOR "3")
-set(VERSION_MINOR "5")
-set(VERSION_PATCH "1")
+set(VERSION_MINOR "6")
+set(VERSION_PATCH "0")
 
 set(BOOST_VERSION_MAJOR "1"  CACHE STRING "boost major version")
 set(BOOST_VERSION_MINOR "54" CACHE STRING "boost minor version")
@@ -116,6 +116,13 @@ message(STATUS "  host system: ${CMAKE_HOST_SYSTEM}")
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+ if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")    
+    set(Boost_USE_DEBUG_LIBS     ON)
+    set(Boost_USE_RELEASE_LIBS   OFF)
+ else()
+    set(Boost_USE_DEBUG_LIBS     OFF)
+    set(Boost_USE_RELEASE_LIBS   ON)
+ endif()
 add_definitions(-DBOOST_ALL_DYN_LINK)
 find_package(
     Boost 
@@ -130,8 +137,8 @@ message(STATUS "Boost library")
 message(STATUS "  version major: ${Boost_MAJOR_VERSION}")
 message(STATUS "  version minor: ${Boost_MINOR_VERSION}")
 message(STATUS "  version subminor: ${Boost_SUBMINOR_VERSION}")
-message(STATUS "  include directory: ${Boost_INCLUDE_DIR}")
-message(STATUS "  library directory: ${Boost_LIBRARY_DIR}")
+message(STATUS "  include directory: ${Boost_INCLUDE_DIRS}")
+message(STATUS "  library directory: ${Boost_LIBRARY_DIRS}")
 message(STATUS "  system debug library: ${Boost_SYSTEM_LIBRARY_DEBUG}")
 message(STATUS "  system release library: ${Boost_SYSTEM_LIBRARY_RELEASE}")
 message(STATUS "  unit_test_framework debug library: ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY_DEBUG}")
@@ -188,9 +195,16 @@ message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-if (WIN32)
+
+set (INSTALL_PREFIX "/usr")        
+if (WIN32)    
+    if (CPACK_BINARY_MSI)
+        set (INSTALL_PREFIX "./usr")   
+    endif()
     include(Tools/CMakeLists.txt) 
 endif()
+
+
 include(OpcUaStackCore/CMakeLists.txt)
 include(OpcUaStackPubSub/CMakeLists.txt)
 include(OpcUaStackClient/CMakeLists.txt) 
@@ -200,25 +214,6 @@ include(OpcUaClient/CMakeLists.txt)
 include(OpcUaProjectBuilder/CMakeLists.txt)
 include(OpcUaEventTypeGenerator/CMakeLists.txt)
 include(cmake/CMakeLists.txt)
-
-
-
-
-
-
-
-
-
-
-
-
-
-if (WIN32)
-	set(CMAKE_PREFIX_PATH C:\\local\\boost_1_54_0)
-	set(BOOST_LIBRARYDIR C:\\local\\boost_1_54_0\\lib32-msvc-11.0)
-	#ADD_DEFINITIONS(-DUNICODE)
-	#ADD_DEFINITIONS(-D_UNICODE)
-endif ()
 
 
 # -----------------------------------------------------------------------------
@@ -232,31 +227,31 @@ endif ()
 
 install(
     FILES icon/asneg.ico 
-    DESTINATION /usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/icons/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES icon/asneg_install.ico 
-    DESTINATION /usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/icons/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES icon/asneg_uninstall.ico 
-    DESTINATION /usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/icons/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES ${CMAKE_SOURCE_DIR}/../LICENSE
-    DESTINATION /usr/share/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES ${CMAKE_SOURCE_DIR}/../README.rst
-    DESTINATION /usr/share/OpcUaStack${VERSION_MAJOR}
+    DESTINATION ${INSTALL_PREFIX}/share/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
@@ -285,7 +280,49 @@ set(CPACK_BINARY_STGZ "OFF")
 set(CPACK_BINARY_TGZ "OFF")
 set(CPACK_BINARY_TZ "OFF")
 
+# Tell CPack all of the components to install. The "ALL"
+# refers to the fact that this is the set of components that
+# will be included when CPack is instructed to put everything
+# into the binary installer (the default behavior).
+set(CPACK_COMPONENTS_ALL libraries headers applications tools)
+
+# Set the displayed names for each of the components to install.
+# These will be displayed in the list of components inside the installer.
+set(CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "C++ OPC UA Stack Libraries")
+set(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "C++ OPC UA Stack Headers")
+set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "C++ OPC UA Applications Server")
+set(CPACK_COMPONENT_TOOLS_DISPLAY_NAME "OPC UA Stack Tools")
+set(CPACK_COMPONENT_DEPENDENCIES_DISPLAY_NAME "C++ OPC UA Stack Dependencies")
+set(CPACK_COMPONENT_DEPENDENCY_HEADERS_DISPLAY_NAME "Headers of C++ OPC UA Stack Dependencies")
+
+# Provide descriptions for each of the components to install.
+# When the user hovers the mouse over the name of a component, 
+# the description will be shown in the "Description" box in the
+# installer. If no descriptions are provided, the "Description" 
+# box will be removed.
+set(CPACK_COMPONENT_LIBRARIES_DESCRIPTION
+  "Shared libraries used to build opc ua applications")
+set(CPACK_COMPONENT_HEADERS_DESCRIPTION
+  "C/C++ header files used to build opc ua applications")
+set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION
+  "C/C++ opc ua application server")
+set(CPACK_COMPONENT_TOOLS_DESCRIPTION
+  "C/C++ development tools")
+set(CPACK_COMPONENT_DEPENDENCIES_DESCRIPTION
+    "Dependencies (boost-${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION} and opennssl-${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}")
+set(CPACK_COMPONENT_DEPENDENCY_HEADERS_DESCRIPTION
+    "Headers of (boost-${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION} and opennssl-${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}")
+
+# Put the components into two different groups: "Runtime" and "Development"
+set(CPACK_COMPONENT_LIBRARIES_GROUP "bin")
+set(CPACK_COMPONENT_APPLICATIONS_GROUP "bin")
+set(CPACK_COMPONENT_DEPENDENCIES_GROUP "bin" )
+set(CPACK_COMPONENT_TOOLS_GROUP "bin")
+
 if (CPACK_BINARY_DEB)
+    set(CPACK_COMPONENT_HEADERS_GROUP "dev")    
+    set(CPACK_COMPONENT_DEPENDENCY_HEADERS_GROUP "dev" )
+    
     set(CPACK_DEB_COMPONENT_INSTALL "ON")
     set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
 
@@ -317,89 +354,54 @@ if (CPACK_BINARY_RPM)
 endif()
 
 
-# Tell CPack all of the components to install. The "ALL"
-# refers to the fact that this is the set of components that
-# will be included when CPack is instructed to put everything
-# into the binary installer (the default behavior).
-set(CPACK_COMPONENTS_ALL libraries headers applications tools)
+if (CPACK_BINARY_MSI)
+    if (CPACK_PACKAGE_TYPE STREQUAL "Dev")
+        set(CPACK_COMPONENT_HEADERS_GROUP "dev")    
+        set(CPACK_COMPONENT_DEPENDENCY_HEADERS_GROUP "dev" )
+    endif()
 
-# Set the displayed names for each of the components to install.
-# These will be displayed in the list of components inside the installer.
-set(CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "C++ OPC UA Stack Libraries")
-set(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "C++ OPC UA Stack Headers")
-set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "C++ OPC UA Applications Server")
-set(CPACK_COMPONENT_TOOLS_DISPLAY_NAME "OPC UA Stack Tools")
+    set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-${CPACK_PACKAGE_TYPE}")    
+    
+    if (CPACK_PACKAGE_TYPE STREQUAL "Dev")
+		file (GLOB DEPS_DLL ${OPENSSL_INCLUDE_DIR}/../bin/libssl* ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto*)
+        set(CPACK_COMPONENTS_ALL libraries headers applications tools dependencies dependency_headers)
+        file(GLOB ALL_DEP_LIBS ${OPENSSL_LIBRARIES}/* ${Boost_LIBRARY_DIRS}/*)
+        install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)             
+        install(FILES ${ALL_DEP_LIBS} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
 
-# Provide descriptions for each of the components to install.
-# When the user hovers the mouse over the name of a component, 
-# the description will be shown in the "Description" box in the
-# installer. If no descriptions are provided, the "Description" 
-# box will be removed.
-set(CPACK_COMPONENT_LIBRARIES_DESCRIPTION
-  "Shared libraries used to build opc ua applications")
-set(CPACK_COMPONENT_HEADERS_DESCRIPTION
-  "C/C++ header files used to build opc ua applications")
-set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION
-  "C/C++ opc ua application server")
-set(CPACK_COMPONENT_TOOLS_DESCRIPTION
-  "C/C++ development tools")
+        install(DIRECTORY ${Boost_INCLUDE_DIRS}/boost DESTINATION ${INSTALL_PREFIX}/include COMPONENT dependency_headers)
+        install(DIRECTORY ${OPENSSL_INCLUDE_DIR}/openssl DESTINATION ${INSTALL_PREFIX}/include COMPONENT dependency_headers)
+    else()
+        set(CPACK_COMPONENTS_ALL libraries applications tools dependencies)
+        GetStackDependencies()   
 
-# Put the components into two different groups: "Runtime" and "Development"
-set(CPACK_COMPONENT_LIBRARIES_GROUP "bin")
-set(CPACK_COMPONENT_HEADERS_GROUP "dev")
-set(CPACK_COMPONENT_APPLICATIONS_GROUP "bin")
-set(CPACK_COMPONENT_TOOLS_GROUP "dev")
-
-include(CPack)
+        install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
+    endif()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#
-# todo
-#
-if (WIN32)
+    
 	include (InstallRequiredSystemLibraries)
-	
-	#set(CPACK_PACKAGE_EXECUTABLES "OpcUaServer" "OpcUaServer")
+    install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
+
+	set(CPACK_GENERATOR NSIS)	
 	set(CPACK_PACKAGE_INSTALL_DIRECTORY "OpcUaStack")
 	set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\\\\\icon\\\\asneg.ico")
 	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
 	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg_install.ico")
-	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")
-	#set(CPACK_NSIS_INSTALLED_ICON_NAME "asneg.ico")
+	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")   
+	set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 	
 	set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
 		"
-			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
-			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\OpcUaStackService.exe\\\" INSTALL \\\"ASNeG-Demo\\\" \\\"ASNeG Demo Server\\\"'
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib;$INSTDIR\\\\usr\\\\bin\\\"'          
 		"
 	) 
 	
 	set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
+		"			
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib;$INSTDIR\\\\usr\\\\bin\\\"'
 		"
-			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\OpcUaStackService.exe\\\" UNINSTALL \\\"ASNeG-Demo\\\"'
-			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
-		"
-	) 
-	
+	)     
 endif ()
-
+include(CPack)	
 
