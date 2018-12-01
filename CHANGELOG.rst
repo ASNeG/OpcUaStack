@@ -9,6 +9,7 @@ Release 3.6.0
 **Bugs**:
  
 * fix too specific params of *build.bat* #16, by @flipback
+* fix OpenSSL-1.1 compatibility in test compilation #46, by @flipback
 
 
 Release 3.5.1 (2018-11-11)
