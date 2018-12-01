@@ -81,7 +81,7 @@
             <Reference ReferenceType="Organizes">ns=1;s=SByte</Reference>
             <Reference ReferenceType="Organizes">ns=1;s=SByteArray</Reference>
             <Reference ReferenceType="Organizes">ns=1;s=StatusCode</Reference>
-            <Reference ReferenceType="Organizes">ns=1;s=StatuscodeArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=StatusCodeArray</Reference>
             <Reference ReferenceType="Organizes">ns=1;s=String</Reference>
             <Reference ReferenceType="Organizes">ns=1;s=StringArray</Reference>
             <Reference ReferenceType="Organizes">ns=1;s=Structure</Reference>
@@ -540,11 +540,11 @@
         </References>
         <Value>
             <uax:StatusCode>
-                <uax:Code>1</uax:Code>
+                <uax:Code>0</uax:Code>
             </uax:StatusCode>  
         </Value>
     </UAVariable>
-    <UAVariable DataType="StatusCode" ValueRank="1" NodeId="ns=1;s=StatuscodeArray" ArrayDimensions="2" BrowseName="1:StatusCodeArray" UserAccessLevel="3" AccessLevel="3">
+    <UAVariable DataType="StatusCode" ValueRank="1" NodeId="ns=1;s=StatusCodeArray" ArrayDimensions="2" BrowseName="1:StatusCodeArray" UserAccessLevel="3" AccessLevel="3">
         <DisplayName>StatusCodeArray</DisplayName>
         <References>
             <Reference ReferenceType="HasTypeDefinition">i=63</Reference>

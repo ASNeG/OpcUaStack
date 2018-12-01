@@ -17,8 +17,9 @@
 
 #include <boost/date_time/date_facet.hpp>
 #include <locale>
-#include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatus.h"
+#include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
 
 using namespace OpcUaStackCore;
 
@@ -113,6 +114,8 @@ namespace OpcUaStackServer
 		insertDataTypeElement("ListOfFloat", DataTypeElement(OpcUaBuildInType_OpcUaFloat, true));
 		insertDataTypeElement("Double", DataTypeElement(OpcUaBuildInType_OpcUaDouble, false));
 		insertDataTypeElement("ListOfDouble", DataTypeElement(OpcUaBuildInType_OpcUaDouble, true));
+		insertDataTypeElement("StatusCode", DataTypeElement(OpcUaBuildInType_OpcUaStatusCode, false));
+		insertDataTypeElement("ListOfStatusCode", DataTypeElement(OpcUaBuildInType_OpcUaStatusCode, true));
 		insertDataTypeElement("String", DataTypeElement(OpcUaBuildInType_OpcUaString, false));
 		insertDataTypeElement("ListOfString", DataTypeElement(OpcUaBuildInType_OpcUaString, true));
 		insertDataTypeElement("ByteString", DataTypeElement(OpcUaBuildInType_OpcUaByteString, false));
@@ -186,6 +189,7 @@ namespace OpcUaStackServer
 			case OpcUaBuildInType_OpcUaUInt64: rc = xmlDecode<OpcUaUInt64>(dataTypeElement, *ptreeValue, variant, "UInt64"); break;
 			case OpcUaBuildInType_OpcUaInt64: rc = xmlDecode<OpcUaInt64>(dataTypeElement, *ptreeValue, variant, "Int64"); break;
 			case OpcUaBuildInType_OpcUaFloat: rc = xmlDecode<OpcUaFloat>(dataTypeElement, *ptreeValue, variant, "Float"); break;
+			case OpcUaBuildInType_OpcUaStatusCode: rc = xmlDecode<OpcUaStatusCode>(dataTypeElement, *ptreeValue, variant, "StatusCode"); break;
 			case OpcUaBuildInType_OpcUaDouble: rc = xmlDecode<OpcUaDouble>(dataTypeElement, *ptreeValue, variant, "Double"); break;
 			case OpcUaBuildInType_OpcUaDateTime: rc = xmlDecode<OpcUaDateTime>(dataTypeElement, *ptreeValue, variant, "DateTime"); break;
 			case OpcUaBuildInType_OpcUaString: rc = xmlDecodeSPtr<OpcUaString>(dataTypeElement, *ptreeValue, variant, "String"); break;
@@ -211,6 +215,18 @@ namespace OpcUaStackServer
 		}
 
 		return rc;
+	}
+
+	bool
+	NodeSetValueParser::xmlDecode(boost::property_tree::ptree& ptree, OpcUaStatusCode& destValue, const std::string& tag)
+	{
+		OpcUaStatus status;
+		Xmlns xmlns;
+		if (!status.xmlDecode(ptree, xmlns)) {
+			return false;
+		}
+		destValue = status.enumeration();
+		return true;
 	}
 
 	bool 

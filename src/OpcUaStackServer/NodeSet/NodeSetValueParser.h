@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -207,6 +207,7 @@ namespace OpcUaStackServer
 				return true;
 			}
 
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStatusCode& destValue, const std::string& tag);
 		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag);
 		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag);
 		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag);

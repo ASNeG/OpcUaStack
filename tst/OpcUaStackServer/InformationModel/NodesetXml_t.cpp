@@ -307,6 +307,19 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode_decode)
 	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
 	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaNodeId>(0) == OpcUaNodeId(123, 1));
 	BOOST_REQUIRE(*dataValue.variant()->getSPtr<OpcUaNodeId>(1) == OpcUaNodeId(456, 1));
+
+	// check status code variable
+	nodeClass = informationModel->find(OpcUaNodeId("StatusCode", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->get<OpcUaStatusCode>() == Success);
+
+	// check status code array variable
+	nodeClass = informationModel->find(OpcUaNodeId("StatusCodeArray", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->get<OpcUaStatusCode>(0) == (OpcUaStatusCode)1);
+	BOOST_REQUIRE(dataValue.variant()->get<OpcUaStatusCode>(1) == (OpcUaStatusCode)2);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
