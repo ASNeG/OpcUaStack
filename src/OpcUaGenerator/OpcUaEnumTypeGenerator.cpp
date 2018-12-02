@@ -275,6 +275,9 @@ namespace OpcUaEnumTypeGenerator
 			}
 		}
 
+		//std::cout << "Name=" << enumTypeName_ << std::endl;
+		//std::cout << "NodeId=" << enumTypeNodeId_.toString() << std::endl;
+
 		// find node id for data type name
 		if (enumTypeNodeId_ == OpcUaNodeId(0,0)) {
 			if (!findNodeId(enumTypeName_, OpcUaNodeId(29))) {
@@ -288,6 +291,9 @@ namespace OpcUaEnumTypeGenerator
 				return -3;
 			}
 		}
+
+		//std::cout << "Name=" << enumTypeName_ << std::endl;
+		//std::cout << "NodeId=" << enumTypeNodeId_.toString() << std::endl;
 
 		// generate data type source code
 		EnumTypeGenerator dataTypeGenerator;
@@ -317,6 +323,7 @@ namespace OpcUaEnumTypeGenerator
 		ofStream << sourceContent;
 		ofStream.close();
 
+		std::cout << "generate " << enumTypeName_ << " success" << std::endl;
 		return 0;
 	}
 
@@ -329,14 +336,16 @@ namespace OpcUaEnumTypeGenerator
 			return rc;
 		}
 
-		// find node id for data type name
-		enumTypeNodeId_.set(0,0);
+		// find node id for data type name. After the call the variable
+		// enumTypeNodeId contains the node identifier
+		enumTypeNodeId_.set(0);
 		if (!findNodeId(enumTypeName_, OpcUaNodeId(29))) {
 			std::cout << "node id not found for data type " << enumTypeName_ << std::endl;
 			return -3;
 		}
 
-		// find all sub types
+		// find all sub types. After the call the variable enumTypeNameVec_
+		// contains all subtype names
 		if (findAllSubTypes(enumTypeNodeId_) < 0) {
 			return -4;
 		}
@@ -344,6 +353,7 @@ namespace OpcUaEnumTypeGenerator
 		// create source
 		std::vector<std::string>::iterator it;
 		for (it = enumTypeNameVec_.begin(); it != enumTypeNameVec_.end(); it++) {
+			enumTypeNodeId_.set(0);
 			enumTypeName_ = *it;
 			if (enumTypeName_ == "Enumeration") {
 				continue;
