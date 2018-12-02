@@ -229,10 +229,11 @@ namespace OpcUaStackCore
     bool
     BuildInfo::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
         if (!tree) {
             Log(Error, "BuildInfo decode xml error - element not found")
-                .parameter("Element", element);
+                .parameter("Element", elementName);
             return false; 
         }
         return xmlDecode(*tree, xmlns);
@@ -241,12 +242,14 @@ namespace OpcUaStackCore
     bool
     BuildInfo::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ProductUri");
+        elementName = xmlns.addPrefix("ProductUri");
+        tree = pt.get_child_optional(elementName);
         if (!tree) {
             Log(Error, "BuildInfo decode xml error - element not found")
-                .parameter("Element", "ProductUri");
+                .parameter("Element", elementName);
             return false;
         }
         if (!productUri_.xmlDecode(*tree, xmlns)) {
@@ -255,10 +258,11 @@ namespace OpcUaStackCore
             return false;
         }
     
-        tree = pt.get_child_optional("ManufacturerName");
+        elementName = xmlns.addPrefix("ManufacturerName");
+        tree = pt.get_child_optional(elementName);
         if (!tree) {
             Log(Error, "BuildInfo decode xml error - element not found")
-                .parameter("Element", "ManufacturerName");
+                .parameter("Element", elementName);
             return false;
         }
         if (!manufacturerName_.xmlDecode(*tree, xmlns)) {
@@ -267,10 +271,11 @@ namespace OpcUaStackCore
             return false;
         }
     
-        tree = pt.get_child_optional("ProductName");
+        elementName = xmlns.addPrefix("ProductName");
+        tree = pt.get_child_optional(elementName);
         if (!tree) {
             Log(Error, "BuildInfo decode xml error - element not found")
-                .parameter("Element", "ProductName");
+                .parameter("Element", elementName);
             return false;
         }
         if (!productName_.xmlDecode(*tree, xmlns)) {
@@ -279,10 +284,11 @@ namespace OpcUaStackCore
             return false;
         }
     
-        tree = pt.get_child_optional("SoftwareVersion");
+        elementName = xmlns.addPrefix("SoftwareVersion");
+        tree = pt.get_child_optional(elementName);
         if (!tree) {
             Log(Error, "BuildInfo decode xml error - element not found")
-                .parameter("Element", "SoftwareVersion");
+                .parameter("Element", elementName);
             return false;
         }
         if (!softwareVersion_.xmlDecode(*tree, xmlns)) {
@@ -291,10 +297,11 @@ namespace OpcUaStackCore
             return false;
         }
     
-        tree = pt.get_child_optional("BuildNumber");
+        elementName = xmlns.addPrefix("BuildNumber");
+        tree = pt.get_child_optional(elementName);
         if (!tree) {
             Log(Error, "BuildInfo decode xml error - element not found")
-                .parameter("Element", "BuildNumber");
+                .parameter("Element", elementName);
             return false;
         }
         if (!buildNumber_.xmlDecode(*tree, xmlns)) {
@@ -303,10 +310,11 @@ namespace OpcUaStackCore
             return false;
         }
     
-        tree = pt.get_child_optional("BuildDate");
+        elementName = xmlns.addPrefix("BuildDate");
+        tree = pt.get_child_optional(elementName);
         if (!tree) {
             Log(Error, "BuildInfo decode xml error - element not found")
-                .parameter("Element", "BuildDate");
+                .parameter("Element", elementName);
             return false;
         }
         if (!buildDate_.xmlDecode(*tree, xmlns)) {

@@ -1008,10 +1008,11 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix <<  nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);" << std::endl;
+		ss << prefix << "    std::string elementName = xmlns.addPrefix(element);" << std::endl;
+		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);" << std::endl;
 		ss << prefix << "    if (!tree) {" << std::endl;
 		ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode xml error - element not found\")" << std::endl;
-		ss << prefix << "            .parameter(\"Element\", element);" << std::endl;
+		ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
  		ss << prefix << "        return false; " << std::endl;
 		ss << prefix << "    }" << std::endl;
 		ss << prefix << "    return xmlDecode(*tree, xmlns);" << std::endl;
@@ -1025,16 +1026,18 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
+		ss << prefix << "    std::string elementName;" << std::endl;
 		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree;" << std::endl;
 		ss << prefix << std::endl;
 
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			ss << prefix << "    tree = pt.get_child_optional(\""<< dataTypeField->name() << "\");" << std::endl;
+			ss << prefix << "    elementName = xmlns.addPrefix(\"" << dataTypeField->name() << "\");" << std::endl;
+			ss << prefix << "    tree = pt.get_child_optional(elementName);" << std::endl;
 			ss << prefix << "    if (!tree) {" << std::endl;
 			ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode xml error - element not found\")" << std::endl;
-			ss << prefix << "            .parameter(\"Element\", \"" << dataTypeField->name() << "\");" << std::endl;
+			ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
 			ss << prefix << "        return false;" << std::endl;
 			ss << prefix << "    }" << std::endl;
 
@@ -1043,7 +1046,7 @@ namespace OpcUaStackServer
 				case DataTypeField::NumberType:
 					ss << prefix << "    if(!XmlNumber::xmlDecode(*tree, " << dataTypeField->variableName() << ")) {" << std::endl;
 					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode xml error - decode failed\")" << std::endl;
-					ss << prefix << "            .parameter(\"Element\", \"" << dataTypeField->name() << "\");" << std::endl;
+					ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
 					ss << prefix << "        return false;" << std::endl;
 					ss << prefix << "    }" << std::endl;
 					break;
@@ -1053,7 +1056,7 @@ namespace OpcUaStackServer
 				//case DataTypeField::EnumerationArrayType:
 					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlDecode(*tree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) {" << std::endl;
 					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode xml error - decode failed\")" << std::endl;
-					ss << prefix << "            .parameter(\"Element\", \"" << dataTypeField->name() << "\");" << std::endl;
+					ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
 					ss << prefix << "        return false;" << std::endl;
 					ss << prefix << "    }" << std::endl;
 					break;
