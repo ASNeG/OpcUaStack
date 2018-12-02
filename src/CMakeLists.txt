@@ -188,6 +188,7 @@ message(STATUS "  crypto library: ${OPENSSL_SSL_LIBRARY}")
 message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
 
 
+find_package (Threads)
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #

@@ -25,6 +25,7 @@ add_library(
 target_link_libraries(
     OpcUaStackCore
     ${CMAKE_DL_LIBS}
+    ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
     ${OPENSSL_LIBRARIES}
 )

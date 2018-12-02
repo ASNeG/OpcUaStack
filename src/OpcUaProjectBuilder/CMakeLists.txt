@@ -38,6 +38,7 @@ add_executable(
 target_link_libraries(
     OpcUaProjectBuilder${VERSION_MAJOR}
     ${CMAKE_DL_LIBS}
+    ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
     OpcUaStackCore
 )
