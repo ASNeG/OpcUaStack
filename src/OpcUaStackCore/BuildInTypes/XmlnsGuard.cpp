@@ -21,12 +21,31 @@
 namespace OpcUaStackCore
 {
 
-	XmlnsGuard::XmlnsGuard(void)
+	XmlnsGuard::XmlnsGuard(boost::property_tree::ptree& nodeSetElement, Xmlns& xmlns)
+	: xmlnsCopy_()
+	, xmlnsAct_(nullptr)
 	{
+		xmlnsCopy_ = xmlns;
+		xmlnsAct_ = &xmlns;
+
+		Xmlns xmlnsNew;
+		xmlnsNew.addNamespaceFromNodeSetElement(nodeSetElement);
+
+		std::vector<std::string> uris;
+		std::vector<std::string>::iterator it;
+		xmlnsNew.getUris(uris);
+
+		for (it = uris.begin(); it != uris.end(); it++) {
+			std::string uri = *it;
+			std::string prefix = xmlnsNew.getPrefix(uri);
+			xmlnsAct_->addNamespace(prefix, uri);
+		}
 	}
 
 	XmlnsGuard::~XmlnsGuard(void)
 	{
+		xmlnsAct_->clear();
+		*xmlnsAct_ = xmlnsCopy_;
 	}
 
 }

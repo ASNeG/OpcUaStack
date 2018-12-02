@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_XmlnsGuard_h__
 #define __OpcUaStackCore_XmlnsGuard_h__
 
+#include <boost/property_tree/ptree.hpp>
 #include <iostream>
 #include <map>
 #include "OpcUaStackCore/Base/os.h"
@@ -31,8 +32,11 @@ namespace OpcUaStackCore
 	  public:
 		/**
 		 * Encoder
+		 *
+		 * @parameter[in] nodeSetElement			node set element with namespace information
+		 * @parameter[in] xmlns						actual namespace info
 		 */
-		XmlnsGuard(void);
+		XmlnsGuard(boost::property_tree::ptree& nodeSetElement, Xmlns& xmlns);
 
 		/**
 		 * Decoder
@@ -40,6 +44,8 @@ namespace OpcUaStackCore
 		~XmlnsGuard(void);
 
 	  private:
+		Xmlns* xmlnsAct_;
+		Xmlns xmlnsCopy_;
 	};
 }
 
