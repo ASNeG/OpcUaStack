@@ -35,12 +35,12 @@ Release 3.5.0 (2018-10-27)
 * fix building DEB packet of a user application #19, by @flipback
 
 
-3.4.1 (2018-10-22)
+Release 3.4.1 (2018-10-22)
 -------------------------------------------------------------
 
 **Bugs**:
 
-* Fix condition check in server start #30, by @antlad
+* fix condition check in server start #30, by @antlad
 
 
 Release 3.4.0 (2018-10-16)
