@@ -343,25 +343,7 @@ namespace OpcUaStackServer
 		Xmlns& xmlns
 	)
 	{
-		boost::optional<std::string> locale = ptree.get_optional<std::string>(xmlns.addPrefix("Locale"));
-		boost::optional<std::string> text = ptree.get_optional<std::string>(xmlns.addPrefix("Text"));
-
-		if (!locale) {
-			destValue->locale("");
-
-		}
-		else {
-			destValue->locale(*locale);
-		}
-
-		if (!text) {
-			destValue->text("");
-		}
-		else {
-			destValue->text(*text);
-		}
-
-		return true;
+		return destValue->xmlDecode(ptree, xmlns);
 	}
 
 	bool 
@@ -372,15 +354,7 @@ namespace OpcUaStackServer
 		Xmlns& xmlns
 	)
 	{
-		boost::optional<std::string> sourceValue = ptree.get_optional<std::string>(xmlns.addPrefix("String"));
-		
-		if (!sourceValue) {
-			Log(Error, "value empty")
-				.parameter("SourceValue", sourceValue);
-			return false;
-		}
-		*destValue = *sourceValue;
-		return true;
+		return destValue->xmlDecode(ptree, xmlns);
 	}
 
 	bool 
@@ -391,22 +365,7 @@ namespace OpcUaStackServer
 		Xmlns& xmlns
 	)
 	{
-		boost::optional<std::string> sourceValue = ptree.get_optional<std::string>(xmlns.addPrefix("Identifier"));
-		if (!sourceValue) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addPrefix("Identifier"));
-			return false;
-		}
-
-		std::string s = *sourceValue;
-		s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-		bool rc = destValue->fromString(s);
-		if (!rc) {
-			Log(Error, "value format error")
-				.parameter("Tag", "uax:Identifier")
-				.parameter("SourceValue", s);
-		}
-		return rc;
+		return destValue->xmlDecode(ptree, xmlns);
 	}
 
 	bool 
@@ -417,25 +376,7 @@ namespace OpcUaStackServer
 		Xmlns& xmlns
 	)
 	{
-		boost::optional<std::string> namespaceIndex = ptree.get_optional<std::string>(xmlns.addPrefix("NamespaceIndex"));
-		if (namespaceIndex) {
-			try {
-				OpcUaUInt16 ns = boost::lexical_cast<OpcUaInt16>(*namespaceIndex);
-				destValue->namespaceIndex(ns);
-			} catch(boost::bad_lexical_cast& e) {
-				Log(Error, "bad_lexical_cast in decode")
-					.parameter("SourceValue", *namespaceIndex)
-					.parameter("What", e.what());
-				return false;
-			}
-		}
-
-		boost::optional<std::string> name = ptree.get_optional<std::string>(xmlns.addPrefix("Name"));
-		if (name) {
-			destValue->name(*name);
-		}
-
-		return true;
+		return destValue->xmlDecode(ptree, xmlns);
 	}
 
 	bool

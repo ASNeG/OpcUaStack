@@ -1,6 +1,7 @@
 #include "unittest.h"
 
 #include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
@@ -19,6 +20,12 @@ BOOST_AUTO_TEST_SUITE(NodesetXml_)
 BOOST_AUTO_TEST_CASE(NodesetXml_)
 {
 	std::cout << "NodesetXml_t" << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(NodesetXml_init)
+{
+	Core core;
+	core.init();
 }
 
 BOOST_AUTO_TEST_CASE(NodesetXml_clear)

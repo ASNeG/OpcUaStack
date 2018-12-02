@@ -191,6 +191,7 @@ namespace OpcUaStackCore
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
+		eo.registerFactoryElement<BuildInfo>(OpcUaId_BuildInfo_Encoding_DefaultXml);
 
 		// json
 	}
