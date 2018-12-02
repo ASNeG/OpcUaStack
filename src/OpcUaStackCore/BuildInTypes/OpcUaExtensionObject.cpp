@@ -18,6 +18,7 @@
 #include <boost/asio/streambuf.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/BuildInTypes/XmlnsGuard.h"
 #include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
@@ -438,9 +439,19 @@ namespace OpcUaStackCore
 		typeId_ = epSPtr_->binaryTypeId();
 
 		//
+		// handle namespaces in object tag
+		//
+		XmlnsGuard xmlnsGuard(bodyTree->front().second, xmlns);
+
+		//
+		// check namespace
+		//
+		//std::cout << "TypeName=" << epSPtr_->typeName() << " " << bodyTree->front().first << std::endl;
+
+		//
 		// decode extension object from xml file
 		//
-		if (!epSPtr_->xmlDecode(*bodyTree, xmlns)) {
+		if (!epSPtr_->xmlDecode(bodyTree->front().second, xmlns)) {
 			Log(Error, "OpcUaExtensionObject xml decoder error")
 				.parameter("Element", "Body")
 				.parameter("XmlTypeNodeId", xmlTypeNodeId);

@@ -23,6 +23,7 @@ namespace OpcUaStackCore
 
 	Xmlns::Xmlns(void)
 	: namespaceMap_()
+	, logEnable_(false)
 	{
 	}
 
@@ -47,12 +48,12 @@ namespace OpcUaStackCore
 			namespaceMap_.erase(it);
 		}
 
-		if (prefix != "") {
+		if (logEnable_) {
 			Log(Debug, "add new namesapce")
 				.parameter("Prefix", prefix)
 				.parameter("Uri", uri);
-			namespaceMap_.insert(std::make_pair(uri, prefix));
 		}
+		namespaceMap_.insert(std::make_pair(uri, prefix));
 		return true;
 	}
 
@@ -60,16 +61,24 @@ namespace OpcUaStackCore
 	Xmlns::addNamespaceFromNodeSetElement(boost::property_tree::ptree& nodeSetElement)
 	{
 		boost::optional<boost::property_tree::ptree&> xmlAttrPtree = nodeSetElement.get_child_optional("<xmlattr>");
-		if (!xmlAttrPtree) return false;
+		if (!xmlAttrPtree) {
+			return false;
+		}
 
 		boost::property_tree::ptree::iterator it;
 		for (it = xmlAttrPtree->begin(); it != xmlAttrPtree->end(); it++) {
 			std::string prefix = it->first;
 			std::string uri = it->second.data();
 
-			if (prefix.substr(0, 6) != "xmlns:") continue;
-
-			prefix = prefix.substr(6, prefix.size() - 6);
+			if (prefix.substr(0, 6) == "xmlns:") {
+				prefix = prefix.substr(6, prefix.size() - 6);
+			}
+			else if (prefix == "xmlns") {
+				prefix = "";
+			}
+			else {
+				continue;
+			}
 
 			addNamespace(prefix, uri);
 		}
@@ -161,5 +170,24 @@ namespace OpcUaStackCore
 
 		return *this;
 	}
+
+	void
+	Xmlns::log(const std::string& message)
+	{
+		Log log(Debug, message);
+
+		NamespaceMap::iterator it;
+		for (it = namespaceMap_.begin(); it!= namespaceMap_.end(); it++) {
+			log.parameter("Prefix", it->second);
+			log.parameter("Uri", it->first);
+		}
+	}
+
+	void
+	Xmlns::logEnable(bool logEnable)
+	{
+		logEnable_ = logEnable;
+	}
+
 
 }

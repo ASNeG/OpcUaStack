@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 
 		Xmlns xmlnsNew;
 		xmlnsNew.addNamespaceFromNodeSetElement(nodeSetElement);
+		//xmlnsNew.log("NEW");
 
 		std::vector<std::string> uris;
 		std::vector<std::string>::iterator it;

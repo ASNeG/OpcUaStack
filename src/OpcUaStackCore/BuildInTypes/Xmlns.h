@@ -121,7 +121,22 @@ namespace OpcUaStackCore
 		 */
 		Xmlns& operator=(const Xmlns& value);
 
+		/**
+		 * This function is used to log all prefix and uri pairs.
+		 *
+		 * @parameter[in] message		log message
+		 */
+		void log(const std::string& message = "");
+
+		/**
+		 * This function is usd to enable or disable the logging of the class
+		 *
+		 * @parameter[in] logEnable		enable or disable the log of the class
+		 */
+		void logEnable(bool logEnable);
+
 	  private:
+		bool logEnable_;
 		NamespaceMap namespaceMap_;
 	};
 

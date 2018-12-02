@@ -72,6 +72,7 @@
 #include "OpcUaStackCore/StandardDataTypes/ReferenceTypeAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/ViewAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/AggregateFilter.h"
+#include "OpcUaStackCore/StandardDataTypes/EnumValueType.h"
 
 namespace OpcUaStackCore
 {
@@ -192,6 +193,7 @@ namespace OpcUaStackCore
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
 		eo.registerFactoryElement<BuildInfo>(OpcUaId_BuildInfo_Encoding_DefaultXml);
+		eo.registerFactoryElement<EnumValueType>(OpcUaId_EnumValueType_Encoding_DefaultXml);
 
 		// json
 	}
@@ -270,6 +272,7 @@ namespace OpcUaStackCore
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);
+		eo.deregisterFactoryElement(OpcUaId_EnumValueType_Encoding_DefaultXml);
 
 		// json
 	}
