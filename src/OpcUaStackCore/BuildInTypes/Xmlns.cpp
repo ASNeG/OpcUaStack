@@ -30,6 +30,12 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	Xmlns::clear(void)
+	{
+		namespaceMap_.clear();
+	}
+
 	bool
 	Xmlns::addNamespace(const std::string& prefix, const std::string& uri)
 	{
@@ -93,6 +99,15 @@ namespace OpcUaStackCore
 		return "";
 	}
 
+	void
+	Xmlns::getUris(std::vector<std::string>& uris)
+	{
+		NamespaceMap::iterator it;
+		for (it = namespaceMap_.begin(); it != namespaceMap_.end(); it++) {
+			uris.push_back(it->first);
+		}
+	}
+
 	std::string
 	Xmlns::addPrefix(const std::string& element, const std::string& uri)
 	{
@@ -130,5 +145,21 @@ namespace OpcUaStackCore
 		}
 	}
 
+	Xmlns&
+	Xmlns::operator=(const Xmlns& value)
+	{
+		clear();
+		std::vector<std::string> uris;
+		const_cast<Xmlns*>(&value)->getUris(uris);
+
+		std::vector<std::string>::iterator it;
+		for (it = uris.begin(); it != uris.end(); it++) {
+			std::string uri = *it;
+			std::string prefix = const_cast<Xmlns*>(&value)->getPrefix(uri);
+			addNamespace(prefix, uri);
+		}
+
+		return *this;
+	}
 
 }

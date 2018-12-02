@@ -42,6 +42,11 @@ namespace OpcUaStackCore
 		~Xmlns(void);
 
 		/**
+		 * This function removes all namespace entries
+		 */
+		void clear(void);
+
+		/**
 		 * This function is used to add a new xml namespace to the namespace map. If the
 		 * namespace already exist then the old namespace will be delete.
 		 *
@@ -81,6 +86,13 @@ namespace OpcUaStackCore
 		std::string getPrefix(const std::string& uri);
 
 		/**
+		 * This function returns a list of all puris
+		 *
+		 * @return prefix of the namespace or a empty string
+		 */
+		void getUris(std::vector<std::string>& uris);
+
+		/**
 		 * This function is used to add the prefix to the element name
 		 *
 		 * @parameter[in] element		name of the element
@@ -99,6 +111,15 @@ namespace OpcUaStackCore
 		 * @return data type name
 		 */
 		std::string cutPrefix(const std::string& element, const std::string& uri = "");
+
+		/**
+		 * equal operator
+		 *
+		 * @parameter[in] value			xmlns element
+		 *
+		 * @return class reference
+		 */
+		Xmlns& operator=(const Xmlns& value);
 
 	  private:
 		NamespaceMap namespaceMap_;
