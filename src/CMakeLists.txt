@@ -188,7 +188,11 @@ message(STATUS "  crypto library: ${OPENSSL_SSL_LIBRARY}")
 message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
 
 
+# -----------------------------------------------------------------------------
+# find thread library
+# -----------------------------------------------------------------------------
 find_package (Threads)
+
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
@@ -320,12 +324,15 @@ set(CPACK_COMPONENT_APPLICATIONS_GROUP "bin")
 set(CPACK_COMPONENT_DEPENDENCIES_GROUP "bin" )
 set(CPACK_COMPONENT_TOOLS_GROUP "bin")
 
-if (CPACK_BINARY_DEB)
+if (CPACK_BINARY_DEB OR CPACK_BINARY_RPM)
     set(CPACK_COMPONENT_HEADERS_GROUP "dev")    
     set(CPACK_COMPONENT_DEPENDENCY_HEADERS_GROUP "dev" )
-    
-    set(CPACK_DEB_COMPONENT_INSTALL "ON")
+   
     set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+endif()
+
+if (CPACK_BINARY_DEB)
+    set(CPACK_DEB_COMPONENT_INSTALL "ON")
 
     SSLDepends(libssl)         
     
@@ -350,8 +357,7 @@ endif()
 
 if (CPACK_BINARY_RPM)
     set(CPACK_RPM_COMPONENT_INSTALL "ON")
- #   set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
-    set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+    set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
 endif()
 
 
