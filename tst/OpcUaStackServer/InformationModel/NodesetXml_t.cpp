@@ -37,9 +37,12 @@ BOOST_AUTO_TEST_CASE(NodesetXml_clear)
 	nodeSetNamespace.clearGlobal();
 }
 
-BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode_decode)
+BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode)
 {
 	bool success;
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 
 	// read opc ua nodeset
 	ConfigXml configXml;
@@ -390,6 +393,26 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode_decode)
 	BOOST_REQUIRE(buildInfo->productName() == OpcUaString("String1"));
 	BOOST_REQUIRE(buildInfo->softwareVersion() == OpcUaString("String1"));
 	BOOST_REQUIRE(buildInfo->buildDate() == OpcUaDateTime("2000-01-01T00:00:00Z"));
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// write nodes from information model into node set file
+	NodeSetXmlParser nodeSetXmlParserWrite;
+
+	namespaceVec.clear();
+	namespaceVec.push_back("http://yourorganisation.org/data_value/");
+	success = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModel, namespaceVec);
+	BOOST_REQUIRE(success == true);
+
+	ConfigXml configXmlWrite;
+	success = nodeSetXmlParserWrite.encode(configXmlWrite.ptree());
+	BOOST_REQUIRE(success == true);
+
+	success = configXmlWrite.write("tmpNodeSet.xml");
+	BOOST_REQUIRE(success == true);
+
+
+    nodeSetXmlParser.nodeSetNamespace().clearGlobal();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
