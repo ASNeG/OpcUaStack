@@ -963,6 +963,10 @@ namespace OpcUaStackServer
 	{
 		OpcUaNodeId nodeId;
 
+		xmlns_.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+		xmlns_.addNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
+		xmlns_.addNamespace("uax", "http://opcfoundation.org/UA/2008/02/Types.xsd");
+
 		nodeId.set((uint32_t)OpcUaId_HasComponent);
 		nodeSetAlias_.insert("HasComponent", nodeId);
 		nodeId.set((uint32_t)OpcUaId_HasProperty);
