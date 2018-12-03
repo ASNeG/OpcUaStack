@@ -131,7 +131,7 @@ namespace OpcUaStackCore
     void
     UserNameIdentityToken::opcUaBinaryEncode(std::ostream& os) const
     {
-       UserIdentityToken::opcUaBinaryEncode(os);
+        UserIdentityToken::opcUaBinaryEncode(os);
         userName_.opcUaBinaryEncode(os);
         password_.opcUaBinaryEncode(os);
         encryptionAlgorithm_.opcUaBinaryEncode(os);
@@ -140,7 +140,7 @@ namespace OpcUaStackCore
     void
     UserNameIdentityToken::opcUaBinaryDecode(std::istream& is)
     {
-       UserIdentityToken::opcUaBinaryDecode(is);
+        UserIdentityToken::opcUaBinaryDecode(is);
         userName_.opcUaBinaryDecode(is);
         password_.opcUaBinaryDecode(is);
         encryptionAlgorithm_.opcUaBinaryDecode(is);
@@ -188,27 +188,60 @@ namespace OpcUaStackCore
     bool
     UserNameIdentityToken::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserNameIdentityToken decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     UserNameIdentityToken::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("UserName");
-        if (!tree) return false;
-        if (!userName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("UserName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserNameIdentityToken decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!userName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UserNameIdentityToken decode xml error - decode failed")
+                .parameter("Element", "UserName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Password");
-        if (!tree) return false;
-        if (!password_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Password");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserNameIdentityToken decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!password_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UserNameIdentityToken decode xml error - decode failed")
+                .parameter("Element", "Password");
+            return false;
+        }
     
-        tree = pt.get_child_optional("EncryptionAlgorithm");
-        if (!tree) return false;
-        if (!encryptionAlgorithm_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("EncryptionAlgorithm");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserNameIdentityToken decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!encryptionAlgorithm_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UserNameIdentityToken decode xml error - decode failed")
+                .parameter("Element", "EncryptionAlgorithm");
+            return false;
+        }
     
         return true;
     }

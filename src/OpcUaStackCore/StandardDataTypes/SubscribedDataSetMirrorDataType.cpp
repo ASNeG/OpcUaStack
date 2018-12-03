@@ -119,6 +119,7 @@ namespace OpcUaStackCore
     void
     SubscribedDataSetMirrorDataType::opcUaBinaryEncode(std::ostream& os) const
     {
+        SubscribedDataSetDataType::opcUaBinaryEncode(os);
         parentNodeName_.opcUaBinaryEncode(os);
         rolePermissions_.opcUaBinaryEncode(os);
     }
@@ -126,6 +127,7 @@ namespace OpcUaStackCore
     void
     SubscribedDataSetMirrorDataType::opcUaBinaryDecode(std::istream& is)
     {
+        SubscribedDataSetDataType::opcUaBinaryDecode(is);
         parentNodeName_.opcUaBinaryDecode(is);
         rolePermissions_.opcUaBinaryDecode(is);
     }
@@ -168,23 +170,47 @@ namespace OpcUaStackCore
     bool
     SubscribedDataSetMirrorDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscribedDataSetMirrorDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     SubscribedDataSetMirrorDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ParentNodeName");
-        if (!tree) return false;
-        if (!parentNodeName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ParentNodeName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscribedDataSetMirrorDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!parentNodeName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SubscribedDataSetMirrorDataType decode xml error - decode failed")
+                .parameter("Element", "ParentNodeName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("RolePermissions");
-        if (!tree) return false;
-        if (!rolePermissions_.xmlDecode(*tree, "RolePermissionType", xmlns)) return false;
+        elementName = xmlns.addPrefix("RolePermissions");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscribedDataSetMirrorDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!rolePermissions_.xmlDecode(*tree, "RolePermissionType", xmlns)) {
+            Log(Error, "SubscribedDataSetMirrorDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

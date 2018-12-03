@@ -110,12 +110,14 @@ namespace OpcUaStackCore
     void
     LiteralOperand::opcUaBinaryEncode(std::ostream& os) const
     {
+        FilterOperand::opcUaBinaryEncode(os);
         value_.opcUaBinaryEncode(os);
     }
     
     void
     LiteralOperand::opcUaBinaryDecode(std::istream& is)
     {
+        FilterOperand::opcUaBinaryDecode(is);
         value_.opcUaBinaryDecode(is);
     }
     
@@ -153,19 +155,34 @@ namespace OpcUaStackCore
     bool
     LiteralOperand::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "LiteralOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     LiteralOperand::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Value");
-        if (!tree) return false;
-        if (!value_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Value");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "LiteralOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!value_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "LiteralOperand decode xml error - decode failed")
+                .parameter("Element", "Value");
+            return false;
+        }
     
         return true;
     }

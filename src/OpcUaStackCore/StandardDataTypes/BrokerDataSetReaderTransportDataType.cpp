@@ -146,6 +146,7 @@ namespace OpcUaStackCore
     void
     BrokerDataSetReaderTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
+        DataSetReaderTransportDataType::opcUaBinaryEncode(os);
         queueName_.opcUaBinaryEncode(os);
         resourceUri_.opcUaBinaryEncode(os);
         authenticationProfileUri_.opcUaBinaryEncode(os);
@@ -156,6 +157,7 @@ namespace OpcUaStackCore
     void
     BrokerDataSetReaderTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
+        DataSetReaderTransportDataType::opcUaBinaryDecode(is);
         queueName_.opcUaBinaryDecode(is);
         resourceUri_.opcUaBinaryDecode(is);
         authenticationProfileUri_.opcUaBinaryDecode(is);
@@ -213,35 +215,86 @@ namespace OpcUaStackCore
     bool
     BrokerDataSetReaderTransportDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     BrokerDataSetReaderTransportDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("QueueName");
-        if (!tree) return false;
-        if (!queueName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("QueueName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!queueName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - decode failed")
+                .parameter("Element", "QueueName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ResourceUri");
-        if (!tree) return false;
-        if (!resourceUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ResourceUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!resourceUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - decode failed")
+                .parameter("Element", "ResourceUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("AuthenticationProfileUri");
-        if (!tree) return false;
-        if (!authenticationProfileUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("AuthenticationProfileUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!authenticationProfileUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - decode failed")
+                .parameter("Element", "AuthenticationProfileUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("RequestedDeliveryGuarantee");
-        if (!tree) return false;
-        if (!requestedDeliveryGuarantee_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("RequestedDeliveryGuarantee");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!requestedDeliveryGuarantee_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - decode failed")
+                .parameter("Element", "RequestedDeliveryGuarantee");
+            return false;
+        }
     
-        tree = pt.get_child_optional("MetaDataQueueName");
-        if (!tree) return false;
-        if (!metaDataQueueName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("MetaDataQueueName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!metaDataQueueName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerDataSetReaderTransportDataType decode xml error - decode failed")
+                .parameter("Element", "MetaDataQueueName");
+            return false;
+        }
     
         return true;
     }

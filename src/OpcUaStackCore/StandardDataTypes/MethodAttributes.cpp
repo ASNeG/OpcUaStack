@@ -173,23 +173,47 @@ namespace OpcUaStackCore
     bool
     MethodAttributes::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MethodAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     MethodAttributes::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Executable");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, executable_)) return false;
+        elementName = xmlns.addPrefix("Executable");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MethodAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, executable_)) {
+            Log(Error, "MethodAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("UserExecutable");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, userExecutable_)) return false;
+        elementName = xmlns.addPrefix("UserExecutable");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MethodAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, userExecutable_)) {
+            Log(Error, "MethodAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

@@ -604,139 +604,424 @@ namespace OpcUaStackCore
     bool
     SubscriptionDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     SubscriptionDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("SessionId");
-        if (!tree) return false;
-        if (!sessionId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SessionId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!sessionId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "SessionId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SubscriptionId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, subscriptionId_)) return false;
+        elementName = xmlns.addPrefix("SubscriptionId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, subscriptionId_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("Priority");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, priority_)) return false;
+        elementName = xmlns.addPrefix("Priority");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, priority_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("PublishingInterval");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, publishingInterval_)) return false;
+        elementName = xmlns.addPrefix("PublishingInterval");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, publishingInterval_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxKeepAliveCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxKeepAliveCount_)) return false;
+        elementName = xmlns.addPrefix("MaxKeepAliveCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxKeepAliveCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxLifetimeCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxLifetimeCount_)) return false;
+        elementName = xmlns.addPrefix("MaxLifetimeCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxLifetimeCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxNotificationsPerPublish");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxNotificationsPerPublish_)) return false;
+        elementName = xmlns.addPrefix("MaxNotificationsPerPublish");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxNotificationsPerPublish_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("PublishingEnabled");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, publishingEnabled_)) return false;
+        elementName = xmlns.addPrefix("PublishingEnabled");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, publishingEnabled_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ModifyCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, modifyCount_)) return false;
+        elementName = xmlns.addPrefix("ModifyCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, modifyCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("EnableCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, enableCount_)) return false;
+        elementName = xmlns.addPrefix("EnableCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, enableCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DisableCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, disableCount_)) return false;
+        elementName = xmlns.addPrefix("DisableCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, disableCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("RepublishRequestCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, republishRequestCount_)) return false;
+        elementName = xmlns.addPrefix("RepublishRequestCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, republishRequestCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("RepublishMessageRequestCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, republishMessageRequestCount_)) return false;
+        elementName = xmlns.addPrefix("RepublishMessageRequestCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, republishMessageRequestCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("RepublishMessageCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, republishMessageCount_)) return false;
+        elementName = xmlns.addPrefix("RepublishMessageCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, republishMessageCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransferRequestCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, transferRequestCount_)) return false;
+        elementName = xmlns.addPrefix("TransferRequestCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, transferRequestCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransferredToAltClientCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, transferredToAltClientCount_)) return false;
+        elementName = xmlns.addPrefix("TransferredToAltClientCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, transferredToAltClientCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransferredToSameClientCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, transferredToSameClientCount_)) return false;
+        elementName = xmlns.addPrefix("TransferredToSameClientCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, transferredToSameClientCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("PublishRequestCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, publishRequestCount_)) return false;
+        elementName = xmlns.addPrefix("PublishRequestCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, publishRequestCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataChangeNotificationsCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, dataChangeNotificationsCount_)) return false;
+        elementName = xmlns.addPrefix("DataChangeNotificationsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, dataChangeNotificationsCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("EventNotificationsCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, eventNotificationsCount_)) return false;
+        elementName = xmlns.addPrefix("EventNotificationsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, eventNotificationsCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("NotificationsCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, notificationsCount_)) return false;
+        elementName = xmlns.addPrefix("NotificationsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, notificationsCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("LatePublishRequestCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, latePublishRequestCount_)) return false;
+        elementName = xmlns.addPrefix("LatePublishRequestCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, latePublishRequestCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("CurrentKeepAliveCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, currentKeepAliveCount_)) return false;
+        elementName = xmlns.addPrefix("CurrentKeepAliveCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, currentKeepAliveCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("CurrentLifetimeCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, currentLifetimeCount_)) return false;
+        elementName = xmlns.addPrefix("CurrentLifetimeCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, currentLifetimeCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("UnacknowledgedMessageCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, unacknowledgedMessageCount_)) return false;
+        elementName = xmlns.addPrefix("UnacknowledgedMessageCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, unacknowledgedMessageCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DiscardedMessageCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, discardedMessageCount_)) return false;
+        elementName = xmlns.addPrefix("DiscardedMessageCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, discardedMessageCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MonitoredItemCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, monitoredItemCount_)) return false;
+        elementName = xmlns.addPrefix("MonitoredItemCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, monitoredItemCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DisabledMonitoredItemCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, disabledMonitoredItemCount_)) return false;
+        elementName = xmlns.addPrefix("DisabledMonitoredItemCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, disabledMonitoredItemCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MonitoringQueueOverflowCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, monitoringQueueOverflowCount_)) return false;
+        elementName = xmlns.addPrefix("MonitoringQueueOverflowCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, monitoringQueueOverflowCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("NextSequenceNumber");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, nextSequenceNumber_)) return false;
+        elementName = xmlns.addPrefix("NextSequenceNumber");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, nextSequenceNumber_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("EventQueueOverFlowCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, eventQueueOverFlowCount_)) return false;
+        elementName = xmlns.addPrefix("EventQueueOverFlowCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, eventQueueOverFlowCount_)) {
+            Log(Error, "SubscriptionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

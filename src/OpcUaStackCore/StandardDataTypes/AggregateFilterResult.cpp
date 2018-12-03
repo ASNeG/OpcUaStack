@@ -185,27 +185,60 @@ namespace OpcUaStackCore
     bool
     AggregateFilterResult::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     AggregateFilterResult::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("RevisedStartTime");
-        if (!tree) return false;
-        if (!revisedStartTime_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("RevisedStartTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!revisedStartTime_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AggregateFilterResult decode xml error - decode failed")
+                .parameter("Element", "RevisedStartTime");
+            return false;
+        }
     
-        tree = pt.get_child_optional("RevisedProcessingInterval");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, revisedProcessingInterval_)) return false;
+        elementName = xmlns.addPrefix("RevisedProcessingInterval");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, revisedProcessingInterval_)) {
+            Log(Error, "AggregateFilterResult decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("RevisedAggregateConfiguration");
-        if (!tree) return false;
-        if (!revisedAggregateConfiguration_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("RevisedAggregateConfiguration");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!revisedAggregateConfiguration_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AggregateFilterResult decode xml error - decode failed")
+                .parameter("Element", "RevisedAggregateConfiguration");
+            return false;
+        }
     
         return true;
     }

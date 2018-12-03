@@ -155,19 +155,34 @@ namespace OpcUaStackCore
     bool
     DeleteEventDetails::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteEventDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     DeleteEventDetails::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("EventIds");
-        if (!tree) return false;
-        if (!eventIds_.xmlDecode(*tree, "ByteString", xmlns)) return false;
+        elementName = xmlns.addPrefix("EventIds");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteEventDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!eventIds_.xmlDecode(*tree, "ByteString", xmlns)) {
+            Log(Error, "DeleteEventDetails decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

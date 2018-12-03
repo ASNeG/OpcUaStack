@@ -113,14 +113,14 @@ namespace OpcUaStackCore
     void
     X509IdentityToken::opcUaBinaryEncode(std::ostream& os) const
     {
-       UserIdentityToken::opcUaBinaryEncode(os);
+        UserIdentityToken::opcUaBinaryEncode(os);
         certificateData_.opcUaBinaryEncode(os);
     }
     
     void
     X509IdentityToken::opcUaBinaryDecode(std::istream& is)
     {
-       UserIdentityToken::opcUaBinaryDecode(is);
+        UserIdentityToken::opcUaBinaryDecode(is);
         certificateData_.opcUaBinaryDecode(is);
     }
     
@@ -158,19 +158,34 @@ namespace OpcUaStackCore
     bool
     X509IdentityToken::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "X509IdentityToken decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     X509IdentityToken::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("CertificateData");
-        if (!tree) return false;
-        if (!certificateData_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("CertificateData");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "X509IdentityToken decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!certificateData_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "X509IdentityToken decode xml error - decode failed")
+                .parameter("Element", "CertificateData");
+            return false;
+        }
     
         return true;
     }

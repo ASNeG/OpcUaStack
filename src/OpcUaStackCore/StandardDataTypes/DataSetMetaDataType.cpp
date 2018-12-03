@@ -146,6 +146,7 @@ namespace OpcUaStackCore
     void
     DataSetMetaDataType::opcUaBinaryEncode(std::ostream& os) const
     {
+        DataTypeSchemaHeader::opcUaBinaryEncode(os);
         name_.opcUaBinaryEncode(os);
         description_.opcUaBinaryEncode(os);
         fields_.opcUaBinaryEncode(os);
@@ -156,6 +157,7 @@ namespace OpcUaStackCore
     void
     DataSetMetaDataType::opcUaBinaryDecode(std::istream& is)
     {
+        DataTypeSchemaHeader::opcUaBinaryDecode(is);
         name_.opcUaBinaryDecode(is);
         description_.opcUaBinaryDecode(is);
         fields_.opcUaBinaryDecode(is);
@@ -213,35 +215,86 @@ namespace OpcUaStackCore
     bool
     DataSetMetaDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetMetaDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     DataSetMetaDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Name");
-        if (!tree) return false;
-        if (!name_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Name");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetMetaDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetMetaDataType decode xml error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Description");
-        if (!tree) return false;
-        if (!description_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Description");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetMetaDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!description_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetMetaDataType decode xml error - decode failed")
+                .parameter("Element", "Description");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Fields");
-        if (!tree) return false;
-        if (!fields_.xmlDecode(*tree, "FieldMetaData", xmlns)) return false;
+        elementName = xmlns.addPrefix("Fields");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetMetaDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!fields_.xmlDecode(*tree, "FieldMetaData", xmlns)) {
+            Log(Error, "DataSetMetaDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetClassId");
-        if (!tree) return false;
-        if (!dataSetClassId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetClassId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetMetaDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetClassId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetMetaDataType decode xml error - decode failed")
+                .parameter("Element", "DataSetClassId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ConfigurationVersion");
-        if (!tree) return false;
-        if (!configurationVersion_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ConfigurationVersion");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetMetaDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!configurationVersion_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetMetaDataType decode xml error - decode failed")
+                .parameter("Element", "ConfigurationVersion");
+            return false;
+        }
     
         return true;
     }

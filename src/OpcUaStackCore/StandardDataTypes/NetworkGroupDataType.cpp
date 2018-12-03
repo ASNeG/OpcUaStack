@@ -169,23 +169,47 @@ namespace OpcUaStackCore
     bool
     NetworkGroupDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "NetworkGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     NetworkGroupDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ServerUri");
-        if (!tree) return false;
-        if (!serverUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ServerUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "NetworkGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "NetworkGroupDataType decode xml error - decode failed")
+                .parameter("Element", "ServerUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("NetworkPaths");
-        if (!tree) return false;
-        if (!networkPaths_.xmlDecode(*tree, "EndpointUrlListDataType", xmlns)) return false;
+        elementName = xmlns.addPrefix("NetworkPaths");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "NetworkGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!networkPaths_.xmlDecode(*tree, "EndpointUrlListDataType", xmlns)) {
+            Log(Error, "NetworkGroupDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

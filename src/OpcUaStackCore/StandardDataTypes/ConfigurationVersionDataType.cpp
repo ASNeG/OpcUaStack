@@ -169,23 +169,47 @@ namespace OpcUaStackCore
     bool
     ConfigurationVersionDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ConfigurationVersionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ConfigurationVersionDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("MajorVersion");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, majorVersion_)) return false;
+        elementName = xmlns.addPrefix("MajorVersion");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ConfigurationVersionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, majorVersion_)) {
+            Log(Error, "ConfigurationVersionDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MinorVersion");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, minorVersion_)) return false;
+        elementName = xmlns.addPrefix("MinorVersion");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ConfigurationVersionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, minorVersion_)) {
+            Log(Error, "ConfigurationVersionDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

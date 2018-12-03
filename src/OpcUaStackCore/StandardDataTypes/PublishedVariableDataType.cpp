@@ -259,47 +259,125 @@ namespace OpcUaStackCore
     bool
     PublishedVariableDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     PublishedVariableDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("PublishedVariable");
-        if (!tree) return false;
-        if (!publishedVariable_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("PublishedVariable");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publishedVariable_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PublishedVariableDataType decode xml error - decode failed")
+                .parameter("Element", "PublishedVariable");
+            return false;
+        }
     
-        tree = pt.get_child_optional("AttributeId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, attributeId_)) return false;
+        elementName = xmlns.addPrefix("AttributeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, attributeId_)) {
+            Log(Error, "PublishedVariableDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SamplingIntervalHint");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, samplingIntervalHint_)) return false;
+        elementName = xmlns.addPrefix("SamplingIntervalHint");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, samplingIntervalHint_)) {
+            Log(Error, "PublishedVariableDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DeadbandType");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, deadbandType_)) return false;
+        elementName = xmlns.addPrefix("DeadbandType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, deadbandType_)) {
+            Log(Error, "PublishedVariableDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DeadbandValue");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, deadbandValue_)) return false;
+        elementName = xmlns.addPrefix("DeadbandValue");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, deadbandValue_)) {
+            Log(Error, "PublishedVariableDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("IndexRange");
-        if (!tree) return false;
-        if (!indexRange_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("IndexRange");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!indexRange_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PublishedVariableDataType decode xml error - decode failed")
+                .parameter("Element", "IndexRange");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SubstituteValue");
-        if (!tree) return false;
-        if (!substituteValue_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SubstituteValue");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!substituteValue_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PublishedVariableDataType decode xml error - decode failed")
+                .parameter("Element", "SubstituteValue");
+            return false;
+        }
     
-        tree = pt.get_child_optional("MetaDataProperties");
-        if (!tree) return false;
-        if (!metaDataProperties_.xmlDecode(*tree, "QualifiedName", xmlns)) return false;
+        elementName = xmlns.addPrefix("MetaDataProperties");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!metaDataProperties_.xmlDecode(*tree, "QualifiedName", xmlns)) {
+            Log(Error, "PublishedVariableDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

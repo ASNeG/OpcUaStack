@@ -128,6 +128,7 @@ namespace OpcUaStackCore
     void
     UABinaryFileDataType::opcUaBinaryEncode(std::ostream& os) const
     {
+        DataTypeSchemaHeader::opcUaBinaryEncode(os);
         schemaLocation_.opcUaBinaryEncode(os);
         fileHeader_.opcUaBinaryEncode(os);
         body_.opcUaBinaryEncode(os);
@@ -136,6 +137,7 @@ namespace OpcUaStackCore
     void
     UABinaryFileDataType::opcUaBinaryDecode(std::istream& is)
     {
+        DataTypeSchemaHeader::opcUaBinaryDecode(is);
         schemaLocation_.opcUaBinaryDecode(is);
         fileHeader_.opcUaBinaryDecode(is);
         body_.opcUaBinaryDecode(is);
@@ -183,27 +185,60 @@ namespace OpcUaStackCore
     bool
     UABinaryFileDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UABinaryFileDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     UABinaryFileDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("SchemaLocation");
-        if (!tree) return false;
-        if (!schemaLocation_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SchemaLocation");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UABinaryFileDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!schemaLocation_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UABinaryFileDataType decode xml error - decode failed")
+                .parameter("Element", "SchemaLocation");
+            return false;
+        }
     
-        tree = pt.get_child_optional("FileHeader");
-        if (!tree) return false;
-        if (!fileHeader_.xmlDecode(*tree, "KeyValuePair", xmlns)) return false;
+        elementName = xmlns.addPrefix("FileHeader");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UABinaryFileDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!fileHeader_.xmlDecode(*tree, "KeyValuePair", xmlns)) {
+            Log(Error, "UABinaryFileDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("Body");
-        if (!tree) return false;
-        if (!body_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Body");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UABinaryFileDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!body_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UABinaryFileDataType decode xml error - decode failed")
+                .parameter("Element", "Body");
+            return false;
+        }
     
         return true;
     }

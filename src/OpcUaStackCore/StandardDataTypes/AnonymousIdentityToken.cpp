@@ -104,13 +104,13 @@ namespace OpcUaStackCore
     void
     AnonymousIdentityToken::opcUaBinaryEncode(std::ostream& os) const
     {
-       UserIdentityToken::opcUaBinaryEncode(os);
+        UserIdentityToken::opcUaBinaryEncode(os);
     }
     
     void
     AnonymousIdentityToken::opcUaBinaryDecode(std::istream& is)
     {
-       UserIdentityToken::opcUaBinaryDecode(is);
+        UserIdentityToken::opcUaBinaryDecode(is);
     }
     
     bool
@@ -143,14 +143,20 @@ namespace OpcUaStackCore
     bool
     AnonymousIdentityToken::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AnonymousIdentityToken decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     AnonymousIdentityToken::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
         return true;

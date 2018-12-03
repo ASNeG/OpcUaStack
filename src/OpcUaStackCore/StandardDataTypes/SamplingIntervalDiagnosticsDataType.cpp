@@ -199,31 +199,73 @@ namespace OpcUaStackCore
     bool
     SamplingIntervalDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     SamplingIntervalDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("SamplingInterval");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, samplingInterval_)) return false;
+        elementName = xmlns.addPrefix("SamplingInterval");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, samplingInterval_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MonitoredItemCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, monitoredItemCount_)) return false;
+        elementName = xmlns.addPrefix("MonitoredItemCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, monitoredItemCount_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxMonitoredItemCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxMonitoredItemCount_)) return false;
+        elementName = xmlns.addPrefix("MaxMonitoredItemCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxMonitoredItemCount_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DisabledMonitoredItemCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, disabledMonitoredItemCount_)) return false;
+        elementName = xmlns.addPrefix("DisabledMonitoredItemCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, disabledMonitoredItemCount_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

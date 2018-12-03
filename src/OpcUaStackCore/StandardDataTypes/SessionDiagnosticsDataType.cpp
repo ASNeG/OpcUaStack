@@ -784,187 +784,580 @@ namespace OpcUaStackCore
     bool
     SessionDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     SessionDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("SessionId");
-        if (!tree) return false;
-        if (!sessionId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SessionId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!sessionId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "SessionId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SessionName");
-        if (!tree) return false;
-        if (!sessionName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SessionName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!sessionName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "SessionName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ClientDescription");
-        if (!tree) return false;
-        if (!clientDescription_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ClientDescription");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!clientDescription_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "ClientDescription");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ServerUri");
-        if (!tree) return false;
-        if (!serverUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ServerUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "ServerUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("EndpointUrl");
-        if (!tree) return false;
-        if (!endpointUrl_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("EndpointUrl");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!endpointUrl_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "EndpointUrl");
+            return false;
+        }
     
-        tree = pt.get_child_optional("LocaleIds");
-        if (!tree) return false;
-        if (!localeIds_.xmlDecode(*tree, "LocaleId", xmlns)) return false;
+        elementName = xmlns.addPrefix("LocaleIds");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!localeIds_.xmlDecode(*tree, "LocaleId", xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ActualSessionTimeout");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, actualSessionTimeout_)) return false;
+        elementName = xmlns.addPrefix("ActualSessionTimeout");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, actualSessionTimeout_)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxResponseMessageSize");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxResponseMessageSize_)) return false;
+        elementName = xmlns.addPrefix("MaxResponseMessageSize");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxResponseMessageSize_)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ClientConnectionTime");
-        if (!tree) return false;
-        if (!clientConnectionTime_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ClientConnectionTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!clientConnectionTime_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "ClientConnectionTime");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ClientLastContactTime");
-        if (!tree) return false;
-        if (!clientLastContactTime_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ClientLastContactTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!clientLastContactTime_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "ClientLastContactTime");
+            return false;
+        }
     
-        tree = pt.get_child_optional("CurrentSubscriptionsCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, currentSubscriptionsCount_)) return false;
+        elementName = xmlns.addPrefix("CurrentSubscriptionsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, currentSubscriptionsCount_)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("CurrentMonitoredItemsCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, currentMonitoredItemsCount_)) return false;
+        elementName = xmlns.addPrefix("CurrentMonitoredItemsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, currentMonitoredItemsCount_)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("CurrentPublishRequestsInQueue");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, currentPublishRequestsInQueue_)) return false;
+        elementName = xmlns.addPrefix("CurrentPublishRequestsInQueue");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, currentPublishRequestsInQueue_)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TotalRequestCount");
-        if (!tree) return false;
-        if (!totalRequestCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TotalRequestCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!totalRequestCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "TotalRequestCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("UnauthorizedRequestCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, unauthorizedRequestCount_)) return false;
+        elementName = xmlns.addPrefix("UnauthorizedRequestCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, unauthorizedRequestCount_)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ReadCount");
-        if (!tree) return false;
-        if (!readCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ReadCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!readCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "ReadCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("HistoryReadCount");
-        if (!tree) return false;
-        if (!historyReadCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("HistoryReadCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!historyReadCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "HistoryReadCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("WriteCount");
-        if (!tree) return false;
-        if (!writeCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("WriteCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!writeCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "WriteCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("HistoryUpdateCount");
-        if (!tree) return false;
-        if (!historyUpdateCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("HistoryUpdateCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!historyUpdateCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "HistoryUpdateCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("CallCount");
-        if (!tree) return false;
-        if (!callCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("CallCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!callCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "CallCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("CreateMonitoredItemsCount");
-        if (!tree) return false;
-        if (!createMonitoredItemsCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("CreateMonitoredItemsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!createMonitoredItemsCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "CreateMonitoredItemsCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ModifyMonitoredItemsCount");
-        if (!tree) return false;
-        if (!modifyMonitoredItemsCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ModifyMonitoredItemsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!modifyMonitoredItemsCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "ModifyMonitoredItemsCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SetMonitoringModeCount");
-        if (!tree) return false;
-        if (!setMonitoringModeCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SetMonitoringModeCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!setMonitoringModeCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "SetMonitoringModeCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SetTriggeringCount");
-        if (!tree) return false;
-        if (!setTriggeringCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SetTriggeringCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!setTriggeringCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "SetTriggeringCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DeleteMonitoredItemsCount");
-        if (!tree) return false;
-        if (!deleteMonitoredItemsCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DeleteMonitoredItemsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!deleteMonitoredItemsCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "DeleteMonitoredItemsCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("CreateSubscriptionCount");
-        if (!tree) return false;
-        if (!createSubscriptionCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("CreateSubscriptionCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!createSubscriptionCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "CreateSubscriptionCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ModifySubscriptionCount");
-        if (!tree) return false;
-        if (!modifySubscriptionCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ModifySubscriptionCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!modifySubscriptionCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "ModifySubscriptionCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SetPublishingModeCount");
-        if (!tree) return false;
-        if (!setPublishingModeCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SetPublishingModeCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!setPublishingModeCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "SetPublishingModeCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("PublishCount");
-        if (!tree) return false;
-        if (!publishCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("PublishCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publishCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "PublishCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("RepublishCount");
-        if (!tree) return false;
-        if (!republishCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("RepublishCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!republishCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "RepublishCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransferSubscriptionsCount");
-        if (!tree) return false;
-        if (!transferSubscriptionsCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TransferSubscriptionsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transferSubscriptionsCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "TransferSubscriptionsCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DeleteSubscriptionsCount");
-        if (!tree) return false;
-        if (!deleteSubscriptionsCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DeleteSubscriptionsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!deleteSubscriptionsCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "DeleteSubscriptionsCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("AddNodesCount");
-        if (!tree) return false;
-        if (!addNodesCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("AddNodesCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!addNodesCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "AddNodesCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("AddReferencesCount");
-        if (!tree) return false;
-        if (!addReferencesCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("AddReferencesCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!addReferencesCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "AddReferencesCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DeleteNodesCount");
-        if (!tree) return false;
-        if (!deleteNodesCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DeleteNodesCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!deleteNodesCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "DeleteNodesCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DeleteReferencesCount");
-        if (!tree) return false;
-        if (!deleteReferencesCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DeleteReferencesCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!deleteReferencesCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "DeleteReferencesCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("BrowseCount");
-        if (!tree) return false;
-        if (!browseCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("BrowseCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!browseCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "BrowseCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("BrowseNextCount");
-        if (!tree) return false;
-        if (!browseNextCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("BrowseNextCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!browseNextCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "BrowseNextCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("TranslateBrowsePathsToNodeIdsCount");
-        if (!tree) return false;
-        if (!translateBrowsePathsToNodeIdsCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TranslateBrowsePathsToNodeIdsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!translateBrowsePathsToNodeIdsCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "TranslateBrowsePathsToNodeIdsCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("QueryFirstCount");
-        if (!tree) return false;
-        if (!queryFirstCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("QueryFirstCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!queryFirstCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "QueryFirstCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("QueryNextCount");
-        if (!tree) return false;
-        if (!queryNextCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("QueryNextCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!queryNextCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "QueryNextCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("RegisterNodesCount");
-        if (!tree) return false;
-        if (!registerNodesCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("RegisterNodesCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!registerNodesCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "RegisterNodesCount");
+            return false;
+        }
     
-        tree = pt.get_child_optional("UnregisterNodesCount");
-        if (!tree) return false;
-        if (!unregisterNodesCount_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("UnregisterNodesCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!unregisterNodesCount_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "UnregisterNodesCount");
+            return false;
+        }
     
         return true;
     }

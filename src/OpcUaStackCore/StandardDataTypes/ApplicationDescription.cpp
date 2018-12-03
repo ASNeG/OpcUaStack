@@ -247,43 +247,112 @@ namespace OpcUaStackCore
     bool
     ApplicationDescription::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ApplicationDescription::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ApplicationUri");
-        if (!tree) return false;
-        if (!applicationUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ApplicationUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!applicationUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ApplicationDescription decode xml error - decode failed")
+                .parameter("Element", "ApplicationUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ProductUri");
-        if (!tree) return false;
-        if (!productUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ProductUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!productUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ApplicationDescription decode xml error - decode failed")
+                .parameter("Element", "ProductUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ApplicationName");
-        if (!tree) return false;
-        if (!applicationName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ApplicationName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!applicationName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ApplicationDescription decode xml error - decode failed")
+                .parameter("Element", "ApplicationName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ApplicationType");
-        if (!tree) return false;
-        if (!applicationType_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ApplicationType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!applicationType_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ApplicationDescription decode xml error - decode failed")
+                .parameter("Element", "ApplicationType");
+            return false;
+        }
     
-        tree = pt.get_child_optional("GatewayServerUri");
-        if (!tree) return false;
-        if (!gatewayServerUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("GatewayServerUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!gatewayServerUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ApplicationDescription decode xml error - decode failed")
+                .parameter("Element", "GatewayServerUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DiscoveryProfileUri");
-        if (!tree) return false;
-        if (!discoveryProfileUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DiscoveryProfileUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!discoveryProfileUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ApplicationDescription decode xml error - decode failed")
+                .parameter("Element", "DiscoveryProfileUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DiscoveryUrls");
-        if (!tree) return false;
-        if (!discoveryUrls_.xmlDecode(*tree, "String", xmlns)) return false;
+        elementName = xmlns.addPrefix("DiscoveryUrls");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!discoveryUrls_.xmlDecode(*tree, "String", xmlns)) {
+            Log(Error, "ApplicationDescription decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

@@ -169,23 +169,47 @@ namespace OpcUaStackCore
     bool
     ServiceCounterDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServiceCounterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ServiceCounterDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("TotalCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, totalCount_)) return false;
+        elementName = xmlns.addPrefix("TotalCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServiceCounterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, totalCount_)) {
+            Log(Error, "ServiceCounterDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ErrorCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, errorCount_)) return false;
+        elementName = xmlns.addPrefix("ErrorCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServiceCounterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, errorCount_)) {
+            Log(Error, "ServiceCounterDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

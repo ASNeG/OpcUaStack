@@ -263,47 +263,125 @@ namespace OpcUaStackCore
     bool
     VariableAttributes::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     VariableAttributes::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Value");
-        if (!tree) return false;
-        if (!value_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Value");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!value_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "VariableAttributes decode xml error - decode failed")
+                .parameter("Element", "Value");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataType");
-        if (!tree) return false;
-        if (!dataType_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataType_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "VariableAttributes decode xml error - decode failed")
+                .parameter("Element", "DataType");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ValueRank");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, valueRank_)) return false;
+        elementName = xmlns.addPrefix("ValueRank");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, valueRank_)) {
+            Log(Error, "VariableAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ArrayDimensions");
-        if (!tree) return false;
-        if (!arrayDimensions_.xmlDecode(*tree, "UInt32", xmlns)) return false;
+        elementName = xmlns.addPrefix("ArrayDimensions");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!arrayDimensions_.xmlDecode(*tree, "UInt32", xmlns)) {
+            Log(Error, "VariableAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("AccessLevel");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, accessLevel_)) return false;
+        elementName = xmlns.addPrefix("AccessLevel");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, accessLevel_)) {
+            Log(Error, "VariableAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("UserAccessLevel");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, userAccessLevel_)) return false;
+        elementName = xmlns.addPrefix("UserAccessLevel");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, userAccessLevel_)) {
+            Log(Error, "VariableAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MinimumSamplingInterval");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, minimumSamplingInterval_)) return false;
+        elementName = xmlns.addPrefix("MinimumSamplingInterval");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, minimumSamplingInterval_)) {
+            Log(Error, "VariableAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("Historizing");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, historizing_)) return false;
+        elementName = xmlns.addPrefix("Historizing");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, historizing_)) {
+            Log(Error, "VariableAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

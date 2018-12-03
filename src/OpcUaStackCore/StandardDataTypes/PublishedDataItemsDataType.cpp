@@ -110,12 +110,14 @@ namespace OpcUaStackCore
     void
     PublishedDataItemsDataType::opcUaBinaryEncode(std::ostream& os) const
     {
+        PublishedDataSetSourceDataType::opcUaBinaryEncode(os);
         publishedData_.opcUaBinaryEncode(os);
     }
     
     void
     PublishedDataItemsDataType::opcUaBinaryDecode(std::istream& is)
     {
+        PublishedDataSetSourceDataType::opcUaBinaryDecode(is);
         publishedData_.opcUaBinaryDecode(is);
     }
     
@@ -153,19 +155,34 @@ namespace OpcUaStackCore
     bool
     PublishedDataItemsDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedDataItemsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     PublishedDataItemsDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("PublishedData");
-        if (!tree) return false;
-        if (!publishedData_.xmlDecode(*tree, "PublishedVariableDataType", xmlns)) return false;
+        elementName = xmlns.addPrefix("PublishedData");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedDataItemsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publishedData_.xmlDecode(*tree, "PublishedVariableDataType", xmlns)) {
+            Log(Error, "PublishedDataItemsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

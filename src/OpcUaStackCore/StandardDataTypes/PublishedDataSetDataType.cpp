@@ -214,35 +214,86 @@ namespace OpcUaStackCore
     bool
     PublishedDataSetDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedDataSetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     PublishedDataSetDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Name");
-        if (!tree) return false;
-        if (!name_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Name");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedDataSetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PublishedDataSetDataType decode xml error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetFolder");
-        if (!tree) return false;
-        if (!dataSetFolder_.xmlDecode(*tree, "String", xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetFolder");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedDataSetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetFolder_.xmlDecode(*tree, "String", xmlns)) {
+            Log(Error, "PublishedDataSetDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetMetaData");
-        if (!tree) return false;
-        if (!dataSetMetaData_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetMetaData");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedDataSetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetMetaData_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PublishedDataSetDataType decode xml error - decode failed")
+                .parameter("Element", "DataSetMetaData");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ExtensionFields");
-        if (!tree) return false;
-        if (!extensionFields_.xmlDecode(*tree, "KeyValuePair", xmlns)) return false;
+        elementName = xmlns.addPrefix("ExtensionFields");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedDataSetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!extensionFields_.xmlDecode(*tree, "KeyValuePair", xmlns)) {
+            Log(Error, "PublishedDataSetDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetSource");
-        if (!tree) return false;
-        if (!dataSetSource_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetSource");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedDataSetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetSource_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PublishedDataSetDataType decode xml error - decode failed")
+                .parameter("Element", "DataSetSource");
+            return false;
+        }
     
         return true;
     }

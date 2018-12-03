@@ -274,51 +274,138 @@ namespace OpcUaStackCore
     bool
     DataSetWriterDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetWriterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     DataSetWriterDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Name");
-        if (!tree) return false;
-        if (!name_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Name");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetWriterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetWriterDataType decode xml error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Enabled");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, enabled_)) return false;
+        elementName = xmlns.addPrefix("Enabled");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetWriterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, enabled_)) {
+            Log(Error, "DataSetWriterDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetWriterId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, dataSetWriterId_)) return false;
+        elementName = xmlns.addPrefix("DataSetWriterId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetWriterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, dataSetWriterId_)) {
+            Log(Error, "DataSetWriterDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetFieldContentMask");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, dataSetFieldContentMask_)) return false;
+        elementName = xmlns.addPrefix("DataSetFieldContentMask");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetWriterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, dataSetFieldContentMask_)) {
+            Log(Error, "DataSetWriterDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("KeyFrameCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, keyFrameCount_)) return false;
+        elementName = xmlns.addPrefix("KeyFrameCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetWriterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, keyFrameCount_)) {
+            Log(Error, "DataSetWriterDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetName");
-        if (!tree) return false;
-        if (!dataSetName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetWriterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetWriterDataType decode xml error - decode failed")
+                .parameter("Element", "DataSetName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetWriterProperties");
-        if (!tree) return false;
-        if (!dataSetWriterProperties_.xmlDecode(*tree, "KeyValuePair", xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetWriterProperties");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetWriterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetWriterProperties_.xmlDecode(*tree, "KeyValuePair", xmlns)) {
+            Log(Error, "DataSetWriterDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransportSettings");
-        if (!tree) return false;
-        if (!transportSettings_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TransportSettings");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetWriterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportSettings_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetWriterDataType decode xml error - decode failed")
+                .parameter("Element", "TransportSettings");
+            return false;
+        }
     
-        tree = pt.get_child_optional("MessageSettings");
-        if (!tree) return false;
-        if (!messageSettings_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("MessageSettings");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetWriterDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!messageSettings_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetWriterDataType decode xml error - decode failed")
+                .parameter("Element", "MessageSettings");
+            return false;
+        }
     
         return true;
     }

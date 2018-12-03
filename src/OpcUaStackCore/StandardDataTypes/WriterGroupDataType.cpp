@@ -173,6 +173,7 @@ namespace OpcUaStackCore
     void
     WriterGroupDataType::opcUaBinaryEncode(std::ostream& os) const
     {
+        PubSubGroupDataType::opcUaBinaryEncode(os);
         OpcUaNumber::opcUaBinaryEncode(os,writerGroupId_);
         OpcUaNumber::opcUaBinaryEncode(os,publishingInterval_);
         OpcUaNumber::opcUaBinaryEncode(os,keepAliveTime_);
@@ -186,6 +187,7 @@ namespace OpcUaStackCore
     void
     WriterGroupDataType::opcUaBinaryDecode(std::istream& is)
     {
+        PubSubGroupDataType::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,writerGroupId_);
         OpcUaNumber::opcUaBinaryDecode(is,publishingInterval_);
         OpcUaNumber::opcUaBinaryDecode(is,keepAliveTime_);
@@ -258,47 +260,125 @@ namespace OpcUaStackCore
     bool
     WriterGroupDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     WriterGroupDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("WriterGroupId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, writerGroupId_)) return false;
+        elementName = xmlns.addPrefix("WriterGroupId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, writerGroupId_)) {
+            Log(Error, "WriterGroupDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("PublishingInterval");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, publishingInterval_)) return false;
+        elementName = xmlns.addPrefix("PublishingInterval");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, publishingInterval_)) {
+            Log(Error, "WriterGroupDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("KeepAliveTime");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, keepAliveTime_)) return false;
+        elementName = xmlns.addPrefix("KeepAliveTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, keepAliveTime_)) {
+            Log(Error, "WriterGroupDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("Priority");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, priority_)) return false;
+        elementName = xmlns.addPrefix("Priority");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, priority_)) {
+            Log(Error, "WriterGroupDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("LocaleIds");
-        if (!tree) return false;
-        if (!localeIds_.xmlDecode(*tree, "LocaleId", xmlns)) return false;
+        elementName = xmlns.addPrefix("LocaleIds");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!localeIds_.xmlDecode(*tree, "LocaleId", xmlns)) {
+            Log(Error, "WriterGroupDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransportSettings");
-        if (!tree) return false;
-        if (!transportSettings_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TransportSettings");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportSettings_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "WriterGroupDataType decode xml error - decode failed")
+                .parameter("Element", "TransportSettings");
+            return false;
+        }
     
-        tree = pt.get_child_optional("MessageSettings");
-        if (!tree) return false;
-        if (!messageSettings_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("MessageSettings");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!messageSettings_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "WriterGroupDataType decode xml error - decode failed")
+                .parameter("Element", "MessageSettings");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetWriters");
-        if (!tree) return false;
-        if (!dataSetWriters_.xmlDecode(*tree, "DataSetWriterDataType", xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetWriters");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetWriters_.xmlDecode(*tree, "DataSetWriterDataType", xmlns)) {
+            Log(Error, "WriterGroupDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

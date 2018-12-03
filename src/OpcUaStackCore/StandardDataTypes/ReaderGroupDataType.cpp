@@ -128,6 +128,7 @@ namespace OpcUaStackCore
     void
     ReaderGroupDataType::opcUaBinaryEncode(std::ostream& os) const
     {
+        PubSubGroupDataType::opcUaBinaryEncode(os);
         transportSettings_.opcUaBinaryEncode(os);
         messageSettings_.opcUaBinaryEncode(os);
         dataSetReaders_.opcUaBinaryEncode(os);
@@ -136,6 +137,7 @@ namespace OpcUaStackCore
     void
     ReaderGroupDataType::opcUaBinaryDecode(std::istream& is)
     {
+        PubSubGroupDataType::opcUaBinaryDecode(is);
         transportSettings_.opcUaBinaryDecode(is);
         messageSettings_.opcUaBinaryDecode(is);
         dataSetReaders_.opcUaBinaryDecode(is);
@@ -183,27 +185,60 @@ namespace OpcUaStackCore
     bool
     ReaderGroupDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ReaderGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ReaderGroupDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("TransportSettings");
-        if (!tree) return false;
-        if (!transportSettings_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TransportSettings");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ReaderGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportSettings_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ReaderGroupDataType decode xml error - decode failed")
+                .parameter("Element", "TransportSettings");
+            return false;
+        }
     
-        tree = pt.get_child_optional("MessageSettings");
-        if (!tree) return false;
-        if (!messageSettings_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("MessageSettings");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ReaderGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!messageSettings_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ReaderGroupDataType decode xml error - decode failed")
+                .parameter("Element", "MessageSettings");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetReaders");
-        if (!tree) return false;
-        if (!dataSetReaders_.xmlDecode(*tree, "DataSetReaderDataType", xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetReaders");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ReaderGroupDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetReaders_.xmlDecode(*tree, "DataSetReaderDataType", xmlns)) {
+            Log(Error, "ReaderGroupDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

@@ -119,6 +119,7 @@ namespace OpcUaStackCore
     void
     BrokerConnectionTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
+        ConnectionTransportDataType::opcUaBinaryEncode(os);
         resourceUri_.opcUaBinaryEncode(os);
         authenticationProfileUri_.opcUaBinaryEncode(os);
     }
@@ -126,6 +127,7 @@ namespace OpcUaStackCore
     void
     BrokerConnectionTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
+        ConnectionTransportDataType::opcUaBinaryDecode(is);
         resourceUri_.opcUaBinaryDecode(is);
         authenticationProfileUri_.opcUaBinaryDecode(is);
     }
@@ -168,23 +170,47 @@ namespace OpcUaStackCore
     bool
     BrokerConnectionTransportDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerConnectionTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     BrokerConnectionTransportDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ResourceUri");
-        if (!tree) return false;
-        if (!resourceUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ResourceUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerConnectionTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!resourceUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerConnectionTransportDataType decode xml error - decode failed")
+                .parameter("Element", "ResourceUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("AuthenticationProfileUri");
-        if (!tree) return false;
-        if (!authenticationProfileUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("AuthenticationProfileUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerConnectionTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!authenticationProfileUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerConnectionTransportDataType decode xml error - decode failed")
+                .parameter("Element", "AuthenticationProfileUri");
+            return false;
+        }
     
         return true;
     }

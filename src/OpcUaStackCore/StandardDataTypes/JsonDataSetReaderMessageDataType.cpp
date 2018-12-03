@@ -119,6 +119,7 @@ namespace OpcUaStackCore
     void
     JsonDataSetReaderMessageDataType::opcUaBinaryEncode(std::ostream& os) const
     {
+        DataSetReaderMessageDataType::opcUaBinaryEncode(os);
         OpcUaNumber::opcUaBinaryEncode(os,networkMessageContentMask_);
         OpcUaNumber::opcUaBinaryEncode(os,dataSetMessageContentMask_);
     }
@@ -126,6 +127,7 @@ namespace OpcUaStackCore
     void
     JsonDataSetReaderMessageDataType::opcUaBinaryDecode(std::istream& is)
     {
+        DataSetReaderMessageDataType::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
         OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
     }
@@ -168,23 +170,47 @@ namespace OpcUaStackCore
     bool
     JsonDataSetReaderMessageDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "JsonDataSetReaderMessageDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     JsonDataSetReaderMessageDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("NetworkMessageContentMask");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, networkMessageContentMask_)) return false;
+        elementName = xmlns.addPrefix("NetworkMessageContentMask");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "JsonDataSetReaderMessageDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, networkMessageContentMask_)) {
+            Log(Error, "JsonDataSetReaderMessageDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetMessageContentMask");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, dataSetMessageContentMask_)) return false;
+        elementName = xmlns.addPrefix("DataSetMessageContentMask");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "JsonDataSetReaderMessageDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, dataSetMessageContentMask_)) {
+            Log(Error, "JsonDataSetReaderMessageDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

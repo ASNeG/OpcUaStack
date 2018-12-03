@@ -185,27 +185,60 @@ namespace OpcUaStackCore
     bool
     DataChangeFilter::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataChangeFilter decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     DataChangeFilter::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Trigger");
-        if (!tree) return false;
-        if (!trigger_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Trigger");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataChangeFilter decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!trigger_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataChangeFilter decode xml error - decode failed")
+                .parameter("Element", "Trigger");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DeadbandType");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, deadbandType_)) return false;
+        elementName = xmlns.addPrefix("DeadbandType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataChangeFilter decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, deadbandType_)) {
+            Log(Error, "DataChangeFilter decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DeadbandValue");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, deadbandValue_)) return false;
+        elementName = xmlns.addPrefix("DeadbandValue");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataChangeFilter decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, deadbandValue_)) {
+            Log(Error, "DataChangeFilter decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

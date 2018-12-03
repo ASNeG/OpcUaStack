@@ -169,23 +169,47 @@ namespace OpcUaStackCore
     bool
     XVType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "XVType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     XVType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("X");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, x_)) return false;
+        elementName = xmlns.addPrefix("X");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "XVType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, x_)) {
+            Log(Error, "XVType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("Value");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, value_)) return false;
+        elementName = xmlns.addPrefix("Value");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "XVType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, value_)) {
+            Log(Error, "XVType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

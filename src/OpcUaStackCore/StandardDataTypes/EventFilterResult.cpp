@@ -185,27 +185,60 @@ namespace OpcUaStackCore
     bool
     EventFilterResult::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EventFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     EventFilterResult::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("SelectClauseResults");
-        if (!tree) return false;
-        if (!selectClauseResults_.xmlDecode(*tree, "Status", xmlns)) return false;
+        elementName = xmlns.addPrefix("SelectClauseResults");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EventFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!selectClauseResults_.xmlDecode(*tree, "Status", xmlns)) {
+            Log(Error, "EventFilterResult decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SelectClauseDiagnosticInfos");
-        if (!tree) return false;
-        if (!selectClauseDiagnosticInfos_.xmlDecode(*tree, "DiagnosticInfo", xmlns)) return false;
+        elementName = xmlns.addPrefix("SelectClauseDiagnosticInfos");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EventFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!selectClauseDiagnosticInfos_.xmlDecode(*tree, "DiagnosticInfo", xmlns)) {
+            Log(Error, "EventFilterResult decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("WhereClauseResult");
-        if (!tree) return false;
-        if (!whereClauseResult_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("WhereClauseResult");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EventFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!whereClauseResult_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "EventFilterResult decode xml error - decode failed")
+                .parameter("Element", "WhereClauseResult");
+            return false;
+        }
     
         return true;
     }

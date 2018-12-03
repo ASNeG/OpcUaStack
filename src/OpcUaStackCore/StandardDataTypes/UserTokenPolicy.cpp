@@ -217,35 +217,86 @@ namespace OpcUaStackCore
     bool
     UserTokenPolicy::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserTokenPolicy decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     UserTokenPolicy::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("PolicyId");
-        if (!tree) return false;
-        if (!policyId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("PolicyId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserTokenPolicy decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!policyId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UserTokenPolicy decode xml error - decode failed")
+                .parameter("Element", "PolicyId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("TokenType");
-        if (!tree) return false;
-        if (!tokenType_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TokenType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserTokenPolicy decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!tokenType_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UserTokenPolicy decode xml error - decode failed")
+                .parameter("Element", "TokenType");
+            return false;
+        }
     
-        tree = pt.get_child_optional("IssuedTokenType");
-        if (!tree) return false;
-        if (!issuedTokenType_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("IssuedTokenType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserTokenPolicy decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!issuedTokenType_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UserTokenPolicy decode xml error - decode failed")
+                .parameter("Element", "IssuedTokenType");
+            return false;
+        }
     
-        tree = pt.get_child_optional("IssuerEndpointUrl");
-        if (!tree) return false;
-        if (!issuerEndpointUrl_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("IssuerEndpointUrl");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserTokenPolicy decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!issuerEndpointUrl_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UserTokenPolicy decode xml error - decode failed")
+                .parameter("Element", "IssuerEndpointUrl");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityPolicyUri");
-        if (!tree) return false;
-        if (!securityPolicyUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SecurityPolicyUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserTokenPolicy decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityPolicyUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UserTokenPolicy decode xml error - decode failed")
+                .parameter("Element", "SecurityPolicyUri");
+            return false;
+        }
     
         return true;
     }

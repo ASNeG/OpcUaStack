@@ -262,47 +262,125 @@ namespace OpcUaStackCore
     bool
     RegisteredServer::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     RegisteredServer::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ServerUri");
-        if (!tree) return false;
-        if (!serverUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ServerUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "RegisteredServer decode xml error - decode failed")
+                .parameter("Element", "ServerUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ProductUri");
-        if (!tree) return false;
-        if (!productUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ProductUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!productUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "RegisteredServer decode xml error - decode failed")
+                .parameter("Element", "ProductUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ServerNames");
-        if (!tree) return false;
-        if (!serverNames_.xmlDecode(*tree, "LocalizedText", xmlns)) return false;
+        elementName = xmlns.addPrefix("ServerNames");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverNames_.xmlDecode(*tree, "LocalizedText", xmlns)) {
+            Log(Error, "RegisteredServer decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ServerType");
-        if (!tree) return false;
-        if (!serverType_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ServerType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverType_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "RegisteredServer decode xml error - decode failed")
+                .parameter("Element", "ServerType");
+            return false;
+        }
     
-        tree = pt.get_child_optional("GatewayServerUri");
-        if (!tree) return false;
-        if (!gatewayServerUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("GatewayServerUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!gatewayServerUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "RegisteredServer decode xml error - decode failed")
+                .parameter("Element", "GatewayServerUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DiscoveryUrls");
-        if (!tree) return false;
-        if (!discoveryUrls_.xmlDecode(*tree, "String", xmlns)) return false;
+        elementName = xmlns.addPrefix("DiscoveryUrls");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!discoveryUrls_.xmlDecode(*tree, "String", xmlns)) {
+            Log(Error, "RegisteredServer decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SemaphoreFilePath");
-        if (!tree) return false;
-        if (!semaphoreFilePath_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SemaphoreFilePath");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!semaphoreFilePath_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "RegisteredServer decode xml error - decode failed")
+                .parameter("Element", "SemaphoreFilePath");
+            return false;
+        }
     
-        tree = pt.get_child_optional("IsOnline");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, isOnline_)) return false;
+        elementName = xmlns.addPrefix("IsOnline");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, isOnline_)) {
+            Log(Error, "RegisteredServer decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

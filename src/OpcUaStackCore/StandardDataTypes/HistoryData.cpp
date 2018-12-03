@@ -154,19 +154,34 @@ namespace OpcUaStackCore
     bool
     HistoryData::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "HistoryData decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     HistoryData::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("DataValues");
-        if (!tree) return false;
-        if (!dataValues_.xmlDecode(*tree, "DataValue", xmlns)) return false;
+        elementName = xmlns.addPrefix("DataValues");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "HistoryData decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataValues_.xmlDecode(*tree, "DataValue", xmlns)) {
+            Log(Error, "HistoryData decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

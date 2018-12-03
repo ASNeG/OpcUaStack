@@ -199,31 +199,73 @@ namespace OpcUaStackCore
     bool
     EUInformation::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EUInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     EUInformation::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("NamespaceUri");
-        if (!tree) return false;
-        if (!namespaceUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("NamespaceUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EUInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!namespaceUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "EUInformation decode xml error - decode failed")
+                .parameter("Element", "NamespaceUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("UnitId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, unitId_)) return false;
+        elementName = xmlns.addPrefix("UnitId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EUInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, unitId_)) {
+            Log(Error, "EUInformation decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DisplayName");
-        if (!tree) return false;
-        if (!displayName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DisplayName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EUInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!displayName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "EUInformation decode xml error - decode failed")
+                .parameter("Element", "DisplayName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Description");
-        if (!tree) return false;
-        if (!description_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Description");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EUInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!description_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "EUInformation decode xml error - decode failed")
+                .parameter("Element", "Description");
+            return false;
+        }
     
         return true;
     }

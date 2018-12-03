@@ -214,35 +214,86 @@ namespace OpcUaStackCore
     bool
     AggregateConfiguration::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     AggregateConfiguration::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("UseServerCapabilitiesDefaults");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, useServerCapabilitiesDefaults_)) return false;
+        elementName = xmlns.addPrefix("UseServerCapabilitiesDefaults");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, useServerCapabilitiesDefaults_)) {
+            Log(Error, "AggregateConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TreatUncertainAsBad");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, treatUncertainAsBad_)) return false;
+        elementName = xmlns.addPrefix("TreatUncertainAsBad");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, treatUncertainAsBad_)) {
+            Log(Error, "AggregateConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("PercentDataBad");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, percentDataBad_)) return false;
+        elementName = xmlns.addPrefix("PercentDataBad");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, percentDataBad_)) {
+            Log(Error, "AggregateConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("PercentDataGood");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, percentDataGood_)) return false;
+        elementName = xmlns.addPrefix("PercentDataGood");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, percentDataGood_)) {
+            Log(Error, "AggregateConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("UseSlopedExtrapolation");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, useSlopedExtrapolation_)) return false;
+        elementName = xmlns.addPrefix("UseSlopedExtrapolation");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, useSlopedExtrapolation_)) {
+            Log(Error, "AggregateConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

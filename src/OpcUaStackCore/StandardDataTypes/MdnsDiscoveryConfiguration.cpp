@@ -122,6 +122,7 @@ namespace OpcUaStackCore
     void
     MdnsDiscoveryConfiguration::opcUaBinaryEncode(std::ostream& os) const
     {
+        DiscoveryConfiguration::opcUaBinaryEncode(os);
         mdnsServerName_.opcUaBinaryEncode(os);
         serverCapabilities_.opcUaBinaryEncode(os);
     }
@@ -129,6 +130,7 @@ namespace OpcUaStackCore
     void
     MdnsDiscoveryConfiguration::opcUaBinaryDecode(std::istream& is)
     {
+        DiscoveryConfiguration::opcUaBinaryDecode(is);
         mdnsServerName_.opcUaBinaryDecode(is);
         serverCapabilities_.opcUaBinaryDecode(is);
     }
@@ -171,23 +173,47 @@ namespace OpcUaStackCore
     bool
     MdnsDiscoveryConfiguration::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MdnsDiscoveryConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     MdnsDiscoveryConfiguration::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("MdnsServerName");
-        if (!tree) return false;
-        if (!mdnsServerName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("MdnsServerName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MdnsDiscoveryConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!mdnsServerName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "MdnsDiscoveryConfiguration decode xml error - decode failed")
+                .parameter("Element", "MdnsServerName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ServerCapabilities");
-        if (!tree) return false;
-        if (!serverCapabilities_.xmlDecode(*tree, "String", xmlns)) return false;
+        elementName = xmlns.addPrefix("ServerCapabilities");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MdnsDiscoveryConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverCapabilities_.xmlDecode(*tree, "String", xmlns)) {
+            Log(Error, "MdnsDiscoveryConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

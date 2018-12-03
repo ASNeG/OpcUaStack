@@ -137,6 +137,7 @@ namespace OpcUaStackCore
     void
     StructureDefinition::opcUaBinaryEncode(std::ostream& os) const
     {
+        DataTypeDefinition::opcUaBinaryEncode(os);
         defaultEncodingId_.opcUaBinaryEncode(os);
         baseDataType_.opcUaBinaryEncode(os);
         structureType_.opcUaBinaryEncode(os);
@@ -146,6 +147,7 @@ namespace OpcUaStackCore
     void
     StructureDefinition::opcUaBinaryDecode(std::istream& is)
     {
+        DataTypeDefinition::opcUaBinaryDecode(is);
         defaultEncodingId_.opcUaBinaryDecode(is);
         baseDataType_.opcUaBinaryDecode(is);
         structureType_.opcUaBinaryDecode(is);
@@ -198,31 +200,73 @@ namespace OpcUaStackCore
     bool
     StructureDefinition::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDefinition decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     StructureDefinition::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("DefaultEncodingId");
-        if (!tree) return false;
-        if (!defaultEncodingId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DefaultEncodingId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDefinition decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!defaultEncodingId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "StructureDefinition decode xml error - decode failed")
+                .parameter("Element", "DefaultEncodingId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("BaseDataType");
-        if (!tree) return false;
-        if (!baseDataType_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("BaseDataType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDefinition decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!baseDataType_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "StructureDefinition decode xml error - decode failed")
+                .parameter("Element", "BaseDataType");
+            return false;
+        }
     
-        tree = pt.get_child_optional("StructureType");
-        if (!tree) return false;
-        if (!structureType_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("StructureType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDefinition decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!structureType_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "StructureDefinition decode xml error - decode failed")
+                .parameter("Element", "StructureType");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Fields");
-        if (!tree) return false;
-        if (!fields_.xmlDecode(*tree, "StructureField", xmlns)) return false;
+        elementName = xmlns.addPrefix("Fields");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDefinition decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!fields_.xmlDecode(*tree, "StructureField", xmlns)) {
+            Log(Error, "StructureDefinition decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

@@ -184,27 +184,60 @@ namespace OpcUaStackCore
     bool
     ContentFilterElementResult::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ContentFilterElementResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ContentFilterElementResult::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("StatusCode");
-        if (!tree) return false;
-        if (!statusCode_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("StatusCode");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ContentFilterElementResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!statusCode_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ContentFilterElementResult decode xml error - decode failed")
+                .parameter("Element", "StatusCode");
+            return false;
+        }
     
-        tree = pt.get_child_optional("OperandStatusCodes");
-        if (!tree) return false;
-        if (!operandStatusCodes_.xmlDecode(*tree, "Status", xmlns)) return false;
+        elementName = xmlns.addPrefix("OperandStatusCodes");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ContentFilterElementResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!operandStatusCodes_.xmlDecode(*tree, "Status", xmlns)) {
+            Log(Error, "ContentFilterElementResult decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("OperandDiagnosticInfos");
-        if (!tree) return false;
-        if (!operandDiagnosticInfos_.xmlDecode(*tree, "DiagnosticInfo", xmlns)) return false;
+        elementName = xmlns.addPrefix("OperandDiagnosticInfos");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ContentFilterElementResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!operandDiagnosticInfos_.xmlDecode(*tree, "DiagnosticInfo", xmlns)) {
+            Log(Error, "ContentFilterElementResult decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

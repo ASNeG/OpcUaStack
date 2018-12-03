@@ -169,23 +169,47 @@ namespace OpcUaStackCore
     bool
     DataTypeDescription::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     DataTypeDescription::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("DataTypeId");
-        if (!tree) return false;
-        if (!dataTypeId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataTypeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataTypeId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataTypeDescription decode xml error - decode failed")
+                .parameter("Element", "DataTypeId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Name");
-        if (!tree) return false;
-        if (!name_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Name");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataTypeDescription decode xml error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
     
         return true;
     }
