@@ -3,6 +3,7 @@
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
@@ -359,6 +360,36 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode_decode)
 	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaLocalizedText>(0)->text() == OpcUaString("Text1"));
 	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaLocalizedText>(1)->locale() == OpcUaString("de"));
 	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaLocalizedText>(1)->text() == OpcUaString("Text2"));
+
+	// check build info variable
+	nodeClass = informationModel->find(OpcUaNodeId("BuildInfo", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaExtensionObject>().get() != nullptr);
+	BuildInfo::SPtr buildInfo = dataValue.variant()->getSPtr<OpcUaExtensionObject>()->parameter<BuildInfo>();
+	BOOST_REQUIRE(buildInfo->productUri() == OpcUaString("String"));
+	BOOST_REQUIRE(buildInfo->manufacturerName() == OpcUaString("String"));
+	BOOST_REQUIRE(buildInfo->productName() == OpcUaString("String"));
+	BOOST_REQUIRE(buildInfo->softwareVersion() == OpcUaString("String"));
+	BOOST_REQUIRE(buildInfo->buildDate() == OpcUaDateTime("2000-01-01T00:00:00Z"));
+
+	// check build info array variable
+	nodeClass = informationModel->find(OpcUaNodeId("BuildInfoArray", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaExtensionObject>(0).get() != nullptr);
+	buildInfo = dataValue.variant()->getSPtr<OpcUaExtensionObject>(0)->parameter<BuildInfo>();
+	BOOST_REQUIRE(buildInfo->productUri() == OpcUaString("String"));
+	BOOST_REQUIRE(buildInfo->manufacturerName() == OpcUaString("String"));
+	BOOST_REQUIRE(buildInfo->productName() == OpcUaString("String"));
+	BOOST_REQUIRE(buildInfo->softwareVersion() == OpcUaString("String"));
+	BOOST_REQUIRE(buildInfo->buildDate() == OpcUaDateTime("2000-01-01T00:00:00Z"));
+	buildInfo = dataValue.variant()->getSPtr<OpcUaExtensionObject>(1)->parameter<BuildInfo>();
+	BOOST_REQUIRE(buildInfo->productUri() == OpcUaString("String1"));
+	BOOST_REQUIRE(buildInfo->manufacturerName() == OpcUaString("String1"));
+	BOOST_REQUIRE(buildInfo->productName() == OpcUaString("String1"));
+	BOOST_REQUIRE(buildInfo->softwareVersion() == OpcUaString("String1"));
+	BOOST_REQUIRE(buildInfo->buildDate() == OpcUaDateTime("2000-01-01T00:00:00Z"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
