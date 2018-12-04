@@ -75,13 +75,13 @@ file(GLOB INC_OpcUaStackPubSub_PubSubModel OpcUaStackPubSub/PubSubModel/*.h OpcU
 
 install(
     TARGETS OpcUaStackPubSub 
-    DESTINATION /usr/lib
+    DESTINATION ${INSTALL_PREFIX}/lib
     COMPONENT libraries
 )
 
 install(
     FILES ${INC_OpcUaStackPubSub_Base} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/Base
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/Base
     COMPONENT headers
 )
 
