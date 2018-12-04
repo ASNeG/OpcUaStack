@@ -372,11 +372,23 @@ namespace OpcUaStackCore
 		// encode body
 		//
 		boost::property_tree::ptree bodyTree;
-		if (!epSPtr_->xmlEncode(bodyTree, xmlns)) {
+		std::string uri = xmlns.getPrefix("http://opcfoundation.org/UA/2008/02/Types.xsd");
+		xmlns.addNamespace("", "http://opcfoundation.org/UA/2008/02/Types.xsd");
+
+		if (!epSPtr_->xmlEncode(bodyTree, epSPtr_->typeName(), xmlns)) {
 			Log(Error, "OpcUaExtensionObject xml encoder error")
 				.parameter("Element", "Body");
+			xmlns.addNamespace(uri, "http://opcfoundation.org/UA/2008/02/Types.xsd");
 			return false;
 		}
+		bodyTree.front().second.put("<xmlattr>.xmlns", "http://opcfoundation.org/UA/2008/02/Types.xsd");
+
+		//
+		// added types namespace element
+		//
+
+
+		xmlns.addNamespace(uri, "http://opcfoundation.org/UA/2008/02/Types.xsd");
 		pt.add_child(xmlns.addPrefix("Body"), bodyTree);
 
 		return true;

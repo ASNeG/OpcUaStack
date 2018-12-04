@@ -542,6 +542,12 @@ namespace OpcUaStackServer
 				rc = xmlEncodeSPtr<OpcUaLocalizedText>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
+			case OpcUaBuildInType_OpcUaExtensionObject:
+			{
+				dataTypeString = "ExtensionObject";
+				rc = xmlEncodeSPtr<OpcUaExtensionObject>(ptree, opcUaVariant, dataTypeString, xmlns);
+				break;
+			}
 			default:
 			{
 				std::stringstream ss;
@@ -692,12 +698,11 @@ namespace OpcUaStackServer
 	NodeSetValueParser::xmlEncode(
 		boost::property_tree::ptree& ptree,
 		OpcUaExtensionObject::SPtr value,
-		const std::string& tag,
+		const std::string& element,
 		Xmlns& xmlns
 	)
 	{
-		// FIXME: todo
-		return false;
+		return value->xmlEncode(ptree, element, xmlns);
 	}
 
 }
