@@ -170,23 +170,47 @@ namespace OpcUaStackCore
     bool
     DataChangeNotification::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataChangeNotification decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     DataChangeNotification::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("MonitoredItems");
-        if (!tree) return false;
-        if (!monitoredItems_.xmlDecode(*tree, "MonitoredItemNotification", xmlns)) return false;
+        elementName = xmlns.addPrefix("MonitoredItems");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataChangeNotification decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!monitoredItems_.xmlDecode(*tree, "MonitoredItemNotification", xmlns)) {
+            Log(Error, "DataChangeNotification decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DiagnosticInfos");
-        if (!tree) return false;
-        if (!diagnosticInfos_.xmlDecode(*tree, "DiagnosticInfo", xmlns)) return false;
+        elementName = xmlns.addPrefix("DiagnosticInfos");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataChangeNotification decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!diagnosticInfos_.xmlDecode(*tree, "DiagnosticInfo", xmlns)) {
+            Log(Error, "DataChangeNotification decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

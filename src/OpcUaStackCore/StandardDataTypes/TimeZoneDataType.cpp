@@ -169,23 +169,47 @@ namespace OpcUaStackCore
     bool
     TimeZoneDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TimeZoneDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     TimeZoneDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Offset");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, offset_)) return false;
+        elementName = xmlns.addPrefix("Offset");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TimeZoneDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, offset_)) {
+            Log(Error, "TimeZoneDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DaylightSavingInOffset");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, daylightSavingInOffset_)) return false;
+        elementName = xmlns.addPrefix("DaylightSavingInOffset");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TimeZoneDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, daylightSavingInOffset_)) {
+            Log(Error, "TimeZoneDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

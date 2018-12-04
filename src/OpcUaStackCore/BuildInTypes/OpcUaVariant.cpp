@@ -2570,7 +2570,7 @@ namespace OpcUaStackCore
 				.parameter("Element", element);
 			return false;
 		}
-		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
 		return true;
 	}
 
@@ -2884,7 +2884,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeBooleanScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaBoolean value = get<OpcUaBoolean>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Boolean"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("Boolean"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "Boolean");
 			return false;
@@ -2898,13 +2898,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaBoolean value = get<OpcUaBoolean>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Boolean"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("Boolean"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "Boolean");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfBoolean"), list);
+		pt.add_child(xmlns.addPrefix("ListOfBoolean"), list);
 		return true;
 	}
 
@@ -2956,7 +2956,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeSByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaSByte value = get<OpcUaSByte>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("SByte"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("SByte"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "SByte");
 			return false;
@@ -2970,13 +2970,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaSByte value = get<OpcUaSByte>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("SByte"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("SByte"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "SByte");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfSByte"), list);
+		pt.add_child(xmlns.addPrefix("ListOfSByte"), list);
 		return true;
 	}
 
@@ -3028,7 +3028,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaByte value = get<OpcUaByte>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Byte"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("Byte"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "Byte");
 			return false;
@@ -3042,13 +3042,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaByte value = get<OpcUaByte>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Byte"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("Byte"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "Byte");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfByte"), list);
+		pt.add_child(xmlns.addPrefix("ListOfByte"), list);
 		return true;
 	}
 
@@ -3100,7 +3100,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeInt16Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaInt16 value = get<OpcUaInt16>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int16"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("Int16"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "Int16");
 			return false;
@@ -3114,13 +3114,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaInt16 value = get<OpcUaInt16>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Int16"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("Int16"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "Int16");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfInt16"), list);
+		pt.add_child(xmlns.addPrefix("ListOfInt16"), list);
 		return true;
 	}
 
@@ -3173,7 +3173,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeUInt16Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaUInt16 value = get<OpcUaUInt16>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt16"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("UInt16"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "UInt16");
 			return false;
@@ -3187,13 +3187,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaUInt16 value = get<OpcUaUInt16>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("UInt16"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("UInt16"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "UInt16");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfUInt16"), list);
+		pt.add_child(xmlns.addPrefix("ListOfUInt16"), list);
 		return true;
 	}
 
@@ -3246,7 +3246,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaInt32 value = get<OpcUaInt32>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int32"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("Int32"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "Int32");
 			return false;
@@ -3260,13 +3260,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaInt32 value = get<OpcUaInt32>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Int32"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("Int32"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "Int32");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfInt32"), list);
+		pt.add_child(xmlns.addPrefix("ListOfInt32"), list);
 		return true;
 	}
 
@@ -3319,7 +3319,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeUInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaUInt32 value = get<OpcUaUInt32>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt32"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("UInt32"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "UInt32");
 			return false;
@@ -3333,13 +3333,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaUInt32 value = get<OpcUaUInt32>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("UInt32"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("UInt32"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "UInt32");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfUInt32"), list);
+		pt.add_child(xmlns.addPrefix("ListOfUInt32"), list);
 		return true;
 	}
 
@@ -3392,7 +3392,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeInt64Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaInt64 value = get<OpcUaInt64>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int64"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("Int64"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "Int64");
 			return false;
@@ -3406,13 +3406,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaInt64 value = get<OpcUaInt64>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Int64"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("Int64"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "Int64");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfInt64"), list);
+		pt.add_child(xmlns.addPrefix("ListOfInt64"), list);
 		return true;
 	}
 
@@ -3465,7 +3465,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeUInt64Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaUInt64 value = get<OpcUaUInt64>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt64"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("UInt64"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "UInt64");
 			return false;
@@ -3479,13 +3479,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaInt64 value = get<OpcUaUInt64>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("UInt64"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("UInt64"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "UInt64");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfUInt64"), list);
+		pt.add_child(xmlns.addPrefix("ListOfUInt64"), list);
 		return true;
 	}
 
@@ -3538,7 +3538,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeFloatScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaFloat value = get<OpcUaFloat>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Float"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("Float"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "Float");
 			return false;
@@ -3552,13 +3552,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaFloat value = get<OpcUaFloat>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Float"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("Float"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "Float");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfFloat"), list);
+		pt.add_child(xmlns.addPrefix("ListOfFloat"), list);
 		return true;
 	}
 
@@ -3611,7 +3611,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlEncodeDoubleScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		OpcUaDouble value = get<OpcUaDouble>();
-		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Double"))) {
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addPrefix("Double"))) {
 			Log(Error, "OpcUaVariant xml encoder error")
 				.parameter("Element", "Double");
 			return false;
@@ -3625,13 +3625,13 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
 			OpcUaDouble value = get<OpcUaDouble>(idx);
-			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Double"))) {
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addPrefix("Double"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "Double");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfDouble"), list);
+		pt.add_child(xmlns.addPrefix("ListOfDouble"), list);
 		return true;
 	}
 
@@ -3704,7 +3704,7 @@ namespace OpcUaStackCore
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfDateTime"), list);
+		pt.add_child(xmlns.addPrefix("ListOfDateTime"), list);
 		return true;
 	}
 
@@ -3777,9 +3777,9 @@ namespace OpcUaStackCore
 					.parameter("Element", "String");
 				return false;
 			}
-			list.add_child(xmlns.addxmlns("String"), element);
+			list.add_child(xmlns.addPrefix("String"), element);
 		}
-		pt.add_child(xmlns.addxmlns("ListOfString"), list);
+		pt.add_child(xmlns.addPrefix("ListOfString"), list);
 		return true;
 	}
 
@@ -3852,9 +3852,9 @@ namespace OpcUaStackCore
 					.parameter("Element", "ByteString");
 				return false;
 			}
-			list.add_child(xmlns.addxmlns("ByteString"), element);
+			list.add_child(xmlns.addPrefix("ByteString"), element);
 		}
-		pt.add_child(xmlns.addxmlns("ListOfByteString"), list);
+		pt.add_child(xmlns.addPrefix("ListOfByteString"), list);
 		return true;
 	}
 
@@ -3927,9 +3927,9 @@ namespace OpcUaStackCore
 					.parameter("Element", "Guid");
 				return false;
 			}
-			list.add_child(xmlns.addxmlns("Guid"), element);
+			list.add_child(xmlns.addPrefix("Guid"), element);
 		}
-		pt.add_child(xmlns.addxmlns("ListOfGuid"), list);
+		pt.add_child(xmlns.addPrefix("ListOfGuid"), list);
 		return true;
 	}
 
@@ -4002,9 +4002,9 @@ namespace OpcUaStackCore
 					.parameter("Element", "NodeId");
 				return false;
 			}
-			list.add_child(xmlns.addxmlns("NodeId"), element);
+			list.add_child(xmlns.addPrefix("NodeId"), element);
 		}
-		pt.add_child(xmlns.addxmlns("ListOfNodeId"), list);
+		pt.add_child(xmlns.addPrefix("ListOfNodeId"), list);
 		return true;
 	}
 
@@ -4077,9 +4077,9 @@ namespace OpcUaStackCore
 					.parameter("Element", "ExpandedNodeId");
 				return false;
 			}
-			list.add_child(xmlns.addxmlns("ExpandedNodeId"), element);
+			list.add_child(xmlns.addPrefix("ExpandedNodeId"), element);
 		}
-		pt.add_child(xmlns.addxmlns("ListOfExpandedNodeId"), list);
+		pt.add_child(xmlns.addPrefix("ListOfExpandedNodeId"), list);
 		return true;
 	}
 
@@ -4152,9 +4152,9 @@ namespace OpcUaStackCore
 					.parameter("Element", "QualifiedName");
 				return false;
 			}
-			list.add_child(xmlns.addxmlns("QualifiedName"), element);
+			list.add_child(xmlns.addPrefix("QualifiedName"), element);
 		}
-		pt.add_child(xmlns.addxmlns("ListOfQualifiedName"), list);
+		pt.add_child(xmlns.addPrefix("ListOfQualifiedName"), list);
 		return true;
 	}
 
@@ -4227,9 +4227,9 @@ namespace OpcUaStackCore
 					.parameter("Element", "LocalizedText");
 				return false;
 			}
-			list.add_child(xmlns.addxmlns("LocalizedText"), element);
+			list.add_child(xmlns.addPrefix("LocalizedText"), element);
 		}
-		pt.add_child(xmlns.addxmlns("ListOfLocalizedText"), list);
+		pt.add_child(xmlns.addPrefix("ListOfLocalizedText"), list);
 		return true;
 	}
 
@@ -4302,9 +4302,9 @@ namespace OpcUaStackCore
 					.parameter("Element", "ExtensionObject");
 				return false;
 			}
-			list.add_child(xmlns.addxmlns("ExtensionObject"), element);
+			list.add_child(xmlns.addPrefix("ExtensionObject"), element);
 		}
-		pt.add_child(xmlns.addxmlns("ListOfExtensionObject"), list);
+		pt.add_child(xmlns.addPrefix("ListOfExtensionObject"), list);
 		return true;
 	}
 

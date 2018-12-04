@@ -185,27 +185,60 @@ namespace OpcUaStackCore
     bool
     UpdateEventDetails::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UpdateEventDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     UpdateEventDetails::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("PerformInsertReplace");
-        if (!tree) return false;
-        if (!performInsertReplace_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("PerformInsertReplace");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UpdateEventDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!performInsertReplace_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UpdateEventDetails decode xml error - decode failed")
+                .parameter("Element", "PerformInsertReplace");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Filter");
-        if (!tree) return false;
-        if (!filter_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Filter");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UpdateEventDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!filter_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UpdateEventDetails decode xml error - decode failed")
+                .parameter("Element", "Filter");
+            return false;
+        }
     
-        tree = pt.get_child_optional("EventData");
-        if (!tree) return false;
-        if (!eventData_.xmlDecode(*tree, "HistoryEventFieldList", xmlns)) return false;
+        elementName = xmlns.addPrefix("EventData");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UpdateEventDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!eventData_.xmlDecode(*tree, "HistoryEventFieldList", xmlns)) {
+            Log(Error, "UpdateEventDetails decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

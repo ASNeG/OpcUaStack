@@ -229,39 +229,99 @@ namespace OpcUaStackCore
     bool
     BuildInfo::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     BuildInfo::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ProductUri");
-        if (!tree) return false;
-        if (!productUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ProductUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!productUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BuildInfo decode xml error - decode failed")
+                .parameter("Element", "ProductUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ManufacturerName");
-        if (!tree) return false;
-        if (!manufacturerName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ManufacturerName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!manufacturerName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BuildInfo decode xml error - decode failed")
+                .parameter("Element", "ManufacturerName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ProductName");
-        if (!tree) return false;
-        if (!productName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ProductName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!productName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BuildInfo decode xml error - decode failed")
+                .parameter("Element", "ProductName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SoftwareVersion");
-        if (!tree) return false;
-        if (!softwareVersion_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SoftwareVersion");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!softwareVersion_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BuildInfo decode xml error - decode failed")
+                .parameter("Element", "SoftwareVersion");
+            return false;
+        }
     
-        tree = pt.get_child_optional("BuildNumber");
-        if (!tree) return false;
-        if (!buildNumber_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("BuildNumber");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!buildNumber_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BuildInfo decode xml error - decode failed")
+                .parameter("Element", "BuildNumber");
+            return false;
+        }
     
-        tree = pt.get_child_optional("BuildDate");
-        if (!tree) return false;
-        if (!buildDate_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("BuildDate");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!buildDate_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BuildInfo decode xml error - decode failed")
+                .parameter("Element", "BuildDate");
+            return false;
+        }
     
         return true;
     }

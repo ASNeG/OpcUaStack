@@ -199,31 +199,73 @@ namespace OpcUaStackCore
     bool
     EndpointType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     EndpointType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("EndpointUrl");
-        if (!tree) return false;
-        if (!endpointUrl_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("EndpointUrl");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!endpointUrl_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "EndpointType decode xml error - decode failed")
+                .parameter("Element", "EndpointUrl");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityMode");
-        if (!tree) return false;
-        if (!securityMode_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SecurityMode");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityMode_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "EndpointType decode xml error - decode failed")
+                .parameter("Element", "SecurityMode");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityPolicyUri");
-        if (!tree) return false;
-        if (!securityPolicyUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SecurityPolicyUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityPolicyUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "EndpointType decode xml error - decode failed")
+                .parameter("Element", "SecurityPolicyUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransportProfileUri");
-        if (!tree) return false;
-        if (!transportProfileUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TransportProfileUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportProfileUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "EndpointType decode xml error - decode failed")
+                .parameter("Element", "TransportProfileUri");
+            return false;
+        }
     
         return true;
     }

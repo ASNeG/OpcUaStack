@@ -119,6 +119,7 @@ namespace OpcUaStackCore
     void
     EnumDescription::opcUaBinaryEncode(std::ostream& os) const
     {
+        DataTypeDescription::opcUaBinaryEncode(os);
         enumDefinition_.opcUaBinaryEncode(os);
         OpcUaNumber::opcUaBinaryEncode(os,builtInType_);
     }
@@ -126,6 +127,7 @@ namespace OpcUaStackCore
     void
     EnumDescription::opcUaBinaryDecode(std::istream& is)
     {
+        DataTypeDescription::opcUaBinaryDecode(is);
         enumDefinition_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,builtInType_);
     }
@@ -168,23 +170,47 @@ namespace OpcUaStackCore
     bool
     EnumDescription::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EnumDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     EnumDescription::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("EnumDefinition");
-        if (!tree) return false;
-        if (!enumDefinition_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("EnumDefinition");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EnumDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!enumDefinition_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "EnumDescription decode xml error - decode failed")
+                .parameter("Element", "EnumDefinition");
+            return false;
+        }
     
-        tree = pt.get_child_optional("BuiltInType");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, builtInType_)) return false;
+        elementName = xmlns.addPrefix("BuiltInType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EnumDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, builtInType_)) {
+            Log(Error, "EnumDescription decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

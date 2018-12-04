@@ -169,23 +169,47 @@ namespace OpcUaStackCore
     bool
     ContentFilterResult::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ContentFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ContentFilterResult::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ElementResults");
-        if (!tree) return false;
-        if (!elementResults_.xmlDecode(*tree, "ContentFilterElementResult", xmlns)) return false;
+        elementName = xmlns.addPrefix("ElementResults");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ContentFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!elementResults_.xmlDecode(*tree, "ContentFilterElementResult", xmlns)) {
+            Log(Error, "ContentFilterResult decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ElementDiagnosticInfos");
-        if (!tree) return false;
-        if (!elementDiagnosticInfos_.xmlDecode(*tree, "DiagnosticInfo", xmlns)) return false;
+        elementName = xmlns.addPrefix("ElementDiagnosticInfos");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ContentFilterResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!elementDiagnosticInfos_.xmlDecode(*tree, "DiagnosticInfo", xmlns)) {
+            Log(Error, "ContentFilterResult decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

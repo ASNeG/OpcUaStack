@@ -110,12 +110,14 @@ namespace OpcUaStackCore
     void
     StructureDescription::opcUaBinaryEncode(std::ostream& os) const
     {
+        DataTypeDescription::opcUaBinaryEncode(os);
         structureDefinition_.opcUaBinaryEncode(os);
     }
     
     void
     StructureDescription::opcUaBinaryDecode(std::istream& is)
     {
+        DataTypeDescription::opcUaBinaryDecode(is);
         structureDefinition_.opcUaBinaryDecode(is);
     }
     
@@ -153,19 +155,34 @@ namespace OpcUaStackCore
     bool
     StructureDescription::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     StructureDescription::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("StructureDefinition");
-        if (!tree) return false;
-        if (!structureDefinition_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("StructureDefinition");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDescription decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!structureDefinition_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "StructureDescription decode xml error - decode failed")
+                .parameter("Element", "StructureDefinition");
+            return false;
+        }
     
         return true;
     }

@@ -170,23 +170,47 @@ namespace OpcUaStackCore
     bool
     UpdateStructureDataDetails::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UpdateStructureDataDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     UpdateStructureDataDetails::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("PerformInsertReplace");
-        if (!tree) return false;
-        if (!performInsertReplace_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("PerformInsertReplace");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UpdateStructureDataDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!performInsertReplace_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UpdateStructureDataDetails decode xml error - decode failed")
+                .parameter("Element", "PerformInsertReplace");
+            return false;
+        }
     
-        tree = pt.get_child_optional("UpdateValues");
-        if (!tree) return false;
-        if (!updateValues_.xmlDecode(*tree, "DataValue", xmlns)) return false;
+        elementName = xmlns.addPrefix("UpdateValues");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UpdateStructureDataDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!updateValues_.xmlDecode(*tree, "DataValue", xmlns)) {
+            Log(Error, "UpdateStructureDataDetails decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

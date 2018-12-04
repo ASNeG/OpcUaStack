@@ -155,9 +155,11 @@ namespace OpcUaStackCore
     {
         boost::property_tree::ptree elementTree;
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, low_)) return false;
         pt.push_back(std::make_pair("Low", elementTree));
     
+        elementTree.clear();
         if(!XmlNumber::xmlEncode(elementTree, high_)) return false;
         pt.push_back(std::make_pair("High", elementTree));
     
@@ -167,23 +169,47 @@ namespace OpcUaStackCore
     bool
     Range::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "Range decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     Range::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Low");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, low_)) return false;
+        elementName = xmlns.addPrefix("Low");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "Range decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, low_)) {
+            Log(Error, "Range decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("High");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, high_)) return false;
+        elementName = xmlns.addPrefix("High");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "Range decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, high_)) {
+            Log(Error, "Range decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

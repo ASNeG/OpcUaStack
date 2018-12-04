@@ -250,7 +250,7 @@ namespace OpcUaStackCore
 				.parameter("Element", element);
 			return false;
 		}
-		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
 		return true;
 	}
 
@@ -259,9 +259,9 @@ namespace OpcUaStackCore
 	{
 		std::stringstream ss;
 		ss << namespaceIndex();
-		pt.put(xmlns.addxmlns("NamespaceIndex"), ss.str());
+		pt.put(xmlns.addPrefix("NamespaceIndex"), ss.str());
 
-		pt.put(xmlns.addxmlns("Name"), name().value());
+		pt.put(xmlns.addPrefix("Name"), name().value());
 
 		return true;
 	}
@@ -272,7 +272,7 @@ namespace OpcUaStackCore
 		//
 		// namespace index
 		//
-		boost::optional<std::string> namespaceIndexString = pt.get_optional<std::string>(xmlns.addxmlns("NamespaceIndex"));
+		boost::optional<std::string> namespaceIndexString = pt.get_optional<std::string>(xmlns.addPrefix("NamespaceIndex"));
 		if (!namespaceIndexString) {
 			namespaceIndex(0);
 		}
@@ -294,7 +294,7 @@ namespace OpcUaStackCore
 		//
 		// name
 		//
-		boost::optional<std::string> nameString = pt.get_optional<std::string>(xmlns.addxmlns("Name"));
+		boost::optional<std::string> nameString = pt.get_optional<std::string>(xmlns.addPrefix("Name"));
 		if (!nameString) {
 			name("");
 		}

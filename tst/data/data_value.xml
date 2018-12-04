@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UANodeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:s1="http://yourorganisation.org/data_value/Types.xsd" xmlns:ua="http://unifiedautomation.com/Configuration/NodeSet.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <NamespaceUris>
+        <Uri>http://yourorganisation.org/data_value/</Uri>
+    </NamespaceUris>
+    <Models>
+        <Model ModelUri="http://yourorganisation.org/data_value/" PublicationDate="2018-11-26T17:54:21Z" Version="1.0.0">
+            <RequiredModel ModelUri="http://opcfoundation.org/UA/" PublicationDate="2016-04-15T00:00:00Z" Version="1.03"/>
+        </Model>
+    </Models>
+    <Aliases>
+        <Alias Alias="Boolean">i=1</Alias>
+        <Alias Alias="SByte">i=2</Alias>
+        <Alias Alias="Byte">i=3</Alias>
+        <Alias Alias="Int16">i=4</Alias>
+        <Alias Alias="UInt16">i=5</Alias>
+        <Alias Alias="Int32">i=6</Alias>
+        <Alias Alias="UInt32">i=7</Alias>
+        <Alias Alias="Int64">i=8</Alias>
+        <Alias Alias="UInt64">i=9</Alias>
+        <Alias Alias="Float">i=10</Alias>
+        <Alias Alias="Double">i=11</Alias>
+        <Alias Alias="String">i=12</Alias>
+        <Alias Alias="DateTime">i=13</Alias>
+        <Alias Alias="Guid">i=14</Alias>
+        <Alias Alias="ByteString">i=15</Alias>
+        <Alias Alias="NodeId">i=17</Alias>
+        <Alias Alias="StatusCode">i=19</Alias>
+        <Alias Alias="QualifiedName">i=20</Alias>
+        <Alias Alias="LocalizedText">i=21</Alias>
+        <Alias Alias="Structure">i=22</Alias>
+        <Alias Alias="DataValue">i=23</Alias>
+        <Alias Alias="Organizes">i=35</Alias>
+        <Alias Alias="HasTypeDefinition">i=40</Alias>
+        <Alias Alias="HasProperty">i=46</Alias>
+        <Alias Alias="HasComponent">i=47</Alias>
+        <Alias Alias="IdType">i=256</Alias>
+        <Alias Alias="NumericRange">i=291</Alias>
+        <Alias Alias="BuildInfo">i=338</Alias>
+    </Aliases>
+    <Extensions>
+        <Extension>
+            <ua:ModelInfo Tool="UaModeler" Hash="a215eppe683KjfrzVgwttg==" Version="1.5.2"/>
+        </Extension>
+    </Extensions>
+    <UAObject NodeId="ns=1;s=Folder" BrowseName="1:Folder">
+        <DisplayName>Folder</DisplayName>
+        <References>
+            <Reference ReferenceType="Organizes">ns=1;s=Boolean</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=BooleanArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=BuildInfo</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=BuildInfoArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Byte</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=ByteArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=ByteString</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=ByteStringArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=DoubleArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=DataValue</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=DataValueArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=DateTime</Reference>
+            <Reference ReferenceType="Organizes">ns=1;i=6009</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Double</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Float</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=FloatArray</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+            <Reference ReferenceType="HasTypeDefinition">i=61</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Guid</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=GuidArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Int16</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Int16Array</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Int32</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Int32Array</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Int64</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Int64Array</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=LocalizedText</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=LocalizedTextArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=NodeId</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=NodeIdArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=QualifiedName</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=QualifiedNameArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=SByte</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=SByteArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=StatusCode</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=StatusCodeArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=String</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=StringArray</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Structure</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=UInt16</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=UInt16Array</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=UInt32</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=UInt32Array</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=UInt64</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=UInt64Array</Reference>
+            <Reference ReferenceType="Organizes">ns=1;s=Variant</Reference>
+            <Reference ReferenceType="Organizes">ns=1;i=6010</Reference>
+        </References>
+    </UAObject>
+    <UAVariable DataType="Boolean" NodeId="ns=1;s=Boolean" BrowseName="1:Boolean" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Boolean</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:Boolean>true</uax:Boolean>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Boolean" ValueRank="1" NodeId="ns=1;s=BooleanArray" ArrayDimensions="2" BrowseName="1:BooleanArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>BooleanArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfBoolean>
+                <uax:Boolean>false</uax:Boolean>
+                <uax:Boolean>true</uax:Boolean>
+            </uax:ListOfBoolean>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="BuildInfo" NodeId="ns=1;s=BuildInfo" BrowseName="1:BuildInfo" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>BuildInfo</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ExtensionObject>
+                <uax:TypeId>
+                    <uax:Identifier>i=339</uax:Identifier>
+                </uax:TypeId>
+                <uax:Body>
+                    <BuildInfo xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd">
+                        <ProductUri>String</ProductUri>
+                        <ManufacturerName>String</ManufacturerName>
+                        <ProductName>String</ProductName>
+                        <SoftwareVersion>String</SoftwareVersion>
+                        <BuildNumber>String</BuildNumber>
+                        <BuildDate>2000-01-01T00:00:00Z</BuildDate>
+                    </BuildInfo>
+                </uax:Body>
+            </uax:ExtensionObject>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="BuildInfo" ValueRank="1" NodeId="ns=1;s=BuildInfoArray" ArrayDimensions="2" BrowseName="1:BuildinfoArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>BuildinfoArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=339</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <BuildInfo xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd">
+                            <ProductUri>String</ProductUri>
+                            <ManufacturerName>String</ManufacturerName>
+                            <ProductName>String</ProductName>
+                            <SoftwareVersion>String</SoftwareVersion>
+                            <BuildNumber>String</BuildNumber>
+                            <BuildDate>2000-01-01T00:00:00Z</BuildDate>
+                        </BuildInfo>
+                    </uax:Body>
+                </uax:ExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=339</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <BuildInfo xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd">
+                            <ProductUri>String1</ProductUri>
+                            <ManufacturerName>String1</ManufacturerName>
+                            <ProductName>String1</ProductName>
+                            <SoftwareVersion>String1</SoftwareVersion>
+                            <BuildNumber>String1</BuildNumber>
+                            <BuildDate>2000-01-01T00:00:00Z</BuildDate>
+                        </BuildInfo>
+                    </uax:Body>
+                </uax:ExtensionObject>
+            </uax:ListOfExtensionObject>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Byte" NodeId="ns=1;s=Byte" BrowseName="1:Byte" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Byte</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:Byte>1</uax:Byte>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Byte" ValueRank="1" NodeId="ns=1;s=ByteArray" ArrayDimensions="2" BrowseName="1:ByteArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>ByteArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfByte>
+                <uax:Byte>1</uax:Byte>
+                <uax:Byte>2</uax:Byte>
+            </uax:ListOfByte>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="ByteString" NodeId="ns=1;s=ByteString" BrowseName="1:ByteString" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>ByteString</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ByteString>Qnl0ZVN0cmluZw==</uax:ByteString>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="ByteString" ValueRank="1" NodeId="ns=1;s=ByteStringArray" ArrayDimensions="2" BrowseName="1:ByteStringArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>ByteStringArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+       <Value>
+            <uax:ListOfByteString>
+                <uax:ByteString>Qnl0ZVN0cmluZw==</uax:ByteString>
+                <uax:ByteString>Qnl0ZVN0cmluZw==</uax:ByteString>
+            </uax:ListOfByteString>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Double" ValueRank="1" NodeId="ns=1;s=DoubleArray" ArrayDimensions="3" BrowseName="1:DaoubleArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>DaoubleArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfDouble>
+                <uax:Double>1</uax:Double>
+                <uax:Double>2</uax:Double>
+                <uax:Double>3</uax:Double>
+            </uax:ListOfDouble>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="DataValue" NodeId="ns=1;s=DataValue" BrowseName="1:DataValue" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>DataValue</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:DataValue>
+                <uax:Value><uax:Double>1</uax:Double></uax:Value>
+		<uax:SourceTimestamp>2018-11-26T17:54:21Z</uax:SourceTimestamp>
+                <uax:ServerTimestamp>2018-11-26T17:54:21Z</uax:ServerTimestamp>
+            </uax:DataValue>     
+	</Value>
+    </UAVariable>
+    <UAVariable DataType="DataValue" ValueRank="1" NodeId="ns=1;s=DataValueArray" ArrayDimensions="2" BrowseName="1:DataValueArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>DataValueArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfDataValue>
+                <uax:DataValue>
+                    <uax:Value><uax:Double>1</uax:Double></uax:Value>
+		    <uax:SourceTimestamp>2018-11-26T17:54:21Z</uax:SourceTimestamp>
+                    <uax:ServerTimestamp>2018-11-26T17:54:21Z</uax:ServerTimestamp>
+                </uax:DataValue>     
+                <uax:DataValue>
+                    <uax:Value><uax:Double>1</uax:Double></uax:Value>
+		    <uax:SourceTimestamp>2018-11-26T17:54:21Z</uax:SourceTimestamp>
+                    <uax:ServerTimestamp>2018-11-26T17:54:21Z</uax:ServerTimestamp>
+                </uax:DataValue>
+            </uax:ListOfDataValue>  
+	</Value>
+    </UAVariable>
+    <UAVariable DataType="DateTime" NodeId="ns=1;s=DateTime" BrowseName="1:DateTime" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>DateTime</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:DateTime>2000-01-02T00:00:09Z</uax:DateTime>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="DateTime" ValueRank="1" NodeId="ns=1;s=DateTimeArray" ArrayDimensions="2" BrowseName="1:DateTimeArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>DateTimeArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+           <uax:ListOfDateTime>
+              <uax:DateTime>2000-01-02T10:00:09Z</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09+01</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09-01</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09+0100</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09+01:00</uax:DateTime>
+              <uax:DateTime>2000-01-02T10:00:09-01:00</uax:DateTime>
+           </uax:ListOfDateTime>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Double" NodeId="ns=1;s=Double" BrowseName="1:Double" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Double</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:Double>1</uax:Double>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Float" NodeId="ns=1;s=Float" BrowseName="1:Float" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Float</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:Float>1</uax:Float>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Float" ValueRank="1" NodeId="ns=1;s=FloatArray" ArrayDimensions="3" BrowseName="1:FloatArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>FloatArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfFloat>
+                <uax:Float>1</uax:Float>
+                <uax:Float>2</uax:Float>
+                <uax:Float>3</uax:Float>
+            </uax:ListOfFloat>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Guid" NodeId="ns=1;s=Guid" BrowseName="1:Guid" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Guid</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:Guid>
+                <uax:String>33b1ea35-7ebc-48c1-acdf-e8aac1579cd9</uax:String>
+            </uax:Guid>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Guid" ValueRank="1" NodeId="ns=1;s=GuidArray" ArrayDimensions="2" BrowseName="1:GuidArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>GuidArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfGuid>
+                <uax:Guid>
+                    <uax:String>33b1ea35-7ebc-48c1-acdf-e8aac1579cd9</uax:String>
+                </uax:Guid>
+                <uax:Guid>
+                    <uax:String>33b1ea35-7ebc-48c1-acdf-e8aac1579cd0</uax:String>
+                </uax:Guid>
+            </uax:ListOfGuid>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Int16" NodeId="ns=1;s=Int16" BrowseName="1:Int16" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Int16</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:Int16>16</uax:Int16>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Int16" ValueRank="1" NodeId="ns=1;s=Int16Array" ArrayDimensions="5" BrowseName="1:Int16Array" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Int16Array</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfInt16>
+                <uax:Int16>1</uax:Int16>
+                <uax:Int16>2</uax:Int16>
+                <uax:Int16>3</uax:Int16>
+                <uax:Int16>4</uax:Int16>
+                <uax:Int16>5</uax:Int16>
+            </uax:ListOfInt16>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Int32" NodeId="ns=1;s=Int32" BrowseName="1:Int32" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Int32</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:Int32>32</uax:Int32>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Int32" ValueRank="1" NodeId="ns=1;s=Int32Array" ArrayDimensions="4" BrowseName="1:Int32Array" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Int32Array</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfInt32>
+                <uax:Int32>1</uax:Int32>
+                <uax:Int32>2</uax:Int32>
+                <uax:Int32>3</uax:Int32>
+                <uax:Int32>4</uax:Int32>
+            </uax:ListOfInt32>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Int64" NodeId="ns=1;s=Int64" BrowseName="1:Int64" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Int64</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:Int64>123</uax:Int64>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Int64" ValueRank="1" NodeId="ns=1;s=Int64Array" ArrayDimensions="9" BrowseName="1:Int64" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Int64</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfInt64>
+                <uax:Int64>1</uax:Int64>
+                <uax:Int64>2</uax:Int64>
+                <uax:Int64>3</uax:Int64>
+                <uax:Int64>4</uax:Int64>
+                <uax:Int64>5</uax:Int64>
+                <uax:Int64>6</uax:Int64>
+                <uax:Int64>7</uax:Int64>
+                <uax:Int64>8</uax:Int64>
+                <uax:Int64>9</uax:Int64>
+            </uax:ListOfInt64>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="LocalizedText" NodeId="ns=1;s=LocalizedText" BrowseName="1:LocalizedText" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>LocalizedText</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:LocalizedText>
+                <uax:Locale>de</uax:Locale>
+                <uax:Text>Text1</uax:Text>
+            </uax:LocalizedText>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="LocalizedText" ValueRank="1" NodeId="ns=1;s=LocalizedTextArray" ArrayDimensions="2" BrowseName="1:LocalizedTextArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>LocalizedTextArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfLocalizedText>
+                <uax:LocalizedText>
+                    <uax:Locale>de</uax:Locale>
+                    <uax:Text>Text1</uax:Text>
+                </uax:LocalizedText>
+                <uax:LocalizedText>
+                    <uax:Locale>de</uax:Locale>
+                    <uax:Text>Text2</uax:Text>
+                </uax:LocalizedText>
+            </uax:ListOfLocalizedText>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="NodeId" NodeId="ns=1;s=NodeId" BrowseName="1:NodeId" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>NodeId</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:NodeId>
+                <uax:Identifier>ns=1;i=123</uax:Identifier>
+            </uax:NodeId>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="NodeId" ValueRank="1" NodeId="ns=1;s=NodeIdArray" ArrayDimensions="2" BrowseName="1:NodeIdArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>NodeIdArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfNodeId>
+                <uax:NodeId>
+                    <uax:Identifier>ns=1;i=123</uax:Identifier>
+                </uax:NodeId>
+                <uax:NodeId>
+                    <uax:Identifier>ns=1;i=456</uax:Identifier>
+                </uax:NodeId>
+            </uax:ListOfNodeId>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="QualifiedName" NodeId="ns=1;s=QualifiedName" BrowseName="1:QualifiedNaame" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>QualifiedNaame</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:QualifiedName>
+                <uax:NamespaceIndex>1</uax:NamespaceIndex>
+                <uax:Name>QualifiedName1</uax:Name>
+            </uax:QualifiedName>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="QualifiedName" ValueRank="1" NodeId="ns=1;s=QualifiedNameArray" ArrayDimensions="2" BrowseName="1:QualifiedNameArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>QualifiedNameArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfQualifiedName>
+                <uax:QualifiedName>
+                    <uax:NamespaceIndex>1</uax:NamespaceIndex>
+                    <uax:Name>QualifiedName1</uax:Name>
+                </uax:QualifiedName>
+                <uax:QualifiedName>
+                    <uax:NamespaceIndex>2</uax:NamespaceIndex>
+                    <uax:Name>QualifiedName2</uax:Name>
+                </uax:QualifiedName>
+
+            </uax:ListOfQualifiedName>
+        </Value>
+
+    </UAVariable>
+    <UAVariable DataType="SByte" NodeId="ns=1;s=SByte" BrowseName="1:SByte" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>SByte</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:SByte>1</uax:SByte>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="SByte" ValueRank="1" NodeId="ns=1;s=SByteArray" ArrayDimensions="2" BrowseName="1:SByteArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>SByteArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfSByte>
+                <uax:SByte>1</uax:SByte>
+                <uax:SByte>2</uax:SByte>
+            </uax:ListOfSByte>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="StatusCode" NodeId="ns=1;s=StatusCode" BrowseName="1:StatusCode" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>StatusCode</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:StatusCode>
+                <uax:Code>0</uax:Code>
+            </uax:StatusCode>  
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="StatusCode" ValueRank="1" NodeId="ns=1;s=StatusCodeArray" ArrayDimensions="2" BrowseName="1:StatusCodeArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>StatusCodeArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+       <Value>
+           <uax:ListOfStatusCode>
+               <uax:StatusCode>
+                   <uax:Code>1</uax:Code>
+               </uax:StatusCode>  
+               <uax:StatusCode>
+                   <uax:Code>2</uax:Code>
+               </uax:StatusCode>  
+           </uax:ListOfStatusCode>
+       </Value>
+    </UAVariable>
+    <UAVariable DataType="String" NodeId="ns=1;s=String" BrowseName="1:String" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>String</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:String>String1</uax:String>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="String" ValueRank="1" NodeId="ns=1;s=StringArray" ArrayDimensions="3" BrowseName="1:StringArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>StringArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfString>
+                <uax:String>String1</uax:String>
+                <uax:String>String2</uax:String>
+                <uax:String>String3</uax:String>
+            </uax:ListOfString>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="Structure" NodeId="ns=1;s=Structure" BrowseName="1:Structure" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Structure</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+    </UAVariable>
+    <UAVariable DataType="UInt16" ValueRank="1" NodeId="ns=1;s=UInt16" BrowseName="1:UInt16" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>UInt16</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+          <uax:UInt16>3</uax:UInt16>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="UInt16" ValueRank="1" NodeId="ns=1;s=UInt16Array" ArrayDimensions="4" BrowseName="1:UInt16Array" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>UInt16Array</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfUInt16>
+                <uax:UInt16>1</uax:UInt16>
+                <uax:UInt16>2</uax:UInt16>
+                <uax:UInt16>3</uax:UInt16>
+                <uax:UInt16>4</uax:UInt16>
+            </uax:ListOfUInt16>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="UInt32" NodeId="ns=1;s=UInt32" BrowseName="1:UInt32" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>UInt32</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:UInt32>1</uax:UInt32>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="UInt32" ValueRank="1" NodeId="ns=1;s=UInt32Array" ArrayDimensions="4" BrowseName="1:UInt32Array" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>UInt32Array</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfUInt32>
+                <uax:UInt32>1</uax:UInt32>
+                <uax:UInt32>2</uax:UInt32>
+                <uax:UInt32>3</uax:UInt32>
+                <uax:UInt32>4</uax:UInt32>
+            </uax:ListOfUInt32>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="UInt64" NodeId="ns=1;s=UInt64" BrowseName="1:UInt64" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>UInt64</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:UInt64>1212</uax:UInt64>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="UInt64" ValueRank="1" NodeId="ns=1;s=UInt64Array" ArrayDimensions="5" BrowseName="1:UInt64Array" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>UInt64Array</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+        <Value>
+            <uax:ListOfUInt64>
+                <uax:UInt64>1</uax:UInt64>
+                <uax:UInt64>2</uax:UInt64>
+                <uax:UInt64>3</uax:UInt64>
+                <uax:UInt64>4</uax:UInt64>
+                <uax:UInt64>5</uax:UInt64>
+            </uax:ListOfUInt64>
+        </Value>
+    </UAVariable>
+    <UAVariable NodeId="ns=1;s=Variant" BrowseName="1:Variant" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>Variant</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+    </UAVariable>
+    <UAVariable ValueRank="1" NodeId="ns=1;i=6010" ArrayDimensions="2" BrowseName="1:VariantArray" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>VariantArray</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Folder</Reference>
+        </References>
+    </UAVariable>
+    <UAObject SymbolicName="http___yourorganisation_org_data_value_" NodeId="ns=1;i=5001" BrowseName="1:http://yourorganisation.org/data_value/">
+        <DisplayName>http://yourorganisation.org/data_value/</DisplayName>
+        <Description>Provides the metadata for a namespace used by the server.</Description>
+        <References>
+            <Reference ReferenceType="HasProperty">ns=1;i=6001</Reference>
+            <Reference ReferenceType="HasTypeDefinition">i=11616</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">i=11715</Reference>
+            <Reference ReferenceType="HasProperty">ns=1;i=6003</Reference>
+            <Reference ReferenceType="HasProperty">ns=1;i=6004</Reference>
+            <Reference ReferenceType="HasProperty">ns=1;i=6005</Reference>
+            <Reference ReferenceType="HasProperty">ns=1;i=6006</Reference>
+            <Reference ReferenceType="HasProperty">ns=1;i=6007</Reference>
+            <Reference ReferenceType="HasProperty">ns=1;i=6008</Reference>
+        </References>
+    </UAObject>
+    <UAVariable DataType="Boolean" ParentNodeId="ns=1;i=5001" NodeId="ns=1;i=6001" BrowseName="IsNamespaceSubset">
+        <DisplayName>IsNamespaceSubset</DisplayName>
+        <Description>If TRUE then the server only supports a subset of the namespace.</Description>
+        <References>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=5001</Reference>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+        </References>
+        <Value>
+            <uax:Boolean>false</uax:Boolean>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="DateTime" ParentNodeId="ns=1;i=5001" NodeId="ns=1;i=6003" BrowseName="NamespacePublicationDate">
+        <DisplayName>NamespacePublicationDate</DisplayName>
+        <Description>The publication date for the namespace.</Description>
+        <References>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=5001</Reference>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+        </References>
+        <Value>
+            <uax:DateTime>2018-11-26T17:54:21Z</uax:DateTime>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="String" ParentNodeId="ns=1;i=5001" NodeId="ns=1;i=6004" BrowseName="NamespaceUri">
+        <DisplayName>NamespaceUri</DisplayName>
+        <Description>The URI of the namespace.</Description>
+        <References>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=5001</Reference>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+        </References>
+        <Value>
+            <uax:String>http://yourorganisation.org/data_value/</uax:String>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="String" ParentNodeId="ns=1;i=5001" NodeId="ns=1;i=6005" BrowseName="NamespaceVersion">
+        <DisplayName>NamespaceVersion</DisplayName>
+        <Description>The human readable string representing version of the namespace.</Description>
+        <References>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=5001</Reference>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+        </References>
+        <Value>
+            <uax:String>1.0.0</uax:String>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="IdType" ParentNodeId="ns=1;i=5001" ValueRank="1" NodeId="ns=1;i=6006" BrowseName="StaticNodeIdTypes">
+        <DisplayName>StaticNodeIdTypes</DisplayName>
+        <Description>A list of IdTypes for nodes which are the same in every server that exposes them.</Description>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=5001</Reference>
+        </References>
+    </UAVariable>
+    <UAVariable DataType="NumericRange" ParentNodeId="ns=1;i=5001" ValueRank="1" NodeId="ns=1;i=6007" BrowseName="StaticNumericNodeIdRange">
+        <DisplayName>StaticNumericNodeIdRange</DisplayName>
+        <Description>A list of ranges for numeric node ids which are the same in every server that exposes them.</Description>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=5001</Reference>
+        </References>
+    </UAVariable>
+    <UAVariable DataType="String" ParentNodeId="ns=1;i=5001" NodeId="ns=1;i=6008" BrowseName="StaticStringNodeIdPattern">
+        <DisplayName>StaticStringNodeIdPattern</DisplayName>
+        <Description>A regular expression which matches string node ids are the same in every server that exposes them.</Description>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=5001</Reference>
+        </References>
+    </UAVariable>
+</UANodeSet>

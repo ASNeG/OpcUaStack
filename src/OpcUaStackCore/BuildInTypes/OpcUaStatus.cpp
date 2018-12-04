@@ -208,29 +208,57 @@ namespace OpcUaStackCore
     bool
     OpcUaStatus::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlEncode(pt, value_, element)) return false;
+    	boost::property_tree::ptree treeElement;
+        if(!xmlEncode(treeElement, xmlns)) return false;
+        pt.add_child(xmlns.addPrefix(element), treeElement);
         return true;
     }
     
     bool
     OpcUaStatus::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlEncode(pt, value_, "Int32")) return false;
+    	std::stringstream ss;
+    	ss << value_;
+    	pt.put(xmlns.addPrefix("Code"), ss.str());
         return true;
     }
     
     bool
     OpcUaStatus::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(xmlns.addPrefix(element));
+        if (!tree) {
+        	Log(Error, "xml element not exist")
+        		.parameter("XmlElement", element);
+        	return false;
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     OpcUaStatus::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlDecode(pt, value_)) return false;
+    	boost::optional<std::string> codeString = pt.get_optional<std::string>(xmlns.addPrefix("Code"));
+    	if (!codeString) {
+    		codeString = pt.get_optional<std::string>(xmlns.addPrefix("Code"));
+    		if (!codeString) {
+    			Log(Error, "xml element not exist")
+        			.parameter("XmlElement", "Code");
+    			return false;
+    		}
+    	}
+
+		try {
+			uint32_t code = boost::lexical_cast<uint32_t>(*codeString);
+			value_ = code;
+		} catch (boost::bad_lexical_cast&)
+		{
+	       	Log(Error, "xml element format invalid")
+	        	.parameter("XmlElement", "Code")
+				.parameter("Content", *codeString);
+			return false;
+		}
+
         return true;
     }
     

@@ -215,35 +215,86 @@ namespace OpcUaStackCore
     bool
     ReadRawModifiedDetails::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ReadRawModifiedDetails::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("IsReadModified");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, isReadModified_)) return false;
+        elementName = xmlns.addPrefix("IsReadModified");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, isReadModified_)) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("StartTime");
-        if (!tree) return false;
-        if (!startTime_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("StartTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!startTime_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - decode failed")
+                .parameter("Element", "StartTime");
+            return false;
+        }
     
-        tree = pt.get_child_optional("EndTime");
-        if (!tree) return false;
-        if (!endTime_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("EndTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!endTime_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - decode failed")
+                .parameter("Element", "EndTime");
+            return false;
+        }
     
-        tree = pt.get_child_optional("NumValuesPerNode");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, numValuesPerNode_)) return false;
+        elementName = xmlns.addPrefix("NumValuesPerNode");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, numValuesPerNode_)) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ReturnBounds");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, returnBounds_)) return false;
+        elementName = xmlns.addPrefix("ReturnBounds");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, returnBounds_)) {
+            Log(Error, "ReadRawModifiedDetails decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

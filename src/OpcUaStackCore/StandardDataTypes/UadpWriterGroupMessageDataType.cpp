@@ -215,35 +215,86 @@ namespace OpcUaStackCore
     bool
     UadpWriterGroupMessageDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     UadpWriterGroupMessageDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("GroupVersion");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, groupVersion_)) return false;
+        elementName = xmlns.addPrefix("GroupVersion");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, groupVersion_)) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetOrdering");
-        if (!tree) return false;
-        if (!dataSetOrdering_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetOrdering");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetOrdering_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - decode failed")
+                .parameter("Element", "DataSetOrdering");
+            return false;
+        }
     
-        tree = pt.get_child_optional("NetworkMessageContentMask");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, networkMessageContentMask_)) return false;
+        elementName = xmlns.addPrefix("NetworkMessageContentMask");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, networkMessageContentMask_)) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SamplingOffset");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, samplingOffset_)) return false;
+        elementName = xmlns.addPrefix("SamplingOffset");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, samplingOffset_)) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("PublishingOffset");
-        if (!tree) return false;
-        if (!publishingOffset_.xmlDecode(*tree, "Duration", xmlns)) return false;
+        elementName = xmlns.addPrefix("PublishingOffset");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publishingOffset_.xmlDecode(*tree, "Duration", xmlns)) {
+            Log(Error, "UadpWriterGroupMessageDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

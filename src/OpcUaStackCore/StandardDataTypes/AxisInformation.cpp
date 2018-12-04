@@ -214,35 +214,86 @@ namespace OpcUaStackCore
     bool
     AxisInformation::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AxisInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     AxisInformation::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("EngineeringUnits");
-        if (!tree) return false;
-        if (!engineeringUnits_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("EngineeringUnits");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AxisInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!engineeringUnits_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AxisInformation decode xml error - decode failed")
+                .parameter("Element", "EngineeringUnits");
+            return false;
+        }
     
-        tree = pt.get_child_optional("EURange");
-        if (!tree) return false;
-        if (!eURange_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("EURange");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AxisInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!eURange_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AxisInformation decode xml error - decode failed")
+                .parameter("Element", "EURange");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Title");
-        if (!tree) return false;
-        if (!title_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Title");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AxisInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!title_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AxisInformation decode xml error - decode failed")
+                .parameter("Element", "Title");
+            return false;
+        }
     
-        tree = pt.get_child_optional("AxisScaleType");
-        if (!tree) return false;
-        if (!axisScaleType_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("AxisScaleType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AxisInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!axisScaleType_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AxisInformation decode xml error - decode failed")
+                .parameter("Element", "AxisScaleType");
+            return false;
+        }
     
-        tree = pt.get_child_optional("AxisSteps");
-        if (!tree) return false;
-        if (!axisSteps_.xmlDecode(*tree, "Double", xmlns)) return false;
+        elementName = xmlns.addPrefix("AxisSteps");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AxisInformation decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!axisSteps_.xmlDecode(*tree, "Double", xmlns)) {
+            Log(Error, "AxisInformation decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

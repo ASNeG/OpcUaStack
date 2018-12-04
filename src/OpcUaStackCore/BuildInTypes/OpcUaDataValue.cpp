@@ -405,7 +405,7 @@ namespace OpcUaStackCore
 	{
 		boost::property_tree::ptree elementTree;
 		if (!xmlEncode(elementTree, xmlns)) return false;
-		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
 		return true;
 	}
 
@@ -475,7 +475,7 @@ namespace OpcUaStackCore
 	{
 		boost::optional<boost::property_tree::ptree&> tmpTree;
 
-		tmpTree = pt.get_child_optional(xmlns.addxmlns("Value"));
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("Value"));
 		if (!tmpTree) {
 			opcUaVariantSPtr_.reset();
 		}
@@ -490,7 +490,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		tmpTree = pt.get_child_optional(xmlns.addxmlns("SourceTimestamp"));
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("SourceTimestamp"));
 		if (!tmpTree) {
 			// nothing to do
 		}
@@ -503,7 +503,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		tmpTree = pt.get_child_optional(xmlns.addxmlns("ServerTimestamp"));
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("ServerTimestamp"));
 		if (!tmpTree) {
 			// nothing to do
 		}
@@ -516,7 +516,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		tmpTree = pt.get_child_optional(xmlns.addxmlns("SourcePicoseconds"));
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("SourcePicoseconds"));
 		if (!tmpTree) {
 			sourcePicoseconds_ = 0;
 		}
@@ -529,7 +529,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		tmpTree = pt.get_child_optional(xmlns.addxmlns("ServerPicoseconds"));
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("ServerPicoseconds"));
 		if (!tmpTree) {
 			serverPicoseconds_ = 0;
 		}

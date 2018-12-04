@@ -229,39 +229,99 @@ namespace OpcUaStackCore
     bool
     ServerStatusDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ServerStatusDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("StartTime");
-        if (!tree) return false;
-        if (!startTime_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("StartTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!startTime_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ServerStatusDataType decode xml error - decode failed")
+                .parameter("Element", "StartTime");
+            return false;
+        }
     
-        tree = pt.get_child_optional("CurrentTime");
-        if (!tree) return false;
-        if (!currentTime_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("CurrentTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!currentTime_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ServerStatusDataType decode xml error - decode failed")
+                .parameter("Element", "CurrentTime");
+            return false;
+        }
     
-        tree = pt.get_child_optional("State");
-        if (!tree) return false;
-        if (!state_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("State");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!state_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ServerStatusDataType decode xml error - decode failed")
+                .parameter("Element", "State");
+            return false;
+        }
     
-        tree = pt.get_child_optional("BuildInfo");
-        if (!tree) return false;
-        if (!buildInfo_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("BuildInfo");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!buildInfo_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ServerStatusDataType decode xml error - decode failed")
+                .parameter("Element", "BuildInfo");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecondsTillShutdown");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, secondsTillShutdown_)) return false;
+        elementName = xmlns.addPrefix("SecondsTillShutdown");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, secondsTillShutdown_)) {
+            Log(Error, "ServerStatusDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ShutdownReason");
-        if (!tree) return false;
-        if (!shutdownReason_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ShutdownReason");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!shutdownReason_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ServerStatusDataType decode xml error - decode failed")
+                .parameter("Element", "ShutdownReason");
+            return false;
+        }
     
         return true;
     }

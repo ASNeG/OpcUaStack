@@ -199,31 +199,73 @@ namespace OpcUaStackCore
     bool
     DataTypeSchemaHeader::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeSchemaHeader decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     DataTypeSchemaHeader::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Namespaces");
-        if (!tree) return false;
-        if (!namespaces_.xmlDecode(*tree, "String", xmlns)) return false;
+        elementName = xmlns.addPrefix("Namespaces");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeSchemaHeader decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!namespaces_.xmlDecode(*tree, "String", xmlns)) {
+            Log(Error, "DataTypeSchemaHeader decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("StructureDataTypes");
-        if (!tree) return false;
-        if (!structureDataTypes_.xmlDecode(*tree, "StructureDescription", xmlns)) return false;
+        elementName = xmlns.addPrefix("StructureDataTypes");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeSchemaHeader decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!structureDataTypes_.xmlDecode(*tree, "StructureDescription", xmlns)) {
+            Log(Error, "DataTypeSchemaHeader decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("EnumDataTypes");
-        if (!tree) return false;
-        if (!enumDataTypes_.xmlDecode(*tree, "EnumDescription", xmlns)) return false;
+        elementName = xmlns.addPrefix("EnumDataTypes");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeSchemaHeader decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!enumDataTypes_.xmlDecode(*tree, "EnumDescription", xmlns)) {
+            Log(Error, "DataTypeSchemaHeader decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SimpleDataTypes");
-        if (!tree) return false;
-        if (!simpleDataTypes_.xmlDecode(*tree, "SimpleTypeDescription", xmlns)) return false;
+        elementName = xmlns.addPrefix("SimpleDataTypes");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeSchemaHeader decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!simpleDataTypes_.xmlDecode(*tree, "SimpleTypeDescription", xmlns)) {
+            Log(Error, "DataTypeSchemaHeader decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

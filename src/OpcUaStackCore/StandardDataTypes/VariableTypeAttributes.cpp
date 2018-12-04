@@ -218,35 +218,86 @@ namespace OpcUaStackCore
     bool
     VariableTypeAttributes::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableTypeAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     VariableTypeAttributes::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Value");
-        if (!tree) return false;
-        if (!value_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Value");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableTypeAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!value_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "VariableTypeAttributes decode xml error - decode failed")
+                .parameter("Element", "Value");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataType");
-        if (!tree) return false;
-        if (!dataType_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableTypeAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataType_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "VariableTypeAttributes decode xml error - decode failed")
+                .parameter("Element", "DataType");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ValueRank");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, valueRank_)) return false;
+        elementName = xmlns.addPrefix("ValueRank");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableTypeAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, valueRank_)) {
+            Log(Error, "VariableTypeAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ArrayDimensions");
-        if (!tree) return false;
-        if (!arrayDimensions_.xmlDecode(*tree, "UInt32", xmlns)) return false;
+        elementName = xmlns.addPrefix("ArrayDimensions");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableTypeAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!arrayDimensions_.xmlDecode(*tree, "UInt32", xmlns)) {
+            Log(Error, "VariableTypeAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("IsAbstract");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, isAbstract_)) return false;
+        elementName = xmlns.addPrefix("IsAbstract");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "VariableTypeAttributes decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, isAbstract_)) {
+            Log(Error, "VariableTypeAttributes decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

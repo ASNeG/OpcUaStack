@@ -214,35 +214,86 @@ namespace OpcUaStackCore
     bool
     TrustListDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TrustListDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     TrustListDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("SpecifiedLists");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, specifiedLists_)) return false;
+        elementName = xmlns.addPrefix("SpecifiedLists");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TrustListDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, specifiedLists_)) {
+            Log(Error, "TrustListDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TrustedCertificates");
-        if (!tree) return false;
-        if (!trustedCertificates_.xmlDecode(*tree, "ByteString", xmlns)) return false;
+        elementName = xmlns.addPrefix("TrustedCertificates");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TrustListDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!trustedCertificates_.xmlDecode(*tree, "ByteString", xmlns)) {
+            Log(Error, "TrustListDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TrustedCrls");
-        if (!tree) return false;
-        if (!trustedCrls_.xmlDecode(*tree, "ByteString", xmlns)) return false;
+        elementName = xmlns.addPrefix("TrustedCrls");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TrustListDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!trustedCrls_.xmlDecode(*tree, "ByteString", xmlns)) {
+            Log(Error, "TrustListDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("IssuerCertificates");
-        if (!tree) return false;
-        if (!issuerCertificates_.xmlDecode(*tree, "ByteString", xmlns)) return false;
+        elementName = xmlns.addPrefix("IssuerCertificates");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TrustListDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!issuerCertificates_.xmlDecode(*tree, "ByteString", xmlns)) {
+            Log(Error, "TrustListDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("IssuerCrls");
-        if (!tree) return false;
-        if (!issuerCrls_.xmlDecode(*tree, "ByteString", xmlns)) return false;
+        elementName = xmlns.addPrefix("IssuerCrls");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TrustListDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!issuerCrls_.xmlDecode(*tree, "ByteString", xmlns)) {
+            Log(Error, "TrustListDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

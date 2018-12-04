@@ -244,43 +244,112 @@ namespace OpcUaStackCore
     bool
     StructureField::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     StructureField::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Name");
-        if (!tree) return false;
-        if (!name_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Name");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "StructureField decode xml error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Description");
-        if (!tree) return false;
-        if (!description_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Description");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!description_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "StructureField decode xml error - decode failed")
+                .parameter("Element", "Description");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataType");
-        if (!tree) return false;
-        if (!dataType_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataType");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataType_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "StructureField decode xml error - decode failed")
+                .parameter("Element", "DataType");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ValueRank");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, valueRank_)) return false;
+        elementName = xmlns.addPrefix("ValueRank");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, valueRank_)) {
+            Log(Error, "StructureField decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ArrayDimensions");
-        if (!tree) return false;
-        if (!arrayDimensions_.xmlDecode(*tree, "UInt32", xmlns)) return false;
+        elementName = xmlns.addPrefix("ArrayDimensions");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!arrayDimensions_.xmlDecode(*tree, "UInt32", xmlns)) {
+            Log(Error, "StructureField decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxStringLength");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxStringLength_)) return false;
+        elementName = xmlns.addPrefix("MaxStringLength");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxStringLength_)) {
+            Log(Error, "StructureField decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("IsOptional");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, isOptional_)) return false;
+        elementName = xmlns.addPrefix("IsOptional");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, isOptional_)) {
+            Log(Error, "StructureField decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

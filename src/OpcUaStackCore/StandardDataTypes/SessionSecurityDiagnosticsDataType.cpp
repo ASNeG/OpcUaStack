@@ -274,51 +274,138 @@ namespace OpcUaStackCore
     bool
     SessionSecurityDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     SessionSecurityDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("SessionId");
-        if (!tree) return false;
-        if (!sessionId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SessionId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!sessionId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "SessionId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ClientUserIdOfSession");
-        if (!tree) return false;
-        if (!clientUserIdOfSession_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ClientUserIdOfSession");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!clientUserIdOfSession_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "ClientUserIdOfSession");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ClientUserIdHistory");
-        if (!tree) return false;
-        if (!clientUserIdHistory_.xmlDecode(*tree, "String", xmlns)) return false;
+        elementName = xmlns.addPrefix("ClientUserIdHistory");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!clientUserIdHistory_.xmlDecode(*tree, "String", xmlns)) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("AuthenticationMechanism");
-        if (!tree) return false;
-        if (!authenticationMechanism_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("AuthenticationMechanism");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!authenticationMechanism_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "AuthenticationMechanism");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Encoding");
-        if (!tree) return false;
-        if (!encoding_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Encoding");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!encoding_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "Encoding");
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransportProtocol");
-        if (!tree) return false;
-        if (!transportProtocol_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TransportProtocol");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportProtocol_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "TransportProtocol");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityMode");
-        if (!tree) return false;
-        if (!securityMode_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SecurityMode");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityMode_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "SecurityMode");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityPolicyUri");
-        if (!tree) return false;
-        if (!securityPolicyUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SecurityPolicyUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityPolicyUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "SecurityPolicyUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ClientCertificate");
-        if (!tree) return false;
-        if (!clientCertificate_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ClientCertificate");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!clientCertificate_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SessionSecurityDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", "ClientCertificate");
+            return false;
+        }
     
         return true;
     }

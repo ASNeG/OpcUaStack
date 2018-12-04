@@ -202,31 +202,73 @@ namespace OpcUaStackCore
     bool
     RelativePathElement::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RelativePathElement decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     RelativePathElement::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ReferenceTypeId");
-        if (!tree) return false;
-        if (!referenceTypeId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ReferenceTypeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RelativePathElement decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!referenceTypeId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "RelativePathElement decode xml error - decode failed")
+                .parameter("Element", "ReferenceTypeId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("IsInverse");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, isInverse_)) return false;
+        elementName = xmlns.addPrefix("IsInverse");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RelativePathElement decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, isInverse_)) {
+            Log(Error, "RelativePathElement decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("IncludeSubtypes");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, includeSubtypes_)) return false;
+        elementName = xmlns.addPrefix("IncludeSubtypes");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RelativePathElement decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, includeSubtypes_)) {
+            Log(Error, "RelativePathElement decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TargetName");
-        if (!tree) return false;
-        if (!targetName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TargetName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RelativePathElement decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!targetName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "RelativePathElement decode xml error - decode failed")
+                .parameter("Element", "TargetName");
+            return false;
+        }
     
         return true;
     }

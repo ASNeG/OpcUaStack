@@ -200,31 +200,73 @@ namespace OpcUaStackCore
     bool
     BrokerWriterGroupTransportDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     BrokerWriterGroupTransportDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("QueueName");
-        if (!tree) return false;
-        if (!queueName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("QueueName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!queueName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode xml error - decode failed")
+                .parameter("Element", "QueueName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ResourceUri");
-        if (!tree) return false;
-        if (!resourceUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ResourceUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!resourceUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode xml error - decode failed")
+                .parameter("Element", "ResourceUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("AuthenticationProfileUri");
-        if (!tree) return false;
-        if (!authenticationProfileUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("AuthenticationProfileUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!authenticationProfileUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode xml error - decode failed")
+                .parameter("Element", "AuthenticationProfileUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("RequestedDeliveryGuarantee");
-        if (!tree) return false;
-        if (!requestedDeliveryGuarantee_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("RequestedDeliveryGuarantee");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!requestedDeliveryGuarantee_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode xml error - decode failed")
+                .parameter("Element", "RequestedDeliveryGuarantee");
+            return false;
+        }
     
         return true;
     }

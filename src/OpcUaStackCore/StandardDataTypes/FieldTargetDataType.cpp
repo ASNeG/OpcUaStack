@@ -244,43 +244,112 @@ namespace OpcUaStackCore
     bool
     FieldTargetDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     FieldTargetDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("DataSetFieldId");
-        if (!tree) return false;
-        if (!dataSetFieldId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetFieldId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetFieldId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "FieldTargetDataType decode xml error - decode failed")
+                .parameter("Element", "DataSetFieldId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ReceiverIndexRange");
-        if (!tree) return false;
-        if (!receiverIndexRange_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ReceiverIndexRange");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!receiverIndexRange_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "FieldTargetDataType decode xml error - decode failed")
+                .parameter("Element", "ReceiverIndexRange");
+            return false;
+        }
     
-        tree = pt.get_child_optional("TargetNodeId");
-        if (!tree) return false;
-        if (!targetNodeId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TargetNodeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!targetNodeId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "FieldTargetDataType decode xml error - decode failed")
+                .parameter("Element", "TargetNodeId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("AttributeId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, attributeId_)) return false;
+        elementName = xmlns.addPrefix("AttributeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, attributeId_)) {
+            Log(Error, "FieldTargetDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("WriteIndexRange");
-        if (!tree) return false;
-        if (!writeIndexRange_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("WriteIndexRange");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!writeIndexRange_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "FieldTargetDataType decode xml error - decode failed")
+                .parameter("Element", "WriteIndexRange");
+            return false;
+        }
     
-        tree = pt.get_child_optional("OverrideValueHandling");
-        if (!tree) return false;
-        if (!overrideValueHandling_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("OverrideValueHandling");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!overrideValueHandling_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "FieldTargetDataType decode xml error - decode failed")
+                .parameter("Element", "OverrideValueHandling");
+            return false;
+        }
     
-        tree = pt.get_child_optional("OverrideValue");
-        if (!tree) return false;
-        if (!overrideValue_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("OverrideValue");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!overrideValue_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "FieldTargetDataType decode xml error - decode failed")
+                .parameter("Element", "OverrideValue");
+            return false;
+        }
     
         return true;
     }

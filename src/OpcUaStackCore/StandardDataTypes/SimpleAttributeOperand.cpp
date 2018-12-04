@@ -137,6 +137,7 @@ namespace OpcUaStackCore
     void
     SimpleAttributeOperand::opcUaBinaryEncode(std::ostream& os) const
     {
+        FilterOperand::opcUaBinaryEncode(os);
         typeDefinitionId_.opcUaBinaryEncode(os);
         browsePath_.opcUaBinaryEncode(os);
         OpcUaNumber::opcUaBinaryEncode(os,attributeId_);
@@ -146,6 +147,7 @@ namespace OpcUaStackCore
     void
     SimpleAttributeOperand::opcUaBinaryDecode(std::istream& is)
     {
+        FilterOperand::opcUaBinaryDecode(is);
         typeDefinitionId_.opcUaBinaryDecode(is);
         browsePath_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
@@ -198,31 +200,73 @@ namespace OpcUaStackCore
     bool
     SimpleAttributeOperand::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SimpleAttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     SimpleAttributeOperand::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("TypeDefinitionId");
-        if (!tree) return false;
-        if (!typeDefinitionId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TypeDefinitionId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SimpleAttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!typeDefinitionId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SimpleAttributeOperand decode xml error - decode failed")
+                .parameter("Element", "TypeDefinitionId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("BrowsePath");
-        if (!tree) return false;
-        if (!browsePath_.xmlDecode(*tree, "QualifiedName", xmlns)) return false;
+        elementName = xmlns.addPrefix("BrowsePath");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SimpleAttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!browsePath_.xmlDecode(*tree, "QualifiedName", xmlns)) {
+            Log(Error, "SimpleAttributeOperand decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("AttributeId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, attributeId_)) return false;
+        elementName = xmlns.addPrefix("AttributeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SimpleAttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, attributeId_)) {
+            Log(Error, "SimpleAttributeOperand decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("IndexRange");
-        if (!tree) return false;
-        if (!indexRange_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("IndexRange");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SimpleAttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!indexRange_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "SimpleAttributeOperand decode xml error - decode failed")
+                .parameter("Element", "IndexRange");
+            return false;
+        }
     
         return true;
     }

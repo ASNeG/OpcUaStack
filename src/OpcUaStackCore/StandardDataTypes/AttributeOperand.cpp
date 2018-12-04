@@ -146,6 +146,7 @@ namespace OpcUaStackCore
     void
     AttributeOperand::opcUaBinaryEncode(std::ostream& os) const
     {
+        FilterOperand::opcUaBinaryEncode(os);
         nodeId_.opcUaBinaryEncode(os);
         alias_.opcUaBinaryEncode(os);
         browsePath_.opcUaBinaryEncode(os);
@@ -156,6 +157,7 @@ namespace OpcUaStackCore
     void
     AttributeOperand::opcUaBinaryDecode(std::istream& is)
     {
+        FilterOperand::opcUaBinaryDecode(is);
         nodeId_.opcUaBinaryDecode(is);
         alias_.opcUaBinaryDecode(is);
         browsePath_.opcUaBinaryDecode(is);
@@ -213,35 +215,86 @@ namespace OpcUaStackCore
     bool
     AttributeOperand::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     AttributeOperand::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("NodeId");
-        if (!tree) return false;
-        if (!nodeId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("NodeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!nodeId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AttributeOperand decode xml error - decode failed")
+                .parameter("Element", "NodeId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Alias");
-        if (!tree) return false;
-        if (!alias_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Alias");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!alias_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AttributeOperand decode xml error - decode failed")
+                .parameter("Element", "Alias");
+            return false;
+        }
     
-        tree = pt.get_child_optional("BrowsePath");
-        if (!tree) return false;
-        if (!browsePath_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("BrowsePath");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!browsePath_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AttributeOperand decode xml error - decode failed")
+                .parameter("Element", "BrowsePath");
+            return false;
+        }
     
-        tree = pt.get_child_optional("AttributeId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, attributeId_)) return false;
+        elementName = xmlns.addPrefix("AttributeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, attributeId_)) {
+            Log(Error, "AttributeOperand decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("IndexRange");
-        if (!tree) return false;
-        if (!indexRange_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("IndexRange");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!indexRange_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AttributeOperand decode xml error - decode failed")
+                .parameter("Element", "IndexRange");
+            return false;
+        }
     
         return true;
     }

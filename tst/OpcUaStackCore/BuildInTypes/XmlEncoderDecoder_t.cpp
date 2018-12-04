@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaDataTime)
 	std::cout << std::endl;
 
 	value2.xmlDecode(pt, xmlns);
-	BOOST_REQUIRE(value2.dateTime() == now);
+	BOOST_REQUIRE(value1.toISO8601() == value2.toISO8601());
 }
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaGuid)
@@ -607,7 +607,7 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_DateTime)
 	std::cout << std::endl;
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	BOOST_REQUIRE(value2.get<OpcUaDateTime>().dateTime() == now);
+	BOOST_REQUIRE(value2.get<OpcUaDateTime>().toISO8601() == value1.get<OpcUaDateTime>().toISO8601());
 }
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ByteString)
@@ -796,8 +796,8 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_DataValue)
 	std::cout << std::endl;
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
 	BOOST_REQUIRE(value2.variant()->get<OpcUaInt32>() == 12345);
-	BOOST_REQUIRE(value2.serverTimestamp().dateTime() == now);
-	BOOST_REQUIRE(value2.sourceTimestamp().dateTime() == now);
+	BOOST_REQUIRE(value2.serverTimestamp().toISO8601() == value1.serverTimestamp().toISO8601());
+	BOOST_REQUIRE(value2.sourceTimestamp().toISO8601() == value2.sourceTimestamp().toISO8601());
 }
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_OpcUaBoolean)
@@ -1062,7 +1062,7 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_DateTime)
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
 	for (uint32_t idx=0; idx<10; idx++) {
-		BOOST_REQUIRE(value2.get<OpcUaDateTime>(idx) == now);
+		BOOST_REQUIRE(value2.get<OpcUaDateTime>(idx).toISO8601() == value1.get<OpcUaDateTime>(idx).toISO8601());
 	}
 }
 

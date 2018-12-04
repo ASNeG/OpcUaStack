@@ -199,31 +199,73 @@ namespace OpcUaStackCore
     bool
     ServerOnNetwork::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerOnNetwork decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ServerOnNetwork::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("RecordId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, recordId_)) return false;
+        elementName = xmlns.addPrefix("RecordId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerOnNetwork decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, recordId_)) {
+            Log(Error, "ServerOnNetwork decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ServerName");
-        if (!tree) return false;
-        if (!serverName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ServerName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerOnNetwork decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ServerOnNetwork decode xml error - decode failed")
+                .parameter("Element", "ServerName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DiscoveryUrl");
-        if (!tree) return false;
-        if (!discoveryUrl_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DiscoveryUrl");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerOnNetwork decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!discoveryUrl_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ServerOnNetwork decode xml error - decode failed")
+                .parameter("Element", "DiscoveryUrl");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ServerCapabilities");
-        if (!tree) return false;
-        if (!serverCapabilities_.xmlDecode(*tree, "String", xmlns)) return false;
+        elementName = xmlns.addPrefix("ServerCapabilities");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerOnNetwork decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverCapabilities_.xmlDecode(*tree, "String", xmlns)) {
+            Log(Error, "ServerOnNetwork decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

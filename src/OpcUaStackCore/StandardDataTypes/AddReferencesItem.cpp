@@ -232,39 +232,99 @@ namespace OpcUaStackCore
     bool
     AddReferencesItem::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddReferencesItem decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     AddReferencesItem::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("SourceNodeId");
-        if (!tree) return false;
-        if (!sourceNodeId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SourceNodeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddReferencesItem decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!sourceNodeId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AddReferencesItem decode xml error - decode failed")
+                .parameter("Element", "SourceNodeId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ReferenceTypeId");
-        if (!tree) return false;
-        if (!referenceTypeId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("ReferenceTypeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddReferencesItem decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!referenceTypeId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AddReferencesItem decode xml error - decode failed")
+                .parameter("Element", "ReferenceTypeId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("IsForward");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, isForward_)) return false;
+        elementName = xmlns.addPrefix("IsForward");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddReferencesItem decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, isForward_)) {
+            Log(Error, "AddReferencesItem decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TargetServerUri");
-        if (!tree) return false;
-        if (!targetServerUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TargetServerUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddReferencesItem decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!targetServerUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AddReferencesItem decode xml error - decode failed")
+                .parameter("Element", "TargetServerUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("TargetNodeId");
-        if (!tree) return false;
-        if (!targetNodeId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TargetNodeId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddReferencesItem decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!targetNodeId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AddReferencesItem decode xml error - decode failed")
+                .parameter("Element", "TargetNodeId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("TargetNodeClass");
-        if (!tree) return false;
-        if (!targetNodeClass_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TargetNodeClass");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddReferencesItem decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!targetNodeClass_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "AddReferencesItem decode xml error - decode failed")
+                .parameter("Element", "TargetNodeClass");
+            return false;
+        }
     
         return true;
     }

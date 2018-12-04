@@ -155,19 +155,34 @@ namespace OpcUaStackCore
     bool
     DeleteAtTimeDetails::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteAtTimeDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     DeleteAtTimeDetails::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ReqTimes");
-        if (!tree) return false;
-        if (!reqTimes_.xmlDecode(*tree, "UtcTime", xmlns)) return false;
+        elementName = xmlns.addPrefix("ReqTimes");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteAtTimeDetails decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!reqTimes_.xmlDecode(*tree, "UtcTime", xmlns)) {
+            Log(Error, "DeleteAtTimeDetails decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

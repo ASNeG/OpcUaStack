@@ -364,75 +364,216 @@ namespace OpcUaStackCore
     bool
     DataSetReaderDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     DataSetReaderDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Name");
-        if (!tree) return false;
-        if (!name_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Name");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Enabled");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, enabled_)) return false;
+        elementName = xmlns.addPrefix("Enabled");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, enabled_)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("PublisherId");
-        if (!tree) return false;
-        if (!publisherId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("PublisherId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publisherId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", "PublisherId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("WriterGroupId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, writerGroupId_)) return false;
+        elementName = xmlns.addPrefix("WriterGroupId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, writerGroupId_)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetWriterId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, dataSetWriterId_)) return false;
+        elementName = xmlns.addPrefix("DataSetWriterId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, dataSetWriterId_)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetMetaData");
-        if (!tree) return false;
-        if (!dataSetMetaData_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetMetaData");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetMetaData_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", "DataSetMetaData");
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetFieldContentMask");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, dataSetFieldContentMask_)) return false;
+        elementName = xmlns.addPrefix("DataSetFieldContentMask");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, dataSetFieldContentMask_)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MessageReceiveTimeout");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, messageReceiveTimeout_)) return false;
+        elementName = xmlns.addPrefix("MessageReceiveTimeout");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, messageReceiveTimeout_)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityMode");
-        if (!tree) return false;
-        if (!securityMode_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SecurityMode");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityMode_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", "SecurityMode");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityGroupId");
-        if (!tree) return false;
-        if (!securityGroupId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SecurityGroupId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityGroupId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", "SecurityGroupId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityKeyServices");
-        if (!tree) return false;
-        if (!securityKeyServices_.xmlDecode(*tree, "EndpointDescription", xmlns)) return false;
+        elementName = xmlns.addPrefix("SecurityKeyServices");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityKeyServices_.xmlDecode(*tree, "EndpointDescription", xmlns)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("DataSetReaderProperties");
-        if (!tree) return false;
-        if (!dataSetReaderProperties_.xmlDecode(*tree, "KeyValuePair", xmlns)) return false;
+        elementName = xmlns.addPrefix("DataSetReaderProperties");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetReaderProperties_.xmlDecode(*tree, "KeyValuePair", xmlns)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransportSettings");
-        if (!tree) return false;
-        if (!transportSettings_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TransportSettings");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportSettings_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", "TransportSettings");
+            return false;
+        }
     
-        tree = pt.get_child_optional("MessageSettings");
-        if (!tree) return false;
-        if (!messageSettings_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("MessageSettings");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!messageSettings_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", "MessageSettings");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SubscribedDataSet");
-        if (!tree) return false;
-        if (!subscribedDataSet_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("SubscribedDataSet");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!subscribedDataSet_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "DataSetReaderDataType decode xml error - decode failed")
+                .parameter("Element", "SubscribedDataSet");
+            return false;
+        }
     
         return true;
     }

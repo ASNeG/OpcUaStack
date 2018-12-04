@@ -214,35 +214,86 @@ namespace OpcUaStackCore
     bool
     MonitoredItemCreateResult::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     MonitoredItemCreateResult::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("StatusCode");
-        if (!tree) return false;
-        if (!statusCode_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("StatusCode");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!statusCode_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - decode failed")
+                .parameter("Element", "StatusCode");
+            return false;
+        }
     
-        tree = pt.get_child_optional("MonitoredItemId");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, monitoredItemId_)) return false;
+        elementName = xmlns.addPrefix("MonitoredItemId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, monitoredItemId_)) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("RevisedSamplingInterval");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, revisedSamplingInterval_)) return false;
+        elementName = xmlns.addPrefix("RevisedSamplingInterval");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, revisedSamplingInterval_)) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("RevisedQueueSize");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, revisedQueueSize_)) return false;
+        elementName = xmlns.addPrefix("RevisedQueueSize");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, revisedQueueSize_)) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("FilterResult");
-        if (!tree) return false;
-        if (!filterResult_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("FilterResult");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!filterResult_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "MonitoredItemCreateResult decode xml error - decode failed")
+                .parameter("Element", "FilterResult");
+            return false;
+        }
     
         return true;
     }

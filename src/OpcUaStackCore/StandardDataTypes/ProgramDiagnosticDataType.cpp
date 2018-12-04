@@ -289,55 +289,151 @@ namespace OpcUaStackCore
     bool
     ProgramDiagnosticDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ProgramDiagnosticDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("CreateSessionId");
-        if (!tree) return false;
-        if (!createSessionId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("CreateSessionId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!createSessionId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - decode failed")
+                .parameter("Element", "CreateSessionId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("CreateClientName");
-        if (!tree) return false;
-        if (!createClientName_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("CreateClientName");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!createClientName_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - decode failed")
+                .parameter("Element", "CreateClientName");
+            return false;
+        }
     
-        tree = pt.get_child_optional("InvocationCreationTime");
-        if (!tree) return false;
-        if (!invocationCreationTime_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("InvocationCreationTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!invocationCreationTime_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - decode failed")
+                .parameter("Element", "InvocationCreationTime");
+            return false;
+        }
     
-        tree = pt.get_child_optional("LastTransitionTime");
-        if (!tree) return false;
-        if (!lastTransitionTime_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("LastTransitionTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!lastTransitionTime_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - decode failed")
+                .parameter("Element", "LastTransitionTime");
+            return false;
+        }
     
-        tree = pt.get_child_optional("LastMethodCall");
-        if (!tree) return false;
-        if (!lastMethodCall_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("LastMethodCall");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!lastMethodCall_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - decode failed")
+                .parameter("Element", "LastMethodCall");
+            return false;
+        }
     
-        tree = pt.get_child_optional("LastMethodSessionId");
-        if (!tree) return false;
-        if (!lastMethodSessionId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("LastMethodSessionId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!lastMethodSessionId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - decode failed")
+                .parameter("Element", "LastMethodSessionId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("LastMethodInputArguments");
-        if (!tree) return false;
-        if (!lastMethodInputArguments_.xmlDecode(*tree, "Argument", xmlns)) return false;
+        elementName = xmlns.addPrefix("LastMethodInputArguments");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!lastMethodInputArguments_.xmlDecode(*tree, "Argument", xmlns)) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("LastMethodOutputArguments");
-        if (!tree) return false;
-        if (!lastMethodOutputArguments_.xmlDecode(*tree, "Argument", xmlns)) return false;
+        elementName = xmlns.addPrefix("LastMethodOutputArguments");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!lastMethodOutputArguments_.xmlDecode(*tree, "Argument", xmlns)) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("LastMethodCallTime");
-        if (!tree) return false;
-        if (!lastMethodCallTime_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("LastMethodCallTime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!lastMethodCallTime_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - decode failed")
+                .parameter("Element", "LastMethodCallTime");
+            return false;
+        }
     
-        tree = pt.get_child_optional("LastMethodReturnStatus");
-        if (!tree) return false;
-        if (!lastMethodReturnStatus_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("LastMethodReturnStatus");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!lastMethodReturnStatus_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ProgramDiagnosticDataType decode xml error - decode failed")
+                .parameter("Element", "LastMethodReturnStatus");
+            return false;
+        }
     
         return true;
     }

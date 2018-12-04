@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,6 +35,15 @@ namespace OpcUaStackCore
 	, data3_(0)
 	{
 		memset((char*)data4_, 0x00, sizeof(data4_));
+	}
+
+	OpcUaGuid::OpcUaGuid(const std::string& opcUaGuid)
+	: Object()
+	, data1_(0)
+	, data2_(0)
+	, data3_(0)
+	{
+		value(opcUaGuid);
 	}
 		
 	OpcUaGuid::~OpcUaGuid(void)
@@ -249,7 +258,7 @@ namespace OpcUaStackCore
 				.parameter("Element", element);
 			return false;
 		}
-		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
 		return true;
 	}
 
@@ -257,14 +266,14 @@ namespace OpcUaStackCore
 	OpcUaGuid::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		std::string guidString = value();
-		pt.put(xmlns.addxmlns("String"), guidString);
+		pt.put(xmlns.addPrefix("String"), guidString);
 		return true;
 	}
 
 	bool
 	OpcUaGuid::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		boost::optional<std::string> sourceValue = pt.get_optional<std::string>(xmlns.addxmlns("String"));
+		boost::optional<std::string> sourceValue = pt.get_optional<std::string>(xmlns.addPrefix("String"));
 		if (!sourceValue) {
 			Log(Error, "OpcUaGuid xml decoder error")
 				.parameter("Element", "String");

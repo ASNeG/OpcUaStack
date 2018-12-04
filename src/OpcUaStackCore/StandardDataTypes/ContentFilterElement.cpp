@@ -169,23 +169,47 @@ namespace OpcUaStackCore
     bool
     ContentFilterElement::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ContentFilterElement decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ContentFilterElement::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("FilterOperator");
-        if (!tree) return false;
-        if (!filterOperator_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("FilterOperator");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ContentFilterElement decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!filterOperator_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "ContentFilterElement decode xml error - decode failed")
+                .parameter("Element", "FilterOperator");
+            return false;
+        }
     
-        tree = pt.get_child_optional("FilterOperands");
-        if (!tree) return false;
-        if (!filterOperands_.xmlDecode(*tree, "ExtensibleParameter", xmlns)) return false;
+        elementName = xmlns.addPrefix("FilterOperands");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ContentFilterElement decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!filterOperands_.xmlDecode(*tree, "ExtensibleParameter", xmlns)) {
+            Log(Error, "ContentFilterElement decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

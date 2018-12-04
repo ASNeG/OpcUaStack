@@ -18,6 +18,7 @@
 #include <boost/asio/streambuf.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/BuildInTypes/XmlnsGuard.h"
 #include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
@@ -343,7 +344,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
 		return true;
 	}
 
@@ -365,18 +366,30 @@ namespace OpcUaStackCore
 				.parameter("Element", "TypeId");
 			return false;
 		}
-		pt.add_child(xmlns.addxmlns("TypeId"), typeIdTree);
+		pt.add_child(xmlns.addPrefix("TypeId"), typeIdTree);
 
 		//
 		// encode body
 		//
 		boost::property_tree::ptree bodyTree;
-		if (!epSPtr_->xmlEncode(bodyTree, xmlns)) {
+		std::string uri = xmlns.getPrefix("http://opcfoundation.org/UA/2008/02/Types.xsd");
+		xmlns.addNamespace("", "http://opcfoundation.org/UA/2008/02/Types.xsd");
+
+		if (!epSPtr_->xmlEncode(bodyTree, epSPtr_->typeName(), xmlns)) {
 			Log(Error, "OpcUaExtensionObject xml encoder error")
 				.parameter("Element", "Body");
+			xmlns.addNamespace(uri, "http://opcfoundation.org/UA/2008/02/Types.xsd");
 			return false;
 		}
-		pt.add_child(xmlns.addxmlns("Body"), bodyTree);
+		bodyTree.front().second.put("<xmlattr>.xmlns", "http://opcfoundation.org/UA/2008/02/Types.xsd");
+
+		//
+		// added types namespace element
+		//
+
+
+		xmlns.addNamespace(uri, "http://opcfoundation.org/UA/2008/02/Types.xsd");
+		pt.add_child(xmlns.addPrefix("Body"), bodyTree);
 
 		return true;
 	}
@@ -395,7 +408,7 @@ namespace OpcUaStackCore
 		//
 		// get typeIdTree tree
 		//
-		boost::optional<boost::property_tree::ptree&> typeIdTree = pt.get_child_optional(xmlns.addxmlns("TypeId"));
+		boost::optional<boost::property_tree::ptree&> typeIdTree = pt.get_child_optional(xmlns.addPrefix("TypeId"));
 		if (!typeIdTree) {
 			Log(Error, "OpcUaExtensionObject xml decoder error - element not exist in xml document")
 				.parameter("Element", "TypeId");
@@ -415,7 +428,7 @@ namespace OpcUaStackCore
 		//
 		// get body tree
 		//
-		boost::optional<boost::property_tree::ptree&> bodyTree = pt.get_child_optional(xmlns.addxmlns("Body"));
+		boost::optional<boost::property_tree::ptree&> bodyTree = pt.get_child_optional(xmlns.addPrefix("Body"));
 		if (!bodyTree) {
 			Log(Error, "OpcUaExtensionObject xml decoder error - element not exist in xml document")
 				.parameter("Element", "Body")
@@ -438,9 +451,19 @@ namespace OpcUaStackCore
 		typeId_ = epSPtr_->binaryTypeId();
 
 		//
+		// handle namespaces in object tag
+		//
+		XmlnsGuard xmlnsGuard(bodyTree->front().second, xmlns);
+
+		//
+		// check namespace
+		//
+		//std::cout << "TypeName=" << epSPtr_->typeName() << " " << bodyTree->front().first << std::endl;
+
+		//
 		// decode extension object from xml file
 		//
-		if (!epSPtr_->xmlDecode(*bodyTree, xmlns)) {
+		if (!epSPtr_->xmlDecode(bodyTree->front().second, xmlns)) {
 			Log(Error, "OpcUaExtensionObject xml decoder error")
 				.parameter("Element", "Body")
 				.parameter("XmlTypeNodeId", xmlTypeNodeId);

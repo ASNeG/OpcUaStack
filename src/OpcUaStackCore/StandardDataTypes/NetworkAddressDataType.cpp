@@ -154,19 +154,34 @@ namespace OpcUaStackCore
     bool
     NetworkAddressDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "NetworkAddressDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     NetworkAddressDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("NetworkInterface");
-        if (!tree) return false;
-        if (!networkInterface_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("NetworkInterface");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "NetworkAddressDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!networkInterface_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "NetworkAddressDataType decode xml error - decode failed")
+                .parameter("Element", "NetworkInterface");
+            return false;
+        }
     
         return true;
     }

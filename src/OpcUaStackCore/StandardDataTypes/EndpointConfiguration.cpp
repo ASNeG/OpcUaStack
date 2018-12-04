@@ -274,51 +274,138 @@ namespace OpcUaStackCore
     bool
     EndpointConfiguration::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     EndpointConfiguration::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("OperationTimeout");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, operationTimeout_)) return false;
+        elementName = xmlns.addPrefix("OperationTimeout");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, operationTimeout_)) {
+            Log(Error, "EndpointConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("UseBinaryEncoding");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, useBinaryEncoding_)) return false;
+        elementName = xmlns.addPrefix("UseBinaryEncoding");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, useBinaryEncoding_)) {
+            Log(Error, "EndpointConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxStringLength");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxStringLength_)) return false;
+        elementName = xmlns.addPrefix("MaxStringLength");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxStringLength_)) {
+            Log(Error, "EndpointConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxByteStringLength");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxByteStringLength_)) return false;
+        elementName = xmlns.addPrefix("MaxByteStringLength");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxByteStringLength_)) {
+            Log(Error, "EndpointConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxArrayLength");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxArrayLength_)) return false;
+        elementName = xmlns.addPrefix("MaxArrayLength");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxArrayLength_)) {
+            Log(Error, "EndpointConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxMessageSize");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxMessageSize_)) return false;
+        elementName = xmlns.addPrefix("MaxMessageSize");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxMessageSize_)) {
+            Log(Error, "EndpointConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("MaxBufferSize");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, maxBufferSize_)) return false;
+        elementName = xmlns.addPrefix("MaxBufferSize");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxBufferSize_)) {
+            Log(Error, "EndpointConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ChannelLifetime");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, channelLifetime_)) return false;
+        elementName = xmlns.addPrefix("ChannelLifetime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, channelLifetime_)) {
+            Log(Error, "EndpointConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityTokenLifetime");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, securityTokenLifetime_)) return false;
+        elementName = xmlns.addPrefix("SecurityTokenLifetime");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointConfiguration decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, securityTokenLifetime_)) {
+            Log(Error, "EndpointConfiguration decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

@@ -119,6 +119,7 @@ namespace OpcUaStackCore
     void
     EventFilter::opcUaBinaryEncode(std::ostream& os) const
     {
+        MonitoringFilter::opcUaBinaryEncode(os);
         selectClauses_.opcUaBinaryEncode(os);
         whereClause_.opcUaBinaryEncode(os);
     }
@@ -126,6 +127,7 @@ namespace OpcUaStackCore
     void
     EventFilter::opcUaBinaryDecode(std::istream& is)
     {
+        MonitoringFilter::opcUaBinaryDecode(is);
         selectClauses_.opcUaBinaryDecode(is);
         whereClause_.opcUaBinaryDecode(is);
     }
@@ -168,23 +170,47 @@ namespace OpcUaStackCore
     bool
     EventFilter::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EventFilter decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     EventFilter::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("SelectClauses");
-        if (!tree) return false;
-        if (!selectClauses_.xmlDecode(*tree, "SimpleAttributeOperand", xmlns)) return false;
+        elementName = xmlns.addPrefix("SelectClauses");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EventFilter decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!selectClauses_.xmlDecode(*tree, "SimpleAttributeOperand", xmlns)) {
+            Log(Error, "EventFilter decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("WhereClause");
-        if (!tree) return false;
-        if (!whereClause_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("WhereClause");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EventFilter decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!whereClause_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "EventFilter decode xml error - decode failed")
+                .parameter("Element", "WhereClause");
+            return false;
+        }
     
         return true;
     }

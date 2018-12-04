@@ -34,9 +34,11 @@ namespace OpcUaStackCore
 
 		OpcUaDateTime(void);
 		OpcUaDateTime(const boost::posix_time::ptime& ptime);
+		OpcUaDateTime(const std::string& dateTimeString);
 		~OpcUaDateTime(void);
 
 		void dateTime(const boost::posix_time::ptime& dateTime);
+		OpcUaUInt64 rawDateTime(void) const;
 		boost::posix_time::ptime dateTime(void) const;
 		bool exist(void) const;
 
@@ -46,6 +48,8 @@ namespace OpcUaStackCore
 		operator OpcUaUInt64 const (void); 
 		bool fromISOString(const std::string& dateTimeString);
 		std::string toISOString(void);
+		bool fromISO8601(const std::string& dateTimeString);
+		std::string toISO8601(void);
 
 		void copyTo(OpcUaDateTime& opcUaDataTime);
 
@@ -65,6 +69,8 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
 	  private:
+
+
 		static boost::posix_time::ptime nullTime_;
 		OpcUaUInt64 dateTime_;
 	};

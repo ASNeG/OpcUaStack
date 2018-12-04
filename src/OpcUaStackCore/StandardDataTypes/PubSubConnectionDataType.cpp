@@ -274,51 +274,138 @@ namespace OpcUaStackCore
     bool
     PubSubConnectionDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     PubSubConnectionDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("Name");
-        if (!tree) return false;
-        if (!name_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Name");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType decode xml error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Enabled");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, enabled_)) return false;
+        elementName = xmlns.addPrefix("Enabled");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, enabled_)) {
+            Log(Error, "PubSubConnectionDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("PublisherId");
-        if (!tree) return false;
-        if (!publisherId_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("PublisherId");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publisherId_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType decode xml error - decode failed")
+                .parameter("Element", "PublisherId");
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransportProfileUri");
-        if (!tree) return false;
-        if (!transportProfileUri_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TransportProfileUri");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportProfileUri_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType decode xml error - decode failed")
+                .parameter("Element", "TransportProfileUri");
+            return false;
+        }
     
-        tree = pt.get_child_optional("Address");
-        if (!tree) return false;
-        if (!address_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Address");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!address_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType decode xml error - decode failed")
+                .parameter("Element", "Address");
+            return false;
+        }
     
-        tree = pt.get_child_optional("ConnectionProperties");
-        if (!tree) return false;
-        if (!connectionProperties_.xmlDecode(*tree, "KeyValuePair", xmlns)) return false;
+        elementName = xmlns.addPrefix("ConnectionProperties");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!connectionProperties_.xmlDecode(*tree, "KeyValuePair", xmlns)) {
+            Log(Error, "PubSubConnectionDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("TransportSettings");
-        if (!tree) return false;
-        if (!transportSettings_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("TransportSettings");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportSettings_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType decode xml error - decode failed")
+                .parameter("Element", "TransportSettings");
+            return false;
+        }
     
-        tree = pt.get_child_optional("WriterGroups");
-        if (!tree) return false;
-        if (!writerGroups_.xmlDecode(*tree, "WriterGroupDataType", xmlns)) return false;
+        elementName = xmlns.addPrefix("WriterGroups");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!writerGroups_.xmlDecode(*tree, "WriterGroupDataType", xmlns)) {
+            Log(Error, "PubSubConnectionDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("ReaderGroups");
-        if (!tree) return false;
-        if (!readerGroups_.xmlDecode(*tree, "ReaderGroupDataType", xmlns)) return false;
+        elementName = xmlns.addPrefix("ReaderGroups");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!readerGroups_.xmlDecode(*tree, "ReaderGroupDataType", xmlns)) {
+            Log(Error, "PubSubConnectionDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

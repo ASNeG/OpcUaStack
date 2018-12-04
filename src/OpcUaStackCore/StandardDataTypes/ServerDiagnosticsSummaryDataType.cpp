@@ -319,63 +319,177 @@ namespace OpcUaStackCore
     bool
     ServerDiagnosticsSummaryDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ServerDiagnosticsSummaryDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("ServerViewCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, serverViewCount_)) return false;
+        elementName = xmlns.addPrefix("ServerViewCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, serverViewCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("CurrentSessionCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, currentSessionCount_)) return false;
+        elementName = xmlns.addPrefix("CurrentSessionCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, currentSessionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("CumulatedSessionCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, cumulatedSessionCount_)) return false;
+        elementName = xmlns.addPrefix("CumulatedSessionCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, cumulatedSessionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityRejectedSessionCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, securityRejectedSessionCount_)) return false;
+        elementName = xmlns.addPrefix("SecurityRejectedSessionCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, securityRejectedSessionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("RejectedSessionCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, rejectedSessionCount_)) return false;
+        elementName = xmlns.addPrefix("RejectedSessionCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, rejectedSessionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SessionTimeoutCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, sessionTimeoutCount_)) return false;
+        elementName = xmlns.addPrefix("SessionTimeoutCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, sessionTimeoutCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SessionAbortCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, sessionAbortCount_)) return false;
+        elementName = xmlns.addPrefix("SessionAbortCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, sessionAbortCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("CurrentSubscriptionCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, currentSubscriptionCount_)) return false;
+        elementName = xmlns.addPrefix("CurrentSubscriptionCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, currentSubscriptionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("CumulatedSubscriptionCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, cumulatedSubscriptionCount_)) return false;
+        elementName = xmlns.addPrefix("CumulatedSubscriptionCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, cumulatedSubscriptionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("PublishingIntervalCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, publishingIntervalCount_)) return false;
+        elementName = xmlns.addPrefix("PublishingIntervalCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, publishingIntervalCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("SecurityRejectedRequestsCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, securityRejectedRequestsCount_)) return false;
+        elementName = xmlns.addPrefix("SecurityRejectedRequestsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, securityRejectedRequestsCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("RejectedRequestsCount");
-        if (!tree) return false;
-        if(!XmlNumber::xmlDecode(*tree, rejectedRequestsCount_)) return false;
+        elementName = xmlns.addPrefix("RejectedRequestsCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, rejectedRequestsCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
         return true;
     }

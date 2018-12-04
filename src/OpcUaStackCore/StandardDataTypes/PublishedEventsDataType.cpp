@@ -128,6 +128,7 @@ namespace OpcUaStackCore
     void
     PublishedEventsDataType::opcUaBinaryEncode(std::ostream& os) const
     {
+        PublishedDataSetSourceDataType::opcUaBinaryEncode(os);
         eventNotifier_.opcUaBinaryEncode(os);
         selectedFields_.opcUaBinaryEncode(os);
         filter_.opcUaBinaryEncode(os);
@@ -136,6 +137,7 @@ namespace OpcUaStackCore
     void
     PublishedEventsDataType::opcUaBinaryDecode(std::istream& is)
     {
+        PublishedDataSetSourceDataType::opcUaBinaryDecode(is);
         eventNotifier_.opcUaBinaryDecode(is);
         selectedFields_.opcUaBinaryDecode(is);
         filter_.opcUaBinaryDecode(is);
@@ -183,27 +185,60 @@ namespace OpcUaStackCore
     bool
     PublishedEventsDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedEventsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     PublishedEventsDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
+        std::string elementName;
         boost::optional<boost::property_tree::ptree&> tree;
     
-        tree = pt.get_child_optional("EventNotifier");
-        if (!tree) return false;
-        if (!eventNotifier_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("EventNotifier");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedEventsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!eventNotifier_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PublishedEventsDataType decode xml error - decode failed")
+                .parameter("Element", "EventNotifier");
+            return false;
+        }
     
-        tree = pt.get_child_optional("SelectedFields");
-        if (!tree) return false;
-        if (!selectedFields_.xmlDecode(*tree, "SimpleAttributeOperand", xmlns)) return false;
+        elementName = xmlns.addPrefix("SelectedFields");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedEventsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!selectedFields_.xmlDecode(*tree, "SimpleAttributeOperand", xmlns)) {
+            Log(Error, "PublishedEventsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
     
-        tree = pt.get_child_optional("Filter");
-        if (!tree) return false;
-        if (!filter_.xmlDecode(*tree, xmlns)) return false;
+        elementName = xmlns.addPrefix("Filter");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedEventsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!filter_.xmlDecode(*tree, xmlns)) {
+            Log(Error, "PublishedEventsDataType decode xml error - decode failed")
+                .parameter("Element", "Filter");
+            return false;
+        }
     
         return true;
     }
