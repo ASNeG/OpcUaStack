@@ -208,7 +208,9 @@ namespace OpcUaStackCore
     bool
     OpcUaStatus::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlEncode(pt, value_, element)) return false;
+    	boost::property_tree::ptree treeElement;
+        if(!xmlEncode(treeElement, xmlns)) return false;
+        pt.add_child(xmlns.addPrefix(element), treeElement);
         return true;
     }
     
@@ -217,7 +219,7 @@ namespace OpcUaStackCore
     {
     	std::stringstream ss;
     	ss << value_;
-    	pt.put("Code", ss.str());
+    	pt.put(xmlns.addPrefix("Code"), ss.str());
         return true;
     }
     

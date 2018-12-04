@@ -471,7 +471,6 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode)
 	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
 	BOOST_REQUIRE(dataValue.variant()->get<OpcUaBoolean>() == true);
 
-#if 0
 	// check boolean array variable
 	nodeClass = informationModel->find(OpcUaNodeId("BooleanArray", 1));
 	BOOST_REQUIRE(nodeClass.get() != nullptr);
@@ -774,7 +773,6 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode)
 	BOOST_REQUIRE(buildInfo->productName() == OpcUaString("String1"));
 	BOOST_REQUIRE(buildInfo->softwareVersion() == OpcUaString("String1"));
 	BOOST_REQUIRE(buildInfo->buildDate() == OpcUaDateTime("2000-01-01T00:00:00Z"));
-#endif
 }
 
 BOOST_AUTO_TEST_SUITE_END()

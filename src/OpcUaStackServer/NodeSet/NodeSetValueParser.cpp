@@ -489,6 +489,11 @@ namespace OpcUaStackServer
 				rc = xmlEncode<OpcUaFloat>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break; 
 			}
+			case OpcUaBuildInType_OpcUaStatusCode:
+				dataTypeString = "StatusCode";
+				rc = xmlEncode<OpcUaStatusCode>(ptree, opcUaVariant, dataTypeString, xmlns);
+				break;
+				break;
 			case OpcUaBuildInType_OpcUaDouble:
 			{
 				dataTypeString = "Double";
@@ -557,110 +562,139 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	bool 
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& element, Xmlns& xmlns)
+	bool
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaStatusCode& value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		if (value) {
-			ptree.put(element, "true");
-		}
-		else {
-			ptree.put(element, "false");
+		OpcUaStatus status;
+		status.enumeration(value);
+		if (!status.xmlEncode(ptree, element, xmlns)) {
+			return false;
 		}
 		return true;
 	}
 
 	bool 
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& element, Xmlns& xmlns)
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaBoolean& value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		std::stringstream ss;
-		ss << (int16_t)value;
-		ptree.put(element, ss.str());
-		return true;
+		return XmlNumber::xmlEncode(ptree, value, xmlns.addPrefix(element));
+	}
+
+	bool 
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaByte& value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
+	{
+		return XmlNumber::xmlEncode(ptree, value, xmlns.addPrefix(element));
 	}
 		
 	bool 
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& element, Xmlns& xmlns)
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaSByte& value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		std::stringstream ss;
-		ss << (int16_t)value;
-		ptree.put(element, ss.str());
-		return true;
+		return XmlNumber::xmlEncode(ptree, value, xmlns.addPrefix(element));
 	}
 
 	bool 
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaDateTime& value, const std::string& element, Xmlns& xmlns)
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaDateTime& value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		ptree.put(element, value.toISOString());
-		return true;
+		return value.xmlEncode(ptree, element, xmlns);
 	}
 
 	bool 
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaString::SPtr value, const std::string& element, Xmlns& xmlns)
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaString::SPtr value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		ptree.put(element, value->value());
-		return true;
+		return value->xmlEncode(ptree, element, xmlns);
 	}
 
 	bool 
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr value, const std::string& element, Xmlns& xmlns)
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaByteString::SPtr value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		OpcUaByte *data;
-		OpcUaInt32 dataLen;
-		value->value(&data, &dataLen);
-		if (dataLen < 0) {
-			ptree.put(element, std::string(""));
-			return true;
-		}
-		std::string byteString((char*)data, dataLen);
-		ptree.put(element, byteString);
-		return true;
+		return value->xmlEncode(ptree, element, xmlns);
 	}
 	
 	bool 
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr value, const std::string& element, Xmlns& xmlns)
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaLocalizedText::SPtr value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		std::string text = value->text().value();
-		ptree.put(element + std::string(".") + xmlns.addPrefix("Text"), text);
-
-		std::string locale = value->locale().value();
-		ptree.put(element + std::string(".") + xmlns.addPrefix("Locale"), locale);
-		return true;
+		return value->xmlEncode(ptree, element, xmlns);
 	}
 
 	bool 
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr value, const std::string& element, Xmlns& xmlns)
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaGuid::SPtr value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		std::string guidString = *value;
-		std::string localTag = element + std::string(".") + xmlns.addPrefix(std::string("String"));
-		ptree.put(localTag, guidString);
-		return true;
+		return value->xmlEncode(ptree, element, xmlns);
 	}
 
 	bool 
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& element, Xmlns& xmlns)
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaNodeId::SPtr value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		std::string localTag = element + std::string(".") + xmlns.addPrefix(std::string("Identifier"));
-		ptree.put(localTag, value->toString());
-		return true;
+		return value->xmlEncode(ptree, element, xmlns);
 	}
 
 	bool 
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr value, const std::string& element, Xmlns& xmlns)
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaQualifiedName::SPtr value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
 	{
-		if (value->namespaceIndex() != 0 ) {
-			std::stringstream ss;
-			ss << value->namespaceIndex();
-			std::string localTag = element + std::string(".") + xmlns.addPrefix(std::string("NamespaceIndex"));
-			ptree.put(localTag, ss.str());
-		}
-
-		std::string localTag = element + std::string(".") + xmlns.addPrefix(std::string("Name"));
-		ptree.put(localTag, value->name().value());
-		return true;
+		return value->xmlEncode(ptree, element, xmlns);
 	}
 
 	bool
-	NodeSetValueParser::xmlEncode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr value, const std::string& tag, Xmlns& xmlns)
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaExtensionObject::SPtr value,
+		const std::string& tag,
+		Xmlns& xmlns
+	)
 	{
 		// FIXME: todo
 		return false;

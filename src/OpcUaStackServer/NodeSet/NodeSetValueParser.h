@@ -261,7 +261,7 @@ namespace OpcUaStackServer
 					T value;
 					value = variant.variant<T>();
 					
-					if (!xmlEncode(ptree, value, xmlns.addPrefix(element), xmlns)) {
+					if (!xmlEncode(ptree, value, element, xmlns)) {
 						Log(Error, "encode error")
 							.parameter("Tag", element);
 						return false;
@@ -292,7 +292,7 @@ namespace OpcUaStackServer
 					typename T::SPtr value;
 					value = variant.variantSPtr<T>();
 					
-					if (!xmlEncode(ptree, value, xmlns.addPrefix(element), xmlns)) {
+					if (!xmlEncode(ptree, value, element, xmlns)) {
 						Log(Error, "encode error")
 							.parameter("Tag", element);
 						return false;
@@ -321,7 +321,7 @@ namespace OpcUaStackServer
 					value = it->variant<T>();
 					
 					boost::property_tree::ptree localPtree;
-					if (!xmlEncode(localPtree, value, xmlns.addPrefix(element), xmlns)) {
+					if (!xmlEncode(localPtree, value, element, xmlns)) {
 						Log(Error, "encode error")
 							.parameter("Tag", element);
 						return false;
@@ -352,7 +352,7 @@ namespace OpcUaStackServer
 					value = it->variantSPtr<T>();
 					
 					boost::property_tree::ptree localPtree;
-					if (!xmlEncode(localPtree, value, xmlns.addPrefix(element), xmlns)) {
+					if (!xmlEncode(localPtree, value, element, xmlns)) {
 						Log(Error, "encode error")
 							.parameter("Tag", element);
 						return false;
@@ -375,10 +375,11 @@ namespace OpcUaStackServer
 			{
 				std::stringstream ss;
 				ss << value;
-				ptree.put(element, ss.str());
+				ptree.put(xmlns.addPrefix(element), ss.str());
 				return true;
 			}
 
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStatusCode& value, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& element, Xmlns& xmlns);
