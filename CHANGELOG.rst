@@ -7,6 +7,7 @@ Release 4.1.0
 * Implement data type code generator #8, by @huebl
 * Implement enum type code generator #29, by @huebl
 * Processing of type information not possible #22, by @huebl
+* read and write values from xml nodeset #37, by @huebl
 
 **Bugs**:
 
