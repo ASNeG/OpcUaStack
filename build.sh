@@ -73,7 +73,7 @@ build_local()
     echo "build local start"
 
     # check build directoriy
-    if [ ! -d "build_local" ] ;
+    if [ ! -d "build_local_"${BUILD_TYPE} ] ;
     then
         BUILD_FIRST=1
         rm -rf build_local_${BUILD_TYPE}
