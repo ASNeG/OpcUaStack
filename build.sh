@@ -297,7 +297,7 @@ build_tst()
     echo "build tst start"
 
     # build tst directory
-    if [ ! -d "build_tst" ] ;
+    if [ ! -d "build_tst_${BUILD_TYPE}" ] ;
     then
         BUILD_FIRST=1
         rm -rf build_tst_${BUILD_TYPE}
