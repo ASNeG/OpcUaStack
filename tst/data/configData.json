@@ -1,0 +1,15 @@
+
+{
+    "ConfigData" : {
+        "Section1" : {
+            "Parameter1" : "Value11",
+            "Parameter2" : "Value12",
+            "Parameter3" : "Value13"
+        }, 
+        "Section2" : {
+            "Parameter1" : "Value21",
+            "Parameter2" : "Value22",
+            "Parameter3" : "Value23"
+        }
+    }
+}
