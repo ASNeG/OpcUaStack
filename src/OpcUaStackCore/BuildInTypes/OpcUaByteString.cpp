@@ -408,4 +408,92 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaByteString::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaByteString json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaByteString::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		OpcUaByte* valueBuf = nullptr;
+		OpcUaInt32 valueLen = 0;
+		value(&valueBuf, &valueLen);
+
+		if (valueLen == 0) {
+			pt.put_value("");
+		}
+		else {
+			uint32_t bufLen = Base64::asciiLen2base64Len(valueLen);
+			if (bufLen == 0) {
+				Log(Error, "OpcUaByteString json encoder error - base64 length error");
+				pt.put_value("");
+				return false;
+			}
+
+			char* buf = (char*) new char[bufLen+1];
+			if (!Base64::encode((const char*)valueBuf, valueLen, buf, bufLen)) {
+				Log(Error, "OpcUaByteString json encoder error - base64 encoder error");
+				delete buf;
+				return false;
+			}
+
+			std::string str(buf, bufLen);
+			pt.put_value(str);
+			delete buf;
+		}
+		return true;
+	}
+
+	bool
+	OpcUaByteString::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaByteString json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	OpcUaByteString::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		std::string sourceValue = pt.get_value<std::string>();
+
+		if (sourceValue.size() == 0) {
+			value("", 0);
+			return true;
+		}
+
+		uint32_t valueLen = Base64::base64Len2asciiLen(sourceValue.length());
+		if (valueLen == 0) {
+			Log(Error, "OpcUaByteString json encoder error - ascii length error");
+			return false;
+		}
+		char* valueBuf = (char*)malloc(valueLen+1);
+		memset(valueBuf, 0x00, valueLen+1);
+
+		if (!Base64::decode(sourceValue.c_str(), sourceValue.length(), valueBuf, valueLen)) {
+			Log(Error, "OpcUaByteString json encoder error - base64 decoder error");
+			delete valueBuf;
+			return false;
+		}
+
+		value(valueBuf, valueLen);
+		delete valueBuf;
+		return true;
+	}
+
 };

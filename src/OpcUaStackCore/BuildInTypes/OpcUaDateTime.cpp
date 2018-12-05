@@ -348,7 +348,7 @@ namespace OpcUaStackCore
 	{
 		boost::property_tree::ptree elementTree;
 		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcDateTune json encoder error")
+			Log(Error, "OpcUaDateTime json encoder error")
 				.parameter("Element", element);
 			return false;
 		}
@@ -370,7 +370,7 @@ namespace OpcUaStackCore
 
 		tmpTree = pt.get_child_optional(element);
 		if (!tmpTree) {
-			Log(Error, "OpcDateTime json decoder error")
+			Log(Error, "OpcUaDateTime json decoder error")
 				.parameter("Element", element);
 				return false;
 		}
