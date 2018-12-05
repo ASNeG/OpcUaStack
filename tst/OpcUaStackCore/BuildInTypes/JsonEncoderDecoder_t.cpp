@@ -239,26 +239,25 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaDataTime)
 	BOOST_REQUIRE(value1.toISO8601() == value2.toISO8601());
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaGuid)
 {
-	Jsonns jsonns;
 	ConfigJson json;
 	boost::property_tree::ptree pt;
 	OpcUaGuid value1, value2;
 
 	value1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
-	value1.jsonEncode(pt, jsonns);
+	value1.jsonEncode(pt, "Guid");
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	value2.jsonDecode(pt, jsonns);
+	value2.jsonDecode(pt, "Guid");
 	std::string str = value2;
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaByteString)
 {
 	std::string str = "Dies ist ein ByteString";
