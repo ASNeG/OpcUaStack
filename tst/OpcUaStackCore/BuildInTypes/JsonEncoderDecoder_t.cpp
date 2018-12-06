@@ -388,27 +388,26 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_QualifiedName)
 	BOOST_REQUIRE(value2.name().toStdString() == "Name");
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_LocalizedText)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaLocalizedText value1, value2;
 
 	value1.locale("de");
 	value1.text("Text");
-	value1.jsonEncode(pt, jsonns);
+	value1.jsonEncode(pt, "LocalizedText");
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	value2.jsonDecode(pt, jsonns);
+	value2.jsonDecode(pt, "LocalizedText");
 	BOOST_REQUIRE(value2.locale().toStdString() == "de");
 	BOOST_REQUIRE(value2.text().toStdString() == "Text");
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_ExtensionObject)
 {
 	OpcUaExtensionObject eo;
