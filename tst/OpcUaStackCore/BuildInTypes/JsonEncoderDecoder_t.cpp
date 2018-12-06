@@ -276,25 +276,70 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaByteString)
 	BOOST_REQUIRE(value2.toString() == str);
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaNodeId)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaNodeId value1, value2;
 
+	//
+	// string node id
+	//
+	pt.clear();
 	value1.set("NodeName", 123);
-	value1.jsonEncode(pt, jsonns);
+	value1.jsonEncode(pt, "NodeId");
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	value2.jsonDecode(pt, jsonns);
+	value2.jsonDecode(pt, "NodeId");
 	BOOST_REQUIRE(value2 == OpcUaNodeId("NodeName", 123));
+
+	//
+	// uint32 node id
+	//
+	pt.clear();
+	value1.set((uint32_t)4711, 123);
+	value1.jsonEncode(pt, "NodeId");
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+
+	value2.jsonDecode(pt, "NodeId");
+	BOOST_REQUIRE(value2 == OpcUaNodeId((uint32_t)4711, 123));
+
+	//
+	// guid node id
+	//
+	pt.clear();
+	value1.set("12345678-9ABC-DEF0-1234-56789ABCDEF0");
+	value1.jsonEncode(pt, "NodeId");
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+
+	value2.jsonDecode(pt, "NodeId");
+	BOOST_REQUIRE(value2 == OpcUaNodeId("12345678-9ABC-DEF0-1234-56789ABCDEF0"));
+
+	//
+	// byte string node id
+	//
+	pt.clear();
+	value1.set(OpcUaByteString("Das ist ein ByteString"));
+	value1.jsonEncode(pt, "NodeId");
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+
+	value2.jsonDecode(pt, "NodeId");
+	BOOST_REQUIRE(value2 == value1);
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaExpandedNodeId)
 {
 	boost::property_tree::ptree pt;

@@ -17,6 +17,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.h"
+#include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
 #include <sstream>
 
 namespace OpcUaStackCore
@@ -128,6 +129,24 @@ namespace OpcUaStackCore
 	OpcUaNodeIdBase::set(const OpcUaString& nodeId, OpcUaUInt16 namespaceIndex)
 	{
 		set(nodeId.value(), namespaceIndex);
+	}
+
+	void
+	OpcUaNodeIdBase::set(const OpcUaGuid& nodeId, OpcUaUInt16 namespaceIndex)
+	{
+		OpcUaGuid::SPtr opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+		*opcUaGuidSPtr = nodeId;
+		nodeIdValue_ = opcUaGuidSPtr;
+		namespaceIndex_ = namespaceIndex;
+	}
+
+	void
+	OpcUaNodeIdBase::set(const OpcUaByteString& nodeId, OpcUaUInt16 namespaceIndex)
+	{
+		OpcUaByteString::SPtr opcUaByteStringSPtr = constructSPtr<OpcUaByteString>();
+		*opcUaByteStringSPtr = nodeId;
+		nodeIdValue_ = opcUaByteStringSPtr;
+		namespaceIndex_ = namespaceIndex;
 	}
 
 	void 
@@ -540,6 +559,176 @@ namespace OpcUaStackCore
 			return false;
 		}
 		return fromString(*sourceValue);
+	}
+
+	bool
+	OpcUaNodeIdBase::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaNodeId json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaNodeIdBase::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		switch (nodeIdType())
+		{
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaUInt32 idType = 1;
+				if (!JsonNumber::jsonEncode(pt, idType, "IdType")) {
+					Log(Error, "OpcUaNodeId json encode error")
+					    .parameter("Element", "IdType");
+					return false;
+				}
+				OpcUaString::SPtr string = boost::get<OpcUaString::SPtr>(nodeIdValue_);
+				if (!string->jsonEncode(pt, "Id")) {
+					Log(Error, "OpcUaNodeId json encode error")
+					    .parameter("Element", "Id");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaUInt32 idType = 2;
+				if (!JsonNumber::jsonEncode(pt, idType, "IdType")) {
+					Log(Error, "OpcUaNodeId json encode error")
+					    .parameter("Element", "IdType");
+					return false;
+				}
+				OpcUaGuid::SPtr guid = boost::get<OpcUaGuid::SPtr>(nodeIdValue_);
+				if (!guid->jsonEncode(pt, "Id")) {
+					Log(Error, "OpcUaNodeId json encode error")
+					    .parameter("Element", "Id");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				OpcUaUInt32 idType = 3;
+				if (!JsonNumber::jsonEncode(pt, idType, "IdType")) {
+					Log(Error, "OpcUaNodeId json encode error")
+					    .parameter("Element", "IdType");
+					return false;
+				}
+				OpcUaByteString::SPtr byteString = boost::get<OpcUaByteString::SPtr>(nodeIdValue_);
+				if (!byteString->jsonEncode(pt, "Id")) {
+					Log(Error, "OpcUaNodeId json encode error")
+						.parameter("Element", "Id");
+					return false;
+				}
+				break;
+			}
+			default:
+			{
+				OpcUaUInt32 number = boost::get<OpcUaUInt32>(nodeIdValue_);
+				if (!JsonNumber::jsonEncode(pt, number, "Id")) {
+					Log(Error, "OpcUaNodeId json encode error")
+						.parameter("Element", "Id");
+					return false;
+				}
+				break;
+			}
+		}
+
+		// add namespace
+		if (namespaceIndex_ != 0) {
+			JsonNumber::jsonEncode(pt, namespaceIndex_, "Namespace");
+		}
+		return true;
+	}
+
+	bool
+	OpcUaNodeIdBase::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaNodeId json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	OpcUaNodeIdBase::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		OpcUaUInt32 idType = 0;
+		if (!JsonNumber::jsonDecode(pt, idType, "IdType")) {
+			idType = 0;
+		}
+
+		OpcUaUInt16 namespaceIndex = 0;
+		if (!JsonNumber::jsonDecode(pt, namespaceIndex, "Namespace")) {
+			namespaceIndex = 0;
+		}
+
+		switch (idType)
+		{
+			case 0: // uint32
+			{
+				OpcUaUInt32 id;
+				if (!JsonNumber::jsonDecode(pt, id, "Id")) {
+					Log(Error, "OpcUaNodeId json decode error")
+					    .parameter("Element", "Id");
+					return false;
+				}
+				set(id, namespaceIndex);
+				break;
+			}
+			case 1: // string
+			{
+				OpcUaString id;
+				if (!id.jsonDecode(pt, "Id")) {
+					Log(Error, "OpcUaNodeId json decode error")
+					    .parameter("Element", "Id");
+					return false;
+				}
+				set(id, namespaceIndex);
+				break;
+			}
+			case 2: // guid
+			{
+				OpcUaGuid id;
+				if (!id.jsonDecode(pt, "Id")) {
+					Log(Error, "OpcUaNodeId json decode error")
+					    .parameter("Element", "Id");
+					return false;
+				}
+				set(id, namespaceIndex);
+				break;
+			}
+			case 3: // byte string
+			{
+				OpcUaByteString id;
+				if (!id.jsonDecode(pt, "Id")) {
+					Log(Error, "OpcUaNodeId json decode error")
+					    .parameter("Element", "Id");
+					return false;
+				}
+				set(id, namespaceIndex);
+				break;
+			}
+			default:
+			{
+				Log(Error, "OpcUaNodeId json decode error - IdType invalid")
+				    .parameter("Element", "Id")
+					.parameter("IdType", idType);
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	bool 
