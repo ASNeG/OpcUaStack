@@ -152,6 +152,7 @@ namespace OpcUaStackServer
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/BuildInTypes/JsonNumber.h\"" << std::endl;
 
 		//
 		// added parent includes
@@ -1112,6 +1113,37 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		// FIXME: todo
+
+
+		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
+		ss << prefix << std::endl;
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    elementTree.clear();" << std::endl;
+					ss << prefix << "    if(!JsonNumber::jsonEncode(elementTree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
+					break;
+
+				case DataTypeField::BuildInArrayType:
+				case DataTypeField::StructureArrayType:
+					ss << prefix << "    elementTree.clear();" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree, \"" << dataTypeField->arrayElementName() << "\")) return false;" << std::endl;
+					break;
+
+				default:
+					ss << prefix << "    elementTree.clear();" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree)) return false;" << std::endl;
+			}
+			ss << prefix << "    pt.push_back(std::make_pair(\"" << dataTypeField->name() << "\", elementTree));" << std::endl;
+			ss << prefix << std::endl;
+		}
+
+
+
     	ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
