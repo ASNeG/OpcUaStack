@@ -317,6 +317,28 @@ namespace OpcUaStackCore
     bool
     Argument::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!name_.jsonEncode(elementTree)) return false;
+        pt.push_back(std::make_pair("Name", elementTree));
+    
+        elementTree.clear();
+        if (!dataType_.jsonEncode(elementTree)) return false;
+        pt.push_back(std::make_pair("DataType", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, valueRank_)) return false;
+        pt.push_back(std::make_pair("ValueRank", elementTree));
+    
+        elementTree.clear();
+        if (!arrayDimensions_.jsonEncode(elementTree, "")) return false;
+        pt.push_back(std::make_pair("ArrayDimensions", elementTree));
+    
+        elementTree.clear();
+        if (!description_.jsonEncode(elementTree)) return false;
+        pt.push_back(std::make_pair("Description", elementTree));
+    
         return true;
     }
     

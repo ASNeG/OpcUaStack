@@ -1131,7 +1131,7 @@ namespace OpcUaStackServer
 				case DataTypeField::BuildInArrayType:
 				case DataTypeField::StructureArrayType:
 					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree, \"" << dataTypeField->arrayElementName() << "\")) return false;" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree, \"\")) return false;" << std::endl;
 					break;
 
 				default:
