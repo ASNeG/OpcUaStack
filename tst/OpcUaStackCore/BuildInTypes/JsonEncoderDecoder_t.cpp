@@ -369,27 +369,26 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaExpandedNodeId)
 	BOOST_REQUIRE(value2.toString() == "svr=4711;nsu=NamespaceUri;s=NodeName");
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_QualifiedName)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaQualifiedName value1, value2;
 
 	value1.namespaceIndex(123);
 	value1.name("Name");
-	value1.jsonEncode(pt, jsonns);
+	value1.jsonEncode(pt, "QualifiedName");
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	value2.jsonDecode(pt, jsonns);
+	value2.jsonDecode(pt, "QualifiedName");
 	BOOST_REQUIRE(value2.namespaceIndex() == 123);
 	BOOST_REQUIRE(value2.name().toStdString() == "Name");
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_LocalizedText)
 {
 	boost::property_tree::ptree pt;
