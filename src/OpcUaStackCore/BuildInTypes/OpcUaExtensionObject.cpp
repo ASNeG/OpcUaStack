@@ -472,6 +472,73 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaExtensionObject::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaExtensionObject json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaExtensionObject::jsonEncode(boost::property_tree::ptree& pt)
+	{
+
+		if (epSPtr_.get() == nullptr) {
+			Log(Error, "OpcUaExtensionObject json encoder error - object invalid");
+			return false;
+		}
+
+		//
+		// encode type id
+		//
+		boost::property_tree::ptree typeIdTree;
+		OpcUaNodeId jsonNodeId = epSPtr_->xmlTypeId();
+		if (!jsonNodeId.jsonEncode(typeIdTree)) {
+			Log(Error, "OpcUaExtensionObject json encoder error")
+				.parameter("Element", "TypeId");
+			return false;
+		}
+		pt.add_child("TypeId", typeIdTree);
+
+		//
+		// encode body
+		//
+		boost::property_tree::ptree bodyTree;
+		if (!epSPtr_->jsonEncode(bodyTree, epSPtr_->typeName())) {
+			Log(Error, "OpcUaExtensionObject json encoder error")
+				.parameter("Element", "Body");
+			return false;
+		}
+		pt.add_child("Body", bodyTree);
+
+		return true;
+	}
+
+	bool
+	OpcUaExtensionObject::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaExtensionObject json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	OpcUaExtensionObject::jsonDecode(boost::property_tree::ptree& pt)
+	{
+	}
+
 	void
 	OpcUaExtensionObject::logExtensionObjectMap(void)
 	{

@@ -410,6 +410,11 @@ namespace OpcUaStackCore
 		 */
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncode(boost::property_tree::ptree& pt);
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecode(boost::property_tree::ptree& pt);
+
 		void logExtensionObjectMap(void);
 
 	  private:
