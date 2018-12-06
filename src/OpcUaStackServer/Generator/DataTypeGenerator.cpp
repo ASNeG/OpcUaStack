@@ -1093,7 +1093,13 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix <<  nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
+		ss << prefix << "    if (!jsonEncode(elementTree)) {" << std::endl;
+		ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
+		ss << prefix << "		     .parameter(\"Element\", element);" << std::endl;
+		ss << prefix << " 	     return false;" << std::endl;
+		ss << prefix << "    }" << std::endl;
+		ss << prefix << "    pt.push_back(std::make_pair(element, elementTree));" << std::endl;
 		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -1127,7 +1133,15 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix <<  nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tmpTree;" << std::endl;
+        ss << prefix << std::endl;
+		ss << prefix << "    tmpTree = pt.get_child_optional(element);" << std::endl;
+		ss << prefix << "    if (!tmpTree) {" << std::endl;
+		ss << prefix << " 	     Log(Error, \"" << nodeInfo_.className() << " json decoder error\")" << std::endl;
+		ss << prefix << "		    .parameter(\"Element\", element);" << std::endl;
+		ss << prefix << "		 return false;" << std::endl;
+		ss << prefix << "    }" << std::endl;
+		ss << prefix << "    return jsonDecode(*tmpTree);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 
@@ -1139,6 +1153,7 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		// FIXME: todo
+		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
