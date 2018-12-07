@@ -5049,7 +5049,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonEncodeUInt32Scalar(boost::property_tree::ptree& pt)
 	{
 		OpcUaUInt32 value = get<OpcUaUInt32>();
-		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
 			Log(Error, "OpcUaVariant json encoder error")
 				.parameter("Element", "OpcUaUInt32");
 			return false;
@@ -5060,7 +5060,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeUInt32Array(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaUInt32 value = get<OpcUaUInt32>(idx);
+			if (!JsonNumber::jsonEncode(list, value, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "UInt32");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -5068,7 +5077,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonDecodeUInt32Scalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaUInt32 value;
-		if (!XmlNumber::xmlDecode(pt, value)) {
+		if (!JsonNumber::jsonDecode(pt, value)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
 				.parameter("DataType", "OpcUaUInt32");
@@ -5081,7 +5090,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeUInt32Array(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "UInt32");
+				return false;
+			}
+			OpcUaUInt32 value;
+			if (!JsonNumber::jsonDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "UInt32");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
@@ -5107,7 +5132,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeInt32Array(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaInt32 value = get<OpcUaInt32>(idx);
+			if (!JsonNumber::jsonEncode(list, value, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "Int32");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -5128,7 +5162,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeInt32Array(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Int32");
+				return false;
+			}
+			OpcUaInt32 value;
+			if (!JsonNumber::jsonDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Int32");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
