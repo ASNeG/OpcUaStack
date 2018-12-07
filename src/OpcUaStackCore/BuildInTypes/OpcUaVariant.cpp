@@ -5204,7 +5204,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeUInt64Array(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaUInt64 value = get<OpcUaUInt64>(idx);
+			if (!JsonNumber::jsonEncode(list, value, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "UInt64");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -5225,7 +5234,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeUInt64Array(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "UInt64");
+				return false;
+			}
+			OpcUaUInt64 value;
+			if (!JsonNumber::jsonDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "UInt64");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
@@ -5251,7 +5276,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeInt64Array(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaInt64 value = get<OpcUaInt64>(idx);
+			if (!JsonNumber::jsonEncode(list, value, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "Int64");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -5272,7 +5306,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeInt64Array(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Int64");
+				return false;
+			}
+			OpcUaInt64 value;
+			if (!JsonNumber::jsonDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Int64");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
