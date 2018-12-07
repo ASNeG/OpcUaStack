@@ -629,27 +629,26 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Double)
 	BOOST_REQUIRE(v > 1.1 && v < 1.3);
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_DateTime)
 {
 	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
 
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	value1.set(OpcUaDateTime(now));
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantDateTime") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantDateTime") == true);
 	BOOST_REQUIRE(value2.get<OpcUaDateTime>().toISO8601() == value1.get<OpcUaDateTime>().toISO8601());
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ByteString)
 {
 	boost::property_tree::ptree pt;
