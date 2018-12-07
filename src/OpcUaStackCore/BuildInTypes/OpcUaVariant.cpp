@@ -5996,7 +5996,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeLocalizedTextArray(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaLocalizedText::SPtr value = getSPtr<OpcUaLocalizedText>(idx);
+			if (!value->jsonEncode(list, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "LocalizedText");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -6015,9 +6024,25 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeLocalizedTextArray(boost::property_tree::ptree& pts, const std::string& element)
+	OpcUaVariant::jsonDecodeLocalizedTextArray(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "OpcUaLocalizedText");
+				return false;
+			}
+			OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+			if (!value->jsonDecode(it->second)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "OpcUaLocalizedText");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
