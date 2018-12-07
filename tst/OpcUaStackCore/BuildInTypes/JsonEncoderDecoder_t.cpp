@@ -709,28 +709,27 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Guid)
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_NodeId)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	OpcUaNodeId::SPtr nodeId1 = constructSPtr<OpcUaNodeId>();
 	nodeId1->set(4711,4712);
 	value1.variant(nodeId1);
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantNodeId") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantNodeId") == true);
 	OpcUaNodeId::SPtr nodeId2 = value2.variantSPtr<OpcUaNodeId>();
 	BOOST_REQUIRE(*nodeId2 == OpcUaNodeId(4711,4712));
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ExpandedNodeId)
 {
 	boost::property_tree::ptree pt;
