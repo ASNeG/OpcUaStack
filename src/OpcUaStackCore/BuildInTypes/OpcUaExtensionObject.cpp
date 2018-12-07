@@ -537,6 +537,66 @@ namespace OpcUaStackCore
 	bool
 	OpcUaExtensionObject::jsonDecode(boost::property_tree::ptree& pt)
 	{
+		//
+		// get typeIdTree tree
+		//
+		boost::optional<boost::property_tree::ptree&> typeIdTree = pt.get_child_optional("TypeId");
+		if (!typeIdTree) {
+			Log(Error, "OpcUaExtensionObject json decoder error - element not exist in json document")
+				.parameter("Element", "TypeId");
+			return false;
+		}
+
+		//
+		// get type id
+		//
+		OpcUaNodeId jsonTypeNodeId;
+		if (!jsonTypeNodeId.jsonDecode(*typeIdTree)) {
+			Log(Error, "OpcUaExtensionObject json decoder error")
+				.parameter("Element", "TypeId");
+			return false;
+		}
+
+		//
+		// get body tree
+		//
+		boost::optional<boost::property_tree::ptree&> bodyTree = pt.get_child_optional("Body");
+		if (!bodyTree) {
+			Log(Error, "OpcUaExtensionObject json decoder error - element not exist in json document")
+				.parameter("Element", "Body")
+				.parameter("JsonTypeNodeId", jsonTypeNodeId);
+			return false;
+		}
+
+		this->typeId(jsonTypeNodeId);
+		if (!createObject()) {
+			// Extension object unknown
+			logExtensionObjectMap();
+			Log(Error, "OpcUaExtensionObject json decoder error - object create error")
+				.parameter("Element", "Body")
+				.parameter("JsonTypeNodeId", jsonTypeNodeId);
+			return false;
+		}
+
+		// Currently the Json type ist stored in the object. Now we determine
+		// the binary type by the XMl type.
+		typeId_ = epSPtr_->binaryTypeId();
+
+		//
+		// check namespace
+		//
+		//std::cout << "TypeName=" << epSPtr_->typeName() << " " << bodyTree->front().first << std::endl;
+
+		//
+		// decode extension object from json file
+		//
+		if (!epSPtr_->jsonDecode(bodyTree->front().second)) {
+			Log(Error, "OpcUaExtensionObject json decoder error")
+				.parameter("Element", "Body")
+				.parameter("JsonTypeNodeId", jsonTypeNodeId);
+			return false;
+		}
+		return true;
 	}
 
 	void

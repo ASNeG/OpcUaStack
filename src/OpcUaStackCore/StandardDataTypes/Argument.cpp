@@ -359,6 +359,74 @@ namespace OpcUaStackCore
     bool
     Argument::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Name";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "Argument decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.jsonDecode(*tree)) {
+            Log(Error, "Argument decode json error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
+    
+        elementName = "DataType";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "Argument decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataType_.jsonDecode(*tree)) {
+            Log(Error, "Argument decode json error - decode failed")
+                .parameter("Element", "DataType");
+            return false;
+        }
+    
+        elementName = "ValueRank";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "Argument decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, valueRank_)) {
+            Log(Error, "Argument decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "ArrayDimensions";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "Argument decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!arrayDimensions_.jsonDecode(*tree, "")) {
+            Log(Error, "Argument decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "Description";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "Argument decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!description_.jsonDecode(*tree)) {
+            Log(Error, "Argument decode json error - decode failed")
+                .parameter("Element", "Description");
+            return false;
+        }
+    
         return true;
     }
     

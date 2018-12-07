@@ -411,14 +411,14 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_ExtensionObject)
 {
 	OpcUaExtensionObject eo;
 	eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
-	eo.registerFactoryElement<Argument>(4711);
+	eo.registerFactoryElement<Argument>(297);
 
 	Argument::SPtr argument1, argument2;
 	boost::property_tree::ptree pt;
 	ConfigJson json;
 	OpcUaExtensionObject value1, value2;
 
-	argument1 = value1.parameter<Argument>(4711);
+	argument1 = value1.parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
 	argument1->name().value("ArgumentName");
 	argument1->dataType().set("NodeName", 23);
 	argument1->arrayDimensions().resize(3);
@@ -433,7 +433,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_ExtensionObject)
 	std::cout << std::endl;
 
 	BOOST_REQUIRE(value2.jsonDecode(pt, "ExtensionObject") == true);
-	BOOST_REQUIRE(value2.typeId().nodeId<OpcUaUInt32>() == 4711);
+	BOOST_REQUIRE(value2.typeId().nodeId<OpcUaUInt32>() == OpcUaId_Argument_Encoding_DefaultBinary);
 	argument2 = value2.parameter<Argument>();
 	BOOST_REQUIRE(argument2->name().toStdString() == "ArgumentName");
 	BOOST_REQUIRE(argument2->dataType() == OpcUaNodeId("NodeName", 23));

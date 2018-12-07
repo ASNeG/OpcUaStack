@@ -1184,7 +1184,52 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+
+		ss << prefix << "    std::string elementName;" << std::endl;
+		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree;" << std::endl;
+		ss << prefix << std::endl;
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			ss << prefix << "    elementName = \"" << dataTypeField->name() << "\";" << std::endl;
+			ss << prefix << "    tree = pt.get_child_optional(elementName);" << std::endl;
+			ss << prefix << "    if (!tree) {" << std::endl;
+			ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - element not found\")" << std::endl;
+			ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
+			ss << prefix << "        return false;" << std::endl;
+			ss << prefix << "    }" << std::endl;
+
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    if(!JsonNumber::jsonDecode(*tree, " << dataTypeField->variableName() << ")) {" << std::endl;
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\")" << std::endl;
+					ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+					ss << prefix << "    }" << std::endl;
+					break;
+
+				case DataTypeField::BuildInArrayType:
+				case DataTypeField::StructureArrayType:
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonDecode(*tree, \"\")) {" << std::endl;
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\")" << std::endl;
+					ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+					ss << prefix << "    }" << std::endl;
+					break;
+
+				default:
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonDecode(*tree)) {" << std::endl;
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\")" << std::endl;
+					ss << prefix << "            .parameter(\"Element\", \"" << dataTypeField->name() << "\");" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+					ss << prefix << "    }" << std::endl;
+			}
+
+			ss << prefix << std::endl;
+		}
+
 		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
