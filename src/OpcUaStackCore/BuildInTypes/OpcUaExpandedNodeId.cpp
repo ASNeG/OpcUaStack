@@ -119,10 +119,14 @@ namespace OpcUaStackCore
 	bool 
 	OpcUaExpandedNodeId::operator==(const OpcUaExpandedNodeId& opcUaExpandedNodeId) const
 	{
-		return
-			namespaceUri_ == const_cast<OpcUaExpandedNodeId*>(&opcUaExpandedNodeId)->namespaceUri() &&
-			serverIndex_ == const_cast<OpcUaExpandedNodeId*>(&opcUaExpandedNodeId)->serverIndex() &&
-			OpcUaNodeIdBase::operator==(opcUaExpandedNodeId);
+		if (namespaceUri_.toStdString() != "") {
+			if (namespaceUri_ != const_cast<OpcUaExpandedNodeId*>(&opcUaExpandedNodeId)->namespaceUri()) return false;
+		}
+		else {
+			if (namespaceIndex_ != const_cast<OpcUaExpandedNodeId*>(&opcUaExpandedNodeId)->namespaceIndex()) return false;
+		}
+		if (serverIndex_ != const_cast<OpcUaExpandedNodeId*>(&opcUaExpandedNodeId)->serverIndex()) return false;
+		return OpcUaNodeIdBase::operator ==(opcUaExpandedNodeId);
 	}
 
 	void 
