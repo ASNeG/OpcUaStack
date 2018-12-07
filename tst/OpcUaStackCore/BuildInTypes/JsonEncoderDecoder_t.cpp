@@ -1150,11 +1150,9 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_Guid)
 	}
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_NodeId)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
@@ -1163,18 +1161,19 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_NodeId)
 		nodeId->set(4711, 4712);
 		value1.pushBack(nodeId);
 	}
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantNodeIdArray") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantNodeIdArray") == true);
 	for (uint32_t idx=0; idx<10; idx++) {
 		BOOST_REQUIRE(*value2.getSPtr<OpcUaNodeId>(idx) == OpcUaNodeId(4711, 4712));
 	}
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_ExpandedNodeId)
 {
 	boost::property_tree::ptree pt;
