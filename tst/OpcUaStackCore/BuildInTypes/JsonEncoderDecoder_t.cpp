@@ -440,25 +440,24 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_ExtensionObject)
 	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_OpcUaBoolean)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	value1.set((OpcUaBoolean)true);
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantBoolean") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantBoolean") == true);
 	BOOST_REQUIRE(value2.get<OpcUaBoolean>() == true);
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_SByte)
 {
 	boost::property_tree::ptree pt;
