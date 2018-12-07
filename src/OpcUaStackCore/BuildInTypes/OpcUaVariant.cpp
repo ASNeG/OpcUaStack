@@ -5521,7 +5521,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeLocalizedTextScalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaLocalizedText::SPtr value = getSPtr<OpcUaLocalizedText>();
+		if (!value->jsonEncode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaLocalizedText");
+			return false;
+		}
 		return true;
 	}
 
@@ -5535,7 +5540,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeLocalizedTextScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+		if (!value->jsonDecode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaLocalizedText");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
