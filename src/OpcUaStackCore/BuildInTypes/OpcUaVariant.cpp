@@ -5852,7 +5852,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeExpandedNodeIdArray(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaExpandedNodeId::SPtr value = getSPtr<OpcUaExpandedNodeId>(idx);
+			if (!value->jsonEncode(list, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "ExpandedNodeId");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -5873,7 +5882,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeExpandedNodeIdArray(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "OpcUaExpandedNodeId");
+				return false;
+			}
+			OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+			if (!value->jsonDecode(it->second)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "OpcUaExpandedNodeId");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
