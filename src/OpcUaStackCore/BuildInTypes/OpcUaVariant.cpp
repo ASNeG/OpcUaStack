@@ -4833,7 +4833,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonEncodeByteScalar(boost::property_tree::ptree& pt)
 	{
 		OpcUaByte value = get<OpcUaByte>();
-		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
 			Log(Error, "OpcUaVariant json encoder error")
 				.parameter("Element", "OpcUaByte");
 			return false;
@@ -4844,7 +4844,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeByteArray(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaByte value = get<OpcUaByte>(idx);
+			if (!JsonNumber::jsonEncode(list, value, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "Byte");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -4852,7 +4861,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonDecodeByteScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaByte value;
-		if (!XmlNumber::xmlDecode(pt, value)) {
+		if (!JsonNumber::jsonDecode(pt, value)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
 				.parameter("DataType", "OpcUaByte");
@@ -4865,7 +4874,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeByteArray(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Byte");
+				return false;
+			}
+			OpcUaByte value;
+			if (!JsonNumber::jsonDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Byte");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
@@ -4891,7 +4916,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeUInt16Array(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaUInt16 value = get<OpcUaUInt16>(idx);
+			if (!JsonNumber::jsonEncode(list, value, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "OpcUaInt16");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -4912,7 +4946,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeUInt16Array(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "UInt16");
+				return false;
+			}
+			OpcUaUInt16 value;
+			if (!JsonNumber::jsonDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "UInt16");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
@@ -4927,7 +4977,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonEncodeInt16Scalar(boost::property_tree::ptree& pt)
 	{
 		OpcUaInt16 value = get<OpcUaInt16>();
-		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
 			Log(Error, "OpcUaVariant json encoder error")
 				.parameter("Element", "OpcUaInt16");
 			return false;
@@ -4938,7 +4988,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeInt16Array(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaInt16 value = get<OpcUaInt16>(idx);
+			if (!JsonNumber::jsonEncode(list, value, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "Int16");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -4946,7 +5005,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonDecodeInt16Scalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaInt16 value;
-		if (!XmlNumber::xmlDecode(pt, value)) {
+		if (!JsonNumber::jsonDecode(pt, value)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
 				.parameter("DataType", "OpcUaInt16");
@@ -4959,7 +5018,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeInt16Array(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Int16");
+				return false;
+			}
+			OpcUaInt16 value;
+			if (!JsonNumber::jsonDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Int16");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 

@@ -869,24 +869,22 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_SByte)
 	}
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_Byte)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
 		value1.pushBack((OpcUaByte)idx);
 	}
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantByteArray") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantByteArray") == true);
 	for (uint32_t idx=0; idx<10; idx++) {
 		BOOST_REQUIRE(value2.get<OpcUaByte>(idx) == idx);
 	}
@@ -895,20 +893,19 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_Byte)
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_Int16)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
 		value1.pushBack((OpcUaInt16)-idx);
 	}
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantInt16Array") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantInt16Array") == true);
 	for (uint32_t idx=0; idx<10; idx++) {
 		BOOST_REQUIRE(value2.get<OpcUaInt16	>(idx) == -idx);
 	}
@@ -917,25 +914,25 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_Int16)
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_UInt16)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
 		value1.pushBack((OpcUaUInt16)idx);
 	}
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantUInt16Array") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantUInt16Array") == true);
 	for (uint32_t idx=0; idx<10; idx++) {
 		BOOST_REQUIRE(value2.get<OpcUaUInt16>(idx) == idx);
 	}
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_Int32)
 {
 	boost::property_tree::ptree pt;
