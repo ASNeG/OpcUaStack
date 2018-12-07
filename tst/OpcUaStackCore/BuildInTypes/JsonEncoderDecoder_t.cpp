@@ -791,15 +791,13 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_LocalizedText)
 	BOOST_REQUIRE(*localizedText2 == OpcUaLocalizedText("de", "Name"));
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ExtensionObject)
 {
 	OpcUaExtensionObject eo;
 	eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
-	eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultJson);
+	eo.registerFactoryElement<Argument>(15081);
 
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 	Argument::SPtr argument1, argument2;
@@ -814,13 +812,13 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ExtensionObject)
 	argument1->arrayDimensions().set(2, 789);
 	argument1->description().set("de", "Description");
 	value1.variant(extentionObject1);
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantExtensionObject") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantExtensionObject") == true);
 	OpcUaExtensionObject::SPtr extentionObject2 = value2.variantSPtr<OpcUaExtensionObject>();
 	BOOST_REQUIRE(extentionObject2->typeId().nodeId<OpcUaUInt32>() == OpcUaId_Argument_Encoding_DefaultBinary);
 	argument2 = extentionObject2->parameter<Argument>();
@@ -829,6 +827,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ExtensionObject)
 	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_DataValue)
 {
 	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
