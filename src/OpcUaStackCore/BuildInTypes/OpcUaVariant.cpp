@@ -4722,7 +4722,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeSByteScalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaSByte value = get<OpcUaSByte>();
+		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaSByte");
+			return false;
+		}
 		return true;
 	}
 
@@ -4736,7 +4741,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeSByteScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaSByte value;
+		if (!XmlNumber::xmlDecode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaSByte");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
@@ -4757,7 +4769,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeByteScalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaByte value = get<OpcUaByte>();
+		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaByte");
+			return false;
+		}
 		return true;
 	}
 
@@ -4771,7 +4788,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeByteScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaByte value;
+		if (!XmlNumber::xmlDecode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaByte");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
