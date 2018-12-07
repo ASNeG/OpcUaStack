@@ -93,7 +93,7 @@ namespace OpcUaStackCore
 			  return JsonNumber::jsonEncode(pt, value, listElement);
 		  }
 
-		  bool jsonDecode(
+		  static bool jsonDecode(
 			  boost::property_tree::ptree& pt,
 			  T& value,
 			  const std::string& listElement
@@ -166,7 +166,7 @@ namespace OpcUaStackCore
 			  return value.jsonEncode(pt, listElement);
 		  }
 
-		  bool jsonDecode(
+		  static bool jsonDecode(
 			  boost::property_tree::ptree& pt,
 			  T& value,
 			  const std::string& listElement
@@ -251,7 +251,7 @@ namespace OpcUaStackCore
 			  return true;
 		  }
 
-		  bool jsonDecode(
+		  static bool jsonDecode(
 			  boost::property_tree::ptree& pt,
 			  T& value,
 			  const std::string& listElement
@@ -328,7 +328,7 @@ namespace OpcUaStackCore
 			  return value->jsonEncode(pt);
 		  }
 
-		  bool jsonDecode(
+		  static bool jsonDecode(
 			  boost::property_tree::ptree& pt,
 			  T& value,
 			  const std::string& listElement
