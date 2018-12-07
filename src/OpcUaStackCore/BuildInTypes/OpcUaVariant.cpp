@@ -5098,7 +5098,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeFloatScalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaFloat value = get<OpcUaFloat>();
+		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaFloat");
+			return false;
+		}
 		return true;
 	}
 
@@ -5112,7 +5117,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeFloatScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaFloat value;
+		if (!XmlNumber::xmlDecode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaFloat");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
