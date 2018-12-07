@@ -688,29 +688,28 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ByteString)
 	BOOST_REQUIRE(byteString2->toString() == "Das ist ein ByteString xxxx");
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Guid)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	OpcUaGuid::SPtr guid1 = constructSPtr<OpcUaGuid>();
 	*guid1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 	value1.variant(guid1);
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantGuid") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantGuid") == true);
 	OpcUaGuid::SPtr guid2 = value2.variantSPtr<OpcUaGuid>();
 	std::string str = *guid2;
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_NodeId)
 {
 	boost::property_tree::ptree pt;
