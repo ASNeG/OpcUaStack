@@ -4910,7 +4910,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeUInt32Scalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaUInt32 value = get<OpcUaUInt32>();
+		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaUInt32");
+			return false;
+		}
 		return true;
 	}
 
@@ -4924,7 +4929,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeUInt32Scalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaUInt32 value;
+		if (!XmlNumber::xmlDecode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaUInt32");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
@@ -4945,7 +4957,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeInt32Scalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaInt32 value = get<OpcUaInt32>();
+		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaInt32");
+			return false;
+		}
 		return true;
 	}
 
@@ -4959,7 +4976,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeInt32Scalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaInt32 value;
+		if (!XmlNumber::xmlDecode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaInt32");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
