@@ -5427,7 +5427,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeExpandedNodeIdScalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaExpandedNodeId::SPtr value = getSPtr<OpcUaExpandedNodeId>();
+		if (!value->jsonEncode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaExpandedNodeId");
+			return false;
+		}
 		return true;
 	}
 
@@ -5441,7 +5446,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeExpandedNodeIdScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+		if (!value->jsonDecode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaExpandedNodeId");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 

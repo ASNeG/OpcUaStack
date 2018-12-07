@@ -729,11 +729,9 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_NodeId)
 	BOOST_REQUIRE(*nodeId2 == OpcUaNodeId(4711,4712));
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ExpandedNodeId)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
@@ -741,18 +739,19 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ExpandedNodeId)
 	expandedNodeId1->set(4711, 4712);
 	expandedNodeId1->serverIndex(4713);
 	value1.variant(expandedNodeId1);
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantExpandedNodeId") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantExpandedNodeId") == true);
 	OpcUaExpandedNodeId::SPtr expandedNodeId2 = value2.variantSPtr<OpcUaExpandedNodeId>();
 	BOOST_REQUIRE(expandedNodeId2->namespaceIndex() == 4712);
 	BOOST_REQUIRE(expandedNodeId2->serverIndex() == 4713);
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_QualifiedName)
 {
 	boost::property_tree::ptree pt;
