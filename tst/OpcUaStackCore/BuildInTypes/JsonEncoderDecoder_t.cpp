@@ -827,48 +827,22 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ExtensionObject)
 	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
 }
 
-#if 0
-BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_DataValue)
-{
-	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
-
-	boost::property_tree::ptree pt;
-	Jsonns jsonns;
-	ConfigJson json;
-	OpcUaDataValue value1, value2;
-
-	value1.variant()->set((OpcUaInt32)12345);
-	value1.statusCode(BadNoData);
-	value1.sourceTimestamp(OpcUaDateTime(now));
-	value1.serverTimestamp(OpcUaDateTime(now));
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
-
-	json.ptree(pt);
-	json.write(std::cout);
-	std::cout << std::endl;
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
-	BOOST_REQUIRE(value2.variant()->get<OpcUaInt32>() == 12345);
-	BOOST_REQUIRE(value2.serverTimestamp().toISO8601() == value1.serverTimestamp().toISO8601());
-	BOOST_REQUIRE(value2.sourceTimestamp().toISO8601() == value2.sourceTimestamp().toISO8601());
-}
-
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_OpcUaBoolean)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
 		value1.pushBack((OpcUaBoolean)true);
 	}
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantBooleanArray") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantBooleanArray") == true);
 	for (uint32_t idx=0; idx<10; idx++) {
 		BOOST_REQUIRE(value2.get<OpcUaBoolean>(idx) == true);
 	}
@@ -877,25 +851,25 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_OpcUaBoolean)
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_SByte)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
 		value1.pushBack((OpcUaSByte)-idx);
 	}
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantSByteArray") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantSByteArray") == true);
 	for (uint32_t idx=0; idx<10; idx++) {
 		BOOST_REQUIRE(value2.get<OpcUaSByte>(idx) == -idx);
 	}
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_Byte)
 {
 	boost::property_tree::ptree pt;
