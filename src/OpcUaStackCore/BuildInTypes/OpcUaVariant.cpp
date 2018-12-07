@@ -5420,7 +5420,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeDoubleArray(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaDouble value = get<OpcUaDouble>(idx);
+			if (!JsonNumber::jsonEncode(list, value, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "Double");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -5441,7 +5450,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeDoubleArray(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Double");
+				return false;
+			}
+			OpcUaDouble value;
+			if (!JsonNumber::jsonDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Double");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
