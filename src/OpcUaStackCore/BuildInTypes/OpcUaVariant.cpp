@@ -5239,7 +5239,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeStringScalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaString::SPtr value = getSPtr<OpcUaString>();
+		if (!value->jsonEncode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaString");
+			return false;
+		}
 		return true;
 	}
 
@@ -5253,7 +5258,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeStringScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaString::SPtr value = constructSPtr<OpcUaString>();
+		if (!value->jsonDecode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaString");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
@@ -5274,7 +5286,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeByteStringScalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaByteString::SPtr value = getSPtr<OpcUaByteString>();
+		if (!value->jsonEncode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcByteUaString");
+			return false;
+		}
 		return true;
 	}
 
@@ -5288,7 +5305,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeByteStringScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+		if (!value->jsonDecode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaByteString");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 

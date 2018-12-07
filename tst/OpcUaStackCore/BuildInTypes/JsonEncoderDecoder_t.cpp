@@ -629,6 +629,26 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Double)
 	BOOST_REQUIRE(v > 1.1 && v < 1.3);
 }
 
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_String)
+{
+	boost::property_tree::ptree pt;
+	ConfigJson json;
+	OpcUaVariant value1, value2;
+
+	OpcUaString::SPtr string1 = constructSPtr<OpcUaString>();
+	string1->value("Das ist ein String xxxx");
+	value1.variant(string1);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantString") == true);
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantString") == true);
+	OpcUaString::SPtr string2 = value2.variantSPtr<OpcUaString>();
+	BOOST_REQUIRE(string2->toStdString() == "Das ist ein String xxxx");
+}
+
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_DateTime)
 {
 	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
@@ -648,28 +668,27 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_DateTime)
 	BOOST_REQUIRE(value2.get<OpcUaDateTime>().toISO8601() == value1.get<OpcUaDateTime>().toISO8601());
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ByteString)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	OpcUaByteString::SPtr byteString1 = constructSPtr<OpcUaByteString>();
 	byteString1->value("Das ist ein ByteString xxxx");
 	value1.variant(byteString1);
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantByteString") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantByteString") == true);
 	OpcUaByteString::SPtr byteString2 = value2.variantSPtr<OpcUaByteString>();
 	BOOST_REQUIRE(byteString2->toString() == "Das ist ein ByteString xxxx");
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Guid)
 {
 	boost::property_tree::ptree pt;
