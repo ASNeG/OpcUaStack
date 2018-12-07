@@ -5145,7 +5145,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeDoubleScalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaDouble value = get<OpcUaDouble>();
+		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaDouble");
+			return false;
+		}
 		return true;
 	}
 
@@ -5159,7 +5164,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeDoubleScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaDouble value;
+		if (!XmlNumber::xmlDecode(pt, value, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaDouble");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
