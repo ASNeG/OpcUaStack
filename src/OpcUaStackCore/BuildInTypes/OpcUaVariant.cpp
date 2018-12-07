@@ -6068,7 +6068,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeExtensionObjectArray(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaExtensionObject::SPtr value = getSPtr<OpcUaExtensionObject>(idx);
+			if (!value->jsonEncode(list, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "ExtensionObject");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -6089,7 +6098,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeExtensionObjectArray(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "OpcUaExtensionObject");
+				return false;
+			}
+			OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
+			if (!value->jsonDecode(it->second)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "OpcUaExtensionObject");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 

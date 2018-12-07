@@ -1247,11 +1247,9 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_LocalizedText)
 	}
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_ExtensionObject)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
@@ -1268,13 +1266,13 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_ExtensionObject)
 		argument->description().set("de", "Description");
 		value1.pushBack(extentionObject);
 	}
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantExtensionObjectArray") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantExtensionObjectArray") == true);
 	for (uint32_t idx=0; idx<10; idx++) {
 		Argument::SPtr argument;
 		OpcUaExtensionObject::SPtr extentionObject2 = value2.getSPtr<OpcUaExtensionObject>(idx);
@@ -1285,6 +1283,5 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_ExtensionObject)
 		BOOST_REQUIRE(argument->description() == OpcUaLocalizedText("de", "Description"));
 	}
 }
-#endif
 
 BOOST_AUTO_TEST_SUITE_END()
