@@ -5474,7 +5474,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeQualifiedNameScalar(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		OpcUaQualifiedName::SPtr value = getSPtr<OpcUaQualifiedName>();
+		if (!value->jsonEncode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaQualifiedName");
+			return false;
+		}
 		return true;
 	}
 
@@ -5488,7 +5493,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeQualifiedNameScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+		if (!value->jsonDecode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaQualifiedName");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
