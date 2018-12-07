@@ -3142,8 +3142,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaDateTime:
 			{
-				if (isArray) return jsonDecodeDateTimeArray(pt, "Body");
-				else return jsonDecodeDateTimeScalar(pt, "Body");
+				if (isArray) return jsonDecodeDateTimeArray(*tree, "Body");
+				else return jsonDecodeDateTimeScalar(*tree, "Body");
 				break;
 			}
 			case OpcUaBuildInType_OpcUaString:
@@ -5492,7 +5492,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeDateTimeArray(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaDateTime value = get<OpcUaDateTime>(idx);
+			if (!value.jsonEncode(list, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "DateTime");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -5500,7 +5509,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonDecodeDateTimeScalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaDateTime value;
-		if (!value.jsonDecode(pt, "Body")) {
+		if (!value.jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
 				.parameter("DataType", "OpcUaDateTime");
@@ -5513,7 +5522,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeDateTimeArray(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "OpcUaDateTime");
+				return false;
+			}
+			OpcUaDateTime value;
+			if (!value.jsonDecode(it->second)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "OpcUaDateTime");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
