@@ -2873,6 +2873,335 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaVariant::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		switch (variantType())
+		{
+			case OpcUaBuildInType_OpcUaBoolean:
+			{
+				if (isArray()) return jsonEncodeBooleanArray(pt);
+				else return jsonEncodeBooleanScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaSByte:
+			{
+				if (isArray()) return jsonEncodeSByteArray(pt);
+				else return jsonEncodeSByteScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByte:
+			{
+				if (isArray()) return jsonEncodeByteArray(pt);
+				else return jsonEncodeByteScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt16:
+			{
+				if (isArray()) return jsonEncodeInt16Array(pt);
+				else return jsonEncodeInt16Scalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt16:
+			{
+				if (isArray()) return jsonEncodeUInt16Array(pt);
+				else return jsonEncodeUInt16Scalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt32:
+			{
+				if (isArray()) return jsonEncodeInt32Array(pt);
+				else return jsonEncodeInt32Scalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				if (isArray()) return jsonEncodeUInt32Array(pt);
+				else return jsonEncodeUInt32Scalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt64:
+			{
+				if (isArray()) return jsonEncodeInt64Array(pt);
+				else return jsonEncodeInt64Scalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt64:
+			{
+				if (isArray()) return jsonEncodeUInt64Array(pt);
+				else return jsonEncodeUInt64Scalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaFloat:
+			{
+				if (isArray()) return jsonEncodeFloatArray(pt);
+				else return jsonEncodeFloatScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDouble:
+			{
+				if (isArray()) return jsonEncodeDoubleArray(pt);
+				else return jsonEncodeDoubleScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDateTime:
+			{
+				if (isArray()) return jsonEncodeDateTimeArray(pt);
+				else return jsonEncodeDateTimeScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				if (isArray()) return jsonEncodeStringArray(pt);
+				else return jsonEncodeStringScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				if (isArray()) return jsonEncodeByteStringArray(pt);
+				else return jsonEncodeByteStringScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				if (isArray()) return jsonEncodeGuidArray(pt);
+				else return jsonEncodeGuidScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaNodeId:
+			{
+				if (isArray()) return jsonEncodeNodeIdArray(pt);
+				else return jsonEncodeNodeIdScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaExpandedNodeId:
+			{
+				if (isArray()) return jsonEncodeExpandedNodeIdArray(pt);
+				else return jsonEncodeExpandedNodeIdScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				if (isArray()) return jsonEncodeQualifiedNameArray(pt);
+				else return jsonEncodeQualifiedNameScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				if (isArray()) return jsonEncodeLocalizedTextArray(pt);
+				else return jsonEncodeLocalizedTextScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaExtensionObject:
+			{
+				if (isArray()) return jsonEncodeExtensionObjectArray(pt);
+				else return jsonEncodeExtensionObjectScalar(pt);
+				break;
+			}
+			default:
+			{
+				std::stringstream ss;
+				ss << variantType();
+				Log(Error, "OpcUaVariant json encode error - data type unknown")
+					.parameter("DataType", ss.str());
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaVariant json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	OpcUaVariant::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		bool isArray = false;
+
+		// check if first element exist
+		if (pt.empty()) {
+			Log(Error, "OpcUaVariant json encode error - variable not exist");
+			return false;
+		}
+		std::string element = pt.front().first;
+		boost::property_tree::ptree tmpTree = pt.front().second;
+
+#if 0
+		// check array
+		if (boost::starts_with(element, "ListOf")) {
+			isArray = true;
+			element = element.substr(6, element.size());
+		}
+
+		// get data type from element name
+		OpcUaBuildInType dataType = OpcUaBuildInTypeMap::string2BuildInType(element);
+		if (dataType == OpcUaBuildInType_Unknown) {
+			Log(Error, "OpcUaVariant xml encode error - data type unknown")
+				.parameter("DataType", element);
+			return false;
+		}
+#endif
+
+		// decode element
+		OpcUaBuildInType dataType; // FIXME: todo
+		switch (dataType)
+		{
+			case OpcUaBuildInType_OpcUaBoolean:
+			{
+				if (isArray) return jsonDecodeBooleanArray(tmpTree, element);
+				else return jsonDecodeBooleanScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaSByte:
+			{
+				if (isArray) return jsonDecodeSByteArray(tmpTree, element);
+				else return jsonDecodeSByteScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByte:
+			{
+				if (isArray) return jsonDecodeByteArray(tmpTree, element);
+				else return jsonDecodeByteScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt16:
+			{
+				if (isArray) return jsonDecodeInt16Array(tmpTree, element);
+				else return jsonDecodeInt16Scalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt16:
+			{
+				if (isArray) return jsonDecodeUInt16Array(tmpTree, element);
+				else return jsonDecodeUInt16Scalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt32:
+			{
+				if (isArray) return jsonDecodeInt32Array(tmpTree, element);
+				else return jsonDecodeInt32Scalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				if (isArray) return jsonDecodeUInt32Array(tmpTree, element);
+				else return jsonDecodeUInt32Scalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt64:
+			{
+				if (isArray) return jsonDecodeInt64Array(tmpTree, element);
+				else return jsonDecodeInt64Scalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt64:
+			{
+				if (isArray) return jsonDecodeUInt64Array(tmpTree, element);
+				else return jsonDecodeUInt64Scalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaFloat:
+			{
+				if (isArray) return jsonDecodeFloatArray(tmpTree, element);
+				else return jsonDecodeFloatScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDouble:
+			{
+				if (isArray) return jsonDecodeDoubleArray(tmpTree, element);
+				else return jsonDecodeDoubleScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDateTime:
+			{
+				if (isArray) return jsonDecodeDateTimeArray(tmpTree, element);
+				else return jsonDecodeDateTimeScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				if (isArray) return jsonDecodeStringArray(tmpTree, element);
+				else return jsonDecodeStringScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				if (isArray) return jsonDecodeByteStringArray(tmpTree, element);
+				else return jsonDecodeByteStringScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				if (isArray) return jsonDecodeGuidArray(tmpTree, element);
+				else return jsonDecodeGuidScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaNodeId:
+			{
+				if (isArray) return jsonDecodeNodeIdArray(tmpTree, element);
+				else return jsonDecodeNodeIdScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaExpandedNodeId:
+			{
+				if (isArray) return jsonDecodeExpandedNodeIdArray(tmpTree, element);
+				else return jsonDecodeExpandedNodeIdScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				if (isArray) return jsonDecodeQualifiedNameArray(tmpTree, element);
+				else return jsonDecodeQualifiedNameScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				if (isArray) return jsonDecodeLocalizedTextArray(tmpTree, element);
+				else return jsonDecodeLocalizedTextScalar(tmpTree, element);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaExtensionObject:
+			{
+				if (isArray) return jsonDecodeExtensionObjectArray(tmpTree, element);
+				else return jsonDecodeExtensionObjectScalar(tmpTree, element);
+				break;
+			}
+			default:
+			{
+				Log(Error, "OpcUaVariant json encode error - data type unknown")
+					.parameter("DataType", element);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -4342,6 +4671,707 @@ namespace OpcUaStackCore
 			}
 			pushBack(value);
 		}
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json boolean encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeBooleanScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeBooleanArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeBooleanScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeBooleanArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json sbyte encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeSByteScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeSByteArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeSByteScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeSByteArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json byte encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeByteScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeByteArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeByteScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeByteArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json uint16 encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeUInt16Scalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeUInt16Array(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeUInt16Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeUInt16Array(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json int16 encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeInt16Scalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeInt16Array(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeInt16Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeInt16Array(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json uint32 encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeUInt32Scalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeUInt32Array(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeUInt32Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeUInt32Array(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json int32 encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeInt32Scalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeInt32Array(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeInt32Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeInt32Array(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json uint64 encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeUInt64Scalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeUInt64Array(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeUInt64Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeUInt64Array(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json int64 encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeInt64Scalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeInt64Array(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeInt64Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeInt64Array(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json float encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeFloatScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeFloatArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeFloatScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeFloatArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json double encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeDoubleScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeDoubleArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeDoubleScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeDoubleArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json datetime encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeDateTimeScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeDateTimeArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeDateTimeScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeDateTimeArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json string encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeStringScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeStringArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeStringScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeStringArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json bytestring encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeByteStringScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeByteStringArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeByteStringScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeByteStringArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json guid encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeGuidScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeGuidArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeGuidScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeGuidArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json nodeid encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeNodeIdScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeNodeIdArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeNodeIdScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeNodeIdArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeExpandedNodeIdScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json enpanded node id encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeExpandedNodeIdArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeExpandedNodeIdScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeExpandedNodeIdArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json qualified name encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeQualifiedNameScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeQualifiedNameArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeQualifiedNameScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeQualifiedNameArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json localized text encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeLocalizedTextScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeLocalizedTextArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeLocalizedTextScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeLocalizedTextArray(boost::property_tree::ptree& pts, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json extension object encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeExtensionObjectScalar(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeExtensionObjectArray(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeExtensionObjectScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeExtensionObjectArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
 		return true;
 	}
 
