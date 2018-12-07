@@ -1016,29 +1016,28 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_UInt64)
 	}
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_Float)
 {
 	boost::property_tree::ptree pt;
-	Jsonns jsonns;
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
 		value1.pushBack((OpcUaFloat)idx);
 	}
-	BOOST_REQUIRE(value1.jsonEncode(pt, jsonns) == true);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantFloatArray") == true);
 
 	json.ptree(pt);
 	json.write(std::cout);
 	std::cout << std::endl;
 
-	BOOST_REQUIRE(value2.jsonDecode(pt, jsonns) == true);
+	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantFloatArray") == true);
 	for (uint32_t idx=0; idx<10; idx++) {
 		BOOST_REQUIRE(value2.get<OpcUaFloat>(idx) == idx);
 	}
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_Double)
 {
 	boost::property_tree::ptree pt;

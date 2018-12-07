@@ -5348,7 +5348,16 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonEncodeFloatArray(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaFloat value = get<OpcUaFloat>(idx);
+			if (!JsonNumber::jsonEncode(list, value, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "Float");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
 		return true;
 	}
 
@@ -5369,7 +5378,23 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeFloatArray(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Float");
+				return false;
+			}
+			OpcUaFloat value;
+			if (!JsonNumber::jsonDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "Float");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
