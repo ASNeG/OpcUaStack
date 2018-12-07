@@ -358,6 +358,25 @@ endif()
 if (CPACK_BINARY_RPM)
     set(CPACK_RPM_COMPONENT_INSTALL "ON")
     set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+
+    SSLDepends(libopenssl)         
+    set(RPM_DEPS_BIN "${LIST_OF_LIB_VERSIONS_BIN}")
+    set(RPM_DEPS_DEV "${LIST_OF_LIB_VERSIONS_DEV}")            
+    
+    foreach(lib
+        libboost_system libboost_thread libboost_date_time libboost_chrono libboost_regex libboost_program_options)
+
+        BoostDepends(${lib})
+        set(RPM_DEPS_BIN "${RPM_DEPS_BIN}, ${LIST_OF_LIB_VERSIONS_BIN}")
+        set(RPM_DEPS_DEV "${RPM_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")            
+    endforeach(lib)
+
+    BoostDepends(libboost_test)
+    set(RPM_DEPS_DEV "${RPM_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")
+    set(RPM_DEPS_DEV "${RPM_DEPS_DEV}, opcuastack-${VERSION_MAJOR}-bin = ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")    
+    
+    set(CPACK_RPM_DEV_PACKAGE_REQUIRES ${RPM_DEPS_DEV})       
+    set(CPACK_RPM_BIN_PACKAGE_REQUIRES ${RPM_DEPS_BIN})             
 endif()
 
 
