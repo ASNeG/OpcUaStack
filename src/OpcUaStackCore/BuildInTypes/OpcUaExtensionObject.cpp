@@ -498,7 +498,7 @@ namespace OpcUaStackCore
 		// encode type id
 		//
 		boost::property_tree::ptree typeIdTree;
-		OpcUaNodeId jsonNodeId = epSPtr_->xmlTypeId();
+		OpcUaNodeId jsonNodeId = epSPtr_->jsonTypeId();
 		if (!jsonNodeId.jsonEncode(typeIdTree)) {
 			Log(Error, "OpcUaExtensionObject json encoder error")
 				.parameter("Element", "TypeId");
@@ -578,7 +578,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		// Currently the Json type ist stored in the object. Now we determine
+		// Currently the Json type is stored in the object. Now we determine
 		// the binary type by the XMl type.
 		typeId_ = epSPtr_->binaryTypeId();
 

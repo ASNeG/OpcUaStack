@@ -411,7 +411,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_ExtensionObject)
 {
 	OpcUaExtensionObject eo;
 	eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
-	eo.registerFactoryElement<Argument>(297);
+	eo.registerFactoryElement<Argument>(15081);
 
 	Argument::SPtr argument1, argument2;
 	boost::property_tree::ptree pt;
