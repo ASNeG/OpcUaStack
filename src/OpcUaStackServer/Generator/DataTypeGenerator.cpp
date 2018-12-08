@@ -1125,18 +1125,27 @@ namespace OpcUaStackServer
 			{
 				case DataTypeField::NumberType:
 					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if(!JsonNumber::jsonEncode(elementTree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
+					ss << prefix << "    if(!JsonNumber::jsonEncode(elementTree, " << dataTypeField->variableName() << "))" << std::endl;
+					ss << prefix << "    {" << std::endl;
+					ss << prefix << "       return false;" << std::endl;
+				    ss << prefix << "    }" << std::endl;
 					break;
 
 				case DataTypeField::BuildInArrayType:
 				case DataTypeField::StructureArrayType:
 					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree, \"\")) return false;" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree, \"\"))" << std::endl;
+					ss << prefix << "    {" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+				    ss << prefix << "    }" << std::endl;
 					break;
 
 				default:
 					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree)) return false;" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree))" << std::endl;
+					ss << prefix << "    {" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+			        ss << prefix << "    }" << std::endl;
 			}
 			ss << prefix << "    pt.push_back(std::make_pair(\"" << dataTypeField->name() << "\", elementTree));" << std::endl;
 			ss << prefix << std::endl;
