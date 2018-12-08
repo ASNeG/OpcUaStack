@@ -321,7 +321,7 @@ namespace OpcUaStackCore
 
 		  static bool jsonEncode(
 			  boost::property_tree::ptree& pt,
-			  T& value,
+			  boost::shared_ptr<T>& value,
 			  const std::string& listElement
 		  )
 		  {
@@ -330,7 +330,7 @@ namespace OpcUaStackCore
 
 		  static bool jsonDecode(
 			  boost::property_tree::ptree& pt,
-			  T& value,
+			  boost::shared_ptr<T>& value,
 			  const std::string& listElement
 		  )
 		  {
