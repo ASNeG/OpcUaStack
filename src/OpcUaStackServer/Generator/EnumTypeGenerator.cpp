@@ -955,7 +955,7 @@ namespace OpcUaStackServer
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-	    ss << prefix << "    if(!XmlNumber::xmlEncode(pt, value_, \"Int32\")) return false;" << std::endl;
+	    ss << prefix << "    if(!XmlNumber::xmlEncode(pt, value_)) return false;" << std::endl;
 	    ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -1012,7 +1012,13 @@ namespace OpcUaStackServer
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
-	    // FIXME: todo
+		ss << prefix << "    if(!JsonNumber::jsonEncode(pt, value_))" << std::endl;
+		ss << prefix << "    {" << std::endl;
+		ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
+		ss << prefix << "		     .parameter(\"Element\", \"Value\");" << std::endl;
+		ss << prefix << "       return false;" << std::endl;
+	    ss << prefix << "    }" << std::endl;
+	    ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -1043,7 +1049,11 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
-	    // FIXME: todo
+		ss << prefix << "    if(!JsonNumber::jsonDecode(pt, value_)) {" << std::endl;
+		ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\");" << std::endl;
+		ss << prefix << "        return false;" << std::endl;
+		ss << prefix << "    }" << std::endl;
+		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
