@@ -224,7 +224,7 @@ namespace OpcUaStackCore
     bool
     HistoryUpdateType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlEncode(pt, value_, "Int32")) return false;
+        if(!XmlNumber::xmlEncode(pt, value_)) return false;
         return true;
     }
     
@@ -246,21 +246,50 @@ namespace OpcUaStackCore
     bool
     HistoryUpdateType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "HistoryUpdateType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
     }
     
     bool
     HistoryUpdateType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        if(!JsonNumber::jsonEncode(pt, value_))
+        {
+    	     Log(Error, "HistoryUpdateType json encoder error")
+    		     .parameter("Element", "Value");
+           return false;
+        }
+        return true;
     }
     
     bool
     HistoryUpdateType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "HistoryUpdateType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     HistoryUpdateType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        if(!JsonNumber::jsonDecode(pt, value_)) {
+            Log(Error, "HistoryUpdateType decode json error - decode failed");
+            return false;
+        }
+        return true;
     }
     
     void
