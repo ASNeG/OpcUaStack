@@ -189,7 +189,11 @@ namespace OpcUaStackCore
     BuildInfo::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BuildInfo encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -200,27 +204,45 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!productUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!productUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BuildInfo encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ProductUri", elementTree));
     
         elementTree.clear();
-        if (!manufacturerName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!manufacturerName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BuildInfo encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ManufacturerName", elementTree));
     
         elementTree.clear();
-        if (!productName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!productName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BuildInfo encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ProductName", elementTree));
     
         elementTree.clear();
-        if (!softwareVersion_.xmlEncode(elementTree, xmlns)) return false;
+        if (!softwareVersion_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BuildInfo encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SoftwareVersion", elementTree));
     
         elementTree.clear();
-        if (!buildNumber_.xmlEncode(elementTree, xmlns)) return false;
+        if (!buildNumber_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BuildInfo encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("BuildNumber", elementTree));
     
         elementTree.clear();
-        if (!buildDate_.xmlEncode(elementTree, xmlns)) return false;
+        if (!buildDate_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BuildInfo encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("BuildDate", elementTree));
     
         return true;

@@ -948,7 +948,8 @@ namespace OpcUaStackServer
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
 		ss << prefix << "    if (!xmlEncode(elementTree, xmlns)) {" << std::endl;
-		// FIXME: todo
+		ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " encode xml error\")" << std::endl;
+		ss << prefix << "            .parameter(\"Element\", element);" << std::endl;
 		ss << prefix << "        return false;" << std::endl;
 	    ss << prefix << "    }" << std::endl;
 		ss << prefix << "    pt.push_back(std::make_pair(element, elementTree));" << std::endl;
@@ -975,7 +976,7 @@ namespace OpcUaStackServer
 					ss << prefix << "    elementTree.clear();" << std::endl;
 					ss << prefix << "    if(!XmlNumber::xmlEncode(elementTree, " << dataTypeField->variableName() << "))" << std::endl;
 					ss << prefix << "    {" << std::endl;
-					// FIXME: todo
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " encode xml error\");" << std::endl;
 					ss << prefix << "        return false;" << std::endl;
 			        ss << prefix << "    }" << std::endl;
 					break;
@@ -985,7 +986,7 @@ namespace OpcUaStackServer
 				//case DataTypeField::EnumerationArrayType:
 					ss << prefix << "    elementTree.clear();" << std::endl;
 					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) {" << std::endl;
-					// FIXME: todo
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " encode xml error\");" << std::endl;
 					ss << prefix << "        return false;" << std::endl;
 			        ss << prefix << "    }" << std::endl;
 					break;
@@ -993,7 +994,7 @@ namespace OpcUaStackServer
 				default:
 					ss << prefix << "    elementTree.clear();" << std::endl;
 					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, xmlns)) {" << std::endl;
-					// FIXME: todo
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " encode xml error\");" << std::endl;
 					ss << prefix << "        return false;" << std::endl;
 			        ss << prefix << "    }" << std::endl;
 			}
