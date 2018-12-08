@@ -213,14 +213,22 @@ namespace OpcUaStackCore
     bool
     OverrideValueHandling::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlEncode(pt, value_, element)) return false;
+        if(!XmlNumber::xmlEncode(pt, value_, element))
+        {
+    	     Log(Error, "OverrideValueHandling json encoder error")
+    		     .parameter("Element", element);
+            return false;
+        }
         return true;
     }
     
     bool
     OverrideValueHandling::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlEncode(pt, value_)) return false;
+        if(!XmlNumber::xmlEncode(pt, value_)) {
+    	     Log(Error, "OverrideValueHandling json encoder error");
+            return false;
+        }
         return true;
     }
     
@@ -228,14 +236,21 @@ namespace OpcUaStackCore
     OverrideValueHandling::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        if (!tree) {
+    	     Log(Error, "OverrideValueHandling json decoder error")
+    		     .parameter("Element", element);
+            return false;
+         }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     OverrideValueHandling::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlDecode(pt, value_)) return false;
+        if(!XmlNumber::xmlDecode(pt, value_)) {
+    	     Log(Error, "OverrideValueHandling json decoder error");
+            return false;
+        }
         return true;
     }
     

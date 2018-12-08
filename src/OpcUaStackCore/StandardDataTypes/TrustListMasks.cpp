@@ -225,14 +225,22 @@ namespace OpcUaStackCore
     bool
     TrustListMasks::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlEncode(pt, value_, element)) return false;
+        if(!XmlNumber::xmlEncode(pt, value_, element))
+        {
+    	     Log(Error, "TrustListMasks json encoder error")
+    		     .parameter("Element", element);
+            return false;
+        }
         return true;
     }
     
     bool
     TrustListMasks::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlEncode(pt, value_)) return false;
+        if(!XmlNumber::xmlEncode(pt, value_)) {
+    	     Log(Error, "TrustListMasks json encoder error");
+            return false;
+        }
         return true;
     }
     
@@ -240,14 +248,21 @@ namespace OpcUaStackCore
     TrustListMasks::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        if (!tree) {
+    	     Log(Error, "TrustListMasks json decoder error")
+    		     .parameter("Element", element);
+            return false;
+         }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     TrustListMasks::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlDecode(pt, value_)) return false;
+        if(!XmlNumber::xmlDecode(pt, value_)) {
+    	     Log(Error, "TrustListMasks json decoder error");
+            return false;
+        }
         return true;
     }
     

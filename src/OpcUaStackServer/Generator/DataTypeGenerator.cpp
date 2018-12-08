@@ -947,7 +947,10 @@ namespace OpcUaStackServer
 		ss << prefix <<  nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
-		ss << prefix << "    if (!xmlEncode(elementTree, xmlns)) return false;" << std::endl;
+		ss << prefix << "    if (!xmlEncode(elementTree, xmlns)) {" << std::endl;
+		// FIXME: todo
+		ss << prefix << "        return false;" << std::endl;
+	    ss << prefix << "    }" << std::endl;
 		ss << prefix << "    pt.push_back(std::make_pair(element, elementTree));" << std::endl;
 		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
@@ -970,19 +973,29 @@ namespace OpcUaStackServer
 			{
 				case DataTypeField::NumberType:
 					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if(!XmlNumber::xmlEncode(elementTree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
+					ss << prefix << "    if(!XmlNumber::xmlEncode(elementTree, " << dataTypeField->variableName() << "))" << std::endl;
+					ss << prefix << "    {" << std::endl;
+					// FIXME: todo
+					ss << prefix << "        return false;" << std::endl;
+			        ss << prefix << "    }" << std::endl;
 					break;
 
 				case DataTypeField::BuildInArrayType:
 				case DataTypeField::StructureArrayType:
 				//case DataTypeField::EnumerationArrayType:
 					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) return false;" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) {" << std::endl;
+					// FIXME: todo
+					ss << prefix << "        return false;" << std::endl;
+			        ss << prefix << "    }" << std::endl;
 					break;
 
 				default:
 					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, xmlns)) return false;" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, xmlns)) {" << std::endl;
+					// FIXME: todo
+					ss << prefix << "        return false;" << std::endl;
+			        ss << prefix << "    }" << std::endl;
 			}
 			ss << prefix << "    pt.push_back(std::make_pair(\"" << dataTypeField->name() << "\", elementTree));" << std::endl;
 			ss << prefix << std::endl;
