@@ -157,7 +157,11 @@ namespace OpcUaStackCore
     UABinaryFileDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UABinaryFileDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -168,15 +172,24 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!schemaLocation_.xmlEncode(elementTree, xmlns)) return false;
+        if (!schemaLocation_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UABinaryFileDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SchemaLocation", elementTree));
     
         elementTree.clear();
-        if (!fileHeader_.xmlEncode(elementTree, "KeyValuePair", xmlns)) return false;
+        if (!fileHeader_.xmlEncode(elementTree, "KeyValuePair", xmlns)) {
+            Log(Error, "UABinaryFileDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("FileHeader", elementTree));
     
         elementTree.clear();
-        if (!body_.xmlEncode(elementTree, xmlns)) return false;
+        if (!body_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UABinaryFileDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Body", elementTree));
     
         return true;
@@ -246,23 +259,111 @@ namespace OpcUaStackCore
     bool
     UABinaryFileDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "UABinaryFileDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     UABinaryFileDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!schemaLocation_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "UABinaryFileDataType json encoder error")
+    		     .parameter("Element", "schemaLocation_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SchemaLocation", elementTree));
+    
+        elementTree.clear();
+        if (!fileHeader_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "UABinaryFileDataType json encoder error")
+    		     .parameter("Element", "fileHeader_");
+            return false;
+        }
+        pt.push_back(std::make_pair("FileHeader", elementTree));
+    
+        elementTree.clear();
+        if (!body_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "UABinaryFileDataType json encoder error")
+    		     .parameter("Element", "body_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Body", elementTree));
+    
         return true;
     }
     
     bool
     UABinaryFileDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "UABinaryFileDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     UABinaryFileDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "SchemaLocation";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UABinaryFileDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!schemaLocation_.jsonDecode(*tree)) {
+            Log(Error, "UABinaryFileDataType decode json error - decode failed")
+                .parameter("Element", "SchemaLocation");
+            return false;
+        }
+    
+        elementName = "FileHeader";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UABinaryFileDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!fileHeader_.jsonDecode(*tree, "")) {
+            Log(Error, "UABinaryFileDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "Body";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UABinaryFileDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!body_.jsonDecode(*tree)) {
+            Log(Error, "UABinaryFileDataType decode json error - decode failed")
+                .parameter("Element", "Body");
+            return false;
+        }
+    
+        return true;
     }
     
     void

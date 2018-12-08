@@ -223,7 +223,11 @@ namespace OpcUaStackCore
     UadpDataSetReaderMessageDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UadpDataSetReaderMessageDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -234,39 +238,74 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, groupVersion_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, groupVersion_))
+        {
+            Log(Error, "UadpDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("GroupVersion", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, networkMessageNumber_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, networkMessageNumber_))
+        {
+            Log(Error, "UadpDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("NetworkMessageNumber", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, dataSetOffset_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, dataSetOffset_))
+        {
+            Log(Error, "UadpDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataSetOffset", elementTree));
     
         elementTree.clear();
-        if (!dataSetClassId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!dataSetClassId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UadpDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataSetClassId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, networkMessageContentMask_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, networkMessageContentMask_))
+        {
+            Log(Error, "UadpDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("NetworkMessageContentMask", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, dataSetMessageContentMask_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, dataSetMessageContentMask_))
+        {
+            Log(Error, "UadpDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataSetMessageContentMask", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, publishingInterval_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, publishingInterval_))
+        {
+            Log(Error, "UadpDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PublishingInterval", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, receiveOffset_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, receiveOffset_))
+        {
+            Log(Error, "UadpDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ReceiveOffset", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, processingOffset_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, processingOffset_))
+        {
+            Log(Error, "UadpDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ProcessingOffset", elementTree));
     
         return true;
@@ -414,23 +453,243 @@ namespace OpcUaStackCore
     bool
     UadpDataSetReaderMessageDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     UadpDataSetReaderMessageDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, groupVersion_))
+        {
+    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "groupVersion_");
+           return false;
+        }
+        pt.push_back(std::make_pair("GroupVersion", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, networkMessageNumber_))
+        {
+    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "networkMessageNumber_");
+           return false;
+        }
+        pt.push_back(std::make_pair("NetworkMessageNumber", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, dataSetOffset_))
+        {
+    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "dataSetOffset_");
+           return false;
+        }
+        pt.push_back(std::make_pair("DataSetOffset", elementTree));
+    
+        elementTree.clear();
+        if (!dataSetClassId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "dataSetClassId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DataSetClassId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, networkMessageContentMask_))
+        {
+    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "networkMessageContentMask_");
+           return false;
+        }
+        pt.push_back(std::make_pair("NetworkMessageContentMask", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, dataSetMessageContentMask_))
+        {
+    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "dataSetMessageContentMask_");
+           return false;
+        }
+        pt.push_back(std::make_pair("DataSetMessageContentMask", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, publishingInterval_))
+        {
+    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "publishingInterval_");
+           return false;
+        }
+        pt.push_back(std::make_pair("PublishingInterval", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, receiveOffset_))
+        {
+    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "receiveOffset_");
+           return false;
+        }
+        pt.push_back(std::make_pair("ReceiveOffset", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, processingOffset_))
+        {
+    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "processingOffset_");
+           return false;
+        }
+        pt.push_back(std::make_pair("ProcessingOffset", elementTree));
+    
         return true;
     }
     
     bool
     UadpDataSetReaderMessageDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "UadpDataSetReaderMessageDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     UadpDataSetReaderMessageDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "GroupVersion";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, groupVersion_)) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "NetworkMessageNumber";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, networkMessageNumber_)) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DataSetOffset";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, dataSetOffset_)) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DataSetClassId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetClassId_.jsonDecode(*tree)) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", "DataSetClassId");
+            return false;
+        }
+    
+        elementName = "NetworkMessageContentMask";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, networkMessageContentMask_)) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DataSetMessageContentMask";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, dataSetMessageContentMask_)) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "PublishingInterval";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, publishingInterval_)) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "ReceiveOffset";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, receiveOffset_)) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "ProcessingOffset";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, processingOffset_)) {
+            Log(Error, "UadpDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

@@ -146,7 +146,11 @@ namespace OpcUaStackCore
     JsonDataSetReaderMessageDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "JsonDataSetReaderMessageDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -157,11 +161,19 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, networkMessageContentMask_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, networkMessageContentMask_))
+        {
+            Log(Error, "JsonDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("NetworkMessageContentMask", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, dataSetMessageContentMask_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, dataSetMessageContentMask_))
+        {
+            Log(Error, "JsonDataSetReaderMessageDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataSetMessageContentMask", elementTree));
     
         return true;
@@ -218,23 +230,89 @@ namespace OpcUaStackCore
     bool
     JsonDataSetReaderMessageDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "JsonDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     JsonDataSetReaderMessageDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, networkMessageContentMask_))
+        {
+    	     Log(Error, "JsonDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "networkMessageContentMask_");
+           return false;
+        }
+        pt.push_back(std::make_pair("NetworkMessageContentMask", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, dataSetMessageContentMask_))
+        {
+    	     Log(Error, "JsonDataSetReaderMessageDataType json encoder error")
+    		     .parameter("Element", "dataSetMessageContentMask_");
+           return false;
+        }
+        pt.push_back(std::make_pair("DataSetMessageContentMask", elementTree));
+    
         return true;
     }
     
     bool
     JsonDataSetReaderMessageDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "JsonDataSetReaderMessageDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     JsonDataSetReaderMessageDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "NetworkMessageContentMask";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "JsonDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, networkMessageContentMask_)) {
+            Log(Error, "JsonDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DataSetMessageContentMask";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "JsonDataSetReaderMessageDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, dataSetMessageContentMask_)) {
+            Log(Error, "JsonDataSetReaderMessageDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

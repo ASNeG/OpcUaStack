@@ -168,7 +168,11 @@ namespace OpcUaStackCore
     BrokerWriterGroupTransportDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerWriterGroupTransportDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -179,19 +183,31 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!queueName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!queueName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerWriterGroupTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("QueueName", elementTree));
     
         elementTree.clear();
-        if (!resourceUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!resourceUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerWriterGroupTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ResourceUri", elementTree));
     
         elementTree.clear();
-        if (!authenticationProfileUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!authenticationProfileUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerWriterGroupTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("AuthenticationProfileUri", elementTree));
     
         elementTree.clear();
-        if (!requestedDeliveryGuarantee_.xmlEncode(elementTree, xmlns)) return false;
+        if (!requestedDeliveryGuarantee_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerWriterGroupTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("RequestedDeliveryGuarantee", elementTree));
     
         return true;
@@ -274,23 +290,133 @@ namespace OpcUaStackCore
     bool
     BrokerWriterGroupTransportDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "BrokerWriterGroupTransportDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     BrokerWriterGroupTransportDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!queueName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerWriterGroupTransportDataType json encoder error")
+    		     .parameter("Element", "queueName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("QueueName", elementTree));
+    
+        elementTree.clear();
+        if (!resourceUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerWriterGroupTransportDataType json encoder error")
+    		     .parameter("Element", "resourceUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ResourceUri", elementTree));
+    
+        elementTree.clear();
+        if (!authenticationProfileUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerWriterGroupTransportDataType json encoder error")
+    		     .parameter("Element", "authenticationProfileUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("AuthenticationProfileUri", elementTree));
+    
+        elementTree.clear();
+        if (!requestedDeliveryGuarantee_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerWriterGroupTransportDataType json encoder error")
+    		     .parameter("Element", "requestedDeliveryGuarantee_");
+            return false;
+        }
+        pt.push_back(std::make_pair("RequestedDeliveryGuarantee", elementTree));
+    
         return true;
     }
     
     bool
     BrokerWriterGroupTransportDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "BrokerWriterGroupTransportDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     BrokerWriterGroupTransportDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "QueueName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!queueName_.jsonDecode(*tree)) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode json error - decode failed")
+                .parameter("Element", "QueueName");
+            return false;
+        }
+    
+        elementName = "ResourceUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!resourceUri_.jsonDecode(*tree)) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode json error - decode failed")
+                .parameter("Element", "ResourceUri");
+            return false;
+        }
+    
+        elementName = "AuthenticationProfileUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!authenticationProfileUri_.jsonDecode(*tree)) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode json error - decode failed")
+                .parameter("Element", "AuthenticationProfileUri");
+            return false;
+        }
+    
+        elementName = "RequestedDeliveryGuarantee";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!requestedDeliveryGuarantee_.jsonDecode(*tree)) {
+            Log(Error, "BrokerWriterGroupTransportDataType decode json error - decode failed")
+                .parameter("Element", "RequestedDeliveryGuarantee");
+            return false;
+        }
+    
+        return true;
     }
     
     void

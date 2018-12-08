@@ -137,7 +137,11 @@ namespace OpcUaStackCore
     UserIdentityToken::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UserIdentityToken encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -148,7 +152,10 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!policyId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!policyId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UserIdentityToken encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PolicyId", elementTree));
     
         return true;
@@ -192,23 +199,67 @@ namespace OpcUaStackCore
     bool
     UserIdentityToken::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "UserIdentityToken json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     UserIdentityToken::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!policyId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "UserIdentityToken json encoder error")
+    		     .parameter("Element", "policyId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("PolicyId", elementTree));
+    
         return true;
     }
     
     bool
     UserIdentityToken::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "UserIdentityToken json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     UserIdentityToken::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "PolicyId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserIdentityToken decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!policyId_.jsonDecode(*tree)) {
+            Log(Error, "UserIdentityToken decode json error - decode failed")
+                .parameter("Element", "PolicyId");
+            return false;
+        }
+    
+        return true;
     }
     
     void

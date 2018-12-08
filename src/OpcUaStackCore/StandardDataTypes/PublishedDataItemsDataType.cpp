@@ -135,7 +135,11 @@ namespace OpcUaStackCore
     PublishedDataItemsDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PublishedDataItemsDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -146,7 +150,10 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!publishedData_.xmlEncode(elementTree, "PublishedVariableDataType", xmlns)) return false;
+        if (!publishedData_.xmlEncode(elementTree, "PublishedVariableDataType", xmlns)) {
+            Log(Error, "PublishedDataItemsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PublishedData", elementTree));
     
         return true;
@@ -190,23 +197,67 @@ namespace OpcUaStackCore
     bool
     PublishedDataItemsDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "PublishedDataItemsDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     PublishedDataItemsDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!publishedData_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "PublishedDataItemsDataType json encoder error")
+    		     .parameter("Element", "publishedData_");
+            return false;
+        }
+        pt.push_back(std::make_pair("PublishedData", elementTree));
+    
         return true;
     }
     
     bool
     PublishedDataItemsDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "PublishedDataItemsDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     PublishedDataItemsDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "PublishedData";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedDataItemsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publishedData_.jsonDecode(*tree, "")) {
+            Log(Error, "PublishedDataItemsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

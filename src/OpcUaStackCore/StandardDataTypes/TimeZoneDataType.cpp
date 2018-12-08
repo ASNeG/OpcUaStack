@@ -145,7 +145,11 @@ namespace OpcUaStackCore
     TimeZoneDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "TimeZoneDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -156,11 +160,19 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, offset_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, offset_))
+        {
+            Log(Error, "TimeZoneDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Offset", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, daylightSavingInOffset_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, daylightSavingInOffset_))
+        {
+            Log(Error, "TimeZoneDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DaylightSavingInOffset", elementTree));
     
         return true;
@@ -217,23 +229,89 @@ namespace OpcUaStackCore
     bool
     TimeZoneDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "TimeZoneDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     TimeZoneDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, offset_))
+        {
+    	     Log(Error, "TimeZoneDataType json encoder error")
+    		     .parameter("Element", "offset_");
+           return false;
+        }
+        pt.push_back(std::make_pair("Offset", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, daylightSavingInOffset_))
+        {
+    	     Log(Error, "TimeZoneDataType json encoder error")
+    		     .parameter("Element", "daylightSavingInOffset_");
+           return false;
+        }
+        pt.push_back(std::make_pair("DaylightSavingInOffset", elementTree));
+    
         return true;
     }
     
     bool
     TimeZoneDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "TimeZoneDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     TimeZoneDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Offset";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TimeZoneDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, offset_)) {
+            Log(Error, "TimeZoneDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DaylightSavingInOffset";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "TimeZoneDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, daylightSavingInOffset_)) {
+            Log(Error, "TimeZoneDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

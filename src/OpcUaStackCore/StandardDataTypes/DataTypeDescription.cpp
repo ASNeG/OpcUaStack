@@ -145,7 +145,11 @@ namespace OpcUaStackCore
     DataTypeDescription::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataTypeDescription encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -156,11 +160,17 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!dataTypeId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!dataTypeId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataTypeDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataTypeId", elementTree));
     
         elementTree.clear();
-        if (!name_.xmlEncode(elementTree, xmlns)) return false;
+        if (!name_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataTypeDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Name", elementTree));
     
         return true;
@@ -217,23 +227,89 @@ namespace OpcUaStackCore
     bool
     DataTypeDescription::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "DataTypeDescription json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     DataTypeDescription::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!dataTypeId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DataTypeDescription json encoder error")
+    		     .parameter("Element", "dataTypeId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DataTypeId", elementTree));
+    
+        elementTree.clear();
+        if (!name_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DataTypeDescription json encoder error")
+    		     .parameter("Element", "name_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Name", elementTree));
+    
         return true;
     }
     
     bool
     DataTypeDescription::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "DataTypeDescription json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     DataTypeDescription::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "DataTypeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataTypeId_.jsonDecode(*tree)) {
+            Log(Error, "DataTypeDescription decode json error - decode failed")
+                .parameter("Element", "DataTypeId");
+            return false;
+        }
+    
+        elementName = "Name";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.jsonDecode(*tree)) {
+            Log(Error, "DataTypeDescription decode json error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
+    
+        return true;
     }
     
     void

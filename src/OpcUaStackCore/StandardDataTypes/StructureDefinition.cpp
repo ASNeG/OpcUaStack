@@ -168,7 +168,11 @@ namespace OpcUaStackCore
     StructureDefinition::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StructureDefinition encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -179,19 +183,31 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!defaultEncodingId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!defaultEncodingId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StructureDefinition encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DefaultEncodingId", elementTree));
     
         elementTree.clear();
-        if (!baseDataType_.xmlEncode(elementTree, xmlns)) return false;
+        if (!baseDataType_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StructureDefinition encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("BaseDataType", elementTree));
     
         elementTree.clear();
-        if (!structureType_.xmlEncode(elementTree, xmlns)) return false;
+        if (!structureType_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StructureDefinition encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("StructureType", elementTree));
     
         elementTree.clear();
-        if (!fields_.xmlEncode(elementTree, "StructureField", xmlns)) return false;
+        if (!fields_.xmlEncode(elementTree, "StructureField", xmlns)) {
+            Log(Error, "StructureDefinition encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Fields", elementTree));
     
         return true;
@@ -274,23 +290,133 @@ namespace OpcUaStackCore
     bool
     StructureDefinition::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "StructureDefinition json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     StructureDefinition::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!defaultEncodingId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "StructureDefinition json encoder error")
+    		     .parameter("Element", "defaultEncodingId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DefaultEncodingId", elementTree));
+    
+        elementTree.clear();
+        if (!baseDataType_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "StructureDefinition json encoder error")
+    		     .parameter("Element", "baseDataType_");
+            return false;
+        }
+        pt.push_back(std::make_pair("BaseDataType", elementTree));
+    
+        elementTree.clear();
+        if (!structureType_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "StructureDefinition json encoder error")
+    		     .parameter("Element", "structureType_");
+            return false;
+        }
+        pt.push_back(std::make_pair("StructureType", elementTree));
+    
+        elementTree.clear();
+        if (!fields_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "StructureDefinition json encoder error")
+    		     .parameter("Element", "fields_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Fields", elementTree));
+    
         return true;
     }
     
     bool
     StructureDefinition::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "StructureDefinition json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     StructureDefinition::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "DefaultEncodingId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDefinition decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!defaultEncodingId_.jsonDecode(*tree)) {
+            Log(Error, "StructureDefinition decode json error - decode failed")
+                .parameter("Element", "DefaultEncodingId");
+            return false;
+        }
+    
+        elementName = "BaseDataType";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDefinition decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!baseDataType_.jsonDecode(*tree)) {
+            Log(Error, "StructureDefinition decode json error - decode failed")
+                .parameter("Element", "BaseDataType");
+            return false;
+        }
+    
+        elementName = "StructureType";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDefinition decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!structureType_.jsonDecode(*tree)) {
+            Log(Error, "StructureDefinition decode json error - decode failed")
+                .parameter("Element", "StructureType");
+            return false;
+        }
+    
+        elementName = "Fields";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureDefinition decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!fields_.jsonDecode(*tree, "")) {
+            Log(Error, "StructureDefinition decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

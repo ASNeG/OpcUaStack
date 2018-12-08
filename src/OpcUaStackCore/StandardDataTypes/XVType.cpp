@@ -145,7 +145,11 @@ namespace OpcUaStackCore
     XVType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "XVType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -156,11 +160,19 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, x_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, x_))
+        {
+            Log(Error, "XVType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("X", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, value_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, value_))
+        {
+            Log(Error, "XVType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Value", elementTree));
     
         return true;
@@ -217,23 +229,89 @@ namespace OpcUaStackCore
     bool
     XVType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "XVType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     XVType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, x_))
+        {
+    	     Log(Error, "XVType json encoder error")
+    		     .parameter("Element", "x_");
+           return false;
+        }
+        pt.push_back(std::make_pair("X", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, value_))
+        {
+    	     Log(Error, "XVType json encoder error")
+    		     .parameter("Element", "value_");
+           return false;
+        }
+        pt.push_back(std::make_pair("Value", elementTree));
+    
         return true;
     }
     
     bool
     XVType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "XVType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     XVType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "X";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "XVType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, x_)) {
+            Log(Error, "XVType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "Value";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "XVType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, value_)) {
+            Log(Error, "XVType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

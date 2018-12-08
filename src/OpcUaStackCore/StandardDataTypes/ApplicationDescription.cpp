@@ -203,7 +203,11 @@ namespace OpcUaStackCore
     ApplicationDescription::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ApplicationDescription encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -214,31 +218,52 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!applicationUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!applicationUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ApplicationDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ApplicationUri", elementTree));
     
         elementTree.clear();
-        if (!productUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!productUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ApplicationDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ProductUri", elementTree));
     
         elementTree.clear();
-        if (!applicationName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!applicationName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ApplicationDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ApplicationName", elementTree));
     
         elementTree.clear();
-        if (!applicationType_.xmlEncode(elementTree, xmlns)) return false;
+        if (!applicationType_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ApplicationDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ApplicationType", elementTree));
     
         elementTree.clear();
-        if (!gatewayServerUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!gatewayServerUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ApplicationDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("GatewayServerUri", elementTree));
     
         elementTree.clear();
-        if (!discoveryProfileUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!discoveryProfileUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ApplicationDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DiscoveryProfileUri", elementTree));
     
         elementTree.clear();
-        if (!discoveryUrls_.xmlEncode(elementTree, "String", xmlns)) return false;
+        if (!discoveryUrls_.xmlEncode(elementTree, "String", xmlns)) {
+            Log(Error, "ApplicationDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DiscoveryUrls", elementTree));
     
         return true;
@@ -360,23 +385,199 @@ namespace OpcUaStackCore
     bool
     ApplicationDescription::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "ApplicationDescription json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     ApplicationDescription::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!applicationUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "ApplicationDescription json encoder error")
+    		     .parameter("Element", "applicationUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ApplicationUri", elementTree));
+    
+        elementTree.clear();
+        if (!productUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "ApplicationDescription json encoder error")
+    		     .parameter("Element", "productUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ProductUri", elementTree));
+    
+        elementTree.clear();
+        if (!applicationName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "ApplicationDescription json encoder error")
+    		     .parameter("Element", "applicationName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ApplicationName", elementTree));
+    
+        elementTree.clear();
+        if (!applicationType_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "ApplicationDescription json encoder error")
+    		     .parameter("Element", "applicationType_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ApplicationType", elementTree));
+    
+        elementTree.clear();
+        if (!gatewayServerUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "ApplicationDescription json encoder error")
+    		     .parameter("Element", "gatewayServerUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("GatewayServerUri", elementTree));
+    
+        elementTree.clear();
+        if (!discoveryProfileUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "ApplicationDescription json encoder error")
+    		     .parameter("Element", "discoveryProfileUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DiscoveryProfileUri", elementTree));
+    
+        elementTree.clear();
+        if (!discoveryUrls_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "ApplicationDescription json encoder error")
+    		     .parameter("Element", "discoveryUrls_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DiscoveryUrls", elementTree));
+    
         return true;
     }
     
     bool
     ApplicationDescription::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "ApplicationDescription json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     ApplicationDescription::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ApplicationUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!applicationUri_.jsonDecode(*tree)) {
+            Log(Error, "ApplicationDescription decode json error - decode failed")
+                .parameter("Element", "ApplicationUri");
+            return false;
+        }
+    
+        elementName = "ProductUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!productUri_.jsonDecode(*tree)) {
+            Log(Error, "ApplicationDescription decode json error - decode failed")
+                .parameter("Element", "ProductUri");
+            return false;
+        }
+    
+        elementName = "ApplicationName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!applicationName_.jsonDecode(*tree)) {
+            Log(Error, "ApplicationDescription decode json error - decode failed")
+                .parameter("Element", "ApplicationName");
+            return false;
+        }
+    
+        elementName = "ApplicationType";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!applicationType_.jsonDecode(*tree)) {
+            Log(Error, "ApplicationDescription decode json error - decode failed")
+                .parameter("Element", "ApplicationType");
+            return false;
+        }
+    
+        elementName = "GatewayServerUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!gatewayServerUri_.jsonDecode(*tree)) {
+            Log(Error, "ApplicationDescription decode json error - decode failed")
+                .parameter("Element", "GatewayServerUri");
+            return false;
+        }
+    
+        elementName = "DiscoveryProfileUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!discoveryProfileUri_.jsonDecode(*tree)) {
+            Log(Error, "ApplicationDescription decode json error - decode failed")
+                .parameter("Element", "DiscoveryProfileUri");
+            return false;
+        }
+    
+        elementName = "DiscoveryUrls";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ApplicationDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!discoveryUrls_.jsonDecode(*tree, "")) {
+            Log(Error, "ApplicationDescription decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

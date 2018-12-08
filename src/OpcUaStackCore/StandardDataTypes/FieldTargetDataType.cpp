@@ -200,7 +200,11 @@ namespace OpcUaStackCore
     FieldTargetDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "FieldTargetDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -211,31 +215,53 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!dataSetFieldId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!dataSetFieldId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "FieldTargetDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataSetFieldId", elementTree));
     
         elementTree.clear();
-        if (!receiverIndexRange_.xmlEncode(elementTree, xmlns)) return false;
+        if (!receiverIndexRange_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "FieldTargetDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ReceiverIndexRange", elementTree));
     
         elementTree.clear();
-        if (!targetNodeId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!targetNodeId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "FieldTargetDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TargetNodeId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, attributeId_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, attributeId_))
+        {
+            Log(Error, "FieldTargetDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("AttributeId", elementTree));
     
         elementTree.clear();
-        if (!writeIndexRange_.xmlEncode(elementTree, xmlns)) return false;
+        if (!writeIndexRange_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "FieldTargetDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("WriteIndexRange", elementTree));
     
         elementTree.clear();
-        if (!overrideValueHandling_.xmlEncode(elementTree, xmlns)) return false;
+        if (!overrideValueHandling_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "FieldTargetDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("OverrideValueHandling", elementTree));
     
         elementTree.clear();
-        if (!overrideValue_.xmlEncode(elementTree, xmlns)) return false;
+        if (!overrideValue_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "FieldTargetDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("OverrideValue", elementTree));
     
         return true;
@@ -357,23 +383,199 @@ namespace OpcUaStackCore
     bool
     FieldTargetDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "FieldTargetDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     FieldTargetDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!dataSetFieldId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "FieldTargetDataType json encoder error")
+    		     .parameter("Element", "dataSetFieldId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DataSetFieldId", elementTree));
+    
+        elementTree.clear();
+        if (!receiverIndexRange_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "FieldTargetDataType json encoder error")
+    		     .parameter("Element", "receiverIndexRange_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ReceiverIndexRange", elementTree));
+    
+        elementTree.clear();
+        if (!targetNodeId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "FieldTargetDataType json encoder error")
+    		     .parameter("Element", "targetNodeId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TargetNodeId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, attributeId_))
+        {
+    	     Log(Error, "FieldTargetDataType json encoder error")
+    		     .parameter("Element", "attributeId_");
+           return false;
+        }
+        pt.push_back(std::make_pair("AttributeId", elementTree));
+    
+        elementTree.clear();
+        if (!writeIndexRange_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "FieldTargetDataType json encoder error")
+    		     .parameter("Element", "writeIndexRange_");
+            return false;
+        }
+        pt.push_back(std::make_pair("WriteIndexRange", elementTree));
+    
+        elementTree.clear();
+        if (!overrideValueHandling_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "FieldTargetDataType json encoder error")
+    		     .parameter("Element", "overrideValueHandling_");
+            return false;
+        }
+        pt.push_back(std::make_pair("OverrideValueHandling", elementTree));
+    
+        elementTree.clear();
+        if (!overrideValue_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "FieldTargetDataType json encoder error")
+    		     .parameter("Element", "overrideValue_");
+            return false;
+        }
+        pt.push_back(std::make_pair("OverrideValue", elementTree));
+    
         return true;
     }
     
     bool
     FieldTargetDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "FieldTargetDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     FieldTargetDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "DataSetFieldId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetFieldId_.jsonDecode(*tree)) {
+            Log(Error, "FieldTargetDataType decode json error - decode failed")
+                .parameter("Element", "DataSetFieldId");
+            return false;
+        }
+    
+        elementName = "ReceiverIndexRange";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!receiverIndexRange_.jsonDecode(*tree)) {
+            Log(Error, "FieldTargetDataType decode json error - decode failed")
+                .parameter("Element", "ReceiverIndexRange");
+            return false;
+        }
+    
+        elementName = "TargetNodeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!targetNodeId_.jsonDecode(*tree)) {
+            Log(Error, "FieldTargetDataType decode json error - decode failed")
+                .parameter("Element", "TargetNodeId");
+            return false;
+        }
+    
+        elementName = "AttributeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, attributeId_)) {
+            Log(Error, "FieldTargetDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "WriteIndexRange";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!writeIndexRange_.jsonDecode(*tree)) {
+            Log(Error, "FieldTargetDataType decode json error - decode failed")
+                .parameter("Element", "WriteIndexRange");
+            return false;
+        }
+    
+        elementName = "OverrideValueHandling";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!overrideValueHandling_.jsonDecode(*tree)) {
+            Log(Error, "FieldTargetDataType decode json error - decode failed")
+                .parameter("Element", "OverrideValueHandling");
+            return false;
+        }
+    
+        elementName = "OverrideValue";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "FieldTargetDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!overrideValue_.jsonDecode(*tree)) {
+            Log(Error, "FieldTargetDataType decode json error - decode failed")
+                .parameter("Element", "OverrideValue");
+            return false;
+        }
+    
+        return true;
     }
     
     void

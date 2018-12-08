@@ -255,7 +255,11 @@ namespace OpcUaStackCore
     ServerDiagnosticsSummaryDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -266,51 +270,99 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, serverViewCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, serverViewCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ServerViewCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, currentSessionCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, currentSessionCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CurrentSessionCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, cumulatedSessionCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, cumulatedSessionCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CumulatedSessionCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, securityRejectedSessionCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, securityRejectedSessionCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityRejectedSessionCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, rejectedSessionCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, rejectedSessionCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("RejectedSessionCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, sessionTimeoutCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, sessionTimeoutCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SessionTimeoutCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, sessionAbortCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, sessionAbortCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SessionAbortCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, currentSubscriptionCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, currentSubscriptionCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CurrentSubscriptionCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, cumulatedSubscriptionCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, cumulatedSubscriptionCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CumulatedSubscriptionCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, publishingIntervalCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, publishingIntervalCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PublishingIntervalCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, securityRejectedRequestsCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, securityRejectedRequestsCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityRejectedRequestsCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, rejectedRequestsCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, rejectedRequestsCount_))
+        {
+            Log(Error, "ServerDiagnosticsSummaryDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("RejectedRequestsCount", elementTree));
     
         return true;
@@ -497,23 +549,309 @@ namespace OpcUaStackCore
     bool
     ServerDiagnosticsSummaryDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     ServerDiagnosticsSummaryDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, serverViewCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "serverViewCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("ServerViewCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, currentSessionCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "currentSessionCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("CurrentSessionCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, cumulatedSessionCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "cumulatedSessionCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("CumulatedSessionCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, securityRejectedSessionCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "securityRejectedSessionCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("SecurityRejectedSessionCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, rejectedSessionCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "rejectedSessionCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("RejectedSessionCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, sessionTimeoutCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "sessionTimeoutCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("SessionTimeoutCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, sessionAbortCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "sessionAbortCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("SessionAbortCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, currentSubscriptionCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "currentSubscriptionCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("CurrentSubscriptionCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, cumulatedSubscriptionCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "cumulatedSubscriptionCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("CumulatedSubscriptionCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, publishingIntervalCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "publishingIntervalCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("PublishingIntervalCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, securityRejectedRequestsCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "securityRejectedRequestsCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("SecurityRejectedRequestsCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, rejectedRequestsCount_))
+        {
+    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
+    		     .parameter("Element", "rejectedRequestsCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("RejectedRequestsCount", elementTree));
+    
         return true;
     }
     
     bool
     ServerDiagnosticsSummaryDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "ServerDiagnosticsSummaryDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     ServerDiagnosticsSummaryDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ServerViewCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, serverViewCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "CurrentSessionCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, currentSessionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "CumulatedSessionCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, cumulatedSessionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "SecurityRejectedSessionCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, securityRejectedSessionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "RejectedSessionCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, rejectedSessionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "SessionTimeoutCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, sessionTimeoutCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "SessionAbortCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, sessionAbortCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "CurrentSubscriptionCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, currentSubscriptionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "CumulatedSubscriptionCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, cumulatedSubscriptionCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "PublishingIntervalCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, publishingIntervalCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "SecurityRejectedRequestsCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, securityRejectedRequestsCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "RejectedRequestsCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, rejectedRequestsCount_)) {
+            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

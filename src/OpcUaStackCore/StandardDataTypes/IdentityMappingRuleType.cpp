@@ -145,7 +145,11 @@ namespace OpcUaStackCore
     IdentityMappingRuleType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "IdentityMappingRuleType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -156,11 +160,17 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!criteriaType_.xmlEncode(elementTree, xmlns)) return false;
+        if (!criteriaType_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "IdentityMappingRuleType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CriteriaType", elementTree));
     
         elementTree.clear();
-        if (!criteria_.xmlEncode(elementTree, xmlns)) return false;
+        if (!criteria_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "IdentityMappingRuleType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Criteria", elementTree));
     
         return true;
@@ -217,23 +227,89 @@ namespace OpcUaStackCore
     bool
     IdentityMappingRuleType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "IdentityMappingRuleType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     IdentityMappingRuleType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!criteriaType_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "IdentityMappingRuleType json encoder error")
+    		     .parameter("Element", "criteriaType_");
+            return false;
+        }
+        pt.push_back(std::make_pair("CriteriaType", elementTree));
+    
+        elementTree.clear();
+        if (!criteria_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "IdentityMappingRuleType json encoder error")
+    		     .parameter("Element", "criteria_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Criteria", elementTree));
+    
         return true;
     }
     
     bool
     IdentityMappingRuleType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "IdentityMappingRuleType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     IdentityMappingRuleType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "CriteriaType";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "IdentityMappingRuleType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!criteriaType_.jsonDecode(*tree)) {
+            Log(Error, "IdentityMappingRuleType decode json error - decode failed")
+                .parameter("Element", "CriteriaType");
+            return false;
+        }
+    
+        elementName = "Criteria";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "IdentityMappingRuleType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!criteria_.jsonDecode(*tree)) {
+            Log(Error, "IdentityMappingRuleType decode json error - decode failed")
+                .parameter("Element", "Criteria");
+            return false;
+        }
+    
+        return true;
     }
     
     void

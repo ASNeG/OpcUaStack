@@ -181,7 +181,11 @@ namespace OpcUaStackCore
     Argument::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "Argument encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -192,23 +196,39 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!name_.xmlEncode(elementTree, xmlns)) return false;
+        if (!name_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "Argument encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Name", elementTree));
     
         elementTree.clear();
-        if (!dataType_.xmlEncode(elementTree, xmlns)) return false;
+        if (!dataType_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "Argument encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataType", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, valueRank_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, valueRank_))
+        {
+            Log(Error, "Argument encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ValueRank", elementTree));
     
         elementTree.clear();
-        if (!arrayDimensions_.xmlEncode(elementTree, "UInt32", xmlns)) return false;
+        if (!arrayDimensions_.xmlEncode(elementTree, "UInt32", xmlns)) {
+            Log(Error, "Argument encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ArrayDimensions", elementTree));
     
         elementTree.clear();
-        if (!description_.xmlEncode(elementTree, xmlns)) return false;
+        if (!description_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "Argument encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Description", elementTree));
     
         return true;
@@ -322,6 +342,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if (!name_.jsonEncode(elementTree))
         {
+    	     Log(Error, "Argument json encoder error")
+    		     .parameter("Element", "name_");
             return false;
         }
         pt.push_back(std::make_pair("Name", elementTree));
@@ -329,6 +351,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if (!dataType_.jsonEncode(elementTree))
         {
+    	     Log(Error, "Argument json encoder error")
+    		     .parameter("Element", "dataType_");
             return false;
         }
         pt.push_back(std::make_pair("DataType", elementTree));
@@ -336,6 +360,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if(!JsonNumber::jsonEncode(elementTree, valueRank_))
         {
+    	     Log(Error, "Argument json encoder error")
+    		     .parameter("Element", "valueRank_");
            return false;
         }
         pt.push_back(std::make_pair("ValueRank", elementTree));
@@ -343,6 +369,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if (!arrayDimensions_.jsonEncode(elementTree, ""))
         {
+    	     Log(Error, "Argument json encoder error")
+    		     .parameter("Element", "arrayDimensions_");
             return false;
         }
         pt.push_back(std::make_pair("ArrayDimensions", elementTree));
@@ -350,6 +378,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if (!description_.jsonEncode(elementTree))
         {
+    	     Log(Error, "Argument json encoder error")
+    		     .parameter("Element", "description_");
             return false;
         }
         pt.push_back(std::make_pair("Description", elementTree));

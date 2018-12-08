@@ -214,7 +214,11 @@ namespace OpcUaStackCore
     EndpointDescription::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "EndpointDescription encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -225,35 +229,60 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!endpointUrl_.xmlEncode(elementTree, xmlns)) return false;
+        if (!endpointUrl_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "EndpointDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("EndpointUrl", elementTree));
     
         elementTree.clear();
-        if (!server_.xmlEncode(elementTree, xmlns)) return false;
+        if (!server_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "EndpointDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Server", elementTree));
     
         elementTree.clear();
-        if (!serverCertificate_.xmlEncode(elementTree, xmlns)) return false;
+        if (!serverCertificate_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "EndpointDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ServerCertificate", elementTree));
     
         elementTree.clear();
-        if (!securityMode_.xmlEncode(elementTree, xmlns)) return false;
+        if (!securityMode_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "EndpointDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityMode", elementTree));
     
         elementTree.clear();
-        if (!securityPolicyUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!securityPolicyUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "EndpointDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityPolicyUri", elementTree));
     
         elementTree.clear();
-        if (!userIdentityTokens_.xmlEncode(elementTree, "UserTokenPolicy", xmlns)) return false;
+        if (!userIdentityTokens_.xmlEncode(elementTree, "UserTokenPolicy", xmlns)) {
+            Log(Error, "EndpointDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("UserIdentityTokens", elementTree));
     
         elementTree.clear();
-        if (!transportProfileUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!transportProfileUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "EndpointDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TransportProfileUri", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, securityLevel_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, securityLevel_))
+        {
+            Log(Error, "EndpointDescription encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityLevel", elementTree));
     
         return true;
@@ -388,23 +417,221 @@ namespace OpcUaStackCore
     bool
     EndpointDescription::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "EndpointDescription json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     EndpointDescription::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!endpointUrl_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "EndpointDescription json encoder error")
+    		     .parameter("Element", "endpointUrl_");
+            return false;
+        }
+        pt.push_back(std::make_pair("EndpointUrl", elementTree));
+    
+        elementTree.clear();
+        if (!server_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "EndpointDescription json encoder error")
+    		     .parameter("Element", "server_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Server", elementTree));
+    
+        elementTree.clear();
+        if (!serverCertificate_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "EndpointDescription json encoder error")
+    		     .parameter("Element", "serverCertificate_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ServerCertificate", elementTree));
+    
+        elementTree.clear();
+        if (!securityMode_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "EndpointDescription json encoder error")
+    		     .parameter("Element", "securityMode_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SecurityMode", elementTree));
+    
+        elementTree.clear();
+        if (!securityPolicyUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "EndpointDescription json encoder error")
+    		     .parameter("Element", "securityPolicyUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SecurityPolicyUri", elementTree));
+    
+        elementTree.clear();
+        if (!userIdentityTokens_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "EndpointDescription json encoder error")
+    		     .parameter("Element", "userIdentityTokens_");
+            return false;
+        }
+        pt.push_back(std::make_pair("UserIdentityTokens", elementTree));
+    
+        elementTree.clear();
+        if (!transportProfileUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "EndpointDescription json encoder error")
+    		     .parameter("Element", "transportProfileUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TransportProfileUri", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, securityLevel_))
+        {
+    	     Log(Error, "EndpointDescription json encoder error")
+    		     .parameter("Element", "securityLevel_");
+           return false;
+        }
+        pt.push_back(std::make_pair("SecurityLevel", elementTree));
+    
         return true;
     }
     
     bool
     EndpointDescription::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "EndpointDescription json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     EndpointDescription::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "EndpointUrl";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!endpointUrl_.jsonDecode(*tree)) {
+            Log(Error, "EndpointDescription decode json error - decode failed")
+                .parameter("Element", "EndpointUrl");
+            return false;
+        }
+    
+        elementName = "Server";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!server_.jsonDecode(*tree)) {
+            Log(Error, "EndpointDescription decode json error - decode failed")
+                .parameter("Element", "Server");
+            return false;
+        }
+    
+        elementName = "ServerCertificate";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverCertificate_.jsonDecode(*tree)) {
+            Log(Error, "EndpointDescription decode json error - decode failed")
+                .parameter("Element", "ServerCertificate");
+            return false;
+        }
+    
+        elementName = "SecurityMode";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityMode_.jsonDecode(*tree)) {
+            Log(Error, "EndpointDescription decode json error - decode failed")
+                .parameter("Element", "SecurityMode");
+            return false;
+        }
+    
+        elementName = "SecurityPolicyUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityPolicyUri_.jsonDecode(*tree)) {
+            Log(Error, "EndpointDescription decode json error - decode failed")
+                .parameter("Element", "SecurityPolicyUri");
+            return false;
+        }
+    
+        elementName = "UserIdentityTokens";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!userIdentityTokens_.jsonDecode(*tree, "")) {
+            Log(Error, "EndpointDescription decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "TransportProfileUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportProfileUri_.jsonDecode(*tree)) {
+            Log(Error, "EndpointDescription decode json error - decode failed")
+                .parameter("Element", "TransportProfileUri");
+            return false;
+        }
+    
+        elementName = "SecurityLevel";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EndpointDescription decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, securityLevel_)) {
+            Log(Error, "EndpointDescription decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

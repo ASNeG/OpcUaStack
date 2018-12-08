@@ -160,7 +160,11 @@ namespace OpcUaStackCore
     UserNameIdentityToken::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UserNameIdentityToken encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -171,15 +175,24 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!userName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!userName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UserNameIdentityToken encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("UserName", elementTree));
     
         elementTree.clear();
-        if (!password_.xmlEncode(elementTree, xmlns)) return false;
+        if (!password_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UserNameIdentityToken encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Password", elementTree));
     
         elementTree.clear();
-        if (!encryptionAlgorithm_.xmlEncode(elementTree, xmlns)) return false;
+        if (!encryptionAlgorithm_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UserNameIdentityToken encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("EncryptionAlgorithm", elementTree));
     
         return true;
@@ -249,23 +262,111 @@ namespace OpcUaStackCore
     bool
     UserNameIdentityToken::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "UserNameIdentityToken json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     UserNameIdentityToken::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!userName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "UserNameIdentityToken json encoder error")
+    		     .parameter("Element", "userName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("UserName", elementTree));
+    
+        elementTree.clear();
+        if (!password_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "UserNameIdentityToken json encoder error")
+    		     .parameter("Element", "password_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Password", elementTree));
+    
+        elementTree.clear();
+        if (!encryptionAlgorithm_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "UserNameIdentityToken json encoder error")
+    		     .parameter("Element", "encryptionAlgorithm_");
+            return false;
+        }
+        pt.push_back(std::make_pair("EncryptionAlgorithm", elementTree));
+    
         return true;
     }
     
     bool
     UserNameIdentityToken::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "UserNameIdentityToken json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     UserNameIdentityToken::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "UserName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserNameIdentityToken decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!userName_.jsonDecode(*tree)) {
+            Log(Error, "UserNameIdentityToken decode json error - decode failed")
+                .parameter("Element", "UserName");
+            return false;
+        }
+    
+        elementName = "Password";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserNameIdentityToken decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!password_.jsonDecode(*tree)) {
+            Log(Error, "UserNameIdentityToken decode json error - decode failed")
+                .parameter("Element", "Password");
+            return false;
+        }
+    
+        elementName = "EncryptionAlgorithm";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UserNameIdentityToken decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!encryptionAlgorithm_.jsonDecode(*tree)) {
+            Log(Error, "UserNameIdentityToken decode json error - decode failed")
+                .parameter("Element", "EncryptionAlgorithm");
+            return false;
+        }
+    
+        return true;
     }
     
     void

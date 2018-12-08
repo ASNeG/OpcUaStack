@@ -167,7 +167,11 @@ namespace OpcUaStackCore
     DataTypeSchemaHeader::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataTypeSchemaHeader encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -178,19 +182,31 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!namespaces_.xmlEncode(elementTree, "String", xmlns)) return false;
+        if (!namespaces_.xmlEncode(elementTree, "String", xmlns)) {
+            Log(Error, "DataTypeSchemaHeader encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Namespaces", elementTree));
     
         elementTree.clear();
-        if (!structureDataTypes_.xmlEncode(elementTree, "StructureDescription", xmlns)) return false;
+        if (!structureDataTypes_.xmlEncode(elementTree, "StructureDescription", xmlns)) {
+            Log(Error, "DataTypeSchemaHeader encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("StructureDataTypes", elementTree));
     
         elementTree.clear();
-        if (!enumDataTypes_.xmlEncode(elementTree, "EnumDescription", xmlns)) return false;
+        if (!enumDataTypes_.xmlEncode(elementTree, "EnumDescription", xmlns)) {
+            Log(Error, "DataTypeSchemaHeader encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("EnumDataTypes", elementTree));
     
         elementTree.clear();
-        if (!simpleDataTypes_.xmlEncode(elementTree, "SimpleTypeDescription", xmlns)) return false;
+        if (!simpleDataTypes_.xmlEncode(elementTree, "SimpleTypeDescription", xmlns)) {
+            Log(Error, "DataTypeSchemaHeader encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SimpleDataTypes", elementTree));
     
         return true;
@@ -273,23 +289,133 @@ namespace OpcUaStackCore
     bool
     DataTypeSchemaHeader::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "DataTypeSchemaHeader json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     DataTypeSchemaHeader::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!namespaces_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "DataTypeSchemaHeader json encoder error")
+    		     .parameter("Element", "namespaces_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Namespaces", elementTree));
+    
+        elementTree.clear();
+        if (!structureDataTypes_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "DataTypeSchemaHeader json encoder error")
+    		     .parameter("Element", "structureDataTypes_");
+            return false;
+        }
+        pt.push_back(std::make_pair("StructureDataTypes", elementTree));
+    
+        elementTree.clear();
+        if (!enumDataTypes_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "DataTypeSchemaHeader json encoder error")
+    		     .parameter("Element", "enumDataTypes_");
+            return false;
+        }
+        pt.push_back(std::make_pair("EnumDataTypes", elementTree));
+    
+        elementTree.clear();
+        if (!simpleDataTypes_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "DataTypeSchemaHeader json encoder error")
+    		     .parameter("Element", "simpleDataTypes_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SimpleDataTypes", elementTree));
+    
         return true;
     }
     
     bool
     DataTypeSchemaHeader::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "DataTypeSchemaHeader json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     DataTypeSchemaHeader::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Namespaces";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeSchemaHeader decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!namespaces_.jsonDecode(*tree, "")) {
+            Log(Error, "DataTypeSchemaHeader decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "StructureDataTypes";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeSchemaHeader decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!structureDataTypes_.jsonDecode(*tree, "")) {
+            Log(Error, "DataTypeSchemaHeader decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "EnumDataTypes";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeSchemaHeader decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!enumDataTypes_.jsonDecode(*tree, "")) {
+            Log(Error, "DataTypeSchemaHeader decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "SimpleDataTypes";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataTypeSchemaHeader decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!simpleDataTypes_.jsonDecode(*tree, "")) {
+            Log(Error, "DataTypeSchemaHeader decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

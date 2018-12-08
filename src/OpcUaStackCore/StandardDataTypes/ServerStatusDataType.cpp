@@ -189,7 +189,11 @@ namespace OpcUaStackCore
     ServerStatusDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ServerStatusDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -200,27 +204,46 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!startTime_.xmlEncode(elementTree, xmlns)) return false;
+        if (!startTime_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ServerStatusDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("StartTime", elementTree));
     
         elementTree.clear();
-        if (!currentTime_.xmlEncode(elementTree, xmlns)) return false;
+        if (!currentTime_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ServerStatusDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CurrentTime", elementTree));
     
         elementTree.clear();
-        if (!state_.xmlEncode(elementTree, xmlns)) return false;
+        if (!state_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ServerStatusDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("State", elementTree));
     
         elementTree.clear();
-        if (!buildInfo_.xmlEncode(elementTree, xmlns)) return false;
+        if (!buildInfo_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ServerStatusDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("BuildInfo", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, secondsTillShutdown_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, secondsTillShutdown_))
+        {
+            Log(Error, "ServerStatusDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecondsTillShutdown", elementTree));
     
         elementTree.clear();
-        if (!shutdownReason_.xmlEncode(elementTree, xmlns)) return false;
+        if (!shutdownReason_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ServerStatusDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ShutdownReason", elementTree));
     
         return true;
@@ -347,6 +370,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if (!startTime_.jsonEncode(elementTree))
         {
+    	     Log(Error, "ServerStatusDataType json encoder error")
+    		     .parameter("Element", "startTime_");
             return false;
         }
         pt.push_back(std::make_pair("StartTime", elementTree));
@@ -354,6 +379,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if (!currentTime_.jsonEncode(elementTree))
         {
+    	     Log(Error, "ServerStatusDataType json encoder error")
+    		     .parameter("Element", "currentTime_");
             return false;
         }
         pt.push_back(std::make_pair("CurrentTime", elementTree));
@@ -361,6 +388,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if (!state_.jsonEncode(elementTree))
         {
+    	     Log(Error, "ServerStatusDataType json encoder error")
+    		     .parameter("Element", "state_");
             return false;
         }
         pt.push_back(std::make_pair("State", elementTree));
@@ -368,6 +397,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if (!buildInfo_.jsonEncode(elementTree))
         {
+    	     Log(Error, "ServerStatusDataType json encoder error")
+    		     .parameter("Element", "buildInfo_");
             return false;
         }
         pt.push_back(std::make_pair("BuildInfo", elementTree));
@@ -375,6 +406,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if(!JsonNumber::jsonEncode(elementTree, secondsTillShutdown_))
         {
+    	     Log(Error, "ServerStatusDataType json encoder error")
+    		     .parameter("Element", "secondsTillShutdown_");
            return false;
         }
         pt.push_back(std::make_pair("SecondsTillShutdown", elementTree));
@@ -382,6 +415,8 @@ namespace OpcUaStackCore
         elementTree.clear();
         if (!shutdownReason_.jsonEncode(elementTree))
         {
+    	     Log(Error, "ServerStatusDataType json encoder error")
+    		     .parameter("Element", "shutdownReason_");
             return false;
         }
         pt.push_back(std::make_pair("ShutdownReason", elementTree));

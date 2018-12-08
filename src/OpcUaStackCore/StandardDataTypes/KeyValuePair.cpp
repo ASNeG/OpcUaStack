@@ -145,7 +145,11 @@ namespace OpcUaStackCore
     KeyValuePair::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "KeyValuePair encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -156,11 +160,17 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!key_.xmlEncode(elementTree, xmlns)) return false;
+        if (!key_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "KeyValuePair encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Key", elementTree));
     
         elementTree.clear();
-        if (!value_.xmlEncode(elementTree, xmlns)) return false;
+        if (!value_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "KeyValuePair encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Value", elementTree));
     
         return true;
@@ -217,23 +227,89 @@ namespace OpcUaStackCore
     bool
     KeyValuePair::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "KeyValuePair json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     KeyValuePair::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!key_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "KeyValuePair json encoder error")
+    		     .parameter("Element", "key_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Key", elementTree));
+    
+        elementTree.clear();
+        if (!value_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "KeyValuePair json encoder error")
+    		     .parameter("Element", "value_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Value", elementTree));
+    
         return true;
     }
     
     bool
     KeyValuePair::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "KeyValuePair json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     KeyValuePair::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Key";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "KeyValuePair decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!key_.jsonDecode(*tree)) {
+            Log(Error, "KeyValuePair decode json error - decode failed")
+                .parameter("Element", "Key");
+            return false;
+        }
+    
+        elementName = "Value";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "KeyValuePair decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!value_.jsonDecode(*tree)) {
+            Log(Error, "KeyValuePair decode json error - decode failed")
+                .parameter("Element", "Value");
+            return false;
+        }
+    
+        return true;
     }
     
     void

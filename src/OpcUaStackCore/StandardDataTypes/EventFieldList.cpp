@@ -145,7 +145,11 @@ namespace OpcUaStackCore
     EventFieldList::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "EventFieldList encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -156,11 +160,18 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, clientHandle_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, clientHandle_))
+        {
+            Log(Error, "EventFieldList encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ClientHandle", elementTree));
     
         elementTree.clear();
-        if (!eventFields_.xmlEncode(elementTree, "Variant", xmlns)) return false;
+        if (!eventFields_.xmlEncode(elementTree, "Variant", xmlns)) {
+            Log(Error, "EventFieldList encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("EventFields", elementTree));
     
         return true;
@@ -217,23 +228,89 @@ namespace OpcUaStackCore
     bool
     EventFieldList::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "EventFieldList json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     EventFieldList::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, clientHandle_))
+        {
+    	     Log(Error, "EventFieldList json encoder error")
+    		     .parameter("Element", "clientHandle_");
+           return false;
+        }
+        pt.push_back(std::make_pair("ClientHandle", elementTree));
+    
+        elementTree.clear();
+        if (!eventFields_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "EventFieldList json encoder error")
+    		     .parameter("Element", "eventFields_");
+            return false;
+        }
+        pt.push_back(std::make_pair("EventFields", elementTree));
+    
         return true;
     }
     
     bool
     EventFieldList::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "EventFieldList json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     EventFieldList::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ClientHandle";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EventFieldList decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, clientHandle_)) {
+            Log(Error, "EventFieldList decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "EventFields";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EventFieldList decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!eventFields_.jsonDecode(*tree, "")) {
+            Log(Error, "EventFieldList decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

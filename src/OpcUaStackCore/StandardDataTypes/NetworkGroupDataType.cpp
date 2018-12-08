@@ -145,7 +145,11 @@ namespace OpcUaStackCore
     NetworkGroupDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "NetworkGroupDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -156,11 +160,17 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!serverUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!serverUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "NetworkGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ServerUri", elementTree));
     
         elementTree.clear();
-        if (!networkPaths_.xmlEncode(elementTree, "EndpointUrlListDataType", xmlns)) return false;
+        if (!networkPaths_.xmlEncode(elementTree, "EndpointUrlListDataType", xmlns)) {
+            Log(Error, "NetworkGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("NetworkPaths", elementTree));
     
         return true;
@@ -217,23 +227,89 @@ namespace OpcUaStackCore
     bool
     NetworkGroupDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "NetworkGroupDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     NetworkGroupDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!serverUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "NetworkGroupDataType json encoder error")
+    		     .parameter("Element", "serverUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ServerUri", elementTree));
+    
+        elementTree.clear();
+        if (!networkPaths_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "NetworkGroupDataType json encoder error")
+    		     .parameter("Element", "networkPaths_");
+            return false;
+        }
+        pt.push_back(std::make_pair("NetworkPaths", elementTree));
+    
         return true;
     }
     
     bool
     NetworkGroupDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "NetworkGroupDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     NetworkGroupDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ServerUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "NetworkGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverUri_.jsonDecode(*tree)) {
+            Log(Error, "NetworkGroupDataType decode json error - decode failed")
+                .parameter("Element", "ServerUri");
+            return false;
+        }
+    
+        elementName = "NetworkPaths";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "NetworkGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!networkPaths_.jsonDecode(*tree, "")) {
+            Log(Error, "NetworkGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

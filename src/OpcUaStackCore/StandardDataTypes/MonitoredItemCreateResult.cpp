@@ -178,7 +178,11 @@ namespace OpcUaStackCore
     MonitoredItemCreateResult::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "MonitoredItemCreateResult encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -189,23 +193,41 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!statusCode_.xmlEncode(elementTree, xmlns)) return false;
+        if (!statusCode_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "MonitoredItemCreateResult encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("StatusCode", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, monitoredItemId_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, monitoredItemId_))
+        {
+            Log(Error, "MonitoredItemCreateResult encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MonitoredItemId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, revisedSamplingInterval_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, revisedSamplingInterval_))
+        {
+            Log(Error, "MonitoredItemCreateResult encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("RevisedSamplingInterval", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, revisedQueueSize_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, revisedQueueSize_))
+        {
+            Log(Error, "MonitoredItemCreateResult encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("RevisedQueueSize", elementTree));
     
         elementTree.clear();
-        if (!filterResult_.xmlEncode(elementTree, xmlns)) return false;
+        if (!filterResult_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "MonitoredItemCreateResult encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("FilterResult", elementTree));
     
         return true;
@@ -301,23 +323,155 @@ namespace OpcUaStackCore
     bool
     MonitoredItemCreateResult::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "MonitoredItemCreateResult json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     MonitoredItemCreateResult::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!statusCode_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "MonitoredItemCreateResult json encoder error")
+    		     .parameter("Element", "statusCode_");
+            return false;
+        }
+        pt.push_back(std::make_pair("StatusCode", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, monitoredItemId_))
+        {
+    	     Log(Error, "MonitoredItemCreateResult json encoder error")
+    		     .parameter("Element", "monitoredItemId_");
+           return false;
+        }
+        pt.push_back(std::make_pair("MonitoredItemId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, revisedSamplingInterval_))
+        {
+    	     Log(Error, "MonitoredItemCreateResult json encoder error")
+    		     .parameter("Element", "revisedSamplingInterval_");
+           return false;
+        }
+        pt.push_back(std::make_pair("RevisedSamplingInterval", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, revisedQueueSize_))
+        {
+    	     Log(Error, "MonitoredItemCreateResult json encoder error")
+    		     .parameter("Element", "revisedQueueSize_");
+           return false;
+        }
+        pt.push_back(std::make_pair("RevisedQueueSize", elementTree));
+    
+        elementTree.clear();
+        if (!filterResult_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "MonitoredItemCreateResult json encoder error")
+    		     .parameter("Element", "filterResult_");
+            return false;
+        }
+        pt.push_back(std::make_pair("FilterResult", elementTree));
+    
         return true;
     }
     
     bool
     MonitoredItemCreateResult::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "MonitoredItemCreateResult json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     MonitoredItemCreateResult::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "StatusCode";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!statusCode_.jsonDecode(*tree)) {
+            Log(Error, "MonitoredItemCreateResult decode json error - decode failed")
+                .parameter("Element", "StatusCode");
+            return false;
+        }
+    
+        elementName = "MonitoredItemId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, monitoredItemId_)) {
+            Log(Error, "MonitoredItemCreateResult decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "RevisedSamplingInterval";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, revisedSamplingInterval_)) {
+            Log(Error, "MonitoredItemCreateResult decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "RevisedQueueSize";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, revisedQueueSize_)) {
+            Log(Error, "MonitoredItemCreateResult decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "FilterResult";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MonitoredItemCreateResult decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!filterResult_.jsonDecode(*tree)) {
+            Log(Error, "MonitoredItemCreateResult decode json error - decode failed")
+                .parameter("Element", "FilterResult");
+            return false;
+        }
+    
+        return true;
     }
     
     void

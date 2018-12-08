@@ -135,7 +135,11 @@ namespace OpcUaStackCore
     EventNotificationList::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "EventNotificationList encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -146,7 +150,10 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!events_.xmlEncode(elementTree, "EventFieldList", xmlns)) return false;
+        if (!events_.xmlEncode(elementTree, "EventFieldList", xmlns)) {
+            Log(Error, "EventNotificationList encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Events", elementTree));
     
         return true;
@@ -190,23 +197,67 @@ namespace OpcUaStackCore
     bool
     EventNotificationList::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "EventNotificationList json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     EventNotificationList::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!events_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "EventNotificationList json encoder error")
+    		     .parameter("Element", "events_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Events", elementTree));
+    
         return true;
     }
     
     bool
     EventNotificationList::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "EventNotificationList json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     EventNotificationList::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Events";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "EventNotificationList decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!events_.jsonDecode(*tree, "")) {
+            Log(Error, "EventNotificationList decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

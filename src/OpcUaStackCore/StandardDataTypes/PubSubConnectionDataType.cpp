@@ -222,7 +222,11 @@ namespace OpcUaStackCore
     PubSubConnectionDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -233,39 +237,67 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!name_.xmlEncode(elementTree, xmlns)) return false;
+        if (!name_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Name", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, enabled_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, enabled_))
+        {
+            Log(Error, "PubSubConnectionDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Enabled", elementTree));
     
         elementTree.clear();
-        if (!publisherId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!publisherId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PublisherId", elementTree));
     
         elementTree.clear();
-        if (!transportProfileUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!transportProfileUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TransportProfileUri", elementTree));
     
         elementTree.clear();
-        if (!address_.xmlEncode(elementTree, xmlns)) return false;
+        if (!address_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Address", elementTree));
     
         elementTree.clear();
-        if (!connectionProperties_.xmlEncode(elementTree, "KeyValuePair", xmlns)) return false;
+        if (!connectionProperties_.xmlEncode(elementTree, "KeyValuePair", xmlns)) {
+            Log(Error, "PubSubConnectionDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ConnectionProperties", elementTree));
     
         elementTree.clear();
-        if (!transportSettings_.xmlEncode(elementTree, xmlns)) return false;
+        if (!transportSettings_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PubSubConnectionDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TransportSettings", elementTree));
     
         elementTree.clear();
-        if (!writerGroups_.xmlEncode(elementTree, "WriterGroupDataType", xmlns)) return false;
+        if (!writerGroups_.xmlEncode(elementTree, "WriterGroupDataType", xmlns)) {
+            Log(Error, "PubSubConnectionDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("WriterGroups", elementTree));
     
         elementTree.clear();
-        if (!readerGroups_.xmlEncode(elementTree, "ReaderGroupDataType", xmlns)) return false;
+        if (!readerGroups_.xmlEncode(elementTree, "ReaderGroupDataType", xmlns)) {
+            Log(Error, "PubSubConnectionDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ReaderGroups", elementTree));
     
         return true;
@@ -413,23 +445,243 @@ namespace OpcUaStackCore
     bool
     PubSubConnectionDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "PubSubConnectionDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     PubSubConnectionDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!name_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PubSubConnectionDataType json encoder error")
+    		     .parameter("Element", "name_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Name", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, enabled_))
+        {
+    	     Log(Error, "PubSubConnectionDataType json encoder error")
+    		     .parameter("Element", "enabled_");
+           return false;
+        }
+        pt.push_back(std::make_pair("Enabled", elementTree));
+    
+        elementTree.clear();
+        if (!publisherId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PubSubConnectionDataType json encoder error")
+    		     .parameter("Element", "publisherId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("PublisherId", elementTree));
+    
+        elementTree.clear();
+        if (!transportProfileUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PubSubConnectionDataType json encoder error")
+    		     .parameter("Element", "transportProfileUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TransportProfileUri", elementTree));
+    
+        elementTree.clear();
+        if (!address_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PubSubConnectionDataType json encoder error")
+    		     .parameter("Element", "address_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Address", elementTree));
+    
+        elementTree.clear();
+        if (!connectionProperties_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "PubSubConnectionDataType json encoder error")
+    		     .parameter("Element", "connectionProperties_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ConnectionProperties", elementTree));
+    
+        elementTree.clear();
+        if (!transportSettings_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PubSubConnectionDataType json encoder error")
+    		     .parameter("Element", "transportSettings_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TransportSettings", elementTree));
+    
+        elementTree.clear();
+        if (!writerGroups_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "PubSubConnectionDataType json encoder error")
+    		     .parameter("Element", "writerGroups_");
+            return false;
+        }
+        pt.push_back(std::make_pair("WriterGroups", elementTree));
+    
+        elementTree.clear();
+        if (!readerGroups_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "PubSubConnectionDataType json encoder error")
+    		     .parameter("Element", "readerGroups_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ReaderGroups", elementTree));
+    
         return true;
     }
     
     bool
     PubSubConnectionDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "PubSubConnectionDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     PubSubConnectionDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Name";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.jsonDecode(*tree)) {
+            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
+    
+        elementName = "Enabled";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, enabled_)) {
+            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "PublisherId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publisherId_.jsonDecode(*tree)) {
+            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
+                .parameter("Element", "PublisherId");
+            return false;
+        }
+    
+        elementName = "TransportProfileUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportProfileUri_.jsonDecode(*tree)) {
+            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
+                .parameter("Element", "TransportProfileUri");
+            return false;
+        }
+    
+        elementName = "Address";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!address_.jsonDecode(*tree)) {
+            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
+                .parameter("Element", "Address");
+            return false;
+        }
+    
+        elementName = "ConnectionProperties";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!connectionProperties_.jsonDecode(*tree, "")) {
+            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "TransportSettings";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportSettings_.jsonDecode(*tree)) {
+            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
+                .parameter("Element", "TransportSettings");
+            return false;
+        }
+    
+        elementName = "WriterGroups";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!writerGroups_.jsonDecode(*tree, "")) {
+            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "ReaderGroups";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubConnectionDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!readerGroups_.jsonDecode(*tree, "")) {
+            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

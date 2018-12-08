@@ -157,7 +157,11 @@ namespace OpcUaStackCore
     UpdateEventDetails::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UpdateEventDetails encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -168,15 +172,24 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!performInsertReplace_.xmlEncode(elementTree, xmlns)) return false;
+        if (!performInsertReplace_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UpdateEventDetails encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PerformInsertReplace", elementTree));
     
         elementTree.clear();
-        if (!filter_.xmlEncode(elementTree, xmlns)) return false;
+        if (!filter_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "UpdateEventDetails encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Filter", elementTree));
     
         elementTree.clear();
-        if (!eventData_.xmlEncode(elementTree, "HistoryEventFieldList", xmlns)) return false;
+        if (!eventData_.xmlEncode(elementTree, "HistoryEventFieldList", xmlns)) {
+            Log(Error, "UpdateEventDetails encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("EventData", elementTree));
     
         return true;
@@ -246,23 +259,111 @@ namespace OpcUaStackCore
     bool
     UpdateEventDetails::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "UpdateEventDetails json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     UpdateEventDetails::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!performInsertReplace_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "UpdateEventDetails json encoder error")
+    		     .parameter("Element", "performInsertReplace_");
+            return false;
+        }
+        pt.push_back(std::make_pair("PerformInsertReplace", elementTree));
+    
+        elementTree.clear();
+        if (!filter_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "UpdateEventDetails json encoder error")
+    		     .parameter("Element", "filter_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Filter", elementTree));
+    
+        elementTree.clear();
+        if (!eventData_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "UpdateEventDetails json encoder error")
+    		     .parameter("Element", "eventData_");
+            return false;
+        }
+        pt.push_back(std::make_pair("EventData", elementTree));
+    
         return true;
     }
     
     bool
     UpdateEventDetails::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "UpdateEventDetails json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     UpdateEventDetails::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "PerformInsertReplace";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UpdateEventDetails decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!performInsertReplace_.jsonDecode(*tree)) {
+            Log(Error, "UpdateEventDetails decode json error - decode failed")
+                .parameter("Element", "PerformInsertReplace");
+            return false;
+        }
+    
+        elementName = "Filter";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UpdateEventDetails decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!filter_.jsonDecode(*tree)) {
+            Log(Error, "UpdateEventDetails decode json error - decode failed")
+                .parameter("Element", "Filter");
+            return false;
+        }
+    
+        elementName = "EventData";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "UpdateEventDetails decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!eventData_.jsonDecode(*tree, "")) {
+            Log(Error, "UpdateEventDetails decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

@@ -134,7 +134,11 @@ namespace OpcUaStackCore
     HistoryEventFieldList::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "HistoryEventFieldList encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -145,7 +149,10 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!eventFields_.xmlEncode(elementTree, "Variant", xmlns)) return false;
+        if (!eventFields_.xmlEncode(elementTree, "Variant", xmlns)) {
+            Log(Error, "HistoryEventFieldList encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("EventFields", elementTree));
     
         return true;
@@ -189,23 +196,67 @@ namespace OpcUaStackCore
     bool
     HistoryEventFieldList::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "HistoryEventFieldList json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     HistoryEventFieldList::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!eventFields_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "HistoryEventFieldList json encoder error")
+    		     .parameter("Element", "eventFields_");
+            return false;
+        }
+        pt.push_back(std::make_pair("EventFields", elementTree));
+    
         return true;
     }
     
     bool
     HistoryEventFieldList::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "HistoryEventFieldList json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     HistoryEventFieldList::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "EventFields";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "HistoryEventFieldList decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!eventFields_.jsonDecode(*tree, "")) {
+            Log(Error, "HistoryEventFieldList decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

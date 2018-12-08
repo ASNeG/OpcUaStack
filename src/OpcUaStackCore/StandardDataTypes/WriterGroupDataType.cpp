@@ -212,7 +212,11 @@ namespace OpcUaStackCore
     WriterGroupDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "WriterGroupDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -223,35 +227,63 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, writerGroupId_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, writerGroupId_))
+        {
+            Log(Error, "WriterGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("WriterGroupId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, publishingInterval_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, publishingInterval_))
+        {
+            Log(Error, "WriterGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PublishingInterval", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, keepAliveTime_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, keepAliveTime_))
+        {
+            Log(Error, "WriterGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("KeepAliveTime", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, priority_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, priority_))
+        {
+            Log(Error, "WriterGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Priority", elementTree));
     
         elementTree.clear();
-        if (!localeIds_.xmlEncode(elementTree, "LocaleId", xmlns)) return false;
+        if (!localeIds_.xmlEncode(elementTree, "LocaleId", xmlns)) {
+            Log(Error, "WriterGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("LocaleIds", elementTree));
     
         elementTree.clear();
-        if (!transportSettings_.xmlEncode(elementTree, xmlns)) return false;
+        if (!transportSettings_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "WriterGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TransportSettings", elementTree));
     
         elementTree.clear();
-        if (!messageSettings_.xmlEncode(elementTree, xmlns)) return false;
+        if (!messageSettings_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "WriterGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MessageSettings", elementTree));
     
         elementTree.clear();
-        if (!dataSetWriters_.xmlEncode(elementTree, "DataSetWriterDataType", xmlns)) return false;
+        if (!dataSetWriters_.xmlEncode(elementTree, "DataSetWriterDataType", xmlns)) {
+            Log(Error, "WriterGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataSetWriters", elementTree));
     
         return true;
@@ -386,23 +418,221 @@ namespace OpcUaStackCore
     bool
     WriterGroupDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "WriterGroupDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     WriterGroupDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, writerGroupId_))
+        {
+    	     Log(Error, "WriterGroupDataType json encoder error")
+    		     .parameter("Element", "writerGroupId_");
+           return false;
+        }
+        pt.push_back(std::make_pair("WriterGroupId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, publishingInterval_))
+        {
+    	     Log(Error, "WriterGroupDataType json encoder error")
+    		     .parameter("Element", "publishingInterval_");
+           return false;
+        }
+        pt.push_back(std::make_pair("PublishingInterval", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, keepAliveTime_))
+        {
+    	     Log(Error, "WriterGroupDataType json encoder error")
+    		     .parameter("Element", "keepAliveTime_");
+           return false;
+        }
+        pt.push_back(std::make_pair("KeepAliveTime", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, priority_))
+        {
+    	     Log(Error, "WriterGroupDataType json encoder error")
+    		     .parameter("Element", "priority_");
+           return false;
+        }
+        pt.push_back(std::make_pair("Priority", elementTree));
+    
+        elementTree.clear();
+        if (!localeIds_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "WriterGroupDataType json encoder error")
+    		     .parameter("Element", "localeIds_");
+            return false;
+        }
+        pt.push_back(std::make_pair("LocaleIds", elementTree));
+    
+        elementTree.clear();
+        if (!transportSettings_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "WriterGroupDataType json encoder error")
+    		     .parameter("Element", "transportSettings_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TransportSettings", elementTree));
+    
+        elementTree.clear();
+        if (!messageSettings_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "WriterGroupDataType json encoder error")
+    		     .parameter("Element", "messageSettings_");
+            return false;
+        }
+        pt.push_back(std::make_pair("MessageSettings", elementTree));
+    
+        elementTree.clear();
+        if (!dataSetWriters_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "WriterGroupDataType json encoder error")
+    		     .parameter("Element", "dataSetWriters_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DataSetWriters", elementTree));
+    
         return true;
     }
     
     bool
     WriterGroupDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "WriterGroupDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     WriterGroupDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "WriterGroupId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, writerGroupId_)) {
+            Log(Error, "WriterGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "PublishingInterval";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, publishingInterval_)) {
+            Log(Error, "WriterGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "KeepAliveTime";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, keepAliveTime_)) {
+            Log(Error, "WriterGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "Priority";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, priority_)) {
+            Log(Error, "WriterGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "LocaleIds";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!localeIds_.jsonDecode(*tree, "")) {
+            Log(Error, "WriterGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "TransportSettings";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportSettings_.jsonDecode(*tree)) {
+            Log(Error, "WriterGroupDataType decode json error - decode failed")
+                .parameter("Element", "TransportSettings");
+            return false;
+        }
+    
+        elementName = "MessageSettings";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!messageSettings_.jsonDecode(*tree)) {
+            Log(Error, "WriterGroupDataType decode json error - decode failed")
+                .parameter("Element", "MessageSettings");
+            return false;
+        }
+    
+        elementName = "DataSetWriters";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "WriterGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetWriters_.jsonDecode(*tree, "")) {
+            Log(Error, "WriterGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

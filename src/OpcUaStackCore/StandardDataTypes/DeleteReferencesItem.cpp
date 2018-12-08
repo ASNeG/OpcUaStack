@@ -181,7 +181,11 @@ namespace OpcUaStackCore
     DeleteReferencesItem::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DeleteReferencesItem encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -192,23 +196,40 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!sourceNodeId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!sourceNodeId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DeleteReferencesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SourceNodeId", elementTree));
     
         elementTree.clear();
-        if (!referenceTypeId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!referenceTypeId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DeleteReferencesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, isForward_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, isForward_))
+        {
+            Log(Error, "DeleteReferencesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("IsForward", elementTree));
     
         elementTree.clear();
-        if (!targetNodeId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!targetNodeId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DeleteReferencesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TargetNodeId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, deleteBidirectional_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, deleteBidirectional_))
+        {
+            Log(Error, "DeleteReferencesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DeleteBidirectional", elementTree));
     
         return true;
@@ -304,23 +325,155 @@ namespace OpcUaStackCore
     bool
     DeleteReferencesItem::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "DeleteReferencesItem json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     DeleteReferencesItem::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!sourceNodeId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DeleteReferencesItem json encoder error")
+    		     .parameter("Element", "sourceNodeId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SourceNodeId", elementTree));
+    
+        elementTree.clear();
+        if (!referenceTypeId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DeleteReferencesItem json encoder error")
+    		     .parameter("Element", "referenceTypeId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, isForward_))
+        {
+    	     Log(Error, "DeleteReferencesItem json encoder error")
+    		     .parameter("Element", "isForward_");
+           return false;
+        }
+        pt.push_back(std::make_pair("IsForward", elementTree));
+    
+        elementTree.clear();
+        if (!targetNodeId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DeleteReferencesItem json encoder error")
+    		     .parameter("Element", "targetNodeId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TargetNodeId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, deleteBidirectional_))
+        {
+    	     Log(Error, "DeleteReferencesItem json encoder error")
+    		     .parameter("Element", "deleteBidirectional_");
+           return false;
+        }
+        pt.push_back(std::make_pair("DeleteBidirectional", elementTree));
+    
         return true;
     }
     
     bool
     DeleteReferencesItem::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "DeleteReferencesItem json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     DeleteReferencesItem::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "SourceNodeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteReferencesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!sourceNodeId_.jsonDecode(*tree)) {
+            Log(Error, "DeleteReferencesItem decode json error - decode failed")
+                .parameter("Element", "SourceNodeId");
+            return false;
+        }
+    
+        elementName = "ReferenceTypeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteReferencesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!referenceTypeId_.jsonDecode(*tree)) {
+            Log(Error, "DeleteReferencesItem decode json error - decode failed")
+                .parameter("Element", "ReferenceTypeId");
+            return false;
+        }
+    
+        elementName = "IsForward";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteReferencesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, isForward_)) {
+            Log(Error, "DeleteReferencesItem decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "TargetNodeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteReferencesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!targetNodeId_.jsonDecode(*tree)) {
+            Log(Error, "DeleteReferencesItem decode json error - decode failed")
+                .parameter("Element", "TargetNodeId");
+            return false;
+        }
+    
+        elementName = "DeleteBidirectional";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteReferencesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, deleteBidirectional_)) {
+            Log(Error, "DeleteReferencesItem decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

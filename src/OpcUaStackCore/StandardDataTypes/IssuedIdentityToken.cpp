@@ -149,7 +149,11 @@ namespace OpcUaStackCore
     IssuedIdentityToken::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "IssuedIdentityToken encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -160,11 +164,17 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!tokenData_.xmlEncode(elementTree, xmlns)) return false;
+        if (!tokenData_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "IssuedIdentityToken encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TokenData", elementTree));
     
         elementTree.clear();
-        if (!encryptionAlgorithm_.xmlEncode(elementTree, xmlns)) return false;
+        if (!encryptionAlgorithm_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "IssuedIdentityToken encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("EncryptionAlgorithm", elementTree));
     
         return true;
@@ -221,23 +231,89 @@ namespace OpcUaStackCore
     bool
     IssuedIdentityToken::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "IssuedIdentityToken json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     IssuedIdentityToken::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!tokenData_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "IssuedIdentityToken json encoder error")
+    		     .parameter("Element", "tokenData_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TokenData", elementTree));
+    
+        elementTree.clear();
+        if (!encryptionAlgorithm_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "IssuedIdentityToken json encoder error")
+    		     .parameter("Element", "encryptionAlgorithm_");
+            return false;
+        }
+        pt.push_back(std::make_pair("EncryptionAlgorithm", elementTree));
+    
         return true;
     }
     
     bool
     IssuedIdentityToken::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "IssuedIdentityToken json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     IssuedIdentityToken::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "TokenData";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "IssuedIdentityToken decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!tokenData_.jsonDecode(*tree)) {
+            Log(Error, "IssuedIdentityToken decode json error - decode failed")
+                .parameter("Element", "TokenData");
+            return false;
+        }
+    
+        elementName = "EncryptionAlgorithm";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "IssuedIdentityToken decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!encryptionAlgorithm_.jsonDecode(*tree)) {
+            Log(Error, "IssuedIdentityToken decode json error - decode failed")
+                .parameter("Element", "EncryptionAlgorithm");
+            return false;
+        }
+    
+        return true;
     }
     
     void

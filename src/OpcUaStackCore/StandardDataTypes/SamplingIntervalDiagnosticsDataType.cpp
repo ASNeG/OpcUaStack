@@ -167,7 +167,11 @@ namespace OpcUaStackCore
     SamplingIntervalDiagnosticsDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -178,19 +182,35 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, samplingInterval_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, samplingInterval_))
+        {
+            Log(Error, "SamplingIntervalDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SamplingInterval", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, monitoredItemCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, monitoredItemCount_))
+        {
+            Log(Error, "SamplingIntervalDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MonitoredItemCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, maxMonitoredItemCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, maxMonitoredItemCount_))
+        {
+            Log(Error, "SamplingIntervalDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MaxMonitoredItemCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, disabledMonitoredItemCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, disabledMonitoredItemCount_))
+        {
+            Log(Error, "SamplingIntervalDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DisabledMonitoredItemCount", elementTree));
     
         return true;
@@ -273,23 +293,133 @@ namespace OpcUaStackCore
     bool
     SamplingIntervalDiagnosticsDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     SamplingIntervalDiagnosticsDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, samplingInterval_))
+        {
+    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "samplingInterval_");
+           return false;
+        }
+        pt.push_back(std::make_pair("SamplingInterval", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, monitoredItemCount_))
+        {
+    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "monitoredItemCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("MonitoredItemCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, maxMonitoredItemCount_))
+        {
+    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "maxMonitoredItemCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("MaxMonitoredItemCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, disabledMonitoredItemCount_))
+        {
+    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "disabledMonitoredItemCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("DisabledMonitoredItemCount", elementTree));
+    
         return true;
     }
     
     bool
     SamplingIntervalDiagnosticsDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "SamplingIntervalDiagnosticsDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     SamplingIntervalDiagnosticsDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "SamplingInterval";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, samplingInterval_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "MonitoredItemCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, monitoredItemCount_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "MaxMonitoredItemCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, maxMonitoredItemCount_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DisabledMonitoredItemCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, disabledMonitoredItemCount_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void
