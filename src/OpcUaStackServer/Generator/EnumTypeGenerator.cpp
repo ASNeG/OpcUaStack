@@ -947,7 +947,12 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix <<  nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-	    ss << prefix << "    if(!XmlNumber::xmlEncode(pt, value_, element)) return false;" << std::endl;
+	    ss << prefix << "    if(!XmlNumber::xmlEncode(pt, value_, element))" << std::endl;
+	    ss << prefix << "    {" << std::endl;
+		ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
+		ss << prefix << "		     .parameter(\"Element\", element);" << std::endl;
+	    ss << prefix << "        return false;" << std::endl;
+	    ss << prefix << "    }" << std::endl;
 	    ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -955,7 +960,10 @@ namespace OpcUaStackServer
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-	    ss << prefix << "    if(!XmlNumber::xmlEncode(pt, value_)) return false;" << std::endl;
+	    ss << prefix << "    if(!XmlNumber::xmlEncode(pt, value_)) {" << std::endl;
+	    ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\");" << std::endl;
+	    ss << prefix << "        return false;" << std::endl;
+	    ss << prefix << "    }" << std::endl;
 	    ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -973,7 +981,11 @@ namespace OpcUaStackServer
 		ss << prefix <<  nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);" << std::endl;
-		ss << prefix << "    if (!tree) return false;" << std::endl;
+		ss << prefix << "    if (!tree) {" << std::endl;
+		ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json decoder error\")" << std::endl;
+		ss << prefix << "		     .parameter(\"Element\", element);" << std::endl;
+		ss << prefix << "        return false;" << std::endl;
+	    ss << prefix << "     }" << std::endl;
 		ss << prefix << "    return xmlDecode(*tree, xmlns);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -981,7 +993,10 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
-	    ss << prefix << "    if(!XmlNumber::xmlDecode(pt, value_)) return false;" << std::endl;
+	    ss << prefix << "    if(!XmlNumber::xmlDecode(pt, value_)) {" << std::endl;
+	    ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json decoder error\");" << std::endl;
+	    ss << prefix << "        return false;" << std::endl;
+	 	ss << prefix << "    }" << std::endl;
 	    ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
