@@ -546,28 +546,28 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DataValue::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaDataValue::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
 	{
 		// FIXME: todo
 		return true;
 	}
 
 	bool
-	DataValue::jsonEncode(boost::property_tree::ptree& pt)
+	OpcUaDataValue::jsonEncode(boost::property_tree::ptree& pt)
 	{
 		// FIXME : todo
 		return true;
 	}
 
 	bool
-	DataValue::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaDataValue::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
 	{
 		// FIXME: Todo
 		return true;
 	}
 
 	bool
-	DataValue::jsonDecode(boost::property_tree::ptree& pt)
+	OpcUaDataValue::jsonDecode(boost::property_tree::ptree& pt)
 	{
 		// FIXME: todo
 		return true;
