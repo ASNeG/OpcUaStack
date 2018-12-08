@@ -329,23 +329,177 @@ namespace OpcUaStackCore
     bool
     BuildInfo::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "BuildInfo json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     BuildInfo::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!productUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BuildInfo json encoder error")
+    		     .parameter("Element", "productUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ProductUri", elementTree));
+    
+        elementTree.clear();
+        if (!manufacturerName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BuildInfo json encoder error")
+    		     .parameter("Element", "manufacturerName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ManufacturerName", elementTree));
+    
+        elementTree.clear();
+        if (!productName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BuildInfo json encoder error")
+    		     .parameter("Element", "productName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ProductName", elementTree));
+    
+        elementTree.clear();
+        if (!softwareVersion_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BuildInfo json encoder error")
+    		     .parameter("Element", "softwareVersion_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SoftwareVersion", elementTree));
+    
+        elementTree.clear();
+        if (!buildNumber_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BuildInfo json encoder error")
+    		     .parameter("Element", "buildNumber_");
+            return false;
+        }
+        pt.push_back(std::make_pair("BuildNumber", elementTree));
+    
+        elementTree.clear();
+        if (!buildDate_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BuildInfo json encoder error")
+    		     .parameter("Element", "buildDate_");
+            return false;
+        }
+        pt.push_back(std::make_pair("BuildDate", elementTree));
+    
         return true;
     }
     
     bool
     BuildInfo::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "BuildInfo json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     BuildInfo::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ProductUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!productUri_.jsonDecode(*tree)) {
+            Log(Error, "BuildInfo decode json error - decode failed")
+                .parameter("Element", "ProductUri");
+            return false;
+        }
+    
+        elementName = "ManufacturerName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!manufacturerName_.jsonDecode(*tree)) {
+            Log(Error, "BuildInfo decode json error - decode failed")
+                .parameter("Element", "ManufacturerName");
+            return false;
+        }
+    
+        elementName = "ProductName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!productName_.jsonDecode(*tree)) {
+            Log(Error, "BuildInfo decode json error - decode failed")
+                .parameter("Element", "ProductName");
+            return false;
+        }
+    
+        elementName = "SoftwareVersion";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!softwareVersion_.jsonDecode(*tree)) {
+            Log(Error, "BuildInfo decode json error - decode failed")
+                .parameter("Element", "SoftwareVersion");
+            return false;
+        }
+    
+        elementName = "BuildNumber";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!buildNumber_.jsonDecode(*tree)) {
+            Log(Error, "BuildInfo decode json error - decode failed")
+                .parameter("Element", "BuildNumber");
+            return false;
+        }
+    
+        elementName = "BuildDate";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BuildInfo decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!buildDate_.jsonDecode(*tree)) {
+            Log(Error, "BuildInfo decode json error - decode failed")
+                .parameter("Element", "BuildDate");
+            return false;
+        }
+    
+        return true;
     }
     
     void

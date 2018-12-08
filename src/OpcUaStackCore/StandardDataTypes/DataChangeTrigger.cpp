@@ -242,6 +242,14 @@ namespace OpcUaStackCore
     bool
     DataChangeTrigger::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "DataChangeTrigger json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
     }
     
     bool
@@ -252,6 +260,15 @@ namespace OpcUaStackCore
     bool
     DataChangeTrigger::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "DataChangeTrigger json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool

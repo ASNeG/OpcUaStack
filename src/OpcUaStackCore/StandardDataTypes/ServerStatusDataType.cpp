@@ -329,23 +329,165 @@ namespace OpcUaStackCore
     bool
     ServerStatusDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "ServerStatusDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     ServerStatusDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!startTime_.jsonEncode(elementTree))
+        {
+            return false;
+        }
+        pt.push_back(std::make_pair("StartTime", elementTree));
+    
+        elementTree.clear();
+        if (!currentTime_.jsonEncode(elementTree))
+        {
+            return false;
+        }
+        pt.push_back(std::make_pair("CurrentTime", elementTree));
+    
+        elementTree.clear();
+        if (!state_.jsonEncode(elementTree))
+        {
+            return false;
+        }
+        pt.push_back(std::make_pair("State", elementTree));
+    
+        elementTree.clear();
+        if (!buildInfo_.jsonEncode(elementTree))
+        {
+            return false;
+        }
+        pt.push_back(std::make_pair("BuildInfo", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, secondsTillShutdown_))
+        {
+           return false;
+        }
+        pt.push_back(std::make_pair("SecondsTillShutdown", elementTree));
+    
+        elementTree.clear();
+        if (!shutdownReason_.jsonEncode(elementTree))
+        {
+            return false;
+        }
+        pt.push_back(std::make_pair("ShutdownReason", elementTree));
+    
         return true;
     }
     
     bool
     ServerStatusDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "ServerStatusDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     ServerStatusDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "StartTime";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!startTime_.jsonDecode(*tree)) {
+            Log(Error, "ServerStatusDataType decode json error - decode failed")
+                .parameter("Element", "StartTime");
+            return false;
+        }
+    
+        elementName = "CurrentTime";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!currentTime_.jsonDecode(*tree)) {
+            Log(Error, "ServerStatusDataType decode json error - decode failed")
+                .parameter("Element", "CurrentTime");
+            return false;
+        }
+    
+        elementName = "State";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!state_.jsonDecode(*tree)) {
+            Log(Error, "ServerStatusDataType decode json error - decode failed")
+                .parameter("Element", "State");
+            return false;
+        }
+    
+        elementName = "BuildInfo";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!buildInfo_.jsonDecode(*tree)) {
+            Log(Error, "ServerStatusDataType decode json error - decode failed")
+                .parameter("Element", "BuildInfo");
+            return false;
+        }
+    
+        elementName = "SecondsTillShutdown";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, secondsTillShutdown_)) {
+            Log(Error, "ServerStatusDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "ShutdownReason";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ServerStatusDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!shutdownReason_.jsonDecode(*tree)) {
+            Log(Error, "ServerStatusDataType decode json error - decode failed")
+                .parameter("Element", "ShutdownReason");
+            return false;
+        }
+    
+        return true;
     }
     
     void
