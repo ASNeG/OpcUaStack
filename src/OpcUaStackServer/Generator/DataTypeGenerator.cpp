@@ -1127,6 +1127,8 @@ namespace OpcUaStackServer
 					ss << prefix << "    elementTree.clear();" << std::endl;
 					ss << prefix << "    if(!JsonNumber::jsonEncode(elementTree, " << dataTypeField->variableName() << "))" << std::endl;
 					ss << prefix << "    {" << std::endl;
+					ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
+					ss << prefix << "		     .parameter(\"Element\", \"" << dataTypeField->variableName() << "\");" << std::endl;
 					ss << prefix << "       return false;" << std::endl;
 				    ss << prefix << "    }" << std::endl;
 					break;
@@ -1136,6 +1138,8 @@ namespace OpcUaStackServer
 					ss << prefix << "    elementTree.clear();" << std::endl;
 					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree, \"\"))" << std::endl;
 					ss << prefix << "    {" << std::endl;
+					ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
+					ss << prefix << "		     .parameter(\"Element\", \"" << dataTypeField->variableName() << "\");" << std::endl;
 					ss << prefix << "        return false;" << std::endl;
 				    ss << prefix << "    }" << std::endl;
 					break;
@@ -1144,6 +1148,8 @@ namespace OpcUaStackServer
 					ss << prefix << "    elementTree.clear();" << std::endl;
 					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree))" << std::endl;
 					ss << prefix << "    {" << std::endl;
+					ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
+					ss << prefix << "		     .parameter(\"Element\", \"" << dataTypeField->variableName() << "\");" << std::endl;
 					ss << prefix << "        return false;" << std::endl;
 			        ss << prefix << "    }" << std::endl;
 			}
