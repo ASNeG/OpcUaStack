@@ -297,4 +297,33 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaDiagnosticInfo::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaDiagnosticInfo::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaDiagnosticInfo::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaDiagnosticInfo::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+
 };
