@@ -358,7 +358,7 @@ endif()
 if (CPACK_BINARY_RPM)
     set(CPACK_RPM_COMPONENT_INSTALL "ON")
     set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
-    set(CPACK_RPM_POST_INSTALL_SCRIPT_FILE "${CMAKE_SOURCE_DIR}/rpm/postinstall.sh")
+    set(CPACK_RPM_POST_INSTALL_SCRIPT_FILE "${CMAKE_SOURCE_DIR}/linux/script/postinst")
 
     SSLDepends(libopenssl)         
     set(RPM_DEPS_BIN "${LIST_OF_LIB_VERSIONS_BIN}")
