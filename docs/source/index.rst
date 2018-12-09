@@ -1,20 +1,42 @@
-.. ASNeG OpcUaStack documentation master file, created by
-   sphinx-quickstart on Sun Dec  9 12:34:11 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to ASNeG OpcUaStack's documentation!
+ASNeG OPC UA Stack Documentation
 ============================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+ASNeG OPC UA Stack is an open source framework for development and distribution of OPC UA client\\server applications.
+It provides SDK to write your applications in C++ and an infrastructure to run and distribute them.
+
+Getting started
+--------------------------------------------
+.. _overview: getting_started/overview
+
+* **From scratch**: :doc:`Overview <getting_started/overview>` | :doc:`Installation <getting_started/installation>` 
+
+* **Tutorials**: :doc:`Hello, World of OPC UA! <getting_started/hello_world>` 
 
 
 
-Indices and tables
-==================
+User Application
+--------------------------------------------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+* **Development**: `Creating` | `Information Model` | `Implementation`
+* **Distribution**: `Linux` | `Windows` | `Docker`
+
+OPC UA Server
+--------------------------------------------
+
+* **Information Model**: `Objects` | `Variables` | `Data Types` | `Methods` | `Events`
+* **Callback System**: `Subscription on data` | `User authentication and authorization`
+* **Security**: `Security polices` | `Encrypting`
+
+OPC UA Client
+--------------------------------------------
+
+*Implemented but not documented*
+
+
+
+Contributor Guide
+--------------------------------------------
+
+*Coming soon*
+
+
