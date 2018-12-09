@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatus.h"
 #include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
@@ -548,28 +549,134 @@ namespace OpcUaStackCore
 	bool
 	OpcUaDataValue::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaDataValue json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
 
 	bool
 	OpcUaDataValue::jsonEncode(boost::property_tree::ptree& pt)
 	{
-		// FIXME : todo
+		// add value
+		if (opcUaVariantSPtr_.get() != nullptr) {
+			if (!opcUaVariantSPtr_->jsonEncode(pt, "Value")) {
+				Log(Error, "OpcUaDataValue json encode error")
+		        	.parameter("Element", "Value");
+				return false;
+			}
+		}
+
+		// add status code
+		OpcUaStatus status(opcUaStatusCode_);
+		if (!status.jsonEncode(pt, "Status")) {
+			Log(Error, "OpcUaDataValue json encode error")
+		        .parameter("Element", "Status");
+			return false;
+		}
+
+		// add source timestamp
+		if (!sourceTimestamp_.jsonEncode(pt, "SourceTimestamp")) {
+			Log(Error, "OpcUaDataValue json encode error")
+		        .parameter("Element", "SourceTimestamp");
+			return false;
+		}
+
+		// add server timestamp
+		if (!serverTimestamp_.jsonEncode(pt, "ServerTimestamp")) {
+			Log(Error, "OpcUaDataValue json encode error")
+		        .parameter("Element", "ServerTimestamp");
+			return false;
+		}
+
+		// added source picoseconds
+		if (!JsonNumber::jsonEncode(pt, sourcePicoseconds_, "SourcePicoSeconds")) {
+			Log(Error, "OpcUaDataValue json encode error")
+		        .parameter("Element", "SourcePicoSeconds");
+			return false;
+		}
+
+		// added server picoseconds
+		if (!JsonNumber::jsonEncode(pt, serverPicoseconds_, "ServerPicoSeconds")) {
+			Log(Error, "OpcUaDataValue json encode error")
+		        .parameter("Element", "ServerPicoSeconds");
+			return false;
+		}
+
 		return true;
 	}
 
 	bool
 	OpcUaDataValue::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
 	{
-		// FIXME: Todo
-		return true;
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaDateTime json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
 	}
 
 	bool
 	OpcUaDataValue::jsonDecode(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		// get value
+		opcUaVariantSPtr_.reset();
+		tmpTree = pt.get_child_optional("Value");
+		if (tmpTree) {
+			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+			if (!opcUaVariantSPtr_->jsonDecode(pt, "Value")) {
+				Log(Error, "OpcUaDataValue json decode error")
+			        .parameter("Element", "Value");
+				return false;
+			}
+		}
+
+		// get status code
+		OpcUaStatus status(Success);
+		tmpTree = pt.get_child_optional("Status");
+		if (tmpTree) {
+			if (!status.jsonDecode(pt, "Status")) {
+				Log(Error, "OpcUaDataValue json decode error")
+		        	.parameter("Element", "Status");
+				return false;
+			}
+		}
+		opcUaStatusCode_ = status.enumeration();
+
+		// get source timestamp
+		tmpTree = pt.get_child_optional("SourceTimestamp");
+		if (tmpTree) {
+			sourceTimestamp_.jsonDecode(pt, "SourceTimestamp");
+		}
+
+		// get server timestamp
+		tmpTree = pt.get_child_optional("ServerTimestamp");
+		if (tmpTree) {
+			serverTimestamp_.jsonDecode(pt, "ServerTimestamp");
+		}
+
+		// get source pico seconds
+		tmpTree = pt.get_child_optional("SourcePicoSeconds");
+		if (tmpTree) {
+			JsonNumber::jsonDecode(pt, sourcePicoseconds_, "SourcePicoSeconds");
+		}
+
+		// get server pico seconds
+		tmpTree = pt.get_child_optional("ServerPicoSeconds");
+		if (tmpTree) {
+			JsonNumber::jsonDecode(pt, serverPicoseconds_, "ServerPicoSeconds");
+		}
+
 		return true;
 	}
 
