@@ -57,6 +57,7 @@ namespace OpcUaStackCore
 
 		void copyFrom(OpcUaDataValue& dataValue);
 		void copyTo(OpcUaDataValue& dataValue);
+		bool operator<(const OpcUaDataValue& dataValue) const;
 		bool operator!=(const OpcUaDataValue& opcUaDataValue) const;
 		bool operator==(const OpcUaDataValue& opcUaDataValue) const;
 

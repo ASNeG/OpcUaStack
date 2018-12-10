@@ -206,6 +206,26 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	OpcUaDataValue::operator<(const OpcUaDataValue& dataValue) const
+	{
+		OpcUaDataValue* actValue = const_cast<OpcUaDataValue*>(this);
+		OpcUaDataValue* tmpValue = const_cast<OpcUaDataValue*>(&dataValue);
+
+		if (actValue->isNullVariant() && !tmpValue->isNullVariant()) return true;
+		if (!actValue->isNullVariant() && tmpValue->isNullVariant()) return false;
+		if (!actValue->isNullVariant() && !tmpValue->isNullVariant()) {
+			if (*actValue->variant() < *tmpValue->variant()) return true;
+		}
+		if (actValue->opcUaStatusCode_ << tmpValue->opcUaStatusCode_) return true;
+		if (actValue->sourceTimestamp_ << tmpValue->sourceTimestamp_) return true;
+		if (actValue->sourcePicoseconds_ << tmpValue->sourcePicoseconds_) return true;
+		if (actValue->serverTimestamp_ << tmpValue->serverTimestamp_) return true;
+		if (actValue->serverPicoseconds_ << tmpValue->serverPicoseconds_) return true;
+
+		return false;
+	}
+
+	bool
 	OpcUaDataValue::operator!=(const OpcUaDataValue& opcUaDataValue) const
 	{
 		return !operator==(opcUaDataValue);
