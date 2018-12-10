@@ -511,6 +511,21 @@ namespace OpcUaStackCore
 			}
 		}
 
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("StatusCode"));
+		if (!tmpTree) {
+			// nothing to do
+		}
+		else {
+			uint32_t statusCode;
+			if (!XmlNumber::xmlDecode(*tmpTree, statusCode)) {
+				Log(Error, "DataValue xml decoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "StatusCode");
+				return false;
+			}
+			opcUaStatusCode_ = (OpcUaStatusCode)statusCode;
+		}
+
 		tmpTree = pt.get_child_optional(xmlns.addPrefix("SourceTimestamp"));
 		if (!tmpTree) {
 			// nothing to do
