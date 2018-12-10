@@ -3193,7 +3193,7 @@ namespace OpcUaStackCore
 
 		// check array
 		bool isArray = false;
-		if (tree->front().first == "") {
+		if (tree->begin() != tree->end() && tree->front().first == "") {
 			isArray = true;
 		}
 
@@ -4944,7 +4944,7 @@ namespace OpcUaStackCore
 				return false;
 			}
 			OpcUaBoolean value;
-			if (!XmlNumber::xmlDecode(it->second, value)) {
+			if (!JsonNumber::jsonDecode(it->second, value)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
 					.parameter("DataType", "Boolean");
@@ -5111,7 +5111,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonEncodeUInt16Scalar(boost::property_tree::ptree& pt)
 	{
 		OpcUaUInt16 value = get<OpcUaUInt16>();
-		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
 			Log(Error, "OpcUaVariant json encoder error")
 				.parameter("Element", "OpcUaUInt16");
 			return false;
@@ -5139,7 +5139,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonDecodeUInt16Scalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaUInt16 value;
-		if (!XmlNumber::xmlDecode(pt, value)) {
+		if (!JsonNumber::jsonDecode(pt, value)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
 				.parameter("DataType", "OpcUaUInt16");
@@ -5327,7 +5327,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonEncodeInt32Scalar(boost::property_tree::ptree& pt)
 	{
 		OpcUaInt32 value = get<OpcUaInt32>();
-		if (!XmlNumber::xmlEncode(pt, value, "Body")) {
+		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
 			Log(Error, "OpcUaVariant json encoder error")
 				.parameter("Element", "OpcUaInt32");
 			return false;
@@ -5355,7 +5355,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonDecodeInt32Scalar(boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaInt32 value;
-		if (!XmlNumber::xmlDecode(pt, value)) {
+		if (!JsonNumber::jsonDecode(pt, value)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
 				.parameter("DataType", "OpcUaInt32");

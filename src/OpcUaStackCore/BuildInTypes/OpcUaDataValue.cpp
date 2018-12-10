@@ -665,7 +665,7 @@ namespace OpcUaStackCore
 		boost::optional<boost::property_tree::ptree&> tmpTree;
 
 		// get value
-		opcUaVariantSPtr_.reset();
+		//opcUaVariantSPtr_.reset();
 		tmpTree = pt.get_child_optional("Value");
 		if (tmpTree) {
 			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();

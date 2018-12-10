@@ -873,6 +873,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_DataValue)
 
 	BOOST_REQUIRE(value2.jsonDecode(pt) == true);
 	dataValue2 = value2.variantSPtr<OpcUaDataValue>();
+	BOOST_REQUIRE(dataValue2->variant()->variantType() == OpcUaBuildInType_OpcUaInt32);
 	BOOST_REQUIRE(dataValue2->variant()->get<OpcUaInt32>() == 12345);
 	BOOST_REQUIRE(dataValue2->statusCode() == BadNoData);
 	BOOST_REQUIRE(dataValue2->serverTimestamp().toISO8601() == dataValue1->serverTimestamp().toISO8601());
