@@ -491,6 +491,29 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaByteString)
 	BOOST_REQUIRE(strncmp((char*)buf, "text", 4) == 0);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaDataValue)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	OpcUaDataValue::SPtr dataValueSPtr1 = constructSPtr<OpcUaDataValue>();
+
+	dataValueSPtr1->statusCode(Success);
+	dataValueSPtr1->variant()->setValue(OpcUaString("Dies ist ein String"));
+	dataValueSPtr1->serverTimestamp(OpcUaDateTime("2018-10-22T10:11:13Z"));
+	dataValueSPtr1->sourceTimestamp(OpcUaDateTime("2018-10-22T10:11:13Z"));
+	value1.variant(dataValueSPtr1);
+
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+
+	OpcUaString value;
+	BOOST_REQUIRE(value2.variantSPtr<OpcUaDataValue>()->statusCode() == Success);
+	BOOST_REQUIRE(value2.variantSPtr<OpcUaDataValue>()->variant()->getValue(value) == true);
+	BOOST_REQUIRE(value == OpcUaString("Dies ist ein String"));
+	BOOST_REQUIRE(value2.variantSPtr<OpcUaDataValue>()->serverTimestamp() == OpcUaDateTime("2018-10-22T10:11:13Z"));
+	BOOST_REQUIRE(value2.variantSPtr<OpcUaDataValue>()->sourceTimestamp() == OpcUaDateTime("2018-10-22T10:11:13Z"));
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaExtensionObject)
 {
 	std::stringstream ss;
