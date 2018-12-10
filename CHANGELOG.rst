@@ -3,6 +3,7 @@ Release 4.1.0
 
 **Features**:
 
+* Integrate JSON encoder/decoder #39, by @huebl
 * Rework OpcUaStackCore #47, by @huebl
 * Implement data type code generator #8, by @huebl
 * Implement enum type code generator #29, by @huebl
@@ -11,6 +12,7 @@ Release 4.1.0
 
 **Bugs**:
 
+* Class OpcUaDataValue does not have an "<" operator #54, by @huebl
 * Extensible Parameter us used incorrectly #36, by @huebl
 
 
