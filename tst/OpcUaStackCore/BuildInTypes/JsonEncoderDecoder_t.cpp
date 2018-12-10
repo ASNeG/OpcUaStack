@@ -440,6 +440,29 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_ExtensionObject)
 	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
 }
 
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_DataValue)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	boost::property_tree::ptree pt;
+	ConfigJson json;
+	OpcUaDataValue value1, value2;
+
+	value1.variant()->set((OpcUaInt32)12345);
+	value1.statusCode(BadNoData);
+	value1.sourceTimestamp(OpcUaDateTime(now));
+	value1.serverTimestamp(OpcUaDateTime(now));
+	BOOST_REQUIRE(value1.jsonEncode(pt, "DataValue") == true);
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+	BOOST_REQUIRE(value2.jsonDecode(pt, "DataValue") == true);
+	BOOST_REQUIRE(value2.variant()->get<OpcUaInt32>() == 12345);
+	BOOST_REQUIRE(value2.serverTimestamp().toISO8601() == value1.serverTimestamp().toISO8601());
+	BOOST_REQUIRE(value2.sourceTimestamp().toISO8601() == value2.sourceTimestamp().toISO8601());
+}
+
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_OpcUaBoolean)
 {
 	boost::property_tree::ptree pt;
@@ -825,6 +848,35 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ExtensionObject)
 	BOOST_REQUIRE(argument2->name().toStdString() == "ArgumentName");
 	BOOST_REQUIRE(argument2->dataType() == OpcUaNodeId("NodeName", 23));
 	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
+}
+
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_DataValue)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	boost::property_tree::ptree pt;
+	ConfigJson json;
+	OpcUaDataValue::SPtr dataValue1, dataValue2;
+	OpcUaVariant value1, value2;
+
+	dataValue1 = constructSPtr<OpcUaDataValue>();
+	dataValue1->variant()->set((OpcUaInt32)12345);
+	dataValue1->statusCode(BadNoData);
+	dataValue1->sourceTimestamp(OpcUaDateTime(now));
+	dataValue1->serverTimestamp(OpcUaDateTime(now));
+	value1.setValue(*dataValue1);
+	BOOST_REQUIRE(value1.jsonEncode(pt) == true);
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.jsonDecode(pt) == true);
+	dataValue2 = value2.variantSPtr<OpcUaDataValue>();
+	BOOST_REQUIRE(dataValue2->variant()->get<OpcUaInt32>() == 12345);
+	BOOST_REQUIRE(dataValue2->statusCode() == BadNoData);
+	BOOST_REQUIRE(dataValue2->serverTimestamp().toISO8601() == dataValue1->serverTimestamp().toISO8601());
+	BOOST_REQUIRE(dataValue2->sourceTimestamp().toISO8601() == dataValue2->sourceTimestamp().toISO8601());
 }
 
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_OpcUaBoolean)
@@ -1281,6 +1333,40 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_ExtensionObject)
 		BOOST_REQUIRE(argument->name().toStdString() == "ArgumentName");
 		BOOST_REQUIRE(argument->dataType() == OpcUaNodeId("NodeName", 23));
 		BOOST_REQUIRE(argument->description() == OpcUaLocalizedText("de", "Description"));
+	}
+}
+
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_Array_DataValue)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	boost::property_tree::ptree pt;
+	ConfigJson json;
+	OpcUaDataValue::SPtr dataValue1, dataValue2;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		dataValue1 = constructSPtr<OpcUaDataValue>();
+		dataValue1->variant()->set((OpcUaInt32)12345);
+		dataValue1->statusCode(BadNoData);
+		dataValue1->sourceTimestamp(OpcUaDateTime(now));
+		dataValue1->serverTimestamp(OpcUaDateTime(now));
+		value1.pushBack(dataValue1);
+	}
+	BOOST_REQUIRE(value1.jsonEncode(pt) == true);
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.jsonDecode(pt) == true);
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		dataValue2 = value2.variantSPtr<OpcUaDataValue>(idx);
+		BOOST_REQUIRE(dataValue2->variant()->get<OpcUaInt32>() == 12345);
+		BOOST_REQUIRE(dataValue2->statusCode() == BadNoData);
+		BOOST_REQUIRE(dataValue2->serverTimestamp().toISO8601() == dataValue1->serverTimestamp().toISO8601());
+		BOOST_REQUIRE(dataValue2->sourceTimestamp().toISO8601() == dataValue2->sourceTimestamp().toISO8601());
 	}
 }
 

@@ -669,7 +669,7 @@ namespace OpcUaStackCore
 		tmpTree = pt.get_child_optional("Value");
 		if (tmpTree) {
 			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-			if (!opcUaVariantSPtr_->jsonDecode(pt, "Value")) {
+			if (!opcUaVariantSPtr_->jsonDecode(*tmpTree)) {
 				Log(Error, "OpcUaDataValue json decode error")
 			        .parameter("Element", "Value");
 				return false;

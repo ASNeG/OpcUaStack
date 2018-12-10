@@ -3169,8 +3169,6 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecode(boost::property_tree::ptree& pt)
 	{
-		bool isArray = false;
-
 		// check if first element exist
 		if (pt.empty()) {
 			Log(Error, "OpcUaVariant json encode error - variable not exist");
@@ -3194,6 +3192,7 @@ namespace OpcUaStackCore
 		}
 
 		// check array
+		bool isArray = false;
 		if (tree->front().first == "") {
 			isArray = true;
 		}
