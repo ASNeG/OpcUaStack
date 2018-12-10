@@ -9,10 +9,7 @@ Getting started
 .. _overview: getting_started/overview
 
 * **From scratch**: :doc:`Overview <getting_started/overview>` | :doc:`Installation <getting_started/installation>` 
-
 * **Tutorials**: :doc:`Hello, World of OPC UA! <getting_started/hello_world>` 
-
-
 
 User Application
 --------------------------------------------
