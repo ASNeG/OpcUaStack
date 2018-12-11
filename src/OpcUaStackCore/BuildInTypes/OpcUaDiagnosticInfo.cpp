@@ -192,6 +192,11 @@ namespace OpcUaStackCore
 		if (innerStatusCode_ != 0) {
 			opcUaDiagnosticInfo.setInnerStatusCode(innerStatusCode_);
 		}
+		if (diagnosticInfo_.get() != nullptr) {
+			OpcUaDiagnosticInfo::SPtr tmp = constructSPtr<OpcUaDiagnosticInfo>();
+			diagnosticInfo_->copyTo(*tmp);
+			opcUaDiagnosticInfo.diagnosticInfo(tmp);
+		}
 	}
 
 	bool
