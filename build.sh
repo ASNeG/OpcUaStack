@@ -73,7 +73,7 @@ build_local()
     echo "build local start"
 
     # check build directoriy
-    if [ ! -d "build_local_"${BUILD_TYPE} ] ;
+    if [ ! -d "build_local_${BUILD_TYPE}" ] ;
     then
         BUILD_FIRST=1
         rm -rf build_local_${BUILD_TYPE}
@@ -152,7 +152,7 @@ build_deb()
     fi
 
     # check build directoriy
-    if [ ! -d "build_deb" ] ;
+    if [ ! -d "build_deb_${BUILD_TYPE}" ] ;
     then
         BUILD_FIRST=1
         rm -rf build_deb_${BUILD_TYPE}
@@ -230,7 +230,7 @@ build_rpm()
     fi
     
     # build package directory
-    if [ ! -d "build_rpm" ] ;
+    if [ ! -d "build_rpm_${BUILD_TYPE}" ] ;
     then
         BUILD_FIRST=1
         rm -rf build_rpm_${BUILD_TYPE}
@@ -238,7 +238,7 @@ build_rpm()
     else
         BUILD_FIRST=0
     fi
-    cd build_rpm
+    cd build_rpm_${BUILD_TYPE}
 
     # build package
     if [ ${BUILD_FIRST} -eq 1 ] ;

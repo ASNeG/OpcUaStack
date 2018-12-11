@@ -236,7 +236,7 @@ build_rpm()
     else
         BUILD_FIRST=0
     fi
-    cd build_rpm
+    cd build_rpm_${BUILD_TYPE}
 
     # build package
     if [ ${BUILD_FIRST} -eq 1 ] ;

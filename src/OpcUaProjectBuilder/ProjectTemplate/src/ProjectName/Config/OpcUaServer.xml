@@ -1,4 +1,4 @@
-<!--
+﻿<!--
    Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
@@ -33,17 +33,17 @@
   </Logging>
   
   <DiscoveryServer>
-    <DiscoveryUrl>opc.tcp://localhost:4840</DiscoveryUrl>
+    <DiscoveryUrl>opc.tcp://0.0.0.0:4840</DiscoveryUrl>
     <RegisterInterval>40000</RegisterInterval>
   </DiscoveryServer>
    
   <Endpoints>
     <EndpointDescription>
-	  <EndpointUrl>opc.tcp://127.0.0.1:ProjectPort</EndpointUrl>
-	  <ApplicationUri>urn:127.0.0.1:ASNeG:ProjectName</ApplicationUri>
+	  <EndpointUrl>opc.tcp://0.0.0.0:ProjectPort</EndpointUrl>
+	  <ApplicationUri>urn:0.0.0.0:ASNeG:ProjectName</ApplicationUri>
 	  <ProductUri>urn:ASNeG:ProjectName</ProductUri>
 	  <ApplicationName>ProjectName</ApplicationName>
-	  <DiscoveryUrl>opc.tcp://127.0.0.1:ProjectPort</DiscoveryUrl>	
+	  <DiscoveryUrl>opc.tcp://0.0.0.0:ProjectPort</DiscoveryUrl>	
 	  <GatewayServerUri></GatewayServerUri>
 	  <!-- <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri> -->
 	  
@@ -113,7 +113,7 @@
         <GenerateCertificate>true</GenerateCertificate>
           
         <CommonName>ProjectName</CommonName>		
-        <DomainComponent>127.0.0.1</DomainComponent>	
+        <DomainComponent>0.0.0.0</DomainComponent>	
         <Organization>ASNeG</Organization>
         <OrganizationUnit>OPC UA Service Department</OrganizationUnit>
         <Locality>Neukirchen</Locality>
@@ -122,7 +122,7 @@
         <YearsValidFor>5</YearsValidFor>
         <KeyLength>2048</KeyLength>
         <CertificateType>RsaSha256</CertificateType>
-        <IPAddress>127.0.0.1</IPAddress>
+        <IPAddress>0.0.0.0</IPAddress>
         <DNSName>ASNeG.de</DNSName>
         <EMail>info@ASNeG.de</EMail>
       </CertificateSettings>
