@@ -9,8 +9,8 @@ OpcUaStack
 About
 ------------------------------
 
-OpcUaStack is an open source implementation of OPC UA protocol written in C++. It provides SDK to create your own OPC UA application from scratch and 
-an OPC UA framework as well, which makes creating and running OPC UA applications easier. 
+OpcUaStack is fundamental part of ASNeG project. It is an open source implementation of OPC UA protocol written in C++. It provides SDK to create your own OPC UA application from scratch and 
+an OPC UA framework as well, which makes creating, running and distributing OPC UA applications easy. 
 
 The stack contains the following parts:
 
@@ -27,14 +27,15 @@ Features
 * SDK for Client\\Server application
 * Application Server to run OPC UA application as dynamic libraries
 * Settings and OPC UA information model in XML format
-* Support DEB package type to distribute user applications on Linux
+* Auto-generating a user application frame
+* Support Docker
+* Support DEB and RPM package types to distribute user applications on Linux
 * Support MSI package type to distribute user applications on Windows
 
 In the development stage:
 
 * Code generator to create C++ classes representing OPC UA types, objects and events from XML (Nodesets)
 * Multi-thread model (currently all application modules run in only one thread)
-* Support RPM package type to distribute user applications on Linux
 
 Installation
 ------------------------------
@@ -81,7 +82,7 @@ By default, the installation path is $HOME/.ASNeG. You can change it at any mome
 
 Winidows users should install all requirements manually. 
 
-In order to compile the project, you should install MSBuild Tools 2015, then run in the environment which
+In order to compile the project, you should install MSBuild Tools, then run in the environment which
 is suitable for your target platform (e.g. Native x86) the following command:
 
 ::
@@ -97,10 +98,10 @@ By default, the installation path is C:\\ASNeG. You can change it by typing:
 
 
 
-DEB Packets
+DEB Packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The stack provides DEB packets, so you can install it into your Ubuntu or Debian.
+The stack provides DEB packages, so you can install it into your Ubuntu or Debian.
 Download `the last packages`_ and install them by using **dpkg** command
 
 If you need only the runtime to run your application, type:
@@ -116,7 +117,6 @@ For development, install *dev* packet too:
   $ sudo dpkg -i OpcUaStack-x.y.z-x86_64-dev.deb
 
 
-.. _the last packages: https://github.com/ASNeG/OpcUaStack/releases/latest
 
 Also you can build DEB packets from source by using *build.sh* script:
 
@@ -127,11 +127,28 @@ Also you can build DEB packets from source by using *build.sh* script:
 Your packets will be built in *build_deb* directory.
 
 
-MSI Packets
+RPM Packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-On Windows, the stack is available for installing with MSI packets. As DEB packets, the MSI packets belong to two kinds.
-The packet, that ends with *-Bin* suffix, provides the stack and its dependencies (OpenSSL and Boost) and it is suitable to run user applications. If you are going to develop your own OPC UA user applications, you can use the development packet (ending with *-Dev* suffix). The development packet installs not only the stack and its headers but the whole Boost and OpenSSL with headers. So you do not need to install something more.
+Users of RPM Linux distributives can install the stack with RPM packages. The way is the same as for DEB packages.
+Download `the last packages`_ and install them by using **rpm** command:
+
+::
+
+  $ sudo rpm -i OpcUaStack-x.y.z-x86_64-bin.rpm
+  $ sudo rpm -i OpcUaStack-x.y.z-x86_64-dev.rpm
+
+
+MSI Packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On Windows, the stack is available for installing with MSI packages. As DEB packets, the MSI packages belong to two kinds.
+The package, that ends with *-Bin* suffix, provides the stack and its dependencies (OpenSSL and Boost) and it is suitable to run user applications. 
+If you are going to develop your own OPC UA user applications, you can use the development package (ending with *-Dev* suffix). This package installs not only the stack and its headers 
+but the whole Boost and OpenSSL with headers. So you do not need to install something more.
+
+
+.. _the last packages: https://github.com/ASNeG/OpcUaStack/releases/latest
 
 
 Usage 

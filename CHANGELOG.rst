@@ -5,6 +5,7 @@ Release 3.6.0
 
 * add options for *build.bat* to set install path, stack location and VS version #33, by @flipback
 * implement MSI distribution for the stack and user applications #14, @flipback
+* implement RPM distribution for the stack and user applications #1333, @flipback
 
 **Bugs**:
  
@@ -35,12 +36,12 @@ Release 3.5.0 (2018-10-27)
 * fix building DEB packet of a user application #19, by @flipback
 
 
-3.4.1 (2018-10-22)
+Release 3.4.1 (2018-10-22)
 -------------------------------------------------------------
 
 **Bugs**:
 
-* Fix condition check in server start #30, by @antlad
+* fix condition check in server start #30, by @antlad
 
 
 Release 3.4.0 (2018-10-16)

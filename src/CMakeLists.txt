@@ -189,6 +189,11 @@ message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
 
 
 # -----------------------------------------------------------------------------
+# find thread library
+# -----------------------------------------------------------------------------
+find_package (Threads)
+
+# -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
 # build subdirectories
@@ -319,12 +324,15 @@ set(CPACK_COMPONENT_APPLICATIONS_GROUP "bin")
 set(CPACK_COMPONENT_DEPENDENCIES_GROUP "bin" )
 set(CPACK_COMPONENT_TOOLS_GROUP "bin")
 
-if (CPACK_BINARY_DEB)
+if (CPACK_BINARY_DEB OR CPACK_BINARY_RPM)
     set(CPACK_COMPONENT_HEADERS_GROUP "dev")    
     set(CPACK_COMPONENT_DEPENDENCY_HEADERS_GROUP "dev" )
-    
-    set(CPACK_DEB_COMPONENT_INSTALL "ON")
+   
     set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+endif()
+
+if (CPACK_BINARY_DEB)
+    set(CPACK_DEB_COMPONENT_INSTALL "ON")
 
     SSLDepends(libssl)         
     
@@ -349,8 +357,27 @@ endif()
 
 if (CPACK_BINARY_RPM)
     set(CPACK_RPM_COMPONENT_INSTALL "ON")
- #   set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
-    set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+    set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+    set(CPACK_RPM_POST_INSTALL_SCRIPT_FILE "${CMAKE_SOURCE_DIR}/linux/script/postinst")
+
+    SSLDepends(libopenssl)         
+    set(RPM_DEPS_BIN "${LIST_OF_LIB_VERSIONS_BIN}")
+    set(RPM_DEPS_DEV "${LIST_OF_LIB_VERSIONS_DEV}")            
+    
+    foreach(lib
+        libboost_system libboost_thread libboost_date_time libboost_chrono libboost_regex libboost_program_options)
+
+        BoostDepends(${lib})
+        set(RPM_DEPS_BIN "${RPM_DEPS_BIN}, ${LIST_OF_LIB_VERSIONS_BIN}")
+        set(RPM_DEPS_DEV "${RPM_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")            
+    endforeach(lib)
+
+    BoostDepends(libboost_test)
+    set(RPM_DEPS_DEV "${RPM_DEPS_DEV}, ${LIST_OF_LIB_VERSIONS_DEV}")
+    set(RPM_DEPS_DEV "${RPM_DEPS_DEV}, opcuastack-${VERSION_MAJOR}-bin = ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")    
+    
+    set(CPACK_RPM_DEV_PACKAGE_REQUIRES ${RPM_DEPS_DEV})       
+    set(CPACK_RPM_BIN_PACKAGE_REQUIRES ${RPM_DEPS_BIN})             
 endif()
 
 
@@ -381,7 +408,7 @@ if (CPACK_BINARY_MSI)
 
     
 	include (InstallRequiredSystemLibraries)
-    install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
+  install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_PREFIX}/lib COMPONENT dependencies)
 
 	set(CPACK_GENERATOR NSIS)	
 	set(CPACK_PACKAGE_INSTALL_DIRECTORY "OpcUaStack")
