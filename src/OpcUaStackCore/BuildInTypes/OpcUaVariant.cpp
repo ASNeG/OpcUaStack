@@ -2923,13 +2923,14 @@ namespace OpcUaStackCore
 
 		// check if first element exist
 		if (pt.empty()) {
-			Log(Error, "OpcUaVariant xml encode error - variable not exist");
+			Log(Error, "OpcUaVariant xml decode error - variable not exist");
 			return false;
 		}
 		std::string element = pt.front().first;
 		boost::property_tree::ptree tmpTree = pt.front().second;
 
 		// check array
+		element = xmlns.cutPrefix(element);
 		if (boost::starts_with(element, "ListOf")) {
 			isArray = true;
 			element = element.substr(6, element.size());
@@ -2938,7 +2939,7 @@ namespace OpcUaStackCore
 		// get data type from element name
 		OpcUaBuildInType dataType = OpcUaBuildInTypeMap::string2BuildInType(element);
 		if (dataType == OpcUaBuildInType_Unknown) {
-			Log(Error, "OpcUaVariant xml encode error - data type unknown")
+			Log(Error, "OpcUaVariant xml decode error - data type unknown")
 				.parameter("DataType", element);
 			return false;
 		}
