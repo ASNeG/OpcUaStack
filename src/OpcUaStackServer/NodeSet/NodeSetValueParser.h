@@ -225,6 +225,7 @@ namespace OpcUaStackServer
 		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& element, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr destValue, const std::string& element, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaDataValue::SPtr destValue, const std::string& element, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaDiagnosticInfo::SPtr destValue, const std::string& element, Xmlns& xmlns);
 
 
 		// --------------------------------------------------------------------------
@@ -391,6 +392,8 @@ namespace OpcUaStackServer
 		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr value, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr value, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaDataValue::SPtr value, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaDiagnosticInfo::SPtr value, const std::string& element, Xmlns& xmlns);
 
 	  private:
 		static void insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement);

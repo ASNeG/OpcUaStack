@@ -232,9 +232,12 @@ namespace OpcUaStackServer
 			case OpcUaBuildInType_OpcUaExtensionObject:
 				rc = xmlDecodeSPtr<OpcUaExtensionObject>(dataTypeElement, *ptreeValue, variant, "ExtensionObject", xmlns);
 				break;
-			//case OpcUaBuildInType_OpcUaDataValue:
-			//	rc = xmlDecodeSPtr<OpcUaDataValue>(dataTypeElement, *ptreeValue, variant, "DataValue", xmlns);
-			//	break;
+			case OpcUaBuildInType_OpcUaDataValue:
+				rc = xmlDecodeSPtr<OpcUaDataValue>(dataTypeElement, *ptreeValue, variant, "DataValue", xmlns);
+				break;
+			case OpcUaBuildInType_OpcUaDiagnosticInfo:
+				rc = xmlDecodeSPtr<OpcUaDiagnosticInfo>(dataTypeElement, *ptreeValue, variant, "DiagnosticInfo", xmlns);
+				break;
 			default:
 			{
 				Log(Error, "data type unknown in node set value decoder")
@@ -406,7 +409,22 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		return false;
+		return true;
+	}
+
+	bool
+	NodeSetValueParser::xmlDecode(
+		boost::property_tree::ptree& ptree,
+		OpcUaDiagnosticInfo::SPtr destValue,
+		const std::string& element,
+		Xmlns& xmlns
+	)
+	{
+		if (!destValue->xmlDecode(ptree, xmlns)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	// ---------------------------------------------------------------------------
@@ -546,6 +564,18 @@ namespace OpcUaStackServer
 			{
 				dataTypeString = "ExtensionObject";
 				rc = xmlEncodeSPtr<OpcUaExtensionObject>(ptree, opcUaVariant, dataTypeString, xmlns);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDataValue:
+			{
+				dataTypeString = "DataValue";
+				rc = xmlEncodeSPtr<OpcUaDataValue>(ptree, opcUaVariant, dataTypeString, xmlns);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				dataTypeString = "DiagnosticInfo";
+				rc = xmlEncodeSPtr<OpcUaDiagnosticInfo>(ptree, opcUaVariant, dataTypeString, xmlns);
 				break;
 			}
 			default:
@@ -698,6 +728,28 @@ namespace OpcUaStackServer
 	NodeSetValueParser::xmlEncode(
 		boost::property_tree::ptree& ptree,
 		OpcUaExtensionObject::SPtr value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
+	{
+		return value->xmlEncode(ptree, element, xmlns);
+	}
+
+	bool
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaDataValue::SPtr value,
+		const std::string& element,
+		Xmlns& xmlns
+	)
+	{
+		return value->xmlEncode(ptree, element, xmlns);
+	}
+
+	bool
+	NodeSetValueParser::xmlEncode(
+		boost::property_tree::ptree& ptree,
+		OpcUaDiagnosticInfo::SPtr value,
 		const std::string& element,
 		Xmlns& xmlns
 	)
