@@ -915,7 +915,6 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Variant_DiagnosticInfo)
 	std::cout << std::endl;
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
 	diagnosticInfo2 = value2.variantSPtr<OpcUaDiagnosticInfo>();
-	BOOST_REQUIRE(diagnosticInfo2->xmlDecode(pt, xmlns) == true);
 	BOOST_REQUIRE(diagnosticInfo2->getSymbolicId() == 123);
 	BOOST_REQUIRE(diagnosticInfo2->getNamespaceUri() == 456);
 	BOOST_REQUIRE(diagnosticInfo2->getAdditionalInfo() == OpcUaString("AdditionalInfo"));
@@ -1468,7 +1467,6 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Variant_Array_DiagnosticInfo)
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
 	for (uint32_t idx=0; idx<10; idx++) {
 		diagnosticInfo2 = value2.variantSPtr<OpcUaDiagnosticInfo>(idx);
-		BOOST_REQUIRE(diagnosticInfo2->xmlDecode(pt, xmlns) == true);
 		BOOST_REQUIRE(diagnosticInfo2->getSymbolicId() == 123);
 		BOOST_REQUIRE(diagnosticInfo2->getNamespaceUri() == 456);
 		BOOST_REQUIRE(diagnosticInfo2->getAdditionalInfo() == OpcUaString("AdditionalInfo"));

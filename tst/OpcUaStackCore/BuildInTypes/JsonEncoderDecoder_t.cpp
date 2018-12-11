@@ -463,6 +463,61 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_DataValue)
 	BOOST_REQUIRE(value2.sourceTimestamp().toISO8601() == value2.sourceTimestamp().toISO8601());
 }
 
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_DiagnosticInfo)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	boost::property_tree::ptree pt;
+	ConfigJson json;
+	OpcUaDiagnosticInfo value1, value2;
+
+	value1.setSymbolicId(123);
+	value1.setNamespaceUri(456);
+	value1.setAdditionalInfo(OpcUaString("AdditionalInfo"));
+	BOOST_REQUIRE(value1.jsonEncode(pt, "DiagnosticInfo") == true);
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+	BOOST_REQUIRE(value2.jsonDecode(pt, "DiagnosticInfo") == true);
+	BOOST_REQUIRE(value2.getSymbolicId() == 123);
+	BOOST_REQUIRE(value2.getNamespaceUri() == 456);
+	BOOST_REQUIRE(value2.getAdditionalInfo() == OpcUaString("AdditionalInfo"));
+}
+
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_DiagnosticInfo_nested)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	boost::property_tree::ptree pt;
+	ConfigJson json;
+	OpcUaDiagnosticInfo value1, value2;
+	OpcUaDiagnosticInfo::SPtr nested1, nested2;
+
+	nested1 = constructSPtr<OpcUaDiagnosticInfo>();
+	nested1->setSymbolicId(111);
+	nested1->setNamespaceUri(111);
+	nested1->setAdditionalInfo(OpcUaString("AdditionalInfo111"));
+
+	value1.setSymbolicId(123);
+	value1.setNamespaceUri(456);
+	value1.setAdditionalInfo(OpcUaString("AdditionalInfo"));
+	value1.diagnosticInfo(nested1);
+	BOOST_REQUIRE(value1.jsonEncode(pt, "DiagnosticInfo") == true);
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+	BOOST_REQUIRE(value2.jsonDecode(pt, "DiagnosticInfo") == true);
+	BOOST_REQUIRE(value2.getSymbolicId() == 123);
+	BOOST_REQUIRE(value2.getNamespaceUri() == 456);
+	BOOST_REQUIRE(value2.getAdditionalInfo() == OpcUaString("AdditionalInfo"));
+	BOOST_REQUIRE(value2.diagnosticInfo()->getSymbolicId() == 111);
+	BOOST_REQUIRE(value2.diagnosticInfo()->getNamespaceUri() == 111);
+	BOOST_REQUIRE(value2.diagnosticInfo()->getAdditionalInfo() == OpcUaString("AdditionalInfo111"));
+}
+
+
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_OpcUaBoolean)
 {
 	boost::property_tree::ptree pt;
@@ -878,6 +933,43 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_DataValue)
 	BOOST_REQUIRE(dataValue2->statusCode() == BadNoData);
 	BOOST_REQUIRE(dataValue2->serverTimestamp().toISO8601() == dataValue1->serverTimestamp().toISO8601());
 	BOOST_REQUIRE(dataValue2->sourceTimestamp().toISO8601() == dataValue2->sourceTimestamp().toISO8601());
+}
+
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_DiagnosticInfo)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	boost::property_tree::ptree pt;
+	ConfigJson json;
+	OpcUaDiagnosticInfo::SPtr diagnosticInfo1, diagnosticInfo2;
+	OpcUaDiagnosticInfo::SPtr nested1, nested2;
+	OpcUaVariant value1, value2;
+
+	nested1 = constructSPtr<OpcUaDiagnosticInfo>();
+	nested1->setSymbolicId(111);
+	nested1->setNamespaceUri(111);
+	nested1->setAdditionalInfo(OpcUaString("AdditionalInfo111"));
+
+	diagnosticInfo1 = constructSPtr<OpcUaDiagnosticInfo>();
+	diagnosticInfo1->setSymbolicId(123);
+	diagnosticInfo1->setNamespaceUri(456);
+	diagnosticInfo1->setAdditionalInfo(OpcUaString("AdditionalInfo"));
+	diagnosticInfo1->diagnosticInfo(nested1);
+
+	value1.setValue(*diagnosticInfo1);
+	BOOST_REQUIRE(value1.jsonEncode(pt) == true);
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+	BOOST_REQUIRE(value2.jsonDecode(pt) == true);
+	diagnosticInfo2 = value2.variantSPtr<OpcUaDiagnosticInfo>();
+	BOOST_REQUIRE(diagnosticInfo2->getSymbolicId() == 123);
+	BOOST_REQUIRE(diagnosticInfo2->getNamespaceUri() == 456);
+	BOOST_REQUIRE(diagnosticInfo2->getAdditionalInfo() == OpcUaString("AdditionalInfo"));
+	BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getSymbolicId() == 111);
+	BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getNamespaceUri() == 111);
+	BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getAdditionalInfo() == OpcUaString("AdditionalInfo111"));
 }
 
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_OpcUaBoolean)
@@ -1370,5 +1462,47 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_Array_DataValue)
 		BOOST_REQUIRE(dataValue2->sourceTimestamp().toISO8601() == dataValue2->sourceTimestamp().toISO8601());
 	}
 }
+
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_Array_DiagnosticInfo)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	boost::property_tree::ptree pt;
+	ConfigJson json;
+	OpcUaDiagnosticInfo::SPtr diagnosticInfo1, diagnosticInfo2;
+	OpcUaDiagnosticInfo::SPtr nested1, nested2;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		nested1 = constructSPtr<OpcUaDiagnosticInfo>();
+		nested1->setSymbolicId(111);
+		nested1->setNamespaceUri(111);
+		nested1->setAdditionalInfo(OpcUaString("AdditionalInfo111"));
+
+		diagnosticInfo1 = constructSPtr<OpcUaDiagnosticInfo>();
+		diagnosticInfo1->setSymbolicId(123);
+		diagnosticInfo1->setNamespaceUri(456);
+		diagnosticInfo1->setAdditionalInfo(OpcUaString("AdditionalInfo"));
+		diagnosticInfo1->diagnosticInfo(nested1);
+
+		value1.pushBack(diagnosticInfo1);
+	}
+	BOOST_REQUIRE(value1.jsonEncode(pt) == true);
+
+	json.ptree(pt);
+	json.write(std::cout);
+	std::cout << std::endl;
+	BOOST_REQUIRE(value2.jsonDecode(pt) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		diagnosticInfo2 = value2.variantSPtr<OpcUaDiagnosticInfo>(idx);
+		BOOST_REQUIRE(diagnosticInfo2->getSymbolicId() == 123);
+		BOOST_REQUIRE(diagnosticInfo2->getNamespaceUri() == 456);
+		BOOST_REQUIRE(diagnosticInfo2->getAdditionalInfo() == OpcUaString("AdditionalInfo"));
+		BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getSymbolicId() == 111);
+		BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getNamespaceUri() == 111);
+		BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getAdditionalInfo() == OpcUaString("AdditionalInfo111"));
+	}
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
