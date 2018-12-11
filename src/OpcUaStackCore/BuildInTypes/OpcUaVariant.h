@@ -32,6 +32,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaDiagnosticInfo.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaType.h"
 #include "OpcUaStackCore/Base/os.h"
 
@@ -101,6 +102,7 @@ namespace OpcUaStackCore
 		void variant(const OpcUaLocalizedText::SPtr valSPtr);
 		void variant(const OpcUaExtensionObject::SPtr valSPtr);
 		void variant(const boost::shared_ptr<OpcUaDataValue> valSPtr);
+		void variant(const OpcUaDiagnosticInfo::SPtr valSPtr);
 
 		template<typename VAL> 
 		  VAL variant(void) const
@@ -274,6 +276,7 @@ namespace OpcUaStackCore
 		void setValue(const OpcUaLocalizedText& value);
 		void setValue(const OpcUaExtensionObject& value);
 		void setValue(const OpcUaDataValue& value);
+		void setValue(const OpcUaDiagnosticInfo& value);
 
 		bool getValue(OpcUaBoolean& value);
 		bool getValue(OpcUaByte& value);
@@ -298,6 +301,7 @@ namespace OpcUaStackCore
 		bool getValue(OpcUaLocalizedText& value);
 		bool getValue(OpcUaExtensionObject& value);
 		bool getValue(OpcUaDataValue& value);
+		bool getValue(OpcUaDiagnosticInfo& value);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -417,6 +421,12 @@ namespace OpcUaStackCore
 		bool xmlDecodeDataValueScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
 		bool xmlDecodeDataValueArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
 
+		bool xmlEncodeDiagnosticInfoScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeDiagnosticInfoArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeDiagnosticInfoScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeDiagnosticInfoArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+
 
 		bool jsonEncodeBooleanScalar(boost::property_tree::ptree& pt);
 		bool jsonEncodeBooleanArray(boost::property_tree::ptree& pt);
@@ -522,6 +532,11 @@ namespace OpcUaStackCore
 		bool jsonEncodeDataValueArray(boost::property_tree::ptree& pt);
 		bool jsonDecodeDataValueScalar(boost::property_tree::ptree& pt, const std::string& element);
 		bool jsonDecodeDataValueArray(boost::property_tree::ptree& pt, const std::string& element);
+
+		bool jsonEncodeDiagnosticInfoScalar(boost::property_tree::ptree& pt);
+		bool jsonEncodeDiagnosticInfoArray(boost::property_tree::ptree& pt);
+		bool jsonDecodeDiagnosticInfoScalar(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeDiagnosticInfoArray(boost::property_tree::ptree& pt, const std::string& element);
 
 		OpcUaInt32 arrayLength_;
 		OpcUaArrayDimensionsVec arrayDimensionsVec_;

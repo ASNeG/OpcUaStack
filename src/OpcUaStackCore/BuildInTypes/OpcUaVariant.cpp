@@ -182,6 +182,15 @@ namespace OpcUaStackCore
 		variantValue_ = val;
 	}
 
+	void
+	OpcUaVariantValue::variant(const OpcUaDiagnosticInfo::SPtr valSPtr)
+	{
+		OpcUaVariantSPtr val;
+		val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaDiagnosticInfo;
+		val.objectSPtr_ = valSPtr;
+		variantValue_ = val;
+	}
+
 	bool 
 	OpcUaVariantValue::operator!=(OpcUaVariantValue& variantValue)
 	{
@@ -353,6 +362,14 @@ namespace OpcUaStackCore
 				OpcUaDataValue::SPtr value2 = boost::static_pointer_cast<OpcUaDataValue>(opcUaVariantSPtr2.objectSPtr_);
 				return *value1 == *value2;
 			}
+			case  OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr1 = boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaVariantSPtr opcUaVariantSPtr2 = variantValue.variant<OpcUaVariantSPtr>();
+				OpcUaDiagnosticInfo::SPtr value1 = boost::static_pointer_cast<OpcUaDiagnosticInfo>(opcUaVariantSPtr1.objectSPtr_);
+				OpcUaDiagnosticInfo::SPtr value2 = boost::static_pointer_cast<OpcUaDiagnosticInfo>(opcUaVariantSPtr2.objectSPtr_);
+				return *value1 == *value2;
+			}
 		}
 		return false;
 	}
@@ -515,6 +532,16 @@ namespace OpcUaStackCore
 				OpcUaDataValue::SPtr value1 = boost::static_pointer_cast<OpcUaDataValue>(opcUaVariantSPtr1.objectSPtr_);
 				OpcUaDataValue::SPtr value2 = boost::static_pointer_cast<OpcUaDataValue>(opcUaVariantSPtr2.objectSPtr_);
 				return *value1 < *value2;
+			}
+			case  OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr1 = boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaVariantSPtr opcUaVariantSPtr2 = variantValue.variant<OpcUaVariantSPtr>();
+				OpcUaDiagnosticInfo::SPtr value1 = boost::static_pointer_cast<OpcUaDiagnosticInfo>(opcUaVariantSPtr1.objectSPtr_);
+				OpcUaDiagnosticInfo::SPtr value2 = boost::static_pointer_cast<OpcUaDiagnosticInfo>(opcUaVariantSPtr2.objectSPtr_);
+				// FIXME: todo
+				return false;
+				//return *value1 < *value2;
 			}
 		}
 		return false;
@@ -815,6 +842,11 @@ namespace OpcUaStackCore
 				return false;
 				break;
 			}
+			case  OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				return false;
+				break;
+			}
 			default:
 			{
 				Log(Error, "unknown data type")
@@ -1009,6 +1041,15 @@ namespace OpcUaStackCore
 				variantValue.variant(value);
 				break;
 			}
+			case  OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaDiagnosticInfo::SPtr dataValueSPtr = boost::static_pointer_cast<OpcUaDiagnosticInfo>(opcUaVariantSPtr.objectSPtr_);
+				dataValueSPtr->copyTo(*value);
+				variantValue.variant(value);
+				break;
+			}
 		}
 	}
 
@@ -1147,6 +1188,13 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaDataValue::SPtr dataValueSPtr = boost::static_pointer_cast<OpcUaDataValue>(opcUaVariantSPtr.objectSPtr_);
+				os << *dataValueSPtr;
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaDiagnosticInfo::SPtr dataValueSPtr = boost::static_pointer_cast<OpcUaDiagnosticInfo>(opcUaVariantSPtr.objectSPtr_);
 				os << *dataValueSPtr;
 				break;
 			}
@@ -1291,6 +1339,13 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaDataValue::SPtr dataValueSPtr = boost::static_pointer_cast<OpcUaDataValue>(opcUaVariantSPtr.objectSPtr_);
+				dataValueSPtr->opcUaBinaryEncode(os);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaDiagnosticInfo::SPtr dataValueSPtr = boost::static_pointer_cast<OpcUaDiagnosticInfo>(opcUaVariantSPtr.objectSPtr_);
 				dataValueSPtr->opcUaBinaryEncode(os);
 				break;
 			}
@@ -1514,6 +1569,17 @@ namespace OpcUaStackCore
 				dataValueSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = dataValueSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaDataValue;
+				variantValue_ = val;
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				OpcUaVariantSPtr val;
+
+				OpcUaDiagnosticInfo::SPtr diagnosticInfoSPtr = constructSPtr<OpcUaDiagnosticInfo>();
+				diagnosticInfoSPtr->opcUaBinaryDecode(is);
+				val.objectSPtr_ = diagnosticInfoSPtr;
+				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaDiagnosticInfo;
 				variantValue_ = val;
 				break;
 			}
@@ -2314,6 +2380,14 @@ namespace OpcUaStackCore
 		variant(tmpValue);
 	}
 
+	void
+	OpcUaVariant::setValue(const OpcUaDiagnosticInfo& value)
+	{
+		OpcUaDiagnosticInfo::SPtr tmpValue = constructSPtr<OpcUaDiagnosticInfo>();
+		const_cast<OpcUaDiagnosticInfo*>(&value)->copyTo(*tmpValue);
+		variant(tmpValue);
+	}
+
 	bool
 	OpcUaVariant::getValue(OpcUaBoolean& value)
 	{
@@ -2504,6 +2578,15 @@ namespace OpcUaStackCore
 	{
 		if (variantType() != OpcUaBuildInType_OpcUaDataValue) return false;
 		OpcUaDataValue::SPtr tmpValue = variantSPtr<OpcUaDataValue>();
+		tmpValue->copyTo(value);
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaDiagnosticInfo& value)
+	{
+		if (variantType() != OpcUaBuildInType_OpcUaDiagnosticInfo) return false;
+		OpcUaDiagnosticInfo::SPtr tmpValue = variantSPtr<OpcUaDiagnosticInfo>();
 		tmpValue->copyTo(value);
 		return true;
 	}
@@ -2814,6 +2897,12 @@ namespace OpcUaStackCore
 				else return xmlEncodeDataValueScalar(pt, xmlns);
 				break;
 			}
+			case OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				if (isArray()) return xmlEncodeDiagnosticInfoArray(pt, xmlns);
+				else return xmlEncodeDiagnosticInfoScalar(pt, xmlns);
+				break;
+			}
 			default:
 			{
 				std::stringstream ss;
@@ -2983,6 +3072,12 @@ namespace OpcUaStackCore
 				else return xmlDecodeDataValueScalar(tmpTree, xmlns, element);
 				break;
 			}
+			case OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				if (isArray) return xmlDecodeDiagnosticInfoArray(tmpTree, xmlns, element);
+				else return xmlDecodeDiagnosticInfoScalar(tmpTree, xmlns, element);
+				break;
+			}
 			default:
 			{
 				Log(Error, "OpcUaVariant xml encode error - data type unknown")
@@ -3137,6 +3232,12 @@ namespace OpcUaStackCore
 			{
 				if (isArray()) return jsonEncodeDataValueArray(pt);
 				else return jsonEncodeDataValueScalar(pt);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				if (isArray()) return jsonEncodeDiagnosticInfoArray(pt);
+				else return jsonEncodeDiagnosticInfoScalar(pt);
 				break;
 			}
 			default:
@@ -3324,6 +3425,12 @@ namespace OpcUaStackCore
 			{
 				if (isArray) return jsonDecodeDataValueArray(*tree, "Body");
 				else return jsonDecodeDataValueScalar(*tree, "Body");
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDiagnosticInfo:
+			{
+				if (isArray) return jsonDecodeDiagnosticInfoArray(*tree, "Body");
+				else return jsonDecodeDiagnosticInfoScalar(*tree, "Body");
 				break;
 			}
 			default:
@@ -4886,6 +4993,81 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// xml encode decode diagnostic info
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeDiagnosticInfoScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		OpcUaDiagnosticInfo::SPtr value = variantSPtr<OpcUaDiagnosticInfo>();
+		if (!value->xmlEncode(pt, "DiagnosticInfo", xmlns)) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "DiagnosticInfo");
+			return false;
+		}
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeDiagnosticInfoArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaDiagnosticInfo::SPtr value = getSPtr<OpcUaDiagnosticInfo>(idx);
+			boost::property_tree::ptree element;
+			if (!value->xmlEncode(element, xmlns)) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "DiagnosticInfo");
+				return false;
+			}
+			list.add_child(xmlns.addPrefix("DiagnosticInfo"), element);
+		}
+		pt.add_child(xmlns.addPrefix("ListOfDiagnosticInfo"), list);
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeDiagnosticInfoScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
+		if (!value->xmlDecode(pt, xmlns)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "DiagnosticInfo");
+			return false;
+		}
+		variant(value);
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeDiagnosticInfoArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "DiagnosticInfo") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "DiagnosticInfo");
+				return false;
+			}
+			OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
+			if (!value->xmlDecode(it->second, xmlns)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "DiagnosticInfo");
+				return false;
+			}
+			pushBack(value);
+		}
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// json boolean encode decode
 	//
 	// ------------------------------------------------------------------------
@@ -6389,6 +6571,78 @@ namespace OpcUaStackCore
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
 					.parameter("DataType", "OpcUaDataValue");
+				return false;
+			}
+			pushBack(value);
+		}
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// json diagnostic info encode decode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::jsonEncodeDiagnosticInfoScalar(boost::property_tree::ptree& pt)
+	{
+		OpcUaDiagnosticInfo::SPtr value = getSPtr<OpcUaDiagnosticInfo>();
+		if (!value->jsonEncode(pt, "Body")) {
+			Log(Error, "OpcUaVariant json encoder error")
+				.parameter("Element", "OpcUaDiagnosticInfo");
+			return false;
+		}
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonEncodeDiagnosticInfoArray(boost::property_tree::ptree& pt)
+	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaDiagnosticInfo::SPtr value = getSPtr<OpcUaDiagnosticInfo>(idx);
+			if (!value->jsonEncode(list, "")) {
+				Log(Error, "OpcUaVariant json encoder error")
+					.parameter("Element", "DiagnosticInfo");
+				return false;
+			}
+		}
+		pt.put_child("Body", list);
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeDiagnosticInfoScalar(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
+		if (!value->jsonDecode(pt)) {
+			Log(Error, "OpcUaVariant json decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "OpcUaDiagnosticInfo");
+			return false;
+		}
+		set(value);
+		return true;
+	}
+
+	bool
+	OpcUaVariant::jsonDecodeDiagnosticInfoArray(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "") {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "OpcUaDiagnosticInfo");
+				return false;
+			}
+			OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
+			if (!value->jsonDecode(it->second)) {
+				Log(Error, "OpcUaVariant json decode error")
+					.parameter("Element", "Body")
+					.parameter("DataType", "OpcUaDiagnosticInfo");
 				return false;
 			}
 			pushBack(value);
