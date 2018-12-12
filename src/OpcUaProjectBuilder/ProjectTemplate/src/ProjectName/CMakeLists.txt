@@ -69,16 +69,16 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+
+file (GLOB CONFIG_FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/*.xml)
 install(TARGETS ProjectName DESTINATION ${INSTALL_PREFIX}/lib)
 
 if (WIN32)
-    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/OpcUaServer.xml DESTINATION ${INSTALL_PREFIX}/../etc/OpcUaStack/ProjectName) 
-    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/Opc.Ua.NodeSet.xml DESTINATION ${INSTALL_PREFIX}/../etc/OpcUaStack/ProjectName)
+    install(FILES ${CONFIG_FILES} DESTINATION ${INSTALL_PREFIX}/../etc/OpcUaStack/ProjectName) 
     install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/log/README DESTINATION ${INSTALL_PREFIX}/../var/log/OpcUaStack/ProjectName)
     install(DIRECTORY DESTINATION ${INSTALL_PREFIX}/../var/log/OpcUaStack/ProjectName)
 else()    
-    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/OpcUaServer.xml DESTINATION /etc/OpcUaStack/ProjectName) 
-    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/Opc.Ua.NodeSet.xml DESTINATION /etc/OpcUaStack/ProjectName)
+    install(FILES ${CONFIG_FILES} DESTINATION ${INSTALL_PREFIX}/../etc/OpcUaStack/ProjectName) 
     install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/log/README DESTINATION /var/log/OpcUaStack/ProjectName)
     install(DIRECTORY DESTINATION /var/log/OpcUaStack/ProjectName)
 
