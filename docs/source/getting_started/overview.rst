@@ -14,7 +14,7 @@ OPC UA
 
 
 Example of OPC UA Application
----------------------------
+------------------------------
 
 ASNeG OPC UA Structure
 ---------------------------
