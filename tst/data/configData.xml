@@ -1,0 +1,16 @@
+
+<ConfigData>
+
+    <Section1>
+        <Parameter1>Value11</Parameter1>
+        <Parameter2>Value12</Parameter2>
+        <Parameter3>Value13</Parameter3>
+    </section1>
+
+    <Section2>
+        <Parameter1>Value21</Parameter1>
+        <Parameter2>Value22</Parameter2>
+        <Parameter3>Value23</Parameter3>
+    </section2>
+
+</ConfigData>

@@ -170,7 +170,11 @@ namespace OpcUaStackCore
     RelativePathElement::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RelativePathElement encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -181,19 +185,33 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!referenceTypeId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!referenceTypeId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RelativePathElement encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, isInverse_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, isInverse_))
+        {
+            Log(Error, "RelativePathElement encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("IsInverse", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, includeSubtypes_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, includeSubtypes_))
+        {
+            Log(Error, "RelativePathElement encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("IncludeSubtypes", elementTree));
     
         elementTree.clear();
-        if (!targetName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!targetName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RelativePathElement encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TargetName", elementTree));
     
         return true;
@@ -276,23 +294,133 @@ namespace OpcUaStackCore
     bool
     RelativePathElement::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "RelativePathElement json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     RelativePathElement::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!referenceTypeId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "RelativePathElement json encoder error")
+    		     .parameter("Element", "referenceTypeId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, isInverse_))
+        {
+    	     Log(Error, "RelativePathElement json encoder error")
+    		     .parameter("Element", "isInverse_");
+           return false;
+        }
+        pt.push_back(std::make_pair("IsInverse", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, includeSubtypes_))
+        {
+    	     Log(Error, "RelativePathElement json encoder error")
+    		     .parameter("Element", "includeSubtypes_");
+           return false;
+        }
+        pt.push_back(std::make_pair("IncludeSubtypes", elementTree));
+    
+        elementTree.clear();
+        if (!targetName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "RelativePathElement json encoder error")
+    		     .parameter("Element", "targetName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TargetName", elementTree));
+    
         return true;
     }
     
     bool
     RelativePathElement::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "RelativePathElement json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     RelativePathElement::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ReferenceTypeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RelativePathElement decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!referenceTypeId_.jsonDecode(*tree)) {
+            Log(Error, "RelativePathElement decode json error - decode failed")
+                .parameter("Element", "ReferenceTypeId");
+            return false;
+        }
+    
+        elementName = "IsInverse";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RelativePathElement decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, isInverse_)) {
+            Log(Error, "RelativePathElement decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "IncludeSubtypes";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RelativePathElement decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, includeSubtypes_)) {
+            Log(Error, "RelativePathElement decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "TargetName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RelativePathElement decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!targetName_.jsonDecode(*tree)) {
+            Log(Error, "RelativePathElement decode json error - decode failed")
+                .parameter("Element", "TargetName");
+            return false;
+        }
+    
+        return true;
     }
     
     void

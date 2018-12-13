@@ -288,7 +288,11 @@ namespace OpcUaStackCore
     DataSetReaderDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -299,63 +303,113 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!name_.xmlEncode(elementTree, xmlns)) return false;
+        if (!name_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Name", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, enabled_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, enabled_))
+        {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Enabled", elementTree));
     
         elementTree.clear();
-        if (!publisherId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!publisherId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PublisherId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, writerGroupId_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, writerGroupId_))
+        {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("WriterGroupId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, dataSetWriterId_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, dataSetWriterId_))
+        {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataSetWriterId", elementTree));
     
         elementTree.clear();
-        if (!dataSetMetaData_.xmlEncode(elementTree, xmlns)) return false;
+        if (!dataSetMetaData_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataSetMetaData", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, dataSetFieldContentMask_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, dataSetFieldContentMask_))
+        {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataSetFieldContentMask", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, messageReceiveTimeout_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, messageReceiveTimeout_))
+        {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MessageReceiveTimeout", elementTree));
     
         elementTree.clear();
-        if (!securityMode_.xmlEncode(elementTree, xmlns)) return false;
+        if (!securityMode_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityMode", elementTree));
     
         elementTree.clear();
-        if (!securityGroupId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!securityGroupId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityGroupId", elementTree));
     
         elementTree.clear();
-        if (!securityKeyServices_.xmlEncode(elementTree, "EndpointDescription", xmlns)) return false;
+        if (!securityKeyServices_.xmlEncode(elementTree, "EndpointDescription", xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityKeyServices", elementTree));
     
         elementTree.clear();
-        if (!dataSetReaderProperties_.xmlEncode(elementTree, "KeyValuePair", xmlns)) return false;
+        if (!dataSetReaderProperties_.xmlEncode(elementTree, "KeyValuePair", xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataSetReaderProperties", elementTree));
     
         elementTree.clear();
-        if (!transportSettings_.xmlEncode(elementTree, xmlns)) return false;
+        if (!transportSettings_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TransportSettings", elementTree));
     
         elementTree.clear();
-        if (!messageSettings_.xmlEncode(elementTree, xmlns)) return false;
+        if (!messageSettings_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MessageSettings", elementTree));
     
         elementTree.clear();
-        if (!subscribedDataSet_.xmlEncode(elementTree, xmlns)) return false;
+        if (!subscribedDataSet_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DataSetReaderDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SubscribedDataSet", elementTree));
     
         return true;
@@ -581,23 +635,375 @@ namespace OpcUaStackCore
     bool
     DataSetReaderDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     DataSetReaderDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!name_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "name_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Name", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, enabled_))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "enabled_");
+           return false;
+        }
+        pt.push_back(std::make_pair("Enabled", elementTree));
+    
+        elementTree.clear();
+        if (!publisherId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "publisherId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("PublisherId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, writerGroupId_))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "writerGroupId_");
+           return false;
+        }
+        pt.push_back(std::make_pair("WriterGroupId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, dataSetWriterId_))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "dataSetWriterId_");
+           return false;
+        }
+        pt.push_back(std::make_pair("DataSetWriterId", elementTree));
+    
+        elementTree.clear();
+        if (!dataSetMetaData_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "dataSetMetaData_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DataSetMetaData", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, dataSetFieldContentMask_))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "dataSetFieldContentMask_");
+           return false;
+        }
+        pt.push_back(std::make_pair("DataSetFieldContentMask", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, messageReceiveTimeout_))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "messageReceiveTimeout_");
+           return false;
+        }
+        pt.push_back(std::make_pair("MessageReceiveTimeout", elementTree));
+    
+        elementTree.clear();
+        if (!securityMode_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "securityMode_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SecurityMode", elementTree));
+    
+        elementTree.clear();
+        if (!securityGroupId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "securityGroupId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SecurityGroupId", elementTree));
+    
+        elementTree.clear();
+        if (!securityKeyServices_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "securityKeyServices_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SecurityKeyServices", elementTree));
+    
+        elementTree.clear();
+        if (!dataSetReaderProperties_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "dataSetReaderProperties_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DataSetReaderProperties", elementTree));
+    
+        elementTree.clear();
+        if (!transportSettings_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "transportSettings_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TransportSettings", elementTree));
+    
+        elementTree.clear();
+        if (!messageSettings_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "messageSettings_");
+            return false;
+        }
+        pt.push_back(std::make_pair("MessageSettings", elementTree));
+    
+        elementTree.clear();
+        if (!subscribedDataSet_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DataSetReaderDataType json encoder error")
+    		     .parameter("Element", "subscribedDataSet_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SubscribedDataSet", elementTree));
+    
         return true;
     }
     
     bool
     DataSetReaderDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "DataSetReaderDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     DataSetReaderDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Name";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.jsonDecode(*tree)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
+    
+        elementName = "Enabled";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, enabled_)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "PublisherId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publisherId_.jsonDecode(*tree)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", "PublisherId");
+            return false;
+        }
+    
+        elementName = "WriterGroupId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, writerGroupId_)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DataSetWriterId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, dataSetWriterId_)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DataSetMetaData";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetMetaData_.jsonDecode(*tree)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", "DataSetMetaData");
+            return false;
+        }
+    
+        elementName = "DataSetFieldContentMask";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, dataSetFieldContentMask_)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "MessageReceiveTimeout";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, messageReceiveTimeout_)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "SecurityMode";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityMode_.jsonDecode(*tree)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", "SecurityMode");
+            return false;
+        }
+    
+        elementName = "SecurityGroupId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityGroupId_.jsonDecode(*tree)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", "SecurityGroupId");
+            return false;
+        }
+    
+        elementName = "SecurityKeyServices";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityKeyServices_.jsonDecode(*tree, "")) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DataSetReaderProperties";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataSetReaderProperties_.jsonDecode(*tree, "")) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "TransportSettings";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transportSettings_.jsonDecode(*tree)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", "TransportSettings");
+            return false;
+        }
+    
+        elementName = "MessageSettings";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!messageSettings_.jsonDecode(*tree)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", "MessageSettings");
+            return false;
+        }
+    
+        elementName = "SubscribedDataSet";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DataSetReaderDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!subscribedDataSet_.jsonDecode(*tree)) {
+            Log(Error, "DataSetReaderDataType decode json error - decode failed")
+                .parameter("Element", "SubscribedDataSet");
+            return false;
+        }
+    
+        return true;
     }
     
     void

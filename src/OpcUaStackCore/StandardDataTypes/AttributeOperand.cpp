@@ -179,7 +179,11 @@ namespace OpcUaStackCore
     AttributeOperand::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AttributeOperand encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -190,23 +194,39 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!nodeId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!nodeId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AttributeOperand encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("NodeId", elementTree));
     
         elementTree.clear();
-        if (!alias_.xmlEncode(elementTree, xmlns)) return false;
+        if (!alias_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AttributeOperand encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Alias", elementTree));
     
         elementTree.clear();
-        if (!browsePath_.xmlEncode(elementTree, xmlns)) return false;
+        if (!browsePath_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AttributeOperand encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("BrowsePath", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, attributeId_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, attributeId_))
+        {
+            Log(Error, "AttributeOperand encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("AttributeId", elementTree));
     
         elementTree.clear();
-        if (!indexRange_.xmlEncode(elementTree, xmlns)) return false;
+        if (!indexRange_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AttributeOperand encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("IndexRange", elementTree));
     
         return true;
@@ -302,23 +322,155 @@ namespace OpcUaStackCore
     bool
     AttributeOperand::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "AttributeOperand json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     AttributeOperand::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!nodeId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AttributeOperand json encoder error")
+    		     .parameter("Element", "nodeId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("NodeId", elementTree));
+    
+        elementTree.clear();
+        if (!alias_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AttributeOperand json encoder error")
+    		     .parameter("Element", "alias_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Alias", elementTree));
+    
+        elementTree.clear();
+        if (!browsePath_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AttributeOperand json encoder error")
+    		     .parameter("Element", "browsePath_");
+            return false;
+        }
+        pt.push_back(std::make_pair("BrowsePath", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, attributeId_))
+        {
+    	     Log(Error, "AttributeOperand json encoder error")
+    		     .parameter("Element", "attributeId_");
+           return false;
+        }
+        pt.push_back(std::make_pair("AttributeId", elementTree));
+    
+        elementTree.clear();
+        if (!indexRange_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AttributeOperand json encoder error")
+    		     .parameter("Element", "indexRange_");
+            return false;
+        }
+        pt.push_back(std::make_pair("IndexRange", elementTree));
+    
         return true;
     }
     
     bool
     AttributeOperand::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "AttributeOperand json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     AttributeOperand::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "NodeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!nodeId_.jsonDecode(*tree)) {
+            Log(Error, "AttributeOperand decode json error - decode failed")
+                .parameter("Element", "NodeId");
+            return false;
+        }
+    
+        elementName = "Alias";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!alias_.jsonDecode(*tree)) {
+            Log(Error, "AttributeOperand decode json error - decode failed")
+                .parameter("Element", "Alias");
+            return false;
+        }
+    
+        elementName = "BrowsePath";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!browsePath_.jsonDecode(*tree)) {
+            Log(Error, "AttributeOperand decode json error - decode failed")
+                .parameter("Element", "BrowsePath");
+            return false;
+        }
+    
+        elementName = "AttributeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, attributeId_)) {
+            Log(Error, "AttributeOperand decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "IndexRange";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AttributeOperand decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!indexRange_.jsonDecode(*tree)) {
+            Log(Error, "AttributeOperand decode json error - decode failed")
+                .parameter("Element", "IndexRange");
+            return false;
+        }
+    
+        return true;
     }
     
     void

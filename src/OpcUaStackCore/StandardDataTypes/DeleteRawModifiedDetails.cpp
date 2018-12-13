@@ -157,7 +157,11 @@ namespace OpcUaStackCore
     DeleteRawModifiedDetails::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DeleteRawModifiedDetails encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -168,15 +172,25 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, isDeleteModified_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, isDeleteModified_))
+        {
+            Log(Error, "DeleteRawModifiedDetails encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("IsDeleteModified", elementTree));
     
         elementTree.clear();
-        if (!startTime_.xmlEncode(elementTree, xmlns)) return false;
+        if (!startTime_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DeleteRawModifiedDetails encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("StartTime", elementTree));
     
         elementTree.clear();
-        if (!endTime_.xmlEncode(elementTree, xmlns)) return false;
+        if (!endTime_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DeleteRawModifiedDetails encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("EndTime", elementTree));
     
         return true;
@@ -246,23 +260,111 @@ namespace OpcUaStackCore
     bool
     DeleteRawModifiedDetails::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "DeleteRawModifiedDetails json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     DeleteRawModifiedDetails::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, isDeleteModified_))
+        {
+    	     Log(Error, "DeleteRawModifiedDetails json encoder error")
+    		     .parameter("Element", "isDeleteModified_");
+           return false;
+        }
+        pt.push_back(std::make_pair("IsDeleteModified", elementTree));
+    
+        elementTree.clear();
+        if (!startTime_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DeleteRawModifiedDetails json encoder error")
+    		     .parameter("Element", "startTime_");
+            return false;
+        }
+        pt.push_back(std::make_pair("StartTime", elementTree));
+    
+        elementTree.clear();
+        if (!endTime_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DeleteRawModifiedDetails json encoder error")
+    		     .parameter("Element", "endTime_");
+            return false;
+        }
+        pt.push_back(std::make_pair("EndTime", elementTree));
+    
         return true;
     }
     
     bool
     DeleteRawModifiedDetails::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "DeleteRawModifiedDetails json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     DeleteRawModifiedDetails::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "IsDeleteModified";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteRawModifiedDetails decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, isDeleteModified_)) {
+            Log(Error, "DeleteRawModifiedDetails decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "StartTime";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteRawModifiedDetails decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!startTime_.jsonDecode(*tree)) {
+            Log(Error, "DeleteRawModifiedDetails decode json error - decode failed")
+                .parameter("Element", "StartTime");
+            return false;
+        }
+    
+        elementName = "EndTime";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DeleteRawModifiedDetails decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!endTime_.jsonDecode(*tree)) {
+            Log(Error, "DeleteRawModifiedDetails decode json error - decode failed")
+                .parameter("Element", "EndTime");
+            return false;
+        }
+    
+        return true;
     }
     
     void

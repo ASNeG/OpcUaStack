@@ -178,7 +178,11 @@ namespace OpcUaStackCore
     AggregateConfiguration::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AggregateConfiguration encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -189,23 +193,43 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, useServerCapabilitiesDefaults_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, useServerCapabilitiesDefaults_))
+        {
+            Log(Error, "AggregateConfiguration encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("UseServerCapabilitiesDefaults", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, treatUncertainAsBad_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, treatUncertainAsBad_))
+        {
+            Log(Error, "AggregateConfiguration encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TreatUncertainAsBad", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, percentDataBad_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, percentDataBad_))
+        {
+            Log(Error, "AggregateConfiguration encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PercentDataBad", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, percentDataGood_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, percentDataGood_))
+        {
+            Log(Error, "AggregateConfiguration encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PercentDataGood", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, useSlopedExtrapolation_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, useSlopedExtrapolation_))
+        {
+            Log(Error, "AggregateConfiguration encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("UseSlopedExtrapolation", elementTree));
     
         return true;
@@ -301,23 +325,155 @@ namespace OpcUaStackCore
     bool
     AggregateConfiguration::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "AggregateConfiguration json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     AggregateConfiguration::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, useServerCapabilitiesDefaults_))
+        {
+    	     Log(Error, "AggregateConfiguration json encoder error")
+    		     .parameter("Element", "useServerCapabilitiesDefaults_");
+           return false;
+        }
+        pt.push_back(std::make_pair("UseServerCapabilitiesDefaults", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, treatUncertainAsBad_))
+        {
+    	     Log(Error, "AggregateConfiguration json encoder error")
+    		     .parameter("Element", "treatUncertainAsBad_");
+           return false;
+        }
+        pt.push_back(std::make_pair("TreatUncertainAsBad", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, percentDataBad_))
+        {
+    	     Log(Error, "AggregateConfiguration json encoder error")
+    		     .parameter("Element", "percentDataBad_");
+           return false;
+        }
+        pt.push_back(std::make_pair("PercentDataBad", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, percentDataGood_))
+        {
+    	     Log(Error, "AggregateConfiguration json encoder error")
+    		     .parameter("Element", "percentDataGood_");
+           return false;
+        }
+        pt.push_back(std::make_pair("PercentDataGood", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, useSlopedExtrapolation_))
+        {
+    	     Log(Error, "AggregateConfiguration json encoder error")
+    		     .parameter("Element", "useSlopedExtrapolation_");
+           return false;
+        }
+        pt.push_back(std::make_pair("UseSlopedExtrapolation", elementTree));
+    
         return true;
     }
     
     bool
     AggregateConfiguration::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "AggregateConfiguration json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     AggregateConfiguration::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "UseServerCapabilitiesDefaults";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, useServerCapabilitiesDefaults_)) {
+            Log(Error, "AggregateConfiguration decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "TreatUncertainAsBad";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, treatUncertainAsBad_)) {
+            Log(Error, "AggregateConfiguration decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "PercentDataBad";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, percentDataBad_)) {
+            Log(Error, "AggregateConfiguration decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "PercentDataGood";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, percentDataGood_)) {
+            Log(Error, "AggregateConfiguration decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "UseSlopedExtrapolation";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AggregateConfiguration decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, useSlopedExtrapolation_)) {
+            Log(Error, "AggregateConfiguration decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

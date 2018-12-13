@@ -314,8 +314,15 @@ namespace OpcUaStackCore
 	bool
 	OpcUaDateTime::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
-		// FIXME: todo
-		return true;
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(xmlns.addPrefix(element));
+		if (!tmpTree) {
+			Log(Error, "OpcDateTime xml decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return xmlDecode(*tmpTree, xmlns);
 	}
 
 	bool
@@ -329,6 +336,58 @@ namespace OpcUaStackCore
 
 		if (!fromISO8601(sourceValue)) {
 			Log(Error, "OpcUaDateTime xml decoder error - value format error")
+				.parameter("Value", sourceValue);
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	OpcUaDateTime::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaDateTime json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaDateTime::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		pt.put_value(toISO8601());
+		return true;
+	}
+
+	bool
+	OpcUaDateTime::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaDateTime json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	OpcUaDateTime::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		std::string sourceValue = pt.get_value<std::string>();
+		if (sourceValue.empty()) {
+			Log(Error, "OpcUaDateTime json decoder error - value not exist in json document");
+			return false;
+		}
+
+		if (!fromISO8601(sourceValue)) {
+			Log(Error, "OpcUaDateTime json decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
 		}

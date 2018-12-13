@@ -146,7 +146,11 @@ namespace OpcUaStackCore
     StatusChangeNotification::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StatusChangeNotification encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -157,11 +161,17 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!status_.xmlEncode(elementTree, xmlns)) return false;
+        if (!status_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StatusChangeNotification encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Status", elementTree));
     
         elementTree.clear();
-        if (!diagnosticInfo_.xmlEncode(elementTree, xmlns)) return false;
+        if (!diagnosticInfo_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StatusChangeNotification encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DiagnosticInfo", elementTree));
     
         return true;
@@ -218,23 +228,89 @@ namespace OpcUaStackCore
     bool
     StatusChangeNotification::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "StatusChangeNotification json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     StatusChangeNotification::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!status_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "StatusChangeNotification json encoder error")
+    		     .parameter("Element", "status_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Status", elementTree));
+    
+        elementTree.clear();
+        if (!diagnosticInfo_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "StatusChangeNotification json encoder error")
+    		     .parameter("Element", "diagnosticInfo_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DiagnosticInfo", elementTree));
+    
         return true;
     }
     
     bool
     StatusChangeNotification::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "StatusChangeNotification json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     StatusChangeNotification::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Status";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StatusChangeNotification decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!status_.jsonDecode(*tree)) {
+            Log(Error, "StatusChangeNotification decode json error - decode failed")
+                .parameter("Element", "Status");
+            return false;
+        }
+    
+        elementName = "DiagnosticInfo";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StatusChangeNotification decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!diagnosticInfo_.jsonDecode(*tree)) {
+            Log(Error, "StatusChangeNotification decode json error - decode failed")
+                .parameter("Element", "DiagnosticInfo");
+            return false;
+        }
+    
+        return true;
     }
     
     void

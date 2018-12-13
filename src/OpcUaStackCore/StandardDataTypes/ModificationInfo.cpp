@@ -156,7 +156,11 @@ namespace OpcUaStackCore
     ModificationInfo::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ModificationInfo encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -167,15 +171,24 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!modificationTime_.xmlEncode(elementTree, xmlns)) return false;
+        if (!modificationTime_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ModificationInfo encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ModificationTime", elementTree));
     
         elementTree.clear();
-        if (!updateType_.xmlEncode(elementTree, xmlns)) return false;
+        if (!updateType_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ModificationInfo encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("UpdateType", elementTree));
     
         elementTree.clear();
-        if (!userName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!userName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ModificationInfo encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("UserName", elementTree));
     
         return true;
@@ -245,23 +258,111 @@ namespace OpcUaStackCore
     bool
     ModificationInfo::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "ModificationInfo json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     ModificationInfo::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!modificationTime_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "ModificationInfo json encoder error")
+    		     .parameter("Element", "modificationTime_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ModificationTime", elementTree));
+    
+        elementTree.clear();
+        if (!updateType_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "ModificationInfo json encoder error")
+    		     .parameter("Element", "updateType_");
+            return false;
+        }
+        pt.push_back(std::make_pair("UpdateType", elementTree));
+    
+        elementTree.clear();
+        if (!userName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "ModificationInfo json encoder error")
+    		     .parameter("Element", "userName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("UserName", elementTree));
+    
         return true;
     }
     
     bool
     ModificationInfo::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "ModificationInfo json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     ModificationInfo::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ModificationTime";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ModificationInfo decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!modificationTime_.jsonDecode(*tree)) {
+            Log(Error, "ModificationInfo decode json error - decode failed")
+                .parameter("Element", "ModificationTime");
+            return false;
+        }
+    
+        elementName = "UpdateType";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ModificationInfo decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!updateType_.jsonDecode(*tree)) {
+            Log(Error, "ModificationInfo decode json error - decode failed")
+                .parameter("Element", "UpdateType");
+            return false;
+        }
+    
+        elementName = "UserName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ModificationInfo decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!userName_.jsonDecode(*tree)) {
+            Log(Error, "ModificationInfo decode json error - decode failed")
+                .parameter("Element", "UserName");
+            return false;
+        }
+    
+        return true;
     }
     
     void

@@ -135,7 +135,11 @@ namespace OpcUaStackCore
     DatagramConnectionTransportDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DatagramConnectionTransportDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -146,7 +150,10 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!discoveryAddress_.xmlEncode(elementTree, xmlns)) return false;
+        if (!discoveryAddress_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "DatagramConnectionTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DiscoveryAddress", elementTree));
     
         return true;
@@ -190,23 +197,67 @@ namespace OpcUaStackCore
     bool
     DatagramConnectionTransportDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "DatagramConnectionTransportDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     DatagramConnectionTransportDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!discoveryAddress_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "DatagramConnectionTransportDataType json encoder error")
+    		     .parameter("Element", "discoveryAddress_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DiscoveryAddress", elementTree));
+    
         return true;
     }
     
     bool
     DatagramConnectionTransportDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "DatagramConnectionTransportDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     DatagramConnectionTransportDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "DiscoveryAddress";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "DatagramConnectionTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!discoveryAddress_.jsonDecode(*tree)) {
+            Log(Error, "DatagramConnectionTransportDataType decode json error - decode failed")
+                .parameter("Element", "DiscoveryAddress");
+            return false;
+        }
+    
+        return true;
     }
     
     void

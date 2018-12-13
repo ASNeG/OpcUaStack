@@ -394,6 +394,25 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode)
 	BOOST_REQUIRE(buildInfo->softwareVersion() == OpcUaString("String1"));
 	BOOST_REQUIRE(buildInfo->buildDate() == OpcUaDateTime("2000-01-01T00:00:00Z"));
 
+	// check data value variable
+	nodeClass = informationModel->find(OpcUaNodeId("DataValue", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>()->variant()->get<OpcUaDouble>() == 1);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>()->sourceTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>()->serverTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+
+	// check data value array variable
+	nodeClass = informationModel->find(OpcUaNodeId("DataValueArray", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(0)->variant()->get<OpcUaDouble>() == 1);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(0)->sourceTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(0)->serverTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(1)->variant()->get<OpcUaDouble>() == 1);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(1)->sourceTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(1)->serverTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	// write nodes from information model into node set file
@@ -773,6 +792,25 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode)
 	BOOST_REQUIRE(buildInfo->productName() == OpcUaString("String1"));
 	BOOST_REQUIRE(buildInfo->softwareVersion() == OpcUaString("String1"));
 	BOOST_REQUIRE(buildInfo->buildDate() == OpcUaDateTime("2000-01-01T00:00:00Z"));
+
+	// check data value variable
+	nodeClass = informationModel->find(OpcUaNodeId("DataValue", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>()->variant()->get<OpcUaDouble>() == 1);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>()->sourceTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>()->serverTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+
+	// check data value array variable
+	nodeClass = informationModel->find(OpcUaNodeId("DataValueArray", 1));
+	BOOST_REQUIRE(nodeClass.get() != nullptr);
+	BOOST_REQUIRE(nodeClass->getValue(dataValue) == true);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(0)->variant()->get<OpcUaDouble>() == 1);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(0)->sourceTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(0)->serverTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(1)->variant()->get<OpcUaDouble>() == 1);
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(1)->sourceTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
+	BOOST_REQUIRE(dataValue.variant()->getSPtr<OpcUaDataValue>(1)->serverTimestamp() == OpcUaDateTime("2018-11-26T17:54:21Z"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

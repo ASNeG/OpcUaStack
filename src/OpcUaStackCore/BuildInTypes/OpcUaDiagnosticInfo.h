@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -49,6 +49,8 @@ namespace OpcUaStackCore
 		const OpcUaString& getAdditionalInfo() const;
 		void setInnerStatusCode(const OpcUaStatusCode innerStatusCode);
 		OpcUaStatusCode getInnerStatusCode() const;
+		void diagnosticInfo(const OpcUaDiagnosticInfo::SPtr diagnosticInfo);
+		OpcUaDiagnosticInfo::SPtr diagnosticInfo(void) const;
 
 		void copyTo(OpcUaDiagnosticInfo& opcUaDiagnosticInfo);
         bool operator==(const OpcUaDiagnosticInfo& value);
@@ -65,7 +67,12 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncode(boost::property_tree::ptree& pt);
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
 		OpcUaInt32 symbolicId_;
@@ -74,7 +81,7 @@ namespace OpcUaStackCore
 		OpcUaInt32 locale_;
 		OpcUaString additionalInfo_;
 		OpcUaStatusCode innerStatusCode_;
-		// FIXME: DiagnosticInfo
+		OpcUaDiagnosticInfo::SPtr diagnosticInfo_;
 	};
 
 	class OpcUaDiagnosticInfoArray

@@ -472,6 +472,133 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaExtensionObject::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaExtensionObject json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaExtensionObject::jsonEncode(boost::property_tree::ptree& pt)
+	{
+
+		if (epSPtr_.get() == nullptr) {
+			Log(Error, "OpcUaExtensionObject json encoder error - object invalid");
+			return false;
+		}
+
+		//
+		// encode type id
+		//
+		boost::property_tree::ptree typeIdTree;
+		OpcUaNodeId jsonNodeId = epSPtr_->jsonTypeId();
+		if (!jsonNodeId.jsonEncode(typeIdTree)) {
+			Log(Error, "OpcUaExtensionObject json encoder error")
+				.parameter("Element", "TypeId");
+			return false;
+		}
+		pt.add_child("TypeId", typeIdTree);
+
+		//
+		// encode body
+		//
+		boost::property_tree::ptree bodyTree;
+		if (!epSPtr_->jsonEncode(bodyTree, epSPtr_->typeName())) {
+			Log(Error, "OpcUaExtensionObject json encoder error")
+				.parameter("Element", "Body");
+			return false;
+		}
+		pt.add_child("Body", bodyTree);
+
+		return true;
+	}
+
+	bool
+	OpcUaExtensionObject::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaExtensionObject json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	OpcUaExtensionObject::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		//
+		// get typeIdTree tree
+		//
+		boost::optional<boost::property_tree::ptree&> typeIdTree = pt.get_child_optional("TypeId");
+		if (!typeIdTree) {
+			Log(Error, "OpcUaExtensionObject json decoder error - element not exist in json document")
+				.parameter("Element", "TypeId");
+			return false;
+		}
+
+		//
+		// get type id
+		//
+		OpcUaNodeId jsonTypeNodeId;
+		if (!jsonTypeNodeId.jsonDecode(*typeIdTree)) {
+			Log(Error, "OpcUaExtensionObject json decoder error")
+				.parameter("Element", "TypeId");
+			return false;
+		}
+
+		//
+		// get body tree
+		//
+		boost::optional<boost::property_tree::ptree&> bodyTree = pt.get_child_optional("Body");
+		if (!bodyTree) {
+			Log(Error, "OpcUaExtensionObject json decoder error - element not exist in json document")
+				.parameter("Element", "Body")
+				.parameter("JsonTypeNodeId", jsonTypeNodeId);
+			return false;
+		}
+
+		this->typeId(jsonTypeNodeId);
+		if (!createObject()) {
+			// Extension object unknown
+			logExtensionObjectMap();
+			Log(Error, "OpcUaExtensionObject json decoder error - object create error")
+				.parameter("Element", "Body")
+				.parameter("JsonTypeNodeId", jsonTypeNodeId);
+			return false;
+		}
+
+		// Currently the Json type is stored in the object. Now we determine
+		// the binary type by the XMl type.
+		typeId_ = epSPtr_->binaryTypeId();
+
+		//
+		// check namespace
+		//
+		//std::cout << "TypeName=" << epSPtr_->typeName() << " " << bodyTree->front().first << std::endl;
+
+		//
+		// decode extension object from json file
+		//
+		if (!epSPtr_->jsonDecode(bodyTree->front().second)) {
+			Log(Error, "OpcUaExtensionObject json decoder error")
+				.parameter("Element", "Body")
+				.parameter("JsonTypeNodeId", jsonTypeNodeId);
+			return false;
+		}
+		return true;
+	}
+
 	void
 	OpcUaExtensionObject::logExtensionObjectMap(void)
 	{

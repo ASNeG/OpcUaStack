@@ -145,7 +145,11 @@ namespace OpcUaStackCore
     RolePermissionType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RolePermissionType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -156,11 +160,18 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!roleId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!roleId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RolePermissionType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("RoleId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, permissions_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, permissions_))
+        {
+            Log(Error, "RolePermissionType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Permissions", elementTree));
     
         return true;
@@ -217,23 +228,89 @@ namespace OpcUaStackCore
     bool
     RolePermissionType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "RolePermissionType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     RolePermissionType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!roleId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "RolePermissionType json encoder error")
+    		     .parameter("Element", "roleId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("RoleId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, permissions_))
+        {
+    	     Log(Error, "RolePermissionType json encoder error")
+    		     .parameter("Element", "permissions_");
+           return false;
+        }
+        pt.push_back(std::make_pair("Permissions", elementTree));
+    
         return true;
     }
     
     bool
     RolePermissionType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "RolePermissionType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     RolePermissionType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "RoleId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RolePermissionType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!roleId_.jsonDecode(*tree)) {
+            Log(Error, "RolePermissionType decode json error - decode failed")
+                .parameter("Element", "RoleId");
+            return false;
+        }
+    
+        elementName = "Permissions";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RolePermissionType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, permissions_)) {
+            Log(Error, "RolePermissionType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

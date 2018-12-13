@@ -30,6 +30,7 @@
 #include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
 #include "OpcUaStackCore/BuildInTypes/Json.h"
 #include "OpcUaStackCore/BuildInTypes/XmlNumber.h"
+#include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
 
 namespace OpcUaStackCore
 {
@@ -81,6 +82,24 @@ namespace OpcUaStackCore
 		  )
 		  {
 			  return XmlNumber::xmlDecode(pt, value);
+		  }
+
+		  static bool jsonEncode(
+			  boost::property_tree::ptree& pt,
+			  T& value,
+			  const std::string& listElement
+		  )
+		  {
+			  return JsonNumber::jsonEncode(pt, value, listElement);
+		  }
+
+		  static bool jsonDecode(
+			  boost::property_tree::ptree& pt,
+			  T& value,
+			  const std::string& listElement
+		  )
+		  {
+			  return JsonNumber::jsonDecode(pt, value);
 		  }
 
 		  static T copy(T& sourceValue, T& destValue)
@@ -136,6 +155,24 @@ namespace OpcUaStackCore
 		  )
 		  {
 			  return value.xmlDecode(pt, element, xmlns);
+		  }
+
+		  static bool jsonEncode(
+			  boost::property_tree::ptree& pt,
+			  T& value,
+			  const std::string& listElement
+		  )
+		  {
+			  return value.jsonEncode(pt, listElement);
+		  }
+
+		  static bool jsonDecode(
+			  boost::property_tree::ptree& pt,
+			  T& value,
+			  const std::string& listElement
+		  )
+		  {
+			  return value.jsonDecode(pt);
 		  }
 
 		  static T& copy(T& sourceValue, T& destValue)
@@ -204,6 +241,26 @@ namespace OpcUaStackCore
 			  return true;
 		  }
 
+		  static bool jsonEncode(
+			  boost::property_tree::ptree& pt,
+			  T& value,
+			  const std::string& listElement
+		  )
+		  {
+			  // FIXME: todo
+			  return true;
+		  }
+
+		  static bool jsonDecode(
+			  boost::property_tree::ptree& pt,
+			  T& value,
+			  const std::string& listElement
+		  )
+		  {
+			  // FIXME: todo
+			  return true;
+		  }
+
 		  static T copy(T& sourceValue, T& destValue)
 		  {
 			  destValue = sourceValue;
@@ -260,6 +317,25 @@ namespace OpcUaStackCore
 		  {
 			  value = constructSPtr<T>();
 			  return value->xmlDecode(pt, xmlns);
+		  }
+
+		  static bool jsonEncode(
+			  boost::property_tree::ptree& pt,
+			  boost::shared_ptr<T>& value,
+			  const std::string& listElement
+		  )
+		  {
+			  return value->jsonEncode(pt);
+		  }
+
+		  static bool jsonDecode(
+			  boost::property_tree::ptree& pt,
+			  boost::shared_ptr<T>& value,
+			  const std::string& listElement
+		  )
+		  {
+			  value = constructSPtr<T>();
+			  return value->jsonDecode(pt);
 		  }
 
 		  static boost::shared_ptr<T> copy( boost::shared_ptr<T>& sourceValue, boost::shared_ptr<T>& destValue)
@@ -342,6 +418,24 @@ namespace OpcUaStackCore
 			boost::property_tree::ptree& pt,
 			const std::string& listElement,
 			Xmlns& xmlns
+		);
+		bool jsonEncode(
+			boost::property_tree::ptree& pt,
+			const std::string& element,
+			const std::string& listElement
+		);
+		bool jsonEncode(
+			boost::property_tree::ptree& pt,
+			const std::string& listElement
+		);
+		bool jsonDecode(
+			boost::property_tree::ptree& pt,
+			const std::string& element,
+			const std::string& listElement
+		);
+		bool jsonDecode(
+			boost::property_tree::ptree& pt,
+			const std::string& listElement
 		);
 
 	  private:
@@ -710,6 +804,94 @@ namespace OpcUaStackCore
 			T value;
 			if (!CODER::xmlDecode(arrayElement, value, listElement, xmlns)) {
 				Log(Error, "OpcUaArray xml decoder error")
+					.parameter("ListElement", listElement);
+				return false;
+			}
+			push_back(value);
+		}
+		return true;
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::jsonEncode(
+		boost::property_tree::ptree& pt,
+		const std::string& element,
+		const std::string& listElement
+	)
+	{
+		if (isNull_) {
+			return true;
+		}
+
+		boost::property_tree::ptree tmpTree;
+		if (!jsonEncode(tmpTree, listElement)) {
+			Log(Error, "OpcUaArray json encoder error")
+				.parameter("Element", element)
+				.parameter("ListElement", listElement);
+			return false;
+		}
+
+		pt.add_child(element, tmpTree);
+		return true;
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::jsonEncode(
+		boost::property_tree::ptree& pt,
+		const std::string& listElement
+	)
+	{
+		if (isNull_) {
+			return true;
+		}
+
+		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
+			if (!CODER::jsonEncode(pt, valueArray_[idx], listElement)) {
+				Log(Error, "OpcUaArray json encoder error")
+					.parameter("ListElement", listElement);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::jsonDecode(
+		boost::property_tree::ptree& pt,
+		const std::string& element,
+		const std::string& listElement
+	)
+	{
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        if (!tree) return false;
+        return jsonDecode(*tree, listElement);
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::jsonDecode(
+		boost::property_tree::ptree& pt,
+		const std::string& listElement
+	)
+	{
+		int32_t arrayLength = 0;
+		arrayLength = pt.size();
+
+		if (arrayLength == 0) {
+			return true;
+		}
+
+		resize(arrayLength);
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			boost::property_tree::ptree arrayElement = it->second;
+
+			T value;
+			if (!CODER::jsonDecode(arrayElement, value, listElement)) {
+				Log(Error, "OpcUaArray json decoder error")
 					.parameter("ListElement", listElement);
 				return false;
 			}

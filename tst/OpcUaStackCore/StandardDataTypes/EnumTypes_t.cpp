@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(EnumTypes_xml_encode_decode)
 	eO1->xmlEncode(ptree, xmlns);
 
 	// decode
-	eO2->xmlDecode(ptree.get_child("Int32"), xmlns);
+	eO2->xmlDecode(ptree, xmlns);
 	BOOST_REQUIRE(*eO1 == *eO2);
 
 }

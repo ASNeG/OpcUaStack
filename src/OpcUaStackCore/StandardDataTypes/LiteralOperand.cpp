@@ -135,7 +135,11 @@ namespace OpcUaStackCore
     LiteralOperand::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "LiteralOperand encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -146,7 +150,10 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!value_.xmlEncode(elementTree, xmlns)) return false;
+        if (!value_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "LiteralOperand encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Value", elementTree));
     
         return true;
@@ -190,23 +197,67 @@ namespace OpcUaStackCore
     bool
     LiteralOperand::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "LiteralOperand json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     LiteralOperand::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!value_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "LiteralOperand json encoder error")
+    		     .parameter("Element", "value_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Value", elementTree));
+    
         return true;
     }
     
     bool
     LiteralOperand::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "LiteralOperand json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     LiteralOperand::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Value";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "LiteralOperand decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!value_.jsonDecode(*tree)) {
+            Log(Error, "LiteralOperand decode json error - decode failed")
+                .parameter("Element", "Value");
+            return false;
+        }
+    
+        return true;
     }
     
     void

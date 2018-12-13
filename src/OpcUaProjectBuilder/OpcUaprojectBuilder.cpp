@@ -36,6 +36,7 @@ namespace OpcUaProjectBuilder
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaProjectBuilder::OpcUaProjectBuilder(void)
+	: noSubstitueExtensions_({ ".ico" })
 	{
 	}
 
@@ -216,51 +217,63 @@ namespace OpcUaProjectBuilder
 		result = boost::regex_replace(result, regProjectPort, projectPort_);
 		result = boost::regex_replace(result, regDockerTag, DOCKER_TAG);
 		result = boost::regex_replace(result, regVersionMajor, VERSION_MAJOR);
-		result = boost::regex_replace(result, regVersionMinor, VERSION_MAJOR);
+		result = boost::regex_replace(result, regVersionMinor, VERSION_MINOR);
 		result = boost::regex_replace(result, regVersionPatch, VERSION_PATCH);
 
 		return result;
 	}
 
 	bool
-	OpcUaProjectBuilder::browseProjectDirectory(boost::filesystem::path& templateDirectory, boost::filesystem::path& projectDirectory)
+	OpcUaProjectBuilder::browseProjectDirectory(boost::filesystem::path& templatePath, boost::filesystem::path& projectPath)
 	{
 		boost::filesystem::directory_iterator itEnd;
-		for (boost::filesystem::directory_iterator it(templateDirectory); it != itEnd; it++) {
+		for (boost::filesystem::directory_iterator it(templatePath); it != itEnd; it++) {
 
 			boost::filesystem::path file = *it;
 
 			std::string leaf = file.leaf().string();
 			leaf = substituteString(leaf);
 
-			templateDirectory /= file.leaf();
-			projectDirectory /= leaf;
+			templatePath /= file.leaf();
+			projectPath /= leaf;
 
-			if (boost::filesystem::is_directory(templateDirectory)) {
+			if (boost::filesystem::is_directory(templatePath)) {
 				// create directory
-				if (!createProjectDirectory(projectDirectory)) return false;
+				if (!createProjectDirectory(projectPath)) return false;
 
 				// create sub tree
-				if (!browseProjectDirectory(templateDirectory, projectDirectory)) return false;
+				if (!browseProjectDirectory(templatePath, projectPath)) return false;
 			}
 			else {
-				std::string content;
 
-				// read project file
-				if (!readProjectFile(templateDirectory, content)) return false;
+				// read and substituate file content
+                if (isFileToSubstitute(templatePath)) {
+                    std::string content;
 
-				// substituate file content
-				content = substituteString(content);
+                    // read project file
+                    if (!readProjectFile(templatePath, content)) return false;
 
-				// create project file
-				if (!createProjectFile(projectDirectory, content)) return false;
+                    content = substituteString(content);
+                    // create project file
+                    if (!createProjectFile(projectPath, content)) return false;
+                }
+                else {
+                    std::cout << "skip subtituting for " << templatePath.string() << std::endl;
+                    boost::filesystem::copy_file(templatePath, projectPath, boost::filesystem::copy_option::overwrite_if_exists);
+                }					
 			}
 
-			templateDirectory.remove_leaf();
-			projectDirectory.remove_leaf();
+			templatePath.remove_leaf();
+			projectPath.remove_leaf();
 		}
 		return true;
 	}
+
+    bool 
+    OpcUaProjectBuilder::isFileToSubstitute(const boost::filesystem::path& file) const
+    {        
+        return noSubstitueExtensions_.find(boost::filesystem::extension(file)) == noSubstitueExtensions_.end();
+    }
 
 }
 

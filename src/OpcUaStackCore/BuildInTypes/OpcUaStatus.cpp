@@ -265,21 +265,50 @@ namespace OpcUaStackCore
     bool
     OpcUaStatus::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaStatus json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
     }
     
     bool
     OpcUaStatus::jsonEncode(boost::property_tree::ptree& pt)
     {
+		// added status
+		if (!JsonNumber::jsonEncode(pt, value_)) {
+			Log(Error, "OpcUaStatus json encode error");
+			return false;
+		}
+		return true;
     }
     
     bool
     OpcUaStatus::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaStatus json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
     }
     
     bool
     OpcUaStatus::jsonDecode(boost::property_tree::ptree& pt)
     {
+		// get source pico seconds
+		if (!JsonNumber::jsonDecode(pt, value_)) {
+			Log(Error, "OpcUaStatus json decoder error");
+			return false;
+		}
+		return true;
     }
     
     void

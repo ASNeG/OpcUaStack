@@ -16,6 +16,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
 #include "OpcUaStackCore/StandardDataTypes/PublishedDataSetSourceDataType.h"
 #include "OpcUaStackCore/StandardDataTypes/PublishedVariableDataType.h"
 

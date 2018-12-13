@@ -214,7 +214,11 @@ namespace OpcUaStackCore
     RegisteredServer::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RegisteredServer encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -225,35 +229,60 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!serverUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!serverUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RegisteredServer encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ServerUri", elementTree));
     
         elementTree.clear();
-        if (!productUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!productUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RegisteredServer encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ProductUri", elementTree));
     
         elementTree.clear();
-        if (!serverNames_.xmlEncode(elementTree, "LocalizedText", xmlns)) return false;
+        if (!serverNames_.xmlEncode(elementTree, "LocalizedText", xmlns)) {
+            Log(Error, "RegisteredServer encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ServerNames", elementTree));
     
         elementTree.clear();
-        if (!serverType_.xmlEncode(elementTree, xmlns)) return false;
+        if (!serverType_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RegisteredServer encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ServerType", elementTree));
     
         elementTree.clear();
-        if (!gatewayServerUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!gatewayServerUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RegisteredServer encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("GatewayServerUri", elementTree));
     
         elementTree.clear();
-        if (!discoveryUrls_.xmlEncode(elementTree, "String", xmlns)) return false;
+        if (!discoveryUrls_.xmlEncode(elementTree, "String", xmlns)) {
+            Log(Error, "RegisteredServer encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DiscoveryUrls", elementTree));
     
         elementTree.clear();
-        if (!semaphoreFilePath_.xmlEncode(elementTree, xmlns)) return false;
+        if (!semaphoreFilePath_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "RegisteredServer encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SemaphoreFilePath", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, isOnline_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, isOnline_))
+        {
+            Log(Error, "RegisteredServer encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("IsOnline", elementTree));
     
         return true;
@@ -388,23 +417,221 @@ namespace OpcUaStackCore
     bool
     RegisteredServer::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "RegisteredServer json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     RegisteredServer::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!serverUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "RegisteredServer json encoder error")
+    		     .parameter("Element", "serverUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ServerUri", elementTree));
+    
+        elementTree.clear();
+        if (!productUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "RegisteredServer json encoder error")
+    		     .parameter("Element", "productUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ProductUri", elementTree));
+    
+        elementTree.clear();
+        if (!serverNames_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "RegisteredServer json encoder error")
+    		     .parameter("Element", "serverNames_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ServerNames", elementTree));
+    
+        elementTree.clear();
+        if (!serverType_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "RegisteredServer json encoder error")
+    		     .parameter("Element", "serverType_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ServerType", elementTree));
+    
+        elementTree.clear();
+        if (!gatewayServerUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "RegisteredServer json encoder error")
+    		     .parameter("Element", "gatewayServerUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("GatewayServerUri", elementTree));
+    
+        elementTree.clear();
+        if (!discoveryUrls_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "RegisteredServer json encoder error")
+    		     .parameter("Element", "discoveryUrls_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DiscoveryUrls", elementTree));
+    
+        elementTree.clear();
+        if (!semaphoreFilePath_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "RegisteredServer json encoder error")
+    		     .parameter("Element", "semaphoreFilePath_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SemaphoreFilePath", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, isOnline_))
+        {
+    	     Log(Error, "RegisteredServer json encoder error")
+    		     .parameter("Element", "isOnline_");
+           return false;
+        }
+        pt.push_back(std::make_pair("IsOnline", elementTree));
+    
         return true;
     }
     
     bool
     RegisteredServer::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "RegisteredServer json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     RegisteredServer::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ServerUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverUri_.jsonDecode(*tree)) {
+            Log(Error, "RegisteredServer decode json error - decode failed")
+                .parameter("Element", "ServerUri");
+            return false;
+        }
+    
+        elementName = "ProductUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!productUri_.jsonDecode(*tree)) {
+            Log(Error, "RegisteredServer decode json error - decode failed")
+                .parameter("Element", "ProductUri");
+            return false;
+        }
+    
+        elementName = "ServerNames";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverNames_.jsonDecode(*tree, "")) {
+            Log(Error, "RegisteredServer decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "ServerType";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverType_.jsonDecode(*tree)) {
+            Log(Error, "RegisteredServer decode json error - decode failed")
+                .parameter("Element", "ServerType");
+            return false;
+        }
+    
+        elementName = "GatewayServerUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!gatewayServerUri_.jsonDecode(*tree)) {
+            Log(Error, "RegisteredServer decode json error - decode failed")
+                .parameter("Element", "GatewayServerUri");
+            return false;
+        }
+    
+        elementName = "DiscoveryUrls";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!discoveryUrls_.jsonDecode(*tree, "")) {
+            Log(Error, "RegisteredServer decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "SemaphoreFilePath";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!semaphoreFilePath_.jsonDecode(*tree)) {
+            Log(Error, "RegisteredServer decode json error - decode failed")
+                .parameter("Element", "SemaphoreFilePath");
+            return false;
+        }
+    
+        elementName = "IsOnline";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "RegisteredServer decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, isOnline_)) {
+            Log(Error, "RegisteredServer decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

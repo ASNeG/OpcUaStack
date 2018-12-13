@@ -149,7 +149,11 @@ namespace OpcUaStackCore
     ViewAttributes::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "ViewAttributes encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -160,11 +164,19 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, containsNoLoops_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, containsNoLoops_))
+        {
+            Log(Error, "ViewAttributes encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ContainsNoLoops", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, eventNotifier_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, eventNotifier_))
+        {
+            Log(Error, "ViewAttributes encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("EventNotifier", elementTree));
     
         return true;
@@ -221,23 +233,89 @@ namespace OpcUaStackCore
     bool
     ViewAttributes::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "ViewAttributes json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     ViewAttributes::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, containsNoLoops_))
+        {
+    	     Log(Error, "ViewAttributes json encoder error")
+    		     .parameter("Element", "containsNoLoops_");
+           return false;
+        }
+        pt.push_back(std::make_pair("ContainsNoLoops", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, eventNotifier_))
+        {
+    	     Log(Error, "ViewAttributes json encoder error")
+    		     .parameter("Element", "eventNotifier_");
+           return false;
+        }
+        pt.push_back(std::make_pair("EventNotifier", elementTree));
+    
         return true;
     }
     
     bool
     ViewAttributes::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "ViewAttributes json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     ViewAttributes::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ContainsNoLoops";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ViewAttributes decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, containsNoLoops_)) {
+            Log(Error, "ViewAttributes decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "EventNotifier";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "ViewAttributes decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, eventNotifier_)) {
+            Log(Error, "ViewAttributes decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

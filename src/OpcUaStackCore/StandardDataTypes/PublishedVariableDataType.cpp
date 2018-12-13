@@ -211,7 +211,11 @@ namespace OpcUaStackCore
     PublishedVariableDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PublishedVariableDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -222,35 +226,63 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!publishedVariable_.xmlEncode(elementTree, xmlns)) return false;
+        if (!publishedVariable_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PublishedVariableDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PublishedVariable", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, attributeId_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, attributeId_))
+        {
+            Log(Error, "PublishedVariableDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("AttributeId", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, samplingIntervalHint_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, samplingIntervalHint_))
+        {
+            Log(Error, "PublishedVariableDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SamplingIntervalHint", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, deadbandType_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, deadbandType_))
+        {
+            Log(Error, "PublishedVariableDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DeadbandType", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, deadbandValue_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, deadbandValue_))
+        {
+            Log(Error, "PublishedVariableDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DeadbandValue", elementTree));
     
         elementTree.clear();
-        if (!indexRange_.xmlEncode(elementTree, xmlns)) return false;
+        if (!indexRange_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PublishedVariableDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("IndexRange", elementTree));
     
         elementTree.clear();
-        if (!substituteValue_.xmlEncode(elementTree, xmlns)) return false;
+        if (!substituteValue_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PublishedVariableDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SubstituteValue", elementTree));
     
         elementTree.clear();
-        if (!metaDataProperties_.xmlEncode(elementTree, "QualifiedName", xmlns)) return false;
+        if (!metaDataProperties_.xmlEncode(elementTree, "QualifiedName", xmlns)) {
+            Log(Error, "PublishedVariableDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MetaDataProperties", elementTree));
     
         return true;
@@ -385,23 +417,221 @@ namespace OpcUaStackCore
     bool
     PublishedVariableDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "PublishedVariableDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     PublishedVariableDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!publishedVariable_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PublishedVariableDataType json encoder error")
+    		     .parameter("Element", "publishedVariable_");
+            return false;
+        }
+        pt.push_back(std::make_pair("PublishedVariable", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, attributeId_))
+        {
+    	     Log(Error, "PublishedVariableDataType json encoder error")
+    		     .parameter("Element", "attributeId_");
+           return false;
+        }
+        pt.push_back(std::make_pair("AttributeId", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, samplingIntervalHint_))
+        {
+    	     Log(Error, "PublishedVariableDataType json encoder error")
+    		     .parameter("Element", "samplingIntervalHint_");
+           return false;
+        }
+        pt.push_back(std::make_pair("SamplingIntervalHint", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, deadbandType_))
+        {
+    	     Log(Error, "PublishedVariableDataType json encoder error")
+    		     .parameter("Element", "deadbandType_");
+           return false;
+        }
+        pt.push_back(std::make_pair("DeadbandType", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, deadbandValue_))
+        {
+    	     Log(Error, "PublishedVariableDataType json encoder error")
+    		     .parameter("Element", "deadbandValue_");
+           return false;
+        }
+        pt.push_back(std::make_pair("DeadbandValue", elementTree));
+    
+        elementTree.clear();
+        if (!indexRange_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PublishedVariableDataType json encoder error")
+    		     .parameter("Element", "indexRange_");
+            return false;
+        }
+        pt.push_back(std::make_pair("IndexRange", elementTree));
+    
+        elementTree.clear();
+        if (!substituteValue_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PublishedVariableDataType json encoder error")
+    		     .parameter("Element", "substituteValue_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SubstituteValue", elementTree));
+    
+        elementTree.clear();
+        if (!metaDataProperties_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "PublishedVariableDataType json encoder error")
+    		     .parameter("Element", "metaDataProperties_");
+            return false;
+        }
+        pt.push_back(std::make_pair("MetaDataProperties", elementTree));
+    
         return true;
     }
     
     bool
     PublishedVariableDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "PublishedVariableDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     PublishedVariableDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "PublishedVariable";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publishedVariable_.jsonDecode(*tree)) {
+            Log(Error, "PublishedVariableDataType decode json error - decode failed")
+                .parameter("Element", "PublishedVariable");
+            return false;
+        }
+    
+        elementName = "AttributeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, attributeId_)) {
+            Log(Error, "PublishedVariableDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "SamplingIntervalHint";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, samplingIntervalHint_)) {
+            Log(Error, "PublishedVariableDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DeadbandType";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, deadbandType_)) {
+            Log(Error, "PublishedVariableDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "DeadbandValue";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, deadbandValue_)) {
+            Log(Error, "PublishedVariableDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "IndexRange";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!indexRange_.jsonDecode(*tree)) {
+            Log(Error, "PublishedVariableDataType decode json error - decode failed")
+                .parameter("Element", "IndexRange");
+            return false;
+        }
+    
+        elementName = "SubstituteValue";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!substituteValue_.jsonDecode(*tree)) {
+            Log(Error, "PublishedVariableDataType decode json error - decode failed")
+                .parameter("Element", "SubstituteValue");
+            return false;
+        }
+    
+        elementName = "MetaDataProperties";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PublishedVariableDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!metaDataProperties_.jsonDecode(*tree, "")) {
+            Log(Error, "PublishedVariableDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

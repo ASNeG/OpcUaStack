@@ -149,7 +149,11 @@ namespace OpcUaStackCore
     MethodAttributes::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "MethodAttributes encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -160,11 +164,19 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, executable_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, executable_))
+        {
+            Log(Error, "MethodAttributes encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Executable", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, userExecutable_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, userExecutable_))
+        {
+            Log(Error, "MethodAttributes encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("UserExecutable", elementTree));
     
         return true;
@@ -221,23 +233,89 @@ namespace OpcUaStackCore
     bool
     MethodAttributes::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "MethodAttributes json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     MethodAttributes::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, executable_))
+        {
+    	     Log(Error, "MethodAttributes json encoder error")
+    		     .parameter("Element", "executable_");
+           return false;
+        }
+        pt.push_back(std::make_pair("Executable", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, userExecutable_))
+        {
+    	     Log(Error, "MethodAttributes json encoder error")
+    		     .parameter("Element", "userExecutable_");
+           return false;
+        }
+        pt.push_back(std::make_pair("UserExecutable", elementTree));
+    
         return true;
     }
     
     bool
     MethodAttributes::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "MethodAttributes json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     MethodAttributes::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Executable";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MethodAttributes decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, executable_)) {
+            Log(Error, "MethodAttributes decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "UserExecutable";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "MethodAttributes decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, userExecutable_)) {
+            Log(Error, "MethodAttributes decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

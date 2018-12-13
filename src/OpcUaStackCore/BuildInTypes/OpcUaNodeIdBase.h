@@ -71,6 +71,8 @@ namespace OpcUaStackCore
 		void set(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0);
 		void set(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0);
 		void set(const OpcUaString& nodeId, OpcUaUInt16 namespaceIndex = 0);
+		void set(const OpcUaGuid& nodeId, OpcUaUInt16 namespaceIndex = 0);
+		void set(const OpcUaByteString& nodeId, OpcUaUInt16 namespaceIndex = 0);
 		void set(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0);
 		bool get(OpcUaUInt32& nodeId, OpcUaUInt16& namespaceIndex);
 		bool get(std::string& nodeId, OpcUaUInt16& namespaceIndex);
@@ -103,6 +105,10 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncode(boost::property_tree::ptree& pt);
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  protected:
 		OpcUaUInt16 namespaceIndex_;

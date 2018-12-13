@@ -135,7 +135,11 @@ namespace OpcUaStackCore
     NetworkAddressUrlDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "NetworkAddressUrlDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -146,7 +150,10 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!url_.xmlEncode(elementTree, xmlns)) return false;
+        if (!url_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "NetworkAddressUrlDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Url", elementTree));
     
         return true;
@@ -190,23 +197,67 @@ namespace OpcUaStackCore
     bool
     NetworkAddressUrlDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "NetworkAddressUrlDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     NetworkAddressUrlDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!url_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "NetworkAddressUrlDataType json encoder error")
+    		     .parameter("Element", "url_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Url", elementTree));
+    
         return true;
     }
     
     bool
     NetworkAddressUrlDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "NetworkAddressUrlDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     NetworkAddressUrlDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Url";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "NetworkAddressUrlDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!url_.jsonDecode(*tree)) {
+            Log(Error, "NetworkAddressUrlDataType decode json error - decode failed")
+                .parameter("Element", "Url");
+            return false;
+        }
+    
+        return true;
     }
     
     void

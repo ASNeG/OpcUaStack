@@ -18,6 +18,7 @@
 #include <boost/lexical_cast.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
 #include "OpcUaStackCore/BuildInTypes/Json.h"
+#include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
 
 namespace OpcUaStackCore
 {
@@ -300,6 +301,73 @@ namespace OpcUaStackCore
 		}
 		else {
 			name(*nameString);
+		}
+
+		return true;
+	}
+
+	bool
+	OpcUaQualifiedName::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaQualifiedName json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaQualifiedName::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// add name
+		if (!name_.jsonEncode(pt, "Name")) {
+			Log(Error, "OpcUaQualifiedName json encode error")
+		        .parameter("Element", "Name");
+			return false;
+		}
+
+		// ad uri
+		if (namespaceIndex_ != 0) {
+			if (!JsonNumber::jsonEncode(pt, namespaceIndex_, "Uri")) {
+				Log(Error, "OpcUaQualifiedName json encode error")
+			        .parameter("Element", "Uri");
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	OpcUaQualifiedName::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaQualifiedName json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	OpcUaQualifiedName::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// get name
+		if (!name_.jsonDecode(pt, "Name")) {
+			Log(Error, "OpcUaQualifiedName json decode error")
+		        .parameter("Element", "Name");
+			return false;
+		}
+
+		// get uri
+		if (!JsonNumber::jsonDecode(pt, namespaceIndex_, "Uri")) {
+			namespaceIndex_ = 0;
 		}
 
 		return true;

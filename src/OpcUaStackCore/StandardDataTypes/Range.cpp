@@ -145,7 +145,11 @@ namespace OpcUaStackCore
     Range::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "Range encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -156,11 +160,19 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, low_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, low_))
+        {
+            Log(Error, "Range encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Low", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, high_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, high_))
+        {
+            Log(Error, "Range encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("High", elementTree));
     
         return true;
@@ -217,23 +229,89 @@ namespace OpcUaStackCore
     bool
     Range::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "Range json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     Range::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, low_))
+        {
+    	     Log(Error, "Range json encoder error")
+    		     .parameter("Element", "low_");
+           return false;
+        }
+        pt.push_back(std::make_pair("Low", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, high_))
+        {
+    	     Log(Error, "Range json encoder error")
+    		     .parameter("Element", "high_");
+           return false;
+        }
+        pt.push_back(std::make_pair("High", elementTree));
+    
         return true;
     }
     
     bool
     Range::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "Range json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     Range::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Low";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "Range decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, low_)) {
+            Log(Error, "Range decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "High";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "Range decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, high_)) {
+            Log(Error, "Range decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

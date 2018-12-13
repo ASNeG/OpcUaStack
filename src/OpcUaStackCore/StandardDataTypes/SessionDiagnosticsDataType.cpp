@@ -596,7 +596,11 @@ namespace OpcUaStackCore
     SessionDiagnosticsDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -607,175 +611,310 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!sessionId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!sessionId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SessionId", elementTree));
     
         elementTree.clear();
-        if (!sessionName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!sessionName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SessionName", elementTree));
     
         elementTree.clear();
-        if (!clientDescription_.xmlEncode(elementTree, xmlns)) return false;
+        if (!clientDescription_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ClientDescription", elementTree));
     
         elementTree.clear();
-        if (!serverUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!serverUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ServerUri", elementTree));
     
         elementTree.clear();
-        if (!endpointUrl_.xmlEncode(elementTree, xmlns)) return false;
+        if (!endpointUrl_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("EndpointUrl", elementTree));
     
         elementTree.clear();
-        if (!localeIds_.xmlEncode(elementTree, "LocaleId", xmlns)) return false;
+        if (!localeIds_.xmlEncode(elementTree, "LocaleId", xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("LocaleIds", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, actualSessionTimeout_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, actualSessionTimeout_))
+        {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ActualSessionTimeout", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, maxResponseMessageSize_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, maxResponseMessageSize_))
+        {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MaxResponseMessageSize", elementTree));
     
         elementTree.clear();
-        if (!clientConnectionTime_.xmlEncode(elementTree, xmlns)) return false;
+        if (!clientConnectionTime_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ClientConnectionTime", elementTree));
     
         elementTree.clear();
-        if (!clientLastContactTime_.xmlEncode(elementTree, xmlns)) return false;
+        if (!clientLastContactTime_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ClientLastContactTime", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, currentSubscriptionsCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, currentSubscriptionsCount_))
+        {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CurrentSubscriptionsCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, currentMonitoredItemsCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, currentMonitoredItemsCount_))
+        {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CurrentMonitoredItemsCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, currentPublishRequestsInQueue_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, currentPublishRequestsInQueue_))
+        {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CurrentPublishRequestsInQueue", elementTree));
     
         elementTree.clear();
-        if (!totalRequestCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!totalRequestCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TotalRequestCount", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, unauthorizedRequestCount_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, unauthorizedRequestCount_))
+        {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("UnauthorizedRequestCount", elementTree));
     
         elementTree.clear();
-        if (!readCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!readCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ReadCount", elementTree));
     
         elementTree.clear();
-        if (!historyReadCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!historyReadCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("HistoryReadCount", elementTree));
     
         elementTree.clear();
-        if (!writeCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!writeCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("WriteCount", elementTree));
     
         elementTree.clear();
-        if (!historyUpdateCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!historyUpdateCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("HistoryUpdateCount", elementTree));
     
         elementTree.clear();
-        if (!callCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!callCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CallCount", elementTree));
     
         elementTree.clear();
-        if (!createMonitoredItemsCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!createMonitoredItemsCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CreateMonitoredItemsCount", elementTree));
     
         elementTree.clear();
-        if (!modifyMonitoredItemsCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!modifyMonitoredItemsCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ModifyMonitoredItemsCount", elementTree));
     
         elementTree.clear();
-        if (!setMonitoringModeCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!setMonitoringModeCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SetMonitoringModeCount", elementTree));
     
         elementTree.clear();
-        if (!setTriggeringCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!setTriggeringCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SetTriggeringCount", elementTree));
     
         elementTree.clear();
-        if (!deleteMonitoredItemsCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!deleteMonitoredItemsCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DeleteMonitoredItemsCount", elementTree));
     
         elementTree.clear();
-        if (!createSubscriptionCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!createSubscriptionCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CreateSubscriptionCount", elementTree));
     
         elementTree.clear();
-        if (!modifySubscriptionCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!modifySubscriptionCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ModifySubscriptionCount", elementTree));
     
         elementTree.clear();
-        if (!setPublishingModeCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!setPublishingModeCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SetPublishingModeCount", elementTree));
     
         elementTree.clear();
-        if (!publishCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!publishCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("PublishCount", elementTree));
     
         elementTree.clear();
-        if (!republishCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!republishCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("RepublishCount", elementTree));
     
         elementTree.clear();
-        if (!transferSubscriptionsCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!transferSubscriptionsCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TransferSubscriptionsCount", elementTree));
     
         elementTree.clear();
-        if (!deleteSubscriptionsCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!deleteSubscriptionsCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DeleteSubscriptionsCount", elementTree));
     
         elementTree.clear();
-        if (!addNodesCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!addNodesCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("AddNodesCount", elementTree));
     
         elementTree.clear();
-        if (!addReferencesCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!addReferencesCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("AddReferencesCount", elementTree));
     
         elementTree.clear();
-        if (!deleteNodesCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!deleteNodesCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DeleteNodesCount", elementTree));
     
         elementTree.clear();
-        if (!deleteReferencesCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!deleteReferencesCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DeleteReferencesCount", elementTree));
     
         elementTree.clear();
-        if (!browseCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!browseCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("BrowseCount", elementTree));
     
         elementTree.clear();
-        if (!browseNextCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!browseNextCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("BrowseNextCount", elementTree));
     
         elementTree.clear();
-        if (!translateBrowsePathsToNodeIdsCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!translateBrowsePathsToNodeIdsCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TranslateBrowsePathsToNodeIdsCount", elementTree));
     
         elementTree.clear();
-        if (!queryFirstCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!queryFirstCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("QueryFirstCount", elementTree));
     
         elementTree.clear();
-        if (!queryNextCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!queryNextCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("QueryNextCount", elementTree));
     
         elementTree.clear();
-        if (!registerNodesCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!registerNodesCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("RegisterNodesCount", elementTree));
     
         elementTree.clear();
-        if (!unregisterNodesCount_.xmlEncode(elementTree, xmlns)) return false;
+        if (!unregisterNodesCount_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SessionDiagnosticsDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("UnregisterNodesCount", elementTree));
     
         return true;
@@ -1365,23 +1504,991 @@ namespace OpcUaStackCore
     bool
     SessionDiagnosticsDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     SessionDiagnosticsDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!sessionId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "sessionId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SessionId", elementTree));
+    
+        elementTree.clear();
+        if (!sessionName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "sessionName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SessionName", elementTree));
+    
+        elementTree.clear();
+        if (!clientDescription_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "clientDescription_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ClientDescription", elementTree));
+    
+        elementTree.clear();
+        if (!serverUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "serverUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ServerUri", elementTree));
+    
+        elementTree.clear();
+        if (!endpointUrl_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "endpointUrl_");
+            return false;
+        }
+        pt.push_back(std::make_pair("EndpointUrl", elementTree));
+    
+        elementTree.clear();
+        if (!localeIds_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "localeIds_");
+            return false;
+        }
+        pt.push_back(std::make_pair("LocaleIds", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, actualSessionTimeout_))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "actualSessionTimeout_");
+           return false;
+        }
+        pt.push_back(std::make_pair("ActualSessionTimeout", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, maxResponseMessageSize_))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "maxResponseMessageSize_");
+           return false;
+        }
+        pt.push_back(std::make_pair("MaxResponseMessageSize", elementTree));
+    
+        elementTree.clear();
+        if (!clientConnectionTime_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "clientConnectionTime_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ClientConnectionTime", elementTree));
+    
+        elementTree.clear();
+        if (!clientLastContactTime_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "clientLastContactTime_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ClientLastContactTime", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, currentSubscriptionsCount_))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "currentSubscriptionsCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("CurrentSubscriptionsCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, currentMonitoredItemsCount_))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "currentMonitoredItemsCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("CurrentMonitoredItemsCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, currentPublishRequestsInQueue_))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "currentPublishRequestsInQueue_");
+           return false;
+        }
+        pt.push_back(std::make_pair("CurrentPublishRequestsInQueue", elementTree));
+    
+        elementTree.clear();
+        if (!totalRequestCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "totalRequestCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TotalRequestCount", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, unauthorizedRequestCount_))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "unauthorizedRequestCount_");
+           return false;
+        }
+        pt.push_back(std::make_pair("UnauthorizedRequestCount", elementTree));
+    
+        elementTree.clear();
+        if (!readCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "readCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ReadCount", elementTree));
+    
+        elementTree.clear();
+        if (!historyReadCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "historyReadCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("HistoryReadCount", elementTree));
+    
+        elementTree.clear();
+        if (!writeCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "writeCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("WriteCount", elementTree));
+    
+        elementTree.clear();
+        if (!historyUpdateCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "historyUpdateCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("HistoryUpdateCount", elementTree));
+    
+        elementTree.clear();
+        if (!callCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "callCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("CallCount", elementTree));
+    
+        elementTree.clear();
+        if (!createMonitoredItemsCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "createMonitoredItemsCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("CreateMonitoredItemsCount", elementTree));
+    
+        elementTree.clear();
+        if (!modifyMonitoredItemsCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "modifyMonitoredItemsCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ModifyMonitoredItemsCount", elementTree));
+    
+        elementTree.clear();
+        if (!setMonitoringModeCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "setMonitoringModeCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SetMonitoringModeCount", elementTree));
+    
+        elementTree.clear();
+        if (!setTriggeringCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "setTriggeringCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SetTriggeringCount", elementTree));
+    
+        elementTree.clear();
+        if (!deleteMonitoredItemsCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "deleteMonitoredItemsCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DeleteMonitoredItemsCount", elementTree));
+    
+        elementTree.clear();
+        if (!createSubscriptionCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "createSubscriptionCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("CreateSubscriptionCount", elementTree));
+    
+        elementTree.clear();
+        if (!modifySubscriptionCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "modifySubscriptionCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ModifySubscriptionCount", elementTree));
+    
+        elementTree.clear();
+        if (!setPublishingModeCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "setPublishingModeCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SetPublishingModeCount", elementTree));
+    
+        elementTree.clear();
+        if (!publishCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "publishCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("PublishCount", elementTree));
+    
+        elementTree.clear();
+        if (!republishCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "republishCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("RepublishCount", elementTree));
+    
+        elementTree.clear();
+        if (!transferSubscriptionsCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "transferSubscriptionsCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TransferSubscriptionsCount", elementTree));
+    
+        elementTree.clear();
+        if (!deleteSubscriptionsCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "deleteSubscriptionsCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DeleteSubscriptionsCount", elementTree));
+    
+        elementTree.clear();
+        if (!addNodesCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "addNodesCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("AddNodesCount", elementTree));
+    
+        elementTree.clear();
+        if (!addReferencesCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "addReferencesCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("AddReferencesCount", elementTree));
+    
+        elementTree.clear();
+        if (!deleteNodesCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "deleteNodesCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DeleteNodesCount", elementTree));
+    
+        elementTree.clear();
+        if (!deleteReferencesCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "deleteReferencesCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DeleteReferencesCount", elementTree));
+    
+        elementTree.clear();
+        if (!browseCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "browseCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("BrowseCount", elementTree));
+    
+        elementTree.clear();
+        if (!browseNextCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "browseNextCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("BrowseNextCount", elementTree));
+    
+        elementTree.clear();
+        if (!translateBrowsePathsToNodeIdsCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "translateBrowsePathsToNodeIdsCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TranslateBrowsePathsToNodeIdsCount", elementTree));
+    
+        elementTree.clear();
+        if (!queryFirstCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "queryFirstCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("QueryFirstCount", elementTree));
+    
+        elementTree.clear();
+        if (!queryNextCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "queryNextCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("QueryNextCount", elementTree));
+    
+        elementTree.clear();
+        if (!registerNodesCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "registerNodesCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("RegisterNodesCount", elementTree));
+    
+        elementTree.clear();
+        if (!unregisterNodesCount_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
+    		     .parameter("Element", "unregisterNodesCount_");
+            return false;
+        }
+        pt.push_back(std::make_pair("UnregisterNodesCount", elementTree));
+    
         return true;
     }
     
     bool
     SessionDiagnosticsDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "SessionDiagnosticsDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     SessionDiagnosticsDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "SessionId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!sessionId_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "SessionId");
+            return false;
+        }
+    
+        elementName = "SessionName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!sessionName_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "SessionName");
+            return false;
+        }
+    
+        elementName = "ClientDescription";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!clientDescription_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "ClientDescription");
+            return false;
+        }
+    
+        elementName = "ServerUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!serverUri_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "ServerUri");
+            return false;
+        }
+    
+        elementName = "EndpointUrl";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!endpointUrl_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "EndpointUrl");
+            return false;
+        }
+    
+        elementName = "LocaleIds";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!localeIds_.jsonDecode(*tree, "")) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "ActualSessionTimeout";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, actualSessionTimeout_)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "MaxResponseMessageSize";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, maxResponseMessageSize_)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "ClientConnectionTime";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!clientConnectionTime_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "ClientConnectionTime");
+            return false;
+        }
+    
+        elementName = "ClientLastContactTime";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!clientLastContactTime_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "ClientLastContactTime");
+            return false;
+        }
+    
+        elementName = "CurrentSubscriptionsCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, currentSubscriptionsCount_)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "CurrentMonitoredItemsCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, currentMonitoredItemsCount_)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "CurrentPublishRequestsInQueue";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, currentPublishRequestsInQueue_)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "TotalRequestCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!totalRequestCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "TotalRequestCount");
+            return false;
+        }
+    
+        elementName = "UnauthorizedRequestCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, unauthorizedRequestCount_)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "ReadCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!readCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "ReadCount");
+            return false;
+        }
+    
+        elementName = "HistoryReadCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!historyReadCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "HistoryReadCount");
+            return false;
+        }
+    
+        elementName = "WriteCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!writeCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "WriteCount");
+            return false;
+        }
+    
+        elementName = "HistoryUpdateCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!historyUpdateCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "HistoryUpdateCount");
+            return false;
+        }
+    
+        elementName = "CallCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!callCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "CallCount");
+            return false;
+        }
+    
+        elementName = "CreateMonitoredItemsCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!createMonitoredItemsCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "CreateMonitoredItemsCount");
+            return false;
+        }
+    
+        elementName = "ModifyMonitoredItemsCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!modifyMonitoredItemsCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "ModifyMonitoredItemsCount");
+            return false;
+        }
+    
+        elementName = "SetMonitoringModeCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!setMonitoringModeCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "SetMonitoringModeCount");
+            return false;
+        }
+    
+        elementName = "SetTriggeringCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!setTriggeringCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "SetTriggeringCount");
+            return false;
+        }
+    
+        elementName = "DeleteMonitoredItemsCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!deleteMonitoredItemsCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "DeleteMonitoredItemsCount");
+            return false;
+        }
+    
+        elementName = "CreateSubscriptionCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!createSubscriptionCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "CreateSubscriptionCount");
+            return false;
+        }
+    
+        elementName = "ModifySubscriptionCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!modifySubscriptionCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "ModifySubscriptionCount");
+            return false;
+        }
+    
+        elementName = "SetPublishingModeCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!setPublishingModeCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "SetPublishingModeCount");
+            return false;
+        }
+    
+        elementName = "PublishCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!publishCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "PublishCount");
+            return false;
+        }
+    
+        elementName = "RepublishCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!republishCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "RepublishCount");
+            return false;
+        }
+    
+        elementName = "TransferSubscriptionsCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!transferSubscriptionsCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "TransferSubscriptionsCount");
+            return false;
+        }
+    
+        elementName = "DeleteSubscriptionsCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!deleteSubscriptionsCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "DeleteSubscriptionsCount");
+            return false;
+        }
+    
+        elementName = "AddNodesCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!addNodesCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "AddNodesCount");
+            return false;
+        }
+    
+        elementName = "AddReferencesCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!addReferencesCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "AddReferencesCount");
+            return false;
+        }
+    
+        elementName = "DeleteNodesCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!deleteNodesCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "DeleteNodesCount");
+            return false;
+        }
+    
+        elementName = "DeleteReferencesCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!deleteReferencesCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "DeleteReferencesCount");
+            return false;
+        }
+    
+        elementName = "BrowseCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!browseCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "BrowseCount");
+            return false;
+        }
+    
+        elementName = "BrowseNextCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!browseNextCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "BrowseNextCount");
+            return false;
+        }
+    
+        elementName = "TranslateBrowsePathsToNodeIdsCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!translateBrowsePathsToNodeIdsCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "TranslateBrowsePathsToNodeIdsCount");
+            return false;
+        }
+    
+        elementName = "QueryFirstCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!queryFirstCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "QueryFirstCount");
+            return false;
+        }
+    
+        elementName = "QueryNextCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!queryNextCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "QueryNextCount");
+            return false;
+        }
+    
+        elementName = "RegisterNodesCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!registerNodesCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "RegisterNodesCount");
+            return false;
+        }
+    
+        elementName = "UnregisterNodesCount";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!unregisterNodesCount_.jsonDecode(*tree)) {
+            Log(Error, "SessionDiagnosticsDataType decode json error - decode failed")
+                .parameter("Element", "UnregisterNodesCount");
+            return false;
+        }
+    
+        return true;
     }
     
     void

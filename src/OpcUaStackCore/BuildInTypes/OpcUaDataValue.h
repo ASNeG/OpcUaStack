@@ -57,6 +57,7 @@ namespace OpcUaStackCore
 
 		void copyFrom(OpcUaDataValue& dataValue);
 		void copyTo(OpcUaDataValue& dataValue);
+		bool operator<(const OpcUaDataValue& dataValue) const;
 		bool operator!=(const OpcUaDataValue& opcUaDataValue) const;
 		bool operator==(const OpcUaDataValue& opcUaDataValue) const;
 
@@ -73,6 +74,10 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncode(boost::property_tree::ptree& pt);
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
 		OpcUaVariant::SPtr opcUaVariantSPtr_;

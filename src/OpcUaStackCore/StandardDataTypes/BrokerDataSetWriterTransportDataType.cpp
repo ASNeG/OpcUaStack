@@ -190,7 +190,11 @@ namespace OpcUaStackCore
     BrokerDataSetWriterTransportDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -201,27 +205,46 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!queueName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!queueName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("QueueName", elementTree));
     
         elementTree.clear();
-        if (!resourceUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!resourceUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ResourceUri", elementTree));
     
         elementTree.clear();
-        if (!authenticationProfileUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!authenticationProfileUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("AuthenticationProfileUri", elementTree));
     
         elementTree.clear();
-        if (!requestedDeliveryGuarantee_.xmlEncode(elementTree, xmlns)) return false;
+        if (!requestedDeliveryGuarantee_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("RequestedDeliveryGuarantee", elementTree));
     
         elementTree.clear();
-        if (!metaDataQueueName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!metaDataQueueName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MetaDataQueueName", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, metaDataUpdateTime_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, metaDataUpdateTime_))
+        {
+            Log(Error, "BrokerDataSetWriterTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MetaDataUpdateTime", elementTree));
     
         return true;
@@ -330,23 +353,177 @@ namespace OpcUaStackCore
     bool
     BrokerDataSetWriterTransportDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     BrokerDataSetWriterTransportDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!queueName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
+    		     .parameter("Element", "queueName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("QueueName", elementTree));
+    
+        elementTree.clear();
+        if (!resourceUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
+    		     .parameter("Element", "resourceUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ResourceUri", elementTree));
+    
+        elementTree.clear();
+        if (!authenticationProfileUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
+    		     .parameter("Element", "authenticationProfileUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("AuthenticationProfileUri", elementTree));
+    
+        elementTree.clear();
+        if (!requestedDeliveryGuarantee_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
+    		     .parameter("Element", "requestedDeliveryGuarantee_");
+            return false;
+        }
+        pt.push_back(std::make_pair("RequestedDeliveryGuarantee", elementTree));
+    
+        elementTree.clear();
+        if (!metaDataQueueName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
+    		     .parameter("Element", "metaDataQueueName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("MetaDataQueueName", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, metaDataUpdateTime_))
+        {
+    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
+    		     .parameter("Element", "metaDataUpdateTime_");
+           return false;
+        }
+        pt.push_back(std::make_pair("MetaDataUpdateTime", elementTree));
+    
         return true;
     }
     
     bool
     BrokerDataSetWriterTransportDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "BrokerDataSetWriterTransportDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     BrokerDataSetWriterTransportDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "QueueName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!queueName_.jsonDecode(*tree)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
+                .parameter("Element", "QueueName");
+            return false;
+        }
+    
+        elementName = "ResourceUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!resourceUri_.jsonDecode(*tree)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
+                .parameter("Element", "ResourceUri");
+            return false;
+        }
+    
+        elementName = "AuthenticationProfileUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!authenticationProfileUri_.jsonDecode(*tree)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
+                .parameter("Element", "AuthenticationProfileUri");
+            return false;
+        }
+    
+        elementName = "RequestedDeliveryGuarantee";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!requestedDeliveryGuarantee_.jsonDecode(*tree)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
+                .parameter("Element", "RequestedDeliveryGuarantee");
+            return false;
+        }
+    
+        elementName = "MetaDataQueueName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!metaDataQueueName_.jsonDecode(*tree)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
+                .parameter("Element", "MetaDataQueueName");
+            return false;
+        }
+    
+        elementName = "MetaDataUpdateTime";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, metaDataUpdateTime_)) {
+            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

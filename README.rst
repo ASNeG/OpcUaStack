@@ -28,13 +28,13 @@ Features
 * Application Server to run OPC UA application as dynamic libraries
 * Settings and OPC UA information model in XML format
 * Support DEB package type to distribute user applications on Linux
+* Support MSI package type to distribute user applications on Windows
 
 In the development stage:
 
 * Code generator to create C++ classes representing OPC UA types, objects and events from XML (Nodesets)
 * Multi-thread model (currently all application modules run in only one thread)
 * Support RPM package type to distribute user applications on Linux
-* Support MSI package type to distribute user applications on Windows
 
 Installation
 ------------------------------
@@ -70,7 +70,7 @@ the root directory of the sources:
   $ sh build.sh -t local 
 
 
-By default the installation path is $HOME/.ASNeG. You can change it at any moment:
+By default, the installation path is $HOME/.ASNeG. You can change it at any moment:
 
 ::
 
@@ -86,16 +86,14 @@ is suitable for your target platform (e.g. Native x86) the following command:
 
 ::
 
-  $ build.bat local
+  $ build.bat -t local
 
 
-By default the installation path is C:\\install. You can change it by typing:
+By default, the installation path is C:\\ASNeG. You can change it by typing:
 
 ::
   
-  $ cd local_build
-  $ set DESTDIR=C:\path\witch\you\prefer
-  $ MSBuild INSTALL.vcxproj
+  $ build.bat -t local -i C:\path\witch\you\prefer
 
 
 
@@ -128,6 +126,14 @@ Also you can build DEB packets from source by using *build.sh* script:
 
 Your packets will be built in *build_deb* directory.
 
+
+MSI Packets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On Windows, the stack is available for installing with MSI packets. As DEB packets, the MSI packets belong to two kinds.
+The packet, that ends with *-Bin* suffix, provides the stack and its dependencies (OpenSSL and Boost) and it is suitable to run user applications. If you are going to develop your own OPC UA user applications, you can use the development packet (ending with *-Dev* suffix). The development packet installs not only the stack and its headers but the whole Boost and OpenSSL with headers. So you do not need to install something more.
+
+
 Usage 
 ------------------------------
 
@@ -145,13 +151,13 @@ ready to be compiled and installed. Below there is an example for local installa
   $ cd MyPorject
   $ sh build.sh local
 
-The user application is installed in directory $HOME/install by default. And you can run it by using OPC UA Server:
+The user application is installed in directory $HOME/.ASNeG or C:\ASNeG by default. And you can run it by using OPC UA Server:
 
 ::
   
   $ OpcUaServer3 $HOME/install/etc/OpcUaStack/MyProject/OpcUaServer.xml
 
-The server reads the setting from file **OpcUaServer.xml** and run the user application. 
+The server reads the setting from file **OpcUaServer.xml** and runs the user application. 
 Now the application is available via OPC UA protocol on port 9012.
   
 For more information about how to write your own OPC UA client server application see ASNeG-Demo_.

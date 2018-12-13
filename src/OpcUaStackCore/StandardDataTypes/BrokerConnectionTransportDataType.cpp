@@ -146,7 +146,11 @@ namespace OpcUaStackCore
     BrokerConnectionTransportDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerConnectionTransportDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -157,11 +161,17 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!resourceUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!resourceUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerConnectionTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ResourceUri", elementTree));
     
         elementTree.clear();
-        if (!authenticationProfileUri_.xmlEncode(elementTree, xmlns)) return false;
+        if (!authenticationProfileUri_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "BrokerConnectionTransportDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("AuthenticationProfileUri", elementTree));
     
         return true;
@@ -218,23 +228,89 @@ namespace OpcUaStackCore
     bool
     BrokerConnectionTransportDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "BrokerConnectionTransportDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     BrokerConnectionTransportDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!resourceUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerConnectionTransportDataType json encoder error")
+    		     .parameter("Element", "resourceUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ResourceUri", elementTree));
+    
+        elementTree.clear();
+        if (!authenticationProfileUri_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "BrokerConnectionTransportDataType json encoder error")
+    		     .parameter("Element", "authenticationProfileUri_");
+            return false;
+        }
+        pt.push_back(std::make_pair("AuthenticationProfileUri", elementTree));
+    
         return true;
     }
     
     bool
     BrokerConnectionTransportDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "BrokerConnectionTransportDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     BrokerConnectionTransportDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ResourceUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerConnectionTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!resourceUri_.jsonDecode(*tree)) {
+            Log(Error, "BrokerConnectionTransportDataType decode json error - decode failed")
+                .parameter("Element", "ResourceUri");
+            return false;
+        }
+    
+        elementName = "AuthenticationProfileUri";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "BrokerConnectionTransportDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!authenticationProfileUri_.jsonDecode(*tree)) {
+            Log(Error, "BrokerConnectionTransportDataType decode json error - decode failed")
+                .parameter("Element", "AuthenticationProfileUri");
+            return false;
+        }
+    
+        return true;
     }
     
     void

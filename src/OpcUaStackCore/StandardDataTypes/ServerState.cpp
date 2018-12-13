@@ -233,14 +233,22 @@ namespace OpcUaStackCore
     bool
     ServerState::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlEncode(pt, value_, element)) return false;
+        if(!XmlNumber::xmlEncode(pt, value_, element))
+        {
+    	     Log(Error, "ServerState json encoder error")
+    		     .parameter("Element", element);
+            return false;
+        }
         return true;
     }
     
     bool
     ServerState::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlEncode(pt, value_, "Int32")) return false;
+        if(!XmlNumber::xmlEncode(pt, value_)) {
+    	     Log(Error, "ServerState json encoder error");
+            return false;
+        }
         return true;
     }
     
@@ -248,35 +256,71 @@ namespace OpcUaStackCore
     ServerState::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
+        if (!tree) {
+    	     Log(Error, "ServerState json decoder error")
+    		     .parameter("Element", element);
+            return false;
+         }
         return xmlDecode(*tree, xmlns);
     }
     
     bool
     ServerState::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
-        if(!XmlNumber::xmlDecode(pt, value_)) return false;
+        if(!XmlNumber::xmlDecode(pt, value_)) {
+    	     Log(Error, "ServerState json decoder error");
+            return false;
+        }
         return true;
     }
     
     bool
     ServerState::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "ServerState json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
     }
     
     bool
     ServerState::jsonEncode(boost::property_tree::ptree& pt)
     {
+        if(!JsonNumber::jsonEncode(pt, value_))
+        {
+    	     Log(Error, "ServerState json encoder error")
+    		     .parameter("Element", "Value");
+           return false;
+        }
+        return true;
     }
     
     bool
     ServerState::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "ServerState json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     ServerState::jsonDecode(boost::property_tree::ptree& pt)
     {
+        if(!JsonNumber::jsonDecode(pt, value_)) {
+            Log(Error, "ServerState decode json error - decode failed");
+            return false;
+        }
+        return true;
     }
     
     void

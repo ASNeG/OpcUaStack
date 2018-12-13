@@ -203,7 +203,11 @@ namespace OpcUaStackCore
     AddNodesItem::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AddNodesItem encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -214,31 +218,52 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!parentNodeId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!parentNodeId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AddNodesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ParentNodeId", elementTree));
     
         elementTree.clear();
-        if (!referenceTypeId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!referenceTypeId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AddNodesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
     
         elementTree.clear();
-        if (!requestedNewNodeId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!requestedNewNodeId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AddNodesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("RequestedNewNodeId", elementTree));
     
         elementTree.clear();
-        if (!browseName_.xmlEncode(elementTree, xmlns)) return false;
+        if (!browseName_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AddNodesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("BrowseName", elementTree));
     
         elementTree.clear();
-        if (!nodeClass_.xmlEncode(elementTree, xmlns)) return false;
+        if (!nodeClass_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AddNodesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("NodeClass", elementTree));
     
         elementTree.clear();
-        if (!nodeAttributes_.xmlEncode(elementTree, xmlns)) return false;
+        if (!nodeAttributes_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AddNodesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("NodeAttributes", elementTree));
     
         elementTree.clear();
-        if (!typeDefinition_.xmlEncode(elementTree, xmlns)) return false;
+        if (!typeDefinition_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "AddNodesItem encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("TypeDefinition", elementTree));
     
         return true;
@@ -360,23 +385,199 @@ namespace OpcUaStackCore
     bool
     AddNodesItem::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "AddNodesItem json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     AddNodesItem::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!parentNodeId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AddNodesItem json encoder error")
+    		     .parameter("Element", "parentNodeId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ParentNodeId", elementTree));
+    
+        elementTree.clear();
+        if (!referenceTypeId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AddNodesItem json encoder error")
+    		     .parameter("Element", "referenceTypeId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
+    
+        elementTree.clear();
+        if (!requestedNewNodeId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AddNodesItem json encoder error")
+    		     .parameter("Element", "requestedNewNodeId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("RequestedNewNodeId", elementTree));
+    
+        elementTree.clear();
+        if (!browseName_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AddNodesItem json encoder error")
+    		     .parameter("Element", "browseName_");
+            return false;
+        }
+        pt.push_back(std::make_pair("BrowseName", elementTree));
+    
+        elementTree.clear();
+        if (!nodeClass_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AddNodesItem json encoder error")
+    		     .parameter("Element", "nodeClass_");
+            return false;
+        }
+        pt.push_back(std::make_pair("NodeClass", elementTree));
+    
+        elementTree.clear();
+        if (!nodeAttributes_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AddNodesItem json encoder error")
+    		     .parameter("Element", "nodeAttributes_");
+            return false;
+        }
+        pt.push_back(std::make_pair("NodeAttributes", elementTree));
+    
+        elementTree.clear();
+        if (!typeDefinition_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "AddNodesItem json encoder error")
+    		     .parameter("Element", "typeDefinition_");
+            return false;
+        }
+        pt.push_back(std::make_pair("TypeDefinition", elementTree));
+    
         return true;
     }
     
     bool
     AddNodesItem::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "AddNodesItem json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     AddNodesItem::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "ParentNodeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddNodesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!parentNodeId_.jsonDecode(*tree)) {
+            Log(Error, "AddNodesItem decode json error - decode failed")
+                .parameter("Element", "ParentNodeId");
+            return false;
+        }
+    
+        elementName = "ReferenceTypeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddNodesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!referenceTypeId_.jsonDecode(*tree)) {
+            Log(Error, "AddNodesItem decode json error - decode failed")
+                .parameter("Element", "ReferenceTypeId");
+            return false;
+        }
+    
+        elementName = "RequestedNewNodeId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddNodesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!requestedNewNodeId_.jsonDecode(*tree)) {
+            Log(Error, "AddNodesItem decode json error - decode failed")
+                .parameter("Element", "RequestedNewNodeId");
+            return false;
+        }
+    
+        elementName = "BrowseName";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddNodesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!browseName_.jsonDecode(*tree)) {
+            Log(Error, "AddNodesItem decode json error - decode failed")
+                .parameter("Element", "BrowseName");
+            return false;
+        }
+    
+        elementName = "NodeClass";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddNodesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!nodeClass_.jsonDecode(*tree)) {
+            Log(Error, "AddNodesItem decode json error - decode failed")
+                .parameter("Element", "NodeClass");
+            return false;
+        }
+    
+        elementName = "NodeAttributes";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddNodesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!nodeAttributes_.jsonDecode(*tree)) {
+            Log(Error, "AddNodesItem decode json error - decode failed")
+                .parameter("Element", "NodeAttributes");
+            return false;
+        }
+    
+        elementName = "TypeDefinition";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "AddNodesItem decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!typeDefinition_.jsonDecode(*tree)) {
+            Log(Error, "AddNodesItem decode json error - decode failed")
+                .parameter("Element", "TypeDefinition");
+            return false;
+        }
+    
+        return true;
     }
     
     void

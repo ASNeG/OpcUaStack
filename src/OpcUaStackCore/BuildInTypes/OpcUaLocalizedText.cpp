@@ -17,6 +17,7 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
+#include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
 
 namespace OpcUaStackCore
 {
@@ -279,5 +280,74 @@ namespace OpcUaStackCore
 		}
 		return true;
 	}
+
+
+	bool
+	OpcUaLocalizedText::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaLocalizedText json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaLocalizedText::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// add locale
+		if (!locale_.jsonEncode(pt, "Locale")) {
+			Log(Error, "OpcUaLocalizedText json encode error")
+		        .parameter("Element", "Locale");
+			return false;
+		}
+
+		// add text
+		if (!text_.jsonEncode(pt, "Text")) {
+			Log(Error, "OpcUaLocalizedText json encode error")
+		        .parameter("Element", "Text");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	OpcUaLocalizedText::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaLocalizedText json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	OpcUaLocalizedText::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// get locale
+		if (!locale_.jsonDecode(pt, "Locale")) {
+			Log(Error, "OpcUaLocalizedText json decode error")
+		        .parameter("Element", "Locale");
+			return false;
+		}
+
+		// get text
+		if (!text_.jsonDecode(pt, "Text")) {
+			Log(Error, "OpcUaLocalizedText json decode error")
+		        .parameter("Element", "Text");
+			return false;
+		}
+
+		return true;
+	}
+
 
 };

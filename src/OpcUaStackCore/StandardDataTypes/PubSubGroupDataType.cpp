@@ -200,7 +200,11 @@ namespace OpcUaStackCore
     PubSubGroupDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PubSubGroupDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -211,31 +215,54 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!name_.xmlEncode(elementTree, xmlns)) return false;
+        if (!name_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PubSubGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Name", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, enabled_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, enabled_))
+        {
+            Log(Error, "PubSubGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Enabled", elementTree));
     
         elementTree.clear();
-        if (!securityMode_.xmlEncode(elementTree, xmlns)) return false;
+        if (!securityMode_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PubSubGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityMode", elementTree));
     
         elementTree.clear();
-        if (!securityGroupId_.xmlEncode(elementTree, xmlns)) return false;
+        if (!securityGroupId_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "PubSubGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityGroupId", elementTree));
     
         elementTree.clear();
-        if (!securityKeyServices_.xmlEncode(elementTree, "EndpointDescription", xmlns)) return false;
+        if (!securityKeyServices_.xmlEncode(elementTree, "EndpointDescription", xmlns)) {
+            Log(Error, "PubSubGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("SecurityKeyServices", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, maxNetworkMessageSize_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, maxNetworkMessageSize_))
+        {
+            Log(Error, "PubSubGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MaxNetworkMessageSize", elementTree));
     
         elementTree.clear();
-        if (!groupProperties_.xmlEncode(elementTree, "KeyValuePair", xmlns)) return false;
+        if (!groupProperties_.xmlEncode(elementTree, "KeyValuePair", xmlns)) {
+            Log(Error, "PubSubGroupDataType encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("GroupProperties", elementTree));
     
         return true;
@@ -357,23 +384,199 @@ namespace OpcUaStackCore
     bool
     PubSubGroupDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "PubSubGroupDataType json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     PubSubGroupDataType::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!name_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PubSubGroupDataType json encoder error")
+    		     .parameter("Element", "name_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Name", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, enabled_))
+        {
+    	     Log(Error, "PubSubGroupDataType json encoder error")
+    		     .parameter("Element", "enabled_");
+           return false;
+        }
+        pt.push_back(std::make_pair("Enabled", elementTree));
+    
+        elementTree.clear();
+        if (!securityMode_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PubSubGroupDataType json encoder error")
+    		     .parameter("Element", "securityMode_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SecurityMode", elementTree));
+    
+        elementTree.clear();
+        if (!securityGroupId_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "PubSubGroupDataType json encoder error")
+    		     .parameter("Element", "securityGroupId_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SecurityGroupId", elementTree));
+    
+        elementTree.clear();
+        if (!securityKeyServices_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "PubSubGroupDataType json encoder error")
+    		     .parameter("Element", "securityKeyServices_");
+            return false;
+        }
+        pt.push_back(std::make_pair("SecurityKeyServices", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, maxNetworkMessageSize_))
+        {
+    	     Log(Error, "PubSubGroupDataType json encoder error")
+    		     .parameter("Element", "maxNetworkMessageSize_");
+           return false;
+        }
+        pt.push_back(std::make_pair("MaxNetworkMessageSize", elementTree));
+    
+        elementTree.clear();
+        if (!groupProperties_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "PubSubGroupDataType json encoder error")
+    		     .parameter("Element", "groupProperties_");
+            return false;
+        }
+        pt.push_back(std::make_pair("GroupProperties", elementTree));
+    
         return true;
     }
     
     bool
     PubSubGroupDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "PubSubGroupDataType json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     PubSubGroupDataType::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Name";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.jsonDecode(*tree)) {
+            Log(Error, "PubSubGroupDataType decode json error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
+    
+        elementName = "Enabled";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, enabled_)) {
+            Log(Error, "PubSubGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "SecurityMode";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityMode_.jsonDecode(*tree)) {
+            Log(Error, "PubSubGroupDataType decode json error - decode failed")
+                .parameter("Element", "SecurityMode");
+            return false;
+        }
+    
+        elementName = "SecurityGroupId";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityGroupId_.jsonDecode(*tree)) {
+            Log(Error, "PubSubGroupDataType decode json error - decode failed")
+                .parameter("Element", "SecurityGroupId");
+            return false;
+        }
+    
+        elementName = "SecurityKeyServices";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!securityKeyServices_.jsonDecode(*tree, "")) {
+            Log(Error, "PubSubGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "MaxNetworkMessageSize";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, maxNetworkMessageSize_)) {
+            Log(Error, "PubSubGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "GroupProperties";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "PubSubGroupDataType decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!groupProperties_.jsonDecode(*tree, "")) {
+            Log(Error, "PubSubGroupDataType decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

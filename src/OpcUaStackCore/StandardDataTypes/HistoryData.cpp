@@ -134,7 +134,11 @@ namespace OpcUaStackCore
     HistoryData::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "HistoryData encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -145,7 +149,10 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!dataValues_.xmlEncode(elementTree, "DataValue", xmlns)) return false;
+        if (!dataValues_.xmlEncode(elementTree, "DataValue", xmlns)) {
+            Log(Error, "HistoryData encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataValues", elementTree));
     
         return true;
@@ -189,23 +196,67 @@ namespace OpcUaStackCore
     bool
     HistoryData::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "HistoryData json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     HistoryData::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!dataValues_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "HistoryData json encoder error")
+    		     .parameter("Element", "dataValues_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DataValues", elementTree));
+    
         return true;
     }
     
     bool
     HistoryData::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "HistoryData json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     HistoryData::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "DataValues";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "HistoryData decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataValues_.jsonDecode(*tree, "")) {
+            Log(Error, "HistoryData decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

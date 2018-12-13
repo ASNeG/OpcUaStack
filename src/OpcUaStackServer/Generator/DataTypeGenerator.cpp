@@ -152,6 +152,7 @@ namespace OpcUaStackServer
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/BuildInTypes/JsonNumber.h\"" << std::endl;
 
 		//
 		// added parent includes
@@ -946,7 +947,11 @@ namespace OpcUaStackServer
 		ss << prefix <<  nodeInfo_.className() << "::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
-		ss << prefix << "    if (!xmlEncode(elementTree, xmlns)) return false;" << std::endl;
+		ss << prefix << "    if (!xmlEncode(elementTree, xmlns)) {" << std::endl;
+		ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " encode xml error\")" << std::endl;
+		ss << prefix << "            .parameter(\"Element\", element);" << std::endl;
+		ss << prefix << "        return false;" << std::endl;
+	    ss << prefix << "    }" << std::endl;
 		ss << prefix << "    pt.push_back(std::make_pair(element, elementTree));" << std::endl;
 		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
@@ -969,19 +974,29 @@ namespace OpcUaStackServer
 			{
 				case DataTypeField::NumberType:
 					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if(!XmlNumber::xmlEncode(elementTree, " << dataTypeField->variableName() << ")) return false;" << std::endl;
+					ss << prefix << "    if(!XmlNumber::xmlEncode(elementTree, " << dataTypeField->variableName() << "))" << std::endl;
+					ss << prefix << "    {" << std::endl;
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " encode xml error\");" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+			        ss << prefix << "    }" << std::endl;
 					break;
 
 				case DataTypeField::BuildInArrayType:
 				case DataTypeField::StructureArrayType:
 				//case DataTypeField::EnumerationArrayType:
 					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) return false;" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, \"" << dataTypeField->arrayElementName() << "\", xmlns)) {" << std::endl;
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " encode xml error\");" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+			        ss << prefix << "    }" << std::endl;
 					break;
 
 				default:
 					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, xmlns)) return false;" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".xmlEncode(elementTree, xmlns)) {" << std::endl;
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " encode xml error\");" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+			        ss << prefix << "    }" << std::endl;
 			}
 			ss << prefix << "    pt.push_back(std::make_pair(\"" << dataTypeField->name() << "\", elementTree));" << std::endl;
 			ss << prefix << std::endl;
@@ -1093,7 +1108,13 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix <<  nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
+		ss << prefix << "    if (!jsonEncode(elementTree)) {" << std::endl;
+		ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
+		ss << prefix << "		     .parameter(\"Element\", element);" << std::endl;
+		ss << prefix << " 	     return false;" << std::endl;
+		ss << prefix << "    }" << std::endl;
+		ss << prefix << "    pt.push_back(std::make_pair(element, elementTree));" << std::endl;
 		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -1106,6 +1127,52 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		// FIXME: todo
+
+
+		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
+		ss << prefix << std::endl;
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    elementTree.clear();" << std::endl;
+					ss << prefix << "    if(!JsonNumber::jsonEncode(elementTree, " << dataTypeField->variableName() << "))" << std::endl;
+					ss << prefix << "    {" << std::endl;
+					ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
+					ss << prefix << "		     .parameter(\"Element\", \"" << dataTypeField->variableName() << "\");" << std::endl;
+					ss << prefix << "       return false;" << std::endl;
+				    ss << prefix << "    }" << std::endl;
+					break;
+
+				case DataTypeField::BuildInArrayType:
+				case DataTypeField::StructureArrayType:
+					ss << prefix << "    elementTree.clear();" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree, \"\"))" << std::endl;
+					ss << prefix << "    {" << std::endl;
+					ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
+					ss << prefix << "		     .parameter(\"Element\", \"" << dataTypeField->variableName() << "\");" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+				    ss << prefix << "    }" << std::endl;
+					break;
+
+				default:
+					ss << prefix << "    elementTree.clear();" << std::endl;
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree))" << std::endl;
+					ss << prefix << "    {" << std::endl;
+					ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
+					ss << prefix << "		     .parameter(\"Element\", \"" << dataTypeField->variableName() << "\");" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+			        ss << prefix << "    }" << std::endl;
+			}
+			ss << prefix << "    pt.push_back(std::make_pair(\"" << dataTypeField->name() << "\", elementTree));" << std::endl;
+			ss << prefix << std::endl;
+		}
+
+
+
     	ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -1127,7 +1194,15 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix <<  nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tmpTree;" << std::endl;
+        ss << prefix << std::endl;
+		ss << prefix << "    tmpTree = pt.get_child_optional(element);" << std::endl;
+		ss << prefix << "    if (!tmpTree) {" << std::endl;
+		ss << prefix << " 	     Log(Error, \"" << nodeInfo_.className() << " json decoder error\")" << std::endl;
+		ss << prefix << "		    .parameter(\"Element\", element);" << std::endl;
+		ss << prefix << "		 return false;" << std::endl;
+		ss << prefix << "    }" << std::endl;
+		ss << prefix << "    return jsonDecode(*tmpTree);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 
@@ -1138,7 +1213,53 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+
+		ss << prefix << "    std::string elementName;" << std::endl;
+		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree;" << std::endl;
+		ss << prefix << std::endl;
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			ss << prefix << "    elementName = \"" << dataTypeField->name() << "\";" << std::endl;
+			ss << prefix << "    tree = pt.get_child_optional(elementName);" << std::endl;
+			ss << prefix << "    if (!tree) {" << std::endl;
+			ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - element not found\")" << std::endl;
+			ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
+			ss << prefix << "        return false;" << std::endl;
+			ss << prefix << "    }" << std::endl;
+
+			switch (dataTypeField->type())
+			{
+				case DataTypeField::NumberType:
+					ss << prefix << "    if(!JsonNumber::jsonDecode(*tree, " << dataTypeField->variableName() << ")) {" << std::endl;
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\")" << std::endl;
+					ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+					ss << prefix << "    }" << std::endl;
+					break;
+
+				case DataTypeField::BuildInArrayType:
+				case DataTypeField::StructureArrayType:
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonDecode(*tree, \"\")) {" << std::endl;
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\")" << std::endl;
+					ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+					ss << prefix << "    }" << std::endl;
+					break;
+
+				default:
+					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonDecode(*tree)) {" << std::endl;
+					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\")" << std::endl;
+					ss << prefix << "            .parameter(\"Element\", \"" << dataTypeField->name() << "\");" << std::endl;
+					ss << prefix << "        return false;" << std::endl;
+					ss << prefix << "    }" << std::endl;
+			}
+
+			ss << prefix << std::endl;
+		}
+
+		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

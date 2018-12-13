@@ -200,7 +200,11 @@ namespace OpcUaStackCore
     StructureField::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StructureField encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -211,31 +215,55 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!name_.xmlEncode(elementTree, xmlns)) return false;
+        if (!name_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StructureField encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Name", elementTree));
     
         elementTree.clear();
-        if (!description_.xmlEncode(elementTree, xmlns)) return false;
+        if (!description_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StructureField encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("Description", elementTree));
     
         elementTree.clear();
-        if (!dataType_.xmlEncode(elementTree, xmlns)) return false;
+        if (!dataType_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "StructureField encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("DataType", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, valueRank_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, valueRank_))
+        {
+            Log(Error, "StructureField encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ValueRank", elementTree));
     
         elementTree.clear();
-        if (!arrayDimensions_.xmlEncode(elementTree, "UInt32", xmlns)) return false;
+        if (!arrayDimensions_.xmlEncode(elementTree, "UInt32", xmlns)) {
+            Log(Error, "StructureField encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("ArrayDimensions", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, maxStringLength_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, maxStringLength_))
+        {
+            Log(Error, "StructureField encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("MaxStringLength", elementTree));
     
         elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, isOptional_)) return false;
+        if(!XmlNumber::xmlEncode(elementTree, isOptional_))
+        {
+            Log(Error, "StructureField encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("IsOptional", elementTree));
     
         return true;
@@ -357,23 +385,199 @@ namespace OpcUaStackCore
     bool
     StructureField::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "StructureField json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     StructureField::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!name_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "StructureField json encoder error")
+    		     .parameter("Element", "name_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Name", elementTree));
+    
+        elementTree.clear();
+        if (!description_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "StructureField json encoder error")
+    		     .parameter("Element", "description_");
+            return false;
+        }
+        pt.push_back(std::make_pair("Description", elementTree));
+    
+        elementTree.clear();
+        if (!dataType_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "StructureField json encoder error")
+    		     .parameter("Element", "dataType_");
+            return false;
+        }
+        pt.push_back(std::make_pair("DataType", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, valueRank_))
+        {
+    	     Log(Error, "StructureField json encoder error")
+    		     .parameter("Element", "valueRank_");
+           return false;
+        }
+        pt.push_back(std::make_pair("ValueRank", elementTree));
+    
+        elementTree.clear();
+        if (!arrayDimensions_.jsonEncode(elementTree, ""))
+        {
+    	     Log(Error, "StructureField json encoder error")
+    		     .parameter("Element", "arrayDimensions_");
+            return false;
+        }
+        pt.push_back(std::make_pair("ArrayDimensions", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, maxStringLength_))
+        {
+    	     Log(Error, "StructureField json encoder error")
+    		     .parameter("Element", "maxStringLength_");
+           return false;
+        }
+        pt.push_back(std::make_pair("MaxStringLength", elementTree));
+    
+        elementTree.clear();
+        if(!JsonNumber::jsonEncode(elementTree, isOptional_))
+        {
+    	     Log(Error, "StructureField json encoder error")
+    		     .parameter("Element", "isOptional_");
+           return false;
+        }
+        pt.push_back(std::make_pair("IsOptional", elementTree));
+    
         return true;
     }
     
     bool
     StructureField::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "StructureField json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     StructureField::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "Name";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!name_.jsonDecode(*tree)) {
+            Log(Error, "StructureField decode json error - decode failed")
+                .parameter("Element", "Name");
+            return false;
+        }
+    
+        elementName = "Description";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!description_.jsonDecode(*tree)) {
+            Log(Error, "StructureField decode json error - decode failed")
+                .parameter("Element", "Description");
+            return false;
+        }
+    
+        elementName = "DataType";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!dataType_.jsonDecode(*tree)) {
+            Log(Error, "StructureField decode json error - decode failed")
+                .parameter("Element", "DataType");
+            return false;
+        }
+    
+        elementName = "ValueRank";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, valueRank_)) {
+            Log(Error, "StructureField decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "ArrayDimensions";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!arrayDimensions_.jsonDecode(*tree, "")) {
+            Log(Error, "StructureField decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "MaxStringLength";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, maxStringLength_)) {
+            Log(Error, "StructureField decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = "IsOptional";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "StructureField decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!JsonNumber::jsonDecode(*tree, isOptional_)) {
+            Log(Error, "StructureField decode json error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
     }
     
     void

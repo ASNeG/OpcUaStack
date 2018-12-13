@@ -138,7 +138,11 @@ namespace OpcUaStackCore
     X509IdentityToken::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) return false;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "X509IdentityToken encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
         pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
@@ -149,7 +153,10 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
-        if (!certificateData_.xmlEncode(elementTree, xmlns)) return false;
+        if (!certificateData_.xmlEncode(elementTree, xmlns)) {
+            Log(Error, "X509IdentityToken encode xml error");
+            return false;
+        }
         pt.push_back(std::make_pair("CertificateData", elementTree));
     
         return true;
@@ -193,23 +200,67 @@ namespace OpcUaStackCore
     bool
     X509IdentityToken::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::property_tree::ptree elementTree;
+        if (!jsonEncode(elementTree)) {
+    	     Log(Error, "X509IdentityToken json encoder error")
+    		     .parameter("Element", element);
+     	     return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
         return true;
     }
     
     bool
     X509IdentityToken::jsonEncode(boost::property_tree::ptree& pt)
     {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if (!certificateData_.jsonEncode(elementTree))
+        {
+    	     Log(Error, "X509IdentityToken json encoder error")
+    		     .parameter("Element", "certificateData_");
+            return false;
+        }
+        pt.push_back(std::make_pair("CertificateData", elementTree));
+    
         return true;
     }
     
     bool
     X509IdentityToken::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
+        boost::optional<boost::property_tree::ptree&> tmpTree;
+    
+        tmpTree = pt.get_child_optional(element);
+        if (!tmpTree) {
+     	     Log(Error, "X509IdentityToken json decoder error")
+    		    .parameter("Element", element);
+    		 return false;
+        }
+        return jsonDecode(*tmpTree);
     }
     
     bool
     X509IdentityToken::jsonDecode(boost::property_tree::ptree& pt)
     {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = "CertificateData";
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "X509IdentityToken decode json error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if (!certificateData_.jsonDecode(*tree)) {
+            Log(Error, "X509IdentityToken decode json error - decode failed")
+                .parameter("Element", "CertificateData");
+            return false;
+        }
+    
+        return true;
     }
     
     void
