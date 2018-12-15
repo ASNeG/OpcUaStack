@@ -205,16 +205,6 @@ namespace OpcUaStackCore
     }
     
     bool
-    UserTokenType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    UserTokenType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
-    bool
     UserTokenType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlEncode(pt, value_, element))

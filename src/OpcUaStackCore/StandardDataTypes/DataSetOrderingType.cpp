@@ -201,16 +201,6 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataSetOrderingType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataSetOrderingType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
-    bool
     DataSetOrderingType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlEncode(pt, value_, element))

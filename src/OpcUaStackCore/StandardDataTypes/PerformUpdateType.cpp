@@ -205,16 +205,6 @@ namespace OpcUaStackCore
     }
     
     bool
-    PerformUpdateType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    PerformUpdateType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
-    bool
     PerformUpdateType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlEncode(pt, value_, element))
