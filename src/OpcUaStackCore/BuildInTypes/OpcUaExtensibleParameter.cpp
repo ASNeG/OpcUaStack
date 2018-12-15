@@ -135,16 +135,6 @@ namespace OpcUaStackCore
     }
 
     bool
-	OpcUaExtensibleParameter::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-
-    bool
-	OpcUaExtensibleParameter::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-
-    bool
 	OpcUaExtensibleParameter::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;

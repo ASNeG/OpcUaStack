@@ -513,23 +513,6 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaNodeIdBase::encode(boost::property_tree::ptree& pt) const
-	{
-		std::string nodeIdString = toString();
-		pt.put_value<std::string>(nodeIdString);
-		return true;
-	}
-
-	bool
-	OpcUaNodeIdBase::decode(boost::property_tree::ptree& pt)
-	{
-		std::string nodeIdString;
-		nodeIdString = pt.get_value<std::string>();
-		if (!fromString(nodeIdString)) return false;
-		return true;
-	}
-
-	bool
 	OpcUaNodeIdBase::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;

@@ -262,36 +262,6 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaDateTime::encode(boost::property_tree::ptree& pt) const
-	{
-		std::string dateTimeString;
-		try
-		{
-			dateTimeString = boost::posix_time::to_iso_extended_string(dateTime());
-		} catch(std::exception&) {
-			return false;
-		}
-		pt.put_value<std::string>(dateTimeString);
-		return true;
-	}
-
-	bool
-	OpcUaDateTime::decode(boost::property_tree::ptree& pt)
-	{
-		std::stringstream ss;
-		std::string dateTimeString = pt.get_value<std::string>();
-
-		boost::posix_time::time_input_facet* facet = new boost::posix_time::time_input_facet();
-		facet->set_iso_extended_format();
-		ss.imbue(std::locale(ss.getloc(), facet));
-		ss.str(dateTimeString);
-		boost::posix_time::ptime timeFromString;
-		ss >> timeFromString;
-		dateTime(timeFromString);
-		return true;
-	}
-
-	bool
 	OpcUaDateTime::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;

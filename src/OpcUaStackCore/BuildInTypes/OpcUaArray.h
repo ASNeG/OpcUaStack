@@ -54,16 +54,6 @@ namespace OpcUaStackCore
 			  ByteOrder<T>::opcUaBinaryDecodeNumberLE(is, value);
 		  }
 
-		  static bool encode(boost::property_tree::ptree& pt, T& value)
-		  {
-			  return Json::encode(pt, value);
-		  }
-
-		  static bool decode(boost::property_tree::ptree& pt, T& value)
-		  {
-			  return Json::decode(pt, value);
-		  }
-
 		  static bool xmlEncode(
 		      boost::property_tree::ptree& pt,
 			  T& value,
@@ -126,16 +116,6 @@ namespace OpcUaStackCore
 		  static void opcUaBinaryDecode(std::istream& is, T& value)
 		  {
 			  value.opcUaBinaryDecode(is);
-		  }
-
-		  static bool encode(boost::property_tree::ptree& pt, T& value)
-		  {
-			  return value.encode(pt);
-		  }
-
-		  static bool decode(boost::property_tree::ptree& pt, T& value)
-		  {
-			  return value.decode(pt);
 		  }
 
 		  static bool xmlEncode(
@@ -202,21 +182,6 @@ namespace OpcUaStackCore
 			  int32_t v = 0;
 			  ByteOrder<int32_t>::opcUaBinaryDecodeNumberLE(is, v);
 			  value = (T)v;
-		  }
-
-		  static bool encode(boost::property_tree::ptree& pt, T& value)
-		  {
-			  int32_t v = value;
-			  pt.put_value(value);
-			  return true;
-		  }
-
-		  static bool decode(boost::property_tree::ptree& pt, T& value)
-		  {
-			  int32_t v = 0;
-			  try { v = pt.get_value<int32_t>(); } catch(...) { return false; }
-			  value = (T)v;
-			  return true;
 		  }
 
 		  static bool xmlEncode(
@@ -288,16 +253,6 @@ namespace OpcUaStackCore
 			  value->opcUaBinaryDecode(is);
 		  }
 
-		  static bool encode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value)
-		  {
-			  return value->encode(pt);
-		  }
-
-		  static bool decode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value)
-		  {
-			  value = constructSPtr<T>();
-			  return value->decode(pt);
-		  }
 		  static bool xmlEncode(
 		      boost::property_tree::ptree& pt,
 			  boost::shared_ptr<T>& value,
@@ -393,9 +348,6 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-
-		bool encode(boost::property_tree::ptree& pt) const;
-		bool decode(boost::property_tree::ptree& pt);
 
 		bool xmlEncode(
 			boost::property_tree::ptree& pt,
@@ -687,37 +639,6 @@ namespace OpcUaStackCore
 			CODER::opcUaBinaryDecode(is, value);
 			push_back(value);
 		}
-	}
-
-	template<typename T, typename CODER>
-	bool
-	OpcUaArray<T, CODER>::encode(boost::property_tree::ptree& pt) const
-	{
-		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
-			boost::property_tree::ptree arrayElement;
-			if (!CODER::encode(arrayElement, valueArray_[idx])) return false;
-			pt.push_back(std::make_pair("", arrayElement));
-		}
-		return true;
-	}
-
-	template<typename T, typename CODER>
-	bool
-	OpcUaArray<T, CODER>::decode(boost::property_tree::ptree& pt)
-	{
-		int32_t arrayLength = 0;
-		arrayLength = pt.size();
-
-		resize(arrayLength);
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
-			boost::property_tree::ptree arrayElement = it->second;
-
-			T value;
-			if (!CODER::decode(arrayElement, value)) return false;
-			push_back(value);
-		}
-		return true;
 	}
 
 	template<typename T, typename CODER>

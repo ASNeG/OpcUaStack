@@ -193,47 +193,6 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaLocalizedText::encode(boost::property_tree::ptree& pt) const
-	{
-		if (locale_.exist()) {
-			boost::property_tree::ptree locale;
-			if (!locale_.encode(locale)) return false;
-			pt.add_child("Locale", locale);
-		}
-
-		if (text_.exist()) {
-			boost::property_tree::ptree text;
-			if (!text_.encode(text)) return false;
-			pt.add_child("Text", text);
-		}
-
-		return true;
-	}
-
-	bool
-	OpcUaLocalizedText::decode(boost::property_tree::ptree& pt)
-	{
-		boost::optional<boost::property_tree::ptree&> locale;
-		locale = pt.get_child_optional("Locale");
-		if (!locale) {
-			// do nothing
-		}
-		else {
-			if (!locale_.decode(*locale)) return false;
-		}
-
-		boost::optional<boost::property_tree::ptree&> text;
-		text = pt.get_child_optional("Text");
-		if (!text) {
-			// do nothing
-		}
-		else {
-			if (!text_.decode(*text)) return false;
-		}
-		return true;
-	}
-
-	bool
 	OpcUaLocalizedText::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;
@@ -249,8 +208,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaLocalizedText::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		pt.put(xmlns.addPrefix("Locale"), locale().toStdString());
-		pt.put(xmlns.addPrefix("Text"), text().toStdString());
+		if (locale_.exist()) {
+			pt.put(xmlns.addPrefix("Locale"), locale().toStdString());
+		}
+		if (text_.exist()) {
+			pt.put(xmlns.addPrefix("Text"), text().toStdString());
+		}
 		return true;
 	}
 
@@ -261,10 +224,7 @@ namespace OpcUaStackCore
 		// name
 		//
 		boost::optional<std::string> localeString = pt.get_optional<std::string>(xmlns.addPrefix("Locale"));
-		if (!localeString) {
-			locale("");
-		}
-		else {
+		if (localeString) {
 			locale(*localeString);
 		}
 
@@ -272,10 +232,7 @@ namespace OpcUaStackCore
 		// text
 		//
 		boost::optional<std::string> textString = pt.get_optional<std::string>(xmlns.addPrefix("Text"));
-		if (!textString) {
-			text("");
-		}
-		else {
+		if (textString) {
 			text(*textString);
 		}
 		return true;

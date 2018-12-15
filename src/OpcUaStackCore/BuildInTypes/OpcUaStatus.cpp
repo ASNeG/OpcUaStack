@@ -194,17 +194,7 @@ namespace OpcUaStackCore
     {
         OpcUaNumber::opcUaBinaryDecode(is, value_);
     }
-    
-    bool
-    OpcUaStatus::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    OpcUaStatus::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
+
     bool
     OpcUaStatus::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
