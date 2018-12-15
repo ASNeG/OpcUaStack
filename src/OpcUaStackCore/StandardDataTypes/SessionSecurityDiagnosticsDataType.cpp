@@ -209,16 +209,6 @@ namespace OpcUaStackCore
     }
     
     bool
-    SessionSecurityDiagnosticsDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    SessionSecurityDiagnosticsDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
-    bool
     SessionSecurityDiagnosticsDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;

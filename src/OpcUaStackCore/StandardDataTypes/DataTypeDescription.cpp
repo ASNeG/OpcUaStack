@@ -132,16 +132,6 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataTypeDescription::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataTypeDescription::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
-    bool
     DataTypeDescription::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;

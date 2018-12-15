@@ -110,16 +110,6 @@ namespace OpcUaStackCore
     }
     
     bool
-    NotificationData::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    NotificationData::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
-    bool
     NotificationData::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;

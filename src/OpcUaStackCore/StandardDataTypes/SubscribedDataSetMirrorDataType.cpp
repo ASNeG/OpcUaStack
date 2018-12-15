@@ -133,16 +133,6 @@ namespace OpcUaStackCore
     }
     
     bool
-    SubscribedDataSetMirrorDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    SubscribedDataSetMirrorDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
-    bool
     SubscribedDataSetMirrorDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;

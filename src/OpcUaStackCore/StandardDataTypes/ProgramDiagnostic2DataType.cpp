@@ -242,16 +242,6 @@ namespace OpcUaStackCore
     }
     
     bool
-    ProgramDiagnostic2DataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ProgramDiagnostic2DataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
-    bool
     ProgramDiagnostic2DataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         boost::property_tree::ptree elementTree;
