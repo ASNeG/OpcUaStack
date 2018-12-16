@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -72,6 +72,7 @@ namespace OpcUaStackServer
 	: maxListSize_(20)
 	, acknowledgementList_()
 	, sequenceNumber_(0)
+	, keepalive_(false)
 	{
 	}
 
@@ -80,8 +81,19 @@ namespace OpcUaStackServer
 	}
 
 	uint32_t
-	AcknowledgementManager::nextSequenceNumber(void)
+	AcknowledgementManager::nextSequenceNumber(bool keepalive)
 	{
+		if (keepalive_) {
+			if (keepalive) return sequenceNumber_;
+			if (!keepalive) {
+				keepalive_ = false;
+				return sequenceNumber_;
+			}
+		}
+		else {
+			if (keepalive) keepalive_ = true;
+		}
+
 		sequenceNumber_++;
 		if (sequenceNumber_ == 0) sequenceNumber_ = 1;
 		return sequenceNumber_;
