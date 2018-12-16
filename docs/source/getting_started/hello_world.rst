@@ -8,21 +8,20 @@ Hello, World of OPC UA!
 
 This is the simplest example of an OPC UA application based on ASNeG OPC UA Stack. 
 The example will help you to understand the basic OPC UA conceptions and make your first OPC UA server.
-Here we are going to make an application outputting a greeting message which will be available from other OPC UA client.
+Here we are going to output a greeting message which will be available from other OPC UA client.
 
 Requirements
 ---------------------------
 
 In order to start this tutorial you need to have the following stuff:
 
-1. Windows or Linux machine with the installed stack (see :doc:`installation <installation>`  if you don't have one) 
+1. Windows or Linux machine with the installed stack (see :doc:`installation <installation>`  if you don't have it yet.) 
 2. A text editor
 3. An OPC UA client to test the app. In the tutorial I will use `OPC UA Expert`_.
 
 
 Creating the application frame
 ------------------------------
-
 At first we need to create the frame of the future application. It is very easy to do with the stack. 
 Just type in your console:
 
@@ -42,7 +41,7 @@ If you look into the folder you can see quite many files, but don't worry. You d
 Information Model
 ---------------------------
 
-Every OPC UA server application provides its data with *Nodes*, which contain some information. 
+Every OPC UA server application provides its data with *Nodes*, which contain some information and have a tree structure. 
 To make a string greeting available for OPC UA clients we must to describe it as a node in *Information Model*. Let's do it!
 
 
@@ -118,7 +117,7 @@ In **HelloWorldNodeSet.xml** we've described our own *namespace* by defining *Na
         <Uri>http://localhost/helloworld/</Uri>
     </NamespaceUris>
 
-It is not necessary for your task that the URI is really exists, but the stack needs it to give our *namespace* a new *namespace index* which will be 1.
+It is not necessary for our task that the URI is really exists, but the stack needs it to give our *namespace* a new *namespace index* which will be 1.
 
 Now we can describe folder **HelloWorldFolder** for our message:
 
@@ -134,7 +133,9 @@ Now we can describe folder **HelloWorldFolder** for our message:
     </UAObject>
 
 In the OPC UA everything (objects, variables, types, methods etc.) is *nodes* and every *node* must be identified by a unique *node ID*. Our **HelloWorldFolder** is an *object* with
-ID "ns=1;i=1", that means it belongs to *namespace* 1 and has *identifier* 1. The next important OPC UA conception is *references*, they describe relations between *nodes*. In our case folder
+ID "ns=1;i=1", that means it belongs to *namespace* 1 and has *identifier* 1. 
+
+The next important OPC UA conception is *references*, they describe relations between *nodes*. In our case folder
 **HelloWorldFolder** is placed on folder *Objects*. This relation is described by the following sting:
 
 .. code-block:: xml
@@ -167,14 +168,117 @@ Now our information model is described and we can see it with an OPC UA client. 
 Building and running
 ---------------------------
 
-In order to make the build process easier ASNeG OPC UA Stack provides scripts for building and installing user applications. 
+In order to make the build process easier ASNeG OPC UA Stack provides scripts for building and installing user applications. We will build and install our application locally:
+
+On Linux:
+
+::
+
+    $ sh build.sh -t local -i path/to/install
+
+On Windows:
+
+::
+
+	$ build.bat -t local -i path\to\install
+
+The application will be built as a shared library and copied with its configuration into the installation directory.
+
+Now got to the directory where you have install the application and run the following command:
+
+On Linux:
+
+::
+
+    $ export LD_LIBRARY_PATH=./usr/lib/
+    $ OpcUaServer3 ./etc/OpcUaStack/helloworld/OpcUaServer.xml 
+
+
+On Windows:
+
+::
+
+    $ set PATH=%PATH%;\path\to\insstall\usr\lib\
+    $ OpcUaServer3 etc\OpcUaStack\helloworld\OpcUaServer.xml 
+
+
+We need to determine, where the shared library is, by using the environment variable only when we install the app locally. 
+You can build a DEB, RPM or MSI packet to distribute our applications as services. 
+
+Testing with OPC UA Client
+---------------------------
+
+So far our application does nothing but we can see its structure in OPC UA client. Make sure that the application is running and launch
+`OPC UA Expert`_. Click on *Server->Add* and add the server with URI **opc.tcp://127.0.0.1:8888**. You should see:
+ 
+.. figure:: add_new_server.png
+   :scale: 50 %   
+   :alt: add a new OPC UA server
+
+Click on security policy **None** and connect to the server. Then drop node *GreetingString* onto *Data Access View*. Now our should see the following view:
+
+.. figure:: data_access_view_1.png
+   :scale: 50 %   
+   :alt: Data Access View
+
+If you are new at OPC UA technology it could be very useful to take some time discovering the application and comparing the information from the client
+with **HelloWorldNodeSet.xml** and **HelloWorldNodeSet.xml** files. 
 
 Hello, World!
 ---------------------------
 
+Now we can make our application do something "useful". Open file **src/helloworld/Library/Library.cpp** and place the following code to method *startup*:
 
-Testing with OPC UA Client
----------------------------
+.. code-block:: cpp
+
+	bool
+	Library::startup(void)
+	{
+		Log(Debug, "Library::startup");
+
+		ServiceTransactionGetNodeReference::SPtr trx = constructSPtr<ServiceTransactionGetNodeReference>();
+		GetNodeReferenceRequest::SPtr req = trx->request();
+		GetNodeReferenceResponse::SPtr res = trx->response();
+
+		OpcUaNodeIdArray::SPtr nodeIds = constructSPtr<OpcUaNodeIdArray>();
+		nodeIds->resize(1);
+		OpcUaNodeId::SPtr greetingStringNodeId = constructSPtr<OpcUaNodeId>();
+		greetingStringNodeId->set(222, 1);
+
+		nodeIds->push_back(greetingStringNodeId);
+		req->nodes(nodeIds);
+
+		this->service().sendSync(trx);
+		if (trx->statusCode() != Success) {
+			Log(Error, "response error");
+			return false;
+		}
+
+		NodeReference::SPtr greetingStringRef;
+		trx->response()->nodeReferenceArray()->get(0, greetingStringRef);
+		if (greetingStringRef->statusCode() != Success) {
+			Log(Error, "reference error");
+			return false;
+		}
+
+  		auto greetingStringApplicationRef = boost::static_pointer_cast<NodeReferenceApplication>(greetingStringRef);
+  		BaseNodeClass::WPtr greetingStringNode = greetingStringApplicationRef->baseNodeClass();
+
+  		auto greetingStringVar = boost::static_pointer_cast<VariableNodeClass>(greetingStringNode.lock());
+  		if (!greetingStringVar) {
+			Log(Error, "pointer error");
+			return false;
+  		}
+
+  		OpcUaDataValue dataValue;
+  		dataValue.statusCode(Success);
+  		dataValue.sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+  		dataValue.serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+  		dataValue.variant()->setValue(OpcUaString("Hello, World!"));
+  		greetingStringVar->setValue(dataValue);
+
+		return true;
+	}
 
 
 References
