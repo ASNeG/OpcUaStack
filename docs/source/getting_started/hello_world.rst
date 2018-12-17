@@ -187,7 +187,7 @@ On Linux:
 
 ::
 
-    $ export LD_LIBRARY_PATH=./usr/lib/
+    $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:path/to/install/usr/lib/
     $ OpcUaServer3 ./etc/OpcUaStack/helloworld/OpcUaServer.xml 
 
 
