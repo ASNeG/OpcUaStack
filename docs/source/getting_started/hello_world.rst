@@ -31,18 +31,17 @@ Just type in your console:
 
 The builder has created a C++ project in folder **helloworld**, which is ready to be compiled and run as an OPC UA server on 8888 TCP\\IP port.
 
-
-If you look into the folder you can see quite many files, but don't worry. You don't need to touch most of them. For our goal we need only three:
+If you look inside the folder you can see quite many files, but don't worry. You don't need to touch most of them. For our goal we need only two:
 
 * **src/helloworld/Config/OpcUaServer.xml** - configuration of the server
-* **src/helloworld/Library/Library.cpp** and **Library.h**  - source code of the user application
+* **src/helloworld/Library/Library.cpp** - source code of the user application
 
 
 Information Model
 ---------------------------
 
 Every OPC UA server application provides its data with *Nodes*, which contain some information and have a tree structure. 
-To make a string greeting available for OPC UA clients we must to describe it as a node in *Information Model*. Let's do it!
+To make a greeting string available for OPC UA clients we must to describe it as a node in *Information Model*. Let's do it!
 
 
 Create a file with name **HelloWorldNodeSet.xml** in directory **src/helloworld/Config** and copy there the following text in XML format:
@@ -104,7 +103,6 @@ Now we must include our node set to the information model of the application in 
 This might seem quite complicated, but actually you won't need to make your XML node sets manually. You can use our `OPC UA Designer`_ to make this process easier. 
 However we do everything ourselves, so that we can learn some basic OPC UA conceptions. If you are already familiar to the protocol, just skip the rest of the section. 
 
-
 *OPC UA Information* model is split into *namespaces*. Each of them must have its *namespace index*. Index 0 is reserved for the OPC UA standard namespace, where all standard types are described. 
 In our application it is stored in **Opc.Ua.NodeSet.xml**. The application can't work without it, so we need to include this file in our configuration. 
 
@@ -135,7 +133,7 @@ Now we can describe folder **HelloWorldFolder** for our message:
 In the OPC UA everything (objects, variables, types, methods etc.) is *nodes* and every *node* must be identified by a unique *node ID*. Our **HelloWorldFolder** is an *object* with
 ID "ns=1;i=1", that means it belongs to *namespace* 1 and has *identifier* 1. 
 
-The next important OPC UA conception is *references*, they describe relations between *nodes*. In our case folder
+The next important OPC UA conception is *references*, they describe relationships between *nodes*. In our case folder
 **HelloWorldFolder** is placed on folder *Objects*. This relation is described by the following sting:
 
 .. code-block:: xml
@@ -160,10 +158,9 @@ In our application **HelloWorldFolder** is just a container for **GreetingString
         </Value>
     </UAVariable>
 
-As you can see from the XML snippet, the main difference between *objects* and *variables* is, that the *variables* have values. Variable **GreatingString** has value of type string (ns=0,i=12) with default
-value *Ehmm* and placed in on **HelloWorldFolder** (ns=1;i=1)
+As you can see from the XML snippet, the main difference between *objects* and *variables* is, that the *variables* have values. Variable **GreatingString** has value of type string (ns=0,i=12) with default value *Ehmm* and placed in on **HelloWorldFolder** (ns=1;i=1)
 
-Now our information model is described and we can see it with an OPC UA client. But we need to compile and launch the application before.
+Now our information model is described completely and we can see it with an OPC UA client. But we need to compile and launch the application before.
 
 Building and running
 ---------------------------
@@ -227,63 +224,128 @@ with **HelloWorldNodeSet.xml** and **HelloWorldNodeSet.xml** files.
 Hello, World!
 ---------------------------
 
-Now we can make our application do something "useful". Open file **src/helloworld/Library/Library.cpp** and place the following code to method *startup*:
+Now we can make our application do something "useful". Open file **src/helloworld/Library/Library.cpp** and place the following code to method **startup**:
 
 .. code-block:: cpp
 
-	bool
-	Library::startup(void)
-	{
-		Log(Debug, "Library::startup");
+    bool
+    Library::startup(void)
+    {
+        Log(Debug, "Library::startup");
 
-		ServiceTransactionGetNodeReference::SPtr trx = constructSPtr<ServiceTransactionGetNodeReference>();
-		GetNodeReferenceRequest::SPtr req = trx->request();
-		GetNodeReferenceResponse::SPtr res = trx->response();
+        ServiceTransactionGetNodeReference::SPtr trx = constructSPtr<ServiceTransactionGetNodeReference>();
+        GetNodeReferenceRequest::SPtr req = trx->request();
+        GetNodeReferenceResponse::SPtr res = trx->response();
 
-		OpcUaNodeIdArray::SPtr nodeIds = constructSPtr<OpcUaNodeIdArray>();
-		nodeIds->resize(1);
-		OpcUaNodeId::SPtr greetingStringNodeId = constructSPtr<OpcUaNodeId>();
-		greetingStringNodeId->set(222, 1);
+        OpcUaNodeIdArray::SPtr nodeIds = constructSPtr<OpcUaNodeIdArray>();
+        nodeIds->resize(1);
+        OpcUaNodeId::SPtr greetingStringNodeId = constructSPtr<OpcUaNodeId>();
+        greetingStringNodeId->set(222, 1);
 
-		nodeIds->push_back(greetingStringNodeId);
-		req->nodes(nodeIds);
+        nodeIds->push_back(greetingStringNodeId);
+        req->nodes(nodeIds);
 
-		this->service().sendSync(trx);
-		if (trx->statusCode() != Success) {
-			Log(Error, "response error");
-			return false;
-		}
+        this->service().sendSync(trx);
+        if (trx->statusCode() != Success) {
+            Log(Error, "response error");
+            return false;
+        }
 
-		NodeReference::SPtr greetingStringRef;
-		trx->response()->nodeReferenceArray()->get(0, greetingStringRef);
-		if (greetingStringRef->statusCode() != Success) {
-			Log(Error, "reference error");
-			return false;
-		}
+        NodeReference::SPtr greetingStringRef;
+        trx->response()->nodeReferenceArray()->get(0, greetingStringRef);
+        if (greetingStringRef->statusCode() != Success) {
+            Log(Error, "reference error");
+            return false;
+        }
 
-  		auto greetingStringApplicationRef = boost::static_pointer_cast<NodeReferenceApplication>(greetingStringRef);
-  		BaseNodeClass::WPtr greetingStringNode = greetingStringApplicationRef->baseNodeClass();
+        auto greetingStringApplicationRef = boost::static_pointer_cast<NodeReferenceApplication>(greetingStringRef);
+        BaseNodeClass::WPtr greetingStringNode = greetingStringApplicationRef->baseNodeClass();
 
-  		auto greetingStringVar = boost::static_pointer_cast<VariableNodeClass>(greetingStringNode.lock());
-  		if (!greetingStringVar) {
-			Log(Error, "pointer error");
-			return false;
-  		}
+        auto greetingStringVar = boost::static_pointer_cast<VariableNodeClass>(greetingStringNode.lock());
+        if (!greetingStringVar) {
+            Log(Error, "pointer error");
+            return false;
+        }
 
-  		OpcUaDataValue dataValue;
-  		dataValue.statusCode(Success);
-  		dataValue.sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
-  		dataValue.serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
-  		dataValue.variant()->setValue(OpcUaString("Hello, World!"));
-  		greetingStringVar->setValue(dataValue);
+        OpcUaDataValue dataValue;
+        dataValue.statusCode(Success);
+        dataValue.sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+        dataValue.serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+        dataValue.variant()->setValue(OpcUaString("Hello, World!"));
+        greetingStringVar->setValue(dataValue);
 
-		return true;
-	}
+        return true;
+    }
 
+There is a pretty big amount of code, but it is not so complicated as looks. The communication between a user application and the stack based on the transaction model. So we need to create
+transaction and initialize the request. Pay attention that we use the same *node ID* of the greeting string that we've described in **HelloWorldNodeSet.xml**. 
+
+.. code-block:: cpp
+
+    ServiceTransactionGetNodeReference::SPtr trx = constructSPtr<ServiceTransactionGetNodeReference>();
+    GetNodeReferenceRequest::SPtr req = trx->request();
+    GetNodeReferenceResponse::SPtr res = trx->response();
+
+    OpcUaNodeIdArray::SPtr nodeIds = constructSPtr<OpcUaNodeIdArray>();
+    nodeIds->resize(1);
+    OpcUaNodeId::SPtr greetingStringNodeId = constructSPtr<OpcUaNodeId>();
+    greetingStringNodeId->set(222, 1);
+
+    nodeIds->push_back(greetingStringNodeId);
+    req->nodes(nodeIds);
+
+Then we must send the transaction to the stack and extract from the response our greeting string as a *variable node*:
+
+.. code-block:: cpp
+
+    this->service().sendSync(trx);
+    if (trx->statusCode() != Success) {
+        Log(Error, "response error");
+        return false;
+    }
+
+    NodeReference::SPtr greetingStringRef;
+    trx->response()->nodeReferenceArray()->get(0, greetingStringRef);
+    if (greetingStringRef->statusCode() != Success) {
+        Log(Error, "reference error");
+        return false;
+    }
+
+    auto greetingStringApplicationRef = boost::static_pointer_cast<NodeReferenceApplication>(greetingStringRef);
+    BaseNodeClass::WPtr greetingStringNode = greetingStringApplicationRef->baseNodeClass();
+
+    auto greetingStringVar = boost::static_pointer_cast<VariableNodeClass>(greetingStringNode.lock());
+    if (!greetingStringVar) {
+        Log(Error, "pointer error");
+        return false;
+    }
+
+
+The last step is to write new value "Hello, World!" to the string:
+
+.. code-block:: cpp
+
+    OpcUaDataValue dataValue;
+    dataValue.statusCode(Success);
+    dataValue.sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+    dataValue.serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+    dataValue.variant()->setValue(OpcUaString("Hello, World!"));
+
+    greetingStringVar->setValue(dataValue);
+
+OPC UA variables contain not only values, but much more additional information. The *status code* provides information about the quality of the data. If it is not **Success** the client
+can't trust the value of the variable. 
+
+Now we can see the message with the client. Rebuild the application and connect with the client to it. 
 
 References
 ---------------------------
- 
+
+* :doc:`installation <Installation Guide>`
+* `OPC UA Designer`_
+* `OPC UA Expert`_
+
+
 .. _OPC UA Expert: https://www.unified-automation.com/products/development-tools/uaexpert.html
 .. _OPC UA Designer: https://github.com/ASNeG/OpcUaDesigner
 
