@@ -31,6 +31,14 @@
 namespace OpcUaStackCore
 {
 
+	class DLLEXPORT OpcUaNullValue
+	{
+	  public:
+		OpcUaNullValue(void) {}
+		~OpcUaNullValue(void) {}
+	};
+
+
 	class DLLEXPORT OpcUaDataValue
 	: public Object
 	{
@@ -39,6 +47,27 @@ namespace OpcUaStackCore
 		typedef std::vector<OpcUaDataValue::SPtr> Vec;
 
 	    OpcUaDataValue(void);
+	    OpcUaDataValue(const OpcUaNullValue& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaBoolean& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaByte& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaSByte& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaInt16& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaUInt16& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaInt32& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaUInt32& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaInt64& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaUInt64& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaString& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaDateTime& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaGuid& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaByteString& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaXmlElement& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaNodeId& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaExpandedNodeId& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaStatusCode& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaQualifiedName& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaLocalizedText& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    OpcUaDataValue(const OpcUaExtensionObject& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 		~OpcUaDataValue(void);
 
 		bool exist(void);
@@ -55,6 +84,71 @@ namespace OpcUaStackCore
 		void serverPicoseconds(const OpcUaUInt16& serverPicoseconds);
 		OpcUaInt16 serverPicoseconds(void);
 		void reset(void);
+
+	    bool setValue(const OpcUaNullValue& value);
+	    bool setValue(const OpcUaBoolean& value);
+	    bool setValue(const OpcUaByte& value);
+	    bool setValue(const OpcUaSByte& value);
+	    bool setValue(const OpcUaInt16& value);
+	    bool setValue(const OpcUaUInt16& value);
+	    bool setValue(const OpcUaInt32& value);
+	    bool setValue(const OpcUaUInt32& value);
+	    bool setValue(const OpcUaInt64& value);
+	    bool setValue(const OpcUaUInt64& value);
+	    bool setValue(const OpcUaString& value);
+	    bool setValue(const OpcUaDateTime& value);
+	    bool setValue(const OpcUaGuid& value);
+	    bool setValue(const OpcUaByteString& value);
+	    bool setValue(const OpcUaXmlElement& value);
+	    bool setValue(const OpcUaNodeId& value);
+	    bool setValue(const OpcUaExpandedNodeId& value);
+	    bool setValue(const OpcUaStatusCode& value);
+	    bool setValue(const OpcUaQualifiedName& value);
+	    bool setValue(const OpcUaLocalizedText& value);
+	    bool setValue(const OpcUaExtensionObject& value);
+
+	    bool getValue(OpcUaBoolean& value);
+	    bool getValue(OpcUaByte& value);
+	    bool getValue(OpcUaSByte& value);
+	    bool getValue(OpcUaInt16& value);
+	    bool getValue(OpcUaUInt16& value);
+	    bool getValue(OpcUaInt32& value);
+	    bool getValue(OpcUaUInt32& value);
+	    bool getValue(OpcUaInt64& value);
+	    bool getValue(OpcUaUInt64& value);
+	    bool getValue(OpcUaString& value);
+	    bool getValue(OpcUaDateTime& value);
+	    bool getValue(OpcUaGuid& value);
+	    bool getValue(OpcUaByteString& value);
+	    bool getValue(OpcUaXmlElement& value);
+	    bool getValue(OpcUaNodeId& value);
+	    bool getValue(OpcUaExpandedNodeId& value);
+	    bool getValue(OpcUaStatusCode& value);
+	    bool getValue(OpcUaQualifiedName& value);
+	    bool getValue(OpcUaLocalizedText& value);
+	    bool getValue(OpcUaExtensionObject& value);
+
+	    void set(const OpcUaNullValue& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaBoolean& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaByte& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaSByte& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaInt16& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaUInt16& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaInt32& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaUInt32& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaInt64& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaUInt64& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaString& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaDateTime& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaGuid& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaByteString& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaXmlElement& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaNodeId& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaExpandedNodeId& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaStatusCode& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaQualifiedName& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaLocalizedText& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+	    void set(const OpcUaExtensionObject& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 
 		void copyFrom(OpcUaDataValue& dataValue);
 		void copyTo(OpcUaDataValue& dataValue);
