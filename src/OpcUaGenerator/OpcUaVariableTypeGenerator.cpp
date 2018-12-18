@@ -290,7 +290,7 @@ namespace OpcUaVariableTypeGenerator
 	int32_t
 	OpcUaVariableTypeGenerator::buildAllSubTypes(void)
 	{
-		// load inforomation model
+		// load information model
 		int32_t rc = loadInformationModel();
 		if (rc < 0) {
 			return rc;
