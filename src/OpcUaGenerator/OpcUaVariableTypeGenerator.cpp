@@ -38,13 +38,13 @@ namespace OpcUaVariableTypeGenerator
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaVariableTypeGenerator::OpcUaVariableTypeGenerator(void)
-	: dataTypeNodeId_(0)
+	: variableTypeNodeId_(0)
 	, informationModel_()
 	, fileNames_()
-	, dataTypeName_("")
+	, variableTypeName_("")
 	, namespaces_()
 	, buildSubTypes_(false)
-	, dataTypeNameVec_()
+	, variableTypeNameVec_()
 	, ignoreVariableTypeNameVec_()
 	{
 	}
@@ -122,7 +122,7 @@ namespace OpcUaVariableTypeGenerator
 			fileNames_ = vm["nodeset"].as< std::vector<std::string> >();
 		}
 
-		dataTypeName_ = vm["datatype"].as<std::string>();
+		variableTypeName_ = vm["datatype"].as<std::string>();
 		if (vm.count("namespaces") != 0) {
 			namespaces_ = vm["namespaces"].as< std::vector<std::string> >();
 		}
@@ -136,7 +136,7 @@ namespace OpcUaVariableTypeGenerator
 		}
 
 		// ignore structure data type
-		if (dataTypeName_ == "VariableTypes") {
+		if (variableTypeName_ == "VariableTypes") {
 			return 1;
 		}
 
@@ -170,7 +170,7 @@ namespace OpcUaVariableTypeGenerator
 
 		// check browse name
 		if (browseName.name().toStdString() == eventTypeName) {
-			dataTypeNodeId_ = nodeId;
+			variableTypeNodeId_ = nodeId;
 			return true;
 		}
 
@@ -244,15 +244,15 @@ namespace OpcUaVariableTypeGenerator
 		// check data type name
 		std::vector<std::string>::iterator it;
 		for (it=ignoreVariableTypeNameVec_.begin(); it!=ignoreVariableTypeNameVec_.end(); it++) {
-			if (*it == dataTypeName_) {
+			if (*it == variableTypeName_) {
 				return 0;
 			}
 		}
 
 		// find node id for data type name
-		dataTypeNodeId_.set(0,0);
-		if (!findNodeId(dataTypeName_, OpcUaNodeId(22))) {
-			std::cout << "node id not found for data type " << dataTypeName_ << std::endl;
+		variableTypeNodeId_.set(0,0);
+		if (!findNodeId(variableTypeName_, OpcUaNodeId(89))) {
+			std::cout << "node id not found for data type " << variableTypeName_ << std::endl;
 			return -3;
 		}
 
@@ -262,8 +262,8 @@ namespace OpcUaVariableTypeGenerator
 			dataTypeGenerator.setNamespaceEntry(*it);
 		}
 		dataTypeGenerator.informationModel(informationModel_);
-		if (!dataTypeGenerator.generate(dataTypeNodeId_)) {
-			std::cout << "source code generator error - " << dataTypeName_ << std::endl;
+		if (!dataTypeGenerator.generate(variableTypeNodeId_)) {
+			std::cout << "source code generator error - " << variableTypeName_ << std::endl;
 			return -4;
 		}
 
@@ -272,13 +272,13 @@ namespace OpcUaVariableTypeGenerator
 		std::string sourceContent = dataTypeGenerator.sourceContent();
 		std::string headerContent = dataTypeGenerator.headerContent();
 
-		std::string headerFileName = dataTypeName_ + ".h";
+		std::string headerFileName = variableTypeName_ + ".h";
 		boost::filesystem::remove(headerFileName);
 		ofStream.open(headerFileName, std::ios::out);
 		ofStream << headerContent;
 		ofStream.close();
 
-		std::string sourceFileName = dataTypeName_ + ".cpp";
+		std::string sourceFileName = variableTypeName_ + ".cpp";
 		boost::filesystem::remove(sourceFileName);
 		ofStream.open(sourceFileName, std::ios::out);
 		ofStream << sourceContent;
@@ -296,25 +296,25 @@ namespace OpcUaVariableTypeGenerator
 			return rc;
 		}
 
-		// find node id for data type name
-		dataTypeNodeId_.set(0,0);
-		if (!findNodeId(dataTypeName_, OpcUaNodeId(22))) {
-			std::cout << "node id not found for data type " << dataTypeName_ << std::endl;
+		// find node id for variable type name
+		variableTypeNodeId_.set(0,0);
+		if (!findNodeId(variableTypeName_, OpcUaNodeId(89))) {
+			std::cout << "node id not found for variable type " << variableTypeName_ << std::endl;
 			return -3;
 		}
 
 		// find all sub types
-		if (findAllSubTypes(dataTypeNodeId_) < 0) {
+		if (findAllSubTypes(variableTypeNodeId_) < 0) {
 			return -4;
 		}
 
 		// create source
 		std::vector<std::string>::iterator it;
-		for (it = dataTypeNameVec_.begin(); it != dataTypeNameVec_.end(); it++) {
-			dataTypeName_ = *it;
+		for (it = variableTypeNameVec_.begin(); it != variableTypeNameVec_.end(); it++) {
+			variableTypeName_ = *it;
 
 			// ignore structure data type
-			if (dataTypeName_ == "Structure") {
+			if (variableTypeName_ == "VariableTypes") {
 				continue;
 			}
 
@@ -342,8 +342,8 @@ namespace OpcUaVariableTypeGenerator
 			return false;
 		}
 
-		if (browseName.name().toStdString() != "BaseVariableType") {
-			dataTypeNameVec_.push_back(browseName.name().toStdString());
+		if (browseName.name().toStdString() != "VariableTypes") {
+			variableTypeNameVec_.push_back(browseName.name().toStdString());
 		}
 
 		// find subtype childs

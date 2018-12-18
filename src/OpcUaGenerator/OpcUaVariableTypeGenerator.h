@@ -37,19 +37,19 @@ namespace OpcUaVariableTypeGenerator
 
 	  private:
 		std::vector<std::string> fileNames_;
-		std::string dataTypeName_;
+		std::string variableTypeName_;
 		std::vector<std::string> namespaces_;
 		bool buildSubTypes_;
 		std::vector<std::string> ignoreVariableTypeNameVec_;
-		std::vector<std::string> dataTypeNameVec_;
+		std::vector<std::string> variableTypeNameVec_;
 		InformationModel::SPtr informationModel_;
-		OpcUaNodeId dataTypeNodeId_;
+		OpcUaNodeId variableTypeNodeId_;
 
 		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
 		int32_t loadInformationModel(void);
 		int32_t generateVariableTypeSource(void);
 		int32_t buildAllSubTypes(void);
-		int32_t findAllSubTypes(const OpcUaNodeId& eventTypeNodeId);
+		int32_t findAllSubTypes(const OpcUaNodeId& variableTypeNodeId);
 	};
 
 }
