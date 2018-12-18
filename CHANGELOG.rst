@@ -21,6 +21,7 @@ Release 3.6.0
 
 **Features**:
 
+* Access to variables in DataValue class is cumbersome #60, by @huebl
 * add options for *build.bat* to set install path, stack location and VS version #33, by @flipback
 * implement MSI distribution for the stack and user applications #14, @flipback
 * implement RPM distribution for the stack and user applications #1333, @flipback
@@ -30,6 +31,11 @@ Release 3.6.0
 * fix too specific params of *build.bat* #16, by @flipback
 * fix OpenSSL-1.1 compatibility in test compilation #46, by @flipback
 
+**Documentation**:
+
+* init Shinx documentations and add 'Hello, World' example #61, by @flipback
+
+
 Release 3.5.2
 ------------------------------------------------------------
 
@@ -38,8 +44,6 @@ Release 3.5.2
 **Bugs**:
 
 * Error "Unexpected SequenceNumber" #57, by @huebl
-
-
 
 
 Release 3.5.1 (2018-11-11)
