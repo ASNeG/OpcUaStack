@@ -241,6 +241,15 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_copyTo_string)
 	BOOST_REQUIRE(value2.serverPicoseconds() == 5678);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_constructor)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	OpcUaDataValue value1(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	OpcUaDataValue value2(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	BOOST_REQUIRE(value1 == value2);
+}
+
 #if 0
 BOOST_AUTO_TEST_CASE(OpcUaDataValue_string_array_with_timestamp)
 {
