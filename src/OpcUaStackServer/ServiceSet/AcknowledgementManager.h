@@ -56,7 +56,7 @@ namespace OpcUaStackServer
 		AcknowledgementManager(void);
 		~AcknowledgementManager(void);
 
-		uint32_t nextSequenceNumber(void);
+		uint32_t nextSequenceNumber(bool keepalive = false);
 		uint32_t actSequenceNumber(void);
 
 		uint32_t size(void);
@@ -82,6 +82,7 @@ namespace OpcUaStackServer
 		);
 
 	  private:
+		bool keepalive_;
 		uint32_t maxListSize_;
 		uint32_t sequenceNumber_;
 		AcknowledgementList acknowledgementList_;

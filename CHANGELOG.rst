@@ -30,6 +30,17 @@ Release 3.6.0
 * fix too specific params of *build.bat* #16, by @flipback
 * fix OpenSSL-1.1 compatibility in test compilation #46, by @flipback
 
+Release 3.5.2
+------------------------------------------------------------
+
+**Features**:
+
+**Bugs**:
+
+* Error "Unexpected SequenceNumber" #57, by @huebl
+
+
+
 
 Release 3.5.1 (2018-11-11)
 -----------------------------------------------------------

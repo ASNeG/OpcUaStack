@@ -209,7 +209,7 @@ namespace OpcUaStackServer
 		PublishResponse::SPtr publishResponse = trx->response();
 		ServiceTransaction::SPtr serviceTransaction = trx;
 
-		uint32_t sequencenumber = acknowledgementManager_.actSequenceNumber();
+		uint32_t sequencenumber = acknowledgementManager_.nextSequenceNumber(true);
 
 		publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
 		publishResponse->notificationMessage()->sequenceNumber() = sequencenumber;
