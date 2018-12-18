@@ -269,6 +269,14 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_setValue_getValue)
 	OpcUaString str;
 	BOOST_REQUIRE(value.getValue(str) == true);
 	BOOST_REQUIRE(str == OpcUaString("Dies ist ein TestString"));
+
+	// get value from invalid type
+	OpcUaGuid guid;
+	BOOST_REQUIRE(value.getValue(guid) == false);
+
+	// get value from empty variable
+	OpcUaDataValue value1;
+	BOOST_REQUIRE(value1.getValue(guid) == false);
 }
 
 #if 0
