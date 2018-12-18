@@ -421,6 +421,175 @@ namespace OpcUaStackCore
 		serverPicoseconds_ = 0;
 	}
 
+    void
+	OpcUaDataValue::set(const OpcUaNullValue& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	opcUaVariantSPtr_.reset();
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaBoolean& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaByte& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaSByte& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaInt16& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaUInt16& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaInt32& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaUInt32& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaInt64& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaUInt64& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaString& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaDateTime& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaGuid& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaByteString& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaXmlElement& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaNodeId& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaExpandedNodeId& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaStatusCode& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaQualifiedName& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaLocalizedText& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+    void
+	OpcUaDataValue::set(const OpcUaExtensionObject& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+    {
+    	variant()->setValue(value);
+    	opcUaStatusCode_ = statusCode;
+    	sourceTimestamp_ = sourceTimestamp;
+    }
+
+
 	void 
 	OpcUaDataValue::out(std::ostream& os) const
 	{
