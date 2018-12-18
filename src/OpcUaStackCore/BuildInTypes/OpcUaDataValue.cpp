@@ -424,147 +424,147 @@ namespace OpcUaStackCore
     bool
 	OpcUaDataValue::setValue(const OpcUaNullValue& value)
     {
-    	// FIXME: todo
+    	opcUaVariantSPtr_.reset();
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaBoolean& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaByte& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaSByte& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaInt16& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaUInt16& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaInt32& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaUInt32& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaInt64& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaUInt64& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaString& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaDateTime& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaGuid& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaByteString& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaXmlElement& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaNodeId& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaExpandedNodeId& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaStatusCode& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaQualifiedName& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaLocalizedText& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
     bool
 	OpcUaDataValue::setValue(const OpcUaExtensionObject& value)
     {
-    	// FIXME: todo
+    	variant()->setValue(value);
     	return true;
     }
 
