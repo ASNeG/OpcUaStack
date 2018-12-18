@@ -39,10 +39,10 @@ namespace OpcUaStackCore
 	{
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaNullValue& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaNullValue& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -50,22 +50,10 @@ namespace OpcUaStackCore
 	{
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaBoolean& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaBoolean& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
-	, sourceTimestamp_()
-	, sourcePicoseconds_(0)
-	, serverTimestamp_()
-	, serverPicoseconds_(0)
-	{
-		variant()->setValue(value);
-	}
-
-	OpcUaDataValue::OpcUaDataValue(const OpcUaByte& value)
-	:  Object()
-	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -74,10 +62,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaSByte& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaByte& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -86,10 +74,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaInt16& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaSByte& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -98,10 +86,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaUInt16& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaInt16& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -110,10 +98,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaInt32& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaUInt16& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -122,10 +110,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaUInt32& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaInt32& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -134,10 +122,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaInt64& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaUInt32& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -146,10 +134,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaUInt64& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaInt64& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -158,10 +146,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaString& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaUInt64& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -170,10 +158,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaDateTime& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaString& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -182,10 +170,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaGuid& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaDateTime& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -194,10 +182,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaByteString& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaGuid& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -206,10 +194,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaXmlElement& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaByteString& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -218,10 +206,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaNodeId& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaXmlElement& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -230,10 +218,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaExpandedNodeId& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaNodeId& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -242,10 +230,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaStatusCode& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaExpandedNodeId& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -254,10 +242,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaQualifiedName& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaStatusCode& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -266,10 +254,10 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaLocalizedText& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaQualifiedName& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
@@ -278,10 +266,22 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
-	OpcUaDataValue::OpcUaDataValue(const OpcUaExtensionObject& value)
+	OpcUaDataValue::OpcUaDataValue(const OpcUaLocalizedText& value, OpcUaStatusCode statusCode)
 	:  Object()
 	, opcUaVariantSPtr_()
-	, opcUaStatusCode_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_()
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+		variant()->setValue(value);
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const OpcUaExtensionObject& value, OpcUaStatusCode statusCode)
+	:  Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_()
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
