@@ -571,141 +571,181 @@ namespace OpcUaStackCore
     bool
 	OpcUaDataValue::getValue(OpcUaBoolean& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaByte& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaSByte& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaInt16& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaUInt16& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaInt32& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaUInt32& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaInt64& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaUInt64& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaString& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaDateTime& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaGuid& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaByteString& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaXmlElement& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaNodeId& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaExpandedNodeId& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaStatusCode& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaQualifiedName& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaLocalizedText& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaExtensionObject& value)
     {
-    	// FIXME: todo
-    	return true;
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
     }
 
 

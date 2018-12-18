@@ -260,6 +260,17 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_set)
 	BOOST_REQUIRE(value1 == value2);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_setValue_getValue)
+{
+	OpcUaDataValue value;
+	value.setValue(OpcUaString("Dies ist ein TestString"));
+
+	// get opc ua string
+	OpcUaString str;
+	BOOST_REQUIRE(value.getValue(str) == true);
+	BOOST_REQUIRE(str == OpcUaString("Dies ist ein TestString"));
+}
+
 #if 0
 BOOST_AUTO_TEST_CASE(OpcUaDataValue_string_array_with_timestamp)
 {
