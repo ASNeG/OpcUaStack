@@ -421,6 +421,294 @@ namespace OpcUaStackCore
 		serverPicoseconds_ = 0;
 	}
 
+    bool
+	OpcUaDataValue::setValue(const OpcUaNullValue& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaBoolean& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaByte& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaSByte& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaInt16& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaUInt16& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaInt32& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaUInt32& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaInt64& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaUInt64& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaString& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaDateTime& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaGuid& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaByteString& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaXmlElement& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaNodeId& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaExpandedNodeId& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaStatusCode& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaQualifiedName& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaLocalizedText& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaExtensionObject& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaBoolean& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaByte& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaSByte& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaInt16& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaUInt16& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaInt32& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaUInt32& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaInt64& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaUInt64& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaString& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaDateTime& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaGuid& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaByteString& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaXmlElement& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaNodeId& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaExpandedNodeId& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaStatusCode& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaQualifiedName& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaLocalizedText& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaExtensionObject& value)
+    {
+    	// FIXME: todo
+    	return true;
+    }
+
+
     void
 	OpcUaDataValue::set(const OpcUaNullValue& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
     {
