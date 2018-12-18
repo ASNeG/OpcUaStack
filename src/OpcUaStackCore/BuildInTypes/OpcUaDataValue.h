@@ -31,6 +31,14 @@
 namespace OpcUaStackCore
 {
 
+	class DLLEXPORT OpcUaNullValue
+	{
+	  public:
+		OpcUaNullValue(void) {}
+		~OpcUaNullValue(void) {}
+	};
+
+
 	class DLLEXPORT OpcUaDataValue
 	: public Object
 	{
@@ -39,6 +47,27 @@ namespace OpcUaStackCore
 		typedef std::vector<OpcUaDataValue::SPtr> Vec;
 
 	    OpcUaDataValue(void);
+	    OpcUaDataValue(const OpcUaNullValue& value);
+	    OpcUaDataValue(const OpcUaBoolean& value);
+	    OpcUaDataValue(const OpcUaByte& value);
+	    OpcUaDataValue(const OpcUaSByte& value);
+	    OpcUaDataValue(const OpcUaInt16& value);
+	    OpcUaDataValue(const OpcUaUInt16& value);
+	    OpcUaDataValue(const OpcUaInt32& value);
+	    OpcUaDataValue(const OpcUaUInt32& value);
+	    OpcUaDataValue(const OpcUaInt64& value);
+	    OpcUaDataValue(const OpcUaUInt64& value);
+	    OpcUaDataValue(const OpcUaString& value);
+	    OpcUaDataValue(const OpcUaDateTime& value);
+	    OpcUaDataValue(const OpcUaGuid& value);
+	    OpcUaDataValue(const OpcUaByteString& value);
+	    OpcUaDataValue(const OpcUaXmlElement& value);
+	    OpcUaDataValue(const OpcUaNodeId& value);
+	    OpcUaDataValue(const OpcUaExpandedNodeId& value);
+	    OpcUaDataValue(const OpcUaStatusCode& value);
+	    OpcUaDataValue(const OpcUaQualifiedName& value);
+	    OpcUaDataValue(const OpcUaLocalizedText& value);
+	    OpcUaDataValue(const OpcUaExtensionObject& value);
 		~OpcUaDataValue(void);
 
 		bool exist(void);
