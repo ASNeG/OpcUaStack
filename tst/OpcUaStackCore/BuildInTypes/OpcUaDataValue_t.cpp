@@ -250,6 +250,16 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_constructor)
 	BOOST_REQUIRE(value1 == value2);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_set)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	OpcUaDataValue value1, value2;
+	value1.set(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	value2.set(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	BOOST_REQUIRE(value1 == value2);
+}
+
 #if 0
 BOOST_AUTO_TEST_CASE(OpcUaDataValue_string_array_with_timestamp)
 {
