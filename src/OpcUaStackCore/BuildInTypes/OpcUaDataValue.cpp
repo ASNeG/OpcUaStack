@@ -623,6 +623,232 @@ namespace OpcUaStackCore
 			opcUaVariantSPtr_->pushBack(val);
 		}
 	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaBoolean>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (auto it = value.begin(); it != value.end(); it++) {
+			opcUaVariantSPtr_->pushBack(*it);
+		}
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaSByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaUInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaUInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaUInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaString>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaDateTime>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaGuid::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaByteString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaXmlElement::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaExpandedNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaStatusCode>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaQualifiedName::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaLocalizedText::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaExtensionObject::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+	}
+
+
 		
 	OpcUaDataValue::~OpcUaDataValue(void)
 	{
