@@ -172,6 +172,27 @@ namespace OpcUaStackCore
 	    bool setValue(const OpcUaLocalizedTextArray& value);
 	    bool setValue(const OpcUaExtensionObjectArray& value);
 
+	    bool setValue(const std::vector<OpcUaBoolean>& value);
+	    bool setValue(const std::vector<OpcUaByte>& value);
+	    bool setValue(const std::vector<OpcUaSByte>& value);
+	    bool setValue(const std::vector<OpcUaInt16>& value);
+	    bool setValue(const std::vector<OpcUaUInt16>& value);
+	    bool setValue(const std::vector<OpcUaInt32>& value);
+	    bool setValue(const std::vector<OpcUaUInt32>& value);
+	    bool setValue(const std::vector<OpcUaInt64>& value);
+	    bool setValue(const std::vector<OpcUaUInt64>& value);
+	    bool setValue(const std::vector<OpcUaString::SPtr>& value);
+	    bool setValue(const std::vector<OpcUaDateTime>& value);
+	    bool setValue(const std::vector<OpcUaGuid::SPtr>& value);
+	    bool setValue(const std::vector<OpcUaByteString::SPtr>& value);
+	    bool setValue(const std::vector<OpcUaXmlElement::SPtr>& value);
+	    bool setValue(const std::vector<OpcUaNodeId::SPtr>& value);
+	    bool setValue(const std::vector<OpcUaExpandedNodeId::SPtr>& value);
+	    bool setValue(const std::vector<OpcUaStatusCode>& value);
+	    bool setValue(const std::vector<OpcUaQualifiedName::SPtr>& value);
+	    bool setValue(const std::vector<OpcUaLocalizedText::SPtr>& value);
+	    bool setValue(const std::vector<OpcUaExtensionObject::SPtr>& value);
+
 	    bool getValue(OpcUaBoolean& value);
 	    bool getValue(OpcUaByte& value);
 	    bool getValue(OpcUaSByte& value);
