@@ -39,6 +39,7 @@ namespace OpcUaStackCore
 		typedef std::set<OpcUaNodeId> Set;
 
 	    OpcUaNodeId(void);
+	    OpcUaNodeId(const OpcUaNodeId& nodeId);
 	    OpcUaNodeId(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0);
 	    OpcUaNodeId(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0);
 		virtual ~OpcUaNodeId(void);
