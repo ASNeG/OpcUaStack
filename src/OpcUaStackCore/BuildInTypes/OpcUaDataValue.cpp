@@ -1205,6 +1205,286 @@ namespace OpcUaStackCore
     }
 
     bool
+	OpcUaDataValue::setValue(const OpcUaBooleanArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaBoolean val;
+			if (!const_cast<OpcUaBooleanArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaByteArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaByte val;
+			if (!const_cast<OpcUaByteArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaSByteArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaSByte val;
+			if (!const_cast<OpcUaSByteArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaInt16Array& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaInt16 val;
+			if (!const_cast<OpcUaInt16Array*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaUInt16Array& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaUInt16 val;
+			if (!const_cast<OpcUaUInt16Array*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaInt32Array& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaInt32 val;
+			if (!const_cast<OpcUaInt32Array*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaUInt32Array& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaUInt32 val;
+			if (!const_cast<OpcUaUInt32Array*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaInt64Array& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaInt64 val;
+			if (!const_cast<OpcUaInt64Array*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaUInt64Array& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaUInt64 val;
+			if (!const_cast<OpcUaUInt64Array*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaStringArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaString::SPtr val;
+			if (!const_cast<OpcUaStringArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaDateTimeArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaDateTime val;
+			if (!const_cast<OpcUaDateTimeArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaGuidArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaGuid::SPtr val;
+			if (!const_cast<OpcUaGuidArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaByteStringArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaByteString::SPtr val;
+			if (!const_cast<OpcUaByteStringArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaXmlElementArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaXmlElement::SPtr val;
+			if (!const_cast<OpcUaXmlElementArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaNodeIdArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaNodeId::SPtr val;
+			if (!const_cast<OpcUaNodeIdArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaExpandedNodeIdArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaExpandedNodeId::SPtr val;
+			if (!const_cast<OpcUaExpandedNodeIdArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaStatusCodeArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaStatusCode val;
+			if (!const_cast<OpcUaStatusCodeArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaQualifiedNameArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaQualifiedName::SPtr val;
+			if (!const_cast<OpcUaQualifiedNameArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaLocalizedTextArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaLocalizedText::SPtr val;
+			if (!const_cast<OpcUaLocalizedTextArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaExtensionObjectArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaExtensionObject::SPtr val;
+			if (!const_cast<OpcUaExtensionObjectArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+    bool
 	OpcUaDataValue::getValue(OpcUaBoolean& value)
     {
     	if (opcUaVariantSPtr_.get() == nullptr) {

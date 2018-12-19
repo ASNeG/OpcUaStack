@@ -151,6 +151,27 @@ namespace OpcUaStackCore
 	    bool setValue(const OpcUaLocalizedText& value);
 	    bool setValue(const OpcUaExtensionObject& value);
 
+	    bool setValue(const OpcUaBooleanArray& value);
+	    bool setValue(const OpcUaByteArray& value);
+	    bool setValue(const OpcUaSByteArray& value);
+	    bool setValue(const OpcUaInt16Array& value);
+	    bool setValue(const OpcUaUInt16Array& value);
+	    bool setValue(const OpcUaInt32Array& value);
+	    bool setValue(const OpcUaUInt32Array& value);
+	    bool setValue(const OpcUaInt64Array& value);
+	    bool setValue(const OpcUaUInt64Array& value);
+	    bool setValue(const OpcUaStringArray& value);
+	    bool setValue(const OpcUaDateTimeArray& value);
+	    bool setValue(const OpcUaGuidArray& value);
+	    bool setValue(const OpcUaByteStringArray& value);
+	    bool setValue(const OpcUaXmlElementArray& value);
+	    bool setValue(const OpcUaNodeIdArray& value);
+	    bool setValue(const OpcUaExpandedNodeIdArray& value);
+	    bool setValue(const OpcUaStatusCodeArray& value);
+	    bool setValue(const OpcUaQualifiedNameArray& value);
+	    bool setValue(const OpcUaLocalizedTextArray& value);
+	    bool setValue(const OpcUaExtensionObjectArray& value);
+
 	    bool getValue(OpcUaBoolean& value);
 	    bool getValue(OpcUaByte& value);
 	    bool getValue(OpcUaSByte& value);
