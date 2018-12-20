@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 using namespace OpcUaStackCore;
 
@@ -45,9 +46,16 @@ namespace OpcUaStackServer
 		std::vector<OpcUaNodeId>& nodes(void);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
+		OpcUaStatusCode resultCode(void);
+
+		std::vector<OpcUaStatusCode>& statuses(void);
+		std::vector<BaseNodeClass::WPtr>& nodeReferences(void);
 
 	  private:
 		std::vector<OpcUaNodeId> nodes_;
+		OpcUaStatusCode resultCode_;
+		std::vector<OpcUaStatusCode> statuses_;
+		std::vector<BaseNodeClass::WPtr> nodeReferences_;
 	};
 
 }

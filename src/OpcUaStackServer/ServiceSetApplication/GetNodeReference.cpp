@@ -17,23 +17,33 @@
 
 #include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSetApplication/GetNodeReference.h"
+#include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 
 namespace OpcUaStackServer
 {
 
 	GetNodeReference::GetNodeReference(void)
 	: nodes_()
+	, resultCode_(Success)
+	, statuses_()
+	, nodeReferences_()
 	{
 	}
 
 	GetNodeReference::GetNodeReference(const OpcUaNodeId& node)
 	: nodes_()
+	, resultCode_(Success)
+	, statuses_()
+	, nodeReferences_()
 	{
 		nodes_.push_back(node);
 	}
 
 	GetNodeReference::GetNodeReference(const std::vector<OpcUaNodeId>& nodes)
 	: nodes_(nodes)
+	, resultCode_(Success)
+	, statuses_()
+	, nodeReferences_()
 	{
 	}
 
@@ -77,6 +87,10 @@ namespace OpcUaStackServer
 	{
 		if (nodes_.size() == 0) return false;
 
+		resultCode_ = Success;
+		statuses_.clear();
+		nodeReferences_.clear();
+
 		// create request
 		auto trx = constructSPtr<ServiceTransactionGetNodeReference>();
 		trx->request()->nodes()->resize(nodes_.size());
@@ -84,12 +98,37 @@ namespace OpcUaStackServer
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);
-	  	if (trx->statusCode() != Success) return false;
+		resultCode_ = trx->statusCode();
+	  	if (resultCode_ != Success) return false;
 
 	  	// handle response
-
+	  	for (uint32_t idx = 0; idx < trx->response()->nodeReferenceArray()->size(); idx++) {
+	  		NodeReference::SPtr nodeReference;
+	  		trx->response()->nodeReferenceArray()->get(idx, nodeReference);
+	  		NodeReferenceApplication::SPtr nodeReferenceApplication = nodeReferenceApplication = boost::static_pointer_cast<NodeReferenceApplication>(nodeReference);
+	  		nodeReferences_.push_back(nodeReferenceApplication->baseNodeClass());
+	  		statuses_.push_back(nodeReferenceApplication->statusCode());
+	  	}
 
 		return true;
+	}
+
+	OpcUaStatusCode
+	GetNodeReference::resultCode(void)
+	{
+		return resultCode_;
+	}
+
+	std::vector<OpcUaStatusCode>&
+	GetNodeReference::statuses(void)
+	{
+		return statuses_;
+	}
+
+	std::vector<BaseNodeClass::WPtr>&
+	GetNodeReference::nodeReferences(void)
+	{
+		return nodeReferences_;
 	}
 
 }
