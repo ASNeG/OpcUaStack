@@ -28,6 +28,8 @@ namespace OpcUaStackCore
 	, authenticationService_()
 	, autorizationService_()
 	, closeSessionService_()
+	, nodeNewService_()
+	, nodeDeleteService_()
 	{
 	}
 
@@ -77,6 +79,18 @@ namespace OpcUaStackCore
 		return closeSessionService_;
 	}
 
+	ForwardCallback&
+	ForwardGlobalSync::nodeNewService(void)
+	{
+		return nodeNewService_;
+	}
+
+	ForwardCallback&
+	ForwardGlobalSync::nodeDeleteService(void)
+	{
+		return nodeDeleteService_;
+	}
+
 	void
 	ForwardGlobalSync::updateFrom(ForwardGlobalSync& forwardGlobalSync)
 	{
@@ -87,7 +101,8 @@ namespace OpcUaStackCore
 		authenticationService_.updateFrom(forwardGlobalSync.authenticationService());
 		autorizationService_.updateFrom(forwardGlobalSync.autorizationService());
 		closeSessionService_.updateFrom(forwardGlobalSync.closeSessionService());
-
+		nodeNewService_.updateFrom(forwardGlobalSync.nodeNewService());
+		nodeDeleteService_.updateFrom(forwardGlobalSync.nodeDeleteService());
 	}
 
 }

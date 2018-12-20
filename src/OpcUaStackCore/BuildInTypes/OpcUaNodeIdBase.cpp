@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-218 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -39,6 +39,13 @@ namespace OpcUaStackCore
 	: Object()
 	, namespaceIndex_(0)
 	, nodeIdValue_()
+	{
+	}
+
+	OpcUaNodeIdBase::OpcUaNodeIdBase(const OpcUaNodeIdBase& nodeId)
+	: Object()
+	, namespaceIndex_(nodeId.namespaceIndex_)
+	, nodeIdValue_(nodeId.nodeIdValue_)
 	{
 	}
 

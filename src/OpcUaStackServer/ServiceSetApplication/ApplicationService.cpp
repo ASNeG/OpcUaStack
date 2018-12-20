@@ -358,7 +358,7 @@ namespace OpcUaStackServer
 			.parameter("Trx", serviceTransaction->transactionId());
 
 		//
-		// create new node instance
+		// delete node instance
 		//
 		InformationModelManager imm(informationModel_);
 		bool success = imm.delNode(
