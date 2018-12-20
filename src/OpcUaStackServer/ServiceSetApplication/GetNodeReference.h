@@ -18,7 +18,10 @@
 #ifndef __OpcUaStackServer_GetNodeReference_h__
 #define __OpcUaStackServer_GetNodeReference_h__
 
+#include <vector>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackServer/Application/ApplicationIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -31,7 +34,20 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<GetNodeReference> SPtr;
 
 		GetNodeReference(void);
+		GetNodeReference(const OpcUaNodeId& node);
+		GetNodeReference(const std::vector<OpcUaNodeId>& nodes);
 		virtual ~GetNodeReference(void);
+
+		void addNode(const OpcUaNodeId& node);
+		void addNodes(const std::vector<OpcUaNodeId>& nodes);
+		void node(const OpcUaNodeId& node);
+		void nodes(const std::vector<OpcUaNodeId>& nodes);
+		std::vector<OpcUaNodeId>& nodes(void);
+
+		bool query(ApplicationServiceIf* applicationServiceIf);
+
+	  private:
+		std::vector<OpcUaNodeId> nodes_;
 	};
 
 }
