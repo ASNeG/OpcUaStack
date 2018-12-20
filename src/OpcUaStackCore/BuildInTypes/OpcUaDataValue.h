@@ -214,6 +214,8 @@ namespace OpcUaStackCore
 	    bool getValue(OpcUaUInt32& value);
 	    bool getValue(OpcUaInt64& value);
 	    bool getValue(OpcUaUInt64& value);
+	    bool getValue(OpcUaDouble& value);
+	    bool getValue(OpcUaFloat& value);
 	    bool getValue(OpcUaString& value);
 	    bool getValue(OpcUaDateTime& value);
 	    bool getValue(OpcUaGuid& value);
@@ -235,6 +237,8 @@ namespace OpcUaStackCore
 	    bool getValue(OpcUaUInt32Array& value);
 	    bool getValue(OpcUaInt64Array& value);
 	    bool getValue(OpcUaUInt64Array& value);
+	    bool getValue(OpcUaDoubleArray& value);
+	    bool getValue(OpcUaFloatArray& value);
 	    bool getValue(OpcUaStringArray& value);
 	    bool getValue(OpcUaDateTimeArray& value);
 	    bool getValue(OpcUaGuidArray& value);
@@ -256,6 +260,8 @@ namespace OpcUaStackCore
 	    bool getValue(std::vector<OpcUaUInt32>& value);
 	    bool getValue(std::vector<OpcUaInt64>& value);
 	    bool getValue(std::vector<OpcUaUInt64>& value);
+	    bool getValue(std::vector<OpcUaDouble>& value);
+	    bool getValue(std::vector<OpcUaFloat>& value);
 	    bool getValue(std::vector<OpcUaString::SPtr>& value);
 	    bool getValue(std::vector<OpcUaDateTime>& value);
 	    bool getValue(std::vector<OpcUaGuid::SPtr>& value);

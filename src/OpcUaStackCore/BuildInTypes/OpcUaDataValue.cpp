@@ -1794,6 +1794,24 @@ namespace OpcUaStackCore
     }
 
     bool
+	OpcUaDataValue::getValue(OpcUaDouble& value)
+    {
+    	if (opcUaVariantSPtr_.get() == nullptr) {
+    		return false;
+    	}
+    	return opcUaVariantSPtr_->getValue(value);
+    }
+
+    bool
+ 	OpcUaDataValue::getValue(OpcUaFloat& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+     		return false;
+     	}
+     	return opcUaVariantSPtr_->getValue(value);
+     }
+
+    bool
 	OpcUaDataValue::getValue(OpcUaString& value)
     {
     	if (opcUaVariantSPtr_.get() == nullptr) {
@@ -2033,6 +2051,38 @@ namespace OpcUaStackCore
         value.resize(opcUaVariantSPtr_->arrayLength());
         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
         	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt64>(idx));
+        }
+        return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaDoubleArray& value)
+    {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+        	return false;
+        }
+        if (!opcUaVariantSPtr_->isArray()) {
+        	return false;
+        }
+        value.resize(opcUaVariantSPtr_->arrayLength());
+        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+        	value.push_back(opcUaVariantSPtr_->get<OpcUaDouble>(idx));
+        }
+        return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(OpcUaFloatArray& value)
+    {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+        	return false;
+        }
+        if (!opcUaVariantSPtr_->isArray()) {
+        	return false;
+        }
+        value.resize(opcUaVariantSPtr_->arrayLength());
+        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+        	value.push_back(opcUaVariantSPtr_->get<OpcUaFloat>(idx));
         }
         return true;
     }
@@ -2345,6 +2395,36 @@ namespace OpcUaStackCore
         }
         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
             value.push_back(opcUaVariantSPtr_->get<OpcUaUInt64>(idx));
+        }
+        return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(std::vector<OpcUaDouble>& value)
+    {
+       	if (opcUaVariantSPtr_.get() == nullptr) {
+            return false;
+        }
+        if (!opcUaVariantSPtr_->isArray()) {
+            return false;
+        }
+        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+            value.push_back(opcUaVariantSPtr_->get<OpcUaDouble>(idx));
+        }
+        return true;
+    }
+
+    bool
+	OpcUaDataValue::getValue(std::vector<OpcUaFloat>& value)
+    {
+       	if (opcUaVariantSPtr_.get() == nullptr) {
+            return false;
+        }
+        if (!opcUaVariantSPtr_->isArray()) {
+            return false;
+        }
+        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+            value.push_back(opcUaVariantSPtr_->get<OpcUaFloat>(idx));
         }
         return true;
     }
