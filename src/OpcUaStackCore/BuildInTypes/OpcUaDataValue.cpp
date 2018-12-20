@@ -158,6 +158,30 @@ namespace OpcUaStackCore
 		variant()->setValue(value);
 	}
 
+	OpcUaDataValue::OpcUaDataValue(const OpcUaFloat& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	:  Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+		variant()->setValue(value);
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const OpcUaDouble& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	:  Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+		variant()->setValue(value);
+	}
+
 	OpcUaDataValue::OpcUaDataValue(const OpcUaString& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
 	, opcUaVariantSPtr_()
@@ -434,6 +458,38 @@ namespace OpcUaStackCore
 		}
 	}
 
+	OpcUaDataValue::OpcUaDataValue(const OpcUaFloatArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	:  Object()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaFloat val;
+			const_cast<OpcUaFloatArray*>(&value)->get(idx, val);
+			opcUaVariantSPtr_->pushBack(val);
+		}
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const OpcUaDoubleArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	:  Object()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaDouble val;
+			const_cast<OpcUaDoubleArray*>(&value)->get(idx, val);
+			opcUaVariantSPtr_->pushBack(val);
+		}
+	}
+
 	OpcUaDataValue::OpcUaDataValue(const OpcUaStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
 	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
@@ -619,9 +675,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -633,9 +687,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaSByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -647,9 +699,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -661,9 +711,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaUInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -675,9 +723,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -689,9 +735,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaUInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -703,9 +747,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -717,9 +759,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaUInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -731,9 +771,31 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaFloat>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+	}
+
+	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaDouble>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+	: Object()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
+	, opcUaStatusCode_(statusCode)
+	, sourceTimestamp_(sourceTimestamp)
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -745,9 +807,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaDateTime>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -759,9 +819,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaGuid::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -773,9 +831,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaByteString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -787,9 +843,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaXmlElement::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -801,9 +855,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -815,9 +867,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaExpandedNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -829,9 +879,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaStatusCode>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -843,9 +891,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaQualifiedName::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -857,9 +903,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaLocalizedText::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -871,9 +915,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaExtensionObject::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -885,9 +927,7 @@ namespace OpcUaStackCore
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
 
 
