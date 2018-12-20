@@ -36,9 +36,7 @@ namespace OpcUaStackCore
 		virtual ~GetNodeReferenceRequest(void);
 
 		void nodes(const OpcUaNodeIdArray::SPtr nodes);
-		void nodes(const std::vector<OpcUaNodeId>& nodes);
-		void node(const OpcUaNodeId& node);
-		OpcUaNodeIdArray::SPtr nodes(void) const;
+		OpcUaNodeIdArray::SPtr& nodes(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

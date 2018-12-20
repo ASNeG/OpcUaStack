@@ -44,30 +44,8 @@ namespace OpcUaStackCore
 		nodes_ = nodes;
 	}
 	
-	void
-	GetNodeReferenceRequest::nodes(const std::vector<OpcUaNodeId>& nodes)
-	{
-		if (nodes_.get() == nullptr) {
-			nodes_ = constructSPtr<OpcUaNodeIdArray>();
-		}
-		nodes_->resize(nodes.size());
-		for (auto it = nodes.begin(); it != nodes.end(); it++) {
-			nodes_->push_back(constructSPtr<OpcUaNodeId>(*it));
-		}
-	}
-
-	void
-	GetNodeReferenceRequest::node(const OpcUaNodeId& node)
-	{
-		if (nodes_.get() == nullptr) {
-			nodes_ = constructSPtr<OpcUaNodeIdArray>();
-		}
-		nodes_->resize(1);
-		nodes_->push_back(constructSPtr<OpcUaNodeId>(node));
-	}
-
-	OpcUaNodeIdArray::SPtr 
-	GetNodeReferenceRequest::nodes(void) const
+	OpcUaNodeIdArray::SPtr&
+	GetNodeReferenceRequest::nodes(void)
 	{
 		return nodes_;
 	}
