@@ -3,6 +3,7 @@ Release 3.6.0
 
 **Features**:
 
+* Access to node reference in application too difficult #59, by @huebl
 * Access to variables in DataValue class is cumbersome #60, by @huebl
 * add options for *build.bat* to set install path, stack location and VS version #33, by @flipback
 * implement MSI distribution for the stack and user applications #14, @flipback
