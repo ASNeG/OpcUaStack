@@ -1137,6 +1137,20 @@ namespace OpcUaStackCore
     }
 
     bool
+	OpcUaDataValue::setValue(const OpcUaDouble& value)
+    {
+    	variant()->setValue(value);
+    	return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const OpcUaFloat& value)
+    {
+    	variant()->setValue(value);
+    	return true;
+    }
+
+    bool
 	OpcUaDataValue::setValue(const OpcUaString& value)
     {
     	variant()->setValue(value);
@@ -1340,6 +1354,34 @@ namespace OpcUaStackCore
     }
 
 	bool
+	OpcUaDataValue::setValue(const OpcUaDoubleArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaDouble val;
+			if (!const_cast<OpcUaDoubleArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
+	OpcUaDataValue::setValue(const OpcUaFloatArray& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaFloat val;
+			if (!const_cast<OpcUaFloatArray*>(&value)->get(idx, val)) {
+				return false;
+			}
+			opcUaVariantSPtr_->pushBack(val);
+		}
+		return true;
+    }
+
+	bool
 	OpcUaDataValue::setValue(const OpcUaStringArray& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
@@ -1497,9 +1539,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaBoolean>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1507,9 +1547,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaByte>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1517,9 +1555,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaSByte>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1527,9 +1563,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaInt16>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1537,9 +1571,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaUInt16>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1547,9 +1579,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaInt32>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1557,9 +1587,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaUInt32>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1567,9 +1595,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaInt64>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1577,9 +1603,23 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaUInt64>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+		return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const std::vector<OpcUaDouble>& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+		return true;
+    }
+
+    bool
+	OpcUaDataValue::setValue(const std::vector<OpcUaFloat>& value)
+    {
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1587,9 +1627,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaString::SPtr>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1597,9 +1635,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaDateTime>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1607,9 +1643,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaGuid::SPtr>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1617,9 +1651,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaByteString::SPtr>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1627,9 +1659,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaXmlElement::SPtr>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1637,9 +1667,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaNodeId::SPtr>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1647,9 +1675,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaExpandedNodeId::SPtr>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1657,9 +1683,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaStatusCode>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1667,9 +1691,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaQualifiedName::SPtr>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1677,9 +1699,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaLocalizedText::SPtr>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 
@@ -1687,9 +1707,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::setValue(const std::vector<OpcUaExtensionObject::SPtr>& value)
     {
 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it = value.begin(); it != value.end(); it++) {
-			opcUaVariantSPtr_->pushBack(*it);
-		}
+		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 		return true;
     }
 

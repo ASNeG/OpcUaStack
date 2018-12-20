@@ -145,6 +145,8 @@ namespace OpcUaStackCore
 	    bool setValue(const OpcUaUInt32& value);
 	    bool setValue(const OpcUaInt64& value);
 	    bool setValue(const OpcUaUInt64& value);
+	    bool setValue(const OpcUaFloat& value);
+	    bool setValue(const OpcUaDouble& value);
 	    bool setValue(const OpcUaString& value);
 	    bool setValue(const OpcUaDateTime& value);
 	    bool setValue(const OpcUaGuid& value);
@@ -166,6 +168,8 @@ namespace OpcUaStackCore
 	    bool setValue(const OpcUaUInt32Array& value);
 	    bool setValue(const OpcUaInt64Array& value);
 	    bool setValue(const OpcUaUInt64Array& value);
+	    bool setValue(const OpcUaDoubleArray& value);
+	    bool setValue(const OpcUaFloatArray& value);
 	    bool setValue(const OpcUaStringArray& value);
 	    bool setValue(const OpcUaDateTimeArray& value);
 	    bool setValue(const OpcUaGuidArray& value);
@@ -187,6 +191,8 @@ namespace OpcUaStackCore
 	    bool setValue(const std::vector<OpcUaUInt32>& value);
 	    bool setValue(const std::vector<OpcUaInt64>& value);
 	    bool setValue(const std::vector<OpcUaUInt64>& value);
+	    bool setValue(const std::vector<OpcUaDouble>& value);
+	    bool setValue(const std::vector<OpcUaFloat>& value);
 	    bool setValue(const std::vector<OpcUaString::SPtr>& value);
 	    bool setValue(const std::vector<OpcUaDateTime>& value);
 	    bool setValue(const std::vector<OpcUaGuid::SPtr>& value);
