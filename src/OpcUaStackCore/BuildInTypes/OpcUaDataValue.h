@@ -214,6 +214,48 @@ namespace OpcUaStackCore
 	    bool getValue(OpcUaLocalizedText& value);
 	    bool getValue(OpcUaExtensionObject& value);
 
+	    bool getValue(OpcUaBooleanArray& value);
+	    bool getValue(OpcUaByteArray& value);
+	    bool getValue(OpcUaSByteArray& value);
+	    bool getValue(OpcUaInt16Array& value);
+	    bool getValue(OpcUaUInt16Array& value);
+	    bool getValue(OpcUaInt32Array& value);
+	    bool getValue(OpcUaUInt32Array& value);
+	    bool getValue(OpcUaInt64Array& value);
+	    bool getValue(OpcUaUInt64Array& value);
+	    bool getValue(OpcUaStringArray& value);
+	    bool getValue(OpcUaDateTimeArray& value);
+	    bool getValue(OpcUaGuidArray& value);
+	    bool getValue(OpcUaByteStringArray& value);
+	    bool getValue(OpcUaXmlElementArray& value);
+	    bool getValue(OpcUaNodeIdArray& value);
+	    bool getValue(OpcUaExpandedNodeIdArray& value);
+	    bool getValue(OpcUaStatusCodeArray& value);
+	    bool getValue(OpcUaQualifiedNameArray& value);
+	    bool getValue(OpcUaLocalizedTextArray& value);
+	    bool getValue(OpcUaExtensionObjectArray& value);
+
+	    bool getValue(std::vector<OpcUaBoolean>& value);
+	    bool getValue(std::vector<OpcUaByte>& value);
+	    bool getValue(std::vector<OpcUaSByte>& value);
+	    bool getValue(std::vector<OpcUaInt16>& value);
+	    bool getValue(std::vector<OpcUaUInt16>& value);
+	    bool getValue(std::vector<OpcUaInt32>& value);
+	    bool getValue(std::vector<OpcUaUInt32>& value);
+	    bool getValue(std::vector<OpcUaInt64>& value);
+	    bool getValue(std::vector<OpcUaUInt64>& value);
+	    bool getValue(std::vector<OpcUaString::SPtr>& value);
+	    bool getValue(std::vector<OpcUaDateTime>& value);
+	    bool getValue(std::vector<OpcUaGuid::SPtr>& value);
+	    bool getValue(std::vector<OpcUaByteString::SPtr>& value);
+	    bool getValue(std::vector<OpcUaXmlElement::SPtr>& value);
+	    bool getValue(std::vector<OpcUaNodeId::SPtr>& value);
+	    bool getValue(std::vector<OpcUaExpandedNodeId::SPtr>& value);
+	    bool getValue(std::vector<OpcUaStatusCode>& value);
+	    bool getValue(std::vector<OpcUaQualifiedName::SPtr>& value);
+	    bool getValue(std::vector<OpcUaLocalizedText::SPtr>& value);
+	    bool getValue(std::vector<OpcUaExtensionObject::SPtr>& value);
+
 	    void set(const OpcUaNullValue& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 	    void set(const OpcUaBoolean& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 	    void set(const OpcUaByte& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
