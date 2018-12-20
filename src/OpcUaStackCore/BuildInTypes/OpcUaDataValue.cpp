@@ -292,14 +292,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaBooleanArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaBoolean val;
 			const_cast<OpcUaBooleanArray*>(&value)->get(idx, val);
@@ -309,14 +308,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaByteArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaByte val;
 			const_cast<OpcUaByteArray*>(&value)->get(idx, val);
@@ -326,14 +324,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaSByteArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaSByte val;
 			const_cast<OpcUaSByteArray*>(&value)->get(idx, val);
@@ -343,14 +340,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaInt16Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaInt16 val;
 			const_cast<OpcUaInt16Array*>(&value)->get(idx, val);
@@ -360,14 +356,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaUInt16Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaUInt16 val;
 			const_cast<OpcUaUInt16Array*>(&value)->get(idx, val);
@@ -377,14 +372,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaInt32Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaInt32 val;
 			const_cast<OpcUaInt32Array*>(&value)->get(idx, val);
@@ -394,14 +388,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaUInt32Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaUInt32 val;
 			const_cast<OpcUaUInt32Array*>(&value)->get(idx, val);
@@ -411,14 +404,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaInt64Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaInt64 val;
 			const_cast<OpcUaInt64Array*>(&value)->get(idx, val);
@@ -428,14 +420,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaUInt64Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaUInt64 val;
 			const_cast<OpcUaUInt64Array*>(&value)->get(idx, val);
@@ -445,14 +436,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaString::SPtr val;
 			const_cast<OpcUaStringArray*>(&value)->get(idx, val);
@@ -462,14 +452,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaDateTimeArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaDateTime val;
 			const_cast<OpcUaDateTimeArray*>(&value)->get(idx, val);
@@ -479,14 +468,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaGuidArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaGuid::SPtr val;
 			const_cast<OpcUaGuidArray*>(&value)->get(idx, val);
@@ -496,14 +484,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaByteStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaByteString::SPtr val;
 			const_cast<OpcUaByteStringArray*>(&value)->get(idx, val);
@@ -513,14 +500,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaXmlElementArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaXmlElement::SPtr val;
 			const_cast<OpcUaXmlElementArray*>(&value)->get(idx, val);
@@ -530,14 +516,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaNodeIdArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaNodeId::SPtr val;
 			const_cast<OpcUaNodeIdArray*>(&value)->get(idx, val);
@@ -547,14 +532,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaExpandedNodeIdArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaExpandedNodeId::SPtr val;
 			const_cast<OpcUaExpandedNodeIdArray*>(&value)->get(idx, val);
@@ -564,14 +548,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaStatusCodeArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaStatusCode val;
 			const_cast<OpcUaStatusCodeArray*>(&value)->get(idx, val);
@@ -581,14 +564,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaQualifiedNameArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaQualifiedName::SPtr val;
 			const_cast<OpcUaQualifiedNameArray*>(&value)->get(idx, val);
@@ -598,25 +580,29 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaLocalizedTextArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
+		for (uint32_t idx = 0; idx < value.size(); idx++) {
+			OpcUaLocalizedText::SPtr val;
+			const_cast<OpcUaLocalizedTextArray*>(&value)->get(idx, val);
+			opcUaVariantSPtr_->pushBack(val);
+		}
 	}
 
 	OpcUaDataValue::OpcUaDataValue(const OpcUaExtensionObjectArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (uint32_t idx = 0; idx < value.size(); idx++) {
 			OpcUaExtensionObject::SPtr val;
 			const_cast<OpcUaExtensionObjectArray*>(&value)->get(idx, val);
@@ -626,14 +612,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaBoolean>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -641,14 +626,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -656,14 +640,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaSByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -671,14 +654,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -686,14 +668,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaUInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -701,14 +682,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -716,14 +696,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaUInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -731,14 +710,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -746,14 +724,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaUInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -761,14 +738,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -776,14 +752,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaDateTime>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -791,14 +766,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaGuid::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -806,14 +780,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaByteString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -821,14 +794,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaXmlElement::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -836,14 +808,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -851,14 +822,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaExpandedNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -866,14 +836,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaStatusCode>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -881,14 +850,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaQualifiedName::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -896,14 +864,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaLocalizedText::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -911,14 +878,13 @@ namespace OpcUaStackCore
 
 	OpcUaDataValue::OpcUaDataValue(const std::vector<OpcUaExtensionObject::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	: Object()
-	, opcUaVariantSPtr_()
+	, opcUaVariantSPtr_(constructSPtr<OpcUaVariant>())
 	, opcUaStatusCode_(statusCode)
 	, sourceTimestamp_(sourceTimestamp)
 	, sourcePicoseconds_(0)
 	, serverTimestamp_()
 	, serverPicoseconds_(0)
 	{
-		if (opcUaVariantSPtr_.get() != nullptr) opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		for (auto it = value.begin(); it != value.end(); it++) {
 			opcUaVariantSPtr_->pushBack(*it);
 		}
@@ -1029,6 +995,7 @@ namespace OpcUaStackCore
 			case DCT_StatusValueTimestamp:
 			{
 				if (dataValue.sourceTimestamp() != sourceTimestamp()) return true;
+				break;
 			}
 			case DCT_StatusValue:
 			{
@@ -1037,10 +1004,12 @@ namespace OpcUaStackCore
 				if (!dataValue.isNullVariant() && !isNullVariant()) {
 					if (*dataValue.variant() != *variant()) return true;
 				}
+				break;
 			}
 			case DCT_Status:
 			{
 				if (dataValue.statusCode() != statusCode()) return true;
+				break;
 			}
 		}
 		return false;
