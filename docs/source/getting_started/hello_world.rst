@@ -233,107 +233,66 @@ Now we can make our application do something "useful". Open file **src/helloworl
     {
         Log(Debug, "Library::startup");
 
-        ServiceTransactionGetNodeReference::SPtr trx = constructSPtr<ServiceTransactionGetNodeReference>();
-        GetNodeReferenceRequest::SPtr req = trx->request();
-        GetNodeReferenceResponse::SPtr res = trx->response();
-
-        OpcUaNodeIdArray::SPtr nodeIds = constructSPtr<OpcUaNodeIdArray>();
-        nodeIds->resize(1);
-        OpcUaNodeId::SPtr greetingStringNodeId = constructSPtr<OpcUaNodeId>();
-        greetingStringNodeId->set(222, 1);
-
-        nodeIds->push_back(greetingStringNodeId);
-        req->nodes(nodeIds);
-
-        this->service().sendSync(trx);
-        if (trx->statusCode() != Success) {
+        GetNodeReference getNodeReference(OpcUaNodeId(222,1));
+        if (!getNodeReference.query(&this->service())) {
             Log(Error, "response error");
             return false;
         }
 
-        NodeReference::SPtr greetingStringRef;
-        trx->response()->nodeReferenceArray()->get(0, greetingStringRef);
-        if (greetingStringRef->statusCode() != Success) {
-            Log(Error, "reference error");
+        if (getNodeReference.statuses()[0] != Success) {
+            Error, "node reference error");
             return false;
         }
 
-        auto greetingStringApplicationRef = boost::static_pointer_cast<NodeReferenceApplication>(greetingStringRef);
-        BaseNodeClass::WPtr greetingStringNode = greetingStringApplicationRef->baseNodeClass();
-
-        auto greetingStringVar = boost::static_pointer_cast<VariableNodeClass>(greetingStringNode.lock());
-        if (!greetingStringVar) {
-            Log(Error, "pointer error");
+        auto ptr = getNodeReference.nodeReferences()[0].lock();
+        if (!ptr) {
+            Log(Error, "node no longer exist");
             return false;
         }
 
-        OpcUaDataValue dataValue;
-        dataValue.statusCode(Success);
-        dataValue.sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
-        dataValue.serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
-        dataValue.variant()->setValue(OpcUaString("Hello, World!"));
-        greetingStringVar->setValue(dataValue);
+
+        OpcUaDataValue dataValue(OpcUaString("Hello, world!"));
+        ptr->setValueSync(dataValue);
 
         return true;
     }
 
-There is a pretty big amount of code, but it is not so complicated as looks. The communication between a user application and the stack based on the transaction model. So we need to create
-transaction and initialize the request. Pay attention that we use the same *node ID* of the greeting string that we've described in **HelloWorldNodeSet.xml**. 
+There is a pretty big amount of code, but it is not so complicated as it looks. The communication between a user application and the stack based on the transaction model. So we need to send
+a request for getting a variable. Pay attention that we use the same *node ID* of the greeting string that we've described in **HelloWorldNodeSet.xml**. 
 
 .. code-block:: cpp
 
-    ServiceTransactionGetNodeReference::SPtr trx = constructSPtr<ServiceTransactionGetNodeReference>();
-    GetNodeReferenceRequest::SPtr req = trx->request();
-    GetNodeReferenceResponse::SPtr res = trx->response();
-
-    OpcUaNodeIdArray::SPtr nodeIds = constructSPtr<OpcUaNodeIdArray>();
-    nodeIds->resize(1);
-    OpcUaNodeId::SPtr greetingStringNodeId = constructSPtr<OpcUaNodeId>();
-    greetingStringNodeId->set(222, 1);
-
-    nodeIds->push_back(greetingStringNodeId);
-    req->nodes(nodeIds);
-
-Then we must send the transaction to the stack and extract from the response our greeting string as a *variable node*:
-
-.. code-block:: cpp
-
-    this->service().sendSync(trx);
-    if (trx->statusCode() != Success) {
+    GetNodeReference getNodeReference(OpcUaNodeId(222,1));
+    if (!getNodeReference.query(&this->service())) {
         Log(Error, "response error");
         return false;
     }
 
-    NodeReference::SPtr greetingStringRef;
-    trx->response()->nodeReferenceArray()->get(0, greetingStringRef);
-    if (greetingStringRef->statusCode() != Success) {
-        Log(Error, "reference error");
-        return false;
-    }
 
-    auto greetingStringApplicationRef = boost::static_pointer_cast<NodeReferenceApplication>(greetingStringRef);
-    BaseNodeClass::WPtr greetingStringNode = greetingStringApplicationRef->baseNodeClass();
-
-    auto greetingStringVar = boost::static_pointer_cast<VariableNodeClass>(greetingStringNode.lock());
-    if (!greetingStringVar) {
-        Log(Error, "pointer error");
-        return false;
-    }
-
-
-The last step is to write new value "Hello, World!" to the string:
+After we've sent the request to the stack, we can check if the node is available and get our greeting string as a *variable node*:
 
 .. code-block:: cpp
 
-    OpcUaDataValue dataValue;
-    dataValue.statusCode(Success);
-    dataValue.sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
-    dataValue.serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
-    dataValue.variant()->setValue(OpcUaString("Hello, World!"));
+    if (getNodeReference.statuses()[0] != Success) {
+        Error, "node reference error");
+        return false;
+    }
 
-    greetingStringVar->setValue(dataValue);
+    auto ptr = getNodeReference.nodeReferences()[0].lock();
+    if (!ptr) {
+        Log(Error, "node no longer exist");
+        return false;
+    }
 
-OPC UA variables contain not only values, but much more additional information. The *status code* provides information about the quality of the data. If it is not **Success** the client
+
+The last step is to write new value "Hello, World!" into the string:
+
+.. code-block:: cpp
+
+    OpcUaDataValue dataValue(OpcUaString("Hello, world!"));
+    ptr->setValueSync(dataValue);
+
+OPC UA variables contain not only values, but some additional information. The *status code* provides information about the quality of the data. If it is not **Success** the client
 can't trust the value of the variable. 
 
 Now we can see the message with the client. Rebuild the application and connect with the client to it. 
@@ -341,7 +300,7 @@ Now we can see the message with the client. Rebuild the application and connect 
 References
 ---------------------------
 
-* :doc:`installation <Installation Guide>`
+* :doc:`Installation Guide <installation>`
 * `OPC UA Designer`_
 * `OPC UA Expert`_
 
