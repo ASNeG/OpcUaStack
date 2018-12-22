@@ -53,6 +53,10 @@ option(
     ON
 )
 
+if (REAL_SERVER) 
+    add_definitions(-DREAL_SERVER)
+endif()
+
 #add_definitions(-DBOOST_ALL_DYN_LINK)
 
 #if (WIN32)
