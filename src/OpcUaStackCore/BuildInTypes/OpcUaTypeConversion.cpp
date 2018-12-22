@@ -92,7 +92,10 @@ namespace OpcUaStackCore
 		{
 		case '-':
 		{
-			targetVariant.copyFrom(sourceVariant);
+			if (&sourceVariant != &targetVariant) {
+				targetVariant.copyFrom(sourceVariant);
+			}
+
 			return true;
 		}
 		case 'I':
