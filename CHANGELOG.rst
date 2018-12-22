@@ -13,6 +13,8 @@ Release 3.6.0
  
 * fix too specific params of *build.bat* #16, by @flipback
 * fix OpenSSL-1.1 compatibility in test compilation #46, by @flipback
+* fix type conversion of refernces on the same value #67, by @flipback
+* fix comparison in *OpcUaStackCore::ComparisonFilterNode* #67, by @flipback
 
 **Documentation**:
 
