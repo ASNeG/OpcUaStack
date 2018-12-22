@@ -8,9 +8,10 @@ before_install:
   - docker build -t asneg/opcuastack:test .
   - docker run --name test_container asneg/opcuastack:test sh build.sh -t tst -j 2 -B Release --test-with-server
   - docker commit test_container asneg/opcuastack:test
+  - docker run -d -p 127.0.0.1:8889:8889 asneg/asneg-demo:latest
+  - docker ps -a
 
 script:
-  - docker run -d -p 8889:8889 asneg/asneg-demo:latest
   - docker run -w /OpcUaStack/build_tst_Release asneg/opcuastack:test ./OpcUaStackCoreTest
   - docker run -w /OpcUaStack/build_tst_Release asneg/opcuastack:test ./OpcUaStackServerTest
   - docker run -w /OpcUaStack/build_tst_Release asneg/opcuastack:test ./OpcUaStackClientTest
