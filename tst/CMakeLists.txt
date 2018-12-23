@@ -53,8 +53,8 @@ option(
     ON
 )
 
-if (REAL_SERVER) 
-    add_definitions(-DREAL_SERVER)
+if (TEST_SERVER_URI) 
+  add_definitions(-DREAL_SERVER -DREAL_SERVER_URI="${TEST_SERVER_URI}")
 endif()
 
 #add_definitions(-DBOOST_ALL_DYN_LINK)

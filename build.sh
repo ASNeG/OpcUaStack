@@ -31,7 +31,7 @@ usage()
    echo "--jobs, -j JOB_COUNT: sets the number of the jobs of make"
    echo ""
    echo "--build-type, -B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type"
-   echo "--test-with-server:  build client test for real OPC UA server. By default, turned off "
+   echo "--test-with-server URI:  build client test for real OPC UA server. By default, empty "
 }
 
 
@@ -312,7 +312,7 @@ build_tst()
         cmake ../tst \
   	     "${CMAKE_GENERATOR_LOCAL}" \
 	     -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}" \
-       ${REAL_SERVER_FLAG} \
+       -DTEST_SERVER_URI=${TEST_SERVER_URI} \
        -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
@@ -383,7 +383,7 @@ INSTALL_PREFIX="${HOME}/.ASNeG"
 STACK_PREFIX="/"
 JOBS=1
 BUILD_TYPE="Debug"
-REAL_SERVER_FLAG="-DREAL_SERVER=OFF"
+TEST_SERVER_URI=""
 
 while [ $# -gt 0 ];
 do
@@ -416,10 +416,10 @@ case $key in
     shift # past value
     ;;
 
-    #flags
     --test-with-server)
-    REAL_SERVER_FLAG="-DREAL_SERVER=ON"
+    TEST_SERVER_URI="$2"
     shift # past flag
+    shift # past value
     ;;
     *)    # unknown option
     shift # past argument
