@@ -1060,5 +1060,14 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_XmlElement)
 	// SHOULD_BE_SAME_PTR			(OpcUaXmlElement, xmlElement);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_ConvertTheSameData)
+{
+    OpcUaTypeConversion converter;
+    OpcUaVariant value1;
+    value1.set<OpcUaDouble>(0);
+
+    BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaDouble, value1));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
