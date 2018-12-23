@@ -319,10 +319,13 @@ namespace OpcUaStackCore
 	{
 	  public:
 		OpcUaArray(uint32_t maxArrayLen = 1);
+		OpcUaArray(const OpcUaArray<T, CODER>& other);
+		OpcUaArray(const std::vector<T>& other);
+		OpcUaArray(const T& other);
 		~OpcUaArray(void); 
 
 		void resize(uint32_t maxArrayLen);
-		uint32_t size(void);
+		uint32_t size(void) const;
 		uint32_t maxSize(void);
 		uint32_t freeSize();
 		void clear(void);
@@ -335,6 +338,14 @@ namespace OpcUaStackCore
 		bool push_back_vec(const std::vector<T>& valueVec);
 		bool get(uint32_t pos, T& value);
 		bool get(T& value);
+
+		OpcUaArray<T, CODER>& operator=(const OpcUaArray<T, CODER>& other);
+		OpcUaArray<T, CODER>& operator=(const std::vector<T>& other);
+		OpcUaArray<T, CODER>& operator=(const T& other);
+		template<typename V>
+		    OpcUaArray<T, CODER>& operator=(const std::vector<V>& other);
+		template<typename V>
+		    OpcUaArray<T, CODER>& operator=(const V& other);
 
 		void copyTo(OpcUaArray<T, CODER>& array);
 		bool operator!=(OpcUaArray<T, CODER>& array);
@@ -412,6 +423,44 @@ namespace OpcUaStackCore
 	}
 
 	template<typename T, typename CODER>
+	OpcUaArray<T, CODER>::OpcUaArray(const OpcUaArray<T, CODER>& other)
+	: isNull_(false)
+	, maxArrayLen_(other.size())
+	, actArrayLen_(0)
+	{
+		initArray();
+		for (uint32_t idx = 0; idx < other.size(); idx++) {
+			T value;
+			get(0, value);
+			push_back(value);
+		}
+	}
+
+	template<typename T, typename CODER>
+	OpcUaArray<T, CODER>::OpcUaArray(const std::vector<T>& other)
+	: isNull_(false)
+	, maxArrayLen_(other.size())
+	, actArrayLen_(0)
+	{
+		initArray();
+		typename std::vector<T>::iterator it;
+		for (it = other.begin(); it != other.end(); it++) {
+			push_back(*it);
+		}
+	}
+
+	template<typename T, typename CODER>
+		OpcUaArray<T, CODER>::OpcUaArray(const T& other)
+	: isNull_(false)
+	, maxArrayLen_(1)
+	, actArrayLen_(0)
+	{
+		initArray();
+		push_back(other);
+	}
+
+
+	template<typename T, typename CODER>
 	OpcUaArray<T, CODER>::~OpcUaArray(void)
 	{
 		clearArray();
@@ -455,7 +504,7 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	uint32_t
-	OpcUaArray<T, CODER>::size(void)
+	OpcUaArray<T, CODER>::size(void) const
 	{
 		return actArrayLen_;
 	}
@@ -557,6 +606,58 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::get(T& value)
 	{
 		return get(0, value);
+	}
+
+	template<typename T, typename CODER>
+	OpcUaArray<T, CODER>&
+	OpcUaArray<T, CODER>::operator=(const OpcUaArray<T, CODER>& other)
+	{
+		const_cast<OpcUaArray<T, CODER>*>(&other)->copyTo(*this);
+		return *this;
+	}
+
+	template<typename T, typename CODER>
+	OpcUaArray<T, CODER>&
+	OpcUaArray<T, CODER>::operator=(const std::vector<T>& other)
+	{
+		typename std::vector<T>::iterator it;
+		resize(other.size());
+		for (it = other.begin(); it != other.end(); it++) {
+			push_back(*it);
+		}
+		return *this;
+	}
+
+	template<typename T, typename CODER>
+	OpcUaArray<T, CODER>&
+	OpcUaArray<T, CODER>::operator=(const T& other)
+	{
+		resize(1);
+		set(0, other);
+		return *this;
+	}
+
+	template<typename T, typename CODER>
+	template<typename V>
+	OpcUaArray<T, CODER>&
+	OpcUaArray<T, CODER>::operator=(const std::vector<V>& other)
+	{
+		typename std::vector<T>::iterator it;
+		resize(other.size());
+		for (it = other.begin(); it != other.end(); it++) {
+			push_back(constructSPtr<T>(other));
+		}
+		return *this;
+	}
+
+	template<typename T, typename CODER>
+	template<typename V>
+	OpcUaArray<T, CODER>&
+	OpcUaArray<T, CODER>::operator=(const V& other)
+	{
+		resize(1);
+		set(0, constructSPtr<T>(other));
+		return *this;
 	}
 
 	template<typename T, typename CODER>

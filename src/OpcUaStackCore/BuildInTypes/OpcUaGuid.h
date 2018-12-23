@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaGuid> SPtr;
 
 	    OpcUaGuid(void);
-	    OpcUaGuid(const std::string& opcUaGuid);
+	    OpcUaGuid(const std::string& string);
 		~OpcUaGuid(void);
 
 		void data1(OpcUaUInt32 value);
