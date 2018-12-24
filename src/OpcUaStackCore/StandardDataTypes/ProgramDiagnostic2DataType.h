@@ -32,6 +32,7 @@ namespace OpcUaStackCore
         typedef std::vector<ProgramDiagnostic2DataType::SPtr> Vec;
     
         ProgramDiagnostic2DataType(void);
+        ProgramDiagnostic2DataType(const ProgramDiagnostic2DataType& value);
         virtual ~ProgramDiagnostic2DataType(void);
         
         OpcUaNodeId& createSessionId(void);

@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A relative path constructed from reference types and browse names.
+     */
+    RelativePath::RelativePath(const RelativePath& value)
+    : Object()
+    , ExtensionObjectBase()
+    , elements_()
+    {
+        const_cast<RelativePath*>(&value)->copyTo(*this);
+    }
+    
     RelativePath::~RelativePath(void)
     {
     }

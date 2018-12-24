@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<SubscribedDataSetDataType::SPtr> Vec;
     
         SubscribedDataSetDataType(void);
+        SubscribedDataSetDataType(const SubscribedDataSetDataType& value);
         virtual ~SubscribedDataSetDataType(void);
         
         

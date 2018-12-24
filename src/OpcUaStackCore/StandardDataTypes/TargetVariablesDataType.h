@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<TargetVariablesDataType::SPtr> Vec;
     
         TargetVariablesDataType(void);
+        TargetVariablesDataType(const TargetVariablesDataType& value);
         virtual ~TargetVariablesDataType(void);
         
         FieldTargetDataTypeArray& targetVariables(void);

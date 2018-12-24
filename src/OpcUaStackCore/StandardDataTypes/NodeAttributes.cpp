@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The base attributes for all nodes.
+     */
+    NodeAttributes::NodeAttributes(const NodeAttributes& value)
+    : Object()
+    , ExtensionObjectBase()
+    , specifiedAttributes_()
+    , displayName_()
+    , description_()
+    , writeMask_()
+    , userWriteMask_()
+    {
+        const_cast<NodeAttributes*>(&value)->copyTo(*this);
+    }
+    
     NodeAttributes::~NodeAttributes(void)
     {
     }

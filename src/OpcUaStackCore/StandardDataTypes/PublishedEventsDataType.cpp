@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    PublishedEventsDataType::PublishedEventsDataType(const PublishedEventsDataType& value)
+    : PublishedDataSetSourceDataType()
+    , eventNotifier_()
+    , selectedFields_()
+    , filter_()
+    {
+        const_cast<PublishedEventsDataType*>(&value)->copyTo(*this);
+    }
+    
     PublishedEventsDataType::~PublishedEventsDataType(void)
     {
     }

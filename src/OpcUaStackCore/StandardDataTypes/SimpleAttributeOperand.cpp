@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    SimpleAttributeOperand::SimpleAttributeOperand(const SimpleAttributeOperand& value)
+    : FilterOperand()
+    , typeDefinitionId_()
+    , browsePath_()
+    , attributeId_()
+    , indexRange_()
+    {
+        const_cast<SimpleAttributeOperand*>(&value)->copyTo(*this);
+    }
+    
     SimpleAttributeOperand::~SimpleAttributeOperand(void)
     {
     }

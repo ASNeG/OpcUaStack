@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    StructureDescription::StructureDescription(const StructureDescription& value)
+    : DataTypeDescription()
+    , structureDefinition_()
+    {
+        const_cast<StructureDescription*>(&value)->copyTo(*this);
+    }
+    
     StructureDescription::~StructureDescription(void)
     {
     }

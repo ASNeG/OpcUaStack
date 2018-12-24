@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<TimeZoneDataType::SPtr> Vec;
     
         TimeZoneDataType(void);
+        TimeZoneDataType(const TimeZoneDataType& value);
         virtual ~TimeZoneDataType(void);
         
         OpcUaInt16& offset(void);

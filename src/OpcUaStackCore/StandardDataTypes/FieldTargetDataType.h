@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<FieldTargetDataType::SPtr> Vec;
     
         FieldTargetDataType(void);
+        FieldTargetDataType(const FieldTargetDataType& value);
         virtual ~FieldTargetDataType(void);
         
         OpcUaGuid& dataSetFieldId(void);

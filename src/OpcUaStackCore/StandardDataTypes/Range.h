@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<Range::SPtr> Vec;
     
         Range(void);
+        Range(const Range& value);
         virtual ~Range(void);
         
         OpcUaDouble& low(void);

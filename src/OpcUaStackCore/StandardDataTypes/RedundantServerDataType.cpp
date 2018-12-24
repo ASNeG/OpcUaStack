@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    RedundantServerDataType::RedundantServerDataType(const RedundantServerDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , serverId_()
+    , serviceLevel_()
+    , serverState_()
+    {
+        const_cast<RedundantServerDataType*>(&value)->copyTo(*this);
+    }
+    
     RedundantServerDataType::~RedundantServerDataType(void)
     {
     }

@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    TimeZoneDataType::TimeZoneDataType(const TimeZoneDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , offset_()
+    , daylightSavingInOffset_()
+    {
+        const_cast<TimeZoneDataType*>(&value)->copyTo(*this);
+    }
+    
     TimeZoneDataType::~TimeZoneDataType(void)
     {
     }

@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    PublishedDataSetDataType::PublishedDataSetDataType(const PublishedDataSetDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , dataSetFolder_()
+    , dataSetMetaData_()
+    , extensionFields_()
+    , dataSetSource_()
+    {
+        const_cast<PublishedDataSetDataType*>(&value)->copyTo(*this);
+    }
+    
     PublishedDataSetDataType::~PublishedDataSetDataType(void)
     {
     }

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    MonitoringFilterResult::MonitoringFilterResult(const MonitoringFilterResult& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<MonitoringFilterResult*>(&value)->copyTo(*this);
+    }
+    
     MonitoringFilterResult::~MonitoringFilterResult(void)
     {
     }

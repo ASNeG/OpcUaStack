@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ObjectAttributes::SPtr> Vec;
     
         ObjectAttributes(void);
+        ObjectAttributes(const ObjectAttributes& value);
         virtual ~ObjectAttributes(void);
         
         OpcUaByte& eventNotifier(void);

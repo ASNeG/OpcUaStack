@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<StatusChangeNotification::SPtr> Vec;
     
         StatusChangeNotification(void);
+        StatusChangeNotification(const StatusChangeNotification& value);
         virtual ~StatusChangeNotification(void);
         
         OpcUaStatus& status(void);

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataSetWriterTransportDataType::SPtr> Vec;
     
         DataSetWriterTransportDataType(void);
+        DataSetWriterTransportDataType(const DataSetWriterTransportDataType& value);
         virtual ~DataSetWriterTransportDataType(void);
         
         

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    EnumDescription::EnumDescription(const EnumDescription& value)
+    : DataTypeDescription()
+    , enumDefinition_()
+    , builtInType_()
+    {
+        const_cast<EnumDescription*>(&value)->copyTo(*this);
+    }
+    
     EnumDescription::~EnumDescription(void)
     {
     }

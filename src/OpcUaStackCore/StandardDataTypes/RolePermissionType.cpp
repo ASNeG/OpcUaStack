@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    RolePermissionType::RolePermissionType(const RolePermissionType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , roleId_()
+    , permissions_()
+    {
+        const_cast<RolePermissionType*>(&value)->copyTo(*this);
+    }
+    
     RolePermissionType::~RolePermissionType(void)
     {
     }

@@ -33,6 +33,7 @@ namespace OpcUaStackCore
         typedef std::vector<PubSubGroupDataType::SPtr> Vec;
     
         PubSubGroupDataType(void);
+        PubSubGroupDataType(const PubSubGroupDataType& value);
         virtual ~PubSubGroupDataType(void);
         
         OpcUaString& name(void);

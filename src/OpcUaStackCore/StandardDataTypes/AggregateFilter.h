@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<AggregateFilter::SPtr> Vec;
     
         AggregateFilter(void);
+        AggregateFilter(const AggregateFilter& value);
         virtual ~AggregateFilter(void);
         
         OpcUaUtcTime& startTime(void);

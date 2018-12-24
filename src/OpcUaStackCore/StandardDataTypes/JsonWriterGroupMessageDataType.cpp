@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    JsonWriterGroupMessageDataType::JsonWriterGroupMessageDataType(const JsonWriterGroupMessageDataType& value)
+    : WriterGroupMessageDataType()
+    , networkMessageContentMask_()
+    {
+        const_cast<JsonWriterGroupMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     JsonWriterGroupMessageDataType::~JsonWriterGroupMessageDataType(void)
     {
     }

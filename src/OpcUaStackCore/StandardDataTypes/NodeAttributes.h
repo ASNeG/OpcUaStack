@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<NodeAttributes::SPtr> Vec;
     
         NodeAttributes(void);
+        NodeAttributes(const NodeAttributes& value);
         virtual ~NodeAttributes(void);
         
         OpcUaUInt32& specifiedAttributes(void);

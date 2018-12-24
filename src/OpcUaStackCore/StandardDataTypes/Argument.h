@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<Argument::SPtr> Vec;
     
         Argument(void);
+        Argument(const Argument& value);
         virtual ~Argument(void);
         
         OpcUaString& name(void);

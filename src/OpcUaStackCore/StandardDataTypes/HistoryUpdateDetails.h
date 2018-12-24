@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<HistoryUpdateDetails::SPtr> Vec;
     
         HistoryUpdateDetails(void);
+        HistoryUpdateDetails(const HistoryUpdateDetails& value);
         virtual ~HistoryUpdateDetails(void);
         
         OpcUaNodeId& nodeId(void);

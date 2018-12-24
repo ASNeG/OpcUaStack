@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ReadRawModifiedDetails::SPtr> Vec;
     
         ReadRawModifiedDetails(void);
+        ReadRawModifiedDetails(const ReadRawModifiedDetails& value);
         virtual ~ReadRawModifiedDetails(void);
         
         OpcUaBoolean& isReadModified(void);

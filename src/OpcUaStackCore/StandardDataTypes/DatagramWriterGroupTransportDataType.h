@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DatagramWriterGroupTransportDataType::SPtr> Vec;
     
         DatagramWriterGroupTransportDataType(void);
+        DatagramWriterGroupTransportDataType(const DatagramWriterGroupTransportDataType& value);
         virtual ~DatagramWriterGroupTransportDataType(void);
         
         OpcUaByte& messageRepeatCount(void);

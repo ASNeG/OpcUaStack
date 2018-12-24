@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    Annotation::Annotation(const Annotation& value)
+    : Object()
+    , ExtensionObjectBase()
+    , message_()
+    , userName_()
+    , annotationTime_()
+    {
+        const_cast<Annotation*>(&value)->copyTo(*this);
+    }
+    
     Annotation::~Annotation(void)
     {
     }

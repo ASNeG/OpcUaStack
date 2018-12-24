@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ServerDiagnosticsSummaryDataType::SPtr> Vec;
     
         ServerDiagnosticsSummaryDataType(void);
+        ServerDiagnosticsSummaryDataType(const ServerDiagnosticsSummaryDataType& value);
         virtual ~ServerDiagnosticsSummaryDataType(void);
         
         OpcUaUInt32& serverViewCount(void);

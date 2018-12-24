@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A token representing a user identified by an X509 certificate.
+     */
+    X509IdentityToken::X509IdentityToken(const X509IdentityToken& value)
+    : UserIdentityToken()
+    , certificateData_()
+    {
+        const_cast<X509IdentityToken*>(&value)->copyTo(*this);
+    }
+    
     X509IdentityToken::~X509IdentityToken(void)
     {
     }

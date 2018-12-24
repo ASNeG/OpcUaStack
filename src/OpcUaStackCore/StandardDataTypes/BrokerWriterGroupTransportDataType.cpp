@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    BrokerWriterGroupTransportDataType::BrokerWriterGroupTransportDataType(const BrokerWriterGroupTransportDataType& value)
+    : WriterGroupTransportDataType()
+    , queueName_()
+    , resourceUri_()
+    , authenticationProfileUri_()
+    , requestedDeliveryGuarantee_()
+    {
+        const_cast<BrokerWriterGroupTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     BrokerWriterGroupTransportDataType::~BrokerWriterGroupTransportDataType(void)
     {
     }

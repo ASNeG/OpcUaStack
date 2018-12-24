@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for an object node.
+     */
+    ObjectAttributes::ObjectAttributes(const ObjectAttributes& value)
+    : NodeAttributes()
+    , eventNotifier_()
+    {
+        const_cast<ObjectAttributes*>(&value)->copyTo(*this);
+    }
+    
     ObjectAttributes::~ObjectAttributes(void)
     {
     }

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<FilterOperand::SPtr> Vec;
     
         FilterOperand(void);
+        FilterOperand(const FilterOperand& value);
         virtual ~FilterOperand(void);
         
         

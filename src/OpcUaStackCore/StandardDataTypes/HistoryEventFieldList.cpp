@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryEventFieldList::HistoryEventFieldList(const HistoryEventFieldList& value)
+    : Object()
+    , ExtensionObjectBase()
+    , eventFields_()
+    {
+        const_cast<HistoryEventFieldList*>(&value)->copyTo(*this);
+    }
+    
     HistoryEventFieldList::~HistoryEventFieldList(void)
     {
     }

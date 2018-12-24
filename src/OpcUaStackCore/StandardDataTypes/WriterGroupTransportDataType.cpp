@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    WriterGroupTransportDataType::WriterGroupTransportDataType(const WriterGroupTransportDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<WriterGroupTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     WriterGroupTransportDataType::~WriterGroupTransportDataType(void)
     {
     }

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DeleteAtTimeDetails::SPtr> Vec;
     
         DeleteAtTimeDetails(void);
+        DeleteAtTimeDetails(const DeleteAtTimeDetails& value);
         virtual ~DeleteAtTimeDetails(void);
         
         OpcUaUtcTimeArray& reqTimes(void);

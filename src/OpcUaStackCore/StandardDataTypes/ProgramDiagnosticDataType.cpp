@@ -30,6 +30,23 @@ namespace OpcUaStackCore
     {
     }
     
+    ProgramDiagnosticDataType::ProgramDiagnosticDataType(const ProgramDiagnosticDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , createSessionId_()
+    , createClientName_()
+    , invocationCreationTime_()
+    , lastTransitionTime_()
+    , lastMethodCall_()
+    , lastMethodSessionId_()
+    , lastMethodInputArguments_()
+    , lastMethodOutputArguments_()
+    , lastMethodCallTime_()
+    , lastMethodReturnStatus_()
+    {
+        const_cast<ProgramDiagnosticDataType*>(&value)->copyTo(*this);
+    }
+    
     ProgramDiagnosticDataType::~ProgramDiagnosticDataType(void)
     {
     }

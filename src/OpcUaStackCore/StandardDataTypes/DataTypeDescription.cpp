@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    DataTypeDescription::DataTypeDescription(const DataTypeDescription& value)
+    : Object()
+    , ExtensionObjectBase()
+    , dataTypeId_()
+    , name_()
+    {
+        const_cast<DataTypeDescription*>(&value)->copyTo(*this);
+    }
+    
     DataTypeDescription::~DataTypeDescription(void)
     {
     }

@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    ConfigurationVersionDataType::ConfigurationVersionDataType(const ConfigurationVersionDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , majorVersion_()
+    , minorVersion_()
+    {
+        const_cast<ConfigurationVersionDataType*>(&value)->copyTo(*this);
+    }
+    
     ConfigurationVersionDataType::~ConfigurationVersionDataType(void)
     {
     }

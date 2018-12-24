@@ -29,6 +29,22 @@ namespace OpcUaStackCore
     {
     }
     
+    SessionSecurityDiagnosticsDataType::SessionSecurityDiagnosticsDataType(const SessionSecurityDiagnosticsDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , sessionId_()
+    , clientUserIdOfSession_()
+    , clientUserIdHistory_()
+    , authenticationMechanism_()
+    , encoding_()
+    , transportProtocol_()
+    , securityMode_()
+    , securityPolicyUri_()
+    , clientCertificate_()
+    {
+        const_cast<SessionSecurityDiagnosticsDataType*>(&value)->copyTo(*this);
+    }
+    
     SessionSecurityDiagnosticsDataType::~SessionSecurityDiagnosticsDataType(void)
     {
     }

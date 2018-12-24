@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<SimpleTypeDescription::SPtr> Vec;
     
         SimpleTypeDescription(void);
+        SimpleTypeDescription(const SimpleTypeDescription& value);
         virtual ~SimpleTypeDescription(void);
         
         OpcUaNodeId& baseDataType(void);

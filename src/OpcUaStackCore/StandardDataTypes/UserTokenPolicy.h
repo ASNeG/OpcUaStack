@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<UserTokenPolicy::SPtr> Vec;
     
         UserTokenPolicy(void);
+        UserTokenPolicy(const UserTokenPolicy& value);
         virtual ~UserTokenPolicy(void);
         
         OpcUaString& policyId(void);

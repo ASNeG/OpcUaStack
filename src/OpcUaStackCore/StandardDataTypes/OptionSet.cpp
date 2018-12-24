@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * This abstract Structured DataType is the base DataType for all DataTypes representing a bit mask.
+     */
+    OptionSet::OptionSet(const OptionSet& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_()
+    , validBits_()
+    {
+        const_cast<OptionSet*>(&value)->copyTo(*this);
+    }
+    
     OptionSet::~OptionSet(void)
     {
     }

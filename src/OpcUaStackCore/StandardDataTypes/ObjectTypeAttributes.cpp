@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for an object type node.
+     */
+    ObjectTypeAttributes::ObjectTypeAttributes(const ObjectTypeAttributes& value)
+    : NodeAttributes()
+    , isAbstract_()
+    {
+        const_cast<ObjectTypeAttributes*>(&value)->copyTo(*this);
+    }
+    
     ObjectTypeAttributes::~ObjectTypeAttributes(void)
     {
     }

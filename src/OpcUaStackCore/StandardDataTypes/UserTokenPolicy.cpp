@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * Describes a user token that can be used with a server.
+     */
+    UserTokenPolicy::UserTokenPolicy(const UserTokenPolicy& value)
+    : Object()
+    , ExtensionObjectBase()
+    , policyId_()
+    , tokenType_()
+    , issuedTokenType_()
+    , issuerEndpointUrl_()
+    , securityPolicyUri_()
+    {
+        const_cast<UserTokenPolicy*>(&value)->copyTo(*this);
+    }
+    
     UserTokenPolicy::~UserTokenPolicy(void)
     {
     }

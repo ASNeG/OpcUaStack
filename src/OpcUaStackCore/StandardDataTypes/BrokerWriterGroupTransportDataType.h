@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<BrokerWriterGroupTransportDataType::SPtr> Vec;
     
         BrokerWriterGroupTransportDataType(void);
+        BrokerWriterGroupTransportDataType(const BrokerWriterGroupTransportDataType& value);
         virtual ~BrokerWriterGroupTransportDataType(void);
         
         OpcUaString& queueName(void);

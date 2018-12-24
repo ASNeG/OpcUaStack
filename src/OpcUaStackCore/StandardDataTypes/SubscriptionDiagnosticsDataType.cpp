@@ -51,6 +51,44 @@ namespace OpcUaStackCore
     {
     }
     
+    SubscriptionDiagnosticsDataType::SubscriptionDiagnosticsDataType(const SubscriptionDiagnosticsDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , sessionId_()
+    , subscriptionId_()
+    , priority_()
+    , publishingInterval_()
+    , maxKeepAliveCount_()
+    , maxLifetimeCount_()
+    , maxNotificationsPerPublish_()
+    , publishingEnabled_()
+    , modifyCount_()
+    , enableCount_()
+    , disableCount_()
+    , republishRequestCount_()
+    , republishMessageRequestCount_()
+    , republishMessageCount_()
+    , transferRequestCount_()
+    , transferredToAltClientCount_()
+    , transferredToSameClientCount_()
+    , publishRequestCount_()
+    , dataChangeNotificationsCount_()
+    , eventNotificationsCount_()
+    , notificationsCount_()
+    , latePublishRequestCount_()
+    , currentKeepAliveCount_()
+    , currentLifetimeCount_()
+    , unacknowledgedMessageCount_()
+    , discardedMessageCount_()
+    , monitoredItemCount_()
+    , disabledMonitoredItemCount_()
+    , monitoringQueueOverflowCount_()
+    , nextSequenceNumber_()
+    , eventQueueOverFlowCount_()
+    {
+        const_cast<SubscriptionDiagnosticsDataType*>(&value)->copyTo(*this);
+    }
+    
     SubscriptionDiagnosticsDataType::~SubscriptionDiagnosticsDataType(void)
     {
     }

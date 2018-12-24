@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ServerOnNetwork::SPtr> Vec;
     
         ServerOnNetwork(void);
+        ServerOnNetwork(const ServerOnNetwork& value);
         virtual ~ServerOnNetwork(void);
         
         OpcUaUInt32& recordId(void);

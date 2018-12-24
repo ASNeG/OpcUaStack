@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<UadpDataSetReaderMessageDataType::SPtr> Vec;
     
         UadpDataSetReaderMessageDataType(void);
+        UadpDataSetReaderMessageDataType(const UadpDataSetReaderMessageDataType& value);
         virtual ~UadpDataSetReaderMessageDataType(void);
         
         OpcUaVersionTime& groupVersion(void);

@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<EventFilterResult::SPtr> Vec;
     
         EventFilterResult(void);
+        EventFilterResult(const EventFilterResult& value);
         virtual ~EventFilterResult(void);
         
         OpcUaStatusArray& selectClauseResults(void);

@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<SessionSecurityDiagnosticsDataType::SPtr> Vec;
     
         SessionSecurityDiagnosticsDataType(void);
+        SessionSecurityDiagnosticsDataType(const SessionSecurityDiagnosticsDataType& value);
         virtual ~SessionSecurityDiagnosticsDataType(void);
         
         OpcUaNodeId& sessionId(void);

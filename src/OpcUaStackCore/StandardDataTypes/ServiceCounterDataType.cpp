@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    ServiceCounterDataType::ServiceCounterDataType(const ServiceCounterDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , totalCount_()
+    , errorCount_()
+    {
+        const_cast<ServiceCounterDataType*>(&value)->copyTo(*this);
+    }
+    
     ServiceCounterDataType::~ServiceCounterDataType(void)
     {
     }

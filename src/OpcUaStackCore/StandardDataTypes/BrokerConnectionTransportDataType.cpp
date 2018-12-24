@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    BrokerConnectionTransportDataType::BrokerConnectionTransportDataType(const BrokerConnectionTransportDataType& value)
+    : ConnectionTransportDataType()
+    , resourceUri_()
+    , authenticationProfileUri_()
+    {
+        const_cast<BrokerConnectionTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     BrokerConnectionTransportDataType::~BrokerConnectionTransportDataType(void)
     {
     }

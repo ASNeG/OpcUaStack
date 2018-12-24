@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<DatagramConnectionTransportDataType::SPtr> Vec;
     
         DatagramConnectionTransportDataType(void);
+        DatagramConnectionTransportDataType(const DatagramConnectionTransportDataType& value);
         virtual ~DatagramConnectionTransportDataType(void);
         
         OpcUaExtensibleParameter& discoveryAddress(void);

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<BuildInfo::SPtr> Vec;
     
         BuildInfo(void);
+        BuildInfo(const BuildInfo& value);
         virtual ~BuildInfo(void);
         
         OpcUaString& productUri(void);

@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    AxisInformation::AxisInformation(const AxisInformation& value)
+    : Object()
+    , ExtensionObjectBase()
+    , engineeringUnits_()
+    , eURange_()
+    , title_()
+    , axisScaleType_()
+    , axisSteps_()
+    {
+        const_cast<AxisInformation*>(&value)->copyTo(*this);
+    }
+    
     AxisInformation::~AxisInformation(void)
     {
     }

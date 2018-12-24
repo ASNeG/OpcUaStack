@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<AggregateFilterResult::SPtr> Vec;
     
         AggregateFilterResult(void);
+        AggregateFilterResult(const AggregateFilterResult& value);
         virtual ~AggregateFilterResult(void);
         
         OpcUaUtcTime& revisedStartTime(void);

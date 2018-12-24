@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ReaderGroupTransportDataType::ReaderGroupTransportDataType(const ReaderGroupTransportDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<ReaderGroupTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     ReaderGroupTransportDataType::~ReaderGroupTransportDataType(void)
     {
     }

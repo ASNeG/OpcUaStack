@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ReadAtTimeDetails::SPtr> Vec;
     
         ReadAtTimeDetails(void);
+        ReadAtTimeDetails(const ReadAtTimeDetails& value);
         virtual ~ReadAtTimeDetails(void);
         
         OpcUaUtcTimeArray& reqTimes(void);

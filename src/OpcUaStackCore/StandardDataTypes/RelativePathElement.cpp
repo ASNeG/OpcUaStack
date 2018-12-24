@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * An element in a relative path.
+     */
+    RelativePathElement::RelativePathElement(const RelativePathElement& value)
+    : Object()
+    , ExtensionObjectBase()
+    , referenceTypeId_()
+    , isInverse_()
+    , includeSubtypes_()
+    , targetName_()
+    {
+        const_cast<RelativePathElement*>(&value)->copyTo(*this);
+    }
+    
     RelativePathElement::~RelativePathElement(void)
     {
     }

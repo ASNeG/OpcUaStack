@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<EnumField::SPtr> Vec;
     
         EnumField(void);
+        EnumField(const EnumField& value);
         virtual ~EnumField(void);
         
         OpcUaString& name(void);

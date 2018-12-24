@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DatagramConnectionTransportDataType::DatagramConnectionTransportDataType(const DatagramConnectionTransportDataType& value)
+    : ConnectionTransportDataType()
+    , discoveryAddress_()
+    {
+        const_cast<DatagramConnectionTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     DatagramConnectionTransportDataType::~DatagramConnectionTransportDataType(void)
     {
     }

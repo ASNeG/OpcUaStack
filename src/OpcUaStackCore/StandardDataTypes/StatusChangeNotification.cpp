@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    StatusChangeNotification::StatusChangeNotification(const StatusChangeNotification& value)
+    : NotificationData()
+    , status_()
+    , diagnosticInfo_()
+    {
+        const_cast<StatusChangeNotification*>(&value)->copyTo(*this);
+    }
+    
     StatusChangeNotification::~StatusChangeNotification(void)
     {
     }

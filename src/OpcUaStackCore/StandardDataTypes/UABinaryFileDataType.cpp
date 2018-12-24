@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    UABinaryFileDataType::UABinaryFileDataType(const UABinaryFileDataType& value)
+    : DataTypeSchemaHeader()
+    , schemaLocation_()
+    , fileHeader_()
+    , body_()
+    {
+        const_cast<UABinaryFileDataType*>(&value)->copyTo(*this);
+    }
+    
     UABinaryFileDataType::~UABinaryFileDataType(void)
     {
     }

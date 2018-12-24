@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    ServerOnNetwork::ServerOnNetwork(const ServerOnNetwork& value)
+    : Object()
+    , ExtensionObjectBase()
+    , recordId_()
+    , serverName_()
+    , discoveryUrl_()
+    , serverCapabilities_()
+    {
+        const_cast<ServerOnNetwork*>(&value)->copyTo(*this);
+    }
+    
     ServerOnNetwork::~ServerOnNetwork(void)
     {
     }

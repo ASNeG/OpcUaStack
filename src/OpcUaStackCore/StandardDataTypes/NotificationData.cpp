@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    NotificationData::NotificationData(const NotificationData& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<NotificationData*>(&value)->copyTo(*this);
+    }
+    
     NotificationData::~NotificationData(void)
     {
     }

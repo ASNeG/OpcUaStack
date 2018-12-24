@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryData::HistoryData(const HistoryData& value)
+    : Object()
+    , ExtensionObjectBase()
+    , dataValues_()
+    {
+        const_cast<HistoryData*>(&value)->copyTo(*this);
+    }
+    
     HistoryData::~HistoryData(void)
     {
     }

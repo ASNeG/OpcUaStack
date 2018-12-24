@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<MonitoringFilterResult::SPtr> Vec;
     
         MonitoringFilterResult(void);
+        MonitoringFilterResult(const MonitoringFilterResult& value);
         virtual ~MonitoringFilterResult(void);
         
         

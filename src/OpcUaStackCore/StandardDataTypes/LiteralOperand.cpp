@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    LiteralOperand::LiteralOperand(const LiteralOperand& value)
+    : FilterOperand()
+    , value_()
+    {
+        const_cast<LiteralOperand*>(&value)->copyTo(*this);
+    }
+    
     LiteralOperand::~LiteralOperand(void)
     {
     }

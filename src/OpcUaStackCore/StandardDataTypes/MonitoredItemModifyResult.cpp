@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    MonitoredItemModifyResult::MonitoredItemModifyResult(const MonitoredItemModifyResult& value)
+    : Object()
+    , ExtensionObjectBase()
+    , statusCode_()
+    , revisedSamplingInterval_()
+    , revisedQueueSize_()
+    , filterResult_()
+    {
+        const_cast<MonitoredItemModifyResult*>(&value)->copyTo(*this);
+    }
+    
     MonitoredItemModifyResult::~MonitoredItemModifyResult(void)
     {
     }

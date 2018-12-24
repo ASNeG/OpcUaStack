@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<EndpointConfiguration::SPtr> Vec;
     
         EndpointConfiguration(void);
+        EndpointConfiguration(const EndpointConfiguration& value);
         virtual ~EndpointConfiguration(void);
         
         OpcUaInt32& operationTimeout(void);

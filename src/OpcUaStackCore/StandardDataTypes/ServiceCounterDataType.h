@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ServiceCounterDataType::SPtr> Vec;
     
         ServiceCounterDataType(void);
+        ServiceCounterDataType(const ServiceCounterDataType& value);
         virtual ~ServiceCounterDataType(void);
         
         OpcUaUInt32& totalCount(void);

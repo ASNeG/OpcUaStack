@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    PubSubGroupDataType::PubSubGroupDataType(const PubSubGroupDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , enabled_()
+    , securityMode_()
+    , securityGroupId_()
+    , securityKeyServices_()
+    , maxNetworkMessageSize_()
+    , groupProperties_()
+    {
+        const_cast<PubSubGroupDataType*>(&value)->copyTo(*this);
+    }
+    
     PubSubGroupDataType::~PubSubGroupDataType(void)
     {
     }

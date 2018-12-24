@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ModelChangeStructureDataType::SPtr> Vec;
     
         ModelChangeStructureDataType(void);
+        ModelChangeStructureDataType(const ModelChangeStructureDataType& value);
         virtual ~ModelChangeStructureDataType(void);
         
         OpcUaNodeId& affected(void);

@@ -33,6 +33,7 @@ namespace OpcUaStackCore
         typedef std::vector<WriterGroupDataType::SPtr> Vec;
     
         WriterGroupDataType(void);
+        WriterGroupDataType(const WriterGroupDataType& value);
         virtual ~WriterGroupDataType(void);
         
         OpcUaUInt16& writerGroupId(void);

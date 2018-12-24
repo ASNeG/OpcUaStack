@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<NetworkGroupDataType::SPtr> Vec;
     
         NetworkGroupDataType(void);
+        NetworkGroupDataType(const NetworkGroupDataType& value);
         virtual ~NetworkGroupDataType(void);
         
         OpcUaString& serverUri(void);

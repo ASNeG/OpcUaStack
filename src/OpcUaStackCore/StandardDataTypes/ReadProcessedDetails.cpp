@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    ReadProcessedDetails::ReadProcessedDetails(const ReadProcessedDetails& value)
+    : HistoryReadDetails()
+    , startTime_()
+    , endTime_()
+    , processingInterval_()
+    , aggregateType_()
+    , aggregateConfiguration_()
+    {
+        const_cast<ReadProcessedDetails*>(&value)->copyTo(*this);
+    }
+    
     ReadProcessedDetails::~ReadProcessedDetails(void)
     {
     }

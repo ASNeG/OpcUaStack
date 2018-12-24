@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    JsonDataSetWriterMessageDataType::JsonDataSetWriterMessageDataType(const JsonDataSetWriterMessageDataType& value)
+    : DataSetWriterMessageDataType()
+    , dataSetMessageContentMask_()
+    {
+        const_cast<JsonDataSetWriterMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     JsonDataSetWriterMessageDataType::~JsonDataSetWriterMessageDataType(void)
     {
     }

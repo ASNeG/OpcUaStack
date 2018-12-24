@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<SubscriptionDiagnosticsDataType::SPtr> Vec;
     
         SubscriptionDiagnosticsDataType(void);
+        SubscriptionDiagnosticsDataType(const SubscriptionDiagnosticsDataType& value);
         virtual ~SubscriptionDiagnosticsDataType(void);
         
         OpcUaNodeId& sessionId(void);

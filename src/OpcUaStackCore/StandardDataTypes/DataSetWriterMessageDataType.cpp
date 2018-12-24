@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetWriterMessageDataType::DataSetWriterMessageDataType(const DataSetWriterMessageDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DataSetWriterMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetWriterMessageDataType::~DataSetWriterMessageDataType(void)
     {
     }

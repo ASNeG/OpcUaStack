@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    ContentFilterElement::ContentFilterElement(const ContentFilterElement& value)
+    : Object()
+    , ExtensionObjectBase()
+    , filterOperator_()
+    , filterOperands_()
+    {
+        const_cast<ContentFilterElement*>(&value)->copyTo(*this);
+    }
+    
     ContentFilterElement::~ContentFilterElement(void)
     {
     }

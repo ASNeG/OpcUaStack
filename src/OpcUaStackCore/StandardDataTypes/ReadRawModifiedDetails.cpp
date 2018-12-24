@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    ReadRawModifiedDetails::ReadRawModifiedDetails(const ReadRawModifiedDetails& value)
+    : HistoryReadDetails()
+    , isReadModified_()
+    , startTime_()
+    , endTime_()
+    , numValuesPerNode_()
+    , returnBounds_()
+    {
+        const_cast<ReadRawModifiedDetails*>(&value)->copyTo(*this);
+    }
+    
     ReadRawModifiedDetails::~ReadRawModifiedDetails(void)
     {
     }

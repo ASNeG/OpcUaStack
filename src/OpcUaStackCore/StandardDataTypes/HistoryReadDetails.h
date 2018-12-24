@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<HistoryReadDetails::SPtr> Vec;
     
         HistoryReadDetails(void);
+        HistoryReadDetails(const HistoryReadDetails& value);
         virtual ~HistoryReadDetails(void);
         
         

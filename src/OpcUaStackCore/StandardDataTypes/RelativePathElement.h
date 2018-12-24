@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<RelativePathElement::SPtr> Vec;
     
         RelativePathElement(void);
+        RelativePathElement(const RelativePathElement& value);
         virtual ~RelativePathElement(void);
         
         OpcUaNodeId& referenceTypeId(void);

@@ -35,6 +35,7 @@ namespace OpcUaStackCore
         typedef std::vector<PubSubConnectionDataType::SPtr> Vec;
     
         PubSubConnectionDataType(void);
+        PubSubConnectionDataType(const PubSubConnectionDataType& value);
         virtual ~PubSubConnectionDataType(void);
         
         OpcUaString& name(void);

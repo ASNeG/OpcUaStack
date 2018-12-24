@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<AddReferencesItem::SPtr> Vec;
     
         AddReferencesItem(void);
+        AddReferencesItem(const AddReferencesItem& value);
         virtual ~AddReferencesItem(void);
         
         OpcUaNodeId& sourceNodeId(void);

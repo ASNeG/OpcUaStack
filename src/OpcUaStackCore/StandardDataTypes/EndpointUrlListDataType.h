@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<EndpointUrlListDataType::SPtr> Vec;
     
         EndpointUrlListDataType(void);
+        EndpointUrlListDataType(const EndpointUrlListDataType& value);
         virtual ~EndpointUrlListDataType(void);
         
         OpcUaStringArray& endpointUrlList(void);

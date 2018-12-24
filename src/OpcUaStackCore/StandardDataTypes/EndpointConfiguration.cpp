@@ -29,6 +29,22 @@ namespace OpcUaStackCore
     {
     }
     
+    EndpointConfiguration::EndpointConfiguration(const EndpointConfiguration& value)
+    : Object()
+    , ExtensionObjectBase()
+    , operationTimeout_()
+    , useBinaryEncoding_()
+    , maxStringLength_()
+    , maxByteStringLength_()
+    , maxArrayLength_()
+    , maxMessageSize_()
+    , maxBufferSize_()
+    , channelLifetime_()
+    , securityTokenLifetime_()
+    {
+        const_cast<EndpointConfiguration*>(&value)->copyTo(*this);
+    }
+    
     EndpointConfiguration::~EndpointConfiguration(void)
     {
     }

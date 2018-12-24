@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    AttributeOperand::AttributeOperand(const AttributeOperand& value)
+    : FilterOperand()
+    , nodeId_()
+    , alias_()
+    , browsePath_()
+    , attributeId_()
+    , indexRange_()
+    {
+        const_cast<AttributeOperand*>(&value)->copyTo(*this);
+    }
+    
     AttributeOperand::~AttributeOperand(void)
     {
     }

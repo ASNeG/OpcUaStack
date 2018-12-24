@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    UpdateStructureDataDetails::UpdateStructureDataDetails(const UpdateStructureDataDetails& value)
+    : HistoryUpdateDetails()
+    , performInsertReplace_()
+    , updateValues_()
+    {
+        const_cast<UpdateStructureDataDetails*>(&value)->copyTo(*this);
+    }
+    
     UpdateStructureDataDetails::~UpdateStructureDataDetails(void)
     {
     }

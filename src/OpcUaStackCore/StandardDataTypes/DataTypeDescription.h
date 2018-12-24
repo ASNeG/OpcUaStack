@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataTypeDescription::SPtr> Vec;
     
         DataTypeDescription(void);
+        DataTypeDescription(const DataTypeDescription& value);
         virtual ~DataTypeDescription(void);
         
         OpcUaNodeId& dataTypeId(void);

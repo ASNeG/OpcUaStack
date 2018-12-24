@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ReferenceTypeAttributes::SPtr> Vec;
     
         ReferenceTypeAttributes(void);
+        ReferenceTypeAttributes(const ReferenceTypeAttributes& value);
         virtual ~ReferenceTypeAttributes(void);
         
         OpcUaBoolean& isAbstract(void);

@@ -32,6 +32,7 @@ namespace OpcUaStackCore
         typedef std::vector<AddNodesItem::SPtr> Vec;
     
         AddNodesItem(void);
+        AddNodesItem(const AddNodesItem& value);
         virtual ~AddNodesItem(void);
         
         OpcUaExpandedNodeId& parentNodeId(void);

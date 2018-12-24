@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<EndpointType::SPtr> Vec;
     
         EndpointType(void);
+        EndpointType(const EndpointType& value);
         virtual ~EndpointType(void);
         
         OpcUaString& endpointUrl(void);

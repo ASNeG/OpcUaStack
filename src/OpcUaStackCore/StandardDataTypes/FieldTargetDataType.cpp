@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    FieldTargetDataType::FieldTargetDataType(const FieldTargetDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , dataSetFieldId_()
+    , receiverIndexRange_()
+    , targetNodeId_()
+    , attributeId_()
+    , writeIndexRange_()
+    , overrideValueHandling_()
+    , overrideValue_()
+    {
+        const_cast<FieldTargetDataType*>(&value)->copyTo(*this);
+    }
+    
     FieldTargetDataType::~FieldTargetDataType(void)
     {
     }

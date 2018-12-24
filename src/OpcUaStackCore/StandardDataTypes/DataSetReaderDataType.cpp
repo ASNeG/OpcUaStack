@@ -35,6 +35,28 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetReaderDataType::DataSetReaderDataType(const DataSetReaderDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , enabled_()
+    , publisherId_()
+    , writerGroupId_()
+    , dataSetWriterId_()
+    , dataSetMetaData_()
+    , dataSetFieldContentMask_()
+    , messageReceiveTimeout_()
+    , securityMode_()
+    , securityGroupId_()
+    , securityKeyServices_()
+    , dataSetReaderProperties_()
+    , transportSettings_()
+    , messageSettings_()
+    , subscribedDataSet_()
+    {
+        const_cast<DataSetReaderDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetReaderDataType::~DataSetReaderDataType(void)
     {
     }

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<EUInformation::SPtr> Vec;
     
         EUInformation(void);
+        EUInformation(const EUInformation& value);
         virtual ~EUInformation(void);
         
         OpcUaString& namespaceUri(void);

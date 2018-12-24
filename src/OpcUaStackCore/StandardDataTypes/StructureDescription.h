@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<StructureDescription::SPtr> Vec;
     
         StructureDescription(void);
+        StructureDescription(const StructureDescription& value);
         virtual ~StructureDescription(void);
         
         StructureDefinition& structureDefinition(void);

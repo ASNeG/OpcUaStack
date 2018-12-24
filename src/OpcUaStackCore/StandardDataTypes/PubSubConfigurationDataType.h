@@ -32,6 +32,7 @@ namespace OpcUaStackCore
         typedef std::vector<PubSubConfigurationDataType::SPtr> Vec;
     
         PubSubConfigurationDataType(void);
+        PubSubConfigurationDataType(const PubSubConfigurationDataType& value);
         virtual ~PubSubConfigurationDataType(void);
         
         PublishedDataSetDataTypeArray& publishedDataSets(void);

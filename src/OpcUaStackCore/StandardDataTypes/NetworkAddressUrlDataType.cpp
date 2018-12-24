@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    NetworkAddressUrlDataType::NetworkAddressUrlDataType(const NetworkAddressUrlDataType& value)
+    : NetworkAddressDataType()
+    , url_()
+    {
+        const_cast<NetworkAddressUrlDataType*>(&value)->copyTo(*this);
+    }
+    
     NetworkAddressUrlDataType::~NetworkAddressUrlDataType(void)
     {
     }

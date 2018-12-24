@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    EventFieldList::EventFieldList(const EventFieldList& value)
+    : Object()
+    , ExtensionObjectBase()
+    , clientHandle_()
+    , eventFields_()
+    {
+        const_cast<EventFieldList*>(&value)->copyTo(*this);
+    }
+    
     EventFieldList::~EventFieldList(void)
     {
     }

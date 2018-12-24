@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<IdentityMappingRuleType::SPtr> Vec;
     
         IdentityMappingRuleType(void);
+        IdentityMappingRuleType(const IdentityMappingRuleType& value);
         virtual ~IdentityMappingRuleType(void);
         
         IdentityCriteriaType& criteriaType(void);

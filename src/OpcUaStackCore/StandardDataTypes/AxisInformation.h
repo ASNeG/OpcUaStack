@@ -33,6 +33,7 @@ namespace OpcUaStackCore
         typedef std::vector<AxisInformation::SPtr> Vec;
     
         AxisInformation(void);
+        AxisInformation(const AxisInformation& value);
         virtual ~AxisInformation(void);
         
         EUInformation& engineeringUnits(void);

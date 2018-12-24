@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataTypeAttributes::SPtr> Vec;
     
         DataTypeAttributes(void);
+        DataTypeAttributes(const DataTypeAttributes& value);
         virtual ~DataTypeAttributes(void);
         
         OpcUaBoolean& isAbstract(void);

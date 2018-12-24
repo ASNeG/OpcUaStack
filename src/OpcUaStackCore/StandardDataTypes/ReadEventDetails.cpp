@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    ReadEventDetails::ReadEventDetails(const ReadEventDetails& value)
+    : HistoryReadDetails()
+    , numValuesPerNode_()
+    , startTime_()
+    , endTime_()
+    , filter_()
+    {
+        const_cast<ReadEventDetails*>(&value)->copyTo(*this);
+    }
+    
     ReadEventDetails::~ReadEventDetails(void)
     {
     }

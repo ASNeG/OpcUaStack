@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<IssuedIdentityToken::SPtr> Vec;
     
         IssuedIdentityToken(void);
+        IssuedIdentityToken(const IssuedIdentityToken& value);
         virtual ~IssuedIdentityToken(void);
         
         OpcUaByteString& tokenData(void);

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<HistoryData::SPtr> Vec;
     
         HistoryData(void);
+        HistoryData(const HistoryData& value);
         virtual ~HistoryData(void);
         
         OpcUaDataValueArray& dataValues(void);

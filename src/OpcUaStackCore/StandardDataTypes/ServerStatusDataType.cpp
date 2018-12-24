@@ -26,6 +26,19 @@ namespace OpcUaStackCore
     {
     }
     
+    ServerStatusDataType::ServerStatusDataType(const ServerStatusDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , startTime_()
+    , currentTime_()
+    , state_()
+    , buildInfo_()
+    , secondsTillShutdown_()
+    , shutdownReason_()
+    {
+        const_cast<ServerStatusDataType*>(&value)->copyTo(*this);
+    }
+    
     ServerStatusDataType::~ServerStatusDataType(void)
     {
     }

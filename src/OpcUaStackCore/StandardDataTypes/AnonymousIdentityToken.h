@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<AnonymousIdentityToken::SPtr> Vec;
     
         AnonymousIdentityToken(void);
+        AnonymousIdentityToken(const AnonymousIdentityToken& value);
         virtual ~AnonymousIdentityToken(void);
         
         

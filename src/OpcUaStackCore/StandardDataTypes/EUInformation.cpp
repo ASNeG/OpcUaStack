@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    EUInformation::EUInformation(const EUInformation& value)
+    : Object()
+    , ExtensionObjectBase()
+    , namespaceUri_()
+    , unitId_()
+    , displayName_()
+    , description_()
+    {
+        const_cast<EUInformation*>(&value)->copyTo(*this);
+    }
+    
     EUInformation::~EUInformation(void)
     {
     }

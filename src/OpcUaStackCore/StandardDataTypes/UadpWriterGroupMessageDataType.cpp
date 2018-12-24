@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    UadpWriterGroupMessageDataType::UadpWriterGroupMessageDataType(const UadpWriterGroupMessageDataType& value)
+    : WriterGroupMessageDataType()
+    , groupVersion_()
+    , dataSetOrdering_()
+    , networkMessageContentMask_()
+    , samplingOffset_()
+    , publishingOffset_()
+    {
+        const_cast<UadpWriterGroupMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     UadpWriterGroupMessageDataType::~UadpWriterGroupMessageDataType(void)
     {
     }

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryUpdateDetails::HistoryUpdateDetails(const HistoryUpdateDetails& value)
+    : Object()
+    , ExtensionObjectBase()
+    , nodeId_()
+    {
+        const_cast<HistoryUpdateDetails*>(&value)->copyTo(*this);
+    }
+    
     HistoryUpdateDetails::~HistoryUpdateDetails(void)
     {
     }

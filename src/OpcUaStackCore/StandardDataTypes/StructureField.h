@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<StructureField::SPtr> Vec;
     
         StructureField(void);
+        StructureField(const StructureField& value);
         virtual ~StructureField(void);
         
         OpcUaString& name(void);

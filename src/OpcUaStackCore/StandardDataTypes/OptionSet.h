@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<OptionSet::SPtr> Vec;
     
         OptionSet(void);
+        OptionSet(const OptionSet& value);
         virtual ~OptionSet(void);
         
         OpcUaByteString& value(void);

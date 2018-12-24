@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    StructureField::StructureField(const StructureField& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , description_()
+    , dataType_()
+    , valueRank_()
+    , arrayDimensions_()
+    , maxStringLength_()
+    , isOptional_()
+    {
+        const_cast<StructureField*>(&value)->copyTo(*this);
+    }
+    
     StructureField::~StructureField(void)
     {
     }

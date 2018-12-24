@@ -26,6 +26,19 @@ namespace OpcUaStackCore
     {
     }
     
+    BuildInfo::BuildInfo(const BuildInfo& value)
+    : Object()
+    , ExtensionObjectBase()
+    , productUri_()
+    , manufacturerName_()
+    , productName_()
+    , softwareVersion_()
+    , buildNumber_()
+    , buildDate_()
+    {
+        const_cast<BuildInfo*>(&value)->copyTo(*this);
+    }
+    
     BuildInfo::~BuildInfo(void)
     {
     }

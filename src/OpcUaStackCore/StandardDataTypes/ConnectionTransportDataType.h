@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ConnectionTransportDataType::SPtr> Vec;
     
         ConnectionTransportDataType(void);
+        ConnectionTransportDataType(const ConnectionTransportDataType& value);
         virtual ~ConnectionTransportDataType(void);
         
         

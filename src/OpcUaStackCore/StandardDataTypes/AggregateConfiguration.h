@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<AggregateConfiguration::SPtr> Vec;
     
         AggregateConfiguration(void);
+        AggregateConfiguration(const AggregateConfiguration& value);
         virtual ~AggregateConfiguration(void);
         
         OpcUaBoolean& useServerCapabilitiesDefaults(void);

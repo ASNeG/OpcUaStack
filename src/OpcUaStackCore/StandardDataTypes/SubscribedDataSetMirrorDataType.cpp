@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    SubscribedDataSetMirrorDataType::SubscribedDataSetMirrorDataType(const SubscribedDataSetMirrorDataType& value)
+    : SubscribedDataSetDataType()
+    , parentNodeName_()
+    , rolePermissions_()
+    {
+        const_cast<SubscribedDataSetMirrorDataType*>(&value)->copyTo(*this);
+    }
+    
     SubscribedDataSetMirrorDataType::~SubscribedDataSetMirrorDataType(void)
     {
     }

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<PublishedVariableDataType::SPtr> Vec;
     
         PublishedVariableDataType(void);
+        PublishedVariableDataType(const PublishedVariableDataType& value);
         virtual ~PublishedVariableDataType(void);
         
         OpcUaNodeId& publishedVariable(void);

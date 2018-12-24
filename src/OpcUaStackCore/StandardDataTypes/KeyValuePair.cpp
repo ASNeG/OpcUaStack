@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    KeyValuePair::KeyValuePair(const KeyValuePair& value)
+    : Object()
+    , ExtensionObjectBase()
+    , key_()
+    , value_()
+    {
+        const_cast<KeyValuePair*>(&value)->copyTo(*this);
+    }
+    
     KeyValuePair::~KeyValuePair(void)
     {
     }

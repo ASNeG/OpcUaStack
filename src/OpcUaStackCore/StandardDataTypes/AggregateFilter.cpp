@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    AggregateFilter::AggregateFilter(const AggregateFilter& value)
+    : MonitoringFilter()
+    , startTime_()
+    , aggregateType_()
+    , processingInterval_()
+    , aggregateConfiguration_()
+    {
+        const_cast<AggregateFilter*>(&value)->copyTo(*this);
+    }
+    
     AggregateFilter::~AggregateFilter(void)
     {
     }

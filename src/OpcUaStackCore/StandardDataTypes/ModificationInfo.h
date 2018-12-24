@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<ModificationInfo::SPtr> Vec;
     
         ModificationInfo(void);
+        ModificationInfo(const ModificationInfo& value);
         virtual ~ModificationInfo(void);
         
         OpcUaUtcTime& modificationTime(void);

@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<ReadEventDetails::SPtr> Vec;
     
         ReadEventDetails(void);
+        ReadEventDetails(const ReadEventDetails& value);
         virtual ~ReadEventDetails(void);
         
         OpcUaCounter& numValuesPerNode(void);

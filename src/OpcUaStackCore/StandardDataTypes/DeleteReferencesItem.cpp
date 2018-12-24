@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A request to delete a node from the server address space.
+     */
+    DeleteReferencesItem::DeleteReferencesItem(const DeleteReferencesItem& value)
+    : Object()
+    , ExtensionObjectBase()
+    , sourceNodeId_()
+    , referenceTypeId_()
+    , isForward_()
+    , targetNodeId_()
+    , deleteBidirectional_()
+    {
+        const_cast<DeleteReferencesItem*>(&value)->copyTo(*this);
+    }
+    
     DeleteReferencesItem::~DeleteReferencesItem(void)
     {
     }

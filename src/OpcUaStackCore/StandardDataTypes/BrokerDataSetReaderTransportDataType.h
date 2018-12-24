@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<BrokerDataSetReaderTransportDataType::SPtr> Vec;
     
         BrokerDataSetReaderTransportDataType(void);
+        BrokerDataSetReaderTransportDataType(const BrokerDataSetReaderTransportDataType& value);
         virtual ~BrokerDataSetReaderTransportDataType(void);
         
         OpcUaString& queueName(void);

@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    StatusResult::StatusResult(const StatusResult& value)
+    : Object()
+    , ExtensionObjectBase()
+    , statusCode_()
+    , diagnosticInfo_()
+    {
+        const_cast<StatusResult*>(&value)->copyTo(*this);
+    }
+    
     StatusResult::~StatusResult(void)
     {
     }

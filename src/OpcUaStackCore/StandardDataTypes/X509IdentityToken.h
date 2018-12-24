@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<X509IdentityToken::SPtr> Vec;
     
         X509IdentityToken(void);
+        X509IdentityToken(const X509IdentityToken& value);
         virtual ~X509IdentityToken(void);
         
         OpcUaByteString& certificateData(void);

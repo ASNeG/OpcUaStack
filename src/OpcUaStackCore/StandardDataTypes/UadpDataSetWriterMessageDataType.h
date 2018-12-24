@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<UadpDataSetWriterMessageDataType::SPtr> Vec;
     
         UadpDataSetWriterMessageDataType(void);
+        UadpDataSetWriterMessageDataType(const UadpDataSetWriterMessageDataType& value);
         virtual ~UadpDataSetWriterMessageDataType(void);
         
         OpcUaUadpDataSetMessageContentMask& dataSetMessageContentMask(void);

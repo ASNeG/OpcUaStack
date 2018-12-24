@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<JsonDataSetReaderMessageDataType::SPtr> Vec;
     
         JsonDataSetReaderMessageDataType(void);
+        JsonDataSetReaderMessageDataType(const JsonDataSetReaderMessageDataType& value);
         virtual ~JsonDataSetReaderMessageDataType(void);
         
         OpcUaJsonNetworkMessageContentMask& networkMessageContentMask(void);

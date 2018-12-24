@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<JsonWriterGroupMessageDataType::SPtr> Vec;
     
         JsonWriterGroupMessageDataType(void);
+        JsonWriterGroupMessageDataType(const JsonWriterGroupMessageDataType& value);
         virtual ~JsonWriterGroupMessageDataType(void);
         
         OpcUaJsonNetworkMessageContentMask& networkMessageContentMask(void);

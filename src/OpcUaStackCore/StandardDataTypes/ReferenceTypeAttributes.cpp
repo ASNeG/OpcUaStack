@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a reference type node.
+     */
+    ReferenceTypeAttributes::ReferenceTypeAttributes(const ReferenceTypeAttributes& value)
+    : NodeAttributes()
+    , isAbstract_()
+    , symmetric_()
+    , inverseName_()
+    {
+        const_cast<ReferenceTypeAttributes*>(&value)->copyTo(*this);
+    }
+    
     ReferenceTypeAttributes::~ReferenceTypeAttributes(void)
     {
     }

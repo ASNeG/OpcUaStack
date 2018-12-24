@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataTypeDefinition::SPtr> Vec;
     
         DataTypeDefinition(void);
+        DataTypeDefinition(const DataTypeDefinition& value);
         virtual ~DataTypeDefinition(void);
         
         

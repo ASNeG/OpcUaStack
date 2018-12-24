@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetReaderTransportDataType::DataSetReaderTransportDataType(const DataSetReaderTransportDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DataSetReaderTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetReaderTransportDataType::~DataSetReaderTransportDataType(void)
     {
     }

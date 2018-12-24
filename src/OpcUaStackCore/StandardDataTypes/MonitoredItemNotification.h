@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<MonitoredItemNotification::SPtr> Vec;
     
         MonitoredItemNotification(void);
+        MonitoredItemNotification(const MonitoredItemNotification& value);
         virtual ~MonitoredItemNotification(void);
         
         OpcUaIntegerId& clientHandle(void);

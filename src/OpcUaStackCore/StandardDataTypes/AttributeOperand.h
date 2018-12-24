@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<AttributeOperand::SPtr> Vec;
     
         AttributeOperand(void);
+        AttributeOperand(const AttributeOperand& value);
         virtual ~AttributeOperand(void);
         
         OpcUaNodeId& nodeId(void);

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataSetReaderTransportDataType::SPtr> Vec;
     
         DataSetReaderTransportDataType(void);
+        DataSetReaderTransportDataType(const DataSetReaderTransportDataType& value);
         virtual ~DataSetReaderTransportDataType(void);
         
         

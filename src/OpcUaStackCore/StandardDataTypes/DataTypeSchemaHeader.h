@@ -33,6 +33,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataTypeSchemaHeader::SPtr> Vec;
     
         DataTypeSchemaHeader(void);
+        DataTypeSchemaHeader(const DataTypeSchemaHeader& value);
         virtual ~DataTypeSchemaHeader(void);
         
         OpcUaStringArray& namespaces(void);

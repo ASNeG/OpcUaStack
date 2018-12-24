@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<MonitoredItemModifyResult::SPtr> Vec;
     
         MonitoredItemModifyResult(void);
+        MonitoredItemModifyResult(const MonitoredItemModifyResult& value);
         virtual ~MonitoredItemModifyResult(void);
         
         OpcUaStatus& statusCode(void);

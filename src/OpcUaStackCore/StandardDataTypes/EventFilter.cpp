@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    EventFilter::EventFilter(const EventFilter& value)
+    : MonitoringFilter()
+    , selectClauses_()
+    , whereClause_()
+    {
+        const_cast<EventFilter*>(&value)->copyTo(*this);
+    }
+    
     EventFilter::~EventFilter(void)
     {
     }

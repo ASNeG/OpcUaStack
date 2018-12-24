@@ -32,6 +32,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataSetMetaDataType::SPtr> Vec;
     
         DataSetMetaDataType(void);
+        DataSetMetaDataType(const DataSetMetaDataType& value);
         virtual ~DataSetMetaDataType(void);
         
         OpcUaString& name(void);

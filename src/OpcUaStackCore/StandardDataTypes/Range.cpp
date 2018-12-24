@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    Range::Range(const Range& value)
+    : Object()
+    , ExtensionObjectBase()
+    , low_()
+    , high_()
+    {
+        const_cast<Range*>(&value)->copyTo(*this);
+    }
+    
     Range::~Range(void)
     {
     }

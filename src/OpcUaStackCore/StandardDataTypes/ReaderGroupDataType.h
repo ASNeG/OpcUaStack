@@ -33,6 +33,7 @@ namespace OpcUaStackCore
         typedef std::vector<ReaderGroupDataType::SPtr> Vec;
     
         ReaderGroupDataType(void);
+        ReaderGroupDataType(const ReaderGroupDataType& value);
         virtual ~ReaderGroupDataType(void);
         
         OpcUaExtensibleParameter& transportSettings(void);

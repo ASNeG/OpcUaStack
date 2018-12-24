@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<StatusResult::SPtr> Vec;
     
         StatusResult(void);
+        StatusResult(const StatusResult& value);
         virtual ~StatusResult(void);
         
         OpcUaStatus& statusCode(void);

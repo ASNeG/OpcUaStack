@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    AggregateConfiguration::AggregateConfiguration(const AggregateConfiguration& value)
+    : Object()
+    , ExtensionObjectBase()
+    , useServerCapabilitiesDefaults_()
+    , treatUncertainAsBad_()
+    , percentDataBad_()
+    , percentDataGood_()
+    , useSlopedExtrapolation_()
+    {
+        const_cast<AggregateConfiguration*>(&value)->copyTo(*this);
+    }
+    
     AggregateConfiguration::~AggregateConfiguration(void)
     {
     }

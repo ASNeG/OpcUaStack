@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    XVType::XVType(const XVType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , x_()
+    , value_()
+    {
+        const_cast<XVType*>(&value)->copyTo(*this);
+    }
+    
     XVType::~XVType(void)
     {
     }

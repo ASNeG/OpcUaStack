@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ElementOperand::ElementOperand(const ElementOperand& value)
+    : FilterOperand()
+    , index_()
+    {
+        const_cast<ElementOperand*>(&value)->copyTo(*this);
+    }
+    
     ElementOperand::~ElementOperand(void)
     {
     }

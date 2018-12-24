@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    DataTypeSchemaHeader::DataTypeSchemaHeader(const DataTypeSchemaHeader& value)
+    : Object()
+    , ExtensionObjectBase()
+    , namespaces_()
+    , structureDataTypes_()
+    , enumDataTypes_()
+    , simpleDataTypes_()
+    {
+        const_cast<DataTypeSchemaHeader*>(&value)->copyTo(*this);
+    }
+    
     DataTypeSchemaHeader::~DataTypeSchemaHeader(void)
     {
     }

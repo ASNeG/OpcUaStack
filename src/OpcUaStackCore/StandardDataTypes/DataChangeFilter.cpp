@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    DataChangeFilter::DataChangeFilter(const DataChangeFilter& value)
+    : MonitoringFilter()
+    , trigger_()
+    , deadbandType_()
+    , deadbandValue_()
+    {
+        const_cast<DataChangeFilter*>(&value)->copyTo(*this);
+    }
+    
     DataChangeFilter::~DataChangeFilter(void)
     {
     }

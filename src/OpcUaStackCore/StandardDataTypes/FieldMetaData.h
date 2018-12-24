@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<FieldMetaData::SPtr> Vec;
     
         FieldMetaData(void);
+        FieldMetaData(const FieldMetaData& value);
         virtual ~FieldMetaData(void);
         
         OpcUaString& name(void);

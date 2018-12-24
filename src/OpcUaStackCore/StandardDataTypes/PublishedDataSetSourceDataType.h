@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<PublishedDataSetSourceDataType::SPtr> Vec;
     
         PublishedDataSetSourceDataType(void);
+        PublishedDataSetSourceDataType(const PublishedDataSetSourceDataType& value);
         virtual ~PublishedDataSetSourceDataType(void);
         
         

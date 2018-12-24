@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ConfigurationVersionDataType::SPtr> Vec;
     
         ConfigurationVersionDataType(void);
+        ConfigurationVersionDataType(const ConfigurationVersionDataType& value);
         virtual ~ConfigurationVersionDataType(void);
         
         OpcUaVersionTime& majorVersion(void);

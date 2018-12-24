@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<ApplicationDescription::SPtr> Vec;
     
         ApplicationDescription(void);
+        ApplicationDescription(const ApplicationDescription& value);
         virtual ~ApplicationDescription(void);
         
         OpcUaString& applicationUri(void);

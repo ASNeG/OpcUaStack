@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<SignedSoftwareCertificate::SPtr> Vec;
     
         SignedSoftwareCertificate(void);
+        SignedSoftwareCertificate(const SignedSoftwareCertificate& value);
         virtual ~SignedSoftwareCertificate(void);
         
         OpcUaByteString& certificateData(void);

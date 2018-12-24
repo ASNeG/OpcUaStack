@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    EndpointType::EndpointType(const EndpointType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , endpointUrl_()
+    , securityMode_()
+    , securityPolicyUri_()
+    , transportProfileUri_()
+    {
+        const_cast<EndpointType*>(&value)->copyTo(*this);
+    }
+    
     EndpointType::~EndpointType(void)
     {
     }

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    EnumField::EnumField(const EnumField& value)
+    : EnumValueType()
+    , name_()
+    {
+        const_cast<EnumField*>(&value)->copyTo(*this);
+    }
+    
     EnumField::~EnumField(void)
     {
     }

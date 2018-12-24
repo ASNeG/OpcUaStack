@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    EnumDefinition::EnumDefinition(const EnumDefinition& value)
+    : DataTypeDefinition()
+    , fields_()
+    {
+        const_cast<EnumDefinition*>(&value)->copyTo(*this);
+    }
+    
     EnumDefinition::~EnumDefinition(void)
     {
     }

@@ -32,6 +32,7 @@ namespace OpcUaStackCore
         typedef std::vector<PublishedEventsDataType::SPtr> Vec;
     
         PublishedEventsDataType(void);
+        PublishedEventsDataType(const PublishedEventsDataType& value);
         virtual ~PublishedEventsDataType(void);
         
         OpcUaNodeId& eventNotifier(void);

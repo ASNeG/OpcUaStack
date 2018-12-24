@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    ModelChangeStructureDataType::ModelChangeStructureDataType(const ModelChangeStructureDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , affected_()
+    , affectedType_()
+    , verb_()
+    {
+        const_cast<ModelChangeStructureDataType*>(&value)->copyTo(*this);
+    }
+    
     ModelChangeStructureDataType::~ModelChangeStructureDataType(void)
     {
     }

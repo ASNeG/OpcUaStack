@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<BrokerConnectionTransportDataType::SPtr> Vec;
     
         BrokerConnectionTransportDataType(void);
+        BrokerConnectionTransportDataType(const BrokerConnectionTransportDataType& value);
         virtual ~BrokerConnectionTransportDataType(void);
         
         OpcUaString& resourceUri(void);

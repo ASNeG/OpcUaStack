@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A token representing a user identified by a WS-Security XML token.
+     */
+    IssuedIdentityToken::IssuedIdentityToken(const IssuedIdentityToken& value)
+    : UserIdentityToken()
+    , tokenData_()
+    , encryptionAlgorithm_()
+    {
+        const_cast<IssuedIdentityToken*>(&value)->copyTo(*this);
+    }
+    
     IssuedIdentityToken::~IssuedIdentityToken(void)
     {
     }

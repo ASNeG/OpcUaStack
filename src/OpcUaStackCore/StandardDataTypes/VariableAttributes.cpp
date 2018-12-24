@@ -30,6 +30,23 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a variable node.
+     */
+    VariableAttributes::VariableAttributes(const VariableAttributes& value)
+    : NodeAttributes()
+    , value_()
+    , dataType_()
+    , valueRank_()
+    , arrayDimensions_()
+    , accessLevel_()
+    , userAccessLevel_()
+    , minimumSamplingInterval_()
+    , historizing_()
+    {
+        const_cast<VariableAttributes*>(&value)->copyTo(*this);
+    }
+    
     VariableAttributes::~VariableAttributes(void)
     {
     }

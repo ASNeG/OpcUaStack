@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<NetworkAddressDataType::SPtr> Vec;
     
         NetworkAddressDataType(void);
+        NetworkAddressDataType(const NetworkAddressDataType& value);
         virtual ~NetworkAddressDataType(void);
         
         OpcUaString& networkInterface(void);

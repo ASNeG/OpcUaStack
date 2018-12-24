@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a variable type node.
+     */
+    VariableTypeAttributes::VariableTypeAttributes(const VariableTypeAttributes& value)
+    : NodeAttributes()
+    , value_()
+    , dataType_()
+    , valueRank_()
+    , arrayDimensions_()
+    , isAbstract_()
+    {
+        const_cast<VariableTypeAttributes*>(&value)->copyTo(*this);
+    }
+    
     VariableTypeAttributes::~VariableTypeAttributes(void)
     {
     }

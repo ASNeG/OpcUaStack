@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    WriterGroupMessageDataType::WriterGroupMessageDataType(const WriterGroupMessageDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<WriterGroupMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     WriterGroupMessageDataType::~WriterGroupMessageDataType(void)
     {
     }

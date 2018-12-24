@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<RedundantServerDataType::SPtr> Vec;
     
         RedundantServerDataType(void);
+        RedundantServerDataType(const RedundantServerDataType& value);
         virtual ~RedundantServerDataType(void);
         
         OpcUaString& serverId(void);

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    JsonDataSetReaderMessageDataType::JsonDataSetReaderMessageDataType(const JsonDataSetReaderMessageDataType& value)
+    : DataSetReaderMessageDataType()
+    , networkMessageContentMask_()
+    , dataSetMessageContentMask_()
+    {
+        const_cast<JsonDataSetReaderMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     JsonDataSetReaderMessageDataType::~JsonDataSetReaderMessageDataType(void)
     {
     }

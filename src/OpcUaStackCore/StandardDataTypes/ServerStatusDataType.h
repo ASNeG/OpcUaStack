@@ -32,6 +32,7 @@ namespace OpcUaStackCore
         typedef std::vector<ServerStatusDataType::SPtr> Vec;
     
         ServerStatusDataType(void);
+        ServerStatusDataType(const ServerStatusDataType& value);
         virtual ~ServerStatusDataType(void);
         
         OpcUaUtcTime& startTime(void);

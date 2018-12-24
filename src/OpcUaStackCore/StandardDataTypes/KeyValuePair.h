@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<KeyValuePair::SPtr> Vec;
     
         KeyValuePair(void);
+        KeyValuePair(const KeyValuePair& value);
         virtual ~KeyValuePair(void);
         
         OpcUaQualifiedName& key(void);

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataTypeDefinition::DataTypeDefinition(const DataTypeDefinition& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DataTypeDefinition*>(&value)->copyTo(*this);
+    }
+    
     DataTypeDefinition::~DataTypeDefinition(void)
     {
     }

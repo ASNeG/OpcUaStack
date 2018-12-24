@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A base type for discovery configuration information.
+     */
+    DiscoveryConfiguration::DiscoveryConfiguration(const DiscoveryConfiguration& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DiscoveryConfiguration*>(&value)->copyTo(*this);
+    }
+    
     DiscoveryConfiguration::~DiscoveryConfiguration(void)
     {
     }

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<SamplingIntervalDiagnosticsDataType::SPtr> Vec;
     
         SamplingIntervalDiagnosticsDataType(void);
+        SamplingIntervalDiagnosticsDataType(const SamplingIntervalDiagnosticsDataType& value);
         virtual ~SamplingIntervalDiagnosticsDataType(void);
         
         OpcUaDuration& samplingInterval(void);

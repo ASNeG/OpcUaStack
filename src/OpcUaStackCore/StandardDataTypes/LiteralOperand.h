@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<LiteralOperand::SPtr> Vec;
     
         LiteralOperand(void);
+        LiteralOperand(const LiteralOperand& value);
         virtual ~LiteralOperand(void);
         
         OpcUaVariant& value(void);

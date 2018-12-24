@@ -33,6 +33,7 @@ namespace OpcUaStackCore
         typedef std::vector<UpdateEventDetails::SPtr> Vec;
     
         UpdateEventDetails(void);
+        UpdateEventDetails(const UpdateEventDetails& value);
         virtual ~UpdateEventDetails(void);
         
         PerformUpdateType& performInsertReplace(void);

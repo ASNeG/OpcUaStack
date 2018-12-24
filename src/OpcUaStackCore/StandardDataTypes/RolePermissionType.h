@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<RolePermissionType::SPtr> Vec;
     
         RolePermissionType(void);
+        RolePermissionType(const RolePermissionType& value);
         virtual ~RolePermissionType(void);
         
         OpcUaNodeId& roleId(void);

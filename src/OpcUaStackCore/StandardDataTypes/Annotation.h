@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<Annotation::SPtr> Vec;
     
         Annotation(void);
+        Annotation(const Annotation& value);
         virtual ~Annotation(void);
         
         OpcUaString& message(void);

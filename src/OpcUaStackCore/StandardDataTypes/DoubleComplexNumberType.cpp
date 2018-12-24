@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    DoubleComplexNumberType::DoubleComplexNumberType(const DoubleComplexNumberType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , real_()
+    , imaginary_()
+    {
+        const_cast<DoubleComplexNumberType*>(&value)->copyTo(*this);
+    }
+    
     DoubleComplexNumberType::~DoubleComplexNumberType(void)
     {
     }

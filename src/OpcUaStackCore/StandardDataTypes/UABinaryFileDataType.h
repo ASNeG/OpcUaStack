@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<UABinaryFileDataType::SPtr> Vec;
     
         UABinaryFileDataType(void);
+        UABinaryFileDataType(const UABinaryFileDataType& value);
         virtual ~UABinaryFileDataType(void);
         
         OpcUaString& schemaLocation(void);

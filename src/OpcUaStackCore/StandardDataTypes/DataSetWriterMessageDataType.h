@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataSetWriterMessageDataType::SPtr> Vec;
     
         DataSetWriterMessageDataType(void);
+        DataSetWriterMessageDataType(const DataSetWriterMessageDataType& value);
         virtual ~DataSetWriterMessageDataType(void);
         
         

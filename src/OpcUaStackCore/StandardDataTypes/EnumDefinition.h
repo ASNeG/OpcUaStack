@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<EnumDefinition::SPtr> Vec;
     
         EnumDefinition(void);
+        EnumDefinition(const EnumDefinition& value);
         virtual ~EnumDefinition(void);
         
         EnumFieldArray& fields(void);

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ReaderGroupMessageDataType::SPtr> Vec;
     
         ReaderGroupMessageDataType(void);
+        ReaderGroupMessageDataType(const ReaderGroupMessageDataType& value);
         virtual ~ReaderGroupMessageDataType(void);
         
         

@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    UpdateEventDetails::UpdateEventDetails(const UpdateEventDetails& value)
+    : HistoryUpdateDetails()
+    , performInsertReplace_()
+    , filter_()
+    , eventData_()
+    {
+        const_cast<UpdateEventDetails*>(&value)->copyTo(*this);
+    }
+    
     UpdateEventDetails::~UpdateEventDetails(void)
     {
     }

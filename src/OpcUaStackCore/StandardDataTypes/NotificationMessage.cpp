@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    NotificationMessage::NotificationMessage(const NotificationMessage& value)
+    : Object()
+    , ExtensionObjectBase()
+    , sequenceNumber_()
+    , publishTime_()
+    , notificationData_()
+    {
+        const_cast<NotificationMessage*>(&value)->copyTo(*this);
+    }
+    
     NotificationMessage::~NotificationMessage(void)
     {
     }

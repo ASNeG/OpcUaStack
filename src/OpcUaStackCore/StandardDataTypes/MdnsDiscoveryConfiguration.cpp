@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The discovery information needed for mDNS registration.
+     */
+    MdnsDiscoveryConfiguration::MdnsDiscoveryConfiguration(const MdnsDiscoveryConfiguration& value)
+    : DiscoveryConfiguration()
+    , mdnsServerName_()
+    , serverCapabilities_()
+    {
+        const_cast<MdnsDiscoveryConfiguration*>(&value)->copyTo(*this);
+    }
+    
     MdnsDiscoveryConfiguration::~MdnsDiscoveryConfiguration(void)
     {
     }

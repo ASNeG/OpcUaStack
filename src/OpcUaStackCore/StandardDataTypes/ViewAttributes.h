@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ViewAttributes::SPtr> Vec;
     
         ViewAttributes(void);
+        ViewAttributes(const ViewAttributes& value);
         virtual ~ViewAttributes(void);
         
         OpcUaBoolean& containsNoLoops(void);

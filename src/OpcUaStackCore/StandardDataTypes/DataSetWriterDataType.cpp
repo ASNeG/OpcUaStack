@@ -29,6 +29,22 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetWriterDataType::DataSetWriterDataType(const DataSetWriterDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , enabled_()
+    , dataSetWriterId_()
+    , dataSetFieldContentMask_()
+    , keyFrameCount_()
+    , dataSetName_()
+    , dataSetWriterProperties_()
+    , transportSettings_()
+    , messageSettings_()
+    {
+        const_cast<DataSetWriterDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetWriterDataType::~DataSetWriterDataType(void)
     {
     }

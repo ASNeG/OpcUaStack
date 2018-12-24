@@ -30,6 +30,23 @@ namespace OpcUaStackCore
     {
     }
     
+    FieldMetaData::FieldMetaData(const FieldMetaData& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , description_()
+    , fieldFlags_()
+    , builtInType_()
+    , dataType_()
+    , valueRank_()
+    , arrayDimensions_()
+    , maxStringLength_()
+    , dataSetFieldId_()
+    , properties_()
+    {
+        const_cast<FieldMetaData*>(&value)->copyTo(*this);
+    }
+    
     FieldMetaData::~FieldMetaData(void)
     {
     }

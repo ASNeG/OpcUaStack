@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    StructureDefinition::StructureDefinition(const StructureDefinition& value)
+    : DataTypeDefinition()
+    , defaultEncodingId_()
+    , baseDataType_()
+    , structureType_()
+    , fields_()
+    {
+        const_cast<StructureDefinition*>(&value)->copyTo(*this);
+    }
+    
     StructureDefinition::~StructureDefinition(void)
     {
     }

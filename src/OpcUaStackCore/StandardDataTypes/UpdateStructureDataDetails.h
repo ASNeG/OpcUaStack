@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<UpdateStructureDataDetails::SPtr> Vec;
     
         UpdateStructureDataDetails(void);
+        UpdateStructureDataDetails(const UpdateStructureDataDetails& value);
         virtual ~UpdateStructureDataDetails(void);
         
         PerformUpdateType& performInsertReplace(void);

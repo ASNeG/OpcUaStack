@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    PublishedDataSetSourceDataType::PublishedDataSetSourceDataType(const PublishedDataSetSourceDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<PublishedDataSetSourceDataType*>(&value)->copyTo(*this);
+    }
+    
     PublishedDataSetSourceDataType::~PublishedDataSetSourceDataType(void)
     {
     }

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<VariableAttributes::SPtr> Vec;
     
         VariableAttributes(void);
+        VariableAttributes(const VariableAttributes& value);
         virtual ~VariableAttributes(void);
         
         OpcUaVariant& value(void);

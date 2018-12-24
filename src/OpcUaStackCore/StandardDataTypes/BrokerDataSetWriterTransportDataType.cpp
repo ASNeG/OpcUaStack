@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    BrokerDataSetWriterTransportDataType::BrokerDataSetWriterTransportDataType(const BrokerDataSetWriterTransportDataType& value)
+    : DataSetWriterTransportDataType()
+    , queueName_()
+    , resourceUri_()
+    , authenticationProfileUri_()
+    , requestedDeliveryGuarantee_()
+    , metaDataQueueName_()
+    , metaDataUpdateTime_()
+    {
+        const_cast<BrokerDataSetWriterTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     BrokerDataSetWriterTransportDataType::~BrokerDataSetWriterTransportDataType(void)
     {
     }

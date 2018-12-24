@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetReaderMessageDataType::DataSetReaderMessageDataType(const DataSetReaderMessageDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DataSetReaderMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetReaderMessageDataType::~DataSetReaderMessageDataType(void)
     {
     }

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<Union::SPtr> Vec;
     
         Union(void);
+        Union(const Union& value);
         virtual ~Union(void);
         
         

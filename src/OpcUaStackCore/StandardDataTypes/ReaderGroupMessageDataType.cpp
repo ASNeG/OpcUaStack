@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ReaderGroupMessageDataType::ReaderGroupMessageDataType(const ReaderGroupMessageDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<ReaderGroupMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     ReaderGroupMessageDataType::~ReaderGroupMessageDataType(void)
     {
     }

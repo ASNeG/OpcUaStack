@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * An argument for a method.
+     */
+    Argument::Argument(const Argument& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , dataType_()
+    , valueRank_()
+    , arrayDimensions_()
+    , description_()
+    {
+        const_cast<Argument*>(&value)->copyTo(*this);
+    }
+    
     Argument::~Argument(void)
     {
     }

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryModifiedData::HistoryModifiedData(const HistoryModifiedData& value)
+    : HistoryData()
+    , modificationInfos_()
+    {
+        const_cast<HistoryModifiedData*>(&value)->copyTo(*this);
+    }
+    
     HistoryModifiedData::~HistoryModifiedData(void)
     {
     }

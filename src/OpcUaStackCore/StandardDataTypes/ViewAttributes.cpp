@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a view node.
+     */
+    ViewAttributes::ViewAttributes(const ViewAttributes& value)
+    : NodeAttributes()
+    , containsNoLoops_()
+    , eventNotifier_()
+    {
+        const_cast<ViewAttributes*>(&value)->copyTo(*this);
+    }
+    
     ViewAttributes::~ViewAttributes(void)
     {
     }

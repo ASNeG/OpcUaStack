@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<EventNotificationList::SPtr> Vec;
     
         EventNotificationList(void);
+        EventNotificationList(const EventNotificationList& value);
         virtual ~EventNotificationList(void);
         
         EventFieldListArray& events(void);

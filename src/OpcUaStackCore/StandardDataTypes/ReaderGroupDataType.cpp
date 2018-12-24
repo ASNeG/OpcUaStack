@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    ReaderGroupDataType::ReaderGroupDataType(const ReaderGroupDataType& value)
+    : PubSubGroupDataType()
+    , transportSettings_()
+    , messageSettings_()
+    , dataSetReaders_()
+    {
+        const_cast<ReaderGroupDataType*>(&value)->copyTo(*this);
+    }
+    
     ReaderGroupDataType::~ReaderGroupDataType(void)
     {
     }

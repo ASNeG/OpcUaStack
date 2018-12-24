@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ElementOperand::SPtr> Vec;
     
         ElementOperand(void);
+        ElementOperand(const ElementOperand& value);
         virtual ~ElementOperand(void);
         
         OpcUaUInt32& index(void);

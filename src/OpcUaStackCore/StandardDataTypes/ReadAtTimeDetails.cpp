@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    ReadAtTimeDetails::ReadAtTimeDetails(const ReadAtTimeDetails& value)
+    : HistoryReadDetails()
+    , reqTimes_()
+    , useSimpleBounds_()
+    {
+        const_cast<ReadAtTimeDetails*>(&value)->copyTo(*this);
+    }
+    
     ReadAtTimeDetails::~ReadAtTimeDetails(void)
     {
     }

@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetMetaDataType::DataSetMetaDataType(const DataSetMetaDataType& value)
+    : DataTypeSchemaHeader()
+    , name_()
+    , description_()
+    , fields_()
+    , dataSetClassId_()
+    , configurationVersion_()
+    {
+        const_cast<DataSetMetaDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetMetaDataType::~DataSetMetaDataType(void)
     {
     }

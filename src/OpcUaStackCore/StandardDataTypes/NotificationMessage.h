@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<NotificationMessage::SPtr> Vec;
     
         NotificationMessage(void);
+        NotificationMessage(const NotificationMessage& value);
         virtual ~NotificationMessage(void);
         
         OpcUaCounter& sequenceNumber(void);

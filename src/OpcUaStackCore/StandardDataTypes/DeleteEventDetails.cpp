@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DeleteEventDetails::DeleteEventDetails(const DeleteEventDetails& value)
+    : HistoryUpdateDetails()
+    , eventIds_()
+    {
+        const_cast<DeleteEventDetails*>(&value)->copyTo(*this);
+    }
+    
     DeleteEventDetails::~DeleteEventDetails(void)
     {
     }

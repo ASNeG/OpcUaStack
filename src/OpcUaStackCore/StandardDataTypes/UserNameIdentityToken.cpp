@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A token representing a user identified by a user name and password.
+     */
+    UserNameIdentityToken::UserNameIdentityToken(const UserNameIdentityToken& value)
+    : UserIdentityToken()
+    , userName_()
+    , password_()
+    , encryptionAlgorithm_()
+    {
+        const_cast<UserNameIdentityToken*>(&value)->copyTo(*this);
+    }
+    
     UserNameIdentityToken::~UserNameIdentityToken(void)
     {
     }

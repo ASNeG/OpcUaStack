@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    IdentityMappingRuleType::IdentityMappingRuleType(const IdentityMappingRuleType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , criteriaType_()
+    , criteria_()
+    {
+        const_cast<IdentityMappingRuleType*>(&value)->copyTo(*this);
+    }
+    
     IdentityMappingRuleType::~IdentityMappingRuleType(void)
     {
     }

@@ -33,6 +33,7 @@ namespace OpcUaStackCore
         typedef std::vector<EndpointDescription::SPtr> Vec;
     
         EndpointDescription(void);
+        EndpointDescription(const EndpointDescription& value);
         virtual ~EndpointDescription(void);
         
         OpcUaString& endpointUrl(void);

@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    DeleteRawModifiedDetails::DeleteRawModifiedDetails(const DeleteRawModifiedDetails& value)
+    : HistoryUpdateDetails()
+    , isDeleteModified_()
+    , startTime_()
+    , endTime_()
+    {
+        const_cast<DeleteRawModifiedDetails*>(&value)->copyTo(*this);
+    }
+    
     DeleteRawModifiedDetails::~DeleteRawModifiedDetails(void)
     {
     }

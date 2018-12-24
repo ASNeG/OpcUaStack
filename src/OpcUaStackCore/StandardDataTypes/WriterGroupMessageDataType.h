@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<WriterGroupMessageDataType::SPtr> Vec;
     
         WriterGroupMessageDataType(void);
+        WriterGroupMessageDataType(const WriterGroupMessageDataType& value);
         virtual ~WriterGroupMessageDataType(void);
         
         

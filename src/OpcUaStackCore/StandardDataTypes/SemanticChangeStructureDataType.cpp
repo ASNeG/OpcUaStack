@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    SemanticChangeStructureDataType::SemanticChangeStructureDataType(const SemanticChangeStructureDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , affected_()
+    , affectedType_()
+    {
+        const_cast<SemanticChangeStructureDataType*>(&value)->copyTo(*this);
+    }
+    
     SemanticChangeStructureDataType::~SemanticChangeStructureDataType(void)
     {
     }

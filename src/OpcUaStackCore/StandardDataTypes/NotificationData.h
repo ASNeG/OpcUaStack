@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<NotificationData::SPtr> Vec;
     
         NotificationData(void);
+        NotificationData(const NotificationData& value);
         virtual ~NotificationData(void);
         
         

@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    PublishedVariableDataType::PublishedVariableDataType(const PublishedVariableDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , publishedVariable_()
+    , attributeId_()
+    , samplingIntervalHint_()
+    , deadbandType_()
+    , deadbandValue_()
+    , indexRange_()
+    , substituteValue_()
+    , metaDataProperties_()
+    {
+        const_cast<PublishedVariableDataType*>(&value)->copyTo(*this);
+    }
+    
     PublishedVariableDataType::~PublishedVariableDataType(void)
     {
     }

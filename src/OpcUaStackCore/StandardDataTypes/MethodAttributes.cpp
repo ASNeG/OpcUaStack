@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a method node.
+     */
+    MethodAttributes::MethodAttributes(const MethodAttributes& value)
+    : NodeAttributes()
+    , executable_()
+    , userExecutable_()
+    {
+        const_cast<MethodAttributes*>(&value)->copyTo(*this);
+    }
+    
     MethodAttributes::~MethodAttributes(void)
     {
     }

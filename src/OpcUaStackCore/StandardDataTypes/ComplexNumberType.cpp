@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    ComplexNumberType::ComplexNumberType(const ComplexNumberType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , real_()
+    , imaginary_()
+    {
+        const_cast<ComplexNumberType*>(&value)->copyTo(*this);
+    }
+    
     ComplexNumberType::~ComplexNumberType(void)
     {
     }

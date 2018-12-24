@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<HistoryEvent::SPtr> Vec;
     
         HistoryEvent(void);
+        HistoryEvent(const HistoryEvent& value);
         virtual ~HistoryEvent(void);
         
         HistoryEventFieldListArray& events(void);

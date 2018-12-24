@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    SimpleTypeDescription::SimpleTypeDescription(const SimpleTypeDescription& value)
+    : DataTypeDescription()
+    , baseDataType_()
+    , builtInType_()
+    {
+        const_cast<SimpleTypeDescription*>(&value)->copyTo(*this);
+    }
+    
     SimpleTypeDescription::~SimpleTypeDescription(void)
     {
     }

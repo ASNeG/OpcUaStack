@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    NetworkAddressDataType::NetworkAddressDataType(const NetworkAddressDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , networkInterface_()
+    {
+        const_cast<NetworkAddressDataType*>(&value)->copyTo(*this);
+    }
+    
     NetworkAddressDataType::~NetworkAddressDataType(void)
     {
     }

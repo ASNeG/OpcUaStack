@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataChangeNotification::SPtr> Vec;
     
         DataChangeNotification(void);
+        DataChangeNotification(const DataChangeNotification& value);
         virtual ~DataChangeNotification(void);
         
         MonitoredItemNotificationArray& monitoredItems(void);

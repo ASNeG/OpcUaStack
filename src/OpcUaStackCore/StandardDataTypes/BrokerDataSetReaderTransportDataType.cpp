@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    BrokerDataSetReaderTransportDataType::BrokerDataSetReaderTransportDataType(const BrokerDataSetReaderTransportDataType& value)
+    : DataSetReaderTransportDataType()
+    , queueName_()
+    , resourceUri_()
+    , authenticationProfileUri_()
+    , requestedDeliveryGuarantee_()
+    , metaDataQueueName_()
+    {
+        const_cast<BrokerDataSetReaderTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     BrokerDataSetReaderTransportDataType::~BrokerDataSetReaderTransportDataType(void)
     {
     }

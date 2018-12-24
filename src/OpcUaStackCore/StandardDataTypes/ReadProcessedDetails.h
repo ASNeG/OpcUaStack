@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<ReadProcessedDetails::SPtr> Vec;
     
         ReadProcessedDetails(void);
+        ReadProcessedDetails(const ReadProcessedDetails& value);
         virtual ~ReadProcessedDetails(void);
         
         OpcUaUtcTime& startTime(void);

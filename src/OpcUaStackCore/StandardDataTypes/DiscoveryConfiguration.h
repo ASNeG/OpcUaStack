@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DiscoveryConfiguration::SPtr> Vec;
     
         DiscoveryConfiguration(void);
+        DiscoveryConfiguration(const DiscoveryConfiguration& value);
         virtual ~DiscoveryConfiguration(void);
         
         

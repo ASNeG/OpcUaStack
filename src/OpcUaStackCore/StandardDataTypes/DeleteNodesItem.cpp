@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A request to delete a node to the server address space.
+     */
+    DeleteNodesItem::DeleteNodesItem(const DeleteNodesItem& value)
+    : Object()
+    , ExtensionObjectBase()
+    , nodeId_()
+    , deleteTargetReferences_()
+    {
+        const_cast<DeleteNodesItem*>(&value)->copyTo(*this);
+    }
+    
     DeleteNodesItem::~DeleteNodesItem(void)
     {
     }

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    DatagramWriterGroupTransportDataType::DatagramWriterGroupTransportDataType(const DatagramWriterGroupTransportDataType& value)
+    : WriterGroupTransportDataType()
+    , messageRepeatCount_()
+    , messageRepeatDelay_()
+    {
+        const_cast<DatagramWriterGroupTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     DatagramWriterGroupTransportDataType::~DatagramWriterGroupTransportDataType(void)
     {
     }

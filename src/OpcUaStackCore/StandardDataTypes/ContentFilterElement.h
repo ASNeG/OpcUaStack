@@ -32,6 +32,7 @@ namespace OpcUaStackCore
         typedef std::vector<ContentFilterElement::SPtr> Vec;
     
         ContentFilterElement(void);
+        ContentFilterElement(const ContentFilterElement& value);
         virtual ~ContentFilterElement(void);
         
         FilterOperator& filterOperator(void);

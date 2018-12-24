@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<MdnsDiscoveryConfiguration::SPtr> Vec;
     
         MdnsDiscoveryConfiguration(void);
+        MdnsDiscoveryConfiguration(const MdnsDiscoveryConfiguration& value);
         virtual ~MdnsDiscoveryConfiguration(void);
         
         OpcUaString& mdnsServerName(void);

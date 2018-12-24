@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    EndpointUrlListDataType::EndpointUrlListDataType(const EndpointUrlListDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , endpointUrlList_()
+    {
+        const_cast<EndpointUrlListDataType*>(&value)->copyTo(*this);
+    }
+    
     EndpointUrlListDataType::~EndpointUrlListDataType(void)
     {
     }

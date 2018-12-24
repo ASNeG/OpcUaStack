@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetWriterTransportDataType::DataSetWriterTransportDataType(const DataSetWriterTransportDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DataSetWriterTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetWriterTransportDataType::~DataSetWriterTransportDataType(void)
     {
     }

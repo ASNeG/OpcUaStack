@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DeleteReferencesItem::SPtr> Vec;
     
         DeleteReferencesItem(void);
+        DeleteReferencesItem(const DeleteReferencesItem& value);
         virtual ~DeleteReferencesItem(void);
         
         OpcUaNodeId& sourceNodeId(void);

@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<RelativePath::SPtr> Vec;
     
         RelativePath(void);
+        RelativePath(const RelativePath& value);
         virtual ~RelativePath(void);
         
         RelativePathElementArray& elements(void);

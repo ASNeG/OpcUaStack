@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ContentFilterElementResult::SPtr> Vec;
     
         ContentFilterElementResult(void);
+        ContentFilterElementResult(const ContentFilterElementResult& value);
         virtual ~ContentFilterElementResult(void);
         
         OpcUaStatus& statusCode(void);

@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    NetworkGroupDataType::NetworkGroupDataType(const NetworkGroupDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , serverUri_()
+    , networkPaths_()
+    {
+        const_cast<NetworkGroupDataType*>(&value)->copyTo(*this);
+    }
+    
     NetworkGroupDataType::~NetworkGroupDataType(void)
     {
     }

@@ -37,6 +37,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataSetReaderDataType::SPtr> Vec;
     
         DataSetReaderDataType(void);
+        DataSetReaderDataType(const DataSetReaderDataType& value);
         virtual ~DataSetReaderDataType(void);
         
         OpcUaString& name(void);

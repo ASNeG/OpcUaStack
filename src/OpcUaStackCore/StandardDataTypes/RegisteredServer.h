@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<RegisteredServer::SPtr> Vec;
     
         RegisteredServer(void);
+        RegisteredServer(const RegisteredServer& value);
         virtual ~RegisteredServer(void);
         
         OpcUaString& serverUri(void);

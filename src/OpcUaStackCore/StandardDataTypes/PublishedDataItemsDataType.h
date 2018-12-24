@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<PublishedDataItemsDataType::SPtr> Vec;
     
         PublishedDataItemsDataType(void);
+        PublishedDataItemsDataType(const PublishedDataItemsDataType& value);
         virtual ~PublishedDataItemsDataType(void);
         
         PublishedVariableDataTypeArray& publishedData(void);

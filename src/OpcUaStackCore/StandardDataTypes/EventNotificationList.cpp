@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    EventNotificationList::EventNotificationList(const EventNotificationList& value)
+    : NotificationData()
+    , events_()
+    {
+        const_cast<EventNotificationList*>(&value)->copyTo(*this);
+    }
+    
     EventNotificationList::~EventNotificationList(void)
     {
     }

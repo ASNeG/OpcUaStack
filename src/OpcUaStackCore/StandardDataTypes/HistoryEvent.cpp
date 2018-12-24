@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryEvent::HistoryEvent(const HistoryEvent& value)
+    : Object()
+    , ExtensionObjectBase()
+    , events_()
+    {
+        const_cast<HistoryEvent*>(&value)->copyTo(*this);
+    }
+    
     HistoryEvent::~HistoryEvent(void)
     {
     }

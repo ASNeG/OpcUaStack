@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DeleteRawModifiedDetails::SPtr> Vec;
     
         DeleteRawModifiedDetails(void);
+        DeleteRawModifiedDetails(const DeleteRawModifiedDetails& value);
         virtual ~DeleteRawModifiedDetails(void);
         
         OpcUaBoolean& isDeleteModified(void);

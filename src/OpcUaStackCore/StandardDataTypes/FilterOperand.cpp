@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    FilterOperand::FilterOperand(const FilterOperand& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<FilterOperand*>(&value)->copyTo(*this);
+    }
+    
     FilterOperand::~FilterOperand(void)
     {
     }

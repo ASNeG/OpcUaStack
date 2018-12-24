@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<SubscribedDataSetMirrorDataType::SPtr> Vec;
     
         SubscribedDataSetMirrorDataType(void);
+        SubscribedDataSetMirrorDataType(const SubscribedDataSetMirrorDataType& value);
         virtual ~SubscribedDataSetMirrorDataType(void);
         
         OpcUaString& parentNodeName(void);

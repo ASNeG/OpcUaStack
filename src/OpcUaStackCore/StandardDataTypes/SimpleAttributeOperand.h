@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<SimpleAttributeOperand::SPtr> Vec;
     
         SimpleAttributeOperand(void);
+        SimpleAttributeOperand(const SimpleAttributeOperand& value);
         virtual ~SimpleAttributeOperand(void);
         
         OpcUaNodeId& typeDefinitionId(void);

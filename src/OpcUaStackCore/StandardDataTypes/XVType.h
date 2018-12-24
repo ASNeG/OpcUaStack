@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<XVType::SPtr> Vec;
     
         XVType(void);
+        XVType(const XVType& value);
         virtual ~XVType(void);
         
         OpcUaDouble& x(void);

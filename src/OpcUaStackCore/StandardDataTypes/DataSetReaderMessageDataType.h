@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataSetReaderMessageDataType::SPtr> Vec;
     
         DataSetReaderMessageDataType(void);
+        DataSetReaderMessageDataType(const DataSetReaderMessageDataType& value);
         virtual ~DataSetReaderMessageDataType(void);
         
         

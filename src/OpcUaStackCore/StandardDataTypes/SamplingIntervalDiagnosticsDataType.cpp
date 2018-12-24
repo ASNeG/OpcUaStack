@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    SamplingIntervalDiagnosticsDataType::SamplingIntervalDiagnosticsDataType(const SamplingIntervalDiagnosticsDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , samplingInterval_()
+    , monitoredItemCount_()
+    , maxMonitoredItemCount_()
+    , disabledMonitoredItemCount_()
+    {
+        const_cast<SamplingIntervalDiagnosticsDataType*>(&value)->copyTo(*this);
+    }
+    
     SamplingIntervalDiagnosticsDataType::~SamplingIntervalDiagnosticsDataType(void)
     {
     }

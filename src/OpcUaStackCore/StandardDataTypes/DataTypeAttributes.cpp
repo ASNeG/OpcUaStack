@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a data type node.
+     */
+    DataTypeAttributes::DataTypeAttributes(const DataTypeAttributes& value)
+    : NodeAttributes()
+    , isAbstract_()
+    {
+        const_cast<DataTypeAttributes*>(&value)->copyTo(*this);
+    }
+    
     DataTypeAttributes::~DataTypeAttributes(void)
     {
     }

@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<TrustListDataType::SPtr> Vec;
     
         TrustListDataType(void);
+        TrustListDataType(const TrustListDataType& value);
         virtual ~TrustListDataType(void);
         
         OpcUaUInt32& specifiedLists(void);

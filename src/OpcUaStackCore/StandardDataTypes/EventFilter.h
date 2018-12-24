@@ -32,6 +32,7 @@ namespace OpcUaStackCore
         typedef std::vector<EventFilter::SPtr> Vec;
     
         EventFilter(void);
+        EventFilter(const EventFilter& value);
         virtual ~EventFilter(void);
         
         SimpleAttributeOperandArray& selectClauses(void);

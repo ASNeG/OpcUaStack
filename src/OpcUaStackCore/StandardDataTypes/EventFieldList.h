@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<EventFieldList::SPtr> Vec;
     
         EventFieldList(void);
+        EventFieldList(const EventFieldList& value);
         virtual ~EventFieldList(void);
         
         OpcUaIntegerId& clientHandle(void);

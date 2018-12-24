@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ConnectionTransportDataType::ConnectionTransportDataType(const ConnectionTransportDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<ConnectionTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     ConnectionTransportDataType::~ConnectionTransportDataType(void)
     {
     }

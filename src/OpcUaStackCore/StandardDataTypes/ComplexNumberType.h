@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<ComplexNumberType::SPtr> Vec;
     
         ComplexNumberType(void);
+        ComplexNumberType(const ComplexNumberType& value);
         virtual ~ComplexNumberType(void);
         
         OpcUaFloat& real(void);

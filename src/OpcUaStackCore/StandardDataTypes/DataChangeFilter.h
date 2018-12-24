@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<DataChangeFilter::SPtr> Vec;
     
         DataChangeFilter(void);
+        DataChangeFilter(const DataChangeFilter& value);
         virtual ~DataChangeFilter(void);
         
         DataChangeTrigger& trigger(void);

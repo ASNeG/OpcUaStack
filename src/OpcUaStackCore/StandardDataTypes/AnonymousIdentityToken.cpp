@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A token representing an anonymous user.
+     */
+    AnonymousIdentityToken::AnonymousIdentityToken(const AnonymousIdentityToken& value)
+    : UserIdentityToken()
+    {
+        const_cast<AnonymousIdentityToken*>(&value)->copyTo(*this);
+    }
+    
     AnonymousIdentityToken::~AnonymousIdentityToken(void)
     {
     }

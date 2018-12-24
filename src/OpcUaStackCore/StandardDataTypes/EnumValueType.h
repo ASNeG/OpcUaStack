@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<EnumValueType::SPtr> Vec;
     
         EnumValueType(void);
+        EnumValueType(const EnumValueType& value);
         virtual ~EnumValueType(void);
         
         OpcUaInt64& value(void);

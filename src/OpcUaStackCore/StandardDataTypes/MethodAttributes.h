@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<MethodAttributes::SPtr> Vec;
     
         MethodAttributes(void);
+        MethodAttributes(const MethodAttributes& value);
         virtual ~MethodAttributes(void);
         
         OpcUaBoolean& executable(void);

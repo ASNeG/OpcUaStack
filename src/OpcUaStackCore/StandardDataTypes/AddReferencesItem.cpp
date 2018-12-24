@@ -29,6 +29,22 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A request to add a reference to the server address space.
+     */
+    AddReferencesItem::AddReferencesItem(const AddReferencesItem& value)
+    : Object()
+    , ExtensionObjectBase()
+    , sourceNodeId_()
+    , referenceTypeId_()
+    , isForward_()
+    , targetServerUri_()
+    , targetNodeId_()
+    , targetNodeClass_()
+    {
+        const_cast<AddReferencesItem*>(&value)->copyTo(*this);
+    }
+    
     AddReferencesItem::~AddReferencesItem(void)
     {
     }

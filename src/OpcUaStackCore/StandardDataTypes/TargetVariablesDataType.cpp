@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    TargetVariablesDataType::TargetVariablesDataType(const TargetVariablesDataType& value)
+    : SubscribedDataSetDataType()
+    , targetVariables_()
+    {
+        const_cast<TargetVariablesDataType*>(&value)->copyTo(*this);
+    }
+    
     TargetVariablesDataType::~TargetVariablesDataType(void)
     {
     }

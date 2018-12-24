@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A base type for a user identity token.
+     */
+    UserIdentityToken::UserIdentityToken(const UserIdentityToken& value)
+    : Object()
+    , ExtensionObjectBase()
+    , policyId_()
+    {
+        const_cast<UserIdentityToken*>(&value)->copyTo(*this);
+    }
+    
     UserIdentityToken::~UserIdentityToken(void)
     {
     }

@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    UadpDataSetReaderMessageDataType::UadpDataSetReaderMessageDataType(const UadpDataSetReaderMessageDataType& value)
+    : DataSetReaderMessageDataType()
+    , groupVersion_()
+    , networkMessageNumber_()
+    , dataSetOffset_()
+    , dataSetClassId_()
+    , networkMessageContentMask_()
+    , dataSetMessageContentMask_()
+    , publishingInterval_()
+    , receiveOffset_()
+    , processingOffset_()
+    {
+        const_cast<UadpDataSetReaderMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     UadpDataSetReaderMessageDataType::~UadpDataSetReaderMessageDataType(void)
     {
     }

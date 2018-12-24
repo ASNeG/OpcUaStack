@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<HistoryModifiedData::SPtr> Vec;
     
         HistoryModifiedData(void);
+        HistoryModifiedData(const HistoryModifiedData& value);
         virtual ~HistoryModifiedData(void);
         
         ModificationInfoArray& modificationInfos(void);

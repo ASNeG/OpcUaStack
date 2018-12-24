@@ -30,6 +30,23 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * Describes an application and how to find it.
+     */
+    ApplicationDescription::ApplicationDescription(const ApplicationDescription& value)
+    : Object()
+    , ExtensionObjectBase()
+    , applicationUri_()
+    , productUri_()
+    , applicationName_()
+    , applicationType_()
+    , gatewayServerUri_()
+    , discoveryProfileUri_()
+    , discoveryUrls_()
+    {
+        const_cast<ApplicationDescription*>(&value)->copyTo(*this);
+    }
+    
     ApplicationDescription::~ApplicationDescription(void)
     {
     }

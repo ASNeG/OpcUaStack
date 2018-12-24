@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    TrustListDataType::TrustListDataType(const TrustListDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , specifiedLists_()
+    , trustedCertificates_()
+    , trustedCrls_()
+    , issuerCertificates_()
+    , issuerCrls_()
+    {
+        const_cast<TrustListDataType*>(&value)->copyTo(*this);
+    }
+    
     TrustListDataType::~TrustListDataType(void)
     {
     }

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryReadDetails::HistoryReadDetails(const HistoryReadDetails& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<HistoryReadDetails*>(&value)->copyTo(*this);
+    }
+    
     HistoryReadDetails::~HistoryReadDetails(void)
     {
     }

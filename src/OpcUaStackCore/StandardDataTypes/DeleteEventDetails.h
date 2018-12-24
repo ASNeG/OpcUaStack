@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DeleteEventDetails::SPtr> Vec;
     
         DeleteEventDetails(void);
+        DeleteEventDetails(const DeleteEventDetails& value);
         virtual ~DeleteEventDetails(void);
         
         OpcUaByteStringArray& eventIds(void);

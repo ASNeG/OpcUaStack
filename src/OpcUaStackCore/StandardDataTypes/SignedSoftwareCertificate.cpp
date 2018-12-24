@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A software certificate with a digital signature.
+     */
+    SignedSoftwareCertificate::SignedSoftwareCertificate(const SignedSoftwareCertificate& value)
+    : Object()
+    , ExtensionObjectBase()
+    , certificateData_()
+    , signature_()
+    {
+        const_cast<SignedSoftwareCertificate*>(&value)->copyTo(*this);
+    }
+    
     SignedSoftwareCertificate::~SignedSoftwareCertificate(void)
     {
     }

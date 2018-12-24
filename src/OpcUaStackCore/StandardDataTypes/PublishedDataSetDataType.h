@@ -33,6 +33,7 @@ namespace OpcUaStackCore
         typedef std::vector<PublishedDataSetDataType::SPtr> Vec;
     
         PublishedDataSetDataType(void);
+        PublishedDataSetDataType(const PublishedDataSetDataType& value);
         virtual ~PublishedDataSetDataType(void);
         
         OpcUaString& name(void);

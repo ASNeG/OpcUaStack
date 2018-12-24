@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    WriterGroupDataType::WriterGroupDataType(const WriterGroupDataType& value)
+    : PubSubGroupDataType()
+    , writerGroupId_()
+    , publishingInterval_()
+    , keepAliveTime_()
+    , priority_()
+    , localeIds_()
+    , transportSettings_()
+    , messageSettings_()
+    , dataSetWriters_()
+    {
+        const_cast<WriterGroupDataType*>(&value)->copyTo(*this);
+    }
+    
     WriterGroupDataType::~WriterGroupDataType(void)
     {
     }

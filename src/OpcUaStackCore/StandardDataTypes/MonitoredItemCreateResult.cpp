@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    MonitoredItemCreateResult::MonitoredItemCreateResult(const MonitoredItemCreateResult& value)
+    : Object()
+    , ExtensionObjectBase()
+    , statusCode_()
+    , monitoredItemId_()
+    , revisedSamplingInterval_()
+    , revisedQueueSize_()
+    , filterResult_()
+    {
+        const_cast<MonitoredItemCreateResult*>(&value)->copyTo(*this);
+    }
+    
     MonitoredItemCreateResult::~MonitoredItemCreateResult(void)
     {
     }

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DeleteAtTimeDetails::DeleteAtTimeDetails(const DeleteAtTimeDetails& value)
+    : HistoryUpdateDetails()
+    , reqTimes_()
+    {
+        const_cast<DeleteAtTimeDetails*>(&value)->copyTo(*this);
+    }
+    
     DeleteAtTimeDetails::~DeleteAtTimeDetails(void)
     {
     }

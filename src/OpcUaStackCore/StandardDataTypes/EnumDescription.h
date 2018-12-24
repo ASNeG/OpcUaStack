@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<EnumDescription::SPtr> Vec;
     
         EnumDescription(void);
+        EnumDescription(const EnumDescription& value);
         virtual ~EnumDescription(void);
         
         EnumDefinition& enumDefinition(void);

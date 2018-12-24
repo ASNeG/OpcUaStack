@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<UadpWriterGroupMessageDataType::SPtr> Vec;
     
         UadpWriterGroupMessageDataType(void);
+        UadpWriterGroupMessageDataType(const UadpWriterGroupMessageDataType& value);
         virtual ~UadpWriterGroupMessageDataType(void);
         
         OpcUaUInt32& groupVersion(void);

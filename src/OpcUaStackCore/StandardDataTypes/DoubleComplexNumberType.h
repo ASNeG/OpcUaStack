@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<DoubleComplexNumberType::SPtr> Vec;
     
         DoubleComplexNumberType(void);
+        DoubleComplexNumberType(const DoubleComplexNumberType& value);
         virtual ~DoubleComplexNumberType(void);
         
         OpcUaDouble& real(void);

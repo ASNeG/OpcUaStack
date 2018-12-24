@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    PubSubConfigurationDataType::PubSubConfigurationDataType(const PubSubConfigurationDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , publishedDataSets_()
+    , connections_()
+    , enabled_()
+    {
+        const_cast<PubSubConfigurationDataType*>(&value)->copyTo(*this);
+    }
+    
     PubSubConfigurationDataType::~PubSubConfigurationDataType(void)
     {
     }

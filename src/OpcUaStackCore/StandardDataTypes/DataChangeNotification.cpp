@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    DataChangeNotification::DataChangeNotification(const DataChangeNotification& value)
+    : NotificationData()
+    , monitoredItems_()
+    , diagnosticInfos_()
+    {
+        const_cast<DataChangeNotification*>(&value)->copyTo(*this);
+    }
+    
     DataChangeNotification::~DataChangeNotification(void)
     {
     }

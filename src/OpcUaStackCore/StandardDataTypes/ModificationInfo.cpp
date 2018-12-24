@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    ModificationInfo::ModificationInfo(const ModificationInfo& value)
+    : Object()
+    , ExtensionObjectBase()
+    , modificationTime_()
+    , updateType_()
+    , userName_()
+    {
+        const_cast<ModificationInfo*>(&value)->copyTo(*this);
+    }
+    
     ModificationInfo::~ModificationInfo(void)
     {
     }

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    SubscribedDataSetDataType::SubscribedDataSetDataType(const SubscribedDataSetDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<SubscribedDataSetDataType*>(&value)->copyTo(*this);
+    }
+    
     SubscribedDataSetDataType::~SubscribedDataSetDataType(void)
     {
     }

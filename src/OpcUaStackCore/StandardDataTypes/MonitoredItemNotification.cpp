@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    MonitoredItemNotification::MonitoredItemNotification(const MonitoredItemNotification& value)
+    : Object()
+    , ExtensionObjectBase()
+    , clientHandle_()
+    , value_()
+    {
+        const_cast<MonitoredItemNotification*>(&value)->copyTo(*this);
+    }
+    
     MonitoredItemNotification::~MonitoredItemNotification(void)
     {
     }

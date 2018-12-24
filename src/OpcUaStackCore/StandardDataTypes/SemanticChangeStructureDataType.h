@@ -30,6 +30,7 @@ namespace OpcUaStackCore
         typedef std::vector<SemanticChangeStructureDataType::SPtr> Vec;
     
         SemanticChangeStructureDataType(void);
+        SemanticChangeStructureDataType(const SemanticChangeStructureDataType& value);
         virtual ~SemanticChangeStructureDataType(void);
         
         OpcUaNodeId& affected(void);

@@ -32,6 +32,7 @@ namespace OpcUaStackCore
         typedef std::vector<StructureDefinition::SPtr> Vec;
     
         StructureDefinition(void);
+        StructureDefinition(const StructureDefinition& value);
         virtual ~StructureDefinition(void);
         
         OpcUaNodeId& defaultEncodingId(void);
