@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatus.h"
 #include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
@@ -929,8 +930,6 @@ namespace OpcUaStackCore
 	{
 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
 	}
-
-
 		
 	OpcUaDataValue::~OpcUaDataValue(void)
 	{
@@ -1021,40 +1020,6 @@ namespace OpcUaStackCore
 		return serverPicoseconds_;
 	}
 
-	bool 
-	OpcUaDataValue::trigger(OpcUaDataValue::SPtr dataValue, DataChangeTrigger dataChangeTrigger)
-	{
-		return trigger(*dataValue, dataChangeTrigger);
-	}
-
-	bool 
-	OpcUaDataValue::trigger(OpcUaDataValue& dataValue, DataChangeTrigger dataChangeTrigger)
-	{
-		switch (dataChangeTrigger) 
-		{
-			case DCT_StatusValueTimestamp:
-			{
-				if (dataValue.sourceTimestamp() != sourceTimestamp()) return true;
-				break;
-			}
-			case DCT_StatusValue:
-			{
-				if (dataValue.isNullVariant() && !isNullVariant()) return true;
-				if (!dataValue.isNullVariant() && isNullVariant()) return true;
-				if (!dataValue.isNullVariant() && !isNullVariant()) {
-					if (*dataValue.variant() != *variant()) return true;
-				}
-				break;
-			}
-			case DCT_Status:
-			{
-				if (dataValue.statusCode() != statusCode()) return true;
-				break;
-			}
-		}
-		return false;
-	}
-
 	void 
 	OpcUaDataValue::reset(void)
 	{
@@ -1137,14 +1102,14 @@ namespace OpcUaStackCore
     }
 
     bool
-	OpcUaDataValue::setValue(const OpcUaDouble& value)
+	OpcUaDataValue::setValue(const OpcUaFloat& value)
     {
     	variant()->setValue(value);
     	return true;
     }
 
     bool
-	OpcUaDataValue::setValue(const OpcUaFloat& value)
+	OpcUaDataValue::setValue(const OpcUaDouble& value)
     {
     	variant()->setValue(value);
     	return true;
@@ -1228,489 +1193,488 @@ namespace OpcUaStackCore
     }
 
     bool
-	OpcUaDataValue::setValue(const OpcUaBooleanArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaBoolean val;
-			if (!const_cast<OpcUaBooleanArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	OpcUaDataValue::setValue(const OpcUaBooleanArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaBoolean val;
+ 			if (!const_cast<OpcUaBooleanArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaByteArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaByte val;
-			if (!const_cast<OpcUaByteArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaByteArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaByte val;
+ 			if (!const_cast<OpcUaByteArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaSByteArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaSByte val;
-			if (!const_cast<OpcUaSByteArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaSByteArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaSByte val;
+ 			if (!const_cast<OpcUaSByteArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaInt16Array& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaInt16 val;
-			if (!const_cast<OpcUaInt16Array*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaInt16Array& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaInt16 val;
+ 			if (!const_cast<OpcUaInt16Array*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaUInt16Array& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaUInt16 val;
-			if (!const_cast<OpcUaUInt16Array*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaUInt16Array& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaUInt16 val;
+ 			if (!const_cast<OpcUaUInt16Array*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaInt32Array& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaInt32 val;
-			if (!const_cast<OpcUaInt32Array*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaInt32Array& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaInt32 val;
+ 			if (!const_cast<OpcUaInt32Array*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaUInt32Array& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaUInt32 val;
-			if (!const_cast<OpcUaUInt32Array*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaUInt32Array& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaUInt32 val;
+ 			if (!const_cast<OpcUaUInt32Array*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaInt64Array& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaInt64 val;
-			if (!const_cast<OpcUaInt64Array*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaInt64Array& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaInt64 val;
+ 			if (!const_cast<OpcUaInt64Array*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaUInt64Array& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaUInt64 val;
-			if (!const_cast<OpcUaUInt64Array*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaUInt64Array& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaUInt64 val;
+ 			if (!const_cast<OpcUaUInt64Array*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaDoubleArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaDouble val;
-			if (!const_cast<OpcUaDoubleArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaDoubleArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaDouble val;
+ 			if (!const_cast<OpcUaDoubleArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaFloatArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaFloat val;
-			if (!const_cast<OpcUaFloatArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaFloatArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaFloat val;
+ 			if (!const_cast<OpcUaFloatArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaStringArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaString::SPtr val;
-			if (!const_cast<OpcUaStringArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaStringArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaString::SPtr val;
+ 			if (!const_cast<OpcUaStringArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaDateTimeArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaDateTime val;
-			if (!const_cast<OpcUaDateTimeArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaDateTimeArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaDateTime val;
+ 			if (!const_cast<OpcUaDateTimeArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaGuidArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaGuid::SPtr val;
-			if (!const_cast<OpcUaGuidArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaGuidArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaGuid::SPtr val;
+ 			if (!const_cast<OpcUaGuidArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaByteStringArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaByteString::SPtr val;
-			if (!const_cast<OpcUaByteStringArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaByteStringArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaByteString::SPtr val;
+ 			if (!const_cast<OpcUaByteStringArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaXmlElementArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaXmlElement::SPtr val;
-			if (!const_cast<OpcUaXmlElementArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaXmlElementArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaXmlElement::SPtr val;
+ 			if (!const_cast<OpcUaXmlElementArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaNodeIdArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaNodeId::SPtr val;
-			if (!const_cast<OpcUaNodeIdArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaNodeIdArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaNodeId::SPtr val;
+ 			if (!const_cast<OpcUaNodeIdArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaExpandedNodeIdArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaExpandedNodeId::SPtr val;
-			if (!const_cast<OpcUaExpandedNodeIdArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaExpandedNodeIdArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaExpandedNodeId::SPtr val;
+ 			if (!const_cast<OpcUaExpandedNodeIdArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaStatusCodeArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaStatusCode val;
-			if (!const_cast<OpcUaStatusCodeArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaStatusCodeArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaStatusCode val;
+ 			if (!const_cast<OpcUaStatusCodeArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaQualifiedNameArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaQualifiedName::SPtr val;
-			if (!const_cast<OpcUaQualifiedNameArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaQualifiedNameArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaQualifiedName::SPtr val;
+ 			if (!const_cast<OpcUaQualifiedNameArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaLocalizedTextArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaLocalizedText::SPtr val;
-			if (!const_cast<OpcUaLocalizedTextArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaLocalizedTextArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaLocalizedText::SPtr val;
+ 			if (!const_cast<OpcUaLocalizedTextArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-	bool
-	OpcUaDataValue::setValue(const OpcUaExtensionObjectArray& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaExtensionObject::SPtr val;
-			if (!const_cast<OpcUaExtensionObjectArray*>(&value)->get(idx, val)) {
-				return false;
-			}
-			opcUaVariantSPtr_->pushBack(val);
-		}
-		return true;
-    }
+ 	bool
+ 	OpcUaDataValue::setValue(const OpcUaExtensionObjectArray& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaExtensionObject::SPtr val;
+ 			if (!const_cast<OpcUaExtensionObjectArray*>(&value)->get(idx, val)) {
+ 				return false;
+ 			}
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaBoolean>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaBoolean>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaByte>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaByte>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaSByte>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaSByte>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaInt16>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaInt16>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaUInt16>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaUInt16>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaInt32>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaInt32>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaUInt32>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaUInt32>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaInt64>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaInt64>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaUInt64>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaUInt64>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaDouble>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaDouble>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaFloat>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaFloat>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaString::SPtr>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaString::SPtr>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaDateTime>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaDateTime>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaGuid::SPtr>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaGuid::SPtr>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaByteString::SPtr>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaByteString::SPtr>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaXmlElement::SPtr>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaXmlElement::SPtr>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaNodeId::SPtr>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaNodeId::SPtr>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaExpandedNodeId::SPtr>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaExpandedNodeId::SPtr>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaStatusCode>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaStatusCode>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaQualifiedName::SPtr>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaQualifiedName::SPtr>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaLocalizedText::SPtr>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaLocalizedText::SPtr>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
-    bool
-	OpcUaDataValue::setValue(const std::vector<OpcUaExtensionObject::SPtr>& value)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
-		return true;
-    }
-
+     bool
+ 	OpcUaDataValue::setValue(const std::vector<OpcUaExtensionObject::SPtr>& value)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (auto it : value) opcUaVariantSPtr_->pushBack(it);
+ 		return true;
+     }
 
     bool
 	OpcUaDataValue::getValue(OpcUaBoolean& value)
@@ -1910,691 +1874,688 @@ namespace OpcUaStackCore
     	return opcUaVariantSPtr_->getValue(value);
     }
 
-
-    bool
-	OpcUaDataValue::getValue(OpcUaBooleanArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-    		return false;
-    	}
-    	if (!opcUaVariantSPtr_->isArray()) {
-    		return false;
-    	}
-    	value.resize(opcUaVariantSPtr_->arrayLength());
-    	for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-    		value.push_back(opcUaVariantSPtr_->get<OpcUaBoolean>(idx));
-    	}
-    	return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaByteArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-    		return false;
-    	}
-    	if (!opcUaVariantSPtr_->isArray()) {
-    		return false;
-    	}
-    	value.resize(opcUaVariantSPtr_->arrayLength());
-    	for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-    		value.push_back(opcUaVariantSPtr_->get<OpcUaByte>(idx));
-    	}
-    	return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaSByteArray& value)
-    {
-       	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaSByte>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaInt16Array& value)
-    {
-       	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaInt16>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaUInt16Array& value)
-    {
-       	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt16>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaInt32Array& value)
-    {
-      	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaInt32>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaUInt32Array& value)
-    {
-      	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt32>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaInt64Array& value)
-    {
-      	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaInt64>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaUInt64Array& value)
-    {
+     bool
+ 	OpcUaDataValue::getValue(OpcUaBooleanArray& value)
+     {
      	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt64>(idx));
-        }
-        return true;
-    }
+     		return false;
+     	}
+     	if (!opcUaVariantSPtr_->isArray()) {
+     		return false;
+     	}
+     	value.resize(opcUaVariantSPtr_->arrayLength());
+     	for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+     		value.push_back(opcUaVariantSPtr_->get<OpcUaBoolean>(idx));
+     	}
+     	return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(OpcUaDoubleArray& value)
-    {
+     bool
+ 	OpcUaDataValue::getValue(OpcUaByteArray& value)
+     {
      	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaDouble>(idx));
-        }
-        return true;
-    }
+     		return false;
+     	}
+     	if (!opcUaVariantSPtr_->isArray()) {
+     		return false;
+     	}
+     	value.resize(opcUaVariantSPtr_->arrayLength());
+     	for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+     		value.push_back(opcUaVariantSPtr_->get<OpcUaByte>(idx));
+     	}
+     	return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(OpcUaFloatArray& value)
-    {
-     	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaFloat>(idx));
-        }
-        return true;
-    }
+     bool
+ 	OpcUaDataValue::getValue(OpcUaSByteArray& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaSByte>(idx));
+         }
+         return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(OpcUaStringArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaString>(idx));
-        }
-        return true;
-    }
+     bool
+ 	OpcUaDataValue::getValue(OpcUaInt16Array& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaInt16>(idx));
+         }
+         return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(OpcUaDateTimeArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaDateTime>(idx));
-        }
-        return true;
-    }
+     bool
+ 	OpcUaDataValue::getValue(OpcUaUInt16Array& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt16>(idx));
+         }
+         return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(OpcUaGuidArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaGuid>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaByteStringArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaByteString>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaXmlElementArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaXmlElement>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaNodeIdArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaNodeId>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaExpandedNodeIdArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaExpandedNodeId>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaStatusCodeArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaStatusCode>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaQualifiedNameArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaQualifiedName>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaLocalizedTextArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaLocalizedText>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(OpcUaExtensionObjectArray& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        value.resize(opcUaVariantSPtr_->arrayLength());
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaExtensionObject>(idx));
-        }
-        return true;
-    }
-
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaBoolean>& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaBoolean>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaByte>& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaByte>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaSByte>& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaSByte>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaInt16>& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaInt16>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaUInt16>& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt16>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaInt32>& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaInt32>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaUInt32>& value)
-    {
-    	if (opcUaVariantSPtr_.get() == nullptr) {
-        	return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-        	return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-        	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt32>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaInt64>& value)
-    {
+     bool
+ 	OpcUaDataValue::getValue(OpcUaInt32Array& value)
+     {
        	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->get<OpcUaInt64>(idx));
-        }
-        return true;
-    }
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaInt32>(idx));
+         }
+         return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaUInt64>& value)
-    {
+     bool
+ 	OpcUaDataValue::getValue(OpcUaUInt32Array& value)
+     {
        	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->get<OpcUaUInt64>(idx));
-        }
-        return true;
-    }
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt32>(idx));
+         }
+         return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaDouble>& value)
-    {
+     bool
+ 	OpcUaDataValue::getValue(OpcUaInt64Array& value)
+     {
        	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->get<OpcUaDouble>(idx));
-        }
-        return true;
-    }
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaInt64>(idx));
+         }
+         return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaFloat>& value)
-    {
-       	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->get<OpcUaFloat>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaString::SPtr>& value)
-    {
-       	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaString>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaDateTime>& value)
-    {
-       	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->get<OpcUaDateTime>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaGuid::SPtr>& value)
-    {
-       	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaGuid>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaByteString::SPtr>& value)
-    {
-       	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaByteString>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaXmlElement::SPtr>& value)
-    {
-       	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaXmlElement>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaNodeId::SPtr>& value)
-    {
-       	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaNodeId>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaExpandedNodeId::SPtr>& value)
-    {
+     bool
+ 	OpcUaDataValue::getValue(OpcUaUInt64Array& value)
+     {
       	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaExpandedNodeId>(idx));
-        }
-        return true;
-    }
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt64>(idx));
+         }
+         return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaStatusCode>& value)
-    {
-     	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->get<OpcUaStatusCode>(idx));
-        }
-        return true;
-    }
-
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaQualifiedName::SPtr>& value)
-    {
+     bool
+ 	OpcUaDataValue::getValue(OpcUaDoubleArray& value)
+     {
       	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaQualifiedName>(idx));
-        }
-        return true;
-    }
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaDouble>(idx));
+         }
+         return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaLocalizedText::SPtr>& value)
-    {
+     bool
+ 	OpcUaDataValue::getValue(OpcUaFloatArray& value)
+     {
       	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaLocalizedText>(idx));
-        }
-        return true;
-    }
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaFloat>(idx));
+         }
+         return true;
+     }
 
-    bool
-	OpcUaDataValue::getValue(std::vector<OpcUaExtensionObject::SPtr>& value)
-    {
+     bool
+ 	OpcUaDataValue::getValue(OpcUaStringArray& value)
+     {
      	if (opcUaVariantSPtr_.get() == nullptr) {
-            return false;
-        }
-        if (!opcUaVariantSPtr_->isArray()) {
-            return false;
-        }
-        for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
-            value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaExtensionObject>(idx));
-        }
-        return true;
-    }
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaString>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(OpcUaDateTimeArray& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaDateTime>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(OpcUaGuidArray& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaGuid>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(OpcUaByteStringArray& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaByteString>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(OpcUaXmlElementArray& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaXmlElement>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(OpcUaNodeIdArray& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaNodeId>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(OpcUaExpandedNodeIdArray& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaExpandedNodeId>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(OpcUaStatusCodeArray& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaStatusCode>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(OpcUaQualifiedNameArray& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaQualifiedName>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(OpcUaLocalizedTextArray& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaLocalizedText>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(OpcUaExtensionObjectArray& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         value.resize(opcUaVariantSPtr_->arrayLength());
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaExtensionObject>(idx));
+         }
+         return true;
+     }
 
 
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaBoolean>& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaBoolean>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaByte>& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaByte>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaSByte>& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaSByte>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaInt16>& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaInt16>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaUInt16>& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt16>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaInt32>& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaInt32>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaUInt32>& value)
+     {
+     	if (opcUaVariantSPtr_.get() == nullptr) {
+         	return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+         	return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+         	value.push_back(opcUaVariantSPtr_->get<OpcUaUInt32>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaInt64>& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->get<OpcUaInt64>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaUInt64>& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->get<OpcUaUInt64>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaDouble>& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->get<OpcUaDouble>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaFloat>& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->get<OpcUaFloat>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaString::SPtr>& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaString>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaDateTime>& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->get<OpcUaDateTime>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaGuid::SPtr>& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaGuid>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaByteString::SPtr>& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaByteString>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaXmlElement::SPtr>& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaXmlElement>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaNodeId::SPtr>& value)
+     {
+        	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaNodeId>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaExpandedNodeId::SPtr>& value)
+     {
+       	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaExpandedNodeId>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaStatusCode>& value)
+     {
+      	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->get<OpcUaStatusCode>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaQualifiedName::SPtr>& value)
+     {
+       	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaQualifiedName>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	OpcUaDataValue::getValue(std::vector<OpcUaLocalizedText::SPtr>& value)
+     {
+       	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaLocalizedText>(idx));
+         }
+         return true;
+     }
+
+     bool
+ 	 OpcUaDataValue::getValue(std::vector<OpcUaExtensionObject::SPtr>& value)
+     {
+      	if (opcUaVariantSPtr_.get() == nullptr) {
+             return false;
+         }
+         if (!opcUaVariantSPtr_->isArray()) {
+             return false;
+         }
+         for (uint32_t idx = 0; idx < opcUaVariantSPtr_->arrayLength(); idx++) {
+             value.push_back(opcUaVariantSPtr_->getSPtr<OpcUaExtensionObject>(idx));
+         }
+         return true;
+     }
 
     void
 	OpcUaDataValue::set(const OpcUaNullValue& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
@@ -2764,487 +2725,485 @@ namespace OpcUaStackCore
     	sourceTimestamp_ = sourceTimestamp;
     }
 
-
     void
-	OpcUaDataValue::set(const OpcUaBooleanArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaBoolean val;
-			const_cast<OpcUaBooleanArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+ 	OpcUaDataValue::set(const OpcUaBooleanArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaBoolean val;
+ 			const_cast<OpcUaBooleanArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaByteArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaByte val;
-			const_cast<OpcUaByteArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaByteArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaByte val;
+ 			const_cast<OpcUaByteArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaSByteArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaSByte val;
-			const_cast<OpcUaSByteArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaSByteArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaSByte val;
+ 			const_cast<OpcUaSByteArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaInt16Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaInt16 val;
-			const_cast<OpcUaInt16Array*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaInt16Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaInt16 val;
+ 			const_cast<OpcUaInt16Array*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaUInt16Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaUInt16 val;
-			const_cast<OpcUaUInt16Array*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaUInt16Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaUInt16 val;
+ 			const_cast<OpcUaUInt16Array*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaInt32Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaInt32 val;
-			const_cast<OpcUaInt32Array*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaInt32Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaInt32 val;
+ 			const_cast<OpcUaInt32Array*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaUInt32Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaUInt32 val;
-			const_cast<OpcUaUInt32Array*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaUInt32Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaUInt32 val;
+ 			const_cast<OpcUaUInt32Array*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaInt64Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaInt64 val;
-			const_cast<OpcUaInt64Array*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaInt64Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaInt64 val;
+ 			const_cast<OpcUaInt64Array*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaUInt64Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaUInt64 val;
-			const_cast<OpcUaUInt64Array*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaUInt64Array& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaUInt64 val;
+ 			const_cast<OpcUaUInt64Array*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaString::SPtr val;
-			const_cast<OpcUaStringArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaString::SPtr val;
+ 			const_cast<OpcUaStringArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaDateTimeArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaDateTime val;
-			const_cast<OpcUaDateTimeArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaDateTimeArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaDateTime val;
+ 			const_cast<OpcUaDateTimeArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaGuidArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaGuid::SPtr val;
-			const_cast<OpcUaGuidArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaGuidArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaGuid::SPtr val;
+ 			const_cast<OpcUaGuidArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaByteStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaByteString::SPtr val;
-			const_cast<OpcUaByteStringArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaByteStringArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaByteString::SPtr val;
+ 			const_cast<OpcUaByteStringArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaXmlElementArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaXmlElement::SPtr val;
-			const_cast<OpcUaXmlElementArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaXmlElementArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaXmlElement::SPtr val;
+ 			const_cast<OpcUaXmlElementArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaNodeIdArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaNodeId::SPtr val;
-			const_cast<OpcUaNodeIdArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaNodeIdArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaNodeId::SPtr val;
+ 			const_cast<OpcUaNodeIdArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaExpandedNodeIdArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaExpandedNodeId::SPtr val;
-			const_cast<OpcUaExpandedNodeIdArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaExpandedNodeIdArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaExpandedNodeId::SPtr val;
+ 			const_cast<OpcUaExpandedNodeIdArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaStatusCodeArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaStatusCode val;
-			const_cast<OpcUaStatusCodeArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaStatusCodeArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaStatusCode val;
+ 			const_cast<OpcUaStatusCodeArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaQualifiedNameArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaQualifiedName::SPtr val;
-			const_cast<OpcUaQualifiedNameArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaQualifiedNameArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaQualifiedName::SPtr val;
+ 			const_cast<OpcUaQualifiedNameArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaLocalizedTextArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaLocalizedText::SPtr val;
-			const_cast<OpcUaLocalizedTextArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaLocalizedTextArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaLocalizedText::SPtr val;
+ 			const_cast<OpcUaLocalizedTextArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const OpcUaExtensionObjectArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-		for (uint32_t idx = 0; idx < value.size(); idx++) {
-			OpcUaExtensionObject::SPtr val;
-			const_cast<OpcUaExtensionObjectArray*>(&value)->get(idx, val);
-			opcUaVariantSPtr_->pushBack(val);
-		}
-    	opcUaStatusCode_ = statusCode;
-    	sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const OpcUaExtensionObjectArray& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+ 		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+ 		for (uint32_t idx = 0; idx < value.size(); idx++) {
+ 			OpcUaExtensionObject::SPtr val;
+ 			const_cast<OpcUaExtensionObjectArray*>(&value)->get(idx, val);
+ 			opcUaVariantSPtr_->pushBack(val);
+ 		}
+     	opcUaStatusCode_ = statusCode;
+     	sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaBoolean>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaBoolean>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaSByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaSByte>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaUInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaUInt16>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaUInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaUInt32>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaUInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaUInt64>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaDateTime>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaDateTime>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaGuid::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaGuid::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaByteString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaByteString::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaXmlElement::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaXmlElement::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaExpandedNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaExpandedNodeId::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaStatusCode>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaStatusCode>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaQualifiedName::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaQualifiedName::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaLocalizedText::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaLocalizedText::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
-    void
-	OpcUaDataValue::set(const std::vector<OpcUaExtensionObject::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
-    {
-    	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-    	for (auto it = value.begin(); it != value.end(); it++) {
-    		opcUaVariantSPtr_->pushBack(*it);
-    	}
-       	opcUaStatusCode_ = statusCode;
-        sourceTimestamp_ = sourceTimestamp;
-    }
-
+     void
+ 	OpcUaDataValue::set(const std::vector<OpcUaExtensionObject::SPtr>& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
+     {
+     	opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+     	for (auto it = value.begin(); it != value.end(); it++) {
+     		opcUaVariantSPtr_->pushBack(*it);
+     	}
+        	opcUaStatusCode_ = statusCode;
+         sourceTimestamp_ = sourceTimestamp;
+     }
 
 
 	void 
@@ -3310,6 +3269,26 @@ namespace OpcUaStackCore
 		if (serverPicoseconds_ != 0) {
 			dataValue.serverPicoseconds(serverPicoseconds_);
 		}
+	}
+
+	bool
+	OpcUaDataValue::operator<(const OpcUaDataValue& dataValue) const
+	{
+		OpcUaDataValue* actValue = const_cast<OpcUaDataValue*>(this);
+		OpcUaDataValue* tmpValue = const_cast<OpcUaDataValue*>(&dataValue);
+
+		if (actValue->isNullVariant() && !tmpValue->isNullVariant()) return true;
+		if (!actValue->isNullVariant() && tmpValue->isNullVariant()) return false;
+		if (!actValue->isNullVariant() && !tmpValue->isNullVariant()) {
+			if (*actValue->variant() < *tmpValue->variant()) return true;
+		}
+		if (actValue->opcUaStatusCode_ << tmpValue->opcUaStatusCode_) return true;
+		if (actValue->sourceTimestamp_ << tmpValue->sourceTimestamp_) return true;
+		if (actValue->sourcePicoseconds_ << tmpValue->sourcePicoseconds_) return true;
+		if (actValue->serverTimestamp_ << tmpValue->serverTimestamp_) return true;
+		if (actValue->serverPicoseconds_ << tmpValue->serverPicoseconds_) return true;
+
+		return false;
 	}
 
 	bool
@@ -3419,101 +3398,12 @@ namespace OpcUaStackCore
 		}
 	}
 
-
-	bool
-	OpcUaDataValue::encode(boost::property_tree::ptree& pt) const
-	{
-		if (opcUaVariantSPtr_.get() != NULL) {
-			boost::property_tree::ptree ptVariant;
-			if (!opcUaVariantSPtr_->encode(ptVariant)) return false;
-			pt.add_child("Value", ptVariant);
-		}
-		if (opcUaStatusCode_ != 0) {
-			boost::property_tree::ptree ptStatusCode;
-			if (!OpcUaNumber::encode(ptStatusCode, (OpcUaUInt32)opcUaStatusCode_)) return false;
-			pt.add_child("StatusCode", ptStatusCode);
-		}
-		if (sourceTimestamp_.exist()) {
-			boost::property_tree::ptree ptSourceTimestamp;
-			if (!sourceTimestamp_.encode(ptSourceTimestamp)) return false;
-			pt.add_child("SourceTimestamp", ptSourceTimestamp);
-		}
-		if (sourcePicoseconds_ != 0) {
-			boost::property_tree::ptree ptSourcePicoseconds;
-			if (!OpcUaNumber::encode(ptSourcePicoseconds, (OpcUaInt16)sourcePicoseconds_)) return false;
-			pt.add_child("SourcePicoseconds", ptSourcePicoseconds);
-		}
-		if (serverTimestamp_.exist()) {
-			boost::property_tree::ptree ptServerTimestamp;
-			if (!serverTimestamp_.encode(ptServerTimestamp)) return false;
-			pt.add_child("ServerTimestamp", ptServerTimestamp);
-		}
-		if (serverPicoseconds_ != 0) {
-			boost::property_tree::ptree ptServerPicoseconds;
-			if (!OpcUaNumber::encode(ptServerPicoseconds, (OpcUaInt16)serverPicoseconds_)) return false;;
-			pt.add_child("ServerPicoseconds", ptServerPicoseconds);
-		}
-
-		return true;
-	}
-
-	bool
-	OpcUaDataValue::decode(boost::property_tree::ptree& pt, OpcUaBuildInType type, bool isArray)
-	{
-		// Value
-		boost::optional<boost::property_tree::ptree&> value;
-		value = pt.get_child_optional("Value");
-		if (value) {
-			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-			if (!opcUaVariantSPtr_->decode(*value, type, isArray)) return false;
-		}
-
-		// StatusCode
-		boost::optional<boost::property_tree::ptree&> statusCode;
-		statusCode = pt.get_child_optional("StatusCode");
-		if (statusCode) {
-			OpcUaUInt32 sc;
-			if (!Json::decode(*statusCode, sc)) return false;
-			opcUaStatusCode_ = (OpcUaStatusCode)sc;
-		}
-
-		// SourceTimestamp
-		boost::optional<boost::property_tree::ptree&> sourceTimestamp;
-		sourceTimestamp = pt.get_child_optional("SourceTimestamp");
-		if (sourceTimestamp) {
-			if (!sourceTimestamp_.decode(*sourceTimestamp)) return false;
-		}
-
-		// SourcePicoseconds
-		boost::optional<boost::property_tree::ptree&> SourcePicoseconds;
-		SourcePicoseconds = pt.get_child_optional("SourcePicoseconds");
-		if (SourcePicoseconds) {
-			if (!Json::decode(*SourcePicoseconds, sourcePicoseconds_)) return false;
-		}
-
-		// Servertimestamp
-		boost::optional<boost::property_tree::ptree&> serverTimestamp;
-		serverTimestamp = pt.get_child_optional("ServerTimestamp");
-		if (serverTimestamp) {
-			if (!sourceTimestamp_.decode(*serverTimestamp)) return false;
-		}
-
-		// ServerPicoseconds
-		boost::optional<boost::property_tree::ptree&> ServerPicoseconds;
-		ServerPicoseconds = pt.get_child_optional("ServerPicoseconds");
-		if (ServerPicoseconds) {
-			if (!Json::decode(*ServerPicoseconds, serverPicoseconds_)) return false;
-		}
-
-		return true;
-	}
-
 	bool
 	OpcUaDataValue::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;
 		if (!xmlEncode(elementTree, xmlns)) return false;
-		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
 		return true;
 	}
 
@@ -3583,7 +3473,7 @@ namespace OpcUaStackCore
 	{
 		boost::optional<boost::property_tree::ptree&> tmpTree;
 
-		tmpTree = pt.get_child_optional(xmlns.addxmlns("Value"));
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("Value"));
 		if (!tmpTree) {
 			opcUaVariantSPtr_.reset();
 		}
@@ -3598,7 +3488,22 @@ namespace OpcUaStackCore
 			}
 		}
 
-		tmpTree = pt.get_child_optional(xmlns.addxmlns("SourceTimestamp"));
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("StatusCode"));
+		if (!tmpTree) {
+			// nothing to do
+		}
+		else {
+			uint32_t statusCode;
+			if (!XmlNumber::xmlDecode(*tmpTree, statusCode)) {
+				Log(Error, "DataValue xml decoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "StatusCode");
+				return false;
+			}
+			opcUaStatusCode_ = (OpcUaStatusCode)statusCode;
+		}
+
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("SourceTimestamp"));
 		if (!tmpTree) {
 			// nothing to do
 		}
@@ -3611,7 +3516,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		tmpTree = pt.get_child_optional(xmlns.addxmlns("ServerTimestamp"));
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("ServerTimestamp"));
 		if (!tmpTree) {
 			// nothing to do
 		}
@@ -3624,7 +3529,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		tmpTree = pt.get_child_optional(xmlns.addxmlns("SourcePicoseconds"));
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("SourcePicoseconds"));
 		if (!tmpTree) {
 			sourcePicoseconds_ = 0;
 		}
@@ -3637,7 +3542,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		tmpTree = pt.get_child_optional(xmlns.addxmlns("ServerPicoseconds"));
+		tmpTree = pt.get_child_optional(xmlns.addPrefix("ServerPicoseconds"));
 		if (!tmpTree) {
 			serverPicoseconds_ = 0;
 		}
@@ -3653,5 +3558,138 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaDataValue::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaDataValue json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaDataValue::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// add value
+		if (opcUaVariantSPtr_.get() != nullptr) {
+			if (!opcUaVariantSPtr_->jsonEncode(pt, "Value")) {
+				Log(Error, "OpcUaDataValue json encode error")
+		        	.parameter("Element", "Value");
+				return false;
+			}
+		}
+
+		// add status code
+		OpcUaStatus status(opcUaStatusCode_);
+		if (!status.jsonEncode(pt, "Status")) {
+			Log(Error, "OpcUaDataValue json encode error")
+		        .parameter("Element", "Status");
+			return false;
+		}
+
+		// add source timestamp
+		if (!sourceTimestamp_.jsonEncode(pt, "SourceTimestamp")) {
+			Log(Error, "OpcUaDataValue json encode error")
+		        .parameter("Element", "SourceTimestamp");
+			return false;
+		}
+
+		// add server timestamp
+		if (!serverTimestamp_.jsonEncode(pt, "ServerTimestamp")) {
+			Log(Error, "OpcUaDataValue json encode error")
+		        .parameter("Element", "ServerTimestamp");
+			return false;
+		}
+
+		// added source picoseconds
+		if (!JsonNumber::jsonEncode(pt, sourcePicoseconds_, "SourcePicoSeconds")) {
+			Log(Error, "OpcUaDataValue json encode error")
+		        .parameter("Element", "SourcePicoSeconds");
+			return false;
+		}
+
+		// added server picoseconds
+		if (!JsonNumber::jsonEncode(pt, serverPicoseconds_, "ServerPicoSeconds")) {
+			Log(Error, "OpcUaDataValue json encode error")
+		        .parameter("Element", "ServerPicoSeconds");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	OpcUaDataValue::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaDateTime json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	OpcUaDataValue::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		// get value
+		//opcUaVariantSPtr_.reset();
+		tmpTree = pt.get_child_optional("Value");
+		if (tmpTree) {
+			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+			if (!opcUaVariantSPtr_->jsonDecode(*tmpTree)) {
+				Log(Error, "OpcUaDataValue json decode error")
+			        .parameter("Element", "Value");
+				return false;
+			}
+		}
+
+		// get status code
+		OpcUaStatus status(Success);
+		tmpTree = pt.get_child_optional("Status");
+		if (tmpTree) {
+			if (!status.jsonDecode(pt, "Status")) {
+				Log(Error, "OpcUaDataValue json decode error")
+		        	.parameter("Element", "Status");
+				return false;
+			}
+		}
+		opcUaStatusCode_ = status.enumeration();
+
+		// get source timestamp
+		tmpTree = pt.get_child_optional("SourceTimestamp");
+		if (tmpTree) {
+			sourceTimestamp_.jsonDecode(pt, "SourceTimestamp");
+		}
+
+		// get server timestamp
+		tmpTree = pt.get_child_optional("ServerTimestamp");
+		if (tmpTree) {
+			serverTimestamp_.jsonDecode(pt, "ServerTimestamp");
+		}
+
+		// get source pico seconds
+		tmpTree = pt.get_child_optional("SourcePicoSeconds");
+		if (tmpTree) {
+			JsonNumber::jsonDecode(pt, sourcePicoseconds_, "SourcePicoSeconds");
+		}
+
+		// get server pico seconds
+		tmpTree = pt.get_child_optional("ServerPicoSeconds");
+		if (tmpTree) {
+			JsonNumber::jsonDecode(pt, serverPicoseconds_, "ServerPicoSeconds");
+		}
+
+		return true;
+	}
 
 }

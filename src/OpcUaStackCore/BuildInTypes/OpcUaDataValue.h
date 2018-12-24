@@ -117,7 +117,8 @@ namespace OpcUaStackCore
 	    OpcUaDataValue(const std::vector<OpcUaExtensionObject::SPtr>& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 
 
-		~OpcUaDataValue(void);
+
+	    ~OpcUaDataValue(void);
 
 		bool exist(void);
 		bool isNullVariant(void);
