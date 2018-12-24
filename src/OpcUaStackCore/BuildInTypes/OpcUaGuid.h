@@ -76,6 +76,8 @@ namespace OpcUaStackCore
 		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
+		OpcUaGuid(const OpcUaGuid& value);
+
 		OpcUaUInt32 data1_;
 		OpcUaUInt16 data2_;
 		OpcUaUInt16 data3_;

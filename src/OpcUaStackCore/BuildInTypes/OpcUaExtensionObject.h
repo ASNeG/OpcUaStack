@@ -363,7 +363,7 @@ namespace OpcUaStackCore
 
 		/**
 		 * Function to decode the binary format to the structure data
-		 *
+		 *OpcUaExtensionObject(void);
 		 * @param[in] is					input stream for binary input
 		 */
 		void opcUaBinaryDecode(std::istream& is);
@@ -392,7 +392,7 @@ namespace OpcUaStackCore
 		/**
 		 * Function to decode the xml tree format to the structure data.
 		 *
-		 * @param[in] pt					tree for xml output
+		 * @param[in] pt				OpcUaExtensionObject(void);	tree for xml output
 		 * @param[in] element				element name of the subtree
 		 * @param[in] xmlns					xml namespaces
 		 *
@@ -418,6 +418,8 @@ namespace OpcUaStackCore
 		void logExtensionObjectMap(void);
 
 	  private:
+		OpcUaExtensionObject(const OpcUaExtensionObject& value);
+
 		static ExtensionObjectBase::Map extentionObjectMap_;
 		static bool init_;
 

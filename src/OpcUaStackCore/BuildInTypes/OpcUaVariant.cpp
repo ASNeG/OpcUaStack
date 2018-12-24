@@ -69,6 +69,12 @@ namespace OpcUaStackCore
 	{
 	}
 	
+	OpcUaVariantValue::OpcUaVariantValue(const OpcUaVariantValue& value)
+	: variantValue_()
+	{
+		const_cast<OpcUaVariantValue*>(&value)->copyTo(*this);
+	}
+
 	OpcUaVariantValue::~OpcUaVariantValue(void)
 	{
 	}
@@ -1600,6 +1606,16 @@ namespace OpcUaStackCore
 	, arrayDimensionsVec_()
 	{
 		clear();
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaVariant& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		const_cast<OpcUaVariant*>(&value)->copyTo(*this);
 	}
 		
 	OpcUaVariant::~OpcUaVariant(void)

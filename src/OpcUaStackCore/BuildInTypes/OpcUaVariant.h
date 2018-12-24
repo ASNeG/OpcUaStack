@@ -83,6 +83,7 @@ namespace OpcUaStackCore
 		typedef std::vector<OpcUaVariantValue> Vec;
 
 		OpcUaVariantValue(void);
+		OpcUaVariantValue(const OpcUaVariantValue& value);
 		~OpcUaVariantValue(void);
 
 		OpcUaBuildInType variantType(void) const;
@@ -152,6 +153,7 @@ namespace OpcUaStackCore
 		typedef std::vector<OpcUaVariant::SPtr> Vec;
 
 	    OpcUaVariant(void);
+	    OpcUaVariant(const OpcUaVariant& value);
 		virtual ~OpcUaVariant(void);
 
 		void clear(void);
@@ -312,6 +314,7 @@ namespace OpcUaStackCore
 		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
+
 		bool xmlEncodeBooleanScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlEncodeBooleanArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecodeBooleanScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);

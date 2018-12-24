@@ -428,12 +428,10 @@ namespace OpcUaStackCore
 	, maxArrayLen_(other.size())
 	, actArrayLen_(0)
 	{
+		clearArray();
 		initArray();
-		for (uint32_t idx = 0; idx < other.size(); idx++) {
-			T value;
-			get(0, value);
-			push_back(value);
-		}
+
+		const_cast<OpcUaArray<T, CODER>*>(&other)->copy(*this);
 	}
 
 	template<typename T, typename CODER>

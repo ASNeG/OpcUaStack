@@ -35,6 +35,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaQualifiedName> SPtr;
 
 		OpcUaQualifiedName(void);
+		OpcUaQualifiedName(const OpcUaQualifiedName& value);
 		OpcUaQualifiedName(const std::string& name, OpcUaInt16 namespaceIndex = 0);
 		~OpcUaQualifiedName(void);
 

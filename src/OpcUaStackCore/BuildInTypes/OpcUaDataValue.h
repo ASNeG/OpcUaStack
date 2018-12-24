@@ -362,6 +362,8 @@ namespace OpcUaStackCore
 		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
+		OpcUaDataValue(const OpcUaDataValue& value);
+
 		OpcUaVariant::SPtr opcUaVariantSPtr_;
 		OpcUaStatusCode opcUaStatusCode_;
 		OpcUaDateTime sourceTimestamp_;

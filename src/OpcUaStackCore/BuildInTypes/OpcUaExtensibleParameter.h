@@ -97,6 +97,8 @@ namespace OpcUaStackCore
 		   }
 
 	  private:
+		OpcUaExtensibleParameter(const OpcUaExtensibleParameter& value);
+
 		OpcUaNodeId parameterTypeId_;
 		ExtensionObjectBase::SPtr eoSPtr_;
 	};

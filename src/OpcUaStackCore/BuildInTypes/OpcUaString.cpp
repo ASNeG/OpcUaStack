@@ -37,6 +37,14 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaString::OpcUaString(const OpcUaString& value)
+	: Object()
+	, exist_(false)
+	, value_()
+	{
+		const_cast<OpcUaString*>(&value)->copyTo(*this);
+	}
+
 	OpcUaString::OpcUaString(const std::string& value)
 	: exist_(true)
 	, value_(value)

@@ -37,6 +37,14 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaQualifiedName::OpcUaQualifiedName(const OpcUaQualifiedName& value)
+	: Object()
+	, namespaceIndex_(0)
+	, name_()
+	{
+		const_cast<OpcUaQualifiedName*>(&value)->copyTo(*this);
+	}
+
 	OpcUaQualifiedName::OpcUaQualifiedName(const std::string& name, OpcUaInt16 namespaceIndex)
 	: Object()
 	, namespaceIndex_(namespaceIndex)

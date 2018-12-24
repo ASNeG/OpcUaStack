@@ -36,6 +36,14 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaLocalizedText::OpcUaLocalizedText(const OpcUaLocalizedText& value)
+	: Object()
+	, locale_()
+	, text_()
+	{
+		const_cast<OpcUaLocalizedText*>(&value)->copyTo(*this);
+	}
+
 	OpcUaLocalizedText::OpcUaLocalizedText(const std::string& locale, const std::string& text)
 	: Object()
 	, locale_(locale)

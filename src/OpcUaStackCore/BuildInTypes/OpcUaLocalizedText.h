@@ -34,6 +34,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaLocalizedText> SPtr;
 
 	    OpcUaLocalizedText(void);
+	    OpcUaLocalizedText(const OpcUaLocalizedText& value);
 	    OpcUaLocalizedText(const std::string& locale, const std::string& text);
 		~OpcUaLocalizedText(void);
 

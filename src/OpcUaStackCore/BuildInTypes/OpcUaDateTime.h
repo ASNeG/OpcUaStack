@@ -33,6 +33,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaDateTime> SPtr;
 
 		OpcUaDateTime(void);
+		OpcUaDateTime(const OpcUaDateTime& value);
 		OpcUaDateTime(const boost::posix_time::ptime& ptime);
 		OpcUaDateTime(const std::string& dateTimeString);
 		~OpcUaDateTime(void);
@@ -71,8 +72,6 @@ namespace OpcUaStackCore
 		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
-
-
 		static boost::posix_time::ptime nullTime_;
 		OpcUaUInt64 dateTime_;
 	};
