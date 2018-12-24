@@ -233,6 +233,7 @@ namespace OpcUaStackServer
 		ss << prefix << "    typedef std::vector<" << nodeInfo_.className() << "::SPtr> Vec;" << std::endl;
 		ss << prefix << std::endl;
 		ss << prefix << "    " << nodeInfo_.className() << "(void);" << std::endl;
+		ss << prefix << "    " << nodeInfo_.className() << "(const " << nodeInfo_.className() << "& value);" << std::endl;
 		ss << prefix << "    virtual ~" << nodeInfo_.className() << "(void);" << std::endl;
 
 		headerContent_ += ss.str();
@@ -530,6 +531,41 @@ namespace OpcUaStackServer
 		}
 
 		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		//
+		// added copy constructor
+		//
+		ss << prefix << std::endl;
+		if (nodeInfo_.description() != "") {
+			ss << prefix << "/**" << std::endl;
+			ss << prefix << " * " << nodeInfo_.description() << std::endl;
+			ss << prefix << " */" << std::endl;
+		}
+
+		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(const " <<nodeInfo_.className()  << "& value)" << std::endl;
+
+		if (nodeInfo_.parentIsStructureType() == true) {
+			ss << prefix << ": Object()" << std::endl;
+			ss << prefix << ", ExtensionObjectBase()" << std::endl;
+		}
+		else {
+			ss << prefix << ": " << nodeInfo_.parentClassName() << "()" << std::endl;
+		}
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			std::string variableContent = "";
+			if (dataTypeField->smartpointer() == true) {
+				variableContent = "constructSPtr<" + dataTypeField->variableTypeWithoutPtr() + ">()";
+			}
+
+			ss << prefix << ", " << dataTypeField->variableName() << "(" << variableContent << ")" << std::endl;
+		}
+
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    const_cast<" << nodeInfo_.className() << "*>(&value)->copyTo(*this);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
