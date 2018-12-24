@@ -145,7 +145,7 @@ static ContentFilterElement::SPtr makeOperatorWithElementAndLiteralOperands(Filt
 }
 
 template<typename T>
-static ContentFilterElement::SPtr makeOperatorWithAttributeAndLiteralOperands(FilterOperator::Enum op, AttributeOperand arg1, T arg2)
+static ContentFilterElement::SPtr makeOperatorWithAttributeAndLiteralOperands(FilterOperator::Enum op, AttributeOperand& arg1, T arg2)
 {
     ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
 
@@ -168,7 +168,7 @@ static ContentFilterElement::SPtr makeOperatorWithAttributeAndLiteralOperands(Fi
 
 
 template<typename T>
-static ContentFilterElement::SPtr makeOperatorWithSimpleAttributeAndLiteralOperands(FilterOperator::Enum op, SimpleAttributeOperand arg1, T arg2)
+static ContentFilterElement::SPtr makeOperatorWithSimpleAttributeAndLiteralOperands(FilterOperator::Enum op, SimpleAttributeOperand& arg1, T arg2)
 {
     ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
 
