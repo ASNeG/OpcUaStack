@@ -40,6 +40,18 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaDataValue::OpcUaDataValue(const OpcUaDataValue& value)
+	:  Object()
+	, opcUaVariantSPtr_()
+	, opcUaStatusCode_()
+	, sourceTimestamp_()
+	, sourcePicoseconds_(0)
+	, serverTimestamp_()
+	, serverPicoseconds_(0)
+	{
+		const_cast<OpcUaDataValue*>(&value)->copyTo(*this);
+	}
+
 	OpcUaDataValue::OpcUaDataValue(const OpcUaNullValue& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp)
 	:  Object()
 	, opcUaVariantSPtr_()

@@ -46,6 +46,7 @@ namespace OpcUaStackCore
 		typedef std::vector<OpcUaDataValue::SPtr> Vec;
 
 	    OpcUaDataValue(void);
+	    OpcUaDataValue(const OpcUaDataValue& value);
 	    OpcUaDataValue(const OpcUaNullValue& value, OpcUaStatusCode statusCode, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 	    OpcUaDataValue(const OpcUaBoolean& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 	    OpcUaDataValue(const OpcUaByte& value, OpcUaStatusCode statusCode = Success, const OpcUaDateTime& sourceTimestamp = OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
@@ -362,8 +363,6 @@ namespace OpcUaStackCore
 		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
-		OpcUaDataValue(const OpcUaDataValue& value);
-
 		OpcUaVariant::SPtr opcUaVariantSPtr_;
 		OpcUaStatusCode opcUaStatusCode_;
 		OpcUaDateTime sourceTimestamp_;
