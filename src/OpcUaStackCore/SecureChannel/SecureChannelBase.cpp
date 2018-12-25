@@ -1246,6 +1246,7 @@ namespace OpcUaStackCore
 			secureChannel->secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
 		}
 
+		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
 			secureChannel->recvBuffer_,
 			boost::bind(
@@ -1266,6 +1267,8 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		secureChannel->asyncRecv_ = false;
+
 		if (secureChannel->isLogging_) {
 			Log(Debug, "asyncReadMessageResponseComplete")
 				.parameter("BytesTransfered", bytes_transfered);
@@ -1278,7 +1281,9 @@ namespace OpcUaStackCore
 				.parameter("Partner", secureChannel->partner_.address().to_string())
 				.parameter("Message", error.message());
 
-			closeChannel(secureChannel);
+			if (!secureChannel->asyncSend_) {
+				closeChannel(secureChannel);
+			}
 			return;
 		}
 
@@ -1288,7 +1293,9 @@ namespace OpcUaStackCore
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
 
-			closeChannel(secureChannel, true);
+			if (!secureChannel->asyncSend_) {
+				closeChannel(secureChannel, true);
+			}
 			return;
 		}
 
@@ -1581,6 +1588,8 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::closeChannel(SecureChannel* secureChannel, bool close)
 	{
+		Log(Error, "opc ua secure channel close")
+			.parameter("AsyncSend", secureChannel->asyncSend_);
 		if (close) secureChannel->close();
 
 		// cleanup sender
