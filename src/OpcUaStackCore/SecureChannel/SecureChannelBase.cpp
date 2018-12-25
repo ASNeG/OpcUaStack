@@ -1236,6 +1236,10 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncReadMessageResponse(SecureChannel* secureChannel)
 	{
+		if (secureChannel->isLogging_) {
+			Log(Debug, "asyncReadMessageResponse");
+		}
+
 		secureChannel->recvFirstSegment_ = false;
 		if (secureChannel->secureChannelTransaction_.get() == nullptr) {
 			secureChannel->recvFirstSegment_ = true;
@@ -1256,8 +1260,17 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::asyncReadMessageResponseComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel)
+	SecureChannelBase::asyncReadMessageResponseComplete(
+		const boost::system::error_code& error,
+		std::size_t bytes_transfered,
+		SecureChannel* secureChannel
+	)
 	{
+		if (secureChannel->isLogging_) {
+			Log(Debug, "asyncReadMessageResponseComplete")
+				.parameter("BytesTransfered", bytes_transfered);
+		}
+
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read service message error; close channel")

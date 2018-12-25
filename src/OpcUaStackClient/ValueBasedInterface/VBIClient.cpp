@@ -96,6 +96,7 @@ namespace OpcUaStackClient
 		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
 		sessionServiceConfig.secureChannelClient_->applicationCertificate(connectContext.applicationCertificate_);
 		sessionServiceConfig.secureChannelClient_->cryptoManager(connectContext.cryptoManager_);
+		sessionServiceConfig.secureChannelClient_->secureChannelLog(connectContext.secureChannelLog_);
 		sessionServiceConfig.session_->sessionName(connectContext.sessionName_);
 		sessionServiceConfig.ioThreadName(ioThreadName_);
 

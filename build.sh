@@ -312,8 +312,8 @@ build_tst()
         cmake ../tst \
   	     "${CMAKE_GENERATOR_LOCAL}" \
 	     -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}" \
-       -DTEST_SERVER_URI=${TEST_SERVER_URI} \
-       -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
+             -DTEST_SERVER_URI=${TEST_SERVER_URI} \
+             -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
