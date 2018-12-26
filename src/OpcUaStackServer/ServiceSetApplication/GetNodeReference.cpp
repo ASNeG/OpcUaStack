@@ -105,7 +105,7 @@ namespace OpcUaStackServer
 	  	for (uint32_t idx = 0; idx < trx->response()->nodeReferenceArray()->size(); idx++) {
 	  		NodeReference::SPtr nodeReference;
 	  		trx->response()->nodeReferenceArray()->get(idx, nodeReference);
-	  		NodeReferenceApplication::SPtr nodeReferenceApplication = nodeReferenceApplication = boost::static_pointer_cast<NodeReferenceApplication>(nodeReference);
+	  		NodeReferenceApplication::SPtr nodeReferenceApplication = boost::static_pointer_cast<NodeReferenceApplication>(nodeReference);
 	  		nodeReferences_.push_back(nodeReferenceApplication->baseNodeClass());
 	  		statuses_.push_back(nodeReferenceApplication->statusCode());
 	  	}

@@ -1236,12 +1236,17 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncReadMessageResponse(SecureChannel* secureChannel)
 	{
+		if (secureChannel->isLogging_) {
+			Log(Debug, "asyncReadMessageResponse");
+		}
+
 		secureChannel->recvFirstSegment_ = false;
 		if (secureChannel->secureChannelTransaction_.get() == nullptr) {
 			secureChannel->recvFirstSegment_ = true;
 			secureChannel->secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
 		}
 
+		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
 			secureChannel->recvBuffer_,
 			boost::bind(
@@ -1256,8 +1261,19 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::asyncReadMessageResponseComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel)
+	SecureChannelBase::asyncReadMessageResponseComplete(
+		const boost::system::error_code& error,
+		std::size_t bytes_transfered,
+		SecureChannel* secureChannel
+	)
 	{
+		secureChannel->asyncRecv_ = false;
+
+		if (secureChannel->isLogging_) {
+			Log(Debug, "asyncReadMessageResponseComplete")
+				.parameter("BytesTransfered", bytes_transfered);
+		}
+
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read service message error; close channel")
@@ -1265,7 +1281,9 @@ namespace OpcUaStackCore
 				.parameter("Partner", secureChannel->partner_.address().to_string())
 				.parameter("Message", error.message());
 
-			closeChannel(secureChannel);
+			if (!secureChannel->asyncSend_) {
+				closeChannel(secureChannel);
+			}
 			return;
 		}
 
@@ -1275,7 +1293,9 @@ namespace OpcUaStackCore
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
 
-			closeChannel(secureChannel, true);
+			if (!secureChannel->asyncSend_) {
+				closeChannel(secureChannel, true);
+			}
 			return;
 		}
 
@@ -1568,6 +1588,8 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::closeChannel(SecureChannel* secureChannel, bool close)
 	{
+		Log(Error, "opc ua secure channel close")
+			.parameter("AsyncSend", secureChannel->asyncSend_);
 		if (close) secureChannel->close();
 
 		// cleanup sender
