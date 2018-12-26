@@ -29,6 +29,9 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	/**
+	 * The discovery client registered server is used to register all endpoints.
+	 */
 	class DLLEXPORT DiscoveryClientRegisteredServers
 	: public SessionServiceIf
 	, public DiscoveryServiceIf

@@ -94,9 +94,11 @@ namespace OpcUaStackClient
 
 	SessionService::~SessionService(void)
 	{
-		if (slotTimerElement_.get() != nullptr) {
-			ioThread_->slotTimer()->stop(slotTimerElement_);
-			slotTimerElement_.reset();
+		if (secureChannelState_ == SCS_DisconnectedWait) {
+			if (slotTimerElement_.get() != nullptr) {
+				ioThread_->slotTimer()->stop(slotTimerElement_);
+				slotTimerElement_.reset();
+			}
 		}
 	}
 
