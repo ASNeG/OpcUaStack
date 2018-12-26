@@ -165,7 +165,8 @@ namespace OpcUaStackClient
 		Log(Debug, "deregister server discovery loop");
 		shutdown_ = true;
 		deregisterServers();
-		sessionService_->asyncDisconnect();
+	    sessionService_->asyncDisconnect();
+	    shutdownCond_.conditionValueDec();
     }
 
 	void
