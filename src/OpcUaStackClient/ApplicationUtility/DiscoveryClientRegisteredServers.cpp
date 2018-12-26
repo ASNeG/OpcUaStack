@@ -110,7 +110,9 @@ namespace OpcUaStackClient
     	ioThread_->run(
     		boost::bind(&DiscoveryClientRegisteredServers::shutdownLoop, this)
     	);
-    	shutdownCond_.waitForCondition(3000);
+    	if (!shutdownCond_.waitForCondition(3000)) {
+    		Log(Error, "discovery client registered server shutdown timeout");
+    	}
 
     	// deregister io thread from service set manager
     	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
@@ -163,7 +165,7 @@ namespace OpcUaStackClient
 		Log(Debug, "deregister server discovery loop");
 		shutdown_ = true;
 		deregisterServers();
-		sessionService_->asyncConnect();
+		sessionService_->asyncDisconnect();
     }
 
 	void
