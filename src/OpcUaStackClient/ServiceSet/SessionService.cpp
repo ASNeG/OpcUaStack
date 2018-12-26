@@ -272,7 +272,7 @@ namespace OpcUaStackClient
 			if (sessionTransaction_.get() != nullptr) {
 				sessionTransaction_->statusCode_ = BadSessionClosed;
 				sessionTransaction_->condition_.conditionValueDec();
-				sessionTransaction_.reset();
+				//sessionTransaction_.reset();
 			}
 		}
 
@@ -418,7 +418,7 @@ namespace OpcUaStackClient
 		if (sessionTransaction_.get() != nullptr) {
 			sessionTransaction_->statusCode_ = Success;
 			sessionTransaction_->condition_.conditionValueDec();
-			sessionTransaction_.reset();
+			//sessionTransaction_.reset();
 			return;
 		}
 	}
@@ -482,7 +482,7 @@ namespace OpcUaStackClient
 			if (sessionTransaction_.get() != nullptr) {
 				sessionTransaction_->statusCode_ = Success;
 				sessionTransaction_->condition_.conditionValueDec();
-				sessionTransaction_.reset();
+				//sessionTransaction_.reset();
 				return;
 			}
 
@@ -521,7 +521,7 @@ namespace OpcUaStackClient
 				sessionTransaction_->statusCode_ = Success;
 			}
 			sessionTransaction_->condition_.conditionValueDec();
-			sessionTransaction_.reset();
+			//sessionTransaction_.reset();
 			return;
 		}
 	}
