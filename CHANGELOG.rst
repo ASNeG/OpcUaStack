@@ -23,6 +23,16 @@ Release 3.6.0
 * init Shinx documentations and add 'Hello, World' example #61, by @flipback
 
 
+Release 3.5.2
+------------------------------------------------------------
+
+**Features**:
+
+**Bugs**:
+
+* Error "Unexpected SequenceNumber" #57, by @huebl
+
+
 Release 3.5.1 (2018-11-11)
 -----------------------------------------------------------
 
