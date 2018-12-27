@@ -25,6 +25,7 @@ add_library(
 target_link_libraries(
     OpcUaStackCore
     ${CMAKE_DL_LIBS}
+    ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
     ${OPENSSL_LIBRARIES}
 )
@@ -85,120 +86,120 @@ file(GLOB INC_OpcUaStackCore_StandardEventType OpcUaStackCore/StandardEventType/
 
 install(
     TARGETS OpcUaStackCore 
-    DESTINATION /usr/lib
+    DESTINATION ${INSTALL_PREFIX}/lib
     COMPONENT libraries
 )
 
 install(
     FILES ${INC_OpcUaStackCore_Base} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Base
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Base
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_BuildInTypes} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/BuildInTypes
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/BuildInTypes
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_Component} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Component
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Component
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_Certificate} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Certificate
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Certificate
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_Core} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Core
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Core
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_SecureChannel} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/SecureChannel
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/SecureChannel
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_ServiceSet} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ServiceSet
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ServiceSet
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_ServiceSetApplication} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ServiceSetApplication
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ServiceSetApplication
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_TCPChannel} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/TCPChannel
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/TCPChannel
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_Utility} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Utility
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Utility
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_Application} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Application
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Application
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_Container} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Container
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Container
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_ApplicationUtility} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ApplicationUtility
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ApplicationUtility
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_StandardDataTypes} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/StandardDataTypes
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/StandardDataTypes
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_ComplexDataTypes} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ComplexDataTypes
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ComplexDataTypes
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_DataType} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/DataType
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/DataType
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_Filter} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Filter
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Filter
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_EventType} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/EventType
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/EventType
     COMPONENT headers
 )
 
 install(
     FILES ${INC_OpcUaStackCore_StandardEventType} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/StandardEventType
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/StandardEventType
     COMPONENT headers
 )

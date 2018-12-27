@@ -1,41 +1,113 @@
-set(BOOST_SUPPORTED_RELEASES_BIN 1.65.1 1.65.0 1.64.0 1.63.0 1.62.0 1.61.0 1.60.0 1.59.0 1.58.0)
-set(BOOST_SUPPORTED_RELEASES_DEV "" 1.65 1.64 1.63 1.62 1.61 1.60 1.59 1.58)
-set(OPEN_SSL_SUPPORTED_RELEASES_BIN 1.0.0 1.0.1 1.0.2 1.1.0)
-set(OPEN_SSL_SUPPORTED_RELEASES_DEV "" 1.0 1.1)
+set(BOOST_SUPPORTED_RELEASES_BIN 1.68.0 1.67.0 1.66.0 1.65.1 1.65.0 1.64.0 1.63.0 1.62.0 1.61.0 1.60.0 1.59.0 1.58.0)
+set(BOOST_SUPPORTED_RELEASES_DEV 1.68 1.67 1.66 1.65 1.64 1.63 1.62 1.61 1.60 1.59 1.58)
+set(OPEN_SSL_SUPPORTED_RELEASES_BIN 1.0.0 1.0.1 1.0.2 1.1.0 1.1)
+set(OPEN_SSL_SUPPORTED_RELEASES_DEV 1.0 1.1)
 
 
 function(BoostDepends nameLib)    
-    LibDepends(${nameLib} BOOST_SUPPORTED_RELEASES_BIN "")
-    set(LIST_OF_LIB_VERSIONS_BIN ${FOUT} PARENT_SCOPE)    
+    LibDepends(${nameLib} BOOST_SUPPORTED_RELEASES_BIN 0)
+    if (CPACK_BINARY_RPM) 
+        set(LIST_OF_LIB_VERSIONS_BIN "(${FOUT})" PARENT_SCOPE)    
+    endif()
+
+    if (CPACK_BINARY_DEB)
+        set(LIST_OF_LIB_VERSIONS_BIN "${FOUT}" PARENT_SCOPE)    
+    endif()
     
-    LibDepends(${nameLib} BOOST_SUPPORTED_RELEASES_DEV "dev")
-    set(LIST_OF_LIB_VERSIONS_DEV ${FOUT} PARENT_SCOPE)
+    if (CPACK_BINARY_RPM) 
+        LibDepends(${nameLib} BOOST_SUPPORTED_RELEASES_BIN 1)
+        set(LIST_OF_LIB_VERSIONS_DEV "(${FOUT})" PARENT_SCOPE)    
+    endif()
+    if (CPACK_BINARY_DEB)
+        LibDepends(${nameLib} BOOST_SUPPORTED_RELEASES_DEV 1)
+        set(LIST_OF_LIB_VERSIONS_DEV "${FOUT}" PARENT_SCOPE)    
+    endif()
 endfunction(BoostDepends)
 
 function(SSLDepends nameLib)
-    LibDepends(${nameLib} OPEN_SSL_SUPPORTED_RELEASES_BIN "")    
-    set(LIST_OF_LIB_VERSIONS_BIN ${FOUT} PARENT_SCOPE)
+    LibDepends(${nameLib} OPEN_SSL_SUPPORTED_RELEASES_BIN 0)    
+    if (CPACK_BINARY_RPM) 
+        set(LIST_OF_LIB_VERSIONS_BIN "(${FOUT})" PARENT_SCOPE)    
+    endif()
+
+    if (CPACK_BINARY_DEB)
+        set(LIST_OF_LIB_VERSIONS_BIN "${FOUT}" PARENT_SCOPE)    
+    endif()
     
-    LibDepends(${nameLib} OPEN_SSL_SUPPORTED_RELEASES_DEV "dev")
-    set(LIST_OF_LIB_VERSIONS_DEV ${FOUT} PARENT_SCOPE)
+    if (CPACK_BINARY_RPM) 
+        LibDepends("${nameLib}-" OPEN_SSL_SUPPORTED_RELEASES_BIN 1)
+        set(LIST_OF_LIB_VERSIONS_DEV "(${FOUT})" PARENT_SCOPE)    
+    endif()
+    if (CPACK_BINARY_DEB)
+        LibDepends(${nameLib} OPEN_SSL_SUPPORTED_RELEASES_DEV 1)
+        set(LIST_OF_LIB_VERSIONS_DEV "${FOUT}" PARENT_SCOPE)    
+    endif()
 endfunction(SSLDepends)
  
-function(LibDepends nameLib releaseList prefix)    
+function(LibDepends nameLib releaseList devVersion)
+    if (CPACK_BINARY_DEB) 
+      set(devPrefix "dev")
+      set(orSymbol "|")
+    else()
+      set(devPrefix "devel")
+      set(orSymbol "or")    
+    endif()
+
     foreach(release IN LISTS ${releaseList})   
-        if ("${prefix}" STREQUAL "")     
-            set(FULL_VERSION ${nameLib}${release})
+        if (CPACK_BINARY_RPM) 
+            string(REPLACE "." "_" releaseNum ${release})  
+        else()
+            set(releaseNum ${release})
+        endif()
+
+        if (${devVersion})     
+            set(FULL_VERSION "${nameLib}${releaseNum}-${devPrefix}")
         else()        
-            set(FULL_VERSION "${nameLib}${release}-${prefix}")
+            set(FULL_VERSION "${nameLib}${releaseNum}")
         endif()        
-        
         
         if ("${OUT}" STREQUAL "")
             set(OUT ${FULL_VERSION})            
         else()
-            set(OUT ${OUT}\ |\ ${FULL_VERSION})
+            set(OUT "${OUT} ${orSymbol} ${FULL_VERSION}")
         endif()
         
     endforeach(release)
     
     set(FOUT ${OUT} PARENT_SCOPE)    
 endfunction(LibDepends)
+
+function(GetBoostDLLPath libPath)
+    string(REPLACE ".lib" ".dll" DLL ${libPath})
+    set(BOOST_DLL_PATH ${DLL} PARENT_SCOPE)
+endfunction(GetBoostDLLPath)
+
+
+function(GetStackDependencies)
+	file (GLOB DEPS_DLL ${OPENSSL_INCLUDE_DIR}/../bin/libssl*.dll ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto*.dll ${OPENSSL_INCLUDE_DIR}/../lib/libssl*.dll ${OPENSSL_INCLUDE_DIR}/../lib/libcrypto*.dll)
+	if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")         
+            set (STACK_BOOST_LIBS  ${Boost_SYSTEM_LIBRARY_DEBUG}
+            ${Boost_SYSTEM_LIBRARY_DEBUG}
+            ${Boost_FILESYSTEM_LIBRARY_DEBUG}
+            ${Boost_THREAD_LIBRARY_DEBUG}
+            ${Boost_DATE_TIME_LIBRARY_DEBUG}
+            ${Boost_CHRONO_LIBRARY_DEBUG}
+            ${Boost_REGEX_LIBRARY_DEBUG}
+            ${Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG})   
+    else()
+            set (STACK_BOOST_LIBS  ${Boost_SYSTEM_LIBRARY_RELEASE}
+            ${Boost_FILESYSTEM_LIBRARY_RELEASE}
+            ${Boost_THREAD_LIBRARY_RELEASE}
+            ${Boost_DATE_TIME_LIBRARY_RELEASE}
+            ${Boost_CHRONO_LIBRARY_RELEASE}
+            ${Boost_REGEX_LIBRARY_RELEASE}
+            ${Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE})
+    endif()
+    message(${STACK_BOOST_LIBS})
+    foreach(lib ${STACK_BOOST_LIBS})
+        GetBoostDLLPath(${lib})
+        set(DEPS_DLL "${DEPS_DLL};${BOOST_DLL_PATH}")             
+    endforeach()
+	
+	set(DEPS_DLL ${DEPS_DLL} PARENT_SCOPE)
+endfunction()

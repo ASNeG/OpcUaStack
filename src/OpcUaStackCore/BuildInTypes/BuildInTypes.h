@@ -44,7 +44,6 @@ namespace OpcUaStackCore
 	typedef OpcUaUInt32 IntegerId;
 	typedef OpcUaDouble Duration;
 	typedef OpcUaStringArray LocaleIdArray;
-
 };
 
 #endif

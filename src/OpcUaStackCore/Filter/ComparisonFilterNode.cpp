@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -82,21 +82,24 @@ namespace OpcUaStackCore
             	return false;
             }
 
-    		OpcUaTypeConversion converter;
-    		// Convert variable with greater precedence rank
-    		if (converter.precedenceRank(value1.variantType()) < converter.precedenceRank(value2.variantType())) {
-    			std::swap(value1, value2);
-    		}
-    	    char conveType = converter.conversionType(value1.variantType(), value2.variantType());
+            bool converted = true;
 
-    	    if (converter.conversion(value1, value2.variantType(), value1)) {
-				return compare(value1, value2, value);
-			} else {
-				value.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
-			}
+            OpcUaTypeConversion converter;
+            // Convert variable with greater precedence rank
+            if (converter.precedenceRank(value1.variantType()) > converter.precedenceRank(value2.variantType())) {
+                converted = converter.conversion(value1, value2.variantType(), value1);
+            } else if (converter.precedenceRank(value1.variantType()) < converter.precedenceRank(value2.variantType())) {
+                converted = converter.conversion(value2, value1.variantType(), value2);
+            }
 
-			return true;
-		}
+            if (converted) {
+                return compare(value1, value2, value);
+            } else {
+                value.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
+            }
+
+            return true;
+        }
 
 		return false;
     }

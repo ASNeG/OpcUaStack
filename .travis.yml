@@ -5,11 +5,10 @@ services:
   - docker
 
 before_install:
-  - docker build -t asneg/opcuastack:test .
-  - docker run --name test_container asneg/opcuastack:test sh build.sh -t tst -j 2
-  - docker commit test_container asneg/opcuastack:test
+  - docker-compose run  --name test_container stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889
+  - docker commit test_container opcuastack_stack 
 
 script:
-  - docker run -w /OpcUaStack/build_tst asneg/opcuastack:test ./OpcUaStackCoreTest
-  - docker run -w /OpcUaStack/build_tst asneg/opcuastack:test ./OpcUaStackServerTest
-  - docker run -w /OpcUaStack/build_tst asneg/opcuastack:test ./OpcUaStackClientTest
+  - docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackCoreTest
+  - docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackServerTest
+  - docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackClientTest

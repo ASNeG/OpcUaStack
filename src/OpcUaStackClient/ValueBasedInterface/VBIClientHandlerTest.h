@@ -115,6 +115,7 @@ namespace OpcUaStackClient
 		Condition dataChangeCallback_;
 		void dataChangeCallback(OpcUaUInt32 clientHandle, OpcUaDataValue& dataValue)
 		{
+			std::cout << "dataChangeCallback" << std::endl;
 			clientHandle_ = clientHandle;
 			dataValue_.copyFrom(dataValue);
 			dataChangeCallback_.sendEvent();

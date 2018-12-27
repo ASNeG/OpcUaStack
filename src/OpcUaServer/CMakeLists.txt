@@ -45,7 +45,7 @@ target_link_libraries(
     OpcUaStackServer
     OpcUaStackClient
     ${CMAKE_DL_LIBS}
-    ${pthread}
+    ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
 )
 
@@ -59,6 +59,6 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 install(
     TARGETS OpcUaServer${VERSION_MAJOR} 
-    DESTINATION /usr/bin
+    DESTINATION ${INSTALL_PREFIX}/bin
     COMPONENT applications
 )

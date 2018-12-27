@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,6 +35,15 @@ namespace OpcUaStackCore
 	, data3_(0)
 	{
 		memset((char*)data4_, 0x00, sizeof(data4_));
+	}
+
+	OpcUaGuid::OpcUaGuid(const std::string& string)
+	: Object()
+	, data1_(0)
+	, data2_(0)
+	, data3_(0)
+	{
+		value(string);
 	}
 		
 	OpcUaGuid::~OpcUaGuid(void)

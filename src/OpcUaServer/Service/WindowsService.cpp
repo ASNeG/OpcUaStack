@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifdef WIN32
@@ -21,6 +21,8 @@
 #include <stdint.h>
 #include <sstream>
 #include <lmerr.h>
+#include <atlstr.h>
+
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
@@ -39,7 +41,7 @@ VOID WINAPI ServiceMain(DWORD dwArgc, LPTSTR *lpszArgv)
 
 	OpcUaServer::WindowsService* windowsService = OpcUaServer::WindowsService::instance();
 	windowsService->eventLog("Info", "Global ServiceMain");
-	windowsService->serviceMain(dwArgc, lpszArgv);
+	windowsService->serviceMain();
 }
 
 VOID WINAPI ServiceHandler(DWORD fdwControl)
@@ -99,8 +101,8 @@ namespace OpcUaServer
 			<< "OpcUaServer\n" 
 			<< "OpcUaServer INSTALL <ServiceName> <Description>\n" 
 			<< "OpcUaServer UNINSTALL <ServiceName>\n" 
-			<< "OpcUaServer START\n" 
-			<< "OpcUaServer STOP\n"
+			<< "OpcUaServer START <ServiceName> <ConfigFileName>\n" 
+			<< "OpcUaServer STOP <ServiceName>\n"
 			<< "OpcUaServer CONSOLE <ServiceName> [<ConfigFileName>]\n\n"; 
 
 		eventLog("Error", ss.str());
@@ -125,14 +127,15 @@ namespace OpcUaServer
 
 		// process install
 		if (command == "INSTALL") {
-			if (argc != 4) {
+			if (argc != 5) {
 				usage();
 				return;
 			}
 
 			std::string serviceName(argv[2]);
 			std::string serviceDescription(argv[3]);
-			if (!installService(serviceName, serviceDescription)) {
+            std::string pathToConfiguration(argv[4]);
+			if (!installService(serviceName, serviceDescription, pathToConfiguration)) {
 				usage();
 			}
 			return;
@@ -154,13 +157,14 @@ namespace OpcUaServer
 
 		// handle start
 		else if (command == "START") {
-			if (argc != 3) {
+			if (argc != 4) {
 				usage();
 				return;
 			}
 
 			std::string serviceName(argv[2]);
-			if (!startService(serviceName)) {
+			std::string pathToConfiguration(argv[3]);
+			if (!startService(serviceName, pathToConfiguration)) {
 				usage();
 			}
 			return;
@@ -233,15 +237,19 @@ namespace OpcUaServer
 
 
 	bool 
-	WindowsService::installService(const std::string& serviceName, const std::string& serviceDescription)
-	{
-		char moduleFileName[2048];
-		DWORD moduleFileNameLen = GetModuleFileName(NULL, moduleFileName, 2048);
-		std::string programFileName(moduleFileName, moduleFileNameLen);
-
+	WindowsService::installService(const std::string& serviceName, const std::string& serviceDescription, const std::string& pathToConfiguration)
+	{		
+        std::string programFileName;
 		if (!programFileName_.empty()) {
 			programFileName = programFileName_;
-		}
+        }
+        else {
+            char moduleFileName[2048];
+            DWORD moduleFileNameLen = GetModuleFileName(NULL, moduleFileName, 2048);
+            programFileName = std::string(moduleFileName, moduleFileNameLen);
+        }
+
+        const std::string serviceBinary = programFileName + " SERVICE " + serviceName + " \"" + pathToConfiguration + "\"";
 
 		SC_HANDLE scManager = OpenSCManager(NULL, NULL, SC_MANAGER_CREATE_SERVICE); 
 		if (scManager==0) 
@@ -262,7 +270,7 @@ namespace OpcUaServer
 			SERVICE_WIN32_OWN_PROCESS|SERVICE_INTERACTIVE_PROCESS , /* service type            */ 
 			SERVICE_AUTO_START,										/* start type              */ 
 			SERVICE_ERROR_NORMAL,									/* error control type      */ 
-			programFileName.c_str(),								/* service's binary        */ 
+            serviceBinary.c_str(),								    /* service's binary        */
 			NULL,													/* no load ordering group  */ 
 			NULL,													/* no tag identifier       */ 
 			NULL,													/* no dependencies         */ 
@@ -285,7 +293,7 @@ namespace OpcUaServer
 			CloseServiceHandle(scManager);
 			return false;
 		}
-		startService(serviceName);
+		startService(serviceName, pathToConfiguration);
 
 		std::stringstream ss;
 		ss << "Service " << serviceName << " installed";
@@ -350,7 +358,7 @@ namespace OpcUaServer
 	}
 
 	bool 
-	WindowsService::startService(const std::string& serviceName)
+	WindowsService::startService(const std::string& serviceName, const std::string& pathToConfiguration)
 	{
 		SC_HANDLE scManager = OpenSCManager( NULL, NULL, SC_MANAGER_ALL_ACCESS); 
 		if (scManager==0)  {
@@ -375,7 +383,8 @@ namespace OpcUaServer
 			return false;
 		}
 	
-		if(!StartService(scService, 0, (const char**)NULL)) {
+		LPCSTR lpServiceArgVectors[1] = { pathToConfiguration.c_str() };
+		if(!StartService(scService, 1, lpServiceArgVectors)) {
 			std::stringstream ss;
 			int errorCode = GetLastError();
 			ss << "StartService failed, error code =" << errorCode;
@@ -499,16 +508,28 @@ namespace OpcUaServer
 
 
 	void 
-	WindowsService::serviceMain(unsigned int argc, char** argv)
-	{
-		std::string serviceName(argv[0]);
+	WindowsService::serviceMain()
+	{		
+		std::string commandLine(GetCommandLine());
+		eventLog("Debug", "Parse the command line of the process: " + commandLine);
+
+		int argc;
+		LPWSTR *argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+		if (argc != 4) {
+			eventLog("Error", "Wrong number of parameters. Should be 3 instead of " + std::to_string(argc - 1));
+			return;
+		}
 
 		std::stringstream ss;
 		ss << "ServiceMain:" << std::endl;
-		for (uint32_t idx=0; idx<argc; idx++) {
-			ss << "P[" << idx << "] = " << argv[idx] << std::endl;
+		for (uint32_t idx=0; idx< argc; idx++) {
+			ss << "P[" << idx << "] = " << CW2A(argv[idx]) << std::endl;
 		}
+	
 		eventLog("Info", ss.str());
+
+		std::string serviceName = CW2A(argv[2]);
+		std::string pathToConfiguration = CW2A(argv[3]);
 
 		//
 		// This function does not return until the service has stopped. 
@@ -531,7 +552,7 @@ namespace OpcUaServer
 			return; 
 		} 
 
-		serverApplicationIf_->serviceCommandLine(serviceName, argc, argv);
+		serverApplicationIf_->serviceCommandLine(pathToConfiguration, 0, NULL);
 
 		// startup service
 		serviceStatus_.dwCurrentState		= SERVICE_START_PENDING;

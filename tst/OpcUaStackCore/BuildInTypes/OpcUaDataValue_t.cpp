@@ -241,6 +241,44 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_copyTo_string)
 	BOOST_REQUIRE(value2.serverPicoseconds() == 5678);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_constructor)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	OpcUaDataValue value1(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	OpcUaDataValue value2(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	BOOST_REQUIRE(value1 == value2);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_set)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	OpcUaDataValue value1, value2;
+	value1.set(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	value2.set(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	BOOST_REQUIRE(value1 == value2);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_setValue_getValue)
+{
+	OpcUaDataValue value;
+	value.setValue(OpcUaString("Dies ist ein TestString"));
+
+	// get opc ua string
+	OpcUaString str;
+	BOOST_REQUIRE(value.getValue(str) == true);
+	BOOST_REQUIRE(str == OpcUaString("Dies ist ein TestString"));
+
+	// get value from invalid type
+	OpcUaGuid guid;
+	BOOST_REQUIRE(value.getValue(guid) == false);
+
+	// get value from empty variable
+	OpcUaDataValue value1;
+	BOOST_REQUIRE(value1.getValue(guid) == false);
+}
+
 #if 0
 BOOST_AUTO_TEST_CASE(OpcUaDataValue_string_array_with_timestamp)
 {

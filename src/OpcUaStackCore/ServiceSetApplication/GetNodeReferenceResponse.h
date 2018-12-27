@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -36,8 +36,8 @@ namespace OpcUaStackCore
 	    GetNodeReferenceResponse(void);
 		virtual ~GetNodeReferenceResponse(void);
 
-		void nodeReferenceArray(const NodeReferenceArray::SPtr nodeReferenceArray);
-		NodeReferenceArray::SPtr nodeReferenceArray(void) const;
+		void nodeReferenceArray(const NodeReferenceArray::SPtr& nodeReferenceArray);
+		NodeReferenceArray::SPtr& nodeReferenceArray(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

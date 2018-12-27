@@ -16,10 +16,9 @@ set(VERSION_MAJOR "1" CACHE STRING "major version")
 set(VERSION_MINOR "0" CACHE STRING "minor version")
 set(VERSION_PATCH "0" CACHE STRING "patch version")
 
-set(OPCUASTACK_VERSION_MAJOR "VersionMajor" CACHE STRING "major version")
-set(OPCUASTACK_VERSION_MINOR "VersionMinor" CACHE STRING "minor version")
-set(OPCUASTACK_VERSION_PATCH "VersionPatch" CACHE STRING "patch version")
-set(OPCUASTACK_INSTALL_PREFIX "/" CACHE PATH "opc ua stack intallation prefix")
+set(OPCUASTACK_VERSION_MAJOR "VersionMajor")
+set(OPCUASTACK_VERSION_MINOR "VersionMinor")
+set(OPCUASTACK_VERSION_PATCH "VersionPatch")
 
 
 # -----------------------------------------------------------------------------
@@ -100,7 +99,14 @@ include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERS
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-include(ProjectName/CMakeLists.txt) 
+set (INSTALL_PREFIX "/usr")        
+if (WIN32)    
+    if (CPACK_BINARY_MSI)
+        set (INSTALL_PREFIX "./usr")   
+    endif()   
+endif()
+
+include(ProjectName/CMakeLists.txt)
 
 
 # -----------------------------------------------------------------------------
@@ -110,11 +116,11 @@ include(ProjectName/CMakeLists.txt)
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(FILES icon/asneg.ico DESTINATION usr/share/icons/ProjectName)
-install(FILES icon/asneg_install.ico DESTINATION usr/share/icons/ProjectName)
-install(FILES icon/asneg_uninstall.ico DESTINATION usr/share/icons/ProjectName)
-install(FILES ${CMAKE_SOURCE_DIR}/Copyright.txt DESTINATION usr/share/ProjectName)
-install(FILES ${CMAKE_SOURCE_DIR}/../NOTICE DESTINATION usr/share/ProjectName)
+install(FILES ${CMAKE_SOURCE_DIR}/icon/asneg.ico DESTINATION ${INSTALL_PREFIX}/share/icons/ProjectName)
+install(FILES ${CMAKE_SOURCE_DIR}/icon/asneg_install.ico DESTINATION ${INSTALL_PREFIX}/share/icons/ProjectName)
+install(FILES ${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico DESTINATION ${INSTALL_PREFIX}/share/icons/ProjectName)
+install(FILES ${CMAKE_SOURCE_DIR}/Copyright.txt DESTINATION ${INSTALL_PREFIX}/share/ProjectName)
+install(FILES ${CMAKE_SOURCE_DIR}/../NOTICE DESTINATION ${INSTALL_PREFIX}/share/ProjectName)
 
 
 # -----------------------------------------------------------------------------
@@ -124,37 +130,6 @@ install(FILES ${CMAKE_SOURCE_DIR}/../NOTICE DESTINATION usr/share/ProjectName)
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-if (WIN32)
-	include (InstallRequiredSystemLibraries)
-	
-	#set(CPACK_PACKAGE_EXECUTABLES "OpcUaServer" "OpcUaServer")
-	set(CPACK_PACKAGE_INSTALL_DIRECTORY "ProjectName")
-	set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\\\\\icon\\\\asneg.ico")
-	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
-	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg_install.ico")
-	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")
-	#set(CPACK_NSIS_INSTALLED_ICON_NAME "asneg.ico")
-	
-       set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
-                "
-                        ExecWait '\\\"C:\\\\Program Files (x86)\\\\OpcUaStack\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack'
-                        ExecWait '\\\"C:\\\\Program Files (x86)\\\\OpcUaStack\\\\usr\\\\bin\\\\OpcUaStackService.exe\\\" INSTALL \\\"ProjectName\\\" \\\"ProjectDescription\\\"'
-                "
-        )
-
-        set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
-                "
-                        ExecWait '\\\"C:\\\\Program Files (x86)\\\\OpcUaStack\\\\usr\\\\bin\\\\OpcUaStackService.exe\\\" UNINSTALL \\\"ProjectName\\\"'
-                        ExecWait '\\\"C:\\\\Program Files (x86)\\\\OpcUaStack\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack'
-                "
-        )
-
-
-
-	
-endif ()
-
-
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
 set(CPACK_PACKAGE_CONTACT "info@asneg.de")
 set(CPACK_PACKAGE_NAME "ProjectName")
@@ -168,6 +143,55 @@ set(CPACK_BINARY_STGZ "OFF")
 set(CPACK_BINARY_TGZ "OFF")
 set(CPACK_BINARY_TZ "OFF")
 
+if (CPACK_BINARY_MSI)
+	set(CPACK_PACKAGE_FILE_NAME "ProjectName-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}")
+
+  set(CPACK_GENERATOR NSIS)
+	set(CPACK_PACKAGE_INSTALL_DIRECTORY "ProjectName")	
+	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
+  set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\\\\\icon\\\\asneg.ico")
+	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg_install.ico")
+	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")	
+  set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+	
+	if (STANDALONE)	
+		set(CPACK_PACKAGE_FILE_NAME "ProjectName-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-Standalone")
+
+		include (InstallRequiredSystemLibraries)
+		install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_PREFIX}/lib)
+
+		include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERSION_MAJOR}/CPackHelpers.txt)
+		GetStackDependencies()
+		install(FILES ${DEPS_DLL} DESTINATION ${INSTALL_PREFIX}/lib)
+
+		file(TO_CMAKE_PATH ${OPCUASTACK_INSTALL_PREFIX} OPCUASTACK_INSTALL_PREFIX)
+		file(GLOB STACK_BINARIES ${OPCUASTACK_INSTALL_PREFIX}/usr/bin/*)
+		install(FILES ${STACK_BINARIES} DESTINATION ${INSTALL_PREFIX}/bin)		
+		file(GLOB STACK_DLLS ${OPCUASTACK_INSTALL_PREFIX}/usr/lib/OpcUaStack*.dll)
+		install(FILES ${STACK_DLLS} DESTINATION ${INSTALL_PREFIX}/lib)
+
+		set(UPDATE_REGISTRY "$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe")
+		set(OPC_UA_STACK_SERVICE "$INSTDIR\\\\usr\\\\bin\\\\OpcUaStackService.exe")
+	else()
+		set(UPDATE_REGISTRY "UpdateRegistry.exe")
+		set(OPC_UA_STACK_SERVICE "OpcUaStackService.exe")
+	endif()
+
+    set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
+            "
+                    ExecWait '\\\"${UPDATE_REGISTRY}\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib'
+                    ExecWait '\\\"${OPC_UA_STACK_SERVICE}\\\" INSTALL \\\"ProjectName\\\" \\\"ProjectDescription\\\" \\\"$INSTDIR\\\\etc\\\\OpcUaStack\\\\ProjectName\\\\OpcUaServer.xml\\\"'
+            "
+    )
+
+    set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
+            "
+                    ExecWait '\\\"${OPC_UA_STACK_SERVICE}\\\" UNINSTALL \\\"ProjectName\\\"'
+                    ExecWait '\\\"${UPDATE_REGISTRY}\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib'
+            "
+    )
+endif ()
+
 if (CPACK_BINARY_DEB)
     set(CPACK_PACKAGE_FILE_NAME "ProjectName-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
     set(CPACK_DEB_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
@@ -178,9 +202,11 @@ if (CPACK_BINARY_DEB)
 endif()
 
 if (CPACK_BINARY_RPM)
-    set(CPACK_RPM_COMPONENT_INSTALL "ON")
- #   set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+    set(CPACK_PACKAGE_FILE_NAME "ProjectName-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
     set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+
+    set(RPM_DEPS "opcuastack-${VERSION_MAJOR}-bin = ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")    
+    set(CPACK_RPM__PACKAGE_REQUIRES ${RPM_DEPS})             
 endif()
 
 

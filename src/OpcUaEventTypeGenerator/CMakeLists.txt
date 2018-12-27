@@ -26,6 +26,7 @@ target_link_libraries(
     OpcUaEventTypeGenerator${VERSION_MAJOR}
     ${CMAKE_DL_LIBS}
     ${Boost_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
     OpcUaStackCore
     OpcUaStackClient
     OpcUaStackServer
@@ -41,6 +42,6 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 install(
     TARGETS OpcUaEventTypeGenerator${VERSION_MAJOR} 
-    DESTINATION /usr/bin
+    DESTINATION ${INSTALL_PREFIX}/bin
     COMPONENT tools
 )

@@ -1,3 +1,28 @@
+Release 3.6.0
+------------------------------------------------------------
+
+**Features**:
+
+* add *OpcUaStackServer::GetNodeReference* to simplify access to nodes in application #59, by @huebl
+* add additional constructors for *OpcUaStack::DataValue* class is cumbersome #60, by @huebl
+* add options for *build.bat* to set install path, stack location and VS version #33, by @flipback
+* implement MSI distribution for the stack and user applications #14, @flipback
+* implement RPM distribution for the stack and user applications #1333, @flipback
+
+**Bugs**:
+ 
+* fix crash during shutdown #10, by @huebl
+* fix runing client tests on CI server #45, by @flipback
+* fix too specific params of *build.bat* #16, by @flipback
+* fix OpenSSL-1.1 compatibility in test compilation #46, by @flipback
+* fix type conversion of refernces on the same value #67, by @flipback
+* fix comparison in *OpcUaStackCore::ComparisonFilterNode* #67, by @flipback
+
+**Documentation**:
+
+* init Shinx documentations and add 'Hello, World' example #61, by @flipback
+
+
 Release 3.5.2
 ------------------------------------------------------------
 
@@ -8,18 +33,14 @@ Release 3.5.2
 * Error "Unexpected SequenceNumber" #57, by @huebl
 
 
-
-Release 3.5.1
-------------------------------------------------------------
-
-**Features**:
+Release 3.5.1 (2018-11-11)
+-----------------------------------------------------------
 
 **Bugs**:
 
-* OpcUaStackCore/Client/Server tests end with errors #31, by @huebl
-* Missing certifcate in opc ua client #40, by @huebl
-* OPC UA client sometimes gets stuck #41, by @huebl  
-
+* fix OpcUaStackCore/Client/Server tests #31, by @huebl
+* fix missing certificate in OPC UA Client #40, by @huebl
+* fix unstable OPC UA Client test #41, by @huebl
 
 
 Release 3.5.0 (2018-10-27)
@@ -35,12 +56,12 @@ Release 3.5.0 (2018-10-27)
 * fix building DEB packet of a user application #19, by @flipback
 
 
-3.4.1 (2018-10-22)
+Release 3.4.1 (2018-10-22)
 -------------------------------------------------------------
 
 **Bugs**:
 
-* Fix condition check in server start #30, by @antlad
+* fix condition check in server start #30, by @antlad
 
 
 Release 3.4.0 (2018-10-16)

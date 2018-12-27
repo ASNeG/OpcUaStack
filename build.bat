@@ -3,24 +3,66 @@ REM
 REM OpcUaStack build and install script
 REM
 
-REM rmdir ./build_local
-REM rmdir ./build_tst
-
-set BOOST_VERSION_MAJOR=1
-set BOOST_VERSION_MINOR=58
-set BOOST_LIBRARYDIR=C:\local\boost_1_58_0\lib32-msvc-12.0
-
 set CMAKE=cmake.exe
-set VS=Visual Studio 12 2013
-set MSBUILD=C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe
-
 
 REM ---------------------------------------------------------------------------
 REM 
 REM main
 REM
 REM ---------------------------------------------------------------------------
-set COMMAND=%1
+
+set ARG_COUNT=0
+for %%x in (%*) do set /A ARG_COUNT+=1
+
+if %ARG_COUNT% LSS 2 goto :usage
+
+set INSTALL_PREFIX=C:\ASNeG
+set COMMAND="local"
+set STACK_PREFIX=C:\ASNeG
+set BUILD_TYPE="Debug"
+set PACKAGE_TYPE="Bin"
+
+:parse
+    if "%~1"=="" goto :execute
+
+    if "%~1"=="/t"               set COMMAND=%2
+    if "%~1"=="-t"               set COMMAND=%2
+    if "%~1"=="--target"         set COMMAND=%2
+
+    if "%~1"=="/i"               set INSTALL_PREFIX="%~2"
+    if "%~1"=="-i"               set INSTALL_PREFIX="%~2"
+    if "%~1"=="--install-prefix" set INSTALL_PREFIX="%~2"
+
+    if "%~1"=="/s"               set STACK_PREFIX="%~2"
+    if "%~1"=="-s"               set STACK_PREFIX="%~2"
+    if "%~1"=="--stack-prefix"   set STACK_PREFIX="%~2"
+
+    if "%~1"=="/vs"               set VS_GENERATOR="-G%~2"
+    if "%~1"=="-vs"               set VS_GENERATOR="-G%~2"
+    if "%~1"=="--vs-generator"    set VS_GENERATOR="-G%~2"
+
+    if "%~1"=="/B"               set BUILD_TYPE=%~2
+    if "%~1"=="-B"               set BUILD_TYPE=%~2
+    if "%~1"=="--build-type"     set BUILD_TYPE=%~2
+
+    if "%~1"=="/P"               set PACKAGE_TYPE=%~2
+    if "%~1"=="-P"               set PACKAGE_TYPE=%~2
+    if "%~1"=="--package-type"   set PACKAGE_TYPE=%~2
+
+    shift
+    shift
+    goto :parse
+
+:execute
+
+set ARCH="x86"
+if %VS_GENERATOR%=="" goto :set_build_suffix
+
+if /i "%VS_GENERATOR:~-6,-1%"=="Win64" set ARCH="x64"
+if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"	
+
+:set_build_suffix
+set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
 
 if "%COMMAND%" == "" (
     call:build_local
@@ -31,6 +73,13 @@ if "%COMMAND%" == "" (
 
 if "%COMMAND%" == "local" (
     call:build_local
+	
+	pause
+	goto:eof
+)
+
+if "%COMMAND%" == "msi" (
+    call:build_msi
 	
 	pause
 	goto:eof
@@ -60,15 +109,34 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% -G"%VS%" -H./src/ -B./build_local
+	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
 	REM
-	set DESTDIR=C:\install
-	%MSBUILD% ./build_local/INSTALL.vcxproj
+    
+	set DESTDIR=%INSTALL_PREFIX%
+	%CMAKE% --build build_local_%BUILD_DIR_SUFFIX% --target install --config %BUILD_TYPE%
 goto:eof
 
+REM ---------------------------------------------------------------------------
+REM
+REM build MSI function
+REM
+REM ---------------------------------------------------------------------------
+:build_msi
+	echo build MSI package
+
+	REM
+	REM build OpcUaStack
+	REM
+	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DCPACK_PACKAGE_TYPE=%PACKAGE_TYPE%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
+
+	REM
+	REM package OpcUaStack to MSI
+	REM    		
+    %CMAKE% --build build_msi_%BUILD_DIR_SUFFIX% --target package --config %BUILD_TYPE%
+goto:eof
 
 REM ---------------------------------------------------------------------------
 REM
@@ -81,12 +149,12 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build unittest
 	REM
-	%CMAKE% -G"%VS%" -DOPCUASTACK_INSTALL_PREFIX=C:\install -H./tst/ -B./build_tst
+	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
-	REM
-	%MSBUILD% ./build_tst/ALL_BUILD.vcxproj
+	REM    
+	%CMAKE% --build build_tst_%BUILD_DIR_SUFFIX% --config %BUILD_TYPE%
 goto:eof
 
 
@@ -96,9 +164,25 @@ REM usage function
 REM
 REM ---------------------------------------------------------------------------
 :usage
-   echo build.bat (local | tst)
+   echo "build.bat --target (local | tst | msi)"
    echo.
-   echo   local - create local build and install in folder C:/install
-   echo   tst   - build unit application
+   echo "--target, -t, /t: sets one of the folowing target:"
+   echo "  local - create local build and install in folder C:/install"
+   echo "  tst   - build unit application"
+   echo "  msi   - build msi package"
    echo.
+   echo "--stack-prefix, -s, /s STACK_PREFIX:  set the path to directory"
+   echo "\twhere the OpcUaStack is installed (default: C:\ASNeG)"
+   echo.
+   echo "--install-prefix, -i, /i INSTALL_PREFIX:  is the path to directory"
+   echo "\twhere the application should be installed (default: C:\ASNeG)"
+   echo.
+   echo "--vs-generator, -vs, /vs VS_GENERATOR:  is the name of cmake generator"
+   echo "\t witch cmake uses during the building of the project. By default, cmake tries to figure out the generator from the environment."
+   echo.
+   echo "--build-type, -B, /B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type."
+   echo.
+   echo "--package-type, -P, /P PACKAGE_TYPE:  set the MSI package type (Bin | Dev). By default, it is Bin type."
+   echo.
+
 goto:eof

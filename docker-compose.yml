@@ -1,0 +1,11 @@
+version: '2'
+services:
+  demo_server:
+    image: asneg/asneg-demo:latest
+    ports:
+      - 127.0.0.1:8889:8889
+  stack:
+    depends_on:
+      - demo_server
+    build: .
+
