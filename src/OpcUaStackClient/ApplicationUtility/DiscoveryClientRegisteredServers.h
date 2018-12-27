@@ -31,6 +31,9 @@ namespace OpcUaStackClient
 
 	typedef std::map<std::string, RegisteredServer::SPtr> RegisteredServerMap;
 
+	/**
+	 * The discovery client registered server is used to register all endpoints.
+	 */
 	class DLLEXPORT DiscoveryClientRegisteredServers
 	: public SessionServiceIf
 	, public DiscoveryServiceIf

@@ -82,9 +82,6 @@ namespace OpcUaStackServer
 
 	Session::~Session(void)
 	{
-		Log(Info, "session destruct")
-			.parameter("SessionId", sessionId_)
-			.parameter("AuthenticationToken", authenticationToken_);
 	}
 
 	void
