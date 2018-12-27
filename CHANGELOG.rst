@@ -11,6 +11,7 @@ Release 3.6.0
 
 **Bugs**:
  
+* fix crash during shutdown #10, by @huebl
 * fix runing client tests on CI server #45, by @flipback
 * fix too specific params of *build.bat* #16, by @flipback
 * fix OpenSSL-1.1 compatibility in test compilation #46, by @flipback

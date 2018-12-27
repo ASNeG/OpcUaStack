@@ -39,7 +39,6 @@ namespace OpcUaStackCore
 
 	SecureChannelBase::~SecureChannelBase(void)
 	{
-		Log(Debug, "Destructor");
 	}
 
 	void
