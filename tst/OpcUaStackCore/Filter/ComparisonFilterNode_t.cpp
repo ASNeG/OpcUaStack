@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_120I_less_than_or_eaual_100F)
     std::vector<FilterNode::SPtr> args;
     MAKE_TWO_LITERAL_ARGS(args, OpcUaInt32(120), OpcUaDouble(100));
 
-    ComparisonFilterNode lessThanOrEqualOperator(OpcUaOperator::LessThanOrEqual, args);
+    ComparisonFilterNode lessThanOrEqualOperator(FilterOperator::EnumLessThanOrEqual, args);
 
     OpcUaVariant operatorResult;
     BOOST_REQUIRE(lessThanOrEqualOperator.evaluate(operatorResult));
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_120F_less_than_or_eaual_100I)
     std::vector<FilterNode::SPtr> args;
     MAKE_TWO_LITERAL_ARGS(args, OpcUaDouble(120), OpcUaInt32(100));
 
-    ComparisonFilterNode lessThanOrEqualOperator(OpcUaOperator::LessThanOrEqual, args);
+    ComparisonFilterNode lessThanOrEqualOperator(FilterOperator::EnumLessThanOrEqual, args);
 
     OpcUaVariant operatorResult;
     BOOST_REQUIRE(lessThanOrEqualOperator.evaluate(operatorResult));

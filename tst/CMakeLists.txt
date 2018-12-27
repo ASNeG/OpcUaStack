@@ -53,18 +53,15 @@ option(
     ON
 )
 
-<<<<<<< HEAD
 option(
     USE_OpcUaStackPubSub
     "build opc ua pub sub library"
     ON
 )
 
-=======
 if (TEST_SERVER_URI) 
   add_definitions(-DREAL_SERVER -DREAL_SERVER_URI="${TEST_SERVER_URI}")
 endif()
->>>>>>> github/master
 
 #add_definitions(-DBOOST_ALL_DYN_LINK)
 
