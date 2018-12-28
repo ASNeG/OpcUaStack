@@ -34,6 +34,8 @@ namespace OpcUaStackServer
 	: informationModel_()
 	, sourceContent_("")
 	, headerContent_("")
+
+	, nodeInfo_()
 	{
 	}
 
@@ -42,7 +44,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	VariableTypeGenerator::generate(const OpcUaNodeId& enumType)
+	VariableTypeGenerator::generate(const OpcUaNodeId& variableType)
 	{
 		// check parameter
 		if (informationModel_.get() == nullptr) {
@@ -50,8 +52,16 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		// FIXME: todo
-		return false;
+		// create node infos
+		if (!nodeInfo_.init(variableType, informationModel_)) {
+			return false;
+		}
+		//nodeInfo_.log();
+
+		// generate header and source content
+		return
+			generateHeader() &&
+			generateSource();
 	}
 
 	void
@@ -77,6 +87,36 @@ namespace OpcUaStackServer
 	VariableTypeGenerator::headerContent(void)
 	{
 		return headerContent_;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// header
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	VariableTypeGenerator::generateHeader(void)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// source
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	VariableTypeGenerator::generateSource(void)
+	{
+		// FIXME: todo
+		return true;
 	}
 
 }

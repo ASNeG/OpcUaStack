@@ -32,4 +32,14 @@ namespace OpcUaStackServer
 	{
 	}
 
+	bool
+	NodeInfoVariableType::init(
+		const OpcUaNodeId& variableTypeNodeId,
+		InformationModel::SPtr& informationModel
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 }

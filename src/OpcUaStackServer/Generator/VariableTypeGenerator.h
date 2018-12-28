@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OpcUaStackServer/Generator/NodeInfoEnumType.h"
+#include "OpcUaStackServer/Generator/NodeInfoVariableType.h"
 
 using namespace OpcUaStackCore;
 
@@ -94,10 +94,22 @@ namespace OpcUaStackServer
 		bool generate(const OpcUaNodeId& variableType);
 
 	  private:
+		//
+		// header functions
+		//
+		bool generateHeader(void);
+
+		//
+		// source functions
+		//
+		bool generateSource(void);
+
 
 		InformationModel::SPtr informationModel_;
 		std::string sourceContent_;
 		std::string headerContent_;
+
+		NodeInfoVariableType nodeInfo_;						//!< information about the variable type node
 	};
 
 
