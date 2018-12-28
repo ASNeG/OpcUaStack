@@ -32,6 +32,10 @@ namespace OpcUaStackServer
 	, parentBaseNode_()
 	, namespaceName_("")
 	, parentNamespaceName_("")
+	, className_("")
+	, parentClassName_("")
+	, directory_("")
+	, parentDirectory_("")
 	{
 	}
 
@@ -86,6 +90,49 @@ namespace OpcUaStackServer
 		// set namespace name of parent
 		//
 		parentNamespaceName_ = numberNamespaceMap_.getNamespaceName(parentVariableTypeNodeId_.namespaceIndex());
+
+		//
+		// set class name
+		//
+		boost::optional<OpcUaLocalizedText&> displayName = baseNode_->getDisplayName();
+		if (!displayName) {
+			Log(Error, "display name not found")
+			    .parameter("VariableTypeNode", variableTypeNodeId_);
+		}
+		className_ = displayName->text();
+		className_ = boost::to_upper_copy(className_.substr(0,1)) + className_.substr(1);
+
+		//
+		// set class name of parent
+		//
+		boost::optional<OpcUaLocalizedText&> parentDisplayName = parentBaseNode_->getDisplayName();
+		if (!parentDisplayName) {
+			Log(Error, "display name not found")
+			    .parameter("ParentVariableTypeNode", parentVariableTypeNodeId_);
+		}
+		parentClassName_ = parentDisplayName->text();
+		parentClassName_ = boost::to_upper_copy(parentClassName_.substr(0,1)) + parentClassName_.substr(1);
+
+		//
+		// set directory
+		//
+		if (variableTypeNodeId_.namespaceIndex() == 0) {
+			directory_ = "StandardVariableTypes";
+		}
+		else {
+			directory_ = "CustomerVariableTypes";
+		}
+
+		//
+		// set directory of parent
+		//
+		if (parentVariableTypeNodeId_.namespaceIndex() == 0) {
+			parentDirectory_ = "StandardVariableTypes";
+		}
+		else {
+			parentDirectory_ = "CustomerVariableTypes";
+		}
+
 
 		// FIXME: todo
 		return true;

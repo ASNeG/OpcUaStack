@@ -68,6 +68,10 @@ class DLLEXPORT NodeInfoVariableType
 	BaseNodeClass::SPtr parentBaseNode_;
 	std::string namespaceName_;
 	std::string parentNamespaceName_;
+	std::string className_;
+	std::string parentClassName_;
+	std::string directory_;
+	std::string parentDirectory_;
 };
 
 }
