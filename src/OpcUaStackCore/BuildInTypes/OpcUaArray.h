@@ -337,7 +337,7 @@ namespace OpcUaStackCore
 	, actArrayLen_(0)
 	{
 		initArray();
-		std::vector<T>::const_iterator it;
+		typename std::vector<T>::const_iterator it;
 		for (it = other.begin(); it != other.end(); it++) {
 			push_back(*it);
 		}
@@ -502,7 +502,7 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>&
 	OpcUaArray<T, CODER>::operator=(const std::vector<T>& other)
 	{
-		std::vector<T>::const_iterator it;
+		typename std::vector<T>::const_iterator it;
 		resize(other.size());
 		for (it = other.begin(); it != other.end(); it++) {
 			push_back(*it);
