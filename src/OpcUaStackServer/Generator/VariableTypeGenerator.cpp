@@ -100,7 +100,26 @@ namespace OpcUaStackServer
 	bool
 	VariableTypeGenerator::generateHeader(void)
 	{
-		// FIXME: todo
+		return generateHeaderComments();
+	}
+
+	bool
+	VariableTypeGenerator::generateHeaderComments(void)
+	{
+		std::stringstream ss;
+
+		ss << "/*" << std::endl;
+		ss << "    VariableTypeClass: " << nodeInfo_.className() << std::endl;
+		ss << std::endl;
+		ss << "    Generated Source Code - please do not change this source code" << std::endl;
+		ss << std::endl;
+		ss << "    VariableTypeCodeGenerator Version:"  << std::endl;
+		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
+		ss << std::endl;
+		ss << "    Autor:     Kai Huebl (kai@huebl-sgh.de)" << std::endl;
+		ss << "*/" << std::endl;
+
+		headerContent_ += ss.str();
 		return true;
 	}
 
@@ -115,7 +134,26 @@ namespace OpcUaStackServer
 	bool
 	VariableTypeGenerator::generateSource(void)
 	{
-		// FIXME: todo
+		return generateSourceComments();
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceComments(void)
+	{
+		std::stringstream ss;
+
+		ss << "/*" << std::endl;
+		ss << "    VariableTypeClass: " << nodeInfo_.className() << std::endl;
+		ss << std::endl;
+		ss << "    Generated Source Code - please do not change this source code" << std::endl;
+		ss << std::endl;
+		ss << "    VariableTypeCodeGenerator Version:" << std::endl;
+		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH  << std::endl;
+		ss << std::endl;
+		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
+		ss << "*/" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 

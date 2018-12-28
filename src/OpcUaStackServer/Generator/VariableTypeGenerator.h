@@ -98,11 +98,13 @@ namespace OpcUaStackServer
 		// header functions
 		//
 		bool generateHeader(void);
+		bool generateHeaderComments(void);
 
 		//
 		// source functions
 		//
 		bool generateSource(void);
+		bool generateSourceComments();
 
 
 		InformationModel::SPtr informationModel_;
