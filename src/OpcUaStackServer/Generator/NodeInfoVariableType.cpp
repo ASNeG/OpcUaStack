@@ -18,13 +18,20 @@
 #include <boost/algorithm/string.hpp>
 
 #include "OpcUaStackServer/Generator/NodeInfoVariableType.h"
+#include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 
 namespace OpcUaStackServer
 {
 
 	NodeInfoVariableType::NodeInfoVariableType(void)
-	: NodeInfo()
-
+	: numberNamespaceMap_()
+	, informationModel_()
+	, variableTypeNodeId_()
+	, parentVariableTypeNodeId_()
+	, baseNode_()
+	, parentBaseNode_()
+	, namespaceName_("")
+	, parentNamespaceName_("")
 	{
 	}
 
@@ -38,6 +45,48 @@ namespace OpcUaStackServer
 		InformationModel::SPtr& informationModel
 	)
 	{
+		variableTypeNodeId_ = variableTypeNodeId;
+		informationModel_ = informationModel;
+
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+
+		//
+		// find node in opc ua information model
+		//
+		baseNode_ = informationModel_->find(variableTypeNodeId);
+		if (baseNode_.get() == nullptr) {
+			Log(Error, "variable type node identifier not exist in information model")
+				.parameter("VariableTypeNode", variableTypeNodeId);
+			return false;
+		}
+
+		//
+		// find parent node in opc ua information model
+		//
+		if (!ima.getSubType(baseNode_, parentVariableTypeNodeId_)) {
+			Log(Error, "parent variable type node identifier do not not exist in information model")
+				.parameter("VariableTypeNodeId", variableTypeNodeId_);
+			return false;
+		}
+		parentBaseNode_ = informationModel_->find(parentVariableTypeNodeId_);
+		if (!parentBaseNode_) {
+			Log(Error, "parent data type node instance do not not exist in information model")
+				.parameter("VariableTypeNodeId", variableTypeNodeId_)
+				.parameter("ParentVariableTypeNodeId", parentVariableTypeNodeId_);
+			return false;
+		}
+
+		//
+		// set namespace name
+		//
+		namespaceName_ = numberNamespaceMap_.getNamespaceName(variableTypeNodeId_.namespaceIndex());
+
+		//
+		// set namespace name of parent
+		//
+		parentNamespaceName_ = numberNamespaceMap_.getNamespaceName(parentVariableTypeNodeId_.namespaceIndex());
+
 		// FIXME: todo
 		return true;
 	}

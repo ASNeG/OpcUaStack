@@ -33,7 +33,6 @@ namespace OpcUaStackServer
  * This function manages node variable type information
  */
 class DLLEXPORT NodeInfoVariableType
-: public NodeInfo
 {
   public:
 	typedef boost::shared_ptr<NodeInfoVariableType> SPtr;
@@ -55,12 +54,20 @@ class DLLEXPORT NodeInfoVariableType
 	 * @parameter[in] informationModel			opc ua information model
 	 */
 	bool init(
-		const OpcUaNodeId& dataTypeNodeId,
+		const OpcUaNodeId& variableTypeNodeId,
 		InformationModel::SPtr& informationModel
 	);
 
   private:
+	NumberNamespaceMap numberNamespaceMap_;
+	OpcUaNodeId variableTypeNodeId_;
+	OpcUaNodeId parentVariableTypeNodeId_;
+	InformationModel::SPtr informationModel_;
 
+	BaseNodeClass::SPtr baseNode_;
+	BaseNodeClass::SPtr parentBaseNode_;
+	std::string namespaceName_;
+	std::string parentNamespaceName_;
 };
 
 }
