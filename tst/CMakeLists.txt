@@ -10,8 +10,8 @@ set (CMAKE_CXX_STANDARD 11)
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 set(OPCUASTACK_VERSION_MAJOR "3")
-set(OPCUASTACK_VERSION_MINOR "5")
-set(OPCUASTACK_VERSION_PATCH "0")
+set(OPCUASTACK_VERSION_MINOR "6")
+set(OPCUASTACK_VERSION_PATCH "1")
 
 set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
 set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")
