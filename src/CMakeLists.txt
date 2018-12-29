@@ -12,7 +12,7 @@ cmake_policy(SET CMP0053 OLD)
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
 set(VERSION_MAJOR "3")
-set(VERSION_MINOR "6")
+set(VERSION_MINOR "7")
 set(VERSION_PATCH "0")
 
 set(BOOST_VERSION_MAJOR "1"  CACHE STRING "boost major version")
