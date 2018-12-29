@@ -111,20 +111,24 @@ namespace OpcUaStackServer
 		// send query to application service
 		applicationServiceIf->sendSync(trx);
 		resultCode_ = trx->statusCode();
-	  	if (resultCode_ != Success) return false;
+	  	if (resultCode_ != Success) {
+	  		return false;
+	  	}
 
 	  	// handle response
+	  	bool result = true;
 	  	if (checkStatusCodeArray) {
 	  		for (uint32_t idx = 0; idx < trx->response()->statusCodeArray()->size(); idx++) {
 	  			OpcUaStatusCode statusCode;
 	  			trx->response()->statusCodeArray()->get(idx, statusCode);
+	  			statuses_.push_back(statusCode);
 	  			if (statusCode != Success) {
-	  				return false;
+	  				result = false;
 	  			}
 	  		}
 	  	}
 
-		return true;
+		return result;
 	}
 
 	OpcUaStatusCode
