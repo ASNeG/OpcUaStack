@@ -95,7 +95,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	RegisterForwardNode::query(ApplicationServiceIf* applicationServiceIf)
+	RegisterForwardNode::query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray)
 	{
 		if (nodes_.size() == 0) return false;
 
@@ -114,11 +114,13 @@ namespace OpcUaStackServer
 	  	if (resultCode_ != Success) return false;
 
 	  	// handle response
-	  	for (uint32_t idx = 0; idx < trx->response()->statusCodeArray()->size(); idx++) {
-	  		OpcUaStatusCode statusCode;
-	  		trx->response()->statusCodeArray()->get(idx, statusCode);
-	  		if (statusCode != Success) {
-	  			return false;
+	  	if (checkStatusCodeArray) {
+	  		for (uint32_t idx = 0; idx < trx->response()->statusCodeArray()->size(); idx++) {
+	  			OpcUaStatusCode statusCode;
+	  			trx->response()->statusCodeArray()->get(idx, statusCode);
+	  			if (statusCode != Success) {
+	  				return false;
+	  			}
 	  		}
 	  	}
 

@@ -67,7 +67,7 @@ namespace OpcUaStackServer
 			//ForwardCallback& monitoredItemStartService(void);
 			//ForwardCallback& monitoredItemStopService(void);
 
-		bool query(ApplicationServiceIf* applicationServiceIf);
+		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
 		OpcUaStatusCode resultCode(void);
 
 		std::vector<OpcUaStatusCode>& statuses(void);
