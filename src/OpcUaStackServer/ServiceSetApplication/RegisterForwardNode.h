@@ -34,13 +34,49 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<RegisterForwardNode> SPtr;
 
 		RegisterForwardNode(void);
+		RegisterForwardNode(const OpcUaNodeId& node);
+		RegisterForwardNode(const std::vector<OpcUaNodeId>& nodes);
 		virtual ~RegisterForwardNode(void);
+
+		void addNode(const OpcUaNodeId& node);
+		void addNodes(const std::vector<OpcUaNodeId>& nodes);
+		void node(const OpcUaNodeId& node);
+		void nodes(const std::vector<OpcUaNodeId>& nodes);
+		std::vector<OpcUaNodeId>& nodes(void);
+
+		void setReadCallback(Callback& callback);
+		template<typename T>
+		  void setReadCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setReadCallback(callback);
+		  }
+		void setWriteCallback(Callback& callback);
+		template<typename T>
+		  void setWriteCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setWriteCallback(callback);
+		  }
+
+
+			//ForwardCallback& readHService(void);
+			//ForwardCallback& readHEService(void);
+			//ForwardCallback& writeHService(void);
+			//ForwardCallback& methodService(void);
+			//ForwardCallback& monitoredItemStartService(void);
+			//ForwardCallback& monitoredItemStopService(void);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStatusCode resultCode(void);
 
+		std::vector<OpcUaStatusCode>& statuses(void);
+
 	  private:
+		std::vector<OpcUaNodeId> nodes_;
+		ForwardNodeSync forwardNodeSync_;
 		OpcUaStatusCode resultCode_;
+		std::vector<OpcUaStatusCode> statuses_;
 	};
 
 }

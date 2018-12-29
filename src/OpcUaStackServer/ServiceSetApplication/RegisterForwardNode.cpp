@@ -23,7 +23,27 @@ namespace OpcUaStackServer
 {
 
 	RegisterForwardNode::RegisterForwardNode(void)
-	: resultCode_(Success)
+	: nodes_()
+	, resultCode_(Success)
+	, forwardNodeSync_()
+	, statuses_()
+	{
+	}
+
+	RegisterForwardNode::RegisterForwardNode(const OpcUaNodeId& node)
+	: nodes_()
+	, resultCode_(Success)
+	, forwardNodeSync_()
+	, statuses_()
+	{
+		nodes_.push_back(node);
+	}
+
+	RegisterForwardNode::RegisterForwardNode(const std::vector<OpcUaNodeId>& nodes)
+	: nodes_(nodes)
+	, resultCode_(Success)
+	, forwardNodeSync_()
+	, statuses_()
 	{
 	}
 
@@ -31,10 +51,77 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	RegisterForwardNode::addNode(const OpcUaNodeId& node)
+	{
+		nodes_.push_back(node);
+	}
+
+	void
+	RegisterForwardNode::addNodes(const std::vector<OpcUaNodeId>& nodes)
+	{
+		nodes_.insert(nodes_.end(), nodes.begin(), nodes.end());
+	}
+
+	void
+	RegisterForwardNode::node(const OpcUaNodeId& node)
+	{
+		nodes_.clear();
+		nodes_.push_back(node);
+	}
+
+	void
+	RegisterForwardNode::nodes(const std::vector<OpcUaNodeId>& nodes)
+	{
+		nodes_ = nodes;
+	}
+
+	std::vector<OpcUaNodeId>&
+	RegisterForwardNode::nodes(void)
+	{
+		return nodes_;
+	}
+
+	void
+	RegisterForwardNode::setReadCallback(Callback& callback)
+	{
+		forwardNodeSync_.readService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardNode::setWriteCallback(Callback& callback)
+	{
+		forwardNodeSync_.writeService().setCallback(callback);
+	}
+
 	bool
 	RegisterForwardNode::query(ApplicationServiceIf* applicationServiceIf)
 	{
-		// FIXME: todo
+		if (nodes_.size() == 0) return false;
+
+		resultCode_ = Success;
+		statuses_.clear();
+
+		// create request
+		auto trx = constructSPtr<ServiceTransactionRegisterForwardNode>();
+		trx->request()->nodesToRegister()->resize(nodes_.size());
+		for (auto node : nodes_) trx->request()->nodesToRegister()->push_back(constructSPtr<OpcUaNodeId>(node));
+		trx->request()->forwardNodeSync()->updateFrom(forwardNodeSync_);
+
+		// send query to application service
+		applicationServiceIf->sendSync(trx);
+		resultCode_ = trx->statusCode();
+	  	if (resultCode_ != Success) return false;
+
+	  	// handle response
+	  	for (uint32_t idx = 0; idx < trx->response()->statusCodeArray()->size(); idx++) {
+	  		OpcUaStatusCode statusCode;
+	  		trx->response()->statusCodeArray()->get(idx, statusCode);
+	  		if (statusCode != Success) {
+	  			return false;
+	  		}
+	  	}
+
 		return true;
 	}
 
@@ -42,6 +129,12 @@ namespace OpcUaStackServer
 	RegisterForwardNode::resultCode(void)
 	{
 		return resultCode_;
+	}
+
+	std::vector<OpcUaStatusCode>&
+	RegisterForwardNode::statuses(void)
+	{
+		return statuses_;
 	}
 
 }
