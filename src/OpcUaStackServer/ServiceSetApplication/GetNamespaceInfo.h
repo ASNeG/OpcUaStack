@@ -21,6 +21,7 @@
 #include <vector>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
+#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 
 using namespace OpcUaStackCore;
 
@@ -38,8 +39,12 @@ namespace OpcUaStackServer
 		bool query(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStatusCode resultCode(void);
 
+		int32_t getNamespaceIndex(const std::string& namespaceUri);
+
 	  private:
 		OpcUaStatusCode resultCode_;
+		NamespaceInfoResponse::Index2NamespaceMap index2NamespaceMap_;
+		NamespaceInfoResponse::Namespace2IndexMap namespace2IndexMap_;
 	};
 
 }

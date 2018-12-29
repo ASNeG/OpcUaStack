@@ -15,14 +15,15 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSetApplication/GetNamespaceInfo.h"
 
 namespace OpcUaStackServer
 {
 
 	GetNamespaceInfo::GetNamespaceInfo(void)
-	: nodes_()
+	: resultCode_(Success)
+	, index2NamespaceMap_()
+	, namespace2IndexMap_()
 	{
 	}
 
@@ -42,7 +43,8 @@ namespace OpcUaStackServer
 	  	if (resultCode_ != Success) return false;
 
 	  	// handle response
-	  	// FIXME: todo
+		index2NamespaceMap_ = trx->response()->index2NamespaceMap();
+		namespace2IndexMap_= trx->response()->namespace2IndexMap();
 
 		return true;
 	}
@@ -51,6 +53,14 @@ namespace OpcUaStackServer
 	GetNamespaceInfo::resultCode(void)
 	{
 		return resultCode_;
+	}
+
+	int32_t
+	GetNamespaceInfo::getNamespaceIndex(const std::string& namespaceUri)
+	{
+		auto it = namespace2IndexMap_.find(namespaceUri);
+		if (it == namespace2IndexMap_.end()) return -1;
+		return (int32_t)it->second;
 	}
 
 }
