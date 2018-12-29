@@ -94,6 +94,42 @@ namespace OpcUaStackServer
 		forwardNodeSync_.writeService().setCallback(callback);
 	}
 
+	void
+	RegisterForwardNode::setReadHCallback(Callback& callback)
+	{
+		forwardNodeSync_.readHService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardNode::setReadHECallback(Callback& callback)
+	{
+		forwardNodeSync_.readHEService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardNode::setWriteHCallback(Callback& callback)
+	{
+		forwardNodeSync_.writeHService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardNode::setMethodCallback(Callback& callback)
+	{
+		forwardNodeSync_.methodService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardNode::setMonitoredItemStartCallback(Callback& callback)
+	{
+		forwardNodeSync_.monitoredItemStartService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardNode::setMonitoredItemStopCallback(Callback& callback)
+	{
+		forwardNodeSync_.monitoredItemStopService().setCallback(callback);
+	}
+
 	bool
 	RegisterForwardNode::query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray)
 	{

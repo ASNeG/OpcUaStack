@@ -58,14 +58,48 @@ namespace OpcUaStackServer
 			  callback.reset(handler);
 			  setWriteCallback(callback);
 		  }
-
-
-			//ForwardCallback& readHService(void);
-			//ForwardCallback& readHEService(void);
-			//ForwardCallback& writeHService(void);
-			//ForwardCallback& methodService(void);
-			//ForwardCallback& monitoredItemStartService(void);
-			//ForwardCallback& monitoredItemStopService(void);
+		void setReadHCallback(Callback& callback);
+		template<typename T>
+		  void setReadHCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setReadHCallback(callback);
+		  }
+		void setReadHECallback(Callback& callback);
+		template<typename T>
+		  void setReadHECallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setReadHECallback(callback);
+		  }
+		void setWriteHCallback(Callback& callback);
+		template<typename T>
+		  void setWriteHCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setReadHCallback(callback);
+		  }
+		void setMethodCallback(Callback& callback);
+		template<typename T>
+		  void setMethodCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setMethodCallback(callback);
+		  }
+		void setMonitoredItemStartCallback(Callback& callback);
+		template<typename T>
+		  void setMonitoredItemStartCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setMonitoredItemStartCallback(callback);
+		  }
+		void setMonitoredItemStopCallback(Callback& callback);
+		template<typename T>
+		  void setMonitoredItemStopCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setMonitoredItemStartCallback(callback);
+		  }
 
 		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
 		OpcUaStatusCode resultCode(void);
