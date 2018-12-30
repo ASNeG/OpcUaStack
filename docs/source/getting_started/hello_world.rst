@@ -240,7 +240,7 @@ Now we can make our application do something "useful". Open file **src/helloworl
         }
 
         if (getNodeReference.statuses()[0] != Success) {
-            Error, "node reference error");
+            Log(Error, "node reference error");
             return false;
         }
 
@@ -274,7 +274,7 @@ After we've sent the request to the stack, we can check if the node is available
 .. code-block:: cpp
 
     if (getNodeReference.statuses()[0] != Success) {
-        Error, "node reference error");
+        Log(Error, "node reference error");
         return false;
     }
 
