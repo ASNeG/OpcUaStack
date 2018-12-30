@@ -33,6 +33,21 @@ namespace OpcUaStackCore
 	{
 	}
 
+	BrowseName::BrowseName(const BrowseName& browseName)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		nodeId_ = browseName.nodeId_;
+
+		if (browseName.pathNames_.get() == nullptr) return;
+		pathNames_->resize(browseName.pathNames_->size());
+		for (uint32_t idx=0; idx < browseName.pathNames_->size(); idx++) {
+			OpcUaQualifiedName::SPtr pathElement;
+			browseName.pathNames_->get(idx, pathElement);
+			pathNames_->push_back(pathElement);
+		}
+	}
+
 	BrowseName::BrowseName(
 		const OpcUaNodeId& nodeId,
 		const OpcUaQualifiedName& pathElement

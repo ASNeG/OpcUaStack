@@ -34,6 +34,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<BrowseName> SPtr;
 
 		BrowseName(void);
+		BrowseName(const BrowseName& browseName);
 		BrowseName(
 			const OpcUaNodeId& nodeId,
 			const OpcUaQualifiedName& pathElement
