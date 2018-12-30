@@ -160,7 +160,7 @@ namespace OpcUaStackServer
 	}
 
 	std::vector<OpcUaNodeId>&
-	BrowsePathToNodeId::nodeReferences(void)
+	BrowsePathToNodeId::nodes(void)
 	{
 		return nodes_;
 	}

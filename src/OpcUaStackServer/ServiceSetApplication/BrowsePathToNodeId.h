@@ -75,7 +75,7 @@ namespace OpcUaStackServer
 		OpcUaStatusCode resultCode(void);
 
 		std::vector<OpcUaStatusCode>& statuses(void);
-		std::vector<OpcUaNodeId>& nodeReferences(void);
+		std::vector<OpcUaNodeId>& nodes(void);
 
 	  private:
 		std::vector<BrowseName::SPtr> browseNames_;
