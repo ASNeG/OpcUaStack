@@ -38,6 +38,54 @@ namespace OpcUaStackServer
 		forwardGlobalSync_.registerServerService().setCallback(callback);
 	}
 
+	void
+	RegisterForwardGlobal::setFindServersCallback(Callback& callback)
+	{
+		forwardGlobalSync_.findServersService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardGlobal::setEventItemStartCallback(Callback& callback)
+	{
+		forwardGlobalSync_.eventItemStartService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardGlobal::setEventItemStopCallback(Callback& callback)
+	{
+		forwardGlobalSync_.eventItemStopService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardGlobal::setAuthenticationCallback(Callback& callback)
+	{
+		forwardGlobalSync_.authenticationService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardGlobal::setAutorizationCallback(Callback& callback)
+	{
+		forwardGlobalSync_.autorizationService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardGlobal::setCloseSessionCallback(Callback& callback)
+	{
+		forwardGlobalSync_.closeSessionService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardGlobal::setNodeNewCallback(Callback& callback)
+	{
+		forwardGlobalSync_.nodeNewService().setCallback(callback);
+	}
+
+	void
+	RegisterForwardGlobal::setNodeDeleteCallback(Callback& callback)
+	{
+		forwardGlobalSync_.nodeDeleteService().setCallback(callback);
+	}
+
 	bool
 	RegisterForwardGlobal::query(ApplicationServiceIf* applicationServiceIf)
 	{

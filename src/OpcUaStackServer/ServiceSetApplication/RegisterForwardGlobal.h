@@ -36,24 +36,74 @@ namespace OpcUaStackServer
 		RegisterForwardGlobal(void);
 		virtual ~RegisterForwardGlobal(void);
 
-#if 0
-		ForwardCallback& registerServerService(void);
-		ForwardCallback& findServersService(void);
-		ForwardCallback& eventItemStartService(void);
-		ForwardCallback& eventItemStopService(void);
-		ForwardCallback& authenticationService(void);
-		ForwardCallback& autorizationService(void);
-		ForwardCallback& closeSessionService(void);
-		ForwardCallback& nodeNewService(void);
-		ForwardCallback& nodeDeleteService(void);
-#endif
-
 		void setRegisterServerCallback(Callback& callback);
 		template<typename T>
 		  void setRegisterServerCallback(T handler) {
 			  Callback callback;
 			  callback.reset(handler);
 			  setRegisterServerCallback(callback);
+		  }
+		void setFindServersCallback(Callback& callback);
+		template<typename T>
+		  void setFindServersCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setFindServersCallback(callback);
+		  }
+		void setEventItemStartCallback(Callback& callback);
+		template<typename T>
+		  void setEventItemStartCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setEventItemStartCallback(callback);
+		  }
+
+		void setEventItemStopCallback(Callback& callback);
+		template<typename T>
+		  void setEventItemStopCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setEventItemStopCallback(callback);
+		  }
+
+		void setAuthenticationCallback(Callback& callback);
+		template<typename T>
+		  void setAuthenticationCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setAuthenticationCallback(callback);
+		  }
+
+		void setAutorizationCallback(Callback& callback);
+		template<typename T>
+		  void setAutorizationCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setAutorizationCallback(callback);
+		  }
+
+		void setCloseSessionCallback(Callback& callback);
+		template<typename T>
+		  void setCloseSessionCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setCloseSessionCallback(callback);
+		  }
+
+		void setNodeNewCallback(Callback& callback);
+		template<typename T>
+		  void setNodeNewCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setNodeNewCallback(callback);
+		  }
+
+		void setNodeDeleteCallback(Callback& callback);
+		template<typename T>
+		  void setNodeDeleteCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setNodeDeleteCallback(callback);
 		  }
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
