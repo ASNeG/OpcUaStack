@@ -34,13 +34,54 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<BrowsePathToNodeId> SPtr;
 
 		BrowsePathToNodeId(void);
+		BrowsePathToNodeId(std::vector<BrowseName::SPtr>& browseNames);
+		BrowsePathToNodeId(std::initializer_list<BrowseName::SPtr> browseNames);
+		BrowsePathToNodeId(std::initializer_list<BrowseName> browseNames);
 		virtual ~BrowsePathToNodeId(void);
 
-		bool query(ApplicationServiceIf* applicationServiceIf);
+		void addBrowseName(const BrowseName::SPtr& browseName);
+		void addBrowseName(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement
+		);
+		void addBrowseName(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2
+		);
+		void addBrowseName(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3
+		);
+		void addBrowseName(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3,
+			const OpcUaQualifiedName& pathElement4
+		);
+		void addBrowseName(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3,
+			const OpcUaQualifiedName& pathElement4,
+			const OpcUaQualifiedName& pathElement5
+		);
+
+		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
 		OpcUaStatusCode resultCode(void);
 
+		std::vector<OpcUaStatusCode>& statuses(void);
+		std::vector<OpcUaNodeId>& nodeReferences(void);
+
 	  private:
+		std::vector<BrowseName::SPtr> browseNames_;
 		OpcUaStatusCode resultCode_;
+		std::vector<OpcUaStatusCode> statuses_;
+		std::vector<OpcUaNodeId> nodes_;
 	};
 
 }
