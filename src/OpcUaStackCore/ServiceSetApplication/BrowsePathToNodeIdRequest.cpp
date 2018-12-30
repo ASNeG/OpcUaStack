@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,6 +31,66 @@ namespace OpcUaStackCore
 	: nodeId_()
 	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
 	{
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElement);
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElement1, pathElement2);
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElement1, pathElement2, pathElement3);
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3,
+		const OpcUaQualifiedName& pathElement4
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4);
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3,
+		const OpcUaQualifiedName& pathElement4,
+		const OpcUaQualifiedName& pathElement5
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5);
 	}
 
 	BrowseName::~BrowseName(void)
