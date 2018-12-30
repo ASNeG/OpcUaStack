@@ -205,8 +205,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* valueAttribute(void);
 		bool unsetValue(void);
-		bool setValueSync(OpcUaDataValue& value);
-		bool setValue(OpcUaDataValue& value);
+		bool setValueSync(const OpcUaDataValue& value);
+		bool setValue(const OpcUaDataValue& value);
 		bool getValueSync(OpcUaDataValue& value);
 		bool getValue(OpcUaDataValue& value);
 		bool isPartValue(void);
