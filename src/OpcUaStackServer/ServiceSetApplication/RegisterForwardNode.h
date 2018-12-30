@@ -36,6 +36,7 @@ namespace OpcUaStackServer
 		RegisterForwardNode(void);
 		RegisterForwardNode(const OpcUaNodeId& node);
 		RegisterForwardNode(const std::vector<OpcUaNodeId>& nodes);
+		RegisterForwardNode(std::initializer_list<OpcUaNodeId> nodes);
 		virtual ~RegisterForwardNode(void);
 
 		void addNode(const OpcUaNodeId& node);

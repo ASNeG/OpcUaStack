@@ -47,6 +47,14 @@ namespace OpcUaStackServer
 	{
 	}
 
+	RegisterForwardNode::RegisterForwardNode(std::initializer_list<OpcUaNodeId> nodes)
+	: nodes_(nodes)
+	, resultCode_(Success)
+	, forwardNodeSync_()
+	, statuses_()
+	{
+	}
+
 	RegisterForwardNode::~RegisterForwardNode(void)
 	{
 	}

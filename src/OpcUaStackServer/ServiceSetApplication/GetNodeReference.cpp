@@ -47,6 +47,14 @@ namespace OpcUaStackServer
 	{
 	}
 
+	GetNodeReference::GetNodeReference(std::initializer_list<OpcUaNodeId> nodes)
+	: nodes_(nodes)
+	, resultCode_(Success)
+	, statuses_()
+	, nodeReferences_()
+	{
+	}
+
 	GetNodeReference::~GetNodeReference(void)
 	{
 	}
