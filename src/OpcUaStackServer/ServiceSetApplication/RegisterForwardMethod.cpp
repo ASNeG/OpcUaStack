@@ -23,8 +23,18 @@ namespace OpcUaStackServer
 {
 
 	RegisterForwardMethod::RegisterForwardMethod(void)
-	: resultCode_(Success)
-	, forwardNodeSync_()
+	: objectNodeId_()
+	, methodNodeId_()
+	, resultCode_(Success)
+	, forwardMethodSync_()
+	{
+	}
+
+	RegisterForwardMethod::RegisterForwardMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId)
+	: objectNodeId_(objectNodeId)
+	, methodNodeId_(methodNodeId)
+	, resultCode_(Success)
+	, forwardMethodSync_()
 	{
 	}
 
@@ -33,20 +43,33 @@ namespace OpcUaStackServer
 	}
 
 	void
+	RegisterForwardMethod::objectNodeId(const OpcUaNodeId& objectNodeId)
+	{
+		objectNodeId_ = objectNodeId;
+	}
+
+	void
+	RegisterForwardMethod::methodNodeId(const OpcUaNodeId& methodNodeId)
+	{
+		methodNodeId_ = methodNodeId;
+	}
+
+	void
 	RegisterForwardMethod::setMethodCallback(Callback& callback)
 	{
-		forwardNodeSync_.methodService().setCallback(callback);
+		forwardMethodSync_.methodService().setCallback(callback);
 	}
 
 	bool
 	RegisterForwardMethod::query(ApplicationServiceIf* applicationServiceIf)
 	{
-		if (nodes_.size() == 0) return false;
-
 		resultCode_ = Success;
 
 		// create response
 		auto trx = constructSPtr<ServiceTransactionRegisterForwardMethod>();
+	  	trx->request()->objectNodeId(objectNodeId_);
+	  	trx->request()->methodNodeId(methodNodeId_);
+	  	trx->request()->forwardMethodSync()->updateFrom(forwardMethodSync_);
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);

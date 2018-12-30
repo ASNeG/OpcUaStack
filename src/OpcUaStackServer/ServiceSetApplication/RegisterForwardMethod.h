@@ -34,8 +34,11 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<RegisterForwardMethod> SPtr;
 
 		RegisterForwardMethod(void);
+		RegisterForwardMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId);
 		virtual ~RegisterForwardMethod(void);
 
+		void objectNodeId(const OpcUaNodeId& objectNodeId);
+		void methodNodeId(const OpcUaNodeId& methodNodeId);
 		void setMethodCallback(Callback& callback);
 		template<typename T>
 		  void setMethodCallback(T handler) {
@@ -48,8 +51,9 @@ namespace OpcUaStackServer
 		OpcUaStatusCode resultCode(void);
 
 	  private:
-		std::vector<OpcUaNodeId> nodes_;
-		ForwardNodeSync forwardNodeSync_;
+		OpcUaNodeId objectNodeId_;
+		OpcUaNodeId methodNodeId_;
+		ForwardMethodSync forwardMethodSync_;
 		OpcUaStatusCode resultCode_;
 	};
 
