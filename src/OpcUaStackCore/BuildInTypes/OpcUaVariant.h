@@ -149,6 +149,28 @@ namespace OpcUaStackCore
 		typedef std::vector<OpcUaVariant::SPtr> Vec;
 
 	    OpcUaVariant(void);
+	    OpcUaVariant(const OpcUaBoolean value);
+	    OpcUaVariant(const OpcUaByte value);
+	    OpcUaVariant(const OpcUaSByte value);
+	    OpcUaVariant(const OpcUaUInt16 value);
+	    OpcUaVariant(const OpcUaInt16 value);
+	    OpcUaVariant(const OpcUaUInt32 value);
+	    OpcUaVariant(const OpcUaInt32 value);
+	    OpcUaVariant(const OpcUaUInt64 value);
+	    OpcUaVariant(const OpcUaInt64 value);
+	    OpcUaVariant(const OpcUaFloat value);
+	    OpcUaVariant(const OpcUaDouble value);
+	    OpcUaVariant(const OpcUaString& value);
+	    OpcUaVariant(const OpcUaDateTime& value);
+	    OpcUaVariant(const OpcUaGuid& value);
+	    OpcUaVariant(const OpcUaByteString& value);
+	    OpcUaVariant(const OpcUaXmlElement& value);
+	    OpcUaVariant(const OpcUaNodeId& value);
+	    OpcUaVariant(const OpcUaExpandedNodeId& value);
+	    OpcUaVariant(const OpcUaStatusCode& value);
+	    OpcUaVariant(const OpcUaQualifiedName& value);
+	    OpcUaVariant(const OpcUaLocalizedText& value);
+	    OpcUaVariant(const OpcUaExtensionObject& value);
 		virtual ~OpcUaVariant(void);
 
 		void clear(void);
