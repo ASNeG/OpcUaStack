@@ -25,12 +25,14 @@ namespace OpcUaStackServer
 	FireEvent::FireEvent(void)
 	: node_()
 	, resultCode_(Success)
+	, eventBase_()
 	{
 	}
 
-	FireEvent::FireEvent(const OpcUaNodeId& node)
+	FireEvent::FireEvent(const OpcUaNodeId& node, const EventBase::SPtr& eventBase)
 	: node_(node)
 	, resultCode_(Success)
+	, eventBase_(eventBase)
 	{
 	}
 
@@ -44,6 +46,12 @@ namespace OpcUaStackServer
 		node_ = node;
 	}
 
+	void
+	FireEvent::eventBase(const EventBase::SPtr& eventBase)
+	{
+		eventBase_ = eventBase;
+	}
+
 	bool
 	FireEvent::fireEvent(ApplicationServiceIf* applicationServiceIf)
 	{
@@ -51,6 +59,8 @@ namespace OpcUaStackServer
 
 		// create request
 		auto trx = constructSPtr<ServiceTransactionFireEvent>();
+		trx->request()->nodeId(node_);
+		trx->request()->eventBase(eventBase_);
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);

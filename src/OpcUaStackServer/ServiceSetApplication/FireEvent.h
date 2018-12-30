@@ -21,6 +21,7 @@
 #include <vector>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/EventType/EventBase.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
@@ -35,16 +36,18 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<FireEvent> SPtr;
 
 		FireEvent(void);
-		FireEvent(const OpcUaNodeId& node);
+		FireEvent(const OpcUaNodeId& node, const EventBase::SPtr& eventBase);
 		virtual ~FireEvent(void);
 
 		void node(const OpcUaNodeId& node);
+		void eventBase(const EventBase::SPtr& eventBase);
 
 		bool fireEvent(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStatusCode resultCode(void);
 
 	  private:
 		OpcUaNodeId node_;
+		EventBase::SPtr eventBase_;
 		OpcUaStatusCode resultCode_;
 	};
 
