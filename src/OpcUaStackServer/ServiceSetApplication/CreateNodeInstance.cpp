@@ -24,6 +24,14 @@ namespace OpcUaStackServer
 
 	CreateNodeInstance::CreateNodeInstance(void)
 	: resultCode_(Success)
+	, name_("")
+	, nodeClassType_()
+	, parentNodeId_()
+	, nodeId_()
+	, displayName_()
+	, browseName_()
+	, referenceNodeId_()
+	, typeNodeId_()
 	{
 	}
 
@@ -31,10 +39,76 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	CreateNodeInstance::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	void
+	CreateNodeInstance::nodeClassType(NodeClassType nodeClassType)
+	{
+		nodeClassType_ = nodeClassType;
+	}
+
+	void
+	CreateNodeInstance::parentNodeId(const OpcUaNodeId& parentNodeId)
+	{
+		parentNodeId_ = parentNodeId;
+	}
+
+	void
+	CreateNodeInstance::nodeId(const OpcUaNodeId& nodeId)
+	{
+		nodeId_ = nodeId;
+	}
+
+	void
+	CreateNodeInstance::displayName(const OpcUaLocalizedText& displayName)
+	{
+		displayName_ = displayName;
+	}
+
+	void
+	CreateNodeInstance::browseName(const OpcUaQualifiedName& browseName)
+	{
+		browseName_ = browseName;
+	}
+
+	void
+	CreateNodeInstance::referenceNodeId(const OpcUaNodeId& referenceNodeId)
+	{
+		referenceNodeId_ = referenceNodeId;
+	}
+
+	void
+	CreateNodeInstance::typeNodeId(const OpcUaNodeId& typeNodeId)
+	{
+		typeNodeId_ = typeNodeId;
+	}
+
 	bool
 	CreateNodeInstance::query(ApplicationServiceIf* applicationServiceIf)
 	{
-		// FIXME:
+		resultCode_ = Success;
+
+		// create response
+		auto trx = constructSPtr<ServiceTransactionCreateNodeInstance>();
+		trx->request()->name() = name_;
+		trx->request()->nodeClassType() = nodeClassType_;
+		trx->request()->parentNodeId() = parentNodeId_;
+	  	trx->request()->nodeId() = nodeId_;
+	  	trx->request()->displayName() = displayName_;
+	  	trx->request()->browseName() = browseName_;
+	  	trx->request()->referenceNodeId() = referenceNodeId_;
+	  	trx->request()->typeNodeId() = typeNodeId_;
+
+		// send query to application service
+		applicationServiceIf->sendSync(trx);
+		resultCode_ = trx->statusCode();
+	  	if (resultCode_ != Success) {
+	  		return false;
+	  	}
 		return true;
 	}
 
