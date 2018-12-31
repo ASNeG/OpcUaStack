@@ -21,6 +21,7 @@
 #include <vector>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/ServiceSet/NodeClass.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
 using namespace OpcUaStackCore;
