@@ -34,6 +34,16 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<CreateNodeInstance> SPtr;
 
 		CreateNodeInstance(void);
+		CreateNodeInstance(
+			const std::string& name,
+			const NodeClassType nodeClassType,
+			const OpcUaNodeId& parentNodeId,
+			const OpcUaNodeId& nodeId,
+			const OpcUaLocalizedText& displayName,
+			const OpcUaQualifiedName& browseName,
+			const OpcUaNodeId& referenceNodeId,
+			const OpcUaNodeId& typeNodeId
+		);
 		virtual ~CreateNodeInstance(void);
 
 		void name(const std::string& name);

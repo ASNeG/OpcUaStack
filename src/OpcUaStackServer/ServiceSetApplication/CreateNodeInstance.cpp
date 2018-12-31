@@ -35,6 +35,28 @@ namespace OpcUaStackServer
 	{
 	}
 
+	CreateNodeInstance::CreateNodeInstance(
+		const std::string& name,
+		const NodeClassType nodeClassType,
+		const OpcUaNodeId& parentNodeId,
+		const OpcUaNodeId& nodeId,
+		const OpcUaLocalizedText& displayName,
+		const OpcUaQualifiedName& browseName,
+		const OpcUaNodeId& referenceNodeId,
+		const OpcUaNodeId& typeNodeId
+	)
+	: resultCode_(Success)
+	, name_(name)
+	, nodeClassType_(nodeClassType)
+	, parentNodeId_(parentNodeId)
+	, nodeId_(nodeId)
+	, displayName_(displayName)
+	, browseName_(browseName)
+	, referenceNodeId_(referenceNodeId)
+	, typeNodeId_(typeNodeId)
+	{
+	}
+
 	CreateNodeInstance::~CreateNodeInstance(void)
 	{
 	}
