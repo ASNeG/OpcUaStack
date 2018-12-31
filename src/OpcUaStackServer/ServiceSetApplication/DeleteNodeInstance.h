@@ -34,12 +34,16 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<DeleteNodeInstance> SPtr;
 
 		DeleteNodeInstance(void);
+		DeleteNodeInstance(const OpcUaNodeId& nodeId);
 		virtual ~DeleteNodeInstance(void);
+
+		void node(const OpcUaNodeId& node);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStatusCode resultCode(void);
 
 	  private:
+		OpcUaNodeId node_;
 		OpcUaStatusCode resultCode_;
 	};
 

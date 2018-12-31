@@ -24,6 +24,13 @@ namespace OpcUaStackServer
 
 	DeleteNodeInstance::DeleteNodeInstance(void)
 	: resultCode_(Success)
+	, node_()
+	{
+	}
+
+	DeleteNodeInstance::DeleteNodeInstance(const OpcUaNodeId& node)
+	: resultCode_(Success)
+	, node_(node)
 	{
 	}
 
@@ -31,10 +38,27 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	DeleteNodeInstance::node(const OpcUaNodeId& node)
+	{
+		node_ = node;
+	}
+
 	bool
 	DeleteNodeInstance::query(ApplicationServiceIf* applicationServiceIf)
 	{
-		// FIXME:
+		resultCode_ = Success;
+
+		// create response
+		auto trx = constructSPtr<ServiceTransactionDelNodeInstance>();
+	  	trx->request()->nodeId() = node_;
+
+		// send query to application service
+		applicationServiceIf->sendSync(trx);
+		resultCode_ = trx->statusCode();
+	  	if (resultCode_ != Success) {
+	  		return false;
+	  	}
 		return true;
 	}
 
