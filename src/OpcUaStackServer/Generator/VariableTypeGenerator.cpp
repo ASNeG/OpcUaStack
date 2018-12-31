@@ -100,7 +100,10 @@ namespace OpcUaStackServer
 	bool
 	VariableTypeGenerator::generateHeader(void)
 	{
-		return generateHeaderComments();
+		return
+			generateHeaderComments() &&
+			generateHeaderBegin() &&
+			generateHeaderEnd();
 	}
 
 	bool
@@ -118,6 +121,59 @@ namespace OpcUaStackServer
 		ss << std::endl;
 		ss << "    Autor:     Kai Huebl (kai@huebl-sgh.de)" << std::endl;
 		ss << "*/" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateHeaderBegin(void)
+	{
+		std::stringstream ss;
+
+		//
+		// added defines
+		//
+		ss << std::endl;
+		ss << "#ifndef __" << nodeInfo_.namespaceName() << "_" << nodeInfo_.className() << "_h__" << std::endl;
+		ss << "#define __" << nodeInfo_.namespaceName() << "_" << nodeInfo_.className() << "_h__" << std::endl;
+
+		//
+		// added includes
+		//
+		ss << std::endl;
+		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+
+		//
+		// added namespace
+		//
+		ss << std::endl;
+		ss << "namespace " << nodeInfo_.namespaceName() << std::endl;
+		ss << "{" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateHeaderEnd(void)
+	{
+		std::stringstream ss;
+
+		//
+		// added namespace
+		//
+		ss << std::endl;
+		ss << "}" << std::endl;
+
+		//
+		// added defines
+		//
+		ss << std::endl;
+		ss << "#endif" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;

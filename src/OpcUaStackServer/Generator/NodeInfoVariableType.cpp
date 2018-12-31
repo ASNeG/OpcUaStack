@@ -144,4 +144,10 @@ namespace OpcUaStackServer
 		return className_;
 	}
 
+	std::string&
+	NodeInfoVariableType::namespaceName(void)
+	{
+		return namespaceName_;
+	}
+
 }

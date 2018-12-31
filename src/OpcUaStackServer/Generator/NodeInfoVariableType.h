@@ -59,6 +59,7 @@ class DLLEXPORT NodeInfoVariableType
 	);
 
 	std::string& className(void);
+	std::string& namespaceName(void);
 
   private:
 	NumberNamespaceMap numberNamespaceMap_;

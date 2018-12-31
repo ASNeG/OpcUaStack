@@ -99,6 +99,8 @@ namespace OpcUaStackServer
 		//
 		bool generateHeader(void);
 		bool generateHeaderComments(void);
+		bool generateHeaderBegin(void);
+		bool generateHeaderEnd(void);
 
 		//
 		// source functions
