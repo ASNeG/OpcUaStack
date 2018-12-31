@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,58 +15,54 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_BrowsePathToNodeIdRequest_h__
-#define __OpcUaStackCore_BrowsePathToNodeIdRequest_h__
+#ifndef __OpcUaStackServer_BrowsePathToNodeId_h__
+#define __OpcUaStackServer_BrowsePathToNodeId_h__
 
-#include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+#include <vector>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
-#include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
+#include "OpcUaStackServer/Application/ApplicationIf.h"
+#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
-	class DLLEXPORT BrowsePathToNodeIdRequest
-	: public  Object
+	class DLLEXPORT BrowsePathToNodeId
 	{
 	  public:
-		typedef boost::shared_ptr<BrowsePathToNodeIdRequest> SPtr;
+		typedef boost::shared_ptr<BrowsePathToNodeId> SPtr;
 
-		BrowsePathToNodeIdRequest(void);
-		virtual ~BrowsePathToNodeIdRequest(void);
+		BrowsePathToNodeId(void);
+		BrowsePathToNodeId(std::vector<BrowseName::SPtr>& browseNames);
+		BrowsePathToNodeId(std::initializer_list<BrowseName::SPtr> browseNames);
+		BrowsePathToNodeId(std::initializer_list<BrowseName> browseNames);
+		virtual ~BrowsePathToNodeId(void);
 
-		void browseNameArray(BrowseNameArray::SPtr& browseNameArray);
-		BrowseNameArray::SPtr browseNameArray(void);
-
-		void addBrowsePath(
-			const BrowseName::SPtr& browseName
-		);
-		void addBrowsePath(
+		void addBrowseName(const BrowseName::SPtr& browseName);
+		void addBrowseName(
 			const OpcUaNodeId& nodeId,
 			const OpcUaQualifiedName& pathElement
 		);
-		void addBrowsePath(
+		void addBrowseName(
 			const OpcUaNodeId& nodeId,
 			const OpcUaQualifiedName& pathElement1,
 			const OpcUaQualifiedName& pathElement2
 		);
-		void addBrowsePath(
+		void addBrowseName(
 			const OpcUaNodeId& nodeId,
 			const OpcUaQualifiedName& pathElement1,
 			const OpcUaQualifiedName& pathElement2,
 			const OpcUaQualifiedName& pathElement3
 		);
-		void addBrowsePath(
+		void addBrowseName(
 			const OpcUaNodeId& nodeId,
 			const OpcUaQualifiedName& pathElement1,
 			const OpcUaQualifiedName& pathElement2,
 			const OpcUaQualifiedName& pathElement3,
 			const OpcUaQualifiedName& pathElement4
 		);
-		void addBrowsePath(
+		void addBrowseName(
 			const OpcUaNodeId& nodeId,
 			const OpcUaQualifiedName& pathElement1,
 			const OpcUaQualifiedName& pathElement2,
@@ -75,13 +71,18 @@ namespace OpcUaStackCore
 			const OpcUaQualifiedName& pathElement5
 		);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
+		OpcUaStatusCode resultCode(void);
+
+		std::vector<OpcUaStatusCode>& statuses(void);
+		std::vector<OpcUaNodeId>& nodes(void);
 
 	  private:
-		BrowseNameArray::SPtr browseNameArray_;
+		std::vector<BrowseName::SPtr> browseNames_;
+		OpcUaStatusCode resultCode_;
+		std::vector<OpcUaStatusCode> statuses_;
+		std::vector<OpcUaNodeId> nodes_;
 	};
 
 }
-
 #endif

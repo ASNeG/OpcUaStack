@@ -15,48 +15,46 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_GetNodeReference_h__
-#define __OpcUaStackServer_GetNodeReference_h__
+#ifndef __OpcUaStackServer_RegisterForwardMethod_h__
+#define __OpcUaStackServer_RegisterForwardMethod_h__
 
 #include <vector>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
-#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT GetNodeReference
+	class DLLEXPORT RegisterForwardMethod
 	{
 	  public:
-		typedef boost::shared_ptr<GetNodeReference> SPtr;
+		typedef boost::shared_ptr<RegisterForwardMethod> SPtr;
 
-		GetNodeReference(void);
-		GetNodeReference(const OpcUaNodeId& node);
-		GetNodeReference(const std::vector<OpcUaNodeId>& nodes);
-		GetNodeReference(std::initializer_list<OpcUaNodeId> nodes);
-		virtual ~GetNodeReference(void);
+		RegisterForwardMethod(void);
+		RegisterForwardMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId);
+		virtual ~RegisterForwardMethod(void);
 
-		void addNode(const OpcUaNodeId& node);
-		void addNodes(const std::vector<OpcUaNodeId>& nodes);
-		void node(const OpcUaNodeId& node);
-		void nodes(const std::vector<OpcUaNodeId>& nodes);
-		std::vector<OpcUaNodeId>& nodes(void);
+		void objectNodeId(const OpcUaNodeId& objectNodeId);
+		void methodNodeId(const OpcUaNodeId& methodNodeId);
+		void setMethodCallback(Callback& callback);
+		template<typename T>
+		  void setMethodCallback(T handler) {
+			  Callback callback;
+			  callback.reset(handler);
+			  setMethodCallback(callback);
+		  }
 
-		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
+		bool query(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStatusCode resultCode(void);
 
-		std::vector<OpcUaStatusCode>& statuses(void);
-		std::vector<BaseNodeClass::WPtr>& nodeReferences(void);
-
 	  private:
-		std::vector<OpcUaNodeId> nodes_;
+		OpcUaNodeId objectNodeId_;
+		OpcUaNodeId methodNodeId_;
+		ForwardMethodSync forwardMethodSync_;
 		OpcUaStatusCode resultCode_;
-		std::vector<OpcUaStatusCode> statuses_;
-		std::vector<BaseNodeClass::WPtr> nodeReferences_;
 	};
 
 }

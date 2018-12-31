@@ -1320,18 +1320,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setValueSync(OpcUaDataValue& value)
+	AttributeBase::setValueSync(const OpcUaDataValue& value)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setValue(value);
 	}
 
 	bool
-	AttributeBase::setValue(OpcUaDataValue& value)
+	AttributeBase::setValue(const OpcUaDataValue& value)
 	{
 		if (!isPartValue()) return false;
 		ValueAttribute* attr = reinterpret_cast<ValueAttribute*>(valueAttribute());
-		value.copyTo(attr->data());
+		const_cast<OpcUaDataValue*>(&value)->copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}

@@ -9,9 +9,15 @@ set (CMAKE_CXX_STANDARD 11)
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+<<<<<<< HEAD
 set(OPCUASTACK_VERSION_MAJOR "4" CACHE STRING "major version")
 set(OPCUASTACK_VERSION_MINOR "0" CACHE STRING "minor version")
 set(OPCUASTACK_VERSION_PATCH "1" CACHE STRING "patch version")
+=======
+set(OPCUASTACK_VERSION_MAJOR "3")
+set(OPCUASTACK_VERSION_MINOR "6")
+set(OPCUASTACK_VERSION_PATCH "1")
+>>>>>>> github/Release3
 
 set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
 set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")

@@ -47,6 +47,14 @@ namespace OpcUaStackServer
 	{
 	}
 
+	GetNodeReference::GetNodeReference(std::initializer_list<OpcUaNodeId> nodes)
+	: nodes_(nodes)
+	, resultCode_(Success)
+	, statuses_()
+	, nodeReferences_()
+	{
+	}
+
 	GetNodeReference::~GetNodeReference(void)
 	{
 	}
@@ -83,7 +91,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	GetNodeReference::query(ApplicationServiceIf* applicationServiceIf)
+	GetNodeReference::query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray)
 	{
 		if (nodes_.size() == 0) return false;
 
@@ -102,15 +110,20 @@ namespace OpcUaStackServer
 	  	if (resultCode_ != Success) return false;
 
 	  	// handle response
+	  	bool result = true;
 	  	for (uint32_t idx = 0; idx < trx->response()->nodeReferenceArray()->size(); idx++) {
 	  		NodeReference::SPtr nodeReference;
 	  		trx->response()->nodeReferenceArray()->get(idx, nodeReference);
 	  		NodeReferenceApplication::SPtr nodeReferenceApplication = boost::static_pointer_cast<NodeReferenceApplication>(nodeReference);
 	  		nodeReferences_.push_back(nodeReferenceApplication->baseNodeClass());
 	  		statuses_.push_back(nodeReferenceApplication->statusCode());
+
+	  		if (checkStatusCodeArray && nodeReferenceApplication->statusCode() !=  Success) {
+	  			result = false;
+	  		}
 	  	}
 
-		return true;
+		return result;
 	}
 
 	OpcUaStatusCode

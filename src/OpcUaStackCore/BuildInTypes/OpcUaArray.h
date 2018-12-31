@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Author: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_OpcUaArray_h__
@@ -318,25 +318,25 @@ namespace OpcUaStackCore
 	class OpcUaArray 
 	{
 	  public:
-		OpcUaArray(uint32_t maxArrayLen = 1);
+		OpcUaArray(size_t maxArrayLen = 1);
 		OpcUaArray(const OpcUaArray<T, CODER>& other);
 		OpcUaArray(const std::vector<T>& other);
 		OpcUaArray(const T& other);
 		~OpcUaArray(void); 
 
-		void resize(uint32_t maxArrayLen);
-		uint32_t size(void) const;
-		uint32_t maxSize(void);
-		uint32_t freeSize();
+		void resize(size_t maxArrayLen);
+		size_t size(void) const;
+		size_t maxSize(void);
+		size_t freeSize();
 		void clear(void);
 		bool isNull(void);
 		void setNull(void);
 
-		bool set(uint32_t pos, const T& value);
+		bool set(size_t pos, const T& value);
 		bool set(const T& value);
 		bool push_back(const T& value);
 		bool push_back_vec(const std::vector<T>& valueVec);
-		bool get(uint32_t pos, T& value);
+		bool get(size_t pos, T& value);
 		bool get(T& value);
 
 		OpcUaArray<T, CODER>& operator=(const OpcUaArray<T, CODER>& other);
@@ -406,15 +406,15 @@ namespace OpcUaStackCore
 		void clearArray(void);
 
 		bool isNull_;
-		uint32_t maxArrayLen_;
-		uint32_t actArrayLen_;
+		size_t maxArrayLen_;
+		size_t actArrayLen_;
 
 		T* valueArray_;
 		T value_;
 	};
 
 	template<typename T, typename CODER>
-	OpcUaArray<T, CODER>::OpcUaArray(uint32_t maxArrayLen)
+	OpcUaArray<T, CODER>::OpcUaArray(size_t maxArrayLen)
 	: isNull_(false)
 	, maxArrayLen_(maxArrayLen)
 	, actArrayLen_(0)
@@ -441,7 +441,7 @@ namespace OpcUaStackCore
 	, actArrayLen_(0)
 	{
 		initArray();
-		typename std::vector<T>::iterator it;
+		typename std::vector<T>::const_iterator it;
 		for (it = other.begin(); it != other.end(); it++) {
 			push_back(*it);
 		}
@@ -492,7 +492,7 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	void
-	OpcUaArray<T, CODER>::resize(uint32_t maxArrayLen)
+	OpcUaArray<T, CODER>::resize(size_t maxArrayLen)
 	{
 		isNull_ = false;
 		clearArray();
@@ -501,21 +501,21 @@ namespace OpcUaStackCore
 	}
 
 	template<typename T, typename CODER>
-	uint32_t
+	size_t
 	OpcUaArray<T, CODER>::size(void) const
 	{
 		return actArrayLen_;
 	}
 
 	template<typename T, typename CODER>
-	uint32_t
+	size_t
 	OpcUaArray<T, CODER>::maxSize(void)
 	{
 		return maxArrayLen_;
 	}
 
 	template<typename T, typename CODER>
-	uint32_t
+	size_t
 	OpcUaArray<T, CODER>::freeSize(void)
 	{
 		return maxArrayLen_ - actArrayLen_;
@@ -548,7 +548,7 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::set(uint32_t pos, const T& value)
+	OpcUaArray<T, CODER>::set(size_t pos, const T& value)
 	{
 		if (pos >= maxArrayLen_) {
 			return false;
@@ -589,7 +589,7 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool 
-	OpcUaArray<T, CODER>::get(uint32_t pos, T& value)
+	OpcUaArray<T, CODER>::get(size_t pos, T& value)
 	{
 		if (pos >= actArrayLen_) {
 			return false;
@@ -618,7 +618,7 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>&
 	OpcUaArray<T, CODER>::operator=(const std::vector<T>& other)
 	{
-		typename std::vector<T>::iterator it;
+		typename std::vector<T>::const_iterator it;
 		resize(other.size());
 		for (it = other.begin(); it != other.end(); it++) {
 			push_back(*it);
@@ -668,7 +668,7 @@ namespace OpcUaStackCore
 		}
 		if (actArrayLen_ == 0) return;
 		array.resize(actArrayLen_);
-		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
+		for (size_t idx=0; idx<actArrayLen_; idx++) {
 			T destValue;
 			CODER::copy(valueArray_[idx], destValue);
 			array.set(idx, destValue);
@@ -704,7 +704,7 @@ namespace OpcUaStackCore
 		bool first = true;
 
 		os << "[";
-		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
+		for (size_t idx=0; idx<actArrayLen_; idx++) {
 			if (!first) os << ",";
 			CODER::out(os, valueArray_[idx]);
 			first = false;
@@ -716,8 +716,8 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<T, CODER>::opcUaBinaryEncode(std::ostream& os) const
 	{
-		ByteOrder<uint32_t>::opcUaBinaryEncodeNumberLE(os, actArrayLen_);
-		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
+		ByteOrder<uint32_t>::opcUaBinaryEncodeNumberLE(os, static_cast<uint32_t>(actArrayLen_));
+		for (size_t idx=0; idx<actArrayLen_; idx++) {
 			CODER::opcUaBinaryEncode(os, valueArray_[idx]);
 		}
 	}
@@ -809,7 +809,7 @@ namespace OpcUaStackCore
 		Xmlns& xmlns
 	)
 	{
-		int32_t arrayLength = 0;
+		size_t arrayLength = 0;
 		arrayLength = pt.size();
 
 		if (arrayLength == 0) {
@@ -897,7 +897,7 @@ namespace OpcUaStackCore
 		const std::string& listElement
 	)
 	{
-		int32_t arrayLength = 0;
+		size_t arrayLength = 0;
 		arrayLength = pt.size();
 
 		if (arrayLength == 0) {

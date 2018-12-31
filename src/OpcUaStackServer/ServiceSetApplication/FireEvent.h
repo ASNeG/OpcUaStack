@@ -15,12 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_GetNodeReference_h__
-#define __OpcUaStackServer_GetNodeReference_h__
+#ifndef __OpcUaStackServer_FireEvent_h__
+#define __OpcUaStackServer_FireEvent_h__
 
 #include <vector>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/EventType/EventBase.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
@@ -29,34 +30,25 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT GetNodeReference
+	class DLLEXPORT FireEvent
 	{
 	  public:
-		typedef boost::shared_ptr<GetNodeReference> SPtr;
+		typedef boost::shared_ptr<FireEvent> SPtr;
 
-		GetNodeReference(void);
-		GetNodeReference(const OpcUaNodeId& node);
-		GetNodeReference(const std::vector<OpcUaNodeId>& nodes);
-		GetNodeReference(std::initializer_list<OpcUaNodeId> nodes);
-		virtual ~GetNodeReference(void);
+		FireEvent(void);
+		FireEvent(const OpcUaNodeId& node, const EventBase::SPtr& eventBase);
+		virtual ~FireEvent(void);
 
-		void addNode(const OpcUaNodeId& node);
-		void addNodes(const std::vector<OpcUaNodeId>& nodes);
 		void node(const OpcUaNodeId& node);
-		void nodes(const std::vector<OpcUaNodeId>& nodes);
-		std::vector<OpcUaNodeId>& nodes(void);
+		void eventBase(const EventBase::SPtr& eventBase);
 
-		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
+		bool fireEvent(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStatusCode resultCode(void);
 
-		std::vector<OpcUaStatusCode>& statuses(void);
-		std::vector<BaseNodeClass::WPtr>& nodeReferences(void);
-
 	  private:
-		std::vector<OpcUaNodeId> nodes_;
+		OpcUaNodeId node_;
+		EventBase::SPtr eventBase_;
 		OpcUaStatusCode resultCode_;
-		std::vector<OpcUaStatusCode> statuses_;
-		std::vector<BaseNodeClass::WPtr> nodeReferences_;
 	};
 
 }
