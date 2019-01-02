@@ -140,8 +140,7 @@ namespace OpcUaStackServer
 		baseNode_->getDescription(description);
 		description_ = description.text().toStdString();
 
-		// FIXME: todo
-		return true;
+		return readValues(variableTypeNodeId);
 	}
 
 	std::string&
@@ -166,6 +165,44 @@ namespace OpcUaStackServer
 	NodeInfoVariableType::description(void)
 	{
 		return description_;
+	}
+
+	bool
+	NodeInfoVariableType::readValues(const OpcUaNodeId& variableTypeNodeId)
+	{
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+
+		//
+		// find node in opc ua information model
+		//
+		BaseNodeClass::SPtr baseNode = informationModel_->find(variableTypeNodeId);
+		if (baseNode_.get() == nullptr) {
+			Log(Error, "variable type node identifier not exist in information model")
+				.parameter("VariableTypeNode", variableTypeNodeId);
+			return false;
+		}
+
+		// find parent node identifier
+		OpcUaNodeId parentVariableTypeNodeId;
+		if (!ima.getSubType(baseNode, parentVariableTypeNodeId)) {
+			Log(Error, "parent variable type node identifier do not not exist in information model")
+				.parameter("VariableTypeNodeId", parentVariableTypeNodeId);
+			return false;
+		}
+		if (parentVariableTypeNodeId == OpcUaNodeId(89)) {
+			return true;
+		}
+
+		return readValues(parentVariableTypeNodeId);
+	}
+
+	bool
+	NodeInfoVariableType::readChilds(void)
+	{
+
+		// FIXME: todo
+		return true;
 	}
 
 }

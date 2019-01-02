@@ -65,6 +65,9 @@ class DLLEXPORT NodeInfoVariableType
 
 
   private:
+	bool readValues(const OpcUaNodeId& nodeId);
+	bool readChilds(void);
+
 	NumberNamespaceMap numberNamespaceMap_;
 	OpcUaNodeId variableTypeNodeId_;
 	OpcUaNodeId parentVariableTypeNodeId_;
