@@ -191,15 +191,17 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		if (variableTypeNodeId == OpcUaNodeId(62)) {
+			return true;
+		}
+
 		// find parent node identifier
 		OpcUaNodeId parentVariableTypeNodeId;
 		if (!ima.getSubType(baseNode, parentVariableTypeNodeId)) {
 			Log(Error, "parent variable type node identifier do not not exist in information model")
-				.parameter("VariableTypeNodeId", parentVariableTypeNodeId);
+				.parameter("VariableTypeNodeId", variableTypeNodeId)
+				.parameter("DisplayName", *baseNode->getDisplayName());
 			return false;
-		}
-		if (parentVariableTypeNodeId == OpcUaNodeId(89)) {
-			return true;
 		}
 
 		return readValues(parentVariableTypeNodeId);
@@ -221,18 +223,22 @@ namespace OpcUaStackServer
 
 		// find childs
 		BaseNodeClass::Vec childBaseNodeClassVec;
-		if (!ima.getChildHierarchically(baseNode, childBaseNodeClassVec)) {
+		std::vector<OpcUaNodeId> referenceTypeNodeIdVec;
+		if (!ima.getChildHierarchically(baseNode, childBaseNodeClassVec, referenceTypeNodeIdVec)) {
 			Log(Error, "get hierachically child error")
 				.parameter("NodeId", *baseNode->getNodeId())
 				.parameter("DispalyName", *baseNode->getDisplayName());
 			return false;
 		}
 
+		size_t size = browseNames.pathNames()->size();
 		for (uint32_t idx = 0; idx < childBaseNodeClassVec.size(); idx++) {
-			BaseNodeClass::SPtr baseNodeClassChild = childBaseNodeClassVec[idx];
-			OpcUaQualifiedName browseName = *baseNode->getBrowseName();
+			// ignore HasSubType references
+			if (referenceTypeNodeIdVec[idx] == OpcUaNodeId(45)) continue;
 
-			size_t size = browseNames.pathNames()->size();
+			BaseNodeClass::SPtr baseNodeClassChild = childBaseNodeClassVec[idx];
+			OpcUaQualifiedName browseName = *childBaseNodeClassVec[idx]->getBrowseName();
+
 			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
 
 			if (!readChilds(baseNodeClassChild, browseNames)) {
@@ -251,11 +257,12 @@ namespace OpcUaStackServer
 	{
 		Log(Debug, "read node information")
 			.parameter("NodeId", *baseNode->getNodeId())
-			.parameter("DisplayName", *baseNode->getDisplayName());
+			.parameter("DisplayName", *baseNode->getDisplayName())
+			.parameter("BrowsePath", browseName);
 
 		// FIXME: todo
 
-		return false;
+		return true;
 	}
 
 }
