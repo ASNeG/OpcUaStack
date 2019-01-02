@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -73,9 +73,9 @@ namespace OpcUaVariableTypeGenerator
 				"set nodeset file name (mandatory)"
 			)
 			(
-				"datatype",
+				"variabletype",
 				boost::program_options::value<std::string>(),
-				"set data type name (mandatory)"
+				"set variable type name (mandatory)"
 			)
 			(
 				"namespaces_",
@@ -113,7 +113,7 @@ namespace OpcUaVariableTypeGenerator
 		    return 1;
 		}
 
-		if (vm.count("datatype") == 0) {
+		if (vm.count("variabletype") == 0) {
 		    std::cout << desc << std::endl;
 		    return 1;
 		}
@@ -122,7 +122,7 @@ namespace OpcUaVariableTypeGenerator
 			fileNames_ = vm["nodeset"].as< std::vector<std::string> >();
 		}
 
-		variableTypeName_ = vm["datatype"].as<std::string>();
+		variableTypeName_ = vm["variabletype"].as<std::string>();
 		if (vm.count("namespaces") != 0) {
 			namespaces_ = vm["namespaces"].as< std::vector<std::string> >();
 		}
@@ -251,7 +251,7 @@ namespace OpcUaVariableTypeGenerator
 
 		// find node id for data type name
 		variableTypeNodeId_.set(0,0);
-		if (!findNodeId(variableTypeName_, OpcUaNodeId(89))) {
+		if (!findNodeId(variableTypeName_, OpcUaNodeId(62))) {
 			std::cout << "node id not found for data type " << variableTypeName_ << std::endl;
 			return -3;
 		}
@@ -298,7 +298,7 @@ namespace OpcUaVariableTypeGenerator
 
 		// find node id for variable type name
 		variableTypeNodeId_.set(0,0);
-		if (!findNodeId(variableTypeName_, OpcUaNodeId(89))) {
+		if (!findNodeId(variableTypeName_, OpcUaNodeId(62))) {
 			std::cout << "node id not found for variable type " << variableTypeName_ << std::endl;
 			return -3;
 		}
