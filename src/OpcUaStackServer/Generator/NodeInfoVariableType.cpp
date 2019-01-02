@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,7 +24,7 @@ namespace OpcUaStackServer
 {
 
 	NodeInfoVariableType::NodeInfoVariableType(void)
-	: numberNamespaceMap_()
+	: numberNamespaceMap_("OpcUaStackServer")
 	, informationModel_()
 	, variableTypeNodeId_()
 	, parentVariableTypeNodeId_()
@@ -117,22 +117,28 @@ namespace OpcUaStackServer
 		// set directory
 		//
 		if (variableTypeNodeId_.namespaceIndex() == 0) {
-			directory_ = "StandardVariableTypes";
+			directory_ = "StandardVariableType";
 		}
 		else {
-			directory_ = "CustomerVariableTypes";
+			directory_ = "CustomerVariableType";
 		}
 
 		//
 		// set directory of parent
 		//
 		if (parentVariableTypeNodeId_.namespaceIndex() == 0) {
-			parentDirectory_ = "StandardVariableTypes";
+			parentDirectory_ = "StandardVariableType";
 		}
 		else {
-			parentDirectory_ = "CustomerVariableTypes";
+			parentDirectory_ = "CustomerVariableType";
 		}
 
+		//
+		// set description
+		//
+		OpcUaLocalizedText description;
+		baseNode_->getDescription(description);
+		description_ = description.text().toStdString();
 
 		// FIXME: todo
 		return true;
@@ -148,6 +154,18 @@ namespace OpcUaStackServer
 	NodeInfoVariableType::namespaceName(void)
 	{
 		return namespaceName_;
+	}
+
+	std::string
+	NodeInfoVariableType::directory(void)
+	{
+		return directory_;
+	}
+
+	std::string&
+	NodeInfoVariableType::description(void)
+	{
+		return description_;
 	}
 
 }

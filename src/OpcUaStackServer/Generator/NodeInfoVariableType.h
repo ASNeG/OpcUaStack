@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -60,6 +60,9 @@ class DLLEXPORT NodeInfoVariableType
 
 	std::string& className(void);
 	std::string& namespaceName(void);
+	std::string directory(void);
+	std::string& description(void);
+
 
   private:
 	NumberNamespaceMap numberNamespaceMap_;
@@ -75,6 +78,7 @@ class DLLEXPORT NodeInfoVariableType
 	std::string parentClassName_;
 	std::string directory_;
 	std::string parentDirectory_;
+	std::string description_;
 };
 
 }

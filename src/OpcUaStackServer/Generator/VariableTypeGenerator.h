@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -101,12 +101,19 @@ namespace OpcUaStackServer
 		bool generateHeaderComments(void);
 		bool generateHeaderBegin(void);
 		bool generateHeaderEnd(void);
+		bool generateHeaderClassBegin(const std::string& prefix);
+		bool generateHeaderClassEnd(const std::string& prefix);
 
 		//
 		// source functions
 		//
 		bool generateSource(void);
 		bool generateSourceComments();
+		bool generateSourceIncludes(void);
+		bool generateSourceClassBegin(void);
+		bool generateSourceClassEnd(void);
+		bool generateSourceClassConstructor(const std::string& prefix);
+		bool generateSourceClassDestructor(const std::string& prefix);
 
 
 		InformationModel::SPtr informationModel_;

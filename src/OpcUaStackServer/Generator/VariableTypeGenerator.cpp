@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -103,6 +103,8 @@ namespace OpcUaStackServer
 		return
 			generateHeaderComments() &&
 			generateHeaderBegin() &&
+			    generateHeaderClassBegin("   ") &&
+				generateHeaderClassEnd("   ") &&
 			generateHeaderEnd();
 	}
 
@@ -179,6 +181,46 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	VariableTypeGenerator::generateHeaderClassBegin(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added class
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << std::endl;
+
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "  public:" << std::endl;
+		ss << prefix << "    typedef boost::shared_ptr<" << nodeInfo_.className()  << "> SPtr;" << std::endl;
+		ss << prefix << "    typedef std::vector<" << nodeInfo_.className() << "::SPtr> Vec;" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    " << nodeInfo_.className() << "(void);" << std::endl;
+		ss << prefix << "    " << nodeInfo_.className() << "(const " << nodeInfo_.className() << "& value);" << std::endl;
+		ss << prefix << "    virtual ~" << nodeInfo_.className() << "(void);" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateHeaderClassEnd(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added class
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "};" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -190,7 +232,13 @@ namespace OpcUaStackServer
 	bool
 	VariableTypeGenerator::generateSource(void)
 	{
-		return generateSourceComments();
+		return
+			generateSourceComments() &&
+			generateSourceIncludes() &&
+			generateSourceClassBegin() &&
+			    generateSourceClassConstructor("    ") &&
+				generateSourceClassDestructor("    ") &&
+			generateSourceClassEnd();
 	}
 
 	bool
@@ -208,6 +256,103 @@ namespace OpcUaStackServer
 		ss << std::endl;
 		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
 		ss << "*/" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceIncludes(void)
+	{
+		std::stringstream ss;
+
+		ss << std::endl;
+		ss << "#include \"" << nodeInfo_.namespaceName() << "/" << nodeInfo_.directory() << "/" << nodeInfo_.className() << ".h\"" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassBegin(void)
+	{
+		std::stringstream ss;
+
+		//
+		// namespace
+		//
+		ss << std::endl;
+		ss << "namespace " <<  nodeInfo_.namespaceName() << std::endl;
+		ss << "{" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassEnd(void)
+	{
+		std::stringstream ss;
+
+		//
+		// namespace
+		//
+		ss << std::endl;
+		ss << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassConstructor(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added constructor
+		//
+		ss << prefix << std::endl;
+		if (nodeInfo_.description() != "") {
+			ss << prefix << "/**" << std::endl;
+			ss << prefix << " * " << nodeInfo_.description() << std::endl;
+			ss << prefix << " */" << std::endl;
+		}
+
+		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		//
+		// added copy constructor
+		//
+		ss << prefix << std::endl;
+		if (nodeInfo_.description() != "") {
+			ss << prefix << "/**" << std::endl;
+			ss << prefix << " * " << nodeInfo_.description() << std::endl;
+			ss << prefix << " */" << std::endl;
+		}
+
+		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(const " <<nodeInfo_.className()  << "& value)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassDestructor(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added destructor
+		//
+		ss << prefix << std::endl;
+		ss << prefix << nodeInfo_.className() << "::~" << nodeInfo_.className() << "(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
