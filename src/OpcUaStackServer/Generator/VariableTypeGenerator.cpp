@@ -104,7 +104,7 @@ namespace OpcUaStackServer
 			generateHeaderComments() &&
 			generateHeaderBegin() &&
 			    generateHeaderClassBegin("   ") &&
-				    //generateHeaderClassValueGetter("        ") &&
+				    generateHeaderClassPublicFunction("        ") &&
 			        //generateHeaderClassExtensionInterface("        ") &&
 			        //generateHeaderClassPublic("        ") &&
 			        generateHeaderClassPrivate("    ") &&
@@ -213,6 +213,24 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	VariableTypeGenerator::generateHeaderClassPublicFunction(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt  = variableTypeField.second;
+			ss << std::endl;
+			ss << prefix << "void " << vt->functionName() << "(ServerVariable::SPtr& serverVariable);" << std::endl;
+			ss << prefix << "ServerVariable::SPtr& " << vt->functionName() << "(void);" << std::endl;
+			ss << prefix << "bool get_" << vt->name() << "(OpcUaDataValue& dataValue);" << std::endl;
+			ss << prefix << "bool set_" << vt->name() << "(const OpcUaDataValue& dataValue);" << std::endl;
+		}
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
 	VariableTypeGenerator::generateHeaderClassEnd(const std::string& prefix)
 	{
 		std::stringstream ss;
@@ -274,6 +292,7 @@ namespace OpcUaStackServer
 			generateSourceClassBegin() &&
 			    generateSourceClassConstructor("    ") &&
 				generateSourceClassDestructor("    ") &&
+				generateSourceClassSetterGetter("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -358,11 +377,9 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
 		ss << prefix << ": VariableBase()" << std::endl;
 
-		//
-		// added value definition
-		//
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
-			ss << prefix << ", " << variableTypeField.second->variableName() << "(constructSPtr<ServerVariable>(\"" << variableTypeField.second->name() << "\"))" << std::endl;
+			auto& vt = variableTypeField.second;
+			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
 		}
 
 		ss << prefix << "{" << std::endl;
@@ -380,6 +397,12 @@ namespace OpcUaStackServer
 
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(const " <<nodeInfo_.className()  << "& value)" << std::endl;
 		ss << prefix << ": VariableBase()" << std::endl;
+
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
+		}
+
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -399,6 +422,71 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::~" << nodeInfo_.className() << "(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassSetterGetter(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// getter method (Server Variable)
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+
+			ss << std::endl;
+			ss << prefix << "ServerVariable::SPtr&" << std::endl;
+			ss << prefix << nodeInfo_.className() << "::" << vt->functionName() << "(void)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    return " << vt->variableName() << ";" << std::endl;
+			ss << prefix << "}" << std::endl;
+		}
+
+		//
+		// setter method (ServerVariable)
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+
+			ss << std::endl;
+			ss << prefix << "void" << std::endl;
+			ss << prefix << nodeInfo_.className() << "::" << vt->functionName() << "(ServerVariable::SPtr& serverVariable)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    "<< vt->variableName() << " = serverVariable;" << std::endl;
+			ss << prefix << "}" << std::endl;
+		}
+
+		//
+		// getter method (OpcUaDataValue)
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+
+			ss << std::endl;
+			ss << prefix << "bool" << std::endl;
+			ss << prefix << nodeInfo_.className() << "::" << "get_" << vt->name() << "(OpcUaDataValue& dataValue)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    return " << vt->variableName() << "->getDataValue(dataValue);" << std::endl;
+			ss << prefix << "}" << std::endl;
+		}
+
+		//
+		// setter method (OpcUaDataValue)
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+
+			ss << std::endl;
+			ss << prefix << "bool" << std::endl;
+			ss << prefix << nodeInfo_.className() << "::" << "set_" << vt->name() << "(const OpcUaDataValue& dataValue)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    return " << vt->variableName() << "->setDataValue(dataValue);" << std::endl;
+			ss << prefix << "}" << std::endl;
+		}
 
 		sourceContent_ += ss.str();
 		return true;

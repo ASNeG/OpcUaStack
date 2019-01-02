@@ -31,6 +31,36 @@ namespace OpcUaStackServer
        AnalogItemType(void);
        AnalogItemType(const AnalogItemType& value);
        virtual ~AnalogItemType(void);
+
+        void definition_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& definition_Variable(void);
+        bool get_Definition_Variable(OpcUaDataValue& dataValue);
+        bool set_Definition_Variable(const OpcUaDataValue& dataValue);
+
+        void eURange_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& eURange_Variable(void);
+        bool get_EURange_Variable(OpcUaDataValue& dataValue);
+        bool set_EURange_Variable(const OpcUaDataValue& dataValue);
+
+        void engineeringUnits_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& engineeringUnits_Variable(void);
+        bool get_EngineeringUnits_Variable(OpcUaDataValue& dataValue);
+        bool set_EngineeringUnits_Variable(const OpcUaDataValue& dataValue);
+
+        void instrumentRange_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& instrumentRange_Variable(void);
+        bool get_InstrumentRange_Variable(OpcUaDataValue& dataValue);
+        bool set_InstrumentRange_Variable(const OpcUaDataValue& dataValue);
+
+        void valuePrecision_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& valuePrecision_Variable(void);
+        bool get_ValuePrecision_Variable(OpcUaDataValue& dataValue);
+        bool set_ValuePrecision_Variable(const OpcUaDataValue& dataValue);
+
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
       private:
         ServerVariable::SPtr definition_Variable_;

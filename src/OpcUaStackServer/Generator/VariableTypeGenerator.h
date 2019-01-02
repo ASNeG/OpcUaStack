@@ -103,6 +103,7 @@ namespace OpcUaStackServer
 		bool generateHeaderEnd(void);
 		bool generateHeaderClassBegin(const std::string& prefix);
 		bool generateHeaderClassEnd(const std::string& prefix);
+		bool generateHeaderClassPublicFunction(const std::string& prefix);
 		bool generateHeaderClassPrivate(const std::string& prefix);
 		bool generateHeaderClassValueDefinition(const std::string& prefix);
 
@@ -116,7 +117,7 @@ namespace OpcUaStackServer
 		bool generateSourceClassEnd(void);
 		bool generateSourceClassConstructor(const std::string& prefix);
 		bool generateSourceClassDestructor(const std::string& prefix);
-
+		bool generateSourceClassSetterGetter(const std::string& prefix);
 
 		InformationModel::SPtr informationModel_;
 		std::string sourceContent_;

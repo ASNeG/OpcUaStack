@@ -21,6 +21,9 @@ namespace OpcUaStackServer
 {
 
 	VariableTypeField::VariableTypeField(void)
+	: name_("")
+	, variableName_("")
+	, functionName_("")
 	{
 	}
 
@@ -50,6 +53,18 @@ namespace OpcUaStackServer
 	VariableTypeField::variableName(void)
 	{
 		return variableName_;
+	}
+
+	void
+	VariableTypeField::functionName(const std::string& functionName)
+	{
+		functionName_ = functionName;
+	}
+
+	std::string&
+	VariableTypeField::functionName(void)
+	{
+		return functionName_;
 	}
 
 }

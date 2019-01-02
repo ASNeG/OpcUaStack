@@ -53,10 +53,13 @@ class DLLEXPORT VariableTypeField
 	std::string& name(void);
 	void variableName(const std::string& variableName);
 	std::string& variableName(void);
+	void functionName(const std::string& functionName);
+	std::string& functionName(void);
 
   private:
 	std::string name_;
 	std::string variableName_;
+	std::string functionName_;
 
 };
 

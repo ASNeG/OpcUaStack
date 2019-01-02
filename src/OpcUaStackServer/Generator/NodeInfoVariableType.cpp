@@ -282,10 +282,14 @@ namespace OpcUaStackServer
 		// create variable name
 		std::string variableName = boost::to_lower_copy(name.substr(0,1)) + name.substr(1) + "_";
 
+		// create function name
+		std::string functionName = boost::to_lower_copy(name.substr(0,1)) + name.substr(1);
+
 		// create variable type field
 		VariableTypeField::SPtr variableTypeField = constructSPtr<VariableTypeField>();
 		variableTypeField->name(name);
 		variableTypeField->variableName(variableName);
+		variableTypeField->functionName(functionName);
 		variableTypeFieldMap_.insert(std::make_pair(name, variableTypeField));
 
 		return true;
