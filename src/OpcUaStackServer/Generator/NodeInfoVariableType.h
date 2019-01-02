@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_NodeInfoVariableType_h__
 
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinitionExpand.h"
+#include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
 
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/DataTypeField.h"
@@ -65,8 +66,9 @@ class DLLEXPORT NodeInfoVariableType
 
 
   private:
-	bool readValues(const OpcUaNodeId& nodeId);
-	bool readChilds(void);
+	bool readValues(const OpcUaNodeId& variableTypeNodeId);
+	bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
+	bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, const BrowseName& browseName);
 
 	NumberNamespaceMap numberNamespaceMap_;
 	OpcUaNodeId variableTypeNodeId_;

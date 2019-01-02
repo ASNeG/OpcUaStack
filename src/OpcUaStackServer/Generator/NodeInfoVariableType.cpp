@@ -183,6 +183,14 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		BrowseName browseName(variableTypeNodeId);
+		browseName.pathNames()->resize(10);
+		if (!readChilds(baseNode, browseName)) {
+			Log(Error, "read childs error")
+				.parameter("VariableTypeNodeId", variableTypeNodeId);
+			return false;
+		}
+
 		// find parent node identifier
 		OpcUaNodeId parentVariableTypeNodeId;
 		if (!ima.getSubType(baseNode, parentVariableTypeNodeId)) {
@@ -198,11 +206,56 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeInfoVariableType::readChilds(void)
+	NodeInfoVariableType::readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseNames)
 	{
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+
+		// read node information
+		if (!readNodeInfo(baseNode, browseNames)) {
+			Log(Error, "read node information error")
+				.parameter("NodeId", baseNode->getNodeId())
+				.parameter("BrowseName", browseNames);
+			return false;
+		}
+
+		// find childs
+		BaseNodeClass::Vec childBaseNodeClassVec;
+		if (!ima.getChildHierarchically(baseNode, childBaseNodeClassVec)) {
+			Log(Error, "get hierachically child error")
+				.parameter("NodeId", *baseNode->getNodeId())
+				.parameter("DispalyName", *baseNode->getDisplayName());
+			return false;
+		}
+
+		for (uint32_t idx = 0; idx < childBaseNodeClassVec.size(); idx++) {
+			BaseNodeClass::SPtr baseNodeClassChild = childBaseNodeClassVec[idx];
+			OpcUaQualifiedName browseName = *baseNode->getBrowseName();
+
+			size_t size = browseNames.pathNames()->size();
+			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
+
+			if (!readChilds(baseNodeClassChild, browseNames)) {
+				Log(Error, "read childs error")
+					.parameter("NodeId", *baseNode->getNodeId())
+					.parameter("BrowseName", browseName);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	NodeInfoVariableType::readNodeInfo(const BaseNodeClass::SPtr& baseNode, const BrowseName& browseName)
+	{
+		Log(Debug, "read node information")
+			.parameter("NodeId", *baseNode->getNodeId())
+			.parameter("DisplayName", *baseNode->getDisplayName());
 
 		// FIXME: todo
-		return true;
+
+		return false;
 	}
 
 }
