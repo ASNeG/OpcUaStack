@@ -148,6 +148,7 @@ namespace OpcUaStackServer
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+		ss << "#include \"OpcUaStackServer/VariableType/VariableBase.h\"" << std::endl;
 
 		//
 		// added namespace
@@ -191,6 +192,7 @@ namespace OpcUaStackServer
 		//
 		ss << prefix << std::endl;
 		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << std::endl;
+		ss << prefix << ": public VariableBase" << std::endl;
 
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
@@ -320,6 +322,7 @@ namespace OpcUaStackServer
 		}
 
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
+		ss << prefix << ": VariableBase()" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -334,6 +337,7 @@ namespace OpcUaStackServer
 		}
 
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(const " <<nodeInfo_.className()  << "& value)" << std::endl;
+		ss << prefix << ": VariableBase()" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "}" << std::endl;
 

@@ -16,11 +16,13 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
    
    class DLLEXPORT AnalogItemType
+   : public VariableBase
    {
      public:
        typedef boost::shared_ptr<AnalogItemType> SPtr;

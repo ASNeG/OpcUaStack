@@ -15,10 +15,12 @@ namespace OpcUaStackServer
 {
     
     AnalogItemType::AnalogItemType(void)
+    : VariableBase()
     {
     }
     
     AnalogItemType::AnalogItemType(const AnalogItemType& value)
+    : VariableBase()
     {
     }
     

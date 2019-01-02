@@ -47,6 +47,8 @@ class DLLEXPORT VariableTypeField
 	 */
 	~VariableTypeField(void);
 
+  private:
+
 };
 
 }
