@@ -111,6 +111,12 @@ namespace OpcUaStackCore
 			const OpcUaQualifiedName& pathElement5
 		);
 
+		void out(std::ostream& os) const;
+		friend std::ostream& operator<<(std::ostream& os, const BrowseName& value) {
+			value.out(os);
+			return os;
+		}
+
 	  private:
 		OpcUaNodeId nodeId_;
 		OpcUaQualifiedNameArray::SPtr pathNames_;

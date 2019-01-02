@@ -281,4 +281,13 @@ namespace OpcUaStackCore
 		pathNames_->push_back(element);
 	}
 
+	void
+	BrowseName::out(std::ostream& os) const
+	{
+		os << "NodeId=" << nodeId_;
+		if (pathNames_ != nullptr) {
+			os << ", Path=" << *pathNames_;
+		}
+	}
+
 }
