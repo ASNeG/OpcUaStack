@@ -42,6 +42,15 @@ namespace OpcUaStackCore
 	}
 
 	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId);
+	}
+
+	BrowseName::BrowseName(
 		const OpcUaNodeId& nodeId,
 		const OpcUaQualifiedName& pathElement
 	)
@@ -127,6 +136,20 @@ namespace OpcUaStackCore
 	BrowseName::pathNames(void)
 	{
 		return pathNames_;
+	}
+
+	bool
+	BrowseName::pushBack(const OpcUaQualifiedName& pathElement)
+	{
+		return pathNames_->push_back(constructSPtr<OpcUaQualifiedName>(pathElement));
+	}
+
+	void
+	BrowseName::set(
+		const OpcUaNodeId& nodeId
+	)
+	{
+		nodeId_ = nodeId;
 	}
 
 	void
