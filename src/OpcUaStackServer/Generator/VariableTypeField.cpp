@@ -28,4 +28,28 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	VariableTypeField::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	std::string&
+	VariableTypeField::name(void)
+	{
+		return name_;
+	}
+
+	void
+	VariableTypeField::variableName(const std::string& variableName)
+	{
+		variableName_ = variableName;
+	}
+
+	std::string&
+	VariableTypeField::variableName(void)
+	{
+		return variableName_;
+	}
+
 }

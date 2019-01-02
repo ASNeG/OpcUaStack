@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <vector>
+#include <map>
 
 #include "OpcUaStackCore/Base/os.h"
 
@@ -36,6 +37,7 @@ class DLLEXPORT VariableTypeField
   public:
 	typedef boost::shared_ptr<VariableTypeField> SPtr;
 	typedef std::vector<VariableTypeField::SPtr> Vec;
+	typedef std::map<std::string, VariableTypeField::SPtr> Map;
 
 	/**
 	 * constructor
@@ -47,7 +49,14 @@ class DLLEXPORT VariableTypeField
 	 */
 	~VariableTypeField(void);
 
+	void name(const std::string& name);
+	std::string& name(void);
+	void variableName(const std::string& variableName);
+	std::string& variableName(void);
+
   private:
+	std::string name_;
+	std::string variableName_;
 
 };
 

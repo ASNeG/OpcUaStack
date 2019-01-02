@@ -36,6 +36,8 @@ namespace OpcUaStackServer
 	, parentClassName_("")
 	, directory_("")
 	, parentDirectory_("")
+
+	, variableTypeFieldMap_()
 	{
 	}
 
@@ -167,6 +169,12 @@ namespace OpcUaStackServer
 		return description_;
 	}
 
+	VariableTypeField::Map&
+	NodeInfoVariableType::variableTypeFieldMap(void)
+	{
+		return variableTypeFieldMap_;
+	}
+
 	bool
 	NodeInfoVariableType::readValues(const OpcUaNodeId& variableTypeNodeId)
 	{
@@ -253,14 +261,32 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeInfoVariableType::readNodeInfo(const BaseNodeClass::SPtr& baseNode, const BrowseName& browseName)
+	NodeInfoVariableType::readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
 	{
 		Log(Debug, "read node information")
 			.parameter("NodeId", *baseNode->getNodeId())
 			.parameter("DisplayName", *baseNode->getDisplayName())
-			.parameter("BrowsePath", browseName);
+			.parameter("BrowsePath", browsePath);
 
-		// FIXME: todo
+		// create name
+		std::string name;
+		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
+			OpcUaQualifiedName::SPtr browseName;
+			browsePath.pathNames()->get(idx, browseName);
+			if (!name.empty()) name += "_";
+			name += browseName->name().toStdString();
+		}
+		if (!name.empty()) name += "_";
+		name += "Variable";
+
+		// create variable name
+		std::string variableName = boost::to_lower_copy(name.substr(0,1)) + name.substr(1) + "_";
+
+		// create variable type field
+		VariableTypeField::SPtr variableTypeField = constructSPtr<VariableTypeField>();
+		variableTypeField->name(name);
+		variableTypeField->variableName(variableName);
+		variableTypeFieldMap_.insert(std::make_pair(name, variableTypeField));
 
 		return true;
 	}

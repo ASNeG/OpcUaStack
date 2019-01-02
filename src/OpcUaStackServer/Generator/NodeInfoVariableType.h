@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
 
 #include "OpcUaStackServer/Generator/NodeInfo.h"
-#include "OpcUaStackServer/Generator/DataTypeField.h"
+#include "OpcUaStackServer/Generator/VariableTypeField.h"
 #include "OpcUaStackServer/Generator/NumberNamespaceMap.h"
 
 using namespace OpcUaStackCore;
@@ -63,12 +63,13 @@ class DLLEXPORT NodeInfoVariableType
 	std::string& namespaceName(void);
 	std::string directory(void);
 	std::string& description(void);
+	VariableTypeField::Map& variableTypeFieldMap(void);
 
 
   private:
 	bool readValues(const OpcUaNodeId& variableTypeNodeId);
 	bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
-	bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, const BrowseName& browseName);
+	bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 
 	NumberNamespaceMap numberNamespaceMap_;
 	OpcUaNodeId variableTypeNodeId_;
@@ -84,6 +85,8 @@ class DLLEXPORT NodeInfoVariableType
 	std::string directory_;
 	std::string parentDirectory_;
 	std::string description_;
+
+	VariableTypeField::Map variableTypeFieldMap_;
 };
 
 }
