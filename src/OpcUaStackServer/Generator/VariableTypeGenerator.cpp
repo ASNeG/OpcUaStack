@@ -104,6 +104,11 @@ namespace OpcUaStackServer
 			generateHeaderComments() &&
 			generateHeaderBegin() &&
 			    generateHeaderClassBegin("   ") &&
+				    //generateHeaderClassValueGetter("        ") &&
+			        //generateHeaderClassExtensionInterface("        ") &&
+			        //generateHeaderClassPublic("        ") &&
+			        generateHeaderClassPrivate("    ") &&
+			        generateHeaderClassValueDefinition("        ") &&
 				generateHeaderClassEnd("   ") &&
 			generateHeaderEnd();
 	}
@@ -222,7 +227,36 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	VariableTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
+	{
+		std::stringstream ss;
 
+		//
+		// added private
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "  private:" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateHeaderClassValueDefinition(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added value definition
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			ss << prefix << "ServerVariable::SPtr " << variableTypeField.second->variableName() << ";" << std::endl;
+		}
+
+		headerContent_ += ss.str();
+		return true;
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -323,6 +357,14 @@ namespace OpcUaStackServer
 
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
 		ss << prefix << ": VariableBase()" << std::endl;
+
+		//
+		// added value definition
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			ss << prefix << ", " << variableTypeField.second->variableName() << "(constructSPtr<ServerVariable>(\"" << variableTypeField.second->name() << "\"))" << std::endl;
+		}
+
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "}" << std::endl;
 

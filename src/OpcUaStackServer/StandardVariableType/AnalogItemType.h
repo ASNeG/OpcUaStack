@@ -31,6 +31,14 @@ namespace OpcUaStackServer
        AnalogItemType(void);
        AnalogItemType(const AnalogItemType& value);
        virtual ~AnalogItemType(void);
+    
+      private:
+        ServerVariable::SPtr definition_Variable_;
+        ServerVariable::SPtr eURange_Variable_;
+        ServerVariable::SPtr engineeringUnits_Variable_;
+        ServerVariable::SPtr instrumentRange_Variable_;
+        ServerVariable::SPtr valuePrecision_Variable_;
+        ServerVariable::SPtr variable_;
    
    };
 
