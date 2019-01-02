@@ -19,6 +19,7 @@
 
 #include "OpcUaStackServer/Generator/NodeInfoVariableType.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
 namespace OpcUaStackServer
 {
@@ -285,11 +286,18 @@ namespace OpcUaStackServer
 		// create function name
 		std::string functionName = boost::to_lower_copy(name.substr(0,1)) + name.substr(1);
 
+		// create data type node identifier
+		NodeSetNamespace nodeSetNamespace;
+		boost::optional<OpcUaNodeId&> typeNodeId = baseNode->getDataType();
+		std::string typeNamespaceName = nodeSetNamespace.globalNamespaceVec()[typeNodeId->namespaceIndex()];
+
 		// create variable type field
 		VariableTypeField::SPtr variableTypeField = constructSPtr<VariableTypeField>();
 		variableTypeField->name(name);
 		variableTypeField->variableName(variableName);
 		variableTypeField->functionName(functionName);
+		variableTypeField->typeNamespaceName(typeNamespaceName);
+		variableTypeField->typeNodeId(*typeNodeId);
 		variableTypeFieldMap_.insert(std::make_pair(name, variableTypeField));
 
 		return true;

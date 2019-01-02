@@ -24,7 +24,9 @@
 #include <map>
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -55,11 +57,17 @@ class DLLEXPORT VariableTypeField
 	std::string& variableName(void);
 	void functionName(const std::string& functionName);
 	std::string& functionName(void);
+	void typeNamespaceName(const std::string& namespaceName);
+	std::string& typeNamespaceName(void);
+	void typeNodeId(const OpcUaNodeId& typeNodeId);
+	OpcUaNodeId& typeNodeId(void);
 
   private:
 	std::string name_;
 	std::string variableName_;
 	std::string functionName_;
+	std::string typeNamespaceName_;
+	OpcUaNodeId typeNodeId_;
 
 };
 
