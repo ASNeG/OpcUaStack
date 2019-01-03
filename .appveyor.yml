@@ -2,7 +2,6 @@ image:
   - Visual Studio 2017
 
 build_script:
-  - set OPENSSL_ROOT_DIR
   - build.bat -t local -B Release -i .\ASNeG -vs "Visual Studio 15 2017 Win64"
   - build.bat -t tst -B Release -s .\ASNeG -vs "Visual Studio 15 2017 Win64"
 
