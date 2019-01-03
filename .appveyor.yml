@@ -1,7 +1,7 @@
 image:
-  - Visual Studio 2015
+  - Visual Studio 2017
 
 build_script:
-  - build.bat -t local -B Release -i .\ASNeG -vs "Visual Studio 14 2015 Win64"
-  - build.bat -t tst -B Release -s .\ASNeG -vs "Visual Studio 14 2015 Win64"
+  - build.bat -t local -B Release -i .\ASNeG -vs "Visual Studio 15 2017 Win64"
+  - build.bat -t tst -B Release -s .\ASNeG -vs "Visual Studio 15 2917 Win64"
 
