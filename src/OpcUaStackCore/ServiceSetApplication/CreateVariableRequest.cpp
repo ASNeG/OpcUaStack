@@ -73,4 +73,14 @@ namespace OpcUaStackCore
     	return variableInstance_;
     }
 
+	void
+	CreateVariableRequest::opcUaBinaryEncode(std::ostream& os) const
+	{
+	}
+
+	void
+	CreateVariableRequest::opcUaBinaryDecode(std::istream& is)
+	{
+	}
+
 }
