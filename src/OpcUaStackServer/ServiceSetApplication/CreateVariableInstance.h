@@ -35,12 +35,27 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<CreateVariableInstance> SPtr;
 
 		CreateVariableInstance(void);
+		CreateVariableInstance(
+			const OpcUaNodeId& parentNodeId,
+			const OpcUaNodeId& referenceTypeNodeId,
+			Object::SPtr& variableInstance
+		);
 		virtual ~CreateVariableInstance(void);
+
+		void parentNodeId(const OpcUaNodeId& parentNodeId);
+		OpcUaNodeId& parentnodeId(void);
+		void referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId);
+		OpcUaNodeId& referenceTypeNodeId(void);
+		void variableInstance(Object::SPtr& variableInstance);
+		Object::SPtr& variableInstace(void);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStatusCode resultCode(void);
 
 	  private:
+		OpcUaNodeId parentNodeId_;
+		OpcUaNodeId referenceTypeNodeId_;
+		Object::SPtr variableInstance_;
 		OpcUaStatusCode resultCode_;
 	};
 

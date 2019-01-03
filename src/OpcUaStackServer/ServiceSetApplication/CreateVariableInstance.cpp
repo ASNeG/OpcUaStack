@@ -24,11 +24,62 @@ namespace OpcUaStackServer
 
 	CreateVariableInstance::CreateVariableInstance(void)
 	: resultCode_(Success)
+	, parentNodeId_()
+	, referenceTypeNodeId_()
+	, variableInstance_()
+	{
+	}
+
+	CreateVariableInstance::CreateVariableInstance(
+		const OpcUaNodeId& parentNodeId,
+		const OpcUaNodeId& referenceTypeNodeId,
+		Object::SPtr& variableInstance
+	)
+	: resultCode_(Success)
+	, parentNodeId_(parentNodeId)
+	, referenceTypeNodeId_(referenceTypeNodeId)
+	, variableInstance_(variableInstance)
 	{
 	}
 
 	CreateVariableInstance::~CreateVariableInstance(void)
 	{
+	}
+
+	void
+	CreateVariableInstance::parentNodeId(const OpcUaNodeId& parentNodeId)
+	{
+		parentNodeId_ = parentNodeId;
+	}
+
+	OpcUaNodeId&
+	CreateVariableInstance::parentnodeId(void)
+	{
+		return parentNodeId_;
+	}
+
+	void
+	CreateVariableInstance::referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId)
+	{
+		referenceTypeNodeId_ = referenceTypeNodeId;
+	}
+
+	OpcUaNodeId&
+	CreateVariableInstance::referenceTypeNodeId(void)
+	{
+		return referenceTypeNodeId_;
+	}
+
+	void
+	CreateVariableInstance::variableInstance(Object::SPtr& variableInstance)
+	{
+		variableInstance_ = variableInstance;
+	}
+
+	Object::SPtr&
+	CreateVariableInstance::variableInstace(void)
+	{
+		return variableInstance_;
 	}
 
 	bool
