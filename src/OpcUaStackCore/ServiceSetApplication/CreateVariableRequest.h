@@ -42,9 +42,6 @@ namespace OpcUaStackCore
         void variableInstance(Object::SPtr& variableInstance);
         Object::SPtr& variableInstance(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
-
 	  private:
 		OpcUaNodeId parentNodeId_;
 		OpcUaNodeId referenceTypeNodeId_;
