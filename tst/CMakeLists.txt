@@ -22,7 +22,6 @@ set(OPCUASTACK_INSTALL_PREFIX "/" CACHE PATH "opc ua stack intallation prefix")
 find_package(
     OpenSSL 
     "${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}" 
-    COMPONENTS openssl crypto 
     REQUIRED
 )
 

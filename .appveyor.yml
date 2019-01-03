@@ -4,7 +4,7 @@ image:
 build_script:
   - set PATH=%PATH%;C:\Libraries\boost_1_67_0
   - echo %PATH%
-  - build.bat -t local -B Release -i .\ASNeG -vs "Visual Studio 15 2017 Win64"
-  - build.bat -t tst -B Release -s .\ASNeG -vs "Visual Studio 15 2017 Win64"
+  - build.bat -t local -B Release -i ..\ASNeG -vs "Ninja"
+  - build.bat -t tst -B Release -s ASNeG -vs "Ninja"
 
 

@@ -55,7 +55,6 @@ set VS_GENERATOR=""
     goto :parse
 
 :execute
-
 set ARCH="x86"
 if %VS_GENERATOR%=="" goto :set_build_suffix
 
@@ -68,34 +67,29 @@ set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
 if "%COMMAND%" == "" (
     call:build_local
 	
-	pause
 	goto:eof
 )
 
 if "%COMMAND%" == "local" (
     call:build_local
 	
-	pause
 	goto:eof
 )
 
 if "%COMMAND%" == "msi" (
     call:build_msi
 	
-	pause
 	goto:eof
 )
 
 if "%COMMAND%" == "tst" (
     call:build_tst
 	
-	pause
 	goto:eof
 )
 
 call:usage
 
-pause
 goto:eof
 
 
