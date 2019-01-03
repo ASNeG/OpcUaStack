@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -2080,6 +2080,10 @@
 #define OpcUaId_FireEventResponse_Encoding_DefaultBinary 				1000015
 #define OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary 		1000016
 #define OpcUaId_BrowsePathToNodeIdResponse_Encoding_DefaultBinary 		1000017
+#define OpcUaId_CreateVariableRequest_Encoding_DefaultBinary 			1000018
+#define OpcUaId_CreateVariableResponse_Encoding_DefaultBinary 			1000019
+#define OpcUaId_CreateObjectRequest_Encoding_DefaultBinary 				1000020
+#define OpcUaId_CreateObjectResponse_Encoding_DefaultBinary 			1000021
 
 #include <map>
 #include <stdint.h>

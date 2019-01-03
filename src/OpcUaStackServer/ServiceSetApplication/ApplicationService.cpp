@@ -71,6 +71,12 @@ namespace OpcUaStackServer
 			case OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary:
 				receiveBrowsePathToNodeIdRequest(serviceTransaction);
 				break;
+			case OpcUaId_CreateVariableRequest_Encoding_DefaultBinary:
+				receiveCreateVariableRequest(serviceTransaction);
+				break;
+			case OpcUaId_CreateObjectRequest_Encoding_DefaultBinary:
+				receiveCreateObjectRequest(serviceTransaction);
+				break;
 			default:
 				Log(Error, "application service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
@@ -518,6 +524,32 @@ namespace OpcUaStackServer
 			getNodeIdFromBrowsePath(browseName, nodeIdResult);
 			res->nodeIdResults()->set(idx, nodeIdResult);
 		}
+
+		trx->statusCode(Success);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveCreateVariableRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		auto trx = boost::static_pointer_cast<ServiceTransactionCreateVariable>(serviceTransaction);
+		auto req = trx->request();
+		auto res = trx->response();
+
+		// FIXME: todo
+
+		trx->statusCode(Success);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveCreateObjectRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		auto trx = boost::static_pointer_cast<ServiceTransactionCreateObject>(serviceTransaction);
+		auto req = trx->request();
+		auto res = trx->response();
+
+		// FIXME: todo
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
