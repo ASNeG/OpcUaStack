@@ -30,13 +30,9 @@ namespace OpcUaStackServer
 	, variableTypeNodeId_()
 	, parentVariableTypeNodeId_()
 	, baseNode_()
-	, parentBaseNode_()
 	, namespaceName_("")
-	, parentNamespaceName_("")
 	, className_("")
-	, parentClassName_("")
 	, directory_("")
-	, parentDirectory_("")
 
 	, variableTypeFieldMap_()
 	{
@@ -72,30 +68,9 @@ namespace OpcUaStackServer
 		}
 
 		//
-		// find parent node in opc ua information model
-		//
-		if (!ima.getSubType(baseNode_, parentVariableTypeNodeId_)) {
-			Log(Error, "parent variable type node identifier do not not exist in information model")
-				.parameter("VariableTypeNodeId", variableTypeNodeId_);
-			return false;
-		}
-		parentBaseNode_ = informationModel_->find(parentVariableTypeNodeId_);
-		if (!parentBaseNode_) {
-			Log(Error, "parent data type node instance do not not exist in information model")
-				.parameter("VariableTypeNodeId", variableTypeNodeId_)
-				.parameter("ParentVariableTypeNodeId", parentVariableTypeNodeId_);
-			return false;
-		}
-
-		//
 		// set namespace name
 		//
 		namespaceName_ = numberNamespaceMap_.getNamespaceName(variableTypeNodeId_.namespaceIndex());
-
-		//
-		// set namespace name of parent
-		//
-		parentNamespaceName_ = numberNamespaceMap_.getNamespaceName(parentVariableTypeNodeId_.namespaceIndex());
 
 		//
 		// set class name
@@ -108,16 +83,6 @@ namespace OpcUaStackServer
 		className_ = displayName->text();
 		className_ = boost::to_upper_copy(className_.substr(0,1)) + className_.substr(1);
 
-		//
-		// set class name of parent
-		//
-		boost::optional<OpcUaLocalizedText&> parentDisplayName = parentBaseNode_->getDisplayName();
-		if (!parentDisplayName) {
-			Log(Error, "display name not found")
-			    .parameter("ParentVariableTypeNode", parentVariableTypeNodeId_);
-		}
-		parentClassName_ = parentDisplayName->text();
-		parentClassName_ = boost::to_upper_copy(parentClassName_.substr(0,1)) + parentClassName_.substr(1);
 
 		//
 		// set directory
@@ -127,16 +92,6 @@ namespace OpcUaStackServer
 		}
 		else {
 			directory_ = "CustomerVariableType";
-		}
-
-		//
-		// set directory of parent
-		//
-		if (parentVariableTypeNodeId_.namespaceIndex() == 0) {
-			parentDirectory_ = "StandardVariableType";
-		}
-		else {
-			parentDirectory_ = "CustomerVariableType";
 		}
 
 		//
