@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -14,24 +14,54 @@
 namespace OpcUaStackServer
 {
     
+    /**
+     * The type for variable that represents a process value.
+     */
     BaseDataVariableType::BaseDataVariableType(void)
-    : BaseVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
+    : VariableBase()
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(63));
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)63);
+    }
+    
+    /**
+     * The type for variable that represents a process value.
+     */
+    BaseDataVariableType::BaseDataVariableType(const BaseDataVariableType& value)
+    : VariableBase()
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)63);
     }
     
     BaseDataVariableType::~BaseDataVariableType(void)
     {
     }
-    
-    bool
-    BaseDataVariableType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    BaseDataVariableType::variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        BaseVariableType::linkInstanceWithModel(nodeId);
+        return variable_;
+    }
+
+    void
+    BaseDataVariableType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    BaseDataVariableType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    BaseDataVariableType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

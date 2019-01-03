@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,50 +15,125 @@ namespace OpcUaStackServer
 {
     
     MultiStateDiscreteType::MultiStateDiscreteType(void)
-    : DiscreteItemType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , enumStrings_(constructSPtr<ServerVariable>("EnumStrings"))
+    : VariableBase()
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , enumStrings_Variable_(constructSPtr<ServerVariable>("EnumStrings_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(2376));
-        serverVariables().registerServerVariable(enumStrings_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2376);
+    }
+    
+    MultiStateDiscreteType::MultiStateDiscreteType(const MultiStateDiscreteType& value)
+    : VariableBase()
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , enumStrings_Variable_(constructSPtr<ServerVariable>("EnumStrings_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2376);
     }
     
     MultiStateDiscreteType::~MultiStateDiscreteType(void)
     {
     }
-    
-    bool
-    MultiStateDiscreteType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    MultiStateDiscreteType::definition_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        enumStrings_->addBrowsePath(nodeId, OpcUaQualifiedName("EnumStrings", namespaceIndex_));
-        DiscreteItemType::linkInstanceWithModel(nodeId);
+        return definition_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    MultiStateDiscreteType::enumStrings(void)
+
+    ServerVariable::SPtr&
+    MultiStateDiscreteType::enumStrings_Variable(void)
     {
-        return enumStrings_->baseNode().lock();
+        return enumStrings_Variable_;
     }
-    
-    bool
-    MultiStateDiscreteType::setEnumStrings(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    MultiStateDiscreteType::valuePrecision_Variable(void)
     {
-        return enumStrings_->setDataValue(dataValue);
+        return valuePrecision_Variable_;
     }
-    
-    bool
-    MultiStateDiscreteType::getEnumStrings(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    MultiStateDiscreteType::variable(void)
     {
-        return enumStrings_->getDataValue(dataValue);
+        return variable_;
     }
-    
+
     void
-    MultiStateDiscreteType::setUpdateCallbackEnumStrings(Callback::SPtr& callback)
+    MultiStateDiscreteType::definition_Variable(ServerVariable::SPtr& serverVariable)
     {
-        enumStrings_->callback(callback);
+        definition_Variable_ = serverVariable;
+    }
+
+    void
+    MultiStateDiscreteType::enumStrings_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        enumStrings_Variable_ = serverVariable;
+    }
+
+    void
+    MultiStateDiscreteType::valuePrecision_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        valuePrecision_Variable_ = serverVariable;
+    }
+
+    void
+    MultiStateDiscreteType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    MultiStateDiscreteType::get_Definition_Variable(OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    MultiStateDiscreteType::get_EnumStrings_Variable(OpcUaDataValue& dataValue)
+    {
+        return enumStrings_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    MultiStateDiscreteType::get_ValuePrecision_Variable(OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    MultiStateDiscreteType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    MultiStateDiscreteType::set_Definition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    MultiStateDiscreteType::set_EnumStrings_Variable(const OpcUaDataValue& dataValue)
+    {
+        return enumStrings_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    MultiStateDiscreteType::set_ValuePrecision_Variable(const OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    MultiStateDiscreteType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

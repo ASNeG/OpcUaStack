@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,158 +15,177 @@ namespace OpcUaStackServer
 {
     
     TransitionVariableType::TransitionVariableType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , id_(constructSPtr<ServerVariable>("Id"))
-    , name_(constructSPtr<ServerVariable>("Name"))
-    , number_(constructSPtr<ServerVariable>("Number"))
-    , transitionTime_(constructSPtr<ServerVariable>("TransitionTime"))
-    , effectiveTransitionTime_(constructSPtr<ServerVariable>("EffectiveTransitionTime"))
+    : VariableBase()
+    , effectiveTransitionTime_Variable_(constructSPtr<ServerVariable>("EffectiveTransitionTime_Variable"))
+    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
+    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
+    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
+    , transitionTime_Variable_(constructSPtr<ServerVariable>("TransitionTime_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(2762));
-        serverVariables().registerServerVariable(id_);
-        serverVariables().registerServerVariable(name_);
-        serverVariables().registerServerVariable(number_);
-        serverVariables().registerServerVariable(transitionTime_);
-        serverVariables().registerServerVariable(effectiveTransitionTime_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2762);
+    }
+    
+    TransitionVariableType::TransitionVariableType(const TransitionVariableType& value)
+    : VariableBase()
+    , effectiveTransitionTime_Variable_(constructSPtr<ServerVariable>("EffectiveTransitionTime_Variable"))
+    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
+    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
+    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
+    , transitionTime_Variable_(constructSPtr<ServerVariable>("TransitionTime_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2762);
     }
     
     TransitionVariableType::~TransitionVariableType(void)
     {
     }
-    
-    bool
-    TransitionVariableType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    TransitionVariableType::effectiveTransitionTime_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        id_->addBrowsePath(nodeId, OpcUaQualifiedName("Id", namespaceIndex_));
-        name_->addBrowsePath(nodeId, OpcUaQualifiedName("Name", namespaceIndex_));
-        number_->addBrowsePath(nodeId, OpcUaQualifiedName("Number", namespaceIndex_));
-        transitionTime_->addBrowsePath(nodeId, OpcUaQualifiedName("TransitionTime", namespaceIndex_));
-        effectiveTransitionTime_->addBrowsePath(nodeId, OpcUaQualifiedName("EffectiveTransitionTime", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return effectiveTransitionTime_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    TransitionVariableType::id(void)
+
+    ServerVariable::SPtr&
+    TransitionVariableType::id_Variable(void)
     {
-        return id_->baseNode().lock();
+        return id_Variable_;
     }
-    
-    bool
-    TransitionVariableType::setId(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    TransitionVariableType::name_Variable(void)
     {
-        return id_->setDataValue(dataValue);
+        return name_Variable_;
     }
-    
-    bool
-    TransitionVariableType::getId(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    TransitionVariableType::number_Variable(void)
     {
-        return id_->getDataValue(dataValue);
+        return number_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    TransitionVariableType::transitionTime_Variable(void)
+    {
+        return transitionTime_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    TransitionVariableType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    TransitionVariableType::setUpdateCallbackId(Callback::SPtr& callback)
+    TransitionVariableType::effectiveTransitionTime_Variable(ServerVariable::SPtr& serverVariable)
     {
-        id_->callback(callback);
+        effectiveTransitionTime_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    TransitionVariableType::name(void)
-    {
-        return name_->baseNode().lock();
-    }
-    
-    bool
-    TransitionVariableType::setName(const OpcUaDataValue& dataValue)
-    {
-        return name_->setDataValue(dataValue);
-    }
-    
-    bool
-    TransitionVariableType::getName(OpcUaDataValue& dataValue)
-    {
-        return name_->getDataValue(dataValue);
-    }
-    
+
     void
-    TransitionVariableType::setUpdateCallbackName(Callback::SPtr& callback)
+    TransitionVariableType::id_Variable(ServerVariable::SPtr& serverVariable)
     {
-        name_->callback(callback);
+        id_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    TransitionVariableType::number(void)
-    {
-        return number_->baseNode().lock();
-    }
-    
-    bool
-    TransitionVariableType::setNumber(const OpcUaDataValue& dataValue)
-    {
-        return number_->setDataValue(dataValue);
-    }
-    
-    bool
-    TransitionVariableType::getNumber(OpcUaDataValue& dataValue)
-    {
-        return number_->getDataValue(dataValue);
-    }
-    
+
     void
-    TransitionVariableType::setUpdateCallbackNumber(Callback::SPtr& callback)
+    TransitionVariableType::name_Variable(ServerVariable::SPtr& serverVariable)
     {
-        number_->callback(callback);
+        name_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    TransitionVariableType::transitionTime(void)
-    {
-        return transitionTime_->baseNode().lock();
-    }
-    
-    bool
-    TransitionVariableType::setTransitionTime(const OpcUaDataValue& dataValue)
-    {
-        return transitionTime_->setDataValue(dataValue);
-    }
-    
-    bool
-    TransitionVariableType::getTransitionTime(OpcUaDataValue& dataValue)
-    {
-        return transitionTime_->getDataValue(dataValue);
-    }
-    
+
     void
-    TransitionVariableType::setUpdateCallbackTransitionTime(Callback::SPtr& callback)
+    TransitionVariableType::number_Variable(ServerVariable::SPtr& serverVariable)
     {
-        transitionTime_->callback(callback);
+        number_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    TransitionVariableType::effectiveTransitionTime(void)
-    {
-        return effectiveTransitionTime_->baseNode().lock();
-    }
-    
-    bool
-    TransitionVariableType::setEffectiveTransitionTime(const OpcUaDataValue& dataValue)
-    {
-        return effectiveTransitionTime_->setDataValue(dataValue);
-    }
-    
-    bool
-    TransitionVariableType::getEffectiveTransitionTime(OpcUaDataValue& dataValue)
-    {
-        return effectiveTransitionTime_->getDataValue(dataValue);
-    }
-    
+
     void
-    TransitionVariableType::setUpdateCallbackEffectiveTransitionTime(Callback::SPtr& callback)
+    TransitionVariableType::transitionTime_Variable(ServerVariable::SPtr& serverVariable)
     {
-        effectiveTransitionTime_->callback(callback);
+        transitionTime_Variable_ = serverVariable;
+    }
+
+    void
+    TransitionVariableType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    TransitionVariableType::get_EffectiveTransitionTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return effectiveTransitionTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::get_Id_Variable(OpcUaDataValue& dataValue)
+    {
+        return id_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::get_Name_Variable(OpcUaDataValue& dataValue)
+    {
+        return name_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::get_Number_Variable(OpcUaDataValue& dataValue)
+    {
+        return number_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::get_TransitionTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return transitionTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::set_EffectiveTransitionTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return effectiveTransitionTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::set_Id_Variable(const OpcUaDataValue& dataValue)
+    {
+        return id_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::set_Name_Variable(const OpcUaDataValue& dataValue)
+    {
+        return name_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::set_Number_Variable(const OpcUaDataValue& dataValue)
+    {
+        return number_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::set_TransitionTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return transitionTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TransitionVariableType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

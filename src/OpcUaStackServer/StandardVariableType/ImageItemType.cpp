@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,77 +15,281 @@ namespace OpcUaStackServer
 {
     
     ImageItemType::ImageItemType(void)
-    : ArrayItemType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , xAxisDefinition_(constructSPtr<ServerVariable>("XAxisDefinition"))
-    , yAxisDefinition_(constructSPtr<ServerVariable>("YAxisDefinition"))
+    : VariableBase()
+    , axisScaleType_Variable_(constructSPtr<ServerVariable>("AxisScaleType_Variable"))
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , eURange_Variable_(constructSPtr<ServerVariable>("EURange_Variable"))
+    , engineeringUnits_Variable_(constructSPtr<ServerVariable>("EngineeringUnits_Variable"))
+    , instrumentRange_Variable_(constructSPtr<ServerVariable>("InstrumentRange_Variable"))
+    , title_Variable_(constructSPtr<ServerVariable>("Title_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , xAxisDefinition_Variable_(constructSPtr<ServerVariable>("XAxisDefinition_Variable"))
+    , yAxisDefinition_Variable_(constructSPtr<ServerVariable>("YAxisDefinition_Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(12047));
-        serverVariables().registerServerVariable(xAxisDefinition_);
-        serverVariables().registerServerVariable(yAxisDefinition_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)12047);
+    }
+    
+    ImageItemType::ImageItemType(const ImageItemType& value)
+    : VariableBase()
+    , axisScaleType_Variable_(constructSPtr<ServerVariable>("AxisScaleType_Variable"))
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , eURange_Variable_(constructSPtr<ServerVariable>("EURange_Variable"))
+    , engineeringUnits_Variable_(constructSPtr<ServerVariable>("EngineeringUnits_Variable"))
+    , instrumentRange_Variable_(constructSPtr<ServerVariable>("InstrumentRange_Variable"))
+    , title_Variable_(constructSPtr<ServerVariable>("Title_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , xAxisDefinition_Variable_(constructSPtr<ServerVariable>("XAxisDefinition_Variable"))
+    , yAxisDefinition_Variable_(constructSPtr<ServerVariable>("YAxisDefinition_Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)12047);
     }
     
     ImageItemType::~ImageItemType(void)
     {
     }
-    
-    bool
-    ImageItemType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    ImageItemType::axisScaleType_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        xAxisDefinition_->addBrowsePath(nodeId, OpcUaQualifiedName("XAxisDefinition", namespaceIndex_));
-        yAxisDefinition_->addBrowsePath(nodeId, OpcUaQualifiedName("YAxisDefinition", namespaceIndex_));
-        ArrayItemType::linkInstanceWithModel(nodeId);
+        return axisScaleType_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    ImageItemType::xAxisDefinition(void)
+
+    ServerVariable::SPtr&
+    ImageItemType::definition_Variable(void)
     {
-        return xAxisDefinition_->baseNode().lock();
+        return definition_Variable_;
     }
-    
-    bool
-    ImageItemType::setXAxisDefinition(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    ImageItemType::eURange_Variable(void)
     {
-        return xAxisDefinition_->setDataValue(dataValue);
+        return eURange_Variable_;
     }
-    
-    bool
-    ImageItemType::getXAxisDefinition(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    ImageItemType::engineeringUnits_Variable(void)
     {
-        return xAxisDefinition_->getDataValue(dataValue);
+        return engineeringUnits_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    ImageItemType::instrumentRange_Variable(void)
+    {
+        return instrumentRange_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ImageItemType::title_Variable(void)
+    {
+        return title_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ImageItemType::valuePrecision_Variable(void)
+    {
+        return valuePrecision_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ImageItemType::variable(void)
+    {
+        return variable_;
+    }
+
+    ServerVariable::SPtr&
+    ImageItemType::xAxisDefinition_Variable(void)
+    {
+        return xAxisDefinition_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ImageItemType::yAxisDefinition_Variable(void)
+    {
+        return yAxisDefinition_Variable_;
+    }
+
     void
-    ImageItemType::setUpdateCallbackXAxisDefinition(Callback::SPtr& callback)
+    ImageItemType::axisScaleType_Variable(ServerVariable::SPtr& serverVariable)
     {
-        xAxisDefinition_->callback(callback);
+        axisScaleType_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ImageItemType::yAxisDefinition(void)
-    {
-        return yAxisDefinition_->baseNode().lock();
-    }
-    
-    bool
-    ImageItemType::setYAxisDefinition(const OpcUaDataValue& dataValue)
-    {
-        return yAxisDefinition_->setDataValue(dataValue);
-    }
-    
-    bool
-    ImageItemType::getYAxisDefinition(OpcUaDataValue& dataValue)
-    {
-        return yAxisDefinition_->getDataValue(dataValue);
-    }
-    
+
     void
-    ImageItemType::setUpdateCallbackYAxisDefinition(Callback::SPtr& callback)
+    ImageItemType::definition_Variable(ServerVariable::SPtr& serverVariable)
     {
-        yAxisDefinition_->callback(callback);
+        definition_Variable_ = serverVariable;
+    }
+
+    void
+    ImageItemType::eURange_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        eURange_Variable_ = serverVariable;
+    }
+
+    void
+    ImageItemType::engineeringUnits_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        engineeringUnits_Variable_ = serverVariable;
+    }
+
+    void
+    ImageItemType::instrumentRange_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        instrumentRange_Variable_ = serverVariable;
+    }
+
+    void
+    ImageItemType::title_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        title_Variable_ = serverVariable;
+    }
+
+    void
+    ImageItemType::valuePrecision_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        valuePrecision_Variable_ = serverVariable;
+    }
+
+    void
+    ImageItemType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    void
+    ImageItemType::xAxisDefinition_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        xAxisDefinition_Variable_ = serverVariable;
+    }
+
+    void
+    ImageItemType::yAxisDefinition_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        yAxisDefinition_Variable_ = serverVariable;
+    }
+
+    bool
+    ImageItemType::get_AxisScaleType_Variable(OpcUaDataValue& dataValue)
+    {
+        return axisScaleType_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::get_Definition_Variable(OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::get_EURange_Variable(OpcUaDataValue& dataValue)
+    {
+        return eURange_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::get_EngineeringUnits_Variable(OpcUaDataValue& dataValue)
+    {
+        return engineeringUnits_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::get_InstrumentRange_Variable(OpcUaDataValue& dataValue)
+    {
+        return instrumentRange_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::get_Title_Variable(OpcUaDataValue& dataValue)
+    {
+        return title_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::get_ValuePrecision_Variable(OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::get_XAxisDefinition_Variable(OpcUaDataValue& dataValue)
+    {
+        return xAxisDefinition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::get_YAxisDefinition_Variable(OpcUaDataValue& dataValue)
+    {
+        return yAxisDefinition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::set_AxisScaleType_Variable(const OpcUaDataValue& dataValue)
+    {
+        return axisScaleType_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::set_Definition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::set_EURange_Variable(const OpcUaDataValue& dataValue)
+    {
+        return eURange_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::set_EngineeringUnits_Variable(const OpcUaDataValue& dataValue)
+    {
+        return engineeringUnits_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::set_InstrumentRange_Variable(const OpcUaDataValue& dataValue)
+    {
+        return instrumentRange_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::set_Title_Variable(const OpcUaDataValue& dataValue)
+    {
+        return title_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::set_ValuePrecision_Variable(const OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::set_XAxisDefinition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return xAxisDefinition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ImageItemType::set_YAxisDefinition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return yAxisDefinition_Variable_->setDataValue(dataValue);
     }
 
 }

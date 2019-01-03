@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,77 +15,99 @@ namespace OpcUaStackServer
 {
     
     OptionSetType::OptionSetType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , optionSetValues_(constructSPtr<ServerVariable>("OptionSetValues"))
-    , bitMask_(constructSPtr<ServerVariable>("BitMask"))
+    : VariableBase()
+    , bitMask_Variable_(constructSPtr<ServerVariable>("BitMask_Variable"))
+    , optionSetValues_Variable_(constructSPtr<ServerVariable>("OptionSetValues_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(11487));
-        serverVariables().registerServerVariable(optionSetValues_);
-        serverVariables().registerServerVariable(bitMask_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)11487);
+    }
+    
+    OptionSetType::OptionSetType(const OptionSetType& value)
+    : VariableBase()
+    , bitMask_Variable_(constructSPtr<ServerVariable>("BitMask_Variable"))
+    , optionSetValues_Variable_(constructSPtr<ServerVariable>("OptionSetValues_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)11487);
     }
     
     OptionSetType::~OptionSetType(void)
     {
     }
-    
-    bool
-    OptionSetType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    OptionSetType::bitMask_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        optionSetValues_->addBrowsePath(nodeId, OpcUaQualifiedName("OptionSetValues", namespaceIndex_));
-        bitMask_->addBrowsePath(nodeId, OpcUaQualifiedName("BitMask", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return bitMask_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    OptionSetType::optionSetValues(void)
+
+    ServerVariable::SPtr&
+    OptionSetType::optionSetValues_Variable(void)
     {
-        return optionSetValues_->baseNode().lock();
+        return optionSetValues_Variable_;
     }
-    
-    bool
-    OptionSetType::setOptionSetValues(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    OptionSetType::variable(void)
     {
-        return optionSetValues_->setDataValue(dataValue);
+        return variable_;
     }
-    
-    bool
-    OptionSetType::getOptionSetValues(OpcUaDataValue& dataValue)
-    {
-        return optionSetValues_->getDataValue(dataValue);
-    }
-    
+
     void
-    OptionSetType::setUpdateCallbackOptionSetValues(Callback::SPtr& callback)
+    OptionSetType::bitMask_Variable(ServerVariable::SPtr& serverVariable)
     {
-        optionSetValues_->callback(callback);
+        bitMask_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    OptionSetType::bitMask(void)
-    {
-        return bitMask_->baseNode().lock();
-    }
-    
-    bool
-    OptionSetType::setBitMask(const OpcUaDataValue& dataValue)
-    {
-        return bitMask_->setDataValue(dataValue);
-    }
-    
-    bool
-    OptionSetType::getBitMask(OpcUaDataValue& dataValue)
-    {
-        return bitMask_->getDataValue(dataValue);
-    }
-    
+
     void
-    OptionSetType::setUpdateCallbackBitMask(Callback::SPtr& callback)
+    OptionSetType::optionSetValues_Variable(ServerVariable::SPtr& serverVariable)
     {
-        bitMask_->callback(callback);
+        optionSetValues_Variable_ = serverVariable;
+    }
+
+    void
+    OptionSetType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    OptionSetType::get_BitMask_Variable(OpcUaDataValue& dataValue)
+    {
+        return bitMask_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    OptionSetType::get_OptionSetValues_Variable(OpcUaDataValue& dataValue)
+    {
+        return optionSetValues_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    OptionSetType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    OptionSetType::set_BitMask_Variable(const OpcUaDataValue& dataValue)
+    {
+        return bitMask_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    OptionSetType::set_OptionSetValues_Variable(const OpcUaDataValue& dataValue)
+    {
+        return optionSetValues_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    OptionSetType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

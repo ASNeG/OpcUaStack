@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,23 +15,99 @@ namespace OpcUaStackServer
 {
     
     DiscreteItemType::DiscreteItemType(void)
-    : DataItemType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
+    : VariableBase()
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(2372));
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2372);
+    }
+    
+    DiscreteItemType::DiscreteItemType(const DiscreteItemType& value)
+    : VariableBase()
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2372);
     }
     
     DiscreteItemType::~DiscreteItemType(void)
     {
     }
-    
-    bool
-    DiscreteItemType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    DiscreteItemType::definition_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        DataItemType::linkInstanceWithModel(nodeId);
+        return definition_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    DiscreteItemType::valuePrecision_Variable(void)
+    {
+        return valuePrecision_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    DiscreteItemType::variable(void)
+    {
+        return variable_;
+    }
+
+    void
+    DiscreteItemType::definition_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        definition_Variable_ = serverVariable;
+    }
+
+    void
+    DiscreteItemType::valuePrecision_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        valuePrecision_Variable_ = serverVariable;
+    }
+
+    void
+    DiscreteItemType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    DiscreteItemType::get_Definition_Variable(OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    DiscreteItemType::get_ValuePrecision_Variable(OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    DiscreteItemType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    DiscreteItemType::set_Definition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    DiscreteItemType::set_ValuePrecision_Variable(const OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    DiscreteItemType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

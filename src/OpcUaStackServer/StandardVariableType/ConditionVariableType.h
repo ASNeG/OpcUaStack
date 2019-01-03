@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_ConditionVariableType_h__
@@ -14,33 +14,39 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/BaseDataVariableType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT ConditionVariableType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<ConditionVariableType> SPtr;
+       typedef std::vector<ConditionVariableType::SPtr> Vec;
+   
+       ConditionVariableType(void);
+       ConditionVariableType(const ConditionVariableType& value);
+       virtual ~ConditionVariableType(void);
+
+        void sourceTimestamp_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& sourceTimestamp_Variable(void);
+        bool get_SourceTimestamp_Variable(OpcUaDataValue& dataValue);
+        bool set_SourceTimestamp_Variable(const OpcUaDataValue& dataValue);
+
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT ConditionVariableType
-    : public BaseDataVariableType
-    {
-      public:
-        typedef boost::shared_ptr<ConditionVariableType> SPtr;
-    
-        ConditionVariableType(void);
-        virtual ~ConditionVariableType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr sourceTimestamp(void);
-        bool setSourceTimestamp(const OpcUaDataValue& dataValue);
-        bool getSourceTimestamp(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSourceTimestamp(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr sourceTimestamp_;
-    
-    };
+        ServerVariable::SPtr sourceTimestamp_Variable_;
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

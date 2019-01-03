@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_MultiStateValueDiscreteType_h__
@@ -14,39 +14,57 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/DiscreteItemType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT MultiStateValueDiscreteType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<MultiStateValueDiscreteType> SPtr;
+       typedef std::vector<MultiStateValueDiscreteType::SPtr> Vec;
+   
+       MultiStateValueDiscreteType(void);
+       MultiStateValueDiscreteType(const MultiStateValueDiscreteType& value);
+       virtual ~MultiStateValueDiscreteType(void);
+
+        void definition_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& definition_Variable(void);
+        bool get_Definition_Variable(OpcUaDataValue& dataValue);
+        bool set_Definition_Variable(const OpcUaDataValue& dataValue);
+
+        void enumValues_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& enumValues_Variable(void);
+        bool get_EnumValues_Variable(OpcUaDataValue& dataValue);
+        bool set_EnumValues_Variable(const OpcUaDataValue& dataValue);
+
+        void valueAsText_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& valueAsText_Variable(void);
+        bool get_ValueAsText_Variable(OpcUaDataValue& dataValue);
+        bool set_ValueAsText_Variable(const OpcUaDataValue& dataValue);
+
+        void valuePrecision_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& valuePrecision_Variable(void);
+        bool get_ValuePrecision_Variable(OpcUaDataValue& dataValue);
+        bool set_ValuePrecision_Variable(const OpcUaDataValue& dataValue);
+
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT MultiStateValueDiscreteType
-    : public DiscreteItemType
-    {
-      public:
-        typedef boost::shared_ptr<MultiStateValueDiscreteType> SPtr;
-    
-        MultiStateValueDiscreteType(void);
-        virtual ~MultiStateValueDiscreteType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr enumValues(void);
-        bool setEnumValues(const OpcUaDataValue& dataValue);
-        bool getEnumValues(OpcUaDataValue& dataValue);
-        void setUpdateCallbackEnumValues(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr valueAsText(void);
-        bool setValueAsText(const OpcUaDataValue& dataValue);
-        bool getValueAsText(OpcUaDataValue& dataValue);
-        void setUpdateCallbackValueAsText(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr enumValues_;
-        ServerVariable::SPtr valueAsText_;
-    
-    };
+        ServerVariable::SPtr definition_Variable_;
+        ServerVariable::SPtr enumValues_Variable_;
+        ServerVariable::SPtr valueAsText_Variable_;
+        ServerVariable::SPtr valuePrecision_Variable_;
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

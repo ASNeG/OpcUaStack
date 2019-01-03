@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -14,78 +14,106 @@
 namespace OpcUaStackServer
 {
     
+    /**
+     * The type for variable that represents the collection of data type decriptions.
+     */
     DataTypeDictionaryType::DataTypeDictionaryType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , dataTypeVersion_(constructSPtr<ServerVariable>("DataTypeVersion"))
-    , namespaceUri_(constructSPtr<ServerVariable>("NamespaceUri"))
+    : VariableBase()
+    , dataTypeVersion_Variable_(constructSPtr<ServerVariable>("DataTypeVersion_Variable"))
+    , namespaceUri_Variable_(constructSPtr<ServerVariable>("NamespaceUri_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(72));
-        serverVariables().registerServerVariable(dataTypeVersion_);
-        serverVariables().registerServerVariable(namespaceUri_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)72);
+    }
+    
+    /**
+     * The type for variable that represents the collection of data type decriptions.
+     */
+    DataTypeDictionaryType::DataTypeDictionaryType(const DataTypeDictionaryType& value)
+    : VariableBase()
+    , dataTypeVersion_Variable_(constructSPtr<ServerVariable>("DataTypeVersion_Variable"))
+    , namespaceUri_Variable_(constructSPtr<ServerVariable>("NamespaceUri_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)72);
     }
     
     DataTypeDictionaryType::~DataTypeDictionaryType(void)
     {
     }
-    
-    bool
-    DataTypeDictionaryType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    DataTypeDictionaryType::dataTypeVersion_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        dataTypeVersion_->addBrowsePath(nodeId, OpcUaQualifiedName("DataTypeVersion", namespaceIndex_));
-        namespaceUri_->addBrowsePath(nodeId, OpcUaQualifiedName("NamespaceUri", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return dataTypeVersion_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    DataTypeDictionaryType::dataTypeVersion(void)
+
+    ServerVariable::SPtr&
+    DataTypeDictionaryType::namespaceUri_Variable(void)
     {
-        return dataTypeVersion_->baseNode().lock();
+        return namespaceUri_Variable_;
     }
-    
-    bool
-    DataTypeDictionaryType::setDataTypeVersion(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    DataTypeDictionaryType::variable(void)
     {
-        return dataTypeVersion_->setDataValue(dataValue);
+        return variable_;
     }
-    
-    bool
-    DataTypeDictionaryType::getDataTypeVersion(OpcUaDataValue& dataValue)
-    {
-        return dataTypeVersion_->getDataValue(dataValue);
-    }
-    
+
     void
-    DataTypeDictionaryType::setUpdateCallbackDataTypeVersion(Callback::SPtr& callback)
+    DataTypeDictionaryType::dataTypeVersion_Variable(ServerVariable::SPtr& serverVariable)
     {
-        dataTypeVersion_->callback(callback);
+        dataTypeVersion_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    DataTypeDictionaryType::namespaceUri(void)
-    {
-        return namespaceUri_->baseNode().lock();
-    }
-    
-    bool
-    DataTypeDictionaryType::setNamespaceUri(const OpcUaDataValue& dataValue)
-    {
-        return namespaceUri_->setDataValue(dataValue);
-    }
-    
-    bool
-    DataTypeDictionaryType::getNamespaceUri(OpcUaDataValue& dataValue)
-    {
-        return namespaceUri_->getDataValue(dataValue);
-    }
-    
+
     void
-    DataTypeDictionaryType::setUpdateCallbackNamespaceUri(Callback::SPtr& callback)
+    DataTypeDictionaryType::namespaceUri_Variable(ServerVariable::SPtr& serverVariable)
     {
-        namespaceUri_->callback(callback);
+        namespaceUri_Variable_ = serverVariable;
+    }
+
+    void
+    DataTypeDictionaryType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    DataTypeDictionaryType::get_DataTypeVersion_Variable(OpcUaDataValue& dataValue)
+    {
+        return dataTypeVersion_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDictionaryType::get_NamespaceUri_Variable(OpcUaDataValue& dataValue)
+    {
+        return namespaceUri_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDictionaryType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDictionaryType::set_DataTypeVersion_Variable(const OpcUaDataValue& dataValue)
+    {
+        return dataTypeVersion_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDictionaryType::set_NamespaceUri_Variable(const OpcUaDataValue& dataValue)
+    {
+        return namespaceUri_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDictionaryType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

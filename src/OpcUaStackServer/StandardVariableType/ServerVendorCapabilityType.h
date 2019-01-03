@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_ServerVendorCapabilityType_h__
@@ -14,27 +14,33 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/BaseDataVariableType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT ServerVendorCapabilityType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<ServerVendorCapabilityType> SPtr;
+       typedef std::vector<ServerVendorCapabilityType::SPtr> Vec;
+   
+       ServerVendorCapabilityType(void);
+       ServerVendorCapabilityType(const ServerVendorCapabilityType& value);
+       virtual ~ServerVendorCapabilityType(void);
+
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT ServerVendorCapabilityType
-    : public BaseDataVariableType
-    {
-      public:
-        typedef boost::shared_ptr<ServerVendorCapabilityType> SPtr;
-    
-        ServerVendorCapabilityType(void);
-        virtual ~ServerVendorCapabilityType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-    
-    };
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

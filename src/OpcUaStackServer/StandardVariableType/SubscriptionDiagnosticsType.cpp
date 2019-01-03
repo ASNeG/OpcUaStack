@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,860 +15,853 @@ namespace OpcUaStackServer
 {
     
     SubscriptionDiagnosticsType::SubscriptionDiagnosticsType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , sessionId_(constructSPtr<ServerVariable>("SessionId"))
-    , subscriptionId_(constructSPtr<ServerVariable>("SubscriptionId"))
-    , priority_(constructSPtr<ServerVariable>("Priority"))
-    , publishingInterval_(constructSPtr<ServerVariable>("PublishingInterval"))
-    , maxKeepAliveCount_(constructSPtr<ServerVariable>("MaxKeepAliveCount"))
-    , maxLifetimeCount_(constructSPtr<ServerVariable>("MaxLifetimeCount"))
-    , maxNotificationsPerPublish_(constructSPtr<ServerVariable>("MaxNotificationsPerPublish"))
-    , publishingEnabled_(constructSPtr<ServerVariable>("PublishingEnabled"))
-    , modifyCount_(constructSPtr<ServerVariable>("ModifyCount"))
-    , enableCount_(constructSPtr<ServerVariable>("EnableCount"))
-    , disableCount_(constructSPtr<ServerVariable>("DisableCount"))
-    , republishRequestCount_(constructSPtr<ServerVariable>("RepublishRequestCount"))
-    , republishMessageRequestCount_(constructSPtr<ServerVariable>("RepublishMessageRequestCount"))
-    , republishMessageCount_(constructSPtr<ServerVariable>("RepublishMessageCount"))
-    , transferRequestCount_(constructSPtr<ServerVariable>("TransferRequestCount"))
-    , transferredToAltClientCount_(constructSPtr<ServerVariable>("TransferredToAltClientCount"))
-    , transferredToSameClientCount_(constructSPtr<ServerVariable>("TransferredToSameClientCount"))
-    , publishRequestCount_(constructSPtr<ServerVariable>("PublishRequestCount"))
-    , dataChangeNotificationsCount_(constructSPtr<ServerVariable>("DataChangeNotificationsCount"))
-    , eventNotificationsCount_(constructSPtr<ServerVariable>("EventNotificationsCount"))
-    , notificationsCount_(constructSPtr<ServerVariable>("NotificationsCount"))
-    , latePublishRequestCount_(constructSPtr<ServerVariable>("LatePublishRequestCount"))
-    , currentKeepAliveCount_(constructSPtr<ServerVariable>("CurrentKeepAliveCount"))
-    , currentLifetimeCount_(constructSPtr<ServerVariable>("CurrentLifetimeCount"))
-    , unacknowledgedMessageCount_(constructSPtr<ServerVariable>("UnacknowledgedMessageCount"))
-    , discardedMessageCount_(constructSPtr<ServerVariable>("DiscardedMessageCount"))
-    , monitoredItemCount_(constructSPtr<ServerVariable>("MonitoredItemCount"))
-    , disabledMonitoredItemCount_(constructSPtr<ServerVariable>("DisabledMonitoredItemCount"))
-    , monitoringQueueOverflowCount_(constructSPtr<ServerVariable>("MonitoringQueueOverflowCount"))
-    , nextSequenceNumber_(constructSPtr<ServerVariable>("NextSequenceNumber"))
-    , eventQueueOverFlowCount_(constructSPtr<ServerVariable>("EventQueueOverFlowCount"))
+    : VariableBase()
+    , currentKeepAliveCount_Variable_(constructSPtr<ServerVariable>("CurrentKeepAliveCount_Variable"))
+    , currentLifetimeCount_Variable_(constructSPtr<ServerVariable>("CurrentLifetimeCount_Variable"))
+    , dataChangeNotificationsCount_Variable_(constructSPtr<ServerVariable>("DataChangeNotificationsCount_Variable"))
+    , disableCount_Variable_(constructSPtr<ServerVariable>("DisableCount_Variable"))
+    , disabledMonitoredItemCount_Variable_(constructSPtr<ServerVariable>("DisabledMonitoredItemCount_Variable"))
+    , discardedMessageCount_Variable_(constructSPtr<ServerVariable>("DiscardedMessageCount_Variable"))
+    , enableCount_Variable_(constructSPtr<ServerVariable>("EnableCount_Variable"))
+    , eventNotificationsCount_Variable_(constructSPtr<ServerVariable>("EventNotificationsCount_Variable"))
+    , eventQueueOverFlowCount_Variable_(constructSPtr<ServerVariable>("EventQueueOverFlowCount_Variable"))
+    , latePublishRequestCount_Variable_(constructSPtr<ServerVariable>("LatePublishRequestCount_Variable"))
+    , maxKeepAliveCount_Variable_(constructSPtr<ServerVariable>("MaxKeepAliveCount_Variable"))
+    , maxLifetimeCount_Variable_(constructSPtr<ServerVariable>("MaxLifetimeCount_Variable"))
+    , maxNotificationsPerPublish_Variable_(constructSPtr<ServerVariable>("MaxNotificationsPerPublish_Variable"))
+    , modifyCount_Variable_(constructSPtr<ServerVariable>("ModifyCount_Variable"))
+    , monitoredItemCount_Variable_(constructSPtr<ServerVariable>("MonitoredItemCount_Variable"))
+    , monitoringQueueOverflowCount_Variable_(constructSPtr<ServerVariable>("MonitoringQueueOverflowCount_Variable"))
+    , nextSequenceNumber_Variable_(constructSPtr<ServerVariable>("NextSequenceNumber_Variable"))
+    , notificationsCount_Variable_(constructSPtr<ServerVariable>("NotificationsCount_Variable"))
+    , priority_Variable_(constructSPtr<ServerVariable>("Priority_Variable"))
+    , publishRequestCount_Variable_(constructSPtr<ServerVariable>("PublishRequestCount_Variable"))
+    , publishingEnabled_Variable_(constructSPtr<ServerVariable>("PublishingEnabled_Variable"))
+    , publishingInterval_Variable_(constructSPtr<ServerVariable>("PublishingInterval_Variable"))
+    , republishMessageCount_Variable_(constructSPtr<ServerVariable>("RepublishMessageCount_Variable"))
+    , republishMessageRequestCount_Variable_(constructSPtr<ServerVariable>("RepublishMessageRequestCount_Variable"))
+    , republishRequestCount_Variable_(constructSPtr<ServerVariable>("RepublishRequestCount_Variable"))
+    , sessionId_Variable_(constructSPtr<ServerVariable>("SessionId_Variable"))
+    , subscriptionId_Variable_(constructSPtr<ServerVariable>("SubscriptionId_Variable"))
+    , transferRequestCount_Variable_(constructSPtr<ServerVariable>("TransferRequestCount_Variable"))
+    , transferredToAltClientCount_Variable_(constructSPtr<ServerVariable>("TransferredToAltClientCount_Variable"))
+    , transferredToSameClientCount_Variable_(constructSPtr<ServerVariable>("TransferredToSameClientCount_Variable"))
+    , unacknowledgedMessageCount_Variable_(constructSPtr<ServerVariable>("UnacknowledgedMessageCount_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(2172));
-        serverVariables().registerServerVariable(sessionId_);
-        serverVariables().registerServerVariable(subscriptionId_);
-        serverVariables().registerServerVariable(priority_);
-        serverVariables().registerServerVariable(publishingInterval_);
-        serverVariables().registerServerVariable(maxKeepAliveCount_);
-        serverVariables().registerServerVariable(maxLifetimeCount_);
-        serverVariables().registerServerVariable(maxNotificationsPerPublish_);
-        serverVariables().registerServerVariable(publishingEnabled_);
-        serverVariables().registerServerVariable(modifyCount_);
-        serverVariables().registerServerVariable(enableCount_);
-        serverVariables().registerServerVariable(disableCount_);
-        serverVariables().registerServerVariable(republishRequestCount_);
-        serverVariables().registerServerVariable(republishMessageRequestCount_);
-        serverVariables().registerServerVariable(republishMessageCount_);
-        serverVariables().registerServerVariable(transferRequestCount_);
-        serverVariables().registerServerVariable(transferredToAltClientCount_);
-        serverVariables().registerServerVariable(transferredToSameClientCount_);
-        serverVariables().registerServerVariable(publishRequestCount_);
-        serverVariables().registerServerVariable(dataChangeNotificationsCount_);
-        serverVariables().registerServerVariable(eventNotificationsCount_);
-        serverVariables().registerServerVariable(notificationsCount_);
-        serverVariables().registerServerVariable(latePublishRequestCount_);
-        serverVariables().registerServerVariable(currentKeepAliveCount_);
-        serverVariables().registerServerVariable(currentLifetimeCount_);
-        serverVariables().registerServerVariable(unacknowledgedMessageCount_);
-        serverVariables().registerServerVariable(discardedMessageCount_);
-        serverVariables().registerServerVariable(monitoredItemCount_);
-        serverVariables().registerServerVariable(disabledMonitoredItemCount_);
-        serverVariables().registerServerVariable(monitoringQueueOverflowCount_);
-        serverVariables().registerServerVariable(nextSequenceNumber_);
-        serverVariables().registerServerVariable(eventQueueOverFlowCount_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2172);
+    }
+    
+    SubscriptionDiagnosticsType::SubscriptionDiagnosticsType(const SubscriptionDiagnosticsType& value)
+    : VariableBase()
+    , currentKeepAliveCount_Variable_(constructSPtr<ServerVariable>("CurrentKeepAliveCount_Variable"))
+    , currentLifetimeCount_Variable_(constructSPtr<ServerVariable>("CurrentLifetimeCount_Variable"))
+    , dataChangeNotificationsCount_Variable_(constructSPtr<ServerVariable>("DataChangeNotificationsCount_Variable"))
+    , disableCount_Variable_(constructSPtr<ServerVariable>("DisableCount_Variable"))
+    , disabledMonitoredItemCount_Variable_(constructSPtr<ServerVariable>("DisabledMonitoredItemCount_Variable"))
+    , discardedMessageCount_Variable_(constructSPtr<ServerVariable>("DiscardedMessageCount_Variable"))
+    , enableCount_Variable_(constructSPtr<ServerVariable>("EnableCount_Variable"))
+    , eventNotificationsCount_Variable_(constructSPtr<ServerVariable>("EventNotificationsCount_Variable"))
+    , eventQueueOverFlowCount_Variable_(constructSPtr<ServerVariable>("EventQueueOverFlowCount_Variable"))
+    , latePublishRequestCount_Variable_(constructSPtr<ServerVariable>("LatePublishRequestCount_Variable"))
+    , maxKeepAliveCount_Variable_(constructSPtr<ServerVariable>("MaxKeepAliveCount_Variable"))
+    , maxLifetimeCount_Variable_(constructSPtr<ServerVariable>("MaxLifetimeCount_Variable"))
+    , maxNotificationsPerPublish_Variable_(constructSPtr<ServerVariable>("MaxNotificationsPerPublish_Variable"))
+    , modifyCount_Variable_(constructSPtr<ServerVariable>("ModifyCount_Variable"))
+    , monitoredItemCount_Variable_(constructSPtr<ServerVariable>("MonitoredItemCount_Variable"))
+    , monitoringQueueOverflowCount_Variable_(constructSPtr<ServerVariable>("MonitoringQueueOverflowCount_Variable"))
+    , nextSequenceNumber_Variable_(constructSPtr<ServerVariable>("NextSequenceNumber_Variable"))
+    , notificationsCount_Variable_(constructSPtr<ServerVariable>("NotificationsCount_Variable"))
+    , priority_Variable_(constructSPtr<ServerVariable>("Priority_Variable"))
+    , publishRequestCount_Variable_(constructSPtr<ServerVariable>("PublishRequestCount_Variable"))
+    , publishingEnabled_Variable_(constructSPtr<ServerVariable>("PublishingEnabled_Variable"))
+    , publishingInterval_Variable_(constructSPtr<ServerVariable>("PublishingInterval_Variable"))
+    , republishMessageCount_Variable_(constructSPtr<ServerVariable>("RepublishMessageCount_Variable"))
+    , republishMessageRequestCount_Variable_(constructSPtr<ServerVariable>("RepublishMessageRequestCount_Variable"))
+    , republishRequestCount_Variable_(constructSPtr<ServerVariable>("RepublishRequestCount_Variable"))
+    , sessionId_Variable_(constructSPtr<ServerVariable>("SessionId_Variable"))
+    , subscriptionId_Variable_(constructSPtr<ServerVariable>("SubscriptionId_Variable"))
+    , transferRequestCount_Variable_(constructSPtr<ServerVariable>("TransferRequestCount_Variable"))
+    , transferredToAltClientCount_Variable_(constructSPtr<ServerVariable>("TransferredToAltClientCount_Variable"))
+    , transferredToSameClientCount_Variable_(constructSPtr<ServerVariable>("TransferredToSameClientCount_Variable"))
+    , unacknowledgedMessageCount_Variable_(constructSPtr<ServerVariable>("UnacknowledgedMessageCount_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2172);
     }
     
     SubscriptionDiagnosticsType::~SubscriptionDiagnosticsType(void)
     {
     }
-    
-    bool
-    SubscriptionDiagnosticsType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::currentKeepAliveCount_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        sessionId_->addBrowsePath(nodeId, OpcUaQualifiedName("SessionId", namespaceIndex_));
-        subscriptionId_->addBrowsePath(nodeId, OpcUaQualifiedName("SubscriptionId", namespaceIndex_));
-        priority_->addBrowsePath(nodeId, OpcUaQualifiedName("Priority", namespaceIndex_));
-        publishingInterval_->addBrowsePath(nodeId, OpcUaQualifiedName("PublishingInterval", namespaceIndex_));
-        maxKeepAliveCount_->addBrowsePath(nodeId, OpcUaQualifiedName("MaxKeepAliveCount", namespaceIndex_));
-        maxLifetimeCount_->addBrowsePath(nodeId, OpcUaQualifiedName("MaxLifetimeCount", namespaceIndex_));
-        maxNotificationsPerPublish_->addBrowsePath(nodeId, OpcUaQualifiedName("MaxNotificationsPerPublish", namespaceIndex_));
-        publishingEnabled_->addBrowsePath(nodeId, OpcUaQualifiedName("PublishingEnabled", namespaceIndex_));
-        modifyCount_->addBrowsePath(nodeId, OpcUaQualifiedName("ModifyCount", namespaceIndex_));
-        enableCount_->addBrowsePath(nodeId, OpcUaQualifiedName("EnableCount", namespaceIndex_));
-        disableCount_->addBrowsePath(nodeId, OpcUaQualifiedName("DisableCount", namespaceIndex_));
-        republishRequestCount_->addBrowsePath(nodeId, OpcUaQualifiedName("RepublishRequestCount", namespaceIndex_));
-        republishMessageRequestCount_->addBrowsePath(nodeId, OpcUaQualifiedName("RepublishMessageRequestCount", namespaceIndex_));
-        republishMessageCount_->addBrowsePath(nodeId, OpcUaQualifiedName("RepublishMessageCount", namespaceIndex_));
-        transferRequestCount_->addBrowsePath(nodeId, OpcUaQualifiedName("TransferRequestCount", namespaceIndex_));
-        transferredToAltClientCount_->addBrowsePath(nodeId, OpcUaQualifiedName("TransferredToAltClientCount", namespaceIndex_));
-        transferredToSameClientCount_->addBrowsePath(nodeId, OpcUaQualifiedName("TransferredToSameClientCount", namespaceIndex_));
-        publishRequestCount_->addBrowsePath(nodeId, OpcUaQualifiedName("PublishRequestCount", namespaceIndex_));
-        dataChangeNotificationsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("DataChangeNotificationsCount", namespaceIndex_));
-        eventNotificationsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("EventNotificationsCount", namespaceIndex_));
-        notificationsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("NotificationsCount", namespaceIndex_));
-        latePublishRequestCount_->addBrowsePath(nodeId, OpcUaQualifiedName("LatePublishRequestCount", namespaceIndex_));
-        currentKeepAliveCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CurrentKeepAliveCount", namespaceIndex_));
-        currentLifetimeCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CurrentLifetimeCount", namespaceIndex_));
-        unacknowledgedMessageCount_->addBrowsePath(nodeId, OpcUaQualifiedName("UnacknowledgedMessageCount", namespaceIndex_));
-        discardedMessageCount_->addBrowsePath(nodeId, OpcUaQualifiedName("DiscardedMessageCount", namespaceIndex_));
-        monitoredItemCount_->addBrowsePath(nodeId, OpcUaQualifiedName("MonitoredItemCount", namespaceIndex_));
-        disabledMonitoredItemCount_->addBrowsePath(nodeId, OpcUaQualifiedName("DisabledMonitoredItemCount", namespaceIndex_));
-        monitoringQueueOverflowCount_->addBrowsePath(nodeId, OpcUaQualifiedName("MonitoringQueueOverflowCount", namespaceIndex_));
-        nextSequenceNumber_->addBrowsePath(nodeId, OpcUaQualifiedName("NextSequenceNumber", namespaceIndex_));
-        eventQueueOverFlowCount_->addBrowsePath(nodeId, OpcUaQualifiedName("EventQueueOverFlowCount", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return currentKeepAliveCount_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::sessionId(void)
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::currentLifetimeCount_Variable(void)
     {
-        return sessionId_->baseNode().lock();
+        return currentLifetimeCount_Variable_;
     }
-    
-    bool
-    SubscriptionDiagnosticsType::setSessionId(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::dataChangeNotificationsCount_Variable(void)
     {
-        return sessionId_->setDataValue(dataValue);
+        return dataChangeNotificationsCount_Variable_;
     }
-    
-    bool
-    SubscriptionDiagnosticsType::getSessionId(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::disableCount_Variable(void)
     {
-        return sessionId_->getDataValue(dataValue);
+        return disableCount_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::disabledMonitoredItemCount_Variable(void)
+    {
+        return disabledMonitoredItemCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::discardedMessageCount_Variable(void)
+    {
+        return discardedMessageCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::enableCount_Variable(void)
+    {
+        return enableCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::eventNotificationsCount_Variable(void)
+    {
+        return eventNotificationsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::eventQueueOverFlowCount_Variable(void)
+    {
+        return eventQueueOverFlowCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::latePublishRequestCount_Variable(void)
+    {
+        return latePublishRequestCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::maxKeepAliveCount_Variable(void)
+    {
+        return maxKeepAliveCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::maxLifetimeCount_Variable(void)
+    {
+        return maxLifetimeCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::maxNotificationsPerPublish_Variable(void)
+    {
+        return maxNotificationsPerPublish_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::modifyCount_Variable(void)
+    {
+        return modifyCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::monitoredItemCount_Variable(void)
+    {
+        return monitoredItemCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::monitoringQueueOverflowCount_Variable(void)
+    {
+        return monitoringQueueOverflowCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::nextSequenceNumber_Variable(void)
+    {
+        return nextSequenceNumber_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::notificationsCount_Variable(void)
+    {
+        return notificationsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::priority_Variable(void)
+    {
+        return priority_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::publishRequestCount_Variable(void)
+    {
+        return publishRequestCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::publishingEnabled_Variable(void)
+    {
+        return publishingEnabled_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::publishingInterval_Variable(void)
+    {
+        return publishingInterval_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::republishMessageCount_Variable(void)
+    {
+        return republishMessageCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::republishMessageRequestCount_Variable(void)
+    {
+        return republishMessageRequestCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::republishRequestCount_Variable(void)
+    {
+        return republishRequestCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::sessionId_Variable(void)
+    {
+        return sessionId_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::subscriptionId_Variable(void)
+    {
+        return subscriptionId_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::transferRequestCount_Variable(void)
+    {
+        return transferRequestCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::transferredToAltClientCount_Variable(void)
+    {
+        return transferredToAltClientCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::transferredToSameClientCount_Variable(void)
+    {
+        return transferredToSameClientCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::unacknowledgedMessageCount_Variable(void)
+    {
+        return unacknowledgedMessageCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackSessionId(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::currentKeepAliveCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        sessionId_->callback(callback);
+        currentKeepAliveCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::subscriptionId(void)
-    {
-        return subscriptionId_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setSubscriptionId(const OpcUaDataValue& dataValue)
-    {
-        return subscriptionId_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getSubscriptionId(OpcUaDataValue& dataValue)
-    {
-        return subscriptionId_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackSubscriptionId(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::currentLifetimeCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        subscriptionId_->callback(callback);
+        currentLifetimeCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::priority(void)
-    {
-        return priority_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setPriority(const OpcUaDataValue& dataValue)
-    {
-        return priority_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getPriority(OpcUaDataValue& dataValue)
-    {
-        return priority_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackPriority(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::dataChangeNotificationsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        priority_->callback(callback);
+        dataChangeNotificationsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::publishingInterval(void)
-    {
-        return publishingInterval_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setPublishingInterval(const OpcUaDataValue& dataValue)
-    {
-        return publishingInterval_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getPublishingInterval(OpcUaDataValue& dataValue)
-    {
-        return publishingInterval_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackPublishingInterval(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::disableCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        publishingInterval_->callback(callback);
+        disableCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::maxKeepAliveCount(void)
-    {
-        return maxKeepAliveCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setMaxKeepAliveCount(const OpcUaDataValue& dataValue)
-    {
-        return maxKeepAliveCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getMaxKeepAliveCount(OpcUaDataValue& dataValue)
-    {
-        return maxKeepAliveCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackMaxKeepAliveCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::disabledMonitoredItemCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        maxKeepAliveCount_->callback(callback);
+        disabledMonitoredItemCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::maxLifetimeCount(void)
-    {
-        return maxLifetimeCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setMaxLifetimeCount(const OpcUaDataValue& dataValue)
-    {
-        return maxLifetimeCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getMaxLifetimeCount(OpcUaDataValue& dataValue)
-    {
-        return maxLifetimeCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackMaxLifetimeCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::discardedMessageCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        maxLifetimeCount_->callback(callback);
+        discardedMessageCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::maxNotificationsPerPublish(void)
-    {
-        return maxNotificationsPerPublish_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setMaxNotificationsPerPublish(const OpcUaDataValue& dataValue)
-    {
-        return maxNotificationsPerPublish_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getMaxNotificationsPerPublish(OpcUaDataValue& dataValue)
-    {
-        return maxNotificationsPerPublish_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackMaxNotificationsPerPublish(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::enableCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        maxNotificationsPerPublish_->callback(callback);
+        enableCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::publishingEnabled(void)
-    {
-        return publishingEnabled_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setPublishingEnabled(const OpcUaDataValue& dataValue)
-    {
-        return publishingEnabled_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getPublishingEnabled(OpcUaDataValue& dataValue)
-    {
-        return publishingEnabled_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackPublishingEnabled(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::eventNotificationsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        publishingEnabled_->callback(callback);
+        eventNotificationsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::modifyCount(void)
-    {
-        return modifyCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setModifyCount(const OpcUaDataValue& dataValue)
-    {
-        return modifyCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getModifyCount(OpcUaDataValue& dataValue)
-    {
-        return modifyCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackModifyCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::eventQueueOverFlowCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        modifyCount_->callback(callback);
+        eventQueueOverFlowCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::enableCount(void)
-    {
-        return enableCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setEnableCount(const OpcUaDataValue& dataValue)
-    {
-        return enableCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getEnableCount(OpcUaDataValue& dataValue)
-    {
-        return enableCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackEnableCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::latePublishRequestCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        enableCount_->callback(callback);
+        latePublishRequestCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::disableCount(void)
-    {
-        return disableCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setDisableCount(const OpcUaDataValue& dataValue)
-    {
-        return disableCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getDisableCount(OpcUaDataValue& dataValue)
-    {
-        return disableCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackDisableCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::maxKeepAliveCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        disableCount_->callback(callback);
+        maxKeepAliveCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::republishRequestCount(void)
-    {
-        return republishRequestCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setRepublishRequestCount(const OpcUaDataValue& dataValue)
-    {
-        return republishRequestCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getRepublishRequestCount(OpcUaDataValue& dataValue)
-    {
-        return republishRequestCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackRepublishRequestCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::maxLifetimeCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        republishRequestCount_->callback(callback);
+        maxLifetimeCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::republishMessageRequestCount(void)
-    {
-        return republishMessageRequestCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setRepublishMessageRequestCount(const OpcUaDataValue& dataValue)
-    {
-        return republishMessageRequestCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getRepublishMessageRequestCount(OpcUaDataValue& dataValue)
-    {
-        return republishMessageRequestCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackRepublishMessageRequestCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::maxNotificationsPerPublish_Variable(ServerVariable::SPtr& serverVariable)
     {
-        republishMessageRequestCount_->callback(callback);
+        maxNotificationsPerPublish_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::republishMessageCount(void)
-    {
-        return republishMessageCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setRepublishMessageCount(const OpcUaDataValue& dataValue)
-    {
-        return republishMessageCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getRepublishMessageCount(OpcUaDataValue& dataValue)
-    {
-        return republishMessageCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackRepublishMessageCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::modifyCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        republishMessageCount_->callback(callback);
+        modifyCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::transferRequestCount(void)
-    {
-        return transferRequestCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setTransferRequestCount(const OpcUaDataValue& dataValue)
-    {
-        return transferRequestCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getTransferRequestCount(OpcUaDataValue& dataValue)
-    {
-        return transferRequestCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackTransferRequestCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::monitoredItemCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        transferRequestCount_->callback(callback);
+        monitoredItemCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::transferredToAltClientCount(void)
-    {
-        return transferredToAltClientCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setTransferredToAltClientCount(const OpcUaDataValue& dataValue)
-    {
-        return transferredToAltClientCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getTransferredToAltClientCount(OpcUaDataValue& dataValue)
-    {
-        return transferredToAltClientCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackTransferredToAltClientCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::monitoringQueueOverflowCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        transferredToAltClientCount_->callback(callback);
+        monitoringQueueOverflowCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::transferredToSameClientCount(void)
-    {
-        return transferredToSameClientCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setTransferredToSameClientCount(const OpcUaDataValue& dataValue)
-    {
-        return transferredToSameClientCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getTransferredToSameClientCount(OpcUaDataValue& dataValue)
-    {
-        return transferredToSameClientCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackTransferredToSameClientCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::nextSequenceNumber_Variable(ServerVariable::SPtr& serverVariable)
     {
-        transferredToSameClientCount_->callback(callback);
+        nextSequenceNumber_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::publishRequestCount(void)
-    {
-        return publishRequestCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setPublishRequestCount(const OpcUaDataValue& dataValue)
-    {
-        return publishRequestCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getPublishRequestCount(OpcUaDataValue& dataValue)
-    {
-        return publishRequestCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackPublishRequestCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::notificationsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        publishRequestCount_->callback(callback);
+        notificationsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::dataChangeNotificationsCount(void)
-    {
-        return dataChangeNotificationsCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setDataChangeNotificationsCount(const OpcUaDataValue& dataValue)
-    {
-        return dataChangeNotificationsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getDataChangeNotificationsCount(OpcUaDataValue& dataValue)
-    {
-        return dataChangeNotificationsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackDataChangeNotificationsCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::priority_Variable(ServerVariable::SPtr& serverVariable)
     {
-        dataChangeNotificationsCount_->callback(callback);
+        priority_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::eventNotificationsCount(void)
-    {
-        return eventNotificationsCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setEventNotificationsCount(const OpcUaDataValue& dataValue)
-    {
-        return eventNotificationsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getEventNotificationsCount(OpcUaDataValue& dataValue)
-    {
-        return eventNotificationsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackEventNotificationsCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::publishRequestCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        eventNotificationsCount_->callback(callback);
+        publishRequestCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::notificationsCount(void)
-    {
-        return notificationsCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setNotificationsCount(const OpcUaDataValue& dataValue)
-    {
-        return notificationsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getNotificationsCount(OpcUaDataValue& dataValue)
-    {
-        return notificationsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackNotificationsCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::publishingEnabled_Variable(ServerVariable::SPtr& serverVariable)
     {
-        notificationsCount_->callback(callback);
+        publishingEnabled_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::latePublishRequestCount(void)
-    {
-        return latePublishRequestCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setLatePublishRequestCount(const OpcUaDataValue& dataValue)
-    {
-        return latePublishRequestCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getLatePublishRequestCount(OpcUaDataValue& dataValue)
-    {
-        return latePublishRequestCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackLatePublishRequestCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::publishingInterval_Variable(ServerVariable::SPtr& serverVariable)
     {
-        latePublishRequestCount_->callback(callback);
+        publishingInterval_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::currentKeepAliveCount(void)
-    {
-        return currentKeepAliveCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setCurrentKeepAliveCount(const OpcUaDataValue& dataValue)
-    {
-        return currentKeepAliveCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getCurrentKeepAliveCount(OpcUaDataValue& dataValue)
-    {
-        return currentKeepAliveCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackCurrentKeepAliveCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::republishMessageCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        currentKeepAliveCount_->callback(callback);
+        republishMessageCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::currentLifetimeCount(void)
-    {
-        return currentLifetimeCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setCurrentLifetimeCount(const OpcUaDataValue& dataValue)
-    {
-        return currentLifetimeCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getCurrentLifetimeCount(OpcUaDataValue& dataValue)
-    {
-        return currentLifetimeCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackCurrentLifetimeCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::republishMessageRequestCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        currentLifetimeCount_->callback(callback);
+        republishMessageRequestCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::unacknowledgedMessageCount(void)
-    {
-        return unacknowledgedMessageCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setUnacknowledgedMessageCount(const OpcUaDataValue& dataValue)
-    {
-        return unacknowledgedMessageCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getUnacknowledgedMessageCount(OpcUaDataValue& dataValue)
-    {
-        return unacknowledgedMessageCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackUnacknowledgedMessageCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::republishRequestCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        unacknowledgedMessageCount_->callback(callback);
+        republishRequestCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::discardedMessageCount(void)
-    {
-        return discardedMessageCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setDiscardedMessageCount(const OpcUaDataValue& dataValue)
-    {
-        return discardedMessageCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getDiscardedMessageCount(OpcUaDataValue& dataValue)
-    {
-        return discardedMessageCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackDiscardedMessageCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::sessionId_Variable(ServerVariable::SPtr& serverVariable)
     {
-        discardedMessageCount_->callback(callback);
+        sessionId_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::monitoredItemCount(void)
-    {
-        return monitoredItemCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setMonitoredItemCount(const OpcUaDataValue& dataValue)
-    {
-        return monitoredItemCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getMonitoredItemCount(OpcUaDataValue& dataValue)
-    {
-        return monitoredItemCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackMonitoredItemCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::subscriptionId_Variable(ServerVariable::SPtr& serverVariable)
     {
-        monitoredItemCount_->callback(callback);
+        subscriptionId_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::disabledMonitoredItemCount(void)
-    {
-        return disabledMonitoredItemCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setDisabledMonitoredItemCount(const OpcUaDataValue& dataValue)
-    {
-        return disabledMonitoredItemCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getDisabledMonitoredItemCount(OpcUaDataValue& dataValue)
-    {
-        return disabledMonitoredItemCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackDisabledMonitoredItemCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::transferRequestCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        disabledMonitoredItemCount_->callback(callback);
+        transferRequestCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::monitoringQueueOverflowCount(void)
-    {
-        return monitoringQueueOverflowCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setMonitoringQueueOverflowCount(const OpcUaDataValue& dataValue)
-    {
-        return monitoringQueueOverflowCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getMonitoringQueueOverflowCount(OpcUaDataValue& dataValue)
-    {
-        return monitoringQueueOverflowCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackMonitoringQueueOverflowCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::transferredToAltClientCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        monitoringQueueOverflowCount_->callback(callback);
+        transferredToAltClientCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::nextSequenceNumber(void)
-    {
-        return nextSequenceNumber_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setNextSequenceNumber(const OpcUaDataValue& dataValue)
-    {
-        return nextSequenceNumber_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getNextSequenceNumber(OpcUaDataValue& dataValue)
-    {
-        return nextSequenceNumber_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackNextSequenceNumber(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::transferredToSameClientCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        nextSequenceNumber_->callback(callback);
+        transferredToSameClientCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SubscriptionDiagnosticsType::eventQueueOverFlowCount(void)
-    {
-        return eventQueueOverFlowCount_->baseNode().lock();
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::setEventQueueOverFlowCount(const OpcUaDataValue& dataValue)
-    {
-        return eventQueueOverFlowCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SubscriptionDiagnosticsType::getEventQueueOverFlowCount(OpcUaDataValue& dataValue)
-    {
-        return eventQueueOverFlowCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SubscriptionDiagnosticsType::setUpdateCallbackEventQueueOverFlowCount(Callback::SPtr& callback)
+    SubscriptionDiagnosticsType::unacknowledgedMessageCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        eventQueueOverFlowCount_->callback(callback);
+        unacknowledgedMessageCount_Variable_ = serverVariable;
+    }
+
+    void
+    SubscriptionDiagnosticsType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_CurrentKeepAliveCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return currentKeepAliveCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_CurrentLifetimeCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return currentLifetimeCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_DataChangeNotificationsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return dataChangeNotificationsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_DisableCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return disableCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_DisabledMonitoredItemCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return disabledMonitoredItemCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_DiscardedMessageCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return discardedMessageCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_EnableCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return enableCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_EventNotificationsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return eventNotificationsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_EventQueueOverFlowCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return eventQueueOverFlowCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_LatePublishRequestCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return latePublishRequestCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_MaxKeepAliveCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return maxKeepAliveCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_MaxLifetimeCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return maxLifetimeCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_MaxNotificationsPerPublish_Variable(OpcUaDataValue& dataValue)
+    {
+        return maxNotificationsPerPublish_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_ModifyCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return modifyCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_MonitoredItemCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return monitoredItemCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_MonitoringQueueOverflowCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return monitoringQueueOverflowCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_NextSequenceNumber_Variable(OpcUaDataValue& dataValue)
+    {
+        return nextSequenceNumber_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_NotificationsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return notificationsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_Priority_Variable(OpcUaDataValue& dataValue)
+    {
+        return priority_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_PublishRequestCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return publishRequestCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_PublishingEnabled_Variable(OpcUaDataValue& dataValue)
+    {
+        return publishingEnabled_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_PublishingInterval_Variable(OpcUaDataValue& dataValue)
+    {
+        return publishingInterval_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_RepublishMessageCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return republishMessageCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_RepublishMessageRequestCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return republishMessageRequestCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_RepublishRequestCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return republishRequestCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_SessionId_Variable(OpcUaDataValue& dataValue)
+    {
+        return sessionId_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_SubscriptionId_Variable(OpcUaDataValue& dataValue)
+    {
+        return subscriptionId_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_TransferRequestCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return transferRequestCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_TransferredToAltClientCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return transferredToAltClientCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_TransferredToSameClientCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return transferredToSameClientCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_UnacknowledgedMessageCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return unacknowledgedMessageCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_CurrentKeepAliveCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return currentKeepAliveCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_CurrentLifetimeCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return currentLifetimeCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_DataChangeNotificationsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return dataChangeNotificationsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_DisableCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return disableCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_DisabledMonitoredItemCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return disabledMonitoredItemCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_DiscardedMessageCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return discardedMessageCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_EnableCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return enableCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_EventNotificationsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return eventNotificationsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_EventQueueOverFlowCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return eventQueueOverFlowCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_LatePublishRequestCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return latePublishRequestCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_MaxKeepAliveCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return maxKeepAliveCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_MaxLifetimeCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return maxLifetimeCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_MaxNotificationsPerPublish_Variable(const OpcUaDataValue& dataValue)
+    {
+        return maxNotificationsPerPublish_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_ModifyCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return modifyCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_MonitoredItemCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return monitoredItemCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_MonitoringQueueOverflowCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return monitoringQueueOverflowCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_NextSequenceNumber_Variable(const OpcUaDataValue& dataValue)
+    {
+        return nextSequenceNumber_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_NotificationsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return notificationsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_Priority_Variable(const OpcUaDataValue& dataValue)
+    {
+        return priority_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_PublishRequestCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return publishRequestCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_PublishingEnabled_Variable(const OpcUaDataValue& dataValue)
+    {
+        return publishingEnabled_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_PublishingInterval_Variable(const OpcUaDataValue& dataValue)
+    {
+        return publishingInterval_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_RepublishMessageCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return republishMessageCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_RepublishMessageRequestCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return republishMessageRequestCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_RepublishRequestCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return republishRequestCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_SessionId_Variable(const OpcUaDataValue& dataValue)
+    {
+        return sessionId_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_SubscriptionId_Variable(const OpcUaDataValue& dataValue)
+    {
+        return subscriptionId_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_TransferRequestCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return transferRequestCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_TransferredToAltClientCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return transferredToAltClientCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_TransferredToSameClientCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return transferredToSameClientCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_UnacknowledgedMessageCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return unacknowledgedMessageCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

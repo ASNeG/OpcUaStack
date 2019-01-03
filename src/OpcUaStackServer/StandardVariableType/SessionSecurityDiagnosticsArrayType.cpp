@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,23 +15,47 @@ namespace OpcUaStackServer
 {
     
     SessionSecurityDiagnosticsArrayType::SessionSecurityDiagnosticsArrayType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
+    : VariableBase()
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(2243));
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2243);
+    }
+    
+    SessionSecurityDiagnosticsArrayType::SessionSecurityDiagnosticsArrayType(const SessionSecurityDiagnosticsArrayType& value)
+    : VariableBase()
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2243);
     }
     
     SessionSecurityDiagnosticsArrayType::~SessionSecurityDiagnosticsArrayType(void)
     {
     }
-    
-    bool
-    SessionSecurityDiagnosticsArrayType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsArrayType::variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return variable_;
+    }
+
+    void
+    SessionSecurityDiagnosticsArrayType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    SessionSecurityDiagnosticsArrayType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsArrayType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

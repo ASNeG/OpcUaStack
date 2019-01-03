@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -14,78 +14,106 @@
 namespace OpcUaStackServer
 {
     
+    /**
+     * The type for variable that represents the description of a data type encoding.
+     */
     DataTypeDescriptionType::DataTypeDescriptionType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , dataTypeVersion_(constructSPtr<ServerVariable>("DataTypeVersion"))
-    , dictionaryFragment_(constructSPtr<ServerVariable>("DictionaryFragment"))
+    : VariableBase()
+    , dataTypeVersion_Variable_(constructSPtr<ServerVariable>("DataTypeVersion_Variable"))
+    , dictionaryFragment_Variable_(constructSPtr<ServerVariable>("DictionaryFragment_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(69));
-        serverVariables().registerServerVariable(dataTypeVersion_);
-        serverVariables().registerServerVariable(dictionaryFragment_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)69);
+    }
+    
+    /**
+     * The type for variable that represents the description of a data type encoding.
+     */
+    DataTypeDescriptionType::DataTypeDescriptionType(const DataTypeDescriptionType& value)
+    : VariableBase()
+    , dataTypeVersion_Variable_(constructSPtr<ServerVariable>("DataTypeVersion_Variable"))
+    , dictionaryFragment_Variable_(constructSPtr<ServerVariable>("DictionaryFragment_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)69);
     }
     
     DataTypeDescriptionType::~DataTypeDescriptionType(void)
     {
     }
-    
-    bool
-    DataTypeDescriptionType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    DataTypeDescriptionType::dataTypeVersion_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        dataTypeVersion_->addBrowsePath(nodeId, OpcUaQualifiedName("DataTypeVersion", namespaceIndex_));
-        dictionaryFragment_->addBrowsePath(nodeId, OpcUaQualifiedName("DictionaryFragment", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return dataTypeVersion_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    DataTypeDescriptionType::dataTypeVersion(void)
+
+    ServerVariable::SPtr&
+    DataTypeDescriptionType::dictionaryFragment_Variable(void)
     {
-        return dataTypeVersion_->baseNode().lock();
+        return dictionaryFragment_Variable_;
     }
-    
-    bool
-    DataTypeDescriptionType::setDataTypeVersion(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    DataTypeDescriptionType::variable(void)
     {
-        return dataTypeVersion_->setDataValue(dataValue);
+        return variable_;
     }
-    
-    bool
-    DataTypeDescriptionType::getDataTypeVersion(OpcUaDataValue& dataValue)
-    {
-        return dataTypeVersion_->getDataValue(dataValue);
-    }
-    
+
     void
-    DataTypeDescriptionType::setUpdateCallbackDataTypeVersion(Callback::SPtr& callback)
+    DataTypeDescriptionType::dataTypeVersion_Variable(ServerVariable::SPtr& serverVariable)
     {
-        dataTypeVersion_->callback(callback);
+        dataTypeVersion_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    DataTypeDescriptionType::dictionaryFragment(void)
-    {
-        return dictionaryFragment_->baseNode().lock();
-    }
-    
-    bool
-    DataTypeDescriptionType::setDictionaryFragment(const OpcUaDataValue& dataValue)
-    {
-        return dictionaryFragment_->setDataValue(dataValue);
-    }
-    
-    bool
-    DataTypeDescriptionType::getDictionaryFragment(OpcUaDataValue& dataValue)
-    {
-        return dictionaryFragment_->getDataValue(dataValue);
-    }
-    
+
     void
-    DataTypeDescriptionType::setUpdateCallbackDictionaryFragment(Callback::SPtr& callback)
+    DataTypeDescriptionType::dictionaryFragment_Variable(ServerVariable::SPtr& serverVariable)
     {
-        dictionaryFragment_->callback(callback);
+        dictionaryFragment_Variable_ = serverVariable;
+    }
+
+    void
+    DataTypeDescriptionType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    DataTypeDescriptionType::get_DataTypeVersion_Variable(OpcUaDataValue& dataValue)
+    {
+        return dataTypeVersion_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDescriptionType::get_DictionaryFragment_Variable(OpcUaDataValue& dataValue)
+    {
+        return dictionaryFragment_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDescriptionType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDescriptionType::set_DataTypeVersion_Variable(const OpcUaDataValue& dataValue)
+    {
+        return dataTypeVersion_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDescriptionType::set_DictionaryFragment_Variable(const OpcUaDataValue& dataValue)
+    {
+        return dictionaryFragment_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDescriptionType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

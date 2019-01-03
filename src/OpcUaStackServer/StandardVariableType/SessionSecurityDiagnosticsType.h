@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_SessionSecurityDiagnosticsType_h__
@@ -14,81 +14,87 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/BaseDataVariableType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT SessionSecurityDiagnosticsType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<SessionSecurityDiagnosticsType> SPtr;
+       typedef std::vector<SessionSecurityDiagnosticsType::SPtr> Vec;
+   
+       SessionSecurityDiagnosticsType(void);
+       SessionSecurityDiagnosticsType(const SessionSecurityDiagnosticsType& value);
+       virtual ~SessionSecurityDiagnosticsType(void);
+
+        void authenticationMechanism_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& authenticationMechanism_Variable(void);
+        bool get_AuthenticationMechanism_Variable(OpcUaDataValue& dataValue);
+        bool set_AuthenticationMechanism_Variable(const OpcUaDataValue& dataValue);
+
+        void clientCertificate_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& clientCertificate_Variable(void);
+        bool get_ClientCertificate_Variable(OpcUaDataValue& dataValue);
+        bool set_ClientCertificate_Variable(const OpcUaDataValue& dataValue);
+
+        void clientUserIdHistory_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& clientUserIdHistory_Variable(void);
+        bool get_ClientUserIdHistory_Variable(OpcUaDataValue& dataValue);
+        bool set_ClientUserIdHistory_Variable(const OpcUaDataValue& dataValue);
+
+        void clientUserIdOfSession_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& clientUserIdOfSession_Variable(void);
+        bool get_ClientUserIdOfSession_Variable(OpcUaDataValue& dataValue);
+        bool set_ClientUserIdOfSession_Variable(const OpcUaDataValue& dataValue);
+
+        void encoding_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& encoding_Variable(void);
+        bool get_Encoding_Variable(OpcUaDataValue& dataValue);
+        bool set_Encoding_Variable(const OpcUaDataValue& dataValue);
+
+        void securityMode_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& securityMode_Variable(void);
+        bool get_SecurityMode_Variable(OpcUaDataValue& dataValue);
+        bool set_SecurityMode_Variable(const OpcUaDataValue& dataValue);
+
+        void securityPolicyUri_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& securityPolicyUri_Variable(void);
+        bool get_SecurityPolicyUri_Variable(OpcUaDataValue& dataValue);
+        bool set_SecurityPolicyUri_Variable(const OpcUaDataValue& dataValue);
+
+        void sessionId_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& sessionId_Variable(void);
+        bool get_SessionId_Variable(OpcUaDataValue& dataValue);
+        bool set_SessionId_Variable(const OpcUaDataValue& dataValue);
+
+        void transportProtocol_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& transportProtocol_Variable(void);
+        bool get_TransportProtocol_Variable(OpcUaDataValue& dataValue);
+        bool set_TransportProtocol_Variable(const OpcUaDataValue& dataValue);
+
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT SessionSecurityDiagnosticsType
-    : public BaseDataVariableType
-    {
-      public:
-        typedef boost::shared_ptr<SessionSecurityDiagnosticsType> SPtr;
-    
-        SessionSecurityDiagnosticsType(void);
-        virtual ~SessionSecurityDiagnosticsType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr sessionId(void);
-        bool setSessionId(const OpcUaDataValue& dataValue);
-        bool getSessionId(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSessionId(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr clientUserIdOfSession(void);
-        bool setClientUserIdOfSession(const OpcUaDataValue& dataValue);
-        bool getClientUserIdOfSession(OpcUaDataValue& dataValue);
-        void setUpdateCallbackClientUserIdOfSession(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr clientUserIdHistory(void);
-        bool setClientUserIdHistory(const OpcUaDataValue& dataValue);
-        bool getClientUserIdHistory(OpcUaDataValue& dataValue);
-        void setUpdateCallbackClientUserIdHistory(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr authenticationMechanism(void);
-        bool setAuthenticationMechanism(const OpcUaDataValue& dataValue);
-        bool getAuthenticationMechanism(OpcUaDataValue& dataValue);
-        void setUpdateCallbackAuthenticationMechanism(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr encoding(void);
-        bool setEncoding(const OpcUaDataValue& dataValue);
-        bool getEncoding(OpcUaDataValue& dataValue);
-        void setUpdateCallbackEncoding(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr transportProtocol(void);
-        bool setTransportProtocol(const OpcUaDataValue& dataValue);
-        bool getTransportProtocol(OpcUaDataValue& dataValue);
-        void setUpdateCallbackTransportProtocol(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr securityMode(void);
-        bool setSecurityMode(const OpcUaDataValue& dataValue);
-        bool getSecurityMode(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSecurityMode(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr securityPolicyUri(void);
-        bool setSecurityPolicyUri(const OpcUaDataValue& dataValue);
-        bool getSecurityPolicyUri(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSecurityPolicyUri(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr clientCertificate(void);
-        bool setClientCertificate(const OpcUaDataValue& dataValue);
-        bool getClientCertificate(OpcUaDataValue& dataValue);
-        void setUpdateCallbackClientCertificate(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr sessionId_;
-        ServerVariable::SPtr clientUserIdOfSession_;
-        ServerVariable::SPtr clientUserIdHistory_;
-        ServerVariable::SPtr authenticationMechanism_;
-        ServerVariable::SPtr encoding_;
-        ServerVariable::SPtr transportProtocol_;
-        ServerVariable::SPtr securityMode_;
-        ServerVariable::SPtr securityPolicyUri_;
-        ServerVariable::SPtr clientCertificate_;
-    
-    };
+        ServerVariable::SPtr authenticationMechanism_Variable_;
+        ServerVariable::SPtr clientCertificate_Variable_;
+        ServerVariable::SPtr clientUserIdHistory_Variable_;
+        ServerVariable::SPtr clientUserIdOfSession_Variable_;
+        ServerVariable::SPtr encoding_Variable_;
+        ServerVariable::SPtr securityMode_Variable_;
+        ServerVariable::SPtr securityPolicyUri_Variable_;
+        ServerVariable::SPtr sessionId_Variable_;
+        ServerVariable::SPtr transportProtocol_Variable_;
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

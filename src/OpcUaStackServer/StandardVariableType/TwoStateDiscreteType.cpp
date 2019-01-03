@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,77 +15,151 @@ namespace OpcUaStackServer
 {
     
     TwoStateDiscreteType::TwoStateDiscreteType(void)
-    : DiscreteItemType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , falseState_(constructSPtr<ServerVariable>("FalseState"))
-    , trueState_(constructSPtr<ServerVariable>("TrueState"))
+    : VariableBase()
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , falseState_Variable_(constructSPtr<ServerVariable>("FalseState_Variable"))
+    , trueState_Variable_(constructSPtr<ServerVariable>("TrueState_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(2373));
-        serverVariables().registerServerVariable(falseState_);
-        serverVariables().registerServerVariable(trueState_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2373);
+    }
+    
+    TwoStateDiscreteType::TwoStateDiscreteType(const TwoStateDiscreteType& value)
+    : VariableBase()
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , falseState_Variable_(constructSPtr<ServerVariable>("FalseState_Variable"))
+    , trueState_Variable_(constructSPtr<ServerVariable>("TrueState_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2373);
     }
     
     TwoStateDiscreteType::~TwoStateDiscreteType(void)
     {
     }
-    
-    bool
-    TwoStateDiscreteType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    TwoStateDiscreteType::definition_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        falseState_->addBrowsePath(nodeId, OpcUaQualifiedName("FalseState", namespaceIndex_));
-        trueState_->addBrowsePath(nodeId, OpcUaQualifiedName("TrueState", namespaceIndex_));
-        DiscreteItemType::linkInstanceWithModel(nodeId);
+        return definition_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    TwoStateDiscreteType::falseState(void)
+
+    ServerVariable::SPtr&
+    TwoStateDiscreteType::falseState_Variable(void)
     {
-        return falseState_->baseNode().lock();
+        return falseState_Variable_;
     }
-    
-    bool
-    TwoStateDiscreteType::setFalseState(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    TwoStateDiscreteType::trueState_Variable(void)
     {
-        return falseState_->setDataValue(dataValue);
+        return trueState_Variable_;
     }
-    
-    bool
-    TwoStateDiscreteType::getFalseState(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    TwoStateDiscreteType::valuePrecision_Variable(void)
     {
-        return falseState_->getDataValue(dataValue);
+        return valuePrecision_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    TwoStateDiscreteType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    TwoStateDiscreteType::setUpdateCallbackFalseState(Callback::SPtr& callback)
+    TwoStateDiscreteType::definition_Variable(ServerVariable::SPtr& serverVariable)
     {
-        falseState_->callback(callback);
+        definition_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    TwoStateDiscreteType::trueState(void)
-    {
-        return trueState_->baseNode().lock();
-    }
-    
-    bool
-    TwoStateDiscreteType::setTrueState(const OpcUaDataValue& dataValue)
-    {
-        return trueState_->setDataValue(dataValue);
-    }
-    
-    bool
-    TwoStateDiscreteType::getTrueState(OpcUaDataValue& dataValue)
-    {
-        return trueState_->getDataValue(dataValue);
-    }
-    
+
     void
-    TwoStateDiscreteType::setUpdateCallbackTrueState(Callback::SPtr& callback)
+    TwoStateDiscreteType::falseState_Variable(ServerVariable::SPtr& serverVariable)
     {
-        trueState_->callback(callback);
+        falseState_Variable_ = serverVariable;
+    }
+
+    void
+    TwoStateDiscreteType::trueState_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        trueState_Variable_ = serverVariable;
+    }
+
+    void
+    TwoStateDiscreteType::valuePrecision_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        valuePrecision_Variable_ = serverVariable;
+    }
+
+    void
+    TwoStateDiscreteType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    TwoStateDiscreteType::get_Definition_Variable(OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateDiscreteType::get_FalseState_Variable(OpcUaDataValue& dataValue)
+    {
+        return falseState_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateDiscreteType::get_TrueState_Variable(OpcUaDataValue& dataValue)
+    {
+        return trueState_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateDiscreteType::get_ValuePrecision_Variable(OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateDiscreteType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateDiscreteType::set_Definition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateDiscreteType::set_FalseState_Variable(const OpcUaDataValue& dataValue)
+    {
+        return falseState_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateDiscreteType::set_TrueState_Variable(const OpcUaDataValue& dataValue)
+    {
+        return trueState_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateDiscreteType::set_ValuePrecision_Variable(const OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateDiscreteType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

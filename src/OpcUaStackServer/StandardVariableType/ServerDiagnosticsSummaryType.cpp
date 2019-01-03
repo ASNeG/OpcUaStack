@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,347 +15,359 @@ namespace OpcUaStackServer
 {
     
     ServerDiagnosticsSummaryType::ServerDiagnosticsSummaryType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , serverViewCount_(constructSPtr<ServerVariable>("ServerViewCount"))
-    , currentSessionCount_(constructSPtr<ServerVariable>("CurrentSessionCount"))
-    , cumulatedSessionCount_(constructSPtr<ServerVariable>("CumulatedSessionCount"))
-    , securityRejectedSessionCount_(constructSPtr<ServerVariable>("SecurityRejectedSessionCount"))
-    , rejectedSessionCount_(constructSPtr<ServerVariable>("RejectedSessionCount"))
-    , sessionTimeoutCount_(constructSPtr<ServerVariable>("SessionTimeoutCount"))
-    , sessionAbortCount_(constructSPtr<ServerVariable>("SessionAbortCount"))
-    , publishingIntervalCount_(constructSPtr<ServerVariable>("PublishingIntervalCount"))
-    , currentSubscriptionCount_(constructSPtr<ServerVariable>("CurrentSubscriptionCount"))
-    , cumulatedSubscriptionCount_(constructSPtr<ServerVariable>("CumulatedSubscriptionCount"))
-    , securityRejectedRequestsCount_(constructSPtr<ServerVariable>("SecurityRejectedRequestsCount"))
-    , rejectedRequestsCount_(constructSPtr<ServerVariable>("RejectedRequestsCount"))
+    : VariableBase()
+    , cumulatedSessionCount_Variable_(constructSPtr<ServerVariable>("CumulatedSessionCount_Variable"))
+    , cumulatedSubscriptionCount_Variable_(constructSPtr<ServerVariable>("CumulatedSubscriptionCount_Variable"))
+    , currentSessionCount_Variable_(constructSPtr<ServerVariable>("CurrentSessionCount_Variable"))
+    , currentSubscriptionCount_Variable_(constructSPtr<ServerVariable>("CurrentSubscriptionCount_Variable"))
+    , publishingIntervalCount_Variable_(constructSPtr<ServerVariable>("PublishingIntervalCount_Variable"))
+    , rejectedRequestsCount_Variable_(constructSPtr<ServerVariable>("RejectedRequestsCount_Variable"))
+    , rejectedSessionCount_Variable_(constructSPtr<ServerVariable>("RejectedSessionCount_Variable"))
+    , securityRejectedRequestsCount_Variable_(constructSPtr<ServerVariable>("SecurityRejectedRequestsCount_Variable"))
+    , securityRejectedSessionCount_Variable_(constructSPtr<ServerVariable>("SecurityRejectedSessionCount_Variable"))
+    , serverViewCount_Variable_(constructSPtr<ServerVariable>("ServerViewCount_Variable"))
+    , sessionAbortCount_Variable_(constructSPtr<ServerVariable>("SessionAbortCount_Variable"))
+    , sessionTimeoutCount_Variable_(constructSPtr<ServerVariable>("SessionTimeoutCount_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(2150));
-        serverVariables().registerServerVariable(serverViewCount_);
-        serverVariables().registerServerVariable(currentSessionCount_);
-        serverVariables().registerServerVariable(cumulatedSessionCount_);
-        serverVariables().registerServerVariable(securityRejectedSessionCount_);
-        serverVariables().registerServerVariable(rejectedSessionCount_);
-        serverVariables().registerServerVariable(sessionTimeoutCount_);
-        serverVariables().registerServerVariable(sessionAbortCount_);
-        serverVariables().registerServerVariable(publishingIntervalCount_);
-        serverVariables().registerServerVariable(currentSubscriptionCount_);
-        serverVariables().registerServerVariable(cumulatedSubscriptionCount_);
-        serverVariables().registerServerVariable(securityRejectedRequestsCount_);
-        serverVariables().registerServerVariable(rejectedRequestsCount_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2150);
+    }
+    
+    ServerDiagnosticsSummaryType::ServerDiagnosticsSummaryType(const ServerDiagnosticsSummaryType& value)
+    : VariableBase()
+    , cumulatedSessionCount_Variable_(constructSPtr<ServerVariable>("CumulatedSessionCount_Variable"))
+    , cumulatedSubscriptionCount_Variable_(constructSPtr<ServerVariable>("CumulatedSubscriptionCount_Variable"))
+    , currentSessionCount_Variable_(constructSPtr<ServerVariable>("CurrentSessionCount_Variable"))
+    , currentSubscriptionCount_Variable_(constructSPtr<ServerVariable>("CurrentSubscriptionCount_Variable"))
+    , publishingIntervalCount_Variable_(constructSPtr<ServerVariable>("PublishingIntervalCount_Variable"))
+    , rejectedRequestsCount_Variable_(constructSPtr<ServerVariable>("RejectedRequestsCount_Variable"))
+    , rejectedSessionCount_Variable_(constructSPtr<ServerVariable>("RejectedSessionCount_Variable"))
+    , securityRejectedRequestsCount_Variable_(constructSPtr<ServerVariable>("SecurityRejectedRequestsCount_Variable"))
+    , securityRejectedSessionCount_Variable_(constructSPtr<ServerVariable>("SecurityRejectedSessionCount_Variable"))
+    , serverViewCount_Variable_(constructSPtr<ServerVariable>("ServerViewCount_Variable"))
+    , sessionAbortCount_Variable_(constructSPtr<ServerVariable>("SessionAbortCount_Variable"))
+    , sessionTimeoutCount_Variable_(constructSPtr<ServerVariable>("SessionTimeoutCount_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2150);
     }
     
     ServerDiagnosticsSummaryType::~ServerDiagnosticsSummaryType(void)
     {
     }
-    
-    bool
-    ServerDiagnosticsSummaryType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::cumulatedSessionCount_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        serverViewCount_->addBrowsePath(nodeId, OpcUaQualifiedName("ServerViewCount", namespaceIndex_));
-        currentSessionCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CurrentSessionCount", namespaceIndex_));
-        cumulatedSessionCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CumulatedSessionCount", namespaceIndex_));
-        securityRejectedSessionCount_->addBrowsePath(nodeId, OpcUaQualifiedName("SecurityRejectedSessionCount", namespaceIndex_));
-        rejectedSessionCount_->addBrowsePath(nodeId, OpcUaQualifiedName("RejectedSessionCount", namespaceIndex_));
-        sessionTimeoutCount_->addBrowsePath(nodeId, OpcUaQualifiedName("SessionTimeoutCount", namespaceIndex_));
-        sessionAbortCount_->addBrowsePath(nodeId, OpcUaQualifiedName("SessionAbortCount", namespaceIndex_));
-        publishingIntervalCount_->addBrowsePath(nodeId, OpcUaQualifiedName("PublishingIntervalCount", namespaceIndex_));
-        currentSubscriptionCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CurrentSubscriptionCount", namespaceIndex_));
-        cumulatedSubscriptionCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CumulatedSubscriptionCount", namespaceIndex_));
-        securityRejectedRequestsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("SecurityRejectedRequestsCount", namespaceIndex_));
-        rejectedRequestsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("RejectedRequestsCount", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return cumulatedSessionCount_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::serverViewCount(void)
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::cumulatedSubscriptionCount_Variable(void)
     {
-        return serverViewCount_->baseNode().lock();
+        return cumulatedSubscriptionCount_Variable_;
     }
-    
-    bool
-    ServerDiagnosticsSummaryType::setServerViewCount(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::currentSessionCount_Variable(void)
     {
-        return serverViewCount_->setDataValue(dataValue);
+        return currentSessionCount_Variable_;
     }
-    
-    bool
-    ServerDiagnosticsSummaryType::getServerViewCount(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::currentSubscriptionCount_Variable(void)
     {
-        return serverViewCount_->getDataValue(dataValue);
+        return currentSubscriptionCount_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::publishingIntervalCount_Variable(void)
+    {
+        return publishingIntervalCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::rejectedRequestsCount_Variable(void)
+    {
+        return rejectedRequestsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::rejectedSessionCount_Variable(void)
+    {
+        return rejectedSessionCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::securityRejectedRequestsCount_Variable(void)
+    {
+        return securityRejectedRequestsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::securityRejectedSessionCount_Variable(void)
+    {
+        return securityRejectedSessionCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::serverViewCount_Variable(void)
+    {
+        return serverViewCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::sessionAbortCount_Variable(void)
+    {
+        return sessionAbortCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::sessionTimeoutCount_Variable(void)
+    {
+        return sessionTimeoutCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerDiagnosticsSummaryType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackServerViewCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::cumulatedSessionCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        serverViewCount_->callback(callback);
+        cumulatedSessionCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::currentSessionCount(void)
-    {
-        return currentSessionCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setCurrentSessionCount(const OpcUaDataValue& dataValue)
-    {
-        return currentSessionCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getCurrentSessionCount(OpcUaDataValue& dataValue)
-    {
-        return currentSessionCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackCurrentSessionCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::cumulatedSubscriptionCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        currentSessionCount_->callback(callback);
+        cumulatedSubscriptionCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::cumulatedSessionCount(void)
-    {
-        return cumulatedSessionCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setCumulatedSessionCount(const OpcUaDataValue& dataValue)
-    {
-        return cumulatedSessionCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getCumulatedSessionCount(OpcUaDataValue& dataValue)
-    {
-        return cumulatedSessionCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackCumulatedSessionCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::currentSessionCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        cumulatedSessionCount_->callback(callback);
+        currentSessionCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::securityRejectedSessionCount(void)
-    {
-        return securityRejectedSessionCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setSecurityRejectedSessionCount(const OpcUaDataValue& dataValue)
-    {
-        return securityRejectedSessionCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getSecurityRejectedSessionCount(OpcUaDataValue& dataValue)
-    {
-        return securityRejectedSessionCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackSecurityRejectedSessionCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::currentSubscriptionCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        securityRejectedSessionCount_->callback(callback);
+        currentSubscriptionCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::rejectedSessionCount(void)
-    {
-        return rejectedSessionCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setRejectedSessionCount(const OpcUaDataValue& dataValue)
-    {
-        return rejectedSessionCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getRejectedSessionCount(OpcUaDataValue& dataValue)
-    {
-        return rejectedSessionCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackRejectedSessionCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::publishingIntervalCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        rejectedSessionCount_->callback(callback);
+        publishingIntervalCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::sessionTimeoutCount(void)
-    {
-        return sessionTimeoutCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setSessionTimeoutCount(const OpcUaDataValue& dataValue)
-    {
-        return sessionTimeoutCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getSessionTimeoutCount(OpcUaDataValue& dataValue)
-    {
-        return sessionTimeoutCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackSessionTimeoutCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::rejectedRequestsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        sessionTimeoutCount_->callback(callback);
+        rejectedRequestsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::sessionAbortCount(void)
-    {
-        return sessionAbortCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setSessionAbortCount(const OpcUaDataValue& dataValue)
-    {
-        return sessionAbortCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getSessionAbortCount(OpcUaDataValue& dataValue)
-    {
-        return sessionAbortCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackSessionAbortCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::rejectedSessionCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        sessionAbortCount_->callback(callback);
+        rejectedSessionCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::publishingIntervalCount(void)
-    {
-        return publishingIntervalCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setPublishingIntervalCount(const OpcUaDataValue& dataValue)
-    {
-        return publishingIntervalCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getPublishingIntervalCount(OpcUaDataValue& dataValue)
-    {
-        return publishingIntervalCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackPublishingIntervalCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::securityRejectedRequestsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        publishingIntervalCount_->callback(callback);
+        securityRejectedRequestsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::currentSubscriptionCount(void)
-    {
-        return currentSubscriptionCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setCurrentSubscriptionCount(const OpcUaDataValue& dataValue)
-    {
-        return currentSubscriptionCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getCurrentSubscriptionCount(OpcUaDataValue& dataValue)
-    {
-        return currentSubscriptionCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackCurrentSubscriptionCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::securityRejectedSessionCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        currentSubscriptionCount_->callback(callback);
+        securityRejectedSessionCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::cumulatedSubscriptionCount(void)
-    {
-        return cumulatedSubscriptionCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setCumulatedSubscriptionCount(const OpcUaDataValue& dataValue)
-    {
-        return cumulatedSubscriptionCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getCumulatedSubscriptionCount(OpcUaDataValue& dataValue)
-    {
-        return cumulatedSubscriptionCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackCumulatedSubscriptionCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::serverViewCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        cumulatedSubscriptionCount_->callback(callback);
+        serverViewCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::securityRejectedRequestsCount(void)
-    {
-        return securityRejectedRequestsCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setSecurityRejectedRequestsCount(const OpcUaDataValue& dataValue)
-    {
-        return securityRejectedRequestsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getSecurityRejectedRequestsCount(OpcUaDataValue& dataValue)
-    {
-        return securityRejectedRequestsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackSecurityRejectedRequestsCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::sessionAbortCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        securityRejectedRequestsCount_->callback(callback);
+        sessionAbortCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerDiagnosticsSummaryType::rejectedRequestsCount(void)
-    {
-        return rejectedRequestsCount_->baseNode().lock();
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::setRejectedRequestsCount(const OpcUaDataValue& dataValue)
-    {
-        return rejectedRequestsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryType::getRejectedRequestsCount(OpcUaDataValue& dataValue)
-    {
-        return rejectedRequestsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerDiagnosticsSummaryType::setUpdateCallbackRejectedRequestsCount(Callback::SPtr& callback)
+    ServerDiagnosticsSummaryType::sessionTimeoutCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        rejectedRequestsCount_->callback(callback);
+        sessionTimeoutCount_Variable_ = serverVariable;
+    }
+
+    void
+    ServerDiagnosticsSummaryType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_CumulatedSessionCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return cumulatedSessionCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_CumulatedSubscriptionCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return cumulatedSubscriptionCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_CurrentSessionCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return currentSessionCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_CurrentSubscriptionCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return currentSubscriptionCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_PublishingIntervalCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return publishingIntervalCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_RejectedRequestsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return rejectedRequestsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_RejectedSessionCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return rejectedSessionCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_SecurityRejectedRequestsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return securityRejectedRequestsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_SecurityRejectedSessionCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return securityRejectedSessionCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_ServerViewCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return serverViewCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_SessionAbortCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return sessionAbortCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_SessionTimeoutCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return sessionTimeoutCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_CumulatedSessionCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return cumulatedSessionCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_CumulatedSubscriptionCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return cumulatedSubscriptionCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_CurrentSessionCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return currentSessionCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_CurrentSubscriptionCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return currentSubscriptionCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_PublishingIntervalCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return publishingIntervalCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_RejectedRequestsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return rejectedRequestsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_RejectedSessionCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return rejectedSessionCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_SecurityRejectedRequestsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return securityRejectedRequestsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_SecurityRejectedSessionCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return securityRejectedSessionCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_ServerViewCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return serverViewCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_SessionAbortCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return sessionAbortCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_SessionTimeoutCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return sessionTimeoutCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerDiagnosticsSummaryType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

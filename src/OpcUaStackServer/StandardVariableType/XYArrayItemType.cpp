@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,50 +15,255 @@ namespace OpcUaStackServer
 {
     
     XYArrayItemType::XYArrayItemType(void)
-    : ArrayItemType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , xAxisDefinition_(constructSPtr<ServerVariable>("XAxisDefinition"))
+    : VariableBase()
+    , axisScaleType_Variable_(constructSPtr<ServerVariable>("AxisScaleType_Variable"))
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , eURange_Variable_(constructSPtr<ServerVariable>("EURange_Variable"))
+    , engineeringUnits_Variable_(constructSPtr<ServerVariable>("EngineeringUnits_Variable"))
+    , instrumentRange_Variable_(constructSPtr<ServerVariable>("InstrumentRange_Variable"))
+    , title_Variable_(constructSPtr<ServerVariable>("Title_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , xAxisDefinition_Variable_(constructSPtr<ServerVariable>("XAxisDefinition_Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(12038));
-        serverVariables().registerServerVariable(xAxisDefinition_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)12038);
+    }
+    
+    XYArrayItemType::XYArrayItemType(const XYArrayItemType& value)
+    : VariableBase()
+    , axisScaleType_Variable_(constructSPtr<ServerVariable>("AxisScaleType_Variable"))
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , eURange_Variable_(constructSPtr<ServerVariable>("EURange_Variable"))
+    , engineeringUnits_Variable_(constructSPtr<ServerVariable>("EngineeringUnits_Variable"))
+    , instrumentRange_Variable_(constructSPtr<ServerVariable>("InstrumentRange_Variable"))
+    , title_Variable_(constructSPtr<ServerVariable>("Title_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , xAxisDefinition_Variable_(constructSPtr<ServerVariable>("XAxisDefinition_Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)12038);
     }
     
     XYArrayItemType::~XYArrayItemType(void)
     {
     }
-    
-    bool
-    XYArrayItemType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    XYArrayItemType::axisScaleType_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        xAxisDefinition_->addBrowsePath(nodeId, OpcUaQualifiedName("XAxisDefinition", namespaceIndex_));
-        ArrayItemType::linkInstanceWithModel(nodeId);
+        return axisScaleType_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    XYArrayItemType::xAxisDefinition(void)
+
+    ServerVariable::SPtr&
+    XYArrayItemType::definition_Variable(void)
     {
-        return xAxisDefinition_->baseNode().lock();
+        return definition_Variable_;
     }
-    
-    bool
-    XYArrayItemType::setXAxisDefinition(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    XYArrayItemType::eURange_Variable(void)
     {
-        return xAxisDefinition_->setDataValue(dataValue);
+        return eURange_Variable_;
     }
-    
-    bool
-    XYArrayItemType::getXAxisDefinition(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    XYArrayItemType::engineeringUnits_Variable(void)
     {
-        return xAxisDefinition_->getDataValue(dataValue);
+        return engineeringUnits_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    XYArrayItemType::instrumentRange_Variable(void)
+    {
+        return instrumentRange_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    XYArrayItemType::title_Variable(void)
+    {
+        return title_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    XYArrayItemType::valuePrecision_Variable(void)
+    {
+        return valuePrecision_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    XYArrayItemType::variable(void)
+    {
+        return variable_;
+    }
+
+    ServerVariable::SPtr&
+    XYArrayItemType::xAxisDefinition_Variable(void)
+    {
+        return xAxisDefinition_Variable_;
+    }
+
     void
-    XYArrayItemType::setUpdateCallbackXAxisDefinition(Callback::SPtr& callback)
+    XYArrayItemType::axisScaleType_Variable(ServerVariable::SPtr& serverVariable)
     {
-        xAxisDefinition_->callback(callback);
+        axisScaleType_Variable_ = serverVariable;
+    }
+
+    void
+    XYArrayItemType::definition_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        definition_Variable_ = serverVariable;
+    }
+
+    void
+    XYArrayItemType::eURange_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        eURange_Variable_ = serverVariable;
+    }
+
+    void
+    XYArrayItemType::engineeringUnits_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        engineeringUnits_Variable_ = serverVariable;
+    }
+
+    void
+    XYArrayItemType::instrumentRange_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        instrumentRange_Variable_ = serverVariable;
+    }
+
+    void
+    XYArrayItemType::title_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        title_Variable_ = serverVariable;
+    }
+
+    void
+    XYArrayItemType::valuePrecision_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        valuePrecision_Variable_ = serverVariable;
+    }
+
+    void
+    XYArrayItemType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    void
+    XYArrayItemType::xAxisDefinition_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        xAxisDefinition_Variable_ = serverVariable;
+    }
+
+    bool
+    XYArrayItemType::get_AxisScaleType_Variable(OpcUaDataValue& dataValue)
+    {
+        return axisScaleType_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::get_Definition_Variable(OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::get_EURange_Variable(OpcUaDataValue& dataValue)
+    {
+        return eURange_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::get_EngineeringUnits_Variable(OpcUaDataValue& dataValue)
+    {
+        return engineeringUnits_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::get_InstrumentRange_Variable(OpcUaDataValue& dataValue)
+    {
+        return instrumentRange_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::get_Title_Variable(OpcUaDataValue& dataValue)
+    {
+        return title_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::get_ValuePrecision_Variable(OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::get_XAxisDefinition_Variable(OpcUaDataValue& dataValue)
+    {
+        return xAxisDefinition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::set_AxisScaleType_Variable(const OpcUaDataValue& dataValue)
+    {
+        return axisScaleType_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::set_Definition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::set_EURange_Variable(const OpcUaDataValue& dataValue)
+    {
+        return eURange_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::set_EngineeringUnits_Variable(const OpcUaDataValue& dataValue)
+    {
+        return engineeringUnits_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::set_InstrumentRange_Variable(const OpcUaDataValue& dataValue)
+    {
+        return instrumentRange_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::set_Title_Variable(const OpcUaDataValue& dataValue)
+    {
+        return title_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::set_ValuePrecision_Variable(const OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
+    }
+
+    bool
+    XYArrayItemType::set_XAxisDefinition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return xAxisDefinition_Variable_->setDataValue(dataValue);
     }
 
 }

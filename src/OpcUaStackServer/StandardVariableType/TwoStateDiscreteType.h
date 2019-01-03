@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_TwoStateDiscreteType_h__
@@ -14,39 +14,57 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/DiscreteItemType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT TwoStateDiscreteType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<TwoStateDiscreteType> SPtr;
+       typedef std::vector<TwoStateDiscreteType::SPtr> Vec;
+   
+       TwoStateDiscreteType(void);
+       TwoStateDiscreteType(const TwoStateDiscreteType& value);
+       virtual ~TwoStateDiscreteType(void);
+
+        void definition_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& definition_Variable(void);
+        bool get_Definition_Variable(OpcUaDataValue& dataValue);
+        bool set_Definition_Variable(const OpcUaDataValue& dataValue);
+
+        void falseState_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& falseState_Variable(void);
+        bool get_FalseState_Variable(OpcUaDataValue& dataValue);
+        bool set_FalseState_Variable(const OpcUaDataValue& dataValue);
+
+        void trueState_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& trueState_Variable(void);
+        bool get_TrueState_Variable(OpcUaDataValue& dataValue);
+        bool set_TrueState_Variable(const OpcUaDataValue& dataValue);
+
+        void valuePrecision_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& valuePrecision_Variable(void);
+        bool get_ValuePrecision_Variable(OpcUaDataValue& dataValue);
+        bool set_ValuePrecision_Variable(const OpcUaDataValue& dataValue);
+
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT TwoStateDiscreteType
-    : public DiscreteItemType
-    {
-      public:
-        typedef boost::shared_ptr<TwoStateDiscreteType> SPtr;
-    
-        TwoStateDiscreteType(void);
-        virtual ~TwoStateDiscreteType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr falseState(void);
-        bool setFalseState(const OpcUaDataValue& dataValue);
-        bool getFalseState(OpcUaDataValue& dataValue);
-        void setUpdateCallbackFalseState(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr trueState(void);
-        bool setTrueState(const OpcUaDataValue& dataValue);
-        bool getTrueState(OpcUaDataValue& dataValue);
-        void setUpdateCallbackTrueState(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr falseState_;
-        ServerVariable::SPtr trueState_;
-    
-    };
+        ServerVariable::SPtr definition_Variable_;
+        ServerVariable::SPtr falseState_Variable_;
+        ServerVariable::SPtr trueState_Variable_;
+        ServerVariable::SPtr valuePrecision_Variable_;
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

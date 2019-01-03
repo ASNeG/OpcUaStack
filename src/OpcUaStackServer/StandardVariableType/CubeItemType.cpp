@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,104 +15,307 @@ namespace OpcUaStackServer
 {
     
     CubeItemType::CubeItemType(void)
-    : ArrayItemType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , xAxisDefinition_(constructSPtr<ServerVariable>("XAxisDefinition"))
-    , yAxisDefinition_(constructSPtr<ServerVariable>("YAxisDefinition"))
-    , zAxisDefinition_(constructSPtr<ServerVariable>("ZAxisDefinition"))
+    : VariableBase()
+    , axisScaleType_Variable_(constructSPtr<ServerVariable>("AxisScaleType_Variable"))
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , eURange_Variable_(constructSPtr<ServerVariable>("EURange_Variable"))
+    , engineeringUnits_Variable_(constructSPtr<ServerVariable>("EngineeringUnits_Variable"))
+    , instrumentRange_Variable_(constructSPtr<ServerVariable>("InstrumentRange_Variable"))
+    , title_Variable_(constructSPtr<ServerVariable>("Title_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , xAxisDefinition_Variable_(constructSPtr<ServerVariable>("XAxisDefinition_Variable"))
+    , yAxisDefinition_Variable_(constructSPtr<ServerVariable>("YAxisDefinition_Variable"))
+    , zAxisDefinition_Variable_(constructSPtr<ServerVariable>("ZAxisDefinition_Variable"))
     {
-        variableTypeNamespaceName(namespaceName_);
-        variableTypeNodeId(OpcUaNodeId(12057));
-        serverVariables().registerServerVariable(xAxisDefinition_);
-        serverVariables().registerServerVariable(yAxisDefinition_);
-        serverVariables().registerServerVariable(zAxisDefinition_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)12057);
+    }
+    
+    CubeItemType::CubeItemType(const CubeItemType& value)
+    : VariableBase()
+    , axisScaleType_Variable_(constructSPtr<ServerVariable>("AxisScaleType_Variable"))
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , eURange_Variable_(constructSPtr<ServerVariable>("EURange_Variable"))
+    , engineeringUnits_Variable_(constructSPtr<ServerVariable>("EngineeringUnits_Variable"))
+    , instrumentRange_Variable_(constructSPtr<ServerVariable>("InstrumentRange_Variable"))
+    , title_Variable_(constructSPtr<ServerVariable>("Title_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , xAxisDefinition_Variable_(constructSPtr<ServerVariable>("XAxisDefinition_Variable"))
+    , yAxisDefinition_Variable_(constructSPtr<ServerVariable>("YAxisDefinition_Variable"))
+    , zAxisDefinition_Variable_(constructSPtr<ServerVariable>("ZAxisDefinition_Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)12057);
     }
     
     CubeItemType::~CubeItemType(void)
     {
     }
-    
-    bool
-    CubeItemType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    CubeItemType::axisScaleType_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        xAxisDefinition_->addBrowsePath(nodeId, OpcUaQualifiedName("XAxisDefinition", namespaceIndex_));
-        yAxisDefinition_->addBrowsePath(nodeId, OpcUaQualifiedName("YAxisDefinition", namespaceIndex_));
-        zAxisDefinition_->addBrowsePath(nodeId, OpcUaQualifiedName("ZAxisDefinition", namespaceIndex_));
-        ArrayItemType::linkInstanceWithModel(nodeId);
+        return axisScaleType_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    CubeItemType::xAxisDefinition(void)
+
+    ServerVariable::SPtr&
+    CubeItemType::definition_Variable(void)
     {
-        return xAxisDefinition_->baseNode().lock();
+        return definition_Variable_;
     }
-    
-    bool
-    CubeItemType::setXAxisDefinition(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    CubeItemType::eURange_Variable(void)
     {
-        return xAxisDefinition_->setDataValue(dataValue);
+        return eURange_Variable_;
     }
-    
-    bool
-    CubeItemType::getXAxisDefinition(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    CubeItemType::engineeringUnits_Variable(void)
     {
-        return xAxisDefinition_->getDataValue(dataValue);
+        return engineeringUnits_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    CubeItemType::instrumentRange_Variable(void)
+    {
+        return instrumentRange_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    CubeItemType::title_Variable(void)
+    {
+        return title_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    CubeItemType::valuePrecision_Variable(void)
+    {
+        return valuePrecision_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    CubeItemType::variable(void)
+    {
+        return variable_;
+    }
+
+    ServerVariable::SPtr&
+    CubeItemType::xAxisDefinition_Variable(void)
+    {
+        return xAxisDefinition_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    CubeItemType::yAxisDefinition_Variable(void)
+    {
+        return yAxisDefinition_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    CubeItemType::zAxisDefinition_Variable(void)
+    {
+        return zAxisDefinition_Variable_;
+    }
+
     void
-    CubeItemType::setUpdateCallbackXAxisDefinition(Callback::SPtr& callback)
+    CubeItemType::axisScaleType_Variable(ServerVariable::SPtr& serverVariable)
     {
-        xAxisDefinition_->callback(callback);
+        axisScaleType_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    CubeItemType::yAxisDefinition(void)
-    {
-        return yAxisDefinition_->baseNode().lock();
-    }
-    
-    bool
-    CubeItemType::setYAxisDefinition(const OpcUaDataValue& dataValue)
-    {
-        return yAxisDefinition_->setDataValue(dataValue);
-    }
-    
-    bool
-    CubeItemType::getYAxisDefinition(OpcUaDataValue& dataValue)
-    {
-        return yAxisDefinition_->getDataValue(dataValue);
-    }
-    
+
     void
-    CubeItemType::setUpdateCallbackYAxisDefinition(Callback::SPtr& callback)
+    CubeItemType::definition_Variable(ServerVariable::SPtr& serverVariable)
     {
-        yAxisDefinition_->callback(callback);
+        definition_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    CubeItemType::zAxisDefinition(void)
-    {
-        return zAxisDefinition_->baseNode().lock();
-    }
-    
-    bool
-    CubeItemType::setZAxisDefinition(const OpcUaDataValue& dataValue)
-    {
-        return zAxisDefinition_->setDataValue(dataValue);
-    }
-    
-    bool
-    CubeItemType::getZAxisDefinition(OpcUaDataValue& dataValue)
-    {
-        return zAxisDefinition_->getDataValue(dataValue);
-    }
-    
+
     void
-    CubeItemType::setUpdateCallbackZAxisDefinition(Callback::SPtr& callback)
+    CubeItemType::eURange_Variable(ServerVariable::SPtr& serverVariable)
     {
-        zAxisDefinition_->callback(callback);
+        eURange_Variable_ = serverVariable;
+    }
+
+    void
+    CubeItemType::engineeringUnits_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        engineeringUnits_Variable_ = serverVariable;
+    }
+
+    void
+    CubeItemType::instrumentRange_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        instrumentRange_Variable_ = serverVariable;
+    }
+
+    void
+    CubeItemType::title_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        title_Variable_ = serverVariable;
+    }
+
+    void
+    CubeItemType::valuePrecision_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        valuePrecision_Variable_ = serverVariable;
+    }
+
+    void
+    CubeItemType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    void
+    CubeItemType::xAxisDefinition_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        xAxisDefinition_Variable_ = serverVariable;
+    }
+
+    void
+    CubeItemType::yAxisDefinition_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        yAxisDefinition_Variable_ = serverVariable;
+    }
+
+    void
+    CubeItemType::zAxisDefinition_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        zAxisDefinition_Variable_ = serverVariable;
+    }
+
+    bool
+    CubeItemType::get_AxisScaleType_Variable(OpcUaDataValue& dataValue)
+    {
+        return axisScaleType_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::get_Definition_Variable(OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::get_EURange_Variable(OpcUaDataValue& dataValue)
+    {
+        return eURange_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::get_EngineeringUnits_Variable(OpcUaDataValue& dataValue)
+    {
+        return engineeringUnits_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::get_InstrumentRange_Variable(OpcUaDataValue& dataValue)
+    {
+        return instrumentRange_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::get_Title_Variable(OpcUaDataValue& dataValue)
+    {
+        return title_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::get_ValuePrecision_Variable(OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::get_XAxisDefinition_Variable(OpcUaDataValue& dataValue)
+    {
+        return xAxisDefinition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::get_YAxisDefinition_Variable(OpcUaDataValue& dataValue)
+    {
+        return yAxisDefinition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::get_ZAxisDefinition_Variable(OpcUaDataValue& dataValue)
+    {
+        return zAxisDefinition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_AxisScaleType_Variable(const OpcUaDataValue& dataValue)
+    {
+        return axisScaleType_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_Definition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_EURange_Variable(const OpcUaDataValue& dataValue)
+    {
+        return eURange_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_EngineeringUnits_Variable(const OpcUaDataValue& dataValue)
+    {
+        return engineeringUnits_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_InstrumentRange_Variable(const OpcUaDataValue& dataValue)
+    {
+        return instrumentRange_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_Title_Variable(const OpcUaDataValue& dataValue)
+    {
+        return title_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_ValuePrecision_Variable(const OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_XAxisDefinition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return xAxisDefinition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_YAxisDefinition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return yAxisDefinition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    CubeItemType::set_ZAxisDefinition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return zAxisDefinition_Variable_->setDataValue(dataValue);
     }
 
 }
