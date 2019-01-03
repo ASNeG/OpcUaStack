@@ -21,6 +21,7 @@ set COMMAND="local"
 set STACK_PREFIX=C:\ASNeG
 set BUILD_TYPE="Debug"
 set PACKAGE_TYPE="Bin"
+set VS_GENERATOR=""
 
 :parse
     if "%~1"=="" goto :execute
