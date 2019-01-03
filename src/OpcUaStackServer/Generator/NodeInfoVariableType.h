@@ -67,6 +67,7 @@ class DLLEXPORT NodeInfoVariableType
 	std::string& description(void);
 	VariableTypeField::Map& variableTypeFieldMap(void);
 
+	std::string getIdentifierAsString(OpcUaNodeId& nodeId);
 
   private:
 	bool readValues(const OpcUaNodeId& variableTypeNodeId);

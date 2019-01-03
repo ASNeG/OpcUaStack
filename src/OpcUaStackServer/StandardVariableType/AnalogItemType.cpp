@@ -23,6 +23,8 @@ namespace OpcUaStackServer
     , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
     , variable_(constructSPtr<ServerVariable>("Variable"))
     {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2368);
     }
     
     AnalogItemType::AnalogItemType(const AnalogItemType& value)
@@ -34,6 +36,8 @@ namespace OpcUaStackServer
     , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
     , variable_(constructSPtr<ServerVariable>("Variable"))
     {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2368);
     }
     
     AnalogItemType::~AnalogItemType(void)

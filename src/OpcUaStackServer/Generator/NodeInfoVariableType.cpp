@@ -318,4 +318,43 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	std::string
+	NodeInfoVariableType::getIdentifierAsString(OpcUaNodeId& nodeId)
+	{
+    	if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+    		uint16_t namespaceIndex;
+    		uint32_t id;
+    		nodeId.get(id, namespaceIndex);
+
+    		std::stringstream ss;
+    		ss << "(OpcUaUInt32)" << id;
+
+    		return ss.str();
+    	}
+    	else if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaString) {
+    		uint16_t namespaceIndex;
+    		std::string id;
+    		nodeId.get(id, namespaceIndex);
+
+       		std::stringstream ss;
+        	ss << "\"" << id << "\"";
+
+        	return ss.str();
+    	}
+       	else if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaGuid) {
+    		uint16_t namespaceIndex;
+    		std::string id;
+    		nodeId.get(id, namespaceIndex);
+
+       		std::stringstream ss;
+        	ss << "\"" << id << "\"";
+
+        	return ss.str();
+        }
+       	else {
+       		return "(OpcUaUInt32)0";
+       	}
+    	return "";
+	}
+
 }

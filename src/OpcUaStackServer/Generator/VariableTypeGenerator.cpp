@@ -383,6 +383,10 @@ namespace OpcUaStackServer
 		}
 
 		ss << prefix << "{" << std::endl;
+
+		ss << prefix << "    variableTypeNamespaceName(\"" << nodeInfo_.variableTypeNamespaceName() << "\");" << std::endl;
+		ss << prefix << "    variableTypeNodeId(" << nodeInfo_.getIdentifierAsString(nodeInfo_.variableTypeNodeId()) << ");" << std::endl;
+
 		ss << prefix << "}" << std::endl;
 
 		//
@@ -404,6 +408,11 @@ namespace OpcUaStackServer
 		}
 
 		ss << prefix << "{" << std::endl;
+
+		ss << prefix << "    variableTypeNamespaceName(\"" << nodeInfo_.variableTypeNamespaceName() << "\");" << std::endl;
+		ss << prefix << "    variableTypeNodeId(" << nodeInfo_.getIdentifierAsString(nodeInfo_.variableTypeNodeId()) << ");" << std::endl;
+
+
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
