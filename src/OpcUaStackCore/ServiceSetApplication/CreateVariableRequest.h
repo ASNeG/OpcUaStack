@@ -34,10 +34,14 @@ namespace OpcUaStackCore
 		CreateVariableRequest(void);
 		virtual ~CreateVariableRequest(void);
 
+        void variableInstance(Object::SPtr& variableInstance);
+        Object::SPtr& variableInstance(void);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		Object::SPtr variableInstance_;
 	};
 
 }

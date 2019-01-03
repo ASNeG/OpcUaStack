@@ -37,4 +37,16 @@ namespace OpcUaStackCore
 	{
 	}
 
+    void
+	CreateVariableRequest::variableInstance(Object::SPtr& variableInstance)
+    {
+    	variableInstance_ = variableInstance;
+    }
+
+    Object::SPtr&
+	CreateVariableRequest::variableInstance(void)
+    {
+    	return variableInstance_;
+    }
+
 }
