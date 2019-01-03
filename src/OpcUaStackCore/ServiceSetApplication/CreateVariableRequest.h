@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
 namespace OpcUaStackCore
 {
@@ -34,6 +35,10 @@ namespace OpcUaStackCore
 		CreateVariableRequest(void);
 		virtual ~CreateVariableRequest(void);
 
+		void parentNodeId(const OpcUaNodeId& parentNodeId);
+		OpcUaNodeId& parentNodeId(void);
+		void referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId);
+		OpcUaNodeId& referenceTypeNodeId(void);
         void variableInstance(Object::SPtr& variableInstance);
         Object::SPtr& variableInstance(void);
 
@@ -41,6 +46,8 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		OpcUaNodeId parentNodeId_;
+		OpcUaNodeId referenceTypeNodeId_;
 		Object::SPtr variableInstance_;
 	};
 

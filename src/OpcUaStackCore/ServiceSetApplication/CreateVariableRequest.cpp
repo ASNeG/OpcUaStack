@@ -37,6 +37,30 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	CreateVariableRequest::parentNodeId(const OpcUaNodeId& parentNodeId)
+	{
+		parentNodeId_ = parentNodeId;
+	}
+
+	OpcUaNodeId&
+	CreateVariableRequest::parentNodeId(void)
+	{
+		return parentNodeId_;
+	}
+
+	void
+	CreateVariableRequest::referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId)
+	{
+		referenceTypeNodeId_ = referenceTypeNodeId;
+	}
+
+	OpcUaNodeId&
+	CreateVariableRequest::referenceTypeNodeId(void)
+	{
+		return referenceTypeNodeId_;
+	}
+
     void
 	CreateVariableRequest::variableInstance(Object::SPtr& variableInstance)
     {
