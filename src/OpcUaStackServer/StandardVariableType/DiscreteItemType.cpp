@@ -19,8 +19,8 @@ namespace OpcUaStackServer
     , namespaceName_("http://opcfoundation.org/UA/")
     , namespaceIndex_(0)
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2372));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2372));
     }
     
     DiscreteItemType::~DiscreteItemType(void)

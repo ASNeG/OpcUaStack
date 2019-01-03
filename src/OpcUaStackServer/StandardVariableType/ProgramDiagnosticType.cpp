@@ -29,8 +29,8 @@ namespace OpcUaStackServer
     , lastMethodCallTime_(constructSPtr<ServerVariable>("LastMethodCallTime"))
     , lastMethodReturnStatus_(constructSPtr<ServerVariable>("LastMethodReturnStatus"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2380));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2380));
         serverVariables().registerServerVariable(createSessionId_);
         serverVariables().registerServerVariable(createClientName_);
         serverVariables().registerServerVariable(invocationCreationTime_);

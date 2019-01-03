@@ -20,8 +20,8 @@ namespace OpcUaStackServer
     , namespaceIndex_(0)
     , xAxisDefinition_(constructSPtr<ServerVariable>("XAxisDefinition"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(12029));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(12029));
         serverVariables().registerServerVariable(xAxisDefinition_);
     }
     

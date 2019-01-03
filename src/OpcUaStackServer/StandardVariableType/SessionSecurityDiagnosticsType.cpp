@@ -28,8 +28,8 @@ namespace OpcUaStackServer
     , securityPolicyUri_(constructSPtr<ServerVariable>("SecurityPolicyUri"))
     , clientCertificate_(constructSPtr<ServerVariable>("ClientCertificate"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2244));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2244));
         serverVariables().registerServerVariable(sessionId_);
         serverVariables().registerServerVariable(clientUserIdOfSession_);
         serverVariables().registerServerVariable(clientUserIdHistory_);

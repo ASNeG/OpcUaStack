@@ -59,6 +59,8 @@ class DLLEXPORT NodeInfoVariableType
 		InformationModel::SPtr& informationModel
 	);
 
+	OpcUaNodeId& variableTypeNodeId(void);
+	std::string& variableTypeNamespaceName(void);
 	std::string& className(void);
 	std::string& namespaceName(void);
 	std::string directory(void);
@@ -73,6 +75,7 @@ class DLLEXPORT NodeInfoVariableType
 
 	NumberNamespaceMap numberNamespaceMap_;
 	OpcUaNodeId variableTypeNodeId_;
+	std::string variableTypeNamespaceName_;
 	OpcUaNodeId parentVariableTypeNodeId_;
 	InformationModel::SPtr informationModel_;
 

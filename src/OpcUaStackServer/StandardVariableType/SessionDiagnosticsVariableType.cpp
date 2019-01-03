@@ -62,8 +62,8 @@ namespace OpcUaStackServer
     , registerNodesCount_(constructSPtr<ServerVariable>("RegisterNodesCount"))
     , unregisterNodesCount_(constructSPtr<ServerVariable>("UnregisterNodesCount"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2197));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2197));
         serverVariables().registerServerVariable(sessionId_);
         serverVariables().registerServerVariable(sessionName_);
         serverVariables().registerServerVariable(clientDescription_);

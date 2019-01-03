@@ -20,8 +20,8 @@ namespace OpcUaStackServer
     , namespaceIndex_(0)
     , id_(constructSPtr<ServerVariable>("Id"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2760));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2760));
         serverVariables().registerServerVariable(id_);
     }
     

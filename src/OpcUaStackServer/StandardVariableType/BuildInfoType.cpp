@@ -25,8 +25,8 @@ namespace OpcUaStackServer
     , buildNumber_(constructSPtr<ServerVariable>("BuildNumber"))
     , buildDate_(constructSPtr<ServerVariable>("BuildDate"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(3051));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(3051));
         serverVariables().registerServerVariable(productUri_);
         serverVariables().registerServerVariable(manufacturerName_);
         serverVariables().registerServerVariable(productName_);

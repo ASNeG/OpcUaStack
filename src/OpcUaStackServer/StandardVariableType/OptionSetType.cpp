@@ -21,8 +21,8 @@ namespace OpcUaStackServer
     , optionSetValues_(constructSPtr<ServerVariable>("OptionSetValues"))
     , bitMask_(constructSPtr<ServerVariable>("BitMask"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(11487));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(11487));
         serverVariables().registerServerVariable(optionSetValues_);
         serverVariables().registerServerVariable(bitMask_);
     }

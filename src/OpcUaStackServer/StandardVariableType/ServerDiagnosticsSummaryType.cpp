@@ -31,8 +31,8 @@ namespace OpcUaStackServer
     , securityRejectedRequestsCount_(constructSPtr<ServerVariable>("SecurityRejectedRequestsCount"))
     , rejectedRequestsCount_(constructSPtr<ServerVariable>("RejectedRequestsCount"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2150));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2150));
         serverVariables().registerServerVariable(serverViewCount_);
         serverVariables().registerServerVariable(currentSessionCount_);
         serverVariables().registerServerVariable(cumulatedSessionCount_);

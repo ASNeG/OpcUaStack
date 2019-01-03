@@ -24,8 +24,8 @@ namespace OpcUaStackServer
     , trueState_(constructSPtr<ServerVariable>("TrueState"))
     , falseState_(constructSPtr<ServerVariable>("FalseState"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(8995));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(8995));
         serverVariables().registerServerVariable(id_);
         serverVariables().registerServerVariable(transitionTime_);
         serverVariables().registerServerVariable(effectiveTransitionTime_);

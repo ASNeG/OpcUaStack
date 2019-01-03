@@ -22,8 +22,8 @@ namespace OpcUaStackServer
     , yAxisDefinition_(constructSPtr<ServerVariable>("YAxisDefinition"))
     , zAxisDefinition_(constructSPtr<ServerVariable>("ZAxisDefinition"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(12057));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(12057));
         serverVariables().registerServerVariable(xAxisDefinition_);
         serverVariables().registerServerVariable(yAxisDefinition_);
         serverVariables().registerServerVariable(zAxisDefinition_);

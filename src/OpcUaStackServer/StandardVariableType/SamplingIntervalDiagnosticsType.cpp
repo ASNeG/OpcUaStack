@@ -23,8 +23,8 @@ namespace OpcUaStackServer
     , maxSampledMonitoredItemsCount_(constructSPtr<ServerVariable>("MaxSampledMonitoredItemsCount"))
     , disabledMonitoredItemsSamplingCount_(constructSPtr<ServerVariable>("DisabledMonitoredItemsSamplingCount"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2165));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2165));
         serverVariables().registerServerVariable(samplingInterval_);
         serverVariables().registerServerVariable(sampledMonitoredItemsCount_);
         serverVariables().registerServerVariable(maxSampledMonitoredItemsCount_);

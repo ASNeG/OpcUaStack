@@ -23,8 +23,8 @@ namespace OpcUaStackServer
     , number_(constructSPtr<ServerVariable>("Number"))
     , effectiveDisplayName_(constructSPtr<ServerVariable>("EffectiveDisplayName"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2755));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2755));
         serverVariables().registerServerVariable(id_);
         serverVariables().registerServerVariable(name_);
         serverVariables().registerServerVariable(number_);

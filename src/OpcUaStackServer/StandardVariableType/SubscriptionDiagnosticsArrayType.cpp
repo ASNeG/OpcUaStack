@@ -19,8 +19,8 @@ namespace OpcUaStackServer
     , namespaceName_("http://opcfoundation.org/UA/")
     , namespaceIndex_(0)
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2171));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2171));
     }
     
     SubscriptionDiagnosticsArrayType::~SubscriptionDiagnosticsArrayType(void)

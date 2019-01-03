@@ -24,8 +24,8 @@ namespace OpcUaStackServer
     , title_(constructSPtr<ServerVariable>("Title"))
     , axisScaleType_(constructSPtr<ServerVariable>("AxisScaleType"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(12021));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(12021));
         serverVariables().registerServerVariable(instrumentRange_);
         serverVariables().registerServerVariable(eURange_);
         serverVariables().registerServerVariable(engineeringUnits_);

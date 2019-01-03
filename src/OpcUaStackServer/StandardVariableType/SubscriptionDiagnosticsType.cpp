@@ -50,8 +50,8 @@ namespace OpcUaStackServer
     , nextSequenceNumber_(constructSPtr<ServerVariable>("NextSequenceNumber"))
     , eventQueueOverFlowCount_(constructSPtr<ServerVariable>("EventQueueOverFlowCount"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2172));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2172));
         serverVariables().registerServerVariable(sessionId_);
         serverVariables().registerServerVariable(subscriptionId_);
         serverVariables().registerServerVariable(priority_);

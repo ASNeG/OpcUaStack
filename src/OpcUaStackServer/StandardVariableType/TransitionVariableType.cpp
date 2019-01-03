@@ -24,8 +24,8 @@ namespace OpcUaStackServer
     , transitionTime_(constructSPtr<ServerVariable>("TransitionTime"))
     , effectiveTransitionTime_(constructSPtr<ServerVariable>("EffectiveTransitionTime"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2762));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2762));
         serverVariables().registerServerVariable(id_);
         serverVariables().registerServerVariable(name_);
         serverVariables().registerServerVariable(number_);

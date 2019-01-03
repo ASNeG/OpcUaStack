@@ -20,8 +20,8 @@ namespace OpcUaStackServer
     , namespaceIndex_(0)
     , sourceTimestamp_(constructSPtr<ServerVariable>("SourceTimestamp"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(9002));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(9002));
         serverVariables().registerServerVariable(sourceTimestamp_);
     }
     

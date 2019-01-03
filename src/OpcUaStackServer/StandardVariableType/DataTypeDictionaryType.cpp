@@ -21,8 +21,8 @@ namespace OpcUaStackServer
     , dataTypeVersion_(constructSPtr<ServerVariable>("DataTypeVersion"))
     , namespaceUri_(constructSPtr<ServerVariable>("NamespaceUri"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(72));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(72));
         serverVariables().registerServerVariable(dataTypeVersion_);
         serverVariables().registerServerVariable(namespaceUri_);
     }

@@ -52,9 +52,10 @@ namespace OpcUaStackServer
 		);
 		bool getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint16_t& namespaceIndex);
 
-		void variableTypeNamespace(const std::string& namespaceName);
-		void variableType(const OpcUaNodeId& variableType);
-		OpcUaNodeId& variableType(void);
+		void variableTypeNamespaceName(const std::string& variableTypeNamespaceName);
+		std::string& variableTypeNamespaceName(void);
+		void variableTypeNodeId(const OpcUaNodeId& variableTypeNodeId);
+		OpcUaNodeId& variableTypeNodeId(void);
 
 	  private:
 		bool getNodeIdFromResponse(BrowsePathToNodeIdResponse::SPtr& res, uint32_t idx, OpcUaNodeId::SPtr& nodeId);
@@ -63,8 +64,8 @@ namespace OpcUaStackServer
 
 		ApplicationServiceIf* applicationServiceIf_;
 
-		std::string namespaceName_;
-		OpcUaNodeId variableType_;
+		std::string variableTypeNamespaceName_;
+		OpcUaNodeId variableTypeNodeId_;
 
 		ServerVariables serverVariables_;
 		Callback writeCallback_;

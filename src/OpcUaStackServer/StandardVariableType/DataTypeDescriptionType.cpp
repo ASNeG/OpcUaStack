@@ -21,8 +21,8 @@ namespace OpcUaStackServer
     , dataTypeVersion_(constructSPtr<ServerVariable>("DataTypeVersion"))
     , dictionaryFragment_(constructSPtr<ServerVariable>("DictionaryFragment"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(69));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(69));
         serverVariables().registerServerVariable(dataTypeVersion_);
         serverVariables().registerServerVariable(dictionaryFragment_);
     }

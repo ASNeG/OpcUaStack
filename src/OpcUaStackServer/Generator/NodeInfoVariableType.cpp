@@ -52,7 +52,10 @@ namespace OpcUaStackServer
 		InformationModel::SPtr& informationModel
 	)
 	{
+		NodeSetNamespace nodeSetNamespace;
+
 		variableTypeNodeId_ = variableTypeNodeId;
+		variableTypeNamespaceName_ = nodeSetNamespace.globalNamespaceVec()[variableTypeNodeId_.namespaceIndex()];
 		informationModel_ = informationModel;
 
 		InformationModelAccess ima;
@@ -144,6 +147,18 @@ namespace OpcUaStackServer
 		description_ = description.text().toStdString();
 
 		return readValues(variableTypeNodeId);
+	}
+
+	OpcUaNodeId&
+	NodeInfoVariableType::variableTypeNodeId(void)
+	{
+		return variableTypeNodeId_;
+	}
+
+	std::string&
+	NodeInfoVariableType::variableTypeNamespaceName(void)
+	{
+		return variableTypeNamespaceName_;
 	}
 
 	std::string&

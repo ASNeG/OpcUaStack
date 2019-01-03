@@ -21,8 +21,8 @@ namespace OpcUaStackServer
     , enumValues_(constructSPtr<ServerVariable>("EnumValues"))
     , valueAsText_(constructSPtr<ServerVariable>("ValueAsText"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(11238));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(11238));
         serverVariables().registerServerVariable(enumValues_);
         serverVariables().registerServerVariable(valueAsText_);
     }

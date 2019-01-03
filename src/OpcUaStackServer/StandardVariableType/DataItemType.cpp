@@ -21,8 +21,8 @@ namespace OpcUaStackServer
     , definition_(constructSPtr<ServerVariable>("Definition"))
     , valuePrecision_(constructSPtr<ServerVariable>("ValuePrecision"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2365));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2365));
         serverVariables().registerServerVariable(definition_);
         serverVariables().registerServerVariable(valuePrecision_);
     }

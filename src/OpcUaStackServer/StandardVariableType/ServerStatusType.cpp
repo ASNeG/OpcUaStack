@@ -31,8 +31,8 @@ namespace OpcUaStackServer
     , secondsTillShutdown_(constructSPtr<ServerVariable>("SecondsTillShutdown"))
     , shutdownReason_(constructSPtr<ServerVariable>("ShutdownReason"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2138));
+        variableTypeNamespaceName(namespaceName_);
+        variableTypeNodeId(OpcUaNodeId(2138));
         serverVariables().registerServerVariable(startTime_);
         serverVariables().registerServerVariable(currentTime_);
         serverVariables().registerServerVariable(state_);

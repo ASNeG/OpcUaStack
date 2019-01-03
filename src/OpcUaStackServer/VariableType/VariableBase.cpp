@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 	VariableBase::VariableBase(void)
 	: serverVariables_()
 	, applicationServiceIf_(nullptr)
-	, namespaceName_("")
+	, variableTypeNamespaceName_("")
 	, writeCallback_(boost::bind(&VariableBase::writeValue, this, _1))
 	{
 	}
@@ -198,12 +198,12 @@ namespace OpcUaStackServer
 	)
 	{
 		Log(Debug, "create new node")
-			.parameter("TypeNodeId", variableType_);
+			.parameter("TypeNodeId", variableTypeNodeId_);
 
 		// get namespace index
 		uint16_t namespaceIndex;
-		getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex);
-		variableType_.namespaceIndex(namespaceIndex);
+		getNamespaceIndexFromNamespaceName(variableTypeNamespaceName_, namespaceIndex);
+		variableTypeNodeId_.namespaceIndex(namespaceIndex);
 
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
@@ -223,7 +223,7 @@ namespace OpcUaStackServer
 		req->displayName() = displayName;
 		req->browseName() = browseName;
 		req->referenceNodeId() = referenceNodeId;
-		req->typeNodeId() = variableType_;
+		req->typeNodeId() = variableTypeNodeId_;
 
 	  	applicationServiceIf_->sendSync(trx);
 	  	if (trx->statusCode() != Success) {
@@ -274,21 +274,27 @@ namespace OpcUaStackServer
 	}
 
 	void
-	VariableBase::variableTypeNamespace(const std::string& namespaceName)
+	VariableBase::variableTypeNamespaceName(const std::string& variableTypeNamespaceName)
 	{
-		namespaceName_ = namespaceName;
+		variableTypeNamespaceName_ = variableTypeNamespaceName;
+	}
+
+	std::string&
+	VariableBase::variableTypeNamespaceName(void)
+	{
+		return variableTypeNamespaceName_;
 	}
 
 	void
-	VariableBase::variableType(const OpcUaNodeId& variableType)
+	VariableBase::variableTypeNodeId(const OpcUaNodeId& variableTypeNodeId)
 	{
-		variableType_ = variableType;
+		variableTypeNodeId_ = variableTypeNodeId;
 	}
 
 	OpcUaNodeId&
-	VariableBase::variableType(void)
+	VariableBase::variableTypeNodeId(void)
 	{
-		return variableType_;
+		return variableTypeNodeId_;
 	}
 
 	// ------------------------------------------------------------------------
