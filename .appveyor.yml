@@ -1,9 +1,14 @@
 image:
   - Visual Studio 2017
+install:
+  - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
+  - appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
+  - 7z x ninja.zip -oC:\projects\deps\ninja > nul
+  - set PATH=C:\projects\deps\ninja;%PATH%
+  - ninja --version
 
 build_script:
   - set PATH=%PATH%;C:\Libraries\boost_1_67_0
-  - echo %PATH%
   - build.bat -t local -B Release -i ..\ASNeG -vs "Ninja"
   - build.bat -t tst -B Release -s ASNeG -vs "Ninja"
 
