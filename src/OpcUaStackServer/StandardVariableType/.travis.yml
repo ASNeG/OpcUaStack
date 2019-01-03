@@ -1,1 +1,7 @@
 language: cpp
+
+services:
+  - docker
+
+before_install:
+  - docker pull asneg/asneg-demo
