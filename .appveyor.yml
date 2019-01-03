@@ -15,6 +15,6 @@ before_build:
 build_script:
   - set PATH=%PATH%;C:\Libraries\boost_1_67_0
   - build.bat -t local -B Release -i ..\ASNeG -vs "Ninja"
-  - build.bat -t tst -B Release -s ASNeG -vs "Ninja"
+    #  - build.bat -t tst -B Release -s ASNeG -vs "Ninja"
 
 
