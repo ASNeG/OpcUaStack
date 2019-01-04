@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -41,8 +41,12 @@ namespace OpcUaStackServer
 		void clear(void);
 		bool add(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
 		bool add(ReferenceType referenceType, bool isForward, OpcUaNodeId& nodeId);
+		bool add(ReferenceType referenceType, bool isForward, std::vector<OpcUaNodeId>& nodes);
 		bool add(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem);
 		bool add(OpcUaNodeId& referenceTypeNodeId, bool isForward, OpcUaNodeId& nodeId);
+		bool add(OpcUaNodeId& referenceTypeNodeId, bool isForward, std::vector<OpcUaNodeId>& nodes);
+
+		void get(ReferenceType referenceType, std::vector<bool>& isForwards, std::vector<OpcUaNodeId>& nodes);
 
 		bool remove(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem);
 		bool remove(OpcUaNodeId& referenceTypeNodeId, OpcUaNodeId& nodeId);

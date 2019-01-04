@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -48,6 +48,17 @@ namespace OpcUaStackServer
 		return add(*referenceTypeNodeId, isForward, nodeId);
 	}
 
+	bool
+	ReferenceItemMap::add(ReferenceType referenceType, bool isForward, std::vector<OpcUaNodeId>& nodes)
+	{
+		for (auto& node : nodes) {
+			if (!add(referenceType, isForward, node)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	bool 
 	ReferenceItemMap::add(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem)
 	{
@@ -72,6 +83,29 @@ namespace OpcUaStackServer
 		referenceItem->isForward_ = isForward;
 		referenceItem->nodeId_ = nodeId;
 		return add(referenceTypeNodeId, referenceItem);
+	}
+
+	bool
+	ReferenceItemMap::add(OpcUaNodeId& referenceTypeNodeId, bool isForward, std::vector<OpcUaNodeId>& nodes)
+	{
+		for (auto& node : nodes) {
+			if (!add(referenceTypeNodeId, isForward, node)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	void
+	ReferenceItemMap::get(ReferenceType referenceType, std::vector<bool>& isForwards, std::vector<OpcUaNodeId>& nodes)
+	{
+		OpcUaNodeId::SPtr referenceTypeNodeId = ReferenceTypeMap::typeNodeId(referenceType);
+		auto it1 = referenceItemMultiMap_.equal_range(*referenceTypeNodeId);
+		for (auto it2 = it1.first; it2 != it1.second; it2++) {
+			auto referenceItem = it2->second;
+			isForwards.push_back(referenceItem->isForward_);
+			nodes.push_back(referenceItem->nodeId_);
+		}
 	}
 
 	bool
