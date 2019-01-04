@@ -167,16 +167,16 @@ namespace OpcUaStackServer
 	bool
 	VariableInstanceBuilder::readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
 	{
-		// create name
-		std::string name;
+		// create variable variableName
+		std::string variableName;
 		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
 			OpcUaQualifiedName::SPtr browseName;
 			browsePath.pathNames()->get(idx, browseName);
-			if (!name.empty()) name += "_";
-			name += browseName->name().toStdString();
+			if (!variableName.empty()) variableName += "_";
+			variableName += browseName->name().toStdString();
 		}
-		if (!name.empty()) name += "_";
-		name += "Variable";
+		if (!variableName.empty()) variableName += "_";
+		variableName += "Variable";
 
 		// FIXME: todo
 		return true;
