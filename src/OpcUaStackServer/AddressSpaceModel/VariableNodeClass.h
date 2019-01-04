@@ -33,7 +33,7 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<VariableNodeClass> SPtr;
 
 		VariableNodeClass(void);
-		VariableNodeClass(VariableTypeNodeClass* variableTypeNodeClass);
+		VariableNodeClass(OpcUaNodeId& nodeId, VariableTypeNodeClass* variableTypeNodeClass);
 		~VariableNodeClass(void);
 
 		ValueAttribute& value(void);

@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 	{
 	}
 
-	BaseNodeClass::BaseNodeClass(NodeClass::Enum nodeClass, BaseNodeClass* baseNodeClass)
+	BaseNodeClass::BaseNodeClass(NodeClass::Enum nodeClass, OpcUaNodeId& nodeId, BaseNodeClass* baseNodeClass)
 	: nodeId_(0)
 	, nodeClass_(nodeClass)
 	, browseName_()
@@ -54,6 +54,8 @@ namespace OpcUaStackServer
 	, userWriteMask_()
 	, forwardNodeSync_()
 	{
+		setNodeId(nodeId);
+
 		OpcUaQualifiedName browseName;
 		if (baseNodeClass->getBrowseName(browseName)) setBrowseName(browseName);
 

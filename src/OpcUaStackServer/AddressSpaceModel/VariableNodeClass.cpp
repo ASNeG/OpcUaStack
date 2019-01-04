@@ -32,8 +32,8 @@ namespace OpcUaStackServer
 	{
 	}
 
-	VariableNodeClass::VariableNodeClass(VariableTypeNodeClass* variableTypeNodeClass)
-	: BaseNodeClass(NodeClass::EnumVariable, variableTypeNodeClass)
+	VariableNodeClass::VariableNodeClass(OpcUaNodeId& nodeId, VariableTypeNodeClass* variableTypeNodeClass)
+	: BaseNodeClass(NodeClass::EnumVariable, nodeId, variableTypeNodeClass)
 	, value_()
 	, dataType_()
 	, valueRank_()

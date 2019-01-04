@@ -43,7 +43,7 @@ namespace OpcUaStackServer
 
 		BaseNodeClass(void);
 		BaseNodeClass(NodeClass::Enum nodeClass);
-		BaseNodeClass(NodeClass::Enum nodeClass, BaseNodeClass* baseNodeClass);
+		BaseNodeClass(NodeClass::Enum nodeClass, OpcUaNodeId& nodeId, BaseNodeClass* baseNodeClass);
 		virtual ~BaseNodeClass(void);
 
 		NodeIdAttribute& nodeId(void);
