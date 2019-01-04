@@ -120,9 +120,47 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	VariableInstanceBuilder::readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName)
+	VariableInstanceBuilder::readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseNames)
 	{
-		// FIXME: todo
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+
+		// read node information
+		if (!readNodeInfo(baseNode, browseNames)) {
+			Log(Error, "read node information error")
+				.parameter("NodeId", baseNode->getNodeId())
+				.parameter("BrowseName", browseNames);
+			return false;
+		}
+
+		// find childs
+		BaseNodeClass::Vec childBaseNodeClassVec;
+		std::vector<OpcUaNodeId> referenceTypeNodeIdVec;
+		if (!ima.getChildHierarchically(baseNode, childBaseNodeClassVec, referenceTypeNodeIdVec)) {
+			Log(Error, "get hierachically child error")
+				.parameter("NodeId", *baseNode->getNodeId())
+				.parameter("DispalyName", *baseNode->getDisplayName());
+			return false;
+		}
+
+		size_t size = browseNames.pathNames()->size();
+		for (uint32_t idx = 0; idx < childBaseNodeClassVec.size(); idx++) {
+			// ignore HasSubType references
+			if (referenceTypeNodeIdVec[idx] == OpcUaNodeId(45)) continue;
+
+			BaseNodeClass::SPtr baseNodeClassChild = childBaseNodeClassVec[idx];
+			OpcUaQualifiedName browseName = *childBaseNodeClassVec[idx]->getBrowseName();
+
+			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
+
+			if (!readChilds(baseNodeClassChild, browseNames)) {
+				Log(Error, "read childs error")
+					.parameter("NodeId", *baseNode->getNodeId())
+					.parameter("BrowseName", browseName);
+				return false;
+			}
+		}
+
 		return true;
 	}
 
