@@ -21,6 +21,7 @@
 #include "OpcUaStackServer/InformationModel/InformationModelManager.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/InformationModel/NamespaceArray.h"
+#include "OpcUaStackServer/InformationModel/VariableInstanceBuilder.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -535,10 +536,17 @@ namespace OpcUaStackServer
 		auto trx = boost::static_pointer_cast<ServiceTransactionCreateVariable>(serviceTransaction);
 		auto req = trx->request();
 		auto res = trx->response();
+		auto variableBase = boost::static_pointer_cast<VariableBase>(req->variableInstance());
 
-		// FIXME: todo
+		VariableInstanceBuilder variableInstanceBuilder;
+		OpcUaStatusCode result = variableInstanceBuilder.createVariableInstance(
+			informationModel_,
+			req->parentNodeId(),
+			req->referenceTypeNodeId(),
+			variableBase
+		);
 
-		trx->statusCode(Success);
+		trx->statusCode(result);
 		trx->componentSession()->send(serviceTransaction);
 	}
 

@@ -89,6 +89,9 @@ namespace OpcUaStackServer
 
 		// create response
 		auto trx = constructSPtr<ServiceTransactionCreateVariable>();
+		trx->request()->parentNodeId(parentNodeId_);
+		trx->request()->referenceTypeNodeId(referenceTypeNodeId_);
+		trx->request()->variableInstance(variableInstance_);
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);

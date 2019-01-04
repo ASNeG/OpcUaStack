@@ -21,46 +21,10 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
-
-    class DLLEXPORT AddNodeRule
-    {
-      public:
-    	typedef enum {
-    		UniqueNumber,
-    		UniqueString
-    	} NodeIdMode;
-
-    	AddNodeRule(void);
-    	AddNodeRule(AddNodeRule& addNodeRule);
-    	AddNodeRule(AddNodeRule& addNodeRule, OpcUaLocalizedText& displayName);
-    	~AddNodeRule(void);
-
-    	void informationModel(InformationModel::SPtr& informationModel);
-    	InformationModel::SPtr& informationModel(void);
-    	void nodeIdMode(NodeIdMode nodeIdMode);
-    	NodeIdMode nodeIdMode(void);
-    	void displayPath(const std::string& displayPath);
-    	void displayPath(OpcUaNodeId& nodeId);
-    	std::string& displayPath(void);
-    	void displayName(OpcUaLocalizedText& displayName);
-    	void delemiter(const std::string& delemiter);
-    	std::string& delemiter(void);
-    	void createOptionalPlaceholder(bool createOptionalPlaceholder);
-    	bool createOptionalPlaceholder(void);
-
-    	OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
-
-      private:
-    	std::string displayPath_;
-    	InformationModel::SPtr informationModel_;
-    	NodeIdMode nodeIdMode_;
-    	std::string delemiter_;
-    	bool createOptionalPlaceholder_;
-    };
-
 
 	class DLLEXPORT VariableInstanceBuilder
 	{
@@ -68,117 +32,23 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<VariableInstanceBuilder> SPtr;
 
 		VariableInstanceBuilder(void);
-		VariableInstanceBuilder(InformationModel::SPtr informationModel);
 		~VariableInstanceBuilder(void);
 
-		void informationModel(InformationModel::SPtr informationModel);
-
-		bool addNode(
-			NodeClass::Enum nodeClassType,
-			AddNodeRule& addNodeRule,
+		OpcUaStatusCode createVariableInstance(
+			InformationModel::SPtr& informationModel,
 			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName,
-			OpcUaNodeId& referenceNodeId,
-			OpcUaNodeId& typeNodeId
-		);
-
-		bool addObjectNode(
-			AddNodeRule& addNodeRule,
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName,
-			OpcUaNodeId& referenceNodeId,
-			OpcUaNodeId& typeNodeId
-		);
-
-		bool addVariableNode(
-			AddNodeRule& addNodeRule,
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName,
-			OpcUaNodeId& referenceNodeId,
-			OpcUaNodeId& typeNodeId
-		);
-
-		bool addMethodNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName
-		);
-
-		bool addObjectTypeNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName
-		);
-
-		bool addVariableTypeNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName
-		);
-
-		bool addDataTypeNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName
-		);
-
-		bool addReferenceTypeNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName
-		);
-
-		bool delNode(
-			OpcUaNodeId& nodeId
-		);
-
-		bool delReference(
-			OpcUaNodeId& sourceNodeId,
 			OpcUaNodeId& referenceTypeNodeId,
-			OpcUaNodeId& targetNodeId
+			VariableBase::SPtr& variableBase
 		);
 
 	  private:
-		bool addTypeChilds(
-			AddNodeRule& addNodeRule,
-			BaseNodeClass::SPtr& parentNodeClass,
-			BaseNodeClass::SPtr& cloneNodeClass
-		);
-		bool addObjectNode(
-			AddNodeRule& addNodeRule,
-			BaseNodeClass::SPtr& parentNodeClass,
-			BaseNodeClass::SPtr& cloneBaseNodeClass,
-			OpcUaNodeId& referenceTypeNodeId
-		);
-		bool addVariableNode(
-			AddNodeRule& addNodeRule,
-			BaseNodeClass::SPtr& parentNodeClass,
-			BaseNodeClass::SPtr& cloneBaseNodeClass,
-			OpcUaNodeId& referenceTypeNodeId
-		);
-		bool addMethodNode(
-			AddNodeRule& addNodeRule,
-			BaseNodeClass::SPtr& parentNodeClass,
-			BaseNodeClass::SPtr& cloneBaseNodeClass,
-			OpcUaNodeId& referenceTypeNodeId
-		);
-
-		bool isOptionalPlaceholder(
-			BaseNodeClass::SPtr& nodeClass
-		);
+		bool readValues(const BaseNodeClass::SPtr& baseNode);
+		bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
+		bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 
 		InformationModel::SPtr informationModel_;
+		BaseNodeClass::SPtr parentNode_;
+		BaseNodeClass::SPtr variableTypeNode_;
 	};
 
 }
