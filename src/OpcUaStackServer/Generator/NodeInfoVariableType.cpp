@@ -156,7 +156,7 @@ namespace OpcUaStackServer
 		// find node in opc ua information model
 		//
 		BaseNodeClass::SPtr baseNode = informationModel_->find(variableTypeNodeId);
-		if (baseNode_.get() == nullptr) {
+		if (baseNode.get() == nullptr) {
 			Log(Error, "variable type node identifier not exist in information model")
 				.parameter("VariableTypeNode", variableTypeNodeId);
 			return false;
