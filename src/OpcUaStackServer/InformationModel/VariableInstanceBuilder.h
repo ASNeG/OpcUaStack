@@ -42,7 +42,7 @@ namespace OpcUaStackServer
 		);
 
 	  private:
-		bool readValues(const BaseNodeClass::SPtr& baseNode);
+		bool readValues(const OpcUaNodeId& variableTypeNodeId);
 		bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 		bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 

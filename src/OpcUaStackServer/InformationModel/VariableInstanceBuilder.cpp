@@ -18,6 +18,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/InformationModel/VariableInstanceBuilder.h"
+#include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
 using namespace OpcUaStackCore;
@@ -79,10 +80,43 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	VariableInstanceBuilder::readValues(const BaseNodeClass::SPtr& baseNode)
+	VariableInstanceBuilder::readValues(const OpcUaNodeId& variableTypeNodeId)
 	{
-		// FIXME: todo
-		return true;
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+
+		//
+		// find node in opc ua information model
+		//
+		BaseNodeClass::SPtr baseNode = informationModel_->find(variableTypeNodeId);
+		if (baseNode.get() == nullptr) {
+			Log(Error, "variable type node identifier not exist in information model")
+				.parameter("VariableTypeNode", variableTypeNodeId);
+			return false;
+		}
+
+		BrowseName browseName(variableTypeNodeId);
+		browseName.pathNames()->resize(10);
+		if (!readChilds(baseNode, browseName)) {
+			Log(Error, "read childs error")
+				.parameter("VariableTypeNodeId", variableTypeNodeId);
+			return false;
+		}
+
+		if (variableTypeNodeId == OpcUaNodeId(62)) {
+			return true;
+		}
+
+		// find parent node identifier
+		OpcUaNodeId parentVariableTypeNodeId;
+		if (!ima.getSubType(baseNode, parentVariableTypeNodeId)) {
+			Log(Error, "parent variable type node identifier do not not exist in information model")
+				.parameter("VariableTypeNodeId", variableTypeNodeId)
+				.parameter("DisplayName", *baseNode->getDisplayName());
+			return false;
+		}
+
+		return readValues(parentVariableTypeNodeId);
 	}
 
 	bool
