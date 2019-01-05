@@ -146,7 +146,7 @@ namespace OpcUaStackServer
 		ima.informationModel(informationModel_);
 
 		// read node information
-		if (!readNodeInfo(baseNode, browseNames)) {
+		if (!createVariableInstance(baseNode, browseNames)) {
 			Log(Error, "read node information error")
 				.parameter("NodeId", baseNode->getNodeId())
 				.parameter("BrowseName", browseNames);
@@ -188,8 +188,13 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	VariableInstanceBuilder::readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
+	VariableInstanceBuilder::createVariableInstance(
+		const BaseNodeClass::SPtr& baseNodeTemplate,
+		BrowseName& browsePath
+	)
 	{
+		std::cout << "BaseNodeType=" << *baseNodeTemplate->getNodeClass() << std::endl;
+
 		// create variable variableName
 		std::string variableName;
 		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
@@ -219,11 +224,35 @@ namespace OpcUaStackServer
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
 		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
-		VariableTypeNodeClass::SPtr variableTypeNode = boost::static_pointer_cast<VariableTypeNodeClass>(baseNode);
-		VariableNodeClass::SPtr variableNode = constructSPtr<VariableNodeClass>(nodeId, *variableTypeNode.get());
+		VariableNodeClass::SPtr variableNode;
+		switch (*baseNodeTemplate->getNodeClass())
+		{
+			case NodeClass::EnumVariable:
+			{
+				VariableNodeClass::SPtr node = boost::static_pointer_cast<VariableNodeClass>(baseNodeTemplate);
+				variableNode = constructSPtr<VariableNodeClass>(nodeId, *node.get());
+				break;
+			}
+			case NodeClass::EnumVariableType:
+			{
+				VariableTypeNodeClass::SPtr node = boost::static_pointer_cast<VariableTypeNodeClass>(baseNodeTemplate);
+				variableNode = constructSPtr<VariableNodeClass>(nodeId, *node.get());
+				break;
+			}
+			default:
+			{
+				Log(Error, "create variable node error - node class error")
+					.parameter("NodeClass", *baseNodeTemplate->getNodeClass())
+					.parameter("VariableName", variableName);
+				return false;
+			}
+		}
 
 		// connect server instance with server variable
-		// FIXME: todo
+		serverVariable->baseNode(variableNode);
+
+		// added new variable node to information model
+		informationModel_->insert(variableNode);
 
 		std::cout << "VariableName=" << variableName << std::endl;
 

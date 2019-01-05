@@ -47,7 +47,10 @@ namespace OpcUaStackServer
 		bool getNamespaceIndex(const std::string& namespaceName);
 		bool readValues(const OpcUaNodeId& variableTypeNodeId);
 		bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
-		bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
+		bool createVariableInstance(
+			const BaseNodeClass::SPtr& baseNodeTemplate,
+			BrowseName& browseName
+		);
 
 		InformationModel::SPtr informationModel_;
 		std::set<std::string> variableNameSet_;
