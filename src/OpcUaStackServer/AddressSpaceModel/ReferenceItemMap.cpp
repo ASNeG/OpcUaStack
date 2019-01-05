@@ -96,6 +96,17 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	ReferenceItemMap::exist(OpcUaNodeId& referenceTypeNodeId, bool isForward, OpcUaNodeId& nodeId)
+	{
+		auto it1 = referenceItemMultiMap_.equal_range(referenceTypeNodeId);
+		for (auto it2 = it1.first; it2 != it1.second; it2++) {
+			auto referenceItem = it2->second;
+			if (referenceItem->isForward_ == isForward && referenceItem->nodeId_ == nodeId) return true;
+		}
+		return false;
+	}
+
 	void
 	ReferenceItemMap::get(ReferenceType referenceType, std::vector<bool>& isForwards, std::vector<OpcUaNodeId>& nodes)
 	{

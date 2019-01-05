@@ -194,7 +194,8 @@ namespace OpcUaStackServer
 
 			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
 
-			if (!readChilds(baseNodeClassChildTemplate, browseNames)) {
+			VariableNodeClass::SPtr variableNodeClassChild = readChilds(baseNodeClassChildTemplate, browseNames);
+			if (variableNodeClassChild.get() == nullptr) {
 				Log(Error, "read childs error")
 					.parameter("NodeId", *baseNodeTemplate->getNodeId())
 					.parameter("BrowseName", browseName);
@@ -203,7 +204,10 @@ namespace OpcUaStackServer
 			}
 
 			// create reference between parent and child
-			// FIXME: todo
+			if (!variableNodeClass->referenceItemMap().exist(referenceTypeNodeIdVec[idx], true, *variableNodeClassChild->getNodeId())) {
+				variableNodeClass->referenceItemMap().add(referenceTypeNodeIdVec[idx], true, *variableNodeClassChild->getNodeId());
+				variableNodeClassChild->referenceItemMap().add(referenceTypeNodeIdVec[idx], false, *variableNodeClass->getNodeId());
+			}
 		}
 
 		return variableNodeClass;
