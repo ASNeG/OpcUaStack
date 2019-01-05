@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/VariableType/VariableBase.h"
 
@@ -47,7 +48,7 @@ namespace OpcUaStackServer
 		bool getNamespaceIndex(const std::string& namespaceName);
 		bool readValues(const OpcUaNodeId& variableTypeNodeId);
 		bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
-		bool createVariableInstance(
+		VariableNodeClass::SPtr createVariableInstance(
 			const BaseNodeClass::SPtr& baseNodeTemplate,
 			BrowseName& browseName
 		);

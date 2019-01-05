@@ -22,7 +22,6 @@
 #include "OpcUaStackServer/InformationModel/NamespaceArray.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
-#include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 
 
 using namespace OpcUaStackCore;
@@ -146,8 +145,9 @@ namespace OpcUaStackServer
 		ima.informationModel(informationModel_);
 
 		// read node information
-		if (!createVariableInstance(baseNode, browseNames)) {
-			Log(Error, "read node information error")
+		VariableNodeClass::SPtr variableNodeClass = createVariableInstance(baseNode, browseNames);
+		if (variableNodeClass.get() == nullptr) {
+			Log(Error, "create variable node error")
 				.parameter("NodeId", baseNode->getNodeId())
 				.parameter("BrowseName", browseNames);
 			return false;
@@ -187,15 +187,15 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	bool
+	VariableNodeClass::SPtr
 	VariableInstanceBuilder::createVariableInstance(
 		const BaseNodeClass::SPtr& baseNodeTemplate,
 		BrowseName& browsePath
 	)
 	{
-		std::cout << "BaseNodeType=" << *baseNodeTemplate->getNodeClass() << std::endl;
+		VariableNodeClass::SPtr variableNode;
 
-		// create variable variableName
+		// create variable variable name
 		std::string variableName;
 		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
 			OpcUaQualifiedName::SPtr browseName;
@@ -206,25 +206,22 @@ namespace OpcUaStackServer
 		if (!variableName.empty()) variableName += "_";
 		variableName += "Variable";
 
-		// check if variable name already exist
-		if (variableNameSet_.find(variableName) != variableNameSet_.end()) {
-			return true;
-		}
-		variableNameSet_.insert(variableName);
-
 		// find server variable
 		ServerVariable::SPtr serverVariable = variableBase_->getServerVariable(variableName);
 		if (serverVariable.get() == nullptr) {
 			Log(Error, "server variable do not exist in variable data type")
 				.parameter("VariableName", variableName);
-			return true;
+			return variableNode;
 		}
+
+		// check if variable node already exist
+		BaseNodeClass::SPtr node = serverVariable->baseNode().lock();
+		if (node.get() != nullptr) return boost::static_pointer_cast<VariableNodeClass>(node);
 
 		// create variable instance
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
 		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
-		VariableNodeClass::SPtr variableNode;
 		switch (*baseNodeTemplate->getNodeClass())
 		{
 			case NodeClass::EnumVariable:
@@ -241,10 +238,11 @@ namespace OpcUaStackServer
 			}
 			default:
 			{
-				Log(Error, "create variable node error - node class error")
+				Log(Error, "create variable node error - template node class error")
 					.parameter("NodeClass", *baseNodeTemplate->getNodeClass())
+					.parameter("NodeId", *baseNodeTemplate->getNodeId())
 					.parameter("VariableName", variableName);
-				return false;
+				return variableNode;
 			}
 		}
 
@@ -256,8 +254,7 @@ namespace OpcUaStackServer
 
 		std::cout << "VariableName=" << variableName << std::endl;
 
-		// FIXME: todo
-		return true;
+		return variableNode;
 	}
 
 }
