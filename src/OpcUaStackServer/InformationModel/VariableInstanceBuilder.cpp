@@ -85,6 +85,8 @@ namespace OpcUaStackServer
 				.parameter("VariableTypeNodeId", variableBase->variableTypeNodeId());
 			return BadInternalError;
 		}
+		OpcUaLocalizedText dn("", displayName);
+		variableNodeClass->setDisplayName(dn);
 
 		// added reference
 		parentBaseNode->referenceItemMap().add(referenceTypeNodeId, true, *variableNodeClass->getNodeId());
