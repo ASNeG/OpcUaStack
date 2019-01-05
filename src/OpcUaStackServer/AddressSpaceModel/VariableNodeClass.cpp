@@ -32,6 +32,44 @@ namespace OpcUaStackServer
 	{
 	}
 
+	VariableNodeClass::VariableNodeClass(OpcUaNodeId& nodeId, VariableNodeClass& variableNodeClass)
+	: BaseNodeClass(NodeClass::EnumVariable, nodeId, &variableNodeClass)
+	, value_()
+	, dataType_()
+	, valueRank_()
+	, accessLevel_()
+	, historizing_()
+	, arrayDimensions_()
+	, minimumSamplingInterval_()
+	{
+		OpcUaDataValue dataValue;
+		if (variableNodeClass.getValue(dataValue)) setValue(dataValue);
+
+		OpcUaNodeId dataType;
+		if (variableNodeClass.getDataType(dataType)) setDataType(dataType);
+
+		int32_t valueRank;
+		if (variableNodeClass.getValueRank(valueRank)) setValueRank(valueRank);
+
+		OpcUaByte accessLevel;
+		if (variableNodeClass.getAccessLevel(accessLevel)) setAccessLevel(accessLevel);
+
+		OpcUaByte userAccessLevel;
+		if (variableNodeClass.getUserAccessLevel(userAccessLevel)) setUserAccessLevel(userAccessLevel);
+
+		OpcUaBoolean historizing;
+		if (variableNodeClass.getHistorizing(historizing)) setHistorizing(historizing);
+
+		OpcUaUInt32Array arrayDimensions;
+		if (variableNodeClass.getArrayDimensions(arrayDimensions)) setArrayDimensions(arrayDimensions);
+
+		OpcUaDouble minimumSamplingInterval;
+		if (variableNodeClass.getMinimumSamplingInterval(minimumSamplingInterval)) setMinimumSamplingInterval(minimumSamplingInterval);
+
+		referenceItemMap().add(ReferenceType_HasTypeDefinition, true, *variableNodeClass.getNodeId());
+		variableNodeClass.referenceItemMap().add(ReferenceType_HasTypeDefinition, false, *getNodeId());
+	}
+
 	VariableNodeClass::VariableNodeClass(OpcUaNodeId& nodeId, VariableTypeNodeClass& variableTypeNodeClass)
 	: BaseNodeClass(NodeClass::EnumVariable, nodeId, &variableTypeNodeClass)
 	, value_()
