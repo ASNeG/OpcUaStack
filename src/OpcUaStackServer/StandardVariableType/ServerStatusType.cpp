@@ -32,6 +32,19 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2138);
+        setServerVariable(buildInfo_BuildDate_Variable_);
+        setServerVariable(buildInfo_BuildNumber_Variable_);
+        setServerVariable(buildInfo_ManufacturerName_Variable_);
+        setServerVariable(buildInfo_ProductName_Variable_);
+        setServerVariable(buildInfo_ProductUri_Variable_);
+        setServerVariable(buildInfo_SoftwareVersion_Variable_);
+        setServerVariable(buildInfo_Variable_);
+        setServerVariable(currentTime_Variable_);
+        setServerVariable(secondsTillShutdown_BuildDate_Variable_);
+        setServerVariable(shutdownReason_BuildDate_Variable_);
+        setServerVariable(startTime_Variable_);
+        setServerVariable(state_Variable_);
+        setServerVariable(variable_);
     }
     
     ServerStatusType::ServerStatusType(const ServerStatusType& value)
@@ -52,6 +65,19 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2138);
+        setServerVariable(buildInfo_BuildDate_Variable_);
+        setServerVariable(buildInfo_BuildNumber_Variable_);
+        setServerVariable(buildInfo_ManufacturerName_Variable_);
+        setServerVariable(buildInfo_ProductName_Variable_);
+        setServerVariable(buildInfo_ProductUri_Variable_);
+        setServerVariable(buildInfo_SoftwareVersion_Variable_);
+        setServerVariable(buildInfo_Variable_);
+        setServerVariable(currentTime_Variable_);
+        setServerVariable(secondsTillShutdown_BuildDate_Variable_);
+        setServerVariable(shutdownReason_BuildDate_Variable_);
+        setServerVariable(startTime_Variable_);
+        setServerVariable(state_Variable_);
+        setServerVariable(variable_);
     }
     
     ServerStatusType::~ServerStatusType(void)

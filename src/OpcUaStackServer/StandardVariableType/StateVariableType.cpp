@@ -24,6 +24,11 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2755);
+        setServerVariable(effectiveDisplayName_Variable_);
+        setServerVariable(id_Variable_);
+        setServerVariable(name_Variable_);
+        setServerVariable(number_Variable_);
+        setServerVariable(variable_);
     }
     
     StateVariableType::StateVariableType(const StateVariableType& value)
@@ -36,6 +41,11 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2755);
+        setServerVariable(effectiveDisplayName_Variable_);
+        setServerVariable(id_Variable_);
+        setServerVariable(name_Variable_);
+        setServerVariable(number_Variable_);
+        setServerVariable(variable_);
     }
     
     StateVariableType::~StateVariableType(void)

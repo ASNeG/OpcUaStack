@@ -22,6 +22,9 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)11487);
+        setServerVariable(bitMask_Variable_);
+        setServerVariable(optionSetValues_Variable_);
+        setServerVariable(variable_);
     }
     
     OptionSetType::OptionSetType(const OptionSetType& value)
@@ -32,6 +35,9 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)11487);
+        setServerVariable(bitMask_Variable_);
+        setServerVariable(optionSetValues_Variable_);
+        setServerVariable(variable_);
     }
     
     OptionSetType::~OptionSetType(void)

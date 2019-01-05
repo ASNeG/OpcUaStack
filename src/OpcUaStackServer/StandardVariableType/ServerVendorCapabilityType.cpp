@@ -20,6 +20,7 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2137);
+        setServerVariable(variable_);
     }
     
     ServerVendorCapabilityType::ServerVendorCapabilityType(const ServerVendorCapabilityType& value)
@@ -28,6 +29,7 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2137);
+        setServerVariable(variable_);
     }
     
     ServerVendorCapabilityType::~ServerVendorCapabilityType(void)

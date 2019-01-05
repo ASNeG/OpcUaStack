@@ -51,6 +51,38 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2172);
+        setServerVariable(currentKeepAliveCount_Variable_);
+        setServerVariable(currentLifetimeCount_Variable_);
+        setServerVariable(dataChangeNotificationsCount_Variable_);
+        setServerVariable(disableCount_Variable_);
+        setServerVariable(disabledMonitoredItemCount_Variable_);
+        setServerVariable(discardedMessageCount_Variable_);
+        setServerVariable(enableCount_Variable_);
+        setServerVariable(eventNotificationsCount_Variable_);
+        setServerVariable(eventQueueOverFlowCount_Variable_);
+        setServerVariable(latePublishRequestCount_Variable_);
+        setServerVariable(maxKeepAliveCount_Variable_);
+        setServerVariable(maxLifetimeCount_Variable_);
+        setServerVariable(maxNotificationsPerPublish_Variable_);
+        setServerVariable(modifyCount_Variable_);
+        setServerVariable(monitoredItemCount_Variable_);
+        setServerVariable(monitoringQueueOverflowCount_Variable_);
+        setServerVariable(nextSequenceNumber_Variable_);
+        setServerVariable(notificationsCount_Variable_);
+        setServerVariable(priority_Variable_);
+        setServerVariable(publishRequestCount_Variable_);
+        setServerVariable(publishingEnabled_Variable_);
+        setServerVariable(publishingInterval_Variable_);
+        setServerVariable(republishMessageCount_Variable_);
+        setServerVariable(republishMessageRequestCount_Variable_);
+        setServerVariable(republishRequestCount_Variable_);
+        setServerVariable(sessionId_Variable_);
+        setServerVariable(subscriptionId_Variable_);
+        setServerVariable(transferRequestCount_Variable_);
+        setServerVariable(transferredToAltClientCount_Variable_);
+        setServerVariable(transferredToSameClientCount_Variable_);
+        setServerVariable(unacknowledgedMessageCount_Variable_);
+        setServerVariable(variable_);
     }
     
     SubscriptionDiagnosticsType::SubscriptionDiagnosticsType(const SubscriptionDiagnosticsType& value)
@@ -90,6 +122,38 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2172);
+        setServerVariable(currentKeepAliveCount_Variable_);
+        setServerVariable(currentLifetimeCount_Variable_);
+        setServerVariable(dataChangeNotificationsCount_Variable_);
+        setServerVariable(disableCount_Variable_);
+        setServerVariable(disabledMonitoredItemCount_Variable_);
+        setServerVariable(discardedMessageCount_Variable_);
+        setServerVariable(enableCount_Variable_);
+        setServerVariable(eventNotificationsCount_Variable_);
+        setServerVariable(eventQueueOverFlowCount_Variable_);
+        setServerVariable(latePublishRequestCount_Variable_);
+        setServerVariable(maxKeepAliveCount_Variable_);
+        setServerVariable(maxLifetimeCount_Variable_);
+        setServerVariable(maxNotificationsPerPublish_Variable_);
+        setServerVariable(modifyCount_Variable_);
+        setServerVariable(monitoredItemCount_Variable_);
+        setServerVariable(monitoringQueueOverflowCount_Variable_);
+        setServerVariable(nextSequenceNumber_Variable_);
+        setServerVariable(notificationsCount_Variable_);
+        setServerVariable(priority_Variable_);
+        setServerVariable(publishRequestCount_Variable_);
+        setServerVariable(publishingEnabled_Variable_);
+        setServerVariable(publishingInterval_Variable_);
+        setServerVariable(republishMessageCount_Variable_);
+        setServerVariable(republishMessageRequestCount_Variable_);
+        setServerVariable(republishRequestCount_Variable_);
+        setServerVariable(sessionId_Variable_);
+        setServerVariable(subscriptionId_Variable_);
+        setServerVariable(transferRequestCount_Variable_);
+        setServerVariable(transferredToAltClientCount_Variable_);
+        setServerVariable(transferredToSameClientCount_Variable_);
+        setServerVariable(unacknowledgedMessageCount_Variable_);
+        setServerVariable(variable_);
     }
     
     SubscriptionDiagnosticsType::~SubscriptionDiagnosticsType(void)

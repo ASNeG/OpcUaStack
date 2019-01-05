@@ -63,6 +63,50 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2197);
+        setServerVariable(actualSessionTimeout_Variable_);
+        setServerVariable(addNodesCount_Variable_);
+        setServerVariable(addReferencesCount_Variable_);
+        setServerVariable(browseCount_Variable_);
+        setServerVariable(browseNextCount_Variable_);
+        setServerVariable(callCount_Variable_);
+        setServerVariable(clientConnectionTime_Variable_);
+        setServerVariable(clientDescription_Variable_);
+        setServerVariable(clientLastContactTime_Variable_);
+        setServerVariable(createMonitoredItemsCount_Variable_);
+        setServerVariable(createSubscriptionCount_Variable_);
+        setServerVariable(currentMonitoredItemsCount_Variable_);
+        setServerVariable(currentPublishRequestsInQueue_Variable_);
+        setServerVariable(currentSubscriptionsCount_Variable_);
+        setServerVariable(deleteMonitoredItemsCount_Variable_);
+        setServerVariable(deleteNodesCount_Variable_);
+        setServerVariable(deleteReferencesCount_Variable_);
+        setServerVariable(deleteSubscriptionsCount_Variable_);
+        setServerVariable(endpointUrl_Variable_);
+        setServerVariable(historyReadCount_Variable_);
+        setServerVariable(historyUpdateCount_Variable_);
+        setServerVariable(localeIds_Variable_);
+        setServerVariable(maxResponseMessageSize_Variable_);
+        setServerVariable(modifyMonitoredItemsCount_Variable_);
+        setServerVariable(modifySubscriptionCount_Variable_);
+        setServerVariable(publishCount_Variable_);
+        setServerVariable(queryFirstCount_Variable_);
+        setServerVariable(queryNextCount_Variable_);
+        setServerVariable(readCount_Variable_);
+        setServerVariable(registerNodesCount_Variable_);
+        setServerVariable(republishCount_Variable_);
+        setServerVariable(serverUri_Variable_);
+        setServerVariable(sessionId_Variable_);
+        setServerVariable(sessionName_Variable_);
+        setServerVariable(setMonitoringModeCount_Variable_);
+        setServerVariable(setPublishingModeCount_Variable_);
+        setServerVariable(setTriggeringCount_Variable_);
+        setServerVariable(totalRequestCount_Variable_);
+        setServerVariable(transferSubscriptionsCount_Variable_);
+        setServerVariable(translateBrowsePathsToNodeIdsCount_Variable_);
+        setServerVariable(unauthorizedRequestCount_Variable_);
+        setServerVariable(unregisterNodesCount_Variable_);
+        setServerVariable(variable_);
+        setServerVariable(writeCount_Variable_);
     }
     
     SessionDiagnosticsVariableType::SessionDiagnosticsVariableType(const SessionDiagnosticsVariableType& value)
@@ -114,6 +158,50 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2197);
+        setServerVariable(actualSessionTimeout_Variable_);
+        setServerVariable(addNodesCount_Variable_);
+        setServerVariable(addReferencesCount_Variable_);
+        setServerVariable(browseCount_Variable_);
+        setServerVariable(browseNextCount_Variable_);
+        setServerVariable(callCount_Variable_);
+        setServerVariable(clientConnectionTime_Variable_);
+        setServerVariable(clientDescription_Variable_);
+        setServerVariable(clientLastContactTime_Variable_);
+        setServerVariable(createMonitoredItemsCount_Variable_);
+        setServerVariable(createSubscriptionCount_Variable_);
+        setServerVariable(currentMonitoredItemsCount_Variable_);
+        setServerVariable(currentPublishRequestsInQueue_Variable_);
+        setServerVariable(currentSubscriptionsCount_Variable_);
+        setServerVariable(deleteMonitoredItemsCount_Variable_);
+        setServerVariable(deleteNodesCount_Variable_);
+        setServerVariable(deleteReferencesCount_Variable_);
+        setServerVariable(deleteSubscriptionsCount_Variable_);
+        setServerVariable(endpointUrl_Variable_);
+        setServerVariable(historyReadCount_Variable_);
+        setServerVariable(historyUpdateCount_Variable_);
+        setServerVariable(localeIds_Variable_);
+        setServerVariable(maxResponseMessageSize_Variable_);
+        setServerVariable(modifyMonitoredItemsCount_Variable_);
+        setServerVariable(modifySubscriptionCount_Variable_);
+        setServerVariable(publishCount_Variable_);
+        setServerVariable(queryFirstCount_Variable_);
+        setServerVariable(queryNextCount_Variable_);
+        setServerVariable(readCount_Variable_);
+        setServerVariable(registerNodesCount_Variable_);
+        setServerVariable(republishCount_Variable_);
+        setServerVariable(serverUri_Variable_);
+        setServerVariable(sessionId_Variable_);
+        setServerVariable(sessionName_Variable_);
+        setServerVariable(setMonitoringModeCount_Variable_);
+        setServerVariable(setPublishingModeCount_Variable_);
+        setServerVariable(setTriggeringCount_Variable_);
+        setServerVariable(totalRequestCount_Variable_);
+        setServerVariable(transferSubscriptionsCount_Variable_);
+        setServerVariable(translateBrowsePathsToNodeIdsCount_Variable_);
+        setServerVariable(unauthorizedRequestCount_Variable_);
+        setServerVariable(unregisterNodesCount_Variable_);
+        setServerVariable(variable_);
+        setServerVariable(writeCount_Variable_);
     }
     
     SessionDiagnosticsVariableType::~SessionDiagnosticsVariableType(void)

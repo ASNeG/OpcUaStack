@@ -25,6 +25,11 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2368);
+        setServerVariable(definition_Variable_);
+        setServerVariable(eURange_Variable_);
+        setServerVariable(engineeringUnits_Variable_);
+        setServerVariable(instrumentRange_Variable_);
+        setServerVariable(valuePrecision_Variable_);
         setServerVariable(variable_);
     }
     
@@ -39,6 +44,11 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2368);
+        setServerVariable(definition_Variable_);
+        setServerVariable(eURange_Variable_);
+        setServerVariable(engineeringUnits_Variable_);
+        setServerVariable(instrumentRange_Variable_);
+        setServerVariable(valuePrecision_Variable_);
         setServerVariable(variable_);
     }
     

@@ -23,6 +23,7 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)63);
+        setServerVariable(variable_);
     }
     
     /**
@@ -34,6 +35,7 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)63);
+        setServerVariable(variable_);
     }
     
     BaseDataVariableType::~BaseDataVariableType(void)

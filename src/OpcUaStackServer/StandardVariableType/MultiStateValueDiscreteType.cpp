@@ -24,6 +24,11 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)11238);
+        setServerVariable(definition_Variable_);
+        setServerVariable(enumValues_Variable_);
+        setServerVariable(valueAsText_Variable_);
+        setServerVariable(valuePrecision_Variable_);
+        setServerVariable(variable_);
     }
     
     MultiStateValueDiscreteType::MultiStateValueDiscreteType(const MultiStateValueDiscreteType& value)
@@ -36,6 +41,11 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)11238);
+        setServerVariable(definition_Variable_);
+        setServerVariable(enumValues_Variable_);
+        setServerVariable(valueAsText_Variable_);
+        setServerVariable(valuePrecision_Variable_);
+        setServerVariable(variable_);
     }
     
     MultiStateValueDiscreteType::~MultiStateValueDiscreteType(void)

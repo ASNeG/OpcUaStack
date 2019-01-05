@@ -21,6 +21,8 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)9002);
+        setServerVariable(sourceTimestamp_Variable_);
+        setServerVariable(variable_);
     }
     
     ConditionVariableType::ConditionVariableType(const ConditionVariableType& value)
@@ -30,6 +32,8 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)9002);
+        setServerVariable(sourceTimestamp_Variable_);
+        setServerVariable(variable_);
     }
     
     ConditionVariableType::~ConditionVariableType(void)

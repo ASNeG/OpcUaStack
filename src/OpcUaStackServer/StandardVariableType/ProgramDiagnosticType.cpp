@@ -30,6 +30,17 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2380);
+        setServerVariable(createClientName_Variable_);
+        setServerVariable(createSessionId_Variable_);
+        setServerVariable(invocationCreationTime_Variable_);
+        setServerVariable(lastMethodCallTime_Variable_);
+        setServerVariable(lastMethodCall_Variable_);
+        setServerVariable(lastMethodInputArguments_Variable_);
+        setServerVariable(lastMethodOutputArguments_Variable_);
+        setServerVariable(lastMethodReturnStatus_Variable_);
+        setServerVariable(lastMethodSessionId_Variable_);
+        setServerVariable(lastTransitionTime_Variable_);
+        setServerVariable(variable_);
     }
     
     ProgramDiagnosticType::ProgramDiagnosticType(const ProgramDiagnosticType& value)
@@ -48,6 +59,17 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2380);
+        setServerVariable(createClientName_Variable_);
+        setServerVariable(createSessionId_Variable_);
+        setServerVariable(invocationCreationTime_Variable_);
+        setServerVariable(lastMethodCallTime_Variable_);
+        setServerVariable(lastMethodCall_Variable_);
+        setServerVariable(lastMethodInputArguments_Variable_);
+        setServerVariable(lastMethodOutputArguments_Variable_);
+        setServerVariable(lastMethodReturnStatus_Variable_);
+        setServerVariable(lastMethodSessionId_Variable_);
+        setServerVariable(lastTransitionTime_Variable_);
+        setServerVariable(variable_);
     }
     
     ProgramDiagnosticType::~ProgramDiagnosticType(void)

@@ -24,6 +24,11 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2165);
+        setServerVariable(disabledMonitoredItemsSamplingCount_Variable_);
+        setServerVariable(maxSampledMonitoredItemsCount_Variable_);
+        setServerVariable(sampledMonitoredItemsCount_Variable_);
+        setServerVariable(samplingInterval_Variable_);
+        setServerVariable(variable_);
     }
     
     SamplingIntervalDiagnosticsType::SamplingIntervalDiagnosticsType(const SamplingIntervalDiagnosticsType& value)
@@ -36,6 +41,11 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2165);
+        setServerVariable(disabledMonitoredItemsSamplingCount_Variable_);
+        setServerVariable(maxSampledMonitoredItemsCount_Variable_);
+        setServerVariable(sampledMonitoredItemsCount_Variable_);
+        setServerVariable(samplingInterval_Variable_);
+        setServerVariable(variable_);
     }
     
     SamplingIntervalDiagnosticsType::~SamplingIntervalDiagnosticsType(void)

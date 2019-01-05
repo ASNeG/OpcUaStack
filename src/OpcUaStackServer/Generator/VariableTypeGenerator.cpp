@@ -387,6 +387,11 @@ namespace OpcUaStackServer
 		ss << prefix << "    variableTypeNamespaceName(\"" << nodeInfo_.variableTypeNamespaceName() << "\");" << std::endl;
 		ss << prefix << "    variableTypeNodeId(" << nodeInfo_.getIdentifierAsString(nodeInfo_.variableTypeNodeId()) << ");" << std::endl;
 
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+			ss << prefix << "    setServerVariable(" << vt->variableName() << ");" << std::endl;
+		}
+
 		ss << prefix << "}" << std::endl;
 
 		//
@@ -412,6 +417,10 @@ namespace OpcUaStackServer
 		ss << prefix << "    variableTypeNamespaceName(\"" << nodeInfo_.variableTypeNamespaceName() << "\");" << std::endl;
 		ss << prefix << "    variableTypeNodeId(" << nodeInfo_.getIdentifierAsString(nodeInfo_.variableTypeNodeId()) << ");" << std::endl;
 
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+			ss << prefix << "    setServerVariable(" << vt->variableName() << ");" << std::endl;
+		}
 
 		ss << prefix << "}" << std::endl;
 

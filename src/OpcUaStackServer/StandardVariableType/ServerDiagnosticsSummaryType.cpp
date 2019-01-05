@@ -32,6 +32,19 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2150);
+        setServerVariable(cumulatedSessionCount_Variable_);
+        setServerVariable(cumulatedSubscriptionCount_Variable_);
+        setServerVariable(currentSessionCount_Variable_);
+        setServerVariable(currentSubscriptionCount_Variable_);
+        setServerVariable(publishingIntervalCount_Variable_);
+        setServerVariable(rejectedRequestsCount_Variable_);
+        setServerVariable(rejectedSessionCount_Variable_);
+        setServerVariable(securityRejectedRequestsCount_Variable_);
+        setServerVariable(securityRejectedSessionCount_Variable_);
+        setServerVariable(serverViewCount_Variable_);
+        setServerVariable(sessionAbortCount_Variable_);
+        setServerVariable(sessionTimeoutCount_Variable_);
+        setServerVariable(variable_);
     }
     
     ServerDiagnosticsSummaryType::ServerDiagnosticsSummaryType(const ServerDiagnosticsSummaryType& value)
@@ -52,6 +65,19 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2150);
+        setServerVariable(cumulatedSessionCount_Variable_);
+        setServerVariable(cumulatedSubscriptionCount_Variable_);
+        setServerVariable(currentSessionCount_Variable_);
+        setServerVariable(currentSubscriptionCount_Variable_);
+        setServerVariable(publishingIntervalCount_Variable_);
+        setServerVariable(rejectedRequestsCount_Variable_);
+        setServerVariable(rejectedSessionCount_Variable_);
+        setServerVariable(securityRejectedRequestsCount_Variable_);
+        setServerVariable(securityRejectedSessionCount_Variable_);
+        setServerVariable(serverViewCount_Variable_);
+        setServerVariable(sessionAbortCount_Variable_);
+        setServerVariable(sessionTimeoutCount_Variable_);
+        setServerVariable(variable_);
     }
     
     ServerDiagnosticsSummaryType::~ServerDiagnosticsSummaryType(void)

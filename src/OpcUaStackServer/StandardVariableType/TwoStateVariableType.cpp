@@ -28,6 +28,15 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)8995);
+        setServerVariable(effectiveDisplayName_Variable_);
+        setServerVariable(effectiveTransitionTime_Variable_);
+        setServerVariable(falseState_Variable_);
+        setServerVariable(id_Variable_);
+        setServerVariable(name_Variable_);
+        setServerVariable(number_Variable_);
+        setServerVariable(transitionTime_Variable_);
+        setServerVariable(trueState_Variable_);
+        setServerVariable(variable_);
     }
     
     TwoStateVariableType::TwoStateVariableType(const TwoStateVariableType& value)
@@ -44,6 +53,15 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)8995);
+        setServerVariable(effectiveDisplayName_Variable_);
+        setServerVariable(effectiveTransitionTime_Variable_);
+        setServerVariable(falseState_Variable_);
+        setServerVariable(id_Variable_);
+        setServerVariable(name_Variable_);
+        setServerVariable(number_Variable_);
+        setServerVariable(transitionTime_Variable_);
+        setServerVariable(trueState_Variable_);
+        setServerVariable(variable_);
     }
     
     TwoStateVariableType::~TwoStateVariableType(void)

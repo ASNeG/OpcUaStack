@@ -27,6 +27,14 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)12021);
+        setServerVariable(axisScaleType_Variable_);
+        setServerVariable(definition_Variable_);
+        setServerVariable(eURange_Variable_);
+        setServerVariable(engineeringUnits_Variable_);
+        setServerVariable(instrumentRange_Variable_);
+        setServerVariable(title_Variable_);
+        setServerVariable(valuePrecision_Variable_);
+        setServerVariable(variable_);
     }
     
     ArrayItemType::ArrayItemType(const ArrayItemType& value)
@@ -42,6 +50,14 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)12021);
+        setServerVariable(axisScaleType_Variable_);
+        setServerVariable(definition_Variable_);
+        setServerVariable(eURange_Variable_);
+        setServerVariable(engineeringUnits_Variable_);
+        setServerVariable(instrumentRange_Variable_);
+        setServerVariable(title_Variable_);
+        setServerVariable(valuePrecision_Variable_);
+        setServerVariable(variable_);
     }
     
     ArrayItemType::~ArrayItemType(void)

@@ -20,6 +20,7 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2164);
+        setServerVariable(variable_);
     }
     
     SamplingIntervalDiagnosticsArrayType::SamplingIntervalDiagnosticsArrayType(const SamplingIntervalDiagnosticsArrayType& value)
@@ -28,6 +29,7 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2164);
+        setServerVariable(variable_);
     }
     
     SamplingIntervalDiagnosticsArrayType::~SamplingIntervalDiagnosticsArrayType(void)

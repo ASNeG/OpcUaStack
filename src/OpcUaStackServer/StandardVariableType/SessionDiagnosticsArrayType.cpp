@@ -20,6 +20,7 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2196);
+        setServerVariable(variable_);
     }
     
     SessionDiagnosticsArrayType::SessionDiagnosticsArrayType(const SessionDiagnosticsArrayType& value)
@@ -28,6 +29,7 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2196);
+        setServerVariable(variable_);
     }
     
     SessionDiagnosticsArrayType::~SessionDiagnosticsArrayType(void)

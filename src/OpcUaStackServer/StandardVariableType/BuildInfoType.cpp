@@ -26,6 +26,13 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)3051);
+        setServerVariable(buildDate_Variable_);
+        setServerVariable(buildNumber_Variable_);
+        setServerVariable(manufacturerName_Variable_);
+        setServerVariable(productName_Variable_);
+        setServerVariable(productUri_Variable_);
+        setServerVariable(softwareVersion_Variable_);
+        setServerVariable(variable_);
     }
     
     BuildInfoType::BuildInfoType(const BuildInfoType& value)
@@ -40,6 +47,13 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)3051);
+        setServerVariable(buildDate_Variable_);
+        setServerVariable(buildNumber_Variable_);
+        setServerVariable(manufacturerName_Variable_);
+        setServerVariable(productName_Variable_);
+        setServerVariable(productUri_Variable_);
+        setServerVariable(softwareVersion_Variable_);
+        setServerVariable(variable_);
     }
     
     BuildInfoType::~BuildInfoType(void)

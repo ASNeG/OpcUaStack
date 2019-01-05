@@ -29,6 +29,16 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2244);
+        setServerVariable(authenticationMechanism_Variable_);
+        setServerVariable(clientCertificate_Variable_);
+        setServerVariable(clientUserIdHistory_Variable_);
+        setServerVariable(clientUserIdOfSession_Variable_);
+        setServerVariable(encoding_Variable_);
+        setServerVariable(securityMode_Variable_);
+        setServerVariable(securityPolicyUri_Variable_);
+        setServerVariable(sessionId_Variable_);
+        setServerVariable(transportProtocol_Variable_);
+        setServerVariable(variable_);
     }
     
     SessionSecurityDiagnosticsType::SessionSecurityDiagnosticsType(const SessionSecurityDiagnosticsType& value)
@@ -46,6 +56,16 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2244);
+        setServerVariable(authenticationMechanism_Variable_);
+        setServerVariable(clientCertificate_Variable_);
+        setServerVariable(clientUserIdHistory_Variable_);
+        setServerVariable(clientUserIdOfSession_Variable_);
+        setServerVariable(encoding_Variable_);
+        setServerVariable(securityMode_Variable_);
+        setServerVariable(securityPolicyUri_Variable_);
+        setServerVariable(sessionId_Variable_);
+        setServerVariable(transportProtocol_Variable_);
+        setServerVariable(variable_);
     }
     
     SessionSecurityDiagnosticsType::~SessionSecurityDiagnosticsType(void)

@@ -25,6 +25,9 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)72);
+        setServerVariable(dataTypeVersion_Variable_);
+        setServerVariable(namespaceUri_Variable_);
+        setServerVariable(variable_);
     }
     
     /**
@@ -38,6 +41,9 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)72);
+        setServerVariable(dataTypeVersion_Variable_);
+        setServerVariable(namespaceUri_Variable_);
+        setServerVariable(variable_);
     }
     
     DataTypeDictionaryType::~DataTypeDictionaryType(void)
