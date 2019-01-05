@@ -52,6 +52,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel_;
 		std::set<std::string> variableNameSet_;
 		uint16_t namespaceIndex_;
+		VariableBase::SPtr variableBase_;
 	};
 
 }

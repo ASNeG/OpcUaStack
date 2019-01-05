@@ -34,6 +34,7 @@ namespace OpcUaStackServer
 	: informationModel_()
 	, variableNameSet_()
 	, namespaceIndex_(0)
+	, variableBase_()
 	{
 	}
 
@@ -52,6 +53,7 @@ namespace OpcUaStackServer
 	)
 	{
 		informationModel_ = informationModel;
+		variableBase_ = variableBase;
 
 		// get namespace index
 		if (!getNamespaceIndex(namespaceName)) {
@@ -177,6 +179,9 @@ namespace OpcUaStackServer
 					.parameter("BrowseName", browseName);
 				return false;
 			}
+
+			// create reference between parent and child
+			// FIXME: todo
 		}
 
 		return true;
@@ -202,12 +207,18 @@ namespace OpcUaStackServer
 		}
 		variableNameSet_.insert(variableName);
 
+		// find server variable
+		//variableBase_->serverVariables();
 
 		// create variable instance
 		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
 		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
 		VariableTypeNodeClass::SPtr variableTypeNode = boost::static_pointer_cast<VariableTypeNodeClass>(baseNode);
 		VariableNodeClass::SPtr variableNode = constructSPtr<VariableNodeClass>(nodeId, *variableTypeNode.get());
+
+		// connect server instance with server variable
+		// FIXME: todo
 
 		std::cout << "VariableName=" << variableName << std::endl;
 

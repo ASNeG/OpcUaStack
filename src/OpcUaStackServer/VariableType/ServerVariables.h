@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -102,6 +102,7 @@ namespace OpcUaStackServer
 		virtual ~ServerVariables(void);
 
 		bool registerServerVariable(ServerVariable::SPtr& serverVariable);
+		ServerVariable::SPtr getServerVariable(const std::string& name);
 		ServerVariable::Map& serverVariableMap(void);
 
 	  private:
