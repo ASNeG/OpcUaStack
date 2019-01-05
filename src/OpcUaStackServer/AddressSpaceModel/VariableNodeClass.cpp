@@ -32,7 +32,10 @@ namespace OpcUaStackServer
 	{
 	}
 
-	VariableNodeClass::VariableNodeClass(OpcUaNodeId& nodeId, VariableNodeClass& variableNodeClass)
+	VariableNodeClass::VariableNodeClass(
+		OpcUaNodeId& nodeId,
+		VariableNodeClass& variableNodeClass
+	)
 	: BaseNodeClass(NodeClass::EnumVariable, nodeId, &variableNodeClass)
 	, value_()
 	, dataType_()
@@ -70,7 +73,10 @@ namespace OpcUaStackServer
 		variableNodeClass.referenceItemMap().add(ReferenceType_HasTypeDefinition, false, *getNodeId());
 	}
 
-	VariableNodeClass::VariableNodeClass(OpcUaNodeId& nodeId, VariableTypeNodeClass& variableTypeNodeClass)
+	VariableNodeClass::VariableNodeClass(
+		OpcUaNodeId& nodeId,
+		VariableTypeNodeClass& variableTypeNodeClass
+	)
 	: BaseNodeClass(NodeClass::EnumVariable, nodeId, &variableTypeNodeClass)
 	, value_()
 	, dataType_()
