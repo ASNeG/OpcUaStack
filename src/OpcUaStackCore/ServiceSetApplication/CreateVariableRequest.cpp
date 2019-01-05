@@ -30,11 +30,40 @@ namespace OpcUaStackCore
 
 	CreateVariableRequest::CreateVariableRequest(void)
 	: Object()
+	, namespaceName_("")
+	, displayName_("")
+	, parentNodeId_()
+	, referenceTypeNodeId_()
+	, variableInstance_()
 	{
 	}
 
 	CreateVariableRequest::~CreateVariableRequest(void)
 	{
+	}
+
+	void
+	CreateVariableRequest::namespaceName(const std::string& namespaceName)
+	{
+		namespaceName_ = namespaceName;
+	}
+
+	std::string&
+	CreateVariableRequest::namespaceName(void)
+	{
+		return namespaceName_;
+	}
+
+	void
+	CreateVariableRequest::displayName(const std::string& displayName)
+	{
+		displayName_ = displayName;
+	}
+
+	std::string&
+	CreateVariableRequest::displayName(void)
+	{
+		return displayName_;
 	}
 
 	void

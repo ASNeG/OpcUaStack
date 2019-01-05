@@ -36,6 +36,8 @@ namespace OpcUaStackServer
 
 		OpcUaStatusCode createVariableInstance(
 			InformationModel::SPtr& informationModel,
+			const std::string& namespaceName,
+			const std::string& displayName,
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& referenceTypeNodeId,
 			VariableBase::SPtr& variableBase
@@ -47,8 +49,8 @@ namespace OpcUaStackServer
 		bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 
 		InformationModel::SPtr informationModel_;
-		BaseNodeClass::SPtr parentNode_;
-		BaseNodeClass::SPtr variableTypeNode_;
+		std::set<std::string> variableNameSet_;
+		uint16_t namespaceIndex_;
 	};
 
 }

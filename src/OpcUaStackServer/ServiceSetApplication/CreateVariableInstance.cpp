@@ -24,6 +24,8 @@ namespace OpcUaStackServer
 
 	CreateVariableInstance::CreateVariableInstance(void)
 	: resultCode_(Success)
+	, namespaceName_("")
+	, displayName_("")
 	, parentNodeId_()
 	, referenceTypeNodeId_()
 	, variableInstance_()
@@ -31,11 +33,15 @@ namespace OpcUaStackServer
 	}
 
 	CreateVariableInstance::CreateVariableInstance(
+		const std::string& namespaceName,
+		const std::string& displayName,
 		const OpcUaNodeId& parentNodeId,
 		const OpcUaNodeId& referenceTypeNodeId,
 		Object::SPtr& variableInstance
 	)
 	: resultCode_(Success)
+	, namespaceName_(namespaceName)
+	, displayName_(displayName)
 	, parentNodeId_(parentNodeId)
 	, referenceTypeNodeId_(referenceTypeNodeId)
 	, variableInstance_(variableInstance)
@@ -44,6 +50,30 @@ namespace OpcUaStackServer
 
 	CreateVariableInstance::~CreateVariableInstance(void)
 	{
+	}
+
+	void
+	CreateVariableInstance::namespaceName(const std::string& namespaceName)
+	{
+		namespaceName_ = namespaceName;
+	}
+
+	std::string&
+	CreateVariableInstance::namespaceName(void)
+	{
+		return namespaceName_;
+	}
+
+	void
+	CreateVariableInstance::displayName(const std::string& displayName)
+	{
+		displayName_ = displayName;
+	}
+
+	std::string&
+	CreateVariableInstance::displayName(void)
+	{
+		return displayName_;
 	}
 
 	void
@@ -89,6 +119,8 @@ namespace OpcUaStackServer
 
 		// create response
 		auto trx = constructSPtr<ServiceTransactionCreateVariable>();
+		trx->request()->namespaceName(namespaceName_);
+		trx->request()->displayName(displayName_);
 		trx->request()->parentNodeId(parentNodeId_);
 		trx->request()->referenceTypeNodeId(referenceTypeNodeId_);
 		trx->request()->variableInstance(variableInstance_);

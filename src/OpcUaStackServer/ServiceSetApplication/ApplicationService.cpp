@@ -541,6 +541,8 @@ namespace OpcUaStackServer
 		VariableInstanceBuilder variableInstanceBuilder;
 		OpcUaStatusCode result = variableInstanceBuilder.createVariableInstance(
 			informationModel_,
+			req->namespaceName(),
+			req->displayName(),
 			req->parentNodeId(),
 			req->referenceTypeNodeId(),
 			variableBase

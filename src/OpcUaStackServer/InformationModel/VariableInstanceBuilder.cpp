@@ -20,6 +20,9 @@
 #include "OpcUaStackServer/InformationModel/VariableInstanceBuilder.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
+
 
 using namespace OpcUaStackCore;
 
@@ -28,8 +31,8 @@ namespace OpcUaStackServer
 
 	VariableInstanceBuilder::VariableInstanceBuilder(void)
 	: informationModel_()
-	, parentNode_()
-	, variableTypeNode_()
+	, variableNameSet_()
+	, namespaceIndex_(0)
 	{
 	}
 
@@ -40,12 +43,17 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	VariableInstanceBuilder::createVariableInstance(
 		InformationModel::SPtr& informationModel,
+		const std::string& namespaceName,
+		const std::string& displayName,
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& referenceTypeNodeId,
 		VariableBase::SPtr& variableBase
 	)
 	{
 		informationModel_ = informationModel;
+
+		// get namesapce index from namespace name
+		NodeSetNamespace nodeSetNamespace;
 
 		// find variable type namespace index from namespace name
 		NodeSetNamespace nodeSetNamespace;
@@ -57,25 +65,12 @@ namespace OpcUaStackServer
 		}
 		variableBase->variableTypeNodeId().namespaceIndex(namespaceIndex);
 
-		// find parent node
-		//boost::mutex::scoped_lock g(informationModel_->mutex());
-		parentNode_ = informationModel_->find(parentNodeId);
-		if (parentNode_.get() == nullptr) {
-			Log(Error, "parent node do not exist in information model")
-				.parameter("ParentNodeId", parentNodeId);
-			return BadInternalError;
-		}
-
-		// find variable type node
-		BaseNodeClass::SPtr variableTypeNode = informationModel_->find(variableBase->variableTypeNodeId());
-		variableTypeNode_ = informationModel_->find(parentNodeId);
-		if (variableTypeNode_.get() == nullptr) {
-			Log(Error, "variable type node do not exist in information model")
+		if (!readValues(variableBase->variableTypeNodeId())) {
+			Log(Error, "create variable type error")
 				.parameter("VariableTypeNodeId", variableBase->variableTypeNodeId());
 			return BadInternalError;
 		}
 
-		std::cout << "VARIABLE INSTANCE SUCCESS..." << std::endl;
 		return Success;
 	}
 
@@ -177,6 +172,21 @@ namespace OpcUaStackServer
 		}
 		if (!variableName.empty()) variableName += "_";
 		variableName += "Variable";
+
+		// check if variable name already exist
+		if (variableNameSet_.find(variableName) != variableNameSet_.end()) {
+			return true;
+		}
+		variableNameSet_.insert(variableName);
+
+
+		// create variable instance
+		InformationModelAccess ima;
+		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
+		VariableTypeNodeClass::SPtr variableTypeNode = boost::static_pointer_cast<VariableTypeNodeClass>(baseNode);
+		VariableNodeClass::SPtr variableNode = constructSPtr<VariableNodeClass>(nodeId, *variableTypeNode.get());
+
+		std::cout << "VariableName=" << variableName << std::endl;
 
 		// FIXME: todo
 		return true;

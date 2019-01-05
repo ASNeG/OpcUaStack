@@ -35,6 +35,10 @@ namespace OpcUaStackCore
 		CreateVariableRequest(void);
 		virtual ~CreateVariableRequest(void);
 
+		void namespaceName(const std::string& namespaceName);
+		std::string& namespaceName(void);
+		void displayName(const std::string& displayName);
+		std::string& displayName(void);
 		void parentNodeId(const OpcUaNodeId& parentNodeId);
 		OpcUaNodeId& parentNodeId(void);
 		void referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId);
@@ -46,6 +50,8 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		std::string namespaceName_;
+		std::string displayName_;
 		OpcUaNodeId parentNodeId_;
 		OpcUaNodeId referenceTypeNodeId_;
 		Object::SPtr variableInstance_;
