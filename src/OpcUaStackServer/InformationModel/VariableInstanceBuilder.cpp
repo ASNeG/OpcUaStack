@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/InformationModel/VariableInstanceBuilder.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "OpcUaStackServer/InformationModel/NamespaceArray.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
@@ -52,8 +53,12 @@ namespace OpcUaStackServer
 	{
 		informationModel_ = informationModel;
 
-		// get namesapce index from namespace name
-		NodeSetNamespace nodeSetNamespace;
+		// get namespace index
+		if (!getNamespaceIndex(namespaceName)) {
+			Log(Error, "get namesapce index error")
+				.parameter("NamespaceName", namespaceName);
+			return BadInternalError;
+		}
 
 		// find variable type namespace index from namespace name
 		NodeSetNamespace nodeSetNamespace;
@@ -72,6 +77,24 @@ namespace OpcUaStackServer
 		}
 
 		return Success;
+	}
+
+	bool
+	VariableInstanceBuilder::getNamespaceIndex(const std::string& namespaceName)
+	{
+		// get namespace index from namespace name
+		NodeSetNamespace nodeSetNamespace;
+		namespaceIndex_ = nodeSetNamespace.mapToGlobalNamespaceIndex(namespaceName);
+		if (namespaceIndex_ != 0xFFFF) return true;
+
+		// the namespace name do not exist in the information model
+		nodeSetNamespace.addNewGlobalNamespace(namespaceName);
+
+		NamespaceArray nsa;
+		nsa.informationModel(informationModel_);
+		nsa.addNamespaceName(namespaceName);
+
+		return true;
 	}
 
 	bool

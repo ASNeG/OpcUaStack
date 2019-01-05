@@ -44,6 +44,7 @@ namespace OpcUaStackServer
 		);
 
 	  private:
+		bool getNamespaceIndex(const std::string& namespaceName);
 		bool readValues(const OpcUaNodeId& variableTypeNodeId);
 		bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 		bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
