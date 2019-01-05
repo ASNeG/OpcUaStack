@@ -54,6 +54,12 @@ namespace OpcUaStackServer
 		return serverVariables_;
 	}
 
+	ServerVariable::SPtr
+	VariableBase::getServerVariable(const std::string& name)
+	{
+		return serverVariables_.getServerVariable(name);
+	}
+
 	bool
 	VariableBase::linkInstanceWithModel(const OpcUaNodeId& nodeId)
 	{

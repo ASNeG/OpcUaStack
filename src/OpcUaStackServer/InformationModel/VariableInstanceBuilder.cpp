@@ -208,7 +208,7 @@ namespace OpcUaStackServer
 		variableNameSet_.insert(variableName);
 
 		// find server variable
-		//variableBase_->serverVariables();
+		// FIXME: todo
 
 		// create variable instance
 		InformationModelAccess ima;

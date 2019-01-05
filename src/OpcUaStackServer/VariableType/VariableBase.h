@@ -42,6 +42,7 @@ namespace OpcUaStackServer
 
 		void applicationServiceIf(ApplicationServiceIf* applicationServiceIf);
 		ServerVariables& serverVariables(void);
+		ServerVariable::SPtr getServerVariable(const std::string& name);
 		virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
 		bool createAndLinkInstanceWithModel(
 			const std::string& name,
