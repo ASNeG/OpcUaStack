@@ -208,7 +208,12 @@ namespace OpcUaStackServer
 		variableNameSet_.insert(variableName);
 
 		// find server variable
-		// FIXME: todo
+		ServerVariable::SPtr serverVariable = variableBase_->getServerVariable(variableName);
+		if (serverVariable.get() == nullptr) {
+			Log(Error, "server variable do not exist in variable data type")
+				.parameter("VariableName", variableName);
+			return true;
+		}
 
 		// create variable instance
 		InformationModelAccess ima;

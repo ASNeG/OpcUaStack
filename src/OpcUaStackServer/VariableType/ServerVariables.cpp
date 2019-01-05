@@ -205,12 +205,8 @@ namespace OpcUaStackServer
 	bool
 	ServerVariables::registerServerVariable(ServerVariable::SPtr& serverVariable)
 	{
-		ServerVariable::Map::iterator it;
-		it = serverVariableMap_.find(serverVariable->name());
-		if (it != serverVariableMap_.end()) {
-			serverVariableMap_.erase(it);
-		}
-
+		auto it = serverVariableMap_.find(serverVariable->name());
+		if (it != serverVariableMap_.end()) serverVariableMap_.erase(it);
 		serverVariableMap_.insert(std::make_pair(serverVariable->name(), serverVariable));
 		return true;
 	}

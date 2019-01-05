@@ -61,6 +61,12 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	VariableBase::setServerVariable(ServerVariable::SPtr& serverVariable)
+	{
+		return serverVariables_.registerServerVariable(serverVariable);
+	}
+
+	bool
 	VariableBase::linkInstanceWithModel(const OpcUaNodeId& nodeId)
 	{
 		if (applicationServiceIf_ == nullptr) {
