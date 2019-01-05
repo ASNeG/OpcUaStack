@@ -202,6 +202,19 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	ServerVariables::logVariables(void)
+	{
+		std::string str = "";
+		for (auto it : serverVariableMap_) {
+			if (str != "") str += ", ";
+			str += it.first;
+		}
+
+		Log(Debug, "")
+		    .parameter("ServerVariables", str);
+	}
+
 	bool
 	ServerVariables::registerServerVariable(ServerVariable::SPtr& serverVariable)
 	{

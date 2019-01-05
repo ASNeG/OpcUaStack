@@ -25,6 +25,7 @@ namespace OpcUaStackServer
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2368);
+        setServerVariable(variable_);
     }
     
     AnalogItemType::AnalogItemType(const AnalogItemType& value)

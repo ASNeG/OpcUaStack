@@ -101,6 +101,7 @@ namespace OpcUaStackServer
 		ServerVariables(void);
 		virtual ~ServerVariables(void);
 
+		void logVariables(void);
 		bool registerServerVariable(ServerVariable::SPtr& serverVariable);
 		ServerVariable::SPtr getServerVariable(const std::string& name);
 		ServerVariable::Map& serverVariableMap(void);

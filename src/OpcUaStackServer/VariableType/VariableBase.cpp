@@ -54,6 +54,12 @@ namespace OpcUaStackServer
 		return serverVariables_;
 	}
 
+	void
+	VariableBase::logVariables(void)
+	{
+		serverVariables_.logVariables();
+	}
+
 	ServerVariable::SPtr
 	VariableBase::getServerVariable(const std::string& name)
 	{

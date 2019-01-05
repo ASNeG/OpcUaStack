@@ -42,6 +42,7 @@ namespace OpcUaStackServer
 
 		void applicationServiceIf(ApplicationServiceIf* applicationServiceIf);
 		ServerVariables& serverVariables(void);
+		void logVariables(void);
 		ServerVariable::SPtr getServerVariable(const std::string& name);
 		bool setServerVariable(ServerVariable::SPtr& serverVariable);
 		virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
