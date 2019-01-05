@@ -71,11 +71,24 @@ namespace OpcUaStackServer
 		}
 		variableBase->variableTypeNodeId().namespaceIndex(namespaceIndex);
 
-		if (!readValues(variableBase->variableTypeNodeId())) {
+		// get parent node class
+		BaseNodeClass::SPtr parentBaseNode = informationModel_->find(parentNodeId);
+		if (parentBaseNode.get() == nullptr) {
+			Log(Error, "parent node id do not exist")
+				.parameter("ParentNodeId", parentNodeId);
+			return BadInternalError;
+		}
+
+		VariableNodeClass::SPtr variableNodeClass = readValues(variableBase->variableTypeNodeId());
+		if (variableNodeClass.get() == nullptr) {
 			Log(Error, "create variable type error")
 				.parameter("VariableTypeNodeId", variableBase->variableTypeNodeId());
 			return BadInternalError;
 		}
+
+		// added reference
+		parentBaseNode->referenceItemMap().add(referenceTypeNodeId, true, *variableNodeClass->getNodeId());
+		variableNodeClass->referenceItemMap().add(referenceTypeNodeId, false, parentNodeId);
 
 		return Success;
 	}
@@ -98,7 +111,7 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	bool
+	VariableNodeClass::SPtr
 	VariableInstanceBuilder::readValues(const OpcUaNodeId& variableTypeNodeId)
 	{
 		InformationModelAccess ima;
@@ -107,60 +120,68 @@ namespace OpcUaStackServer
 		//
 		// find node in opc ua information model
 		//
-		BaseNodeClass::SPtr baseNode = informationModel_->find(variableTypeNodeId);
-		if (baseNode.get() == nullptr) {
+		BaseNodeClass::SPtr baseNodeTemplate = informationModel_->find(variableTypeNodeId);
+		if (baseNodeTemplate.get() == nullptr) {
 			Log(Error, "variable type node identifier not exist in information model")
 				.parameter("VariableTypeNode", variableTypeNodeId);
-			return false;
+			VariableNodeClass::SPtr variableNodeClass;
+			return variableNodeClass;
 		}
 
 		BrowseName browseName(variableTypeNodeId);
 		browseName.pathNames()->resize(10);
-		if (!readChilds(baseNode, browseName)) {
+		VariableNodeClass::SPtr variableNodeClass = readChilds(baseNodeTemplate, browseName);
+		if (variableNodeClass.get() == nullptr) {
 			Log(Error, "read childs error")
 				.parameter("VariableTypeNodeId", variableTypeNodeId);
-			return false;
+			VariableNodeClass::SPtr variableNodeClass;
+			return variableNodeClass;
 		}
 
 		if (variableTypeNodeId == OpcUaNodeId(62)) {
-			return true;
+			return variableNodeClass;
 		}
 
 		// find parent node identifier
 		OpcUaNodeId parentVariableTypeNodeId;
-		if (!ima.getSubType(baseNode, parentVariableTypeNodeId)) {
+		if (!ima.getSubType(baseNodeTemplate, parentVariableTypeNodeId)) {
 			Log(Error, "parent variable type node identifier do not not exist in information model")
 				.parameter("VariableTypeNodeId", variableTypeNodeId)
-				.parameter("DisplayName", *baseNode->getDisplayName());
-			return false;
+				.parameter("DisplayName", *baseNodeTemplate->getDisplayName());
+			VariableNodeClass::SPtr variableNodeClass;
+			return variableNodeClass;
 		}
 
 		return readValues(parentVariableTypeNodeId);
 	}
 
-	bool
-	VariableInstanceBuilder::readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseNames)
+	VariableNodeClass::SPtr
+	VariableInstanceBuilder::readChilds(
+		const BaseNodeClass::SPtr& baseNodeTemplate,
+		BrowseName& browseNames
+	)
 	{
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
 
 		// read node information
-		VariableNodeClass::SPtr variableNodeClass = createVariableInstance(baseNode, browseNames);
+		VariableNodeClass::SPtr variableNodeClass = createVariableInstance(baseNodeTemplate, browseNames);
 		if (variableNodeClass.get() == nullptr) {
 			Log(Error, "create variable node error")
-				.parameter("NodeId", baseNode->getNodeId())
+				.parameter("NodeId", *baseNodeTemplate->getNodeId())
 				.parameter("BrowseName", browseNames);
-			return false;
+			return variableNodeClass;
 		}
 
 		// find childs
 		BaseNodeClass::Vec childBaseNodeClassVec;
 		std::vector<OpcUaNodeId> referenceTypeNodeIdVec;
-		if (!ima.getChildHierarchically(baseNode, childBaseNodeClassVec, referenceTypeNodeIdVec)) {
+		if (!ima.getChildHierarchically(baseNodeTemplate, childBaseNodeClassVec, referenceTypeNodeIdVec)) {
 			Log(Error, "get hierachically child error")
-				.parameter("NodeId", *baseNode->getNodeId())
-				.parameter("DispalyName", *baseNode->getDisplayName());
-			return false;
+				.parameter("NodeId", *baseNodeTemplate->getNodeId())
+				.parameter("DispalyName", *baseNodeTemplate->getDisplayName());
+			VariableNodeClass::SPtr variableNodeClass;
+			return variableNodeClass;
 		}
 
 		size_t size = browseNames.pathNames()->size();
@@ -168,23 +189,24 @@ namespace OpcUaStackServer
 			// ignore HasSubType references
 			if (referenceTypeNodeIdVec[idx] == OpcUaNodeId(45)) continue;
 
-			BaseNodeClass::SPtr baseNodeClassChild = childBaseNodeClassVec[idx];
+			BaseNodeClass::SPtr baseNodeClassChildTemplate = childBaseNodeClassVec[idx];
 			OpcUaQualifiedName browseName = *childBaseNodeClassVec[idx]->getBrowseName();
 
 			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
 
-			if (!readChilds(baseNodeClassChild, browseNames)) {
+			if (!readChilds(baseNodeClassChildTemplate, browseNames)) {
 				Log(Error, "read childs error")
-					.parameter("NodeId", *baseNode->getNodeId())
+					.parameter("NodeId", *baseNodeTemplate->getNodeId())
 					.parameter("BrowseName", browseName);
-				return false;
+				VariableNodeClass::SPtr variableNodeClass;
+				return variableNodeClass;
 			}
 
 			// create reference between parent and child
 			// FIXME: todo
 		}
 
-		return true;
+		return variableNodeClass;
 	}
 
 	VariableNodeClass::SPtr
