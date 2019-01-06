@@ -49,6 +49,7 @@ namespace OpcUaStackServer
 		bool exist(OpcUaNodeId& referenceTypeNodeId, bool isForward, OpcUaNodeId& nodeId);
 
 		void get(ReferenceType referenceType, std::vector<bool>& isForwards, std::vector<OpcUaNodeId>& nodes);
+		bool getHasTypeDefinition(OpcUaNodeId& node);
 
 		bool remove(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem);
 		bool remove(OpcUaNodeId& referenceTypeNodeId, OpcUaNodeId& nodeId);

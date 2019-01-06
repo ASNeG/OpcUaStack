@@ -120,6 +120,17 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	ReferenceItemMap::getHasTypeDefinition(OpcUaNodeId& node)
+	{
+		std::vector<bool> isForwards;
+		std::vector<OpcUaNodeId> nodes;
+		get(ReferenceType_HasTypeDefinition, isForwards, nodes);
+		if (nodes.size() != 1) return false;
+		node = nodes[0];
+		return true;
+	}
+
+	bool
 	ReferenceItemMap::remove(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem)
 	{
 		if (referenceItem.get() == nullptr) return false;
