@@ -32,16 +32,25 @@ namespace OpcUaStackServer
        DataTypeDictionaryType(const DataTypeDictionaryType& value);
        virtual ~DataTypeDictionaryType(void);
 
+        //
+        // String
+        //
         void dataTypeVersion_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataTypeVersion_Variable(void);
         bool get_DataTypeVersion_Variable(OpcUaDataValue& dataValue);
         bool set_DataTypeVersion_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // String
+        //
         void namespaceUri_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& namespaceUri_Variable(void);
         bool get_NamespaceUri_Variable(OpcUaDataValue& dataValue);
         bool set_NamespaceUri_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // ByteString
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

@@ -32,56 +32,89 @@ namespace OpcUaStackServer
        ProgramDiagnosticType(const ProgramDiagnosticType& value);
        virtual ~ProgramDiagnosticType(void);
 
+        //
+        // String
+        //
         void createClientName_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& createClientName_Variable(void);
         bool get_CreateClientName_Variable(OpcUaDataValue& dataValue);
         bool set_CreateClientName_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // NodeId
+        //
         void createSessionId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& createSessionId_Variable(void);
         bool get_CreateSessionId_Variable(OpcUaDataValue& dataValue);
         bool set_CreateSessionId_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UtcTime
+        //
         void invocationCreationTime_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& invocationCreationTime_Variable(void);
         bool get_InvocationCreationTime_Variable(OpcUaDataValue& dataValue);
         bool set_InvocationCreationTime_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UtcTime
+        //
         void lastMethodCallTime_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastMethodCallTime_Variable(void);
         bool get_LastMethodCallTime_Variable(OpcUaDataValue& dataValue);
         bool set_LastMethodCallTime_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // String
+        //
         void lastMethodCall_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastMethodCall_Variable(void);
         bool get_LastMethodCall_Variable(OpcUaDataValue& dataValue);
         bool set_LastMethodCall_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // Argument (Array)
+        //
         void lastMethodInputArguments_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastMethodInputArguments_Variable(void);
         bool get_LastMethodInputArguments_Variable(OpcUaDataValue& dataValue);
         bool set_LastMethodInputArguments_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // Argument (Array)
+        //
         void lastMethodOutputArguments_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastMethodOutputArguments_Variable(void);
         bool get_LastMethodOutputArguments_Variable(OpcUaDataValue& dataValue);
         bool set_LastMethodOutputArguments_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // StatusResult
+        //
         void lastMethodReturnStatus_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastMethodReturnStatus_Variable(void);
         bool get_LastMethodReturnStatus_Variable(OpcUaDataValue& dataValue);
         bool set_LastMethodReturnStatus_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // NodeId
+        //
         void lastMethodSessionId_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastMethodSessionId_Variable(void);
         bool get_LastMethodSessionId_Variable(OpcUaDataValue& dataValue);
         bool set_LastMethodSessionId_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UtcTime
+        //
         void lastTransitionTime_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastTransitionTime_Variable(void);
         bool get_LastTransitionTime_Variable(OpcUaDataValue& dataValue);
         bool set_LastTransitionTime_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // ProgramDiagnosticDataType (Array)
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

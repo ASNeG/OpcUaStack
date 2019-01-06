@@ -32,6 +32,9 @@ namespace OpcUaStackServer
        PropertyType(const PropertyType& value);
        virtual ~PropertyType(void);
 
+        //
+        // Variant
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

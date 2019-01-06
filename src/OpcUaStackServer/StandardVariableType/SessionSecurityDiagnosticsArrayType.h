@@ -32,6 +32,9 @@ namespace OpcUaStackServer
        SessionSecurityDiagnosticsArrayType(const SessionSecurityDiagnosticsArrayType& value);
        virtual ~SessionSecurityDiagnosticsArrayType(void);
 
+        //
+        // SessionSecurityDiagnosticsDataType (Array)
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

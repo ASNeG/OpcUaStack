@@ -32,11 +32,17 @@ namespace OpcUaStackServer
        ConditionVariableType(const ConditionVariableType& value);
        virtual ~ConditionVariableType(void);
 
+        //
+        // UtcTime
+        //
         void sourceTimestamp_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sourceTimestamp_Variable(void);
         bool get_SourceTimestamp_Variable(OpcUaDataValue& dataValue);
         bool set_SourceTimestamp_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // Variant
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

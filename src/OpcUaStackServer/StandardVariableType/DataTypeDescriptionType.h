@@ -32,16 +32,25 @@ namespace OpcUaStackServer
        DataTypeDescriptionType(const DataTypeDescriptionType& value);
        virtual ~DataTypeDescriptionType(void);
 
+        //
+        // String
+        //
         void dataTypeVersion_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dataTypeVersion_Variable(void);
         bool get_DataTypeVersion_Variable(OpcUaDataValue& dataValue);
         bool set_DataTypeVersion_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // ByteString
+        //
         void dictionaryFragment_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& dictionaryFragment_Variable(void);
         bool get_DictionaryFragment_Variable(OpcUaDataValue& dataValue);
         bool set_DictionaryFragment_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // String
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

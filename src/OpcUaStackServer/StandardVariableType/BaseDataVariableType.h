@@ -32,6 +32,9 @@ namespace OpcUaStackServer
        BaseDataVariableType(const BaseDataVariableType& value);
        virtual ~BaseDataVariableType(void);
 
+        //
+        // Variant
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

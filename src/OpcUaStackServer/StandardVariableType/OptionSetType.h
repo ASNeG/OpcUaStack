@@ -32,16 +32,25 @@ namespace OpcUaStackServer
        OptionSetType(const OptionSetType& value);
        virtual ~OptionSetType(void);
 
+        //
+        // Boolean (Array)
+        //
         void bitMask_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& bitMask_Variable(void);
         bool get_BitMask_Variable(OpcUaDataValue& dataValue);
         bool set_BitMask_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // LocalizedText (Array)
+        //
         void optionSetValues_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& optionSetValues_Variable(void);
         bool get_OptionSetValues_Variable(OpcUaDataValue& dataValue);
         bool set_OptionSetValues_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // Variant (Array)
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

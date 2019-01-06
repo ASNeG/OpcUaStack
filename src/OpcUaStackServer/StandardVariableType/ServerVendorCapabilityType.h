@@ -32,6 +32,9 @@ namespace OpcUaStackServer
        ServerVendorCapabilityType(const ServerVendorCapabilityType& value);
        virtual ~ServerVendorCapabilityType(void);
 
+        //
+        // Variant (Array)
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

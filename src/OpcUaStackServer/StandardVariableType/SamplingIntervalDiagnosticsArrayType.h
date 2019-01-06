@@ -32,6 +32,9 @@ namespace OpcUaStackServer
        SamplingIntervalDiagnosticsArrayType(const SamplingIntervalDiagnosticsArrayType& value);
        virtual ~SamplingIntervalDiagnosticsArrayType(void);
 
+        //
+        // SamplingIntervalDiagnosticsDataType (Array)
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

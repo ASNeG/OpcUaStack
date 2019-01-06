@@ -32,16 +32,25 @@ namespace OpcUaStackServer
        DataItemType(const DataItemType& value);
        virtual ~DataItemType(void);
 
+        //
+        // String
+        //
         void definition_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& definition_Variable(void);
         bool get_Definition_Variable(OpcUaDataValue& dataValue);
         bool set_Definition_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // Double
+        //
         void valuePrecision_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& valuePrecision_Variable(void);
         bool get_ValuePrecision_Variable(OpcUaDataValue& dataValue);
         bool set_ValuePrecision_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // Variant
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);

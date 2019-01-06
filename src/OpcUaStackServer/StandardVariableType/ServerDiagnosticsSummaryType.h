@@ -32,66 +32,105 @@ namespace OpcUaStackServer
        ServerDiagnosticsSummaryType(const ServerDiagnosticsSummaryType& value);
        virtual ~ServerDiagnosticsSummaryType(void);
 
+        //
+        // UInt32
+        //
         void cumulatedSessionCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& cumulatedSessionCount_Variable(void);
         bool get_CumulatedSessionCount_Variable(OpcUaDataValue& dataValue);
         bool set_CumulatedSessionCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void cumulatedSubscriptionCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& cumulatedSubscriptionCount_Variable(void);
         bool get_CumulatedSubscriptionCount_Variable(OpcUaDataValue& dataValue);
         bool set_CumulatedSubscriptionCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void currentSessionCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& currentSessionCount_Variable(void);
         bool get_CurrentSessionCount_Variable(OpcUaDataValue& dataValue);
         bool set_CurrentSessionCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void currentSubscriptionCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& currentSubscriptionCount_Variable(void);
         bool get_CurrentSubscriptionCount_Variable(OpcUaDataValue& dataValue);
         bool set_CurrentSubscriptionCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void publishingIntervalCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& publishingIntervalCount_Variable(void);
         bool get_PublishingIntervalCount_Variable(OpcUaDataValue& dataValue);
         bool set_PublishingIntervalCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void rejectedRequestsCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& rejectedRequestsCount_Variable(void);
         bool get_RejectedRequestsCount_Variable(OpcUaDataValue& dataValue);
         bool set_RejectedRequestsCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void rejectedSessionCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& rejectedSessionCount_Variable(void);
         bool get_RejectedSessionCount_Variable(OpcUaDataValue& dataValue);
         bool set_RejectedSessionCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void securityRejectedRequestsCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& securityRejectedRequestsCount_Variable(void);
         bool get_SecurityRejectedRequestsCount_Variable(OpcUaDataValue& dataValue);
         bool set_SecurityRejectedRequestsCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void securityRejectedSessionCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& securityRejectedSessionCount_Variable(void);
         bool get_SecurityRejectedSessionCount_Variable(OpcUaDataValue& dataValue);
         bool set_SecurityRejectedSessionCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void serverViewCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& serverViewCount_Variable(void);
         bool get_ServerViewCount_Variable(OpcUaDataValue& dataValue);
         bool set_ServerViewCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void sessionAbortCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sessionAbortCount_Variable(void);
         bool get_SessionAbortCount_Variable(OpcUaDataValue& dataValue);
         bool set_SessionAbortCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // UInt32
+        //
         void sessionTimeoutCount_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& sessionTimeoutCount_Variable(void);
         bool get_SessionTimeoutCount_Variable(OpcUaDataValue& dataValue);
         bool set_SessionTimeoutCount_Variable(const OpcUaDataValue& dataValue);
 
+        //
+        // ServerDiagnosticsSummaryDataType (Array)
+        //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
         bool get_Variable(OpcUaDataValue& dataValue);
