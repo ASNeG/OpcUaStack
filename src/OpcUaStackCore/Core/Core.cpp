@@ -74,6 +74,7 @@
 #include "OpcUaStackCore/StandardDataTypes/AggregateFilter.h"
 #include "OpcUaStackCore/StandardDataTypes/EnumValueType.h"
 #include "OpcUaStackCore/StandardDataTypes/Range.h"
+#include "OpcUaStackCore/StandardDataTypes/EUInformation.h"
 
 namespace OpcUaStackCore
 {
@@ -129,6 +130,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<AttributeOperand>(OpcUaId_AttributeOperand);
 		eo.registerFactoryElement<SimpleAttributeOperand>(OpcUaId_SimpleAttributeOperand);
 		eo.registerFactoryElement<Range>(OpcUaId_Range);
+		eo.registerFactoryElement<Range>(OpcUaId_EUInformation);
 
 		// binary
 		eo.registerFactoryElement<BuildInfo>(OpcUaId_BuildInfo_Encoding_DefaultBinary);
@@ -192,6 +194,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes_Encoding_DefaultBinary);
 		eo.registerFactoryElement<AggregateFilter>(OpcUaId_AggregateFilter_Encoding_DefaultBinary);
 		eo.registerFactoryElement<Range>(OpcUaId_Range_Encoding_DefaultBinary);
+		eo.registerFactoryElement<Range>(OpcUaId_EUInformation_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
