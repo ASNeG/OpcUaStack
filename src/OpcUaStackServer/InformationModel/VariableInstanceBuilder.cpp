@@ -254,14 +254,29 @@ namespace OpcUaStackServer
 		{
 			case NodeClass::EnumVariable:
 			{
-				VariableNodeClass::SPtr node = boost::static_pointer_cast<VariableNodeClass>(baseNodeTemplate);
-				variableNode = constructSPtr<VariableNodeClass>(nodeId, *node.get());
+
+
+				VariableNodeClass::SPtr variableNode0 = boost::static_pointer_cast<VariableNodeClass>(baseNodeTemplate);
+				variableNode = constructSPtr<VariableNodeClass>(nodeId, *variableNode0.get());
 				break;
 			}
 			case NodeClass::EnumVariableType:
 			{
-				VariableTypeNodeClass::SPtr node = boost::static_pointer_cast<VariableTypeNodeClass>(baseNodeTemplate);
-				variableNode = constructSPtr<VariableNodeClass>(nodeId, *node.get());
+				VariableTypeNodeClass::SPtr variableTypeNode = boost::static_pointer_cast<VariableTypeNodeClass>(baseNodeTemplate);
+				variableNode = constructSPtr<VariableNodeClass>(nodeId, *variableTypeNode.get());
+
+				variableNode->referenceItemMap().add(
+					ReferenceType_HasTypeDefinition,
+					true,
+					*variableTypeNode->getNodeId()
+				);
+
+				variableTypeNode->referenceItemMap().add(
+					ReferenceType_HasTypeDefinition,
+					false,
+					*variableNode->getNodeId()
+				);
+
 				break;
 			}
 			default:
