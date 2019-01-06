@@ -24,26 +24,56 @@ namespace OpcUaStackServer
 
 	CreateObjectInstance::CreateObjectInstance(void)
 	: resultCode_(Success)
+	, namespaceName_("")
+	, displayName_()
 	, parentNodeId_()
 	, referenceTypeNodeId_()
-	, variableInstance_()
+	, objectInstance_()
 	{
 	}
 
 	CreateObjectInstance::CreateObjectInstance(
+		const std::string& namespaceName,
+		const OpcUaLocalizedText& displayName,
 		const OpcUaNodeId& parentNodeId,
 		const OpcUaNodeId& referenceTypeNodeId,
-		Object::SPtr& variableInstance
+		Object::SPtr& objectInstance
 	)
 	: resultCode_(Success)
+	, namespaceName_(namespaceName)
+	, displayName_(displayName)
 	, parentNodeId_(parentNodeId)
 	, referenceTypeNodeId_(referenceTypeNodeId)
-	, variableInstance_(variableInstance)
+	, objectInstance_(objectInstance)
 	{
 	}
 
 	CreateObjectInstance::~CreateObjectInstance(void)
 	{
+	}
+
+	void
+	CreateObjectInstance::namespaceName(const std::string& namespaceName)
+	{
+		namespaceName_ = namespaceName;
+	}
+
+	std::string&
+	CreateObjectInstance::namespaceName(void)
+	{
+		return namespaceName_;
+	}
+
+	void
+	CreateObjectInstance::displayName(const OpcUaLocalizedText& displayName)
+	{
+		displayName_ = displayName;
+	}
+
+	OpcUaLocalizedText&
+	CreateObjectInstance::displayName(void)
+	{
+		return displayName_;
 	}
 
 	void
@@ -71,15 +101,15 @@ namespace OpcUaStackServer
 	}
 
 	void
-	CreateObjectInstance::variableInstance(Object::SPtr& variableInstance)
+	CreateObjectInstance::objectInstance(Object::SPtr& objectInstance)
 	{
-		variableInstance_ = variableInstance;
+		objectInstance_ = objectInstance;
 	}
 
 	Object::SPtr&
-	CreateObjectInstance::variableInstace(void)
+	CreateObjectInstance::objectInstance(void)
 	{
-		return variableInstance_;
+		return objectInstance_;
 	}
 
 	bool
@@ -89,6 +119,11 @@ namespace OpcUaStackServer
 
 		// create response
 		auto trx = constructSPtr<ServiceTransactionCreateObject>();
+		trx->request()->namespaceName(namespaceName_);
+		trx->request()->displayName(displayName_);
+		trx->request()->parentNodeId(parentNodeId_);
+		trx->request()->referenceTypeNodeId(referenceTypeNodeId_);
+		trx->request()->objectInstance(objectInstance_);
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);
