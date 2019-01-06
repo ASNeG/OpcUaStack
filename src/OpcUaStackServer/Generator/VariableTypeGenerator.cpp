@@ -220,6 +220,9 @@ namespace OpcUaStackServer
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt  = variableTypeField.second;
 			ss << std::endl;
+			ss << prefix << "//" << std::endl;
+			ss << prefix << "// " << vt->dataTypeDescription() << std::endl;
+			ss << prefix << "//" << std::endl;
 			ss << prefix << "void " << vt->functionName() << "(ServerVariable::SPtr& serverVariable);" << std::endl;
 			ss << prefix << "ServerVariable::SPtr& " << vt->functionName() << "(void);" << std::endl;
 			ss << prefix << "bool get_" << vt->name() << "(OpcUaDataValue& dataValue);" << std::endl;

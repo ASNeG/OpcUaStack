@@ -287,20 +287,27 @@ namespace OpcUaStackServer
 			dataTypeNodeId->get(type, namespaceIndex);
 			std::string buildInTypeName = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
 			if (buildInTypeName != "Unknown") {
-				buildInTypeExist = true;
+				if (*valueRank >= 0) variableTypeField->dataTypeDescription(buildInTypeName + " (Array)");
+				else variableTypeField->dataTypeDescription(buildInTypeName);
 
-				if (type == 22) {
-					buildInTypeName = "ExtensibleParameter";
-				}
-
-				if (variableTypeField->isArray()) {
-					buildInTypeName += "Array";
-				}
-
-				buildInTypeName = "OpcUa" + buildInTypeName;
-				variableTypeField->dataTypeName(buildInTypeName);
 				buildInTypeExist = true;
 			}
+		}
+
+		if (buildInTypeExist == false) {
+			// get type name
+			BaseNodeClass::SPtr baseNode = informationModel_->find(*dataTypeNodeId);
+			if (baseNode.get() == nullptr) {
+				Log(Error, "data type node identifier not exist in information model")
+					.parameter("DataTypeNode", dataTypeNodeId);
+				return false;
+			}
+			OpcUaLocalizedText displayName;
+			baseNode->getDisplayName(displayName);
+			std::string dataTypeName = displayName.text().toStdString();
+
+			if (*valueRank >= 0) variableTypeField->dataTypeDescription(dataTypeName + " (Array)");
+			else variableTypeField->dataTypeDescription(dataTypeName);
 		}
 
 		// insert variable type field into map

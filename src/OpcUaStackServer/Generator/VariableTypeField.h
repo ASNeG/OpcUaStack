@@ -63,6 +63,8 @@ class DLLEXPORT VariableTypeField
 	OpcUaNodeId& dataTypeNodeId(void);
 	void dataTypeName(const std::string& dataTypeName);
 	std::string& dataTypeName(void);
+	void dataTypeDescription(const std::string& dataTypeDescription);
+	std::string& dataTypeDescription(void);
 	void isArray(bool isArray);
 	bool isArray(void);
 
@@ -73,6 +75,7 @@ class DLLEXPORT VariableTypeField
 	std::string dataTypeNamespaceName_;
 	OpcUaNodeId dataTypeNodeId_;
 	std::string dataTypeName_;
+	std::string dataTypeDescription_;
 	bool isArray_;
 
 };

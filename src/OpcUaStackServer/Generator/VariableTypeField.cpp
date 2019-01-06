@@ -27,6 +27,7 @@ namespace OpcUaStackServer
 	, dataTypeNamespaceName_("")
 	, dataTypeNodeId_()
 	, dataTypeName_()
+	, dataTypeDescription_("")
 	, isArray_(false)
 	{
 	}
@@ -105,6 +106,18 @@ namespace OpcUaStackServer
 	VariableTypeField::dataTypeName(void)
 	{
 		return dataTypeName_;
+	}
+
+	void
+	VariableTypeField::dataTypeDescription(const std::string& dataTypeDescription)
+	{
+		dataTypeDescription_ = dataTypeDescription;
+	}
+
+	std::string&
+	VariableTypeField::dataTypeDescription(void)
+	{
+		return dataTypeDescription_;
 	}
 
 	void
