@@ -193,8 +193,14 @@ namespace OpcUaStackServer
 			BaseNodeClass::SPtr baseNodeClassChildTemplate = childBaseNodeClassVec[idx];
 			OpcUaQualifiedName browseName = *childBaseNodeClassVec[idx]->getBrowseName();
 
-			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
+			// only nodes with modelling rules are allowed
+			OpcUaNodeId modellingRule;
+			if (!baseNodeClassChildTemplate->referenceItemMap().getHasModellingRule(modellingRule)) {
+				continue;
+			}
 
+			// handle childs of node
+			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
 			VariableNodeClass::SPtr variableNodeClassChild = readChilds(baseNodeClassChildTemplate, browseNames);
 			if (variableNodeClassChild.get() == nullptr) {
 				Log(Error, "read childs error")

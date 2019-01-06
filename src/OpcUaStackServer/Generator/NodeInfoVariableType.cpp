@@ -215,12 +215,18 @@ namespace OpcUaStackServer
 			// ignore HasSubType references
 			if (referenceTypeNodeIdVec[idx] == OpcUaNodeId(45)) continue;
 
-			BaseNodeClass::SPtr baseNodeClassChild = childBaseNodeClassVec[idx];
+			BaseNodeClass::SPtr baseNodeClassChildTemplate = childBaseNodeClassVec[idx];
 			OpcUaQualifiedName browseName = *childBaseNodeClassVec[idx]->getBrowseName();
 
-			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
+			// only nodes with modelling rules are allowed
+			OpcUaNodeId modellingRule;
+			if (!baseNodeClassChildTemplate->referenceItemMap().getHasModellingRule(modellingRule)) {
+				continue;
+			}
 
-			if (!readChilds(baseNodeClassChild, browseNames)) {
+			// handle child nodes
+			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
+			if (!readChilds(baseNodeClassChildTemplate, browseNames)) {
 				Log(Error, "read childs error")
 					.parameter("NodeId", *baseNode->getNodeId())
 					.parameter("BrowseName", browseName);
