@@ -45,7 +45,7 @@ namespace OpcUaObjectTypeGenerator
 		InformationModel::SPtr informationModel_;
 		OpcUaNodeId objectTypeNodeId_;
 
-		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
+		bool findNodeId(const std::string& objectTypeName, const OpcUaNodeId& nodeId);
 		int32_t loadInformationModel(void);
 		int32_t generateObjectTypeSource(void);
 		int32_t buildAllSubTypes(void);

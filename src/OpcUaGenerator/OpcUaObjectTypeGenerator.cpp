@@ -90,11 +90,11 @@ namespace OpcUaObjectTypeGenerator
 			(
 				"ignoreObjectTypeName",
 				boost::program_options::value< std::vector<std::string> >(),
-			    "ignore data type name"
+			    "ignore object type name"
 			)
 		;
 
-		boost::program_options::objects_map vm;
+		boost::program_options::variables_map vm;
 		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
 		boost::program_options::notify(vm);
 
@@ -135,12 +135,12 @@ namespace OpcUaObjectTypeGenerator
 			return buildAllSubTypes();
 		}
 
-		// ignore structure data type
+		// ignore object data type
 		if (objectTypeName_ == "ObjectTypes") {
 			return 1;
 		}
 
-		// load inforomation model
+		// load information model
 		int32_t rc = loadInformationModel();
 		if (rc < 0) {
 			return rc;
@@ -150,7 +150,7 @@ namespace OpcUaObjectTypeGenerator
 	}
 
 	bool
-	OpcUaObjectTypeGenerator::findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId)
+	OpcUaObjectTypeGenerator::findNodeId(const std::string& objectTypeName, const OpcUaNodeId& nodeId)
 	{
 		bool success;
 
@@ -169,7 +169,7 @@ namespace OpcUaObjectTypeGenerator
 		}
 
 		// check browse name
-		if (browseName.name().toStdString() == eventTypeName) {
+		if (browseName.name().toStdString() == objectTypeName) {
 			objectTypeNodeId_ = nodeId;
 			return true;
 		}
@@ -191,7 +191,7 @@ namespace OpcUaObjectTypeGenerator
 		}
 
 		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
-			success = findNodeId(eventTypeName, *it);
+			success = findNodeId(objectTypeName, *it);
 			if (success) {
 				return true;
 			}
@@ -241,7 +241,7 @@ namespace OpcUaObjectTypeGenerator
 	int32_t
 	OpcUaObjectTypeGenerator::generateObjectTypeSource(void)
 	{
-		// check data type name
+		// check object type name
 		std::vector<std::string>::iterator it;
 		for (it=ignoreObjectTypeNameVec_.begin(); it!=ignoreObjectTypeNameVec_.end(); it++) {
 			if (*it == objectTypeName_) {
@@ -249,28 +249,28 @@ namespace OpcUaObjectTypeGenerator
 			}
 		}
 
-		// find node id for data type name
+		// find node id for object type name
 		objectTypeNodeId_.set(0,0);
-		if (!findNodeId(objectTypeName_, OpcUaNodeId(62))) {
-			std::cout << "node id not found for data type " << objectTypeName_ << std::endl;
+		if (!findNodeId(objectTypeName_, OpcUaNodeId(58))) {
+			std::cout << "node id not found for object type " << objectTypeName_ << std::endl;
 			return -3;
 		}
 
-		// generate data type source code
-		ObjectTypeGenerator dataTypeGenerator;
+		// generate object type source code
+		ObjectTypeGenerator objectTypeGenerator;
 		for (it = namespaces_.begin(); it != namespaces_.end(); it++) {
-			dataTypeGenerator.setNamespaceEntry(*it);
+			objectTypeGenerator.setNamespaceEntry(*it);
 		}
-		dataTypeGenerator.informationModel(informationModel_);
-		if (!dataTypeGenerator.generate(objectTypeNodeId_)) {
+		objectTypeGenerator.informationModel(informationModel_);
+		if (!objectTypeGenerator.generate(objectTypeNodeId_)) {
 			std::cout << "source code generator error - " << objectTypeName_ << std::endl;
 			return -4;
 		}
 
 		// save header and source file
 		boost::filesystem::ofstream ofStream;
-		std::string sourceContent = dataTypeGenerator.sourceContent();
-		std::string headerContent = dataTypeGenerator.headerContent();
+		std::string sourceContent = objectTypeGenerator.sourceContent();
+		std::string headerContent = objectTypeGenerator.headerContent();
 
 		std::string headerFileName = objectTypeName_ + ".h";
 		boost::filesystem::remove(headerFileName);
@@ -298,7 +298,7 @@ namespace OpcUaObjectTypeGenerator
 
 		// find node id for object type name
 		objectTypeNodeId_.set(0,0);
-		if (!findNodeId(objectTypeName_, OpcUaNodeId(62))) {
+		if (!findNodeId(objectTypeName_, OpcUaNodeId(58))) {
 			std::cout << "node id not found for object type " << objectTypeName_ << std::endl;
 			return -3;
 		}
