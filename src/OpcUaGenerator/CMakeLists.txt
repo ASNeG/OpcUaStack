@@ -144,13 +144,13 @@ include_directories(
 
 file(
     GLOB OpcUaObjectTypeGenerator_SRC 
-    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaVariableTypeGenerator.cpp
+    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaObjectTypeGenerator.cpp
 )
 
 
 add_executable(
     OpcUaObjectTypeGenerator${VERSION_MAJOR}
-    ${OpcUaVariableTypeGenerator_SRC}
+    ${OpcUaObjectTypeGenerator_SRC}
     ${PROJECT_BINARY_DIR}
 )
 
