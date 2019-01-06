@@ -24,8 +24,8 @@ namespace OpcUaStackServer
 	: name_("")
 	, variableName_("")
 	, functionName_("")
-	, typeNamespaceName_("")
-	, typeNodeId_("")
+	, dataTypeNamespaceName_("")
+	, dataTypeNodeId_("")
 	{
 	}
 
@@ -70,27 +70,27 @@ namespace OpcUaStackServer
 	}
 
 	void
-	VariableTypeField::typeNamespaceName(const std::string& typeNamespaceName)
+	VariableTypeField::dataTypeNamespaceName(const std::string& dataTypeNamespaceName)
 	{
-		typeNamespaceName_ = typeNamespaceName;
+		dataTypeNamespaceName_ = dataTypeNamespaceName;
 	}
 
 	std::string&
-	VariableTypeField::typeNamespaceName(void)
+	VariableTypeField::dataTypeNamespaceName(void)
 	{
-		return typeNamespaceName_;
+		return dataTypeNamespaceName_;
 	}
 
 	void
-	VariableTypeField::typeNodeId(const OpcUaNodeId& typeNodeId)
+	VariableTypeField::dataTypeNodeId(const OpcUaNodeId& dataTypeNodeId)
 	{
-		typeNodeId_ = typeNodeId;
+		dataTypeNodeId_ = dataTypeNodeId;
 	}
 
 	OpcUaNodeId&
-	VariableTypeField::typeNodeId(void)
+	VariableTypeField::dataTypeNodeId(void)
 	{
-		return typeNodeId_;
+		return dataTypeNodeId_;
 	}
 
 }

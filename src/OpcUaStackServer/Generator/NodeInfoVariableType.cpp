@@ -264,16 +264,16 @@ namespace OpcUaStackServer
 
 		// create data type node identifier
 		NodeSetNamespace nodeSetNamespace;
-		boost::optional<OpcUaNodeId&> typeNodeId = baseNode->getDataType();
-		std::string typeNamespaceName = nodeSetNamespace.globalNamespaceVec()[typeNodeId->namespaceIndex()];
+		boost::optional<OpcUaNodeId&> dataTypeNodeId = baseNode->getDataType();
+		std::string dataTypeNamespaceName = nodeSetNamespace.globalNamespaceVec()[dataTypeNodeId->namespaceIndex()];
 
 		// create variable type field
 		VariableTypeField::SPtr variableTypeField = constructSPtr<VariableTypeField>();
 		variableTypeField->name(name);
 		variableTypeField->variableName(variableName);
 		variableTypeField->functionName(functionName);
-		variableTypeField->typeNamespaceName(typeNamespaceName);
-		variableTypeField->typeNodeId(*typeNodeId);
+		variableTypeField->dataTypeNamespaceName(dataTypeNamespaceName);
+		variableTypeField->dataTypeNodeId(*dataTypeNodeId);
 		variableTypeFieldMap_.insert(std::make_pair(name, variableTypeField));
 
 		return true;

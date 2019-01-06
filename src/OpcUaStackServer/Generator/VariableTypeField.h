@@ -57,17 +57,17 @@ class DLLEXPORT VariableTypeField
 	std::string& variableName(void);
 	void functionName(const std::string& functionName);
 	std::string& functionName(void);
-	void typeNamespaceName(const std::string& namespaceName);
-	std::string& typeNamespaceName(void);
-	void typeNodeId(const OpcUaNodeId& typeNodeId);
-	OpcUaNodeId& typeNodeId(void);
+	void dataTypeNamespaceName(const std::string& dataTypeNamespaceName);
+	std::string& dataTypeNamespaceName(void);
+	void dataTypeNodeId(const OpcUaNodeId& dataTypeNodeId);
+	OpcUaNodeId& dataTypeNodeId(void);
 
   private:
 	std::string name_;
 	std::string variableName_;
 	std::string functionName_;
-	std::string typeNamespaceName_;
-	OpcUaNodeId typeNodeId_;
+	std::string dataTypeNamespaceName_;
+	OpcUaNodeId dataTypeNodeId_;
 
 };
 
