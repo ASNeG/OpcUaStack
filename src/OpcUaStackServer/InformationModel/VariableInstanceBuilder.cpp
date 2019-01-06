@@ -254,10 +254,33 @@ namespace OpcUaStackServer
 		{
 			case NodeClass::EnumVariable:
 			{
+				OpcUaNodeId typeDefintionNode;
+				baseNodeTemplate->referenceItemMap().getHasTypeDefinition(typeDefintionNode);
 
+				BaseNodeClass::SPtr variableTypeNode = informationModel_->find(typeDefintionNode);
+				if (variableTypeNode.get() == nullptr) {
+					Log(Error, "variable type definition node not found in information model")
+						.parameter("VariableTypeNode", typeDefintionNode)
+						.parameter("VariableNode", *baseNodeTemplate->getNodeId());
+					VariableNodeClass::SPtr variableNode;
+					return variableNode;
+				}
 
 				VariableNodeClass::SPtr variableNode0 = boost::static_pointer_cast<VariableNodeClass>(baseNodeTemplate);
 				variableNode = constructSPtr<VariableNodeClass>(nodeId, *variableNode0.get());
+
+				variableNode->referenceItemMap().add(
+					ReferenceType_HasTypeDefinition,
+					true,
+					*variableTypeNode->getNodeId()
+				);
+
+				variableTypeNode->referenceItemMap().add(
+					ReferenceType_HasTypeDefinition,
+					false,
+					*variableNode->getNodeId()
+				);
+
 				break;
 			}
 			case NodeClass::EnumVariableType:

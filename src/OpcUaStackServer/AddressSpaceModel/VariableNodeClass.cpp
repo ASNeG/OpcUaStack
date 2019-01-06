@@ -68,9 +68,6 @@ namespace OpcUaStackServer
 
 		OpcUaDouble minimumSamplingInterval;
 		if (variableNodeClass.getMinimumSamplingInterval(minimumSamplingInterval)) setMinimumSamplingInterval(minimumSamplingInterval);
-
-		referenceItemMap().add(ReferenceType_HasTypeDefinition, true, *variableNodeClass.getNodeId());
-		variableNodeClass.referenceItemMap().add(ReferenceType_HasTypeDefinition, false, *getNodeId());
 	}
 
 	VariableNodeClass::VariableNodeClass(
@@ -109,9 +106,6 @@ namespace OpcUaStackServer
 
 		OpcUaDouble minimumSamplingInterval = 0;
 		setMinimumSamplingInterval(minimumSamplingInterval);
-
-		referenceItemMap().add(ReferenceType_HasTypeDefinition, true, *variableTypeNodeClass.getNodeId());
-		variableTypeNodeClass.referenceItemMap().add(ReferenceType_HasTypeDefinition, false, *getNodeId());
 	}
 
 	VariableNodeClass::~VariableNodeClass(void)
