@@ -240,6 +240,8 @@ namespace OpcUaStackServer
 	bool
 	NodeInfoVariableType::readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
 	{
+		VariableTypeField::SPtr variableTypeField = constructSPtr<VariableTypeField>();
+
 		Log(Debug, "read node information")
 			.parameter("NodeId", *baseNode->getNodeId())
 			.parameter("DisplayName", *baseNode->getDisplayName())
@@ -255,25 +257,53 @@ namespace OpcUaStackServer
 		}
 		if (!name.empty()) name += "_";
 		name += "Variable";
+		variableTypeField->name(name);
 
 		// create variable name
 		std::string variableName = boost::to_lower_copy(name.substr(0,1)) + name.substr(1) + "_";
+		variableTypeField->variableName(variableName);
 
 		// create function name
 		std::string functionName = boost::to_lower_copy(name.substr(0,1)) + name.substr(1);
+		variableTypeField->functionName(functionName);
 
 		// create data type node identifier
 		NodeSetNamespace nodeSetNamespace;
 		boost::optional<OpcUaNodeId&> dataTypeNodeId = baseNode->getDataType();
-		std::string dataTypeNamespaceName = nodeSetNamespace.globalNamespaceVec()[dataTypeNodeId->namespaceIndex()];
-
-		// create variable type field
-		VariableTypeField::SPtr variableTypeField = constructSPtr<VariableTypeField>();
-		variableTypeField->name(name);
-		variableTypeField->variableName(variableName);
-		variableTypeField->functionName(functionName);
-		variableTypeField->dataTypeNamespaceName(dataTypeNamespaceName);
 		variableTypeField->dataTypeNodeId(*dataTypeNodeId);
+		std::string dataTypeNamespaceName = nodeSetNamespace.globalNamespaceVec()[dataTypeNodeId->namespaceIndex()];
+		variableTypeField->dataTypeNamespaceName(dataTypeNamespaceName);
+
+		// create value rank
+		boost::optional<OpcUaInt32&> valueRank = baseNode->getValueRank();
+		if (*valueRank > -1) variableTypeField->isArray(true);
+
+		// handle build in type
+		bool buildInTypeExist = false;
+		variableTypeField->dataTypeName("Unknown");
+		if (dataTypeNodeId->namespaceIndex() == 0 && dataTypeNodeId->nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+			uint32_t type;
+			uint16_t namespaceIndex;
+			dataTypeNodeId->get(type, namespaceIndex);
+			std::string buildInTypeName = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
+			if (buildInTypeName != "Unknown") {
+				buildInTypeExist = true;
+
+				if (type == 22) {
+					buildInTypeName = "ExtensibleParameter";
+				}
+
+				if (variableTypeField->isArray()) {
+					buildInTypeName += "Array";
+				}
+
+				buildInTypeName = "OpcUa" + buildInTypeName;
+				variableTypeField->dataTypeName(buildInTypeName);
+				buildInTypeExist = true;
+			}
+		}
+
+		// insert variable type field into map
 		variableTypeFieldMap_.insert(std::make_pair(name, variableTypeField));
 
 		return true;

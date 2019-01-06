@@ -25,7 +25,9 @@ namespace OpcUaStackServer
 	, variableName_("")
 	, functionName_("")
 	, dataTypeNamespaceName_("")
-	, dataTypeNodeId_("")
+	, dataTypeNodeId_()
+	, dataTypeName_()
+	, isArray_(false)
 	{
 	}
 
@@ -91,6 +93,30 @@ namespace OpcUaStackServer
 	VariableTypeField::dataTypeNodeId(void)
 	{
 		return dataTypeNodeId_;
+	}
+
+	void
+	VariableTypeField::dataTypeName(const std::string& dataTypeName)
+	{
+		dataTypeName_ = dataTypeName;
+	}
+
+	std::string&
+	VariableTypeField::dataTypeName(void)
+	{
+		return dataTypeName_;
+	}
+
+	void
+	VariableTypeField::isArray(bool isArray)
+	{
+		isArray_ = isArray;
+	}
+
+	bool
+	VariableTypeField::isArray(void)
+	{
+		return isArray_;
 	}
 
 }
