@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	CreateVariableRequest::CreateVariableRequest(void)
 	: Object()
 	, namespaceName_("")
-	, displayName_("")
+	, displayName_()
 	, parentNodeId_()
 	, referenceTypeNodeId_()
 	, variableInstance_()
@@ -55,12 +55,12 @@ namespace OpcUaStackCore
 	}
 
 	void
-	CreateVariableRequest::displayName(const std::string& displayName)
+	CreateVariableRequest::displayName(const OpcUaLocalizedText& displayName)
 	{
 		displayName_ = displayName;
 	}
 
-	std::string&
+	OpcUaLocalizedText&
 	CreateVariableRequest::displayName(void)
 	{
 		return displayName_;

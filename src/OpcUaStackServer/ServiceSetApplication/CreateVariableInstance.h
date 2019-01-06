@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 		CreateVariableInstance(void);
 		CreateVariableInstance(
 			const std::string& namespaceName,
-			const std::string& displayName,
+			const OpcUaLocalizedText& displayName,
 			const OpcUaNodeId& parentNodeId,
 			const OpcUaNodeId& referenceTypeNodeId,
 			Object::SPtr& variableInstance
@@ -46,8 +46,8 @@ namespace OpcUaStackServer
 
 		void namespaceName(const std::string& namespaceName);
 		std::string& namespaceName(void);
-		void displayName(const std::string& displayName);
-		std::string& displayName(void);
+		void displayName(const OpcUaLocalizedText& displayName);
+		OpcUaLocalizedText& displayName(void);
 		void parentNodeId(const OpcUaNodeId& parentNodeId);
 		OpcUaNodeId& parentnodeId(void);
 		void referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId);
@@ -60,7 +60,7 @@ namespace OpcUaStackServer
 
 	  private:
 		std::string namespaceName_;
-		std::string displayName_;
+		OpcUaLocalizedText displayName_;
 		OpcUaNodeId parentNodeId_;
 		OpcUaNodeId referenceTypeNodeId_;
 		Object::SPtr variableInstance_;

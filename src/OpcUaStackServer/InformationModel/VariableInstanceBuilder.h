@@ -38,7 +38,7 @@ namespace OpcUaStackServer
 		OpcUaStatusCode createVariableInstance(
 			InformationModel::SPtr& informationModel,
 			const std::string& namespaceName,
-			const std::string& displayName,
+			const OpcUaLocalizedText& displayName,
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& referenceTypeNodeId,
 			VariableBase::SPtr& variableBase

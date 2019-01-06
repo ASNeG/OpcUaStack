@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 
 namespace OpcUaStackCore
 {
@@ -37,8 +38,8 @@ namespace OpcUaStackCore
 
 		void namespaceName(const std::string& namespaceName);
 		std::string& namespaceName(void);
-		void displayName(const std::string& displayName);
-		std::string& displayName(void);
+		void displayName(const OpcUaLocalizedText& displayName);
+		OpcUaLocalizedText& displayName(void);
 		void parentNodeId(const OpcUaNodeId& parentNodeId);
 		OpcUaNodeId& parentNodeId(void);
 		void referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId);
@@ -51,7 +52,7 @@ namespace OpcUaStackCore
 
 	  private:
 		std::string namespaceName_;
-		std::string displayName_;
+		OpcUaLocalizedText displayName_;
 		OpcUaNodeId parentNodeId_;
 		OpcUaNodeId referenceTypeNodeId_;
 		Object::SPtr variableInstance_;

@@ -45,7 +45,7 @@ namespace OpcUaStackServer
 	VariableInstanceBuilder::createVariableInstance(
 		InformationModel::SPtr& informationModel,
 		const std::string& namespaceName,
-		const std::string& displayName,
+		const OpcUaLocalizedText& displayName,
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& referenceTypeNodeId,
 		VariableBase::SPtr& variableBase
@@ -85,8 +85,7 @@ namespace OpcUaStackServer
 				.parameter("VariableTypeNodeId", variableBase->variableTypeNodeId());
 			return BadInternalError;
 		}
-		OpcUaLocalizedText dn("", displayName);
-		variableNodeClass->setDisplayName(dn);
+		variableNodeClass->setDisplayName(displayName);
 
 		// added reference
 		parentBaseNode->referenceItemMap().add(referenceTypeNodeId, true, *variableNodeClass->getNodeId());
@@ -317,9 +316,6 @@ namespace OpcUaStackServer
 
 		// added new variable node to information model
 		informationModel_->insert(variableNode);
-
-		std::cout << "VariableName=" << variableName << std::endl;
-
 		return variableNode;
 	}
 

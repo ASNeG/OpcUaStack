@@ -88,8 +88,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* displayNameAttribute(void);
 		bool unsetDisplayName(void);
-		bool setDisplayNameSync(OpcUaLocalizedText& displayName);
-		bool setDisplayName(OpcUaLocalizedText& displayName);
+		bool setDisplayNameSync(const OpcUaLocalizedText& displayName);
+		bool setDisplayName(const OpcUaLocalizedText& displayName);
 		bool getDisplayNameSync(OpcUaLocalizedText& displayName);
 		bool getDisplayName(OpcUaLocalizedText& displayName);
 		bool isPartDisplayName(void);
