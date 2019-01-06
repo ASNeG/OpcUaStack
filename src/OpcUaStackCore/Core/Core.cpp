@@ -73,6 +73,7 @@
 #include "OpcUaStackCore/StandardDataTypes/ViewAttributes.h"
 #include "OpcUaStackCore/StandardDataTypes/AggregateFilter.h"
 #include "OpcUaStackCore/StandardDataTypes/EnumValueType.h"
+#include "OpcUaStackCore/StandardDataTypes/Range.h"
 
 namespace OpcUaStackCore
 {
@@ -127,6 +128,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<ElementOperand>(OpcUaId_ElementOperand);
 		eo.registerFactoryElement<AttributeOperand>(OpcUaId_AttributeOperand);
 		eo.registerFactoryElement<SimpleAttributeOperand>(OpcUaId_SimpleAttributeOperand);
+		eo.registerFactoryElement<Range>(OpcUaId_Range);
 
 		// binary
 		eo.registerFactoryElement<BuildInfo>(OpcUaId_BuildInfo_Encoding_DefaultBinary);
@@ -189,6 +191,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<ReferenceTypeAttributes>(OpcUaId_ReferenceTypeAttributes_Encoding_DefaultBinary);
 		eo.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes_Encoding_DefaultBinary);
 		eo.registerFactoryElement<AggregateFilter>(OpcUaId_AggregateFilter_Encoding_DefaultBinary);
+		eo.registerFactoryElement<Range>(OpcUaId_Range_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
@@ -207,6 +210,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_ElementOperand);
 		eo.deregisterFactoryElement(OpcUaId_AttributeOperand);
 		eo.deregisterFactoryElement(OpcUaId_SimpleAttributeOperand);
+		eo.deregisterFactoryElement(OpcUaId_Range);
 
 		// binary
 		eo.deregisterFactoryElement(OpcUaId_BuildInfo_Encoding_DefaultBinary);
@@ -269,6 +273,7 @@ namespace OpcUaStackCore
 		eo.deregisterFactoryElement(OpcUaId_ReferenceTypeAttributes_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_ViewAttributes_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_AggregateFilter_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_Range_Encoding_DefaultBinary);
 
 		// xml
 		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);
