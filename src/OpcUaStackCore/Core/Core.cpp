@@ -194,7 +194,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes_Encoding_DefaultBinary);
 		eo.registerFactoryElement<AggregateFilter>(OpcUaId_AggregateFilter_Encoding_DefaultBinary);
 		eo.registerFactoryElement<Range>(OpcUaId_Range_Encoding_DefaultBinary);
-		eo.registerFactoryElement<Range>(OpcUaId_EUInformation_Encoding_DefaultBinary);
+		eo.registerFactoryElement<EUInformation>(OpcUaId_EUInformation_Encoding_DefaultBinary);
 
 		// xml
 		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
