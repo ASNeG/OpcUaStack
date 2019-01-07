@@ -30,6 +30,23 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a variable node.
+     */
+    VariableAttributes::VariableAttributes(const VariableAttributes& value)
+    : NodeAttributes()
+    , value_()
+    , dataType_()
+    , valueRank_()
+    , arrayDimensions_()
+    , accessLevel_()
+    , userAccessLevel_()
+    , minimumSamplingInterval_()
+    , historizing_()
+    {
+        const_cast<VariableAttributes*>(&value)->copyTo(*this);
+    }
+    
     VariableAttributes::~VariableAttributes(void)
     {
     }
@@ -199,16 +216,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,userAccessLevel_);
         OpcUaNumber::opcUaBinaryDecode(is,minimumSamplingInterval_);
         OpcUaNumber::opcUaBinaryDecode(is,historizing_);
-    }
-    
-    bool
-    VariableAttributes::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    VariableAttributes::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

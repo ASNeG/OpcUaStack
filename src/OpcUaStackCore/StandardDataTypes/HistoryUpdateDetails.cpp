@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryUpdateDetails::HistoryUpdateDetails(const HistoryUpdateDetails& value)
+    : Object()
+    , ExtensionObjectBase()
+    , nodeId_()
+    {
+        const_cast<HistoryUpdateDetails*>(&value)->copyTo(*this);
+    }
+    
     HistoryUpdateDetails::~HistoryUpdateDetails(void)
     {
     }
@@ -118,16 +126,6 @@ namespace OpcUaStackCore
     HistoryUpdateDetails::opcUaBinaryDecode(std::istream& is)
     {
         nodeId_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    HistoryUpdateDetails::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    HistoryUpdateDetails::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

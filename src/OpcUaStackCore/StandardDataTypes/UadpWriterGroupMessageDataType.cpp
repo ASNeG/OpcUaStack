@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    UadpWriterGroupMessageDataType::UadpWriterGroupMessageDataType(const UadpWriterGroupMessageDataType& value)
+    : WriterGroupMessageDataType()
+    , groupVersion_()
+    , dataSetOrdering_()
+    , networkMessageContentMask_()
+    , samplingOffset_()
+    , publishingOffset_()
+    {
+        const_cast<UadpWriterGroupMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     UadpWriterGroupMessageDataType::~UadpWriterGroupMessageDataType(void)
     {
     }
@@ -163,16 +174,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
         OpcUaNumber::opcUaBinaryDecode(is,samplingOffset_);
         publishingOffset_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    UadpWriterGroupMessageDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    UadpWriterGroupMessageDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

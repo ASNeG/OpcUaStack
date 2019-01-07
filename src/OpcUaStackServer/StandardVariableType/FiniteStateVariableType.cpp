@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,50 +15,161 @@ namespace OpcUaStackServer
 {
     
     FiniteStateVariableType::FiniteStateVariableType(void)
-    : StateVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , id_(constructSPtr<ServerVariable>("Id"))
+    : VariableBase()
+    , effectiveDisplayName_Variable_(constructSPtr<ServerVariable>("EffectiveDisplayName_Variable"))
+    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
+    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
+    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2760));
-        serverVariables().registerServerVariable(id_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2760);
+        setServerVariable(effectiveDisplayName_Variable_);
+        setServerVariable(id_Variable_);
+        setServerVariable(name_Variable_);
+        setServerVariable(number_Variable_);
+        setServerVariable(variable_);
+    }
+    
+    FiniteStateVariableType::FiniteStateVariableType(const FiniteStateVariableType& value)
+    : VariableBase()
+    , effectiveDisplayName_Variable_(constructSPtr<ServerVariable>("EffectiveDisplayName_Variable"))
+    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
+    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
+    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2760);
+        setServerVariable(effectiveDisplayName_Variable_);
+        setServerVariable(id_Variable_);
+        setServerVariable(name_Variable_);
+        setServerVariable(number_Variable_);
+        setServerVariable(variable_);
     }
     
     FiniteStateVariableType::~FiniteStateVariableType(void)
     {
     }
-    
-    bool
-    FiniteStateVariableType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    FiniteStateVariableType::effectiveDisplayName_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        id_->addBrowsePath(nodeId, OpcUaQualifiedName("Id", namespaceIndex_));
-        StateVariableType::linkInstanceWithModel(nodeId);
+        return effectiveDisplayName_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    FiniteStateVariableType::id(void)
+
+    ServerVariable::SPtr&
+    FiniteStateVariableType::id_Variable(void)
     {
-        return id_->baseNode().lock();
+        return id_Variable_;
     }
-    
-    bool
-    FiniteStateVariableType::setId(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    FiniteStateVariableType::name_Variable(void)
     {
-        return id_->setDataValue(dataValue);
+        return name_Variable_;
     }
-    
-    bool
-    FiniteStateVariableType::getId(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    FiniteStateVariableType::number_Variable(void)
     {
-        return id_->getDataValue(dataValue);
+        return number_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    FiniteStateVariableType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    FiniteStateVariableType::setUpdateCallbackId(Callback::SPtr& callback)
+    FiniteStateVariableType::effectiveDisplayName_Variable(ServerVariable::SPtr& serverVariable)
     {
-        id_->callback(callback);
+        effectiveDisplayName_Variable_ = serverVariable;
+    }
+
+    void
+    FiniteStateVariableType::id_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        id_Variable_ = serverVariable;
+    }
+
+    void
+    FiniteStateVariableType::name_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        name_Variable_ = serverVariable;
+    }
+
+    void
+    FiniteStateVariableType::number_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        number_Variable_ = serverVariable;
+    }
+
+    void
+    FiniteStateVariableType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    FiniteStateVariableType::get_EffectiveDisplayName_Variable(OpcUaDataValue& dataValue)
+    {
+        return effectiveDisplayName_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    FiniteStateVariableType::get_Id_Variable(OpcUaDataValue& dataValue)
+    {
+        return id_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    FiniteStateVariableType::get_Name_Variable(OpcUaDataValue& dataValue)
+    {
+        return name_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    FiniteStateVariableType::get_Number_Variable(OpcUaDataValue& dataValue)
+    {
+        return number_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    FiniteStateVariableType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    FiniteStateVariableType::set_EffectiveDisplayName_Variable(const OpcUaDataValue& dataValue)
+    {
+        return effectiveDisplayName_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    FiniteStateVariableType::set_Id_Variable(const OpcUaDataValue& dataValue)
+    {
+        return id_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    FiniteStateVariableType::set_Name_Variable(const OpcUaDataValue& dataValue)
+    {
+        return name_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    FiniteStateVariableType::set_Number_Variable(const OpcUaDataValue& dataValue)
+    {
+        return number_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    FiniteStateVariableType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

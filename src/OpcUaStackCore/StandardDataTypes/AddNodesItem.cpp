@@ -30,6 +30,23 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A request to add a node to the server address space.
+     */
+    AddNodesItem::AddNodesItem(const AddNodesItem& value)
+    : Object()
+    , ExtensionObjectBase()
+    , parentNodeId_()
+    , referenceTypeId_()
+    , requestedNewNodeId_()
+    , browseName_()
+    , nodeClass_()
+    , nodeAttributes_()
+    , typeDefinition_()
+    {
+        const_cast<AddNodesItem*>(&value)->copyTo(*this);
+    }
+    
     AddNodesItem::~AddNodesItem(void)
     {
     }
@@ -187,16 +204,6 @@ namespace OpcUaStackCore
         nodeClass_.opcUaBinaryDecode(is);
         nodeAttributes_.opcUaBinaryDecode(is);
         typeDefinition_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    AddNodesItem::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    AddNodesItem::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

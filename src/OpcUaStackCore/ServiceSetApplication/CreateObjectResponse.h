@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,25 +15,28 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaObjectTypeGenerator_OpcUaObjectTypeGenerator_h__
-#define __OpcUaObjectTypeGenerator_OpcUaObjectTypeGenerator_h__
+#ifndef __OpcUaStackCore_CreateObjectResponse_h__
+#define __OpcUaStackCore_CreateObjectResponse_h__
 
-#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include <stdint.h>
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackServer;
-
-namespace OpcUaObjectTypeGenerator
+namespace OpcUaStackCore
 {
 
-	class OpcUaObjectTypeGenerator
+	class DLLEXPORT CreateObjectResponse
+	: public  Object
 	{
 	  public:
-		OpcUaObjectTypeGenerator(void);
-		~OpcUaObjectTypeGenerator(void);
+		typedef boost::shared_ptr<CreateObjectResponse> SPtr;
 
-		uint32_t start(int argc, char** argv);
+		CreateObjectResponse(void);
+		virtual ~CreateObjectResponse(void);
+
+		void opcUaBinaryEncode(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
 	};

@@ -50,10 +50,11 @@ BOOST_AUTO_TEST_CASE(OpcUaString_string_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaString value1, value2;
+	Xmlns xmlns;
 
 	value1.value("ABC");
-	value1.encode(pt);
-	value2.decode(pt);
+	value1.xmlEncode(pt, xmlns);
+	value2.xmlDecode(pt, xmlns);
 	BOOST_REQUIRE(value2.exist() == true);
 	BOOST_REQUIRE(value2.value() == "ABC");
 }

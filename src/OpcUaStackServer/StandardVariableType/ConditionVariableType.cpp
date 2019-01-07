@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,50 +15,77 @@ namespace OpcUaStackServer
 {
     
     ConditionVariableType::ConditionVariableType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , sourceTimestamp_(constructSPtr<ServerVariable>("SourceTimestamp"))
+    : VariableBase()
+    , sourceTimestamp_Variable_(constructSPtr<ServerVariable>("SourceTimestamp_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(9002));
-        serverVariables().registerServerVariable(sourceTimestamp_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)9002);
+        setServerVariable(sourceTimestamp_Variable_);
+        setServerVariable(variable_);
+    }
+    
+    ConditionVariableType::ConditionVariableType(const ConditionVariableType& value)
+    : VariableBase()
+    , sourceTimestamp_Variable_(constructSPtr<ServerVariable>("SourceTimestamp_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)9002);
+        setServerVariable(sourceTimestamp_Variable_);
+        setServerVariable(variable_);
     }
     
     ConditionVariableType::~ConditionVariableType(void)
     {
     }
-    
-    bool
-    ConditionVariableType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    ConditionVariableType::sourceTimestamp_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        sourceTimestamp_->addBrowsePath(nodeId, OpcUaQualifiedName("SourceTimestamp", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return sourceTimestamp_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    ConditionVariableType::sourceTimestamp(void)
+
+    ServerVariable::SPtr&
+    ConditionVariableType::variable(void)
     {
-        return sourceTimestamp_->baseNode().lock();
+        return variable_;
     }
-    
-    bool
-    ConditionVariableType::setSourceTimestamp(const OpcUaDataValue& dataValue)
-    {
-        return sourceTimestamp_->setDataValue(dataValue);
-    }
-    
-    bool
-    ConditionVariableType::getSourceTimestamp(OpcUaDataValue& dataValue)
-    {
-        return sourceTimestamp_->getDataValue(dataValue);
-    }
-    
+
     void
-    ConditionVariableType::setUpdateCallbackSourceTimestamp(Callback::SPtr& callback)
+    ConditionVariableType::sourceTimestamp_Variable(ServerVariable::SPtr& serverVariable)
     {
-        sourceTimestamp_->callback(callback);
+        sourceTimestamp_Variable_ = serverVariable;
+    }
+
+    void
+    ConditionVariableType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    ConditionVariableType::get_SourceTimestamp_Variable(OpcUaDataValue& dataValue)
+    {
+        return sourceTimestamp_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ConditionVariableType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ConditionVariableType::set_SourceTimestamp_Variable(const OpcUaDataValue& dataValue)
+    {
+        return sourceTimestamp_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ConditionVariableType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

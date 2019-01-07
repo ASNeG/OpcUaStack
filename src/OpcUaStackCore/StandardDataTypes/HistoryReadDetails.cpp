@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryReadDetails::HistoryReadDetails(const HistoryReadDetails& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<HistoryReadDetails*>(&value)->copyTo(*this);
+    }
+    
     HistoryReadDetails::~HistoryReadDetails(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     HistoryReadDetails::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    HistoryReadDetails::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    HistoryReadDetails::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

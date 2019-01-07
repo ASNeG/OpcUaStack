@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The base attributes for all nodes.
+     */
+    NodeAttributes::NodeAttributes(const NodeAttributes& value)
+    : Object()
+    , ExtensionObjectBase()
+    , specifiedAttributes_()
+    , displayName_()
+    , description_()
+    , writeMask_()
+    , userWriteMask_()
+    {
+        const_cast<NodeAttributes*>(&value)->copyTo(*this);
+    }
+    
     NodeAttributes::~NodeAttributes(void)
     {
     }
@@ -165,16 +180,6 @@ namespace OpcUaStackCore
         description_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,writeMask_);
         OpcUaNumber::opcUaBinaryDecode(is,userWriteMask_);
-    }
-    
-    bool
-    NodeAttributes::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    NodeAttributes::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataTypeDefinition::DataTypeDefinition(const DataTypeDefinition& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DataTypeDefinition*>(&value)->copyTo(*this);
+    }
+    
     DataTypeDefinition::~DataTypeDefinition(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     DataTypeDefinition::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    DataTypeDefinition::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataTypeDefinition::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

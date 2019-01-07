@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_ProgramDiagnosticType_h__
@@ -14,87 +14,126 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/BaseDataVariableType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT ProgramDiagnosticType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<ProgramDiagnosticType> SPtr;
+       typedef std::vector<ProgramDiagnosticType::SPtr> Vec;
+   
+       ProgramDiagnosticType(void);
+       ProgramDiagnosticType(const ProgramDiagnosticType& value);
+       virtual ~ProgramDiagnosticType(void);
+
+        //
+        // String
+        //
+        void createClientName_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& createClientName_Variable(void);
+        bool get_CreateClientName_Variable(OpcUaDataValue& dataValue);
+        bool set_CreateClientName_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // NodeId
+        //
+        void createSessionId_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& createSessionId_Variable(void);
+        bool get_CreateSessionId_Variable(OpcUaDataValue& dataValue);
+        bool set_CreateSessionId_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UtcTime
+        //
+        void invocationCreationTime_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& invocationCreationTime_Variable(void);
+        bool get_InvocationCreationTime_Variable(OpcUaDataValue& dataValue);
+        bool set_InvocationCreationTime_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UtcTime
+        //
+        void lastMethodCallTime_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& lastMethodCallTime_Variable(void);
+        bool get_LastMethodCallTime_Variable(OpcUaDataValue& dataValue);
+        bool set_LastMethodCallTime_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // String
+        //
+        void lastMethodCall_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& lastMethodCall_Variable(void);
+        bool get_LastMethodCall_Variable(OpcUaDataValue& dataValue);
+        bool set_LastMethodCall_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Argument (Array)
+        //
+        void lastMethodInputArguments_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& lastMethodInputArguments_Variable(void);
+        bool get_LastMethodInputArguments_Variable(OpcUaDataValue& dataValue);
+        bool set_LastMethodInputArguments_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Argument (Array)
+        //
+        void lastMethodOutputArguments_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& lastMethodOutputArguments_Variable(void);
+        bool get_LastMethodOutputArguments_Variable(OpcUaDataValue& dataValue);
+        bool set_LastMethodOutputArguments_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // StatusResult
+        //
+        void lastMethodReturnStatus_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& lastMethodReturnStatus_Variable(void);
+        bool get_LastMethodReturnStatus_Variable(OpcUaDataValue& dataValue);
+        bool set_LastMethodReturnStatus_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // NodeId
+        //
+        void lastMethodSessionId_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& lastMethodSessionId_Variable(void);
+        bool get_LastMethodSessionId_Variable(OpcUaDataValue& dataValue);
+        bool set_LastMethodSessionId_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UtcTime
+        //
+        void lastTransitionTime_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& lastTransitionTime_Variable(void);
+        bool get_LastTransitionTime_Variable(OpcUaDataValue& dataValue);
+        bool set_LastTransitionTime_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ProgramDiagnosticDataType (Array)
+        //
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT ProgramDiagnosticType
-    : public BaseDataVariableType
-    {
-      public:
-        typedef boost::shared_ptr<ProgramDiagnosticType> SPtr;
-    
-        ProgramDiagnosticType(void);
-        virtual ~ProgramDiagnosticType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr createSessionId(void);
-        bool setCreateSessionId(const OpcUaDataValue& dataValue);
-        bool getCreateSessionId(OpcUaDataValue& dataValue);
-        void setUpdateCallbackCreateSessionId(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr createClientName(void);
-        bool setCreateClientName(const OpcUaDataValue& dataValue);
-        bool getCreateClientName(OpcUaDataValue& dataValue);
-        void setUpdateCallbackCreateClientName(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr invocationCreationTime(void);
-        bool setInvocationCreationTime(const OpcUaDataValue& dataValue);
-        bool getInvocationCreationTime(OpcUaDataValue& dataValue);
-        void setUpdateCallbackInvocationCreationTime(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr lastTransitionTime(void);
-        bool setLastTransitionTime(const OpcUaDataValue& dataValue);
-        bool getLastTransitionTime(OpcUaDataValue& dataValue);
-        void setUpdateCallbackLastTransitionTime(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr lastMethodCall(void);
-        bool setLastMethodCall(const OpcUaDataValue& dataValue);
-        bool getLastMethodCall(OpcUaDataValue& dataValue);
-        void setUpdateCallbackLastMethodCall(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr lastMethodSessionId(void);
-        bool setLastMethodSessionId(const OpcUaDataValue& dataValue);
-        bool getLastMethodSessionId(OpcUaDataValue& dataValue);
-        void setUpdateCallbackLastMethodSessionId(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr lastMethodInputArguments(void);
-        bool setLastMethodInputArguments(const OpcUaDataValue& dataValue);
-        bool getLastMethodInputArguments(OpcUaDataValue& dataValue);
-        void setUpdateCallbackLastMethodInputArguments(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr lastMethodOutputArguments(void);
-        bool setLastMethodOutputArguments(const OpcUaDataValue& dataValue);
-        bool getLastMethodOutputArguments(OpcUaDataValue& dataValue);
-        void setUpdateCallbackLastMethodOutputArguments(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr lastMethodCallTime(void);
-        bool setLastMethodCallTime(const OpcUaDataValue& dataValue);
-        bool getLastMethodCallTime(OpcUaDataValue& dataValue);
-        void setUpdateCallbackLastMethodCallTime(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr lastMethodReturnStatus(void);
-        bool setLastMethodReturnStatus(const OpcUaDataValue& dataValue);
-        bool getLastMethodReturnStatus(OpcUaDataValue& dataValue);
-        void setUpdateCallbackLastMethodReturnStatus(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr createSessionId_;
-        ServerVariable::SPtr createClientName_;
-        ServerVariable::SPtr invocationCreationTime_;
-        ServerVariable::SPtr lastTransitionTime_;
-        ServerVariable::SPtr lastMethodCall_;
-        ServerVariable::SPtr lastMethodSessionId_;
-        ServerVariable::SPtr lastMethodInputArguments_;
-        ServerVariable::SPtr lastMethodOutputArguments_;
-        ServerVariable::SPtr lastMethodCallTime_;
-        ServerVariable::SPtr lastMethodReturnStatus_;
-    
-    };
+        ServerVariable::SPtr createClientName_Variable_;
+        ServerVariable::SPtr createSessionId_Variable_;
+        ServerVariable::SPtr invocationCreationTime_Variable_;
+        ServerVariable::SPtr lastMethodCallTime_Variable_;
+        ServerVariable::SPtr lastMethodCall_Variable_;
+        ServerVariable::SPtr lastMethodInputArguments_Variable_;
+        ServerVariable::SPtr lastMethodOutputArguments_Variable_;
+        ServerVariable::SPtr lastMethodReturnStatus_Variable_;
+        ServerVariable::SPtr lastMethodSessionId_Variable_;
+        ServerVariable::SPtr lastTransitionTime_Variable_;
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

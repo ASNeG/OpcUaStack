@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * An element in a relative path.
+     */
+    RelativePathElement::RelativePathElement(const RelativePathElement& value)
+    : Object()
+    , ExtensionObjectBase()
+    , referenceTypeId_()
+    , isInverse_()
+    , includeSubtypes_()
+    , targetName_()
+    {
+        const_cast<RelativePathElement*>(&value)->copyTo(*this);
+    }
+    
     RelativePathElement::~RelativePathElement(void)
     {
     }
@@ -154,16 +168,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,isInverse_);
         OpcUaNumber::opcUaBinaryDecode(is,includeSubtypes_);
         targetName_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    RelativePathElement::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    RelativePathElement::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

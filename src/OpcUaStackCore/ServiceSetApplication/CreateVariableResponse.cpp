@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,57 +15,37 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <OpcUaStackServer/Generator/ObjectTypeGenerator.h>
-#include "BuildConfig.h"
-#include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "OpcUaStackCore/ServiceSetApplication/CreateVariableResponse.h"
 
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// ObjectTypeGenerator
+	// OpcUa CreateVariableResponse
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	ObjectTypeGenerator::ObjectTypeGenerator(void)
+
+	CreateVariableResponse::CreateVariableResponse(void)
+	: Object()
 	{
 	}
 
-	ObjectTypeGenerator::~ObjectTypeGenerator(void)
+	CreateVariableResponse::~CreateVariableResponse(void)
 	{
 	}
 
-	bool
-	ObjectTypeGenerator::generate(void)
+	void 
+	CreateVariableResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		return true;
+	}
+	
+	void 
+	CreateVariableResponse::opcUaBinaryDecode(std::istream& is)
+	{
 	}
 
-	void
-	ObjectTypeGenerator::informationModel(InformationModel::SPtr& informationModel)
-	{
-		informationModel_ = informationModel;
-	}
-
-	void
-	ObjectTypeGenerator::objectType(OpcUaNodeId& objectTypeNodeId)
-	{
-		objectTypeNodeId_ = objectTypeNodeId;
-	}
-
-	std::string&
-	ObjectTypeGenerator::sourceContent(void)
-	{
-		return sourceContent_;
-	}
-
-	std::string&
-	ObjectTypeGenerator::headerContent(void)
-	{
-		return headerContent_;
-	}
 
 }

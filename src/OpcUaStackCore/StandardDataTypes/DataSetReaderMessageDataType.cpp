@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetReaderMessageDataType::DataSetReaderMessageDataType(const DataSetReaderMessageDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DataSetReaderMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetReaderMessageDataType::~DataSetReaderMessageDataType(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     DataSetReaderMessageDataType::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    DataSetReaderMessageDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataSetReaderMessageDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

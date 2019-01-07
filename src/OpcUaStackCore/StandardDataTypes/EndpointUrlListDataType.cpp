@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    EndpointUrlListDataType::EndpointUrlListDataType(const EndpointUrlListDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , endpointUrlList_()
+    {
+        const_cast<EndpointUrlListDataType*>(&value)->copyTo(*this);
+    }
+    
     EndpointUrlListDataType::~EndpointUrlListDataType(void)
     {
     }
@@ -118,16 +126,6 @@ namespace OpcUaStackCore
     EndpointUrlListDataType::opcUaBinaryDecode(std::istream& is)
     {
         endpointUrlList_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    EndpointUrlListDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EndpointUrlListDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

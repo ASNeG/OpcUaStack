@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryModifiedData::HistoryModifiedData(const HistoryModifiedData& value)
+    : HistoryData()
+    , modificationInfos_()
+    {
+        const_cast<HistoryModifiedData*>(&value)->copyTo(*this);
+    }
+    
     HistoryModifiedData::~HistoryModifiedData(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         HistoryData::opcUaBinaryDecode(is);
         modificationInfos_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    HistoryModifiedData::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    HistoryModifiedData::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

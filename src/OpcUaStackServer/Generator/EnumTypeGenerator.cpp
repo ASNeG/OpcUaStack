@@ -277,8 +277,6 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual OpcUaNodeId jsonTypeId(void);" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryEncode(std::ostream& os) const;" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryDecode(std::istream& is);" << std::endl;
-		ss << prefix << "virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;" << std::endl;
-		ss << prefix << "virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
@@ -416,8 +414,6 @@ namespace OpcUaStackServer
 				generateSourceClassTypeId("    ") &&
 				generateSourceClassBinaryEncode("    ") &&
 				generateSourceClassBinaryDecode("    ") &&
-				generateSourceClassEncode("    ") &&
-				generateSourceClassDecode("    ") &&
 				generateSourceClassXmlEncode("    ") &&
 				generateSourceClassXmlDecode("    ") &&
 				generateSourceClassJsonEncode("    ") &&
@@ -898,40 +894,6 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryDecode(std::istream& is)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is, value_);" << std::endl;
-		ss << prefix << "}" << std::endl;
-
-		sourceContent_ += ss.str();
-		return true;
-	}
-
-
-
-	bool
-	EnumTypeGenerator::generateSourceClassEncode(const std::string& prefix)
-	{
-		std::stringstream ss;
-
-		ss << prefix << std::endl;
-		ss << prefix << "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const" << std::endl;
-		ss << prefix << "{" << std::endl;
-		// FIXME: todo
-		ss << prefix << "}" << std::endl;
-
-		sourceContent_ += ss.str();
-		return true;
-	}
-
-	bool
-	EnumTypeGenerator::generateSourceClassDecode(const std::string& prefix)
-	{
-		std::stringstream ss;
-
-		ss << prefix << std::endl;
-		ss << prefix << "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
-		ss << prefix << "{" << std::endl;
-		// FIXME: todo
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

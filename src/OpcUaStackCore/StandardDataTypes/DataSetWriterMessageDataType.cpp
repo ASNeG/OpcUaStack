@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetWriterMessageDataType::DataSetWriterMessageDataType(const DataSetWriterMessageDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DataSetWriterMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetWriterMessageDataType::~DataSetWriterMessageDataType(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     DataSetWriterMessageDataType::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    DataSetWriterMessageDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataSetWriterMessageDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

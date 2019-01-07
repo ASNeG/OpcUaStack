@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    UpdateDataDetails::UpdateDataDetails(const UpdateDataDetails& value)
+    : HistoryUpdateDetails()
+    , performInsertReplace_()
+    , updateValues_()
+    {
+        const_cast<UpdateDataDetails*>(&value)->copyTo(*this);
+    }
+    
     UpdateDataDetails::~UpdateDataDetails(void)
     {
     }
@@ -130,16 +138,6 @@ namespace OpcUaStackCore
         HistoryUpdateDetails::opcUaBinaryDecode(is);
         performInsertReplace_.opcUaBinaryDecode(is);
         updateValues_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    UpdateDataDetails::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    UpdateDataDetails::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a data type node.
+     */
+    DataTypeAttributes::DataTypeAttributes(const DataTypeAttributes& value)
+    : NodeAttributes()
+    , isAbstract_()
+    {
+        const_cast<DataTypeAttributes*>(&value)->copyTo(*this);
+    }
+    
     DataTypeAttributes::~DataTypeAttributes(void)
     {
     }
@@ -122,16 +132,6 @@ namespace OpcUaStackCore
     {
         NodeAttributes::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,isAbstract_);
-    }
-    
-    bool
-    DataTypeAttributes::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataTypeAttributes::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

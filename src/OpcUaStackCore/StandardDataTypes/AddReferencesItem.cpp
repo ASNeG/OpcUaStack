@@ -29,6 +29,22 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A request to add a reference to the server address space.
+     */
+    AddReferencesItem::AddReferencesItem(const AddReferencesItem& value)
+    : Object()
+    , ExtensionObjectBase()
+    , sourceNodeId_()
+    , referenceTypeId_()
+    , isForward_()
+    , targetServerUri_()
+    , targetNodeId_()
+    , targetNodeClass_()
+    {
+        const_cast<AddReferencesItem*>(&value)->copyTo(*this);
+    }
+    
     AddReferencesItem::~AddReferencesItem(void)
     {
     }
@@ -176,16 +192,6 @@ namespace OpcUaStackCore
         targetServerUri_.opcUaBinaryDecode(is);
         targetNodeId_.opcUaBinaryDecode(is);
         targetNodeClass_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    AddReferencesItem::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    AddReferencesItem::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

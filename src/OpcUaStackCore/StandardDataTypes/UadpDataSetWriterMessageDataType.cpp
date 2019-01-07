@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    UadpDataSetWriterMessageDataType::UadpDataSetWriterMessageDataType(const UadpDataSetWriterMessageDataType& value)
+    : DataSetWriterMessageDataType()
+    , dataSetMessageContentMask_()
+    , configuredSize_()
+    , networkMessageNumber_()
+    , dataSetOffset_()
+    {
+        const_cast<UadpDataSetWriterMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     UadpDataSetWriterMessageDataType::~UadpDataSetWriterMessageDataType(void)
     {
     }
@@ -152,16 +162,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,configuredSize_);
         OpcUaNumber::opcUaBinaryDecode(is,networkMessageNumber_);
         OpcUaNumber::opcUaBinaryDecode(is,dataSetOffset_);
-    }
-    
-    bool
-    UadpDataSetWriterMessageDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    UadpDataSetWriterMessageDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

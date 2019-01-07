@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    DataTypeSchemaHeader::DataTypeSchemaHeader(const DataTypeSchemaHeader& value)
+    : Object()
+    , ExtensionObjectBase()
+    , namespaces_()
+    , structureDataTypes_()
+    , enumDataTypes_()
+    , simpleDataTypes_()
+    {
+        const_cast<DataTypeSchemaHeader*>(&value)->copyTo(*this);
+    }
+    
     DataTypeSchemaHeader::~DataTypeSchemaHeader(void)
     {
     }
@@ -151,16 +162,6 @@ namespace OpcUaStackCore
         structureDataTypes_.opcUaBinaryDecode(is);
         enumDataTypes_.opcUaBinaryDecode(is);
         simpleDataTypes_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    DataTypeSchemaHeader::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataTypeSchemaHeader::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

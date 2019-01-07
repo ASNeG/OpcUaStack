@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    ComplexNumberType::ComplexNumberType(const ComplexNumberType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , real_()
+    , imaginary_()
+    {
+        const_cast<ComplexNumberType*>(&value)->copyTo(*this);
+    }
+    
     ComplexNumberType::~ComplexNumberType(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         OpcUaNumber::opcUaBinaryDecode(is,real_);
         OpcUaNumber::opcUaBinaryDecode(is,imaginary_);
-    }
-    
-    bool
-    ComplexNumberType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ComplexNumberType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

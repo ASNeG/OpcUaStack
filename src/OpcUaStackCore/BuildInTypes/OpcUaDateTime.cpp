@@ -35,6 +35,12 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaDateTime::OpcUaDateTime(const OpcUaDateTime& value)
+	: dateTime_(0)
+	{
+		dateTime_ = value.dateTime_;
+	}
+
 	OpcUaDateTime::OpcUaDateTime(const boost::posix_time::ptime& ptime)
 	: dateTime_(0)
 	{
@@ -259,36 +265,6 @@ namespace OpcUaStackCore
 	OpcUaDateTime::copyTo(OpcUaDateTime& opcUaDataTime)
 	{
 		opcUaDataTime = dateTime_;
-	}
-
-	bool
-	OpcUaDateTime::encode(boost::property_tree::ptree& pt) const
-	{
-		std::string dateTimeString;
-		try
-		{
-			dateTimeString = boost::posix_time::to_iso_extended_string(dateTime());
-		} catch(std::exception&) {
-			return false;
-		}
-		pt.put_value<std::string>(dateTimeString);
-		return true;
-	}
-
-	bool
-	OpcUaDateTime::decode(boost::property_tree::ptree& pt)
-	{
-		std::stringstream ss;
-		std::string dateTimeString = pt.get_value<std::string>();
-
-		boost::posix_time::time_input_facet* facet = new boost::posix_time::time_input_facet();
-		facet->set_iso_extended_format();
-		ss.imbue(std::locale(ss.getloc(), facet));
-		ss.str(dateTimeString);
-		boost::posix_time::ptime timeFromString;
-		ss >> timeFromString;
-		dateTime(timeFromString);
-		return true;
 	}
 
 	bool

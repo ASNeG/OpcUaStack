@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,6 +40,13 @@ namespace OpcUaStackCore
 	: Object()
 	, namespaceIndex_(0)
 	, nodeIdValue_()
+	{
+	}
+
+	OpcUaNodeIdBase::OpcUaNodeIdBase(const OpcUaNodeIdBase& nodeId)
+	: Object()
+	, namespaceIndex_(nodeId.namespaceIndex_)
+	, nodeIdValue_(nodeId.nodeIdValue_)
 	{
 	}
 
@@ -510,23 +517,6 @@ namespace OpcUaStackCore
 				break;
 			}
 		}
-	}
-
-	bool
-	OpcUaNodeIdBase::encode(boost::property_tree::ptree& pt) const
-	{
-		std::string nodeIdString = toString();
-		pt.put_value<std::string>(nodeIdString);
-		return true;
-	}
-
-	bool
-	OpcUaNodeIdBase::decode(boost::property_tree::ptree& pt)
-	{
-		std::string nodeIdString;
-		nodeIdString = pt.get_value<std::string>();
-		if (!fromString(nodeIdString)) return false;
-		return true;
 	}
 
 	bool

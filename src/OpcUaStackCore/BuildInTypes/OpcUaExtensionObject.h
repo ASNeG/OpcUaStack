@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -90,7 +90,7 @@ namespace OpcUaStackCore
 	     *
 	     * @param[in] typeId					type node identifier
 	     */
-	    OpcUaExtensionObject(OpcUaNodeId& typeId);
+	    OpcUaExtensionObject(const OpcUaNodeId& typeId);
 
 	    /**
 	     * Destructor
@@ -363,7 +363,7 @@ namespace OpcUaStackCore
 
 		/**
 		 * Function to decode the binary format to the structure data
-		 *
+		 *OpcUaExtensionObject(void);
 		 * @param[in] is					input stream for binary input
 		 */
 		void opcUaBinaryDecode(std::istream& is);
@@ -392,7 +392,7 @@ namespace OpcUaStackCore
 		/**
 		 * Function to decode the xml tree format to the structure data.
 		 *
-		 * @param[in] pt					tree for xml output
+		 * @param[in] pt				OpcUaExtensionObject(void);	tree for xml output
 		 * @param[in] element				element name of the subtree
 		 * @param[in] xmlns					xml namespaces
 		 *
@@ -418,6 +418,8 @@ namespace OpcUaStackCore
 		void logExtensionObjectMap(void);
 
 	  private:
+		OpcUaExtensionObject(const OpcUaExtensionObject& value);
+
 		static ExtensionObjectBase::Map extentionObjectMap_;
 		static bool init_;
 

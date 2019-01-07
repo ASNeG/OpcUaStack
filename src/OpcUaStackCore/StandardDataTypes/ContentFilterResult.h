@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         typedef std::vector<ContentFilterResult::SPtr> Vec;
     
         ContentFilterResult(void);
+        ContentFilterResult(const ContentFilterResult& value);
         virtual ~ContentFilterResult(void);
         
         ContentFilterElementResultArray& elementResults(void);
@@ -46,8 +47,6 @@ namespace OpcUaStackCore
         virtual OpcUaNodeId jsonTypeId(void);
         virtual void opcUaBinaryEncode(std::ostream& os) const;
         virtual void opcUaBinaryDecode(std::istream& is);
-        virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
-        virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
         virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
         virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
         virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);

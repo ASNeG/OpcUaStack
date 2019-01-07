@@ -75,6 +75,8 @@ namespace OpcUaStackCore
 		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
+		OpcUaDiagnosticInfo(const OpcUaDiagnosticInfo& value);
+
 		OpcUaInt32 symbolicId_;
 		OpcUaInt32 namespaceUri_;
 		OpcUaInt32 localizedText_;

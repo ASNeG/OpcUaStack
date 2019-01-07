@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    TimeZoneDataType::TimeZoneDataType(const TimeZoneDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , offset_()
+    , daylightSavingInOffset_()
+    {
+        const_cast<TimeZoneDataType*>(&value)->copyTo(*this);
+    }
+    
     TimeZoneDataType::~TimeZoneDataType(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         OpcUaNumber::opcUaBinaryDecode(is,offset_);
         OpcUaNumber::opcUaBinaryDecode(is,daylightSavingInOffset_);
-    }
-    
-    bool
-    TimeZoneDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    TimeZoneDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

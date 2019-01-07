@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    SubscribedDataSetDataType::SubscribedDataSetDataType(const SubscribedDataSetDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<SubscribedDataSetDataType*>(&value)->copyTo(*this);
+    }
+    
     SubscribedDataSetDataType::~SubscribedDataSetDataType(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     SubscribedDataSetDataType::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    SubscribedDataSetDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    SubscribedDataSetDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

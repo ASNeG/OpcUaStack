@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    XVType::XVType(const XVType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , x_()
+    , value_()
+    {
+        const_cast<XVType*>(&value)->copyTo(*this);
+    }
+    
     XVType::~XVType(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         OpcUaNumber::opcUaBinaryDecode(is,x_);
         OpcUaNumber::opcUaBinaryDecode(is,value_);
-    }
-    
-    bool
-    XVType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    XVType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

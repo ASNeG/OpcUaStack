@@ -209,16 +209,6 @@ namespace OpcUaStackCore
     }
     
     bool
-    ExceptionDeviationFormat::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ExceptionDeviationFormat::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
-    bool
     ExceptionDeviationFormat::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlEncode(pt, value_, element))

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    StatusChangeNotification::StatusChangeNotification(const StatusChangeNotification& value)
+    : NotificationData()
+    , status_()
+    , diagnosticInfo_()
+    {
+        const_cast<StatusChangeNotification*>(&value)->copyTo(*this);
+    }
+    
     StatusChangeNotification::~StatusChangeNotification(void)
     {
     }
@@ -130,16 +138,6 @@ namespace OpcUaStackCore
         NotificationData::opcUaBinaryDecode(is);
         status_.opcUaBinaryDecode(is);
         diagnosticInfo_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    StatusChangeNotification::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    StatusChangeNotification::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

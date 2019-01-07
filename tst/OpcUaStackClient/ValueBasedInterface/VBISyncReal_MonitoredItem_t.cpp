@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_MonitoredItem_create_delete_callback)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
-	connectContext.secureChannelLog_ = true;
+	//connectContext.secureChannelLog_ = true;
 	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
 
 	// set data change callback
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_MonitoredItem_data_change)
 	// data change
 	for (uint32_t idx=0; idx<2; idx++) {
 		vbiClientHandlerTest.dataChangeCallback_.initEvent();
-		BOOST_REQUIRE(vbiClientHandlerTest.dataChangeCallback_.waitForEvent(3000) == true);
+		BOOST_REQUIRE(vbiClientHandlerTest.dataChangeCallback_.waitForEvent(5000) == true);
 	}
 
 	// delete monitored item

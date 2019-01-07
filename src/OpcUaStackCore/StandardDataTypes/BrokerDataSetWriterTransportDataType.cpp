@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    BrokerDataSetWriterTransportDataType::BrokerDataSetWriterTransportDataType(const BrokerDataSetWriterTransportDataType& value)
+    : DataSetWriterTransportDataType()
+    , queueName_()
+    , resourceUri_()
+    , authenticationProfileUri_()
+    , requestedDeliveryGuarantee_()
+    , metaDataQueueName_()
+    , metaDataUpdateTime_()
+    {
+        const_cast<BrokerDataSetWriterTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     BrokerDataSetWriterTransportDataType::~BrokerDataSetWriterTransportDataType(void)
     {
     }
@@ -174,16 +186,6 @@ namespace OpcUaStackCore
         requestedDeliveryGuarantee_.opcUaBinaryDecode(is);
         metaDataQueueName_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,metaDataUpdateTime_);
-    }
-    
-    bool
-    BrokerDataSetWriterTransportDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    BrokerDataSetWriterTransportDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

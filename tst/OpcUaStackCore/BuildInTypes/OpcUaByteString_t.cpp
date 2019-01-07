@@ -77,11 +77,12 @@ BOOST_AUTO_TEST_CASE(OpcUaString_string_ptree)
 	std::string str;
 	boost::property_tree::ptree pt;
 	OpcUaByteString value1, value2;
+	Xmlns xmlns;
 
 	value1 = "ABC";
-	value1.encode(pt);
+	value1.xmlEncode(pt, xmlns);
 	writeDocument1(pt);
-	value2.decode(pt);
+	value2.xmlDecode(pt, xmlns);
 	BOOST_REQUIRE(value2.exist() == true);
 	str = value2;
 	BOOST_REQUIRE(str == "ABC");

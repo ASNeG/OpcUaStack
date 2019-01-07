@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A relative path constructed from reference types and browse names.
+     */
+    RelativePath::RelativePath(const RelativePath& value)
+    : Object()
+    , ExtensionObjectBase()
+    , elements_()
+    {
+        const_cast<RelativePath*>(&value)->copyTo(*this);
+    }
+    
     RelativePath::~RelativePath(void)
     {
     }
@@ -121,16 +132,6 @@ namespace OpcUaStackCore
     RelativePath::opcUaBinaryDecode(std::istream& is)
     {
         elements_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    RelativePath::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    RelativePath::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

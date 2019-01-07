@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a variable type node.
+     */
+    VariableTypeAttributes::VariableTypeAttributes(const VariableTypeAttributes& value)
+    : NodeAttributes()
+    , value_()
+    , dataType_()
+    , valueRank_()
+    , arrayDimensions_()
+    , isAbstract_()
+    {
+        const_cast<VariableTypeAttributes*>(&value)->copyTo(*this);
+    }
+    
     VariableTypeAttributes::~VariableTypeAttributes(void)
     {
     }
@@ -166,16 +180,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
         arrayDimensions_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,isAbstract_);
-    }
-    
-    bool
-    VariableTypeAttributes::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    VariableTypeAttributes::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

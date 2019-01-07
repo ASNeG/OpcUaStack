@@ -29,6 +29,22 @@ namespace OpcUaStackCore
     {
     }
     
+    PubSubConnectionDataType::PubSubConnectionDataType(const PubSubConnectionDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , enabled_()
+    , publisherId_()
+    , transportProfileUri_()
+    , address_()
+    , connectionProperties_()
+    , transportSettings_()
+    , writerGroups_()
+    , readerGroups_()
+    {
+        const_cast<PubSubConnectionDataType*>(&value)->copyTo(*this);
+    }
+    
     PubSubConnectionDataType::~PubSubConnectionDataType(void)
     {
     }
@@ -206,16 +222,6 @@ namespace OpcUaStackCore
         transportSettings_.opcUaBinaryDecode(is);
         writerGroups_.opcUaBinaryDecode(is);
         readerGroups_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    PubSubConnectionDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    PubSubConnectionDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetReaderTransportDataType::DataSetReaderTransportDataType(const DataSetReaderTransportDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DataSetReaderTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetReaderTransportDataType::~DataSetReaderTransportDataType(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     DataSetReaderTransportDataType::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    DataSetReaderTransportDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataSetReaderTransportDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

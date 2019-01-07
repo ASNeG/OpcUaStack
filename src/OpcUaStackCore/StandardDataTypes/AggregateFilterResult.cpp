@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    AggregateFilterResult::AggregateFilterResult(const AggregateFilterResult& value)
+    : MonitoringFilterResult()
+    , revisedStartTime_()
+    , revisedProcessingInterval_()
+    , revisedAggregateConfiguration_()
+    {
+        const_cast<AggregateFilterResult*>(&value)->copyTo(*this);
+    }
+    
     AggregateFilterResult::~AggregateFilterResult(void)
     {
     }
@@ -141,16 +150,6 @@ namespace OpcUaStackCore
         revisedStartTime_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,revisedProcessingInterval_);
         revisedAggregateConfiguration_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    AggregateFilterResult::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    AggregateFilterResult::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

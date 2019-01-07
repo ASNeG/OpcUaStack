@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    PubSubConfigurationDataType::PubSubConfigurationDataType(const PubSubConfigurationDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , publishedDataSets_()
+    , connections_()
+    , enabled_()
+    {
+        const_cast<PubSubConfigurationDataType*>(&value)->copyTo(*this);
+    }
+    
     PubSubConfigurationDataType::~PubSubConfigurationDataType(void)
     {
     }
@@ -140,16 +150,6 @@ namespace OpcUaStackCore
         publishedDataSets_.opcUaBinaryDecode(is);
         connections_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,enabled_);
-    }
-    
-    bool
-    PubSubConfigurationDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    PubSubConfigurationDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

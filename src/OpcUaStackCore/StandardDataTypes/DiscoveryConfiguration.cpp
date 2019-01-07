@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A base type for discovery configuration information.
+     */
+    DiscoveryConfiguration::DiscoveryConfiguration(const DiscoveryConfiguration& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<DiscoveryConfiguration*>(&value)->copyTo(*this);
+    }
+    
     DiscoveryConfiguration::~DiscoveryConfiguration(void)
     {
     }
@@ -109,16 +119,6 @@ namespace OpcUaStackCore
     
     void
     DiscoveryConfiguration::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    DiscoveryConfiguration::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DiscoveryConfiguration::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

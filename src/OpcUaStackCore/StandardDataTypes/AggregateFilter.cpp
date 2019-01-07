@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    AggregateFilter::AggregateFilter(const AggregateFilter& value)
+    : MonitoringFilter()
+    , startTime_()
+    , aggregateType_()
+    , processingInterval_()
+    , aggregateConfiguration_()
+    {
+        const_cast<AggregateFilter*>(&value)->copyTo(*this);
+    }
+    
     AggregateFilter::~AggregateFilter(void)
     {
     }
@@ -152,16 +162,6 @@ namespace OpcUaStackCore
         aggregateType_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,processingInterval_);
         aggregateConfiguration_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    AggregateFilter::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    AggregateFilter::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

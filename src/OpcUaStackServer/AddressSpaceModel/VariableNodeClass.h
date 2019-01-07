@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
 
 namespace OpcUaStackServer
 {
@@ -32,6 +33,8 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<VariableNodeClass> SPtr;
 
 		VariableNodeClass(void);
+		VariableNodeClass(OpcUaNodeId& nodeId, VariableNodeClass& variableNodeClass);
+		VariableNodeClass(OpcUaNodeId& nodeId, VariableTypeNodeClass& variableTypeNodeClass);
 		~VariableNodeClass(void);
 
 		ValueAttribute& value(void);
@@ -68,14 +71,6 @@ namespace OpcUaStackServer
 		// attributes optional
 		ArrayDimensionsAttribute arrayDimensions_;
 		MinimumSamplingIntervalAttribute minimumSamplingInterval_;
-
-		// standard properties - all optional
-		OpcUaString nodeVersion_;  
-		//TimeZoneDataType localTime_;
-		OpcUaString dataTypeVersion_;
-		OpcUaByteString dictionaryFragment_;
-		OpcUaBoolean allowNulls_;
-
 	};
 
 }

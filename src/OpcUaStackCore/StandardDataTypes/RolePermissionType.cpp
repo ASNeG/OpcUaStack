@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    RolePermissionType::RolePermissionType(const RolePermissionType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , roleId_()
+    , permissions_()
+    {
+        const_cast<RolePermissionType*>(&value)->copyTo(*this);
+    }
+    
     RolePermissionType::~RolePermissionType(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         roleId_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,permissions_);
-    }
-    
-    bool
-    RolePermissionType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    RolePermissionType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

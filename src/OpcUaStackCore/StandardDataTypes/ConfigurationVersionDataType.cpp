@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    ConfigurationVersionDataType::ConfigurationVersionDataType(const ConfigurationVersionDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , majorVersion_()
+    , minorVersion_()
+    {
+        const_cast<ConfigurationVersionDataType*>(&value)->copyTo(*this);
+    }
+    
     ConfigurationVersionDataType::~ConfigurationVersionDataType(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         OpcUaNumber::opcUaBinaryDecode(is,majorVersion_);
         OpcUaNumber::opcUaBinaryDecode(is,minorVersion_);
-    }
-    
-    bool
-    ConfigurationVersionDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ConfigurationVersionDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

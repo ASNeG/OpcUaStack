@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    PublishedDataSetSourceDataType::PublishedDataSetSourceDataType(const PublishedDataSetSourceDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<PublishedDataSetSourceDataType*>(&value)->copyTo(*this);
+    }
+    
     PublishedDataSetSourceDataType::~PublishedDataSetSourceDataType(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     PublishedDataSetSourceDataType::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    PublishedDataSetSourceDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    PublishedDataSetSourceDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

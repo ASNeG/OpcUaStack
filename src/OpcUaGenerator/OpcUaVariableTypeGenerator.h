@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -36,13 +36,11 @@ namespace OpcUaVariableTypeGenerator
 		uint32_t start(int argc, char** argv);
 
 	  private:
-		std::string fileName_;
+		std::vector<std::string> fileNames_;
 		std::string variableTypeName_;
-		std::string projectNamespace_;
-		std::string parentProjectNamespace_;
+		std::vector<std::string> namespaces_;
 		bool buildSubTypes_;
 		std::vector<std::string> ignoreVariableTypeNameVec_;
-
 		std::vector<std::string> variableTypeNameVec_;
 		InformationModel::SPtr informationModel_;
 		OpcUaNodeId variableTypeNodeId_;
@@ -51,7 +49,7 @@ namespace OpcUaVariableTypeGenerator
 		int32_t loadInformationModel(void);
 		int32_t generateVariableTypeSource(void);
 		int32_t buildAllSubTypes(void);
-		int32_t findAllSubTypes(const OpcUaNodeId& eventTypeNodeId);
+		int32_t findAllSubTypes(const OpcUaNodeId& variableTypeNodeId);
 	};
 
 }

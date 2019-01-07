@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    NotificationData::NotificationData(const NotificationData& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<NotificationData*>(&value)->copyTo(*this);
+    }
+    
     NotificationData::~NotificationData(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     NotificationData::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    NotificationData::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    NotificationData::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

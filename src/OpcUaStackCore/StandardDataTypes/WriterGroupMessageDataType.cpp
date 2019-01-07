@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    WriterGroupMessageDataType::WriterGroupMessageDataType(const WriterGroupMessageDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<WriterGroupMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     WriterGroupMessageDataType::~WriterGroupMessageDataType(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     WriterGroupMessageDataType::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    WriterGroupMessageDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    WriterGroupMessageDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

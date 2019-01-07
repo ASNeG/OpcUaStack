@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    EUInformation::EUInformation(const EUInformation& value)
+    : Object()
+    , ExtensionObjectBase()
+    , namespaceUri_()
+    , unitId_()
+    , displayName_()
+    , description_()
+    {
+        const_cast<EUInformation*>(&value)->copyTo(*this);
+    }
+    
     EUInformation::~EUInformation(void)
     {
     }
@@ -151,16 +162,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,unitId_);
         displayName_.opcUaBinaryDecode(is);
         description_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    EUInformation::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EUInformation::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -30,6 +30,23 @@ namespace OpcUaStackCore
     {
     }
     
+    ProgramDiagnosticDataType::ProgramDiagnosticDataType(const ProgramDiagnosticDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , createSessionId_()
+    , createClientName_()
+    , invocationCreationTime_()
+    , lastTransitionTime_()
+    , lastMethodCall_()
+    , lastMethodSessionId_()
+    , lastMethodInputArguments_()
+    , lastMethodOutputArguments_()
+    , lastMethodCallTime_()
+    , lastMethodReturnStatus_()
+    {
+        const_cast<ProgramDiagnosticDataType*>(&value)->copyTo(*this);
+    }
+    
     ProgramDiagnosticDataType::~ProgramDiagnosticDataType(void)
     {
     }
@@ -217,16 +234,6 @@ namespace OpcUaStackCore
         lastMethodOutputArguments_.opcUaBinaryDecode(is);
         lastMethodCallTime_.opcUaBinaryDecode(is);
         lastMethodReturnStatus_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ProgramDiagnosticDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ProgramDiagnosticDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

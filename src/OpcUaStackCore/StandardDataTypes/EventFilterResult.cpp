@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    EventFilterResult::EventFilterResult(const EventFilterResult& value)
+    : MonitoringFilterResult()
+    , selectClauseResults_()
+    , selectClauseDiagnosticInfos_()
+    , whereClauseResult_()
+    {
+        const_cast<EventFilterResult*>(&value)->copyTo(*this);
+    }
+    
     EventFilterResult::~EventFilterResult(void)
     {
     }
@@ -141,16 +150,6 @@ namespace OpcUaStackCore
         selectClauseResults_.opcUaBinaryDecode(is);
         selectClauseDiagnosticInfos_.opcUaBinaryDecode(is);
         whereClauseResult_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    EventFilterResult::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EventFilterResult::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

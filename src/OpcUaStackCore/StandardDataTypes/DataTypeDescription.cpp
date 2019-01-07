@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    DataTypeDescription::DataTypeDescription(const DataTypeDescription& value)
+    : Object()
+    , ExtensionObjectBase()
+    , dataTypeId_()
+    , name_()
+    {
+        const_cast<DataTypeDescription*>(&value)->copyTo(*this);
+    }
+    
     DataTypeDescription::~DataTypeDescription(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         dataTypeId_.opcUaBinaryDecode(is);
         name_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    DataTypeDescription::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataTypeDescription::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

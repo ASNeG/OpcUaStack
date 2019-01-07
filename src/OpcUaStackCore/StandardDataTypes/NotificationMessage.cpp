@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    NotificationMessage::NotificationMessage(const NotificationMessage& value)
+    : Object()
+    , ExtensionObjectBase()
+    , sequenceNumber_()
+    , publishTime_()
+    , notificationData_()
+    {
+        const_cast<NotificationMessage*>(&value)->copyTo(*this);
+    }
+    
     NotificationMessage::~NotificationMessage(void)
     {
     }
@@ -140,16 +150,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,sequenceNumber_);
         publishTime_.opcUaBinaryDecode(is);
         notificationData_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    NotificationMessage::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    NotificationMessage::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

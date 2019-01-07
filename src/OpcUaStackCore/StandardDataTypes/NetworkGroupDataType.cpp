@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    NetworkGroupDataType::NetworkGroupDataType(const NetworkGroupDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , serverUri_()
+    , networkPaths_()
+    {
+        const_cast<NetworkGroupDataType*>(&value)->copyTo(*this);
+    }
+    
     NetworkGroupDataType::~NetworkGroupDataType(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         serverUri_.opcUaBinaryDecode(is);
         networkPaths_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    NetworkGroupDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    NetworkGroupDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

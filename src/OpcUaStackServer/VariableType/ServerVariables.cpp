@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -202,17 +202,35 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	ServerVariables::logVariables(void)
+	{
+		std::string str = "";
+		for (auto it : serverVariableMap_) {
+			if (str != "") str += ", ";
+			str += it.first;
+		}
+
+		Log(Debug, "")
+		    .parameter("ServerVariables", str);
+	}
+
 	bool
 	ServerVariables::registerServerVariable(ServerVariable::SPtr& serverVariable)
 	{
-		ServerVariable::Map::iterator it;
-		it = serverVariableMap_.find(serverVariable->name());
-		if (it != serverVariableMap_.end()) {
-			serverVariableMap_.erase(it);
-		}
-
+		auto it = serverVariableMap_.find(serverVariable->name());
+		if (it != serverVariableMap_.end()) serverVariableMap_.erase(it);
 		serverVariableMap_.insert(std::make_pair(serverVariable->name(), serverVariable));
 		return true;
+	}
+
+	ServerVariable::SPtr
+	ServerVariables::getServerVariable(const std::string& name)
+	{
+		auto it = serverVariableMap_.find(name);
+		if (it != serverVariableMap_.end()) return it->second;
+		ServerVariable::SPtr tmp;
+		return tmp;
 	}
 
 	ServerVariable::Map&

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    ReadAtTimeDetails::ReadAtTimeDetails(const ReadAtTimeDetails& value)
+    : HistoryReadDetails()
+    , reqTimes_()
+    , useSimpleBounds_()
+    {
+        const_cast<ReadAtTimeDetails*>(&value)->copyTo(*this);
+    }
+    
     ReadAtTimeDetails::~ReadAtTimeDetails(void)
     {
     }
@@ -130,16 +138,6 @@ namespace OpcUaStackCore
         HistoryReadDetails::opcUaBinaryDecode(is);
         reqTimes_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,useSimpleBounds_);
-    }
-    
-    bool
-    ReadAtTimeDetails::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ReadAtTimeDetails::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

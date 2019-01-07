@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    EnumDefinition::EnumDefinition(const EnumDefinition& value)
+    : DataTypeDefinition()
+    , fields_()
+    {
+        const_cast<EnumDefinition*>(&value)->copyTo(*this);
+    }
+    
     EnumDefinition::~EnumDefinition(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         DataTypeDefinition::opcUaBinaryDecode(is);
         fields_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    EnumDefinition::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EnumDefinition::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

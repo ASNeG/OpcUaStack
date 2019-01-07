@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    SamplingIntervalDiagnosticsDataType::SamplingIntervalDiagnosticsDataType(const SamplingIntervalDiagnosticsDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , samplingInterval_()
+    , monitoredItemCount_()
+    , maxMonitoredItemCount_()
+    , disabledMonitoredItemCount_()
+    {
+        const_cast<SamplingIntervalDiagnosticsDataType*>(&value)->copyTo(*this);
+    }
+    
     SamplingIntervalDiagnosticsDataType::~SamplingIntervalDiagnosticsDataType(void)
     {
     }
@@ -151,16 +162,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,monitoredItemCount_);
         OpcUaNumber::opcUaBinaryDecode(is,maxMonitoredItemCount_);
         OpcUaNumber::opcUaBinaryDecode(is,disabledMonitoredItemCount_);
-    }
-    
-    bool
-    SamplingIntervalDiagnosticsDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    SamplingIntervalDiagnosticsDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

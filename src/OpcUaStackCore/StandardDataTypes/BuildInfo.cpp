@@ -26,6 +26,19 @@ namespace OpcUaStackCore
     {
     }
     
+    BuildInfo::BuildInfo(const BuildInfo& value)
+    : Object()
+    , ExtensionObjectBase()
+    , productUri_()
+    , manufacturerName_()
+    , productName_()
+    , softwareVersion_()
+    , buildNumber_()
+    , buildDate_()
+    {
+        const_cast<BuildInfo*>(&value)->copyTo(*this);
+    }
+    
     BuildInfo::~BuildInfo(void)
     {
     }
@@ -173,16 +186,6 @@ namespace OpcUaStackCore
         softwareVersion_.opcUaBinaryDecode(is);
         buildNumber_.opcUaBinaryDecode(is);
         buildDate_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    BuildInfo::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    BuildInfo::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

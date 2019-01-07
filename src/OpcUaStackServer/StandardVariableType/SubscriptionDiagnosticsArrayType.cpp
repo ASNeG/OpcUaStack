@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,23 +15,49 @@ namespace OpcUaStackServer
 {
     
     SubscriptionDiagnosticsArrayType::SubscriptionDiagnosticsArrayType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
+    : VariableBase()
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2171));
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2171);
+        setServerVariable(variable_);
+    }
+    
+    SubscriptionDiagnosticsArrayType::SubscriptionDiagnosticsArrayType(const SubscriptionDiagnosticsArrayType& value)
+    : VariableBase()
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2171);
+        setServerVariable(variable_);
     }
     
     SubscriptionDiagnosticsArrayType::~SubscriptionDiagnosticsArrayType(void)
     {
     }
-    
-    bool
-    SubscriptionDiagnosticsArrayType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    SubscriptionDiagnosticsArrayType::variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return variable_;
+    }
+
+    void
+    SubscriptionDiagnosticsArrayType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    SubscriptionDiagnosticsArrayType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SubscriptionDiagnosticsArrayType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

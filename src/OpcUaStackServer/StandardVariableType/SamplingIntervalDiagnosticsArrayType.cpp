@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,23 +15,49 @@ namespace OpcUaStackServer
 {
     
     SamplingIntervalDiagnosticsArrayType::SamplingIntervalDiagnosticsArrayType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
+    : VariableBase()
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2164));
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2164);
+        setServerVariable(variable_);
+    }
+    
+    SamplingIntervalDiagnosticsArrayType::SamplingIntervalDiagnosticsArrayType(const SamplingIntervalDiagnosticsArrayType& value)
+    : VariableBase()
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2164);
+        setServerVariable(variable_);
     }
     
     SamplingIntervalDiagnosticsArrayType::~SamplingIntervalDiagnosticsArrayType(void)
     {
     }
-    
-    bool
-    SamplingIntervalDiagnosticsArrayType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    SamplingIntervalDiagnosticsArrayType::variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return variable_;
+    }
+
+    void
+    SamplingIntervalDiagnosticsArrayType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    SamplingIntervalDiagnosticsArrayType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SamplingIntervalDiagnosticsArrayType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

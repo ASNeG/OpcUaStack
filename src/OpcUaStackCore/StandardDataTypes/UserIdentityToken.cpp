@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A base type for a user identity token.
+     */
+    UserIdentityToken::UserIdentityToken(const UserIdentityToken& value)
+    : Object()
+    , ExtensionObjectBase()
+    , policyId_()
+    {
+        const_cast<UserIdentityToken*>(&value)->copyTo(*this);
+    }
+    
     UserIdentityToken::~UserIdentityToken(void)
     {
     }
@@ -121,16 +132,6 @@ namespace OpcUaStackCore
     UserIdentityToken::opcUaBinaryDecode(std::istream& is)
     {
         policyId_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    UserIdentityToken::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    UserIdentityToken::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

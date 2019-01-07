@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    ServiceCounterDataType::ServiceCounterDataType(const ServiceCounterDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , totalCount_()
+    , errorCount_()
+    {
+        const_cast<ServiceCounterDataType*>(&value)->copyTo(*this);
+    }
+    
     ServiceCounterDataType::~ServiceCounterDataType(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         OpcUaNumber::opcUaBinaryDecode(is,totalCount_);
         OpcUaNumber::opcUaBinaryDecode(is,errorCount_);
-    }
-    
-    bool
-    ServiceCounterDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ServiceCounterDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

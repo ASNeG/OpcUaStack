@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OpcUaStackServer/Generator/NodeElement.h"
+#include "OpcUaStackServer/Generator/NodeInfoVariableType.h"
 
 using namespace OpcUaStackCore;
 
@@ -34,22 +34,66 @@ namespace OpcUaStackServer
 	  public:
 		typedef boost::shared_ptr<VariableTypeGenerator> SPtr;
 
+		/**
+		 * constructor
+		 */
 		VariableTypeGenerator(void);
+
+		/*
+		 * destructor
+		 */
 		~VariableTypeGenerator(void);
 
+		/**
+		 * This function passes the information model to the class.The informationModel
+		 * function must be called before generate function.
+		 *
+		 * @param[in] informationModel			information model
+		 */
 		void informationModel(InformationModel::SPtr& informationModel);
-		void variableType(OpcUaNodeId& variableTypeNodeId);
-		void projectNamespace(const std::string& projectNamespace);
-		void parentProjectNamespace(const std::string& parentProjectNamespace);
+
+		/**
+		 * This function sets a new namespace entry
+		 *
+		 * @param[in] namespaceEntry			Set a new namespace entry. The string must have
+		 * 										the following format:
+		 * 										<NamespaceIndex>:<NamespaceName>
+		 *
+		 * @return true if successful
+		 */
+		bool setNamespaceEntry(const std::string& namespaceEntry);
+
+		/**
+		 * This function results the C++ source content.
+		 *
+		 * @return C++ source content
+		 */
 		std::string& sourceContent(void);
+
+		/**
+		 * This function results the C++ header content.
+		 *
+		 * @return C++ header content
+		 */
 		std::string& headerContent(void);
 
-		bool generate(void);
+		/**
+		 * This function generates the C++ header and source content from a given
+		 * node identifier. The node must be a variable type node in the opc ua information
+		 * model. The C++ source content and the header content can be result with
+		 * the functions sourceContent and headerContent.
+		 *
+		 * Conditions:
+		 * - The informationModel function must be called before
+		 *
+		 * @param[in] variableType				variable type node id from the opc ua
+		 * 										information model
+		 *
+		 * @return true if successful
+		 */
+		bool generate(const OpcUaNodeId& variableType);
 
 	  private:
-		std::string getTypeNameFromNodeId(OpcUaNodeId& typeNodeId);
-		bool createNodeElementVec(const std::string& prefix, OpcUaNodeId& nodeId);
-
 		//
 		// header functions
 		//
@@ -59,42 +103,27 @@ namespace OpcUaStackServer
 		bool generateHeaderEnd(void);
 		bool generateHeaderClassBegin(const std::string& prefix);
 		bool generateHeaderClassEnd(const std::string& prefix);
-		bool generateHeaderClassPublic(const std::string& prefix);
+		bool generateHeaderClassPublicFunction(const std::string& prefix);
 		bool generateHeaderClassPrivate(const std::string& prefix);
+		bool generateHeaderClassValueDefinition(const std::string& prefix);
 
 		//
 		// source functions
 		//
 		bool generateSource(void);
-		bool generateSourceComments(void);
+		bool generateSourceComments();
 		bool generateSourceIncludes(void);
 		bool generateSourceClassBegin(void);
 		bool generateSourceClassEnd(void);
 		bool generateSourceClassConstructor(const std::string& prefix);
 		bool generateSourceClassDestructor(const std::string& prefix);
-		bool generateSourceLinkInstanceWithModel(const std::string& prefix);
-		bool generateSourceClassGetterSetter(const std::string& prefix);
-
+		bool generateSourceClassSetterGetter(const std::string& prefix);
 
 		InformationModel::SPtr informationModel_;
-		BaseNodeClass::SPtr variableTypeNode_;
-		BaseNodeClass::SPtr parentVariableTypeNode_;
-		OpcUaNodeId variableTypeNodeId_;
-		OpcUaNodeId parentVariableTypeNodeId_;
-		uint32_t variableTypeNumber_;
-		std::string variableTypeName_;
-		std::string parentVariableTypeName_;
 		std::string sourceContent_;
 		std::string headerContent_;
 
-		std::string namespaceUri_;
-		std::string projectNamespace_;
-		std::string parentProjectNamespace_;
-		std::string projectDirectory_;
-		std::string parentProjectDirectory_;
-
-		NodeElement::Vec nodeElementVec_;
-
+		NodeInfoVariableType nodeInfo_;						//!< information about the variable type node
 	};
 
 

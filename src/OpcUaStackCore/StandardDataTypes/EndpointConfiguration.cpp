@@ -29,6 +29,22 @@ namespace OpcUaStackCore
     {
     }
     
+    EndpointConfiguration::EndpointConfiguration(const EndpointConfiguration& value)
+    : Object()
+    , ExtensionObjectBase()
+    , operationTimeout_()
+    , useBinaryEncoding_()
+    , maxStringLength_()
+    , maxByteStringLength_()
+    , maxArrayLength_()
+    , maxMessageSize_()
+    , maxBufferSize_()
+    , channelLifetime_()
+    , securityTokenLifetime_()
+    {
+        const_cast<EndpointConfiguration*>(&value)->copyTo(*this);
+    }
+    
     EndpointConfiguration::~EndpointConfiguration(void)
     {
     }
@@ -206,16 +222,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,maxBufferSize_);
         OpcUaNumber::opcUaBinaryDecode(is,channelLifetime_);
         OpcUaNumber::opcUaBinaryDecode(is,securityTokenLifetime_);
-    }
-    
-    bool
-    EndpointConfiguration::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EndpointConfiguration::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

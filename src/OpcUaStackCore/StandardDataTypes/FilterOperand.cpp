@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    FilterOperand::FilterOperand(const FilterOperand& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<FilterOperand*>(&value)->copyTo(*this);
+    }
+    
     FilterOperand::~FilterOperand(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     FilterOperand::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    FilterOperand::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    FilterOperand::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

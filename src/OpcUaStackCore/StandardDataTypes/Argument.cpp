@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * An argument for a method.
+     */
+    Argument::Argument(const Argument& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , dataType_()
+    , valueRank_()
+    , arrayDimensions_()
+    , description_()
+    {
+        const_cast<Argument*>(&value)->copyTo(*this);
+    }
+    
     Argument::~Argument(void)
     {
     }
@@ -165,16 +180,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
         arrayDimensions_.opcUaBinaryDecode(is);
         description_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    Argument::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    Argument::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

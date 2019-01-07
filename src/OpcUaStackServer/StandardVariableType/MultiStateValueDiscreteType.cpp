@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,77 +15,161 @@ namespace OpcUaStackServer
 {
     
     MultiStateValueDiscreteType::MultiStateValueDiscreteType(void)
-    : DiscreteItemType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , enumValues_(constructSPtr<ServerVariable>("EnumValues"))
-    , valueAsText_(constructSPtr<ServerVariable>("ValueAsText"))
+    : VariableBase()
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , enumValues_Variable_(constructSPtr<ServerVariable>("EnumValues_Variable"))
+    , valueAsText_Variable_(constructSPtr<ServerVariable>("ValueAsText_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(11238));
-        serverVariables().registerServerVariable(enumValues_);
-        serverVariables().registerServerVariable(valueAsText_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)11238);
+        setServerVariable(definition_Variable_);
+        setServerVariable(enumValues_Variable_);
+        setServerVariable(valueAsText_Variable_);
+        setServerVariable(valuePrecision_Variable_);
+        setServerVariable(variable_);
+    }
+    
+    MultiStateValueDiscreteType::MultiStateValueDiscreteType(const MultiStateValueDiscreteType& value)
+    : VariableBase()
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , enumValues_Variable_(constructSPtr<ServerVariable>("EnumValues_Variable"))
+    , valueAsText_Variable_(constructSPtr<ServerVariable>("ValueAsText_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)11238);
+        setServerVariable(definition_Variable_);
+        setServerVariable(enumValues_Variable_);
+        setServerVariable(valueAsText_Variable_);
+        setServerVariable(valuePrecision_Variable_);
+        setServerVariable(variable_);
     }
     
     MultiStateValueDiscreteType::~MultiStateValueDiscreteType(void)
     {
     }
-    
-    bool
-    MultiStateValueDiscreteType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    MultiStateValueDiscreteType::definition_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        enumValues_->addBrowsePath(nodeId, OpcUaQualifiedName("EnumValues", namespaceIndex_));
-        valueAsText_->addBrowsePath(nodeId, OpcUaQualifiedName("ValueAsText", namespaceIndex_));
-        DiscreteItemType::linkInstanceWithModel(nodeId);
+        return definition_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    MultiStateValueDiscreteType::enumValues(void)
+
+    ServerVariable::SPtr&
+    MultiStateValueDiscreteType::enumValues_Variable(void)
     {
-        return enumValues_->baseNode().lock();
+        return enumValues_Variable_;
     }
-    
-    bool
-    MultiStateValueDiscreteType::setEnumValues(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    MultiStateValueDiscreteType::valueAsText_Variable(void)
     {
-        return enumValues_->setDataValue(dataValue);
+        return valueAsText_Variable_;
     }
-    
-    bool
-    MultiStateValueDiscreteType::getEnumValues(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    MultiStateValueDiscreteType::valuePrecision_Variable(void)
     {
-        return enumValues_->getDataValue(dataValue);
+        return valuePrecision_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    MultiStateValueDiscreteType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    MultiStateValueDiscreteType::setUpdateCallbackEnumValues(Callback::SPtr& callback)
+    MultiStateValueDiscreteType::definition_Variable(ServerVariable::SPtr& serverVariable)
     {
-        enumValues_->callback(callback);
+        definition_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    MultiStateValueDiscreteType::valueAsText(void)
-    {
-        return valueAsText_->baseNode().lock();
-    }
-    
-    bool
-    MultiStateValueDiscreteType::setValueAsText(const OpcUaDataValue& dataValue)
-    {
-        return valueAsText_->setDataValue(dataValue);
-    }
-    
-    bool
-    MultiStateValueDiscreteType::getValueAsText(OpcUaDataValue& dataValue)
-    {
-        return valueAsText_->getDataValue(dataValue);
-    }
-    
+
     void
-    MultiStateValueDiscreteType::setUpdateCallbackValueAsText(Callback::SPtr& callback)
+    MultiStateValueDiscreteType::enumValues_Variable(ServerVariable::SPtr& serverVariable)
     {
-        valueAsText_->callback(callback);
+        enumValues_Variable_ = serverVariable;
+    }
+
+    void
+    MultiStateValueDiscreteType::valueAsText_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        valueAsText_Variable_ = serverVariable;
+    }
+
+    void
+    MultiStateValueDiscreteType::valuePrecision_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        valuePrecision_Variable_ = serverVariable;
+    }
+
+    void
+    MultiStateValueDiscreteType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    MultiStateValueDiscreteType::get_Definition_Variable(OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    MultiStateValueDiscreteType::get_EnumValues_Variable(OpcUaDataValue& dataValue)
+    {
+        return enumValues_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    MultiStateValueDiscreteType::get_ValueAsText_Variable(OpcUaDataValue& dataValue)
+    {
+        return valueAsText_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    MultiStateValueDiscreteType::get_ValuePrecision_Variable(OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    MultiStateValueDiscreteType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    MultiStateValueDiscreteType::set_Definition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    MultiStateValueDiscreteType::set_EnumValues_Variable(const OpcUaDataValue& dataValue)
+    {
+        return enumValues_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    MultiStateValueDiscreteType::set_ValueAsText_Variable(const OpcUaDataValue& dataValue)
+    {
+        return valueAsText_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    MultiStateValueDiscreteType::set_ValuePrecision_Variable(const OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    MultiStateValueDiscreteType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

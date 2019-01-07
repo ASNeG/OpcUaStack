@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    ModificationInfo::ModificationInfo(const ModificationInfo& value)
+    : Object()
+    , ExtensionObjectBase()
+    , modificationTime_()
+    , updateType_()
+    , userName_()
+    {
+        const_cast<ModificationInfo*>(&value)->copyTo(*this);
+    }
+    
     ModificationInfo::~ModificationInfo(void)
     {
     }
@@ -140,16 +150,6 @@ namespace OpcUaStackCore
         modificationTime_.opcUaBinaryDecode(is);
         updateType_.opcUaBinaryDecode(is);
         userName_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ModificationInfo::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ModificationInfo::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

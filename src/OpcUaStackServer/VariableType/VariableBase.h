@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,6 +32,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT VariableBase
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<VariableBase> SPtr;
@@ -41,6 +42,9 @@ namespace OpcUaStackServer
 
 		void applicationServiceIf(ApplicationServiceIf* applicationServiceIf);
 		ServerVariables& serverVariables(void);
+		void logVariables(void);
+		ServerVariable::SPtr getServerVariable(const std::string& name);
+		bool setServerVariable(ServerVariable::SPtr& serverVariable);
 		virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
 		bool createAndLinkInstanceWithModel(
 			const std::string& name,
@@ -52,9 +56,10 @@ namespace OpcUaStackServer
 		);
 		bool getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint16_t& namespaceIndex);
 
-		void variableTypeNamespace(const std::string& namespaceName);
-		void variableType(const OpcUaNodeId& variableType);
-		OpcUaNodeId& variableType(void);
+		void variableTypeNamespaceName(const std::string& variableTypeNamespaceName);
+		std::string& variableTypeNamespaceName(void);
+		void variableTypeNodeId(const OpcUaNodeId& variableTypeNodeId);
+		OpcUaNodeId& variableTypeNodeId(void);
 
 	  private:
 		bool getNodeIdFromResponse(BrowsePathToNodeIdResponse::SPtr& res, uint32_t idx, OpcUaNodeId::SPtr& nodeId);
@@ -63,8 +68,8 @@ namespace OpcUaStackServer
 
 		ApplicationServiceIf* applicationServiceIf_;
 
-		std::string namespaceName_;
-		OpcUaNodeId variableType_;
+		std::string variableTypeNamespaceName_;
+		OpcUaNodeId variableTypeNodeId_;
 
 		ServerVariables serverVariables_;
 		Callback writeCallback_;

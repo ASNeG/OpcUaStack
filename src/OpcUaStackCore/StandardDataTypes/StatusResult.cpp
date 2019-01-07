@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    StatusResult::StatusResult(const StatusResult& value)
+    : Object()
+    , ExtensionObjectBase()
+    , statusCode_()
+    , diagnosticInfo_()
+    {
+        const_cast<StatusResult*>(&value)->copyTo(*this);
+    }
+    
     StatusResult::~StatusResult(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         statusCode_.opcUaBinaryDecode(is);
         diagnosticInfo_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    StatusResult::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    StatusResult::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

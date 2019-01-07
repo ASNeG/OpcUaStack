@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    ContentFilterElementResult::ContentFilterElementResult(const ContentFilterElementResult& value)
+    : Object()
+    , ExtensionObjectBase()
+    , statusCode_()
+    , operandStatusCodes_()
+    , operandDiagnosticInfos_()
+    {
+        const_cast<ContentFilterElementResult*>(&value)->copyTo(*this);
+    }
+    
     ContentFilterElementResult::~ContentFilterElementResult(void)
     {
     }
@@ -140,16 +150,6 @@ namespace OpcUaStackCore
         statusCode_.opcUaBinaryDecode(is);
         operandStatusCodes_.opcUaBinaryDecode(is);
         operandDiagnosticInfos_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ContentFilterElementResult::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ContentFilterElementResult::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

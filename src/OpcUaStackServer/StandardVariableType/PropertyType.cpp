@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 4.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -14,24 +14,56 @@
 namespace OpcUaStackServer
 {
     
+    /**
+     * The type for variable that represents a property of another node.
+     */
     PropertyType::PropertyType(void)
-    : BaseVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
+    : VariableBase()
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(68));
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)68);
+        setServerVariable(variable_);
+    }
+    
+    /**
+     * The type for variable that represents a property of another node.
+     */
+    PropertyType::PropertyType(const PropertyType& value)
+    : VariableBase()
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)68);
+        setServerVariable(variable_);
     }
     
     PropertyType::~PropertyType(void)
     {
     }
-    
-    bool
-    PropertyType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    PropertyType::variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        BaseVariableType::linkInstanceWithModel(nodeId);
+        return variable_;
+    }
+
+    void
+    PropertyType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    PropertyType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    PropertyType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

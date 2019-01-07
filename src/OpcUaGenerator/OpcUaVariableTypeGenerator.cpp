@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,10 +40,9 @@ namespace OpcUaVariableTypeGenerator
 	OpcUaVariableTypeGenerator::OpcUaVariableTypeGenerator(void)
 	: variableTypeNodeId_(0)
 	, informationModel_()
-	, fileName_("")
+	, fileNames_()
 	, variableTypeName_("")
-	, projectNamespace_("")
-	, parentProjectNamespace_("")
+	, namespaces_()
 	, buildSubTypes_(false)
 	, variableTypeNameVec_()
 	, ignoreVariableTypeNameVec_()
@@ -70,7 +69,7 @@ namespace OpcUaVariableTypeGenerator
 			)
 		    (
 		    	"nodeset",
-				boost::program_options::value<std::string>(),
+				boost::program_options::value< std::vector<std::string> >(),
 				"set nodeset file name (mandatory)"
 			)
 			(
@@ -79,14 +78,9 @@ namespace OpcUaVariableTypeGenerator
 				"set variable type name (mandatory)"
 			)
 			(
-				"projectNamespace",
-				boost::program_options::value<std::string>()->default_value("OpcUaStackServer"),
-			    "set project namespace"
-			)
-			(
-				"parentProjectNamespace",
-				boost::program_options::value<std::string>()->default_value("OpcUaStackServer"),
-			    "set parent project namespace"
+				"namespaces_",
+				boost::program_options::value< std::vector<std::string> >(),
+			    "set project namespaces"
 			)
 			(
 				"buildSubTypes",
@@ -96,7 +90,7 @@ namespace OpcUaVariableTypeGenerator
 			(
 				"ignoreVariableTypeName",
 				boost::program_options::value< std::vector<std::string> >(),
-			    "ignore variable type name"
+			    "ignore data type name"
 			)
 		;
 
@@ -124,12 +118,14 @@ namespace OpcUaVariableTypeGenerator
 		    return 1;
 		}
 
-		// vm["input-file"].as< vector<string> >()
+		if (vm.count("nodeset") != 0) {
+			fileNames_ = vm["nodeset"].as< std::vector<std::string> >();
+		}
 
-		fileName_ = vm["nodeset"].as<std::string>();
 		variableTypeName_ = vm["variabletype"].as<std::string>();
-		projectNamespace_ = vm["projectNamespace"].as<std::string>();
-		parentProjectNamespace_ = vm["parentProjectNamespace"].as<std::string>();
+		if (vm.count("namespaces") != 0) {
+			namespaces_ = vm["namespaces"].as< std::vector<std::string> >();
+		}
 		buildSubTypes_ = vm["buildSubTypes"].as<bool>();
 		if (vm.count("ignoreEventTypeName") != 0) {
 			ignoreVariableTypeNameVec_ = vm["ignoreVariableTypeName"].as< std::vector<std::string> >();
@@ -139,8 +135,8 @@ namespace OpcUaVariableTypeGenerator
 			return buildAllSubTypes();
 		}
 
-		// ignore BaseEventType
-		if (variableTypeName_ == "BaseVariableType") {
+		// ignore structure data type
+		if (variableTypeName_ == "VariableTypes") {
 			return 1;
 		}
 
@@ -207,26 +203,36 @@ namespace OpcUaVariableTypeGenerator
 	int32_t
 	OpcUaVariableTypeGenerator::loadInformationModel(void)
 	{
-		// read opc ua nodeset
-		ConfigXml configXml;
-	    if (!configXml.parse(fileName_)) {
-	    	std::cout << configXml.errorMessage() << std::endl;
-	    	return -1;
-	    }
-
-	    // parse node set file
-	    NodeSetXmlParser nodeSetXmlParser;
-	    if (!nodeSetXmlParser.decode(configXml.ptree())) {
-	    	std::cout << "node set parser error" << std::endl;
-	    	return -2;
-	    }
-
-	    // init information model
+		// create a new information model
 		informationModel_ = constructSPtr<InformationModel>();
-		if (!InformationModelNodeSet::initial(informationModel_, nodeSetXmlParser)) {
-			std::cout << "init information model error" << std::endl;
-			return -3;
+
+		std::vector<std::string>::iterator it;
+		for (it = fileNames_.begin(); it != fileNames_.end(); it++) {
+
+			std::string fileName = *it;
+
+			// read opc ua nodeset
+			ConfigXml configXml;
+			if (!configXml.parse(fileName)) {
+				std::cout << configXml.errorMessage() << std::endl;
+				return -1;
+			}
+
+			// parse node set file
+			NodeSetXmlParser nodeSetXmlParser;
+			if (!nodeSetXmlParser.decode(configXml.ptree())) {
+				std::cout << "node set parser error" << std::endl;
+				return -2;
+			}
+
+			// init information model
+			if (!InformationModelNodeSet::initial(informationModel_, nodeSetXmlParser)) {
+				std::cout << "init information model error" << std::endl;
+				return -3;
+			}
+
 		}
+
 		informationModel_->checkForwardReferences();
 
 		return 0;
@@ -235,7 +241,7 @@ namespace OpcUaVariableTypeGenerator
 	int32_t
 	OpcUaVariableTypeGenerator::generateVariableTypeSource(void)
 	{
-		// check event type name
+		// check data type name
 		std::vector<std::string>::iterator it;
 		for (it=ignoreVariableTypeNameVec_.begin(); it!=ignoreVariableTypeNameVec_.end(); it++) {
 			if (*it == variableTypeName_) {
@@ -243,28 +249,28 @@ namespace OpcUaVariableTypeGenerator
 			}
 		}
 
-		// find node id for variable type name
+		// find node id for data type name
 		variableTypeNodeId_.set(0,0);
 		if (!findNodeId(variableTypeName_, OpcUaNodeId(62))) {
-			std::cout << "node id not found for variable type " << variableTypeName_ << std::endl;
+			std::cout << "node id not found for data type " << variableTypeName_ << std::endl;
 			return -3;
 		}
 
-		// generate variable type source code
-		VariableTypeGenerator variableTypeGenerator;
-		//variableTypeGenerator.projectNamespace(projectNamespace_);
-		//variableTypeGenerator.parentProjectNamespace(parentProjectNamespace_);
-		variableTypeGenerator.informationModel(informationModel_);
-		variableTypeGenerator.variableType(variableTypeNodeId_);
-		if (!variableTypeGenerator.generate()) {
+		// generate data type source code
+		VariableTypeGenerator dataTypeGenerator;
+		for (it = namespaces_.begin(); it != namespaces_.end(); it++) {
+			dataTypeGenerator.setNamespaceEntry(*it);
+		}
+		dataTypeGenerator.informationModel(informationModel_);
+		if (!dataTypeGenerator.generate(variableTypeNodeId_)) {
 			std::cout << "source code generator error - " << variableTypeName_ << std::endl;
 			return -4;
 		}
 
 		// save header and source file
 		boost::filesystem::ofstream ofStream;
-		std::string sourceContent = variableTypeGenerator.sourceContent();
-		std::string headerContent = variableTypeGenerator.headerContent();
+		std::string sourceContent = dataTypeGenerator.sourceContent();
+		std::string headerContent = dataTypeGenerator.headerContent();
 
 		std::string headerFileName = variableTypeName_ + ".h";
 		boost::filesystem::remove(headerFileName);
@@ -284,7 +290,7 @@ namespace OpcUaVariableTypeGenerator
 	int32_t
 	OpcUaVariableTypeGenerator::buildAllSubTypes(void)
 	{
-		// load inforomation model
+		// load information model
 		int32_t rc = loadInformationModel();
 		if (rc < 0) {
 			return rc;
@@ -306,6 +312,12 @@ namespace OpcUaVariableTypeGenerator
 		std::vector<std::string>::iterator it;
 		for (it = variableTypeNameVec_.begin(); it != variableTypeNameVec_.end(); it++) {
 			variableTypeName_ = *it;
+
+			// ignore structure data type
+			if (variableTypeName_ == "VariableTypes") {
+				continue;
+			}
+
 			int32_t rc = generateVariableTypeSource();
 			if (rc < 0) return rc;
 		}
@@ -314,23 +326,23 @@ namespace OpcUaVariableTypeGenerator
 	}
 
 	int32_t
-	OpcUaVariableTypeGenerator::findAllSubTypes(const OpcUaNodeId& variableTypeNodeId)
+	OpcUaVariableTypeGenerator::findAllSubTypes(const OpcUaNodeId& dataTypeNodeId)
 	{
 		// find node id in information model
-		BaseNodeClass::SPtr nodeClass = informationModel_->find(variableTypeNodeId);
+		BaseNodeClass::SPtr nodeClass = informationModel_->find(dataTypeNodeId);
 		if (!nodeClass) {
-			std::cout << "node " << variableTypeNodeId << " not found in information model" << std::endl;
+			std::cout << "node " << dataTypeNodeId << " not found in information model" << std::endl;
 			return false;
 		}
 
 		// get browse name
 		OpcUaQualifiedName browseName;
 		if (!nodeClass->getBrowseName(browseName)) {
-			std::cout << "browsename of node " << variableTypeNodeId << " error" << std::endl;
+			std::cout << "browsename of node " << dataTypeNodeId << " error" << std::endl;
 			return false;
 		}
 
-		if (browseName.name().toStdString() != "BaseVariableType") {
+		if (browseName.name().toStdString() != "VariableTypes") {
 			variableTypeNameVec_.push_back(browseName.name().toStdString());
 		}
 
@@ -346,7 +358,7 @@ namespace OpcUaVariableTypeGenerator
 			childNodeIdVec
 		);
 		if (!success) {
-			std::cout << "node " << variableTypeNodeId << " subtype error" << std::endl;
+			std::cout << "node " << dataTypeNodeId << " subtype error" << std::endl;
 			return -1;
 		}
 

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    TargetVariablesDataType::TargetVariablesDataType(const TargetVariablesDataType& value)
+    : SubscribedDataSetDataType()
+    , targetVariables_()
+    {
+        const_cast<TargetVariablesDataType*>(&value)->copyTo(*this);
+    }
+    
     TargetVariablesDataType::~TargetVariablesDataType(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         SubscribedDataSetDataType::opcUaBinaryDecode(is);
         targetVariables_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    TargetVariablesDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    TargetVariablesDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

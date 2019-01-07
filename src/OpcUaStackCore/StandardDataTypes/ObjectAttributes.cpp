@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for an object node.
+     */
+    ObjectAttributes::ObjectAttributes(const ObjectAttributes& value)
+    : NodeAttributes()
+    , eventNotifier_()
+    {
+        const_cast<ObjectAttributes*>(&value)->copyTo(*this);
+    }
+    
     ObjectAttributes::~ObjectAttributes(void)
     {
     }
@@ -122,16 +132,6 @@ namespace OpcUaStackCore
     {
         NodeAttributes::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,eventNotifier_);
-    }
-    
-    bool
-    ObjectAttributes::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ObjectAttributes::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

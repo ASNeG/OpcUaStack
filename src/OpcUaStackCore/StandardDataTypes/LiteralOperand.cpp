@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    LiteralOperand::LiteralOperand(const LiteralOperand& value)
+    : FilterOperand()
+    , value_()
+    {
+        const_cast<LiteralOperand*>(&value)->copyTo(*this);
+    }
+    
     LiteralOperand::~LiteralOperand(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         FilterOperand::opcUaBinaryDecode(is);
         value_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    LiteralOperand::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    LiteralOperand::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DeleteEventDetails::DeleteEventDetails(const DeleteEventDetails& value)
+    : HistoryUpdateDetails()
+    , eventIds_()
+    {
+        const_cast<DeleteEventDetails*>(&value)->copyTo(*this);
+    }
+    
     DeleteEventDetails::~DeleteEventDetails(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         HistoryUpdateDetails::opcUaBinaryDecode(is);
         eventIds_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    DeleteEventDetails::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DeleteEventDetails::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

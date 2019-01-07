@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_ServerStatusType_h__
@@ -14,99 +14,144 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/BaseDataVariableType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT ServerStatusType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<ServerStatusType> SPtr;
+       typedef std::vector<ServerStatusType::SPtr> Vec;
+   
+       ServerStatusType(void);
+       ServerStatusType(const ServerStatusType& value);
+       virtual ~ServerStatusType(void);
+
+        //
+        // UtcTime
+        //
+        void buildInfo_BuildDate_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& buildInfo_BuildDate_Variable(void);
+        bool get_BuildInfo_BuildDate_Variable(OpcUaDataValue& dataValue);
+        bool set_BuildInfo_BuildDate_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // String
+        //
+        void buildInfo_BuildNumber_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& buildInfo_BuildNumber_Variable(void);
+        bool get_BuildInfo_BuildNumber_Variable(OpcUaDataValue& dataValue);
+        bool set_BuildInfo_BuildNumber_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // String
+        //
+        void buildInfo_ManufacturerName_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& buildInfo_ManufacturerName_Variable(void);
+        bool get_BuildInfo_ManufacturerName_Variable(OpcUaDataValue& dataValue);
+        bool set_BuildInfo_ManufacturerName_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // String
+        //
+        void buildInfo_ProductName_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& buildInfo_ProductName_Variable(void);
+        bool get_BuildInfo_ProductName_Variable(OpcUaDataValue& dataValue);
+        bool set_BuildInfo_ProductName_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // String
+        //
+        void buildInfo_ProductUri_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& buildInfo_ProductUri_Variable(void);
+        bool get_BuildInfo_ProductUri_Variable(OpcUaDataValue& dataValue);
+        bool set_BuildInfo_ProductUri_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // String
+        //
+        void buildInfo_SoftwareVersion_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& buildInfo_SoftwareVersion_Variable(void);
+        bool get_BuildInfo_SoftwareVersion_Variable(OpcUaDataValue& dataValue);
+        bool set_BuildInfo_SoftwareVersion_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // BuildInfo
+        //
+        void buildInfo_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& buildInfo_Variable(void);
+        bool get_BuildInfo_Variable(OpcUaDataValue& dataValue);
+        bool set_BuildInfo_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UtcTime
+        //
+        void currentTime_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& currentTime_Variable(void);
+        bool get_CurrentTime_Variable(OpcUaDataValue& dataValue);
+        bool set_CurrentTime_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UInt32
+        //
+        void secondsTillShutdown_BuildDate_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& secondsTillShutdown_BuildDate_Variable(void);
+        bool get_SecondsTillShutdown_BuildDate_Variable(OpcUaDataValue& dataValue);
+        bool set_SecondsTillShutdown_BuildDate_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // LocalizedText
+        //
+        void shutdownReason_BuildDate_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& shutdownReason_BuildDate_Variable(void);
+        bool get_ShutdownReason_BuildDate_Variable(OpcUaDataValue& dataValue);
+        bool set_ShutdownReason_BuildDate_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UtcTime
+        //
+        void startTime_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& startTime_Variable(void);
+        bool get_StartTime_Variable(OpcUaDataValue& dataValue);
+        bool set_StartTime_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServerState
+        //
+        void state_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& state_Variable(void);
+        bool get_State_Variable(OpcUaDataValue& dataValue);
+        bool set_State_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServerStatusDataType (Array)
+        //
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT ServerStatusType
-    : public BaseDataVariableType
-    {
-      public:
-        typedef boost::shared_ptr<ServerStatusType> SPtr;
-    
-        ServerStatusType(void);
-        virtual ~ServerStatusType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr startTime(void);
-        bool setStartTime(const OpcUaDataValue& dataValue);
-        bool getStartTime(OpcUaDataValue& dataValue);
-        void setUpdateCallbackStartTime(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr currentTime(void);
-        bool setCurrentTime(const OpcUaDataValue& dataValue);
-        bool getCurrentTime(OpcUaDataValue& dataValue);
-        void setUpdateCallbackCurrentTime(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr state(void);
-        bool setState(const OpcUaDataValue& dataValue);
-        bool getState(OpcUaDataValue& dataValue);
-        void setUpdateCallbackState(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr buildInfo(void);
-        bool setBuildInfo(const OpcUaDataValue& dataValue);
-        bool getBuildInfo(OpcUaDataValue& dataValue);
-        void setUpdateCallbackBuildInfo(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr buildInfo_ProductUri(void);
-        bool setProductUri(const OpcUaDataValue& dataValue);
-        bool getProductUri(OpcUaDataValue& dataValue);
-        void setUpdateCallbackProductUri(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr buildInfo_ManufacturerName(void);
-        bool setManufacturerName(const OpcUaDataValue& dataValue);
-        bool getManufacturerName(OpcUaDataValue& dataValue);
-        void setUpdateCallbackManufacturerName(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr buildInfo_ProductName(void);
-        bool setProductName(const OpcUaDataValue& dataValue);
-        bool getProductName(OpcUaDataValue& dataValue);
-        void setUpdateCallbackProductName(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr buildInfo_SoftwareVersion(void);
-        bool setSoftwareVersion(const OpcUaDataValue& dataValue);
-        bool getSoftwareVersion(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSoftwareVersion(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr buildInfo_BuildNumber(void);
-        bool setBuildNumber(const OpcUaDataValue& dataValue);
-        bool getBuildNumber(OpcUaDataValue& dataValue);
-        void setUpdateCallbackBuildNumber(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr buildInfo_BuildDate(void);
-        bool setBuildDate(const OpcUaDataValue& dataValue);
-        bool getBuildDate(OpcUaDataValue& dataValue);
-        void setUpdateCallbackBuildDate(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr secondsTillShutdown(void);
-        bool setSecondsTillShutdown(const OpcUaDataValue& dataValue);
-        bool getSecondsTillShutdown(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSecondsTillShutdown(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr shutdownReason(void);
-        bool setShutdownReason(const OpcUaDataValue& dataValue);
-        bool getShutdownReason(OpcUaDataValue& dataValue);
-        void setUpdateCallbackShutdownReason(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr startTime_;
-        ServerVariable::SPtr currentTime_;
-        ServerVariable::SPtr state_;
-        ServerVariable::SPtr buildInfo_;
-        ServerVariable::SPtr buildInfo_ProductUri_;
-        ServerVariable::SPtr buildInfo_ManufacturerName_;
-        ServerVariable::SPtr buildInfo_ProductName_;
-        ServerVariable::SPtr buildInfo_SoftwareVersion_;
-        ServerVariable::SPtr buildInfo_BuildNumber_;
-        ServerVariable::SPtr buildInfo_BuildDate_;
-        ServerVariable::SPtr secondsTillShutdown_;
-        ServerVariable::SPtr shutdownReason_;
-    
-    };
+        ServerVariable::SPtr buildInfo_BuildDate_Variable_;
+        ServerVariable::SPtr buildInfo_BuildNumber_Variable_;
+        ServerVariable::SPtr buildInfo_ManufacturerName_Variable_;
+        ServerVariable::SPtr buildInfo_ProductName_Variable_;
+        ServerVariable::SPtr buildInfo_ProductUri_Variable_;
+        ServerVariable::SPtr buildInfo_SoftwareVersion_Variable_;
+        ServerVariable::SPtr buildInfo_Variable_;
+        ServerVariable::SPtr currentTime_Variable_;
+        ServerVariable::SPtr secondsTillShutdown_BuildDate_Variable_;
+        ServerVariable::SPtr shutdownReason_BuildDate_Variable_;
+        ServerVariable::SPtr startTime_Variable_;
+        ServerVariable::SPtr state_Variable_;
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

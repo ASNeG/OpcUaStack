@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * This abstract DataType is the base DataType for all union DataTypes.
+     */
+    Union::Union(const Union& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<Union*>(&value)->copyTo(*this);
+    }
+    
     Union::~Union(void)
     {
     }
@@ -109,16 +119,6 @@ namespace OpcUaStackCore
     
     void
     Union::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    Union::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    Union::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

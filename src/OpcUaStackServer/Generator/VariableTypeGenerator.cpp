@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,22 +31,11 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VariableTypeGenerator::VariableTypeGenerator(void)
-	: sourceContent_("")
+	: informationModel_()
+	, sourceContent_("")
 	, headerContent_("")
-	, informationModel_(nullptr)
-	, variableTypeNodeId_()
-	, parentVariableTypeNodeId_()
-	, variableTypeNode_()
-	, parentVariableTypeNode_()
-	, variableTypeNumber_(0)
-	, variableTypeName_("")
-	, parentVariableTypeName_("")
-	, projectNamespace_("")
-	, parentProjectNamespace_("")
-	, projectDirectory_("")
-	, parentProjectDirectory_("")
-	, namespaceUri_("")
-	, nodeElementVec_()
+
+	, nodeInfo_()
 	{
 	}
 
@@ -55,109 +44,24 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	VariableTypeGenerator::generate(void)
+	VariableTypeGenerator::generate(const OpcUaNodeId& variableType)
 	{
-		OpcUaQualifiedName browseName;
-
-		// check information model
-		if (informationModel_ == nullptr) {
-			Log(Error, "information model is empty");
+		// check parameter
+		if (informationModel_.get() == nullptr) {
+			Log(Error, "invalid parameter - information model is null");
 			return false;
 		}
 
-		// find variable node
-		variableTypeNode_ = informationModel_->find(variableTypeNodeId_);
-		if (!variableTypeNode_) {
-			Log(Error, "event type do not not exist in information model")
-				.parameter("VariableType", variableTypeNodeId_);
+		// create node infos
+		if (!nodeInfo_.init(variableType, informationModel_)) {
 			return false;
 		}
+		//nodeInfo_.log();
 
-		// get variable type number
-		if (variableTypeNodeId_.nodeIdType() != OpcUaBuildInType_OpcUaUInt32) {
-			Log(Error, "variable type node id mismatch - id must be a uint32 value")
-				.parameter("VariableType", variableTypeNodeId_);
-			return false;
-		}
-		variableTypeNumber_ = variableTypeNodeId_.nodeId<uint32_t>();
-
-		// find parent variable type node
-		InformationModelAccess ima;
-		ima.informationModel(informationModel_);
-		if (!ima.getSubType(variableTypeNode_, parentVariableTypeNodeId_)) {
-			Log(Error, "parent variable type do not not exist in information model")
-				.parameter("VariableType", variableTypeNodeId_);
-			return false;
-		}
-		parentVariableTypeNode_ = informationModel_->find(parentVariableTypeNodeId_);
-		if (!parentVariableTypeNode_) {
-			Log(Error, "parent variable type do not not exist in information model")
-				.parameter("VariableType", variableTypeNodeId_);
-			return false;
-		}
-
-		// get variable type name
-		if (!variableTypeNode_->getBrowseName(browseName)) {
-			Log(Error, "variable name not found in node")
-				.parameter("VariableType", variableTypeNodeId_);
-			return false;
-		}
-		variableTypeName_ = browseName.name().toStdString();
-
-		// get opc ua namesapce name
-		if (variableTypeNodeId_.namespaceIndex() != 0) {
-			// FIXME: todo
-		}
-		else {
-			namespaceUri_ = "http://opcfoundation.org/UA/";
-		}
-
-		// get parent variable type name
-		if (!parentVariableTypeNode_->getBrowseName(browseName)) {
-			Log(Error, "parent variable name not found in node")
-				.parameter("VariableType", variableTypeNodeId_)
-				.parameter("ParentVariableType", parentVariableTypeNodeId_);
-			return false;
-		}
-		parentVariableTypeName_ = browseName.name().toStdString();
-
-		// set project directory
-		if (projectDirectory_ == "") {
-			if (variableTypeNodeId_.namespaceIndex() == 0) {
-				projectDirectory_ = "StandardVariableType";
-			}
-			else {
-				projectDirectory_ = "CustomerVariableType";
-			}
-		}
-
-		// set parent project directory
-		if (parentProjectDirectory_ == "") {
-			if (parentVariableTypeNodeId_.namespaceIndex() == 0) {
-				parentProjectDirectory_ = "StandardVariableType";
-			}
-			else {
-				parentProjectDirectory_ = "CustomerVariableType";
-			}
-		}
-
-		// set project namespace
-		if (projectNamespace_ == "") {
-			projectNamespace_ = "OpcUaStackServer";
-		}
-
-		// set parent project namespace
-		if (parentProjectNamespace_ == "") {
-			parentProjectNamespace_ = "OpcUaStackServer";
-		}
-
-		// create variable element list
-		if (!createNodeElementVec("", variableTypeNodeId_)) {
-			return false;
-		}
-
-		// generate source file and header file
-		return generateSource() && generateHeader();
+		// generate header and source content
+		return
+			generateHeader() &&
+			generateSource();
 	}
 
 	void
@@ -166,10 +70,11 @@ namespace OpcUaStackServer
 		informationModel_ = informationModel;
 	}
 
-	void
-	VariableTypeGenerator::variableType(OpcUaNodeId& variableTypeNodeId)
+	bool
+	VariableTypeGenerator::setNamespaceEntry(const std::string& namespaceEntry)
 	{
-		variableTypeNodeId_ = variableTypeNodeId;
+		// FIXME: todo
+		return false;
 	}
 
 	std::string&
@@ -184,160 +89,11 @@ namespace OpcUaStackServer
 		return headerContent_;
 	}
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// private functions
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	std::string
-	VariableTypeGenerator::getTypeNameFromNodeId(OpcUaNodeId& typeNodeId)
-	{
-		// build in type possible
-		if (typeNodeId.namespaceIndex() == 0 && typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
-			uint32_t type;
-			uint16_t namespaceIndex;
-			typeNodeId.get(type, namespaceIndex);
-			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
-			if (buildInType != "Unknown") return buildInType;
-		}
-
-		// get property node class
-		BaseNodeClass::SPtr nodeClass = informationModel_->find(typeNodeId);
-		if (!nodeClass) {
-			return "Unknown";
-		}
-
-		// get property class name
-		OpcUaQualifiedName browseName;
-		if (!nodeClass->getBrowseName(browseName)) {
-			return "Unknown";
-		}
-
-		return browseName.name().toStdString();
-	}
-
-	bool
-	VariableTypeGenerator::createNodeElementVec(
-		const std::string& prefix,
-		OpcUaNodeId& nodeId
-	)
-	{
-		bool success;
-
-		BaseNodeClass::SPtr nodeClass = informationModel_->find(nodeId);
-		if (!nodeClass) {
-			Log(Error, "node not exist in information model")
-				.parameter("PropertyNodeId", nodeId);
-			return false;
-		}
-
-		InformationModelAccess ima;
-		std::vector<OpcUaNodeId> referenceTypeVec;
-		referenceTypeVec.push_back(OpcUaNodeId(46));
-		referenceTypeVec.push_back(OpcUaNodeId(47));
-		std::vector<OpcUaNodeId> childNodeIdVec;
-		std::vector<OpcUaNodeId>::iterator it;
-		ima.informationModel(informationModel_);
-		success = ima.getChildHierarchically(
-			nodeClass,
-			referenceTypeVec,
-			childNodeIdVec
-		);
-		if (!success) {
-			Log(Error, "variable properties error")
-				.parameter("VariableType", variableTypeNodeId_);
-			return false;
-		}
-
-		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
-			// get child node class
-			BaseNodeClass::SPtr childNodeClass = informationModel_->find(*it);
-			if (!childNodeClass) {
-				Log(Error, "child node not exist in information model")
-					.parameter("ParentNodeId", nodeId)
-					.parameter("ChildNodeId", *it);
-				return false;
-			}
-
-			// use only variable class
-			NodeClass::Enum nodeClassType;
-			childNodeClass->getNodeClass(nodeClassType);
-			if (nodeClassType != NodeClass::EnumVariable) {
-				continue;
-			}
-
-			// get browse name
-			OpcUaQualifiedName browseName;
-			if (!childNodeClass->getBrowseName(browseName)) {
-				Log(Error, "browse name not found in node")
-					.parameter("ParentNodeId", nodeId)
-					.parameter("ChildNodeId", *it);
-				return false;
-			}
-
-			// create full name
-			std::string fullName = prefix;
-			if (prefix.size() > 0) {
-				fullName.append("_");
-			}
-			fullName.append(browseName.toString());
-
-			// create function name
-			std::string functionName = fullName;
-			functionName[0] = boost::to_lower_copy(functionName.substr(0,1))[0];
-
-			// create global variable name
-			std::string globalVariableName = functionName;
-			globalVariableName.append("_");
-
-			// create local variable name
-			std::string localVariableName = functionName;
-
-			// create data type name
-			// get property type
-			OpcUaNodeId dataTypeNodeId;
-			if (!childNodeClass->getDataType(dataTypeNodeId)) {
-				Log(Error, "child data type not found in node")
-					.parameter("ParentNodeId", nodeId)
-					.parameter("ChildNodeId", *it);
-				return false;
-			}
-			std::string dataTypeName = getTypeNameFromNodeId(dataTypeNodeId);
-			if (dataTypeName == "Unknown") {
-				Log(Error, "child data type is not a build in type")
-					.parameter("ParentNodeId", nodeId)
-					.parameter("ChildNodeId", *it)
-					.parameter("DataTypeNodeId", dataTypeNodeId);
-				return false;
-			}
-
-			// create new variable element
-			NodeElement::SPtr nodeElement = constructSPtr<NodeElement>();
-			nodeElement->prefix(prefix);
-			nodeElement->nodeId(*it);
-			nodeElement->browseName(browseName);
-			nodeElement->fullName(fullName);
-			nodeElement->globalVariableName(globalVariableName);
-			nodeElement->localVariableName(localVariableName);
-			nodeElement->functionName(functionName);
-			nodeElement->dataTypeName(dataTypeName);
-			nodeElement->log();
-			nodeElementVec_.push_back(nodeElement);
-
-			if (!createNodeElementVec(fullName, *it)) {
-				return false;
-			}
-		}
-
-		return true;
-	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// header functions
+	// header
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -347,10 +103,13 @@ namespace OpcUaStackServer
 		return
 			generateHeaderComments() &&
 			generateHeaderBegin() &&
-			generateHeaderClassBegin("    ") &&
-				generateHeaderClassPublic("        ") &&
-				generateHeaderClassPrivate("    ") &&
-		    generateHeaderClassEnd("    ") &&
+			    generateHeaderClassBegin("   ") &&
+				    generateHeaderClassPublicFunction("        ") &&
+			        //generateHeaderClassExtensionInterface("        ") &&
+			        //generateHeaderClassPublic("        ") &&
+			        generateHeaderClassPrivate("    ") &&
+			        generateHeaderClassValueDefinition("        ") &&
+				generateHeaderClassEnd("   ") &&
 			generateHeaderEnd();
 	}
 
@@ -360,14 +119,14 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << "/*" << std::endl;
-		ss << "    VariableTypeClass: " << variableTypeName_ << std::endl;
+		ss << "    VariableTypeClass: " << nodeInfo_.className() << std::endl;
 		ss << std::endl;
 		ss << "    Generated Source Code - please do not change this source code" << std::endl;
 		ss << std::endl;
 		ss << "    VariableTypeCodeGenerator Version:"  << std::endl;
 		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
 		ss << std::endl;
-		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
+		ss << "    Autor:     Kai Huebl (kai@huebl-sgh.de)" << std::endl;
 		ss << "*/" << std::endl;
 
 		headerContent_ += ss.str();
@@ -383,8 +142,8 @@ namespace OpcUaStackServer
 		// added defines
 		//
 		ss << std::endl;
-		ss << "#ifndef __" << projectNamespace_ << "_" << variableTypeName_ << "_h__" << std::endl;
-		ss << "#define __" << projectNamespace_ << "_" << variableTypeName_ << "_h__" << std::endl;
+		ss << "#ifndef __" << nodeInfo_.namespaceName() << "_" << nodeInfo_.className() << "_h__" << std::endl;
+		ss << "#define __" << nodeInfo_.namespaceName() << "_" << nodeInfo_.className() << "_h__" << std::endl;
 
 		//
 		// added includes
@@ -392,18 +151,15 @@ namespace OpcUaStackServer
 		ss << std::endl;
 		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
-		ss << "#include \"OpcUaStackServer/VariableType/ServerVariables.h\"" << std::endl;
-		ss << "#include \"" << parentProjectNamespace_ << "/" << parentProjectDirectory_ << "/" << parentVariableTypeName_ << ".h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+		ss << "#include \"OpcUaStackServer/VariableType/VariableBase.h\"" << std::endl;
 
 		//
 		// added namespace
 		//
-		if (projectNamespace_ != parentProjectNamespace_) {
-			ss << "using namespace " << parentProjectNamespace_ << ";";
-			ss << std::endl;
-		}
 		ss << std::endl;
-		ss << "namespace " << projectNamespace_ << std::endl;
+		ss << "namespace " << nodeInfo_.namespaceName() << std::endl;
 		ss << "{" << std::endl;
 
 		headerContent_ += ss.str();
@@ -440,14 +196,38 @@ namespace OpcUaStackServer
 		// added class
 		//
 		ss << prefix << std::endl;
-		ss << prefix << "class DLLEXPORT " << variableTypeName_ << std::endl;
-		ss << prefix << ": public " << parentVariableTypeName_ << std::endl;
+		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << std::endl;
+		ss << prefix << ": public VariableBase" << std::endl;
+
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
-		ss << prefix << "    typedef boost::shared_ptr<" << variableTypeName_  << "> SPtr;" << std::endl;
+		ss << prefix << "    typedef boost::shared_ptr<" << nodeInfo_.className()  << "> SPtr;" << std::endl;
+		ss << prefix << "    typedef std::vector<" << nodeInfo_.className() << "::SPtr> Vec;" << std::endl;
 		ss << prefix << std::endl;
-		ss << prefix << "    " << variableTypeName_ << "(void);" << std::endl;
-		ss << prefix << "    virtual ~" << variableTypeName_ << "(void);" << std::endl;
+		ss << prefix << "    " << nodeInfo_.className() << "(void);" << std::endl;
+		ss << prefix << "    " << nodeInfo_.className() << "(const " << nodeInfo_.className() << "& value);" << std::endl;
+		ss << prefix << "    virtual ~" << nodeInfo_.className() << "(void);" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateHeaderClassPublicFunction(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt  = variableTypeField.second;
+			ss << std::endl;
+			ss << prefix << "//" << std::endl;
+			ss << prefix << "// " << vt->dataTypeDescription() << std::endl;
+			ss << prefix << "//" << std::endl;
+			ss << prefix << "void " << vt->functionName() << "(ServerVariable::SPtr& serverVariable);" << std::endl;
+			ss << prefix << "ServerVariable::SPtr& " << vt->functionName() << "(void);" << std::endl;
+			ss << prefix << "bool get_" << vt->name() << "(OpcUaDataValue& dataValue);" << std::endl;
+			ss << prefix << "bool set_" << vt->name() << "(const OpcUaDataValue& dataValue);" << std::endl;
+		}
 
 		headerContent_ += ss.str();
 		return true;
@@ -469,55 +249,40 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	VariableTypeGenerator::generateHeaderClassPublic(const std::string& prefix)
+	VariableTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
 	{
 		std::stringstream ss;
 
-		ss << prefix << "virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);" << std::endl;
+		//
+		// added private
+		//
 		ss << prefix << std::endl;
-
-		NodeElement::Vec::iterator it;
-		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
-			NodeElement::SPtr nodeElement = *it;
-			std::string functionName = nodeElement->functionName();
-			std::string browseName = nodeElement->browseName();
-
-			ss << prefix << "BaseNodeClass::SPtr " << functionName << "(void);" << std::endl;
-			ss << prefix << "bool set" << browseName << "(const OpcUaDataValue& dataValue);" << std::endl;
-			ss << prefix << "bool get" << browseName << "(OpcUaDataValue& dataValue);" << std::endl;
-			ss << prefix << "void setUpdateCallback" << browseName << "(Callback::SPtr& callback);" << std::endl;
-			ss << prefix << std::endl;
-		}
+		ss << prefix << "  private:" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
 	}
 
 	bool
-	VariableTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
+	VariableTypeGenerator::generateHeaderClassValueDefinition(const std::string& prefix)
 	{
 		std::stringstream ss;
 
-		ss << "      private:" << std::endl;
-		ss << prefix << "    std::string namespaceName_;" << std::endl;
-		ss << prefix << "    uint16_t namespaceIndex_;" << std::endl;
-
-		NodeElement::Vec::iterator it;
-		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
-			NodeElement::SPtr nodeElement = *it;
-			std::string variableName = nodeElement->globalVariableName();
-			ss << prefix << "    ServerVariable::SPtr " << variableName << ";" << std::endl;
+		//
+		// added value definition
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			ss << prefix << "ServerVariable::SPtr " << variableTypeField.second->variableName() << ";" << std::endl;
 		}
 
 		headerContent_ += ss.str();
 		return true;
 	}
 
-
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// source functions
+	// source
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -528,10 +293,9 @@ namespace OpcUaStackServer
 			generateSourceComments() &&
 			generateSourceIncludes() &&
 			generateSourceClassBegin() &&
-				generateSourceClassConstructor("    ") &&
+			    generateSourceClassConstructor("    ") &&
 				generateSourceClassDestructor("    ") &&
-				generateSourceLinkInstanceWithModel("    ") &&
-				generateSourceClassGetterSetter("    ") &&
+				generateSourceClassSetterGetter("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -541,7 +305,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << "/*" << std::endl;
-		ss << "    VariableTypeClass: " << variableTypeName_ << std::endl;
+		ss << "    VariableTypeClass: " << nodeInfo_.className() << std::endl;
 		ss << std::endl;
 		ss << "    Generated Source Code - please do not change this source code" << std::endl;
 		ss << std::endl;
@@ -561,7 +325,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << std::endl;
-		ss << "#include \"" << projectNamespace_ << "/" << projectDirectory_ << "/" << variableTypeName_ << ".h\"" << std::endl;
+		ss << "#include \"" << nodeInfo_.namespaceName() << "/" << nodeInfo_.directory() << "/" << nodeInfo_.className() << ".h\"" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
@@ -576,7 +340,7 @@ namespace OpcUaStackServer
 		// namespace
 		//
 		ss << std::endl;
-		ss << "namespace " <<  projectNamespace_ << std::endl;
+		ss << "namespace " <<  nodeInfo_.namespaceName() << std::endl;
 		ss << "{" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -603,28 +367,64 @@ namespace OpcUaStackServer
 	{
 		std::stringstream ss;
 
+		//
+		// added constructor
+		//
 		ss << prefix << std::endl;
-		ss << prefix << variableTypeName_ << "::" << variableTypeName_ << "(void)" << std::endl;
-		ss << prefix << ": " << parentVariableTypeName_ << "()" << std::endl;
-		ss << prefix << ", namespaceName_(\"" << namespaceUri_ << "\")" << std::endl;
-		ss << prefix << ", namespaceIndex_(0)" << std::endl;
+		if (nodeInfo_.description() != "") {
+			ss << prefix << "/**" << std::endl;
+			ss << prefix << " * " << nodeInfo_.description() << std::endl;
+			ss << prefix << " */" << std::endl;
+		}
 
-		NodeElement::Vec::iterator it;
-		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
-			NodeElement::SPtr nodeElement = *it;
-			std::string variableName = nodeElement->globalVariableName();
-			std::string browseName = nodeElement->browseName();
-			ss << prefix << ", " << variableName << "(constructSPtr<ServerVariable>(\"" << browseName << "\"))" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
+		ss << prefix << ": VariableBase()" << std::endl;
+
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
 		}
 
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    variableTypeNamespace(namespaceName_);" << std::endl;
-		ss << prefix << "    variableType(OpcUaNodeId(" << variableTypeNumber_ << "));" << std::endl;
-		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
-			NodeElement::SPtr nodeElement = *it;
-			std::string variableName = nodeElement->globalVariableName();
-			ss << prefix << "    serverVariables().registerServerVariable(" << variableName << ");" << std::endl;
+
+		ss << prefix << "    variableTypeNamespaceName(\"" << nodeInfo_.variableTypeNamespaceName() << "\");" << std::endl;
+		ss << prefix << "    variableTypeNodeId(" << nodeInfo_.getIdentifierAsString(nodeInfo_.variableTypeNodeId()) << ");" << std::endl;
+
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+			ss << prefix << "    setServerVariable(" << vt->variableName() << ");" << std::endl;
 		}
+
+		ss << prefix << "}" << std::endl;
+
+		//
+		// added copy constructor
+		//
+		ss << prefix << std::endl;
+		if (nodeInfo_.description() != "") {
+			ss << prefix << "/**" << std::endl;
+			ss << prefix << " * " << nodeInfo_.description() << std::endl;
+			ss << prefix << " */" << std::endl;
+		}
+
+		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(const " <<nodeInfo_.className()  << "& value)" << std::endl;
+		ss << prefix << ": VariableBase()" << std::endl;
+
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
+		}
+
+		ss << prefix << "{" << std::endl;
+
+		ss << prefix << "    variableTypeNamespaceName(\"" << nodeInfo_.variableTypeNamespaceName() << "\");" << std::endl;
+		ss << prefix << "    variableTypeNodeId(" << nodeInfo_.getIdentifierAsString(nodeInfo_.variableTypeNodeId()) << ");" << std::endl;
+
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+			ss << prefix << "    setServerVariable(" << vt->variableName() << ");" << std::endl;
+		}
+
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -636,8 +436,11 @@ namespace OpcUaStackServer
 	{
 		std::stringstream ss;
 
+		//
+		// added destructor
+		//
 		ss << prefix << std::endl;
-		ss << prefix << variableTypeName_ << "::~" << variableTypeName_ << "(void)" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::~" << nodeInfo_.className() << "(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -646,72 +449,64 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	VariableTypeGenerator::generateSourceLinkInstanceWithModel(const std::string& prefix)
+	VariableTypeGenerator::generateSourceClassSetterGetter(const std::string& prefix)
 	{
 		std::stringstream ss;
 
-		ss << prefix << std::endl;
-		ss << prefix << "bool" << std::endl;
-		ss << prefix << variableTypeName_ << "::linkInstanceWithModel(const OpcUaNodeId& nodeId)" << std::endl;
-		ss << prefix << "{" << std::endl;
-		ss << prefix << "    if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;" << std::endl;
+		//
+		// getter method (Server Variable)
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
 
-		NodeElement::Vec::iterator it;
-		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
-			NodeElement::SPtr nodeElement = *it;
-			std::string variableName = nodeElement->globalVariableName();
-			std::string browseName = nodeElement->browseName();
-
-			ss << prefix << "    " << variableName << "->addBrowsePath(nodeId, OpcUaQualifiedName(\"" << browseName << "\", namespaceIndex_));" << std::endl;
+			ss << std::endl;
+			ss << prefix << "ServerVariable::SPtr&" << std::endl;
+			ss << prefix << nodeInfo_.className() << "::" << vt->functionName() << "(void)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    return " << vt->variableName() << ";" << std::endl;
+			ss << prefix << "}" << std::endl;
 		}
 
-		ss << prefix << "    " << parentVariableTypeName_ << "::linkInstanceWithModel(nodeId);" << std::endl;
-		ss << prefix << "}" << std::endl;
+		//
+		// setter method (ServerVariable)
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
 
-		sourceContent_ += ss.str();
-		return true;
-	}
-
-	bool
-	VariableTypeGenerator::generateSourceClassGetterSetter(const std::string& prefix)
-	{
-		std::stringstream ss;
-
-		NodeElement::Vec::iterator it;
-		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
-			NodeElement::SPtr nodeElement = *it;
-			std::string variableName = nodeElement->globalVariableName();
-			std::string browseName = nodeElement->browseName();
-			std::string functionName = nodeElement->functionName();
-
-			ss << prefix << std::endl;
-			ss << prefix << "BaseNodeClass::SPtr" << std::endl;
-			ss << prefix << variableTypeName_ << "::" << functionName << "(void)" << std::endl;
-			ss << prefix << "{" << std::endl;
-			ss << prefix << "    return " << variableName << "->baseNode().lock();" << std::endl;
-			ss << prefix << "}" << std::endl;
-
-			ss << prefix << std::endl;
-			ss << prefix << "bool" << std::endl;
-			ss << prefix << variableTypeName_ << "::set" << browseName << "(const OpcUaDataValue& dataValue)" << std::endl;
-			ss << prefix << "{" << std::endl;
-			ss << prefix << "    return " << variableName << "->setDataValue(dataValue);" << std::endl;
-			ss << prefix << "}" << std::endl;
-
-			ss << prefix << std::endl;
-			ss << prefix << "bool" << std::endl;
-			ss << prefix << variableTypeName_ << "::get" << browseName << "(OpcUaDataValue& dataValue)" << std::endl;
-			ss << prefix << "{" << std::endl;
-			ss << prefix << "    return " << variableName << "->getDataValue(dataValue);" << std::endl;
-			ss << prefix << "}" << std::endl;
-
-			ss << prefix << std::endl;
+			ss << std::endl;
 			ss << prefix << "void" << std::endl;
-			ss << prefix << variableTypeName_ << "::setUpdateCallback" << browseName << "(Callback::SPtr& callback)" << std::endl;
+			ss << prefix << nodeInfo_.className() << "::" << vt->functionName() << "(ServerVariable::SPtr& serverVariable)" << std::endl;
 			ss << prefix << "{" << std::endl;
-			ss << prefix << "    " << variableName << "->callback(callback);" << std::endl;
+			ss << prefix << "    "<< vt->variableName() << " = serverVariable;" << std::endl;
 			ss << prefix << "}" << std::endl;
+		}
 
+		//
+		// getter method (OpcUaDataValue)
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+
+			ss << std::endl;
+			ss << prefix << "bool" << std::endl;
+			ss << prefix << nodeInfo_.className() << "::" << "get_" << vt->name() << "(OpcUaDataValue& dataValue)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    return " << vt->variableName() << "->getDataValue(dataValue);" << std::endl;
+			ss << prefix << "}" << std::endl;
+		}
+
+		//
+		// setter method (OpcUaDataValue)
+		//
+		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
+			auto& vt = variableTypeField.second;
+
+			ss << std::endl;
+			ss << prefix << "bool" << std::endl;
+			ss << prefix << nodeInfo_.className() << "::" << "set_" << vt->name() << "(const OpcUaDataValue& dataValue)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    return " << vt->variableName() << "->setDataValue(dataValue);" << std::endl;
+			ss << prefix << "}" << std::endl;
 		}
 
 		sourceContent_ += ss.str();

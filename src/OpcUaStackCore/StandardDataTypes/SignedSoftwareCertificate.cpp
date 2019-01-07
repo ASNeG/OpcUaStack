@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A software certificate with a digital signature.
+     */
+    SignedSoftwareCertificate::SignedSoftwareCertificate(const SignedSoftwareCertificate& value)
+    : Object()
+    , ExtensionObjectBase()
+    , certificateData_()
+    , signature_()
+    {
+        const_cast<SignedSoftwareCertificate*>(&value)->copyTo(*this);
+    }
+    
     SignedSoftwareCertificate::~SignedSoftwareCertificate(void)
     {
     }
@@ -132,16 +144,6 @@ namespace OpcUaStackCore
     {
         certificateData_.opcUaBinaryDecode(is);
         signature_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    SignedSoftwareCertificate::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    SignedSoftwareCertificate::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

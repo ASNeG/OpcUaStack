@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ElementOperand::ElementOperand(const ElementOperand& value)
+    : FilterOperand()
+    , index_()
+    {
+        const_cast<ElementOperand*>(&value)->copyTo(*this);
+    }
+    
     ElementOperand::~ElementOperand(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         FilterOperand::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,index_);
-    }
-    
-    bool
-    ElementOperand::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ElementOperand::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

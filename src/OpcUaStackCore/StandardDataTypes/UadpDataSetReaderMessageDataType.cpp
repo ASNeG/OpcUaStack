@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    UadpDataSetReaderMessageDataType::UadpDataSetReaderMessageDataType(const UadpDataSetReaderMessageDataType& value)
+    : DataSetReaderMessageDataType()
+    , groupVersion_()
+    , networkMessageNumber_()
+    , dataSetOffset_()
+    , dataSetClassId_()
+    , networkMessageContentMask_()
+    , dataSetMessageContentMask_()
+    , publishingInterval_()
+    , receiveOffset_()
+    , processingOffset_()
+    {
+        const_cast<UadpDataSetReaderMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     UadpDataSetReaderMessageDataType::~UadpDataSetReaderMessageDataType(void)
     {
     }
@@ -207,16 +222,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,publishingInterval_);
         OpcUaNumber::opcUaBinaryDecode(is,receiveOffset_);
         OpcUaNumber::opcUaBinaryDecode(is,processingOffset_);
-    }
-    
-    bool
-    UadpDataSetReaderMessageDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    UadpDataSetReaderMessageDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

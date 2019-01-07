@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    StructureDefinition::StructureDefinition(const StructureDefinition& value)
+    : DataTypeDefinition()
+    , defaultEncodingId_()
+    , baseDataType_()
+    , structureType_()
+    , fields_()
+    {
+        const_cast<StructureDefinition*>(&value)->copyTo(*this);
+    }
+    
     StructureDefinition::~StructureDefinition(void)
     {
     }
@@ -152,16 +162,6 @@ namespace OpcUaStackCore
         baseDataType_.opcUaBinaryDecode(is);
         structureType_.opcUaBinaryDecode(is);
         fields_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    StructureDefinition::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    StructureDefinition::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

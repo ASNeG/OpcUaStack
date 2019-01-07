@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    StructureDescription::StructureDescription(const StructureDescription& value)
+    : DataTypeDescription()
+    , structureDefinition_()
+    {
+        const_cast<StructureDescription*>(&value)->copyTo(*this);
+    }
+    
     StructureDescription::~StructureDescription(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         DataTypeDescription::opcUaBinaryDecode(is);
         structureDefinition_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    StructureDescription::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    StructureDescription::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

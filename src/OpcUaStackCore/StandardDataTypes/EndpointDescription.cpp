@@ -31,6 +31,24 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The description of a endpoint that can be used to access a server.
+     */
+    EndpointDescription::EndpointDescription(const EndpointDescription& value)
+    : Object()
+    , ExtensionObjectBase()
+    , endpointUrl_()
+    , server_()
+    , serverCertificate_()
+    , securityMode_()
+    , securityPolicyUri_()
+    , userIdentityTokens_()
+    , transportProfileUri_()
+    , securityLevel_()
+    {
+        const_cast<EndpointDescription*>(&value)->copyTo(*this);
+    }
+    
     EndpointDescription::~EndpointDescription(void)
     {
     }
@@ -198,16 +216,6 @@ namespace OpcUaStackCore
         userIdentityTokens_.opcUaBinaryDecode(is);
         transportProfileUri_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,securityLevel_);
-    }
-    
-    bool
-    EndpointDescription::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EndpointDescription::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

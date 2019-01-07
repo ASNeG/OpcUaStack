@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,1184 +15,1253 @@ namespace OpcUaStackServer
 {
     
     SessionDiagnosticsVariableType::SessionDiagnosticsVariableType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , sessionId_(constructSPtr<ServerVariable>("SessionId"))
-    , sessionName_(constructSPtr<ServerVariable>("SessionName"))
-    , clientDescription_(constructSPtr<ServerVariable>("ClientDescription"))
-    , serverUri_(constructSPtr<ServerVariable>("ServerUri"))
-    , endpointUrl_(constructSPtr<ServerVariable>("EndpointUrl"))
-    , localeIds_(constructSPtr<ServerVariable>("LocaleIds"))
-    , actualSessionTimeout_(constructSPtr<ServerVariable>("ActualSessionTimeout"))
-    , maxResponseMessageSize_(constructSPtr<ServerVariable>("MaxResponseMessageSize"))
-    , clientConnectionTime_(constructSPtr<ServerVariable>("ClientConnectionTime"))
-    , clientLastContactTime_(constructSPtr<ServerVariable>("ClientLastContactTime"))
-    , currentSubscriptionsCount_(constructSPtr<ServerVariable>("CurrentSubscriptionsCount"))
-    , currentMonitoredItemsCount_(constructSPtr<ServerVariable>("CurrentMonitoredItemsCount"))
-    , currentPublishRequestsInQueue_(constructSPtr<ServerVariable>("CurrentPublishRequestsInQueue"))
-    , totalRequestCount_(constructSPtr<ServerVariable>("TotalRequestCount"))
-    , unauthorizedRequestCount_(constructSPtr<ServerVariable>("UnauthorizedRequestCount"))
-    , readCount_(constructSPtr<ServerVariable>("ReadCount"))
-    , historyReadCount_(constructSPtr<ServerVariable>("HistoryReadCount"))
-    , writeCount_(constructSPtr<ServerVariable>("WriteCount"))
-    , historyUpdateCount_(constructSPtr<ServerVariable>("HistoryUpdateCount"))
-    , callCount_(constructSPtr<ServerVariable>("CallCount"))
-    , createMonitoredItemsCount_(constructSPtr<ServerVariable>("CreateMonitoredItemsCount"))
-    , modifyMonitoredItemsCount_(constructSPtr<ServerVariable>("ModifyMonitoredItemsCount"))
-    , setMonitoringModeCount_(constructSPtr<ServerVariable>("SetMonitoringModeCount"))
-    , setTriggeringCount_(constructSPtr<ServerVariable>("SetTriggeringCount"))
-    , deleteMonitoredItemsCount_(constructSPtr<ServerVariable>("DeleteMonitoredItemsCount"))
-    , createSubscriptionCount_(constructSPtr<ServerVariable>("CreateSubscriptionCount"))
-    , modifySubscriptionCount_(constructSPtr<ServerVariable>("ModifySubscriptionCount"))
-    , setPublishingModeCount_(constructSPtr<ServerVariable>("SetPublishingModeCount"))
-    , publishCount_(constructSPtr<ServerVariable>("PublishCount"))
-    , republishCount_(constructSPtr<ServerVariable>("RepublishCount"))
-    , transferSubscriptionsCount_(constructSPtr<ServerVariable>("TransferSubscriptionsCount"))
-    , deleteSubscriptionsCount_(constructSPtr<ServerVariable>("DeleteSubscriptionsCount"))
-    , addNodesCount_(constructSPtr<ServerVariable>("AddNodesCount"))
-    , addReferencesCount_(constructSPtr<ServerVariable>("AddReferencesCount"))
-    , deleteNodesCount_(constructSPtr<ServerVariable>("DeleteNodesCount"))
-    , deleteReferencesCount_(constructSPtr<ServerVariable>("DeleteReferencesCount"))
-    , browseCount_(constructSPtr<ServerVariable>("BrowseCount"))
-    , browseNextCount_(constructSPtr<ServerVariable>("BrowseNextCount"))
-    , translateBrowsePathsToNodeIdsCount_(constructSPtr<ServerVariable>("TranslateBrowsePathsToNodeIdsCount"))
-    , queryFirstCount_(constructSPtr<ServerVariable>("QueryFirstCount"))
-    , queryNextCount_(constructSPtr<ServerVariable>("QueryNextCount"))
-    , registerNodesCount_(constructSPtr<ServerVariable>("RegisterNodesCount"))
-    , unregisterNodesCount_(constructSPtr<ServerVariable>("UnregisterNodesCount"))
+    : VariableBase()
+    , actualSessionTimeout_Variable_(constructSPtr<ServerVariable>("ActualSessionTimeout_Variable"))
+    , addNodesCount_Variable_(constructSPtr<ServerVariable>("AddNodesCount_Variable"))
+    , addReferencesCount_Variable_(constructSPtr<ServerVariable>("AddReferencesCount_Variable"))
+    , browseCount_Variable_(constructSPtr<ServerVariable>("BrowseCount_Variable"))
+    , browseNextCount_Variable_(constructSPtr<ServerVariable>("BrowseNextCount_Variable"))
+    , callCount_Variable_(constructSPtr<ServerVariable>("CallCount_Variable"))
+    , clientConnectionTime_Variable_(constructSPtr<ServerVariable>("ClientConnectionTime_Variable"))
+    , clientDescription_Variable_(constructSPtr<ServerVariable>("ClientDescription_Variable"))
+    , clientLastContactTime_Variable_(constructSPtr<ServerVariable>("ClientLastContactTime_Variable"))
+    , createMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("CreateMonitoredItemsCount_Variable"))
+    , createSubscriptionCount_Variable_(constructSPtr<ServerVariable>("CreateSubscriptionCount_Variable"))
+    , currentMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("CurrentMonitoredItemsCount_Variable"))
+    , currentPublishRequestsInQueue_Variable_(constructSPtr<ServerVariable>("CurrentPublishRequestsInQueue_Variable"))
+    , currentSubscriptionsCount_Variable_(constructSPtr<ServerVariable>("CurrentSubscriptionsCount_Variable"))
+    , deleteMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("DeleteMonitoredItemsCount_Variable"))
+    , deleteNodesCount_Variable_(constructSPtr<ServerVariable>("DeleteNodesCount_Variable"))
+    , deleteReferencesCount_Variable_(constructSPtr<ServerVariable>("DeleteReferencesCount_Variable"))
+    , deleteSubscriptionsCount_Variable_(constructSPtr<ServerVariable>("DeleteSubscriptionsCount_Variable"))
+    , endpointUrl_Variable_(constructSPtr<ServerVariable>("EndpointUrl_Variable"))
+    , historyReadCount_Variable_(constructSPtr<ServerVariable>("HistoryReadCount_Variable"))
+    , historyUpdateCount_Variable_(constructSPtr<ServerVariable>("HistoryUpdateCount_Variable"))
+    , localeIds_Variable_(constructSPtr<ServerVariable>("LocaleIds_Variable"))
+    , maxResponseMessageSize_Variable_(constructSPtr<ServerVariable>("MaxResponseMessageSize_Variable"))
+    , modifyMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("ModifyMonitoredItemsCount_Variable"))
+    , modifySubscriptionCount_Variable_(constructSPtr<ServerVariable>("ModifySubscriptionCount_Variable"))
+    , publishCount_Variable_(constructSPtr<ServerVariable>("PublishCount_Variable"))
+    , queryFirstCount_Variable_(constructSPtr<ServerVariable>("QueryFirstCount_Variable"))
+    , queryNextCount_Variable_(constructSPtr<ServerVariable>("QueryNextCount_Variable"))
+    , readCount_Variable_(constructSPtr<ServerVariable>("ReadCount_Variable"))
+    , registerNodesCount_Variable_(constructSPtr<ServerVariable>("RegisterNodesCount_Variable"))
+    , republishCount_Variable_(constructSPtr<ServerVariable>("RepublishCount_Variable"))
+    , serverUri_Variable_(constructSPtr<ServerVariable>("ServerUri_Variable"))
+    , sessionId_Variable_(constructSPtr<ServerVariable>("SessionId_Variable"))
+    , sessionName_Variable_(constructSPtr<ServerVariable>("SessionName_Variable"))
+    , setMonitoringModeCount_Variable_(constructSPtr<ServerVariable>("SetMonitoringModeCount_Variable"))
+    , setPublishingModeCount_Variable_(constructSPtr<ServerVariable>("SetPublishingModeCount_Variable"))
+    , setTriggeringCount_Variable_(constructSPtr<ServerVariable>("SetTriggeringCount_Variable"))
+    , totalRequestCount_Variable_(constructSPtr<ServerVariable>("TotalRequestCount_Variable"))
+    , transferSubscriptionsCount_Variable_(constructSPtr<ServerVariable>("TransferSubscriptionsCount_Variable"))
+    , translateBrowsePathsToNodeIdsCount_Variable_(constructSPtr<ServerVariable>("TranslateBrowsePathsToNodeIdsCount_Variable"))
+    , unauthorizedRequestCount_Variable_(constructSPtr<ServerVariable>("UnauthorizedRequestCount_Variable"))
+    , unregisterNodesCount_Variable_(constructSPtr<ServerVariable>("UnregisterNodesCount_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , writeCount_Variable_(constructSPtr<ServerVariable>("WriteCount_Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2197));
-        serverVariables().registerServerVariable(sessionId_);
-        serverVariables().registerServerVariable(sessionName_);
-        serverVariables().registerServerVariable(clientDescription_);
-        serverVariables().registerServerVariable(serverUri_);
-        serverVariables().registerServerVariable(endpointUrl_);
-        serverVariables().registerServerVariable(localeIds_);
-        serverVariables().registerServerVariable(actualSessionTimeout_);
-        serverVariables().registerServerVariable(maxResponseMessageSize_);
-        serverVariables().registerServerVariable(clientConnectionTime_);
-        serverVariables().registerServerVariable(clientLastContactTime_);
-        serverVariables().registerServerVariable(currentSubscriptionsCount_);
-        serverVariables().registerServerVariable(currentMonitoredItemsCount_);
-        serverVariables().registerServerVariable(currentPublishRequestsInQueue_);
-        serverVariables().registerServerVariable(totalRequestCount_);
-        serverVariables().registerServerVariable(unauthorizedRequestCount_);
-        serverVariables().registerServerVariable(readCount_);
-        serverVariables().registerServerVariable(historyReadCount_);
-        serverVariables().registerServerVariable(writeCount_);
-        serverVariables().registerServerVariable(historyUpdateCount_);
-        serverVariables().registerServerVariable(callCount_);
-        serverVariables().registerServerVariable(createMonitoredItemsCount_);
-        serverVariables().registerServerVariable(modifyMonitoredItemsCount_);
-        serverVariables().registerServerVariable(setMonitoringModeCount_);
-        serverVariables().registerServerVariable(setTriggeringCount_);
-        serverVariables().registerServerVariable(deleteMonitoredItemsCount_);
-        serverVariables().registerServerVariable(createSubscriptionCount_);
-        serverVariables().registerServerVariable(modifySubscriptionCount_);
-        serverVariables().registerServerVariable(setPublishingModeCount_);
-        serverVariables().registerServerVariable(publishCount_);
-        serverVariables().registerServerVariable(republishCount_);
-        serverVariables().registerServerVariable(transferSubscriptionsCount_);
-        serverVariables().registerServerVariable(deleteSubscriptionsCount_);
-        serverVariables().registerServerVariable(addNodesCount_);
-        serverVariables().registerServerVariable(addReferencesCount_);
-        serverVariables().registerServerVariable(deleteNodesCount_);
-        serverVariables().registerServerVariable(deleteReferencesCount_);
-        serverVariables().registerServerVariable(browseCount_);
-        serverVariables().registerServerVariable(browseNextCount_);
-        serverVariables().registerServerVariable(translateBrowsePathsToNodeIdsCount_);
-        serverVariables().registerServerVariable(queryFirstCount_);
-        serverVariables().registerServerVariable(queryNextCount_);
-        serverVariables().registerServerVariable(registerNodesCount_);
-        serverVariables().registerServerVariable(unregisterNodesCount_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2197);
+        setServerVariable(actualSessionTimeout_Variable_);
+        setServerVariable(addNodesCount_Variable_);
+        setServerVariable(addReferencesCount_Variable_);
+        setServerVariable(browseCount_Variable_);
+        setServerVariable(browseNextCount_Variable_);
+        setServerVariable(callCount_Variable_);
+        setServerVariable(clientConnectionTime_Variable_);
+        setServerVariable(clientDescription_Variable_);
+        setServerVariable(clientLastContactTime_Variable_);
+        setServerVariable(createMonitoredItemsCount_Variable_);
+        setServerVariable(createSubscriptionCount_Variable_);
+        setServerVariable(currentMonitoredItemsCount_Variable_);
+        setServerVariable(currentPublishRequestsInQueue_Variable_);
+        setServerVariable(currentSubscriptionsCount_Variable_);
+        setServerVariable(deleteMonitoredItemsCount_Variable_);
+        setServerVariable(deleteNodesCount_Variable_);
+        setServerVariable(deleteReferencesCount_Variable_);
+        setServerVariable(deleteSubscriptionsCount_Variable_);
+        setServerVariable(endpointUrl_Variable_);
+        setServerVariable(historyReadCount_Variable_);
+        setServerVariable(historyUpdateCount_Variable_);
+        setServerVariable(localeIds_Variable_);
+        setServerVariable(maxResponseMessageSize_Variable_);
+        setServerVariable(modifyMonitoredItemsCount_Variable_);
+        setServerVariable(modifySubscriptionCount_Variable_);
+        setServerVariable(publishCount_Variable_);
+        setServerVariable(queryFirstCount_Variable_);
+        setServerVariable(queryNextCount_Variable_);
+        setServerVariable(readCount_Variable_);
+        setServerVariable(registerNodesCount_Variable_);
+        setServerVariable(republishCount_Variable_);
+        setServerVariable(serverUri_Variable_);
+        setServerVariable(sessionId_Variable_);
+        setServerVariable(sessionName_Variable_);
+        setServerVariable(setMonitoringModeCount_Variable_);
+        setServerVariable(setPublishingModeCount_Variable_);
+        setServerVariable(setTriggeringCount_Variable_);
+        setServerVariable(totalRequestCount_Variable_);
+        setServerVariable(transferSubscriptionsCount_Variable_);
+        setServerVariable(translateBrowsePathsToNodeIdsCount_Variable_);
+        setServerVariable(unauthorizedRequestCount_Variable_);
+        setServerVariable(unregisterNodesCount_Variable_);
+        setServerVariable(variable_);
+        setServerVariable(writeCount_Variable_);
+    }
+    
+    SessionDiagnosticsVariableType::SessionDiagnosticsVariableType(const SessionDiagnosticsVariableType& value)
+    : VariableBase()
+    , actualSessionTimeout_Variable_(constructSPtr<ServerVariable>("ActualSessionTimeout_Variable"))
+    , addNodesCount_Variable_(constructSPtr<ServerVariable>("AddNodesCount_Variable"))
+    , addReferencesCount_Variable_(constructSPtr<ServerVariable>("AddReferencesCount_Variable"))
+    , browseCount_Variable_(constructSPtr<ServerVariable>("BrowseCount_Variable"))
+    , browseNextCount_Variable_(constructSPtr<ServerVariable>("BrowseNextCount_Variable"))
+    , callCount_Variable_(constructSPtr<ServerVariable>("CallCount_Variable"))
+    , clientConnectionTime_Variable_(constructSPtr<ServerVariable>("ClientConnectionTime_Variable"))
+    , clientDescription_Variable_(constructSPtr<ServerVariable>("ClientDescription_Variable"))
+    , clientLastContactTime_Variable_(constructSPtr<ServerVariable>("ClientLastContactTime_Variable"))
+    , createMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("CreateMonitoredItemsCount_Variable"))
+    , createSubscriptionCount_Variable_(constructSPtr<ServerVariable>("CreateSubscriptionCount_Variable"))
+    , currentMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("CurrentMonitoredItemsCount_Variable"))
+    , currentPublishRequestsInQueue_Variable_(constructSPtr<ServerVariable>("CurrentPublishRequestsInQueue_Variable"))
+    , currentSubscriptionsCount_Variable_(constructSPtr<ServerVariable>("CurrentSubscriptionsCount_Variable"))
+    , deleteMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("DeleteMonitoredItemsCount_Variable"))
+    , deleteNodesCount_Variable_(constructSPtr<ServerVariable>("DeleteNodesCount_Variable"))
+    , deleteReferencesCount_Variable_(constructSPtr<ServerVariable>("DeleteReferencesCount_Variable"))
+    , deleteSubscriptionsCount_Variable_(constructSPtr<ServerVariable>("DeleteSubscriptionsCount_Variable"))
+    , endpointUrl_Variable_(constructSPtr<ServerVariable>("EndpointUrl_Variable"))
+    , historyReadCount_Variable_(constructSPtr<ServerVariable>("HistoryReadCount_Variable"))
+    , historyUpdateCount_Variable_(constructSPtr<ServerVariable>("HistoryUpdateCount_Variable"))
+    , localeIds_Variable_(constructSPtr<ServerVariable>("LocaleIds_Variable"))
+    , maxResponseMessageSize_Variable_(constructSPtr<ServerVariable>("MaxResponseMessageSize_Variable"))
+    , modifyMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("ModifyMonitoredItemsCount_Variable"))
+    , modifySubscriptionCount_Variable_(constructSPtr<ServerVariable>("ModifySubscriptionCount_Variable"))
+    , publishCount_Variable_(constructSPtr<ServerVariable>("PublishCount_Variable"))
+    , queryFirstCount_Variable_(constructSPtr<ServerVariable>("QueryFirstCount_Variable"))
+    , queryNextCount_Variable_(constructSPtr<ServerVariable>("QueryNextCount_Variable"))
+    , readCount_Variable_(constructSPtr<ServerVariable>("ReadCount_Variable"))
+    , registerNodesCount_Variable_(constructSPtr<ServerVariable>("RegisterNodesCount_Variable"))
+    , republishCount_Variable_(constructSPtr<ServerVariable>("RepublishCount_Variable"))
+    , serverUri_Variable_(constructSPtr<ServerVariable>("ServerUri_Variable"))
+    , sessionId_Variable_(constructSPtr<ServerVariable>("SessionId_Variable"))
+    , sessionName_Variable_(constructSPtr<ServerVariable>("SessionName_Variable"))
+    , setMonitoringModeCount_Variable_(constructSPtr<ServerVariable>("SetMonitoringModeCount_Variable"))
+    , setPublishingModeCount_Variable_(constructSPtr<ServerVariable>("SetPublishingModeCount_Variable"))
+    , setTriggeringCount_Variable_(constructSPtr<ServerVariable>("SetTriggeringCount_Variable"))
+    , totalRequestCount_Variable_(constructSPtr<ServerVariable>("TotalRequestCount_Variable"))
+    , transferSubscriptionsCount_Variable_(constructSPtr<ServerVariable>("TransferSubscriptionsCount_Variable"))
+    , translateBrowsePathsToNodeIdsCount_Variable_(constructSPtr<ServerVariable>("TranslateBrowsePathsToNodeIdsCount_Variable"))
+    , unauthorizedRequestCount_Variable_(constructSPtr<ServerVariable>("UnauthorizedRequestCount_Variable"))
+    , unregisterNodesCount_Variable_(constructSPtr<ServerVariable>("UnregisterNodesCount_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , writeCount_Variable_(constructSPtr<ServerVariable>("WriteCount_Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2197);
+        setServerVariable(actualSessionTimeout_Variable_);
+        setServerVariable(addNodesCount_Variable_);
+        setServerVariable(addReferencesCount_Variable_);
+        setServerVariable(browseCount_Variable_);
+        setServerVariable(browseNextCount_Variable_);
+        setServerVariable(callCount_Variable_);
+        setServerVariable(clientConnectionTime_Variable_);
+        setServerVariable(clientDescription_Variable_);
+        setServerVariable(clientLastContactTime_Variable_);
+        setServerVariable(createMonitoredItemsCount_Variable_);
+        setServerVariable(createSubscriptionCount_Variable_);
+        setServerVariable(currentMonitoredItemsCount_Variable_);
+        setServerVariable(currentPublishRequestsInQueue_Variable_);
+        setServerVariable(currentSubscriptionsCount_Variable_);
+        setServerVariable(deleteMonitoredItemsCount_Variable_);
+        setServerVariable(deleteNodesCount_Variable_);
+        setServerVariable(deleteReferencesCount_Variable_);
+        setServerVariable(deleteSubscriptionsCount_Variable_);
+        setServerVariable(endpointUrl_Variable_);
+        setServerVariable(historyReadCount_Variable_);
+        setServerVariable(historyUpdateCount_Variable_);
+        setServerVariable(localeIds_Variable_);
+        setServerVariable(maxResponseMessageSize_Variable_);
+        setServerVariable(modifyMonitoredItemsCount_Variable_);
+        setServerVariable(modifySubscriptionCount_Variable_);
+        setServerVariable(publishCount_Variable_);
+        setServerVariable(queryFirstCount_Variable_);
+        setServerVariable(queryNextCount_Variable_);
+        setServerVariable(readCount_Variable_);
+        setServerVariable(registerNodesCount_Variable_);
+        setServerVariable(republishCount_Variable_);
+        setServerVariable(serverUri_Variable_);
+        setServerVariable(sessionId_Variable_);
+        setServerVariable(sessionName_Variable_);
+        setServerVariable(setMonitoringModeCount_Variable_);
+        setServerVariable(setPublishingModeCount_Variable_);
+        setServerVariable(setTriggeringCount_Variable_);
+        setServerVariable(totalRequestCount_Variable_);
+        setServerVariable(transferSubscriptionsCount_Variable_);
+        setServerVariable(translateBrowsePathsToNodeIdsCount_Variable_);
+        setServerVariable(unauthorizedRequestCount_Variable_);
+        setServerVariable(unregisterNodesCount_Variable_);
+        setServerVariable(variable_);
+        setServerVariable(writeCount_Variable_);
     }
     
     SessionDiagnosticsVariableType::~SessionDiagnosticsVariableType(void)
     {
     }
-    
-    bool
-    SessionDiagnosticsVariableType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::actualSessionTimeout_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        sessionId_->addBrowsePath(nodeId, OpcUaQualifiedName("SessionId", namespaceIndex_));
-        sessionName_->addBrowsePath(nodeId, OpcUaQualifiedName("SessionName", namespaceIndex_));
-        clientDescription_->addBrowsePath(nodeId, OpcUaQualifiedName("ClientDescription", namespaceIndex_));
-        serverUri_->addBrowsePath(nodeId, OpcUaQualifiedName("ServerUri", namespaceIndex_));
-        endpointUrl_->addBrowsePath(nodeId, OpcUaQualifiedName("EndpointUrl", namespaceIndex_));
-        localeIds_->addBrowsePath(nodeId, OpcUaQualifiedName("LocaleIds", namespaceIndex_));
-        actualSessionTimeout_->addBrowsePath(nodeId, OpcUaQualifiedName("ActualSessionTimeout", namespaceIndex_));
-        maxResponseMessageSize_->addBrowsePath(nodeId, OpcUaQualifiedName("MaxResponseMessageSize", namespaceIndex_));
-        clientConnectionTime_->addBrowsePath(nodeId, OpcUaQualifiedName("ClientConnectionTime", namespaceIndex_));
-        clientLastContactTime_->addBrowsePath(nodeId, OpcUaQualifiedName("ClientLastContactTime", namespaceIndex_));
-        currentSubscriptionsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CurrentSubscriptionsCount", namespaceIndex_));
-        currentMonitoredItemsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CurrentMonitoredItemsCount", namespaceIndex_));
-        currentPublishRequestsInQueue_->addBrowsePath(nodeId, OpcUaQualifiedName("CurrentPublishRequestsInQueue", namespaceIndex_));
-        totalRequestCount_->addBrowsePath(nodeId, OpcUaQualifiedName("TotalRequestCount", namespaceIndex_));
-        unauthorizedRequestCount_->addBrowsePath(nodeId, OpcUaQualifiedName("UnauthorizedRequestCount", namespaceIndex_));
-        readCount_->addBrowsePath(nodeId, OpcUaQualifiedName("ReadCount", namespaceIndex_));
-        historyReadCount_->addBrowsePath(nodeId, OpcUaQualifiedName("HistoryReadCount", namespaceIndex_));
-        writeCount_->addBrowsePath(nodeId, OpcUaQualifiedName("WriteCount", namespaceIndex_));
-        historyUpdateCount_->addBrowsePath(nodeId, OpcUaQualifiedName("HistoryUpdateCount", namespaceIndex_));
-        callCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CallCount", namespaceIndex_));
-        createMonitoredItemsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CreateMonitoredItemsCount", namespaceIndex_));
-        modifyMonitoredItemsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("ModifyMonitoredItemsCount", namespaceIndex_));
-        setMonitoringModeCount_->addBrowsePath(nodeId, OpcUaQualifiedName("SetMonitoringModeCount", namespaceIndex_));
-        setTriggeringCount_->addBrowsePath(nodeId, OpcUaQualifiedName("SetTriggeringCount", namespaceIndex_));
-        deleteMonitoredItemsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("DeleteMonitoredItemsCount", namespaceIndex_));
-        createSubscriptionCount_->addBrowsePath(nodeId, OpcUaQualifiedName("CreateSubscriptionCount", namespaceIndex_));
-        modifySubscriptionCount_->addBrowsePath(nodeId, OpcUaQualifiedName("ModifySubscriptionCount", namespaceIndex_));
-        setPublishingModeCount_->addBrowsePath(nodeId, OpcUaQualifiedName("SetPublishingModeCount", namespaceIndex_));
-        publishCount_->addBrowsePath(nodeId, OpcUaQualifiedName("PublishCount", namespaceIndex_));
-        republishCount_->addBrowsePath(nodeId, OpcUaQualifiedName("RepublishCount", namespaceIndex_));
-        transferSubscriptionsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("TransferSubscriptionsCount", namespaceIndex_));
-        deleteSubscriptionsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("DeleteSubscriptionsCount", namespaceIndex_));
-        addNodesCount_->addBrowsePath(nodeId, OpcUaQualifiedName("AddNodesCount", namespaceIndex_));
-        addReferencesCount_->addBrowsePath(nodeId, OpcUaQualifiedName("AddReferencesCount", namespaceIndex_));
-        deleteNodesCount_->addBrowsePath(nodeId, OpcUaQualifiedName("DeleteNodesCount", namespaceIndex_));
-        deleteReferencesCount_->addBrowsePath(nodeId, OpcUaQualifiedName("DeleteReferencesCount", namespaceIndex_));
-        browseCount_->addBrowsePath(nodeId, OpcUaQualifiedName("BrowseCount", namespaceIndex_));
-        browseNextCount_->addBrowsePath(nodeId, OpcUaQualifiedName("BrowseNextCount", namespaceIndex_));
-        translateBrowsePathsToNodeIdsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("TranslateBrowsePathsToNodeIdsCount", namespaceIndex_));
-        queryFirstCount_->addBrowsePath(nodeId, OpcUaQualifiedName("QueryFirstCount", namespaceIndex_));
-        queryNextCount_->addBrowsePath(nodeId, OpcUaQualifiedName("QueryNextCount", namespaceIndex_));
-        registerNodesCount_->addBrowsePath(nodeId, OpcUaQualifiedName("RegisterNodesCount", namespaceIndex_));
-        unregisterNodesCount_->addBrowsePath(nodeId, OpcUaQualifiedName("UnregisterNodesCount", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return actualSessionTimeout_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::sessionId(void)
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::addNodesCount_Variable(void)
     {
-        return sessionId_->baseNode().lock();
+        return addNodesCount_Variable_;
     }
-    
-    bool
-    SessionDiagnosticsVariableType::setSessionId(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::addReferencesCount_Variable(void)
     {
-        return sessionId_->setDataValue(dataValue);
+        return addReferencesCount_Variable_;
     }
-    
-    bool
-    SessionDiagnosticsVariableType::getSessionId(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::browseCount_Variable(void)
     {
-        return sessionId_->getDataValue(dataValue);
+        return browseCount_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::browseNextCount_Variable(void)
+    {
+        return browseNextCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::callCount_Variable(void)
+    {
+        return callCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::clientConnectionTime_Variable(void)
+    {
+        return clientConnectionTime_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::clientDescription_Variable(void)
+    {
+        return clientDescription_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::clientLastContactTime_Variable(void)
+    {
+        return clientLastContactTime_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::createMonitoredItemsCount_Variable(void)
+    {
+        return createMonitoredItemsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::createSubscriptionCount_Variable(void)
+    {
+        return createSubscriptionCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::currentMonitoredItemsCount_Variable(void)
+    {
+        return currentMonitoredItemsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::currentPublishRequestsInQueue_Variable(void)
+    {
+        return currentPublishRequestsInQueue_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::currentSubscriptionsCount_Variable(void)
+    {
+        return currentSubscriptionsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::deleteMonitoredItemsCount_Variable(void)
+    {
+        return deleteMonitoredItemsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::deleteNodesCount_Variable(void)
+    {
+        return deleteNodesCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::deleteReferencesCount_Variable(void)
+    {
+        return deleteReferencesCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::deleteSubscriptionsCount_Variable(void)
+    {
+        return deleteSubscriptionsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::endpointUrl_Variable(void)
+    {
+        return endpointUrl_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::historyReadCount_Variable(void)
+    {
+        return historyReadCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::historyUpdateCount_Variable(void)
+    {
+        return historyUpdateCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::localeIds_Variable(void)
+    {
+        return localeIds_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::maxResponseMessageSize_Variable(void)
+    {
+        return maxResponseMessageSize_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::modifyMonitoredItemsCount_Variable(void)
+    {
+        return modifyMonitoredItemsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::modifySubscriptionCount_Variable(void)
+    {
+        return modifySubscriptionCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::publishCount_Variable(void)
+    {
+        return publishCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::queryFirstCount_Variable(void)
+    {
+        return queryFirstCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::queryNextCount_Variable(void)
+    {
+        return queryNextCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::readCount_Variable(void)
+    {
+        return readCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::registerNodesCount_Variable(void)
+    {
+        return registerNodesCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::republishCount_Variable(void)
+    {
+        return republishCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::serverUri_Variable(void)
+    {
+        return serverUri_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::sessionId_Variable(void)
+    {
+        return sessionId_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::sessionName_Variable(void)
+    {
+        return sessionName_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::setMonitoringModeCount_Variable(void)
+    {
+        return setMonitoringModeCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::setPublishingModeCount_Variable(void)
+    {
+        return setPublishingModeCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::setTriggeringCount_Variable(void)
+    {
+        return setTriggeringCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::totalRequestCount_Variable(void)
+    {
+        return totalRequestCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::transferSubscriptionsCount_Variable(void)
+    {
+        return transferSubscriptionsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::translateBrowsePathsToNodeIdsCount_Variable(void)
+    {
+        return translateBrowsePathsToNodeIdsCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::unauthorizedRequestCount_Variable(void)
+    {
+        return unauthorizedRequestCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::unregisterNodesCount_Variable(void)
+    {
+        return unregisterNodesCount_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::variable(void)
+    {
+        return variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionDiagnosticsVariableType::writeCount_Variable(void)
+    {
+        return writeCount_Variable_;
+    }
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackSessionId(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::actualSessionTimeout_Variable(ServerVariable::SPtr& serverVariable)
     {
-        sessionId_->callback(callback);
+        actualSessionTimeout_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::sessionName(void)
-    {
-        return sessionName_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setSessionName(const OpcUaDataValue& dataValue)
-    {
-        return sessionName_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getSessionName(OpcUaDataValue& dataValue)
-    {
-        return sessionName_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackSessionName(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::addNodesCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        sessionName_->callback(callback);
+        addNodesCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::clientDescription(void)
-    {
-        return clientDescription_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setClientDescription(const OpcUaDataValue& dataValue)
-    {
-        return clientDescription_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getClientDescription(OpcUaDataValue& dataValue)
-    {
-        return clientDescription_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackClientDescription(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::addReferencesCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        clientDescription_->callback(callback);
+        addReferencesCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::serverUri(void)
-    {
-        return serverUri_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setServerUri(const OpcUaDataValue& dataValue)
-    {
-        return serverUri_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getServerUri(OpcUaDataValue& dataValue)
-    {
-        return serverUri_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackServerUri(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::browseCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        serverUri_->callback(callback);
+        browseCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::endpointUrl(void)
-    {
-        return endpointUrl_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setEndpointUrl(const OpcUaDataValue& dataValue)
-    {
-        return endpointUrl_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getEndpointUrl(OpcUaDataValue& dataValue)
-    {
-        return endpointUrl_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackEndpointUrl(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::browseNextCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        endpointUrl_->callback(callback);
+        browseNextCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::localeIds(void)
-    {
-        return localeIds_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setLocaleIds(const OpcUaDataValue& dataValue)
-    {
-        return localeIds_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getLocaleIds(OpcUaDataValue& dataValue)
-    {
-        return localeIds_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackLocaleIds(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::callCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        localeIds_->callback(callback);
+        callCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::actualSessionTimeout(void)
-    {
-        return actualSessionTimeout_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setActualSessionTimeout(const OpcUaDataValue& dataValue)
-    {
-        return actualSessionTimeout_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getActualSessionTimeout(OpcUaDataValue& dataValue)
-    {
-        return actualSessionTimeout_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackActualSessionTimeout(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::clientConnectionTime_Variable(ServerVariable::SPtr& serverVariable)
     {
-        actualSessionTimeout_->callback(callback);
+        clientConnectionTime_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::maxResponseMessageSize(void)
-    {
-        return maxResponseMessageSize_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setMaxResponseMessageSize(const OpcUaDataValue& dataValue)
-    {
-        return maxResponseMessageSize_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getMaxResponseMessageSize(OpcUaDataValue& dataValue)
-    {
-        return maxResponseMessageSize_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackMaxResponseMessageSize(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::clientDescription_Variable(ServerVariable::SPtr& serverVariable)
     {
-        maxResponseMessageSize_->callback(callback);
+        clientDescription_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::clientConnectionTime(void)
-    {
-        return clientConnectionTime_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setClientConnectionTime(const OpcUaDataValue& dataValue)
-    {
-        return clientConnectionTime_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getClientConnectionTime(OpcUaDataValue& dataValue)
-    {
-        return clientConnectionTime_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackClientConnectionTime(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::clientLastContactTime_Variable(ServerVariable::SPtr& serverVariable)
     {
-        clientConnectionTime_->callback(callback);
+        clientLastContactTime_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::clientLastContactTime(void)
-    {
-        return clientLastContactTime_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setClientLastContactTime(const OpcUaDataValue& dataValue)
-    {
-        return clientLastContactTime_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getClientLastContactTime(OpcUaDataValue& dataValue)
-    {
-        return clientLastContactTime_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackClientLastContactTime(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::createMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        clientLastContactTime_->callback(callback);
+        createMonitoredItemsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::currentSubscriptionsCount(void)
-    {
-        return currentSubscriptionsCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setCurrentSubscriptionsCount(const OpcUaDataValue& dataValue)
-    {
-        return currentSubscriptionsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getCurrentSubscriptionsCount(OpcUaDataValue& dataValue)
-    {
-        return currentSubscriptionsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackCurrentSubscriptionsCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::createSubscriptionCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        currentSubscriptionsCount_->callback(callback);
+        createSubscriptionCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::currentMonitoredItemsCount(void)
-    {
-        return currentMonitoredItemsCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setCurrentMonitoredItemsCount(const OpcUaDataValue& dataValue)
-    {
-        return currentMonitoredItemsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getCurrentMonitoredItemsCount(OpcUaDataValue& dataValue)
-    {
-        return currentMonitoredItemsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackCurrentMonitoredItemsCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::currentMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        currentMonitoredItemsCount_->callback(callback);
+        currentMonitoredItemsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::currentPublishRequestsInQueue(void)
-    {
-        return currentPublishRequestsInQueue_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setCurrentPublishRequestsInQueue(const OpcUaDataValue& dataValue)
-    {
-        return currentPublishRequestsInQueue_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getCurrentPublishRequestsInQueue(OpcUaDataValue& dataValue)
-    {
-        return currentPublishRequestsInQueue_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackCurrentPublishRequestsInQueue(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::currentPublishRequestsInQueue_Variable(ServerVariable::SPtr& serverVariable)
     {
-        currentPublishRequestsInQueue_->callback(callback);
+        currentPublishRequestsInQueue_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::totalRequestCount(void)
-    {
-        return totalRequestCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setTotalRequestCount(const OpcUaDataValue& dataValue)
-    {
-        return totalRequestCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getTotalRequestCount(OpcUaDataValue& dataValue)
-    {
-        return totalRequestCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackTotalRequestCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::currentSubscriptionsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        totalRequestCount_->callback(callback);
+        currentSubscriptionsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::unauthorizedRequestCount(void)
-    {
-        return unauthorizedRequestCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setUnauthorizedRequestCount(const OpcUaDataValue& dataValue)
-    {
-        return unauthorizedRequestCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getUnauthorizedRequestCount(OpcUaDataValue& dataValue)
-    {
-        return unauthorizedRequestCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackUnauthorizedRequestCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::deleteMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        unauthorizedRequestCount_->callback(callback);
+        deleteMonitoredItemsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::readCount(void)
-    {
-        return readCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setReadCount(const OpcUaDataValue& dataValue)
-    {
-        return readCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getReadCount(OpcUaDataValue& dataValue)
-    {
-        return readCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackReadCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::deleteNodesCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        readCount_->callback(callback);
+        deleteNodesCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::historyReadCount(void)
-    {
-        return historyReadCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setHistoryReadCount(const OpcUaDataValue& dataValue)
-    {
-        return historyReadCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getHistoryReadCount(OpcUaDataValue& dataValue)
-    {
-        return historyReadCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackHistoryReadCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::deleteReferencesCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        historyReadCount_->callback(callback);
+        deleteReferencesCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::writeCount(void)
-    {
-        return writeCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setWriteCount(const OpcUaDataValue& dataValue)
-    {
-        return writeCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getWriteCount(OpcUaDataValue& dataValue)
-    {
-        return writeCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackWriteCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::deleteSubscriptionsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        writeCount_->callback(callback);
+        deleteSubscriptionsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::historyUpdateCount(void)
-    {
-        return historyUpdateCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setHistoryUpdateCount(const OpcUaDataValue& dataValue)
-    {
-        return historyUpdateCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getHistoryUpdateCount(OpcUaDataValue& dataValue)
-    {
-        return historyUpdateCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackHistoryUpdateCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::endpointUrl_Variable(ServerVariable::SPtr& serverVariable)
     {
-        historyUpdateCount_->callback(callback);
+        endpointUrl_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::callCount(void)
-    {
-        return callCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setCallCount(const OpcUaDataValue& dataValue)
-    {
-        return callCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getCallCount(OpcUaDataValue& dataValue)
-    {
-        return callCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackCallCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::historyReadCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        callCount_->callback(callback);
+        historyReadCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::createMonitoredItemsCount(void)
-    {
-        return createMonitoredItemsCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setCreateMonitoredItemsCount(const OpcUaDataValue& dataValue)
-    {
-        return createMonitoredItemsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getCreateMonitoredItemsCount(OpcUaDataValue& dataValue)
-    {
-        return createMonitoredItemsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackCreateMonitoredItemsCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::historyUpdateCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        createMonitoredItemsCount_->callback(callback);
+        historyUpdateCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::modifyMonitoredItemsCount(void)
-    {
-        return modifyMonitoredItemsCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setModifyMonitoredItemsCount(const OpcUaDataValue& dataValue)
-    {
-        return modifyMonitoredItemsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getModifyMonitoredItemsCount(OpcUaDataValue& dataValue)
-    {
-        return modifyMonitoredItemsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackModifyMonitoredItemsCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::localeIds_Variable(ServerVariable::SPtr& serverVariable)
     {
-        modifyMonitoredItemsCount_->callback(callback);
+        localeIds_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::setMonitoringModeCount(void)
-    {
-        return setMonitoringModeCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setSetMonitoringModeCount(const OpcUaDataValue& dataValue)
-    {
-        return setMonitoringModeCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getSetMonitoringModeCount(OpcUaDataValue& dataValue)
-    {
-        return setMonitoringModeCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackSetMonitoringModeCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::maxResponseMessageSize_Variable(ServerVariable::SPtr& serverVariable)
     {
-        setMonitoringModeCount_->callback(callback);
+        maxResponseMessageSize_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::setTriggeringCount(void)
-    {
-        return setTriggeringCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setSetTriggeringCount(const OpcUaDataValue& dataValue)
-    {
-        return setTriggeringCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getSetTriggeringCount(OpcUaDataValue& dataValue)
-    {
-        return setTriggeringCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackSetTriggeringCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::modifyMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        setTriggeringCount_->callback(callback);
+        modifyMonitoredItemsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::deleteMonitoredItemsCount(void)
-    {
-        return deleteMonitoredItemsCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setDeleteMonitoredItemsCount(const OpcUaDataValue& dataValue)
-    {
-        return deleteMonitoredItemsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getDeleteMonitoredItemsCount(OpcUaDataValue& dataValue)
-    {
-        return deleteMonitoredItemsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackDeleteMonitoredItemsCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::modifySubscriptionCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        deleteMonitoredItemsCount_->callback(callback);
+        modifySubscriptionCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::createSubscriptionCount(void)
-    {
-        return createSubscriptionCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setCreateSubscriptionCount(const OpcUaDataValue& dataValue)
-    {
-        return createSubscriptionCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getCreateSubscriptionCount(OpcUaDataValue& dataValue)
-    {
-        return createSubscriptionCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackCreateSubscriptionCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::publishCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        createSubscriptionCount_->callback(callback);
+        publishCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::modifySubscriptionCount(void)
-    {
-        return modifySubscriptionCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setModifySubscriptionCount(const OpcUaDataValue& dataValue)
-    {
-        return modifySubscriptionCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getModifySubscriptionCount(OpcUaDataValue& dataValue)
-    {
-        return modifySubscriptionCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackModifySubscriptionCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::queryFirstCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        modifySubscriptionCount_->callback(callback);
+        queryFirstCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::setPublishingModeCount(void)
-    {
-        return setPublishingModeCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setSetPublishingModeCount(const OpcUaDataValue& dataValue)
-    {
-        return setPublishingModeCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getSetPublishingModeCount(OpcUaDataValue& dataValue)
-    {
-        return setPublishingModeCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackSetPublishingModeCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::queryNextCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        setPublishingModeCount_->callback(callback);
+        queryNextCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::publishCount(void)
-    {
-        return publishCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setPublishCount(const OpcUaDataValue& dataValue)
-    {
-        return publishCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getPublishCount(OpcUaDataValue& dataValue)
-    {
-        return publishCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackPublishCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::readCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        publishCount_->callback(callback);
+        readCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::republishCount(void)
-    {
-        return republishCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setRepublishCount(const OpcUaDataValue& dataValue)
-    {
-        return republishCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getRepublishCount(OpcUaDataValue& dataValue)
-    {
-        return republishCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackRepublishCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::registerNodesCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        republishCount_->callback(callback);
+        registerNodesCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::transferSubscriptionsCount(void)
-    {
-        return transferSubscriptionsCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setTransferSubscriptionsCount(const OpcUaDataValue& dataValue)
-    {
-        return transferSubscriptionsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getTransferSubscriptionsCount(OpcUaDataValue& dataValue)
-    {
-        return transferSubscriptionsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackTransferSubscriptionsCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::republishCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        transferSubscriptionsCount_->callback(callback);
+        republishCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::deleteSubscriptionsCount(void)
-    {
-        return deleteSubscriptionsCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setDeleteSubscriptionsCount(const OpcUaDataValue& dataValue)
-    {
-        return deleteSubscriptionsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getDeleteSubscriptionsCount(OpcUaDataValue& dataValue)
-    {
-        return deleteSubscriptionsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackDeleteSubscriptionsCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::serverUri_Variable(ServerVariable::SPtr& serverVariable)
     {
-        deleteSubscriptionsCount_->callback(callback);
+        serverUri_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::addNodesCount(void)
-    {
-        return addNodesCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setAddNodesCount(const OpcUaDataValue& dataValue)
-    {
-        return addNodesCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getAddNodesCount(OpcUaDataValue& dataValue)
-    {
-        return addNodesCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackAddNodesCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::sessionId_Variable(ServerVariable::SPtr& serverVariable)
     {
-        addNodesCount_->callback(callback);
+        sessionId_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::addReferencesCount(void)
-    {
-        return addReferencesCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setAddReferencesCount(const OpcUaDataValue& dataValue)
-    {
-        return addReferencesCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getAddReferencesCount(OpcUaDataValue& dataValue)
-    {
-        return addReferencesCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackAddReferencesCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::sessionName_Variable(ServerVariable::SPtr& serverVariable)
     {
-        addReferencesCount_->callback(callback);
+        sessionName_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::deleteNodesCount(void)
-    {
-        return deleteNodesCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setDeleteNodesCount(const OpcUaDataValue& dataValue)
-    {
-        return deleteNodesCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getDeleteNodesCount(OpcUaDataValue& dataValue)
-    {
-        return deleteNodesCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackDeleteNodesCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::setMonitoringModeCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        deleteNodesCount_->callback(callback);
+        setMonitoringModeCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::deleteReferencesCount(void)
-    {
-        return deleteReferencesCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setDeleteReferencesCount(const OpcUaDataValue& dataValue)
-    {
-        return deleteReferencesCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getDeleteReferencesCount(OpcUaDataValue& dataValue)
-    {
-        return deleteReferencesCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackDeleteReferencesCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::setPublishingModeCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        deleteReferencesCount_->callback(callback);
+        setPublishingModeCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::browseCount(void)
-    {
-        return browseCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setBrowseCount(const OpcUaDataValue& dataValue)
-    {
-        return browseCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getBrowseCount(OpcUaDataValue& dataValue)
-    {
-        return browseCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackBrowseCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::setTriggeringCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        browseCount_->callback(callback);
+        setTriggeringCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::browseNextCount(void)
-    {
-        return browseNextCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setBrowseNextCount(const OpcUaDataValue& dataValue)
-    {
-        return browseNextCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getBrowseNextCount(OpcUaDataValue& dataValue)
-    {
-        return browseNextCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackBrowseNextCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::totalRequestCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        browseNextCount_->callback(callback);
+        totalRequestCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::translateBrowsePathsToNodeIdsCount(void)
-    {
-        return translateBrowsePathsToNodeIdsCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setTranslateBrowsePathsToNodeIdsCount(const OpcUaDataValue& dataValue)
-    {
-        return translateBrowsePathsToNodeIdsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getTranslateBrowsePathsToNodeIdsCount(OpcUaDataValue& dataValue)
-    {
-        return translateBrowsePathsToNodeIdsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackTranslateBrowsePathsToNodeIdsCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::transferSubscriptionsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        translateBrowsePathsToNodeIdsCount_->callback(callback);
+        transferSubscriptionsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::queryFirstCount(void)
-    {
-        return queryFirstCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setQueryFirstCount(const OpcUaDataValue& dataValue)
-    {
-        return queryFirstCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getQueryFirstCount(OpcUaDataValue& dataValue)
-    {
-        return queryFirstCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackQueryFirstCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::translateBrowsePathsToNodeIdsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        queryFirstCount_->callback(callback);
+        translateBrowsePathsToNodeIdsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::queryNextCount(void)
-    {
-        return queryNextCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setQueryNextCount(const OpcUaDataValue& dataValue)
-    {
-        return queryNextCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getQueryNextCount(OpcUaDataValue& dataValue)
-    {
-        return queryNextCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackQueryNextCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::unauthorizedRequestCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        queryNextCount_->callback(callback);
+        unauthorizedRequestCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::registerNodesCount(void)
-    {
-        return registerNodesCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setRegisterNodesCount(const OpcUaDataValue& dataValue)
-    {
-        return registerNodesCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getRegisterNodesCount(OpcUaDataValue& dataValue)
-    {
-        return registerNodesCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackRegisterNodesCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::unregisterNodesCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        registerNodesCount_->callback(callback);
+        unregisterNodesCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionDiagnosticsVariableType::unregisterNodesCount(void)
-    {
-        return unregisterNodesCount_->baseNode().lock();
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::setUnregisterNodesCount(const OpcUaDataValue& dataValue)
-    {
-        return unregisterNodesCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionDiagnosticsVariableType::getUnregisterNodesCount(OpcUaDataValue& dataValue)
-    {
-        return unregisterNodesCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionDiagnosticsVariableType::setUpdateCallbackUnregisterNodesCount(Callback::SPtr& callback)
+    SessionDiagnosticsVariableType::variable(ServerVariable::SPtr& serverVariable)
     {
-        unregisterNodesCount_->callback(callback);
+        variable_ = serverVariable;
+    }
+
+    void
+    SessionDiagnosticsVariableType::writeCount_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        writeCount_Variable_ = serverVariable;
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_ActualSessionTimeout_Variable(OpcUaDataValue& dataValue)
+    {
+        return actualSessionTimeout_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_AddNodesCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return addNodesCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_AddReferencesCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return addReferencesCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_BrowseCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return browseCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_BrowseNextCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return browseNextCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_CallCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return callCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_ClientConnectionTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return clientConnectionTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_ClientDescription_Variable(OpcUaDataValue& dataValue)
+    {
+        return clientDescription_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_ClientLastContactTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return clientLastContactTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_CreateMonitoredItemsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return createMonitoredItemsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_CreateSubscriptionCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return createSubscriptionCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_CurrentMonitoredItemsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return currentMonitoredItemsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_CurrentPublishRequestsInQueue_Variable(OpcUaDataValue& dataValue)
+    {
+        return currentPublishRequestsInQueue_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_CurrentSubscriptionsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return currentSubscriptionsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_DeleteMonitoredItemsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return deleteMonitoredItemsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_DeleteNodesCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return deleteNodesCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_DeleteReferencesCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return deleteReferencesCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_DeleteSubscriptionsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return deleteSubscriptionsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_EndpointUrl_Variable(OpcUaDataValue& dataValue)
+    {
+        return endpointUrl_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_HistoryReadCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return historyReadCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_HistoryUpdateCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return historyUpdateCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_LocaleIds_Variable(OpcUaDataValue& dataValue)
+    {
+        return localeIds_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_MaxResponseMessageSize_Variable(OpcUaDataValue& dataValue)
+    {
+        return maxResponseMessageSize_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_ModifyMonitoredItemsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return modifyMonitoredItemsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_ModifySubscriptionCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return modifySubscriptionCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_PublishCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return publishCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_QueryFirstCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return queryFirstCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_QueryNextCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return queryNextCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_ReadCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return readCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_RegisterNodesCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return registerNodesCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_RepublishCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return republishCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_ServerUri_Variable(OpcUaDataValue& dataValue)
+    {
+        return serverUri_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_SessionId_Variable(OpcUaDataValue& dataValue)
+    {
+        return sessionId_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_SessionName_Variable(OpcUaDataValue& dataValue)
+    {
+        return sessionName_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_SetMonitoringModeCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return setMonitoringModeCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_SetPublishingModeCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return setPublishingModeCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_SetTriggeringCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return setTriggeringCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_TotalRequestCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return totalRequestCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_TransferSubscriptionsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return transferSubscriptionsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_TranslateBrowsePathsToNodeIdsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return translateBrowsePathsToNodeIdsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_UnauthorizedRequestCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return unauthorizedRequestCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_UnregisterNodesCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return unregisterNodesCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::get_WriteCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return writeCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_ActualSessionTimeout_Variable(const OpcUaDataValue& dataValue)
+    {
+        return actualSessionTimeout_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_AddNodesCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return addNodesCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_AddReferencesCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return addReferencesCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_BrowseCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return browseCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_BrowseNextCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return browseNextCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_CallCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return callCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_ClientConnectionTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return clientConnectionTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_ClientDescription_Variable(const OpcUaDataValue& dataValue)
+    {
+        return clientDescription_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_ClientLastContactTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return clientLastContactTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_CreateMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return createMonitoredItemsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_CreateSubscriptionCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return createSubscriptionCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_CurrentMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return currentMonitoredItemsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_CurrentPublishRequestsInQueue_Variable(const OpcUaDataValue& dataValue)
+    {
+        return currentPublishRequestsInQueue_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_CurrentSubscriptionsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return currentSubscriptionsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_DeleteMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return deleteMonitoredItemsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_DeleteNodesCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return deleteNodesCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_DeleteReferencesCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return deleteReferencesCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_DeleteSubscriptionsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return deleteSubscriptionsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_EndpointUrl_Variable(const OpcUaDataValue& dataValue)
+    {
+        return endpointUrl_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_HistoryReadCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return historyReadCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_HistoryUpdateCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return historyUpdateCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_LocaleIds_Variable(const OpcUaDataValue& dataValue)
+    {
+        return localeIds_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_MaxResponseMessageSize_Variable(const OpcUaDataValue& dataValue)
+    {
+        return maxResponseMessageSize_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_ModifyMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return modifyMonitoredItemsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_ModifySubscriptionCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return modifySubscriptionCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_PublishCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return publishCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_QueryFirstCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return queryFirstCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_QueryNextCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return queryNextCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_ReadCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return readCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_RegisterNodesCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return registerNodesCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_RepublishCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return republishCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_ServerUri_Variable(const OpcUaDataValue& dataValue)
+    {
+        return serverUri_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_SessionId_Variable(const OpcUaDataValue& dataValue)
+    {
+        return sessionId_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_SessionName_Variable(const OpcUaDataValue& dataValue)
+    {
+        return sessionName_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_SetMonitoringModeCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return setMonitoringModeCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_SetPublishingModeCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return setPublishingModeCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_SetTriggeringCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return setTriggeringCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_TotalRequestCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return totalRequestCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_TransferSubscriptionsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return transferSubscriptionsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_TranslateBrowsePathsToNodeIdsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return translateBrowsePathsToNodeIdsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_UnauthorizedRequestCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return unauthorizedRequestCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_UnregisterNodesCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return unregisterNodesCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionDiagnosticsVariableType::set_WriteCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return writeCount_Variable_->setDataValue(dataValue);
     }
 
 }

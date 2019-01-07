@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,266 +15,301 @@ namespace OpcUaStackServer
 {
     
     SessionSecurityDiagnosticsType::SessionSecurityDiagnosticsType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , sessionId_(constructSPtr<ServerVariable>("SessionId"))
-    , clientUserIdOfSession_(constructSPtr<ServerVariable>("ClientUserIdOfSession"))
-    , clientUserIdHistory_(constructSPtr<ServerVariable>("ClientUserIdHistory"))
-    , authenticationMechanism_(constructSPtr<ServerVariable>("AuthenticationMechanism"))
-    , encoding_(constructSPtr<ServerVariable>("Encoding"))
-    , transportProtocol_(constructSPtr<ServerVariable>("TransportProtocol"))
-    , securityMode_(constructSPtr<ServerVariable>("SecurityMode"))
-    , securityPolicyUri_(constructSPtr<ServerVariable>("SecurityPolicyUri"))
-    , clientCertificate_(constructSPtr<ServerVariable>("ClientCertificate"))
+    : VariableBase()
+    , authenticationMechanism_Variable_(constructSPtr<ServerVariable>("AuthenticationMechanism_Variable"))
+    , clientCertificate_Variable_(constructSPtr<ServerVariable>("ClientCertificate_Variable"))
+    , clientUserIdHistory_Variable_(constructSPtr<ServerVariable>("ClientUserIdHistory_Variable"))
+    , clientUserIdOfSession_Variable_(constructSPtr<ServerVariable>("ClientUserIdOfSession_Variable"))
+    , encoding_Variable_(constructSPtr<ServerVariable>("Encoding_Variable"))
+    , securityMode_Variable_(constructSPtr<ServerVariable>("SecurityMode_Variable"))
+    , securityPolicyUri_Variable_(constructSPtr<ServerVariable>("SecurityPolicyUri_Variable"))
+    , sessionId_Variable_(constructSPtr<ServerVariable>("SessionId_Variable"))
+    , transportProtocol_Variable_(constructSPtr<ServerVariable>("TransportProtocol_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2244));
-        serverVariables().registerServerVariable(sessionId_);
-        serverVariables().registerServerVariable(clientUserIdOfSession_);
-        serverVariables().registerServerVariable(clientUserIdHistory_);
-        serverVariables().registerServerVariable(authenticationMechanism_);
-        serverVariables().registerServerVariable(encoding_);
-        serverVariables().registerServerVariable(transportProtocol_);
-        serverVariables().registerServerVariable(securityMode_);
-        serverVariables().registerServerVariable(securityPolicyUri_);
-        serverVariables().registerServerVariable(clientCertificate_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2244);
+        setServerVariable(authenticationMechanism_Variable_);
+        setServerVariable(clientCertificate_Variable_);
+        setServerVariable(clientUserIdHistory_Variable_);
+        setServerVariable(clientUserIdOfSession_Variable_);
+        setServerVariable(encoding_Variable_);
+        setServerVariable(securityMode_Variable_);
+        setServerVariable(securityPolicyUri_Variable_);
+        setServerVariable(sessionId_Variable_);
+        setServerVariable(transportProtocol_Variable_);
+        setServerVariable(variable_);
+    }
+    
+    SessionSecurityDiagnosticsType::SessionSecurityDiagnosticsType(const SessionSecurityDiagnosticsType& value)
+    : VariableBase()
+    , authenticationMechanism_Variable_(constructSPtr<ServerVariable>("AuthenticationMechanism_Variable"))
+    , clientCertificate_Variable_(constructSPtr<ServerVariable>("ClientCertificate_Variable"))
+    , clientUserIdHistory_Variable_(constructSPtr<ServerVariable>("ClientUserIdHistory_Variable"))
+    , clientUserIdOfSession_Variable_(constructSPtr<ServerVariable>("ClientUserIdOfSession_Variable"))
+    , encoding_Variable_(constructSPtr<ServerVariable>("Encoding_Variable"))
+    , securityMode_Variable_(constructSPtr<ServerVariable>("SecurityMode_Variable"))
+    , securityPolicyUri_Variable_(constructSPtr<ServerVariable>("SecurityPolicyUri_Variable"))
+    , sessionId_Variable_(constructSPtr<ServerVariable>("SessionId_Variable"))
+    , transportProtocol_Variable_(constructSPtr<ServerVariable>("TransportProtocol_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2244);
+        setServerVariable(authenticationMechanism_Variable_);
+        setServerVariable(clientCertificate_Variable_);
+        setServerVariable(clientUserIdHistory_Variable_);
+        setServerVariable(clientUserIdOfSession_Variable_);
+        setServerVariable(encoding_Variable_);
+        setServerVariable(securityMode_Variable_);
+        setServerVariable(securityPolicyUri_Variable_);
+        setServerVariable(sessionId_Variable_);
+        setServerVariable(transportProtocol_Variable_);
+        setServerVariable(variable_);
     }
     
     SessionSecurityDiagnosticsType::~SessionSecurityDiagnosticsType(void)
     {
     }
-    
-    bool
-    SessionSecurityDiagnosticsType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsType::authenticationMechanism_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        sessionId_->addBrowsePath(nodeId, OpcUaQualifiedName("SessionId", namespaceIndex_));
-        clientUserIdOfSession_->addBrowsePath(nodeId, OpcUaQualifiedName("ClientUserIdOfSession", namespaceIndex_));
-        clientUserIdHistory_->addBrowsePath(nodeId, OpcUaQualifiedName("ClientUserIdHistory", namespaceIndex_));
-        authenticationMechanism_->addBrowsePath(nodeId, OpcUaQualifiedName("AuthenticationMechanism", namespaceIndex_));
-        encoding_->addBrowsePath(nodeId, OpcUaQualifiedName("Encoding", namespaceIndex_));
-        transportProtocol_->addBrowsePath(nodeId, OpcUaQualifiedName("TransportProtocol", namespaceIndex_));
-        securityMode_->addBrowsePath(nodeId, OpcUaQualifiedName("SecurityMode", namespaceIndex_));
-        securityPolicyUri_->addBrowsePath(nodeId, OpcUaQualifiedName("SecurityPolicyUri", namespaceIndex_));
-        clientCertificate_->addBrowsePath(nodeId, OpcUaQualifiedName("ClientCertificate", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return authenticationMechanism_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    SessionSecurityDiagnosticsType::sessionId(void)
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsType::clientCertificate_Variable(void)
     {
-        return sessionId_->baseNode().lock();
+        return clientCertificate_Variable_;
     }
-    
-    bool
-    SessionSecurityDiagnosticsType::setSessionId(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsType::clientUserIdHistory_Variable(void)
     {
-        return sessionId_->setDataValue(dataValue);
+        return clientUserIdHistory_Variable_;
     }
-    
-    bool
-    SessionSecurityDiagnosticsType::getSessionId(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsType::clientUserIdOfSession_Variable(void)
     {
-        return sessionId_->getDataValue(dataValue);
+        return clientUserIdOfSession_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsType::encoding_Variable(void)
+    {
+        return encoding_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsType::securityMode_Variable(void)
+    {
+        return securityMode_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsType::securityPolicyUri_Variable(void)
+    {
+        return securityPolicyUri_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsType::sessionId_Variable(void)
+    {
+        return sessionId_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsType::transportProtocol_Variable(void)
+    {
+        return transportProtocol_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    SessionSecurityDiagnosticsType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    SessionSecurityDiagnosticsType::setUpdateCallbackSessionId(Callback::SPtr& callback)
+    SessionSecurityDiagnosticsType::authenticationMechanism_Variable(ServerVariable::SPtr& serverVariable)
     {
-        sessionId_->callback(callback);
+        authenticationMechanism_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionSecurityDiagnosticsType::clientUserIdOfSession(void)
-    {
-        return clientUserIdOfSession_->baseNode().lock();
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::setClientUserIdOfSession(const OpcUaDataValue& dataValue)
-    {
-        return clientUserIdOfSession_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::getClientUserIdOfSession(OpcUaDataValue& dataValue)
-    {
-        return clientUserIdOfSession_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionSecurityDiagnosticsType::setUpdateCallbackClientUserIdOfSession(Callback::SPtr& callback)
+    SessionSecurityDiagnosticsType::clientCertificate_Variable(ServerVariable::SPtr& serverVariable)
     {
-        clientUserIdOfSession_->callback(callback);
+        clientCertificate_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionSecurityDiagnosticsType::clientUserIdHistory(void)
-    {
-        return clientUserIdHistory_->baseNode().lock();
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::setClientUserIdHistory(const OpcUaDataValue& dataValue)
-    {
-        return clientUserIdHistory_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::getClientUserIdHistory(OpcUaDataValue& dataValue)
-    {
-        return clientUserIdHistory_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionSecurityDiagnosticsType::setUpdateCallbackClientUserIdHistory(Callback::SPtr& callback)
+    SessionSecurityDiagnosticsType::clientUserIdHistory_Variable(ServerVariable::SPtr& serverVariable)
     {
-        clientUserIdHistory_->callback(callback);
+        clientUserIdHistory_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionSecurityDiagnosticsType::authenticationMechanism(void)
-    {
-        return authenticationMechanism_->baseNode().lock();
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::setAuthenticationMechanism(const OpcUaDataValue& dataValue)
-    {
-        return authenticationMechanism_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::getAuthenticationMechanism(OpcUaDataValue& dataValue)
-    {
-        return authenticationMechanism_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionSecurityDiagnosticsType::setUpdateCallbackAuthenticationMechanism(Callback::SPtr& callback)
+    SessionSecurityDiagnosticsType::clientUserIdOfSession_Variable(ServerVariable::SPtr& serverVariable)
     {
-        authenticationMechanism_->callback(callback);
+        clientUserIdOfSession_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionSecurityDiagnosticsType::encoding(void)
-    {
-        return encoding_->baseNode().lock();
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::setEncoding(const OpcUaDataValue& dataValue)
-    {
-        return encoding_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::getEncoding(OpcUaDataValue& dataValue)
-    {
-        return encoding_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionSecurityDiagnosticsType::setUpdateCallbackEncoding(Callback::SPtr& callback)
+    SessionSecurityDiagnosticsType::encoding_Variable(ServerVariable::SPtr& serverVariable)
     {
-        encoding_->callback(callback);
+        encoding_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionSecurityDiagnosticsType::transportProtocol(void)
-    {
-        return transportProtocol_->baseNode().lock();
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::setTransportProtocol(const OpcUaDataValue& dataValue)
-    {
-        return transportProtocol_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::getTransportProtocol(OpcUaDataValue& dataValue)
-    {
-        return transportProtocol_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionSecurityDiagnosticsType::setUpdateCallbackTransportProtocol(Callback::SPtr& callback)
+    SessionSecurityDiagnosticsType::securityMode_Variable(ServerVariable::SPtr& serverVariable)
     {
-        transportProtocol_->callback(callback);
+        securityMode_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionSecurityDiagnosticsType::securityMode(void)
-    {
-        return securityMode_->baseNode().lock();
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::setSecurityMode(const OpcUaDataValue& dataValue)
-    {
-        return securityMode_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::getSecurityMode(OpcUaDataValue& dataValue)
-    {
-        return securityMode_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionSecurityDiagnosticsType::setUpdateCallbackSecurityMode(Callback::SPtr& callback)
+    SessionSecurityDiagnosticsType::securityPolicyUri_Variable(ServerVariable::SPtr& serverVariable)
     {
-        securityMode_->callback(callback);
+        securityPolicyUri_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionSecurityDiagnosticsType::securityPolicyUri(void)
-    {
-        return securityPolicyUri_->baseNode().lock();
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::setSecurityPolicyUri(const OpcUaDataValue& dataValue)
-    {
-        return securityPolicyUri_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::getSecurityPolicyUri(OpcUaDataValue& dataValue)
-    {
-        return securityPolicyUri_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionSecurityDiagnosticsType::setUpdateCallbackSecurityPolicyUri(Callback::SPtr& callback)
+    SessionSecurityDiagnosticsType::sessionId_Variable(ServerVariable::SPtr& serverVariable)
     {
-        securityPolicyUri_->callback(callback);
+        sessionId_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SessionSecurityDiagnosticsType::clientCertificate(void)
-    {
-        return clientCertificate_->baseNode().lock();
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::setClientCertificate(const OpcUaDataValue& dataValue)
-    {
-        return clientCertificate_->setDataValue(dataValue);
-    }
-    
-    bool
-    SessionSecurityDiagnosticsType::getClientCertificate(OpcUaDataValue& dataValue)
-    {
-        return clientCertificate_->getDataValue(dataValue);
-    }
-    
+
     void
-    SessionSecurityDiagnosticsType::setUpdateCallbackClientCertificate(Callback::SPtr& callback)
+    SessionSecurityDiagnosticsType::transportProtocol_Variable(ServerVariable::SPtr& serverVariable)
     {
-        clientCertificate_->callback(callback);
+        transportProtocol_Variable_ = serverVariable;
+    }
+
+    void
+    SessionSecurityDiagnosticsType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::get_AuthenticationMechanism_Variable(OpcUaDataValue& dataValue)
+    {
+        return authenticationMechanism_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::get_ClientCertificate_Variable(OpcUaDataValue& dataValue)
+    {
+        return clientCertificate_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::get_ClientUserIdHistory_Variable(OpcUaDataValue& dataValue)
+    {
+        return clientUserIdHistory_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::get_ClientUserIdOfSession_Variable(OpcUaDataValue& dataValue)
+    {
+        return clientUserIdOfSession_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::get_Encoding_Variable(OpcUaDataValue& dataValue)
+    {
+        return encoding_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::get_SecurityMode_Variable(OpcUaDataValue& dataValue)
+    {
+        return securityMode_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::get_SecurityPolicyUri_Variable(OpcUaDataValue& dataValue)
+    {
+        return securityPolicyUri_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::get_SessionId_Variable(OpcUaDataValue& dataValue)
+    {
+        return sessionId_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::get_TransportProtocol_Variable(OpcUaDataValue& dataValue)
+    {
+        return transportProtocol_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::set_AuthenticationMechanism_Variable(const OpcUaDataValue& dataValue)
+    {
+        return authenticationMechanism_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::set_ClientCertificate_Variable(const OpcUaDataValue& dataValue)
+    {
+        return clientCertificate_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::set_ClientUserIdHistory_Variable(const OpcUaDataValue& dataValue)
+    {
+        return clientUserIdHistory_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::set_ClientUserIdOfSession_Variable(const OpcUaDataValue& dataValue)
+    {
+        return clientUserIdOfSession_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::set_Encoding_Variable(const OpcUaDataValue& dataValue)
+    {
+        return encoding_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::set_SecurityMode_Variable(const OpcUaDataValue& dataValue)
+    {
+        return securityMode_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::set_SecurityPolicyUri_Variable(const OpcUaDataValue& dataValue)
+    {
+        return securityPolicyUri_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::set_SessionId_Variable(const OpcUaDataValue& dataValue)
+    {
+        return sessionId_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::set_TransportProtocol_Variable(const OpcUaDataValue& dataValue)
+    {
+        return transportProtocol_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SessionSecurityDiagnosticsType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -53,6 +53,8 @@ namespace OpcUaStackServer
 		void receiveDelNodeInstanceRequest(ServiceTransaction::SPtr serviceTransaction);
 		void receiveFireEventRequest(ServiceTransaction::SPtr serviceTransaction);
 		void receiveBrowsePathToNodeIdRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateVariableRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateObjectRequest(ServiceTransaction::SPtr serviceTransaction);
 		void getNodeIdFromBrowsePath(BrowseName::SPtr& browseName, NodeIdResult::SPtr& nodeIdResult);
 	};
 

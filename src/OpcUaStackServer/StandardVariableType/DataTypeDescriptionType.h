@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_DataTypeDescriptionType_h__
@@ -14,39 +14,54 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/BaseDataVariableType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT DataTypeDescriptionType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<DataTypeDescriptionType> SPtr;
+       typedef std::vector<DataTypeDescriptionType::SPtr> Vec;
+   
+       DataTypeDescriptionType(void);
+       DataTypeDescriptionType(const DataTypeDescriptionType& value);
+       virtual ~DataTypeDescriptionType(void);
+
+        //
+        // String
+        //
+        void dataTypeVersion_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& dataTypeVersion_Variable(void);
+        bool get_DataTypeVersion_Variable(OpcUaDataValue& dataValue);
+        bool set_DataTypeVersion_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ByteString
+        //
+        void dictionaryFragment_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& dictionaryFragment_Variable(void);
+        bool get_DictionaryFragment_Variable(OpcUaDataValue& dataValue);
+        bool set_DictionaryFragment_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // String
+        //
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT DataTypeDescriptionType
-    : public BaseDataVariableType
-    {
-      public:
-        typedef boost::shared_ptr<DataTypeDescriptionType> SPtr;
-    
-        DataTypeDescriptionType(void);
-        virtual ~DataTypeDescriptionType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr dataTypeVersion(void);
-        bool setDataTypeVersion(const OpcUaDataValue& dataValue);
-        bool getDataTypeVersion(OpcUaDataValue& dataValue);
-        void setUpdateCallbackDataTypeVersion(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr dictionaryFragment(void);
-        bool setDictionaryFragment(const OpcUaDataValue& dataValue);
-        bool getDictionaryFragment(OpcUaDataValue& dataValue);
-        void setUpdateCallbackDictionaryFragment(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr dataTypeVersion_;
-        ServerVariable::SPtr dictionaryFragment_;
-    
-    };
+        ServerVariable::SPtr dataTypeVersion_Variable_;
+        ServerVariable::SPtr dictionaryFragment_Variable_;
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    AxisInformation::AxisInformation(const AxisInformation& value)
+    : Object()
+    , ExtensionObjectBase()
+    , engineeringUnits_()
+    , eURange_()
+    , title_()
+    , axisScaleType_()
+    , axisSteps_()
+    {
+        const_cast<AxisInformation*>(&value)->copyTo(*this);
+    }
+    
     AxisInformation::~AxisInformation(void)
     {
     }
@@ -162,16 +174,6 @@ namespace OpcUaStackCore
         title_.opcUaBinaryDecode(is);
         axisScaleType_.opcUaBinaryDecode(is);
         axisSteps_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    AxisInformation::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    AxisInformation::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

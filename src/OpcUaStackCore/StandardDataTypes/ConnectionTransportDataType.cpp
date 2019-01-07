@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ConnectionTransportDataType::ConnectionTransportDataType(const ConnectionTransportDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<ConnectionTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     ConnectionTransportDataType::~ConnectionTransportDataType(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     ConnectionTransportDataType::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    ConnectionTransportDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ConnectionTransportDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

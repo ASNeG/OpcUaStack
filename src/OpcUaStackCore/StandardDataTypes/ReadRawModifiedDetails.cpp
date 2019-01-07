@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    ReadRawModifiedDetails::ReadRawModifiedDetails(const ReadRawModifiedDetails& value)
+    : HistoryReadDetails()
+    , isReadModified_()
+    , startTime_()
+    , endTime_()
+    , numValuesPerNode_()
+    , returnBounds_()
+    {
+        const_cast<ReadRawModifiedDetails*>(&value)->copyTo(*this);
+    }
+    
     ReadRawModifiedDetails::~ReadRawModifiedDetails(void)
     {
     }
@@ -163,16 +174,6 @@ namespace OpcUaStackCore
         endTime_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,numValuesPerNode_);
         OpcUaNumber::opcUaBinaryDecode(is,returnBounds_);
-    }
-    
-    bool
-    ReadRawModifiedDetails::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ReadRawModifiedDetails::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

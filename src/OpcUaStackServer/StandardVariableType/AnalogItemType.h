@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_AnalogItemType_h__
@@ -14,45 +14,81 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/DataItemType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT AnalogItemType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<AnalogItemType> SPtr;
+       typedef std::vector<AnalogItemType::SPtr> Vec;
+   
+       AnalogItemType(void);
+       AnalogItemType(const AnalogItemType& value);
+       virtual ~AnalogItemType(void);
+
+        //
+        // String
+        //
+        void definition_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& definition_Variable(void);
+        bool get_Definition_Variable(OpcUaDataValue& dataValue);
+        bool set_Definition_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Range
+        //
+        void eURange_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& eURange_Variable(void);
+        bool get_EURange_Variable(OpcUaDataValue& dataValue);
+        bool set_EURange_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // EUInformation
+        //
+        void engineeringUnits_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& engineeringUnits_Variable(void);
+        bool get_EngineeringUnits_Variable(OpcUaDataValue& dataValue);
+        bool set_EngineeringUnits_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Range
+        //
+        void instrumentRange_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& instrumentRange_Variable(void);
+        bool get_InstrumentRange_Variable(OpcUaDataValue& dataValue);
+        bool set_InstrumentRange_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Double
+        //
+        void valuePrecision_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& valuePrecision_Variable(void);
+        bool get_ValuePrecision_Variable(OpcUaDataValue& dataValue);
+        bool set_ValuePrecision_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Number
+        //
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT AnalogItemType
-    : public DataItemType
-    {
-      public:
-        typedef boost::shared_ptr<AnalogItemType> SPtr;
-    
-        AnalogItemType(void);
-        virtual ~AnalogItemType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr instrumentRange(void);
-        bool setInstrumentRange(const OpcUaDataValue& dataValue);
-        bool getInstrumentRange(OpcUaDataValue& dataValue);
-        void setUpdateCallbackInstrumentRange(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr eURange(void);
-        bool setEURange(const OpcUaDataValue& dataValue);
-        bool getEURange(OpcUaDataValue& dataValue);
-        void setUpdateCallbackEURange(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr engineeringUnits(void);
-        bool setEngineeringUnits(const OpcUaDataValue& dataValue);
-        bool getEngineeringUnits(OpcUaDataValue& dataValue);
-        void setUpdateCallbackEngineeringUnits(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr instrumentRange_;
-        ServerVariable::SPtr eURange_;
-        ServerVariable::SPtr engineeringUnits_;
-    
-    };
+        ServerVariable::SPtr definition_Variable_;
+        ServerVariable::SPtr eURange_Variable_;
+        ServerVariable::SPtr engineeringUnits_Variable_;
+        ServerVariable::SPtr instrumentRange_Variable_;
+        ServerVariable::SPtr valuePrecision_Variable_;
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

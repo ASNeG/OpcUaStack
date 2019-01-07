@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetMetaDataType::DataSetMetaDataType(const DataSetMetaDataType& value)
+    : DataTypeSchemaHeader()
+    , name_()
+    , description_()
+    , fields_()
+    , dataSetClassId_()
+    , configurationVersion_()
+    {
+        const_cast<DataSetMetaDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetMetaDataType::~DataSetMetaDataType(void)
     {
     }
@@ -163,16 +174,6 @@ namespace OpcUaStackCore
         fields_.opcUaBinaryDecode(is);
         dataSetClassId_.opcUaBinaryDecode(is);
         configurationVersion_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    DataSetMetaDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataSetMetaDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

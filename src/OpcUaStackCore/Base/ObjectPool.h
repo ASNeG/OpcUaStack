@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -101,11 +101,50 @@ namespace OpcUaStackCore
 		return typename OBJ::SPtr(new OBJ(p1, p2));
 	  }
 
+	template<typename OBJ, typename P1, typename P2>
+	  typename OBJ::SPtr constructSPtr(P1& p1, P2& p2) {
+		return typename OBJ::SPtr(new OBJ(p1, p2));
+	  }
+
+	template<typename OBJ, typename P1, typename P2>
+	  typename OBJ::SPtr constructSPtr(P1* p1, P2* p2) {
+		return typename OBJ::SPtr(new OBJ(p1, p2));
+	  }
+
 	template<typename OBJ, typename P1, typename P2, typename P3>
-	  typename OBJ::SPtr constructSPtr(P1& p1, P2& p2, P3 p3) {
+	  typename OBJ::SPtr constructSPtr(P1& p1, P2& p2, P3& p3) {
 		return typename OBJ::SPtr(new OBJ(p1, p2, p3));
 	  }
 
+	template<typename OBJ, typename P1, typename P2, typename P3>
+	  typename OBJ::SPtr constructSPtr(const P1& p1, const P2& p2, const P3& p3) {
+		return typename OBJ::SPtr(new OBJ(p1, p2, p3));
+	  }
+
+	template<typename OBJ, typename P1, typename P2, typename P3, typename P4>
+	  typename OBJ::SPtr constructSPtr(P1& p1, P2& p2, P3& p3, P4& p4) {
+		return typename OBJ::SPtr(new OBJ(p1, p2, p3, p4));
+	  }
+
+	template<typename OBJ, typename P1, typename P2, typename P3, typename P4>
+	  typename OBJ::SPtr constructSPtr(const P1& p1, const P2& p2, const P3& p3, const P4& p4) {
+		return typename OBJ::SPtr(new OBJ(p1, p2, p3, p4));
+	  }
+
+	template<typename OBJ, typename P1, typename P2, typename P3, typename P4, typename P5>
+	  typename OBJ::SPtr constructSPtr(P1& p1, P2& p2, P3& p3, P4& p4, P5& p5) {
+		return typename OBJ::SPtr(new OBJ(p1, p2, p3, p4, p5));
+	  }
+
+	template<typename OBJ, typename P1, typename P2, typename P3, typename P4, typename P5>
+	  typename OBJ::SPtr constructSPtr(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5) {
+		return typename OBJ::SPtr(new OBJ(p1, p2, p3, p4, p5));
+	  }
+
+	template<typename OBJ, typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
+	  typename OBJ::SPtr constructSPtr(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6) {
+		return typename OBJ::SPtr(new OBJ(p1, p2, p3, p4, p5, p6));
+	  }
 
 }
 

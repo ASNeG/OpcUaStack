@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * Describes a user token that can be used with a server.
+     */
+    UserTokenPolicy::UserTokenPolicy(const UserTokenPolicy& value)
+    : Object()
+    , ExtensionObjectBase()
+    , policyId_()
+    , tokenType_()
+    , issuedTokenType_()
+    , issuerEndpointUrl_()
+    , securityPolicyUri_()
+    {
+        const_cast<UserTokenPolicy*>(&value)->copyTo(*this);
+    }
+    
     UserTokenPolicy::~UserTokenPolicy(void)
     {
     }
@@ -165,16 +180,6 @@ namespace OpcUaStackCore
         issuedTokenType_.opcUaBinaryDecode(is);
         issuerEndpointUrl_.opcUaBinaryDecode(is);
         securityPolicyUri_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    UserTokenPolicy::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    UserTokenPolicy::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

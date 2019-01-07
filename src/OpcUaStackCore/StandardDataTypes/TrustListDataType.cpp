@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    TrustListDataType::TrustListDataType(const TrustListDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , specifiedLists_()
+    , trustedCertificates_()
+    , trustedCrls_()
+    , issuerCertificates_()
+    , issuerCrls_()
+    {
+        const_cast<TrustListDataType*>(&value)->copyTo(*this);
+    }
+    
     TrustListDataType::~TrustListDataType(void)
     {
     }
@@ -162,16 +174,6 @@ namespace OpcUaStackCore
         trustedCrls_.opcUaBinaryDecode(is);
         issuerCertificates_.opcUaBinaryDecode(is);
         issuerCrls_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    TrustListDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    TrustListDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

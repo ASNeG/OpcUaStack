@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    BrokerDataSetReaderTransportDataType::BrokerDataSetReaderTransportDataType(const BrokerDataSetReaderTransportDataType& value)
+    : DataSetReaderTransportDataType()
+    , queueName_()
+    , resourceUri_()
+    , authenticationProfileUri_()
+    , requestedDeliveryGuarantee_()
+    , metaDataQueueName_()
+    {
+        const_cast<BrokerDataSetReaderTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     BrokerDataSetReaderTransportDataType::~BrokerDataSetReaderTransportDataType(void)
     {
     }
@@ -163,16 +174,6 @@ namespace OpcUaStackCore
         authenticationProfileUri_.opcUaBinaryDecode(is);
         requestedDeliveryGuarantee_.opcUaBinaryDecode(is);
         metaDataQueueName_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    BrokerDataSetReaderTransportDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    BrokerDataSetReaderTransportDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    JsonDataSetReaderMessageDataType::JsonDataSetReaderMessageDataType(const JsonDataSetReaderMessageDataType& value)
+    : DataSetReaderMessageDataType()
+    , networkMessageContentMask_()
+    , dataSetMessageContentMask_()
+    {
+        const_cast<JsonDataSetReaderMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     JsonDataSetReaderMessageDataType::~JsonDataSetReaderMessageDataType(void)
     {
     }
@@ -130,16 +138,6 @@ namespace OpcUaStackCore
         DataSetReaderMessageDataType::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
         OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
-    }
-    
-    bool
-    JsonDataSetReaderMessageDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    JsonDataSetReaderMessageDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

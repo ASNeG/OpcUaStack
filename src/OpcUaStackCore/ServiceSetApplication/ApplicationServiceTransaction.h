@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -38,6 +38,10 @@
 #include "OpcUaStackCore/ServiceSetApplication/FireEventResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/BrowsePathToNodeIdRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/BrowsePathToNodeIdResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/CreateVariableRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/CreateVariableResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/CreateObjectRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/CreateObjectResponse.h"
 
 namespace OpcUaStackCore
 {
@@ -100,10 +104,24 @@ namespace OpcUaStackCore
 
 	typedef ServiceTransactionTemplate<
 		BrowsePathToNodeIdRequest,
-		BrowsePathToNodeIdResponse,
-		OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary,
-		OpcUaId_BrowsePathToNodeIdResponse_Encoding_DefaultBinary
-	> ServiceTransactionBrowsePathToNodeId;
+        BrowsePathToNodeIdResponse,
+        OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary,
+        OpcUaId_BrowsePathToNodeIdResponse_Encoding_DefaultBinary
+    > ServiceTransactionBrowsePathToNodeId;
+
+	typedef ServiceTransactionTemplate<
+		CreateVariableRequest,
+		CreateVariableResponse,
+		OpcUaId_CreateVariableRequest_Encoding_DefaultBinary,
+		OpcUaId_CreateVariableResponse_Encoding_DefaultBinary
+	> ServiceTransactionCreateVariable;
+
+	typedef ServiceTransactionTemplate<
+		CreateObjectRequest,
+		CreateObjectResponse,
+		OpcUaId_CreateObjectRequest_Encoding_DefaultBinary,
+		OpcUaId_CreateObjectResponse_Encoding_DefaultBinary
+	> ServiceTransactionCreateObject;
 
 }
 

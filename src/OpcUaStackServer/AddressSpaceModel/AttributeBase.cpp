@@ -643,18 +643,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setDisplayNameSync(OpcUaLocalizedText& displayName)
+	AttributeBase::setDisplayNameSync(const OpcUaLocalizedText& displayName)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setDisplayName(displayName);
 	}
 
 	bool
-	AttributeBase::setDisplayName(OpcUaLocalizedText& displayName)
+	AttributeBase::setDisplayName(const OpcUaLocalizedText& displayName)
 	{
 		if (!isPartDisplayName()) return false;
 		DisplayNameAttribute* attr = reinterpret_cast<DisplayNameAttribute*>(displayNameAttribute());
-		displayName.copyTo(attr->data());
+		const_cast<OpcUaLocalizedText*>(&displayName)->copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}
@@ -1320,18 +1320,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setValueSync(OpcUaDataValue& value)
+	AttributeBase::setValueSync(const OpcUaDataValue& value)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setValue(value);
 	}
 
 	bool
-	AttributeBase::setValue(OpcUaDataValue& value)
+	AttributeBase::setValue(const OpcUaDataValue& value)
 	{
 		if (!isPartValue()) return false;
 		ValueAttribute* attr = reinterpret_cast<ValueAttribute*>(valueAttribute());
-		value.copyTo(attr->data());
+		const_cast<OpcUaDataValue*>(&value)->copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}

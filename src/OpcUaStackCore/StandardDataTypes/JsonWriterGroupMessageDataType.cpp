@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    JsonWriterGroupMessageDataType::JsonWriterGroupMessageDataType(const JsonWriterGroupMessageDataType& value)
+    : WriterGroupMessageDataType()
+    , networkMessageContentMask_()
+    {
+        const_cast<JsonWriterGroupMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     JsonWriterGroupMessageDataType::~JsonWriterGroupMessageDataType(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         WriterGroupMessageDataType::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
-    }
-    
-    bool
-    JsonWriterGroupMessageDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    JsonWriterGroupMessageDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

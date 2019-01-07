@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,104 +15,189 @@ namespace OpcUaStackServer
 {
     
     AnalogItemType::AnalogItemType(void)
-    : DataItemType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , instrumentRange_(constructSPtr<ServerVariable>("InstrumentRange"))
-    , eURange_(constructSPtr<ServerVariable>("EURange"))
-    , engineeringUnits_(constructSPtr<ServerVariable>("EngineeringUnits"))
+    : VariableBase()
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , eURange_Variable_(constructSPtr<ServerVariable>("EURange_Variable"))
+    , engineeringUnits_Variable_(constructSPtr<ServerVariable>("EngineeringUnits_Variable"))
+    , instrumentRange_Variable_(constructSPtr<ServerVariable>("InstrumentRange_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2368));
-        serverVariables().registerServerVariable(instrumentRange_);
-        serverVariables().registerServerVariable(eURange_);
-        serverVariables().registerServerVariable(engineeringUnits_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2368);
+        setServerVariable(definition_Variable_);
+        setServerVariable(eURange_Variable_);
+        setServerVariable(engineeringUnits_Variable_);
+        setServerVariable(instrumentRange_Variable_);
+        setServerVariable(valuePrecision_Variable_);
+        setServerVariable(variable_);
+    }
+    
+    AnalogItemType::AnalogItemType(const AnalogItemType& value)
+    : VariableBase()
+    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
+    , eURange_Variable_(constructSPtr<ServerVariable>("EURange_Variable"))
+    , engineeringUnits_Variable_(constructSPtr<ServerVariable>("EngineeringUnits_Variable"))
+    , instrumentRange_Variable_(constructSPtr<ServerVariable>("InstrumentRange_Variable"))
+    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2368);
+        setServerVariable(definition_Variable_);
+        setServerVariable(eURange_Variable_);
+        setServerVariable(engineeringUnits_Variable_);
+        setServerVariable(instrumentRange_Variable_);
+        setServerVariable(valuePrecision_Variable_);
+        setServerVariable(variable_);
     }
     
     AnalogItemType::~AnalogItemType(void)
     {
     }
-    
-    bool
-    AnalogItemType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    AnalogItemType::definition_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        instrumentRange_->addBrowsePath(nodeId, OpcUaQualifiedName("InstrumentRange", namespaceIndex_));
-        eURange_->addBrowsePath(nodeId, OpcUaQualifiedName("EURange", namespaceIndex_));
-        engineeringUnits_->addBrowsePath(nodeId, OpcUaQualifiedName("EngineeringUnits", namespaceIndex_));
-        DataItemType::linkInstanceWithModel(nodeId);
+        return definition_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    AnalogItemType::instrumentRange(void)
+
+    ServerVariable::SPtr&
+    AnalogItemType::eURange_Variable(void)
     {
-        return instrumentRange_->baseNode().lock();
+        return eURange_Variable_;
     }
-    
-    bool
-    AnalogItemType::setInstrumentRange(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    AnalogItemType::engineeringUnits_Variable(void)
     {
-        return instrumentRange_->setDataValue(dataValue);
+        return engineeringUnits_Variable_;
     }
-    
-    bool
-    AnalogItemType::getInstrumentRange(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    AnalogItemType::instrumentRange_Variable(void)
     {
-        return instrumentRange_->getDataValue(dataValue);
+        return instrumentRange_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    AnalogItemType::valuePrecision_Variable(void)
+    {
+        return valuePrecision_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    AnalogItemType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    AnalogItemType::setUpdateCallbackInstrumentRange(Callback::SPtr& callback)
+    AnalogItemType::definition_Variable(ServerVariable::SPtr& serverVariable)
     {
-        instrumentRange_->callback(callback);
+        definition_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    AnalogItemType::eURange(void)
-    {
-        return eURange_->baseNode().lock();
-    }
-    
-    bool
-    AnalogItemType::setEURange(const OpcUaDataValue& dataValue)
-    {
-        return eURange_->setDataValue(dataValue);
-    }
-    
-    bool
-    AnalogItemType::getEURange(OpcUaDataValue& dataValue)
-    {
-        return eURange_->getDataValue(dataValue);
-    }
-    
+
     void
-    AnalogItemType::setUpdateCallbackEURange(Callback::SPtr& callback)
+    AnalogItemType::eURange_Variable(ServerVariable::SPtr& serverVariable)
     {
-        eURange_->callback(callback);
+        eURange_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    AnalogItemType::engineeringUnits(void)
-    {
-        return engineeringUnits_->baseNode().lock();
-    }
-    
-    bool
-    AnalogItemType::setEngineeringUnits(const OpcUaDataValue& dataValue)
-    {
-        return engineeringUnits_->setDataValue(dataValue);
-    }
-    
-    bool
-    AnalogItemType::getEngineeringUnits(OpcUaDataValue& dataValue)
-    {
-        return engineeringUnits_->getDataValue(dataValue);
-    }
-    
+
     void
-    AnalogItemType::setUpdateCallbackEngineeringUnits(Callback::SPtr& callback)
+    AnalogItemType::engineeringUnits_Variable(ServerVariable::SPtr& serverVariable)
     {
-        engineeringUnits_->callback(callback);
+        engineeringUnits_Variable_ = serverVariable;
+    }
+
+    void
+    AnalogItemType::instrumentRange_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        instrumentRange_Variable_ = serverVariable;
+    }
+
+    void
+    AnalogItemType::valuePrecision_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        valuePrecision_Variable_ = serverVariable;
+    }
+
+    void
+    AnalogItemType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    AnalogItemType::get_Definition_Variable(OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::get_EURange_Variable(OpcUaDataValue& dataValue)
+    {
+        return eURange_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::get_EngineeringUnits_Variable(OpcUaDataValue& dataValue)
+    {
+        return engineeringUnits_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::get_InstrumentRange_Variable(OpcUaDataValue& dataValue)
+    {
+        return instrumentRange_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::get_ValuePrecision_Variable(OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::set_Definition_Variable(const OpcUaDataValue& dataValue)
+    {
+        return definition_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::set_EURange_Variable(const OpcUaDataValue& dataValue)
+    {
+        return eURange_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::set_EngineeringUnits_Variable(const OpcUaDataValue& dataValue)
+    {
+        return engineeringUnits_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::set_InstrumentRange_Variable(const OpcUaDataValue& dataValue)
+    {
+        return instrumentRange_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::set_ValuePrecision_Variable(const OpcUaDataValue& dataValue)
+    {
+        return valuePrecision_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    AnalogItemType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

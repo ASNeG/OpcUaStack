@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_SessionDiagnosticsVariableType_h__
@@ -14,285 +14,423 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/BaseDataVariableType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT SessionDiagnosticsVariableType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<SessionDiagnosticsVariableType> SPtr;
+       typedef std::vector<SessionDiagnosticsVariableType::SPtr> Vec;
+   
+       SessionDiagnosticsVariableType(void);
+       SessionDiagnosticsVariableType(const SessionDiagnosticsVariableType& value);
+       virtual ~SessionDiagnosticsVariableType(void);
+
+        //
+        // Duration
+        //
+        void actualSessionTimeout_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& actualSessionTimeout_Variable(void);
+        bool get_ActualSessionTimeout_Variable(OpcUaDataValue& dataValue);
+        bool set_ActualSessionTimeout_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void addNodesCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& addNodesCount_Variable(void);
+        bool get_AddNodesCount_Variable(OpcUaDataValue& dataValue);
+        bool set_AddNodesCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void addReferencesCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& addReferencesCount_Variable(void);
+        bool get_AddReferencesCount_Variable(OpcUaDataValue& dataValue);
+        bool set_AddReferencesCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void browseCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& browseCount_Variable(void);
+        bool get_BrowseCount_Variable(OpcUaDataValue& dataValue);
+        bool set_BrowseCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void browseNextCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& browseNextCount_Variable(void);
+        bool get_BrowseNextCount_Variable(OpcUaDataValue& dataValue);
+        bool set_BrowseNextCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void callCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& callCount_Variable(void);
+        bool get_CallCount_Variable(OpcUaDataValue& dataValue);
+        bool set_CallCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UtcTime
+        //
+        void clientConnectionTime_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& clientConnectionTime_Variable(void);
+        bool get_ClientConnectionTime_Variable(OpcUaDataValue& dataValue);
+        bool set_ClientConnectionTime_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ApplicationDescription
+        //
+        void clientDescription_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& clientDescription_Variable(void);
+        bool get_ClientDescription_Variable(OpcUaDataValue& dataValue);
+        bool set_ClientDescription_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UtcTime
+        //
+        void clientLastContactTime_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& clientLastContactTime_Variable(void);
+        bool get_ClientLastContactTime_Variable(OpcUaDataValue& dataValue);
+        bool set_ClientLastContactTime_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void createMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& createMonitoredItemsCount_Variable(void);
+        bool get_CreateMonitoredItemsCount_Variable(OpcUaDataValue& dataValue);
+        bool set_CreateMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void createSubscriptionCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& createSubscriptionCount_Variable(void);
+        bool get_CreateSubscriptionCount_Variable(OpcUaDataValue& dataValue);
+        bool set_CreateSubscriptionCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UInt32
+        //
+        void currentMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& currentMonitoredItemsCount_Variable(void);
+        bool get_CurrentMonitoredItemsCount_Variable(OpcUaDataValue& dataValue);
+        bool set_CurrentMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UInt32
+        //
+        void currentPublishRequestsInQueue_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& currentPublishRequestsInQueue_Variable(void);
+        bool get_CurrentPublishRequestsInQueue_Variable(OpcUaDataValue& dataValue);
+        bool set_CurrentPublishRequestsInQueue_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UInt32
+        //
+        void currentSubscriptionsCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& currentSubscriptionsCount_Variable(void);
+        bool get_CurrentSubscriptionsCount_Variable(OpcUaDataValue& dataValue);
+        bool set_CurrentSubscriptionsCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void deleteMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& deleteMonitoredItemsCount_Variable(void);
+        bool get_DeleteMonitoredItemsCount_Variable(OpcUaDataValue& dataValue);
+        bool set_DeleteMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void deleteNodesCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& deleteNodesCount_Variable(void);
+        bool get_DeleteNodesCount_Variable(OpcUaDataValue& dataValue);
+        bool set_DeleteNodesCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void deleteReferencesCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& deleteReferencesCount_Variable(void);
+        bool get_DeleteReferencesCount_Variable(OpcUaDataValue& dataValue);
+        bool set_DeleteReferencesCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void deleteSubscriptionsCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& deleteSubscriptionsCount_Variable(void);
+        bool get_DeleteSubscriptionsCount_Variable(OpcUaDataValue& dataValue);
+        bool set_DeleteSubscriptionsCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // String
+        //
+        void endpointUrl_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& endpointUrl_Variable(void);
+        bool get_EndpointUrl_Variable(OpcUaDataValue& dataValue);
+        bool set_EndpointUrl_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void historyReadCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& historyReadCount_Variable(void);
+        bool get_HistoryReadCount_Variable(OpcUaDataValue& dataValue);
+        bool set_HistoryReadCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void historyUpdateCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& historyUpdateCount_Variable(void);
+        bool get_HistoryUpdateCount_Variable(OpcUaDataValue& dataValue);
+        bool set_HistoryUpdateCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // LocaleId (Array)
+        //
+        void localeIds_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& localeIds_Variable(void);
+        bool get_LocaleIds_Variable(OpcUaDataValue& dataValue);
+        bool set_LocaleIds_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UInt32
+        //
+        void maxResponseMessageSize_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& maxResponseMessageSize_Variable(void);
+        bool get_MaxResponseMessageSize_Variable(OpcUaDataValue& dataValue);
+        bool set_MaxResponseMessageSize_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void modifyMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& modifyMonitoredItemsCount_Variable(void);
+        bool get_ModifyMonitoredItemsCount_Variable(OpcUaDataValue& dataValue);
+        bool set_ModifyMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void modifySubscriptionCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& modifySubscriptionCount_Variable(void);
+        bool get_ModifySubscriptionCount_Variable(OpcUaDataValue& dataValue);
+        bool set_ModifySubscriptionCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void publishCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& publishCount_Variable(void);
+        bool get_PublishCount_Variable(OpcUaDataValue& dataValue);
+        bool set_PublishCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void queryFirstCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& queryFirstCount_Variable(void);
+        bool get_QueryFirstCount_Variable(OpcUaDataValue& dataValue);
+        bool set_QueryFirstCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void queryNextCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& queryNextCount_Variable(void);
+        bool get_QueryNextCount_Variable(OpcUaDataValue& dataValue);
+        bool set_QueryNextCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void readCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& readCount_Variable(void);
+        bool get_ReadCount_Variable(OpcUaDataValue& dataValue);
+        bool set_ReadCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void registerNodesCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& registerNodesCount_Variable(void);
+        bool get_RegisterNodesCount_Variable(OpcUaDataValue& dataValue);
+        bool set_RegisterNodesCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void republishCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& republishCount_Variable(void);
+        bool get_RepublishCount_Variable(OpcUaDataValue& dataValue);
+        bool set_RepublishCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // String
+        //
+        void serverUri_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& serverUri_Variable(void);
+        bool get_ServerUri_Variable(OpcUaDataValue& dataValue);
+        bool set_ServerUri_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // NodeId
+        //
+        void sessionId_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& sessionId_Variable(void);
+        bool get_SessionId_Variable(OpcUaDataValue& dataValue);
+        bool set_SessionId_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // String
+        //
+        void sessionName_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& sessionName_Variable(void);
+        bool get_SessionName_Variable(OpcUaDataValue& dataValue);
+        bool set_SessionName_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void setMonitoringModeCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& setMonitoringModeCount_Variable(void);
+        bool get_SetMonitoringModeCount_Variable(OpcUaDataValue& dataValue);
+        bool set_SetMonitoringModeCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void setPublishingModeCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& setPublishingModeCount_Variable(void);
+        bool get_SetPublishingModeCount_Variable(OpcUaDataValue& dataValue);
+        bool set_SetPublishingModeCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void setTriggeringCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& setTriggeringCount_Variable(void);
+        bool get_SetTriggeringCount_Variable(OpcUaDataValue& dataValue);
+        bool set_SetTriggeringCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void totalRequestCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& totalRequestCount_Variable(void);
+        bool get_TotalRequestCount_Variable(OpcUaDataValue& dataValue);
+        bool set_TotalRequestCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void transferSubscriptionsCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& transferSubscriptionsCount_Variable(void);
+        bool get_TransferSubscriptionsCount_Variable(OpcUaDataValue& dataValue);
+        bool set_TransferSubscriptionsCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void translateBrowsePathsToNodeIdsCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& translateBrowsePathsToNodeIdsCount_Variable(void);
+        bool get_TranslateBrowsePathsToNodeIdsCount_Variable(OpcUaDataValue& dataValue);
+        bool set_TranslateBrowsePathsToNodeIdsCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UInt32
+        //
+        void unauthorizedRequestCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& unauthorizedRequestCount_Variable(void);
+        bool get_UnauthorizedRequestCount_Variable(OpcUaDataValue& dataValue);
+        bool set_UnauthorizedRequestCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void unregisterNodesCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& unregisterNodesCount_Variable(void);
+        bool get_UnregisterNodesCount_Variable(OpcUaDataValue& dataValue);
+        bool set_UnregisterNodesCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // SessionDiagnosticsDataType (Array)
+        //
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // ServiceCounterDataType
+        //
+        void writeCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& writeCount_Variable(void);
+        bool get_WriteCount_Variable(OpcUaDataValue& dataValue);
+        bool set_WriteCount_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT SessionDiagnosticsVariableType
-    : public BaseDataVariableType
-    {
-      public:
-        typedef boost::shared_ptr<SessionDiagnosticsVariableType> SPtr;
-    
-        SessionDiagnosticsVariableType(void);
-        virtual ~SessionDiagnosticsVariableType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr sessionId(void);
-        bool setSessionId(const OpcUaDataValue& dataValue);
-        bool getSessionId(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSessionId(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr sessionName(void);
-        bool setSessionName(const OpcUaDataValue& dataValue);
-        bool getSessionName(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSessionName(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr clientDescription(void);
-        bool setClientDescription(const OpcUaDataValue& dataValue);
-        bool getClientDescription(OpcUaDataValue& dataValue);
-        void setUpdateCallbackClientDescription(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr serverUri(void);
-        bool setServerUri(const OpcUaDataValue& dataValue);
-        bool getServerUri(OpcUaDataValue& dataValue);
-        void setUpdateCallbackServerUri(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr endpointUrl(void);
-        bool setEndpointUrl(const OpcUaDataValue& dataValue);
-        bool getEndpointUrl(OpcUaDataValue& dataValue);
-        void setUpdateCallbackEndpointUrl(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr localeIds(void);
-        bool setLocaleIds(const OpcUaDataValue& dataValue);
-        bool getLocaleIds(OpcUaDataValue& dataValue);
-        void setUpdateCallbackLocaleIds(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr actualSessionTimeout(void);
-        bool setActualSessionTimeout(const OpcUaDataValue& dataValue);
-        bool getActualSessionTimeout(OpcUaDataValue& dataValue);
-        void setUpdateCallbackActualSessionTimeout(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr maxResponseMessageSize(void);
-        bool setMaxResponseMessageSize(const OpcUaDataValue& dataValue);
-        bool getMaxResponseMessageSize(OpcUaDataValue& dataValue);
-        void setUpdateCallbackMaxResponseMessageSize(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr clientConnectionTime(void);
-        bool setClientConnectionTime(const OpcUaDataValue& dataValue);
-        bool getClientConnectionTime(OpcUaDataValue& dataValue);
-        void setUpdateCallbackClientConnectionTime(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr clientLastContactTime(void);
-        bool setClientLastContactTime(const OpcUaDataValue& dataValue);
-        bool getClientLastContactTime(OpcUaDataValue& dataValue);
-        void setUpdateCallbackClientLastContactTime(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr currentSubscriptionsCount(void);
-        bool setCurrentSubscriptionsCount(const OpcUaDataValue& dataValue);
-        bool getCurrentSubscriptionsCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackCurrentSubscriptionsCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr currentMonitoredItemsCount(void);
-        bool setCurrentMonitoredItemsCount(const OpcUaDataValue& dataValue);
-        bool getCurrentMonitoredItemsCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackCurrentMonitoredItemsCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr currentPublishRequestsInQueue(void);
-        bool setCurrentPublishRequestsInQueue(const OpcUaDataValue& dataValue);
-        bool getCurrentPublishRequestsInQueue(OpcUaDataValue& dataValue);
-        void setUpdateCallbackCurrentPublishRequestsInQueue(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr totalRequestCount(void);
-        bool setTotalRequestCount(const OpcUaDataValue& dataValue);
-        bool getTotalRequestCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackTotalRequestCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr unauthorizedRequestCount(void);
-        bool setUnauthorizedRequestCount(const OpcUaDataValue& dataValue);
-        bool getUnauthorizedRequestCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackUnauthorizedRequestCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr readCount(void);
-        bool setReadCount(const OpcUaDataValue& dataValue);
-        bool getReadCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackReadCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr historyReadCount(void);
-        bool setHistoryReadCount(const OpcUaDataValue& dataValue);
-        bool getHistoryReadCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackHistoryReadCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr writeCount(void);
-        bool setWriteCount(const OpcUaDataValue& dataValue);
-        bool getWriteCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackWriteCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr historyUpdateCount(void);
-        bool setHistoryUpdateCount(const OpcUaDataValue& dataValue);
-        bool getHistoryUpdateCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackHistoryUpdateCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr callCount(void);
-        bool setCallCount(const OpcUaDataValue& dataValue);
-        bool getCallCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackCallCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr createMonitoredItemsCount(void);
-        bool setCreateMonitoredItemsCount(const OpcUaDataValue& dataValue);
-        bool getCreateMonitoredItemsCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackCreateMonitoredItemsCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr modifyMonitoredItemsCount(void);
-        bool setModifyMonitoredItemsCount(const OpcUaDataValue& dataValue);
-        bool getModifyMonitoredItemsCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackModifyMonitoredItemsCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr setMonitoringModeCount(void);
-        bool setSetMonitoringModeCount(const OpcUaDataValue& dataValue);
-        bool getSetMonitoringModeCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSetMonitoringModeCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr setTriggeringCount(void);
-        bool setSetTriggeringCount(const OpcUaDataValue& dataValue);
-        bool getSetTriggeringCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSetTriggeringCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr deleteMonitoredItemsCount(void);
-        bool setDeleteMonitoredItemsCount(const OpcUaDataValue& dataValue);
-        bool getDeleteMonitoredItemsCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackDeleteMonitoredItemsCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr createSubscriptionCount(void);
-        bool setCreateSubscriptionCount(const OpcUaDataValue& dataValue);
-        bool getCreateSubscriptionCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackCreateSubscriptionCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr modifySubscriptionCount(void);
-        bool setModifySubscriptionCount(const OpcUaDataValue& dataValue);
-        bool getModifySubscriptionCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackModifySubscriptionCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr setPublishingModeCount(void);
-        bool setSetPublishingModeCount(const OpcUaDataValue& dataValue);
-        bool getSetPublishingModeCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackSetPublishingModeCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr publishCount(void);
-        bool setPublishCount(const OpcUaDataValue& dataValue);
-        bool getPublishCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackPublishCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr republishCount(void);
-        bool setRepublishCount(const OpcUaDataValue& dataValue);
-        bool getRepublishCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackRepublishCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr transferSubscriptionsCount(void);
-        bool setTransferSubscriptionsCount(const OpcUaDataValue& dataValue);
-        bool getTransferSubscriptionsCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackTransferSubscriptionsCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr deleteSubscriptionsCount(void);
-        bool setDeleteSubscriptionsCount(const OpcUaDataValue& dataValue);
-        bool getDeleteSubscriptionsCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackDeleteSubscriptionsCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr addNodesCount(void);
-        bool setAddNodesCount(const OpcUaDataValue& dataValue);
-        bool getAddNodesCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackAddNodesCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr addReferencesCount(void);
-        bool setAddReferencesCount(const OpcUaDataValue& dataValue);
-        bool getAddReferencesCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackAddReferencesCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr deleteNodesCount(void);
-        bool setDeleteNodesCount(const OpcUaDataValue& dataValue);
-        bool getDeleteNodesCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackDeleteNodesCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr deleteReferencesCount(void);
-        bool setDeleteReferencesCount(const OpcUaDataValue& dataValue);
-        bool getDeleteReferencesCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackDeleteReferencesCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr browseCount(void);
-        bool setBrowseCount(const OpcUaDataValue& dataValue);
-        bool getBrowseCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackBrowseCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr browseNextCount(void);
-        bool setBrowseNextCount(const OpcUaDataValue& dataValue);
-        bool getBrowseNextCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackBrowseNextCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr translateBrowsePathsToNodeIdsCount(void);
-        bool setTranslateBrowsePathsToNodeIdsCount(const OpcUaDataValue& dataValue);
-        bool getTranslateBrowsePathsToNodeIdsCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackTranslateBrowsePathsToNodeIdsCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr queryFirstCount(void);
-        bool setQueryFirstCount(const OpcUaDataValue& dataValue);
-        bool getQueryFirstCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackQueryFirstCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr queryNextCount(void);
-        bool setQueryNextCount(const OpcUaDataValue& dataValue);
-        bool getQueryNextCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackQueryNextCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr registerNodesCount(void);
-        bool setRegisterNodesCount(const OpcUaDataValue& dataValue);
-        bool getRegisterNodesCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackRegisterNodesCount(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr unregisterNodesCount(void);
-        bool setUnregisterNodesCount(const OpcUaDataValue& dataValue);
-        bool getUnregisterNodesCount(OpcUaDataValue& dataValue);
-        void setUpdateCallbackUnregisterNodesCount(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr sessionId_;
-        ServerVariable::SPtr sessionName_;
-        ServerVariable::SPtr clientDescription_;
-        ServerVariable::SPtr serverUri_;
-        ServerVariable::SPtr endpointUrl_;
-        ServerVariable::SPtr localeIds_;
-        ServerVariable::SPtr actualSessionTimeout_;
-        ServerVariable::SPtr maxResponseMessageSize_;
-        ServerVariable::SPtr clientConnectionTime_;
-        ServerVariable::SPtr clientLastContactTime_;
-        ServerVariable::SPtr currentSubscriptionsCount_;
-        ServerVariable::SPtr currentMonitoredItemsCount_;
-        ServerVariable::SPtr currentPublishRequestsInQueue_;
-        ServerVariable::SPtr totalRequestCount_;
-        ServerVariable::SPtr unauthorizedRequestCount_;
-        ServerVariable::SPtr readCount_;
-        ServerVariable::SPtr historyReadCount_;
-        ServerVariable::SPtr writeCount_;
-        ServerVariable::SPtr historyUpdateCount_;
-        ServerVariable::SPtr callCount_;
-        ServerVariable::SPtr createMonitoredItemsCount_;
-        ServerVariable::SPtr modifyMonitoredItemsCount_;
-        ServerVariable::SPtr setMonitoringModeCount_;
-        ServerVariable::SPtr setTriggeringCount_;
-        ServerVariable::SPtr deleteMonitoredItemsCount_;
-        ServerVariable::SPtr createSubscriptionCount_;
-        ServerVariable::SPtr modifySubscriptionCount_;
-        ServerVariable::SPtr setPublishingModeCount_;
-        ServerVariable::SPtr publishCount_;
-        ServerVariable::SPtr republishCount_;
-        ServerVariable::SPtr transferSubscriptionsCount_;
-        ServerVariable::SPtr deleteSubscriptionsCount_;
-        ServerVariable::SPtr addNodesCount_;
-        ServerVariable::SPtr addReferencesCount_;
-        ServerVariable::SPtr deleteNodesCount_;
-        ServerVariable::SPtr deleteReferencesCount_;
-        ServerVariable::SPtr browseCount_;
-        ServerVariable::SPtr browseNextCount_;
-        ServerVariable::SPtr translateBrowsePathsToNodeIdsCount_;
-        ServerVariable::SPtr queryFirstCount_;
-        ServerVariable::SPtr queryNextCount_;
-        ServerVariable::SPtr registerNodesCount_;
-        ServerVariable::SPtr unregisterNodesCount_;
-    
-    };
+        ServerVariable::SPtr actualSessionTimeout_Variable_;
+        ServerVariable::SPtr addNodesCount_Variable_;
+        ServerVariable::SPtr addReferencesCount_Variable_;
+        ServerVariable::SPtr browseCount_Variable_;
+        ServerVariable::SPtr browseNextCount_Variable_;
+        ServerVariable::SPtr callCount_Variable_;
+        ServerVariable::SPtr clientConnectionTime_Variable_;
+        ServerVariable::SPtr clientDescription_Variable_;
+        ServerVariable::SPtr clientLastContactTime_Variable_;
+        ServerVariable::SPtr createMonitoredItemsCount_Variable_;
+        ServerVariable::SPtr createSubscriptionCount_Variable_;
+        ServerVariable::SPtr currentMonitoredItemsCount_Variable_;
+        ServerVariable::SPtr currentPublishRequestsInQueue_Variable_;
+        ServerVariable::SPtr currentSubscriptionsCount_Variable_;
+        ServerVariable::SPtr deleteMonitoredItemsCount_Variable_;
+        ServerVariable::SPtr deleteNodesCount_Variable_;
+        ServerVariable::SPtr deleteReferencesCount_Variable_;
+        ServerVariable::SPtr deleteSubscriptionsCount_Variable_;
+        ServerVariable::SPtr endpointUrl_Variable_;
+        ServerVariable::SPtr historyReadCount_Variable_;
+        ServerVariable::SPtr historyUpdateCount_Variable_;
+        ServerVariable::SPtr localeIds_Variable_;
+        ServerVariable::SPtr maxResponseMessageSize_Variable_;
+        ServerVariable::SPtr modifyMonitoredItemsCount_Variable_;
+        ServerVariable::SPtr modifySubscriptionCount_Variable_;
+        ServerVariable::SPtr publishCount_Variable_;
+        ServerVariable::SPtr queryFirstCount_Variable_;
+        ServerVariable::SPtr queryNextCount_Variable_;
+        ServerVariable::SPtr readCount_Variable_;
+        ServerVariable::SPtr registerNodesCount_Variable_;
+        ServerVariable::SPtr republishCount_Variable_;
+        ServerVariable::SPtr serverUri_Variable_;
+        ServerVariable::SPtr sessionId_Variable_;
+        ServerVariable::SPtr sessionName_Variable_;
+        ServerVariable::SPtr setMonitoringModeCount_Variable_;
+        ServerVariable::SPtr setPublishingModeCount_Variable_;
+        ServerVariable::SPtr setTriggeringCount_Variable_;
+        ServerVariable::SPtr totalRequestCount_Variable_;
+        ServerVariable::SPtr transferSubscriptionsCount_Variable_;
+        ServerVariable::SPtr translateBrowsePathsToNodeIdsCount_Variable_;
+        ServerVariable::SPtr unauthorizedRequestCount_Variable_;
+        ServerVariable::SPtr unregisterNodesCount_Variable_;
+        ServerVariable::SPtr variable_;
+        ServerVariable::SPtr writeCount_Variable_;
+   
+   };
 
 }
 

@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A token representing an anonymous user.
+     */
+    AnonymousIdentityToken::AnonymousIdentityToken(const AnonymousIdentityToken& value)
+    : UserIdentityToken()
+    {
+        const_cast<AnonymousIdentityToken*>(&value)->copyTo(*this);
+    }
+    
     AnonymousIdentityToken::~AnonymousIdentityToken(void)
     {
     }
@@ -111,16 +120,6 @@ namespace OpcUaStackCore
     AnonymousIdentityToken::opcUaBinaryDecode(std::istream& is)
     {
         UserIdentityToken::opcUaBinaryDecode(is);
-    }
-    
-    bool
-    AnonymousIdentityToken::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    AnonymousIdentityToken::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

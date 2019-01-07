@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,158 +15,273 @@ namespace OpcUaStackServer
 {
     
     TwoStateVariableType::TwoStateVariableType(void)
-    : StateVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , id_(constructSPtr<ServerVariable>("Id"))
-    , transitionTime_(constructSPtr<ServerVariable>("TransitionTime"))
-    , effectiveTransitionTime_(constructSPtr<ServerVariable>("EffectiveTransitionTime"))
-    , trueState_(constructSPtr<ServerVariable>("TrueState"))
-    , falseState_(constructSPtr<ServerVariable>("FalseState"))
+    : VariableBase()
+    , effectiveDisplayName_Variable_(constructSPtr<ServerVariable>("EffectiveDisplayName_Variable"))
+    , effectiveTransitionTime_Variable_(constructSPtr<ServerVariable>("EffectiveTransitionTime_Variable"))
+    , falseState_Variable_(constructSPtr<ServerVariable>("FalseState_Variable"))
+    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
+    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
+    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
+    , transitionTime_Variable_(constructSPtr<ServerVariable>("TransitionTime_Variable"))
+    , trueState_Variable_(constructSPtr<ServerVariable>("TrueState_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(8995));
-        serverVariables().registerServerVariable(id_);
-        serverVariables().registerServerVariable(transitionTime_);
-        serverVariables().registerServerVariable(effectiveTransitionTime_);
-        serverVariables().registerServerVariable(trueState_);
-        serverVariables().registerServerVariable(falseState_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)8995);
+        setServerVariable(effectiveDisplayName_Variable_);
+        setServerVariable(effectiveTransitionTime_Variable_);
+        setServerVariable(falseState_Variable_);
+        setServerVariable(id_Variable_);
+        setServerVariable(name_Variable_);
+        setServerVariable(number_Variable_);
+        setServerVariable(transitionTime_Variable_);
+        setServerVariable(trueState_Variable_);
+        setServerVariable(variable_);
+    }
+    
+    TwoStateVariableType::TwoStateVariableType(const TwoStateVariableType& value)
+    : VariableBase()
+    , effectiveDisplayName_Variable_(constructSPtr<ServerVariable>("EffectiveDisplayName_Variable"))
+    , effectiveTransitionTime_Variable_(constructSPtr<ServerVariable>("EffectiveTransitionTime_Variable"))
+    , falseState_Variable_(constructSPtr<ServerVariable>("FalseState_Variable"))
+    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
+    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
+    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
+    , transitionTime_Variable_(constructSPtr<ServerVariable>("TransitionTime_Variable"))
+    , trueState_Variable_(constructSPtr<ServerVariable>("TrueState_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)8995);
+        setServerVariable(effectiveDisplayName_Variable_);
+        setServerVariable(effectiveTransitionTime_Variable_);
+        setServerVariable(falseState_Variable_);
+        setServerVariable(id_Variable_);
+        setServerVariable(name_Variable_);
+        setServerVariable(number_Variable_);
+        setServerVariable(transitionTime_Variable_);
+        setServerVariable(trueState_Variable_);
+        setServerVariable(variable_);
     }
     
     TwoStateVariableType::~TwoStateVariableType(void)
     {
     }
-    
-    bool
-    TwoStateVariableType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    TwoStateVariableType::effectiveDisplayName_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        id_->addBrowsePath(nodeId, OpcUaQualifiedName("Id", namespaceIndex_));
-        transitionTime_->addBrowsePath(nodeId, OpcUaQualifiedName("TransitionTime", namespaceIndex_));
-        effectiveTransitionTime_->addBrowsePath(nodeId, OpcUaQualifiedName("EffectiveTransitionTime", namespaceIndex_));
-        trueState_->addBrowsePath(nodeId, OpcUaQualifiedName("TrueState", namespaceIndex_));
-        falseState_->addBrowsePath(nodeId, OpcUaQualifiedName("FalseState", namespaceIndex_));
-        StateVariableType::linkInstanceWithModel(nodeId);
+        return effectiveDisplayName_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    TwoStateVariableType::id(void)
+
+    ServerVariable::SPtr&
+    TwoStateVariableType::effectiveTransitionTime_Variable(void)
     {
-        return id_->baseNode().lock();
+        return effectiveTransitionTime_Variable_;
     }
-    
-    bool
-    TwoStateVariableType::setId(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    TwoStateVariableType::falseState_Variable(void)
     {
-        return id_->setDataValue(dataValue);
+        return falseState_Variable_;
     }
-    
-    bool
-    TwoStateVariableType::getId(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    TwoStateVariableType::id_Variable(void)
     {
-        return id_->getDataValue(dataValue);
+        return id_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    TwoStateVariableType::name_Variable(void)
+    {
+        return name_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    TwoStateVariableType::number_Variable(void)
+    {
+        return number_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    TwoStateVariableType::transitionTime_Variable(void)
+    {
+        return transitionTime_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    TwoStateVariableType::trueState_Variable(void)
+    {
+        return trueState_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    TwoStateVariableType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    TwoStateVariableType::setUpdateCallbackId(Callback::SPtr& callback)
+    TwoStateVariableType::effectiveDisplayName_Variable(ServerVariable::SPtr& serverVariable)
     {
-        id_->callback(callback);
+        effectiveDisplayName_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    TwoStateVariableType::transitionTime(void)
-    {
-        return transitionTime_->baseNode().lock();
-    }
-    
-    bool
-    TwoStateVariableType::setTransitionTime(const OpcUaDataValue& dataValue)
-    {
-        return transitionTime_->setDataValue(dataValue);
-    }
-    
-    bool
-    TwoStateVariableType::getTransitionTime(OpcUaDataValue& dataValue)
-    {
-        return transitionTime_->getDataValue(dataValue);
-    }
-    
+
     void
-    TwoStateVariableType::setUpdateCallbackTransitionTime(Callback::SPtr& callback)
+    TwoStateVariableType::effectiveTransitionTime_Variable(ServerVariable::SPtr& serverVariable)
     {
-        transitionTime_->callback(callback);
+        effectiveTransitionTime_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    TwoStateVariableType::effectiveTransitionTime(void)
-    {
-        return effectiveTransitionTime_->baseNode().lock();
-    }
-    
-    bool
-    TwoStateVariableType::setEffectiveTransitionTime(const OpcUaDataValue& dataValue)
-    {
-        return effectiveTransitionTime_->setDataValue(dataValue);
-    }
-    
-    bool
-    TwoStateVariableType::getEffectiveTransitionTime(OpcUaDataValue& dataValue)
-    {
-        return effectiveTransitionTime_->getDataValue(dataValue);
-    }
-    
+
     void
-    TwoStateVariableType::setUpdateCallbackEffectiveTransitionTime(Callback::SPtr& callback)
+    TwoStateVariableType::falseState_Variable(ServerVariable::SPtr& serverVariable)
     {
-        effectiveTransitionTime_->callback(callback);
+        falseState_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    TwoStateVariableType::trueState(void)
-    {
-        return trueState_->baseNode().lock();
-    }
-    
-    bool
-    TwoStateVariableType::setTrueState(const OpcUaDataValue& dataValue)
-    {
-        return trueState_->setDataValue(dataValue);
-    }
-    
-    bool
-    TwoStateVariableType::getTrueState(OpcUaDataValue& dataValue)
-    {
-        return trueState_->getDataValue(dataValue);
-    }
-    
+
     void
-    TwoStateVariableType::setUpdateCallbackTrueState(Callback::SPtr& callback)
+    TwoStateVariableType::id_Variable(ServerVariable::SPtr& serverVariable)
     {
-        trueState_->callback(callback);
+        id_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    TwoStateVariableType::falseState(void)
-    {
-        return falseState_->baseNode().lock();
-    }
-    
-    bool
-    TwoStateVariableType::setFalseState(const OpcUaDataValue& dataValue)
-    {
-        return falseState_->setDataValue(dataValue);
-    }
-    
-    bool
-    TwoStateVariableType::getFalseState(OpcUaDataValue& dataValue)
-    {
-        return falseState_->getDataValue(dataValue);
-    }
-    
+
     void
-    TwoStateVariableType::setUpdateCallbackFalseState(Callback::SPtr& callback)
+    TwoStateVariableType::name_Variable(ServerVariable::SPtr& serverVariable)
     {
-        falseState_->callback(callback);
+        name_Variable_ = serverVariable;
+    }
+
+    void
+    TwoStateVariableType::number_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        number_Variable_ = serverVariable;
+    }
+
+    void
+    TwoStateVariableType::transitionTime_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        transitionTime_Variable_ = serverVariable;
+    }
+
+    void
+    TwoStateVariableType::trueState_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        trueState_Variable_ = serverVariable;
+    }
+
+    void
+    TwoStateVariableType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    TwoStateVariableType::get_EffectiveDisplayName_Variable(OpcUaDataValue& dataValue)
+    {
+        return effectiveDisplayName_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::get_EffectiveTransitionTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return effectiveTransitionTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::get_FalseState_Variable(OpcUaDataValue& dataValue)
+    {
+        return falseState_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::get_Id_Variable(OpcUaDataValue& dataValue)
+    {
+        return id_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::get_Name_Variable(OpcUaDataValue& dataValue)
+    {
+        return name_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::get_Number_Variable(OpcUaDataValue& dataValue)
+    {
+        return number_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::get_TransitionTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return transitionTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::get_TrueState_Variable(OpcUaDataValue& dataValue)
+    {
+        return trueState_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::set_EffectiveDisplayName_Variable(const OpcUaDataValue& dataValue)
+    {
+        return effectiveDisplayName_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::set_EffectiveTransitionTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return effectiveTransitionTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::set_FalseState_Variable(const OpcUaDataValue& dataValue)
+    {
+        return falseState_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::set_Id_Variable(const OpcUaDataValue& dataValue)
+    {
+        return id_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::set_Name_Variable(const OpcUaDataValue& dataValue)
+    {
+        return name_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::set_Number_Variable(const OpcUaDataValue& dataValue)
+    {
+        return number_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::set_TransitionTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return transitionTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::set_TrueState_Variable(const OpcUaDataValue& dataValue)
+    {
+        return trueState_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    TwoStateVariableType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

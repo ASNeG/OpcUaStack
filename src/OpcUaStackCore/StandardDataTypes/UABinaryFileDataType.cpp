@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    UABinaryFileDataType::UABinaryFileDataType(const UABinaryFileDataType& value)
+    : DataTypeSchemaHeader()
+    , schemaLocation_()
+    , fileHeader_()
+    , body_()
+    {
+        const_cast<UABinaryFileDataType*>(&value)->copyTo(*this);
+    }
+    
     UABinaryFileDataType::~UABinaryFileDataType(void)
     {
     }
@@ -141,16 +150,6 @@ namespace OpcUaStackCore
         schemaLocation_.opcUaBinaryDecode(is);
         fileHeader_.opcUaBinaryDecode(is);
         body_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    UABinaryFileDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    UABinaryFileDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

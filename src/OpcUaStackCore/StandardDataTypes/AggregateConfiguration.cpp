@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    AggregateConfiguration::AggregateConfiguration(const AggregateConfiguration& value)
+    : Object()
+    , ExtensionObjectBase()
+    , useServerCapabilitiesDefaults_()
+    , treatUncertainAsBad_()
+    , percentDataBad_()
+    , percentDataGood_()
+    , useSlopedExtrapolation_()
+    {
+        const_cast<AggregateConfiguration*>(&value)->copyTo(*this);
+    }
+    
     AggregateConfiguration::~AggregateConfiguration(void)
     {
     }
@@ -162,16 +174,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,percentDataBad_);
         OpcUaNumber::opcUaBinaryDecode(is,percentDataGood_);
         OpcUaNumber::opcUaBinaryDecode(is,useSlopedExtrapolation_);
-    }
-    
-    bool
-    AggregateConfiguration::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    AggregateConfiguration::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

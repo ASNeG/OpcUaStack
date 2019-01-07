@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A request to delete a node to the server address space.
+     */
+    DeleteNodesItem::DeleteNodesItem(const DeleteNodesItem& value)
+    : Object()
+    , ExtensionObjectBase()
+    , nodeId_()
+    , deleteTargetReferences_()
+    {
+        const_cast<DeleteNodesItem*>(&value)->copyTo(*this);
+    }
+    
     DeleteNodesItem::~DeleteNodesItem(void)
     {
     }
@@ -132,16 +144,6 @@ namespace OpcUaStackCore
     {
         nodeId_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,deleteTargetReferences_);
-    }
-    
-    bool
-    DeleteNodesItem::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DeleteNodesItem::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

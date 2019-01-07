@@ -70,6 +70,8 @@ namespace OpcUaStackCore
 		void get(AttributeIdMask::Vec& attributeIdMaskVec);
 
 	  public:
+		AttributeIdMask(const AttributeIdMask& value);
+
 		uint32_t attributeIdMask_;
 	};
 

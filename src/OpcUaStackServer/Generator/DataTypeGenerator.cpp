@@ -233,6 +233,7 @@ namespace OpcUaStackServer
 		ss << prefix << "    typedef std::vector<" << nodeInfo_.className() << "::SPtr> Vec;" << std::endl;
 		ss << prefix << std::endl;
 		ss << prefix << "    " << nodeInfo_.className() << "(void);" << std::endl;
+		ss << prefix << "    " << nodeInfo_.className() << "(const " << nodeInfo_.className() << "& value);" << std::endl;
 		ss << prefix << "    virtual ~" << nodeInfo_.className() << "(void);" << std::endl;
 
 		headerContent_ += ss.str();
@@ -273,8 +274,6 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual OpcUaNodeId jsonTypeId(void);" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryEncode(std::ostream& os) const;" << std::endl;
 		ss << prefix << "virtual void opcUaBinaryDecode(std::istream& is);" << std::endl;
-		ss << prefix << "virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;" << std::endl;
-		ss << prefix << "virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
@@ -419,8 +418,6 @@ namespace OpcUaStackServer
 				generateSourceClassJsonTypeId("    ") &&
 				generateSourceClassBinaryEncode("    ") &&
 				generateSourceClassBinaryDecode("    ") &&
-				generateSourceClassEncode("    ") &&
-				generateSourceClassDecode("    ") &&
 				generateSourceClassXmlEncode("    ") &&
 				generateSourceClassXmlDecode("    ") &&
 				generateSourceClassJsonEncode("    ") &&
@@ -534,6 +531,41 @@ namespace OpcUaStackServer
 		}
 
 		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		//
+		// added copy constructor
+		//
+		ss << prefix << std::endl;
+		if (nodeInfo_.description() != "") {
+			ss << prefix << "/**" << std::endl;
+			ss << prefix << " * " << nodeInfo_.description() << std::endl;
+			ss << prefix << " */" << std::endl;
+		}
+
+		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(const " <<nodeInfo_.className()  << "& value)" << std::endl;
+
+		if (nodeInfo_.parentIsStructureType() == true) {
+			ss << prefix << ": Object()" << std::endl;
+			ss << prefix << ", ExtensionObjectBase()" << std::endl;
+		}
+		else {
+			ss << prefix << ": " << nodeInfo_.parentClassName() << "()" << std::endl;
+		}
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			std::string variableContent = "";
+			if (dataTypeField->smartpointer() == true) {
+				variableContent = "constructSPtr<" + dataTypeField->variableTypeWithoutPtr() + ">()";
+			}
+
+			ss << prefix << ", " << dataTypeField->variableName() << "(" << variableContent << ")" << std::endl;
+		}
+
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    const_cast<" << nodeInfo_.className() << "*>(&value)->copyTo(*this);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -892,40 +924,6 @@ namespace OpcUaStackServer
 			}
 		}
 
-		ss << prefix << "}" << std::endl;
-
-		sourceContent_ += ss.str();
-		return true;
-	}
-
-
-
-	bool
-	DataTypeGenerator::generateSourceClassEncode(const std::string& prefix)
-	{
-		std::stringstream ss;
-
-		ss << prefix << std::endl;
-		ss << prefix << "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const" << std::endl;
-		ss << prefix << "{" << std::endl;
-		// FIXME: todo
-		ss << prefix << "}" << std::endl;
-
-		sourceContent_ += ss.str();
-		return true;
-	}
-
-	bool
-	DataTypeGenerator::generateSourceClassDecode(const std::string& prefix)
-	{
-		std::stringstream ss;
-
-		ss << prefix << std::endl;
-		ss << prefix << "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
-		ss << prefix << "{" << std::endl;
-		// FIXME: todo
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

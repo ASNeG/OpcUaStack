@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    PublishedDataItemsDataType::PublishedDataItemsDataType(const PublishedDataItemsDataType& value)
+    : PublishedDataSetSourceDataType()
+    , publishedData_()
+    {
+        const_cast<PublishedDataItemsDataType*>(&value)->copyTo(*this);
+    }
+    
     PublishedDataItemsDataType::~PublishedDataItemsDataType(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         PublishedDataSetSourceDataType::opcUaBinaryDecode(is);
         publishedData_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    PublishedDataItemsDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    PublishedDataItemsDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -33,6 +33,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaDateTime> SPtr;
 
 		OpcUaDateTime(void);
+		OpcUaDateTime(const OpcUaDateTime& value);
 		OpcUaDateTime(const boost::posix_time::ptime& ptime);
 		OpcUaDateTime(const std::string& dateTimeString);
 		~OpcUaDateTime(void);
@@ -61,8 +62,6 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool encode(boost::property_tree::ptree& pt) const;
-		bool decode(boost::property_tree::ptree& pt);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
@@ -73,8 +72,6 @@ namespace OpcUaStackCore
 		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
-
-
 		static boost::posix_time::ptime nullTime_;
 		OpcUaUInt64 dateTime_;
 	};

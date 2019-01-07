@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The discovery information needed for mDNS registration.
+     */
+    MdnsDiscoveryConfiguration::MdnsDiscoveryConfiguration(const MdnsDiscoveryConfiguration& value)
+    : DiscoveryConfiguration()
+    , mdnsServerName_()
+    , serverCapabilities_()
+    {
+        const_cast<MdnsDiscoveryConfiguration*>(&value)->copyTo(*this);
+    }
+    
     MdnsDiscoveryConfiguration::~MdnsDiscoveryConfiguration(void)
     {
     }
@@ -133,16 +144,6 @@ namespace OpcUaStackCore
         DiscoveryConfiguration::opcUaBinaryDecode(is);
         mdnsServerName_.opcUaBinaryDecode(is);
         serverCapabilities_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    MdnsDiscoveryConfiguration::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    MdnsDiscoveryConfiguration::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

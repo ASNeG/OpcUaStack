@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    SimpleTypeDescription::SimpleTypeDescription(const SimpleTypeDescription& value)
+    : DataTypeDescription()
+    , baseDataType_()
+    , builtInType_()
+    {
+        const_cast<SimpleTypeDescription*>(&value)->copyTo(*this);
+    }
+    
     SimpleTypeDescription::~SimpleTypeDescription(void)
     {
     }
@@ -130,16 +138,6 @@ namespace OpcUaStackCore
         DataTypeDescription::opcUaBinaryDecode(is);
         baseDataType_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,builtInType_);
-    }
-    
-    bool
-    SimpleTypeDescription::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    SimpleTypeDescription::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

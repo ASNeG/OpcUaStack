@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaGuid> SPtr;
 
 	    OpcUaGuid(void);
-	    OpcUaGuid(const std::string& opcUaGuid);
+	    OpcUaGuid(const std::string& string);
 		~OpcUaGuid(void);
 
 		void data1(OpcUaUInt32 value);
@@ -67,8 +67,6 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool encode(boost::property_tree::ptree& pt) const;
-		bool decode(boost::property_tree::ptree& pt);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
@@ -78,6 +76,8 @@ namespace OpcUaStackCore
 		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
+		OpcUaGuid(const OpcUaGuid& value);
+
 		OpcUaUInt32 data1_;
 		OpcUaUInt16 data2_;
 		OpcUaUInt16 data3_;

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryEventFieldList::HistoryEventFieldList(const HistoryEventFieldList& value)
+    : Object()
+    , ExtensionObjectBase()
+    , eventFields_()
+    {
+        const_cast<HistoryEventFieldList*>(&value)->copyTo(*this);
+    }
+    
     HistoryEventFieldList::~HistoryEventFieldList(void)
     {
     }
@@ -118,16 +126,6 @@ namespace OpcUaStackCore
     HistoryEventFieldList::opcUaBinaryDecode(std::istream& is)
     {
         eventFields_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    HistoryEventFieldList::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    HistoryEventFieldList::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

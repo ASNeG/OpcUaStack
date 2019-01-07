@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    DataChangeFilter::DataChangeFilter(const DataChangeFilter& value)
+    : MonitoringFilter()
+    , trigger_()
+    , deadbandType_()
+    , deadbandValue_()
+    {
+        const_cast<DataChangeFilter*>(&value)->copyTo(*this);
+    }
+    
     DataChangeFilter::~DataChangeFilter(void)
     {
     }
@@ -141,16 +150,6 @@ namespace OpcUaStackCore
         trigger_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,deadbandType_);
         OpcUaNumber::opcUaBinaryDecode(is,deadbandValue_);
-    }
-    
-    bool
-    DataChangeFilter::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataChangeFilter::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

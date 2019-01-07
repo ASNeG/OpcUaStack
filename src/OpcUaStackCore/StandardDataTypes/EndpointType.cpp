@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    EndpointType::EndpointType(const EndpointType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , endpointUrl_()
+    , securityMode_()
+    , securityPolicyUri_()
+    , transportProfileUri_()
+    {
+        const_cast<EndpointType*>(&value)->copyTo(*this);
+    }
+    
     EndpointType::~EndpointType(void)
     {
     }
@@ -151,16 +162,6 @@ namespace OpcUaStackCore
         securityMode_.opcUaBinaryDecode(is);
         securityPolicyUri_.opcUaBinaryDecode(is);
         transportProfileUri_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    EndpointType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EndpointType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

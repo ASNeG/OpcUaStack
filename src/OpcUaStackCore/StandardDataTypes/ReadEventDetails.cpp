@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    ReadEventDetails::ReadEventDetails(const ReadEventDetails& value)
+    : HistoryReadDetails()
+    , numValuesPerNode_()
+    , startTime_()
+    , endTime_()
+    , filter_()
+    {
+        const_cast<ReadEventDetails*>(&value)->copyTo(*this);
+    }
+    
     ReadEventDetails::~ReadEventDetails(void)
     {
     }
@@ -152,16 +162,6 @@ namespace OpcUaStackCore
         startTime_.opcUaBinaryDecode(is);
         endTime_.opcUaBinaryDecode(is);
         filter_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ReadEventDetails::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ReadEventDetails::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

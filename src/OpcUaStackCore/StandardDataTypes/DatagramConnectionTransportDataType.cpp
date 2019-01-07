@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DatagramConnectionTransportDataType::DatagramConnectionTransportDataType(const DatagramConnectionTransportDataType& value)
+    : ConnectionTransportDataType()
+    , discoveryAddress_()
+    {
+        const_cast<DatagramConnectionTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     DatagramConnectionTransportDataType::~DatagramConnectionTransportDataType(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         ConnectionTransportDataType::opcUaBinaryDecode(is);
         discoveryAddress_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    DatagramConnectionTransportDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DatagramConnectionTransportDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

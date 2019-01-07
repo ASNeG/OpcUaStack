@@ -201,16 +201,6 @@ namespace OpcUaStackCore
     }
     
     bool
-    OverrideValueHandling::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    OverrideValueHandling::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-    }
-    
-    bool
     OverrideValueHandling::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
     {
         if(!XmlNumber::xmlEncode(pt, value_, element))

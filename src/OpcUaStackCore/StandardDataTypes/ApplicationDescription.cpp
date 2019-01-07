@@ -30,6 +30,23 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * Describes an application and how to find it.
+     */
+    ApplicationDescription::ApplicationDescription(const ApplicationDescription& value)
+    : Object()
+    , ExtensionObjectBase()
+    , applicationUri_()
+    , productUri_()
+    , applicationName_()
+    , applicationType_()
+    , gatewayServerUri_()
+    , discoveryProfileUri_()
+    , discoveryUrls_()
+    {
+        const_cast<ApplicationDescription*>(&value)->copyTo(*this);
+    }
+    
     ApplicationDescription::~ApplicationDescription(void)
     {
     }
@@ -187,16 +204,6 @@ namespace OpcUaStackCore
         gatewayServerUri_.opcUaBinaryDecode(is);
         discoveryProfileUri_.opcUaBinaryDecode(is);
         discoveryUrls_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ApplicationDescription::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ApplicationDescription::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

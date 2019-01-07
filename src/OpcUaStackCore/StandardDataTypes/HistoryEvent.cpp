@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryEvent::HistoryEvent(const HistoryEvent& value)
+    : Object()
+    , ExtensionObjectBase()
+    , events_()
+    {
+        const_cast<HistoryEvent*>(&value)->copyTo(*this);
+    }
+    
     HistoryEvent::~HistoryEvent(void)
     {
     }
@@ -118,16 +126,6 @@ namespace OpcUaStackCore
     HistoryEvent::opcUaBinaryDecode(std::istream& is)
     {
         events_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    HistoryEvent::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    HistoryEvent::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

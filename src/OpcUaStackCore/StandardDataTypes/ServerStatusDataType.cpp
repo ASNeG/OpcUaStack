@@ -26,6 +26,19 @@ namespace OpcUaStackCore
     {
     }
     
+    ServerStatusDataType::ServerStatusDataType(const ServerStatusDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , startTime_()
+    , currentTime_()
+    , state_()
+    , buildInfo_()
+    , secondsTillShutdown_()
+    , shutdownReason_()
+    {
+        const_cast<ServerStatusDataType*>(&value)->copyTo(*this);
+    }
+    
     ServerStatusDataType::~ServerStatusDataType(void)
     {
     }
@@ -173,16 +186,6 @@ namespace OpcUaStackCore
         buildInfo_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,secondsTillShutdown_);
         shutdownReason_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ServerStatusDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ServerStatusDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

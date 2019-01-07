@@ -32,6 +32,25 @@ namespace OpcUaStackCore
     {
     }
     
+    ServerDiagnosticsSummaryDataType::ServerDiagnosticsSummaryDataType(const ServerDiagnosticsSummaryDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , serverViewCount_()
+    , currentSessionCount_()
+    , cumulatedSessionCount_()
+    , securityRejectedSessionCount_()
+    , rejectedSessionCount_()
+    , sessionTimeoutCount_()
+    , sessionAbortCount_()
+    , currentSubscriptionCount_()
+    , cumulatedSubscriptionCount_()
+    , publishingIntervalCount_()
+    , securityRejectedRequestsCount_()
+    , rejectedRequestsCount_()
+    {
+        const_cast<ServerDiagnosticsSummaryDataType*>(&value)->copyTo(*this);
+    }
+    
     ServerDiagnosticsSummaryDataType::~ServerDiagnosticsSummaryDataType(void)
     {
     }
@@ -239,16 +258,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,publishingIntervalCount_);
         OpcUaNumber::opcUaBinaryDecode(is,securityRejectedRequestsCount_);
         OpcUaNumber::opcUaBinaryDecode(is,rejectedRequestsCount_);
-    }
-    
-    bool
-    ServerDiagnosticsSummaryDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ServerDiagnosticsSummaryDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

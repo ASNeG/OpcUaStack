@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    Range::Range(const Range& value)
+    : Object()
+    , ExtensionObjectBase()
+    , low_()
+    , high_()
+    {
+        const_cast<Range*>(&value)->copyTo(*this);
+    }
+    
     Range::~Range(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         OpcUaNumber::opcUaBinaryDecode(is,low_);
         OpcUaNumber::opcUaBinaryDecode(is,high_);
-    }
-    
-    bool
-    Range::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    Range::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

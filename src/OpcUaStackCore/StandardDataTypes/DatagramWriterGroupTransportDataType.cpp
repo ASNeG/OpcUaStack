@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    DatagramWriterGroupTransportDataType::DatagramWriterGroupTransportDataType(const DatagramWriterGroupTransportDataType& value)
+    : WriterGroupTransportDataType()
+    , messageRepeatCount_()
+    , messageRepeatDelay_()
+    {
+        const_cast<DatagramWriterGroupTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     DatagramWriterGroupTransportDataType::~DatagramWriterGroupTransportDataType(void)
     {
     }
@@ -130,16 +138,6 @@ namespace OpcUaStackCore
         WriterGroupTransportDataType::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,messageRepeatCount_);
         OpcUaNumber::opcUaBinaryDecode(is,messageRepeatDelay_);
-    }
-    
-    bool
-    DatagramWriterGroupTransportDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DatagramWriterGroupTransportDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

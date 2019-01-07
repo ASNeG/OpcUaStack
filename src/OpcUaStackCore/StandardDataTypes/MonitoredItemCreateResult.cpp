@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    MonitoredItemCreateResult::MonitoredItemCreateResult(const MonitoredItemCreateResult& value)
+    : Object()
+    , ExtensionObjectBase()
+    , statusCode_()
+    , monitoredItemId_()
+    , revisedSamplingInterval_()
+    , revisedQueueSize_()
+    , filterResult_()
+    {
+        const_cast<MonitoredItemCreateResult*>(&value)->copyTo(*this);
+    }
+    
     MonitoredItemCreateResult::~MonitoredItemCreateResult(void)
     {
     }
@@ -162,16 +174,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,revisedSamplingInterval_);
         OpcUaNumber::opcUaBinaryDecode(is,revisedQueueSize_);
         filterResult_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    MonitoredItemCreateResult::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    MonitoredItemCreateResult::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

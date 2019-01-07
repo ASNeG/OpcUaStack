@@ -21,6 +21,7 @@
 #include "OpcUaStackServer/InformationModel/InformationModelManager.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/InformationModel/NamespaceArray.h"
+#include "OpcUaStackServer/InformationModel/VariableInstanceBuilder.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -70,6 +71,12 @@ namespace OpcUaStackServer
 				break;
 			case OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary:
 				receiveBrowsePathToNodeIdRequest(serviceTransaction);
+				break;
+			case OpcUaId_CreateVariableRequest_Encoding_DefaultBinary:
+				receiveCreateVariableRequest(serviceTransaction);
+				break;
+			case OpcUaId_CreateObjectRequest_Encoding_DefaultBinary:
+				receiveCreateObjectRequest(serviceTransaction);
 				break;
 			default:
 				Log(Error, "application service received unknown message type")
@@ -383,7 +390,7 @@ namespace OpcUaStackServer
 			.parameter("Trx", serviceTransaction->transactionId());
 
 		//
-		// create new node instance
+		// delete node instance
 		//
 		InformationModelManager imm(informationModel_);
 		bool success = imm.delNode(
@@ -518,6 +525,41 @@ namespace OpcUaStackServer
 			getNodeIdFromBrowsePath(browseName, nodeIdResult);
 			res->nodeIdResults()->set(idx, nodeIdResult);
 		}
+
+		trx->statusCode(Success);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveCreateVariableRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		auto trx = boost::static_pointer_cast<ServiceTransactionCreateVariable>(serviceTransaction);
+		auto req = trx->request();
+		auto res = trx->response();
+		auto variableBase = boost::static_pointer_cast<VariableBase>(req->variableInstance());
+
+		VariableInstanceBuilder variableInstanceBuilder;
+		OpcUaStatusCode result = variableInstanceBuilder.createVariableInstance(
+			informationModel_,
+			req->namespaceName(),
+			req->displayName(),
+			req->parentNodeId(),
+			req->referenceTypeNodeId(),
+			variableBase
+		);
+
+		trx->statusCode(result);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveCreateObjectRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		auto trx = boost::static_pointer_cast<ServiceTransactionCreateObject>(serviceTransaction);
+		auto req = trx->request();
+		auto res = trx->response();
+
+		// FIXME: todo
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);

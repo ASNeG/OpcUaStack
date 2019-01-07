@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    DoubleComplexNumberType::DoubleComplexNumberType(const DoubleComplexNumberType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , real_()
+    , imaginary_()
+    {
+        const_cast<DoubleComplexNumberType*>(&value)->copyTo(*this);
+    }
+    
     DoubleComplexNumberType::~DoubleComplexNumberType(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         OpcUaNumber::opcUaBinaryDecode(is,real_);
         OpcUaNumber::opcUaBinaryDecode(is,imaginary_);
-    }
-    
-    bool
-    DoubleComplexNumberType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DoubleComplexNumberType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

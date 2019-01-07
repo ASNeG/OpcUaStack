@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    EventFilter::EventFilter(const EventFilter& value)
+    : MonitoringFilter()
+    , selectClauses_()
+    , whereClause_()
+    {
+        const_cast<EventFilter*>(&value)->copyTo(*this);
+    }
+    
     EventFilter::~EventFilter(void)
     {
     }
@@ -130,16 +138,6 @@ namespace OpcUaStackCore
         MonitoringFilter::opcUaBinaryDecode(is);
         selectClauses_.opcUaBinaryDecode(is);
         whereClause_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    EventFilter::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EventFilter::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

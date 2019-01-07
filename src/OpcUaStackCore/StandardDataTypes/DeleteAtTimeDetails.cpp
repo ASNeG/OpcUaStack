@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    DeleteAtTimeDetails::DeleteAtTimeDetails(const DeleteAtTimeDetails& value)
+    : HistoryUpdateDetails()
+    , reqTimes_()
+    {
+        const_cast<DeleteAtTimeDetails*>(&value)->copyTo(*this);
+    }
+    
     DeleteAtTimeDetails::~DeleteAtTimeDetails(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         HistoryUpdateDetails::opcUaBinaryDecode(is);
         reqTimes_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    DeleteAtTimeDetails::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DeleteAtTimeDetails::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

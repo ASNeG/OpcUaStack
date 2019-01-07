@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    SemanticChangeStructureDataType::SemanticChangeStructureDataType(const SemanticChangeStructureDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , affected_()
+    , affectedType_()
+    {
+        const_cast<SemanticChangeStructureDataType*>(&value)->copyTo(*this);
+    }
+    
     SemanticChangeStructureDataType::~SemanticChangeStructureDataType(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         affected_.opcUaBinaryDecode(is);
         affectedType_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    SemanticChangeStructureDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    SemanticChangeStructureDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

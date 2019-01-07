@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    MonitoredItemNotification::MonitoredItemNotification(const MonitoredItemNotification& value)
+    : Object()
+    , ExtensionObjectBase()
+    , clientHandle_()
+    , value_()
+    {
+        const_cast<MonitoredItemNotification*>(&value)->copyTo(*this);
+    }
+    
     MonitoredItemNotification::~MonitoredItemNotification(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         OpcUaNumber::opcUaBinaryDecode(is,clientHandle_);
         value_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    MonitoredItemNotification::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    MonitoredItemNotification::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

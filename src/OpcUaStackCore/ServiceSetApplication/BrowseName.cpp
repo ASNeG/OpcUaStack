@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,6 +24,90 @@ namespace OpcUaStackCore
 	: nodeId_()
 	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
 	{
+	}
+
+	BrowseName::BrowseName(const BrowseName& browseName)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		nodeId_ = browseName.nodeId_;
+
+		if (browseName.pathNames_.get() == nullptr) return;
+		pathNames_->resize(browseName.pathNames_->size());
+		for (uint32_t idx=0; idx < browseName.pathNames_->size(); idx++) {
+			OpcUaQualifiedName::SPtr pathElement;
+			browseName.pathNames_->get(idx, pathElement);
+			pathNames_->push_back(pathElement);
+		}
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId);
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElement);
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElement1, pathElement2);
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElement1, pathElement2, pathElement3);
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3,
+		const OpcUaQualifiedName& pathElement4
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4);
+	}
+
+	BrowseName::BrowseName(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3,
+		const OpcUaQualifiedName& pathElement4,
+		const OpcUaQualifiedName& pathElement5
+	)
+	: nodeId_()
+	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
+	{
+		set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5);
 	}
 
 	BrowseName::~BrowseName(void)
@@ -52,6 +136,20 @@ namespace OpcUaStackCore
 	BrowseName::pathNames(void)
 	{
 		return pathNames_;
+	}
+
+	bool
+	BrowseName::pushBack(const OpcUaQualifiedName& pathElement)
+	{
+		return pathNames_->push_back(constructSPtr<OpcUaQualifiedName>(pathElement));
+	}
+
+	void
+	BrowseName::set(
+		const OpcUaNodeId& nodeId
+	)
+	{
+		nodeId_ = nodeId;
 	}
 
 	void
@@ -181,6 +279,15 @@ namespace OpcUaStackCore
 		element = constructSPtr<OpcUaQualifiedName>();
 		const_cast<OpcUaQualifiedName*>(&pathElement5)->copyTo(*element);
 		pathNames_->push_back(element);
+	}
+
+	void
+	BrowseName::out(std::ostream& os) const
+	{
+		os << "NodeId=" << nodeId_;
+		if (pathNames_ != nullptr) {
+			os << ", Path=" << *pathNames_;
+		}
 	}
 
 }

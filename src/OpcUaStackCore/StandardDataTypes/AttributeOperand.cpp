@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    AttributeOperand::AttributeOperand(const AttributeOperand& value)
+    : FilterOperand()
+    , nodeId_()
+    , alias_()
+    , browsePath_()
+    , attributeId_()
+    , indexRange_()
+    {
+        const_cast<AttributeOperand*>(&value)->copyTo(*this);
+    }
+    
     AttributeOperand::~AttributeOperand(void)
     {
     }
@@ -163,16 +174,6 @@ namespace OpcUaStackCore
         browsePath_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
         indexRange_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    AttributeOperand::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    AttributeOperand::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

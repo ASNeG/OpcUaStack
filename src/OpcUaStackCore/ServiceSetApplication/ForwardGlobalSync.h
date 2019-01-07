@@ -43,6 +43,8 @@ namespace OpcUaStackCore
 		ForwardCallback& authenticationService(void);
 		ForwardCallback& autorizationService(void);
 		ForwardCallback& closeSessionService(void);
+		ForwardCallback& nodeNewService(void);
+		ForwardCallback& nodeDeleteService(void);
 
 		void updateFrom(ForwardGlobalSync& forwardGlobalSync);
 
@@ -59,6 +61,10 @@ namespace OpcUaStackCore
 		ForwardCallback authenticationService_;
 		ForwardCallback autorizationService_;
 		ForwardCallback closeSessionService_;
+
+		// node service
+		ForwardCallback nodeNewService_;
+		ForwardCallback nodeDeleteService_;
 	};
 
 }

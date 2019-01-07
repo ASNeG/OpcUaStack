@@ -31,6 +31,24 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The information required to register a server with a discovery server.
+     */
+    RegisteredServer::RegisteredServer(const RegisteredServer& value)
+    : Object()
+    , ExtensionObjectBase()
+    , serverUri_()
+    , productUri_()
+    , serverNames_()
+    , serverType_()
+    , gatewayServerUri_()
+    , discoveryUrls_()
+    , semaphoreFilePath_()
+    , isOnline_()
+    {
+        const_cast<RegisteredServer*>(&value)->copyTo(*this);
+    }
+    
     RegisteredServer::~RegisteredServer(void)
     {
     }
@@ -198,16 +216,6 @@ namespace OpcUaStackCore
         discoveryUrls_.opcUaBinaryDecode(is);
         semaphoreFilePath_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,isOnline_);
-    }
-    
-    bool
-    RegisteredServer::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    RegisteredServer::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

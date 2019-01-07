@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    RedundantServerDataType::RedundantServerDataType(const RedundantServerDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , serverId_()
+    , serviceLevel_()
+    , serverState_()
+    {
+        const_cast<RedundantServerDataType*>(&value)->copyTo(*this);
+    }
+    
     RedundantServerDataType::~RedundantServerDataType(void)
     {
     }
@@ -140,16 +150,6 @@ namespace OpcUaStackCore
         serverId_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,serviceLevel_);
         serverState_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    RedundantServerDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    RedundantServerDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

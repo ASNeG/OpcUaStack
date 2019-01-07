@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a view node.
+     */
+    ViewAttributes::ViewAttributes(const ViewAttributes& value)
+    : NodeAttributes()
+    , containsNoLoops_()
+    , eventNotifier_()
+    {
+        const_cast<ViewAttributes*>(&value)->copyTo(*this);
+    }
+    
     ViewAttributes::~ViewAttributes(void)
     {
     }
@@ -133,16 +144,6 @@ namespace OpcUaStackCore
         NodeAttributes::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,containsNoLoops_);
         OpcUaNumber::opcUaBinaryDecode(is,eventNotifier_);
-    }
-    
-    bool
-    ViewAttributes::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ViewAttributes::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

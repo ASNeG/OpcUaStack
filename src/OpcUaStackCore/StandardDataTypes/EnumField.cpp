@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    EnumField::EnumField(const EnumField& value)
+    : EnumValueType()
+    , name_()
+    {
+        const_cast<EnumField*>(&value)->copyTo(*this);
+    }
+    
     EnumField::~EnumField(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         EnumValueType::opcUaBinaryDecode(is);
         name_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    EnumField::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EnumField::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    SubscribedDataSetMirrorDataType::SubscribedDataSetMirrorDataType(const SubscribedDataSetMirrorDataType& value)
+    : SubscribedDataSetDataType()
+    , parentNodeName_()
+    , rolePermissions_()
+    {
+        const_cast<SubscribedDataSetMirrorDataType*>(&value)->copyTo(*this);
+    }
+    
     SubscribedDataSetMirrorDataType::~SubscribedDataSetMirrorDataType(void)
     {
     }
@@ -130,16 +138,6 @@ namespace OpcUaStackCore
         SubscribedDataSetDataType::opcUaBinaryDecode(is);
         parentNodeName_.opcUaBinaryDecode(is);
         rolePermissions_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    SubscribedDataSetMirrorDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    SubscribedDataSetMirrorDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

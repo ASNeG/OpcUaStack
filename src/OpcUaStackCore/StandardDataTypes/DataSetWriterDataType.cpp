@@ -29,6 +29,22 @@ namespace OpcUaStackCore
     {
     }
     
+    DataSetWriterDataType::DataSetWriterDataType(const DataSetWriterDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , enabled_()
+    , dataSetWriterId_()
+    , dataSetFieldContentMask_()
+    , keyFrameCount_()
+    , dataSetName_()
+    , dataSetWriterProperties_()
+    , transportSettings_()
+    , messageSettings_()
+    {
+        const_cast<DataSetWriterDataType*>(&value)->copyTo(*this);
+    }
+    
     DataSetWriterDataType::~DataSetWriterDataType(void)
     {
     }
@@ -206,16 +222,6 @@ namespace OpcUaStackCore
         dataSetWriterProperties_.opcUaBinaryDecode(is);
         transportSettings_.opcUaBinaryDecode(is);
         messageSettings_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    DataSetWriterDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataSetWriterDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

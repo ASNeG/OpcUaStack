@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a reference type node.
+     */
+    ReferenceTypeAttributes::ReferenceTypeAttributes(const ReferenceTypeAttributes& value)
+    : NodeAttributes()
+    , isAbstract_()
+    , symmetric_()
+    , inverseName_()
+    {
+        const_cast<ReferenceTypeAttributes*>(&value)->copyTo(*this);
+    }
+    
     ReferenceTypeAttributes::~ReferenceTypeAttributes(void)
     {
     }
@@ -144,16 +156,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,isAbstract_);
         OpcUaNumber::opcUaBinaryDecode(is,symmetric_);
         inverseName_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ReferenceTypeAttributes::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ReferenceTypeAttributes::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

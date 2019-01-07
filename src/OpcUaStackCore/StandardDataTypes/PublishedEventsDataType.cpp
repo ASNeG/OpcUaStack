@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    PublishedEventsDataType::PublishedEventsDataType(const PublishedEventsDataType& value)
+    : PublishedDataSetSourceDataType()
+    , eventNotifier_()
+    , selectedFields_()
+    , filter_()
+    {
+        const_cast<PublishedEventsDataType*>(&value)->copyTo(*this);
+    }
+    
     PublishedEventsDataType::~PublishedEventsDataType(void)
     {
     }
@@ -141,16 +150,6 @@ namespace OpcUaStackCore
         eventNotifier_.opcUaBinaryDecode(is);
         selectedFields_.opcUaBinaryDecode(is);
         filter_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    PublishedEventsDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    PublishedEventsDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

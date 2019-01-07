@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    IdentityMappingRuleType::IdentityMappingRuleType(const IdentityMappingRuleType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , criteriaType_()
+    , criteria_()
+    {
+        const_cast<IdentityMappingRuleType*>(&value)->copyTo(*this);
+    }
+    
     IdentityMappingRuleType::~IdentityMappingRuleType(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         criteriaType_.opcUaBinaryDecode(is);
         criteria_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    IdentityMappingRuleType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    IdentityMappingRuleType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    HistoryData::HistoryData(const HistoryData& value)
+    : Object()
+    , ExtensionObjectBase()
+    , dataValues_()
+    {
+        const_cast<HistoryData*>(&value)->copyTo(*this);
+    }
+    
     HistoryData::~HistoryData(void)
     {
     }
@@ -118,16 +126,6 @@ namespace OpcUaStackCore
     HistoryData::opcUaBinaryDecode(std::istream& is)
     {
         dataValues_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    HistoryData::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    HistoryData::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

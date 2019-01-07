@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    KeyValuePair::KeyValuePair(const KeyValuePair& value)
+    : Object()
+    , ExtensionObjectBase()
+    , key_()
+    , value_()
+    {
+        const_cast<KeyValuePair*>(&value)->copyTo(*this);
+    }
+    
     KeyValuePair::~KeyValuePair(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         key_.opcUaBinaryDecode(is);
         value_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    KeyValuePair::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    KeyValuePair::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

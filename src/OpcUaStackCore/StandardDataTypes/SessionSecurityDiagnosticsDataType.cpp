@@ -29,6 +29,22 @@ namespace OpcUaStackCore
     {
     }
     
+    SessionSecurityDiagnosticsDataType::SessionSecurityDiagnosticsDataType(const SessionSecurityDiagnosticsDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , sessionId_()
+    , clientUserIdOfSession_()
+    , clientUserIdHistory_()
+    , authenticationMechanism_()
+    , encoding_()
+    , transportProtocol_()
+    , securityMode_()
+    , securityPolicyUri_()
+    , clientCertificate_()
+    {
+        const_cast<SessionSecurityDiagnosticsDataType*>(&value)->copyTo(*this);
+    }
+    
     SessionSecurityDiagnosticsDataType::~SessionSecurityDiagnosticsDataType(void)
     {
     }
@@ -206,16 +222,6 @@ namespace OpcUaStackCore
         securityMode_.opcUaBinaryDecode(is);
         securityPolicyUri_.opcUaBinaryDecode(is);
         clientCertificate_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    SessionSecurityDiagnosticsDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    SessionSecurityDiagnosticsDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

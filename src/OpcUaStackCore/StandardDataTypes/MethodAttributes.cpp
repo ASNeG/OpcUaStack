@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * The attributes for a method node.
+     */
+    MethodAttributes::MethodAttributes(const MethodAttributes& value)
+    : NodeAttributes()
+    , executable_()
+    , userExecutable_()
+    {
+        const_cast<MethodAttributes*>(&value)->copyTo(*this);
+    }
+    
     MethodAttributes::~MethodAttributes(void)
     {
     }
@@ -133,16 +144,6 @@ namespace OpcUaStackCore
         NodeAttributes::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,executable_);
         OpcUaNumber::opcUaBinaryDecode(is,userExecutable_);
-    }
-    
-    bool
-    MethodAttributes::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    MethodAttributes::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

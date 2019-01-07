@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ReaderGroupMessageDataType::ReaderGroupMessageDataType(const ReaderGroupMessageDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<ReaderGroupMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     ReaderGroupMessageDataType::~ReaderGroupMessageDataType(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     ReaderGroupMessageDataType::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    ReaderGroupMessageDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ReaderGroupMessageDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

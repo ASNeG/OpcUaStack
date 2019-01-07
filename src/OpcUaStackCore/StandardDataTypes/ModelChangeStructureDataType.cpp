@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    ModelChangeStructureDataType::ModelChangeStructureDataType(const ModelChangeStructureDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , affected_()
+    , affectedType_()
+    , verb_()
+    {
+        const_cast<ModelChangeStructureDataType*>(&value)->copyTo(*this);
+    }
+    
     ModelChangeStructureDataType::~ModelChangeStructureDataType(void)
     {
     }
@@ -140,16 +150,6 @@ namespace OpcUaStackCore
         affected_.opcUaBinaryDecode(is);
         affectedType_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,verb_);
-    }
-    
-    bool
-    ModelChangeStructureDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ModelChangeStructureDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

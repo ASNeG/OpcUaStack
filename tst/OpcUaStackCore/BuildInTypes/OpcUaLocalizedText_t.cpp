@@ -28,9 +28,10 @@ BOOST_AUTO_TEST_CASE(OpcUaLocalizedText_locale_no_text_no_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaLocalizedText value1, value2;
+	Xmlns xmlns;
 
-	value1.encode(pt);
-	value2.decode(pt);
+	value1.xmlEncode(pt, xmlns);
+	value2.xmlDecode(pt, xmlns);
 
 	BOOST_REQUIRE(value2.locale().exist() == false);
 	BOOST_REQUIRE(value2.text().exist() == false);
@@ -54,10 +55,11 @@ BOOST_AUTO_TEST_CASE(OpcUaLocalizedText_locale_yes_text_no_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaLocalizedText value1, value2;
+	Xmlns xmlns;
 
 	value1.locale("locale");
-	value1.encode(pt);
-	value2.decode(pt);
+	value1.xmlEncode(pt, xmlns);
+	value2.xmlDecode(pt, xmlns);
 
 	BOOST_REQUIRE(value2.locale().exist() == true);
 	BOOST_REQUIRE(value2.text().exist() == false);
@@ -82,10 +84,11 @@ BOOST_AUTO_TEST_CASE(OpcUaLocalizedText_locale_no_text_yes_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaLocalizedText value1, value2;
+	Xmlns xmlns;
 
 	value1.text("text");
-	value1.encode(pt);
-	value2.decode(pt);
+	value1.xmlEncode(pt, xmlns);
+	value2.xmlDecode(pt, xmlns);
 
 	BOOST_REQUIRE(value2.locale().exist() == false);
 	BOOST_REQUIRE(value2.text().exist() == true);
@@ -112,11 +115,12 @@ BOOST_AUTO_TEST_CASE(OpcUaLocalizedText_locale_yes_text_yes_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaLocalizedText value1, value2;
+	Xmlns xmlns;
 
 	value1.locale("locale");
 	value1.text("text");
-	value1.encode(pt);
-	value2.decode(pt);
+	value1.xmlEncode(pt, xmlns);
+	value2.xmlDecode(pt, xmlns);
 
 	BOOST_REQUIRE(value2.locale().exist() == true);
 	BOOST_REQUIRE(value2.text().exist() == true);

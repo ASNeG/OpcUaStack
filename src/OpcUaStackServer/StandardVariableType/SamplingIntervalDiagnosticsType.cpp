@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,131 +15,161 @@ namespace OpcUaStackServer
 {
     
     SamplingIntervalDiagnosticsType::SamplingIntervalDiagnosticsType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , samplingInterval_(constructSPtr<ServerVariable>("SamplingInterval"))
-    , sampledMonitoredItemsCount_(constructSPtr<ServerVariable>("SampledMonitoredItemsCount"))
-    , maxSampledMonitoredItemsCount_(constructSPtr<ServerVariable>("MaxSampledMonitoredItemsCount"))
-    , disabledMonitoredItemsSamplingCount_(constructSPtr<ServerVariable>("DisabledMonitoredItemsSamplingCount"))
+    : VariableBase()
+    , disabledMonitoredItemsSamplingCount_Variable_(constructSPtr<ServerVariable>("DisabledMonitoredItemsSamplingCount_Variable"))
+    , maxSampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("MaxSampledMonitoredItemsCount_Variable"))
+    , sampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("SampledMonitoredItemsCount_Variable"))
+    , samplingInterval_Variable_(constructSPtr<ServerVariable>("SamplingInterval_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2165));
-        serverVariables().registerServerVariable(samplingInterval_);
-        serverVariables().registerServerVariable(sampledMonitoredItemsCount_);
-        serverVariables().registerServerVariable(maxSampledMonitoredItemsCount_);
-        serverVariables().registerServerVariable(disabledMonitoredItemsSamplingCount_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2165);
+        setServerVariable(disabledMonitoredItemsSamplingCount_Variable_);
+        setServerVariable(maxSampledMonitoredItemsCount_Variable_);
+        setServerVariable(sampledMonitoredItemsCount_Variable_);
+        setServerVariable(samplingInterval_Variable_);
+        setServerVariable(variable_);
+    }
+    
+    SamplingIntervalDiagnosticsType::SamplingIntervalDiagnosticsType(const SamplingIntervalDiagnosticsType& value)
+    : VariableBase()
+    , disabledMonitoredItemsSamplingCount_Variable_(constructSPtr<ServerVariable>("DisabledMonitoredItemsSamplingCount_Variable"))
+    , maxSampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("MaxSampledMonitoredItemsCount_Variable"))
+    , sampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("SampledMonitoredItemsCount_Variable"))
+    , samplingInterval_Variable_(constructSPtr<ServerVariable>("SamplingInterval_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2165);
+        setServerVariable(disabledMonitoredItemsSamplingCount_Variable_);
+        setServerVariable(maxSampledMonitoredItemsCount_Variable_);
+        setServerVariable(sampledMonitoredItemsCount_Variable_);
+        setServerVariable(samplingInterval_Variable_);
+        setServerVariable(variable_);
     }
     
     SamplingIntervalDiagnosticsType::~SamplingIntervalDiagnosticsType(void)
     {
     }
-    
-    bool
-    SamplingIntervalDiagnosticsType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    SamplingIntervalDiagnosticsType::disabledMonitoredItemsSamplingCount_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        samplingInterval_->addBrowsePath(nodeId, OpcUaQualifiedName("SamplingInterval", namespaceIndex_));
-        sampledMonitoredItemsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("SampledMonitoredItemsCount", namespaceIndex_));
-        maxSampledMonitoredItemsCount_->addBrowsePath(nodeId, OpcUaQualifiedName("MaxSampledMonitoredItemsCount", namespaceIndex_));
-        disabledMonitoredItemsSamplingCount_->addBrowsePath(nodeId, OpcUaQualifiedName("DisabledMonitoredItemsSamplingCount", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return disabledMonitoredItemsSamplingCount_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    SamplingIntervalDiagnosticsType::samplingInterval(void)
+
+    ServerVariable::SPtr&
+    SamplingIntervalDiagnosticsType::maxSampledMonitoredItemsCount_Variable(void)
     {
-        return samplingInterval_->baseNode().lock();
+        return maxSampledMonitoredItemsCount_Variable_;
     }
-    
-    bool
-    SamplingIntervalDiagnosticsType::setSamplingInterval(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    SamplingIntervalDiagnosticsType::sampledMonitoredItemsCount_Variable(void)
     {
-        return samplingInterval_->setDataValue(dataValue);
+        return sampledMonitoredItemsCount_Variable_;
     }
-    
-    bool
-    SamplingIntervalDiagnosticsType::getSamplingInterval(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    SamplingIntervalDiagnosticsType::samplingInterval_Variable(void)
     {
-        return samplingInterval_->getDataValue(dataValue);
+        return samplingInterval_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    SamplingIntervalDiagnosticsType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    SamplingIntervalDiagnosticsType::setUpdateCallbackSamplingInterval(Callback::SPtr& callback)
+    SamplingIntervalDiagnosticsType::disabledMonitoredItemsSamplingCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        samplingInterval_->callback(callback);
+        disabledMonitoredItemsSamplingCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SamplingIntervalDiagnosticsType::sampledMonitoredItemsCount(void)
-    {
-        return sampledMonitoredItemsCount_->baseNode().lock();
-    }
-    
-    bool
-    SamplingIntervalDiagnosticsType::setSampledMonitoredItemsCount(const OpcUaDataValue& dataValue)
-    {
-        return sampledMonitoredItemsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SamplingIntervalDiagnosticsType::getSampledMonitoredItemsCount(OpcUaDataValue& dataValue)
-    {
-        return sampledMonitoredItemsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SamplingIntervalDiagnosticsType::setUpdateCallbackSampledMonitoredItemsCount(Callback::SPtr& callback)
+    SamplingIntervalDiagnosticsType::maxSampledMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        sampledMonitoredItemsCount_->callback(callback);
+        maxSampledMonitoredItemsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SamplingIntervalDiagnosticsType::maxSampledMonitoredItemsCount(void)
-    {
-        return maxSampledMonitoredItemsCount_->baseNode().lock();
-    }
-    
-    bool
-    SamplingIntervalDiagnosticsType::setMaxSampledMonitoredItemsCount(const OpcUaDataValue& dataValue)
-    {
-        return maxSampledMonitoredItemsCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SamplingIntervalDiagnosticsType::getMaxSampledMonitoredItemsCount(OpcUaDataValue& dataValue)
-    {
-        return maxSampledMonitoredItemsCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SamplingIntervalDiagnosticsType::setUpdateCallbackMaxSampledMonitoredItemsCount(Callback::SPtr& callback)
+    SamplingIntervalDiagnosticsType::sampledMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        maxSampledMonitoredItemsCount_->callback(callback);
+        sampledMonitoredItemsCount_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    SamplingIntervalDiagnosticsType::disabledMonitoredItemsSamplingCount(void)
-    {
-        return disabledMonitoredItemsSamplingCount_->baseNode().lock();
-    }
-    
-    bool
-    SamplingIntervalDiagnosticsType::setDisabledMonitoredItemsSamplingCount(const OpcUaDataValue& dataValue)
-    {
-        return disabledMonitoredItemsSamplingCount_->setDataValue(dataValue);
-    }
-    
-    bool
-    SamplingIntervalDiagnosticsType::getDisabledMonitoredItemsSamplingCount(OpcUaDataValue& dataValue)
-    {
-        return disabledMonitoredItemsSamplingCount_->getDataValue(dataValue);
-    }
-    
+
     void
-    SamplingIntervalDiagnosticsType::setUpdateCallbackDisabledMonitoredItemsSamplingCount(Callback::SPtr& callback)
+    SamplingIntervalDiagnosticsType::samplingInterval_Variable(ServerVariable::SPtr& serverVariable)
     {
-        disabledMonitoredItemsSamplingCount_->callback(callback);
+        samplingInterval_Variable_ = serverVariable;
+    }
+
+    void
+    SamplingIntervalDiagnosticsType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    SamplingIntervalDiagnosticsType::get_DisabledMonitoredItemsSamplingCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return disabledMonitoredItemsSamplingCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SamplingIntervalDiagnosticsType::get_MaxSampledMonitoredItemsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return maxSampledMonitoredItemsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SamplingIntervalDiagnosticsType::get_SampledMonitoredItemsCount_Variable(OpcUaDataValue& dataValue)
+    {
+        return sampledMonitoredItemsCount_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SamplingIntervalDiagnosticsType::get_SamplingInterval_Variable(OpcUaDataValue& dataValue)
+    {
+        return samplingInterval_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SamplingIntervalDiagnosticsType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    SamplingIntervalDiagnosticsType::set_DisabledMonitoredItemsSamplingCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return disabledMonitoredItemsSamplingCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SamplingIntervalDiagnosticsType::set_MaxSampledMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return maxSampledMonitoredItemsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SamplingIntervalDiagnosticsType::set_SampledMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue)
+    {
+        return sampledMonitoredItemsCount_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SamplingIntervalDiagnosticsType::set_SamplingInterval_Variable(const OpcUaDataValue& dataValue)
+    {
+        return samplingInterval_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    SamplingIntervalDiagnosticsType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

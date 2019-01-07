@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    MonitoringFilterResult::MonitoringFilterResult(const MonitoringFilterResult& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<MonitoringFilterResult*>(&value)->copyTo(*this);
+    }
+    
     MonitoringFilterResult::~MonitoringFilterResult(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     MonitoringFilterResult::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    MonitoringFilterResult::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    MonitoringFilterResult::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

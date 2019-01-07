@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,293 +15,329 @@ namespace OpcUaStackServer
 {
     
     ProgramDiagnosticType::ProgramDiagnosticType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , createSessionId_(constructSPtr<ServerVariable>("CreateSessionId"))
-    , createClientName_(constructSPtr<ServerVariable>("CreateClientName"))
-    , invocationCreationTime_(constructSPtr<ServerVariable>("InvocationCreationTime"))
-    , lastTransitionTime_(constructSPtr<ServerVariable>("LastTransitionTime"))
-    , lastMethodCall_(constructSPtr<ServerVariable>("LastMethodCall"))
-    , lastMethodSessionId_(constructSPtr<ServerVariable>("LastMethodSessionId"))
-    , lastMethodInputArguments_(constructSPtr<ServerVariable>("LastMethodInputArguments"))
-    , lastMethodOutputArguments_(constructSPtr<ServerVariable>("LastMethodOutputArguments"))
-    , lastMethodCallTime_(constructSPtr<ServerVariable>("LastMethodCallTime"))
-    , lastMethodReturnStatus_(constructSPtr<ServerVariable>("LastMethodReturnStatus"))
+    : VariableBase()
+    , createClientName_Variable_(constructSPtr<ServerVariable>("CreateClientName_Variable"))
+    , createSessionId_Variable_(constructSPtr<ServerVariable>("CreateSessionId_Variable"))
+    , invocationCreationTime_Variable_(constructSPtr<ServerVariable>("InvocationCreationTime_Variable"))
+    , lastMethodCallTime_Variable_(constructSPtr<ServerVariable>("LastMethodCallTime_Variable"))
+    , lastMethodCall_Variable_(constructSPtr<ServerVariable>("LastMethodCall_Variable"))
+    , lastMethodInputArguments_Variable_(constructSPtr<ServerVariable>("LastMethodInputArguments_Variable"))
+    , lastMethodOutputArguments_Variable_(constructSPtr<ServerVariable>("LastMethodOutputArguments_Variable"))
+    , lastMethodReturnStatus_Variable_(constructSPtr<ServerVariable>("LastMethodReturnStatus_Variable"))
+    , lastMethodSessionId_Variable_(constructSPtr<ServerVariable>("LastMethodSessionId_Variable"))
+    , lastTransitionTime_Variable_(constructSPtr<ServerVariable>("LastTransitionTime_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2380));
-        serverVariables().registerServerVariable(createSessionId_);
-        serverVariables().registerServerVariable(createClientName_);
-        serverVariables().registerServerVariable(invocationCreationTime_);
-        serverVariables().registerServerVariable(lastTransitionTime_);
-        serverVariables().registerServerVariable(lastMethodCall_);
-        serverVariables().registerServerVariable(lastMethodSessionId_);
-        serverVariables().registerServerVariable(lastMethodInputArguments_);
-        serverVariables().registerServerVariable(lastMethodOutputArguments_);
-        serverVariables().registerServerVariable(lastMethodCallTime_);
-        serverVariables().registerServerVariable(lastMethodReturnStatus_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2380);
+        setServerVariable(createClientName_Variable_);
+        setServerVariable(createSessionId_Variable_);
+        setServerVariable(invocationCreationTime_Variable_);
+        setServerVariable(lastMethodCallTime_Variable_);
+        setServerVariable(lastMethodCall_Variable_);
+        setServerVariable(lastMethodInputArguments_Variable_);
+        setServerVariable(lastMethodOutputArguments_Variable_);
+        setServerVariable(lastMethodReturnStatus_Variable_);
+        setServerVariable(lastMethodSessionId_Variable_);
+        setServerVariable(lastTransitionTime_Variable_);
+        setServerVariable(variable_);
+    }
+    
+    ProgramDiagnosticType::ProgramDiagnosticType(const ProgramDiagnosticType& value)
+    : VariableBase()
+    , createClientName_Variable_(constructSPtr<ServerVariable>("CreateClientName_Variable"))
+    , createSessionId_Variable_(constructSPtr<ServerVariable>("CreateSessionId_Variable"))
+    , invocationCreationTime_Variable_(constructSPtr<ServerVariable>("InvocationCreationTime_Variable"))
+    , lastMethodCallTime_Variable_(constructSPtr<ServerVariable>("LastMethodCallTime_Variable"))
+    , lastMethodCall_Variable_(constructSPtr<ServerVariable>("LastMethodCall_Variable"))
+    , lastMethodInputArguments_Variable_(constructSPtr<ServerVariable>("LastMethodInputArguments_Variable"))
+    , lastMethodOutputArguments_Variable_(constructSPtr<ServerVariable>("LastMethodOutputArguments_Variable"))
+    , lastMethodReturnStatus_Variable_(constructSPtr<ServerVariable>("LastMethodReturnStatus_Variable"))
+    , lastMethodSessionId_Variable_(constructSPtr<ServerVariable>("LastMethodSessionId_Variable"))
+    , lastTransitionTime_Variable_(constructSPtr<ServerVariable>("LastTransitionTime_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2380);
+        setServerVariable(createClientName_Variable_);
+        setServerVariable(createSessionId_Variable_);
+        setServerVariable(invocationCreationTime_Variable_);
+        setServerVariable(lastMethodCallTime_Variable_);
+        setServerVariable(lastMethodCall_Variable_);
+        setServerVariable(lastMethodInputArguments_Variable_);
+        setServerVariable(lastMethodOutputArguments_Variable_);
+        setServerVariable(lastMethodReturnStatus_Variable_);
+        setServerVariable(lastMethodSessionId_Variable_);
+        setServerVariable(lastTransitionTime_Variable_);
+        setServerVariable(variable_);
     }
     
     ProgramDiagnosticType::~ProgramDiagnosticType(void)
     {
     }
-    
-    bool
-    ProgramDiagnosticType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::createClientName_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        createSessionId_->addBrowsePath(nodeId, OpcUaQualifiedName("CreateSessionId", namespaceIndex_));
-        createClientName_->addBrowsePath(nodeId, OpcUaQualifiedName("CreateClientName", namespaceIndex_));
-        invocationCreationTime_->addBrowsePath(nodeId, OpcUaQualifiedName("InvocationCreationTime", namespaceIndex_));
-        lastTransitionTime_->addBrowsePath(nodeId, OpcUaQualifiedName("LastTransitionTime", namespaceIndex_));
-        lastMethodCall_->addBrowsePath(nodeId, OpcUaQualifiedName("LastMethodCall", namespaceIndex_));
-        lastMethodSessionId_->addBrowsePath(nodeId, OpcUaQualifiedName("LastMethodSessionId", namespaceIndex_));
-        lastMethodInputArguments_->addBrowsePath(nodeId, OpcUaQualifiedName("LastMethodInputArguments", namespaceIndex_));
-        lastMethodOutputArguments_->addBrowsePath(nodeId, OpcUaQualifiedName("LastMethodOutputArguments", namespaceIndex_));
-        lastMethodCallTime_->addBrowsePath(nodeId, OpcUaQualifiedName("LastMethodCallTime", namespaceIndex_));
-        lastMethodReturnStatus_->addBrowsePath(nodeId, OpcUaQualifiedName("LastMethodReturnStatus", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return createClientName_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    ProgramDiagnosticType::createSessionId(void)
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::createSessionId_Variable(void)
     {
-        return createSessionId_->baseNode().lock();
+        return createSessionId_Variable_;
     }
-    
-    bool
-    ProgramDiagnosticType::setCreateSessionId(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::invocationCreationTime_Variable(void)
     {
-        return createSessionId_->setDataValue(dataValue);
+        return invocationCreationTime_Variable_;
     }
-    
-    bool
-    ProgramDiagnosticType::getCreateSessionId(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::lastMethodCallTime_Variable(void)
     {
-        return createSessionId_->getDataValue(dataValue);
+        return lastMethodCallTime_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::lastMethodCall_Variable(void)
+    {
+        return lastMethodCall_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::lastMethodInputArguments_Variable(void)
+    {
+        return lastMethodInputArguments_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::lastMethodOutputArguments_Variable(void)
+    {
+        return lastMethodOutputArguments_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::lastMethodReturnStatus_Variable(void)
+    {
+        return lastMethodReturnStatus_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::lastMethodSessionId_Variable(void)
+    {
+        return lastMethodSessionId_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::lastTransitionTime_Variable(void)
+    {
+        return lastTransitionTime_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ProgramDiagnosticType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    ProgramDiagnosticType::setUpdateCallbackCreateSessionId(Callback::SPtr& callback)
+    ProgramDiagnosticType::createClientName_Variable(ServerVariable::SPtr& serverVariable)
     {
-        createSessionId_->callback(callback);
+        createClientName_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ProgramDiagnosticType::createClientName(void)
-    {
-        return createClientName_->baseNode().lock();
-    }
-    
-    bool
-    ProgramDiagnosticType::setCreateClientName(const OpcUaDataValue& dataValue)
-    {
-        return createClientName_->setDataValue(dataValue);
-    }
-    
-    bool
-    ProgramDiagnosticType::getCreateClientName(OpcUaDataValue& dataValue)
-    {
-        return createClientName_->getDataValue(dataValue);
-    }
-    
+
     void
-    ProgramDiagnosticType::setUpdateCallbackCreateClientName(Callback::SPtr& callback)
+    ProgramDiagnosticType::createSessionId_Variable(ServerVariable::SPtr& serverVariable)
     {
-        createClientName_->callback(callback);
+        createSessionId_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ProgramDiagnosticType::invocationCreationTime(void)
-    {
-        return invocationCreationTime_->baseNode().lock();
-    }
-    
-    bool
-    ProgramDiagnosticType::setInvocationCreationTime(const OpcUaDataValue& dataValue)
-    {
-        return invocationCreationTime_->setDataValue(dataValue);
-    }
-    
-    bool
-    ProgramDiagnosticType::getInvocationCreationTime(OpcUaDataValue& dataValue)
-    {
-        return invocationCreationTime_->getDataValue(dataValue);
-    }
-    
+
     void
-    ProgramDiagnosticType::setUpdateCallbackInvocationCreationTime(Callback::SPtr& callback)
+    ProgramDiagnosticType::invocationCreationTime_Variable(ServerVariable::SPtr& serverVariable)
     {
-        invocationCreationTime_->callback(callback);
+        invocationCreationTime_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ProgramDiagnosticType::lastTransitionTime(void)
-    {
-        return lastTransitionTime_->baseNode().lock();
-    }
-    
-    bool
-    ProgramDiagnosticType::setLastTransitionTime(const OpcUaDataValue& dataValue)
-    {
-        return lastTransitionTime_->setDataValue(dataValue);
-    }
-    
-    bool
-    ProgramDiagnosticType::getLastTransitionTime(OpcUaDataValue& dataValue)
-    {
-        return lastTransitionTime_->getDataValue(dataValue);
-    }
-    
+
     void
-    ProgramDiagnosticType::setUpdateCallbackLastTransitionTime(Callback::SPtr& callback)
+    ProgramDiagnosticType::lastMethodCallTime_Variable(ServerVariable::SPtr& serverVariable)
     {
-        lastTransitionTime_->callback(callback);
+        lastMethodCallTime_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ProgramDiagnosticType::lastMethodCall(void)
-    {
-        return lastMethodCall_->baseNode().lock();
-    }
-    
-    bool
-    ProgramDiagnosticType::setLastMethodCall(const OpcUaDataValue& dataValue)
-    {
-        return lastMethodCall_->setDataValue(dataValue);
-    }
-    
-    bool
-    ProgramDiagnosticType::getLastMethodCall(OpcUaDataValue& dataValue)
-    {
-        return lastMethodCall_->getDataValue(dataValue);
-    }
-    
+
     void
-    ProgramDiagnosticType::setUpdateCallbackLastMethodCall(Callback::SPtr& callback)
+    ProgramDiagnosticType::lastMethodCall_Variable(ServerVariable::SPtr& serverVariable)
     {
-        lastMethodCall_->callback(callback);
+        lastMethodCall_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ProgramDiagnosticType::lastMethodSessionId(void)
-    {
-        return lastMethodSessionId_->baseNode().lock();
-    }
-    
-    bool
-    ProgramDiagnosticType::setLastMethodSessionId(const OpcUaDataValue& dataValue)
-    {
-        return lastMethodSessionId_->setDataValue(dataValue);
-    }
-    
-    bool
-    ProgramDiagnosticType::getLastMethodSessionId(OpcUaDataValue& dataValue)
-    {
-        return lastMethodSessionId_->getDataValue(dataValue);
-    }
-    
+
     void
-    ProgramDiagnosticType::setUpdateCallbackLastMethodSessionId(Callback::SPtr& callback)
+    ProgramDiagnosticType::lastMethodInputArguments_Variable(ServerVariable::SPtr& serverVariable)
     {
-        lastMethodSessionId_->callback(callback);
+        lastMethodInputArguments_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ProgramDiagnosticType::lastMethodInputArguments(void)
-    {
-        return lastMethodInputArguments_->baseNode().lock();
-    }
-    
-    bool
-    ProgramDiagnosticType::setLastMethodInputArguments(const OpcUaDataValue& dataValue)
-    {
-        return lastMethodInputArguments_->setDataValue(dataValue);
-    }
-    
-    bool
-    ProgramDiagnosticType::getLastMethodInputArguments(OpcUaDataValue& dataValue)
-    {
-        return lastMethodInputArguments_->getDataValue(dataValue);
-    }
-    
+
     void
-    ProgramDiagnosticType::setUpdateCallbackLastMethodInputArguments(Callback::SPtr& callback)
+    ProgramDiagnosticType::lastMethodOutputArguments_Variable(ServerVariable::SPtr& serverVariable)
     {
-        lastMethodInputArguments_->callback(callback);
+        lastMethodOutputArguments_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ProgramDiagnosticType::lastMethodOutputArguments(void)
-    {
-        return lastMethodOutputArguments_->baseNode().lock();
-    }
-    
-    bool
-    ProgramDiagnosticType::setLastMethodOutputArguments(const OpcUaDataValue& dataValue)
-    {
-        return lastMethodOutputArguments_->setDataValue(dataValue);
-    }
-    
-    bool
-    ProgramDiagnosticType::getLastMethodOutputArguments(OpcUaDataValue& dataValue)
-    {
-        return lastMethodOutputArguments_->getDataValue(dataValue);
-    }
-    
+
     void
-    ProgramDiagnosticType::setUpdateCallbackLastMethodOutputArguments(Callback::SPtr& callback)
+    ProgramDiagnosticType::lastMethodReturnStatus_Variable(ServerVariable::SPtr& serverVariable)
     {
-        lastMethodOutputArguments_->callback(callback);
+        lastMethodReturnStatus_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ProgramDiagnosticType::lastMethodCallTime(void)
-    {
-        return lastMethodCallTime_->baseNode().lock();
-    }
-    
-    bool
-    ProgramDiagnosticType::setLastMethodCallTime(const OpcUaDataValue& dataValue)
-    {
-        return lastMethodCallTime_->setDataValue(dataValue);
-    }
-    
-    bool
-    ProgramDiagnosticType::getLastMethodCallTime(OpcUaDataValue& dataValue)
-    {
-        return lastMethodCallTime_->getDataValue(dataValue);
-    }
-    
+
     void
-    ProgramDiagnosticType::setUpdateCallbackLastMethodCallTime(Callback::SPtr& callback)
+    ProgramDiagnosticType::lastMethodSessionId_Variable(ServerVariable::SPtr& serverVariable)
     {
-        lastMethodCallTime_->callback(callback);
+        lastMethodSessionId_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ProgramDiagnosticType::lastMethodReturnStatus(void)
-    {
-        return lastMethodReturnStatus_->baseNode().lock();
-    }
-    
-    bool
-    ProgramDiagnosticType::setLastMethodReturnStatus(const OpcUaDataValue& dataValue)
-    {
-        return lastMethodReturnStatus_->setDataValue(dataValue);
-    }
-    
-    bool
-    ProgramDiagnosticType::getLastMethodReturnStatus(OpcUaDataValue& dataValue)
-    {
-        return lastMethodReturnStatus_->getDataValue(dataValue);
-    }
-    
+
     void
-    ProgramDiagnosticType::setUpdateCallbackLastMethodReturnStatus(Callback::SPtr& callback)
+    ProgramDiagnosticType::lastTransitionTime_Variable(ServerVariable::SPtr& serverVariable)
     {
-        lastMethodReturnStatus_->callback(callback);
+        lastTransitionTime_Variable_ = serverVariable;
+    }
+
+    void
+    ProgramDiagnosticType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    ProgramDiagnosticType::get_CreateClientName_Variable(OpcUaDataValue& dataValue)
+    {
+        return createClientName_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::get_CreateSessionId_Variable(OpcUaDataValue& dataValue)
+    {
+        return createSessionId_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::get_InvocationCreationTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return invocationCreationTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::get_LastMethodCallTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return lastMethodCallTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::get_LastMethodCall_Variable(OpcUaDataValue& dataValue)
+    {
+        return lastMethodCall_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::get_LastMethodInputArguments_Variable(OpcUaDataValue& dataValue)
+    {
+        return lastMethodInputArguments_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::get_LastMethodOutputArguments_Variable(OpcUaDataValue& dataValue)
+    {
+        return lastMethodOutputArguments_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::get_LastMethodReturnStatus_Variable(OpcUaDataValue& dataValue)
+    {
+        return lastMethodReturnStatus_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::get_LastMethodSessionId_Variable(OpcUaDataValue& dataValue)
+    {
+        return lastMethodSessionId_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::get_LastTransitionTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return lastTransitionTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_CreateClientName_Variable(const OpcUaDataValue& dataValue)
+    {
+        return createClientName_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_CreateSessionId_Variable(const OpcUaDataValue& dataValue)
+    {
+        return createSessionId_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_InvocationCreationTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return invocationCreationTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_LastMethodCallTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return lastMethodCallTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_LastMethodCall_Variable(const OpcUaDataValue& dataValue)
+    {
+        return lastMethodCall_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_LastMethodInputArguments_Variable(const OpcUaDataValue& dataValue)
+    {
+        return lastMethodInputArguments_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_LastMethodOutputArguments_Variable(const OpcUaDataValue& dataValue)
+    {
+        return lastMethodOutputArguments_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_LastMethodReturnStatus_Variable(const OpcUaDataValue& dataValue)
+    {
+        return lastMethodReturnStatus_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_LastMethodSessionId_Variable(const OpcUaDataValue& dataValue)
+    {
+        return lastMethodSessionId_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_LastTransitionTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return lastTransitionTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ProgramDiagnosticType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

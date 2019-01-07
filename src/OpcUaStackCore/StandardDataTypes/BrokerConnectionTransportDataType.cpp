@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    BrokerConnectionTransportDataType::BrokerConnectionTransportDataType(const BrokerConnectionTransportDataType& value)
+    : ConnectionTransportDataType()
+    , resourceUri_()
+    , authenticationProfileUri_()
+    {
+        const_cast<BrokerConnectionTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     BrokerConnectionTransportDataType::~BrokerConnectionTransportDataType(void)
     {
     }
@@ -130,16 +138,6 @@ namespace OpcUaStackCore
         ConnectionTransportDataType::opcUaBinaryDecode(is);
         resourceUri_.opcUaBinaryDecode(is);
         authenticationProfileUri_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    BrokerConnectionTransportDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    BrokerConnectionTransportDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    PubSubGroupDataType::PubSubGroupDataType(const PubSubGroupDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , enabled_()
+    , securityMode_()
+    , securityGroupId_()
+    , securityKeyServices_()
+    , maxNetworkMessageSize_()
+    , groupProperties_()
+    {
+        const_cast<PubSubGroupDataType*>(&value)->copyTo(*this);
+    }
+    
     PubSubGroupDataType::~PubSubGroupDataType(void)
     {
     }
@@ -184,16 +198,6 @@ namespace OpcUaStackCore
         securityKeyServices_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,maxNetworkMessageSize_);
         groupProperties_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    PubSubGroupDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    PubSubGroupDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

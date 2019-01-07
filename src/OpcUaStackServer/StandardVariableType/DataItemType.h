@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_DataItemType_h__
@@ -14,39 +14,54 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/BaseDataVariableType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT DataItemType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<DataItemType> SPtr;
+       typedef std::vector<DataItemType::SPtr> Vec;
+   
+       DataItemType(void);
+       DataItemType(const DataItemType& value);
+       virtual ~DataItemType(void);
+
+        //
+        // String
+        //
+        void definition_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& definition_Variable(void);
+        bool get_Definition_Variable(OpcUaDataValue& dataValue);
+        bool set_Definition_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Double
+        //
+        void valuePrecision_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& valuePrecision_Variable(void);
+        bool get_ValuePrecision_Variable(OpcUaDataValue& dataValue);
+        bool set_ValuePrecision_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Variant
+        //
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT DataItemType
-    : public BaseDataVariableType
-    {
-      public:
-        typedef boost::shared_ptr<DataItemType> SPtr;
-    
-        DataItemType(void);
-        virtual ~DataItemType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr definition(void);
-        bool setDefinition(const OpcUaDataValue& dataValue);
-        bool getDefinition(OpcUaDataValue& dataValue);
-        void setUpdateCallbackDefinition(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr valuePrecision(void);
-        bool setValuePrecision(const OpcUaDataValue& dataValue);
-        bool getValuePrecision(OpcUaDataValue& dataValue);
-        void setUpdateCallbackValuePrecision(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr definition_;
-        ServerVariable::SPtr valuePrecision_;
-    
-    };
+        ServerVariable::SPtr definition_Variable_;
+        ServerVariable::SPtr valuePrecision_Variable_;
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

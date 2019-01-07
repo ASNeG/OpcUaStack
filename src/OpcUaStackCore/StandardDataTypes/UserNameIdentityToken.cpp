@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A token representing a user identified by a user name and password.
+     */
+    UserNameIdentityToken::UserNameIdentityToken(const UserNameIdentityToken& value)
+    : UserIdentityToken()
+    , userName_()
+    , password_()
+    , encryptionAlgorithm_()
+    {
+        const_cast<UserNameIdentityToken*>(&value)->copyTo(*this);
+    }
+    
     UserNameIdentityToken::~UserNameIdentityToken(void)
     {
     }
@@ -144,16 +156,6 @@ namespace OpcUaStackCore
         userName_.opcUaBinaryDecode(is);
         password_.opcUaBinaryDecode(is);
         encryptionAlgorithm_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    UserNameIdentityToken::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    UserNameIdentityToken::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

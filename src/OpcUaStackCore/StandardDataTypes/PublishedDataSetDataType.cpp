@@ -25,6 +25,18 @@ namespace OpcUaStackCore
     {
     }
     
+    PublishedDataSetDataType::PublishedDataSetDataType(const PublishedDataSetDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , dataSetFolder_()
+    , dataSetMetaData_()
+    , extensionFields_()
+    , dataSetSource_()
+    {
+        const_cast<PublishedDataSetDataType*>(&value)->copyTo(*this);
+    }
+    
     PublishedDataSetDataType::~PublishedDataSetDataType(void)
     {
     }
@@ -162,16 +174,6 @@ namespace OpcUaStackCore
         dataSetMetaData_.opcUaBinaryDecode(is);
         extensionFields_.opcUaBinaryDecode(is);
         dataSetSource_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    PublishedDataSetDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    PublishedDataSetDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

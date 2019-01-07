@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    ServerOnNetwork::ServerOnNetwork(const ServerOnNetwork& value)
+    : Object()
+    , ExtensionObjectBase()
+    , recordId_()
+    , serverName_()
+    , discoveryUrl_()
+    , serverCapabilities_()
+    {
+        const_cast<ServerOnNetwork*>(&value)->copyTo(*this);
+    }
+    
     ServerOnNetwork::~ServerOnNetwork(void)
     {
     }
@@ -151,16 +162,6 @@ namespace OpcUaStackCore
         serverName_.opcUaBinaryDecode(is);
         discoveryUrl_.opcUaBinaryDecode(is);
         serverCapabilities_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ServerOnNetwork::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ServerOnNetwork::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

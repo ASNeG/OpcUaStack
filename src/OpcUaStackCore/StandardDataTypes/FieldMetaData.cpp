@@ -30,6 +30,23 @@ namespace OpcUaStackCore
     {
     }
     
+    FieldMetaData::FieldMetaData(const FieldMetaData& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , description_()
+    , fieldFlags_()
+    , builtInType_()
+    , dataType_()
+    , valueRank_()
+    , arrayDimensions_()
+    , maxStringLength_()
+    , dataSetFieldId_()
+    , properties_()
+    {
+        const_cast<FieldMetaData*>(&value)->copyTo(*this);
+    }
+    
     FieldMetaData::~FieldMetaData(void)
     {
     }
@@ -217,16 +234,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,maxStringLength_);
         dataSetFieldId_.opcUaBinaryDecode(is);
         properties_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    FieldMetaData::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    FieldMetaData::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

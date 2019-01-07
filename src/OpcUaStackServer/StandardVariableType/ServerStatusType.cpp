@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,347 +15,385 @@ namespace OpcUaStackServer
 {
     
     ServerStatusType::ServerStatusType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , startTime_(constructSPtr<ServerVariable>("StartTime"))
-    , currentTime_(constructSPtr<ServerVariable>("CurrentTime"))
-    , state_(constructSPtr<ServerVariable>("State"))
-    , buildInfo_(constructSPtr<ServerVariable>("BuildInfo"))
-    , buildInfo_ProductUri_(constructSPtr<ServerVariable>("ProductUri"))
-    , buildInfo_ManufacturerName_(constructSPtr<ServerVariable>("ManufacturerName"))
-    , buildInfo_ProductName_(constructSPtr<ServerVariable>("ProductName"))
-    , buildInfo_SoftwareVersion_(constructSPtr<ServerVariable>("SoftwareVersion"))
-    , buildInfo_BuildNumber_(constructSPtr<ServerVariable>("BuildNumber"))
-    , buildInfo_BuildDate_(constructSPtr<ServerVariable>("BuildDate"))
-    , secondsTillShutdown_(constructSPtr<ServerVariable>("SecondsTillShutdown"))
-    , shutdownReason_(constructSPtr<ServerVariable>("ShutdownReason"))
+    : VariableBase()
+    , buildInfo_BuildDate_Variable_(constructSPtr<ServerVariable>("BuildInfo_BuildDate_Variable"))
+    , buildInfo_BuildNumber_Variable_(constructSPtr<ServerVariable>("BuildInfo_BuildNumber_Variable"))
+    , buildInfo_ManufacturerName_Variable_(constructSPtr<ServerVariable>("BuildInfo_ManufacturerName_Variable"))
+    , buildInfo_ProductName_Variable_(constructSPtr<ServerVariable>("BuildInfo_ProductName_Variable"))
+    , buildInfo_ProductUri_Variable_(constructSPtr<ServerVariable>("BuildInfo_ProductUri_Variable"))
+    , buildInfo_SoftwareVersion_Variable_(constructSPtr<ServerVariable>("BuildInfo_SoftwareVersion_Variable"))
+    , buildInfo_Variable_(constructSPtr<ServerVariable>("BuildInfo_Variable"))
+    , currentTime_Variable_(constructSPtr<ServerVariable>("CurrentTime_Variable"))
+    , secondsTillShutdown_BuildDate_Variable_(constructSPtr<ServerVariable>("SecondsTillShutdown_BuildDate_Variable"))
+    , shutdownReason_BuildDate_Variable_(constructSPtr<ServerVariable>("ShutdownReason_BuildDate_Variable"))
+    , startTime_Variable_(constructSPtr<ServerVariable>("StartTime_Variable"))
+    , state_Variable_(constructSPtr<ServerVariable>("State_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(2138));
-        serverVariables().registerServerVariable(startTime_);
-        serverVariables().registerServerVariable(currentTime_);
-        serverVariables().registerServerVariable(state_);
-        serverVariables().registerServerVariable(buildInfo_);
-        serverVariables().registerServerVariable(buildInfo_ProductUri_);
-        serverVariables().registerServerVariable(buildInfo_ManufacturerName_);
-        serverVariables().registerServerVariable(buildInfo_ProductName_);
-        serverVariables().registerServerVariable(buildInfo_SoftwareVersion_);
-        serverVariables().registerServerVariable(buildInfo_BuildNumber_);
-        serverVariables().registerServerVariable(buildInfo_BuildDate_);
-        serverVariables().registerServerVariable(secondsTillShutdown_);
-        serverVariables().registerServerVariable(shutdownReason_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2138);
+        setServerVariable(buildInfo_BuildDate_Variable_);
+        setServerVariable(buildInfo_BuildNumber_Variable_);
+        setServerVariable(buildInfo_ManufacturerName_Variable_);
+        setServerVariable(buildInfo_ProductName_Variable_);
+        setServerVariable(buildInfo_ProductUri_Variable_);
+        setServerVariable(buildInfo_SoftwareVersion_Variable_);
+        setServerVariable(buildInfo_Variable_);
+        setServerVariable(currentTime_Variable_);
+        setServerVariable(secondsTillShutdown_BuildDate_Variable_);
+        setServerVariable(shutdownReason_BuildDate_Variable_);
+        setServerVariable(startTime_Variable_);
+        setServerVariable(state_Variable_);
+        setServerVariable(variable_);
+    }
+    
+    ServerStatusType::ServerStatusType(const ServerStatusType& value)
+    : VariableBase()
+    , buildInfo_BuildDate_Variable_(constructSPtr<ServerVariable>("BuildInfo_BuildDate_Variable"))
+    , buildInfo_BuildNumber_Variable_(constructSPtr<ServerVariable>("BuildInfo_BuildNumber_Variable"))
+    , buildInfo_ManufacturerName_Variable_(constructSPtr<ServerVariable>("BuildInfo_ManufacturerName_Variable"))
+    , buildInfo_ProductName_Variable_(constructSPtr<ServerVariable>("BuildInfo_ProductName_Variable"))
+    , buildInfo_ProductUri_Variable_(constructSPtr<ServerVariable>("BuildInfo_ProductUri_Variable"))
+    , buildInfo_SoftwareVersion_Variable_(constructSPtr<ServerVariable>("BuildInfo_SoftwareVersion_Variable"))
+    , buildInfo_Variable_(constructSPtr<ServerVariable>("BuildInfo_Variable"))
+    , currentTime_Variable_(constructSPtr<ServerVariable>("CurrentTime_Variable"))
+    , secondsTillShutdown_BuildDate_Variable_(constructSPtr<ServerVariable>("SecondsTillShutdown_BuildDate_Variable"))
+    , shutdownReason_BuildDate_Variable_(constructSPtr<ServerVariable>("ShutdownReason_BuildDate_Variable"))
+    , startTime_Variable_(constructSPtr<ServerVariable>("StartTime_Variable"))
+    , state_Variable_(constructSPtr<ServerVariable>("State_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)2138);
+        setServerVariable(buildInfo_BuildDate_Variable_);
+        setServerVariable(buildInfo_BuildNumber_Variable_);
+        setServerVariable(buildInfo_ManufacturerName_Variable_);
+        setServerVariable(buildInfo_ProductName_Variable_);
+        setServerVariable(buildInfo_ProductUri_Variable_);
+        setServerVariable(buildInfo_SoftwareVersion_Variable_);
+        setServerVariable(buildInfo_Variable_);
+        setServerVariable(currentTime_Variable_);
+        setServerVariable(secondsTillShutdown_BuildDate_Variable_);
+        setServerVariable(shutdownReason_BuildDate_Variable_);
+        setServerVariable(startTime_Variable_);
+        setServerVariable(state_Variable_);
+        setServerVariable(variable_);
     }
     
     ServerStatusType::~ServerStatusType(void)
     {
     }
-    
-    bool
-    ServerStatusType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    ServerStatusType::buildInfo_BuildDate_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        startTime_->addBrowsePath(nodeId, OpcUaQualifiedName("StartTime", namespaceIndex_));
-        currentTime_->addBrowsePath(nodeId, OpcUaQualifiedName("CurrentTime", namespaceIndex_));
-        state_->addBrowsePath(nodeId, OpcUaQualifiedName("State", namespaceIndex_));
-        buildInfo_->addBrowsePath(nodeId, OpcUaQualifiedName("BuildInfo", namespaceIndex_));
-        buildInfo_ProductUri_->addBrowsePath(nodeId, OpcUaQualifiedName("ProductUri", namespaceIndex_));
-        buildInfo_ManufacturerName_->addBrowsePath(nodeId, OpcUaQualifiedName("ManufacturerName", namespaceIndex_));
-        buildInfo_ProductName_->addBrowsePath(nodeId, OpcUaQualifiedName("ProductName", namespaceIndex_));
-        buildInfo_SoftwareVersion_->addBrowsePath(nodeId, OpcUaQualifiedName("SoftwareVersion", namespaceIndex_));
-        buildInfo_BuildNumber_->addBrowsePath(nodeId, OpcUaQualifiedName("BuildNumber", namespaceIndex_));
-        buildInfo_BuildDate_->addBrowsePath(nodeId, OpcUaQualifiedName("BuildDate", namespaceIndex_));
-        secondsTillShutdown_->addBrowsePath(nodeId, OpcUaQualifiedName("SecondsTillShutdown", namespaceIndex_));
-        shutdownReason_->addBrowsePath(nodeId, OpcUaQualifiedName("ShutdownReason", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return buildInfo_BuildDate_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::startTime(void)
+
+    ServerVariable::SPtr&
+    ServerStatusType::buildInfo_BuildNumber_Variable(void)
     {
-        return startTime_->baseNode().lock();
+        return buildInfo_BuildNumber_Variable_;
     }
-    
-    bool
-    ServerStatusType::setStartTime(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    ServerStatusType::buildInfo_ManufacturerName_Variable(void)
     {
-        return startTime_->setDataValue(dataValue);
+        return buildInfo_ManufacturerName_Variable_;
     }
-    
-    bool
-    ServerStatusType::getStartTime(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    ServerStatusType::buildInfo_ProductName_Variable(void)
     {
-        return startTime_->getDataValue(dataValue);
+        return buildInfo_ProductName_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    ServerStatusType::buildInfo_ProductUri_Variable(void)
+    {
+        return buildInfo_ProductUri_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerStatusType::buildInfo_SoftwareVersion_Variable(void)
+    {
+        return buildInfo_SoftwareVersion_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerStatusType::buildInfo_Variable(void)
+    {
+        return buildInfo_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerStatusType::currentTime_Variable(void)
+    {
+        return currentTime_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerStatusType::secondsTillShutdown_BuildDate_Variable(void)
+    {
+        return secondsTillShutdown_BuildDate_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerStatusType::shutdownReason_BuildDate_Variable(void)
+    {
+        return shutdownReason_BuildDate_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerStatusType::startTime_Variable(void)
+    {
+        return startTime_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerStatusType::state_Variable(void)
+    {
+        return state_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    ServerStatusType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    ServerStatusType::setUpdateCallbackStartTime(Callback::SPtr& callback)
+    ServerStatusType::buildInfo_BuildDate_Variable(ServerVariable::SPtr& serverVariable)
     {
-        startTime_->callback(callback);
+        buildInfo_BuildDate_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::currentTime(void)
-    {
-        return currentTime_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setCurrentTime(const OpcUaDataValue& dataValue)
-    {
-        return currentTime_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getCurrentTime(OpcUaDataValue& dataValue)
-    {
-        return currentTime_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackCurrentTime(Callback::SPtr& callback)
+    ServerStatusType::buildInfo_BuildNumber_Variable(ServerVariable::SPtr& serverVariable)
     {
-        currentTime_->callback(callback);
+        buildInfo_BuildNumber_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::state(void)
-    {
-        return state_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setState(const OpcUaDataValue& dataValue)
-    {
-        return state_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getState(OpcUaDataValue& dataValue)
-    {
-        return state_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackState(Callback::SPtr& callback)
+    ServerStatusType::buildInfo_ManufacturerName_Variable(ServerVariable::SPtr& serverVariable)
     {
-        state_->callback(callback);
+        buildInfo_ManufacturerName_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::buildInfo(void)
-    {
-        return buildInfo_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setBuildInfo(const OpcUaDataValue& dataValue)
-    {
-        return buildInfo_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getBuildInfo(OpcUaDataValue& dataValue)
-    {
-        return buildInfo_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackBuildInfo(Callback::SPtr& callback)
+    ServerStatusType::buildInfo_ProductName_Variable(ServerVariable::SPtr& serverVariable)
     {
-        buildInfo_->callback(callback);
+        buildInfo_ProductName_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::buildInfo_ProductUri(void)
-    {
-        return buildInfo_ProductUri_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setProductUri(const OpcUaDataValue& dataValue)
-    {
-        return buildInfo_ProductUri_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getProductUri(OpcUaDataValue& dataValue)
-    {
-        return buildInfo_ProductUri_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackProductUri(Callback::SPtr& callback)
+    ServerStatusType::buildInfo_ProductUri_Variable(ServerVariable::SPtr& serverVariable)
     {
-        buildInfo_ProductUri_->callback(callback);
+        buildInfo_ProductUri_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::buildInfo_ManufacturerName(void)
-    {
-        return buildInfo_ManufacturerName_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setManufacturerName(const OpcUaDataValue& dataValue)
-    {
-        return buildInfo_ManufacturerName_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getManufacturerName(OpcUaDataValue& dataValue)
-    {
-        return buildInfo_ManufacturerName_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackManufacturerName(Callback::SPtr& callback)
+    ServerStatusType::buildInfo_SoftwareVersion_Variable(ServerVariable::SPtr& serverVariable)
     {
-        buildInfo_ManufacturerName_->callback(callback);
+        buildInfo_SoftwareVersion_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::buildInfo_ProductName(void)
-    {
-        return buildInfo_ProductName_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setProductName(const OpcUaDataValue& dataValue)
-    {
-        return buildInfo_ProductName_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getProductName(OpcUaDataValue& dataValue)
-    {
-        return buildInfo_ProductName_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackProductName(Callback::SPtr& callback)
+    ServerStatusType::buildInfo_Variable(ServerVariable::SPtr& serverVariable)
     {
-        buildInfo_ProductName_->callback(callback);
+        buildInfo_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::buildInfo_SoftwareVersion(void)
-    {
-        return buildInfo_SoftwareVersion_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setSoftwareVersion(const OpcUaDataValue& dataValue)
-    {
-        return buildInfo_SoftwareVersion_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getSoftwareVersion(OpcUaDataValue& dataValue)
-    {
-        return buildInfo_SoftwareVersion_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackSoftwareVersion(Callback::SPtr& callback)
+    ServerStatusType::currentTime_Variable(ServerVariable::SPtr& serverVariable)
     {
-        buildInfo_SoftwareVersion_->callback(callback);
+        currentTime_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::buildInfo_BuildNumber(void)
-    {
-        return buildInfo_BuildNumber_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setBuildNumber(const OpcUaDataValue& dataValue)
-    {
-        return buildInfo_BuildNumber_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getBuildNumber(OpcUaDataValue& dataValue)
-    {
-        return buildInfo_BuildNumber_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackBuildNumber(Callback::SPtr& callback)
+    ServerStatusType::secondsTillShutdown_BuildDate_Variable(ServerVariable::SPtr& serverVariable)
     {
-        buildInfo_BuildNumber_->callback(callback);
+        secondsTillShutdown_BuildDate_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::buildInfo_BuildDate(void)
-    {
-        return buildInfo_BuildDate_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setBuildDate(const OpcUaDataValue& dataValue)
-    {
-        return buildInfo_BuildDate_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getBuildDate(OpcUaDataValue& dataValue)
-    {
-        return buildInfo_BuildDate_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackBuildDate(Callback::SPtr& callback)
+    ServerStatusType::shutdownReason_BuildDate_Variable(ServerVariable::SPtr& serverVariable)
     {
-        buildInfo_BuildDate_->callback(callback);
+        shutdownReason_BuildDate_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::secondsTillShutdown(void)
-    {
-        return secondsTillShutdown_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setSecondsTillShutdown(const OpcUaDataValue& dataValue)
-    {
-        return secondsTillShutdown_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getSecondsTillShutdown(OpcUaDataValue& dataValue)
-    {
-        return secondsTillShutdown_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackSecondsTillShutdown(Callback::SPtr& callback)
+    ServerStatusType::startTime_Variable(ServerVariable::SPtr& serverVariable)
     {
-        secondsTillShutdown_->callback(callback);
+        startTime_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    ServerStatusType::shutdownReason(void)
-    {
-        return shutdownReason_->baseNode().lock();
-    }
-    
-    bool
-    ServerStatusType::setShutdownReason(const OpcUaDataValue& dataValue)
-    {
-        return shutdownReason_->setDataValue(dataValue);
-    }
-    
-    bool
-    ServerStatusType::getShutdownReason(OpcUaDataValue& dataValue)
-    {
-        return shutdownReason_->getDataValue(dataValue);
-    }
-    
+
     void
-    ServerStatusType::setUpdateCallbackShutdownReason(Callback::SPtr& callback)
+    ServerStatusType::state_Variable(ServerVariable::SPtr& serverVariable)
     {
-        shutdownReason_->callback(callback);
+        state_Variable_ = serverVariable;
+    }
+
+    void
+    ServerStatusType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    ServerStatusType::get_BuildInfo_BuildDate_Variable(OpcUaDataValue& dataValue)
+    {
+        return buildInfo_BuildDate_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_BuildInfo_BuildNumber_Variable(OpcUaDataValue& dataValue)
+    {
+        return buildInfo_BuildNumber_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_BuildInfo_ManufacturerName_Variable(OpcUaDataValue& dataValue)
+    {
+        return buildInfo_ManufacturerName_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_BuildInfo_ProductName_Variable(OpcUaDataValue& dataValue)
+    {
+        return buildInfo_ProductName_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_BuildInfo_ProductUri_Variable(OpcUaDataValue& dataValue)
+    {
+        return buildInfo_ProductUri_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_BuildInfo_SoftwareVersion_Variable(OpcUaDataValue& dataValue)
+    {
+        return buildInfo_SoftwareVersion_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_BuildInfo_Variable(OpcUaDataValue& dataValue)
+    {
+        return buildInfo_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_CurrentTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return currentTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_SecondsTillShutdown_BuildDate_Variable(OpcUaDataValue& dataValue)
+    {
+        return secondsTillShutdown_BuildDate_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_ShutdownReason_BuildDate_Variable(OpcUaDataValue& dataValue)
+    {
+        return shutdownReason_BuildDate_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_StartTime_Variable(OpcUaDataValue& dataValue)
+    {
+        return startTime_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_State_Variable(OpcUaDataValue& dataValue)
+    {
+        return state_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_BuildInfo_BuildDate_Variable(const OpcUaDataValue& dataValue)
+    {
+        return buildInfo_BuildDate_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_BuildInfo_BuildNumber_Variable(const OpcUaDataValue& dataValue)
+    {
+        return buildInfo_BuildNumber_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_BuildInfo_ManufacturerName_Variable(const OpcUaDataValue& dataValue)
+    {
+        return buildInfo_ManufacturerName_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_BuildInfo_ProductName_Variable(const OpcUaDataValue& dataValue)
+    {
+        return buildInfo_ProductName_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_BuildInfo_ProductUri_Variable(const OpcUaDataValue& dataValue)
+    {
+        return buildInfo_ProductUri_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_BuildInfo_SoftwareVersion_Variable(const OpcUaDataValue& dataValue)
+    {
+        return buildInfo_SoftwareVersion_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_BuildInfo_Variable(const OpcUaDataValue& dataValue)
+    {
+        return buildInfo_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_CurrentTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return currentTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_SecondsTillShutdown_BuildDate_Variable(const OpcUaDataValue& dataValue)
+    {
+        return secondsTillShutdown_BuildDate_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_ShutdownReason_BuildDate_Variable(const OpcUaDataValue& dataValue)
+    {
+        return shutdownReason_BuildDate_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_StartTime_Variable(const OpcUaDataValue& dataValue)
+    {
+        return startTime_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_State_Variable(const OpcUaDataValue& dataValue)
+    {
+        return state_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    ServerStatusType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

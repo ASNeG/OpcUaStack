@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A token representing a user identified by a WS-Security XML token.
+     */
+    IssuedIdentityToken::IssuedIdentityToken(const IssuedIdentityToken& value)
+    : UserIdentityToken()
+    , tokenData_()
+    , encryptionAlgorithm_()
+    {
+        const_cast<IssuedIdentityToken*>(&value)->copyTo(*this);
+    }
+    
     IssuedIdentityToken::~IssuedIdentityToken(void)
     {
     }
@@ -133,16 +144,6 @@ namespace OpcUaStackCore
         UserIdentityToken::opcUaBinaryDecode(is);
         tokenData_.opcUaBinaryDecode(is);
         encryptionAlgorithm_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    IssuedIdentityToken::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    IssuedIdentityToken::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

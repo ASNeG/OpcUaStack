@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    EventFieldList::EventFieldList(const EventFieldList& value)
+    : Object()
+    , ExtensionObjectBase()
+    , clientHandle_()
+    , eventFields_()
+    {
+        const_cast<EventFieldList*>(&value)->copyTo(*this);
+    }
+    
     EventFieldList::~EventFieldList(void)
     {
     }
@@ -129,16 +138,6 @@ namespace OpcUaStackCore
     {
         OpcUaNumber::opcUaBinaryDecode(is,clientHandle_);
         eventFields_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    EventFieldList::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EventFieldList::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

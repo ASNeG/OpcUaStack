@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    ContentFilter::ContentFilter(const ContentFilter& value)
+    : Object()
+    , ExtensionObjectBase()
+    , elements_()
+    {
+        const_cast<ContentFilter*>(&value)->copyTo(*this);
+    }
+    
     ContentFilter::~ContentFilter(void)
     {
     }
@@ -118,16 +126,6 @@ namespace OpcUaStackCore
     ContentFilter::opcUaBinaryDecode(std::istream& is)
     {
         elements_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ContentFilter::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ContentFilter::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    NetworkAddressDataType::NetworkAddressDataType(const NetworkAddressDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , networkInterface_()
+    {
+        const_cast<NetworkAddressDataType*>(&value)->copyTo(*this);
+    }
+    
     NetworkAddressDataType::~NetworkAddressDataType(void)
     {
     }
@@ -118,16 +126,6 @@ namespace OpcUaStackCore
     NetworkAddressDataType::opcUaBinaryDecode(std::istream& is)
     {
         networkInterface_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    NetworkAddressDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    NetworkAddressDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

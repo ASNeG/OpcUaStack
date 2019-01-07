@@ -21,6 +21,14 @@ namespace OpcUaStackCore
     {
     }
     
+    DataChangeNotification::DataChangeNotification(const DataChangeNotification& value)
+    : NotificationData()
+    , monitoredItems_()
+    , diagnosticInfos_()
+    {
+        const_cast<DataChangeNotification*>(&value)->copyTo(*this);
+    }
+    
     DataChangeNotification::~DataChangeNotification(void)
     {
     }
@@ -130,16 +138,6 @@ namespace OpcUaStackCore
         NotificationData::opcUaBinaryDecode(is);
         monitoredItems_.opcUaBinaryDecode(is);
         diagnosticInfos_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    DataChangeNotification::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DataChangeNotification::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

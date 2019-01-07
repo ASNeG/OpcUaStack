@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    JsonDataSetWriterMessageDataType::JsonDataSetWriterMessageDataType(const JsonDataSetWriterMessageDataType& value)
+    : DataSetWriterMessageDataType()
+    , dataSetMessageContentMask_()
+    {
+        const_cast<JsonDataSetWriterMessageDataType*>(&value)->copyTo(*this);
+    }
+    
     JsonDataSetWriterMessageDataType::~JsonDataSetWriterMessageDataType(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         DataSetWriterMessageDataType::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
-    }
-    
-    bool
-    JsonDataSetWriterMessageDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    JsonDataSetWriterMessageDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

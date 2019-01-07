@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -15,185 +15,217 @@ namespace OpcUaStackServer
 {
     
     BuildInfoType::BuildInfoType(void)
-    : BaseDataVariableType()
-    , namespaceName_("http://opcfoundation.org/UA/")
-    , namespaceIndex_(0)
-    , productUri_(constructSPtr<ServerVariable>("ProductUri"))
-    , manufacturerName_(constructSPtr<ServerVariable>("ManufacturerName"))
-    , productName_(constructSPtr<ServerVariable>("ProductName"))
-    , softwareVersion_(constructSPtr<ServerVariable>("SoftwareVersion"))
-    , buildNumber_(constructSPtr<ServerVariable>("BuildNumber"))
-    , buildDate_(constructSPtr<ServerVariable>("BuildDate"))
+    : VariableBase()
+    , buildDate_Variable_(constructSPtr<ServerVariable>("BuildDate_Variable"))
+    , buildNumber_Variable_(constructSPtr<ServerVariable>("BuildNumber_Variable"))
+    , manufacturerName_Variable_(constructSPtr<ServerVariable>("ManufacturerName_Variable"))
+    , productName_Variable_(constructSPtr<ServerVariable>("ProductName_Variable"))
+    , productUri_Variable_(constructSPtr<ServerVariable>("ProductUri_Variable"))
+    , softwareVersion_Variable_(constructSPtr<ServerVariable>("SoftwareVersion_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
     {
-        variableTypeNamespace(namespaceName_);
-        variableType(OpcUaNodeId(3051));
-        serverVariables().registerServerVariable(productUri_);
-        serverVariables().registerServerVariable(manufacturerName_);
-        serverVariables().registerServerVariable(productName_);
-        serverVariables().registerServerVariable(softwareVersion_);
-        serverVariables().registerServerVariable(buildNumber_);
-        serverVariables().registerServerVariable(buildDate_);
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)3051);
+        setServerVariable(buildDate_Variable_);
+        setServerVariable(buildNumber_Variable_);
+        setServerVariable(manufacturerName_Variable_);
+        setServerVariable(productName_Variable_);
+        setServerVariable(productUri_Variable_);
+        setServerVariable(softwareVersion_Variable_);
+        setServerVariable(variable_);
+    }
+    
+    BuildInfoType::BuildInfoType(const BuildInfoType& value)
+    : VariableBase()
+    , buildDate_Variable_(constructSPtr<ServerVariable>("BuildDate_Variable"))
+    , buildNumber_Variable_(constructSPtr<ServerVariable>("BuildNumber_Variable"))
+    , manufacturerName_Variable_(constructSPtr<ServerVariable>("ManufacturerName_Variable"))
+    , productName_Variable_(constructSPtr<ServerVariable>("ProductName_Variable"))
+    , productUri_Variable_(constructSPtr<ServerVariable>("ProductUri_Variable"))
+    , softwareVersion_Variable_(constructSPtr<ServerVariable>("SoftwareVersion_Variable"))
+    , variable_(constructSPtr<ServerVariable>("Variable"))
+    {
+        variableTypeNamespaceName("http://opcfoundation.org/UA/");
+        variableTypeNodeId((OpcUaUInt32)3051);
+        setServerVariable(buildDate_Variable_);
+        setServerVariable(buildNumber_Variable_);
+        setServerVariable(manufacturerName_Variable_);
+        setServerVariable(productName_Variable_);
+        setServerVariable(productUri_Variable_);
+        setServerVariable(softwareVersion_Variable_);
+        setServerVariable(variable_);
     }
     
     BuildInfoType::~BuildInfoType(void)
     {
     }
-    
-    bool
-    BuildInfoType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+
+    ServerVariable::SPtr&
+    BuildInfoType::buildDate_Variable(void)
     {
-        if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;
-        productUri_->addBrowsePath(nodeId, OpcUaQualifiedName("ProductUri", namespaceIndex_));
-        manufacturerName_->addBrowsePath(nodeId, OpcUaQualifiedName("ManufacturerName", namespaceIndex_));
-        productName_->addBrowsePath(nodeId, OpcUaQualifiedName("ProductName", namespaceIndex_));
-        softwareVersion_->addBrowsePath(nodeId, OpcUaQualifiedName("SoftwareVersion", namespaceIndex_));
-        buildNumber_->addBrowsePath(nodeId, OpcUaQualifiedName("BuildNumber", namespaceIndex_));
-        buildDate_->addBrowsePath(nodeId, OpcUaQualifiedName("BuildDate", namespaceIndex_));
-        BaseDataVariableType::linkInstanceWithModel(nodeId);
+        return buildDate_Variable_;
     }
-    
-    BaseNodeClass::SPtr
-    BuildInfoType::productUri(void)
+
+    ServerVariable::SPtr&
+    BuildInfoType::buildNumber_Variable(void)
     {
-        return productUri_->baseNode().lock();
+        return buildNumber_Variable_;
     }
-    
-    bool
-    BuildInfoType::setProductUri(const OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    BuildInfoType::manufacturerName_Variable(void)
     {
-        return productUri_->setDataValue(dataValue);
+        return manufacturerName_Variable_;
     }
-    
-    bool
-    BuildInfoType::getProductUri(OpcUaDataValue& dataValue)
+
+    ServerVariable::SPtr&
+    BuildInfoType::productName_Variable(void)
     {
-        return productUri_->getDataValue(dataValue);
+        return productName_Variable_;
     }
-    
+
+    ServerVariable::SPtr&
+    BuildInfoType::productUri_Variable(void)
+    {
+        return productUri_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    BuildInfoType::softwareVersion_Variable(void)
+    {
+        return softwareVersion_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    BuildInfoType::variable(void)
+    {
+        return variable_;
+    }
+
     void
-    BuildInfoType::setUpdateCallbackProductUri(Callback::SPtr& callback)
+    BuildInfoType::buildDate_Variable(ServerVariable::SPtr& serverVariable)
     {
-        productUri_->callback(callback);
+        buildDate_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    BuildInfoType::manufacturerName(void)
-    {
-        return manufacturerName_->baseNode().lock();
-    }
-    
-    bool
-    BuildInfoType::setManufacturerName(const OpcUaDataValue& dataValue)
-    {
-        return manufacturerName_->setDataValue(dataValue);
-    }
-    
-    bool
-    BuildInfoType::getManufacturerName(OpcUaDataValue& dataValue)
-    {
-        return manufacturerName_->getDataValue(dataValue);
-    }
-    
+
     void
-    BuildInfoType::setUpdateCallbackManufacturerName(Callback::SPtr& callback)
+    BuildInfoType::buildNumber_Variable(ServerVariable::SPtr& serverVariable)
     {
-        manufacturerName_->callback(callback);
+        buildNumber_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    BuildInfoType::productName(void)
-    {
-        return productName_->baseNode().lock();
-    }
-    
-    bool
-    BuildInfoType::setProductName(const OpcUaDataValue& dataValue)
-    {
-        return productName_->setDataValue(dataValue);
-    }
-    
-    bool
-    BuildInfoType::getProductName(OpcUaDataValue& dataValue)
-    {
-        return productName_->getDataValue(dataValue);
-    }
-    
+
     void
-    BuildInfoType::setUpdateCallbackProductName(Callback::SPtr& callback)
+    BuildInfoType::manufacturerName_Variable(ServerVariable::SPtr& serverVariable)
     {
-        productName_->callback(callback);
+        manufacturerName_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    BuildInfoType::softwareVersion(void)
-    {
-        return softwareVersion_->baseNode().lock();
-    }
-    
-    bool
-    BuildInfoType::setSoftwareVersion(const OpcUaDataValue& dataValue)
-    {
-        return softwareVersion_->setDataValue(dataValue);
-    }
-    
-    bool
-    BuildInfoType::getSoftwareVersion(OpcUaDataValue& dataValue)
-    {
-        return softwareVersion_->getDataValue(dataValue);
-    }
-    
+
     void
-    BuildInfoType::setUpdateCallbackSoftwareVersion(Callback::SPtr& callback)
+    BuildInfoType::productName_Variable(ServerVariable::SPtr& serverVariable)
     {
-        softwareVersion_->callback(callback);
+        productName_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    BuildInfoType::buildNumber(void)
-    {
-        return buildNumber_->baseNode().lock();
-    }
-    
-    bool
-    BuildInfoType::setBuildNumber(const OpcUaDataValue& dataValue)
-    {
-        return buildNumber_->setDataValue(dataValue);
-    }
-    
-    bool
-    BuildInfoType::getBuildNumber(OpcUaDataValue& dataValue)
-    {
-        return buildNumber_->getDataValue(dataValue);
-    }
-    
+
     void
-    BuildInfoType::setUpdateCallbackBuildNumber(Callback::SPtr& callback)
+    BuildInfoType::productUri_Variable(ServerVariable::SPtr& serverVariable)
     {
-        buildNumber_->callback(callback);
+        productUri_Variable_ = serverVariable;
     }
-    
-    BaseNodeClass::SPtr
-    BuildInfoType::buildDate(void)
-    {
-        return buildDate_->baseNode().lock();
-    }
-    
-    bool
-    BuildInfoType::setBuildDate(const OpcUaDataValue& dataValue)
-    {
-        return buildDate_->setDataValue(dataValue);
-    }
-    
-    bool
-    BuildInfoType::getBuildDate(OpcUaDataValue& dataValue)
-    {
-        return buildDate_->getDataValue(dataValue);
-    }
-    
+
     void
-    BuildInfoType::setUpdateCallbackBuildDate(Callback::SPtr& callback)
+    BuildInfoType::softwareVersion_Variable(ServerVariable::SPtr& serverVariable)
     {
-        buildDate_->callback(callback);
+        softwareVersion_Variable_ = serverVariable;
+    }
+
+    void
+    BuildInfoType::variable(ServerVariable::SPtr& serverVariable)
+    {
+        variable_ = serverVariable;
+    }
+
+    bool
+    BuildInfoType::get_BuildDate_Variable(OpcUaDataValue& dataValue)
+    {
+        return buildDate_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::get_BuildNumber_Variable(OpcUaDataValue& dataValue)
+    {
+        return buildNumber_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::get_ManufacturerName_Variable(OpcUaDataValue& dataValue)
+    {
+        return manufacturerName_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::get_ProductName_Variable(OpcUaDataValue& dataValue)
+    {
+        return productName_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::get_ProductUri_Variable(OpcUaDataValue& dataValue)
+    {
+        return productUri_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::get_SoftwareVersion_Variable(OpcUaDataValue& dataValue)
+    {
+        return softwareVersion_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::get_Variable(OpcUaDataValue& dataValue)
+    {
+        return variable_->getDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::set_BuildDate_Variable(const OpcUaDataValue& dataValue)
+    {
+        return buildDate_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::set_BuildNumber_Variable(const OpcUaDataValue& dataValue)
+    {
+        return buildNumber_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::set_ManufacturerName_Variable(const OpcUaDataValue& dataValue)
+    {
+        return manufacturerName_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::set_ProductName_Variable(const OpcUaDataValue& dataValue)
+    {
+        return productName_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::set_ProductUri_Variable(const OpcUaDataValue& dataValue)
+    {
+        return productUri_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::set_SoftwareVersion_Variable(const OpcUaDataValue& dataValue)
+    {
+        return softwareVersion_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    BuildInfoType::set_Variable(const OpcUaDataValue& dataValue)
+    {
+        return variable_->setDataValue(dataValue);
     }
 
 }

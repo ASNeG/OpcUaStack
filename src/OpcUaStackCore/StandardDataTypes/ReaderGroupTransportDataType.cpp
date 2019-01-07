@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    ReaderGroupTransportDataType::ReaderGroupTransportDataType(const ReaderGroupTransportDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    {
+        const_cast<ReaderGroupTransportDataType*>(&value)->copyTo(*this);
+    }
+    
     ReaderGroupTransportDataType::~ReaderGroupTransportDataType(void)
     {
     }
@@ -106,16 +113,6 @@ namespace OpcUaStackCore
     
     void
     ReaderGroupTransportDataType::opcUaBinaryDecode(std::istream& is)
-    {
-    }
-    
-    bool
-    ReaderGroupTransportDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ReaderGroupTransportDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     }
     

@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    WriterGroupDataType::WriterGroupDataType(const WriterGroupDataType& value)
+    : PubSubGroupDataType()
+    , writerGroupId_()
+    , publishingInterval_()
+    , keepAliveTime_()
+    , priority_()
+    , localeIds_()
+    , transportSettings_()
+    , messageSettings_()
+    , dataSetWriters_()
+    {
+        const_cast<WriterGroupDataType*>(&value)->copyTo(*this);
+    }
+    
     WriterGroupDataType::~WriterGroupDataType(void)
     {
     }
@@ -196,16 +210,6 @@ namespace OpcUaStackCore
         transportSettings_.opcUaBinaryDecode(is);
         messageSettings_.opcUaBinaryDecode(is);
         dataSetWriters_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    WriterGroupDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    WriterGroupDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

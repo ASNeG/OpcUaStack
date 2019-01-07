@@ -4,9 +4,9 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 3.0.1
+        OpcUaStackCore - 4.1.0
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
 #ifndef __OpcUaStackServer_StateVariableType_h__
@@ -14,51 +14,72 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/StandardVariableType/BaseDataVariableType.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
+   
+   class DLLEXPORT StateVariableType
+   : public VariableBase
+   {
+     public:
+       typedef boost::shared_ptr<StateVariableType> SPtr;
+       typedef std::vector<StateVariableType::SPtr> Vec;
+   
+       StateVariableType(void);
+       StateVariableType(const StateVariableType& value);
+       virtual ~StateVariableType(void);
+
+        //
+        // LocalizedText
+        //
+        void effectiveDisplayName_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& effectiveDisplayName_Variable(void);
+        bool get_EffectiveDisplayName_Variable(OpcUaDataValue& dataValue);
+        bool set_EffectiveDisplayName_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Variant
+        //
+        void id_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& id_Variable(void);
+        bool get_Id_Variable(OpcUaDataValue& dataValue);
+        bool set_Id_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // QualifiedName
+        //
+        void name_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& name_Variable(void);
+        bool get_Name_Variable(OpcUaDataValue& dataValue);
+        bool set_Name_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UInt32
+        //
+        void number_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& number_Variable(void);
+        bool get_Number_Variable(OpcUaDataValue& dataValue);
+        bool set_Number_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // LocalizedText (Array)
+        //
+        void variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& variable(void);
+        bool get_Variable(OpcUaDataValue& dataValue);
+        bool set_Variable(const OpcUaDataValue& dataValue);
     
-    class DLLEXPORT StateVariableType
-    : public BaseDataVariableType
-    {
-      public:
-        typedef boost::shared_ptr<StateVariableType> SPtr;
-    
-        StateVariableType(void);
-        virtual ~StateVariableType(void);
-        virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-        
-        BaseNodeClass::SPtr id(void);
-        bool setId(const OpcUaDataValue& dataValue);
-        bool getId(OpcUaDataValue& dataValue);
-        void setUpdateCallbackId(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr name(void);
-        bool setName(const OpcUaDataValue& dataValue);
-        bool getName(OpcUaDataValue& dataValue);
-        void setUpdateCallbackName(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr number(void);
-        bool setNumber(const OpcUaDataValue& dataValue);
-        bool getNumber(OpcUaDataValue& dataValue);
-        void setUpdateCallbackNumber(Callback::SPtr& callback);
-        
-        BaseNodeClass::SPtr effectiveDisplayName(void);
-        bool setEffectiveDisplayName(const OpcUaDataValue& dataValue);
-        bool getEffectiveDisplayName(OpcUaDataValue& dataValue);
-        void setUpdateCallbackEffectiveDisplayName(Callback::SPtr& callback);
-        
       private:
-        std::string namespaceName_;
-        uint16_t namespaceIndex_;
-        ServerVariable::SPtr id_;
-        ServerVariable::SPtr name_;
-        ServerVariable::SPtr number_;
-        ServerVariable::SPtr effectiveDisplayName_;
-    
-    };
+        ServerVariable::SPtr effectiveDisplayName_Variable_;
+        ServerVariable::SPtr id_Variable_;
+        ServerVariable::SPtr name_Variable_;
+        ServerVariable::SPtr number_Variable_;
+        ServerVariable::SPtr variable_;
+   
+   };
 
 }
 

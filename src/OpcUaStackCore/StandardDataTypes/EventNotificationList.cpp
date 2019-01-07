@@ -20,6 +20,13 @@ namespace OpcUaStackCore
     {
     }
     
+    EventNotificationList::EventNotificationList(const EventNotificationList& value)
+    : NotificationData()
+    , events_()
+    {
+        const_cast<EventNotificationList*>(&value)->copyTo(*this);
+    }
+    
     EventNotificationList::~EventNotificationList(void)
     {
     }
@@ -119,16 +126,6 @@ namespace OpcUaStackCore
     {
         NotificationData::opcUaBinaryDecode(is);
         events_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    EventNotificationList::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EventNotificationList::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

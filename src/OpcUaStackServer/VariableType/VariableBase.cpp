@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,9 +30,10 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VariableBase::VariableBase(void)
-	: serverVariables_()
+	: Object()
+	, serverVariables_()
 	, applicationServiceIf_(nullptr)
-	, namespaceName_("")
+	, variableTypeNamespaceName_("")
 	, writeCallback_(boost::bind(&VariableBase::writeValue, this, _1))
 	{
 	}
@@ -51,6 +52,24 @@ namespace OpcUaStackServer
 	VariableBase::serverVariables(void)
 	{
 		return serverVariables_;
+	}
+
+	void
+	VariableBase::logVariables(void)
+	{
+		serverVariables_.logVariables();
+	}
+
+	ServerVariable::SPtr
+	VariableBase::getServerVariable(const std::string& name)
+	{
+		return serverVariables_.getServerVariable(name);
+	}
+
+	bool
+	VariableBase::setServerVariable(ServerVariable::SPtr& serverVariable)
+	{
+		return serverVariables_.registerServerVariable(serverVariable);
 	}
 
 	bool
@@ -198,12 +217,12 @@ namespace OpcUaStackServer
 	)
 	{
 		Log(Debug, "create new node")
-			.parameter("TypeNodeId", variableType_);
+			.parameter("TypeNodeId", variableTypeNodeId_);
 
 		// get namespace index
 		uint16_t namespaceIndex;
-		getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex);
-		variableType_.namespaceIndex(namespaceIndex);
+		getNamespaceIndexFromNamespaceName(variableTypeNamespaceName_, namespaceIndex);
+		variableTypeNodeId_.namespaceIndex(namespaceIndex);
 
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
@@ -223,7 +242,7 @@ namespace OpcUaStackServer
 		req->displayName() = displayName;
 		req->browseName() = browseName;
 		req->referenceNodeId() = referenceNodeId;
-		req->typeNodeId() = variableType_;
+		req->typeNodeId() = variableTypeNodeId_;
 
 	  	applicationServiceIf_->sendSync(trx);
 	  	if (trx->statusCode() != Success) {
@@ -274,21 +293,27 @@ namespace OpcUaStackServer
 	}
 
 	void
-	VariableBase::variableTypeNamespace(const std::string& namespaceName)
+	VariableBase::variableTypeNamespaceName(const std::string& variableTypeNamespaceName)
 	{
-		namespaceName_ = namespaceName;
+		variableTypeNamespaceName_ = variableTypeNamespaceName;
+	}
+
+	std::string&
+	VariableBase::variableTypeNamespaceName(void)
+	{
+		return variableTypeNamespaceName_;
 	}
 
 	void
-	VariableBase::variableType(const OpcUaNodeId& variableType)
+	VariableBase::variableTypeNodeId(const OpcUaNodeId& variableTypeNodeId)
 	{
-		variableType_ = variableType;
+		variableTypeNodeId_ = variableTypeNodeId;
 	}
 
 	OpcUaNodeId&
-	VariableBase::variableType(void)
+	VariableBase::variableTypeNodeId(void)
 	{
-		return variableType_;
+		return variableTypeNodeId_;
 	}
 
 	// ------------------------------------------------------------------------

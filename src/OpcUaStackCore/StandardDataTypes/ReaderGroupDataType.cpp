@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    ReaderGroupDataType::ReaderGroupDataType(const ReaderGroupDataType& value)
+    : PubSubGroupDataType()
+    , transportSettings_()
+    , messageSettings_()
+    , dataSetReaders_()
+    {
+        const_cast<ReaderGroupDataType*>(&value)->copyTo(*this);
+    }
+    
     ReaderGroupDataType::~ReaderGroupDataType(void)
     {
     }
@@ -141,16 +150,6 @@ namespace OpcUaStackCore
         transportSettings_.opcUaBinaryDecode(is);
         messageSettings_.opcUaBinaryDecode(is);
         dataSetReaders_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ReaderGroupDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ReaderGroupDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

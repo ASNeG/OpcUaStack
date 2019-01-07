@@ -24,6 +24,17 @@ namespace OpcUaStackCore
     {
     }
     
+    ReadProcessedDetails::ReadProcessedDetails(const ReadProcessedDetails& value)
+    : HistoryReadDetails()
+    , startTime_()
+    , endTime_()
+    , processingInterval_()
+    , aggregateType_()
+    , aggregateConfiguration_()
+    {
+        const_cast<ReadProcessedDetails*>(&value)->copyTo(*this);
+    }
+    
     ReadProcessedDetails::~ReadProcessedDetails(void)
     {
     }
@@ -163,16 +174,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,processingInterval_);
         aggregateType_.opcUaBinaryDecode(is);
         aggregateConfiguration_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    ReadProcessedDetails::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    ReadProcessedDetails::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

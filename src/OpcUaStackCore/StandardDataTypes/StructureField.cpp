@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    StructureField::StructureField(const StructureField& value)
+    : Object()
+    , ExtensionObjectBase()
+    , name_()
+    , description_()
+    , dataType_()
+    , valueRank_()
+    , arrayDimensions_()
+    , maxStringLength_()
+    , isOptional_()
+    {
+        const_cast<StructureField*>(&value)->copyTo(*this);
+    }
+    
     StructureField::~StructureField(void)
     {
     }
@@ -184,16 +198,6 @@ namespace OpcUaStackCore
         arrayDimensions_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,maxStringLength_);
         OpcUaNumber::opcUaBinaryDecode(is,isOptional_);
-    }
-    
-    bool
-    StructureField::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    StructureField::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

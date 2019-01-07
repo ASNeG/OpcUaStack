@@ -28,6 +28,21 @@ namespace OpcUaStackCore
     {
     }
     
+    PublishedVariableDataType::PublishedVariableDataType(const PublishedVariableDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , publishedVariable_()
+    , attributeId_()
+    , samplingIntervalHint_()
+    , deadbandType_()
+    , deadbandValue_()
+    , indexRange_()
+    , substituteValue_()
+    , metaDataProperties_()
+    {
+        const_cast<PublishedVariableDataType*>(&value)->copyTo(*this);
+    }
+    
     PublishedVariableDataType::~PublishedVariableDataType(void)
     {
     }
@@ -195,16 +210,6 @@ namespace OpcUaStackCore
         indexRange_.opcUaBinaryDecode(is);
         substituteValue_.opcUaBinaryDecode(is);
         metaDataProperties_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    PublishedVariableDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    PublishedVariableDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

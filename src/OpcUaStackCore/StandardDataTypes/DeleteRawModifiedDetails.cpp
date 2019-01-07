@@ -22,6 +22,15 @@ namespace OpcUaStackCore
     {
     }
     
+    DeleteRawModifiedDetails::DeleteRawModifiedDetails(const DeleteRawModifiedDetails& value)
+    : HistoryUpdateDetails()
+    , isDeleteModified_()
+    , startTime_()
+    , endTime_()
+    {
+        const_cast<DeleteRawModifiedDetails*>(&value)->copyTo(*this);
+    }
+    
     DeleteRawModifiedDetails::~DeleteRawModifiedDetails(void)
     {
     }
@@ -141,16 +150,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,isDeleteModified_);
         startTime_.opcUaBinaryDecode(is);
         endTime_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    DeleteRawModifiedDetails::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    DeleteRawModifiedDetails::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

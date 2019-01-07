@@ -59,6 +59,7 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_all_elements_ptree)
 	OpcUaDateTime sourceTimestamp, serverTimestamp;
 	boost::property_tree::ptree pt;
 	OpcUaDataValue value1, value2;
+	Xmlns xmlns;
 
 	sourceTimestamp.dateTime(ptime1);
 	serverTimestamp.dateTime(ptime2);
@@ -70,8 +71,8 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_all_elements_ptree)
 	value1.serverTimestamp(serverTimestamp);
 	value1.serverPicoseconds(5678);
 
-	value1.encode(pt);
-	value2.decode(pt, OpcUaBuildInType_OpcUaUInt16, false);
+	value1.xmlEncode(pt, xmlns);
+	value2.xmlDecode(pt, xmlns);
 
 	BOOST_REQUIRE(value1.variant()->variant<OpcUaUInt16>() == 1234);
 	BOOST_REQUIRE(value1.statusCode() == (OpcUaStatusCode)12);
@@ -239,6 +240,44 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_copyTo_string)
 	BOOST_REQUIRE(value2.sourcePicoseconds() == 1234);
 	BOOST_REQUIRE(boost::posix_time::to_iso_string(value2.serverTimestamp().dateTime()) == "20140506T102014.123456");
 	BOOST_REQUIRE(value2.serverPicoseconds() == 5678);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_constructor)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	OpcUaDataValue value1(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	OpcUaDataValue value2(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	BOOST_REQUIRE(value1 == value2);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_set)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	OpcUaDataValue value1, value2;
+	value1.set(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	value2.set(OpcUaByteString("String-Variable"), Success, OpcUaDateTime(now));
+	BOOST_REQUIRE(value1 == value2);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_setValue_getValue)
+{
+	OpcUaDataValue value;
+	value.setValue(OpcUaString("Dies ist ein TestString"));
+
+	// get opc ua string
+	OpcUaString str;
+	BOOST_REQUIRE(value.getValue(str) == true);
+	BOOST_REQUIRE(str == OpcUaString("Dies ist ein TestString"));
+
+	// get value from invalid type
+	OpcUaGuid guid;
+	BOOST_REQUIRE(value.getValue(guid) == false);
+
+	// get value from empty variable
+	OpcUaDataValue value1;
+	BOOST_REQUIRE(value1.getValue(guid) == false);
 }
 
 #if 0

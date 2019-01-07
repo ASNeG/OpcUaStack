@@ -27,6 +27,20 @@ namespace OpcUaStackCore
     {
     }
     
+    FieldTargetDataType::FieldTargetDataType(const FieldTargetDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , dataSetFieldId_()
+    , receiverIndexRange_()
+    , targetNodeId_()
+    , attributeId_()
+    , writeIndexRange_()
+    , overrideValueHandling_()
+    , overrideValue_()
+    {
+        const_cast<FieldTargetDataType*>(&value)->copyTo(*this);
+    }
+    
     FieldTargetDataType::~FieldTargetDataType(void)
     {
     }
@@ -184,16 +198,6 @@ namespace OpcUaStackCore
         writeIndexRange_.opcUaBinaryDecode(is);
         overrideValueHandling_.opcUaBinaryDecode(is);
         overrideValue_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    FieldTargetDataType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    FieldTargetDataType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

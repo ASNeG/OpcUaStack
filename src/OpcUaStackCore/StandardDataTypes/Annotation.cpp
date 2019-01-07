@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    Annotation::Annotation(const Annotation& value)
+    : Object()
+    , ExtensionObjectBase()
+    , message_()
+    , userName_()
+    , annotationTime_()
+    {
+        const_cast<Annotation*>(&value)->copyTo(*this);
+    }
+    
     Annotation::~Annotation(void)
     {
     }
@@ -140,16 +150,6 @@ namespace OpcUaStackCore
         message_.opcUaBinaryDecode(is);
         userName_.opcUaBinaryDecode(is);
         annotationTime_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    Annotation::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    Annotation::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

@@ -23,6 +23,16 @@ namespace OpcUaStackCore
     {
     }
     
+    SimpleAttributeOperand::SimpleAttributeOperand(const SimpleAttributeOperand& value)
+    : FilterOperand()
+    , typeDefinitionId_()
+    , browsePath_()
+    , attributeId_()
+    , indexRange_()
+    {
+        const_cast<SimpleAttributeOperand*>(&value)->copyTo(*this);
+    }
+    
     SimpleAttributeOperand::~SimpleAttributeOperand(void)
     {
     }
@@ -152,16 +162,6 @@ namespace OpcUaStackCore
         browsePath_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
         indexRange_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    SimpleAttributeOperand::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    SimpleAttributeOperand::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool

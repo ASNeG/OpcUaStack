@@ -26,6 +26,19 @@ namespace OpcUaStackCore
     {
     }
     
+    /**
+     * A mapping between a value of an enumerated type and a name and description.
+     */
+    EnumValueType::EnumValueType(const EnumValueType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , value_()
+    , displayName_()
+    , description_()
+    {
+        const_cast<EnumValueType*>(&value)->copyTo(*this);
+    }
+    
     EnumValueType::~EnumValueType(void)
     {
     }
@@ -143,16 +156,6 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,value_);
         displayName_.opcUaBinaryDecode(is);
         description_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    EnumValueType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
-    {
-    }
-    
-    bool
-    EnumValueType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
     }
     
     bool
