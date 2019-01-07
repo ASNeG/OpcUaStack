@@ -59,8 +59,8 @@ class DLLEXPORT NodeInfoObjectType
 		InformationModel::SPtr& informationModel
 	);
 
-	OpcUaNodeId& variableTypeNodeId(void);
-	std::string& variableTypeNamespaceName(void);
+	OpcUaNodeId& objectTypeNodeId(void);
+	std::string& objectTypeNamespaceName(void);
 	std::string& className(void);
 	std::string& namespaceName(void);
 	std::string directory(void);
@@ -70,14 +70,15 @@ class DLLEXPORT NodeInfoObjectType
 	std::string getIdentifierAsString(OpcUaNodeId& nodeId);
 
   private:
-	bool readValues(const OpcUaNodeId& variableTypeNodeId);
+	bool readNodes(const OpcUaNodeId& objectTypeNodeId);
 	bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
-	bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
+	bool readObjectTypeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
+	bool readVariableInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 
 	NumberNamespaceMap numberNamespaceMap_;
-	OpcUaNodeId variableTypeNodeId_;
-	std::string variableTypeNamespaceName_;
-	OpcUaNodeId parentVariableTypeNodeId_;
+	OpcUaNodeId objectTypeNodeId_;
+	std::string objectTypeNamespaceName_;
+	OpcUaNodeId parentObjectTypeNodeId_;
 	InformationModel::SPtr informationModel_;
 
 	BaseNodeClass::SPtr baseNode_;

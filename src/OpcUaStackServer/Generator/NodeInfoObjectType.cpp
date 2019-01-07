@@ -27,8 +27,8 @@ namespace OpcUaStackServer
 	NodeInfoObjectType::NodeInfoObjectType(void)
 	: numberNamespaceMap_("OpcUaStackServer")
 	, informationModel_()
-	, variableTypeNodeId_()
-	, parentVariableTypeNodeId_()
+	, objectTypeNodeId_()
+	, parentObjectTypeNodeId_()
 	, baseNode_()
 	, namespaceName_("")
 	, className_("")
@@ -50,9 +50,8 @@ namespace OpcUaStackServer
 	{
 		NodeSetNamespace nodeSetNamespace;
 
-#if 0
-		variableTypeNodeId_ = variableTypeNodeId;
-		variableTypeNamespaceName_ = nodeSetNamespace.globalNamespaceVec()[variableTypeNodeId_.namespaceIndex()];
+		objectTypeNodeId_ = objectTypeNodeId;
+		objectTypeNamespaceName_ = nodeSetNamespace.globalNamespaceVec()[objectTypeNodeId_.namespaceIndex()];
 		informationModel_ = informationModel;
 
 		InformationModelAccess ima;
@@ -61,17 +60,17 @@ namespace OpcUaStackServer
 		//
 		// find node in opc ua information model
 		//
-		baseNode_ = informationModel_->find(variableTypeNodeId);
+		baseNode_ = informationModel_->find(objectTypeNodeId);
 		if (baseNode_.get() == nullptr) {
-			Log(Error, "variable type node identifier not exist in information model")
-				.parameter("VariableTypeNode", variableTypeNodeId);
+			Log(Error, "object type node identifier not exist in information model")
+				.parameter("ObjectTypeNode", objectTypeNodeId);
 			return false;
 		}
 
 		//
 		// set namespace name
 		//
-		namespaceName_ = numberNamespaceMap_.getNamespaceName(variableTypeNodeId_.namespaceIndex());
+		namespaceName_ = numberNamespaceMap_.getNamespaceName(objectTypeNodeId_.namespaceIndex());
 
 		//
 		// set class name
@@ -79,7 +78,7 @@ namespace OpcUaStackServer
 		boost::optional<OpcUaLocalizedText&> displayName = baseNode_->getDisplayName();
 		if (!displayName) {
 			Log(Error, "display name not found")
-			    .parameter("VariableTypeNode", variableTypeNodeId_);
+			    .parameter("ObjectTypeNode", objectTypeNodeId_);
 		}
 		className_ = displayName->text();
 		className_ = boost::to_upper_copy(className_.substr(0,1)) + className_.substr(1);
@@ -88,11 +87,11 @@ namespace OpcUaStackServer
 		//
 		// set directory
 		//
-		if (variableTypeNodeId_.namespaceIndex() == 0) {
-			directory_ = "StandardVariableType";
+		if (objectTypeNodeId_.namespaceIndex() == 0) {
+			directory_ = "StandardObjectType";
 		}
 		else {
-			directory_ = "CustomerVariableType";
+			directory_ = "CustomerObjectType";
 		}
 
 		//
@@ -102,21 +101,19 @@ namespace OpcUaStackServer
 		baseNode_->getDescription(description);
 		description_ = description.text().toStdString();
 
-		return readValues(variableTypeNodeId);
-#endif
-		return true;
+		return readNodes(objectTypeNodeId);
 	}
 
 	OpcUaNodeId&
-	NodeInfoObjectType::variableTypeNodeId(void)
+	NodeInfoObjectType::objectTypeNodeId(void)
 	{
-		return variableTypeNodeId_;
+		return objectTypeNodeId_;
 	}
 
 	std::string&
-	NodeInfoObjectType::variableTypeNamespaceName(void)
+	NodeInfoObjectType::objectTypeNamespaceName(void)
 	{
-		return variableTypeNamespaceName_;
+		return objectTypeNamespaceName_;
 	}
 
 	std::string&
@@ -150,7 +147,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeInfoObjectType::readValues(const OpcUaNodeId& variableTypeNodeId)
+	NodeInfoObjectType::readNodes(const OpcUaNodeId& objectTypeNodeId)
 	{
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
@@ -158,35 +155,35 @@ namespace OpcUaStackServer
 		//
 		// find node in opc ua information model
 		//
-		BaseNodeClass::SPtr baseNode = informationModel_->find(variableTypeNodeId);
+		BaseNodeClass::SPtr baseNode = informationModel_->find(objectTypeNodeId);
 		if (baseNode.get() == nullptr) {
-			Log(Error, "variable type node identifier not exist in information model")
-				.parameter("VariableTypeNode", variableTypeNodeId);
+			Log(Error, "object type node identifier not exist in information model")
+				.parameter("ObjectTypeNode", objectTypeNodeId);
 			return false;
 		}
 
-		BrowseName browseName(variableTypeNodeId);
+		BrowseName browseName(objectTypeNodeId);
 		browseName.pathNames()->resize(10);
 		if (!readChilds(baseNode, browseName)) {
 			Log(Error, "read childs error")
-				.parameter("VariableTypeNodeId", variableTypeNodeId);
+				.parameter("ObjectTypeNodeId", objectTypeNodeId);
 			return false;
 		}
 
-		if (variableTypeNodeId == OpcUaNodeId(62)) {
+		if (objectTypeNodeId == OpcUaNodeId(58)) {
 			return true;
 		}
 
 		// find parent node identifier
-		OpcUaNodeId parentVariableTypeNodeId;
-		if (!ima.getSubType(baseNode, parentVariableTypeNodeId)) {
-			Log(Error, "parent variable type node identifier do not not exist in information model")
-				.parameter("VariableTypeNodeId", variableTypeNodeId)
+		OpcUaNodeId parentObjectTypeNodeId;
+		if (!ima.getSubType(baseNode, parentObjectTypeNodeId)) {
+			Log(Error, "parent object type node identifier do not not exist in information model")
+				.parameter("ObjectTypeNodeId", objectTypeNodeId)
 				.parameter("DisplayName", *baseNode->getDisplayName());
 			return false;
 		}
 
-		return readValues(parentVariableTypeNodeId);
+		return readNodes(parentObjectTypeNodeId);
 	}
 
 	bool
@@ -196,11 +193,47 @@ namespace OpcUaStackServer
 		ima.informationModel(informationModel_);
 
 		// read node information
-		if (!readNodeInfo(baseNode, browseNames)) {
-			Log(Error, "read node information error")
-				.parameter("NodeId", baseNode->getNodeId())
-				.parameter("BrowseName", browseNames);
-			return false;
+		std::cout << *baseNode->getNodeClass() << std::endl;
+		switch (*baseNode->getNodeClass())
+		{
+			case NodeClass::EnumObjectType:
+			{
+				if (!readObjectTypeInfo(baseNode, browseNames)) {
+					Log(Error, "read object type information error")
+						.parameter("NodeId", baseNode->getNodeId())
+						.parameter("BrowseName", browseNames);
+					return false;
+				}
+				break;
+			}
+			case NodeClass::EnumObject:
+			{
+				// FIXME: todo
+				break;
+			}
+			case NodeClass::EnumVariable:
+			{
+				if (!readVariableInfo(baseNode, browseNames)) {
+					Log(Error, "read variable information error")
+						.parameter("NodeId", baseNode->getNodeId())
+						.parameter("BrowseName", browseNames);
+					return false;
+				}
+				break;
+			}
+			case NodeClass::EnumMethod:
+			{
+				// FIXME: todo
+				break;
+			}
+			default:
+			{
+				Log(Error, "invalid class name found in read child function")
+					.parameter("NodeId", baseNode->getNodeId())
+					.parameter("BrowseName", browseNames);
+				return false;
+			}
+
 		}
 
 		// find childs
@@ -241,11 +274,17 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeInfoObjectType::readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
+	NodeInfoObjectType::readObjectTypeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
+	{
+		return true;
+	}
+
+	bool
+	NodeInfoObjectType::readVariableInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
 	{
 		VariableTypeField::SPtr variableTypeField = constructSPtr<VariableTypeField>();
 
-		Log(Debug, "read node information")
+		Log(Debug, "read variable information")
 			.parameter("NodeId", *baseNode->getNodeId())
 			.parameter("DisplayName", *baseNode->getDisplayName())
 			.parameter("BrowsePath", browsePath);
