@@ -1,7 +1,5 @@
 os:
   - Visual Studio 2015
-cache:
-  - C:/projects/opcuastack/build_local_x86_vs14.0_Release
 install:
   - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
   - appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
