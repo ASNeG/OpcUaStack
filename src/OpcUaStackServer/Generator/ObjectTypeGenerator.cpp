@@ -193,8 +193,7 @@ namespace OpcUaStackServer
 		//
 		ss << prefix << std::endl;
 		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << std::endl;
-		ss << prefix << ": public VariableBase" << std::endl;
-		ss << prefix << ", public ObjectBase" << std::endl;
+		ss << prefix << ": public ObjectBase" << std::endl;
 
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
@@ -382,8 +381,7 @@ namespace OpcUaStackServer
 		}
 
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
-		ss << prefix << ": VariableBase()" << std::endl;
-		ss << prefix << ", ObjectBase()" << std::endl;
+		ss << prefix << ": ObjectBase()" << std::endl;
 
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
@@ -397,8 +395,8 @@ namespace OpcUaStackServer
 
 		ss << prefix << "{" << std::endl;
 
-		ss << prefix << "    variableTypeNamespaceName(\"" << nodeInfo_.objectTypeNamespaceName() << "\");" << std::endl;
-		ss << prefix << "    variableTypeNodeId(" << nodeInfo_.getIdentifierAsString(nodeInfo_.objectTypeNodeId()) << ");" << std::endl;
+		ss << prefix << "    objectTypeNamespaceName(\"" << nodeInfo_.objectTypeNamespaceName() << "\");" << std::endl;
+		ss << prefix << "    objectTypeNodeId(" << nodeInfo_.getIdentifierAsString(nodeInfo_.objectTypeNodeId()) << ");" << std::endl;
 
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
@@ -423,7 +421,7 @@ namespace OpcUaStackServer
 		}
 
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(const " <<nodeInfo_.className()  << "& value)" << std::endl;
-		ss << prefix << ": VariableBase()" << std::endl;
+		ss << prefix << ": ObjectBase()" << std::endl;
 
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
@@ -437,8 +435,8 @@ namespace OpcUaStackServer
 
 		ss << prefix << "{" << std::endl;
 
-		ss << prefix << "    variableTypeNamespaceName(\"" << nodeInfo_.objectTypeNamespaceName() << "\");" << std::endl;
-		ss << prefix << "    variableTypeNodeId(" << nodeInfo_.getIdentifierAsString(nodeInfo_.objectTypeNodeId()) << ");" << std::endl;
+		ss << prefix << "    objectTypeNamespaceName(\"" << nodeInfo_.objectTypeNamespaceName() << "\");" << std::endl;
+		ss << prefix << "    objectTypeNodeId(" << nodeInfo_.getIdentifierAsString(nodeInfo_.objectTypeNodeId()) << ");" << std::endl;
 
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
