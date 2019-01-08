@@ -415,6 +415,11 @@ namespace OpcUaStackServer
 			ss << prefix << "    setServerMethod(" << vt->variableName() << ");" << std::endl;
 		}
 
+		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
+			auto& vt = methodTypeField.second;
+			ss << prefix << "    " << vt->variableName() << "->registerMethod(boost::bind(&" << nodeInfo_.className() << "::call_" << vt->name() << ", this, _1));" << std::endl;
+		}
+
 		ss << prefix << "}" << std::endl;
 
 		//
