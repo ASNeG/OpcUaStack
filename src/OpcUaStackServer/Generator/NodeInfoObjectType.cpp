@@ -313,6 +313,10 @@ namespace OpcUaStackServer
 			.parameter("DisplayName", *baseNode->getDisplayName())
 			.parameter("BrowsePath", browsePath);
 
+		// ignore InputArguments und OutputArguments
+		if ((*baseNode->getDisplayName()).text().toStdString() == "InputArguments") return true;
+		if ((*baseNode->getDisplayName()).text().toStdString() == "OutputArguments") return true;
+
 		// create name
 		std::string name;
 		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
