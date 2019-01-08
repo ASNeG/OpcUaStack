@@ -90,11 +90,11 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	ServerMethods::registerServerMethod(ServerMethod::SPtr& serverVariable)
+	ServerMethods::registerServerMethod(ServerMethod::SPtr& serverMethod)
 	{
-		auto it = serverMethodMap_.find(serverVariable->name());
+		auto it = serverMethodMap_.find(serverMethod->name());
 		if (it != serverMethodMap_.end()) serverMethodMap_.erase(it);
-		serverMethodMap_.insert(std::make_pair(serverVariable->name(), serverVariable));
+		serverMethodMap_.insert(std::make_pair(serverMethod->name(), serverMethod));
 		return true;
 	}
 
@@ -108,7 +108,7 @@ namespace OpcUaStackServer
 	}
 
 	ServerMethod::Map&
-	ServerMethods::serverVariableMap(void)
+	ServerMethods::serverMethodMap(void)
 	{
 		return serverMethodMap_;
 	}

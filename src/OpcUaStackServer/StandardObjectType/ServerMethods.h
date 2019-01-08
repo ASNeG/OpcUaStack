@@ -63,9 +63,9 @@ namespace OpcUaStackServer
 		virtual ~ServerMethods(void);
 
 		void logVariables(void);
-		bool registerServerMethod(ServerMethod::SPtr& serverVariable);
+		bool registerServerMethod(ServerMethod::SPtr& serverMethod);
 		ServerMethod::SPtr getServerMethod(const std::string& name);
-		ServerMethod::Map& serverVariableMap(void);
+		ServerMethod::Map& serverMethodMap(void);
 
 	  private:
 		ServerMethod::Map serverMethodMap_;
