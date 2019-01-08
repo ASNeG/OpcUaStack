@@ -401,7 +401,7 @@ namespace OpcUaStackServer
 			name += browseName->name().toStdString();
 		}
 		if (!name.empty()) name += "_";
-		name += "Variable";
+		name += "Method";
 		methodTypeField->name(name);
 
 		// create variable name
