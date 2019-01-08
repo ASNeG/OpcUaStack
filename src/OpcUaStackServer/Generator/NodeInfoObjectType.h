@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_NodeInfoObjectType_h__
 #define __OpcUaStackCore_NodeInfoObjectType_h__
 
-#include "OpcUaStackCore/StandardDataTypes/StructureDefinitionExpand.h"
 #include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
 
 #include "OpcUaStackServer/Generator/NodeInfo.h"
@@ -73,6 +72,7 @@ class DLLEXPORT NodeInfoObjectType
 	bool readNodes(const OpcUaNodeId& objectTypeNodeId);
 	bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 	bool readObjectTypeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
+	bool readObjectInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 	bool readVariableInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 
 	NumberNamespaceMap numberNamespaceMap_;

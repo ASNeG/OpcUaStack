@@ -208,7 +208,12 @@ namespace OpcUaStackServer
 			}
 			case NodeClass::EnumObject:
 			{
-				// FIXME: todo
+				if (!readObjectInfo(baseNode, browseNames)) {
+					Log(Error, "read object information error")
+						.parameter("NodeId", baseNode->getNodeId())
+						.parameter("BrowseName", browseNames);
+					return false;
+				}
 				break;
 			}
 			case NodeClass::EnumVariable:
@@ -276,6 +281,12 @@ namespace OpcUaStackServer
 
 	bool
 	NodeInfoObjectType::readObjectTypeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
+	{
+		return true;
+	}
+
+	bool
+	NodeInfoObjectType::readObjectInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
 	{
 		return true;
 	}
