@@ -19,7 +19,9 @@
 #define __OpcUaStackServer_ServerMethods_h__
 
 #include <map>
-#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackCore/Base/BaseClass.h"
+#include "OpcUaStackCore/Base/Callback.h"
+#include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 
 using namespace OpcUaStackCore;
 
@@ -34,13 +36,21 @@ namespace OpcUaStackServer
 		typedef std::map<std::string, ServerMethod::SPtr> Map;
 
 		ServerMethod(const std::string& name);
-		~ServerMethod(void);
+		virtual ~ServerMethod(void);
 
 		void name(const std::string& name);
 		std::string& name(void);
+		template<typename T>
+		    void registerMethod(T& handle)
+			{
+				methodCallback_ = handle;
+			}
+
+		void method(ApplicationMethodContext* applicationMethodContext);
 
 	  private:
 		std::string name_;
+		Callback methodCallback_;
 	};
 
 

@@ -34,7 +34,7 @@ namespace OpcUaStackServer
 		typedef std::map<std::string, ServerVariable::SPtr> Map;
 
 		ServerVariable(const std::string& name);
-		~ServerVariable(void);
+		virtual ~ServerVariable(void);
 
 		void name(const std::string& name);
 		std::string& name(void);

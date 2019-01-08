@@ -29,7 +29,8 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ServerMethod::ServerMethod(const std::string& name)
-	: name_(name)
+	: BaseClass()
+	, name_(name)
 	{
 	}
 
@@ -47,6 +48,16 @@ namespace OpcUaStackServer
 	ServerMethod::name(void)
 	{
 		return name_;
+	}
+
+	void
+	ServerMethod::method(ApplicationMethodContext* applicationMethodContext)
+	{
+		if (!methodCallback_.exist()) {
+			applicationMethodContext->statusCode_ = BadNotSupported;
+			return;
+		}
+		methodCallback_(applicationMethodContext);
 	}
 
 	// ------------------------------------------------------------------------
