@@ -14,8 +14,6 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/StandardVariableType/VariableBase.h"
 
 namespace OpcUaStackServer
@@ -99,18 +97,18 @@ namespace OpcUaStackServer
         //
         // UInt32
         //
-        void secondsTillShutdown_BuildDate_Variable(ServerVariable::SPtr& serverVariable);
-        ServerVariable::SPtr& secondsTillShutdown_BuildDate_Variable(void);
-        bool get_SecondsTillShutdown_BuildDate_Variable(OpcUaDataValue& dataValue);
-        bool set_SecondsTillShutdown_BuildDate_Variable(const OpcUaDataValue& dataValue);
+        void secondsTillShutdown_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& secondsTillShutdown_Variable(void);
+        bool get_SecondsTillShutdown_Variable(OpcUaDataValue& dataValue);
+        bool set_SecondsTillShutdown_Variable(const OpcUaDataValue& dataValue);
 
         //
         // LocalizedText
         //
-        void shutdownReason_BuildDate_Variable(ServerVariable::SPtr& serverVariable);
-        ServerVariable::SPtr& shutdownReason_BuildDate_Variable(void);
-        bool get_ShutdownReason_BuildDate_Variable(OpcUaDataValue& dataValue);
-        bool set_ShutdownReason_BuildDate_Variable(const OpcUaDataValue& dataValue);
+        void shutdownReason_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& shutdownReason_Variable(void);
+        bool get_ShutdownReason_Variable(OpcUaDataValue& dataValue);
+        bool set_ShutdownReason_Variable(const OpcUaDataValue& dataValue);
 
         //
         // UtcTime
@@ -145,8 +143,8 @@ namespace OpcUaStackServer
         ServerVariable::SPtr buildInfo_SoftwareVersion_Variable_;
         ServerVariable::SPtr buildInfo_Variable_;
         ServerVariable::SPtr currentTime_Variable_;
-        ServerVariable::SPtr secondsTillShutdown_BuildDate_Variable_;
-        ServerVariable::SPtr shutdownReason_BuildDate_Variable_;
+        ServerVariable::SPtr secondsTillShutdown_Variable_;
+        ServerVariable::SPtr shutdownReason_Variable_;
         ServerVariable::SPtr startTime_Variable_;
         ServerVariable::SPtr state_Variable_;
         ServerVariable::SPtr variable_;

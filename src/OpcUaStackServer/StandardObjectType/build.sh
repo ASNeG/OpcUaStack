@@ -1,3 +1,3 @@
 #!/bin/bash
 
-OpcUaObjectTypeGenerator4 --nodeset Opc.Ua.NodeSet.xml --variabletype BaseObjectType --buildSubTypes 1
+OpcUaVariableTypeGenerator4 --nodeset Opc.Ua.NodeSet.xml --variabletype BaseVariableType --buildSubTypes 1
