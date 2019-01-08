@@ -149,6 +149,7 @@ namespace OpcUaStackServer
 		//
 		ss << std::endl;
 		ss << "#include \"OpcUaStackServer/StandardVariableType/VariableBase.h\"" << std::endl;
+		ss << "#include \"OpcUaStackServer/StandardObjectType/ObjectBase.h\"" << std::endl;
 
 		//
 		// added namespace
@@ -193,6 +194,7 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << std::endl;
 		ss << prefix << ": public VariableBase" << std::endl;
+		ss << prefix << ", public ObjectBase" << std::endl;
 
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;
@@ -374,6 +376,7 @@ namespace OpcUaStackServer
 
 		ss << prefix << nodeInfo_.className() << "::" << nodeInfo_.className() << "(void)" << std::endl;
 		ss << prefix << ": VariableBase()" << std::endl;
+		ss << prefix << ", ObjectBase()" << std::endl;
 
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
