@@ -22,7 +22,7 @@
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OpcUaStackServer/VariableType/VariableBase.h"
+#include "OpcUaStackServer/StandardVariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {

@@ -14,9 +14,9 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackServer/VariableType/VariableBase.h"
+//#include "OpcUaStackCore/Base/ObjectPool.h"
+//#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/StandardVariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
