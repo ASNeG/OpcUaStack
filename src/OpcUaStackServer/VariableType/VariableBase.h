@@ -20,11 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
-#include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackServer/VariableType/ServerVariables.h"
-#include "OpcUaStackServer/Application/ApplicationIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -40,21 +36,9 @@ namespace OpcUaStackServer
 		VariableBase(void);
 		virtual ~VariableBase(void);
 
-		void applicationServiceIf(ApplicationServiceIf* applicationServiceIf);
 		ServerVariables& serverVariables(void);
-		void logVariables(void);
 		ServerVariable::SPtr getServerVariable(const std::string& name);
 		bool setServerVariable(ServerVariable::SPtr& serverVariable);
-		virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
-		bool createAndLinkInstanceWithModel(
-			const std::string& name,
-			const OpcUaNodeId& parentNodeId,
-			const OpcUaNodeId& nodeId,
-			const OpcUaLocalizedText& displayName,
-			const OpcUaQualifiedName& browseName,
-			const OpcUaNodeId& referenceNodeId
-		);
-		bool getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint16_t& namespaceIndex);
 
 		void variableTypeNamespaceName(const std::string& variableTypeNamespaceName);
 		std::string& variableTypeNamespaceName(void);
@@ -62,17 +46,10 @@ namespace OpcUaStackServer
 		OpcUaNodeId& variableTypeNodeId(void);
 
 	  private:
-		bool getNodeIdFromResponse(BrowsePathToNodeIdResponse::SPtr& res, uint32_t idx, OpcUaNodeId::SPtr& nodeId);
-		bool getRefFromResponse(GetNodeReferenceResponse::SPtr& res, uint32_t idx, BaseNodeClass::WPtr& ref);
-		void writeValue(ApplicationWriteContext* applicationWriteContext);
-
-		ApplicationServiceIf* applicationServiceIf_;
-
 		std::string variableTypeNamespaceName_;
 		OpcUaNodeId variableTypeNodeId_;
 
 		ServerVariables serverVariables_;
-		Callback writeCallback_;
 	};
 
 
