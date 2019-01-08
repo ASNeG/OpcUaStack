@@ -12,8 +12,6 @@
 #ifndef __OpcUaStackServer_PropertyType_h__
 #define __OpcUaStackServer_PropertyType_h__
 
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/StandardVariableType/VariableBase.h"
 
 namespace OpcUaStackServer

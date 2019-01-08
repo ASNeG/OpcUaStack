@@ -149,8 +149,6 @@ namespace OpcUaStackServer
 		// added includes
 		//
 		ss << std::endl;
-		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
-		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
 		ss << "#include \"OpcUaStackServer/StandardVariableType/VariableBase.h\"" << std::endl;
 
 		//

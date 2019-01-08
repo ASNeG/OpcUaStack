@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackServer_VariableBase_h__
 #define __OpcUaStackServer_VariableBase_h__
 
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/StandardVariableType/ServerVariables.h"
 
 using namespace OpcUaStackCore;

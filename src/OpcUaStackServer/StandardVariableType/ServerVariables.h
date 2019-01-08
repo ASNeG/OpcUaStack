@@ -18,12 +18,8 @@
 #ifndef __OpcUaStackServer_ServerVariables_h__
 #define __OpcUaStackServer_ServerVariables_h__
 
-#include <boost/shared_ptr.hpp>
 #include <map>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
-#include "OpcUaStackCore/Application/ApplicationWriteContext.h"
-#include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
 
 using namespace OpcUaStackCore;
 
