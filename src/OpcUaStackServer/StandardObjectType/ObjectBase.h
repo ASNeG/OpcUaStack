@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackServer_ObjectBase_h__
 #define __OpcUaStackServer_ObjectBase_h__
 
+#include "OpcUaStackServer/StandardVariableType/ServerVariables.h"
 #include "OpcUaStackServer/StandardObjectType/ServerMethods.h"
 
 using namespace OpcUaStackCore;
@@ -36,7 +37,11 @@ namespace OpcUaStackServer
 
 		ServerMethods& serverMethods(void);
 		ServerMethod::SPtr getServerMethod(const std::string& name);
-		bool setServerMethod(ServerMethod::SPtr& serverVariable);
+		bool setServerMethod(ServerMethod::SPtr& serverMethod);
+
+		ServerVariables& serverVariables(void);
+		ServerVariable::SPtr getServerVariable(const std::string& name);
+		bool setServerVariable(ServerVariable::SPtr& serverVariable);
 
 		void objectTypeNamespaceName(const std::string& objectTypeNamespaceName);
 		std::string& objectTypeNamespaceName(void);
@@ -48,6 +53,7 @@ namespace OpcUaStackServer
 		OpcUaNodeId objectTypeNodeId_;
 
 		ServerMethods serverMethods_;
+		ServerVariables serverVariables_;
 	};
 
 

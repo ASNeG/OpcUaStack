@@ -24,7 +24,9 @@ namespace OpcUaStackServer
 	ObjectBase::ObjectBase(void)
 	: Object()
 	, serverMethods_()
+	, serverVariables_()
 	, objectTypeNamespaceName_("")
+	, objectTypeNodeId_()
 	{
 	}
 
@@ -45,9 +47,27 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	ObjectBase::setServerMethod(ServerMethod::SPtr& serverVariable)
+	ObjectBase::setServerMethod(ServerMethod::SPtr& serverMethod)
 	{
-		return serverMethods_.registerServerMethod(serverVariable);
+		return serverMethods_.registerServerMethod(serverMethod);
+	}
+
+	ServerVariables&
+	ObjectBase::serverVariables(void)
+	{
+		return serverVariables_;
+	}
+
+	ServerVariable::SPtr
+	ObjectBase::getServerVariable(const std::string& name)
+	{
+		return serverVariables_.getServerVariable(name);
+	}
+
+	bool
+	ObjectBase::setServerVariable(ServerVariable::SPtr& serverVariable)
+	{
+		return serverVariables_.registerServerVariable(serverVariable);
 	}
 
 	void
