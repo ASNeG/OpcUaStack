@@ -117,6 +117,7 @@ namespace OpcUaStackServer
 		bool generateSourceClassConstructor(const std::string& prefix);
 		bool generateSourceClassDestructor(const std::string& prefix);
 		bool generateSourceClassSetterGetter(const std::string& prefix);
+		bool generateSourceClassMethod(const std::string& prefix);
 
 		InformationModel::SPtr informationModel_;
 		std::string sourceContent_;

@@ -225,6 +225,12 @@ namespace OpcUaStackServer
 			ss << prefix << "bool set_" << vt->name() << "(const OpcUaDataValue& dataValue);" << std::endl;
 		}
 
+		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
+			auto& vt  = methodTypeField.second;
+			ss << std::endl;
+			ss << prefix << "virtual void call_" << vt->name() << "(ApplicationMethodContext* applicationMethodContext);" << std::endl;
+		}
+
 		headerContent_ += ss.str();
 		return true;
 	}
@@ -299,6 +305,7 @@ namespace OpcUaStackServer
 			    generateSourceClassConstructor("    ") &&
 				generateSourceClassDestructor("    ") &&
 				generateSourceClassSetterGetter("    ") &&
+				generateSourceClassMethod("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -529,6 +536,26 @@ namespace OpcUaStackServer
 			ss << prefix << nodeInfo_.className() << "::" << "set_" << vt->name() << "(const OpcUaDataValue& dataValue)" << std::endl;
 			ss << prefix << "{" << std::endl;
 			ss << prefix << "    return " << vt->variableName() << "->setDataValue(dataValue);" << std::endl;
+			ss << prefix << "}" << std::endl;
+		}
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	ObjectTypeGenerator::generateSourceClassMethod(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
+			auto& vt = methodTypeField.second;
+
+			ss << std::endl;
+			ss << prefix << "void" << std::endl;
+			ss << prefix << nodeInfo_.className() << "::call_" << vt->name() << "(ApplicationMethodContext* applicationMethodContext)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    applicationMethodContext->statusCode_ = BadNotSupported;" << std::endl;
 			ss << prefix << "}" << std::endl;
 		}
 
