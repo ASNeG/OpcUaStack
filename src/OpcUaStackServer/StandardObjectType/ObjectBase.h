@@ -34,7 +34,7 @@ namespace OpcUaStackServer
 		ObjectBase(void);
 		virtual ~ObjectBase(void);
 
-		ServerMethods& serverVariables(void);
+		ServerMethods& serverMethods(void);
 		ServerMethod::SPtr getServerMethod(const std::string& name);
 		bool setServerMethod(ServerMethod::SPtr& serverVariable);
 

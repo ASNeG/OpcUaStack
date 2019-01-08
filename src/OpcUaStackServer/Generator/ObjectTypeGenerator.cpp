@@ -272,6 +272,13 @@ namespace OpcUaStackServer
 			ss << prefix << "ServerVariable::SPtr " << variableTypeField.second->variableName() << ";" << std::endl;
 		}
 
+		//
+		// added method definition
+		//
+		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
+			ss << prefix << "ServerMethod::SPtr " << methodTypeField.second->variableName() << ";" << std::endl;
+		}
+
 		headerContent_ += ss.str();
 		return true;
 	}
@@ -383,6 +390,11 @@ namespace OpcUaStackServer
 			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
 		}
 
+		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
+			auto& vt = methodTypeField.second;
+			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerMethod>(\"" << vt->name() << "\"))" << std::endl;
+		}
+
 		ss << prefix << "{" << std::endl;
 
 		ss << prefix << "    variableTypeNamespaceName(\"" << nodeInfo_.objectTypeNamespaceName() << "\");" << std::endl;
@@ -391,6 +403,11 @@ namespace OpcUaStackServer
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
 			ss << prefix << "    setServerVariable(" << vt->variableName() << ");" << std::endl;
+		}
+
+		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
+			auto& vt = methodTypeField.second;
+			ss << prefix << "    setServerMethod(" << vt->variableName() << ");" << std::endl;
 		}
 
 		ss << prefix << "}" << std::endl;
@@ -413,6 +430,11 @@ namespace OpcUaStackServer
 			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
 		}
 
+		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
+			auto& vt = methodTypeField.second;
+			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerMethod>(\"" << vt->name() << "\"))" << std::endl;
+		}
+
 		ss << prefix << "{" << std::endl;
 
 		ss << prefix << "    variableTypeNamespaceName(\"" << nodeInfo_.objectTypeNamespaceName() << "\");" << std::endl;
@@ -421,6 +443,11 @@ namespace OpcUaStackServer
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
 			ss << prefix << "    setServerVariable(" << vt->variableName() << ");" << std::endl;
+		}
+
+		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
+			auto& vt = methodTypeField.second;
+			ss << prefix << "    setServerMethod(" << vt->variableName() << ");" << std::endl;
 		}
 
 		ss << prefix << "}" << std::endl;

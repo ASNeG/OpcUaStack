@@ -33,7 +33,7 @@ namespace OpcUaStackServer
 	}
 
 	ServerMethods&
-	ObjectBase::serverVariables(void)
+	ObjectBase::serverMethods(void)
 	{
 		return serverMethods_;
 	}
