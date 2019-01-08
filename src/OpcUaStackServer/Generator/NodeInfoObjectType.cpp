@@ -35,6 +35,7 @@ namespace OpcUaStackServer
 	, directory_("")
 
 	, variableTypeFieldMap_()
+	, methodTypeFieldMap_()
 	{
 	}
 
@@ -146,6 +147,12 @@ namespace OpcUaStackServer
 		return variableTypeFieldMap_;
 	}
 
+	MethodTypeField::Map&
+	NodeInfoObjectType::methodTypeFieldMap(void)
+	{
+		return methodTypeFieldMap_;
+	}
+
 	bool
 	NodeInfoObjectType::readNodes(const OpcUaNodeId& objectTypeNodeId)
 	{
@@ -228,7 +235,12 @@ namespace OpcUaStackServer
 			}
 			case NodeClass::EnumMethod:
 			{
-				// FIXME: todo
+				if (!readMethodInfo(baseNode, browseNames)) {
+					Log(Error, "read method information error")
+						.parameter("NodeId", baseNode->getNodeId())
+						.parameter("BrowseName", browseNames);
+					return false;
+				}
 				break;
 			}
 			default:
@@ -366,6 +378,42 @@ namespace OpcUaStackServer
 
 		// insert variable type field into map
 		variableTypeFieldMap_.insert(std::make_pair(name, variableTypeField));
+
+		return true;
+	}
+
+	bool
+	NodeInfoObjectType::readMethodInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
+	{
+		MethodTypeField::SPtr methodTypeField = constructSPtr<MethodTypeField>();
+
+		Log(Debug, "read method information")
+			.parameter("NodeId", *baseNode->getNodeId())
+			.parameter("DisplayName", *baseNode->getDisplayName())
+			.parameter("BrowsePath", browsePath);
+
+		// create name
+		std::string name;
+		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
+			OpcUaQualifiedName::SPtr browseName;
+			browsePath.pathNames()->get(idx, browseName);
+			if (!name.empty()) name += "_";
+			name += browseName->name().toStdString();
+		}
+		if (!name.empty()) name += "_";
+		name += "Variable";
+		methodTypeField->name(name);
+
+		// create variable name
+		std::string variableName = boost::to_lower_copy(name.substr(0,1)) + name.substr(1) + "_";
+		methodTypeField->variableName(variableName);
+
+		// create function name
+		std::string functionName = boost::to_lower_copy(name.substr(0,1)) + name.substr(1);
+		methodTypeField->functionName(functionName);
+
+		// insert method type field into map
+		methodTypeFieldMap_.insert(std::make_pair(name, methodTypeField));
 
 		return true;
 	}

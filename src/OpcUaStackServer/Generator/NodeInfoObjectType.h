@@ -22,6 +22,7 @@
 
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/VariableTypeField.h"
+#include "OpcUaStackServer/Generator/MethodTypeField.h"
 #include "OpcUaStackServer/Generator/NumberNamespaceMap.h"
 
 using namespace OpcUaStackCore;
@@ -65,6 +66,7 @@ class DLLEXPORT NodeInfoObjectType
 	std::string directory(void);
 	std::string& description(void);
 	VariableTypeField::Map& variableTypeFieldMap(void);
+	MethodTypeField::Map& methodTypeFieldMap(void);
 
 	std::string getIdentifierAsString(OpcUaNodeId& nodeId);
 
@@ -74,6 +76,7 @@ class DLLEXPORT NodeInfoObjectType
 	bool readObjectTypeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 	bool readObjectInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 	bool readVariableInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
+	bool readMethodInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
 
 	NumberNamespaceMap numberNamespaceMap_;
 	OpcUaNodeId objectTypeNodeId_;
@@ -88,6 +91,7 @@ class DLLEXPORT NodeInfoObjectType
 	std::string description_;
 
 	VariableTypeField::Map variableTypeFieldMap_;
+	MethodTypeField::Map methodTypeFieldMap_;
 };
 
 }
