@@ -49,6 +49,12 @@ namespace OpcUaStackCore
 		return namespaceName_;
 	}
 
+	OpcUaLocalizedText&
+	CreateObjectRequest::displayName(void)
+	{
+		return displayName_;
+	}
+
 	void
 	CreateObjectRequest::displayName(const OpcUaLocalizedText& displayName)
 	{
