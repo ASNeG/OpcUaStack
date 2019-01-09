@@ -35,6 +35,7 @@ namespace OpcUaStackServer
 	, objectBase_()
 
 	, objectNodeClassMap_()
+	, methodNodeClassMap_()
 	{
 	}
 
@@ -177,19 +178,98 @@ namespace OpcUaStackServer
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
 
-		// read node information
-		ObjectNodeClass::SPtr objectNodeClass = createObjectInstance(baseNodeTemplate, browseNames);
-		if (objectNodeClass.get() == nullptr) {
-			Log(Error, "create object node error")
-				.parameter("NodeId", *baseNodeTemplate->getNodeId())
-				.parameter("BrowseName", browseNames);
-			return objectNodeClass;
+		// create node class
+		BaseNodeClass::SPtr nodeClass;
+		switch (*baseNodeTemplate->getNodeClass())
+		{
+			case NodeClass::EnumObject:
+			case NodeClass::EnumObjectType:
+			{
+				nodeClass = createObjectInstance(baseNodeTemplate, browseNames);
+				if (nodeClass.get() == nullptr) {
+					Log(Error, "create object node error")
+						.parameter("NodeId", *baseNodeTemplate->getNodeId())
+						.parameter("BrowseName", browseNames);
+					return nodeClass;
+				}
+				break;
+			}
+			case NodeClass::EnumVariable:
+			{
+				nodeClass = createVariableInstance(baseNodeTemplate, browseNames);
+				if (nodeClass.get() == nullptr) {
+					Log(Error, "create variable node error")
+						.parameter("NodeId", *baseNodeTemplate->getNodeId())
+						.parameter("BrowseName", browseNames);
+					return nodeClass;
+				}
+				break;
+			}
+			case NodeClass::EnumMethod:
+			{
+				nodeClass = createMethodInstance(baseNodeTemplate, browseNames);
+				if (nodeClass.get() == nullptr) {
+					Log(Error, "create method node error")
+						.parameter("NodeId", *baseNodeTemplate->getNodeId())
+						.parameter("BrowseName", browseNames);
+					return nodeClass;
+				}
+				break;
+			}
+			default:
+			{
+				Log(Error, "create node error - template node class error")
+					.parameter("NodeClass", *baseNodeTemplate->getNodeClass())
+					.parameter("NodeId", *baseNodeTemplate->getNodeId());
+				return nodeClass;
+			}
 		}
 
-		// FIXME: todo
+		// find childs
+		BaseNodeClass::Vec childBaseNodeClassVec;
+		std::vector<OpcUaNodeId> referenceTypeNodeIdVec;
+		if (!ima.getChildHierarchically(baseNodeTemplate, childBaseNodeClassVec, referenceTypeNodeIdVec)) {
+			Log(Error, "get hierachically child error")
+				.parameter("NodeId", *baseNodeTemplate->getNodeId())
+				.parameter("DispalyName", *baseNodeTemplate->getDisplayName());
+			BaseNodeClass::SPtr baseNodeClass;
+			return baseNodeClass;
+		}
+
+		size_t size = browseNames.pathNames()->size();
+		for (uint32_t idx = 0; idx < childBaseNodeClassVec.size(); idx++) {
+			// ignore HasSubType references
+			if (referenceTypeNodeIdVec[idx] == OpcUaNodeId(45)) continue;
+
+			BaseNodeClass::SPtr baseNodeClassChildTemplate = childBaseNodeClassVec[idx];
+			OpcUaQualifiedName browseName = *childBaseNodeClassVec[idx]->getBrowseName();
+
+			// only nodes with modelling rules are allowed
+			OpcUaNodeId modellingRule;
+			if (!baseNodeClassChildTemplate->referenceItemMap().getHasModellingRule(modellingRule)) {
+				continue;
+			}
+
+			// handle childs of node
+			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
+			BaseNodeClass::SPtr nodeClassChild = readChilds(baseNodeClassChildTemplate, browseNames);
+			if (nodeClassChild.get() == nullptr) {
+				Log(Error, "read childs error")
+					.parameter("NodeId", *baseNodeTemplate->getNodeId())
+					.parameter("BrowseName", browseName);
+				BaseNodeClass::SPtr baseNodeClass;
+				return baseNodeClass;
+			}
+
+			// create reference between parent and child
+			if (!nodeClass->referenceItemMap().exist(referenceTypeNodeIdVec[idx], true, *nodeClassChild->getNodeId())) {
+				nodeClass->referenceItemMap().add(referenceTypeNodeIdVec[idx], true, *nodeClassChild->getNodeId());
+				nodeClassChild->referenceItemMap().add(referenceTypeNodeIdVec[idx], false, *nodeClass->getNodeId());
+			}
+		}
 
 
-		return objectNodeClass;
+		return nodeClass;
 	}
 
 	ObjectNodeClass::SPtr
@@ -287,6 +367,140 @@ namespace OpcUaStackServer
 		// added new variable node to information model
 		informationModel_->insert(objectNode);
 		return objectNode;
+	}
+
+	VariableNodeClass::SPtr
+	ObjectInstanceBuilder::createVariableInstance(
+		const BaseNodeClass::SPtr& baseNodeTemplate,
+		BrowseName& browsePath
+	)
+	{
+		VariableNodeClass::SPtr variableNode;
+
+		// create variable variable name
+		bool serverVariableExist = true;
+		std::string variableName;
+		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
+			OpcUaQualifiedName::SPtr browseName;
+			browsePath.pathNames()->get(idx, browseName);
+			if (!variableName.empty()) variableName += "_";
+			variableName += browseName->name().toStdString();
+
+			if (browseName->name().toStdString() == "InputArguments") serverVariableExist = false;
+			if (browseName->name().toStdString() == "OutputArguments") serverVariableExist = false;
+		}
+		if (!variableName.empty()) variableName += "_";
+		variableName += "Variable";
+
+		ServerVariable::SPtr serverVariable;
+		if (serverVariableExist) {
+
+			// find server variable
+			serverVariable = objectBase_->getServerVariable(variableName);
+			if (serverVariable.get() == nullptr) {
+				Log(Error, "server variable do not exist in variable")
+					.parameter("VariableName", variableName);
+				return variableNode;
+			}
+
+			// check if variable node already exist
+			BaseNodeClass::SPtr node = serverVariable->baseNode().lock();
+			if (node.get() != nullptr) return boost::static_pointer_cast<VariableNodeClass>(node);
+		}
+
+		// create variable instance
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
+		switch (*baseNodeTemplate->getNodeClass())
+		{
+			case NodeClass::EnumVariable:
+			{
+				OpcUaNodeId typeDefintionNode;
+				baseNodeTemplate->referenceItemMap().getHasTypeDefinition(typeDefintionNode);
+
+				BaseNodeClass::SPtr variableTypeNode = informationModel_->find(typeDefintionNode);
+				if (variableTypeNode.get() == nullptr) {
+					Log(Error, "variable type definition node not found in information model")
+						.parameter("VariableTypeNode", typeDefintionNode)
+						.parameter("VariableNode", *baseNodeTemplate->getNodeId());
+					VariableNodeClass::SPtr variableNode;
+					return variableNode;
+				}
+
+				VariableNodeClass::SPtr variableNode0 = boost::static_pointer_cast<VariableNodeClass>(baseNodeTemplate);
+				variableNode = constructSPtr<VariableNodeClass>(nodeId, *variableNode0.get());
+
+				variableNode->referenceItemMap().add(
+					ReferenceType_HasTypeDefinition,
+					true,
+					*variableTypeNode->getNodeId()
+				);
+
+				variableTypeNode->referenceItemMap().add(
+					ReferenceType_HasTypeDefinition,
+					false,
+					*variableNode->getNodeId()
+				);
+
+				break;
+			}
+			default:
+			{
+				Log(Error, "create variable node error - template node class error")
+					.parameter("NodeClass", *baseNodeTemplate->getNodeClass())
+					.parameter("NodeId", *baseNodeTemplate->getNodeId())
+					.parameter("VariableName", variableName);
+				return variableNode;
+			}
+		}
+
+		// connect server instance with server variable
+		if (serverVariableExist) {
+			serverVariable->baseNode(variableNode);
+		}
+
+		// added new variable node to information model
+		informationModel_->insert(variableNode);
+		return variableNode;
+	}
+
+	MethodNodeClass::SPtr
+	ObjectInstanceBuilder::createMethodInstance(
+		const BaseNodeClass::SPtr& baseNodeTemplate,
+		BrowseName& browsePath
+	)
+	{
+		MethodNodeClass::SPtr methodNode;
+
+		// create method name
+		std::string methodName;
+		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
+			OpcUaQualifiedName::SPtr browseName;
+			browsePath.pathNames()->get(idx, browseName);
+			if (!methodName.empty()) methodName += "_";
+			methodName += browseName->name().toStdString();
+		}
+		if (!methodName.empty()) methodName += "_";
+		methodName += "Method";
+
+		// check if variable node already exist
+		auto it = methodNodeClassMap_.find(methodName);
+		if (it != methodNodeClassMap_.end()) return it->second;
+
+		// create object instance
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
+
+		MethodNodeClass::SPtr methodNode0 = boost::static_pointer_cast<MethodNodeClass>(baseNodeTemplate);
+		methodNode = constructSPtr<MethodNodeClass>(nodeId, *methodNode0.get());
+
+		methodNodeClassMap_.insert(std::make_pair(methodName, methodNode));
+
+		// added new method node to information model
+		informationModel_->insert(methodNode);
+		return methodNode;
 	}
 
 }

@@ -22,6 +22,7 @@
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/StandardObjectType/ObjectBase.h"
 
@@ -58,12 +59,21 @@ namespace OpcUaStackServer
 			const BaseNodeClass::SPtr& baseNodeTemplate,
 			BrowseName& browseName
 		);
+		VariableNodeClass::SPtr createVariableInstance(
+			const BaseNodeClass::SPtr& baseNodeTemplate,
+			BrowseName& browseName
+		);
+		MethodNodeClass::SPtr createMethodInstance(
+			const BaseNodeClass::SPtr& baseNodeTemplate,
+			BrowseName& browseName
+		);
 
 		InformationModel::SPtr informationModel_;
 		uint16_t namespaceIndex_;
 		ObjectBase::SPtr objectBase_;
 
 		std::map<std::string, ObjectNodeClass::SPtr> objectNodeClassMap_;
+		std::map<std::string, MethodNodeClass::SPtr> methodNodeClassMap_;
 	};
 
 }
