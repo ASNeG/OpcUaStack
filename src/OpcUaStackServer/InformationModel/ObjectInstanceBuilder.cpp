@@ -160,11 +160,72 @@ namespace OpcUaStackServer
 	ObjectNodeClass::SPtr
 	ObjectInstanceBuilder::readChilds(
 		const BaseNodeClass::SPtr& baseNodeTemplate,
-		BrowseName& browseName
+		BrowseName& browseNames
 	)
 	{
-		ObjectNodeClass::SPtr x;
-		return x;
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+
+		// read node information
+		ObjectNodeClass::SPtr objectNodeClass = createObjectInstance(baseNodeTemplate, browseNames);
+		if (objectNodeClass.get() == nullptr) {
+			Log(Error, "create object node error")
+				.parameter("NodeId", *baseNodeTemplate->getNodeId())
+				.parameter("BrowseName", browseNames);
+			return objectNodeClass;
+		}
+
+		// FIXME: todo
+
+
+		return objectNodeClass;
+	}
+
+	ObjectNodeClass::SPtr
+	ObjectInstanceBuilder::createObjectInstance(
+		const BaseNodeClass::SPtr& baseNodeTemplate,
+		BrowseName& browsePath
+	)
+	{
+		ObjectNodeClass::SPtr objectNode;
+
+		// create object name
+		std::string objectName;
+		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
+			OpcUaQualifiedName::SPtr browseName;
+			browsePath.pathNames()->get(idx, browseName);
+			if (!objectName.empty()) objectName += "_";
+			objectName += browseName->name().toStdString();
+		}
+		if (!objectName.empty()) objectName += "_";
+		objectName += "Object";
+
+		// create object instance
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
+
+		switch (*baseNodeTemplate->getNodeClass())
+		{
+			case NodeClass::EnumObject:
+			{
+				break;
+			}
+			case NodeClass::EnumObjectType:
+			{
+				break;
+			}
+			default:
+			{
+				Log(Error, "create object node error - template node class error")
+					.parameter("NodeClass", *baseNodeTemplate->getNodeClass())
+					.parameter("NodeId", *baseNodeTemplate->getNodeId())
+					.parameter("ObjectName", objectName);
+				return objectNode;
+			}
+		}
+
+		return objectNode;
 	}
 
 }

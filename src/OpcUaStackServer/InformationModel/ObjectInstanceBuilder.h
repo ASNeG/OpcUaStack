@@ -54,6 +54,10 @@ namespace OpcUaStackServer
 			const BaseNodeClass::SPtr& baseNodeTemplate,
 			BrowseName& browseName
 		);
+		ObjectNodeClass::SPtr createObjectInstance(
+			const BaseNodeClass::SPtr& baseNodeTemplate,
+			BrowseName& browseName
+		);
 
 		InformationModel::SPtr informationModel_;
 		uint16_t namespaceIndex_;
