@@ -50,7 +50,7 @@ namespace OpcUaStackServer
 		ObjectNodeClass::SPtr readObjects(
 			const OpcUaNodeId& objectTypeNodeId
 		);
-		ObjectNodeClass::SPtr readChilds(
+		BaseNodeClass::SPtr readChilds(
 			const BaseNodeClass::SPtr& baseNodeTemplate,
 			BrowseName& browseName
 		);
@@ -62,6 +62,8 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel_;
 		uint16_t namespaceIndex_;
 		ObjectBase::SPtr objectBase_;
+
+		std::map<std::string, ObjectNodeClass::SPtr> objectNodeClassMap_;
 	};
 
 }

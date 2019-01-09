@@ -33,6 +33,8 @@ namespace OpcUaStackServer
 	: informationModel_()
 	, namespaceIndex_(0)
 	, objectBase_()
+
+	, objectNodeClassMap_()
 	{
 	}
 
@@ -50,6 +52,7 @@ namespace OpcUaStackServer
 		ObjectBase::SPtr& objectBase
 	)
 	{
+		std::cout << "createObjectInstance" << std::endl;
 		informationModel_ = informationModel;
 		objectBase_ = objectBase;
 
@@ -87,6 +90,9 @@ namespace OpcUaStackServer
 		objectNodeClass->setDisplayName(displayName);
 
 		// added reference
+		std::cout << "Parent=" << *parentBaseNode->getNodeId() << std::endl;
+		std::cout << "New=" << *objectNodeClass->getNodeId() << std::endl;
+		std::cout << "DisplayName=" << *objectNodeClass->getDisplayName() << std::endl;
 		parentBaseNode->referenceItemMap().add(referenceTypeNodeId, true, *objectNodeClass->getNodeId());
 		objectNodeClass->referenceItemMap().add(referenceTypeNodeId, false, parentNodeId);
 
@@ -108,6 +114,7 @@ namespace OpcUaStackServer
 		nsa.informationModel(informationModel_);
 		nsa.addNamespaceName(namespaceName);
 
+		namespaceIndex_ = nodeSetNamespace.mapToGlobalNamespaceIndex(namespaceName);
 		return true;
 	}
 
@@ -116,6 +123,8 @@ namespace OpcUaStackServer
 		const OpcUaNodeId& objectTypeNodeId
 	)
 	{
+		std::cout << "readObjects" << std::endl;
+
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
 
@@ -132,7 +141,7 @@ namespace OpcUaStackServer
 
 		BrowseName browseName(objectTypeNodeId);
 		browseName.pathNames()->resize(10);
-		ObjectNodeClass::SPtr objectNodeClass = readChilds(baseNodeTemplate, browseName);
+		BaseNodeClass::SPtr objectNodeClass = readChilds(baseNodeTemplate, browseName);
 		if (objectNodeClass.get() == nullptr) {
 			Log(Error, "read childs error")
 				.parameter("ObjectTypeNodeId", objectTypeNodeId);
@@ -141,7 +150,7 @@ namespace OpcUaStackServer
 		}
 
 		if (objectTypeNodeId == OpcUaNodeId(58)) {
-			return objectNodeClass;
+			return boost::static_pointer_cast<ObjectNodeClass>(objectNodeClass);
 		}
 
 		// find parent node identifier
@@ -157,12 +166,14 @@ namespace OpcUaStackServer
 		return readObjects(parentObjectTypeNodeId);
 	}
 
-	ObjectNodeClass::SPtr
+	BaseNodeClass::SPtr
 	ObjectInstanceBuilder::readChilds(
 		const BaseNodeClass::SPtr& baseNodeTemplate,
 		BrowseName& browseNames
 	)
 	{
+		std::cout << "readChilds" << std::endl;
+
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
 
@@ -200,6 +211,10 @@ namespace OpcUaStackServer
 		if (!objectName.empty()) objectName += "_";
 		objectName += "Object";
 
+		// check if variable node already exist
+		auto it = objectNodeClassMap_.find(objectName);
+		if (it != objectNodeClassMap_.end()) return it->second;
+
 		// create object instance
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
@@ -209,10 +224,52 @@ namespace OpcUaStackServer
 		{
 			case NodeClass::EnumObject:
 			{
+				OpcUaNodeId typeDefintionNode;
+				baseNodeTemplate->referenceItemMap().getHasTypeDefinition(typeDefintionNode);
+
+				BaseNodeClass::SPtr objectTypeNode = informationModel_->find(typeDefintionNode);
+				if (objectTypeNode.get() == nullptr) {
+					Log(Error, "object type definition node not found in information model")
+						.parameter("ObjectTypeNode", typeDefintionNode)
+						.parameter("ObjectNode", *baseNodeTemplate->getNodeId());
+					ObjectNodeClass::SPtr objectNode;
+					return objectNode;
+				}
+
+				ObjectNodeClass::SPtr objectNode0 = boost::static_pointer_cast<ObjectNodeClass>(baseNodeTemplate);
+				objectNode = constructSPtr<ObjectNodeClass>(nodeId, *objectNode0.get());
+
+				objectNode->referenceItemMap().add(
+					ReferenceType_HasTypeDefinition,
+					true,
+					*objectTypeNode->getNodeId()
+				);
+
+				objectTypeNode->referenceItemMap().add(
+					ReferenceType_HasTypeDefinition,
+					false,
+					*objectNode->getNodeId()
+				);
+
 				break;
 			}
 			case NodeClass::EnumObjectType:
 			{
+				ObjectTypeNodeClass::SPtr objectTypeNode = boost::static_pointer_cast<ObjectTypeNodeClass>(baseNodeTemplate);
+				objectNode = constructSPtr<ObjectNodeClass>(nodeId, *objectTypeNode.get());
+
+				objectNode->referenceItemMap().add(
+					ReferenceType_HasTypeDefinition,
+					true,
+					*objectTypeNode->getNodeId()
+				);
+
+				objectTypeNode->referenceItemMap().add(
+					ReferenceType_HasTypeDefinition,
+					false,
+					*objectNode->getNodeId()
+				);
+
 				break;
 			}
 			default:
@@ -225,6 +282,10 @@ namespace OpcUaStackServer
 			}
 		}
 
+		objectNodeClassMap_.insert(std::make_pair(objectName, objectNode));
+
+		// added new variable node to information model
+		informationModel_->insert(objectNode);
 		return objectNode;
 	}
 
