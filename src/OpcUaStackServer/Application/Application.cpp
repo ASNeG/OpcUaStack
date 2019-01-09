@@ -182,6 +182,8 @@ namespace OpcUaStackServer
 			case OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary:
 			case OpcUaId_CreateNodeInstanceRequest_Encoding_DefaultBinary:
 			case OpcUaId_DelNodeInstanceRequest_Encoding_DefaultBinary:
+			case OpcUaId_CreateVariableRequest_Encoding_DefaultBinary:
+			case OpcUaId_CreateObjectRequest_Encoding_DefaultBinary:
 			{
 				serviceTransaction->componentSession(this);
 				break;
@@ -189,7 +191,7 @@ namespace OpcUaStackServer
 			default:
 			{
 				// nothing to do
-				Log(Warning, "receive invalid messsage type")
+				Log(Warning, "application interface receive invalid messsage type")
 				    .parameter("MessageType", serviceTransaction->nodeTypeRequest().nodeId<uint32_t>());
 			}
 		}
