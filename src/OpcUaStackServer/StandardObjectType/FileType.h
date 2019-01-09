@@ -30,6 +30,14 @@ namespace OpcUaStackServer
        virtual ~FileType(void);
 
         //
+        // String
+        //
+        void mimeType_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& mimeType_Variable(void);
+        bool get_MimeType_Variable(OpcUaDataValue& dataValue);
+        bool set_MimeType_Variable(const OpcUaDataValue& dataValue);
+
+        //
         // UInt16
         //
         void openCount_Variable(ServerVariable::SPtr& serverVariable);
@@ -48,18 +56,18 @@ namespace OpcUaStackServer
         //
         // Boolean
         //
-        void userWriteable_Variable(ServerVariable::SPtr& serverVariable);
-        ServerVariable::SPtr& userWriteable_Variable(void);
-        bool get_UserWriteable_Variable(OpcUaDataValue& dataValue);
-        bool set_UserWriteable_Variable(const OpcUaDataValue& dataValue);
+        void userWritable_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& userWritable_Variable(void);
+        bool get_UserWritable_Variable(OpcUaDataValue& dataValue);
+        bool set_UserWritable_Variable(const OpcUaDataValue& dataValue);
 
         //
         // Boolean
         //
-        void writeable_Variable(ServerVariable::SPtr& serverVariable);
-        ServerVariable::SPtr& writeable_Variable(void);
-        bool get_Writeable_Variable(OpcUaDataValue& dataValue);
-        bool set_Writeable_Variable(const OpcUaDataValue& dataValue);
+        void writable_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& writable_Variable(void);
+        bool get_Writable_Variable(OpcUaDataValue& dataValue);
+        bool set_Writable_Variable(const OpcUaDataValue& dataValue);
 
         virtual void call_Close_Method(ApplicationMethodContext* applicationMethodContext);
 
@@ -74,10 +82,11 @@ namespace OpcUaStackServer
         virtual void call_Write_Method(ApplicationMethodContext* applicationMethodContext);
     
       private:
+        ServerVariable::SPtr mimeType_Variable_;
         ServerVariable::SPtr openCount_Variable_;
         ServerVariable::SPtr size_Variable_;
-        ServerVariable::SPtr userWriteable_Variable_;
-        ServerVariable::SPtr writeable_Variable_;
+        ServerVariable::SPtr userWritable_Variable_;
+        ServerVariable::SPtr writable_Variable_;
         ServerMethod::SPtr close_Method_;
         ServerMethod::SPtr getPosition_Method_;
         ServerMethod::SPtr open_Method_;

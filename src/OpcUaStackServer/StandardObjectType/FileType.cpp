@@ -19,10 +19,11 @@ namespace OpcUaStackServer
      */
     FileType::FileType(void)
     : ObjectBase()
+    , mimeType_Variable_(constructSPtr<ServerVariable>("MimeType_Variable"))
     , openCount_Variable_(constructSPtr<ServerVariable>("OpenCount_Variable"))
     , size_Variable_(constructSPtr<ServerVariable>("Size_Variable"))
-    , userWriteable_Variable_(constructSPtr<ServerVariable>("UserWriteable_Variable"))
-    , writeable_Variable_(constructSPtr<ServerVariable>("Writeable_Variable"))
+    , userWritable_Variable_(constructSPtr<ServerVariable>("UserWritable_Variable"))
+    , writable_Variable_(constructSPtr<ServerVariable>("Writable_Variable"))
     , close_Method_(constructSPtr<ServerMethod>("Close_Method"))
     , getPosition_Method_(constructSPtr<ServerMethod>("GetPosition_Method"))
     , open_Method_(constructSPtr<ServerMethod>("Open_Method"))
@@ -32,10 +33,11 @@ namespace OpcUaStackServer
     {
         objectTypeNamespaceName("http://opcfoundation.org/UA/");
         objectTypeNodeId((OpcUaUInt32)11575);
+        setServerVariable(mimeType_Variable_);
         setServerVariable(openCount_Variable_);
         setServerVariable(size_Variable_);
-        setServerVariable(userWriteable_Variable_);
-        setServerVariable(writeable_Variable_);
+        setServerVariable(userWritable_Variable_);
+        setServerVariable(writable_Variable_);
         setServerMethod(close_Method_);
         setServerMethod(getPosition_Method_);
         setServerMethod(open_Method_);
@@ -55,10 +57,11 @@ namespace OpcUaStackServer
      */
     FileType::FileType(const FileType& value)
     : ObjectBase()
+    , mimeType_Variable_(constructSPtr<ServerVariable>("MimeType_Variable"))
     , openCount_Variable_(constructSPtr<ServerVariable>("OpenCount_Variable"))
     , size_Variable_(constructSPtr<ServerVariable>("Size_Variable"))
-    , userWriteable_Variable_(constructSPtr<ServerVariable>("UserWriteable_Variable"))
-    , writeable_Variable_(constructSPtr<ServerVariable>("Writeable_Variable"))
+    , userWritable_Variable_(constructSPtr<ServerVariable>("UserWritable_Variable"))
+    , writable_Variable_(constructSPtr<ServerVariable>("Writable_Variable"))
     , close_Method_(constructSPtr<ServerMethod>("Close_Method"))
     , getPosition_Method_(constructSPtr<ServerMethod>("GetPosition_Method"))
     , open_Method_(constructSPtr<ServerMethod>("Open_Method"))
@@ -68,10 +71,11 @@ namespace OpcUaStackServer
     {
         objectTypeNamespaceName("http://opcfoundation.org/UA/");
         objectTypeNodeId((OpcUaUInt32)11575);
+        setServerVariable(mimeType_Variable_);
         setServerVariable(openCount_Variable_);
         setServerVariable(size_Variable_);
-        setServerVariable(userWriteable_Variable_);
-        setServerVariable(writeable_Variable_);
+        setServerVariable(userWritable_Variable_);
+        setServerVariable(writable_Variable_);
         setServerMethod(close_Method_);
         setServerMethod(getPosition_Method_);
         setServerMethod(open_Method_);
@@ -82,6 +86,12 @@ namespace OpcUaStackServer
     
     FileType::~FileType(void)
     {
+    }
+
+    ServerVariable::SPtr&
+    FileType::mimeType_Variable(void)
+    {
+        return mimeType_Variable_;
     }
 
     ServerVariable::SPtr&
@@ -97,15 +107,21 @@ namespace OpcUaStackServer
     }
 
     ServerVariable::SPtr&
-    FileType::userWriteable_Variable(void)
+    FileType::userWritable_Variable(void)
     {
-        return userWriteable_Variable_;
+        return userWritable_Variable_;
     }
 
     ServerVariable::SPtr&
-    FileType::writeable_Variable(void)
+    FileType::writable_Variable(void)
     {
-        return writeable_Variable_;
+        return writable_Variable_;
+    }
+
+    void
+    FileType::mimeType_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        mimeType_Variable_ = serverVariable;
     }
 
     void
@@ -121,15 +137,21 @@ namespace OpcUaStackServer
     }
 
     void
-    FileType::userWriteable_Variable(ServerVariable::SPtr& serverVariable)
+    FileType::userWritable_Variable(ServerVariable::SPtr& serverVariable)
     {
-        userWriteable_Variable_ = serverVariable;
+        userWritable_Variable_ = serverVariable;
     }
 
     void
-    FileType::writeable_Variable(ServerVariable::SPtr& serverVariable)
+    FileType::writable_Variable(ServerVariable::SPtr& serverVariable)
     {
-        writeable_Variable_ = serverVariable;
+        writable_Variable_ = serverVariable;
+    }
+
+    bool
+    FileType::get_MimeType_Variable(OpcUaDataValue& dataValue)
+    {
+        return mimeType_Variable_->getDataValue(dataValue);
     }
 
     bool
@@ -145,15 +167,21 @@ namespace OpcUaStackServer
     }
 
     bool
-    FileType::get_UserWriteable_Variable(OpcUaDataValue& dataValue)
+    FileType::get_UserWritable_Variable(OpcUaDataValue& dataValue)
     {
-        return userWriteable_Variable_->getDataValue(dataValue);
+        return userWritable_Variable_->getDataValue(dataValue);
     }
 
     bool
-    FileType::get_Writeable_Variable(OpcUaDataValue& dataValue)
+    FileType::get_Writable_Variable(OpcUaDataValue& dataValue)
     {
-        return writeable_Variable_->getDataValue(dataValue);
+        return writable_Variable_->getDataValue(dataValue);
+    }
+
+    bool
+    FileType::set_MimeType_Variable(const OpcUaDataValue& dataValue)
+    {
+        return mimeType_Variable_->setDataValue(dataValue);
     }
 
     bool
@@ -169,15 +197,15 @@ namespace OpcUaStackServer
     }
 
     bool
-    FileType::set_UserWriteable_Variable(const OpcUaDataValue& dataValue)
+    FileType::set_UserWritable_Variable(const OpcUaDataValue& dataValue)
     {
-        return userWriteable_Variable_->setDataValue(dataValue);
+        return userWritable_Variable_->setDataValue(dataValue);
     }
 
     bool
-    FileType::set_Writeable_Variable(const OpcUaDataValue& dataValue)
+    FileType::set_Writable_Variable(const OpcUaDataValue& dataValue)
     {
-        return writeable_Variable_->setDataValue(dataValue);
+        return writable_Variable_->setDataValue(dataValue);
     }
 
     void
