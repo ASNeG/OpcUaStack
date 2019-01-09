@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/StandardObjectType/ObjectBase.h"
 
@@ -46,6 +47,9 @@ namespace OpcUaStackServer
 
 	  private:
 		bool getNamespaceIndex(const std::string& namespaceName);
+		ObjectNodeClass::SPtr readObjects(
+			const OpcUaNodeId& objectTypeNodeId
+		);
 
 		InformationModel::SPtr informationModel_;
 		uint16_t namespaceIndex_;

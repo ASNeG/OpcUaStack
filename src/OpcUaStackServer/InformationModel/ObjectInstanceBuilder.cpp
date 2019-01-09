@@ -53,6 +53,43 @@ namespace OpcUaStackServer
 		informationModel_ = informationModel;
 		objectBase_ = objectBase;
 
+		// get namespace index
+		if (!getNamespaceIndex(namespaceName)) {
+			Log(Error, "get namesapce index error")
+				.parameter("NamespaceName", namespaceName);
+			return BadInternalError;
+		}
+
+		// find object type namespace index from namespace name
+		NodeSetNamespace nodeSetNamespace;
+		uint16_t namespaceIndex = nodeSetNamespace.mapToGlobalNamespaceIndex(objectBase->objectTypeNamespaceName());
+		if (namespaceIndex == 0xFFFF) {
+			Log(Error, "object type namespace name do not exist")
+				.parameter("NamespaceName", objectBase->objectTypeNamespaceName());
+			return BadInternalError;
+		}
+		objectBase->objectTypeNodeId().namespaceIndex(namespaceIndex);
+
+		// get parent node class
+		BaseNodeClass::SPtr parentBaseNode = informationModel_->find(parentNodeId);
+		if (parentBaseNode.get() == nullptr) {
+			Log(Error, "parent node id do not exist")
+				.parameter("ParentNodeId", parentNodeId);
+			return BadInternalError;
+		}
+
+		ObjectNodeClass::SPtr objectNodeClass = readObjects(objectBase->objectTypeNodeId());
+		if (objectNodeClass.get() == nullptr) {
+			Log(Error, "create object type error")
+				.parameter("ObjectTypeNodeId", objectBase->objectTypeNodeId());
+			return BadInternalError;
+		}
+		objectNodeClass->setDisplayName(displayName);
+
+		// added reference
+		parentBaseNode->referenceItemMap().add(referenceTypeNodeId, true, *objectNodeClass->getNodeId());
+		objectNodeClass->referenceItemMap().add(referenceTypeNodeId, false, parentNodeId);
+
 		return Success;
 	}
 
@@ -72,6 +109,15 @@ namespace OpcUaStackServer
 		nsa.addNamespaceName(namespaceName);
 
 		return true;
+	}
+
+	ObjectNodeClass::SPtr
+	ObjectInstanceBuilder::readObjects(
+		const OpcUaNodeId& objectTypeNodeId
+	)
+	{
+		ObjectNodeClass::SPtr x;
+		return x;
 	}
 
 }
