@@ -6,7 +6,6 @@ It provides SDK to write your applications in C++ and an infrastructure to run a
 
 Getting started
 --------------------------------------------
-.. _overview: getting_started/overview
 
 * **From scratch**: :doc:`Overview <getting_started/overview>` | :doc:`Installation <getting_started/installation>` 
 * **Tutorials**: :doc:`Hello, World of OPC UA! <getting_started/hello_world>` 
@@ -31,9 +30,16 @@ OPC UA Client
 
 
 
-Contributor Guide
+Contribution
 --------------------------------------------
 
-*Coming soon*
+Our goal is to let people use OPC UA technology easily and for free. As an open source project we can't reach the goal without a strong community.
+So we will appreciate any help to the project. Even if you have no time or competence to help us, but you have some questions, feel free to make issue
+on GitHub_ with label *question* and ask us. So you make your contribution too.
+
+.. _GitHub: https://github.com/ASNeG/OpcUaStack
+
+
+
 
 

@@ -20,8 +20,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'ASNeG OpcUaStack'
-copyright = '2018, Kai Huebl, Aleksey Timin'
-author = 'Kai Huebl, Aleksey Timin'
+copyright = '2018-2019, Kai Hübl, Aleksey Timin'
+author = 'Kai Hübl, Aleksey Timin'
 
 # The short X.Y version
 version = ''
@@ -135,7 +135,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'ASNeGOpcUaStack.tex', 'ASNeG OpcUaStack Documentation',
-     'Kai Huebl, Aleksey Timin', 'manual'),
+     'Kai Hübl, Aleksey Timin', 'manual'),
 ]
 
 
