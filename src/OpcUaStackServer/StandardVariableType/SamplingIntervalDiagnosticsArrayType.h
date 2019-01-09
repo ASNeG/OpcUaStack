@@ -29,6 +29,46 @@ namespace OpcUaStackServer
        virtual ~SamplingIntervalDiagnosticsArrayType(void);
 
         //
+        // UInt32
+        //
+        void samplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& samplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable(void);
+        bool get_SamplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable(OpcUaDataValue& dataValue);
+        bool set_SamplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UInt32
+        //
+        void samplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& samplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable(void);
+        bool get_SamplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable(OpcUaDataValue& dataValue);
+        bool set_SamplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // UInt32
+        //
+        void samplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& samplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable(void);
+        bool get_SamplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable(OpcUaDataValue& dataValue);
+        bool set_SamplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Duration
+        //
+        void samplingIntervalDiagnostics_SamplingInterval_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& samplingIntervalDiagnostics_SamplingInterval_Variable(void);
+        bool get_SamplingIntervalDiagnostics_SamplingInterval_Variable(OpcUaDataValue& dataValue);
+        bool set_SamplingIntervalDiagnostics_SamplingInterval_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // SamplingIntervalDiagnosticsDataType
+        //
+        void samplingIntervalDiagnostics_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& samplingIntervalDiagnostics_Variable(void);
+        bool get_SamplingIntervalDiagnostics_Variable(OpcUaDataValue& dataValue);
+        bool set_SamplingIntervalDiagnostics_Variable(const OpcUaDataValue& dataValue);
+
+        //
         // SamplingIntervalDiagnosticsDataType (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
@@ -37,6 +77,11 @@ namespace OpcUaStackServer
         bool set_Variable(const OpcUaDataValue& dataValue);
     
       private:
+        ServerVariable::SPtr samplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable_;
+        ServerVariable::SPtr samplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable_;
+        ServerVariable::SPtr samplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable_;
+        ServerVariable::SPtr samplingIntervalDiagnostics_SamplingInterval_Variable_;
+        ServerVariable::SPtr samplingIntervalDiagnostics_Variable_;
         ServerVariable::SPtr variable_;
    
    };

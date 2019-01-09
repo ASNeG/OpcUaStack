@@ -37,6 +37,14 @@ namespace OpcUaStackServer
         bool set_DataTypeVersion_Variable(const OpcUaDataValue& dataValue);
 
         //
+        // Boolean
+        //
+        void deprecated_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& deprecated_Variable(void);
+        bool get_Deprecated_Variable(OpcUaDataValue& dataValue);
+        bool set_Deprecated_Variable(const OpcUaDataValue& dataValue);
+
+        //
         // String
         //
         void namespaceUri_Variable(ServerVariable::SPtr& serverVariable);
@@ -45,7 +53,7 @@ namespace OpcUaStackServer
         bool set_NamespaceUri_Variable(const OpcUaDataValue& dataValue);
 
         //
-        // ByteString
+        // ByteString (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
@@ -54,6 +62,7 @@ namespace OpcUaStackServer
     
       private:
         ServerVariable::SPtr dataTypeVersion_Variable_;
+        ServerVariable::SPtr deprecated_Variable_;
         ServerVariable::SPtr namespaceUri_Variable_;
         ServerVariable::SPtr variable_;
    
