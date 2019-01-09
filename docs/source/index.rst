@@ -13,7 +13,7 @@ Getting started
 User Application
 --------------------------------------------
 
-* **Development**: `Creating` | `Information Model` | `Implementation`
+* **Development**: `Creating` | `Information Model` | :doc:`Application Service Interface <user_app/application_service_interface>`
 * **Distribution**: `Linux` | `Windows` | `Docker`
 
 OPC UA Server
@@ -27,7 +27,6 @@ OPC UA Client
 --------------------------------------------
 
 *Implemented but not documented*
-
 
 
 Contribution
