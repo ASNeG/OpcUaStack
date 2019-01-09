@@ -338,6 +338,7 @@ namespace OpcUaStackCore
 		bool push_back_vec(const std::vector<T>& valueVec);
 		bool get(size_t pos, T& value);
 		bool get(T& value);
+		bool pop_back(void);
 
 		OpcUaArray<T, CODER>& operator=(const OpcUaArray<T, CODER>& other);
 		OpcUaArray<T, CODER>& operator=(const std::vector<T>& other);
@@ -604,6 +605,15 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::get(T& value)
 	{
 		return get(0, value);
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::pop_back(void)
+	{
+		if (actArrayLen_ <= 0) return false;
+		actArrayLen_--;
+		return true;
 	}
 
 	template<typename T, typename CODER>

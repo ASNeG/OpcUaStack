@@ -12,11 +12,7 @@
 #ifndef __OpcUaStackServer_AnalogItemType_h__
 #define __OpcUaStackServer_AnalogItemType_h__
 
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackServer/VariableType/VariableBase.h"
+#include "OpcUaStackServer/StandardVariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {

@@ -38,6 +38,24 @@ namespace OpcUaStackCore
 	}
 
 	void
+	CreateObjectRequest::namespaceName(const std::string& namespaceName)
+	{
+		namespaceName_ = namespaceName;
+	}
+
+	std::string&
+	CreateObjectRequest::namespaceName(void)
+	{
+		return namespaceName_;
+	}
+
+	void
+	CreateObjectRequest::displayName(const OpcUaLocalizedText& displayName)
+	{
+		displayName_ = displayName;
+	}
+
+	void
 	CreateObjectRequest::parentNodeId(const OpcUaNodeId& parentNodeId)
 	{
 		parentNodeId_ = parentNodeId;

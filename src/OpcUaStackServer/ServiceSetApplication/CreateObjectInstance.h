@@ -36,26 +36,34 @@ namespace OpcUaStackServer
 
 		CreateObjectInstance(void);
 		CreateObjectInstance(
+			const std::string& namespaceName,
+			const OpcUaLocalizedText& displayName,
 			const OpcUaNodeId& parentNodeId,
 			const OpcUaNodeId& referenceTypeNodeId,
-			Object::SPtr& variableInstance
+			Object::SPtr& objectInstance
 		);
 		virtual ~CreateObjectInstance(void);
 
+		void namespaceName(const std::string& namespaceName);
+		std::string& namespaceName(void);
+		void displayName(const OpcUaLocalizedText& displayName);
+		OpcUaLocalizedText& displayName(void);
 		void parentNodeId(const OpcUaNodeId& parentNodeId);
 		OpcUaNodeId& parentnodeId(void);
 		void referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId);
 		OpcUaNodeId& referenceTypeNodeId(void);
-		void variableInstance(Object::SPtr& variableInstance);
-		Object::SPtr& variableInstace(void);
+		void objectInstance(Object::SPtr& objectInstance);
+		Object::SPtr& objectInstance(void);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStatusCode resultCode(void);
 
 	  private:
+		std::string namespaceName_;
+		OpcUaLocalizedText displayName_;
 		OpcUaNodeId parentNodeId_;
 		OpcUaNodeId referenceTypeNodeId_;
-		Object::SPtr variableInstance_;
+		Object::SPtr objectInstance_;
 		OpcUaStatusCode resultCode_;
 	};
 

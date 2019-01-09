@@ -18,10 +18,9 @@
 #ifndef __OpcUaStackCore_CreateObjectRequest_h__
 #define __OpcUaStackCore_CreateObjectRequest_h__
 
-#include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 
 namespace OpcUaStackCore
 {
@@ -35,6 +34,10 @@ namespace OpcUaStackCore
 		CreateObjectRequest(void);
 		virtual ~CreateObjectRequest(void);
 
+		void namespaceName(const std::string& namespaceName);
+		std::string& namespaceName(void);
+		void displayName(const OpcUaLocalizedText& displayName);
+		OpcUaLocalizedText& displayName(void);
 		void parentNodeId(const OpcUaNodeId& parentNodeId);
 		OpcUaNodeId& parentNodeId(void);
 		void referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId);
@@ -46,6 +49,8 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		std::string namespaceName_;
+		OpcUaLocalizedText displayName_;
 		OpcUaNodeId parentNodeId_;
 		OpcUaNodeId referenceTypeNodeId_;
 		Object::SPtr objectInstance_;

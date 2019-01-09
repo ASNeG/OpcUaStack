@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackCore_CreateVariableRequest_h__
 #define __OpcUaStackCore_CreateVariableRequest_h__
 
-#include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"

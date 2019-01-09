@@ -232,6 +232,7 @@ namespace OpcUaStackServer
 					.parameter("BrowseName", browseName);
 				return false;
 			}
+			browseNames.pathNames()->pop_back();
 		}
 
 		return true;

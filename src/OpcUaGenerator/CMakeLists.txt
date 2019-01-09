@@ -133,6 +133,39 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
+# build OpcUaObjectTypeGenerator
+# 
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+include_directories(
+    ${PROJECT_BINARY_DIR}
+    ${Boost_INCLUDE_DIRS}
+)
+
+file(
+    GLOB OpcUaObjectTypeGenerator_SRC 
+    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaObjectTypeGenerator.cpp
+)
+
+
+add_executable(
+    OpcUaObjectTypeGenerator${VERSION_MAJOR}
+    ${OpcUaObjectTypeGenerator_SRC}
+    ${PROJECT_BINARY_DIR}
+)
+
+target_link_libraries(
+    OpcUaObjectTypeGenerator${VERSION_MAJOR}
+    ${CMAKE_DL_LIBS}
+    ${Boost_LIBRARIES}
+    OpcUaStackCore
+    OpcUaStackClient
+    OpcUaStackServer
+)
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
 # install
 # 
 # -----------------------------------------------------------------------------
@@ -157,6 +190,12 @@ install(
 
 install(
     TARGETS OpcUaVariableTypeGenerator${VERSION_MAJOR} 
+    DESTINATION /usr/bin
+    COMPONENT tools
+)
+
+install(
+    TARGETS OpcUaObjectTypeGenerator${VERSION_MAJOR} 
     DESTINATION /usr/bin
     COMPONENT tools
 )

@@ -18,10 +18,9 @@
 #ifndef __OpcUaStackCore_CreateObjectResponse_h__
 #define __OpcUaStackCore_CreateObjectResponse_h__
 
-#include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/Base/Object.h"
 
 namespace OpcUaStackCore
 {

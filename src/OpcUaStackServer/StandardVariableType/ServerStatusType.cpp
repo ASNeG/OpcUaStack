@@ -24,8 +24,8 @@ namespace OpcUaStackServer
     , buildInfo_SoftwareVersion_Variable_(constructSPtr<ServerVariable>("BuildInfo_SoftwareVersion_Variable"))
     , buildInfo_Variable_(constructSPtr<ServerVariable>("BuildInfo_Variable"))
     , currentTime_Variable_(constructSPtr<ServerVariable>("CurrentTime_Variable"))
-    , secondsTillShutdown_BuildDate_Variable_(constructSPtr<ServerVariable>("SecondsTillShutdown_BuildDate_Variable"))
-    , shutdownReason_BuildDate_Variable_(constructSPtr<ServerVariable>("ShutdownReason_BuildDate_Variable"))
+    , secondsTillShutdown_Variable_(constructSPtr<ServerVariable>("SecondsTillShutdown_Variable"))
+    , shutdownReason_Variable_(constructSPtr<ServerVariable>("ShutdownReason_Variable"))
     , startTime_Variable_(constructSPtr<ServerVariable>("StartTime_Variable"))
     , state_Variable_(constructSPtr<ServerVariable>("State_Variable"))
     , variable_(constructSPtr<ServerVariable>("Variable"))
@@ -40,8 +40,8 @@ namespace OpcUaStackServer
         setServerVariable(buildInfo_SoftwareVersion_Variable_);
         setServerVariable(buildInfo_Variable_);
         setServerVariable(currentTime_Variable_);
-        setServerVariable(secondsTillShutdown_BuildDate_Variable_);
-        setServerVariable(shutdownReason_BuildDate_Variable_);
+        setServerVariable(secondsTillShutdown_Variable_);
+        setServerVariable(shutdownReason_Variable_);
         setServerVariable(startTime_Variable_);
         setServerVariable(state_Variable_);
         setServerVariable(variable_);
@@ -57,8 +57,8 @@ namespace OpcUaStackServer
     , buildInfo_SoftwareVersion_Variable_(constructSPtr<ServerVariable>("BuildInfo_SoftwareVersion_Variable"))
     , buildInfo_Variable_(constructSPtr<ServerVariable>("BuildInfo_Variable"))
     , currentTime_Variable_(constructSPtr<ServerVariable>("CurrentTime_Variable"))
-    , secondsTillShutdown_BuildDate_Variable_(constructSPtr<ServerVariable>("SecondsTillShutdown_BuildDate_Variable"))
-    , shutdownReason_BuildDate_Variable_(constructSPtr<ServerVariable>("ShutdownReason_BuildDate_Variable"))
+    , secondsTillShutdown_Variable_(constructSPtr<ServerVariable>("SecondsTillShutdown_Variable"))
+    , shutdownReason_Variable_(constructSPtr<ServerVariable>("ShutdownReason_Variable"))
     , startTime_Variable_(constructSPtr<ServerVariable>("StartTime_Variable"))
     , state_Variable_(constructSPtr<ServerVariable>("State_Variable"))
     , variable_(constructSPtr<ServerVariable>("Variable"))
@@ -73,8 +73,8 @@ namespace OpcUaStackServer
         setServerVariable(buildInfo_SoftwareVersion_Variable_);
         setServerVariable(buildInfo_Variable_);
         setServerVariable(currentTime_Variable_);
-        setServerVariable(secondsTillShutdown_BuildDate_Variable_);
-        setServerVariable(shutdownReason_BuildDate_Variable_);
+        setServerVariable(secondsTillShutdown_Variable_);
+        setServerVariable(shutdownReason_Variable_);
         setServerVariable(startTime_Variable_);
         setServerVariable(state_Variable_);
         setServerVariable(variable_);
@@ -133,15 +133,15 @@ namespace OpcUaStackServer
     }
 
     ServerVariable::SPtr&
-    ServerStatusType::secondsTillShutdown_BuildDate_Variable(void)
+    ServerStatusType::secondsTillShutdown_Variable(void)
     {
-        return secondsTillShutdown_BuildDate_Variable_;
+        return secondsTillShutdown_Variable_;
     }
 
     ServerVariable::SPtr&
-    ServerStatusType::shutdownReason_BuildDate_Variable(void)
+    ServerStatusType::shutdownReason_Variable(void)
     {
-        return shutdownReason_BuildDate_Variable_;
+        return shutdownReason_Variable_;
     }
 
     ServerVariable::SPtr&
@@ -211,15 +211,15 @@ namespace OpcUaStackServer
     }
 
     void
-    ServerStatusType::secondsTillShutdown_BuildDate_Variable(ServerVariable::SPtr& serverVariable)
+    ServerStatusType::secondsTillShutdown_Variable(ServerVariable::SPtr& serverVariable)
     {
-        secondsTillShutdown_BuildDate_Variable_ = serverVariable;
+        secondsTillShutdown_Variable_ = serverVariable;
     }
 
     void
-    ServerStatusType::shutdownReason_BuildDate_Variable(ServerVariable::SPtr& serverVariable)
+    ServerStatusType::shutdownReason_Variable(ServerVariable::SPtr& serverVariable)
     {
-        shutdownReason_BuildDate_Variable_ = serverVariable;
+        shutdownReason_Variable_ = serverVariable;
     }
 
     void
@@ -289,15 +289,15 @@ namespace OpcUaStackServer
     }
 
     bool
-    ServerStatusType::get_SecondsTillShutdown_BuildDate_Variable(OpcUaDataValue& dataValue)
+    ServerStatusType::get_SecondsTillShutdown_Variable(OpcUaDataValue& dataValue)
     {
-        return secondsTillShutdown_BuildDate_Variable_->getDataValue(dataValue);
+        return secondsTillShutdown_Variable_->getDataValue(dataValue);
     }
 
     bool
-    ServerStatusType::get_ShutdownReason_BuildDate_Variable(OpcUaDataValue& dataValue)
+    ServerStatusType::get_ShutdownReason_Variable(OpcUaDataValue& dataValue)
     {
-        return shutdownReason_BuildDate_Variable_->getDataValue(dataValue);
+        return shutdownReason_Variable_->getDataValue(dataValue);
     }
 
     bool
@@ -367,15 +367,15 @@ namespace OpcUaStackServer
     }
 
     bool
-    ServerStatusType::set_SecondsTillShutdown_BuildDate_Variable(const OpcUaDataValue& dataValue)
+    ServerStatusType::set_SecondsTillShutdown_Variable(const OpcUaDataValue& dataValue)
     {
-        return secondsTillShutdown_BuildDate_Variable_->setDataValue(dataValue);
+        return secondsTillShutdown_Variable_->setDataValue(dataValue);
     }
 
     bool
-    ServerStatusType::set_ShutdownReason_BuildDate_Variable(const OpcUaDataValue& dataValue)
+    ServerStatusType::set_ShutdownReason_Variable(const OpcUaDataValue& dataValue)
     {
-        return shutdownReason_BuildDate_Variable_->setDataValue(dataValue);
+        return shutdownReason_Variable_->setDataValue(dataValue);
     }
 
     bool
