@@ -28,7 +28,7 @@ namespace OpcUaStackServer
 	}
 
 	MethodNodeClass::MethodNodeClass(OpcUaNodeId& nodeId, MethodNodeClass& methodNodeClass)
-	: BaseNodeClass(NodeClass::EnumObject, nodeId, &methodNodeClass)
+	: BaseNodeClass(NodeClass::EnumMethod, nodeId, &methodNodeClass)
 	, executable_()
 	, userExecutable_()
 	{
