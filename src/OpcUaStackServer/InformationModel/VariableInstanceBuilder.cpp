@@ -109,6 +109,7 @@ namespace OpcUaStackServer
 		nsa.informationModel(informationModel_);
 		nsa.addNamespaceName(namespaceName);
 
+		namespaceIndex_ = nodeSetNamespace.mapToGlobalNamespaceIndex(namespaceName);
 		return true;
 	}
 
