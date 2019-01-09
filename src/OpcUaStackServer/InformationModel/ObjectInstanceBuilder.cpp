@@ -116,6 +116,53 @@ namespace OpcUaStackServer
 		const OpcUaNodeId& objectTypeNodeId
 	)
 	{
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+
+		//
+		// find node in opc ua information model
+		//
+		BaseNodeClass::SPtr baseNodeTemplate = informationModel_->find(objectTypeNodeId);
+		if (baseNodeTemplate.get() == nullptr) {
+			Log(Error, "object type node identifier not exist in information model")
+				.parameter("ObjectTypeNode", objectTypeNodeId);
+			ObjectNodeClass::SPtr objectNodeClass;
+			return objectNodeClass;
+		}
+
+		BrowseName browseName(objectTypeNodeId);
+		browseName.pathNames()->resize(10);
+		ObjectNodeClass::SPtr objectNodeClass = readChilds(baseNodeTemplate, browseName);
+		if (objectNodeClass.get() == nullptr) {
+			Log(Error, "read childs error")
+				.parameter("ObjectTypeNodeId", objectTypeNodeId);
+			ObjectNodeClass::SPtr objectNodeClass;
+			return objectNodeClass;
+		}
+
+		if (objectTypeNodeId == OpcUaNodeId(58)) {
+			return objectNodeClass;
+		}
+
+		// find parent node identifier
+		OpcUaNodeId parentObjectTypeNodeId;
+		if (!ima.getSubType(baseNodeTemplate, parentObjectTypeNodeId)) {
+			Log(Error, "parent object type node identifier do not not exist in information model")
+				.parameter("ObjectTypeNodeId", objectTypeNodeId)
+				.parameter("DisplayName", *baseNodeTemplate->getDisplayName());
+			ObjectNodeClass::SPtr objectNodeClass;
+			return objectNodeClass;
+		}
+
+		return readObjects(parentObjectTypeNodeId);
+	}
+
+	ObjectNodeClass::SPtr
+	ObjectInstanceBuilder::readChilds(
+		const BaseNodeClass::SPtr& baseNodeTemplate,
+		BrowseName& browseName
+	)
+	{
 		ObjectNodeClass::SPtr x;
 		return x;
 	}

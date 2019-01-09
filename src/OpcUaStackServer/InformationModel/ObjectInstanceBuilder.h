@@ -50,6 +50,10 @@ namespace OpcUaStackServer
 		ObjectNodeClass::SPtr readObjects(
 			const OpcUaNodeId& objectTypeNodeId
 		);
+		ObjectNodeClass::SPtr readChilds(
+			const BaseNodeClass::SPtr& baseNodeTemplate,
+			BrowseName& browseName
+		);
 
 		InformationModel::SPtr informationModel_;
 		uint16_t namespaceIndex_;
