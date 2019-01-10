@@ -49,9 +49,11 @@ namespace OpcUaStackServer
 	  private:
 		bool getNamespaceIndex(const std::string& namespaceName);
 		ObjectNodeClass::SPtr readObjects(
+			const OpcUaNodeId& parentNodeId,
 			const OpcUaNodeId& objectTypeNodeId
 		);
 		BaseNodeClass::SPtr readChilds(
+			const OpcUaNodeId& parentNodeId,
 			const BaseNodeClass::SPtr& baseNodeTemplate,
 			BrowseName& browseName
 		);
@@ -64,6 +66,7 @@ namespace OpcUaStackServer
 			BrowseName& browseName
 		);
 		MethodNodeClass::SPtr createMethodInstance(
+			const OpcUaNodeId& parentNodeId,
 			const BaseNodeClass::SPtr& baseNodeTemplate,
 			BrowseName& browseName
 		);

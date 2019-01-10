@@ -80,7 +80,7 @@ namespace OpcUaStackServer
 			return BadInternalError;
 		}
 
-		ObjectNodeClass::SPtr objectNodeClass = readObjects(objectBase->objectTypeNodeId());
+		ObjectNodeClass::SPtr objectNodeClass = readObjects(parentNodeId, objectBase->objectTypeNodeId());
 		if (objectNodeClass.get() == nullptr) {
 			Log(Error, "create object type error")
 				.parameter("ObjectTypeNodeId", objectBase->objectTypeNodeId());
@@ -116,6 +116,7 @@ namespace OpcUaStackServer
 
 	ObjectNodeClass::SPtr
 	ObjectInstanceBuilder::readObjects(
+		const OpcUaNodeId& parentNodeId,
 		const OpcUaNodeId& objectTypeNodeId
 	)
 	{
@@ -135,7 +136,7 @@ namespace OpcUaStackServer
 
 		BrowseName browseName(objectTypeNodeId);
 		browseName.pathNames()->resize(10);
-		BaseNodeClass::SPtr objectNodeClass = readChilds(baseNodeTemplate, browseName);
+		BaseNodeClass::SPtr objectNodeClass = readChilds(parentNodeId, baseNodeTemplate, browseName);
 		if (objectNodeClass.get() == nullptr) {
 			Log(Error, "read childs error")
 				.parameter("ObjectTypeNodeId", objectTypeNodeId);
@@ -157,11 +158,12 @@ namespace OpcUaStackServer
 			return objectNodeClass;
 		}
 
-		return readObjects(parentObjectTypeNodeId);
+		return readObjects(parentNodeId, parentObjectTypeNodeId);
 	}
 
 	BaseNodeClass::SPtr
 	ObjectInstanceBuilder::readChilds(
+		const OpcUaNodeId& parentNodeId,
 		const BaseNodeClass::SPtr& baseNodeTemplate,
 		BrowseName& browseNames
 	)
@@ -198,7 +200,7 @@ namespace OpcUaStackServer
 			}
 			case NodeClass::EnumMethod:
 			{
-				nodeClass = createMethodInstance(baseNodeTemplate, browseNames);
+				nodeClass = createMethodInstance(parentNodeId, baseNodeTemplate, browseNames);
 				if (nodeClass.get() == nullptr) {
 					Log(Error, "create method node error")
 						.parameter("NodeId", *baseNodeTemplate->getNodeId())
@@ -243,7 +245,7 @@ namespace OpcUaStackServer
 
 			// handle childs of node
 			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
-			BaseNodeClass::SPtr nodeClassChild = readChilds(baseNodeClassChildTemplate, browseNames);
+			BaseNodeClass::SPtr nodeClassChild = readChilds(*nodeClass->getNodeId(), baseNodeClassChildTemplate, browseNames);
 			if (nodeClassChild.get() == nullptr) {
 				Log(Error, "read childs error")
 					.parameter("NodeId", *baseNodeTemplate->getNodeId())
@@ -459,6 +461,7 @@ namespace OpcUaStackServer
 
 	MethodNodeClass::SPtr
 	ObjectInstanceBuilder::createMethodInstance(
+		const OpcUaNodeId& parentNodeId,
 		const BaseNodeClass::SPtr& baseNodeTemplate,
 		BrowseName& browsePath
 	)
@@ -466,15 +469,7 @@ namespace OpcUaStackServer
 		MethodNodeClass::SPtr methodNode;
 
 		// create method name
-		std::string methodName;
-		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
-			OpcUaQualifiedName::SPtr browseName;
-			browsePath.pathNames()->get(idx, browseName);
-			if (!methodName.empty()) methodName += "_";
-			methodName += browseName->name().toStdString();
-		}
-		if (!methodName.empty()) methodName += "_";
-		methodName += "Method";
+		std::string methodName = browsePath.stringId("Method");
 
 		// find server variable
 		ServerMethod::SPtr serverMethod = objectBase_->getServerMethod(methodName);
@@ -491,6 +486,15 @@ namespace OpcUaStackServer
 
 		MethodNodeClass::SPtr methodNode0 = boost::static_pointer_cast<MethodNodeClass>(baseNodeTemplate);
 		methodNode = constructSPtr<MethodNodeClass>(nodeId, *methodNode0.get());
+
+		// register method callback
+#if 0
+		 informationModel_->methodMap().registerMethod(
+			registerForwardMethodRequest->objectNodeId(),
+			registerForwardMethodRequest->methodNodeId(),
+			registerForwardMethodRequest->forwardMethodSync()
+		);
+#endif
 
 		// added new method node to information model
 		informationModel_->insert(methodNode);
