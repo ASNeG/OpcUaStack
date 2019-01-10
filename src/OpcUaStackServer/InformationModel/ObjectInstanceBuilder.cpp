@@ -488,13 +488,13 @@ namespace OpcUaStackServer
 		methodNode = constructSPtr<MethodNodeClass>(nodeId, *methodNode0.get());
 
 		// register method callback
-#if 0
-		 informationModel_->methodMap().registerMethod(
-			registerForwardMethodRequest->objectNodeId(),
-			registerForwardMethodRequest->methodNodeId(),
-			registerForwardMethodRequest->forwardMethodSync()
+		ForwardMethodSync::SPtr forwardMethodSync = constructSPtr<ForwardMethodSync>();
+		forwardMethodSync->methodService().setCallback(boost::bind(&ServerMethod::method, serverMethod.get(), _1));
+		informationModel_->methodMap().registerMethod(
+			parentNodeId,
+			nodeId,
+			forwardMethodSync
 		);
-#endif
 
 		// added new method node to information model
 		informationModel_->insert(methodNode);

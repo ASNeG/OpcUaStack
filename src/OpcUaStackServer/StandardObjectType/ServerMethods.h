@@ -41,9 +41,9 @@ namespace OpcUaStackServer
 		void name(const std::string& name);
 		std::string& name(void);
 		template<typename T>
-		    void registerMethod(const T& handle)
+		    void registerMethod(T handle)
 			{
-				methodCallback_ = handle;
+				methodCallback_.reset(handle);
 			}
 
 		void method(ApplicationMethodContext* applicationMethodContext);
