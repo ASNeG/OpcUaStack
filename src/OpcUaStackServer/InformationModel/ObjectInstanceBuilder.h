@@ -73,7 +73,6 @@ namespace OpcUaStackServer
 		ObjectBase::SPtr objectBase_;
 
 		std::map<std::string, ObjectNodeClass::SPtr> objectNodeClassMap_;
-		std::map<std::string, MethodNodeClass::SPtr> methodNodeClassMap_;
 	};
 
 }

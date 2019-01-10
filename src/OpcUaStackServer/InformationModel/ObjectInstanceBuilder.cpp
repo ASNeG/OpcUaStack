@@ -35,7 +35,6 @@ namespace OpcUaStackServer
 	, objectBase_()
 
 	, objectNodeClassMap_()
-	, methodNodeClassMap_()
 	{
 	}
 
@@ -53,7 +52,6 @@ namespace OpcUaStackServer
 		ObjectBase::SPtr& objectBase
 	)
 	{
-		std::cout << "createObjectInstance" << std::endl;
 		informationModel_ = informationModel;
 		objectBase_ = objectBase;
 
@@ -91,9 +89,6 @@ namespace OpcUaStackServer
 		objectNodeClass->setDisplayName(displayName);
 
 		// added reference
-		std::cout << "Parent=" << *parentBaseNode->getNodeId() << std::endl;
-		std::cout << "New=" << *objectNodeClass->getNodeId() << std::endl;
-		std::cout << "DisplayName=" << *objectNodeClass->getDisplayName() << std::endl;
 		parentBaseNode->referenceItemMap().add(referenceTypeNodeId, true, *objectNodeClass->getNodeId());
 		objectNodeClass->referenceItemMap().add(referenceTypeNodeId, false, parentNodeId);
 
@@ -124,8 +119,6 @@ namespace OpcUaStackServer
 		const OpcUaNodeId& objectTypeNodeId
 	)
 	{
-		std::cout << "readObjects" << std::endl;
-
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
 
@@ -173,8 +166,6 @@ namespace OpcUaStackServer
 		BrowseName& browseNames
 	)
 	{
-		std::cout << "readChilds" << std::endl;
-
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
 
@@ -260,6 +251,7 @@ namespace OpcUaStackServer
 				BaseNodeClass::SPtr baseNodeClass;
 				return baseNodeClass;
 			}
+			browseNames.pathNames()->pop_back();
 
 			// create reference between parent and child
 			if (!nodeClass->referenceItemMap().exist(referenceTypeNodeIdVec[idx], true, *nodeClassChild->getNodeId())) {
@@ -484,9 +476,13 @@ namespace OpcUaStackServer
 		if (!methodName.empty()) methodName += "_";
 		methodName += "Method";
 
-		// check if variable node already exist
-		auto it = methodNodeClassMap_.find(methodName);
-		if (it != methodNodeClassMap_.end()) return it->second;
+		// find server variable
+		ServerMethod::SPtr serverMethod = objectBase_->getServerMethod(methodName);
+		if (serverMethod.get() == nullptr) {
+			Log(Error, "server method do not exist")
+				.parameter("MethodName", methodName);
+			return methodNode;
+		}
 
 		// create object instance
 		InformationModelAccess ima;
@@ -495,8 +491,6 @@ namespace OpcUaStackServer
 
 		MethodNodeClass::SPtr methodNode0 = boost::static_pointer_cast<MethodNodeClass>(baseNodeTemplate);
 		methodNode = constructSPtr<MethodNodeClass>(nodeId, *methodNode0.get());
-
-		methodNodeClassMap_.insert(std::make_pair(methodName, methodNode));
 
 		// added new method node to information model
 		informationModel_->insert(methodNode);
