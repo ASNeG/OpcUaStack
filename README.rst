@@ -39,7 +39,7 @@ In the development stage:
 Installing
 ------------------------------
 
-See `here<_example: https://opcuastack.rtfd.io/en/latest/getting_started/hello_world.html>`_.
+See `here<_example: https://opcuastack.rtfd.io/en/latest/getting_started/installation.html>`_.
 
 Usage 
 ------------------------------
