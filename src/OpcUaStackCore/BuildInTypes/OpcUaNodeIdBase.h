@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -84,7 +84,7 @@ namespace OpcUaStackCore
 		std::string toString(void) const;
 
 		void copyTo(OpcUaNodeIdBase& opcUaNodeIdBase);
-		void copyFrom(OpcUaNodeIdBase& opcUaNodeIdBase);
+		void copyFrom(const OpcUaNodeIdBase& opcUaNodeIdBase);
 		bool operator!=(const OpcUaNodeIdBase& opcUaNodeId) const; 
 		bool operator==(const OpcUaNodeIdBase& opcUaNodeIdBase) const;
 		bool operator<(const OpcUaNodeIdBase& opcUaNodeIdBase) const;

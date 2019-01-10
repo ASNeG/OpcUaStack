@@ -3,7 +3,8 @@ Release 4.1.0
 
 **Features**:
 
-# Implement variable type code generator #26, by @huebl
+* Implement object type code generator #27, by @huebl
+* Implement variable type code generator #26, by @huebl
 * Integrate JSON encoder/decoder #39, by @huebl
 * Rework OpcUaStackCore #47, by @huebl
 * Implement data type code generator #8, by @huebl
@@ -13,6 +14,7 @@ Release 4.1.0
 
 **Bugs**:
 
+* Error occured during create a new opc ua application server #84, by @huebl
 * Class OpcUaDataValue does not have an "<" operator #54, by @huebl
 * Extensible Parameter us used incorrectly #36, by @huebl
 

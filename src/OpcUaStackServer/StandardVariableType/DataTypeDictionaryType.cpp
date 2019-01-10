@@ -20,12 +20,14 @@ namespace OpcUaStackServer
     DataTypeDictionaryType::DataTypeDictionaryType(void)
     : VariableBase()
     , dataTypeVersion_Variable_(constructSPtr<ServerVariable>("DataTypeVersion_Variable"))
+    , deprecated_Variable_(constructSPtr<ServerVariable>("Deprecated_Variable"))
     , namespaceUri_Variable_(constructSPtr<ServerVariable>("NamespaceUri_Variable"))
     , variable_(constructSPtr<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)72);
         setServerVariable(dataTypeVersion_Variable_);
+        setServerVariable(deprecated_Variable_);
         setServerVariable(namespaceUri_Variable_);
         setServerVariable(variable_);
     }
@@ -36,12 +38,14 @@ namespace OpcUaStackServer
     DataTypeDictionaryType::DataTypeDictionaryType(const DataTypeDictionaryType& value)
     : VariableBase()
     , dataTypeVersion_Variable_(constructSPtr<ServerVariable>("DataTypeVersion_Variable"))
+    , deprecated_Variable_(constructSPtr<ServerVariable>("Deprecated_Variable"))
     , namespaceUri_Variable_(constructSPtr<ServerVariable>("NamespaceUri_Variable"))
     , variable_(constructSPtr<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)72);
         setServerVariable(dataTypeVersion_Variable_);
+        setServerVariable(deprecated_Variable_);
         setServerVariable(namespaceUri_Variable_);
         setServerVariable(variable_);
     }
@@ -54,6 +58,12 @@ namespace OpcUaStackServer
     DataTypeDictionaryType::dataTypeVersion_Variable(void)
     {
         return dataTypeVersion_Variable_;
+    }
+
+    ServerVariable::SPtr&
+    DataTypeDictionaryType::deprecated_Variable(void)
+    {
+        return deprecated_Variable_;
     }
 
     ServerVariable::SPtr&
@@ -75,6 +85,12 @@ namespace OpcUaStackServer
     }
 
     void
+    DataTypeDictionaryType::deprecated_Variable(ServerVariable::SPtr& serverVariable)
+    {
+        deprecated_Variable_ = serverVariable;
+    }
+
+    void
     DataTypeDictionaryType::namespaceUri_Variable(ServerVariable::SPtr& serverVariable)
     {
         namespaceUri_Variable_ = serverVariable;
@@ -93,6 +109,12 @@ namespace OpcUaStackServer
     }
 
     bool
+    DataTypeDictionaryType::get_Deprecated_Variable(OpcUaDataValue& dataValue)
+    {
+        return deprecated_Variable_->getDataValue(dataValue);
+    }
+
+    bool
     DataTypeDictionaryType::get_NamespaceUri_Variable(OpcUaDataValue& dataValue)
     {
         return namespaceUri_Variable_->getDataValue(dataValue);
@@ -108,6 +130,12 @@ namespace OpcUaStackServer
     DataTypeDictionaryType::set_DataTypeVersion_Variable(const OpcUaDataValue& dataValue)
     {
         return dataTypeVersion_Variable_->setDataValue(dataValue);
+    }
+
+    bool
+    DataTypeDictionaryType::set_Deprecated_Variable(const OpcUaDataValue& dataValue)
+    {
+        return deprecated_Variable_->setDataValue(dataValue);
     }
 
     bool

@@ -45,7 +45,7 @@ namespace OpcUaStackServer
         bool set_DictionaryFragment_Variable(const OpcUaDataValue& dataValue);
 
         //
-        // String
+        // String (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);

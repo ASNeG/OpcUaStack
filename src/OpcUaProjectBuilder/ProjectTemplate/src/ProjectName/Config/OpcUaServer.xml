@@ -139,7 +139,7 @@
  
   
   <InformationModel>
-    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet2.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>

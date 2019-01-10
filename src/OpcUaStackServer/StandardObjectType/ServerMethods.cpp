@@ -31,6 +31,7 @@ namespace OpcUaStackServer
 	ServerMethod::ServerMethod(const std::string& name)
 	: BaseClass()
 	, name_(name)
+	, methodCallback_()
 	{
 	}
 

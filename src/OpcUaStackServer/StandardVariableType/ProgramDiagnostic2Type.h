@@ -1,5 +1,5 @@
 /*
-    VariableTypeClass: ProgramDiagnosticType
+    VariableTypeClass: ProgramDiagnostic2Type
 
     Generated Source Code - please do not change this source code
 
@@ -9,24 +9,24 @@
     Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
 
-#ifndef __OpcUaStackServer_ProgramDiagnosticType_h__
-#define __OpcUaStackServer_ProgramDiagnosticType_h__
+#ifndef __OpcUaStackServer_ProgramDiagnostic2Type_h__
+#define __OpcUaStackServer_ProgramDiagnostic2Type_h__
 
 #include "OpcUaStackServer/StandardVariableType/VariableBase.h"
 
 namespace OpcUaStackServer
 {
    
-   class DLLEXPORT ProgramDiagnosticType
+   class DLLEXPORT ProgramDiagnostic2Type
    : public VariableBase
    {
      public:
-       typedef boost::shared_ptr<ProgramDiagnosticType> SPtr;
-       typedef std::vector<ProgramDiagnosticType::SPtr> Vec;
+       typedef boost::shared_ptr<ProgramDiagnostic2Type> SPtr;
+       typedef std::vector<ProgramDiagnostic2Type::SPtr> Vec;
    
-       ProgramDiagnosticType(void);
-       ProgramDiagnosticType(const ProgramDiagnosticType& value);
-       virtual ~ProgramDiagnosticType(void);
+       ProgramDiagnostic2Type(void);
+       ProgramDiagnostic2Type(const ProgramDiagnostic2Type& value);
+       virtual ~ProgramDiagnostic2Type(void);
 
         //
         // String
@@ -69,7 +69,7 @@ namespace OpcUaStackServer
         bool set_LastMethodCall_Variable(const OpcUaDataValue& dataValue);
 
         //
-        // Variant (Array)
+        // Argument (Array)
         //
         void lastMethodInputArguments_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastMethodInputArguments_Variable(void);
@@ -79,10 +79,26 @@ namespace OpcUaStackServer
         //
         // Variant (Array)
         //
+        void lastMethodInputValues_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& lastMethodInputValues_Variable(void);
+        bool get_LastMethodInputValues_Variable(OpcUaDataValue& dataValue);
+        bool set_LastMethodInputValues_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Argument (Array)
+        //
         void lastMethodOutputArguments_Variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& lastMethodOutputArguments_Variable(void);
         bool get_LastMethodOutputArguments_Variable(OpcUaDataValue& dataValue);
         bool set_LastMethodOutputArguments_Variable(const OpcUaDataValue& dataValue);
+
+        //
+        // Variant (Array)
+        //
+        void lastMethodOutputValues_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& lastMethodOutputValues_Variable(void);
+        bool get_LastMethodOutputValues_Variable(OpcUaDataValue& dataValue);
+        bool set_LastMethodOutputValues_Variable(const OpcUaDataValue& dataValue);
 
         //
         // Status
@@ -109,7 +125,7 @@ namespace OpcUaStackServer
         bool set_LastTransitionTime_Variable(const OpcUaDataValue& dataValue);
 
         //
-        // ProgramDiagnosticDataType (Array)
+        // ProgramDiagnostic2DataType (Array)
         //
         void variable(ServerVariable::SPtr& serverVariable);
         ServerVariable::SPtr& variable(void);
@@ -123,7 +139,9 @@ namespace OpcUaStackServer
         ServerVariable::SPtr lastMethodCallTime_Variable_;
         ServerVariable::SPtr lastMethodCall_Variable_;
         ServerVariable::SPtr lastMethodInputArguments_Variable_;
+        ServerVariable::SPtr lastMethodInputValues_Variable_;
         ServerVariable::SPtr lastMethodOutputArguments_Variable_;
+        ServerVariable::SPtr lastMethodOutputValues_Variable_;
         ServerVariable::SPtr lastMethodReturnStatus_Variable_;
         ServerVariable::SPtr lastMethodSessionId_Variable_;
         ServerVariable::SPtr lastTransitionTime_Variable_;

@@ -95,10 +95,10 @@ namespace OpcUaStackServer
         //
         // UInt32
         //
-        void eventQueueOverFlowCount_Variable(ServerVariable::SPtr& serverVariable);
-        ServerVariable::SPtr& eventQueueOverFlowCount_Variable(void);
-        bool get_EventQueueOverFlowCount_Variable(OpcUaDataValue& dataValue);
-        bool set_EventQueueOverFlowCount_Variable(const OpcUaDataValue& dataValue);
+        void eventQueueOverflowCount_Variable(ServerVariable::SPtr& serverVariable);
+        ServerVariable::SPtr& eventQueueOverflowCount_Variable(void);
+        bool get_EventQueueOverflowCount_Variable(OpcUaDataValue& dataValue);
+        bool set_EventQueueOverflowCount_Variable(const OpcUaDataValue& dataValue);
 
         //
         // UInt32
@@ -293,7 +293,7 @@ namespace OpcUaStackServer
         ServerVariable::SPtr discardedMessageCount_Variable_;
         ServerVariable::SPtr enableCount_Variable_;
         ServerVariable::SPtr eventNotificationsCount_Variable_;
-        ServerVariable::SPtr eventQueueOverFlowCount_Variable_;
+        ServerVariable::SPtr eventQueueOverflowCount_Variable_;
         ServerVariable::SPtr latePublishRequestCount_Variable_;
         ServerVariable::SPtr maxKeepAliveCount_Variable_;
         ServerVariable::SPtr maxLifetimeCount_Variable_;

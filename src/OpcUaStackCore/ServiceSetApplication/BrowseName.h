@@ -115,6 +115,8 @@ namespace OpcUaStackCore
 			return os;
 		}
 
+		std::string stringId(const std::string& suffix);
+
 	  private:
 		OpcUaNodeId nodeId_;
 		OpcUaQualifiedNameArray::SPtr pathNames_;

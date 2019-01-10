@@ -24,7 +24,7 @@ namespace OpcUaStackServer
     , discardedMessageCount_Variable_(constructSPtr<ServerVariable>("DiscardedMessageCount_Variable"))
     , enableCount_Variable_(constructSPtr<ServerVariable>("EnableCount_Variable"))
     , eventNotificationsCount_Variable_(constructSPtr<ServerVariable>("EventNotificationsCount_Variable"))
-    , eventQueueOverFlowCount_Variable_(constructSPtr<ServerVariable>("EventQueueOverFlowCount_Variable"))
+    , eventQueueOverflowCount_Variable_(constructSPtr<ServerVariable>("EventQueueOverflowCount_Variable"))
     , latePublishRequestCount_Variable_(constructSPtr<ServerVariable>("LatePublishRequestCount_Variable"))
     , maxKeepAliveCount_Variable_(constructSPtr<ServerVariable>("MaxKeepAliveCount_Variable"))
     , maxLifetimeCount_Variable_(constructSPtr<ServerVariable>("MaxLifetimeCount_Variable"))
@@ -59,7 +59,7 @@ namespace OpcUaStackServer
         setServerVariable(discardedMessageCount_Variable_);
         setServerVariable(enableCount_Variable_);
         setServerVariable(eventNotificationsCount_Variable_);
-        setServerVariable(eventQueueOverFlowCount_Variable_);
+        setServerVariable(eventQueueOverflowCount_Variable_);
         setServerVariable(latePublishRequestCount_Variable_);
         setServerVariable(maxKeepAliveCount_Variable_);
         setServerVariable(maxLifetimeCount_Variable_);
@@ -95,7 +95,7 @@ namespace OpcUaStackServer
     , discardedMessageCount_Variable_(constructSPtr<ServerVariable>("DiscardedMessageCount_Variable"))
     , enableCount_Variable_(constructSPtr<ServerVariable>("EnableCount_Variable"))
     , eventNotificationsCount_Variable_(constructSPtr<ServerVariable>("EventNotificationsCount_Variable"))
-    , eventQueueOverFlowCount_Variable_(constructSPtr<ServerVariable>("EventQueueOverFlowCount_Variable"))
+    , eventQueueOverflowCount_Variable_(constructSPtr<ServerVariable>("EventQueueOverflowCount_Variable"))
     , latePublishRequestCount_Variable_(constructSPtr<ServerVariable>("LatePublishRequestCount_Variable"))
     , maxKeepAliveCount_Variable_(constructSPtr<ServerVariable>("MaxKeepAliveCount_Variable"))
     , maxLifetimeCount_Variable_(constructSPtr<ServerVariable>("MaxLifetimeCount_Variable"))
@@ -130,7 +130,7 @@ namespace OpcUaStackServer
         setServerVariable(discardedMessageCount_Variable_);
         setServerVariable(enableCount_Variable_);
         setServerVariable(eventNotificationsCount_Variable_);
-        setServerVariable(eventQueueOverFlowCount_Variable_);
+        setServerVariable(eventQueueOverflowCount_Variable_);
         setServerVariable(latePublishRequestCount_Variable_);
         setServerVariable(maxKeepAliveCount_Variable_);
         setServerVariable(maxLifetimeCount_Variable_);
@@ -209,9 +209,9 @@ namespace OpcUaStackServer
     }
 
     ServerVariable::SPtr&
-    SubscriptionDiagnosticsType::eventQueueOverFlowCount_Variable(void)
+    SubscriptionDiagnosticsType::eventQueueOverflowCount_Variable(void)
     {
-        return eventQueueOverFlowCount_Variable_;
+        return eventQueueOverflowCount_Variable_;
     }
 
     ServerVariable::SPtr&
@@ -401,9 +401,9 @@ namespace OpcUaStackServer
     }
 
     void
-    SubscriptionDiagnosticsType::eventQueueOverFlowCount_Variable(ServerVariable::SPtr& serverVariable)
+    SubscriptionDiagnosticsType::eventQueueOverflowCount_Variable(ServerVariable::SPtr& serverVariable)
     {
-        eventQueueOverFlowCount_Variable_ = serverVariable;
+        eventQueueOverflowCount_Variable_ = serverVariable;
     }
 
     void
@@ -593,9 +593,9 @@ namespace OpcUaStackServer
     }
 
     bool
-    SubscriptionDiagnosticsType::get_EventQueueOverFlowCount_Variable(OpcUaDataValue& dataValue)
+    SubscriptionDiagnosticsType::get_EventQueueOverflowCount_Variable(OpcUaDataValue& dataValue)
     {
-        return eventQueueOverFlowCount_Variable_->getDataValue(dataValue);
+        return eventQueueOverflowCount_Variable_->getDataValue(dataValue);
     }
 
     bool
@@ -785,9 +785,9 @@ namespace OpcUaStackServer
     }
 
     bool
-    SubscriptionDiagnosticsType::set_EventQueueOverFlowCount_Variable(const OpcUaDataValue& dataValue)
+    SubscriptionDiagnosticsType::set_EventQueueOverflowCount_Variable(const OpcUaDataValue& dataValue)
     {
-        return eventQueueOverFlowCount_Variable_->setDataValue(dataValue);
+        return eventQueueOverflowCount_Variable_->setDataValue(dataValue);
     }
 
     bool
