@@ -88,6 +88,7 @@ build_local()
         set -x
         cmake ../src \
               "${CMAKE_GENERATOR_LOCAL}" \
+              -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}" \
               -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" 
         RESULT=$?
         set +x
