@@ -210,6 +210,7 @@ namespace OpcUaStackServer
 				VariableNodeClass::SPtr variableNodeClass;
 				return variableNodeClass;
 			}
+			browseNames.pathNames()->pop_back();
 
 			// create reference between parent and child
 			if (!variableNodeClass->referenceItemMap().exist(referenceTypeNodeIdVec[idx], true, *variableNodeClassChild->getNodeId())) {
