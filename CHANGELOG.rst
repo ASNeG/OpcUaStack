@@ -3,7 +3,8 @@ Release 4.1.0
 
 **Features**:
 
-# Implement variable type code generator #26, by @huebl
+* Implement object type code generator #27, by @huebl
+* Implement variable type code generator #26, by @huebl
 * Integrate JSON encoder/decoder #39, by @huebl
 * Rework OpcUaStackCore #47, by @huebl
 * Implement data type code generator #8, by @huebl
