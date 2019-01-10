@@ -82,12 +82,14 @@ namespace OpcUaServer
 		{
 			boost::mutex::scoped_lock g(mutex_);
 			running_ = true;
-			if (stopSignal_) stopFlag = true;
+			if (stopSignal_) {
+				stopSignal_ = false;
+				stopFlag = true;
+			}
 		}
 
 		Log(Debug, "service application loop");
 		if (stopFlag) {
-			stopSignal_ = false;
 			stop();
 		}
 		while (running_) {
