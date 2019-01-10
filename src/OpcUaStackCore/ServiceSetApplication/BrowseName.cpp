@@ -290,4 +290,20 @@ namespace OpcUaStackCore
 		}
 	}
 
+	std::string
+	BrowseName::stringId(const std::string& suffix)
+	{
+		std::string id("");
+		for (uint32_t idx = 0; idx < pathNames()->size(); idx++) {
+			OpcUaQualifiedName::SPtr browseName;
+			pathNames()->get(idx, browseName);
+			if (!id.empty()) id += "_";
+			id += browseName->name().toStdString();
+		}
+		if (suffix.empty()) return id;
+		if (!id.empty()) id += "_";
+		id += suffix;
+		return id;
+	}
+
 }
