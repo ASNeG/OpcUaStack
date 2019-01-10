@@ -14,6 +14,7 @@ Release 4.1.0
 
 **Bugs**:
 
+* Double entry of CTRL C leads to crash #74, by @huebl
 * Error occured during create a new opc ua application server #84, by @huebl
 * Class OpcUaDataValue does not have an "<" operator #54, by @huebl
 * Extensible Parameter us used incorrectly #36, by @huebl
