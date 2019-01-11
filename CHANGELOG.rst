@@ -14,6 +14,7 @@ Release 4.1.0
 
 **Bugs**:
 
+* Ignore optional placeholder element in code generator #78, @huebl
 * Double entry of CTRL C leads to crash #74, by @huebl
 * Error occured during create a new opc ua application server #84, by @huebl
 * Class OpcUaDataValue does not have an "<" operator #54, by @huebl
