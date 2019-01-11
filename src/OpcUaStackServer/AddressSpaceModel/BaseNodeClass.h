@@ -19,7 +19,6 @@
 #define __OpcUaStackServer_BaseNodeClass_h__
 
 #include <vector>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"

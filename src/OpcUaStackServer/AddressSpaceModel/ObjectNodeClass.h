@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackServer_ObjectNodeClass_h__
 #define __OpcUaStackServer_ObjectNodeClass_h__
 
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
 
