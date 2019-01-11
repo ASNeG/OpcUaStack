@@ -18,10 +18,6 @@
 #ifndef __OpcUaStackCore_NodeInfo_h__
 #define __OpcUaStackCore_NodeInfo_h__
 
-#include <boost/shared_ptr.hpp>
-
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/Generator/NumberNamespaceMap.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 

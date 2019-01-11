@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackCore_ObjectTypeGenerator_h__
 #define __OpcUaStackCore_ObjectTypeGenerator_h__
 
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/Generator/NodeInfoObjectType.h"
 

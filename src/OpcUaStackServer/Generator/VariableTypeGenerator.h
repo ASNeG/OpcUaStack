@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackCore_VariableTypeGenerator_h__
 #define __OpcUaStackCore_VariableTypeGenerator_h__
 
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/Generator/NodeInfoVariableType.h"
 

@@ -19,11 +19,9 @@
 #define __OpcUaStackCore_NodeInfoObjectType_h__
 
 #include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
-
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/VariableTypeField.h"
 #include "OpcUaStackServer/Generator/MethodTypeField.h"
-#include "OpcUaStackServer/Generator/NumberNamespaceMap.h"
 
 using namespace OpcUaStackCore;
 

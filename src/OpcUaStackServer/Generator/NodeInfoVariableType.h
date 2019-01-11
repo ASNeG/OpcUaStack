@@ -20,10 +20,8 @@
 
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinitionExpand.h"
 #include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
-
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/VariableTypeField.h"
-#include "OpcUaStackServer/Generator/NumberNamespaceMap.h"
 
 using namespace OpcUaStackCore;
 
