@@ -17,6 +17,7 @@
 
 #include <boost/algorithm/string.hpp>
 
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/Generator/NodeInfoObjectType.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
@@ -200,7 +201,6 @@ namespace OpcUaStackServer
 		ima.informationModel(informationModel_);
 
 		// read node information
-		std::cout << *baseNode->getNodeClass() << std::endl;
 		switch (*baseNode->getNodeClass())
 		{
 			case NodeClass::EnumObjectType:
@@ -274,6 +274,11 @@ namespace OpcUaStackServer
 			// only nodes with modelling rules are allowed
 			OpcUaNodeId modellingRule;
 			if (!baseNodeClassChildTemplate->referenceItemMap().getHasModellingRule(modellingRule)) {
+				continue;
+			}
+
+			// ignore optional place holder nodes
+			if (modellingRule == OpcUaNodeId(OpcUaId_ModellingRule_OptionalPlaceholder)) {
 				continue;
 			}
 
