@@ -20,9 +20,7 @@
 
 #include <map>
 #include <string>
-#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/Object.h"
-#include "OpcUaStackCore/Base/os.h"
 
 
 namespace OpcUaStackCore

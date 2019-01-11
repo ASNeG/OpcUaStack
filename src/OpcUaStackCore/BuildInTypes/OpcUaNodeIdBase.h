@@ -26,8 +26,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaGuid.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {

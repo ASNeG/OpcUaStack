@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_ApplicationHReadEventContext_h__
 #define __OpcUaStackCore_ApplicationHReadEventContext_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"

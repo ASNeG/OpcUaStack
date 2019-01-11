@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackCore_OpcUaExtensibleParameter_h__
 #define __OpcUaStackCore_OpcUaExtensibleParameter_h__
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore

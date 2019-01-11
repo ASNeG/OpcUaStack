@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_RegisterForwardGlobalRequest_h__
 #define __OpcUaStackCore_RegisterForwardGlobalRequest_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 
 namespace OpcUaStackCore

@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_RegisterForwardNodeResponse_h__
 #define __OpcUaStackCore_RegisterForwardNodeResponse_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
 namespace OpcUaStackCore

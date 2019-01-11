@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_RegisterForwardNodeRequest_h__
 #define __OpcUaStackCore_RegisterForwardNodeRequest_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
 

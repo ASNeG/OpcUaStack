@@ -18,10 +18,8 @@
 #ifndef __OpcUaStackCore_BrowseName_h__
 #define __OpcUaStackCore_BrowseName_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore
 {

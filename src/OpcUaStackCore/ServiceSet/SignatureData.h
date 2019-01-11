@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,12 +19,11 @@
 #define __OpcUaStackCore_SignatureData_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 
 namespace OpcUaStackCore
 {

@@ -18,9 +18,7 @@
 #ifndef __OpcUaStackCore_ObjectPool_h__
 #define __OpcUaStackCore_ObjectPool_h__
 
-#include "boost/shared_ptr.hpp"
 #include "OpcUaStackCore/Base/Object.h"
-#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {

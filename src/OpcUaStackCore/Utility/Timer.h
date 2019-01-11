@@ -2,7 +2,6 @@
 #define __OpcUaStackCore_Timer_h__
 
 #include <boost/asio.hpp>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Callback.h"
 

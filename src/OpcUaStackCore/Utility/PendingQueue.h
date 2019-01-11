@@ -1,7 +1,6 @@
 #ifndef __OpcUaStackCore_PendingQueue_h__
 #define __OpcUaStackCore_PendingQueue_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Utility/Timer.h"

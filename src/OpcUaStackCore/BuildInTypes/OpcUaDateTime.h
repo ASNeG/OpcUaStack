@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,10 +19,9 @@
 #define __OpcUaStackCore_OpcUaDateTime_h__
 
 #include "boost/property_tree/ptree.hpp"
+#include "boost/date_time/posix_time/posix_time.hpp"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
-#include "OpcUaStackCore/Base/os.h"
-#include "boost/date_time/posix_time/posix_time.hpp"
 
 namespace OpcUaStackCore
 {

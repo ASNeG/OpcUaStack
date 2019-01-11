@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,19 +19,7 @@
 #define __OpcUaStackCore_AddNodesRequest_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/StandardDataTypes/AddNodesItem.h"
-#include "OpcUaStackCore/StandardDataTypes/ObjectAttributes.h"
-#include "OpcUaStackCore/StandardDataTypes/VariableAttributes.h"
-#include "OpcUaStackCore/StandardDataTypes/VariableTypeAttributes.h"
-#include "OpcUaStackCore/StandardDataTypes/MethodAttributes.h"
-#include "OpcUaStackCore/StandardDataTypes/ObjectTypeAttributes.h"
-#include "OpcUaStackCore/StandardDataTypes/DataTypeAttributes.h"
-#include "OpcUaStackCore/StandardDataTypes/ReferenceTypeAttributes.h"
-#include "OpcUaStackCore/StandardDataTypes/ViewAttributes.h"
 
 namespace OpcUaStackCore
 {

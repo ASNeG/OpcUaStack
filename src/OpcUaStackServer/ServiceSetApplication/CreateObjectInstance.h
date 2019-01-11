@@ -19,7 +19,6 @@
 #define __OpcUaStackServer_CreateObjectInstance_h__
 
 #include <vector>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"

@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackServer_ApplicationService_h__
 #define __OpcUaStackServer_ApplicationService_h__
 
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"

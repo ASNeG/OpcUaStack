@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_ForwardNodeSync_h__
 #define __OpcUaStackCore_ForwardNodeSync_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardCallback.h"
 
 namespace OpcUaStackCore

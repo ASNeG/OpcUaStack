@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackCore_ResponseHeader_h__
 #define __OpcUaStackCore_ResponseHeader_h__
 
-#include "OpcUaStackCore/Base/Object.h"
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 

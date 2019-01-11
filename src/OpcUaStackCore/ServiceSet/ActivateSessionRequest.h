@@ -20,8 +20,8 @@
 
 #include <stdint.h>
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
-#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/SignatureData.h"
+#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/StandardDataTypes/UserIdentityToken.h"
 #include "OpcUaStackCore/StandardDataTypes/SignedSoftwareCertificate.h"
 

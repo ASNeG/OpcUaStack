@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,9 +18,8 @@
 #ifndef __OpcUaStackCore_ApplicationCertificateConfig_h__
 #define __OpcUaStackCore_ApplicationCertificateConfig_h__
 
-#include <OpcUaStackCore/Certificate/ApplicationCertificate.h>
 #include <string>
-#include "OpcUaStackCore/Base/os.h"
+#include <OpcUaStackCore/Certificate/ApplicationCertificate.h>
 #include "OpcUaStackCore/Base/Config.h"
 
 namespace OpcUaStackCore

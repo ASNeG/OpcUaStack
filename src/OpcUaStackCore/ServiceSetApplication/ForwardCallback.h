@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_ForwardCallback_h__
 #define __OpcUaStackCore_ForwardCallback_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/Callback.h"
 
