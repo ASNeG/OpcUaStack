@@ -15,8 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <OpcUaStackServer/Generator/NumberNamespaceMap.h>
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
+#include "OpcUaStackServer/Generator/NumberNamespaceMap.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

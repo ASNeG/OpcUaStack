@@ -21,12 +21,9 @@
 #include <boost/shared_ptr.hpp>
 
 #include <string>
+#include <map>
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-
-
-using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

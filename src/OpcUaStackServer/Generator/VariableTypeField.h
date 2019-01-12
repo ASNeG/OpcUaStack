@@ -18,12 +18,9 @@
 #ifndef __OpcUaStackCore_VariableTypeField_h__
 #define __OpcUaStackCore_VariableTypeField_h__
 
-#include <boost/shared_ptr.hpp>
-
 #include <vector>
 #include <map>
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
 using namespace OpcUaStackCore;

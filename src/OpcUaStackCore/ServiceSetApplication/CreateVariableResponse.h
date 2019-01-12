@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackCore_CreateVariableResponse_h__
 #define __OpcUaStackCore_CreateVariableResponse_h__
 
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Object.h"
 
 namespace OpcUaStackCore

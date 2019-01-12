@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackServer_ReferenceItemMap_h__
 #define __OpcUaStackServer_ReferenceItemMap_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceItem.h"
 

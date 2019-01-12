@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_CreateNodeInstanceRequest_h__
 #define __OpcUaStackCore_CreateNodeInstanceRequest_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"

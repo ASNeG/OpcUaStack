@@ -124,12 +124,15 @@ namespace OpcUaServer
 			}
 		}
 
+		Log(Info, "application started...");
 		return true;
 	}
 
 	void
 	Server::stop(void)
 	{
+		Log(Info, "receive stop signal...");
+
 		// shutdown discovery client
 		discoveryClient_.shutdown();
 

@@ -19,8 +19,6 @@
 #define __OpcUaStackServer_AttributeBase_h__
 
 #include <boost/thread/shared_mutex.hpp>
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 
 namespace OpcUaStackServer

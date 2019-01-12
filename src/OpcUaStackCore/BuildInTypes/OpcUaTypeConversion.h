@@ -24,7 +24,6 @@
 #ifndef __OpcUaStackCore_OpcUaTypeConversion_h__
 #define __OpcUaStackCore_OpcUaTypeConversion_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 

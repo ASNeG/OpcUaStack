@@ -17,7 +17,6 @@
 #ifndef __OpcUaStackClient_AttributeServiceConfig_h__
 #define __OpcUaStackClient_AttributeServiceConfig_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/AttributeServiceIf.h"
 #include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 

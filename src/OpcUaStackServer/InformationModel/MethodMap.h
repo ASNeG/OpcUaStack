@@ -20,7 +20,6 @@
 
 #include <map>
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
 #include "OpcUaStackServer/InformationModel/MethodId.h"
 

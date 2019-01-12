@@ -21,8 +21,6 @@
 #include <boost/property_tree/ptree.hpp>
 #include <map>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"

@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_GetNodeReferenceRequest_h__
 #define __OpcUaStackCore_GetNodeReferenceRequest_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
 namespace OpcUaStackCore

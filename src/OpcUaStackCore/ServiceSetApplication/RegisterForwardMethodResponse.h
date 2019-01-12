@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_RegisterForwardMethodResponse_h__
 #define __OpcUaStackCore_RegisterForwardMethodResponse_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
 

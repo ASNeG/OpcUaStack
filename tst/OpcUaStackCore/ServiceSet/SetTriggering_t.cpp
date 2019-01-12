@@ -4,6 +4,8 @@
 #include "OpcUaStackCore/ServiceSet/SetTriggeringResponse.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
+#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
+#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 

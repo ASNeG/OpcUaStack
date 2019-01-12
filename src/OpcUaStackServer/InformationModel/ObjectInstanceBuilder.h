@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"

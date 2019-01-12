@@ -19,10 +19,9 @@
 #define __OpcUaStackServer_Attribute_h__
 
 #include <boost/optional.hpp>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
+#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 
 using namespace OpcUaStackCore;
 

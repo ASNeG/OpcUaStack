@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,8 +19,6 @@
 #define __OpcUaStackServer_NodeSetDefinitionParser_h__
 
 #include <boost/property_tree/ptree.hpp>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/StandardDataTypes/EnumDefinitionExpand.h"
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinitionExpand.h"
 

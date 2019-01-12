@@ -17,6 +17,7 @@
 
 #include <boost/algorithm/string.hpp>
 
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/Generator/NodeInfoObjectType.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
@@ -200,7 +201,6 @@ namespace OpcUaStackServer
 		ima.informationModel(informationModel_);
 
 		// read node information
-		std::cout << *baseNode->getNodeClass() << std::endl;
 		switch (*baseNode->getNodeClass())
 		{
 			case NodeClass::EnumObjectType:
@@ -277,6 +277,11 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// ignore optional place holder nodes
+			if (modellingRule == OpcUaNodeId(OpcUaId_ModellingRule_OptionalPlaceholder)) {
+				continue;
+			}
+
 			// handle child nodes
 			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
 			if (!readChilds(baseNodeClassChildTemplate, browseNames)) {
@@ -318,15 +323,7 @@ namespace OpcUaStackServer
 		if ((*baseNode->getDisplayName()).text().toStdString() == "OutputArguments") return true;
 
 		// create name
-		std::string name;
-		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
-			OpcUaQualifiedName::SPtr browseName;
-			browsePath.pathNames()->get(idx, browseName);
-			if (!name.empty()) name += "_";
-			name += browseName->name().toStdString();
-		}
-		if (!name.empty()) name += "_";
-		name += "Variable";
+		std::string name = browsePath.stringId("Variable");
 		variableTypeField->name(name);
 
 		// create variable name
@@ -397,15 +394,7 @@ namespace OpcUaStackServer
 			.parameter("BrowsePath", browsePath);
 
 		// create name
-		std::string name;
-		for (uint32_t idx = 0; idx < browsePath.pathNames()->size(); idx++) {
-			OpcUaQualifiedName::SPtr browseName;
-			browsePath.pathNames()->get(idx, browseName);
-			if (!name.empty()) name += "_";
-			name += browseName->name().toStdString();
-		}
-		if (!name.empty()) name += "_";
-		name += "Method";
+		std::string name = browsePath.stringId("Method");
 		methodTypeField->name(name);
 
 		// create variable name

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackServer_NodeSetBaseParser_h__
 #define __OpcUaStackServer_NodeSetBaseParser_h__
 
-#include "OpcUaStackCore/Base/os.h"
+#include <vector>
 #include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
@@ -27,7 +27,6 @@
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ViewNodeClass.h"
-#include <vector>
 
 namespace OpcUaStackServer
 {
