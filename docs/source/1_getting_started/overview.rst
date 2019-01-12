@@ -1,13 +1,7 @@
 Overview
 ===========================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Overview:
-
-
 In this part you can learn about the basic OPC UA conceptions and structure of ASNeG OPC UA Stack
-
 
 OPC UA
 ---------------------------
@@ -201,9 +195,9 @@ Columns:
 Columns:
 
 * *Information Model* - Interface of the OPC UA information model of the OPC UA Server
-* *OPC UA Interface* - OPC UA Applications are deployed to the OPC UA Server in form of libraries. The OPC UA Interface contains the full OPC UA functionality. 
+* *OPC UA Interface* - OPC UA Applications are deployed to the OPC UA Server in form of libraries. The OPC UA Interface contains the full OPC UA functionality.
   To use the interface OPC UA skills are necessary.
-* *Value Based Interface* - OPC UA Applications are deployed to the OPC UA Server in form of libraries. The value based Interface contains the limited OPC UA functionality. 
+* *Value Based Interface* - OPC UA Applications are deployed to the OPC UA Server in form of libraries. The value based Interface contains the limited OPC UA functionality.
   To use the interface OPC UA skills are not necessary.
 
 **Security:**
@@ -215,7 +209,7 @@ Columns:
 +                        +----------------------------+----------+----------+
 |                        | Sign                       |          | |done|   |
 +                        +----------------------------+----------+----------+
-|                        | Sign and Encrypt           |          | |done|   | 
+|                        | Sign and Encrypt           |          | |done|   |
 +------------------------+----------------------------+----------+----------+
 | Security Policy        | None                       | |done|   | |done|   |
 +                        +----------------------------+----------+----------+
@@ -223,7 +217,7 @@ Columns:
 +                        +----------------------------+----------+----------+
 |                        | Basic256                   |          | |done|   |
 +                        +----------------------------+----------+----------+
-|                        | Basic256Sha256             |          | |done|   | 
+|                        | Basic256Sha256             |          | |done|   |
 +------------------------+----------------------------+----------+----------+
 | User Authentication    | Anonymous                  | |done|   | |done|   |
 + Policy                 +----------------------------+----------+----------+
@@ -231,10 +225,8 @@ Columns:
 +                        +----------------------------+----------+----------+
 |                        | IssuedToken                |          | |done|   |
 +                        +----------------------------+----------+----------+
-|                        | Certificate                |          | |done|   | 
+|                        | Certificate                |          | |done|   |
 +------------------------+----------------------------+----------+----------+
 
 References
 ---------------------------
-
-

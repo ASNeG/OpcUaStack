@@ -1,12 +1,8 @@
 Hello, World of OPC UA!
 ===========================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Hello, World!:
 
-
-This is the simplest example of an OPC UA application based on ASNeG OPC UA Stack. 
+This is the simplest example of an OPC UA application based on ASNeG OPC UA Stack.
 The example will help you to understand the basic OPC UA conceptions and make your first OPC UA server.
 Here we are going to output a greeting message which will be available from other OPC UA client.
 
@@ -15,18 +11,18 @@ Requirements
 
 In order to start this tutorial you need to have the following stuff:
 
-1. Windows or Linux machine with the installed stack (see :doc:`installation <installation>`  if you don't have it yet.) 
+1. Windows or Linux machine with the installed stack (see :doc:`installation <installation>`  if you don't have it yet.)
 2. A text editor
 3. An OPC UA client to test the app. In the tutorial I will use `OPC UA Expert`_.
 
 
 Creating the application frame
 ------------------------------
-At first we need to create the frame of the future application. It is very easy to do with the stack. 
+At first we need to create the frame of the future application. It is very easy to do with the stack.
 Just type in your console:
 
 ::
-    
+
     $ OpcUaProjectBuilder3 helloworld "My First OPC UA Application" 8888
 
 The builder has created a C++ project in folder **helloworld**, which is ready to be compiled and run as an OPC UA server on 8888 TCP\\IP port.
@@ -40,7 +36,7 @@ If you look inside the folder you can see quite many files, but don't worry. You
 Information Model
 ---------------------------
 
-Every OPC UA server application provides its data with *Nodes*, which contain some information and have a tree structure. 
+Every OPC UA server application provides its data with *Nodes*, which contain some information and have a tree structure.
 To make a greeting string available for OPC UA clients we must to describe it as a node in *Information Model*. Let's do it!
 
 
@@ -100,11 +96,11 @@ Now we must include our node set to the information model of the application in 
     <NodeSetFile>@CONF_DIR@/HelloWorldNodeSet.xml</NodeSetFile>
   </InformationModel>
 
-This might seem quite complicated, but actually you won't need to make your XML node sets manually. You can use our `OPC UA Designer`_ to make this process easier. 
-However we do everything ourselves, so that we can learn some basic OPC UA conceptions. If you are already familiar to the protocol, just skip the rest of the section. 
+This might seem quite complicated, but actually you won't need to make your XML node sets manually. You can use our `OPC UA Designer`_ to make this process easier.
+However we do everything ourselves, so that we can learn some basic OPC UA conceptions. If you are already familiar to the protocol, just skip the rest of the section.
 
-*OPC UA Information* model is split into *namespaces*. Each of them must have its *namespace index*. Index 0 is reserved for the OPC UA standard namespace, where all standard types are described. 
-In our application it is stored in **Opc.Ua.NodeSet.xml**. The application can't work without it, so we need to include this file in our configuration. 
+*OPC UA Information* model is split into *namespaces*. Each of them must have its *namespace index*. Index 0 is reserved for the OPC UA standard namespace, where all standard types are described.
+In our application it is stored in **Opc.Ua.NodeSet.xml**. The application can't work without it, so we need to include this file in our configuration.
 
 In **HelloWorldNodeSet.xml** we've described our own *namespace* by defining *NamespaceUri*:
 
@@ -131,7 +127,7 @@ Now we can describe folder **HelloWorldFolder** for our message:
     </UAObject>
 
 In the OPC UA everything (objects, variables, types, methods etc.) is *nodes* and every *node* must be identified by a unique *node ID*. Our **HelloWorldFolder** is an *object* with
-ID "ns=1;i=1", that means it belongs to *namespace* 1 and has *identifier* 1. 
+ID "ns=1;i=1", that means it belongs to *namespace* 1 and has *identifier* 1.
 
 The next important OPC UA conception is *references*, they describe relationships between *nodes*. In our case folder
 **HelloWorldFolder** is placed on folder *Objects*. This relation is described by the following sting:
@@ -140,7 +136,7 @@ The next important OPC UA conception is *references*, they describe relationship
 
     <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
 
-The node ID 'i=85' references to standard node *Objects* in namespace 0 with identifier 85. You can found it in **Opc.Ua.NodeSet.xml**. 
+The node ID 'i=85' references to standard node *Objects* in namespace 0 with identifier 85. You can found it in **Opc.Ua.NodeSet.xml**.
 
 In our application **HelloWorldFolder** is just a container for **GreetingString** and it doesn't have any other information. The data is stored in *variables*. And our string is a *variable*:
 
@@ -188,7 +184,7 @@ On Linux:
 ::
 
     $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:path/to/install/usr/lib/
-    $ OpcUaServer3 ./etc/OpcUaStack/helloworld/OpcUaServer.xml 
+    $ OpcUaServer3 ./etc/OpcUaStack/helloworld/OpcUaServer.xml
 
 
 On Windows:
@@ -196,30 +192,30 @@ On Windows:
 ::
 
     $ set PATH=%PATH%;\path\to\insstall\usr\lib\
-    $ OpcUaServer3 etc\OpcUaStack\helloworld\OpcUaServer.xml 
+    $ OpcUaServer3 etc\OpcUaStack\helloworld\OpcUaServer.xml
 
 
-We need to determine, where the shared library is, by using the environment variable only when we install the app locally. 
-You can build a DEB, RPM or MSI packet to distribute our applications as services. 
+We need to determine, where the shared library is, by using the environment variable only when we install the app locally.
+You can build a DEB, RPM or MSI packet to distribute our applications as services.
 
 Testing with OPC UA Client
 ---------------------------
 
 So far our application does nothing but we can see its structure in OPC UA client. Make sure that the application is running and launch
 `OPC UA Expert`_. Click on *Server->Add* and add the server with URI **opc.tcp://127.0.0.1:8888**. You should see:
- 
+
 .. figure:: add_new_server.png
-   :scale: 50 %   
+   :scale: 50 %
    :alt: add a new OPC UA server
 
 Click on security policy **None** and connect to the server. Then drop node *GreetingString* onto *Data Access View*. Now our should see the following view:
 
 .. figure:: data_access_view_1.png
-   :scale: 50 %   
+   :scale: 50 %
    :alt: Data Access View
 
 If you are new at OPC UA technology it could be very useful to take some time discovering the application and comparing the information from the client
-with **HelloWorldNodeSet.xml** and **HelloWorldNodeSet.xml** files. 
+with **HelloWorldNodeSet.xml** and **HelloWorldNodeSet.xml** files.
 
 Hello, World!
 ---------------------------
@@ -258,7 +254,7 @@ Now we can make our application do something "useful". Open file **src/helloworl
     }
 
 There is a pretty big amount of code, but it is not so complicated as it looks. The communication between a user application and the stack based on the transaction model. So we need to send
-a request for getting a variable. Pay attention that we use the same *node ID* of the greeting string that we've described in **HelloWorldNodeSet.xml**. 
+a request for getting a variable. Pay attention that we use the same *node ID* of the greeting string that we've described in **HelloWorldNodeSet.xml**.
 
 .. code-block:: cpp
 
@@ -293,9 +289,9 @@ The last step is to write new value "Hello, World!" into the string:
     ptr->setValueSync(dataValue);
 
 OPC UA variables contain not only values, but some additional information. The *status code* provides information about the quality of the data. If it is not **Success** the client
-can't trust the value of the variable. 
+can't trust the value of the variable.
 
-Now we can see the message with the client. Rebuild the application and connect with the client to it. 
+Now we can see the message with the client. Rebuild the application and connect with the client to it.
 
 References
 ---------------------------
@@ -307,5 +303,3 @@ References
 
 .. _OPC UA Expert: https://www.unified-automation.com/products/development-tools/uaexpert.html
 .. _OPC UA Designer: https://github.com/ASNeG/OpcUaDesigner
-
-
