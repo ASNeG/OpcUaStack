@@ -186,7 +186,7 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		Log(Debug, "receive find servers request request");
+		Log(Debug, "receive find servers request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_FindServersResponse_Encoding_DefaultBinary;
 
 		std::iostream is(&secureChannelTransaction->is_);
