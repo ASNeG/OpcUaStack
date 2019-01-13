@@ -102,13 +102,14 @@ namespace OpcUaStackCore
 	bool
 	SecurityHeader::isEncryptionEnabled(void)
 	{
-		return senderCertificate_.exist();
+		return receiverCertificateThumbprint_.exist();
+
 	}
 
 	bool
 	SecurityHeader::isSignatureEnabled(void)
 	{
-		return receiverCertificateThumbprint_.exist();
+		return senderCertificate_.exist();
 	}
 
 	bool
@@ -128,7 +129,7 @@ namespace OpcUaStackCore
 		senderCertificate_.opcUaBinaryDecode(is);
 		receiverCertificateThumbprint_.opcUaBinaryDecode(is);
 
-		// create certificate chain
+		// create certificate chain - only one certificate is supported
 		if (senderCertificate_.exist()) {
 			if (!certificateChain_.fromByteString(senderCertificate_)) {
 				return false;
