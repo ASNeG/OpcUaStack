@@ -86,13 +86,6 @@ namespace OpcUaStackServer
 		Log(Info, "init application");
 		rc = rc && initApplication();
 
-#if 0
-		std::vector<std::string> namespaceUris;
-		//namespaceUris.push_back("http://yourorganisation.org/Raspberry/");
-		namespaceUris.push_back("http://yourorganisation.org/Test-Server/");
-		writeInformationModel("NodeSet.xml", namespaceUris);
-#endif
-
 		return rc;
 	}
 
@@ -230,16 +223,6 @@ namespace OpcUaStackServer
 					.parameter("NodeSetFileName", nodeSetFileName);
 				return false;
 			}
-
-#if 0 // FIXME: Beispiel - Lesen von Namespace Informationen
-			NamespaceVec::iterator it;
-			NodeSetNamespace& nodeSetNamespace = nodeSetXmlParser.nodeSetNamespace();
-			NamespaceVec& namespaceVec = nodeSetNamespace.localNamespaceVec();
-			std::cout << "NodeSetFileName=" << nodeSetFileName << std::endl;
-			for (it = namespaceVec.begin(); it != namespaceVec.end(); it++) {
-				std::cout << "NamespaceUri" << *it << ", NamespaceIndex=" << nodeSetNamespace.mapToGlobalNamespaceIndex(*it) << std::endl;
-			}
-#endif
 
 			if (!InformationModelNodeSet::initial(informationModel_, nodeSetXmlParser)) {
 				Log(Error, "node set initialisation error")
