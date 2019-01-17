@@ -36,8 +36,8 @@ If you look inside the folder you can see quite many files, but don't worry. You
 Information Model
 ---------------------------
 
-Every OPC UA server application provides its data with *Nodes*, which contain some information and have a tree structure.
-To make a greeting string available for OPC UA clients we must to describe it as a node in *Information Model*. Let's do it!
+Every OPC UA server application provides its data with :term:`Node`\ s, which contain some information and have a tree structure.
+To make a greeting string available for OPC UA clients we must to describe it as a node in :term:`Information Model`. Let's do it!
 
 
 Create a file with name **HelloWorldNodeSet.xml** in directory **src/helloworld/Config** and copy there the following text in XML format:
@@ -126,7 +126,7 @@ Now we can describe folder **HelloWorldFolder** for our message:
         </References>
     </UAObject>
 
-In the OPC UA everything (objects, variables, types, methods etc.) is *nodes* and every *node* must be identified by a unique *node ID*. Our **HelloWorldFolder** is an *object* with
+In the OPC UA everything (objects, variables, types, methods etc.) is *nodes* and every :term:`node` must be identified by a unique *node ID*. Our **HelloWorldFolder** is an *object* with
 ID "ns=1;i=1", that means it belongs to *namespace* 1 and has *identifier* 1.
 
 The next important OPC UA conception is *references*, they describe relationships between *nodes*. In our case folder
