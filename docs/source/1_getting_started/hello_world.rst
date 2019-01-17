@@ -1,7 +1,6 @@
 Hello, World of OPC UA!
 ===========================
 
-
 This is the simplest example of an OPC UA application based on ASNeG OPC UA Stack.
 The example will help you to understand the basic OPC UA conceptions and make your first OPC UA server.
 Here we are going to output a greeting message which will be available from other OPC UA client.
@@ -177,7 +176,7 @@ On Windows:
 
 The application will be built as a shared library and copied with its configuration into the installation directory.
 
-Now got to the directory where you have install the application and run the following command:
+Now go to the directory where you have install the application and run the following command:
 
 On Linux:
 
