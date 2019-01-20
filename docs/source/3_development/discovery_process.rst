@@ -1,3 +1,5 @@
+.. _discovery_process:
+
 Discovery Process
 ==================
 

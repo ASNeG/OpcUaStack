@@ -24,9 +24,11 @@ Just type in your console:
 
     $ OpcUaProjectBuilder3 helloworld "My First OPC UA Application" 8888
 
-The builder has created a C++ project in folder **helloworld**, which is ready to be compiled and run as an OPC UA server on 8888 TCP\\IP port.
+The builder has created a C++ project in folder **helloworld**, which is ready
+to be compiled and run as an OPC UA server on 8888 TCP\\IP port.
 
-If you look inside the folder you can see quite many files, but don't worry. You don't need to touch most of them. For our goal we need only two:
+If you look inside the folder you can see quite many files, but don't worry.
+You don't need to touch most of them. For our goal we need only two:
 
 * **src/helloworld/Config/OpcUaServer.xml** - configuration of the server
 * **src/helloworld/Library/Library.cpp** - source code of the user application
@@ -35,11 +37,14 @@ If you look inside the folder you can see quite many files, but don't worry. You
 Information Model
 ---------------------------
 
-Every OPC UA server application provides its data with :term:`Node`\ s, which contain some information and have a tree structure.
-To make a greeting string available for OPC UA clients we must to describe it as a node in :term:`Information Model`. Let's do it!
+Every OPC UA server application provides its data with :term:`Node`\ s, which
+contain some information and have a tree structure. To make a greeting string
+available for OPC UA clients we must to describe it as a node in
+:term:`Information Model`. Let's do it!
 
 
-Create a file with name **HelloWorldNodeSet.xml** in directory **src/helloworld/Config** and copy there the following text in XML format:
+Create a file with name **HelloWorldNodeSet.xml** in directory
+**src/helloworld/Config** and copy there the following text in XML format:
 
 .. code-block:: xml
   :emphasize-lines: 3,5
@@ -85,7 +90,8 @@ This file describes the structure of the application:
             |
             |- GreetingString (="Hello, World!")
 
-Now we must include our node set to the information model of the application in file **src/helloworld/Config/OpcUaServer.xml**:
+Now we must include our node set to the information model of the application in
+file **src/helloworld/Config/OpcUaServer.xml**:
 
 .. code-block:: xml
   :emphasize-lines: 3
@@ -95,13 +101,19 @@ Now we must include our node set to the information model of the application in 
     <NodeSetFile>@CONF_DIR@/HelloWorldNodeSet.xml</NodeSetFile>
   </InformationModel>
 
-This might seem quite complicated, but actually you won't need to make your XML node sets manually. You can use our `OPC UA Designer`_ to make this process easier.
-However we do everything ourselves, so that we can learn some basic OPC UA conceptions. If you are already familiar to the protocol, just skip the rest of the section.
+This might seem quite complicated, but actually you won't need to make your XML
+node sets manually. You can use our `OPC UA Designer`_ to make this process easier.
+However we do everything ourselves, so that we can learn some basic OPC UA
+conceptions. If you are already familiar to the protocol, just skip the rest of the section.
 
-*OPC UA Information* model is split into *namespaces*. Each of them must have its *namespace index*. Index 0 is reserved for the OPC UA standard namespace, where all standard types are described.
-In our application it is stored in **Opc.Ua.NodeSet.xml**. The application can't work without it, so we need to include this file in our configuration.
+OPC UA :term:`Information Model` is split into *namespaces*. Each of them must
+have its *namespace index*. Index 0 is reserved for the OPC UA standard namespace,
+where all standard types are described. In our application it is stored in
+**Opc.Ua.NodeSet.xml**. The application can't work without it, so we need to
+include this file in our configuration.
 
-In **HelloWorldNodeSet.xml** we've described our own *namespace* by defining *NamespaceUri*:
+In **HelloWorldNodeSet.xml** we've described our own *namespace* by defining
+*NamespaceUri*:
 
 .. code-block:: xml
     :emphasize-lines: 2
@@ -110,7 +122,8 @@ In **HelloWorldNodeSet.xml** we've described our own *namespace* by defining *Na
         <Uri>http://localhost/helloworld/</Uri>
     </NamespaceUris>
 
-It is not necessary for our task that the URI is really exists, but the stack needs it to give our *namespace* a new *namespace index* which will be 1.
+It is not necessary for our task that the URI is really exists, but the stack
+needs it to give our *namespace* a new *namespace index* which will be 1.
 
 Now we can describe folder **HelloWorldFolder** for our message:
 
@@ -125,19 +138,25 @@ Now we can describe folder **HelloWorldFolder** for our message:
         </References>
     </UAObject>
 
-In the OPC UA everything (objects, variables, types, methods etc.) is *nodes* and every :term:`node` must be identified by a unique *node ID*. Our **HelloWorldFolder** is an *object* with
-ID "ns=1;i=1", that means it belongs to *namespace* 1 and has *identifier* 1.
+In the OPC UA everything (:term:`Object`\ s, :term:`Variable`\ s, :term:`ObjectType`\ s,
+:term:`Method`\ s etc.) is :term:`Node`\ s and every :term:`Node` must be identified by
+a unique *node ID*. Our **HelloWorldFolder** is an *object* with ID "ns=1;i=1",
+that means it belongs to *namespace* 1 and has *identifier* 1.
 
-The next important OPC UA conception is *references*, they describe relationships between *nodes*. In our case folder
-**HelloWorldFolder** is placed on folder *Objects*. This relation is described by the following sting:
+The next important OPC UA conception is :term:`Reference`\ s, they describe
+relationships between :term:`Node`\ s. In our case folder **HelloWorldFolder**
+is placed on folder *Objects*. This relation is described by the following sting:
 
 .. code-block:: xml
 
     <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
 
-The node ID 'i=85' references to standard node *Objects* in namespace 0 with identifier 85. You can found it in **Opc.Ua.NodeSet.xml**.
+The node ID 'i=85' belongs to standard node-folder *Objects* in namespace 0. You
+can found it in **Opc.Ua.NodeSet.xml**.
 
-In our application **HelloWorldFolder** is just a container for **GreetingString** and it doesn't have any other information. The data is stored in *variables*. And our string is a *variable*:
+In our application **HelloWorldFolder** is just a container for **GreetingString**
+and it doesn't have any other information. In OPC UA the data is stored in
+:term:`Variable`\ s. And our string is a :term:`Variable` as well:
 
 .. code-block:: xml
 
@@ -153,14 +172,20 @@ In our application **HelloWorldFolder** is just a container for **GreetingString
         </Value>
     </UAVariable>
 
-As you can see from the XML snippet, the main difference between *objects* and *variables* is, that the *variables* have values. Variable **GreatingString** has value of type string (ns=0,i=12) with default value *Ehmm* and placed in on **HelloWorldFolder** (ns=1;i=1)
+As you can see from the XML snippet, the main difference between :term:`Object`\ s
+and :term:`Variable`\ s is, that the :term:`Variable`\ s have values. Variable
+**GreatingString** has value of type string (ns=0,i=12) with default value *Ehmm*
+and placed on **HelloWorldFolder** (ns=1;i=1)
 
-Now our information model is described completely and we can see it with an OPC UA client. But we need to compile and launch the application before.
+Now our information model is described completely and we can see it with an
+OPC UA client. But we need to compile and launch the application before.
 
 Building and running
 ---------------------------
 
-In order to make the build process easier ASNeG OPC UA Stack provides scripts for building and installing user applications. We will build and install our application locally:
+In order to make the build process easier ASNeG OPC UA Stack provides scripts
+for building and installing user applications. We will build and install our
+application locally:
 
 On Linux:
 
@@ -174,9 +199,11 @@ On Windows:
 
 	$ build.bat -t local -i path\to\install
 
-The application will be built as a shared library and copied with its configuration into the installation directory.
+The application will be built as a shared library and copied with its
+configuration into the installation directory.
 
-Now go to the directory where you have install the application and run the following command:
+Now go to the directory where you have install the application and run the
+following command:
 
 On Linux:
 
@@ -194,32 +221,43 @@ On Windows:
     $ OpcUaServer3 etc\OpcUaStack\helloworld\OpcUaServer.xml
 
 
-We need to determine, where the shared library is, by using the environment variable only when we install the app locally.
-You can build a DEB, RPM or MSI packet to distribute our applications as services.
+We need to determine, where the shared library is, by using the environment
+variable only when we install the app locally. You can build a DEB, RPM or MSI
+packet to distribute our applications as services.
 
 Testing with OPC UA Client
 ---------------------------
 
-So far our application does nothing but we can see its structure in OPC UA client. Make sure that the application is running and launch
-`OPC UA Expert`_. Click on *Server->Add* and add the server with URI **opc.tcp://127.0.0.1:8888**. You should see:
+So far our application does nothing but we can see its structure in OPC UA client.
+Make sure that the application is running and launch `OPC UA Expert`_. Click on
+*Server->Add* and add the server with URI **opc.tcp://127.0.0.1:8888**. You
+should see:
 
 .. figure:: add_new_server.png
    :scale: 50 %
    :alt: add a new OPC UA server
 
-Click on security policy **None** and connect to the server. Then drop node *GreetingString* onto *Data Access View*. Now our should see the following view:
+Click on security policy **None** and connect to the server. Then drop node
+*GreetingString* onto *Data Access View*. Now our should see the following view:
 
 .. figure:: data_access_view_1.png
    :scale: 50 %
    :alt: Data Access View
 
-If you are new at OPC UA technology it could be very useful to take some time discovering the application and comparing the information from the client
+If you are new at OPC UA technology it could be very useful to take some time
+discovering the application and comparing the information from the client
 with **HelloWorldNodeSet.xml** and **HelloWorldNodeSet.xml** files.
+
+Actually we've described the simplest way to connect with OPC UA server but there
+are some other approaches too. See :ref:`discovery_process` and :ref:`security`
+sections for more information.
 
 Hello, World!
 ---------------------------
 
-Now we can make our application do something "useful". Open file **src/helloworld/Library/Library.cpp** and place the following code to method **startup**:
+Now we can make our application do something "useful". Open file
+**src/helloworld/Library/Library.cpp** and place the following code to method
+**startup**:
 
 .. code-block:: cpp
 
@@ -252,8 +290,11 @@ Now we can make our application do something "useful". Open file **src/helloworl
         return true;
     }
 
-There is a pretty big amount of code, but it is not so complicated as it looks. The communication between a user application and the stack based on the transaction model. So we need to send
-a request for getting a variable. Pay attention that we use the same *node ID* of the greeting string that we've described in **HelloWorldNodeSet.xml**.
+There is a pretty big amount of code, but it is not so complicated as it looks.
+The communication between a user application and the stack based on the
+transaction model. So we need to send a request for getting a variable. Pay
+attention that we use the same *node ID* of the greeting string that we've
+described in **HelloWorldNodeSet.xml**.
 
 .. code-block:: cpp
 
@@ -264,7 +305,8 @@ a request for getting a variable. Pay attention that we use the same *node ID* o
     }
 
 
-After we've sent the request to the stack, we can check if the node is available and get our greeting string as a *variable node*:
+After we've sent the request to the stack, we can check if the node is available
+and get our greeting string as a :term:`Variable`:
 
 .. code-block:: cpp
 
@@ -287,15 +329,21 @@ The last step is to write new value "Hello, World!" into the string:
     OpcUaDataValue dataValue(OpcUaString("Hello, world!"));
     ptr->setValueSync(dataValue);
 
-OPC UA variables contain not only values, but some additional information. The *status code* provides information about the quality of the data. If it is not **Success** the client
-can't trust the value of the variable.
+OPC UA :term:`Variable`\ s contain not only values, but some additional information.
+The *status code* provides information about the quality of the data. If it is
+not **Success** the client can't trust the value of the variable. You can learn
+more about how to obtain data with the stack in :ref:`data_access` section.
 
-Now we can see the message with the client. Rebuild the application and connect with the client to it.
+Now we can see the message with the client. Rebuild the application and connect
+with the client to it.
 
 References
 ---------------------------
 
-* :doc:`Installation Guide <installation>`
+* :ref:`installation`
+* :ref:`discovery_process`
+* :ref:`data_access`
+* :ref:`security`
 * `OPC UA Designer`_
 * `OPC UA Expert`_
 

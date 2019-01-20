@@ -7,8 +7,8 @@ develop your own applications with ASNeG OPC UA Stack.
 .. toctree::
 
    discovery_process
-   security
    session_and_access_control
    node_management
    data_access
    methods
+   security
