@@ -73,6 +73,8 @@ namespace OpcUaStackCore
 		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// check if encryption or signature is enabled
+		// if receiver certificate thumprint exist -> encryption is enabled
+		// if sender certificate exist             -> signature is enabled
 		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
 			return Success;
 		}
@@ -88,6 +90,7 @@ namespace OpcUaStackCore
 		securitySettings.cryptoBase(cryptoBase);
 
 		// decrypt received open secure channel request
+		// if receiver certificate thumprint exist -> encryption is enabled
 		if (securityHeader->isEncryptionEnabled()) {
 			statusCode = decryptReceivedOpenSecureChannelRequest(secureChannel);
 			if (statusCode != Success) {
@@ -96,6 +99,7 @@ namespace OpcUaStackCore
 		}
 
 		// verify signature
+		// if sender certificate exist -> signature is enabled
 		if (securityHeader->isSignatureEnabled()) {
 			Certificate::SPtr partnerCertificate = securityHeader->certificateChain().getCertificate();
 			securitySettings.partnerCertificate(partnerCertificate);
