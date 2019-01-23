@@ -8,6 +8,11 @@ OPC UA Glossary
   Address Space
     collection of information that an OPC UA Server makes visible to its Clients
 
+  Communication Stack
+    layered set of software modules between the application and the hardware that provides various
+    functions to encode, encrypt and format a Message for sending, and to decode, decrypt and unpack
+    a Message that was received
+
   Endpoint
     physical address available on a network that allows Clients to access one
     or more :term:`Service`\ s provided by a Server
@@ -38,11 +43,16 @@ OPC UA Glossary
   Reference
     explicit relationship (a named pointer) from one :term:`Node` to another
 
-  Security Channel
-    a long-term logical connection between a single client and a single server
+  Secure Channel
+    a long-term logical connection between a single client and a single server on
+    :term:`Communication Stack`'s level
 
   Service
     client-callable operation in an OPC UA Server
+
+  Session
+    a long-term logical connection between a single client and a single server
+    on OPC UA application level
 
   Variable
     :term:`Node` that contains a value

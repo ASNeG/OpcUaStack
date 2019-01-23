@@ -73,7 +73,7 @@ in configuration file **OpcUaServer.xml**:
       <UserTokenPolicy>
         <PolicyId>OpcUaStack1</PolicyId>
         <TokenType>Anonymous</TokenType>
-              <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+        <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
       </UserTokenPolicy>
       <UserTokenPolicy>
         <PolicyId>OpcUaStack2</PolicyId>
@@ -97,7 +97,7 @@ in configuration file **OpcUaServer.xml**:
 
 As you can see the :term:`Endpoint` provides the client information about
 application identification, communication and security policy so that the client
-can connect to the application via TCP\\IP and open a :term:`Security Channel`\ .
+can connect to the application via TCP\\IP and open a :term:`Secure Channel`\ .
 You can learn more about OPC UA security in section :ref:`Security`.
 
 
@@ -137,7 +137,7 @@ discovery server.
      I<-------------------------------------------------I          |
      |                                                  |          |
      |                                                  |          |
-     I                CreateSecurityChannel()           |          |
+     I                CreateSecureChannel()             |          |
      I------------------------------------------------------------>I
      I                                                  |          I
      |                                                  |          |
