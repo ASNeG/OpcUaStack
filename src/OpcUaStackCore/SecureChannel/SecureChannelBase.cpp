@@ -761,13 +761,13 @@ namespace OpcUaStackCore
 
 		// encode security header
 		SecurityHeader& securityHeader = secureChannel->securityHeader_;
-		securityHeader.senderCertificate().reset();
 		if (securityHeader.isSignatureEnabled()) {
+			securityHeader.senderCertificate().reset();
 			// FIXME: use sender certificate chain
 			applicationCertificate()->certificate()->toDERBuf(securityHeader.senderCertificate());
 		}
-		securityHeader.receiverCertificateThumbprint().reset();
 		if (securityHeader.isEncryptionEnabled()) {
+			securityHeader.receiverCertificateThumbprint().reset();
 			assert(securitySettings.partnerCertificate().get() != nullptr);
 
 			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
