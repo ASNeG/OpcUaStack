@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,8 +24,8 @@ namespace OpcUaStackCore
 	SecureChannelSecuritySettings::SecureChannelSecuritySettings(void)
 	: cryptoBase_()
 	, partnerCertificate_()
-	, clientNonce_()
-	, serverNonce_()
+	, partnerNonce_()
+	, ownNonce_()
 	, securityKeySetClient_()
 	, securityKeySetServer_()
 	{
@@ -34,6 +34,83 @@ namespace OpcUaStackCore
 	SecureChannelSecuritySettings::~SecureChannelSecuritySettings(void)
 	{
 	}
+
+	bool
+	SecureChannelSecuritySettings::isOwnEncryptionEnabled(void)
+	{
+		return ownCertificateChain_.size() > 0;
+
+	}
+
+	bool
+	SecureChannelSecuritySettings::isOwnSignatureEnabled(void)
+	{
+		return partnerCertificateThumbprint_.exist();
+	}
+
+	OpcUaByteString&
+	SecureChannelSecuritySettings::ownCertificateThumbprint(void)
+	{
+		return ownCertificateThumbprint_;
+	}
+
+	OpcUaByteString&
+	SecureChannelSecuritySettings::ownSecurityPolicyUri(void)
+	{
+		return ownSecurityPolicyUri_;
+	}
+
+	CertificateChain&
+	SecureChannelSecuritySettings::ownCertificateChain(void)
+	{
+		return ownCertificateChain_;
+	}
+
+	MemoryBuffer&
+	SecureChannelSecuritySettings::ownNonce(void)
+	{
+		return ownNonce_;
+	}
+
+
+	bool
+	SecureChannelSecuritySettings::isPartnerEncryptionEnabled(void)
+	{
+		return ownCertificateThumbprint_.exist();
+	}
+
+	bool
+	SecureChannelSecuritySettings::isPartnerSignatureEnabled(void)
+	{
+		return partnerCertificateChain_.size() > 0;
+	}
+
+	OpcUaByteString&
+	SecureChannelSecuritySettings::partnerCertificateThumbprint(void)
+	{
+		return partnerCertificateThumbprint_;
+	}
+
+	OpcUaByteString&
+	SecureChannelSecuritySettings::partnerSecurityPolicyUri(void)
+	{
+		return partnerSecurityPolicyUri_;
+	}
+
+	CertificateChain&
+	SecureChannelSecuritySettings::partnerCertificateChain(void)
+	{
+		return partnerCertificateChain_;
+	}
+
+	MemoryBuffer&
+	SecureChannelSecuritySettings::partnerNonce(void)
+	{
+		return partnerNonce_;
+	}
+
+	// **********************************************
+	// **********************************************
 
 	void
 	SecureChannelSecuritySettings::cryptoBase(CryptoBase::SPtr& cryptoBase)
@@ -57,18 +134,6 @@ namespace OpcUaStackCore
 	SecureChannelSecuritySettings::partnerCertificate(void)
 	{
 		return partnerCertificate_;
-	}
-
-	MemoryBuffer&
-	SecureChannelSecuritySettings::clientNonce(void)
-	{
-		return clientNonce_;
-	}
-
-	MemoryBuffer&
-	SecureChannelSecuritySettings::serverNonce(void)
-	{
-		return serverNonce_;
 	}
 
 	SecurityKeySet&

@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -65,6 +65,17 @@ namespace OpcUaStackCore
 		return certificateVec_.size();
 	}
 
+	uint32_t
+	CertificateChain::lastCertificateSize(void)
+	{
+		if (certificateVec_.size() == 0) {
+			return 0;
+		}
+
+		auto certificate = certificateVec_[certificateVec_.size()-1];
+		return certificate->getDERBufSize();
+	}
+
 	bool
 	CertificateChain::fromByteString(OpcUaByteString& byteString)
 	{
@@ -101,18 +112,24 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CertificateChain::toByteString(OpcUaByteString& byteString)
+	CertificateChain::opcUaBinaryDecode(std::istream& is)
 	{
-		Certificate::Vec::iterator it;
+		OpcUaByteString byteString;
+		byteString.opcUaBinaryDecode(is);
+		return fromByteString(byteString);
+	}
 
+	bool
+	CertificateChain::toByteString(OpcUaByteString& byteString) const
+	{
 		if (certificateVec_.empty()) {
 			return true;
 		}
 
 		// calculate buffer size
 		uint32_t usedBufferSize = 0;
-		for (it = certificateVec_.begin(); it != certificateVec_.end(); it++) {
-			usedBufferSize += (*it)->getDERBufSize();
+		for (auto certificate : certificateVec_) {
+			usedBufferSize += certificate->getDERBufSize();
 		}
 
 		if (usedBufferSize == 0) {
@@ -122,8 +139,7 @@ namespace OpcUaStackCore
 		// create buffer
 		MemoryBuffer buffer(usedBufferSize);
 		char* mem = buffer.memBuf();
-		for (it = certificateVec_.begin(); it != certificateVec_.end(); it++) {
-			Certificate::SPtr certificate = *it;
+		for (auto certificate : certificateVec_) {
 			uint32_t length = certificate->getDERBufSize();
 			certificate->toDERBuf(mem, &length);
 
@@ -131,6 +147,15 @@ namespace OpcUaStackCore
 		}
 
 		byteString.value(buffer.memBuf(), buffer.memLen());
+		return true;
+	}
+
+	bool
+	CertificateChain::opcUaBinaryEncode(std::ostream& os) const
+	{
+		OpcUaByteString byteString;
+		toByteString(byteString);
+		byteString.opcUaBinaryEncode(os);
 		return true;
 	}
 

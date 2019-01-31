@@ -39,8 +39,12 @@ namespace OpcUaStackCore
 		Certificate::SPtr getCertificate(uint32_t idx = 0);
 
 		uint32_t size(void);
+		uint32_t lastCertificateSize(void);
 		bool fromByteString(OpcUaByteString& byteString);
-		bool toByteString(OpcUaByteString& byteString);
+		bool toByteString(OpcUaByteString& byteString) const;
+
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		Certificate::Vec certificateVec_;

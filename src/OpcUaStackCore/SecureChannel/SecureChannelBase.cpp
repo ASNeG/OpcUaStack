@@ -438,8 +438,13 @@ namespace OpcUaStackCore
 		// decode second part of message header
 		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
 
-		// decode secure header
-		resultCode = secureChannel->securityHeader_.opcUaBinaryDecode(is);
+		// decode secure header from client
+		resultCode = SecurityHeader::opcUaBinaryDecode(
+			is,
+			secureSettings.partnerSecurityPolicyUri(),
+			secureSettings.partnerCertificateChain(),
+			secureSettings.ownCertificateThumbprint()
+		);
 		if (!resultCode) {
 			Log(Debug, "opc ua secure channel security header error")
 				.parameter("Local", secureChannel->local_.address().to_string())
@@ -480,12 +485,12 @@ namespace OpcUaStackCore
 		);
 
 		// handle server nonce
-		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
+		if (secureSettings.isPartnerEncryptionEnabled()) {
 			char* buf;
 			int32_t len;
 			openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
 			if (len > 0) {
-				secureSettings.clientNonce().set(buf, len);
+				secureSettings.partnerNonce().set(buf, len);
 			}
 		}
 
@@ -523,11 +528,11 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// create client nonce
-		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
+		if (secureChannel->securityPolicy_ != SP_None) {
 			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
-			secureChannel->securitySettings().clientNonce().resize(keyLen);
+			securitySettings.ownNonce().resize(keyLen);
 
-			char* memBuf = secureChannel->securitySettings().clientNonce().memBuf();
+			char* memBuf = securitySettings.ownNonce().memBuf();
 			for (uint32_t idx=0; idx<keyLen; idx++) {
 				memBuf[idx] = rand();
 			}
@@ -543,7 +548,6 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode security header
-		SecurityHeader securityHeader;
 		std::string securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
 		switch (secureChannel->securityPolicy_)
 		{
@@ -552,18 +556,21 @@ namespace OpcUaStackCore
 			case SP_Basic256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256"; break;
 			case SP_Basic256Sha256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256"; break;
 		}
-		securityHeader.securityPolicyUri((OpcUaByte*)securityPolicyUri.c_str(), securityPolicyUri.size());
-		if (securityHeader.isSignatureEnabled()) {
-			// FIXME: use sender certificate chain
-			applicationCertificate()->certificate()->toDERBuf(securityHeader.senderCertificate());
+		securitySettings.ownSecurityPolicyUri() = securityPolicyUri;
+		if (secureChannel->securityPolicy_ != SP_None) {
+			securitySettings.ownCertificateChain().certificateVec().push_back(applicationCertificate()->certificate());
 		}
-		if (securityHeader.isEncryptionEnabled()) {
-			assert(securitySettings.partnerCertificate().get() != nullptr);
-
+		if (securitySettings.partnerCertificate().get() != nullptr) {
 			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
-			securityHeader.receiverCertificateThumbprint(thumbPrint);
+			securitySettings.partnerCertificateThumbprint() = thumbPrint;
 		}
-		securityHeader.opcUaBinaryEncode(ios1);
+
+		SecurityHeader::opcUaBinaryEncode(
+			ios1,
+			securitySettings.ownSecurityPolicyUri(),
+			securitySettings.ownCertificateChain(),
+			securitySettings.partnerCertificateThumbprint()
+		);
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
@@ -648,6 +655,8 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+
+
 		// error accurred
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelResponse message error; close channel")
@@ -674,8 +683,14 @@ namespace OpcUaStackCore
 		// get channel id
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->channelId_);
 
-		SecurityHeader securityHeader;
-		securityHeader.opcUaBinaryDecode(is);
+		// decode security header
+		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
+		SecurityHeader::opcUaBinaryDecode(
+			is,
+			secureSettings.partnerSecurityPolicyUri(),
+			secureSettings.partnerCertificateChain(),
+			secureSettings.ownCertificateThumbprint()
+		);
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
@@ -740,11 +755,11 @@ namespace OpcUaStackCore
 		secureChannel->openSecureChannelResponseList_.pop_front();
 
 		// create server nonce
-		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
+		if (securitySettings.isPartnerEncryptionEnabled()) {
 			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
-			secureChannel->securitySettings().serverNonce().resize(keyLen);
+			securitySettings.ownNonce().resize(keyLen);
 
-			char* memBuf = secureChannel->securitySettings().serverNonce().memBuf();
+			char* memBuf = securitySettings.ownNonce().memBuf();
 			for (uint32_t idx=0; idx<keyLen; idx++) {
 				memBuf[idx] = rand();
 			}
@@ -760,20 +775,21 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode security header
-		SecurityHeader& securityHeader = secureChannel->securityHeader_;
-		if (securityHeader.isSignatureEnabled()) {
-			securityHeader.senderCertificate().reset();
-			// FIXME: use sender certificate chain
-			applicationCertificate()->certificate()->toDERBuf(securityHeader.senderCertificate());
+		if (securitySettings.isPartnerSignatureEnabled()) {
+			securitySettings.ownCertificateChain().addCertificate(applicationCertificate()->certificate());
 		}
-		if (securityHeader.isEncryptionEnabled()) {
-			securityHeader.receiverCertificateThumbprint().reset();
+		if (securitySettings.isPartnerEncryptionEnabled()) {
 			assert(securitySettings.partnerCertificate().get() != nullptr);
 
 			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
-			securityHeader.receiverCertificateThumbprint(thumbPrint);
+			securitySettings.partnerCertificateThumbprint() = thumbPrint;
 		}
-		securityHeader.opcUaBinaryEncode(ios1);
+		SecurityHeader::opcUaBinaryEncode(
+			ios1,
+			securitySettings.ownSecurityPolicyUri(),
+			securitySettings.ownCertificateChain(),
+			securitySettings.partnerCertificateThumbprint()
+		);
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
