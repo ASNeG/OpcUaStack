@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 			case DataChangeTrigger::EnumStatusValueTimestamp:
 			{
 				if (dataValue1.sourceTimestamp() != dataValue2.sourceTimestamp()) return true;
-				break;
+				// fall through
 			}
 			case DataChangeTrigger::EnumStatusValue:
 			{
@@ -59,12 +59,12 @@ namespace OpcUaStackCore
 				if (!dataValue1.isNullVariant() && !dataValue2.isNullVariant()) {
 					if (*dataValue1.variant() != *dataValue2.variant()) return true;
 				}
-				break;
+				// fall through
 			}
 			case DataChangeTrigger::EnumStatus:
 			{
 				if (dataValue1.statusCode() != dataValue2.statusCode()) return true;
-				break;
+				// fall through
 			}
 		}
 		return false;
