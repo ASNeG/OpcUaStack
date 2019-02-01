@@ -445,6 +445,10 @@ namespace OpcUaStackCore
 			secureSettings.partnerCertificateChain(),
 			secureSettings.ownCertificateThumbprint()
 		);
+
+		// FIXME: todo
+		secureSettings.ownSecurityPolicyUri() = secureSettings.partnerSecurityPolicyUri();
+
 		if (!resultCode) {
 			Log(Debug, "opc ua secure channel security header error")
 				.parameter("Local", secureChannel->local_.address().to_string())
@@ -560,8 +564,8 @@ namespace OpcUaStackCore
 		if (secureChannel->securityPolicy_ != SP_None) {
 			securitySettings.ownCertificateChain().certificateVec().push_back(applicationCertificate()->certificate());
 		}
-		if (securitySettings.partnerCertificate().get() != nullptr) {
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
+		if (securitySettings.partnerCertificateChain().getCertificate().get() != nullptr) {
+			OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
 			securitySettings.partnerCertificateThumbprint() = thumbPrint;
 		}
 
@@ -779,9 +783,9 @@ namespace OpcUaStackCore
 			securitySettings.ownCertificateChain().addCertificate(applicationCertificate()->certificate());
 		}
 		if (securitySettings.isPartnerEncryptionEnabled()) {
-			assert(securitySettings.partnerCertificate().get() != nullptr);
+			assert(securitySettings.partnerCertificateChain().getCertificate().get() != nullptr);
 
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
+			OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
 			securitySettings.partnerCertificateThumbprint() = thumbPrint;
 		}
 		SecurityHeader::opcUaBinaryEncode(

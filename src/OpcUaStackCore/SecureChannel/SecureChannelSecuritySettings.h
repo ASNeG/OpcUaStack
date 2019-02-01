@@ -49,8 +49,6 @@ namespace OpcUaStackCore
 		// *************************************************************
 		void cryptoBase(CryptoBase::SPtr& cryptoBase);
 		CryptoBase::SPtr& cryptoBase(void);
-		void partnerCertificate(Certificate::SPtr& partnerCertificate);
-		Certificate::SPtr& partnerCertificate(void);
 
 		SecurityKeySet& securityKeySetClient(void);
 		SecurityKeySet& securityKeySetServer(void);
@@ -71,7 +69,6 @@ namespace OpcUaStackCore
 
 		// *************************************************************
 		CryptoBase::SPtr cryptoBase_;
-		Certificate::SPtr partnerCertificate_;
 
 		SecurityKeySet securityKeySetClient_;
 		SecurityKeySet securityKeySetServer_;

@@ -23,7 +23,6 @@ namespace OpcUaStackCore
 
 	SecureChannelSecuritySettings::SecureChannelSecuritySettings(void)
 	: cryptoBase_()
-	, partnerCertificate_()
 	, partnerNonce_()
 	, ownNonce_()
 	, securityKeySetClient_()
@@ -122,18 +121,6 @@ namespace OpcUaStackCore
 	SecureChannelSecuritySettings::cryptoBase(void)
 	{
 		return cryptoBase_;
-	}
-
-	void
-	SecureChannelSecuritySettings::partnerCertificate(Certificate::SPtr& partnerCertificate)
-	{
-		partnerCertificate_ = partnerCertificate;
-	}
-
-	Certificate::SPtr&
-	SecureChannelSecuritySettings::partnerCertificate(void)
-	{
-		return partnerCertificate_;
 	}
 
 	SecurityKeySet&

@@ -70,7 +70,6 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// check if encryption or signature is enabled
 		// if receiver certificate thumprint exist -> encryption is enabled
@@ -102,7 +101,6 @@ namespace OpcUaStackCore
 		// if sender certificate exist -> signature is enabled
 		if (securitySettings.isPartnerSignatureEnabled()) {
 			Certificate::SPtr partnerCertificate = securitySettings.partnerCertificateChain().getCertificate();
-			securitySettings.partnerCertificate(partnerCertificate);
 			statusCode = verifyReceivedOpenSecureChannelRequest(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
@@ -118,7 +116,6 @@ namespace OpcUaStackCore
 	)
 	{
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
 		OpcUaStatusCode statusCode;
@@ -365,7 +362,7 @@ namespace OpcUaStackCore
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		CryptoBase::SPtr cryptoBase = securitySettings.cryptoBase();
-		PublicKey publicKey = securitySettings.partnerCertificate()->publicKey();
+		PublicKey publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
 
 		// create symmetric key set
 		statusCode = cryptoBase->deriveChannelKeyset(
@@ -469,7 +466,6 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// check if encryption or signature is enabled
 		if (!securitySettings.isPartnerEncryptionEnabled() && securitySettings.isPartnerSignatureEnabled()) {
@@ -511,7 +507,6 @@ namespace OpcUaStackCore
 	)
 	{
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
 		OpcUaStatusCode statusCode;
@@ -562,7 +557,6 @@ namespace OpcUaStackCore
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		MessageHeader* messageHeader = &secureChannel->messageHeader_;
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// get public key client certificate
 		PublicKey publicKey = securitySettings.ownCertificateChain().getCertificate()->publicKey();
@@ -621,7 +615,6 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// check if encryption or signature is enabled
 		if (!securitySettings.isOwnEncryptionEnabled() && !securitySettings.isOwnSignatureEnabled()) {
@@ -759,7 +752,7 @@ namespace OpcUaStackCore
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		CryptoBase::SPtr cryptoBase = securitySettings.cryptoBase();
-		PublicKey publicKey = securitySettings.partnerCertificate()->publicKey();
+		PublicKey publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
 
 		// create symmetric key set
 		statusCode = cryptoBase->deriveChannelKeyset(
@@ -863,7 +856,6 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// check if encryption or signature is enabled
 		if (!securitySettings.isPartnerEncryptionEnabled() && !securitySettings.isPartnerSignatureEnabled()) {
@@ -895,7 +887,6 @@ namespace OpcUaStackCore
 	)
 	{
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
 		OpcUaStatusCode statusCode;
@@ -931,7 +922,6 @@ namespace OpcUaStackCore
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		MessageHeader* messageHeader = &secureChannel->messageHeader_;
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// create plain text buffer (with signature at end of buffer)
 		boost::asio::streambuf streambuf;
@@ -980,7 +970,6 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// check if encryption or signature is enabled
 		if (!securitySettings.isOwnEncryptionEnabled() && !securitySettings.isOwnSignatureEnabled()) {
@@ -1176,7 +1165,6 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// check if encryption or signature is enabled
 		if (!securitySettings.isPartnerEncryptionEnabled() && !securitySettings.isPartnerSignatureEnabled()) {
@@ -1208,7 +1196,6 @@ namespace OpcUaStackCore
 	)
 	{
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
 		OpcUaStatusCode statusCode;
@@ -1244,7 +1231,6 @@ namespace OpcUaStackCore
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		MessageHeader* messageHeader = &secureChannel->messageHeader_;
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// create plain text buffer (with signature at end of buffer)
 		boost::asio::streambuf streambuf;
@@ -1293,7 +1279,6 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// check if encryption or signature is enabled
 		if (!securitySettings.isOwnEncryptionEnabled() && !securitySettings.isOwnSignatureEnabled()) {

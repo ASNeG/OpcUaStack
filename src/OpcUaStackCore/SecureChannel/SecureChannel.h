@@ -101,7 +101,6 @@ namespace OpcUaStackCore
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
 		MessageHeader messageHeader_;
-		SecurityHeader securityHeader_;
 
 		IOThread* ioThread_;
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
