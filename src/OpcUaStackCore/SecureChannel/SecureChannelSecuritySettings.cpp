@@ -25,10 +25,23 @@ namespace OpcUaStackCore
 	: cryptoBase_()
 	, partnerNonce_()
 	, ownNonce_()
-	, securityKeySetClient_()
-	, securityKeySetServer_()
+	, partnerSecurityKeySet_()
+	, ownSecurityKeySet_()
 	{
 	}
+
+	void
+	SecureChannelSecuritySettings::cryptoBase(CryptoBase::SPtr& cryptoBase)
+	{
+		cryptoBase_ = cryptoBase;
+	}
+
+	CryptoBase::SPtr&
+	SecureChannelSecuritySettings::cryptoBase(void)
+	{
+		return cryptoBase_;
+	}
+
 
 	SecureChannelSecuritySettings::~SecureChannelSecuritySettings(void)
 	{
@@ -71,6 +84,12 @@ namespace OpcUaStackCore
 		return ownNonce_;
 	}
 
+	SecurityKeySet&
+	SecureChannelSecuritySettings::ownSecurityKeySet(void)
+	{
+		return ownSecurityKeySet_;
+	}
+
 
 	bool
 	SecureChannelSecuritySettings::isPartnerEncryptionEnabled(void)
@@ -108,31 +127,10 @@ namespace OpcUaStackCore
 		return partnerNonce_;
 	}
 
-	// **********************************************
-	// **********************************************
-
-	void
-	SecureChannelSecuritySettings::cryptoBase(CryptoBase::SPtr& cryptoBase)
-	{
-		cryptoBase_ = cryptoBase;
-	}
-
-	CryptoBase::SPtr&
-	SecureChannelSecuritySettings::cryptoBase(void)
-	{
-		return cryptoBase_;
-	}
-
 	SecurityKeySet&
-	SecureChannelSecuritySettings::securityKeySetClient(void)
+	SecureChannelSecuritySettings::partnerSecurityKeySet(void)
 	{
-		return securityKeySetClient_;
-	}
-
-	SecurityKeySet&
-	SecureChannelSecuritySettings::securityKeySetServer(void)
-	{
-		return securityKeySetServer_;
+		return partnerSecurityKeySet_;
 	}
 
 }

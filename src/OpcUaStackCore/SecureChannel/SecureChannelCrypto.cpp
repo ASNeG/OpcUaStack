@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -368,8 +368,8 @@ namespace OpcUaStackCore
 		statusCode = cryptoBase->deriveChannelKeyset(
 			securitySettings.ownNonce(),
 			securitySettings.partnerNonce(),
-			securitySettings.securityKeySetClient(),
-			securitySettings.securityKeySetServer()
+			securitySettings.ownSecurityKeySet(),
+			securitySettings.partnerSecurityKeySet()
 		);
 		if (statusCode != Success) {
 			return statusCode;
@@ -758,8 +758,8 @@ namespace OpcUaStackCore
 		statusCode = cryptoBase->deriveChannelKeyset(
 			securitySettings.partnerNonce(),
 			securitySettings.ownNonce(),
-			securitySettings.securityKeySetClient(),
-			securitySettings.securityKeySetServer()
+			securitySettings.partnerSecurityKeySet(),
+			securitySettings.ownSecurityKeySet()
 		);
 		if (statusCode != Success) {
 			return statusCode;
@@ -900,8 +900,8 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricDecrypt(
 			encryptedText.memBuf(),
 			encryptedText.memLen(),
-			securitySettings.securityKeySetClient().encryptKey(),
-			securitySettings.securityKeySetClient().iv(),
+			securitySettings.partnerSecurityKeySet().encryptKey(),
+			securitySettings.partnerSecurityKeySet().iv(),
 			plainText.memBuf(),
 			&receivedDataLen
 		);
@@ -940,7 +940,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricVerify(
 			plainText.memBuf(),
 			plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
-			securitySettings.securityKeySetClient().signKey(),
+			securitySettings.partnerSecurityKeySet().signKey(),
 			plainText.memBuf() + plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
 			securitySettings.cryptoBase()->signatureDataLen()
 		);
@@ -1052,7 +1052,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricSign(
 			plainText.memBuf(),
 			plainText.memLen() - signatureDataLen,
-			securitySettings.securityKeySetServer().signKey(),
+			securitySettings.partnerSecurityKeySet().signKey(),
 			plainText.memBuf() + plainText.memLen() - signatureDataLen,
 			&keyLen
 		);
@@ -1134,8 +1134,8 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricEncrypt(
 			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
 			plainText.memLen() - messageHeaderLen - securityHeaderLen,
-			securitySettings.securityKeySetServer().encryptKey(),
-			securitySettings.securityKeySetServer().iv(),
+			securitySettings.partnerSecurityKeySet().encryptKey(),
+			securitySettings.partnerSecurityKeySet().iv(),
 			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
 			&encryptedTextLen
 		);
@@ -1209,8 +1209,8 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricDecrypt(
 			encryptedText.memBuf(),
 			encryptedText.memLen(),
-			securitySettings.securityKeySetClient().encryptKey(),
-			securitySettings.securityKeySetClient().iv(),
+			securitySettings.ownSecurityKeySet().encryptKey(),
+			securitySettings.ownSecurityKeySet().iv(),
 			plainText.memBuf(),
 			&receivedDataLen
 		);
@@ -1249,7 +1249,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricVerify(
 			plainText.memBuf(),
 			plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
-			securitySettings.securityKeySetClient().signKey(),
+			securitySettings.ownSecurityKeySet().signKey(),
 			plainText.memBuf() + plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
 			securitySettings.cryptoBase()->signatureDataLen()
 		);
@@ -1361,7 +1361,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricSign(
 			plainText.memBuf(),
 			plainText.memLen() - signatureDataLen,
-			securitySettings.securityKeySetServer().signKey(),
+			securitySettings.ownSecurityKeySet().signKey(),
 			plainText.memBuf() + plainText.memLen() - signatureDataLen,
 			&keyLen
 		);
@@ -1443,8 +1443,8 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricEncrypt(
 			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
 			plainText.memLen() - messageHeaderLen - securityHeaderLen,
-			securitySettings.securityKeySetServer().encryptKey(),
-			securitySettings.securityKeySetServer().iv(),
+			securitySettings.ownSecurityKeySet().encryptKey(),
+			securitySettings.ownSecurityKeySet().iv(),
 			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
 			&encryptedTextLen
 		);
