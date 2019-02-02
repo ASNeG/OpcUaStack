@@ -32,7 +32,6 @@ namespace OpcUaStackCore
 
 	// actual header
 	, messageHeader_()
-	, securityHeader_()
 
 	, actSegmentFlag_('F')
 	, ioThread_(ioThread)

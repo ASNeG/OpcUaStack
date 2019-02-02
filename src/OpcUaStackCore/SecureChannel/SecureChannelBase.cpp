@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -438,8 +438,14 @@ namespace OpcUaStackCore
 		// decode second part of message header
 		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
 
-		// decode secure header
-		resultCode = secureChannel->securityHeader_.opcUaBinaryDecode(is);
+		// decode secure header from client
+		resultCode = SecurityHeader::opcUaBinaryDecode(
+			is,
+			secureSettings.partnerSecurityPolicyUri(),
+			secureSettings.partnerCertificateChain(),
+			secureSettings.ownCertificateThumbprint()
+		);
+
 		if (!resultCode) {
 			Log(Debug, "opc ua secure channel security header error")
 				.parameter("Local", secureChannel->local_.address().to_string())
@@ -479,16 +485,6 @@ namespace OpcUaStackCore
 			secureChannel->messageHeader_.channelId()
 		);
 
-		// handle server nonce
-		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
-			char* buf;
-			int32_t len;
-			openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
-			if (len > 0) {
-				secureSettings.clientNonce().set(buf, len);
-			}
-		}
-
 		// process open secure channel request
 		handleRecvOpenSecureChannelRequest(
 			secureChannel,
@@ -523,11 +519,11 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// create client nonce
-		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
+		if (secureChannel->securityPolicy_ != SP_None) {
 			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
-			secureChannel->securitySettings().clientNonce().resize(keyLen);
+			securitySettings.ownNonce().resize(keyLen);
 
-			char* memBuf = secureChannel->securitySettings().clientNonce().memBuf();
+			char* memBuf = securitySettings.ownNonce().memBuf();
 			for (uint32_t idx=0; idx<keyLen; idx++) {
 				memBuf[idx] = rand();
 			}
@@ -543,7 +539,6 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode security header
-		SecurityHeader securityHeader;
 		std::string securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
 		switch (secureChannel->securityPolicy_)
 		{
@@ -552,18 +547,21 @@ namespace OpcUaStackCore
 			case SP_Basic256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256"; break;
 			case SP_Basic256Sha256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256"; break;
 		}
-		securityHeader.securityPolicyUri((OpcUaByte*)securityPolicyUri.c_str(), securityPolicyUri.size());
-		if (securityHeader.isSignatureEnabled()) {
-			// FIXME: use sender certificate chain
-			applicationCertificate()->certificate()->toDERBuf(securityHeader.senderCertificate());
+		securitySettings.ownSecurityPolicyUri() = securityPolicyUri;
+		if (secureChannel->securityPolicy_ != SP_None) {
+			securitySettings.ownCertificateChain().certificateVec().push_back(applicationCertificate()->certificate());
 		}
-		if (securityHeader.isEncryptionEnabled()) {
-			assert(securitySettings.partnerCertificate().get() != nullptr);
+		if (securitySettings.partnerCertificateChain().getCertificate().get() != nullptr) {
+			OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
+			securitySettings.partnerCertificateThumbprint() = thumbPrint;
+		}
 
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
-			securityHeader.receiverCertificateThumbprint(thumbPrint);
-		}
-		securityHeader.opcUaBinaryEncode(ios1);
+		SecurityHeader::opcUaBinaryEncode(
+			ios1,
+			securitySettings.ownSecurityPolicyUri(),
+			securitySettings.ownCertificateChain(),
+			securitySettings.partnerCertificateThumbprint()
+		);
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
@@ -674,8 +672,14 @@ namespace OpcUaStackCore
 		// get channel id
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->channelId_);
 
-		SecurityHeader securityHeader;
-		securityHeader.opcUaBinaryDecode(is);
+		// decode security header
+		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
+		SecurityHeader::opcUaBinaryDecode(
+			is,
+			secureSettings.partnerSecurityPolicyUri(),
+			secureSettings.partnerCertificateChain(),
+			secureSettings.ownCertificateThumbprint()
+		);
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
@@ -739,19 +743,6 @@ namespace OpcUaStackCore
 		openSecureChannelResponse = secureChannel->openSecureChannelResponseList_.front();
 		secureChannel->openSecureChannelResponseList_.pop_front();
 
-		// create server nonce
-		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
-			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
-			secureChannel->securitySettings().serverNonce().resize(keyLen);
-
-			char* memBuf = secureChannel->securitySettings().serverNonce().memBuf();
-			for (uint32_t idx=0; idx<keyLen; idx++) {
-				memBuf[idx] = rand();
-			}
-
-			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
-		}
-
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);
 		boost::asio::streambuf sb2;
@@ -760,20 +751,12 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode security header
-		SecurityHeader& securityHeader = secureChannel->securityHeader_;
-		securityHeader.senderCertificate().reset();
-		if (securityHeader.isSignatureEnabled()) {
-			// FIXME: use sender certificate chain
-			applicationCertificate()->certificate()->toDERBuf(securityHeader.senderCertificate());
-		}
-		securityHeader.receiverCertificateThumbprint().reset();
-		if (securityHeader.isEncryptionEnabled()) {
-			assert(securitySettings.partnerCertificate().get() != nullptr);
-
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
-			securityHeader.receiverCertificateThumbprint(thumbPrint);
-		}
-		securityHeader.opcUaBinaryEncode(ios1);
+		SecurityHeader::opcUaBinaryEncode(
+			ios1,
+			securitySettings.ownSecurityPolicyUri(),
+			securitySettings.ownCertificateChain(),
+			securitySettings.partnerCertificateThumbprint()
+		);
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;

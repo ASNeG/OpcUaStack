@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -294,14 +294,95 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
-		// check security parameter
-		// FIXME: todo - we must find the right endpoint
+		OpenSecureChannelResponse::SPtr openSecureChannelResponse = constructSPtr<OpenSecureChannelResponse>();
+
+		// get server configuration and security settings
 		SecureChannelServerConfig::SPtr secureChannelServerConfig;
 		secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
+
+		// find endpoint description
+		bool found = false;
 		EndpointDescription::SPtr endpointDescription;
-		secureChannelServerConfig->endpointDescriptionArray()->get(0, endpointDescription);
-		secureChannelServerConfig->endpointDescription(endpointDescription);
+		for (uint32_t idx = 0; idx < secureChannelServerConfig->endpointDescriptionArray()->size(); idx++) {
+			secureChannelServerConfig->endpointDescriptionArray()->get(idx, endpointDescription);
+
+			if (securitySettings.partnerSecurityPolicyUri().toString() == endpointDescription->securityPolicyUri().toStdString()) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {secureChannel->partner_ = secureChannel->socket().remote_endpoint();
+			Log(Error, "server does not accept policy uri from client")
+			    .parameter("LocalEndpoint", secureChannel->local_)
+				.parameter("PartnerEndpont", secureChannel->partner_)
+				.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+			secureChannel->socket().cancel();
+			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
+			return;
+		}
+
+
+		// set security policy uri
+		securitySettings.ownSecurityPolicyUri() = endpointDescription->securityPolicyUri();
+
+		// set certificate
+		if (securitySettings.isPartnerSignatureEnabled()) {
+			securitySettings.ownCertificateChain().addCertificate(applicationCertificate()->certificate());
+		}
+
+		// set partner certificate thumbprint
+		if (securitySettings.isPartnerEncryptionEnabled()) {
+			assert(securitySettings.partnerCertificateChain().getCertificate().get() != nullptr);
+
+			OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
+			securitySettings.partnerCertificateThumbprint() = thumbPrint;
+		}
+
+		// handle partner nonce
+		if (securitySettings.isPartnerEncryptionEnabled()) {
+			char* buf;
+			int32_t len;
+			openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
+			if (len > 0) {
+				securitySettings.partnerNonce().set(buf, len);
+			}
+		}
+
+		// create own nonce
+		if (securitySettings.isOwnEncryptionEnabled()) {
+			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
+			securitySettings.ownNonce().resize(keyLen);
+
+			char* memBuf = securitySettings.ownNonce().memBuf();
+			for (uint32_t idx=0; idx<keyLen; idx++) {
+				memBuf[idx] = rand();
+			}
+
+			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
+		}
+
+		// create symmetric key set
+		if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
+			OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
+				securitySettings.partnerNonce(),
+				securitySettings.ownNonce(),
+				securitySettings.partnerSecurityKeySet(),
+				securitySettings.ownSecurityKeySet()
+			);
+			if (statusCode != Success) {
+				Log(Error, "create derived channel keyset error")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
+					.parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_);
+					return;
+			}
+		}
+
+
+		// check security parameter
+		// FIXME: todo - we must find the right endpoint
 
 		// check parameter
 		bool success = true;
@@ -354,7 +435,7 @@ namespace OpcUaStackCore
 		secureChannel->secureTokenVec_.push_back(std::rand());
 
 		// create open secure channel response
-		OpenSecureChannelResponse::SPtr openSecureChannelResponse = constructSPtr<OpenSecureChannelResponse>();
+
 		OpcUaByte serverNonce[1];
 		serverNonce[0] = 0x01;
 		openSecureChannelResponse->securityToken()->channelId(secureChannel->channelId_);
@@ -363,7 +444,6 @@ namespace OpcUaStackCore
 		openSecureChannelResponse->securityToken()->revisedLifetime(openSecureChannelRequest.requestedLifetime());
 		openSecureChannelResponse->responseHeader()->requestHandle(openSecureChannelRequest.requestHeader()->requestHandle());
 		openSecureChannelResponse->responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
-		openSecureChannelResponse->serverNonce(serverNonce, 1);
 
 		// send open secure channel response
 		asyncWriteOpenSecureChannelResponse(secureChannel, openSecureChannelResponse);
