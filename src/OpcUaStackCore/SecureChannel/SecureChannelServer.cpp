@@ -294,10 +294,53 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
-		// check security parameter
-		// FIXME: todo - we must find the right endpoint
+		// get server configuration and security settings
 		SecureChannelServerConfig::SPtr secureChannelServerConfig;
 		secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
+
+		// find endpoint description and set own security settings
+		bool found = false;
+		for (uint32_t idx = 0; idx < secureChannelServerConfig->endpointDescriptionArray()->size(); idx++) {
+			EndpointDescription::SPtr endpointDescription;
+			secureChannelServerConfig->endpointDescriptionArray()->get(idx, endpointDescription);
+
+			if (securitySettings.partnerSecurityPolicyUri().toString() == endpointDescription->securityPolicyUri().toStdString()) {
+
+				// set security policy uri
+				securitySettings.ownSecurityPolicyUri() = endpointDescription->securityPolicyUri();
+
+				// set certificate
+				if (securitySettings.isPartnerSignatureEnabled()) {
+					securitySettings.ownCertificateChain().addCertificate(applicationCertificate()->certificate());
+				}
+
+				// set partner certificate thumbprint
+				if (securitySettings.isPartnerEncryptionEnabled()) {
+					assert(securitySettings.partnerCertificateChain().getCertificate().get() != nullptr);
+
+					OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
+					securitySettings.partnerCertificateThumbprint() = thumbPrint;
+				}
+
+				found = true;
+				break;
+			}
+
+		}
+		if (!found) {secureChannel->partner_ = secureChannel->socket().remote_endpoint();
+			Log(Info, "server does not accept policy uri from client")
+			    .parameter("LocalEndpoint", secureChannel->local_)
+				.parameter("PartnerEndpont", secureChannel->partner_)
+				.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+			secureChannel->socket().cancel();
+			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
+			return;
+		}
+
+		// check security parameter
+		// FIXME: todo - we must find the right endpoint
 
 		EndpointDescription::SPtr endpointDescription;
 		secureChannelServerConfig->endpointDescriptionArray()->get(0, endpointDescription);

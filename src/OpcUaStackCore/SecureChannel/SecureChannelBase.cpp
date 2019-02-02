@@ -446,9 +446,6 @@ namespace OpcUaStackCore
 			secureSettings.ownCertificateThumbprint()
 		);
 
-		// FIXME: todo
-		secureSettings.ownSecurityPolicyUri() = secureSettings.partnerSecurityPolicyUri();
-
 		if (!resultCode) {
 			Log(Debug, "opc ua secure channel security header error")
 				.parameter("Local", secureChannel->local_.address().to_string())
@@ -779,15 +776,6 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode security header
-		if (securitySettings.isPartnerSignatureEnabled()) {
-			securitySettings.ownCertificateChain().addCertificate(applicationCertificate()->certificate());
-		}
-		if (securitySettings.isPartnerEncryptionEnabled()) {
-			assert(securitySettings.partnerCertificateChain().getCertificate().get() != nullptr);
-
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
-			securitySettings.partnerCertificateThumbprint() = thumbPrint;
-		}
 		SecurityHeader::opcUaBinaryEncode(
 			ios1,
 			securitySettings.ownSecurityPolicyUri(),
