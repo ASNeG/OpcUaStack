@@ -302,7 +302,7 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 
-		// find endpoint description and set own security settings
+		// find endpoint description
 		bool found = false;
 		for (uint32_t idx = 0; idx < secureChannelServerConfig->endpointDescriptionArray()->size(); idx++) {
 			EndpointDescription::SPtr endpointDescription;
@@ -337,7 +337,7 @@ namespace OpcUaStackCore
 				}
 
 				// create own nonce
-				if (securitySettings.isPartnerEncryptionEnabled()) {
+				if (securitySettings.isOwnEncryptionEnabled()) {
 					uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
 					securitySettings.ownNonce().resize(keyLen);
 
@@ -349,13 +349,30 @@ namespace OpcUaStackCore
 					openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
 				}
 
+				// create symmetric key set
+				if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
+					OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
+						securitySettings.partnerNonce(),
+						securitySettings.ownNonce(),
+						securitySettings.partnerSecurityKeySet(),
+						securitySettings.ownSecurityKeySet()
+					);
+					if (statusCode != Success) {
+						Log(Error, "create derived channel keyset error")
+							.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
+							.parameter("LocalEndpoint", secureChannel->local_)
+							.parameter("PartnerEndpont", secureChannel->partner_);
+							return;
+					}
+				}
+
 				found = true;
 				break;
 			}
 
 		}
 		if (!found) {secureChannel->partner_ = secureChannel->socket().remote_endpoint();
-			Log(Info, "server does not accept policy uri from client")
+			Log(Error, "server does not accept policy uri from client")
 			    .parameter("LocalEndpoint", secureChannel->local_)
 				.parameter("PartnerEndpont", secureChannel->partner_)
 				.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
