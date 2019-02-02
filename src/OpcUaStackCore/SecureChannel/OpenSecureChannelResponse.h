@@ -43,6 +43,7 @@ namespace OpcUaStackCore
 		SecurityToken::SPtr securityToken(void);
 		void serverNonce(OpcUaByte** buf, OpcUaInt32 *bufLen) const;
 		void serverNonce(const OpcUaByte* buf, OpcUaInt32 bufLen);
+		void serverNonce(OpcUaByteString& serverNonce);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

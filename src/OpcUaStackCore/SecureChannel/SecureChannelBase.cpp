@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -485,16 +485,6 @@ namespace OpcUaStackCore
 			secureChannel->messageHeader_.channelId()
 		);
 
-		// handle server nonce
-		if (secureSettings.isPartnerEncryptionEnabled()) {
-			char* buf;
-			int32_t len;
-			openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
-			if (len > 0) {
-				secureSettings.partnerNonce().set(buf, len);
-			}
-		}
-
 		// process open secure channel request
 		handleRecvOpenSecureChannelRequest(
 			secureChannel,
@@ -656,8 +646,6 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-
-
 		// error accurred
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelResponse message error; close channel")
@@ -754,19 +742,6 @@ namespace OpcUaStackCore
 		OpenSecureChannelResponse::SPtr openSecureChannelResponse;
 		openSecureChannelResponse = secureChannel->openSecureChannelResponseList_.front();
 		secureChannel->openSecureChannelResponseList_.pop_front();
-
-		// create server nonce
-		if (securitySettings.isPartnerEncryptionEnabled()) {
-			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
-			securitySettings.ownNonce().resize(keyLen);
-
-			char* memBuf = securitySettings.ownNonce().memBuf();
-			for (uint32_t idx=0; idx<keyLen; idx++) {
-				memBuf[idx] = rand();
-			}
-
-			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
-		}
 
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);

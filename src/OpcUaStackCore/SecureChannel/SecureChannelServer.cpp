@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -294,6 +294,8 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
+		OpenSecureChannelResponse::SPtr openSecureChannelResponse = constructSPtr<OpenSecureChannelResponse>();
+
 		// get server configuration and security settings
 		SecureChannelServerConfig::SPtr secureChannelServerConfig;
 		secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
@@ -322,6 +324,29 @@ namespace OpcUaStackCore
 
 					OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
 					securitySettings.partnerCertificateThumbprint() = thumbPrint;
+				}
+
+				// handle partner nonce
+				if (securitySettings.isPartnerEncryptionEnabled()) {
+					char* buf;
+					int32_t len;
+					openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
+					if (len > 0) {
+						securitySettings.partnerNonce().set(buf, len);
+					}
+				}
+
+				// create own nonce
+				if (securitySettings.isPartnerEncryptionEnabled()) {
+					uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
+					securitySettings.ownNonce().resize(keyLen);
+
+					char* memBuf = securitySettings.ownNonce().memBuf();
+					for (uint32_t idx=0; idx<keyLen; idx++) {
+						memBuf[idx] = rand();
+					}
+
+					openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
 				}
 
 				found = true;
@@ -397,7 +422,7 @@ namespace OpcUaStackCore
 		secureChannel->secureTokenVec_.push_back(std::rand());
 
 		// create open secure channel response
-		OpenSecureChannelResponse::SPtr openSecureChannelResponse = constructSPtr<OpenSecureChannelResponse>();
+
 		OpcUaByte serverNonce[1];
 		serverNonce[0] = 0x01;
 		openSecureChannelResponse->securityToken()->channelId(secureChannel->channelId_);
@@ -406,7 +431,6 @@ namespace OpcUaStackCore
 		openSecureChannelResponse->securityToken()->revisedLifetime(openSecureChannelRequest.requestedLifetime());
 		openSecureChannelResponse->responseHeader()->requestHandle(openSecureChannelRequest.requestHeader()->requestHandle());
 		openSecureChannelResponse->responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
-		openSecureChannelResponse->serverNonce(serverNonce, 1);
 
 		// send open secure channel response
 		asyncWriteOpenSecureChannelResponse(secureChannel, openSecureChannelResponse);
