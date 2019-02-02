@@ -304,72 +304,14 @@ namespace OpcUaStackCore
 
 		// find endpoint description
 		bool found = false;
+		EndpointDescription::SPtr endpointDescription;
 		for (uint32_t idx = 0; idx < secureChannelServerConfig->endpointDescriptionArray()->size(); idx++) {
-			EndpointDescription::SPtr endpointDescription;
 			secureChannelServerConfig->endpointDescriptionArray()->get(idx, endpointDescription);
 
 			if (securitySettings.partnerSecurityPolicyUri().toString() == endpointDescription->securityPolicyUri().toStdString()) {
-
-				// set security policy uri
-				securitySettings.ownSecurityPolicyUri() = endpointDescription->securityPolicyUri();
-
-				// set certificate
-				if (securitySettings.isPartnerSignatureEnabled()) {
-					securitySettings.ownCertificateChain().addCertificate(applicationCertificate()->certificate());
-				}
-
-				// set partner certificate thumbprint
-				if (securitySettings.isPartnerEncryptionEnabled()) {
-					assert(securitySettings.partnerCertificateChain().getCertificate().get() != nullptr);
-
-					OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
-					securitySettings.partnerCertificateThumbprint() = thumbPrint;
-				}
-
-				// handle partner nonce
-				if (securitySettings.isPartnerEncryptionEnabled()) {
-					char* buf;
-					int32_t len;
-					openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
-					if (len > 0) {
-						securitySettings.partnerNonce().set(buf, len);
-					}
-				}
-
-				// create own nonce
-				if (securitySettings.isOwnEncryptionEnabled()) {
-					uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
-					securitySettings.ownNonce().resize(keyLen);
-
-					char* memBuf = securitySettings.ownNonce().memBuf();
-					for (uint32_t idx=0; idx<keyLen; idx++) {
-						memBuf[idx] = rand();
-					}
-
-					openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
-				}
-
-				// create symmetric key set
-				if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
-					OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
-						securitySettings.partnerNonce(),
-						securitySettings.ownNonce(),
-						securitySettings.partnerSecurityKeySet(),
-						securitySettings.ownSecurityKeySet()
-					);
-					if (statusCode != Success) {
-						Log(Error, "create derived channel keyset error")
-							.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
-							.parameter("LocalEndpoint", secureChannel->local_)
-							.parameter("PartnerEndpont", secureChannel->partner_);
-							return;
-					}
-				}
-
 				found = true;
 				break;
 			}
-
 		}
 		if (!found) {secureChannel->partner_ = secureChannel->socket().remote_endpoint();
 			Log(Error, "server does not accept policy uri from client")
@@ -381,12 +323,66 @@ namespace OpcUaStackCore
 			return;
 		}
 
+
+		// set security policy uri
+		securitySettings.ownSecurityPolicyUri() = endpointDescription->securityPolicyUri();
+
+		// set certificate
+		if (securitySettings.isPartnerSignatureEnabled()) {
+			securitySettings.ownCertificateChain().addCertificate(applicationCertificate()->certificate());
+		}
+
+		// set partner certificate thumbprint
+		if (securitySettings.isPartnerEncryptionEnabled()) {
+			assert(securitySettings.partnerCertificateChain().getCertificate().get() != nullptr);
+
+			OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
+			securitySettings.partnerCertificateThumbprint() = thumbPrint;
+		}
+
+		// handle partner nonce
+		if (securitySettings.isPartnerEncryptionEnabled()) {
+			char* buf;
+			int32_t len;
+			openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
+			if (len > 0) {
+				securitySettings.partnerNonce().set(buf, len);
+			}
+		}
+
+		// create own nonce
+		if (securitySettings.isOwnEncryptionEnabled()) {
+			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
+			securitySettings.ownNonce().resize(keyLen);
+
+			char* memBuf = securitySettings.ownNonce().memBuf();
+			for (uint32_t idx=0; idx<keyLen; idx++) {
+				memBuf[idx] = rand();
+			}
+
+			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
+		}
+
+		// create symmetric key set
+		if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
+			OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
+				securitySettings.partnerNonce(),
+				securitySettings.ownNonce(),
+				securitySettings.partnerSecurityKeySet(),
+				securitySettings.ownSecurityKeySet()
+			);
+			if (statusCode != Success) {
+				Log(Error, "create derived channel keyset error")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
+					.parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_);
+					return;
+			}
+		}
+
+
 		// check security parameter
 		// FIXME: todo - we must find the right endpoint
-
-		EndpointDescription::SPtr endpointDescription;
-		secureChannelServerConfig->endpointDescriptionArray()->get(0, endpointDescription);
-		secureChannelServerConfig->endpointDescription(endpointDescription);
 
 		// check parameter
 		bool success = true;
