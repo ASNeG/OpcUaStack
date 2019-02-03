@@ -18,7 +18,8 @@
 #ifndef __OpcUaStackCore_CertificateManager_h__
 #define __OpcUaStackCore_CertificateManager_h__
 
-#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/Certificate/Certificate.h"
+#include "OpcUaStackCore/Certificate/PrivateKey.h"
 
 namespace OpcUaStackCore
 {
@@ -30,6 +31,52 @@ namespace OpcUaStackCore
 
 		CertificateManager(void);
 		~CertificateManager(void);
+
+		bool init(void);
+
+		void certificateTrustListLocation(const std::string& certificateTrustListLocation);
+		std::string& certificateTrustListLocation(void);
+		void certificateRejectListLocation(const std::string& certificateRejectListLocation);
+		std::string& certificateRejectListLocation(void);
+		void certificateRevocationListLocation(const std::string& certificateRevocationListLocation);
+		std::string& certificateRevocationListLocation(void);
+		void issuersCertificatesLocation(const std::string& issuersCertificatesLocation);
+		std::string& issuersCertificatesLocation(void);
+		void issuersRevocationListLocation(const std::string& issuersRevocationListLocation);
+		std::string& issuersRevocationListLocation(void);
+
+		void ownCertificateFile(const std::string& ownCertificateFile);
+		std::string& ownCertificateFile(void);
+		void ownPrivateKeyFile(const std::string& ownPrivateKeyFile);
+		std::string& ownPrivateKeyFile(void);
+
+		bool existOwnCertificate(void);
+		Certificate::SPtr readOwnCertificate(void);
+		bool writeOwnCertificate(Certificate::SPtr& certificate);
+		bool existOwnPrivateKey(void);
+		PrivateKey::SPtr readOwnPrivateKey(void);
+		bool writeOwnPrivateKey(PrivateKey::SPtr& privateKey);
+
+	  private:
+		bool checkAndCreateDirectory(const std::string& directory);
+		bool setReadOnly(const std::string& directory);
+
+		std::string certificateTrustListLocation_;		//!< The folder where certificates of trusted applications
+														//!< and trusted CAs should be stored
+		std::string certificateRejectListLocation_;		//!< The folder where certificates of rejected applications
+														//!< should be stored
+		std::string certificateRevocationListLocation_;	//!< The folder where revocation lists for trusted CAs
+														//! should be stored
+		std::string issuersCertificatesLocation_;		//!< The folder where issuer certificates are stored. Issuer
+														//!< certificates are CA certificates necessary for the
+														//!< verification of the full trust chain of CA certificates
+														//!< in the trust list
+		std::string issuersRevocationListLocation_;		//!< The folder where revocation lists for issuer CAs should
+														//!< be stored
+
+
+		std::string ownCertificateFile_;
+		std::string ownPrivateKeyFile_;
 	};
 
 }
