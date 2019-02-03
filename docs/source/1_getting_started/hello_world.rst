@@ -7,6 +7,8 @@ This is the simplest example of an OPC UA application based on ASNeG OPC UA Stac
 The example will help you to understand the basic OPC UA conceptions and make your first OPC UA server.
 Here we are going to output a greeting message which will be available from other OPC UA client.
 
+You can download the source code of example from :download:`here <helloworld.zip>`.
+
 Requirements
 ---------------------------
 
@@ -348,7 +350,6 @@ References
 * :ref:`security`
 * `OPC UA Designer`_
 * `OPC UA Expert`_
-
 
 .. _OPC UA Expert: https://www.unified-automation.com/products/development-tools/uaexpert.html
 .. _OPC UA Designer: https://github.com/ASNeG/OpcUaDesigner
