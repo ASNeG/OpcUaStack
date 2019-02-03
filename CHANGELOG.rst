@@ -5,6 +5,8 @@ Release 3.7.0
 
 * refactoring application service interface #65, by @huebl
 
+**Bugs**:
+* User change was not implemented in session #105, by @huebl
 
 Release 3.6.1 (2018-12-28)
 ------------------------------------------------------------
