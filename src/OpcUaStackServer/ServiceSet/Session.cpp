@@ -355,7 +355,14 @@ namespace OpcUaStackServer
 			Log(Debug, "decrypt password server nonce error");
 				return BadIdentityTokenRejected;;
 		}
-		token->password((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
+
+		size_t passwordLen = plainTextLen-36;
+		if (passwordLen < 0) {
+			Log(Debug, "decrypted password length < 0");
+			return BadIdentityTokenRejected;;
+		}
+
+		token->password((const OpcUaByte*)&plainTextBuf[4], passwordLen);
 
 		// create application context
 		ApplicationAuthenticationContext context;
