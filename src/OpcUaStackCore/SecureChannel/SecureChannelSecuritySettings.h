@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/Certificate/SecurityKeySet.h"
 #include "OpcUaStackCore/Certificate/CertificateChain.h"
+#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 
 namespace OpcUaStackCore
 {
@@ -34,6 +35,7 @@ namespace OpcUaStackCore
 
 		void cryptoBase(CryptoBase::SPtr& cryptoBase);
 		CryptoBase::SPtr& cryptoBase(void);
+		EndpointDescription::SPtr& endpointDescription(void);
 
 		bool isOwnEncryptionEnabled(void);
 		bool isOwnSignatureEnabled(void);
@@ -53,6 +55,7 @@ namespace OpcUaStackCore
 
 	  private:
 		CryptoBase::SPtr cryptoBase_;
+		EndpointDescription::SPtr endpointDescription_;
 
 		OpcUaByteString ownCertificateThumbprint_;
 		OpcUaByteString ownSecurityPolicyUri_;

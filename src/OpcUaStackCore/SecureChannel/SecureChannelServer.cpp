@@ -303,17 +303,17 @@ namespace OpcUaStackCore
 
 
 		// find endpoint description
-		bool found = false;
+		securitySettings.endpointDescription().reset();
 		EndpointDescription::SPtr endpointDescription;
 		for (uint32_t idx = 0; idx < secureChannelServerConfig->endpointDescriptionArray()->size(); idx++) {
 			secureChannelServerConfig->endpointDescriptionArray()->get(idx, endpointDescription);
 
 			if (securitySettings.partnerSecurityPolicyUri().toString() == endpointDescription->securityPolicyUri().toStdString()) {
-				found = true;
+				securitySettings.endpointDescription() = endpointDescription;
 				break;
 			}
 		}
-		if (!found) {secureChannel->partner_ = secureChannel->socket().remote_endpoint();
+		if (securitySettings.endpointDescription().get() == nullptr) {
 			Log(Error, "server does not accept policy uri from client")
 			    .parameter("LocalEndpoint", secureChannel->local_)
 				.parameter("PartnerEndpont", secureChannel->partner_)

@@ -281,7 +281,6 @@ namespace OpcUaStackServer
 		SecureChannelServerConfig::SPtr secureChannelServerConfig;
 		secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 		EndpointDescriptionArray::SPtr endpointDescriptionArray = secureChannelServerConfig->endpointDescriptionArray();
-		EndpointDescription::SPtr endpointDescription = secureChannelServerConfig->endpointDescription();
 
 		// create new session
 		Session::SPtr session = constructSPtr<Session>();
@@ -290,7 +289,7 @@ namespace OpcUaStackServer
 		session->applicationCertificate(applicationCertificate_);
 		session->cryptoManager(cryptoManager_);
 		session->endpointDescriptionArray(endpointDescriptionArray);
-		session->endpointDescription(endpointDescription);
+		session->endpointDescription(secureChannel->securitySettings_.endpointDescription());
 		session->transactionManager(transactionManagerSPtr_);
 		session->forwardGlobalSync(forwardGlobalSync_);
 

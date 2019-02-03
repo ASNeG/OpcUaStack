@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackCore_CertificateManager_h__
 #define __OpcUaStackCore_CertificateManager_h__
 
-#include "OpcUaStackCore/Certificate/ApplicationCertificateConfig.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 
 namespace OpcUaStackCore
 {

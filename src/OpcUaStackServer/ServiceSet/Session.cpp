@@ -143,6 +143,7 @@ namespace OpcUaStackServer
 	void
 	Session::endpointDescription(EndpointDescription::SPtr& endpointDescription)
 	{
+		assert(endpointDescription.get() != nullptr);
 		endpointDescription_ = endpointDescription;
 	}
 
@@ -707,7 +708,7 @@ namespace OpcUaStackServer
 		ActivateSessionRequest activateSessionRequest;
 		activateSessionRequest.opcUaBinaryDecode(ios);
 
-		if (sessionState_ != SessionState_CreateSessionResponse) {
+		if (sessionState_ != SessionState_CreateSessionResponse && sessionState_ != SessionState_Ready) {
 			Log(Error, "receive activate session request in invalid state")
 				.parameter("SessionState", sessionState_);
 			activateSessionRequestError(requestHeader, secureChannelTransaction, BadIdentityTokenInvalid);
