@@ -73,6 +73,18 @@ namespace OpcUaStackCore
 		password_.value(buf, bufLen);
 	}
 
+	std::string
+	UserNameIdentityToken::password() const
+	{
+		char* buf;
+		int32_t bufLen;
+
+		password_.value((OpcUaByte**)&buf, (OpcUaInt32*)&bufLen);
+		return std::string(buf, bufLen);
+	}
+
+
+
 	uint32_t
 	UserNameIdentityToken::passwordLen(void)
 	{
