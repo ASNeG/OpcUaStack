@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Certificate/Certificate.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
+#include "OpcUaStackCore/Certificate/CertificateSettings.h"
 
 namespace OpcUaStackCore
 {
@@ -57,6 +58,8 @@ namespace OpcUaStackCore
 		PrivateKey::SPtr readOwnPrivateKey(void);
 		bool writeOwnPrivateKey(PrivateKey::SPtr& privateKey);
 
+		CertificateSettings& certificateSettings(void);
+
 	  private:
 		bool checkAndCreateDirectory(const std::string& directory);
 		bool setReadOnly(const std::string& directory);
@@ -77,6 +80,8 @@ namespace OpcUaStackCore
 
 		std::string ownCertificateFile_;
 		std::string ownPrivateKeyFile_;
+
+		CertificateSettings certificateSettings_;
 	};
 
 }

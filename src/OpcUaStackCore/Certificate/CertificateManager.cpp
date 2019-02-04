@@ -25,6 +25,16 @@ namespace OpcUaStackCore
 {
 
 	CertificateManager::CertificateManager(void)
+	: certificateTrustListLocation_("")
+	, certificateRejectListLocation_("")
+	, certificateRevocationListLocation_("")
+	, issuersCertificatesLocation_("")
+	, issuersRevocationListLocation_("")
+
+	, ownCertificateFile_("")
+    , ownPrivateKeyFile_("")
+
+	, certificateSettings_()
 	{
 	}
 
@@ -203,6 +213,12 @@ namespace OpcUaStackCore
 			return false;
 		}
 		return true;
+	}
+
+	CertificateSettings&
+	CertificateManager::certificateSettings(void)
+	{
+		return certificateSettings_;
 	}
 
 	bool
