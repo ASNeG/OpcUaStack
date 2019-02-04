@@ -32,6 +32,8 @@ namespace OpcUaStackCore
 		CertificateSettings(void);
 		~CertificateSettings(void);
 
+		void enable(bool enable);
+		bool enable(void);
 		void generateCertificate(bool generateCertificate);
 		bool generateCertificate(void);
 		void uri(const std::string& uri);
@@ -62,6 +64,7 @@ namespace OpcUaStackCore
 		std::string& email(void);
 
 	  private:
+		bool enable_;
 		bool generateCertificate_;
 		std::string uri_;
 		std::string commonName_;						//!< name of the application

@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 {
 
 	CertificateSettings::CertificateSettings(void)
-	: generateCertificate_(true)
+	: enable_(false)
+	, generateCertificate_(true)
 	, uri_("")
 	, commonName_("")
 	, domainComponent_("")
@@ -39,6 +40,19 @@ namespace OpcUaStackCore
 	CertificateSettings::~CertificateSettings(void)
 	{
 	}
+
+	void
+	CertificateSettings::enable(bool enable)
+	{
+		enable_ = enable;
+	}
+
+	bool
+	CertificateSettings::enable(void)
+	{
+		return enable_;
+	}
+
 
 	void
 	CertificateSettings::generateCertificate(bool generateCertificate)

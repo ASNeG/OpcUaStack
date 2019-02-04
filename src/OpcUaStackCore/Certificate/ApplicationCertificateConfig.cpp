@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,14 +33,12 @@ namespace OpcUaStackCore
 
 	bool
 	ApplicationCertificateConfig::parse(
-		ApplicationCertificate::SPtr& serverCertificate,
+		CertificateManager::SPtr& certificateManager,
 		const std::string& configPrefix,
 		Config* childConfig,
 		const std::string& configurationFileName
 	)
 	{
-		serverCertificate->enable(false);
-
 		// checks if server certificate configuration exists
 		boost::optional<Config> child = childConfig->getChild(configPrefix);
 		if (!child) {
@@ -64,7 +62,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".Folder.CertificateTrustListLocation"));
 			return false;
 		}
-		serverCertificate->certificateTrustListLocation(certificateTrustListLocation);
+		certificateManager->certificateTrustListLocation(certificateTrustListLocation);
 
 		// get certificate revocation list location
 		std::string certificateRevocationListLocation;
@@ -74,7 +72,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".Folder.CertificateRevocationListLocation"));
 			return false;
 		}
-		serverCertificate->certificateRevocationListLocation(certificateRevocationListLocation);
+		certificateManager->certificateRevocationListLocation(certificateRevocationListLocation);
 
 		// get issuer certificates location
 		std::string issuersCertificatesLocation;
@@ -84,7 +82,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".Folder.IssuersCertificatesLocation"));
 			return false;
 		}
-		serverCertificate->issuersCertificatesLocation(issuersCertificatesLocation);
+		certificateManager->issuersCertificatesLocation(issuersCertificatesLocation);
 
 		// get issuer revocation list location
 		std::string issuersRevocationListLocation;
@@ -94,7 +92,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".Folder.IssuersRevocationListLocation"));
 			return false;
 		}
-		serverCertificate->issuersRevocationListLocation(issuersRevocationListLocation);
+		certificateManager->issuersRevocationListLocation(issuersRevocationListLocation);
 
 		// get certificate reject list location
 		std::string certificateRejectListLocation;
@@ -104,7 +102,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".Folder.CertificateRejectListLocation"));
 			return false;
 		}
-		serverCertificate->certificateRejectListLocation(certificateRejectListLocation);
+		certificateManager->certificateRejectListLocation(certificateRejectListLocation);
 
 
 		// --------------------------------------------------------------------
@@ -116,24 +114,24 @@ namespace OpcUaStackCore
 		// --------------------------------------------------------------------
 
 		// get server certificate file
-		std::string serverCertificateFile;
-		if (!child->getConfigParameter("Files.ApplicationCertificateFile", serverCertificateFile) == true) {
+		std::string ownCertificateFile;
+		if (!child->getConfigParameter("Files.ApplicationCertificateFile", ownCertificateFile) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
 				.parameter("ParameterPath", configPrefix + std::string(".Files.ServerCertificateFile"));
 			return false;
 		}
-		serverCertificate->serverCertificateFile(serverCertificateFile);
+		certificateManager->ownCertificateFile(ownCertificateFile);
 
 		// get private key file
-		std::string privateKeyFile;
-		if (!child->getConfigParameter("Files.PrivateKeyFile", privateKeyFile) == true) {
+		std::string ownPrivateKeyFile;
+		if (!child->getConfigParameter("Files.PrivateKeyFile", ownPrivateKeyFile) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
 				.parameter("ParameterPath", configPrefix + std::string(".Files.PrivateKeyFile"));
 			return false;
 		}
-		serverCertificate->privateKeyFile(privateKeyFile);
+		certificateManager->ownPrivateKeyFile(ownPrivateKeyFile);
 
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
@@ -142,6 +140,8 @@ namespace OpcUaStackCore
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
+		CertificateSettings& certificateSettings = certificateManager->certificateSettings();
+		certificateSettings.enable(false);
 
 		// get generate certificate flag
 		std::string generateCertificate;
@@ -153,10 +153,10 @@ namespace OpcUaStackCore
 		}
 		boost::to_upper(generateCertificate);
 		if (generateCertificate == "TRUE") {
-		    serverCertificate->generateCertificate(true);
+			certificateSettings.generateCertificate(true);
 		}
 		else {
-			serverCertificate->generateCertificate(false);
+			certificateSettings.generateCertificate(false);
 		}
 
 		// get common name
@@ -167,7 +167,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.CommonName"));
 			return false;
 		}
-		serverCertificate->commonName(commonName);
+		certificateSettings.commonName(commonName);
 
 		// get domain component
 		std::string domainComponent;
@@ -177,7 +177,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.DomainComponent"));
 			return false;
 		}
-		serverCertificate->domainComponent(domainComponent);
+		certificateSettings.domainComponent(domainComponent);
 
 		// get organization
 		std::string organization;
@@ -187,7 +187,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.Organization"));
 			return false;
 		}
-		serverCertificate->organization(organization);
+		certificateSettings.organization(organization);
 
 		// get organization unit
 		std::string organizationUnit;
@@ -197,7 +197,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.OrganizationUnit"));
 			return false;
 		}
-		serverCertificate->organizationUnit(organizationUnit);
+		certificateSettings.organizationUnit(organizationUnit);
 
 		// get locality
 		std::string locality;
@@ -207,7 +207,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.Locality"));
 			return false;
 		}
-		serverCertificate->locality(locality);
+		certificateSettings.locality(locality);
 
 		// get state
 		std::string state;
@@ -217,7 +217,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.State"));
 			return false;
 		}
-		serverCertificate->state(state);
+		certificateSettings.state(state);
 
 		// get country
 		std::string country;
@@ -227,7 +227,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.Country"));
 			return false;
 		}
-		serverCertificate->country(country);
+		certificateSettings.country(country);
 
 		// get years valid for
 		uint32_t yearsValidFor;
@@ -237,7 +237,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.YearsValidFor"));
 			return false;
 		}
-		serverCertificate->yearsValidFor(yearsValidFor);
+		certificateSettings.yearsValidFor(yearsValidFor);
 
 		// get key length
 		uint32_t keyLength;
@@ -285,8 +285,8 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		serverCertificate->keyLength(keyLength);
-		serverCertificate->certificateType(certificateType);
+		certificateSettings.keyLength(keyLength);
+		certificateSettings.certificateType(certificateType);
 
 		// get ip address
 		std::vector<std::string>::iterator itIpAddress;
@@ -299,7 +299,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 		for (itIpAddress = ipAddresses.begin(); itIpAddress != ipAddresses.end(); itIpAddress++) {
-			serverCertificate->ipAddress().push_back(*itIpAddress);
+			certificateSettings.ipAddress().push_back(*itIpAddress);
 		}
 
 		// get dns name
@@ -313,7 +313,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 		for (itDnsName = dnsNames.begin(); itDnsName != dnsNames.end(); itDnsName++) {
-			serverCertificate->dnsName().push_back(*itDnsName);
+			certificateSettings.dnsName().push_back(*itDnsName);
 		}
 
 		// get email
@@ -324,9 +324,9 @@ namespace OpcUaStackCore
 				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.EMail"));
 			return false;
 		}
-		serverCertificate->email(email);
+		certificateSettings.email(email);
 
-		serverCertificate->enable(true);
+		certificateSettings.enable(true);
 		return true;
 	}
 
