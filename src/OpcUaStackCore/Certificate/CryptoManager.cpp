@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Certificate/ApplicationCertificateConfig.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Certificate/CryptoOpenSSLNONE.h"
 #include "OpcUaStackCore/Certificate/CryptoOpenSSLBASIC256SHA256.h"
@@ -72,6 +73,34 @@ namespace OpcUaStackCore
 			return cryptoBase;
 		}
 		return it->second;
+	}
+
+	void
+	CryptoManager::certificateManager(CertificateManager::SPtr& certificateManager)
+	{
+		certificateManager_ = certificateManager;
+	}
+
+	bool
+	CryptoManager::certificateManager(
+		const std::string& configPrefix,
+		Config* config,
+		const std::string& configurationFileName
+	)
+	{
+		certificateManager_ = constructSPtr<CertificateManager>();
+		return ApplicationCertificateConfig::parse(
+			certificateManager_,
+			"OpcUaServer.ApplicationCertificate",
+			config,
+			config->configFileName()
+		);
+	}
+
+	CertificateManager::SPtr&
+	CryptoManager::certificateManager(void)
+	{
+		return certificateManager_;
 	}
 
 }

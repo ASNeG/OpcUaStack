@@ -325,6 +325,23 @@ namespace OpcUaStackServer
 		}
 
 		// decode certificate configuration
+		CertificateManager::SPtr certificateManager = constructSPtr<CertificateManager>();
+		rc = ApplicationCertificateConfig::parse(
+			certificateManager,
+			"OpcUaServer.ApplicationCertificate",
+			&config(),
+			config().configFileName()
+		);
+		if (!rc) {
+			Log(Error, "parse application certificate configuration error");
+			return false;
+		}
+
+		// create crypto manager
+		cryptoManager_ = constructSPtr<CryptoManager>();
+		cryptoManager_->certificateManager(certificateManager);
+
+#if 0
 		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
 		applicationCertificate_->uri(serverInfo_.serverUri());
 		rc = ApplicationCertificateConfig::parse(
@@ -344,6 +361,7 @@ namespace OpcUaStackServer
 
 		// create crypto manager
 		cryptoManager_ = constructSPtr<CryptoManager>();
+#endif
 
 		return true;
 	}
