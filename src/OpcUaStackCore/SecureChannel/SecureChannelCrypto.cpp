@@ -23,7 +23,6 @@ namespace OpcUaStackCore
 
 	SecureChannelCrypto::SecureChannelCrypto(void)
 	: cryptoManager_()
-	, applicationCertificate_()
 	{
 	}
 
@@ -41,18 +40,6 @@ namespace OpcUaStackCore
 	SecureChannelCrypto::cryptoManager(void)
 	{
 		return cryptoManager_;
-	}
-
-	void
-	SecureChannelCrypto::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
-	{
-		applicationCertificate_ = applicationCertificate;
-	}
-
-	ApplicationCertificate::SPtr&
-	SecureChannelCrypto::applicationCertificate(void)
-	{
-		return applicationCertificate_;
 	}
 
 	// ------------------------------------------------------------------------
@@ -116,19 +103,20 @@ namespace OpcUaStackCore
 	)
 	{
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		ApplicationCertificate::SPtr& applicationCertificate = cryptoManager_->applicationCertificate();
 
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
 		OpcUaStatusCode statusCode;
 
 		// check receiver certificate
-		if (securitySettings.ownCertificateThumbprint() != applicationCertificate_->certificate()->thumbPrint()) {
+		if (securitySettings.ownCertificateThumbprint() != applicationCertificate->certificate()->thumbPrint()) {
 			Log(Error, "receiver certificate invalid")
 				.parameter("ReceiverCertificateThumbprint", securitySettings.ownCertificateThumbprint());
 			return BadCertificateInvalid;
 		}
 
 		// the number of received bytes must be a multiple of the key length
-		if (receivedDataLen % (applicationCertificate_->privateKey()->keySize()/8) != 0) {
+		if (receivedDataLen % (applicationCertificate->privateKey()->keySize()/8) != 0) {
 			Log(Error, "number of received bytes invalid")
 				.parameter("ReceivedDataLen", receivedDataLen);
 			return BadSecurityChecksFailed;
@@ -143,7 +131,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->asymmetricDecrypt(
 			encryptedText.memBuf(),
 			encryptedText.memLen(),
-			*applicationCertificate_->privateKey().get(),
+			*applicationCertificate->privateKey().get(),
 			plainText.memBuf(),
 			&receivedDataLen
 		);
@@ -262,8 +250,9 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		PublicKey publicKey = applicationCertificate()->certificate()->publicKey();
-		PrivateKey::SPtr privateKey = applicationCertificate()->privateKey();
+		ApplicationCertificate::SPtr& applicationCertificate = cryptoManager_->applicationCertificate();
+		PublicKey publicKey = applicationCertificate->certificate()->publicKey();
+		PrivateKey::SPtr privateKey = applicationCertificate->privateKey();
 
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
@@ -507,19 +496,21 @@ namespace OpcUaStackCore
 	)
 	{
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		ApplicationCertificate::SPtr& applicationCertificate = cryptoManager_->applicationCertificate();
+
 
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
 		OpcUaStatusCode statusCode;
 
 		// check receiver certificate
-		if (securitySettings.ownCertificateThumbprint() != applicationCertificate_->certificate()->thumbPrint()) {
+		if (securitySettings.ownCertificateThumbprint() != applicationCertificate->certificate()->thumbPrint()) {
 			Log(Error, "receiver certificate invalid")
 				.parameter("ReceiverCertificateThumbprint", securitySettings.ownCertificateThumbprint());
 			return BadCertificateInvalid;
 		}
 
 		// the number of received bytes must be a multiple of the key length
-		if (receivedDataLen % (applicationCertificate_->privateKey()->keySize()/8) != 0) {
+		if (receivedDataLen % (applicationCertificate->privateKey()->keySize()/8) != 0) {
 			Log(Error, "number of received bytes invalid")
 				.parameter("ReceivedDataLen", receivedDataLen);
 			return BadSecurityChecksFailed;
@@ -534,7 +525,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->asymmetricDecrypt(
 			encryptedText.memBuf(),
 			encryptedText.memLen(),
-			*applicationCertificate_->privateKey().get(),
+			*applicationCertificate->privateKey().get(),
 			plainText.memBuf(),
 			&receivedDataLen
 		);
@@ -652,8 +643,10 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		PublicKey publicKey = applicationCertificate()->certificate()->publicKey();
-		PrivateKey::SPtr privateKey = applicationCertificate()->privateKey();
+		ApplicationCertificate::SPtr& applicationCertificate = cryptoManager_->applicationCertificate();
+
+		PublicKey publicKey = applicationCertificate->certificate()->publicKey();
+		PrivateKey::SPtr privateKey = applicationCertificate->privateKey();
 
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;

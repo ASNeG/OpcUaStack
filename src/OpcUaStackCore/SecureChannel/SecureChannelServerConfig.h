@@ -42,8 +42,6 @@ namespace OpcUaStackCore
 		EndpointDescription::SPtr& endpointDescription(void);
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
-		ApplicationCertificate::SPtr& applicationCertificate(void);
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		CryptoManager::SPtr& cryptoManager(void);
 
@@ -51,7 +49,6 @@ namespace OpcUaStackCore
 		bool secureChannelLog(void);
 
 	  private:
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;

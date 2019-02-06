@@ -56,7 +56,6 @@ namespace OpcUaStackServer
 
 		typedef boost::shared_ptr<Session> SPtr;
 
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManager);
 		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
@@ -132,7 +131,6 @@ namespace OpcUaStackServer
 		SessionIf* sessionIf_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		EndpointDescription::SPtr endpointDescription_;
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 		Certificate clientCertificate_;
 

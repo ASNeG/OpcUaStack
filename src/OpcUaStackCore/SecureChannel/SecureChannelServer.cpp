@@ -51,7 +51,6 @@ namespace OpcUaStackCore
 	bool
 	SecureChannelServer::accept(SecureChannelServerConfig::SPtr secureChannelServerConfig)
 	{
-		applicationCertificate(secureChannelServerConfig->applicationCertificate());
 		cryptoManager(secureChannelServerConfig->cryptoManager());
 
 		// check interface
@@ -329,7 +328,9 @@ namespace OpcUaStackCore
 
 		// set certificate
 		if (securitySettings.isPartnerSignatureEnabled()) {
-			securitySettings.ownCertificateChain().addCertificate(applicationCertificate()->certificate());
+			securitySettings.ownCertificateChain().addCertificate(
+				cryptoManager()->applicationCertificate()->certificate()
+			);
 		}
 
 		// set partner certificate thumbprint

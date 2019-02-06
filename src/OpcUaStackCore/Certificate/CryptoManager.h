@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/Certificate/CertificateManager.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -37,6 +38,7 @@ namespace OpcUaStackCore
 		bool insert(const std::string& name, CryptoBase::SPtr& cryptoBase);
 		bool remove(const std::string& name);
 		CryptoBase::SPtr get(const std::string& name);
+
 		void certificateManager(CertificateManager::SPtr& certificateManager);
 		bool certificateManager(
 			const std::string& configPrefix,
@@ -45,9 +47,13 @@ namespace OpcUaStackCore
 		);
 		CertificateManager::SPtr& certificateManager(void);
 
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		ApplicationCertificate::SPtr& applicationCertificate(void);
+
 	  private:
 		CryptoBase::Map cryptoBaseMap_;
 		CertificateManager::SPtr certificateManager_;
+		ApplicationCertificate::SPtr applicationCertificate_;
 	};
 
 }

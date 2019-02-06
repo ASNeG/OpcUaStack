@@ -52,11 +52,15 @@ namespace OpcUaStackCore
 		std::string& ownPrivateKeyFile(void);
 
 		bool existOwnCertificate(void);
+		bool removeOwnCertificate(void);
 		Certificate::SPtr readOwnCertificate(void);
 		bool writeOwnCertificate(Certificate::SPtr& certificate);
+		bool writeOwnCertificate(Certificate& certificate);
 		bool existOwnPrivateKey(void);
+		bool removeOwnPrivateKey(void);
 		PrivateKey::SPtr readOwnPrivateKey(void);
 		bool writeOwnPrivateKey(PrivateKey::SPtr& privateKey);
+		bool writeOwnPrivateKey(PrivateKey& privateKey);
 
 		CertificateSettings& certificateSettings(void);
 

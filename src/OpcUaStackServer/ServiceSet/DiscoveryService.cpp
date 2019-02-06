@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 
 	DiscoveryService::DiscoveryService(void)
 	: discoveryIf_(nullptr)
-	, applicationCertificate_(nullptr)
+	, cryptoManager_(nullptr)
 	, endpointDescriptionArray_()
 	{
 	}
@@ -59,15 +59,16 @@ namespace OpcUaStackServer
 	}
 
 	void
-	DiscoveryService::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	DiscoveryService::cryptoManager(CryptoManager::SPtr& cryptoManager)
 	{
 		Log(Debug, "applicationCertificate");
 
-		assert(applicationCertificate.get() != nullptr);
+		assert(cryptoManager.get() != nullptr);
 
-		applicationCertificate_ = applicationCertificate;
+		cryptoManager_ = cryptoManager;
+		ApplicationCertificate::SPtr applicationCertificate = cryptoManager->applicationCertificate();
 
-		if (!applicationCertificate_->enable()) {
+		if (!applicationCertificate->enable()) {
 			return;
 		}
 

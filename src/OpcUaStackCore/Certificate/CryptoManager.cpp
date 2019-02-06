@@ -28,6 +28,8 @@ namespace OpcUaStackCore
 
 	CryptoManager::CryptoManager(void)
 	: cryptoBaseMap_()
+	, certificateManager_()
+	, applicationCertificate_()
 	{
 		// register open ssl security policy NONE
 		CryptoOpenSSLNONE::SPtr cryptoOpenSSLNone(constructSPtr<CryptoOpenSSLNONE>());
@@ -49,6 +51,9 @@ namespace OpcUaStackCore
 
 	CryptoManager::~CryptoManager(void)
 	{
+		if (applicationCertificate_.get() != nullptr) {
+			applicationCertificate_->cleanup();
+		}
 	}
 
 	bool
@@ -102,6 +107,18 @@ namespace OpcUaStackCore
 	CryptoManager::certificateManager(void)
 	{
 		return certificateManager_;
+	}
+
+	void
+	CryptoManager::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
+	}
+
+	ApplicationCertificate::SPtr&
+	CryptoManager::applicationCertificate(void)
+	{
+		return applicationCertificate_;
 	}
 
 }

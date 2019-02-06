@@ -50,7 +50,6 @@ namespace OpcUaStackServer
 		virtual ~SessionManager(void);
 
 		void discoveryService(DiscoveryService::SPtr& discoveryService);
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void ioThread(IOThread* ioThread);
@@ -151,7 +150,6 @@ namespace OpcUaStackServer
 		IOThread* ioThread_;
 		Config* config_;
 		EndpointDescriptionSet::SPtr endpointDescriptionSet_;
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 
 		ConditionProcess secureChannelServerShutdown_;

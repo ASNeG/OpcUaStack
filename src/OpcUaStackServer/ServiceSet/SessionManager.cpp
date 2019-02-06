@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,7 +30,6 @@ namespace OpcUaStackServer
 	, secureChannelServerMap_()
 	, config_(nullptr)
 	, endpointDescriptionSet_()
-	, applicationCertificate_()
 	, cryptoManager_()
 	, secureChannelServerShutdown_()
 	, discoveryService_()
@@ -49,12 +48,6 @@ namespace OpcUaStackServer
 	{
 		discoveryService_ = discoveryService;
 		discoveryService_->discoveryIf(this);
-	}
-
-	void
-	SessionManager::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
-	{
-		applicationCertificate_ = applicationCertificate;
 	}
 
 	void
@@ -118,7 +111,6 @@ namespace OpcUaStackServer
 			secureChannelServerConfig->endpointDescriptionArray(endpointDescriptionArray);
 			secureChannelServerConfig->endpointUrl(endpointUrl);
 			secureChannelServerConfig->secureChannelLog(secureChannelLog);
-			secureChannelServerConfig->applicationCertificate(applicationCertificate_);
 			secureChannelServerConfig->cryptoManager(cryptoManager_);
 
 			// create new secure channel
@@ -286,7 +278,6 @@ namespace OpcUaStackServer
 		Session::SPtr session = constructSPtr<Session>();
 		session->ioThread(ioThread_);
 		session->sessionIf(this);
-		session->applicationCertificate(applicationCertificate_);
 		session->cryptoManager(cryptoManager_);
 		session->endpointDescriptionArray(endpointDescriptionArray);
 		session->endpointDescription(secureChannel->securitySettings_.endpointDescription());

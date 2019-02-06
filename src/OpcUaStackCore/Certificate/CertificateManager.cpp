@@ -166,6 +166,12 @@ namespace OpcUaStackCore
 		return boost::filesystem::exists(ownCertificateFile_);
 	}
 
+	bool
+	CertificateManager::removeOwnCertificate(void)
+	{
+		return boost::filesystem::remove(ownCertificateFile_);
+	}
+
 	Certificate::SPtr
 	CertificateManager::readOwnCertificate(void)
 	{
@@ -180,9 +186,15 @@ namespace OpcUaStackCore
 	bool
 	CertificateManager::writeOwnCertificate(Certificate::SPtr& certificate)
 	{
-		certificate->toDERFile(ownCertificateFile_);
-		if (certificate->isError()) {
-			certificate->log(Error, "save self signed certificate error");
+		return writeOwnCertificate(*certificate.get());
+	}
+
+	bool
+	CertificateManager::writeOwnCertificate(Certificate& certificate)
+	{
+		certificate.toDERFile(ownCertificateFile_);
+		if (certificate.isError()) {
+			certificate.log(Error, "save self signed certificate error");
 			return false;
 		}
 		return false;
@@ -192,6 +204,12 @@ namespace OpcUaStackCore
 	CertificateManager::existOwnPrivateKey(void)
 	{
 		return boost::filesystem::exists(ownPrivateKeyFile_);
+	}
+
+	bool
+	CertificateManager::removeOwnPrivateKey(void)
+	{
+		return boost::filesystem::remove(ownPrivateKeyFile_);
 	}
 
 	PrivateKey::SPtr
@@ -208,8 +226,14 @@ namespace OpcUaStackCore
 	bool
 	CertificateManager::writeOwnPrivateKey(PrivateKey::SPtr& privateKey)
 	{
-		if (!privateKey->toPEMFile(ownPrivateKeyFile_, nullptr)) {
-			privateKey->log(Error, "save private key error");
+		return writeOwnPrivateKey(*privateKey.get());
+	}
+
+	bool
+	CertificateManager::writeOwnPrivateKey(PrivateKey& privateKey)
+	{
+		if (!privateKey.toPEMFile(ownPrivateKeyFile_, nullptr)) {
+			privateKey.log(Error, "save private key error");
 			return false;
 		}
 		return true;
