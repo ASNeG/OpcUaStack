@@ -87,20 +87,29 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CryptoManager::certificateManager(
+	CryptoManager::createCertificateManager(
 		const std::string& configPrefix,
 		Config* config,
 		const std::string& configurationFileName
 	)
 	{
+		bool result;
+
+		// parse configuration
 		certificateManager_ = constructSPtr<CertificateManager>();
-		return ApplicationCertificateConfig::parse(
+		result = ApplicationCertificateConfig::parse(
 			certificateManager_,
 			"OpcUaServer.ServerInfo",
 			"OpcUaServer.ApplicationCertificate",
 			config,
 			config->configFileName()
 		);
+		if (!result) {
+			return false;
+		}
+
+		// init certificate manager
+		return certificateManager_->init();
 	}
 
 	CertificateManager::SPtr&
@@ -113,6 +122,19 @@ namespace OpcUaStackCore
 	CryptoManager::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
 	{
 		applicationCertificate_ = applicationCertificate;
+	}
+
+	bool
+	CryptoManager::createApplicationCertificate(void)
+	{
+		assert(certificateManager_.get() != nullptr);
+
+		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
+		if (!applicationCertificate_->init(certificateManager_)) {
+			Log(Error, "init application certificate error");
+			return false;
+		}
+		return true;
 	}
 
 	ApplicationCertificate::SPtr&

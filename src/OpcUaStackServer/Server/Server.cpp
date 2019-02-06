@@ -336,6 +336,9 @@ namespace OpcUaStackServer
 			Log(Error, "parse application certificate configuration error");
 			return false;
 		}
+		if (!certificateManager->init()) {
+			return false;
+		}
 
 		// create application certificate
 		ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();

@@ -40,7 +40,7 @@ namespace OpcUaStackCore
 		CryptoBase::SPtr get(const std::string& name);
 
 		void certificateManager(CertificateManager::SPtr& certificateManager);
-		bool certificateManager(
+		bool createCertificateManager(
 			const std::string& configPrefix,
 			Config* config,
 			const std::string& configurationFileName
@@ -48,6 +48,7 @@ namespace OpcUaStackCore
 		CertificateManager::SPtr& certificateManager(void);
 
 		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		bool createApplicationCertificate(void);
 		ApplicationCertificate::SPtr& applicationCertificate(void);
 
 	  private:
