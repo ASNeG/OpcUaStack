@@ -36,8 +36,10 @@ namespace OpcUaStackCore
 		bool enable(void);
 		void generateCertificate(bool generateCertificate);
 		bool generateCertificate(void);
-		void uri(const std::string& uri);
-		std::string& uri(void);
+		void serverUri(const std::string& serverUri);
+		std::string& serverUri(void);
+		void serverName(const std::string& serverName);
+		std::string& serverName(void);
 		void commonName(const std::string& commonName);
 		std::string& commonName(void);
 		void domainComponent(const std::string& domainComponent);
@@ -66,7 +68,8 @@ namespace OpcUaStackCore
 	  private:
 		bool enable_;
 		bool generateCertificate_;
-		std::string uri_;
+		std::string serverUri_;
+		std::string serverName_;
 		std::string commonName_;						//!< name of the application
 		std::string domainComponent_;					//!< hostname of the machine
 		std::string organization_;						//!< organization using the opc ua server

@@ -34,13 +34,64 @@ namespace OpcUaStackCore
 	bool
 	ApplicationCertificateConfig::parse(
 		CertificateManager::SPtr& certificateManager,
-		const std::string& configPrefix,
+		const std::string& configPrefixServerInfo,
+		const std::string& configPrefixApplicationCertificate,
 		Config* childConfig,
 		const std::string& configurationFileName
 	)
 	{
+		boost::optional<Config> child;
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// server info
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+
+		// check if server info configuration exists
+		child = childConfig->getChild(configPrefixServerInfo);
+		if (!child) {
+			Log(Info, "server info element not exist in configuration")
+				.parameter("FileName", configurationFileName);
+			return false;
+		}
+
+		// get server uri
+		std::string serverUri;
+		if (!child->getConfigParameter("ServerUri", serverUri) == true) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefixServerInfo + std::string(".ServerUri"));
+			return false;
+		}
+		certificateManager->certificateSettings().serverUri(serverUri);
+
+		// get server name
+		std::string serverName;
+		if (!child->getConfigParameter("ServerName", serverName) == true) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefixServerInfo + std::string(".ServerName"));
+			return false;
+		}
+		certificateManager->certificateSettings().serverName(serverName);
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// certificate settings
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+
 		// checks if server certificate configuration exists
-		boost::optional<Config> child = childConfig->getChild(configPrefix);
+		child = childConfig->getChild(configPrefixApplicationCertificate);
 		if (!child) {
 			Log(Info, "application certificate is disabled");
 			return true;
@@ -59,7 +110,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("Folder.CertificateTrustListLocation", certificateTrustListLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".Folder.CertificateTrustListLocation"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".Folder.CertificateTrustListLocation"));
 			return false;
 		}
 		certificateManager->certificateTrustListLocation(certificateTrustListLocation);
@@ -69,7 +120,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("Folder.CertificateRevocationListLocation", certificateRevocationListLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".Folder.CertificateRevocationListLocation"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".Folder.CertificateRevocationListLocation"));
 			return false;
 		}
 		certificateManager->certificateRevocationListLocation(certificateRevocationListLocation);
@@ -79,7 +130,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("Folder.IssuersCertificatesLocation", issuersCertificatesLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".Folder.IssuersCertificatesLocation"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".Folder.IssuersCertificatesLocation"));
 			return false;
 		}
 		certificateManager->issuersCertificatesLocation(issuersCertificatesLocation);
@@ -89,7 +140,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("Folder.IssuersRevocationListLocation", issuersRevocationListLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".Folder.IssuersRevocationListLocation"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".Folder.IssuersRevocationListLocation"));
 			return false;
 		}
 		certificateManager->issuersRevocationListLocation(issuersRevocationListLocation);
@@ -99,7 +150,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("Folder.CertificateRejectListLocation", certificateRejectListLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".Folder.CertificateRejectListLocation"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".Folder.CertificateRejectListLocation"));
 			return false;
 		}
 		certificateManager->certificateRejectListLocation(certificateRejectListLocation);
@@ -118,7 +169,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("Files.ApplicationCertificateFile", ownCertificateFile) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".Files.ServerCertificateFile"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".Files.ServerCertificateFile"));
 			return false;
 		}
 		certificateManager->ownCertificateFile(ownCertificateFile);
@@ -128,7 +179,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("Files.PrivateKeyFile", ownPrivateKeyFile) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".Files.PrivateKeyFile"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".Files.PrivateKeyFile"));
 			return false;
 		}
 		certificateManager->ownPrivateKeyFile(ownPrivateKeyFile);
@@ -148,7 +199,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.GenerateCertificate", generateCertificate) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.GenerateCertificate"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.GenerateCertificate"));
 			return false;
 		}
 		boost::to_upper(generateCertificate);
@@ -164,7 +215,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.CommonName", commonName) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.CommonName"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.CommonName"));
 			return false;
 		}
 		certificateSettings.commonName(commonName);
@@ -174,7 +225,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.DomainComponent", domainComponent) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.DomainComponent"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.DomainComponent"));
 			return false;
 		}
 		certificateSettings.domainComponent(domainComponent);
@@ -184,7 +235,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.Organization", organization) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.Organization"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.Organization"));
 			return false;
 		}
 		certificateSettings.organization(organization);
@@ -194,7 +245,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.OrganizationUnit", organizationUnit) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.OrganizationUnit"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.OrganizationUnit"));
 			return false;
 		}
 		certificateSettings.organizationUnit(organizationUnit);
@@ -204,7 +255,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.Locality", locality) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.Locality"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.Locality"));
 			return false;
 		}
 		certificateSettings.locality(locality);
@@ -214,7 +265,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.State", state) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.State"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.State"));
 			return false;
 		}
 		certificateSettings.state(state);
@@ -224,7 +275,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.Country", country) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.Country"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.Country"));
 			return false;
 		}
 		certificateSettings.country(country);
@@ -234,7 +285,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.YearsValidFor", yearsValidFor) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.YearsValidFor"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.YearsValidFor"));
 			return false;
 		}
 		certificateSettings.yearsValidFor(yearsValidFor);
@@ -244,7 +295,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.KeyLength", keyLength) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.KeyLength"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.KeyLength"));
 			return false;
 		}
 
@@ -253,7 +304,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.CertificateType", certificateType) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.CertificateType"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.CertificateType"));
 			return false;
 		}
 
@@ -261,7 +312,7 @@ namespace OpcUaStackCore
 			if (keyLength != 1024 && keyLength != 2048) {
 				Log(Error, "parameter invalid in configuration file")
 					.parameter("ConfigurationFileName", configurationFileName)
-					.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.KeyLength"))
+					.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.KeyLength"))
 					.parameter("KeyLength", keyLength)
 					.parameter("CertificateType", certificateType);
 				return false;
@@ -271,7 +322,7 @@ namespace OpcUaStackCore
 			if (keyLength != 2048 && keyLength != 3072 && keyLength != 4096) {
 				Log(Error, "parameter invalid in configuration file")
 					.parameter("ConfigurationFileName", configurationFileName)
-					.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.KeyLength"))
+					.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.KeyLength"))
 					.parameter("KeyLength", keyLength)
 					.parameter("CertificateType", certificateType);
 				return false;
@@ -280,7 +331,7 @@ namespace OpcUaStackCore
 		else {
 			Log(Error, "parameter invalid in configuration file")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.CertificateType"))
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.CertificateType"))
 				.parameter("CertificateType", certificateType);
 			return false;
 		}
@@ -295,7 +346,7 @@ namespace OpcUaStackCore
 		if (ipAddresses.size() == 0) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.IPAddress"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.IPAddress"));
 			return false;
 		}
 		for (itIpAddress = ipAddresses.begin(); itIpAddress != ipAddresses.end(); itIpAddress++) {
@@ -309,7 +360,7 @@ namespace OpcUaStackCore
 		if (ipAddresses.size() == 0) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.DNSName"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.DNSName"));
 			return false;
 		}
 		for (itDnsName = dnsNames.begin(); itDnsName != dnsNames.end(); itDnsName++) {
@@ -321,7 +372,7 @@ namespace OpcUaStackCore
 		if (!child->getConfigParameter("CertificateSettings.EMail", email) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.EMail"));
+				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.EMail"));
 			return false;
 		}
 		certificateSettings.email(email);

@@ -328,6 +328,7 @@ namespace OpcUaStackServer
 		CertificateManager::SPtr certificateManager = constructSPtr<CertificateManager>();
 		rc = ApplicationCertificateConfig::parse(
 			certificateManager,
+			"OpcUaServer.ServerInfo",
 			"OpcUaServer.ApplicationCertificate",
 			&config(),
 			config().configFileName()

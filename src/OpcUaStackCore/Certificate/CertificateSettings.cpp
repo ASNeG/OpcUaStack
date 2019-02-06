@@ -23,7 +23,8 @@ namespace OpcUaStackCore
 	CertificateSettings::CertificateSettings(void)
 	: enable_(false)
 	, generateCertificate_(true)
-	, uri_("")
+	, serverUri_("")
+	, serverName_("")
 	, commonName_("")
 	, domainComponent_("")
 	, organization_("")
@@ -67,15 +68,27 @@ namespace OpcUaStackCore
 	}
 
 	void
-	CertificateSettings::uri(const std::string& uri)
+	CertificateSettings::serverUri(const std::string& serverUri)
 	{
-		uri_ = uri;
+		serverUri_ = serverUri;
 	}
 
 	std::string&
-	CertificateSettings::uri(void)
+	CertificateSettings::serverUri(void)
 	{
-		return uri_;
+		return serverUri_;
+	}
+
+	void
+	CertificateSettings::serverName(const std::string& serverName)
+	{
+		serverName_ = serverName;
+	}
+
+	std::string&
+	CertificateSettings::serverName(void)
+	{
+		return serverName_;
 	}
 
 	void

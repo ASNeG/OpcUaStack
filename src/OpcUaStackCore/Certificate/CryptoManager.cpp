@@ -91,6 +91,7 @@ namespace OpcUaStackCore
 		certificateManager_ = constructSPtr<CertificateManager>();
 		return ApplicationCertificateConfig::parse(
 			certificateManager_,
+			"OpcUaServer.ServerInfo",
 			"OpcUaServer.ApplicationCertificate",
 			config,
 			config->configFileName()
