@@ -44,6 +44,8 @@ namespace OpcUaStackCore
 	bool
 	ApplicationCertificate::init(CertificateManager::SPtr& certificateManager)
 	{
+		assert(certificateManager.get() != nullptr);
+
 		CertificateSettings& certificateSettings = certificateManager->certificateSettings();
 
 		Log(Info, "init certificate")
@@ -167,12 +169,14 @@ namespace OpcUaStackCore
 
 		// save self signed cerificate
 		if (!certificateManager->writeOwnCertificate(certificate)) {
+			Log(Error, "write own certificate error");
 			return false;
 		}
 
 		// save private key
 		PrivateKey privateKey = key.privateKey();
 		if (!certificateManager->writeOwnPrivateKey(privateKey)) {
+			Log(Error, "write own private key error");
 			return false;
 		}
 
@@ -185,12 +189,14 @@ namespace OpcUaStackCore
 		// read certificate from file
 		certificate_ = certificateManager->readOwnCertificate();
 		if (certificate_.get() == nullptr) {
+			Log(Error, "read own certificate error");
 			return false;
 		}
 
 		// read private key from file
 		privateKey_ = certificateManager->readOwnPrivateKey();
-		if (privateKey_.get() != nullptr) {
+		if (privateKey_.get() == nullptr) {
+			Log(Error, "read own private key error");
 			return false;
 		}
 

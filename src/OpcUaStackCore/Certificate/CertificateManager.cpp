@@ -197,7 +197,7 @@ namespace OpcUaStackCore
 			certificate.log(Error, "save self signed certificate error");
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 	bool
