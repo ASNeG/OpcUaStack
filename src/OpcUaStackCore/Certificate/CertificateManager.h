@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/Certificate/Certificate.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
 #include "OpcUaStackCore/Certificate/CertificateSettings.h"
+#include "OpcUaStackCore/Certificate/CertificateChain.h"
 
 namespace OpcUaStackCore
 {
@@ -63,6 +64,9 @@ namespace OpcUaStackCore
 		bool writeOwnPrivateKey(PrivateKey& privateKey);
 
 		CertificateSettings& certificateSettings(void);
+
+		bool writePartnerCertificate(const std::string& fileName, Certificate& certificate);
+		bool isPartnerCertificateTrusted(CertificateChain& partnerCertificateChain);
 
 	  private:
 		bool checkAndCreateDirectory(const std::string& directory);

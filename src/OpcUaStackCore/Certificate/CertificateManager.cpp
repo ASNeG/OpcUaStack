@@ -246,6 +246,46 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	CertificateManager::writePartnerCertificate(const std::string& fileName, Certificate& certificate)
+	{
+		certificate.toDERFile(fileName);
+		if (certificate.isError()) {
+			certificate.log(Error, "save partner certificate error: " + ownCertificateFile_);
+			return false;
+		}
+		return true;
+	}
+
+	bool
+	CertificateManager::isPartnerCertificateTrusted(CertificateChain& partnerCertificateChain)
+	{
+		Certificate::SPtr certificate = partnerCertificateChain.getCertificate();
+		std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
+
+		// check if certificate is in reject list location
+		boost::filesystem::path rejectFilePath(certificateRejectListLocation_ + "/" + certFileName);
+		if (boost::filesystem::exists(rejectFilePath)) {
+			return false;
+		}
+
+		// check if certificate is in trust list location
+		boost::filesystem::path trustFilePath(certificateTrustListLocation_ + "/" + certFileName);
+		if (boost::filesystem::exists(trustFilePath)) {
+			return true;
+		}
+
+		if (writePartnerCertificate(rejectFilePath.string(), *certificate.get())) {
+			Log(Info, "write partner certificate to reject folder")
+		    	.parameter("CertFileName", rejectFilePath.string());
+		}
+		else {
+			Log(Error, "write partner certificate to reject folder failed")
+		    	.parameter("CertFileName", rejectFilePath.string());
+		}
+		return false;
+	}
+
+	bool
 	CertificateManager::checkAndCreateDirectory(const std::string& directory)
 	{
 		boost::filesystem::path path(directory);

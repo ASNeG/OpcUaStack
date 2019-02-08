@@ -57,6 +57,8 @@ namespace OpcUaStackCore
 		//- SecureChannelBase -------------------------------------------------
 
 	  private:
+		void sendOpenSecureChannelResponseError(OpenSecureChannelResponse::SPtr& openSecureChannelResponse);
+
 		void accept(SecureChannel* secureChannel);
 		void resolveComplete(
 			const boost::system::error_code& error,
