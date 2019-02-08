@@ -50,7 +50,6 @@ namespace OpcUaStackClient
 		bool secureChannelLog_;
 		std::string endpointUrl_;
 		std::string sessionName_;
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 	};
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -36,7 +36,6 @@ namespace OpcUaStackCore
 	, renewTimeout_(300000)
 	, reconnectTimeout_(0)
 
-	, applicationCertificate_()
 	, cryptoManager_()
 
 	, secureChannelLog_(false)
@@ -117,18 +116,6 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::reconnectTimeout(void)
 	{
 		return reconnectTimeout_;
-	}
-
-	void
-	SecureChannelClientConfig::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
-	{
-		applicationCertificate_ = applicationCertificate;
-	}
-
-	ApplicationCertificate::SPtr&
-	SecureChannelClientConfig::applicationCertificate(void)
-	{
-		return applicationCertificate_;
 	}
 
 	void

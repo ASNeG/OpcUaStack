@@ -177,7 +177,7 @@ namespace OpcUaStackCore
 	{
 		auto certificate = constructSPtr<Certificate>();
 		if (!certificate->fromDERFile(ownCertificateFile_)) {
-			certificate->log(Error, "read certificate from file error");
+			certificate->log(Error, "read certificate from file error: " + ownCertificateFile_);
 			return nullptr;
 		}
 		return certificate;
@@ -194,7 +194,7 @@ namespace OpcUaStackCore
 	{
 		certificate.toDERFile(ownCertificateFile_);
 		if (certificate.isError()) {
-			certificate.log(Error, "save self signed certificate error");
+			certificate.log(Error, "save self signed certificate error: " + ownCertificateFile_);
 			return false;
 		}
 		return true;
@@ -217,7 +217,7 @@ namespace OpcUaStackCore
 	{
 		auto privateKey = constructSPtr<PrivateKey>();
 		if (!privateKey->fromPEMFile(ownPrivateKeyFile_, nullptr)) {
-			privateKey->log(Error, "read private key from file error");
+			privateKey->log(Error, "read private key from file error: " + ownCertificateFile_);
 			return nullptr;
 		}
 		return privateKey;
@@ -233,7 +233,7 @@ namespace OpcUaStackCore
 	CertificateManager::writeOwnPrivateKey(PrivateKey& privateKey)
 	{
 		if (!privateKey.toPEMFile(ownPrivateKeyFile_, nullptr)) {
-			privateKey.log(Error, "save private key error");
+			privateKey.log(Error, "save private key error: " + ownPrivateKeyFile_);
 			return false;
 		}
 		return true;
