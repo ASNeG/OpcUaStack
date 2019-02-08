@@ -16,6 +16,7 @@ include_directories(
 file(
 	GLOB OpcUaStackClientTest_SRC 
 	${PROJECT_SOURCE_DIR}/unittest.cpp
+	${PROJECT_SOURCE_DIR}/OpcUaStackClient/CryptoManagerTest.cpp
 	${PROJECT_SOURCE_DIR}/OpcUaStackClient/*/*.cpp 
 	${PROJECT_SOURCE_DIR}/unittest.cpp
 )
