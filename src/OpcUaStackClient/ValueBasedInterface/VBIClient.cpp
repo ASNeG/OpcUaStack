@@ -94,6 +94,8 @@ namespace OpcUaStackClient
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
+		sessionServiceConfig.secureChannelClient_->securityMode(connectContext.securityMode_);
+		sessionServiceConfig.secureChannelClient_->securityPolicy(connectContext.securityPolicy_);
 		sessionServiceConfig.secureChannelClient_->cryptoManager(connectContext.cryptoManager_);
 		sessionServiceConfig.secureChannelClient_->secureChannelLog(connectContext.secureChannelLog_);
 		sessionServiceConfig.session_->sessionName(connectContext.sessionName_);
@@ -114,6 +116,8 @@ namespace OpcUaStackClient
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
+		sessionServiceConfig.secureChannelClient_->securityMode(connectContext.securityMode_);
+		sessionServiceConfig.secureChannelClient_->securityPolicy(connectContext.securityPolicy_);
 		sessionServiceConfig.secureChannelClient_->cryptoManager(connectContext.cryptoManager_);
 		sessionServiceConfig.secureChannelClient_->secureChannelLog(connectContext.secureChannelLog_);
 		sessionServiceConfig.session_->sessionName(connectContext.sessionName_);

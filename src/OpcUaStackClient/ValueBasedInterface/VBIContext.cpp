@@ -51,6 +51,8 @@ namespace OpcUaStackClient
 	ConnectContext::ConnectContext(void)
 	: secureChannelLog_(false)
 	, endpointUrl_("Unknown")
+	, securityMode_(SM_None)
+	, securityPolicy_(SP_None)
 	, sessionName_("Unknown")
 	, cryptoManager_()
 	{
