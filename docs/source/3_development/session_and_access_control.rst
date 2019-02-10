@@ -10,12 +10,12 @@ Overview
 After an OPC UA client has got :term:`Endpoint`\ s of the server by
 using :ref:`discovery_process` and opened a :term:`Secure Channel` with suitable
 :ref:`security_policy` and :ref:`security_mode`, it should create and activate
-:term:`Session` with the server to access to the OPC UA application's data with
+:term:`Session` with the server to access to the OPC UA application's data.
 During the session activation the client authenticates itself by *userIdentityToken*
 that allows the application to correspond the activated :term:`Session` with
-its user profile. Then the client finishes
-communication with the server it should close :term:`Session` by calling
-:term:`Service` *CloseSession* or it is closed by the timeout.
+its user profile. Then the client finishes communication with the server it
+should close :term:`Session` by calling :term:`Service` *CloseSession* or it is
+closed by the timeout.
 
 ASNeG OPC UA Stack provides a callback mechanism to notify the user application
 about activating\\closing session and accessing to the data during the current
@@ -197,7 +197,7 @@ based on *UserContext* and make a map (*userMap_*) of them in **Library.h**:
       UserProfile::Map userMap_;
   };
 
-Now we're placing two users to the map in  method *startup*. *User_RW* has right
+Now we're placing two users into the map in method *startup*. *User_RW* has right
 to read and write data, *User_R* can only read:
 
 .. code-block:: cpp
@@ -221,13 +221,105 @@ to read and write data, *User_R* can only read:
       return true;
   }
 
+When we have the list of the allowed users, we can implement our authentication method:
 
 .. code-block:: cpp
 
-  #include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
+  #include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h" // don't forget include this
 
   // ...
+  void
+	Library::authenticationCallback(
+			ApplicationAuthenticationContext* contex)
+	{
+		Log(Debug, "Event::authenticationCallback")
+			.parameter("SessionId", contex->sessionId_);
 
+
+		if (contex->authenticationType_ == OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary) {
+			contex->statusCode_ = BadIdentityTokenRejected;
+		}
+		else if (contex->authenticationType_ == OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary) {
+
+			ExtensibleParameter::SPtr parameter = contex->parameter_;
+			UserNameIdentityToken::SPtr token = parameter->parameter<UserNameIdentityToken>();
+
+			// find user profile
+			UserProfile::Map::iterator it;
+			it = userMap_.find(token->userName());
+			if (it == userMap_.end()) {
+				contex->statusCode_ = BadUserAccessDenied;
+				return;
+			}
+
+			UserProfile::SPtr userProfile = it->second;
+
+			// check password
+			if (token->password() != userProfile->password_) {
+				contex->statusCode_ = BadUserAccessDenied;
+				return;
+			}
+
+			contex->userContext_ = userProfile;
+			contex->statusCode_ = Success;
+		}
+		else if (contex->authenticationType_ == OpcUaId_X509IdentityToken_Encoding_DefaultBinary) {
+			contex->statusCode_ = BadIdentityTokenRejected;
+		}
+		else {
+			contex->statusCode_ = BadIdentityTokenInvalid;
+		}
+	}
+
+OPC UA Specification determines several kinds of authentication and the example
+application supports only the identification by username and password. If the client tries to
+authenticate itself with the unsupported type, the method notifies the stack about
+it by writing status *BadIdentityTokenRejected* to the context:
+
+.. code-block:: cpp
+
+  contex->statusCode_ = BadIdentityTokenRejected;
+
+
+The stack denies to open the session with the client.
+
+In case, where the client uses *OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary*
+identity token, we can get from it the username and the password to check them:
+
+.. code-block:: cpp
+
+  if (contex->authenticationType_ == OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary) {
+
+    ExtensibleParameter::SPtr parameter = contex->parameter_;
+    UserNameIdentityToken::SPtr token = parameter->parameter<UserNameIdentityToken>();
+
+    // find user profile
+    UserProfile::Map::iterator it;
+    it = userMap_.find(token->userName());
+    if (it == userMap_.end()) {
+      contex->statusCode_ = BadUserAccessDenied;
+      return;
+    }
+
+    UserProfile::SPtr userProfile = it->second;
+
+    // check password
+    if (token->password() != userProfile->password_) {
+      contex->statusCode_ = BadUserAccessDenied;
+      return;
+    }
+
+    contex->userContext_ = userProfile;
+    contex->statusCode_ = Success;
+  }
+
+The authentication method should write into the context *BadUserAccessDenied* status
+if there is no allowed user with the given username or the password mismatches.
+The method should write into the context *Success* status if the authentication is
+successful, so that the stack allows to open the session with the client. Pay attention,
+that we've saved the authenticated user into the *context->userContext_*.
+The stack connects the user to the activated session and passes it as a current
+user with the context to all method-handlers of services during the session.  
 
 Authorization
 --------------
