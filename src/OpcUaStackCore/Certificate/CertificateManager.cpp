@@ -286,6 +286,63 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	CertificateManager::isPartnerCertificateTrusted(
+		const std::string& applicationUri,
+		CertificateChain& partnerCertificateChain
+	)
+	{
+		// check if certificate is in reject list location
+		boost::filesystem::path rejectFilePath(certificateRejectListLocation_);
+		for (auto file : boost::filesystem::directory_iterator(rejectFilePath)) {
+			if (boost::filesystem::is_directory(file)) {
+				continue;
+			}
+			if (file.path().extension().string() != ".der") {
+				continue;
+			}
+
+			auto certificate = constructSPtr<Certificate>();
+			if (!certificate->fromDERFile(file.path().string())) {
+				certificate->log(Error, "read certificate from file error: " + file.path().string());
+				continue;
+			}
+
+			CertificateInfo info;
+			certificate->getInfo(info);
+			if (info.uri() == applicationUri) {
+				partnerCertificateChain.addCertificate(certificate);
+				return false;
+			}
+		}
+
+		// check if certificate is in trust list location
+		boost::filesystem::path trustFilePath(certificateTrustListLocation_);
+		for (auto file : boost::filesystem::directory_iterator(trustFilePath)) {
+			if (boost::filesystem::is_directory(file)) {
+				continue;
+			}
+			if (file.path().extension().string() != ".der") {
+				continue;
+			}
+
+			auto certificate = constructSPtr<Certificate>();
+			if (!certificate->fromDERFile(file.path().string())) {
+				certificate->log(Error, "read certificate from file error: " + file.path().string());
+				continue;
+			}
+
+			CertificateInfo info;
+			certificate->getInfo(info);
+			if (info.uri() == applicationUri) {
+				partnerCertificateChain.addCertificate(certificate);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	bool
 	CertificateManager::checkAndCreateDirectory(const std::string& directory)
 	{
 		boost::filesystem::path path(directory);

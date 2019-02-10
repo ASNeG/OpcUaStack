@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -60,9 +60,6 @@ namespace OpcUaStackCore
 	SecureChannel*
 	SecureChannelClient::connect(SecureChannelClientConfig::SPtr secureChannelClientConfig)
 	{
-		// FIXME: only test code
-		// secureChannelClientConfig->secureChannelLog(true);
-
 		cryptoManager(secureChannelClientConfig->cryptoManager());
 
 		if (secureChannelClientIf_ == nullptr) {
@@ -78,6 +75,59 @@ namespace OpcUaStackCore
 		// create new secure channel
 		SecureChannel* secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelClientConfig;
+
+		// create security settings
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings_;
+		CryptoBase::SPtr cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
+		if (!cryptoBase) {
+			Log(Error, "security policy invalid")
+				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
+				.parameter("SecurityPolicy", secureChannelClientConfig->securityPolicy());
+			return nullptr;
+		}
+		securitySettings.cryptoBase(cryptoBase);
+		securitySettings.ownSecurityPolicyUri() = cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy());
+
+		if (secureChannelClientConfig->securityMode() == SM_Sign ||
+			secureChannelClientConfig->securityMode() == SM_SignAndEncrypt) {
+			securitySettings.ownCertificateChain().addCertificate(cryptoManager()->applicationCertificate()->certificate());
+		}
+
+		if (secureChannelClientConfig->securityMode() == SM_SignAndEncrypt) {
+			bool result = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(
+				secureChannelClientConfig->applicationUri(),
+				securitySettings.partnerCertificateChain()
+			);
+			if (!result) {
+				Log(Error, "partner certificate not found in certificate store")
+					.parameter("EndpointUrl", secureChannelClientConfig->applicationUri());
+				return nullptr;
+			}
+			securitySettings.partnerCertificateThumbprint() = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
+		}
+
+		//OpcUaByteString partnerCertificateThumbprint_; // verschluesselung
+		//CertificateChain ownCertificateChain_; // signature
+
+#if 0
+		CryptoBase::SPtr cryptoBase_;
+		EndpointDescription::SPtr endpointDescription_;
+
+		OpcUaByteString ownCertificateThumbprint_;
+		OpcUaByteString ownSecurityPolicyUri_;
+		CertificateChain ownCertificateChain_;
+		MemoryBuffer ownNonce_;
+		SecurityKeySet ownSecurityKeySet_;
+
+		OpcUaByteString partnerCertificateThumbprint_;
+		OpcUaByteString partnerSecurityPolicyUri_;
+		CertificateChain partnerCertificateChain_;
+		MemoryBuffer partnerNonce_;
+		SecurityKeySet partnerSecurityKeySet_;
+#endif
+
+
+		// connect to opc ua server
 		connect(secureChannel);
 		return secureChannel;
 	}
