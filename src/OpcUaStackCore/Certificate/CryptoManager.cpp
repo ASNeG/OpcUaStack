@@ -79,6 +79,7 @@ namespace OpcUaStackCore
 		CryptoBase::SPtr& cryptoBase
 	)
 	{
+		securityPolicyMap_.insert(std::make_pair(securityPolicyString, securityPolicy));
 		return cryptoBaseMap_.insert(std::make_pair(securityPolicy, cryptoBase)).second;
 	}
 
