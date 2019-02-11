@@ -104,6 +104,7 @@ namespace OpcUaServer
 		server_.start();
 
 		// start discovery client
+		discoveryClient_.cryptoManager(server_.cryptoManager());
 		if (!discoveryClient_.startup(*config_)) {
 			return false;
 		}

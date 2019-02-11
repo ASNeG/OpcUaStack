@@ -41,6 +41,7 @@ namespace OpcUaStackClient
 		DiscoveryClientRegisteredServers(void);
 	    ~DiscoveryClientRegisteredServers(void);
 
+	    void cryptoManager(CryptoManager::SPtr& cryptoManager);
 	    void ioThread(IOThread::SPtr& ioThread);
 	    void discoveryUri(const std::string& discoveryUri);
 	    void registerInterval(uint32_t registerInterval);
@@ -76,6 +77,7 @@ namespace OpcUaStackClient
 		std::string discoveryUri_;
 		uint32_t registerInterval_;
 
+		CryptoManager::SPtr cryptoManager_;
 		ServiceSetManager serviceSetManager_;
 		SessionService::SPtr sessionService_;
 		DiscoveryService::SPtr discoveryService_;

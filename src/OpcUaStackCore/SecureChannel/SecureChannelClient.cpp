@@ -106,9 +106,6 @@ namespace OpcUaStackCore
 			securitySettings.partnerCertificateThumbprint() = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
 		}
 
-		//OpcUaByteString partnerCertificateThumbprint_; // verschluesselung
-		//CertificateChain ownCertificateChain_; // signature
-
 #if 0
 		CryptoBase::SPtr cryptoBase_;
 		EndpointDescription::SPtr endpointDescription_;
