@@ -535,26 +535,6 @@ namespace OpcUaStackCore
 
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
-		// encode security header
-		std::string securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
-		switch (secureChannel->securityPolicy_)
-		{
-			case SP_None: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None"; break;
-			case SP_Basic128Rsa15: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15"; break;
-			case SP_Basic256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256"; break;
-			case SP_Basic256Sha256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256"; break;
-		}
-		securitySettings.ownSecurityPolicyUri() = securityPolicyUri;
-		if (secureChannel->securityPolicy_ != SP_None) {
-			securitySettings.ownCertificateChain().certificateVec().push_back(
-				cryptoManager()->applicationCertificate()->certificate()
-			);
-		}
-		if (securitySettings.partnerCertificateChain().getCertificate().get() != nullptr) {
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
-			securitySettings.partnerCertificateThumbprint() = thumbPrint;
-		}
-
 		SecurityHeader::opcUaBinaryEncode(
 			ios1,
 			securitySettings.ownSecurityPolicyUri(),
@@ -679,6 +659,15 @@ namespace OpcUaStackCore
 			secureSettings.partnerCertificateChain(),
 			secureSettings.ownCertificateThumbprint()
 		);
+
+		// handle security
+		if (secureReceivedOpenSecureChannelResponse(secureChannel) != Success) {
+			Log(Debug, "opc ua secure channel decrypt received message error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			// FIXME: handle error
+		}
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);

@@ -111,12 +111,12 @@ namespace OpcUaStackCore
 		EndpointDescription::SPtr endpointDescription_;
 
 		OpcUaByteString ownCertificateThumbprint_;
-		OpcUaByteString ownSecurityPolicyUri_;
-		CertificateChain ownCertificateChain_;
-		MemoryBuffer ownNonce_;
+		OpcUaByteString ownSecurityPolicyUri_;				XX
+		CertificateChain ownCertificateChain_;				XX
+		MemoryBuffer ownNonce_;								XX
 		SecurityKeySet ownSecurityKeySet_;
 
-		OpcUaByteString partnerCertificateThumbprint_;
+		OpcUaByteString partnerCertificateThumbprint_;		XX
 		OpcUaByteString partnerSecurityPolicyUri_;
 		CertificateChain partnerCertificateChain_;
 		MemoryBuffer partnerNonce_;
@@ -293,6 +293,35 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::handleRecvOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
+		// handle partner nonce
+		if (securitySettings.isPartnerEncryptionEnabled()) {
+			char* buf;
+			int32_t len = 0;
+			openSecureChannelResponse.serverNonce((OpcUaByte**)&buf, &len);
+			if (len > 0) {
+				securitySettings.partnerNonce().set(buf, len);
+			}
+		}
+
+		// create symmetric key set
+		if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
+			OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
+				securitySettings.ownNonce(),
+				securitySettings.partnerNonce(),
+				securitySettings.ownSecurityKeySet(),
+				securitySettings.partnerSecurityKeySet()
+			);
+			if (statusCode != Success) {
+				Log(Error, "create derived channel keyset error")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
+					.parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_);
+					// FIXME: todo - handle error
+			}
+		}
+
 		// set security parameter
 		SecurityToken::SPtr securityToken = openSecureChannelResponse.securityToken();
 		secureChannel->channelId_ = securityToken->channelId();

@@ -353,17 +353,6 @@ namespace OpcUaStackCore
 		CryptoBase::SPtr cryptoBase = securitySettings.cryptoBase();
 		PublicKey publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
 
-		// create symmetric key set
-		statusCode = cryptoBase->deriveChannelKeyset(
-			securitySettings.ownNonce(),
-			securitySettings.partnerNonce(),
-			securitySettings.ownSecurityKeySet(),
-			securitySettings.partnerSecurityKeySet()
-		);
-		if (statusCode != Success) {
-			return statusCode;
-		}
-
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
 		securitySettings.cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
