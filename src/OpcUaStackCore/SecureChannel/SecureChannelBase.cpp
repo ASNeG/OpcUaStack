@@ -1260,12 +1260,12 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		secureChannel->asyncRecv_ = false;
-
 		if (secureChannel->isLogging_) {
 			Log(Debug, "asyncReadMessageResponseComplete")
 				.parameter("BytesTransfered", bytes_transfered);
 		}
+
+		secureChannel->asyncRecv_ = false;
 
 		// error occurred
 		if (error) {
@@ -1294,9 +1294,21 @@ namespace OpcUaStackCore
 
 		std::iostream ios(&secureChannel->recvBuffer_);
 
+		// get channel id
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->channelId_);
 
+		// get security token
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->tokenId_);
+
+		// handle security
+		if (secureReceivedMessageRequest(secureChannel) != Success) {
+			Log(Debug, "opc ua decrypt received message error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->recvSequenceNumber_);
