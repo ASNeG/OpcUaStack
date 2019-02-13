@@ -106,24 +106,6 @@ namespace OpcUaStackCore
 			securitySettings.partnerCertificateThumbprint() = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
 		}
 
-#if 0
-		CryptoBase::SPtr cryptoBase_;
-		EndpointDescription::SPtr endpointDescription_;
-
-		OpcUaByteString ownCertificateThumbprint_;
-		OpcUaByteString ownSecurityPolicyUri_;				XX
-		CertificateChain ownCertificateChain_;				XX
-		MemoryBuffer ownNonce_;								XX
-		SecurityKeySet ownSecurityKeySet_;
-
-		OpcUaByteString partnerCertificateThumbprint_;		XX
-		OpcUaByteString partnerSecurityPolicyUri_;
-		CertificateChain partnerCertificateChain_;
-		MemoryBuffer partnerNonce_;
-		SecurityKeySet partnerSecurityKeySet_;
-#endif
-
-
 		// connect to opc ua server
 		connect(secureChannel);
 		return secureChannel;

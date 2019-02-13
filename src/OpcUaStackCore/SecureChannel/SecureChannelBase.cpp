@@ -1139,8 +1139,21 @@ namespace OpcUaStackCore
 			ios.write(bufferPtr,bodySize);
 			secureChannelTransaction->os_.consume(bodySize);
 
+			// handle security
+			MemoryBuffer plainText(sb2, sb1, sb);
+			MemoryBuffer encryptedText;
+
+			if (secureSendMessageRequest(plainText, encryptedText, secureChannel) != Success) {
+				Log(Debug, "opc ua secure channel encrypt send message error")
+					.parameter("Local", secureChannel->local_.address().to_string())
+					.parameter("Partner", secureChannel->partner_.address().to_string());
+				return;
+			}
+
+			encryptedText.get(secureChannel->sendBuffer_);
+
 			secureChannel->async_write(
-				sb2, sb1, sb,
+				secureChannel->sendBuffer_,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageRequestComplete,
 					this,
@@ -1155,8 +1168,21 @@ namespace OpcUaStackCore
 			secureChannel->secureChannelTransactionList_.pop_front();
 			secureChannel->sendFirstSegment_ = true;
 
+			// handle security
+			MemoryBuffer plainText(sb2, sb1, secureChannelTransaction->os_);
+			MemoryBuffer encryptedText;
+
+			if (secureSendMessageRequest(plainText, encryptedText, secureChannel) != Success) {
+				Log(Debug, "opc ua secure channel encrypt send message error")
+					.parameter("Local", secureChannel->local_.address().to_string())
+					.parameter("Partner", secureChannel->partner_.address().to_string());
+				return;
+			}
+
+			encryptedText.get(secureChannel->sendBuffer_);
+
 			secureChannel->async_write(
-				sb2, sb1, secureChannelTransaction->os_,
+				secureChannel->sendBuffer_,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageRequestComplete,
 					this,
