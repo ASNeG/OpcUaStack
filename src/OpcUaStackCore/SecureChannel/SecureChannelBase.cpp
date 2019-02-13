@@ -649,7 +649,7 @@ namespace OpcUaStackCore
 		std::iostream is(&secureChannel->recvBuffer_);
 
 		// get channel id
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->channelId_);
+		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
 
 		// decode security header
 		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
@@ -1295,13 +1295,13 @@ namespace OpcUaStackCore
 		std::iostream ios(&secureChannel->recvBuffer_);
 
 		// get channel id
-		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->channelId_);
+		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(ios);
 
 		// get security token
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->tokenId_);
 
 		// handle security
-		if (secureReceivedMessageRequest(secureChannel) != Success) {
+		if (secureReceivedMessageResponse(secureChannel) != Success) {
 			Log(Debug, "opc ua decrypt received message error")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());

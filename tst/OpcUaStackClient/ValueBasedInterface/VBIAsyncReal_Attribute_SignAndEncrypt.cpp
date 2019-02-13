@@ -72,9 +72,9 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write)
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
-	//connectContext.applicationUri_ = "urn:devel:ASNeG:ASNeG-Demo";		// needed to detect right certificate
-	//connectContext.securityMode_ = SM_SignAndEncrypt;					// security mode
-	//connectContext.securityPolicy_ = SP_Basic128Rsa15;					// security policy
+	connectContext.applicationUri_ = "urn:devel:ASNeG:ASNeG-Demo";		// needed to detect right certificate
+	connectContext.securityMode_ = SM_SignAndEncrypt;					// security mode
+	connectContext.securityPolicy_ = SP_Basic128Rsa15;					// security policy
 	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();;
 	connectContext.secureChannelLog_ = true;
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();

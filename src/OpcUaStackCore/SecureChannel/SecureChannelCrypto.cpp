@@ -538,8 +538,8 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		MessageHeader* messageHeader = &secureChannel->messageHeader_;
 
-		// get public key client certificate
-		PublicKey publicKey = securitySettings.ownCertificateChain().getCertificate()->publicKey();
+		// get public key server certificate
+		PublicKey publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
 		uint32_t signTextLen = publicKey.keySizeInBytes();
 
 		// create plain text buffer (with signature at end of buffer)
@@ -1023,7 +1023,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricSign(
 			plainText.memBuf(),
 			plainText.memLen() - signatureDataLen,
-			securitySettings.partnerSecurityKeySet().signKey(),
+			securitySettings.ownSecurityKeySet().signKey(),
 			plainText.memBuf() + plainText.memLen() - signatureDataLen,
 			&keyLen
 		);
@@ -1105,8 +1105,8 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricEncrypt(
 			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
 			plainText.memLen() - messageHeaderLen - securityHeaderLen,
-			securitySettings.partnerSecurityKeySet().encryptKey(),
-			securitySettings.partnerSecurityKeySet().iv(),
+			securitySettings.ownSecurityKeySet().encryptKey(),
+			securitySettings.ownSecurityKeySet().iv(),
 			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
 			&encryptedTextLen
 		);
@@ -1180,8 +1180,8 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricDecrypt(
 			encryptedText.memBuf(),
 			encryptedText.memLen(),
-			securitySettings.ownSecurityKeySet().encryptKey(),
-			securitySettings.ownSecurityKeySet().iv(),
+			securitySettings.partnerSecurityKeySet().encryptKey(),
+			securitySettings.partnerSecurityKeySet().iv(),
 			plainText.memBuf(),
 			&receivedDataLen
 		);
@@ -1207,7 +1207,7 @@ namespace OpcUaStackCore
 		boost::asio::streambuf streambuf;
 		std::iostream os(&streambuf);
 		messageHeader->opcUaBinaryEncode(os, true);
-		OpcUaNumber::opcUaBinaryEncode(os, secureChannel->secureChannelTransaction_->securityTokenId_);
+		OpcUaNumber::opcUaBinaryEncode(os, secureChannel->tokenId_);
 
 		uint32_t plainTextLen = streambuf.size() + secureChannel->recvBuffer_.size();
 		MemoryBuffer plainText(plainTextLen);
@@ -1220,7 +1220,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricVerify(
 			plainText.memBuf(),
 			plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
-			securitySettings.ownSecurityKeySet().signKey(),
+			securitySettings.partnerSecurityKeySet().signKey(),
 			plainText.memBuf() + plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
 			securitySettings.cryptoBase()->signatureDataLen()
 		);
