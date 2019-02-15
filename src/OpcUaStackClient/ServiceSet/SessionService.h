@@ -144,7 +144,9 @@ namespace OpcUaStackClient
 		OpcUaUInt32 requestId_;
 		OpcUaNodeId authenticationToken_;
 
+		Certificate serverCertificate_;
 		char clientNonce_[32];
+		char serverNonce_[32];
 		PendingQueue pendingQueue_;
 	};
 

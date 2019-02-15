@@ -359,12 +359,17 @@ namespace OpcUaStackClient
 		Log(Debug, "session send CreateSessionRequest")
 		    .parameter("RequestId", secureChannelTransaction->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_);
-		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
+		secureChannelClient_.asyncWriteMessageRequest(
+			secureChannel_,
+			secureChannelTransaction
+		);
 	}
 
 	void
 	SessionService::recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr& responseHeader)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel_->securitySettings_;
+
 		std::iostream ios(&secureChannelTransaction->is_);
 		CreateSessionResponse createSessionResponse;
 		createSessionResponse.opcUaBinaryDecode(ios);
@@ -372,6 +377,35 @@ namespace OpcUaStackClient
 		sessionTimeout_ = createSessionResponse.receivedSessionTimeout();
 		maxResponseMessageSize_ = createSessionResponse.maxRequestMessageSize();
 		authenticationToken_ = createSessionResponse.authenticationToken();
+
+		// check server signature
+		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
+		if (certificate.get() != nullptr) {
+			serverCertificate_.fromDERBuf(
+				createSessionResponse.serverCertificate().memBuf(),
+				createSessionResponse.serverCertificate().size()
+			);
+
+			// get client certificate
+			MemoryBuffer clientCertificate;
+			certificate->toDERBuf(clientCertificate);
+
+			// verify signature
+			MemoryBuffer clientNonce(clientNonce_, 32);
+			PublicKey publicKey = serverCertificate_.publicKey();
+			OpcUaStatusCode statusCode = createSessionResponse.signatureData()->verifySignature(
+				clientCertificate,
+				clientNonce,
+				publicKey,
+				*securitySettings.cryptoBase()
+			);
+
+			if (statusCode != Success) {
+				Log(Error, "server signature error");
+				asyncDisconnect();
+				return;
+			}
+		}
 
 		Log(Debug, "session recv CreateSessionResponse")
 		    .parameter("RequestId", secureChannelTransaction->requestId_)
