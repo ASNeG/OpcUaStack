@@ -326,13 +326,16 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SessionService::sendCreateSessionRequest(void)
+	SessionService::sendCreateSessionRequest(SecureChannel* secureChannel)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings_;
+
 		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
 		secureChannelTransaction->requestId_ = ++requestId_;
 		std::iostream ios(&secureChannelTransaction->os_);
 
+		// create session request
 		CreateSessionRequest createSessionRequest;
 		createSessionRequest.requestHeader()->requestHandle(++requestHandle_);
 		createSessionRequest.clientDescription(sessionConfig_->applicationDescription_);
@@ -341,6 +344,15 @@ namespace OpcUaStackClient
 		createSessionRequest.clientNonce((OpcUaStackCore::OpcUaByte*)"\000", 1);
 		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout_);
 		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize_);
+
+		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
+		if (certificate.get() != nullptr) {
+			createClientNonce();
+			createSessionRequest.clientNonce((const OpcUaByte*)clientNonce_, 32);
+			certificate->toDERBuf(createSessionRequest.clientCertificate());
+		}
+
+		// send create session request
 		createSessionRequest.requestHeader()->opcUaBinaryEncode(ios);
 		createSessionRequest.opcUaBinaryEncode(ios);
 
@@ -490,7 +502,7 @@ namespace OpcUaStackClient
 		}
 
 		// create CreateSessionRequest
-		sendCreateSessionRequest();
+		sendCreateSessionRequest(secureChannel);
 	}
 
 	void
@@ -664,6 +676,14 @@ namespace OpcUaStackClient
 
 		Component* componentService = serviceTransaction->componentService();
 		componentService->sendAsync(serviceTransaction);
+	}
+
+	void
+	SessionService::createClientNonce(void)
+	{
+		for (uint32_t idx=0; idx<32; idx++) {
+			clientNonce_[idx] = (rand() / 256);
+		}
 	}
 
 }
