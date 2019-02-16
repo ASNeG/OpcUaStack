@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_UserNameIdentityToken_h__
@@ -42,6 +42,7 @@ namespace OpcUaStackCore
 		std::string userName(void) const;
 		void password(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void password(OpcUaByte** buf, OpcUaInt32* bufLen) const;
+		std::string password() const;
 		uint32_t passwordLen(void);
 		void encryptionAlgorithm(const std::string& encryptionAlgorithm);
 		std::string encryptionAlgorithm(void) const;
