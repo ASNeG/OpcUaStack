@@ -23,6 +23,7 @@ CryptoManagerTest::getInstance(void)
 	certificateManager->issuersRevocationListLocation("./pki/issuers/crl/");
 	certificateManager->ownCertificateFile("./pki/own/certs/ASNeG-Test.der");
 	certificateManager->ownPrivateKeyFile("./pki/own/private/ASNeG-Test.pem");
+	certificateManager->init();
 
 	CertificateSettings& certificateSettings = certificateManager->certificateSettings();
 	certificateSettings.enable(true);
