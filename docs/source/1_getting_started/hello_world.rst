@@ -7,7 +7,7 @@ This is the simplest example of an OPC UA application based on ASNeG OPC UA Stac
 The example will help you to understand the basic OPC UA conceptions and make your first OPC UA server.
 Here we are going to output a greeting message which will be available from other OPC UA client.
 
-You can download the source code of example from :download:`here <helloworld.zip>`.
+You can download the source code of the example from :download:`here <helloworld.zip>`.
 
 Requirements
 ---------------------------
@@ -21,6 +21,7 @@ In order to start this tutorial you need to have the following stuff:
 
 Creating the application frame
 ------------------------------
+
 At first we need to create the frame of the future application. It is very easy to do with the stack.
 Just type in your console:
 
