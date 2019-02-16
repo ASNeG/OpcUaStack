@@ -61,7 +61,6 @@ namespace OpcUaStackServer
 		bool initApplication(void);
 
 		EndpointDescriptionSet::SPtr endpointDescriptionSet_;
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 
 		IOThread::SPtr ioThread_;

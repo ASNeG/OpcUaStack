@@ -19,7 +19,10 @@
 #define __OpcUaStackCore_CryptoManager_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
+#include "OpcUaStackCore/Certificate/CertificateManager.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -36,8 +39,22 @@ namespace OpcUaStackCore
 		bool remove(const std::string& name);
 		CryptoBase::SPtr get(const std::string& name);
 
+		void certificateManager(CertificateManager::SPtr& certificateManager);
+		bool createCertificateManager(
+			const std::string& configPrefix,
+			Config* config,
+			const std::string& configurationFileName
+		);
+		CertificateManager::SPtr& certificateManager(void);
+
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		bool createApplicationCertificate(void);
+		ApplicationCertificate::SPtr& applicationCertificate(void);
+
 	  private:
 		CryptoBase::Map cryptoBaseMap_;
+		CertificateManager::SPtr certificateManager_;
+		ApplicationCertificate::SPtr applicationCertificate_;
 	};
 
 }

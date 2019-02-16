@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,7 +20,6 @@
 #define __OpUaStackCore_SecureChannelClientConfig_h__
 
 #include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
-#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 
 namespace OpcUaStackCore
@@ -47,8 +46,6 @@ namespace OpcUaStackCore
 		uint32_t renewTimeout(void);
 		void reconnectTimeout(uint32_t reconnectTimeout);
 		uint32_t reconnectTimeout(void);
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
-		ApplicationCertificate::SPtr& applicationCertificate(void);
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		CryptoManager::SPtr& cryptoManager(void);
 
@@ -60,7 +57,6 @@ namespace OpcUaStackCore
 		SecurityMode securityMode_;
 		SecurityPolicy securityPolicy_;
 
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 
 		uint32_t connectTimeout_;

@@ -34,8 +34,6 @@ namespace OpcUaStackCore
 
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		CryptoManager::SPtr& cryptoManager(void);
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
-		ApplicationCertificate::SPtr& applicationCertificate(void);
 
 		//
 		// receive open secure channel request
@@ -178,8 +176,6 @@ namespace OpcUaStackCore
 
 	  private:
 		CryptoManager::SPtr cryptoManager_;
-		ApplicationCertificate::SPtr applicationCertificate_;
-
 	};
 
 }

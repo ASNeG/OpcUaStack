@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackServer_DiscoveryService_h__
 #define __OpcUaStackServer_DiscoveryService_h__
 
-#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 
 		void discoveryIf(DiscoveryIf* discoveryIf);
 		void endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet);
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 
 		void getEndpointRequest(
 			RequestHeader::SPtr requestHeader,
@@ -65,7 +65,7 @@ namespace OpcUaStackServer
 
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
-		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoManager::SPtr cryptoManager_;
 		DiscoveryIf* discoveryIf_;
 	};
 

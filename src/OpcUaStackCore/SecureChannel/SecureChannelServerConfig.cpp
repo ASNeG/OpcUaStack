@@ -1,6 +1,6 @@
 
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,7 +33,6 @@ namespace OpcUaStackCore
 	, endpointDescriptionArray_()
 	, endpointDescription_()
 	, endpointUrl_("")
-	, applicationCertificate_()
 	, cryptoManager_()
 
 	, secureChannelLog_(false)
@@ -78,18 +77,6 @@ namespace OpcUaStackCore
 	SecureChannelServerConfig::endpointUrl(void)
 	{
 		return endpointUrl_;
-	}
-
-	void
-	SecureChannelServerConfig::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
-	{
-		applicationCertificate_ = applicationCertificate;
-	}
-
-	ApplicationCertificate::SPtr&
-	SecureChannelServerConfig::applicationCertificate(void)
-	{
-		return applicationCertificate_;
 	}
 
 	void

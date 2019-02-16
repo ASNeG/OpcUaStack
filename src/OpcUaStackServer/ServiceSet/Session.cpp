@@ -68,7 +68,6 @@ namespace OpcUaStackServer
 	, sessionState_(SessionState_Close)
 	, sessionId_(getUniqueSessionId())
 	, authenticationToken_(getUniqueAuthenticationToken())
-	, applicationCertificate_()
 	, endpointDescriptionArray_()
 	, endpointDescription_()
 	, userContext_()
@@ -90,12 +89,6 @@ namespace OpcUaStackServer
 		for (uint32_t idx=0; idx<32; idx++) {
 			serverNonce_[idx] = (rand() / 256);
 		}
-	}
-
-	void
-	Session::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
-	{
-		applicationCertificate_ = applicationCertificate;
 	}
 
 	void
@@ -143,6 +136,7 @@ namespace OpcUaStackServer
 	void
 	Session::endpointDescription(EndpointDescription::SPtr& endpointDescription)
 	{
+		assert(endpointDescription.get() != nullptr);
 		endpointDescription_ = endpointDescription;
 	}
 
@@ -336,7 +330,7 @@ namespace OpcUaStackServer
 		plainTextBuf = plainText.memBuf();
 		plainTextLen = plainText.memLen();
 
-		PrivateKey::SPtr privateKey = applicationCertificate_->privateKey();
+		PrivateKey::SPtr privateKey = cryptoManager_->applicationCertificate()->privateKey();
 
 		statusCode = cryptoBase->asymmetricDecrypt(
 			encryptedTextBuf,
@@ -514,7 +508,7 @@ namespace OpcUaStackServer
 		plainTextBuf = plainText.memBuf();
 		plainTextLen = plainText.memLen();
 
-		PrivateKey::SPtr privateKey = applicationCertificate_->privateKey();
+		PrivateKey::SPtr privateKey = cryptoManager_->applicationCertificate()->privateKey();
 
 		statusCode = cryptoBase->asymmetricDecrypt(
 			encryptedTextBuf,
@@ -649,14 +643,14 @@ namespace OpcUaStackServer
 
 		// added server certificate
 		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
-		applicationCertificate_->certificate()->toDERBuf(createSessionResponse.serverCertificate());
+		cryptoManager_->applicationCertificate()->certificate()->toDERBuf(createSessionResponse.serverCertificate());
 
-		if (applicationCertificate_.get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
+		if (cryptoManager_->applicationCertificate().get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
 
 			// create server signature
 			MemoryBuffer clientCertificate(createSessionRequest.clientCertificate());
 			MemoryBuffer clientNonce(createSessionRequest.clientNonce());
-			PrivateKey privateKey = *applicationCertificate_->privateKey();
+			PrivateKey privateKey = *cryptoManager_->applicationCertificate()->privateKey();
 			statusCode = createSessionResponse.signatureData()->createSignature(
 				clientCertificate,
 				clientNonce,
@@ -707,7 +701,7 @@ namespace OpcUaStackServer
 		ActivateSessionRequest activateSessionRequest;
 		activateSessionRequest.opcUaBinaryDecode(ios);
 
-		if (sessionState_ != SessionState_CreateSessionResponse) {
+		if (sessionState_ != SessionState_CreateSessionResponse && sessionState_ != SessionState_Ready) {
 			Log(Error, "receive activate session request in invalid state")
 				.parameter("SessionState", sessionState_);
 			activateSessionRequestError(requestHeader, secureChannelTransaction, BadIdentityTokenInvalid);
@@ -717,9 +711,9 @@ namespace OpcUaStackServer
 		// check client signature
 		if (secureChannelTransaction->cryptoBase_.get() != nullptr) {
 			// create certificate
-			uint32_t derCertSize = applicationCertificate_->certificate()->getDERBufSize();
+			uint32_t derCertSize = cryptoManager_->applicationCertificate()->certificate()->getDERBufSize();
 			MemoryBuffer certificate(derCertSize);
-			applicationCertificate_->certificate()->toDERBuf(
+			cryptoManager_->applicationCertificate()->certificate()->toDERBuf(
 				certificate.memBuf(),
 				&derCertSize
 			);

@@ -513,9 +513,6 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
-		assert(applicationCertificate().get() != nullptr);
-		assert(applicationCertificate()->certificate().get() != nullptr);
-
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// create client nonce
@@ -549,7 +546,9 @@ namespace OpcUaStackCore
 		}
 		securitySettings.ownSecurityPolicyUri() = securityPolicyUri;
 		if (secureChannel->securityPolicy_ != SP_None) {
-			securitySettings.ownCertificateChain().certificateVec().push_back(applicationCertificate()->certificate());
+			securitySettings.ownCertificateChain().certificateVec().push_back(
+				cryptoManager()->applicationCertificate()->certificate()
+			);
 		}
 		if (securitySettings.partnerCertificateChain().getCertificate().get() != nullptr) {
 			OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
@@ -731,9 +730,6 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncWriteOpenSecureChannelResponse(SecureChannel* secureChannel)
 	{
-		assert(applicationCertificate().get() != nullptr);
-		assert(applicationCertificate()->certificate().get() != nullptr);
-
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		if (secureChannel->openSecureChannelResponseList_.size() == 0) return;

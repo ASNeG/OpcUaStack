@@ -19,7 +19,6 @@
 #define __OpcUaStackServer_ApplicationManager_h__
 
 #include "OpcUaStackCore/Component/Component.h"
-#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/Application/ReloadIf.h"
@@ -36,7 +35,6 @@ namespace OpcUaStackServer
 		ApplicationManager(void);
 		~ApplicationManager(void);
 
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 
 		bool registerApplication(
@@ -58,7 +56,6 @@ namespace OpcUaStackServer
 		Application::Map applicationMap_;
 		Component* serviceComponent_;
 
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 	};
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Certificate/ApplicationCertificateConfig.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Certificate/CryptoOpenSSLNONE.h"
 #include "OpcUaStackCore/Certificate/CryptoOpenSSLBASIC256SHA256.h"
@@ -27,6 +28,8 @@ namespace OpcUaStackCore
 
 	CryptoManager::CryptoManager(void)
 	: cryptoBaseMap_()
+	, certificateManager_()
+	, applicationCertificate_()
 	{
 		// register open ssl security policy NONE
 		CryptoOpenSSLNONE::SPtr cryptoOpenSSLNone(constructSPtr<CryptoOpenSSLNONE>());
@@ -48,6 +51,9 @@ namespace OpcUaStackCore
 
 	CryptoManager::~CryptoManager(void)
 	{
+		if (applicationCertificate_.get() != nullptr) {
+			applicationCertificate_->cleanup();
+		}
 	}
 
 	bool
@@ -72,6 +78,69 @@ namespace OpcUaStackCore
 			return cryptoBase;
 		}
 		return it->second;
+	}
+
+	void
+	CryptoManager::certificateManager(CertificateManager::SPtr& certificateManager)
+	{
+		certificateManager_ = certificateManager;
+	}
+
+	bool
+	CryptoManager::createCertificateManager(
+		const std::string& configPrefix,
+		Config* config,
+		const std::string& configurationFileName
+	)
+	{
+		bool result;
+
+		// parse configuration
+		certificateManager_ = constructSPtr<CertificateManager>();
+		result = ApplicationCertificateConfig::parse(
+			certificateManager_,
+			"OpcUaServer.ServerInfo",
+			"OpcUaServer.ApplicationCertificate",
+			config,
+			config->configFileName()
+		);
+		if (!result) {
+			return false;
+		}
+
+		// init certificate manager
+		return certificateManager_->init();
+	}
+
+	CertificateManager::SPtr&
+	CryptoManager::certificateManager(void)
+	{
+		return certificateManager_;
+	}
+
+	void
+	CryptoManager::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
+	}
+
+	bool
+	CryptoManager::createApplicationCertificate(void)
+	{
+		assert(certificateManager_.get() != nullptr);
+
+		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
+		if (!applicationCertificate_->init(certificateManager_)) {
+			Log(Error, "init application certificate error");
+			return false;
+		}
+		return true;
+	}
+
+	ApplicationCertificate::SPtr&
+	CryptoManager::applicationCertificate(void)
+	{
+		return applicationCertificate_;
 	}
 
 }

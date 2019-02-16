@@ -41,8 +41,6 @@ namespace OpcUaStackServer
 		Config* config(void);
 		void applicationInfo(ApplicationInfo* applicationInfo);
 		ApplicationInfo* applicationInfo(void);
-		void applicationCertificate(const ApplicationCertificate::SPtr& applicationCertificate);
-		ApplicationCertificate::SPtr& applicationCertificate(void);
 		void cryptoManager(const CryptoManager::SPtr& cryptoManager);
 		CryptoManager::SPtr& cryptoManager(void);
 
@@ -50,7 +48,6 @@ namespace OpcUaStackServer
 		ApplicationServiceIf* applicationServiceIf_;
 		Config* config_;
 		ApplicationInfo* applicationInfo_;
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 	};
 
@@ -72,8 +69,6 @@ namespace OpcUaStackServer
 		Config* config(void);
 		void applicationInfo(ApplicationInfo* applicationInfo);
 		ApplicationInfo* applicationInfo(void);
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
-		ApplicationCertificate::SPtr& applicationCertificate(void);
 		void cryptoManager(CryptoManager::SPtr cryptoManager);
 		CryptoManager::SPtr& cryptoManager(void);
 		void applicationData(ApplicationData::SPtr& applicationData);

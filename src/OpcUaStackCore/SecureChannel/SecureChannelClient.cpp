@@ -63,7 +63,6 @@ namespace OpcUaStackCore
 		// FIXME: only test code
 		// secureChannelClientConfig->secureChannelLog(true);
 
-		applicationCertificate(secureChannelClientConfig->applicationCertificate());
 		cryptoManager(secureChannelClientConfig->cryptoManager());
 
 		if (secureChannelClientIf_ == nullptr) {

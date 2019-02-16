@@ -36,15 +36,20 @@ namespace OpcUaStackCore
 		cryptoBase_ = cryptoBase;
 	}
 
+	SecureChannelSecuritySettings::~SecureChannelSecuritySettings(void)
+	{
+	}
+
 	CryptoBase::SPtr&
 	SecureChannelSecuritySettings::cryptoBase(void)
 	{
 		return cryptoBase_;
 	}
 
-
-	SecureChannelSecuritySettings::~SecureChannelSecuritySettings(void)
+	EndpointDescription::SPtr&
+	SecureChannelSecuritySettings::endpointDescription(void)
 	{
+		return endpointDescription_;
 	}
 
 	bool

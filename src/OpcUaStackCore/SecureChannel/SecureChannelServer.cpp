@@ -51,7 +51,6 @@ namespace OpcUaStackCore
 	bool
 	SecureChannelServer::accept(SecureChannelServerConfig::SPtr secureChannelServerConfig)
 	{
-		applicationCertificate(secureChannelServerConfig->applicationCertificate());
 		cryptoManager(secureChannelServerConfig->cryptoManager());
 
 		// check interface
@@ -295,25 +294,27 @@ namespace OpcUaStackCore
 	)
 	{
 		OpenSecureChannelResponse::SPtr openSecureChannelResponse = constructSPtr<OpenSecureChannelResponse>();
+		openSecureChannelResponse->responseHeader()->requestHandle(openSecureChannelRequest.requestHeader()->requestHandle());
+		openSecureChannelResponse->responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
+
 
 		// get server configuration and security settings
-		SecureChannelServerConfig::SPtr secureChannelServerConfig;
-		secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		SecureChannelServerConfig::SPtr secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 
 		// find endpoint description
-		bool found = false;
+		securitySettings.endpointDescription().reset();
 		EndpointDescription::SPtr endpointDescription;
 		for (uint32_t idx = 0; idx < secureChannelServerConfig->endpointDescriptionArray()->size(); idx++) {
 			secureChannelServerConfig->endpointDescriptionArray()->get(idx, endpointDescription);
 
 			if (securitySettings.partnerSecurityPolicyUri().toString() == endpointDescription->securityPolicyUri().toStdString()) {
-				found = true;
+				securitySettings.endpointDescription() = endpointDescription;
 				break;
 			}
 		}
-		if (!found) {secureChannel->partner_ = secureChannel->socket().remote_endpoint();
+		if (securitySettings.endpointDescription().get() == nullptr) {
 			Log(Error, "server does not accept policy uri from client")
 			    .parameter("LocalEndpoint", secureChannel->local_)
 				.parameter("PartnerEndpont", secureChannel->partner_)
@@ -323,13 +324,14 @@ namespace OpcUaStackCore
 			return;
 		}
 
-
 		// set security policy uri
 		securitySettings.ownSecurityPolicyUri() = endpointDescription->securityPolicyUri();
 
 		// set certificate
 		if (securitySettings.isPartnerSignatureEnabled()) {
-			securitySettings.ownCertificateChain().addCertificate(applicationCertificate()->certificate());
+			securitySettings.ownCertificateChain().addCertificate(
+				cryptoManager()->applicationCertificate()->certificate()
+			);
 		}
 
 		// set partner certificate thumbprint
@@ -434,16 +436,32 @@ namespace OpcUaStackCore
 		// create new security token
 		secureChannel->secureTokenVec_.push_back(std::rand());
 
-		// create open secure channel response
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// start security checks
+		//
 
-		OpcUaByte serverNonce[1];
-		serverNonce[0] = 0x01;
+		// check if client certificate is trusted
+		if (securitySettings.isPartnerEncryptionEnabled()) {
+			bool trusted = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(securitySettings.partnerCertificateChain());
+			if (!trusted) {
+				Log(Error, "client certificate not trusted")
+				    .parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_)
+					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
+				//serviceResult = BadCertificateUntrusted;
+
+				// FIXME: send error message and close connection
+			}
+		}
+
+		// create open secure channel response
 		openSecureChannelResponse->securityToken()->channelId(secureChannel->channelId_);
 		openSecureChannelResponse->securityToken()->tokenId(secureChannel->secureTokenVec_[secureChannel->secureTokenVec_.size()-1]);
 		openSecureChannelResponse->securityToken()->createAt().dateTime(boost::posix_time::microsec_clock::local_time());
 		openSecureChannelResponse->securityToken()->revisedLifetime(openSecureChannelRequest.requestedLifetime());
-		openSecureChannelResponse->responseHeader()->requestHandle(openSecureChannelRequest.requestHeader()->requestHandle());
-		openSecureChannelResponse->responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
+		openSecureChannelResponse->responseHeader()->serviceResult(Success);
 
 		// send open secure channel response
 		asyncWriteOpenSecureChannelResponse(secureChannel, openSecureChannelResponse);

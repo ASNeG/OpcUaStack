@@ -19,7 +19,7 @@
 #define __OpcUaStackCore_ApplicationCertificateConfig_h__
 
 #include <string>
-#include <OpcUaStackCore/Certificate/ApplicationCertificate.h>
+#include <OpcUaStackCore/Certificate/CertificateManager.h>
 #include "OpcUaStackCore/Base/Config.h"
 
 namespace OpcUaStackCore
@@ -32,8 +32,9 @@ namespace OpcUaStackCore
 		~ApplicationCertificateConfig(void);
 
 		static bool parse(
-			ApplicationCertificate::SPtr& serverCertificate,
-			const std::string& configPrefix,
+			CertificateManager::SPtr& certificateManager,
+			const std::string& configPrefixServerInfo,
+			const std::string& configPrefixApplicationCertificate,
 			Config* childConfig,
 			const std::string& configurationFileName
 		);
