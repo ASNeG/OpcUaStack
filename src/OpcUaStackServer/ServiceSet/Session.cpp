@@ -642,7 +642,6 @@ namespace OpcUaStackServer
 		createSessionResponse.maxRequestMessageSize(0);
 
 		// added server certificate
-		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 		cryptoManager_->applicationCertificate()->certificate()->toDERBuf(createSessionResponse.serverCertificate());
 
 		if (cryptoManager_->applicationCertificate().get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {

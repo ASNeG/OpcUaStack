@@ -146,7 +146,7 @@ namespace OpcUaStackClient
 
 		Certificate serverCertificate_;
 		char clientNonce_[32];
-		char serverNonce_[32];
+		OpcUaByteString serverNonce_;
 		PendingQueue pendingQueue_;
 	};
 

@@ -45,6 +45,7 @@ namespace OpcUaStackCore
 		OpcUaNodeId& authenticationToken(void);
 		void receivedSessionTimeout(const OpcUaDuration receivedSessionTimeout);
 		OpcUaDuration receivedSessionTimeout(void) const;
+		OpcUaByteString& serverNonce(void);
 		void serverNonce(OpcUaByte** buf, OpcUaInt32* bufLen) const;
 		void serverNonce(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void serverCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const;

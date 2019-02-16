@@ -381,6 +381,8 @@ namespace OpcUaStackClient
 		// check server signature
 		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
 		if (certificate.get() != nullptr) {
+			serverNonce_ = createSessionResponse.serverNonce();
+
 			serverCertificate_.fromDERBuf(
 				createSessionResponse.serverCertificate().memBuf(),
 				createSessionResponse.serverCertificate().size()
@@ -401,7 +403,7 @@ namespace OpcUaStackClient
 			);
 
 			if (statusCode != Success) {
-				Log(Error, "server signature error");
+				Log(Error, "validate server signature error");
 				asyncDisconnect();
 				return;
 			}
@@ -418,6 +420,8 @@ namespace OpcUaStackClient
 	void
 	SessionService::sendActivateSessionRequest(void)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel_->securitySettings_;
+
 		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
 		secureChannelTransaction->requestId_ = ++requestId_;
@@ -431,6 +435,32 @@ namespace OpcUaStackClient
 		activateSessionRequest.requestHeader()->sessionAuthenticationToken() = authenticationToken_;
 		activateSessionRequest.localeIds()->resize(1);
 		activateSessionRequest.localeIds()->push_back(localeIdSPtr);
+
+		// create client signature
+		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
+		if (certificate.get() != nullptr) {
+			uint32_t derCertSize = serverCertificate_.getDERBufSize();
+			MemoryBuffer serverCertificate(derCertSize);
+			serverCertificate_.toDERBuf(
+				serverCertificate.memBuf(),
+				&derCertSize
+			);
+			PrivateKey::SPtr privateKey =  secureChannelClientConfig_->cryptoManager()->applicationCertificate()->privateKey();
+
+			MemoryBuffer serverNonce((const char*)serverNonce_.memBuf(), (uint32_t)serverNonce_.size());
+
+			OpcUaStatusCode statusCode = activateSessionRequest.clientSignature()->createSignature(
+				serverCertificate,
+				serverNonce,
+				*privateKey,
+				*securitySettings.cryptoBase()
+			);
+			if (statusCode != Success) {
+				Log(Error, "create client signature error");
+				asyncDisconnect();
+				return;
+			}
+		}
 
 		// user identity token
 		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
