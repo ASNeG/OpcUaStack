@@ -450,7 +450,7 @@ namespace OpcUaStackCore
 				    .parameter("LocalEndpoint", secureChannel->local_)
 					.parameter("PartnerEndpont", secureChannel->partner_)
 					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
-				serviceResult = BadCertificateUntrusted;
+				//serviceResult = BadCertificateUntrusted;
 
 				// FIXME: send error message and close connection
 			}
