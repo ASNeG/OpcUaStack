@@ -110,7 +110,7 @@ on the discovery server by using RegiserServer() or RegisterServer2() :term:`Ser
 
 In order to connect to the registered server, the client calls FindRegister()
 :term:`Service` on the discovery server to get the list of the servers. So that
-the client needn't to know any :term:`DiscoverUrl`\ s of servers excepting the
+the client needn't to know any :term:`DiscoveryUrl`\ s of servers excepting the
 discovery server.
 
 ::

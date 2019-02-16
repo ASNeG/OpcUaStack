@@ -1,7 +1,7 @@
 .. _glossary:
 
 OPC UA Glossary
-========
+===============
 
 .. glossary::
 
