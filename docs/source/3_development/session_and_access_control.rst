@@ -413,14 +413,45 @@ is allowed and *BadUserAccessDenied* if the access is denied.
 Close Session
 --------------
 
+Sometimes a user application needs to be notified when the :term:`Session` is
+closed. To catch this event we have registered *closeSessionCallback* in
+:ref:`_access_control_callback_registration` section. Now we can make it write them
+name of the authenticated user when the user closes the :ref:`Session`.
+
+.. code-block:: cpp
+
+  void
+  Library::closeSessionCallback(
+    ApplicationCloseSessionContext* context)
+  {
+    if (!context->userContext_) {
+      return;
+    }
+
+    auto user = boost::dynamic_pointer_cast<UserProfile>(context->userContext_);
+
+    Log(Info, "User close the session.")
+      .parameter("Username", user->username_)
+      .parameter("SessionId", context->sessionId_);
+  }
+
+What Next?
+----------
+
+The access control is a enough complicated topic and we couldn't describe it
+completely. You can find on our Demo-Project_ a more complex implementation
+of the authentication and authorization.
+
 References
 -----------
 
 * :ref:`security`
 * :ref:`discovery_process`
-* `Example <https://github.com/ASNeG/ASNeG-Demo/blob/master/src/ASNeG-Demo/Library/Authentication.cpp>`_
+* Demo-Project_
 
 OPC UA Specification
 --------------------
 
 * Part 4 Services, 5.6 Session Service Set.
+
+.. _Demo-Project: https://github.com/ASNeG/ASNeG-Demo/blob/master/src/ASNeG-Demo/Library/Authentication.cpp
