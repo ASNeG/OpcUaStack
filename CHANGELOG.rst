@@ -8,7 +8,7 @@ Release 3.7.0
 
 **Bugs**:
 
-* User change was not implemented in session #105, by @huebl
+* fix user changing during activated session #105, by @huebl
 
 Release 3.6.1 (2018-12-28)
 ------------------------------------------------------------
