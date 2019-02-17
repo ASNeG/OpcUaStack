@@ -8,7 +8,9 @@ develop your own applications with ASNeG OPC UA Stack.
 
    discovery_process
    session_and_access_control
-   node_management
    data_access
+   history_data_access
+   events
+   node_management
    methods
    security
