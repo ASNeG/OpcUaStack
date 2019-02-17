@@ -8,8 +8,18 @@ using namespace OpcUaStackCore;
 class CryptoManagerTest
 {
   public:
+	static const std::string clientCertificateName_;
+	static const std::string serverCertificateName_;
+
 	static const CryptoManager::SPtr& getInstance(void);
 	static void delInstance(void);
+
+	static void trustedClientServerCertificates(void);
+	static void trustedClientCertificate(void);
+	static void trustedServerCertificate(void);
+	static void untrustedClientServerCertificates(void);
+	static void untrusteClientCertificate(void);
+	static void untrusteServerCertificate(void);
 
   private:
 	static CryptoManager::SPtr cryptoManager_;

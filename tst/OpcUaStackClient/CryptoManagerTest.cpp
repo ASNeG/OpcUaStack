@@ -2,6 +2,8 @@
 #include "OpcUaStackClient/CryptoManagerTest.h"
 
 CryptoManager::SPtr CryptoManagerTest::cryptoManager_ = nullptr;
+const std::string CryptoManagerTest::clientCertificateName_ = "./pki/own/certs/ASNeG-Test.der";
+const std::string CryptoManagerTest::serverCertificateName_ = "/etc/OpcUaStack/ASNeG-Demo/pki/own/certs/ASNeG-Demo.der";
 
 const CryptoManager::SPtr&
 CryptoManagerTest::getInstance(void)
@@ -53,6 +55,9 @@ CryptoManagerTest::getInstance(void)
 	cryptoManager_->certificateManager(certificateManager);
 	cryptoManager_->applicationCertificate(applicationCertificate);
 
+	// for testing we must trust the client certificate and the server certificate
+	CryptoManagerTest::trustedClientServerCertificates();
+
 	return cryptoManager_;
 }
 
@@ -62,4 +67,38 @@ CryptoManagerTest::delInstance(void)
 	if (cryptoManager_) {
 		cryptoManager_.reset();
 	}
+}
+
+void
+CryptoManagerTest::trustedClientServerCertificates(void)
+{
+	CryptoManagerTest::trustedClientCertificate();
+	CryptoManagerTest::trustedServerCertificate();
+}
+
+void
+CryptoManagerTest::trustedClientCertificate(void)
+{
+}
+
+void
+CryptoManagerTest::trustedServerCertificate(void)
+{
+}
+
+void
+CryptoManagerTest::untrustedClientServerCertificates(void)
+{
+	CryptoManagerTest::untrusteClientCertificate();
+	CryptoManagerTest::untrusteServerCertificate();
+}
+
+void
+CryptoManagerTest::untrusteClientCertificate(void)
+{
+}
+
+void
+CryptoManagerTest::untrusteServerCertificate(void)
+{
 }
