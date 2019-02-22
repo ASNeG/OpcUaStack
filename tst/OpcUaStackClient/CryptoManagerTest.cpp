@@ -169,9 +169,57 @@ CryptoManagerTest::untrustedClientServerCertificates(void)
 void
 CryptoManagerTest::untrusteClientCertificate(void)
 {
+	// check if certificate exists on client
+	if (!cryptoManager_->certificateManager()->existCertificate(clientCertificateName_)) {
+		Log(Error, "client certificate not exist")
+			.parameter("ClientCertificate", clientCertificateName_);
+		return;
+	}
+
+	// load server certificate
+	Certificate::SPtr certificate;
+	certificate = cryptoManager_->certificateManager()->readCertificate(clientCertificateName_);
+	if (!certificate) {
+		Log(Error, "load client certificate failed")
+			.parameter("ClientCertificate", clientCertificateName_);
+		return;
+	}
+	OpcUaByteString thumbPrint = certificate->thumbPrint();
+
+	// remove certificate from trusted folder on server
+	boost::filesystem::path rejectFile(serverCertificateName_);
+	rejectFile = rejectFile.parent_path().parent_path().parent_path();
+	rejectFile /= boost::filesystem::path("/trusted/certs/" + thumbPrint.toHexString() + ".der");
+	if (cryptoManager_->certificateManager()->existCertificate(rejectFile.string())) {
+		cryptoManager_->certificateManager()->removeCertificate(rejectFile.string());
+	}
 }
 
 void
 CryptoManagerTest::untrusteServerCertificate(void)
 {
+	// check if certificate exists on server
+	if (!cryptoManager_->certificateManager()->existCertificate(serverCertificateName_)) {
+		Log(Error, "server certificate not exist")
+			.parameter("ServerCertificate", serverCertificateName_);
+		return;
+	}
+
+	// load server certificate
+	Certificate::SPtr certificate;
+	certificate = cryptoManager_->certificateManager()->readCertificate(serverCertificateName_);
+	if (!certificate) {
+		Log(Error, "load server certificate failed")
+			.parameter("ServerCertificate", serverCertificateName_);
+		return;
+	}
+	OpcUaByteString thumbPrint = certificate->thumbPrint();
+
+	// remove certificate from reject folder on client
+	boost::filesystem::path rejectFile(clientCertificateName_);
+	rejectFile = rejectFile.parent_path().parent_path().parent_path();
+	rejectFile /= boost::filesystem::path("/reject/certs/" + thumbPrint.toHexString() + ".der");
+	if (cryptoManager_->certificateManager()->existCertificate(rejectFile.string())) {
+		cryptoManager_->certificateManager()->removeCertificate(rejectFile.string());
+	}
 }
