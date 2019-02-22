@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12.2)
 project	(OpcUaStackTest4)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set (CMAKE_CXX_STANDARD 11)
 
 # -----------------------------------------------------------------------------
@@ -62,6 +63,11 @@ option(
 if (TEST_SERVER_URI) 
   add_definitions(-DREAL_SERVER -DREAL_SERVER_URI="${TEST_SERVER_URI}")
 endif()
+if (TEST_SERVER_INSTALL_PATH) 
+  add_definitions(-DREAL_SERVER_INSTALL_PATH="${TEST_SERVER_INSTALL_PATH}")
+endif()
+
+
 
 #add_definitions(-DBOOST_ALL_DYN_LINK)
 
