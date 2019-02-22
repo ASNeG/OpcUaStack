@@ -936,7 +936,6 @@ namespace OpcUaStackCore
 		secureChannel->socket().cancel();
 	}
 
-
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -1531,6 +1530,44 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
+	SecureChannelBase::asyncWriteMessageError(
+		SecureChannel* secureChannel,
+		OpcUaUInt32 error,
+		const std::string& reason
+	)
+	{
+		// create error message
+		ErrorMessage errorMessage;
+		errorMessage.error(error);
+		errorMessage.reason(reason);
+
+		// encode error message
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+		errorMessage.opcUaBinaryEncode(ios1);
+
+		// encode message header
+		boost::asio::streambuf sb2;
+		std::iostream ios2(&sb2);
+		secureChannel->messageHeader_.messageType(MessageType_Error);
+		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
+		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+
+		// debug output
+		secureChannel->debugSendHeader(secureChannel->messageHeader_);
+		secureChannel->debugSendError(errorMessage);
+
+		// send error message
+		secureChannel->async_write(
+			sb2,
+			sb1,
+			[this, secureChannel] (const boost::system::error_code& error, std::size_t bytes_transfered) {
+				closeChannel(secureChannel, true);
+			}
+		);
+	}
+
+	void
 	SecureChannelBase::asyncReadError(SecureChannel* secureChannel)
 	{
 		secureChannel->async_read_exactly(
@@ -1578,7 +1615,8 @@ namespace OpcUaStackCore
 		Log(Error, "opc ua secure channel read error message; close channel")
 		    .parameter("Local", secureChannel->local_.address().to_string())
 			.parameter("Partner", secureChannel->partner_.address().to_string())
-			.parameter("Message", OpcUaStatusCodeMap::shortString((OpcUaStatusCode)errorMessage.error()));
+			.parameter("Message", OpcUaStatusCodeMap::shortString((OpcUaStatusCode)errorMessage.error()))
+			.parameter("Reason", errorMessage.reason());
 		closeChannel(secureChannel, true);
 	}
 
