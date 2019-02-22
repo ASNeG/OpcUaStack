@@ -343,6 +343,46 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	CertificateManager::existCertificate(const std::string& fileName)
+	{
+		return boost::filesystem::exists(fileName);
+	}
+
+	bool
+	CertificateManager::removeCertificate(const std::string& fileName)
+	{
+		return boost::filesystem::remove(fileName);
+	}
+
+	Certificate::SPtr
+	CertificateManager::readCertificate(const std::string& fileName)
+	{
+		auto certificate = constructSPtr<Certificate>();
+		if (!certificate->fromDERFile(fileName)) {
+			certificate->log(Error, "read certificate from file error: " + fileName);
+				return nullptr;
+			}
+		return certificate;
+	}
+
+	bool
+	CertificateManager::writeCertificate(const std::string& fileName, Certificate::SPtr& certificate)
+	{
+		return writeCertificate(fileName, *certificate.get());
+	}
+
+	bool
+	CertificateManager::writeCertificate(const std::string& fileName, Certificate& certificate)
+	{
+		certificate.toDERFile(fileName);
+		if (certificate.isError()) {
+			certificate.log(Error, "save certificate error: " + fileName);
+			return false;
+		}
+		return true;
+	}
+
+	bool
 	CertificateManager::checkAndCreateDirectory(const std::string& directory)
 	{
 		boost::filesystem::path path(directory);

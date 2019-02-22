@@ -69,6 +69,12 @@ namespace OpcUaStackCore
 		bool isPartnerCertificateTrusted(CertificateChain& partnerCertificateChain);
 		bool isPartnerCertificateTrusted(const std::string& applicationUri, CertificateChain& partnerCertificateChain);
 
+		bool existCertificate(const std::string& fileName);
+		bool removeCertificate(const std::string& fileName);
+		Certificate::SPtr readCertificate(const std::string& fileName);
+		bool writeCertificate(const std::string& fileName, Certificate::SPtr& certificate);
+		bool writeCertificate(const std::string& fileName, Certificate& certificate);
+
 	  private:
 		bool checkAndCreateDirectory(const std::string& directory);
 		bool setReadOnly(const std::string& directory);
