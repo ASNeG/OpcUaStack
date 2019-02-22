@@ -1,9 +1,10 @@
-
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
 #include "OpcUaStackClient/CryptoManagerTest.h"
 
 CryptoManager::SPtr CryptoManagerTest::cryptoManager_ = nullptr;
 const std::string CryptoManagerTest::clientCertificateName_ = "./pki/own/certs/ASNeG-Test.der";
-const std::string CryptoManagerTest::serverCertificateName_ = "/etc/OpcUaStack/ASNeG-Demo/pki/own/certs/ASNeG-Demo.der";
+const std::string CryptoManagerTest::serverCertificateName_ = std::string(REAL_SERVER_INSTALL_PATH) + "/etc/OpcUaStack/ASNeG-Demo/pki/own/certs/ASNeG-Demo.der";
 
 const CryptoManager::SPtr&
 CryptoManagerTest::getInstance(void)
@@ -48,7 +49,7 @@ CryptoManagerTest::getInstance(void)
 	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
 	if (!applicationCertificate->init(certificateManager)) {
 		cryptoManager_.reset();
-		return nullptr;
+		return cryptoManager_;
 	}
 
 	// init crypto manager
@@ -56,7 +57,7 @@ CryptoManagerTest::getInstance(void)
 	cryptoManager_->applicationCertificate(applicationCertificate);
 
 	// for testing we must trust the client certificate and the server certificate
-	CryptoManagerTest::trustedClientServerCertificates();
+	trustedClientServerCertificates();
 
 	return cryptoManager_;
 }
@@ -72,13 +73,51 @@ CryptoManagerTest::delInstance(void)
 void
 CryptoManagerTest::trustedClientServerCertificates(void)
 {
-	CryptoManagerTest::trustedClientCertificate();
-	CryptoManagerTest::trustedServerCertificate();
+	trustedClientCertificate();
+	trustedServerCertificate();
 }
 
 void
 CryptoManagerTest::trustedClientCertificate(void)
 {
+	// check if certificate exists on client
+	if (!cryptoManager_->certificateManager()->existCertificate(clientCertificateName_)) {
+		Log(Error, "client certificate not exist")
+			.parameter("ClientCertificate", clientCertificateName_);
+		return;
+	}
+
+	// load certificate
+	Certificate::SPtr certificate;
+	certificate = cryptoManager_->certificateManager()->readCertificate(clientCertificateName_);
+	if (!certificate) {
+		Log(Error, "load client certificate failed")
+			.parameter("ClientCertificate", clientCertificateName_);
+		return;
+	}
+	OpcUaByteString thumbPrint = certificate->thumbPrint();
+
+	// remove certificate from reject folder on server
+	boost::filesystem::path rejectFile(serverCertificateName_);
+	rejectFile = rejectFile.parent_path().parent_path().parent_path();
+	rejectFile /= boost::filesystem::path("/reject/certs/" + thumbPrint.toHexString() + ".der");
+	if (cryptoManager_->certificateManager()->existCertificate(rejectFile.string())) {
+		cryptoManager_->certificateManager()->removeCertificate(rejectFile.string());
+	}
+
+	std::cout << "PATH=" << rejectFile.string() << std::endl;
+
+	// added certificate to trust folder on server
+	boost::filesystem::path trustedFile(serverCertificateName_);
+	trustedFile = rejectFile.parent_path().parent_path().parent_path();
+	trustedFile /= boost::filesystem::path("/trusted/certs/" + thumbPrint.toHexString() + ".der");
+	if (!cryptoManager_->certificateManager()->existCertificate(trustedFile.string())) {
+		if (!cryptoManager_->certificateManager()->writeCertificate(trustedFile.string(), certificate)) {
+			Log(Error, "write client certificate error")
+				.parameter("ClientCertificate", trustedFile.string());
+			return;
+		}
+	}
 }
 
 void
@@ -89,8 +128,8 @@ CryptoManagerTest::trustedServerCertificate(void)
 void
 CryptoManagerTest::untrustedClientServerCertificates(void)
 {
-	CryptoManagerTest::untrusteClientCertificate();
-	CryptoManagerTest::untrusteServerCertificate();
+	untrusteClientCertificate();
+	untrusteServerCertificate();
 }
 
 void
