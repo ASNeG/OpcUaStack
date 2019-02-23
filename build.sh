@@ -1,6 +1,17 @@
 #!/bin/bash
 
-#export USE_MOSQUITTO_CLIENT=1
+#
+# Local test:
+#
+# Normal test:
+#   sh build.sh -t tst -s ~/.ASNeG/
+#
+# Enable real server test: 
+#   sh build.sh -t tst -s ~/.ASNeG/ --test-with-server opc.tcp://127.0.0.1:8889   
+#
+# Enable MQTT:
+#   export USE_MOSQUITTO_CLIENT=1
+#
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
