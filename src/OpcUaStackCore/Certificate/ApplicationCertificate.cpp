@@ -126,7 +126,7 @@ namespace OpcUaStackCore
 		// create self signed certificate
 		// --------------------------------------------------------------------
 		Log(Debug, "create self signed certificate")
-		    .parameter("ServerUri", certificateSettings.serverUri());
+		    .parameter("Uri", certificateSettings.serverUri());
 
 		RSAKey key(certificateSettings.keyLength());
 		if (key.isError()) {

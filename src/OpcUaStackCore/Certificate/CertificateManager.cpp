@@ -311,11 +311,14 @@ namespace OpcUaStackCore
 			certificate->getInfo(info);
 			if (info.uri() == applicationUri) {
 				partnerCertificateChain.addCertificate(certificate);
+				Log(Debug, "found certificate in reject folder")
+				    .parameter("Uri", applicationUri);
 				return false;
 			}
 		}
 
 		// check if certificate is in trust list location
+		std::vector<std::string> uris;
 		boost::filesystem::path trustFilePath(certificateTrustListLocation_);
 		for (auto file : boost::filesystem::directory_iterator(trustFilePath)) {
 			if (boost::filesystem::is_directory(file)) {
@@ -333,12 +336,18 @@ namespace OpcUaStackCore
 
 			CertificateInfo info;
 			certificate->getInfo(info);
+			uris.push_back(info.uri());
 			if (info.uri() == applicationUri) {
 				partnerCertificateChain.addCertificate(certificate);
 				return true;
 			}
 		}
 
+		Log log(Debug, "certificate not found in trusted folder");
+		log.parameter("Uri", applicationUri);
+		for (auto uri : uris) {
+			log.parameter("TrustedUri", uris);
+		}
 		return false;
 	}
 
