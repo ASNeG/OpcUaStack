@@ -63,8 +63,8 @@ option(
 if (TEST_SERVER_URI) 
   add_definitions(-DREAL_SERVER -DREAL_SERVER_URI="${TEST_SERVER_URI}")
 endif()
-if (TEST_SERVER_INSTALL_PATH) 
-  add_definitions(-DREAL_SERVER_INSTALL_PATH="${TEST_SERVER_INSTALL_PATH}")
+if (SERVER_PKI_PATH) 
+  add_definitions(-DSERVER_PKI_PATH="${SERVER_PKI_PATH}")
 endif()
 
 

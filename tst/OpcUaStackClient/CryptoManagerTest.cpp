@@ -4,7 +4,7 @@
 
 CryptoManager::SPtr CryptoManagerTest::cryptoManager_ = nullptr;
 const std::string CryptoManagerTest::clientCertificateName_ = "./pki/own/certs/ASNeG-Test.der";
-const std::string CryptoManagerTest::serverCertificateName_ = std::string(REAL_SERVER_INSTALL_PATH) + "/etc/OpcUaStack/ASNeG-Demo/pki/own/certs/ASNeG-Demo.der";
+const std::string CryptoManagerTest::serverCertificateName_ = std::string(SERVER_PKI_PATH) + "/etc/OpcUaStack/ASNeG-Demo/pki/own/certs/ASNeG-Demo.der";
 
 const CryptoManager::SPtr&
 CryptoManagerTest::getInstance(void)
