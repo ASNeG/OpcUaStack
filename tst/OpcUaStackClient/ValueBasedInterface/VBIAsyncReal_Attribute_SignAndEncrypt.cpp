@@ -1,8 +1,10 @@
 #include "unittest.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
+using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(VBIAsyncReal_Attribute_SignAndEncrypt_)
