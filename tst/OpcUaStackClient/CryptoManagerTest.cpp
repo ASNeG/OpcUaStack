@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 #include "OpcUaStackCore/Utility/Environment.h"
@@ -5,7 +6,7 @@
 
 CryptoManager::SPtr CryptoManagerTest::cryptoManager_ = nullptr;
 const std::string CryptoManagerTest::clientCertificateName_ = "./pki/own/certs/ASNeG-Test.der";
-const std::string CryptoManagerTest::serverCertificateName_ = std::string(SERVER_PKI_PATH) + "/etc/OpcUaStack/ASNeG-Demo/pki/own/certs/ASNeG-Demo.der";
+const std::string CryptoManagerTest::serverCertificateName_ = CryptoManagerTest::getServerPkiRootDir() + "/etc/OpcUaStack/ASNeG-Demo/pki/own/certs/ASNeG-Demo.der";
 
 const CryptoManager::SPtr&
 CryptoManagerTest::getInstance(void)
@@ -223,4 +224,24 @@ CryptoManagerTest::untrusteServerCertificate(void)
 	if (cryptoManager_->certificateManager()->existCertificate(rejectFile.string())) {
 		cryptoManager_->certificateManager()->removeCertificate(rejectFile.string());
 	}
+}
+
+std::string
+CryptoManagerTest::getServerHostName(void)
+{
+	char* var = std::getenv("SERVER_HOST_NAME");
+	if (var == nullptr) {
+		return Environment::hostname();
+	}
+	return std::string(var);
+}
+
+std::string
+CryptoManagerTest::getServerPkiRootDir(void)
+{
+	char* var = std::getenv("SERVER_PKI_ROOT_DIR");
+	if (var == nullptr) {
+		return std::string("/");
+	}
+	return std::string(var);
 }

@@ -21,6 +21,9 @@ class CryptoManagerTest
 	static void untrusteClientCertificate(void);
 	static void untrusteServerCertificate(void);
 
+	static std::string getServerHostName(void);
+	static std::string getServerPkiRootDir(void);
+
   private:
 	static CryptoManager::SPtr cryptoManager_;
 };

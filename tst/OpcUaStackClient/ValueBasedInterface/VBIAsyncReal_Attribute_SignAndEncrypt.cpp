@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_)
 #ifdef REAL_SERVER
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read)
 {
-	std::string applicationUri = std::string("urn:") + Environment::hostname() + std::string(":ASNeG:ASNeG-Demo");
+
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
@@ -27,6 +27,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read)
 	);
 
 	// connect session
+	std::string applicationUri = std::string("urn:") + CryptoManagerTest::getServerHostName() + std::string(":ASNeG:ASNeG-Demo");
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
@@ -63,7 +64,6 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read)
 
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write)
 {
-	std::string applicationUri = std::string("urn:") + Environment::hostname() + std::string(":ASNeG:ASNeG-Demo");
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
@@ -74,6 +74,8 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write)
 
 
 	// connect session
+	std::string applicationUri = std::string("urn:") + CryptoManagerTest::getServerHostName() + std::string(":ASNeG:ASNeG-Demo");
+
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
