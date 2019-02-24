@@ -2,6 +2,7 @@ version: '2'
 services:
   demo_server:
     image: asneg/asneg-demo:latest
+    hostname: asneg-demo
     ports:
       - 127.0.0.1:8889:8889
     volumes:
@@ -9,6 +10,7 @@ services:
   stack:
     depends_on:
       - demo_server
+    hostname: asneg-test
     build: .
     volumes:
       - server_pki:/tmp/etc/OpcUaStack/ASNeG-Demo/pki
