@@ -57,9 +57,6 @@ namespace OpcUaStackServer
 		std::pair<ReferenceItemTable::const_iterator, bool> result = referenceItemMultiMap_[referenceTypeNodeId]
 																					  .insert(std::make_pair(referenceItem->nodeId_, referenceItem));
 
-		Log(Trace, "Add reference").parameter("type", referenceItem->typeId_)
-				.parameter("node", referenceItem->nodeId_);
-
 		return result.second;
 	}
 
