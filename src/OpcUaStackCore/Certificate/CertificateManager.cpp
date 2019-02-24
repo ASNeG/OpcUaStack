@@ -346,7 +346,7 @@ namespace OpcUaStackCore
 		Log log(Debug, "certificate not found in trusted folder");
 		log.parameter("Uri", applicationUri);
 		for (auto uri : uris) {
-			log.parameter("TrustedUri", uris);
+			log.parameter("TrustedUri", uri);
 		}
 		return false;
 	}
