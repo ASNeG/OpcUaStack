@@ -11,6 +11,9 @@ services:
     depends_on:
       - demo_server
     hostname: asneg-test
+    environment:
+      - SERVER_PKI_ROOT_DIR=/tmp/
+      - SERVER_HOST_NAME=asneg-demo
     build: .
     volumes:
       - server_pki:/tmp/etc/OpcUaStack/ASNeG-Demo/pki
