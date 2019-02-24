@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::SecureChannelClientConfig(void)
 	: SecureChannelConfig()
 	, endpointUrl_("")
+	, applicationUri_("")
 	, securityMode_(SM_None)
 	, securityPolicy_(SP_None)
 	, connectTimeout_(0)
@@ -56,6 +57,18 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::endpointUrl(void)
 	{
 		return endpointUrl_;
+	}
+
+	void
+	SecureChannelClientConfig::applicationUri(const std::string& applicationUri)
+	{
+		applicationUri_ = applicationUri;
+	}
+
+	std::string&
+	SecureChannelClientConfig::applicationUri(void)
+	{
+		return applicationUri_;
 	}
 
 	void

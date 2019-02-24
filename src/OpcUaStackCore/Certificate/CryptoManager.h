@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaBaseEnums.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/Certificate/CertificateManager.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
@@ -35,9 +36,16 @@ namespace OpcUaStackCore
 		CryptoManager(void);
 		~CryptoManager(void);
 
-		bool insert(const std::string& name, CryptoBase::SPtr& cryptoBase);
-		bool remove(const std::string& name);
+		bool insert(
+			SecurityPolicy securityPolicy,
+			const std::string& securityPolicyString,
+			CryptoBase::SPtr& cryptoBase
+		);
+		bool remove(SecurityPolicy securityPolicy);
+		std::string securityPolicy(SecurityPolicy securityPolicy);
+		SecurityPolicy securityPolicy(const std::string securityPolicy);
 		CryptoBase::SPtr get(const std::string& name);
+		CryptoBase::SPtr get(SecurityPolicy securityPolicy);
 
 		void certificateManager(CertificateManager::SPtr& certificateManager);
 		bool createCertificateManager(
@@ -52,7 +60,8 @@ namespace OpcUaStackCore
 		ApplicationCertificate::SPtr& applicationCertificate(void);
 
 	  private:
-		CryptoBase::Map cryptoBaseMap_;
+		std::map<SecurityPolicy,CryptoBase::SPtr> cryptoBaseMap_;
+		std::map<std::string, SecurityPolicy> securityPolicyMap_;
 		CertificateManager::SPtr certificateManager_;
 		ApplicationCertificate::SPtr applicationCertificate_;
 	};

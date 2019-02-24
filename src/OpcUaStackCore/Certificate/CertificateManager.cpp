@@ -286,6 +286,112 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	CertificateManager::isPartnerCertificateTrusted(
+		const std::string& applicationUri,
+		CertificateChain& partnerCertificateChain
+	)
+	{
+		// check if certificate is in reject list location
+		boost::filesystem::path rejectFilePath(certificateRejectListLocation_);
+		for (auto file : boost::filesystem::directory_iterator(rejectFilePath)) {
+			if (boost::filesystem::is_directory(file)) {
+				continue;
+			}
+			if (file.path().extension().string() != ".der") {
+				continue;
+			}
+
+			auto certificate = constructSPtr<Certificate>();
+			if (!certificate->fromDERFile(file.path().string())) {
+				certificate->log(Error, "read certificate from file error: " + file.path().string());
+				continue;
+			}
+
+			CertificateInfo info;
+			certificate->getInfo(info);
+			if (info.uri() == applicationUri) {
+				partnerCertificateChain.addCertificate(certificate);
+				Log(Debug, "found certificate in reject folder")
+				    .parameter("Uri", applicationUri);
+				return false;
+			}
+		}
+
+		// check if certificate is in trust list location
+		std::vector<std::string> uris;
+		boost::filesystem::path trustFilePath(certificateTrustListLocation_);
+		for (auto file : boost::filesystem::directory_iterator(trustFilePath)) {
+			if (boost::filesystem::is_directory(file)) {
+				continue;
+			}
+			if (file.path().extension().string() != ".der") {
+				continue;
+			}
+
+			auto certificate = constructSPtr<Certificate>();
+			if (!certificate->fromDERFile(file.path().string())) {
+				certificate->log(Error, "read certificate from file error: " + file.path().string());
+				continue;
+			}
+
+			CertificateInfo info;
+			certificate->getInfo(info);
+			uris.push_back(info.uri());
+			if (info.uri() == applicationUri) {
+				partnerCertificateChain.addCertificate(certificate);
+				return true;
+			}
+		}
+
+		Log log(Debug, "certificate not found in trusted folder");
+		log.parameter("Uri", applicationUri);
+		for (auto uri : uris) {
+			log.parameter("TrustedUri", uri);
+		}
+		return false;
+	}
+
+	bool
+	CertificateManager::existCertificate(const std::string& fileName)
+	{
+		return boost::filesystem::exists(fileName);
+	}
+
+	bool
+	CertificateManager::removeCertificate(const std::string& fileName)
+	{
+		return boost::filesystem::remove(fileName);
+	}
+
+	Certificate::SPtr
+	CertificateManager::readCertificate(const std::string& fileName)
+	{
+		auto certificate = constructSPtr<Certificate>();
+		if (!certificate->fromDERFile(fileName)) {
+			certificate->log(Error, "read certificate from file error: " + fileName);
+				return nullptr;
+			}
+		return certificate;
+	}
+
+	bool
+	CertificateManager::writeCertificate(const std::string& fileName, Certificate::SPtr& certificate)
+	{
+		return writeCertificate(fileName, *certificate.get());
+	}
+
+	bool
+	CertificateManager::writeCertificate(const std::string& fileName, Certificate& certificate)
+	{
+		certificate.toDERFile(fileName);
+		if (certificate.isError()) {
+			certificate.log(Error, "save certificate error: " + fileName);
+			return false;
+		}
+		return true;
+	}
+
+	bool
 	CertificateManager::checkAndCreateDirectory(const std::string& directory)
 	{
 		boost::filesystem::path path(directory);

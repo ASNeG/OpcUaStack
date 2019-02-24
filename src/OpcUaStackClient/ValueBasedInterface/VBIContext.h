@@ -49,6 +49,9 @@ namespace OpcUaStackClient
 
 		bool secureChannelLog_;
 		std::string endpointUrl_;
+		std::string applicationUri_;
+		SecurityMode securityMode_;
+		SecurityPolicy securityPolicy_;
 		std::string sessionName_;
 		CryptoManager::SPtr cryptoManager_;
 	};

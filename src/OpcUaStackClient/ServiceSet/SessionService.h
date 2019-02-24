@@ -110,7 +110,7 @@ namespace OpcUaStackClient
 		void asyncDisconnectInternal(SessionTransaction::SPtr& sessionTransaction, bool deleteSubscriptions);
 		void asyncCancelInternal(uint32_t requestHandle);
 
-		void sendCreateSessionRequest(void);
+		void sendCreateSessionRequest(SecureChannel* secureChannel);
 		void recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr& responseHeader);
 		void sendActivateSessionRequest(void);
 		void recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr responseHeader);
@@ -119,6 +119,7 @@ namespace OpcUaStackClient
 		void pendingQueueTimeout(Object::SPtr object);
 		void receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr responseHeader);
 		void reconnectTimeout(void);
+		void createClientNonce(void);
 
 		// configuration
 		Mode mode_;
@@ -143,6 +144,9 @@ namespace OpcUaStackClient
 		OpcUaUInt32 requestId_;
 		OpcUaNodeId authenticationToken_;
 
+		Certificate serverCertificate_;
+		char clientNonce_[32];
+		OpcUaByteString serverNonce_;
 		PendingQueue pendingQueue_;
 	};
 

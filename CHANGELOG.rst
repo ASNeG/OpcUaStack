@@ -3,6 +3,9 @@ Release 4.1.0
 
 **Features**:
 
+* Implemented client security #5, by @huebl
+* Server accepted unknown certificates #96, by @huebl
+* Security implementation complicated #95, by @huebl
 * Implement object type code generator #27, by @huebl
 * Implement variable type code generator #26, by @huebl
 * Integrate JSON encoder/decoder #39, by @huebl
@@ -14,7 +17,8 @@ Release 4.1.0
 
 **Bugs**:
 
-* Ignore optional placeholder element in code generator #78, @huebl
+* OPC UA server chrashes at startup #99, by @huebl
+* Ignore optional placeholder element in code generator #78, by @huebl
 * Double entry of CTRL C leads to crash #74, by @huebl
 * Error occured during create a new opc ua application server #84, by @huebl
 * Class OpcUaDataValue does not have an "<" operator #54, by @huebl

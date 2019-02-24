@@ -161,6 +161,12 @@ namespace OpcUaStackServer
 		return serviceManager_;
 	}
 
+	CryptoManager::SPtr&
+	Server::cryptoManager(void)
+	{
+		return cryptoManager_;
+	}
+
 	bool
 	Server::writeInformationModel(const std::string& nodeSetFileName, std::vector<std::string>& namespaceUris)
 	{

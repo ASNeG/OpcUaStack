@@ -625,6 +625,7 @@ namespace OpcUaStackServer
 		CreateSessionResponse createSessionResponse;
 		createSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		createSessionResponse.responseHeader()->serviceResult(serviceResult);
+		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 
 		if (createSessionRequest.clientCertificate().exist()) {
 			clientCertificate_.fromDERBuf(
@@ -642,7 +643,6 @@ namespace OpcUaStackServer
 		createSessionResponse.maxRequestMessageSize(0);
 
 		// added server certificate
-		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 		cryptoManager_->applicationCertificate()->certificate()->toDERBuf(createSessionResponse.serverCertificate());
 
 		if (cryptoManager_->applicationCertificate().get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
@@ -738,11 +738,11 @@ namespace OpcUaStackServer
 		}
 
 		// check username and password
+		createServerNonce();
 		statusCode = authentication(activateSessionRequest);
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
-		createServerNonce();
 		ActivateSessionResponse activateSessionResponse;
 		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		activateSessionResponse.responseHeader()->serviceResult(statusCode);

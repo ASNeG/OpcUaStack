@@ -47,6 +47,7 @@ namespace OpcUaStackServer
 		IOThread* ioThread(void);
 		ApplicationManager& applicationManager(void);
 		ServiceManager& serviceManager(void);
+		CryptoManager::SPtr& cryptoManager(void);
 
 	  private:
 		bool readInformationModel(void);

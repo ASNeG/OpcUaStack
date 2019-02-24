@@ -326,13 +326,16 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SessionService::sendCreateSessionRequest(void)
+	SessionService::sendCreateSessionRequest(SecureChannel* secureChannel)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings_;
+
 		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
 		secureChannelTransaction->requestId_ = ++requestId_;
 		std::iostream ios(&secureChannelTransaction->os_);
 
+		// create session request
 		CreateSessionRequest createSessionRequest;
 		createSessionRequest.requestHeader()->requestHandle(++requestHandle_);
 		createSessionRequest.clientDescription(sessionConfig_->applicationDescription_);
@@ -341,18 +344,32 @@ namespace OpcUaStackClient
 		createSessionRequest.clientNonce((OpcUaStackCore::OpcUaByte*)"\000", 1);
 		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout_);
 		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize_);
+
+		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
+		if (certificate.get() != nullptr) {
+			createClientNonce();
+			createSessionRequest.clientNonce((const OpcUaByte*)clientNonce_, 32);
+			certificate->toDERBuf(createSessionRequest.clientCertificate());
+		}
+
+		// send create session request
 		createSessionRequest.requestHeader()->opcUaBinaryEncode(ios);
 		createSessionRequest.opcUaBinaryEncode(ios);
 
 		Log(Debug, "session send CreateSessionRequest")
 		    .parameter("RequestId", secureChannelTransaction->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_);
-		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
+		secureChannelClient_.asyncWriteMessageRequest(
+			secureChannel_,
+			secureChannelTransaction
+		);
 	}
 
 	void
 	SessionService::recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr& responseHeader)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel_->securitySettings_;
+
 		std::iostream ios(&secureChannelTransaction->is_);
 		CreateSessionResponse createSessionResponse;
 		createSessionResponse.opcUaBinaryDecode(ios);
@@ -360,6 +377,37 @@ namespace OpcUaStackClient
 		sessionTimeout_ = createSessionResponse.receivedSessionTimeout();
 		maxResponseMessageSize_ = createSessionResponse.maxRequestMessageSize();
 		authenticationToken_ = createSessionResponse.authenticationToken();
+
+		// check server signature
+		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
+		if (certificate.get() != nullptr) {
+			serverNonce_ = createSessionResponse.serverNonce();
+
+			serverCertificate_.fromDERBuf(
+				createSessionResponse.serverCertificate().memBuf(),
+				createSessionResponse.serverCertificate().size()
+			);
+
+			// get client certificate
+			MemoryBuffer clientCertificate;
+			certificate->toDERBuf(clientCertificate);
+
+			// verify signature
+			MemoryBuffer clientNonce(clientNonce_, 32);
+			PublicKey publicKey = serverCertificate_.publicKey();
+			OpcUaStatusCode statusCode = createSessionResponse.signatureData()->verifySignature(
+				clientCertificate,
+				clientNonce,
+				publicKey,
+				*securitySettings.cryptoBase()
+			);
+
+			if (statusCode != Success) {
+				Log(Error, "validate server signature error");
+				asyncDisconnect();
+				return;
+			}
+		}
 
 		Log(Debug, "session recv CreateSessionResponse")
 		    .parameter("RequestId", secureChannelTransaction->requestId_)
@@ -372,6 +420,8 @@ namespace OpcUaStackClient
 	void
 	SessionService::sendActivateSessionRequest(void)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel_->securitySettings_;
+
 		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
 		secureChannelTransaction->requestId_ = ++requestId_;
@@ -385,6 +435,32 @@ namespace OpcUaStackClient
 		activateSessionRequest.requestHeader()->sessionAuthenticationToken() = authenticationToken_;
 		activateSessionRequest.localeIds()->resize(1);
 		activateSessionRequest.localeIds()->push_back(localeIdSPtr);
+
+		// create client signature
+		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
+		if (certificate.get() != nullptr) {
+			uint32_t derCertSize = serverCertificate_.getDERBufSize();
+			MemoryBuffer serverCertificate(derCertSize);
+			serverCertificate_.toDERBuf(
+				serverCertificate.memBuf(),
+				&derCertSize
+			);
+			PrivateKey::SPtr privateKey =  secureChannelClientConfig_->cryptoManager()->applicationCertificate()->privateKey();
+
+			MemoryBuffer serverNonce((const char*)serverNonce_.memBuf(), (uint32_t)serverNonce_.size());
+
+			OpcUaStatusCode statusCode = activateSessionRequest.clientSignature()->createSignature(
+				serverCertificate,
+				serverNonce,
+				*privateKey,
+				*securitySettings.cryptoBase()
+			);
+			if (statusCode != Success) {
+				Log(Error, "create client signature error");
+				asyncDisconnect();
+				return;
+			}
+		}
 
 		// user identity token
 		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
@@ -490,7 +566,7 @@ namespace OpcUaStackClient
 		}
 
 		// create CreateSessionRequest
-		sendCreateSessionRequest();
+		sendCreateSessionRequest(secureChannel);
 	}
 
 	void
@@ -664,6 +740,14 @@ namespace OpcUaStackClient
 
 		Component* componentService = serviceTransaction->componentService();
 		componentService->sendAsync(serviceTransaction);
+	}
+
+	void
+	SessionService::createClientNonce(void)
+	{
+		for (uint32_t idx=0; idx<32; idx++) {
+			clientNonce_[idx] = (rand() / 256);
+		}
 	}
 
 }

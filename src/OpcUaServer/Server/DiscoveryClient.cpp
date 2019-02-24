@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,11 +31,18 @@ namespace OpcUaServer
 	, discoveryClient_()
 	, discoveryServerUrl_("")
 	, enable_(false)
+	, cryptoManager_()
 	{
 	}
 
 	DiscoveryClient::~DiscoveryClient(void)
 	{
+	}
+
+	void
+	DiscoveryClient::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
 	}
 
 	bool
@@ -85,6 +92,7 @@ namespace OpcUaServer
 		ioThread_->startup();
 
 		discoveryClient_.ioThread(ioThread_);
+		discoveryClient_.cryptoManager(cryptoManager_);
 		discoveryClient_.discoveryUri(discoveryServerUrl_);
 		discoveryClient_.registerInterval(registerInterval_);
 		discoveryClient_.startup();

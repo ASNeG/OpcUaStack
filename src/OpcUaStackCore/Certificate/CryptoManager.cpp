@@ -28,25 +28,41 @@ namespace OpcUaStackCore
 
 	CryptoManager::CryptoManager(void)
 	: cryptoBaseMap_()
+	, securityPolicyMap_()
 	, certificateManager_()
 	, applicationCertificate_()
 	{
 		// register open ssl security policy NONE
 		CryptoOpenSSLNONE::SPtr cryptoOpenSSLNone(constructSPtr<CryptoOpenSSLNONE>());
-		insert(cryptoOpenSSLNone->securityPolicy(), cryptoOpenSSLNone);
+		insert(
+			SP_None,
+			"http://opcfoundation.org/UA/SecurityPolicy#None",
+			cryptoOpenSSLNone
+		);
 
 		// register open ssl security policy BASIC256SHA256
 		CryptoOpenSSLBASIC256SHA256::SPtr cryptoOpenSSLBASIC256SHA256(constructSPtr<CryptoOpenSSLBASIC256SHA256>());
-		insert(cryptoOpenSSLBASIC256SHA256->securityPolicy(), cryptoOpenSSLBASIC256SHA256);
+		insert(
+			SP_Basic256Sha256,
+			"http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256",
+			cryptoOpenSSLBASIC256SHA256
+		);
 
 		// register open ssl security policy BASIC256
 		CryptoOpenSSLBASIC256::SPtr cryptoOpenSSLBASIC256(constructSPtr<CryptoOpenSSLBASIC256>());
-		insert(cryptoOpenSSLBASIC256->securityPolicy(), cryptoOpenSSLBASIC256);
+		insert(
+			SP_Basic256,
+			"http://opcfoundation.org/UA/SecurityPolicy#Basic256",
+			cryptoOpenSSLBASIC256
+		);
 
 		// register open ssl security policy BASIC128RSA15
 		CryptoOpenSSLBASIC128RSA15::SPtr cryptoOpenSSLBASIC128RSA15(constructSPtr<CryptoOpenSSLBASIC128RSA15>());
-		insert(cryptoOpenSSLBASIC128RSA15->securityPolicy(), cryptoOpenSSLBASIC128RSA15);
-
+		insert(
+			SP_Basic128Rsa15,
+			"http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15",
+			cryptoOpenSSLBASIC128RSA15
+		);
 	}
 
 	CryptoManager::~CryptoManager(void)
@@ -57,22 +73,59 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CryptoManager::insert(const std::string& name, CryptoBase::SPtr& cryptoBase)
+	CryptoManager::insert(
+		SecurityPolicy securityPolicy,
+		const std::string& securityPolicyString,
+		CryptoBase::SPtr& cryptoBase
+	)
 	{
-		return cryptoBaseMap_.insert(std::make_pair(name, cryptoBase)).second;
+		securityPolicyMap_.insert(std::make_pair(securityPolicyString, securityPolicy));
+		return cryptoBaseMap_.insert(std::make_pair(securityPolicy, cryptoBase)).second;
 	}
 
 	bool
-	CryptoManager::remove(const std::string& name)
+	CryptoManager::remove(SecurityPolicy securityPolicy)
 	{
-		return cryptoBaseMap_.erase(name) == 1;
+		return cryptoBaseMap_.erase(securityPolicy) == 1;
+	}
+
+	std::string
+	CryptoManager::securityPolicy(SecurityPolicy securityPolicy)
+	{
+		auto it = cryptoBaseMap_.find(securityPolicy);
+		if (it == cryptoBaseMap_.end()) {
+			return "http://opcfoundation.org/UA/SecurityPolicy#None";
+		}
+		return it->second->securityPolicy();
+	}
+
+	SecurityPolicy
+	CryptoManager::securityPolicy(const std::string securityPolicy)
+	{
+		auto it = securityPolicyMap_.find(securityPolicy);
+		if (it == securityPolicyMap_.end()) {
+			return SP_None;
+		}
+		return it->second;
 	}
 
 	CryptoBase::SPtr
 	CryptoManager::get(const std::string& name)
 	{
 		CryptoBase::Map::iterator it;
-		it = cryptoBaseMap_.find(name);
+		it = cryptoBaseMap_.find(securityPolicy(name));
+		if (it == cryptoBaseMap_.end()) {
+			CryptoBase::SPtr cryptoBase;
+			return cryptoBase;
+		}
+		return it->second;
+	}
+
+	CryptoBase::SPtr
+	CryptoManager::get(SecurityPolicy securityPolicy)
+	{
+		CryptoBase::Map::iterator it;
+		it = cryptoBaseMap_.find(securityPolicy);
 		if (it == cryptoBaseMap_.end()) {
 			CryptoBase::SPtr cryptoBase;
 			return cryptoBase;

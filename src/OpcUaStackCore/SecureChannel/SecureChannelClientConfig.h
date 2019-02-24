@@ -36,6 +36,8 @@ namespace OpcUaStackCore
 
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
+		void applicationUri(const std::string& applicationUri);
+		std::string& applicationUri(void);
 		void securityMode(SecurityMode securityMode);
 		SecurityMode securityMode(void);
 		void securityPolicy(SecurityPolicy securityPolicy);
@@ -54,6 +56,7 @@ namespace OpcUaStackCore
 
 	  private:
 		std::string endpointUrl_;
+		std::string applicationUri_;
 		SecurityMode securityMode_;
 		SecurityPolicy securityPolicy_;
 
