@@ -27,13 +27,17 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read)
 	);
 
 	// connect session
+	//
+	// To enable security, fields applicationUri, securityMode and security policy
+	// must be specified.
+	//
 	std::string applicationUri = std::string("urn:") + CryptoManagerTest::getServerHostName() + std::string(":ASNeG:ASNeG-Demo");
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
-	//connectContext.applicationUri_ = applicationUri;					// needed to detect right certificate
-	//connectContext.securityMode_ = SM_SignAndEncrypt;					// security mode
-	//connectContext.securityPolicy_ = SP_Basic128Rsa15;					// security policy
+	connectContext.applicationUri_ = applicationUri;					// needed to detect right certificate
+	connectContext.securityMode_ = SM_SignAndEncrypt;					// security mode
+	connectContext.securityPolicy_ = SP_Basic128Rsa15;					// security policy
 	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();
 	connectContext.secureChannelLog_ = true;
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
@@ -72,10 +76,12 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write)
 		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
 	);
 
-
 	// connect session
+	//
+	// To enable security, fields applicationUri, securityMode and security policy
+	// must be specified.
+	//
 	std::string applicationUri = std::string("urn:") + CryptoManagerTest::getServerHostName() + std::string(":ASNeG:ASNeG-Demo");
-
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;

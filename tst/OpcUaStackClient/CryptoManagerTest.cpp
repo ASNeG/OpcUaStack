@@ -241,7 +241,13 @@ CryptoManagerTest::getServerPkiRootDir(void)
 {
 	char* var = std::getenv("SERVER_PKI_ROOT_DIR");
 	if (var == nullptr) {
-		return std::string("/");
+
+		char* var = std::getenv("HOME");
+		if (var == nullptr) {
+			return std::string("/");
+		}
+
+		return std::string(var) + std::string("/.ASNeG");
 	}
 	return std::string(var);
 }
