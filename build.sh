@@ -45,7 +45,6 @@ usage()
    echo ""
    echo "--build-type, -B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type"
    echo "--test-with-server URI:  build client test for real OPC UA server. By default, empty "
-   echo "--server-pki-path PATH: pki root path for real OPC UA server. (default: ${HOME}/.ASNeG)"
 
 }
 
@@ -328,7 +327,6 @@ build_tst()
   	     "${CMAKE_GENERATOR_LOCAL}" \
 	     -DOPCUASTACK_INSTALL_PREFIX="${STACK_PREFIX}" \
              -DTEST_SERVER_URI=${TEST_SERVER_URI} \
-             -DSERVER_PKI_PATH=${SERVER_PKI_PATH} \
              -DCMAKE_BUILD_TYPE="${BUILD_TYPE}"
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
@@ -400,7 +398,6 @@ STACK_PREFIX="/"
 JOBS=1
 BUILD_TYPE="Debug"
 TEST_SERVER_URI=""
-SERVER_PKI_PATH="${HOME}/.ASNeG"
 
 while [ $# -gt 0 ];
 do
@@ -438,13 +435,6 @@ case $key in
     shift # past flag
     shift # past value
     ;;
-
-    --server-pki-path)
-    SERVER_PKI_PATH="$2"
-    shift # past flag
-    shift # past value
-    ;;
-
 
     *)    # unknown option
     shift # past argument
