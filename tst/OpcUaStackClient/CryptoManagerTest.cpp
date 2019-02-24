@@ -1,5 +1,6 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 
 CryptoManager::SPtr CryptoManagerTest::cryptoManager_ = nullptr;
@@ -30,7 +31,7 @@ CryptoManagerTest::getInstance(void)
 
 	CertificateSettings& certificateSettings = certificateManager->certificateSettings();
 	certificateSettings.enable(true);
-	certificateSettings.serverUri("urn:asneg.de:ASNeG:ASNeG-Test");
+	certificateSettings.serverUri(std::string("urn:") + Environment::hostname() + std::string(":ASNeG:ASNeG-Test"));
 	certificateSettings.commonName("ASNeG-Test");
 	certificateSettings.domainComponent("127.0.0.1");
 	certificateSettings.organization("ASNeG");
