@@ -928,15 +928,14 @@ namespace OpcUaStackServer
 		}
 
 		// remove all references from node class
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = nodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != nodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
+		for (auto it = nodeClass->referenceItemMap().begin();
+			it != nodeClass->referenceItemMap().end();
+			++it
 		) {
-			OpcUaNodeId referenceTypeId = it->first;
-			ReferenceItem::SPtr referenceItem = it->second;
+
+			ReferenceItem::SPtr referenceItem = *it;
 			OpcUaNodeId targetNodeId = referenceItem->nodeId_;
+			OpcUaNodeId referenceTypeId = referenceItem->nodeId_;
 
 			delReference(targetNodeId, referenceTypeId, nodeId);
 		}
@@ -1101,7 +1100,7 @@ namespace OpcUaStackServer
 		// clone node class
 		//
 		BaseNodeClass::SPtr objectNodeClass = cloneBaseNodeClass->clone();
-		objectNodeClass->referenceItemMap().referenceItemMultiMap().clear();
+		objectNodeClass->referenceItemMap().clear();
 
 		//
 		// get parent node id
@@ -1193,7 +1192,7 @@ namespace OpcUaStackServer
 		// clone node class
 		//
 		BaseNodeClass::SPtr variableNodeClass = cloneBaseNodeClass->clone();
-		variableNodeClass->referenceItemMap().referenceItemMultiMap().clear();
+		variableNodeClass->referenceItemMap().clear();
 
 		//
 		// get parent node id
@@ -1284,7 +1283,7 @@ namespace OpcUaStackServer
 		// clone node class
 		//
 		BaseNodeClass::SPtr methodNodeClass = cloneBaseNodeClass->clone();
-		methodNodeClass->referenceItemMap().referenceItemMultiMap().clear();
+		methodNodeClass->referenceItemMap().clear();
 
 		//
 		// get parent node id

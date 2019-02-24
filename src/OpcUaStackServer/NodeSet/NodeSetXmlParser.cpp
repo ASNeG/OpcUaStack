@@ -1110,13 +1110,12 @@ namespace OpcUaStackServer
 	{
 		boost::property_tree::ptree referenceTree;
 
-		ReferenceItemMultiMap::iterator it;
 		ReferenceItemMap& referenceItemMap = objectNodeClass->referenceItemMap();
 
-		for (it = referenceItemMap.referenceItemMultiMap().begin(); it != referenceItemMap.referenceItemMultiMap().end(); it++) {
+		for (auto it = referenceItemMap.begin(); it != referenceItemMap.end(); ++it) {
 			boost::property_tree::ptree reference;
-			ReferenceItem::SPtr referenceItem = it->second;
-			OpcUaNodeId referenceTypeNodeId = it->first;
+			ReferenceItem::SPtr referenceItem = *it;
+			OpcUaNodeId referenceTypeNodeId = referenceItem->nodeId_;
 
 			//if (referenceItem->isForward_) continue;
 
@@ -1620,12 +1619,10 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::isProperty(VariableNodeClass::SPtr variableNodeClassSPtr)
 	{
-		std::pair<ReferenceItemMultiMap::iterator, ReferenceItemMultiMap::iterator> itp;
-		ReferenceItemMultiMap& referenceItemMultiMap = variableNodeClassSPtr->referenceItemMap().referenceItemMultiMap();
 		OpcUaNodeId propertyTypeNodeId;
 		propertyTypeNodeId.nodeId(OpcUaId_HasProperty);
 
-		itp = referenceItemMultiMap.equal_range(propertyTypeNodeId);
+		auto itp = variableNodeClassSPtr->referenceItemMap().equal_range(propertyTypeNodeId);
 		if (itp.first == itp.second) return false;
 		return true;
 	}

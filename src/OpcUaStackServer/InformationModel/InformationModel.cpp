@@ -122,10 +122,8 @@ namespace OpcUaStackServer
 		for (it = informationModelMap_.begin(); it != informationModelMap_.end(); it++) {
 			BaseNodeClass::SPtr baseNodeClass = it->second;
 
-			ReferenceItemMultiMap::iterator itr;
-			for (itr = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin(); itr != baseNodeClass->referenceItemMap().referenceItemMultiMap().end(); itr++) {
-				OpcUaNodeId referenceTypeNodeId = itr->first;
-				ReferenceItem::SPtr referenceItem = itr->second;
+			for (auto referenceItem : baseNodeClass->referenceItemMap()) {
+				OpcUaNodeId referenceTypeNodeId = referenceItem->nodeId_;
 				if (referenceItem->isForward_) {
 					BaseNodeClass::SPtr baseNodeClassTarget = find(referenceItem->nodeId_);
 					if (baseNodeClassTarget.get() == nullptr) {
