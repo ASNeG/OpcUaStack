@@ -935,7 +935,7 @@ namespace OpcUaStackServer
 
 			ReferenceItem::SPtr referenceItem = *it;
 			OpcUaNodeId targetNodeId = referenceItem->nodeId_;
-			OpcUaNodeId referenceTypeId = referenceItem->nodeId_;
+			OpcUaNodeId referenceTypeId = referenceItem->typeId_;
 
 			delReference(targetNodeId, referenceTypeId, nodeId);
 		}

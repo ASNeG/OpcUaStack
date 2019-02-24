@@ -75,7 +75,7 @@ namespace OpcUaStackServer
 		const_iterator begin() const;
 		const_iterator end() const;
 		bool erase(const_iterator it);
-		std::pair<const_iterator, const_iterator> equal_range(const OpcUaNodeId& referenceTypeNodeId) const;
+		std::pair<ReferenceItemTable::const_iterator, ReferenceItemTable::const_iterator> equal_range(const OpcUaNodeId& referenceTypeNodeId) const;
 		size_t size() const;
 
 	  private:

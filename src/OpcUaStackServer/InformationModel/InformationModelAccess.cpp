@@ -757,7 +757,7 @@ namespace OpcUaStackServer
 		}
 
 		for (auto ref = it.first; ref != it.second; ++ref) {
-			ReferenceItem::SPtr referenceItem  = *ref;
+			ReferenceItem::SPtr referenceItem  = ref->second;
 
 			if (referenceItem->isForward_) continue;
 			referenceItem->nodeId_.copyTo(subTypeNodeId);

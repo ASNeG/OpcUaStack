@@ -271,7 +271,7 @@ namespace OpcUaStackServer
 
 			auto itp = baseNodeClassTarget->referenceItemMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
 			if (itp.first != itp.second) {
-				ReferenceItem::SPtr referenceItem = *itp.first;
+				ReferenceItem::SPtr referenceItem = itp.first->second;
 				referenceItem->nodeId_.copyTo(*referenceDescription->typeDefinition());
 			}
 		}
@@ -314,7 +314,7 @@ namespace OpcUaStackServer
 		}
 
 		for (auto itl = it.first; itl != it.second; ++itl) {
-			ReferenceItem::SPtr referenceItem  = *itl;
+			ReferenceItem::SPtr referenceItem  = itl->second;
 
 			if (referenceItem->isForward_) continue;
 

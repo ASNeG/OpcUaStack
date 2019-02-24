@@ -123,7 +123,7 @@ namespace OpcUaStackServer
 			BaseNodeClass::SPtr baseNodeClass = it->second;
 
 			for (auto referenceItem : baseNodeClass->referenceItemMap()) {
-				OpcUaNodeId referenceTypeNodeId = referenceItem->nodeId_;
+				OpcUaNodeId referenceTypeNodeId = referenceItem->typeId_;
 				if (referenceItem->isForward_) {
 					BaseNodeClass::SPtr baseNodeClassTarget = find(referenceItem->nodeId_);
 					if (baseNodeClassTarget.get() == nullptr) {

@@ -57,7 +57,9 @@ namespace OpcUaStackServer
 		std::pair<ReferenceItemTable::const_iterator, bool> result = referenceItemMultiMap_[referenceTypeNodeId]
 																					  .insert(std::make_pair(referenceItem->nodeId_, referenceItem));
 
-		std::cout << "Add type " << referenceTypeNodeId.toString() << "\n";
+		Log(Trace, "Add reference").parameter("type", referenceItem->typeId_)
+				.parameter("node", referenceItem->nodeId_);
+
 		return result.second;
 	}
 
@@ -144,20 +146,16 @@ namespace OpcUaStackServer
 		return referenceItemMultiMap_.find(it.refTypeIt->first)->second.erase(it.refItemIt->first);
 	}
 
-	std::pair<ReferenceItemMap::const_iterator, ReferenceItemMap::const_iterator>
+	std::pair<ReferenceItemTable::const_iterator, ReferenceItemTable::const_iterator>
 	ReferenceItemMap::equal_range(const OpcUaNodeId& referenceTypeNodeId) const
 	{
-		ReferenceItemMap::const_iterator it1 = end();
-		ReferenceItemMap::const_iterator it2 = end();
+		ReferenceItemTable::const_iterator it1;
+		ReferenceItemTable::const_iterator it2;
 
 		auto refTypeIt = referenceItemMultiMap_.find(referenceTypeNodeId);
 		if (refTypeIt != referenceItemMultiMap_.end()) {
-			it1.refItemIt = refTypeIt->second.begin();
-			it1.refItemEnd = refTypeIt->second.end();
-			it1.refTypeIt = refTypeIt;
-
-			it2 = it1;
-			it2.refItemIt = it1.refItemEnd;
+			it1 = refTypeIt->second.begin();
+			it2 = refTypeIt->second.end();
 		}
 
 		return std::make_pair(it1, it2);
@@ -226,7 +224,7 @@ namespace OpcUaStackServer
 		if (this->refTypeIt == other.refTypeIt
 			&& this->refTypeEnd == other.refTypeEnd) {
 
-			if (this->refItemIt != this->refItemEnd) {
+			if (this->refTypeIt != this->refTypeEnd) {
 				return this->refItemIt == other.refItemIt
 						&& this->refItemEnd == other.refItemEnd;
 			}

@@ -1115,7 +1115,7 @@ namespace OpcUaStackServer
 		for (auto it = referenceItemMap.begin(); it != referenceItemMap.end(); ++it) {
 			boost::property_tree::ptree reference;
 			ReferenceItem::SPtr referenceItem = *it;
-			OpcUaNodeId referenceTypeNodeId = referenceItem->nodeId_;
+			OpcUaNodeId referenceTypeNodeId = referenceItem->typeId_;
 
 			//if (referenceItem->isForward_) continue;
 
