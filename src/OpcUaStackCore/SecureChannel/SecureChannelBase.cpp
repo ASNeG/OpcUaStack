@@ -44,6 +44,12 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncRead(SecureChannel* secureChannel)
 	{
+		// check socket
+		if (secureChannel->closeFlag_) {
+			Log(Debug, "async read failed, because socket is already closed");
+			return;
+		}
+
 		// read message header
 		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
@@ -1631,6 +1637,11 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::closeChannel(SecureChannel* secureChannel, bool close)
 	{
+		if (secureChannel->closeFlag_) {
+			return;
+		}
+		secureChannel->closeFlag_ = true;
+
 		Log(Error, "opc ua secure channel close")
 			.parameter("AsyncSend", secureChannel->asyncSend_);
 		if (close) secureChannel->close();

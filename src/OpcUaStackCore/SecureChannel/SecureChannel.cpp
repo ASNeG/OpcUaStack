@@ -329,7 +329,7 @@ namespace OpcUaStackCore
 	SecureChannel::debugSendError(ErrorMessage& error)
 	{
 		if (!isLogging_) return;
-		Log(Debug, "opc ua secure channel send Acknowledge")
+		Log(Debug, "opc ua secure channel send Error")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
 			.parameter("Partner-Address", partner_.address().to_string())
