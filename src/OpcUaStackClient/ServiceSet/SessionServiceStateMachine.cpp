@@ -24,7 +24,25 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	SessionServiceStateIf::SessionServiceStateIf(const std::string& stateName)
+	: stateName_()
+	{
+	}
+
+	SessionServiceStateIf::~SessionServiceStateIf(void)
+	{
+	}
+
+	std::string
+	SessionServiceStateIf::stateName(void)
+	{
+		return stateName_;
+	}
+
+
+
 	SessionServiceStateMachine::SessionServiceStateMachine(void)
+	: state_()
 	{
 	}
 

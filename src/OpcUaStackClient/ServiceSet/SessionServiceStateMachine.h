@@ -17,12 +17,26 @@
 #ifndef __OpcUaStackClient_SessionServiceStateMachine_h__
 #define __OpcUaStackClient_SessionServiceStateMachine_h__
 
+#include <memory>
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
+	class DLLEXPORT SessionServiceStateIf
+	{
+	  public:
+		typedef std::unique_ptr<SessionServiceStateIf> UPtr;
+
+		SessionServiceStateIf(const std::string& stateName);
+		virtual ~SessionServiceStateIf(void);
+
+		std::string stateName(void);
+
+	  private:
+		std::string stateName_;
+	};
 
 	class DLLEXPORT SessionServiceStateMachine
 	{
@@ -31,6 +45,9 @@ namespace OpcUaStackClient
 
 		SessionServiceStateMachine(void);
 		~SessionServiceStateMachine(void);
+
+	  private:
+		SessionServiceStateIf::UPtr state_;
 	};
 
 }
