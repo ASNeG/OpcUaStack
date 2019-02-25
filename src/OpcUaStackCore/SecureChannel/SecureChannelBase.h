@@ -69,6 +69,11 @@ namespace OpcUaStackCore
 		void asyncWriteCloseSecureChannelRequest(
 			SecureChannel* secureChannel
 		);
+		void asyncWriteMessageError(
+			SecureChannel* secureChannel,
+			OpcUaUInt32 error,
+			const std::string& reason
+		);
 		void asyncWriteMessageRequest(
 			SecureChannel* secureChannel,
 			SecureChannelTransaction::SPtr secureChannelTransaction

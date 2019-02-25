@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -29,6 +29,7 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
+#include "OpcUaStackCore/SecureChannel/ErrorMessage.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
 
@@ -79,6 +80,7 @@ namespace OpcUaStackCore
 		void debugSendHeader(MessageHeader& messageHeader);
 		void debugSendHello(HelloMessage& hello);
 		void debugSendAcknowledge(AcknowledgeMessage& acknowledge);
+		void debugSendError(ErrorMessage& error);
 		void debugSendOpenSecureChannelRequest(OpenSecureChannelRequest& openSecureChannelRequest);
 		void debugSendOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse);
 		void debugSendMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction);

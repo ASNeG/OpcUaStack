@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -323,6 +323,19 @@ namespace OpcUaStackCore
 			.parameter("SendBufferSize", acknowledge.sendBufferSize())
 			.parameter("MaxMessageSize", acknowledge.maxMessageSize())
 			.parameter("MaxChunkCount", acknowledge.maxChunkCount());
+	}
+
+	void
+	SecureChannel::debugSendError(ErrorMessage& error)
+	{
+		if (!isLogging_) return;
+		Log(Debug, "opc ua secure channel send Error")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("Error", error.error())
+			.parameter("Reason", error.reason());
 	}
 
 	void
