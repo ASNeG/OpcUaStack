@@ -24,10 +24,12 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	class SessionServiceContext;
+
 	enum class DLLEXPORT SessionServiceStateId
 	{
 		None,
-		Initial
+		Disconnected
 	};
 
 	template<typename T>
@@ -41,12 +43,19 @@ namespace OpcUaStackClient
 	  public:
 		typedef std::unique_ptr<SessionServiceStateIf> UPtr;
 
-		//SessionServiceStateIf(void) delete;
+		SessionServiceStateIf(void) = delete;
 		SessionServiceStateIf(const std::string& stateName, SessionServiceStateId stateId);
 		virtual ~SessionServiceStateIf(void);
 
+		void setCtx(SessionServiceContext* ctx);
 		std::string stateName(void);
 		SessionServiceStateId stateId(void);
+
+		virtual SessionServiceStateId asyncConnect(void) = 0;
+		virtual SessionServiceStateId asyncDisconnect(bool deleteSubscriptions) = 0;
+
+	  protected:
+		SessionServiceContext* ctx_;
 
 	  private:
 		std::string stateName_;
@@ -54,12 +63,15 @@ namespace OpcUaStackClient
 	};
 
 
-	class DLLEXPORT SessionServiceStateInitial
+	class DLLEXPORT SessionServiceStateDisconnected
 	: public SessionServiceStateIf
 	{
 	  public:
-		SessionServiceStateInitial(void);
-		~SessionServiceStateInitial(void);
+		SessionServiceStateDisconnected(void);
+		~SessionServiceStateDisconnected(void);
+
+		virtual SessionServiceStateId asyncConnect(void) override;
+		virtual SessionServiceStateId asyncDisconnect(bool deleteSubscriptions) override;
 	};
 
 	class DLLEXPORT SessionServiceStateMachine

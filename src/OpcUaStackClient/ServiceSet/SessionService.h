@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateMachine.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
@@ -148,6 +149,8 @@ namespace OpcUaStackClient
 		char clientNonce_[32];
 		OpcUaByteString serverNonce_;
 		PendingQueue pendingQueue_;
+
+		SessionServiceStateMachine sm_;
 	};
 
 }

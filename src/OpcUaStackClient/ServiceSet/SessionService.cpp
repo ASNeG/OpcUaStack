@@ -90,6 +90,9 @@ namespace OpcUaStackClient
 		pendingQueue_.timeoutCallback().reset(
 			boost::bind(&SessionService::pendingQueueTimeout, this, _1)
 		);
+
+		// init state machine
+		sm_.setStateId(SessionServiceStateId::Disconnected);
 	}
 
 	SessionService::~SessionService(void)
@@ -155,6 +158,16 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction)
 	{
+
+#if 0
+		sm_.event(
+			[this](SessionServiceStateIf* sssif) {
+				return sssif->asyncConnect();
+			}
+		);
+#endif
+
+
 		// stop reconnect timer if necessary
 		if (secureChannelState_ == SCS_DisconnectedWait) {
 			ioThread_->slotTimer()->stop(slotTimerElement_);

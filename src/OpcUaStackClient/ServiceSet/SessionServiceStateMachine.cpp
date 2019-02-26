@@ -32,13 +32,20 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SessionServiceStateIf::SessionServiceStateIf(const std::string& stateName, SessionServiceStateId stateId)
-	: stateName_("")
+	: ctx_(nullptr)
+	, stateName_("")
 	, stateId_(stateId_)
 	{
 	}
 
 	SessionServiceStateIf::~SessionServiceStateIf(void)
 	{
+	}
+
+	void
+	SessionServiceStateIf::setCtx(SessionServiceContext* ctx)
+	{
+		ctx_ = ctx;
 	}
 
 	std::string
@@ -56,17 +63,29 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// SessionServiceStateInitial
+	// SessionServiceStateDisconnected
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	SessionServiceStateInitial::SessionServiceStateInitial(void)
-	: SessionServiceStateIf("Initial", SessionServiceStateId::Initial)
+	SessionServiceStateDisconnected::SessionServiceStateDisconnected(void)
+	: SessionServiceStateIf("Disconnected", SessionServiceStateId::Disconnected)
 	{
 	}
 
-	SessionServiceStateInitial::~SessionServiceStateInitial(void)
+	SessionServiceStateDisconnected::~SessionServiceStateDisconnected(void)
 	{
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::asyncConnect(void)
+	{
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::asyncDisconnect(bool deleteSubscriptions)
+	{
+		return SessionServiceStateId::Disconnected;
 	}
 
 	// ------------------------------------------------------------------------
@@ -105,9 +124,9 @@ namespace OpcUaStackClient
 
 		switch (stateId)
 		{
-			case SessionServiceStateId::Initial:
+			case SessionServiceStateId::Disconnected:
 			{
-				state_.reset(new SessionServiceStateInitial());
+				state_.reset(new SessionServiceStateDisconnected());
 				logChangeState(oldStateName);
 				break;
 			}
