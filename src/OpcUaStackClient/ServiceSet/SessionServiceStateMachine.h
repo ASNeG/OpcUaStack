@@ -24,18 +24,42 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	enum class DLLEXPORT SessionServiceStateId
+	{
+		None,
+		Initial
+	};
+
+	template<typename T>
+	std::ostream& operator<<(typename std::enable_if<std::is_enum<T>::value, std::ostream>::type& stream, const T& e)
+	{
+	    return stream << static_cast<typename std::underlying_type<T>::type>(e);
+	}
+
 	class DLLEXPORT SessionServiceStateIf
 	{
 	  public:
 		typedef std::unique_ptr<SessionServiceStateIf> UPtr;
 
-		SessionServiceStateIf(const std::string& stateName);
+		//SessionServiceStateIf(void) delete;
+		SessionServiceStateIf(const std::string& stateName, SessionServiceStateId stateId);
 		virtual ~SessionServiceStateIf(void);
 
 		std::string stateName(void);
+		SessionServiceStateId stateId(void);
 
 	  private:
 		std::string stateName_;
+		SessionServiceStateId stateId_;
+	};
+
+
+	class DLLEXPORT SessionServiceStateInitial
+	: public SessionServiceStateIf
+	{
+	  public:
+		SessionServiceStateInitial(void);
+		~SessionServiceStateInitial(void);
 	};
 
 	class DLLEXPORT SessionServiceStateMachine
@@ -46,7 +70,13 @@ namespace OpcUaStackClient
 		SessionServiceStateMachine(void);
 		~SessionServiceStateMachine(void);
 
+		bool setStateId(SessionServiceStateId stateId);
+		bool event(std::function<SessionServiceStateId(SessionServiceStateIf*)> event);
+
 	  private:
+		void logChangeState(const std::string& oldStateName);
+
+		std::string sessionServiceName_;
 		SessionServiceStateIf::UPtr state_;
 	};
 

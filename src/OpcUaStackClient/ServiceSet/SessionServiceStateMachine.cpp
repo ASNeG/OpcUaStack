@@ -24,8 +24,16 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	SessionServiceStateIf::SessionServiceStateIf(const std::string& stateName)
-	: stateName_()
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SessionServiceStateIf
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	SessionServiceStateIf::SessionServiceStateIf(const std::string& stateName, SessionServiceStateId stateId)
+	: stateName_("")
+	, stateId_(stateId_)
 	{
 	}
 
@@ -39,15 +47,107 @@ namespace OpcUaStackClient
 		return stateName_;
 	}
 
+	SessionServiceStateId
+	SessionServiceStateIf::stateId(void)
+	{
+		return stateId_;
+	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SessionServiceStateInitial
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	SessionServiceStateInitial::SessionServiceStateInitial(void)
+	: SessionServiceStateIf("Initial", SessionServiceStateId::Initial)
+	{
+	}
 
+	SessionServiceStateInitial::~SessionServiceStateInitial(void)
+	{
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SessionServiceStateMachine
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	SessionServiceStateMachine::SessionServiceStateMachine(void)
-	: state_()
+	: sessionServiceName_("")
+	, state_()
 	{
 	}
 
 	SessionServiceStateMachine::~SessionServiceStateMachine(void)
 	{
+	}
+
+	bool
+	SessionServiceStateMachine::setStateId(SessionServiceStateId stateId)
+	{
+		auto oldStateId = SessionServiceStateId::None;
+		std::string oldStateName = "None";
+		if (state_) {
+			oldStateId = state_->stateId();
+
+			// check if state has changed
+			if (oldStateId == stateId) {
+				return true;
+			}
+
+			oldStateName = state_->stateName();
+		}
+
+
+		switch (stateId)
+		{
+			case SessionServiceStateId::Initial:
+			{
+				state_.reset(new SessionServiceStateInitial());
+				logChangeState(oldStateName);
+				break;
+			}
+			default:
+			{
+				Log(Error, "set state id failed, because unknown state")
+				    .parameter("SessionServiceName", sessionServiceName_)
+					.parameter("StateId", stateId);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	bool
+	SessionServiceStateMachine::event(std::function<SessionServiceStateId(SessionServiceStateIf*)> event)
+	{
+		// check state
+		if (!state_) {
+			Log(Error, "call event function failed in session service state machine, because state is null")
+				.parameter("SessionServiceName", sessionServiceName_);
+			return false;
+		}
+
+		// call event function
+		SessionServiceStateId stateId = event(state_.get());
+		if (stateId != state_->stateId()) {
+			return setStateId(stateId);
+		}
+
+		return true;
+	}
+
+	void
+	SessionServiceStateMachine::logChangeState(const std::string& oldStateName)
+	{
+		Log(Debug, "change state in session service")
+			.parameter("SessionServiceName", sessionServiceName_)
+			.parameter("OldState", oldStateName)
+			.parameter("NewSate", state_->stateName());
 	}
 
 }
