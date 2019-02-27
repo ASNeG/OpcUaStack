@@ -82,12 +82,14 @@ namespace OpcUaStackClient
 		SessionServiceStateMachine(void);
 		~SessionServiceStateMachine(void);
 
+		void setCtx(SessionServiceContext* ctx);
 		bool setStateId(SessionServiceStateId stateId);
 		bool event(std::function<SessionServiceStateId(SessionServiceStateIf*)> event);
 
 	  private:
 		void logChangeState(const std::string& oldStateName);
 
+		SessionServiceContext* ctx_;
 		std::string sessionServiceName_;
 		SessionServiceStateIf::UPtr state_;
 	};

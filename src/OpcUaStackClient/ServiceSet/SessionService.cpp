@@ -58,7 +58,10 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SessionService::SessionService(IOThread* ioThread)
-	: mode_(M_SecureChannelAndSession)
+	: sessionServiceContext_()
+
+
+	, mode_(M_SecureChannelAndSession)
 	, sessionServiceIf_(nullptr)
 	, sessionConfig_()
 	, secureChannelClientConfig_()
@@ -92,6 +95,7 @@ namespace OpcUaStackClient
 		);
 
 		// init state machine
+		sm_.setCtx(&sessionServiceContext_);
 		sm_.setStateId(SessionServiceStateId::Disconnected);
 	}
 

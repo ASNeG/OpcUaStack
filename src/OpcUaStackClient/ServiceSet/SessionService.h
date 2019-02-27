@@ -28,6 +28,7 @@
 #include "OpcUaStackClient/ServiceSet/SessionServiceIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 
 using namespace OpcUaStackCore;
 
@@ -121,6 +122,13 @@ namespace OpcUaStackClient
 		void receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr responseHeader);
 		void reconnectTimeout(void);
 		void createClientNonce(void);
+
+		SessionServiceContext sessionServiceContext_;
+
+
+
+
+
 
 		// configuration
 		Mode mode_;

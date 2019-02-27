@@ -18,6 +18,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateMachine.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 
 using namespace OpcUaStackCore;
 
@@ -96,13 +97,20 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SessionServiceStateMachine::SessionServiceStateMachine(void)
-	: sessionServiceName_("")
+	: ctx_(nullptr)
+	, sessionServiceName_("")
 	, state_()
 	{
 	}
 
 	SessionServiceStateMachine::~SessionServiceStateMachine(void)
 	{
+	}
+
+	void
+	SessionServiceStateMachine::setCtx(SessionServiceContext* ctx)
+	{
+		ctx_ = ctx;
 	}
 
 	bool
@@ -127,6 +135,7 @@ namespace OpcUaStackClient
 			case SessionServiceStateId::Disconnected:
 			{
 				state_.reset(new SessionServiceStateDisconnected());
+				state_->setCtx(ctx_);
 				logChangeState(oldStateName);
 				break;
 			}
