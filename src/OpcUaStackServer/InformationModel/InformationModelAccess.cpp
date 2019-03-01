@@ -240,7 +240,7 @@ namespace OpcUaStackServer
 		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (!referenceItem->isForward_) continue;
 
-			if (isReferenceHierarchically(referenceItem->nodeId_)) continue;
+			if (isReferenceHierarchically(referenceItem->typeId_)) continue;
 
 			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
 			if (childBaseNodeClass.get() == nullptr) {
@@ -544,8 +544,8 @@ namespace OpcUaStackServer
 
 		// remove reference from parent to node
 		success = false;
-		for (auto refIt = baseNodeClass->referenceItemMap().begin();
-					refIt != baseNodeClass->referenceItemMap().end(); ++refIt) {
+		for (auto refIt = oldParentBaseNodeClass->referenceItemMap().begin();
+					refIt != oldParentBaseNodeClass->referenceItemMap().end(); ++refIt) {
 			auto referenceItem = *refIt;
 			if (referenceItem->nodeId_ == nodeId && referenceItem->isForward_ == true) {
 				success = true;
@@ -719,7 +719,7 @@ namespace OpcUaStackServer
 		if (nodeId == OpcUaNodeId(31)) return false;
 		if (nodeId == OpcUaNodeId(62)) return false;
 
-		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasSubtypeTypeNodeId());
 		if (it.first == it.second) {
 			Log(Warning, "HasTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
@@ -749,7 +749,7 @@ namespace OpcUaStackServer
 	InformationModelAccess::getSubType(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& subTypeNodeId)
 	{
 
-		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasSubtypeTypeNodeId());
 		if (it.first == it.second) {
 			Log(Warning, "HasTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
