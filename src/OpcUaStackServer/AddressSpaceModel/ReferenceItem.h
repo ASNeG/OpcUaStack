@@ -40,7 +40,7 @@ namespace OpcUaStackServer
 		ReferenceItem(const OpcUaNodeId& typeId, const bool& isForward, const OpcUaNodeId& nodeId);
 		~ReferenceItem(void);
 
-		void copyTo(ReferenceItem::SPtr referenceItem);
+		void copyTo(ReferenceItem::SPtr& referenceItem);
 		void copyTo(ReferenceItem& referenceItem);
 		bool operator==(const ReferenceItem& referenceItem);
 

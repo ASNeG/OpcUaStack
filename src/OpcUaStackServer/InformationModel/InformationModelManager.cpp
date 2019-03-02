@@ -211,7 +211,7 @@ namespace OpcUaStackServer
 	{
 	}
 
-	InformationModelManager::InformationModelManager(InformationModel::SPtr informationModel)
+	InformationModelManager::InformationModelManager(InformationModel::SPtr& informationModel)
 	{
 		informationModel_ = informationModel;
 	}
@@ -221,7 +221,7 @@ namespace OpcUaStackServer
 	}
 
 	void
-	InformationModelManager::informationModel(InformationModel::SPtr informationModel)
+	InformationModelManager::informationModel(InformationModel::SPtr& informationModel)
 	{
 		informationModel_ = informationModel;
 	}

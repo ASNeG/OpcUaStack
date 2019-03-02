@@ -37,8 +37,8 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<ReferenceItemMap> SPtr;
 
 		class const_iterator {
-		friend class ReferenceItemMap;
-		public:
+		    friend class ReferenceItemMap;
+		  public:
 			const_iterator();
 			const_iterator(const const_iterator&);
 		    ~const_iterator();
@@ -48,26 +48,26 @@ namespace OpcUaStackServer
 		    const_iterator& operator++(); //prefix increment
 		    const ReferenceItem::SPtr operator*() const;
 
-		private:
-		    ReferenceItemTable::const_iterator refItemIt;
-		    ReferenceItemTable::const_iterator refItemEnd;
-		    ReferenceItemMultiMap::const_iterator refTypeIt;
-		    ReferenceItemMultiMap::const_iterator refTypeEnd;
+		  private:
+		    ReferenceItemTable::const_iterator refItemIt_;
+		    ReferenceItemTable::const_iterator refItemEnd_;
+		    ReferenceItemMultiMap::const_iterator refTypeIt_;
+		    ReferenceItemMultiMap::const_iterator refTypeEnd_;
 		};
 
 		ReferenceItemMap(void);
 		~ReferenceItemMap(void);
 
 		void clear(void);
-		bool add(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
+		bool add(ReferenceType referenceType, ReferenceItem::SPtr& referenceItem);
 		bool add(ReferenceType referenceType, bool isForward, const OpcUaNodeId& nodeId);
-		bool add(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem);
+		bool add(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem);
 		bool add(const OpcUaNodeId& referenceTypeNodeId, bool isForward, const OpcUaNodeId& nodeId);
 
-		bool remove(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem);
+		bool remove(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem);
 		bool remove(const OpcUaNodeId& referenceTypeNodeId, const OpcUaNodeId& nodeId);
 
-		void copyTo(ReferenceItemMap::SPtr referenceItemMap) const;
+		void copyTo(ReferenceItemMap::SPtr& referenceItemMap) const;
 		void copyTo(ReferenceItemMap& referenceItemMap) const;
 
 		const_iterator begin() const;

@@ -46,7 +46,7 @@ namespace OpcUaStackServer
 	}
 
 	void
-	ReferenceItem::copyTo(ReferenceItem::SPtr referenceItem)
+	ReferenceItem::copyTo(ReferenceItem::SPtr& referenceItem)
 	{
 		copyTo(*referenceItem);
 	}

@@ -15,18 +15,21 @@
    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
-#include "OpcUaStackServer/AddressSpaceModel/ReferenceItemMap.h"
+#include <boost/make_shared.hpp>
 #include <numeric>
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceItemMap.h"
 
 namespace OpcUaStackServer
 {
 
 	ReferenceItemMap::ReferenceItemMap(void)
+	: referenceItemMultiMap_()
 	{
 	}
 
 	ReferenceItemMap::~ReferenceItemMap(void)
 	{
+		clear();
 	}
 
 	void
@@ -36,27 +39,26 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	ReferenceItemMap::add(ReferenceType referenceType, ReferenceItem::SPtr referenceItem)
+	ReferenceItemMap::add(ReferenceType referenceType, ReferenceItem::SPtr& referenceItem)
 	{
-		OpcUaNodeId::SPtr nodeId = ReferenceTypeMap::typeNodeId(referenceType);
-		return add(*nodeId, referenceItem);
+		auto referenceTypeNodeId = ReferenceTypeMap::typeNodeId(referenceType);
+		return add(*referenceTypeNodeId, referenceItem);
 	}
 
 	bool
 	ReferenceItemMap::add(ReferenceType referenceType, bool isForward, const OpcUaNodeId& nodeId)
 	{
-		OpcUaNodeId::SPtr referenceTypeNodeId = ReferenceTypeMap::typeNodeId(referenceType);
+		auto referenceTypeNodeId = ReferenceTypeMap::typeNodeId(referenceType);
 		return add(*referenceTypeNodeId, isForward, nodeId);
 	}
 
 	bool 
-	ReferenceItemMap::add(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem)
+	ReferenceItemMap::add(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem)
 	{
 		if (referenceItem.get() == nullptr) return false;
 
 		referenceItem->typeId_ = referenceTypeNodeId;
-		std::pair<ReferenceItemTable::const_iterator, bool> result = referenceItemMultiMap_[referenceTypeNodeId]
-																					  .insert(std::make_pair(referenceItem->nodeId_, referenceItem));
+		auto result = referenceItemMultiMap_[referenceTypeNodeId].insert(std::make_pair(referenceItem->nodeId_, referenceItem));
 
 		return result.second;
 	}
@@ -65,14 +67,14 @@ namespace OpcUaStackServer
 	ReferenceItemMap::add(const OpcUaNodeId& referenceTypeNodeId, bool isForward, const OpcUaNodeId& nodeId)
 	{
 		ReferenceItem::SPtr referenceItem;
-		referenceItem.reset(new ReferenceItem());
+		referenceItem = boost::make_shared<ReferenceItem>();
 		referenceItem->isForward_ = isForward;
 		referenceItem->nodeId_ = nodeId;
 		return add(referenceTypeNodeId, referenceItem);
 	}
 
 	bool
-	ReferenceItemMap::remove(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem)
+	ReferenceItemMap::remove(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem)
 	{
 		if (referenceItem.get() == nullptr) return false;
 		return remove(referenceTypeNodeId, referenceItem->nodeId_);
@@ -81,16 +83,16 @@ namespace OpcUaStackServer
 	bool
 	ReferenceItemMap::remove(const OpcUaNodeId& referenceTypeNodeId, const OpcUaNodeId& nodeId)
 	{
-		bool result = referenceItemMultiMap_[referenceTypeNodeId].erase(nodeId);
+		size_t result = referenceItemMultiMap_[referenceTypeNodeId].erase(nodeId);
 		if (referenceItemMultiMap_[referenceTypeNodeId].size() == 0) {
 			referenceItemMultiMap_.erase(referenceTypeNodeId);
 		}
 
-		return result;
+		return result == 1;
 	}
 
 	void
-	ReferenceItemMap::copyTo(ReferenceItemMap::SPtr referenceItemMap) const
+	ReferenceItemMap::copyTo(ReferenceItemMap::SPtr& referenceItemMap) const
 	{
 		copyTo(*referenceItemMap);
 	}
@@ -99,7 +101,7 @@ namespace OpcUaStackServer
 	ReferenceItemMap::copyTo(ReferenceItemMap& referenceItemMap) const
 	{
 		for (const auto& referenceItem : *this) {
-			ReferenceItem::SPtr newReferenceItem = constructSPtr<ReferenceItem>();
+			ReferenceItem::SPtr newReferenceItem = boost::make_shared<ReferenceItem>();
 			referenceItem->copyTo(newReferenceItem);
 
 			referenceItemMap.referenceItemMultiMap_[referenceItem->typeId_].insert(
@@ -112,12 +114,12 @@ namespace OpcUaStackServer
 	ReferenceItemMap::begin() const
 	{
 		ReferenceItemMap::const_iterator it;
-		it.refTypeIt = referenceItemMultiMap_.cbegin();
-		it.refTypeEnd = referenceItemMultiMap_.cend();
+		it.refTypeIt_ = referenceItemMultiMap_.cbegin();
+		it.refTypeEnd_ = referenceItemMultiMap_.cend();
 
-		if (it.refTypeIt != it.refTypeEnd) {
-			it.refItemIt = it.refTypeIt->second.cbegin();
-			it.refItemEnd = it.refTypeIt->second.cend();
+		if (it.refTypeIt_ != it.refTypeEnd_) {
+			it.refItemIt_ = it.refTypeIt_->second.cbegin();
+			it.refItemEnd_ = it.refTypeIt_->second.cend();
 		}
 
 		return it;
@@ -128,8 +130,8 @@ namespace OpcUaStackServer
 	ReferenceItemMap::end() const
 	{
 		ReferenceItemMap::const_iterator it;
-		it.refTypeIt = referenceItemMultiMap_.cend();
-		it.refTypeEnd = referenceItemMultiMap_.cend();
+		it.refTypeIt_ = referenceItemMultiMap_.cend();
+		it.refTypeEnd_ = referenceItemMultiMap_.cend();
 
 		return it;
 	}
@@ -137,7 +139,9 @@ namespace OpcUaStackServer
 	bool
 	ReferenceItemMap::erase(const_iterator it)
 	{
-		return remove(it.refTypeIt->first, it.refItemIt->second);
+		auto referenceTypeNode = it.refTypeIt_->first;
+		auto referenceItem = it.refItemIt_->second;
+		return remove(referenceTypeNode, referenceItem);
 	}
 
 	std::pair<ReferenceItemTable::const_iterator, ReferenceItemTable::const_iterator>
@@ -169,10 +173,10 @@ namespace OpcUaStackServer
 
 	ReferenceItemMap::const_iterator::const_iterator(const const_iterator& other)
 	{
-		this->refTypeIt = other.refTypeIt;
-		this->refTypeEnd = other.refTypeEnd;
-		this->refItemIt = other.refItemIt;
-		this->refItemEnd = other.refItemEnd;
+		this->refTypeIt_ = other.refTypeIt_;
+		this->refTypeEnd_ = other.refTypeEnd_;
+		this->refItemIt_ = other.refItemIt_;
+		this->refItemEnd_ = other.refItemEnd_;
 	}
 
 	ReferenceItemMap::const_iterator::~const_iterator()
@@ -183,22 +187,22 @@ namespace OpcUaStackServer
 	ReferenceItemMap::const_iterator&
 	ReferenceItemMap::const_iterator::operator=(const const_iterator& other)
 	{
-		this->refTypeIt = other.refTypeIt;
-		this->refTypeEnd = other.refTypeEnd;
-		this->refItemIt = other.refItemIt;
-		this->refItemEnd = other.refItemEnd;
+		this->refTypeIt_ = other.refTypeIt_;
+		this->refTypeEnd_ = other.refTypeEnd_;
+		this->refItemIt_ = other.refItemIt_;
+		this->refItemEnd_ = other.refItemEnd_;
 		return *this;
 	}
 
 	ReferenceItemMap::const_iterator&
 	ReferenceItemMap::const_iterator::operator++()
 	{
-		refItemIt++;
-		if (refItemIt == refItemEnd) {
-			refTypeIt++;
-			if (refTypeIt != refTypeEnd) {
-				refItemIt = refTypeIt->second.begin();
-				refItemEnd = refTypeIt->second.end();
+		refItemIt_++;
+		if (refItemIt_ == refItemEnd_) {
+			refTypeIt_++;
+			if (refTypeIt_ != refTypeEnd_) {
+				refItemIt_ = refTypeIt_->second.begin();
+				refItemEnd_ = refTypeIt_->second.end();
 			}
 		}
 
@@ -208,22 +212,22 @@ namespace OpcUaStackServer
 	const ReferenceItem::SPtr
 	ReferenceItemMap::const_iterator::operator*() const
 	{
-		assert(refTypeIt != refTypeEnd);
-		assert(refItemIt != refItemEnd);
-		assert(refItemIt->second->typeId_ == refTypeIt->first);
+		assert(refTypeIt_ != refTypeEnd_);
+		assert(refItemIt_ != refItemEnd_);
+		assert(refItemIt_->second->typeId_ == refTypeIt_->first);
 
-		return refItemIt->second;
+		return refItemIt_->second;
 	}
 
 	bool
 	ReferenceItemMap::const_iterator::operator==(const const_iterator& other)
 	{
-		if (this->refTypeIt == other.refTypeIt
-			&& this->refTypeEnd == other.refTypeEnd) {
+		if (this->refTypeIt_ == other.refTypeIt_
+			&& this->refTypeEnd_ == other.refTypeEnd_) {
 
-			if (this->refTypeIt != this->refTypeEnd) {
-				return this->refItemIt == other.refItemIt
-						&& this->refItemEnd == other.refItemEnd;
+			if (this->refTypeIt_ != this->refTypeEnd_) {
+				return this->refItemIt_ == other.refItemIt_
+						&& this->refItemEnd_ == other.refItemEnd_;
 			}
 
 			return true;

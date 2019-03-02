@@ -68,10 +68,10 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<InformationModelManager> SPtr;
 
 		InformationModelManager(void);
-		InformationModelManager(InformationModel::SPtr informationModel);
+		InformationModelManager(InformationModel::SPtr& informationModel);
 		~InformationModelManager(void);
 
-		void informationModel(InformationModel::SPtr informationModel);
+		void informationModel(InformationModel::SPtr& informationModel);
 
 		bool addNode(
 			NodeClassType nodeClassType,
