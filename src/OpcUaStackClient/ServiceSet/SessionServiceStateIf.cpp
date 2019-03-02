@@ -14,39 +14,44 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-#ifndef __OpcUaStackClient_SessionServiceStateMachine_h__
-#define __OpcUaStackClient_SessionServiceStateMachine_h__
 
-#include <memory>
-#include "OpcUaStackClient/ServiceSet/SessionServiceStateIf.h"
+
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateMachine.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	class SessionServiceContext;
-
-	class DLLEXPORT SessionServiceStateMachine
+	SessionServiceStateIf::SessionServiceStateIf(const std::string& stateName, SessionServiceStateId stateId)
+	: ctx_(nullptr)
+	, stateName_("")
+	, stateId_(stateId_)
 	{
-	  public:
-		typedef boost::shared_ptr<SessionServiceStateMachine> SPtr;
+	}
 
-		SessionServiceStateMachine(void);
-		~SessionServiceStateMachine(void);
+	SessionServiceStateIf::~SessionServiceStateIf(void)
+	{
+	}
 
-		void setCtx(SessionServiceContext* ctx);
-		bool setStateId(SessionServiceStateId stateId);
-		bool event(std::function<SessionServiceStateId(SessionServiceStateIf*)> event);
+	void
+	SessionServiceStateIf::setCtx(SessionServiceContext* ctx)
+	{
+		ctx_ = ctx;
+	}
 
-	  private:
-		void logChangeState(const std::string& oldStateName);
+	std::string
+	SessionServiceStateIf::stateName(void)
+	{
+		return stateName_;
+	}
 
-		SessionServiceContext* ctx_;
-		std::string sessionServiceName_;
-		SessionServiceStateIf::UPtr state_;
-	};
+	SessionServiceStateId
+	SessionServiceStateIf::stateId(void)
+	{
+		return stateId_;
+	}
 
 }
-
-#endif

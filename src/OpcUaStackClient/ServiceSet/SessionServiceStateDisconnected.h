@@ -14,10 +14,9 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-#ifndef __OpcUaStackClient_SessionServiceStateMachine_h__
-#define __OpcUaStackClient_SessionServiceStateMachine_h__
+#ifndef __OpcUaStackClient_SessionServiceStateDisconnected_h__
+#define __OpcUaStackClient_SessionServiceStateDisconnected_h__
 
-#include <memory>
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateIf.h"
 
 using namespace OpcUaStackCore;
@@ -25,26 +24,15 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	class SessionServiceContext;
-
-	class DLLEXPORT SessionServiceStateMachine
+	class DLLEXPORT SessionServiceStateDisconnected
+	: public SessionServiceStateIf
 	{
 	  public:
-		typedef boost::shared_ptr<SessionServiceStateMachine> SPtr;
+		SessionServiceStateDisconnected(void);
+		~SessionServiceStateDisconnected(void);
 
-		SessionServiceStateMachine(void);
-		~SessionServiceStateMachine(void);
-
-		void setCtx(SessionServiceContext* ctx);
-		bool setStateId(SessionServiceStateId stateId);
-		bool event(std::function<SessionServiceStateId(SessionServiceStateIf*)> event);
-
-	  private:
-		void logChangeState(const std::string& oldStateName);
-
-		SessionServiceContext* ctx_;
-		std::string sessionServiceName_;
-		SessionServiceStateIf::UPtr state_;
+		virtual SessionServiceStateId asyncConnect(void) override;
+		virtual SessionServiceStateId asyncDisconnect(bool deleteSubscriptions) override;
 	};
 
 }

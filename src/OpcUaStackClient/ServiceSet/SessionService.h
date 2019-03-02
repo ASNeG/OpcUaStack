@@ -123,6 +123,7 @@ namespace OpcUaStackClient
 		void reconnectTimeout(void);
 		void createClientNonce(void);
 
+		SessionServiceStateMachine sm_;
 		SessionServiceContext sessionServiceContext_;
 
 
@@ -158,7 +159,7 @@ namespace OpcUaStackClient
 		OpcUaByteString serverNonce_;
 		PendingQueue pendingQueue_;
 
-		SessionServiceStateMachine sm_;
+
 	};
 
 }

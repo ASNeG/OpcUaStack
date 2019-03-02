@@ -19,83 +19,13 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateMachine.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateDisconnected.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// SessionServiceStateIf
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	SessionServiceStateIf::SessionServiceStateIf(const std::string& stateName, SessionServiceStateId stateId)
-	: ctx_(nullptr)
-	, stateName_("")
-	, stateId_(stateId_)
-	{
-	}
-
-	SessionServiceStateIf::~SessionServiceStateIf(void)
-	{
-	}
-
-	void
-	SessionServiceStateIf::setCtx(SessionServiceContext* ctx)
-	{
-		ctx_ = ctx;
-	}
-
-	std::string
-	SessionServiceStateIf::stateName(void)
-	{
-		return stateName_;
-	}
-
-	SessionServiceStateId
-	SessionServiceStateIf::stateId(void)
-	{
-		return stateId_;
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// SessionServiceStateDisconnected
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	SessionServiceStateDisconnected::SessionServiceStateDisconnected(void)
-	: SessionServiceStateIf("Disconnected", SessionServiceStateId::Disconnected)
-	{
-	}
-
-	SessionServiceStateDisconnected::~SessionServiceStateDisconnected(void)
-	{
-	}
-
-	SessionServiceStateId
-	SessionServiceStateDisconnected::asyncConnect(void)
-	{
-		return SessionServiceStateId::Disconnected;
-	}
-
-	SessionServiceStateId
-	SessionServiceStateDisconnected::asyncDisconnect(bool deleteSubscriptions)
-	{
-		return SessionServiceStateId::Disconnected;
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// SessionServiceStateMachine
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
 	SessionServiceStateMachine::SessionServiceStateMachine(void)
 	: ctx_(nullptr)
 	, sessionServiceName_("")
