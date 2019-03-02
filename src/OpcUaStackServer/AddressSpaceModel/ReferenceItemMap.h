@@ -58,7 +58,6 @@ namespace OpcUaStackServer
 		~ReferenceItemMap(void);
 
 		void clear(void);
-<<<<<<< HEAD
 		bool add(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
 		bool add(ReferenceType referenceType, bool isForward, OpcUaNodeId& nodeId);
 		bool add(ReferenceType referenceType, bool isForward, std::vector<OpcUaNodeId>& nodes);
@@ -71,12 +70,6 @@ namespace OpcUaStackServer
 		void get(ReferenceType referenceType, std::vector<bool>& isForwards, std::vector<OpcUaNodeId>& nodes);
 		bool getHasTypeDefinition(OpcUaNodeId& node);
 		bool getHasModellingRule(OpcUaNodeId& node);
-=======
-		bool add(ReferenceType referenceType, ReferenceItem::SPtr& referenceItem);
-		bool add(ReferenceType referenceType, bool isForward, const OpcUaNodeId& nodeId);
-		bool add(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem);
-		bool add(const OpcUaNodeId& referenceTypeNodeId, bool isForward, const OpcUaNodeId& nodeId);
->>>>>>> refs/remotes/github/Release3
 
 		bool remove(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem);
 		bool remove(const OpcUaNodeId& referenceTypeNodeId, const OpcUaNodeId& nodeId);
