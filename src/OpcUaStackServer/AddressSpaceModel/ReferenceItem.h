@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackServer_ReferenceItem_h__
@@ -37,14 +37,17 @@ namespace OpcUaStackServer
 
 		ReferenceItem(void);
 		ReferenceItem(const bool& isForward, const OpcUaNodeId& nodeId);
+		ReferenceItem(const OpcUaNodeId& typeId, const bool& isForward, const OpcUaNodeId& nodeId);
 		~ReferenceItem(void);
 
-		void copyTo(ReferenceItem::SPtr referenceItem);
+		void copyTo(ReferenceItem::SPtr& referenceItem);
 		void copyTo(ReferenceItem& referenceItem);
 		bool operator==(const ReferenceItem& referenceItem);
 
+		OpcUaNodeId typeId_;
 		OpcUaNodeId nodeId_;
 		bool isForward_;
+
 	};
 
 }
