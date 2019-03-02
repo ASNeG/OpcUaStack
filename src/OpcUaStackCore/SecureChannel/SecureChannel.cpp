@@ -340,5 +340,3 @@ namespace OpcUaStackCore
 	}
 
 }
-
-
