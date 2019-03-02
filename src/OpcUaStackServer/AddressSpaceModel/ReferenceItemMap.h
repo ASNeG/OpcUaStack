@@ -67,8 +67,6 @@ namespace OpcUaStackServer
 		bool remove(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem);
 		bool remove(const OpcUaNodeId& referenceTypeNodeId, const OpcUaNodeId& nodeId);
 
-//		ReferenceItemMultiMap& referenceItemMultiMap(void);
-
 		void copyTo(ReferenceItemMap::SPtr referenceItemMap) const;
 		void copyTo(ReferenceItemMap& referenceItemMap) const;
 

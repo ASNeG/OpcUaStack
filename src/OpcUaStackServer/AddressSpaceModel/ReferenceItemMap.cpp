@@ -85,13 +85,9 @@ namespace OpcUaStackServer
 		if (referenceItemMultiMap_[referenceTypeNodeId].size() == 0) {
 			referenceItemMultiMap_.erase(referenceTypeNodeId);
 		}
+
+		return result;
 	}
-		
-//	ReferenceItemMultiMap&
-//	ReferenceItemMap::referenceItemMultiMap(void)
-//	{
-//		return referenceItemMultiMap_;
-//	}
 
 	void
 	ReferenceItemMap::copyTo(ReferenceItemMap::SPtr referenceItemMap) const
@@ -103,15 +99,12 @@ namespace OpcUaStackServer
 	ReferenceItemMap::copyTo(ReferenceItemMap& referenceItemMap) const
 	{
 		for (const auto& referenceItem : *this) {
+			ReferenceItem::SPtr newReferenceItem = constructSPtr<ReferenceItem>();
+			referenceItem->copyTo(newReferenceItem);
 
-				ReferenceItem::SPtr newReferenceItem = constructSPtr<ReferenceItem>();
-
-				referenceItem->copyTo(newReferenceItem);
-
-				referenceItemMap.referenceItemMultiMap_[referenceItem->typeId_].insert(
-					std::make_pair(referenceItem->nodeId_, newReferenceItem)
-				);
-
+			referenceItemMap.referenceItemMultiMap_[referenceItem->typeId_].insert(
+				std::make_pair(referenceItem->nodeId_, newReferenceItem)
+			);
 		}
 	}
 

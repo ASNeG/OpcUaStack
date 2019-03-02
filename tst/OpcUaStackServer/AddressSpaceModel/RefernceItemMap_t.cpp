@@ -73,27 +73,27 @@ BOOST_AUTO_TEST_CASE(RefernceItemMap_iterator)
 
 BOOST_AUTO_TEST_CASE(RefernceItemMap_add_item)
 {
-	 ReferenceItemMap map;
-	 OpcUaNodeId id(1);
+	ReferenceItemMap map;
+	OpcUaNodeId id(1);
 
-	 map.add(ReferenceType::ReferenceType_Organizes, true, id);
-	 auto referenceItem = *(map.begin());
+	BOOST_REQUIRE(map.add(ReferenceType::ReferenceType_Organizes, true, id));
+	auto referenceItem = *(map.begin());
 
-	 BOOST_REQUIRE(referenceItem);
-	 BOOST_REQUIRE(referenceItem->isForward_);
-	 BOOST_REQUIRE(id == referenceItem->nodeId_);
-	 BOOST_REQUIRE(OpcUaNodeId(OpcUaId_Organizes) == referenceItem->typeId_);
+	BOOST_REQUIRE(referenceItem);
+	BOOST_REQUIRE(referenceItem->isForward_);
+	BOOST_REQUIRE(id == referenceItem->nodeId_);
+	BOOST_REQUIRE(OpcUaNodeId(OpcUaId_Organizes) == referenceItem->typeId_);
 }
 
 
 BOOST_AUTO_TEST_CASE(RefernceItemMap_remove_item)
 {
 	auto it = map.begin();
-	map.erase(it);
+	BOOST_REQUIRE(map.erase(it));
 	++it;
-	map.erase(it);
+	BOOST_REQUIRE(map.erase(it));
 	++it;
-	map.erase(it);
+	BOOST_REQUIRE(map.erase(it));
 
 	BOOST_REQUIRE_EQUAL(1, map.size());
 	auto itr = map.equal_range(OpcUaNodeId(OpcUaId_Organizes));
