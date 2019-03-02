@@ -81,7 +81,10 @@ namespace OpcUaStackServer
 	bool
 	ReferenceItemMap::remove(const OpcUaNodeId& referenceTypeNodeId, const OpcUaNodeId& nodeId)
 	{
-		return referenceItemMultiMap_[referenceTypeNodeId].erase(nodeId);
+		bool result = referenceItemMultiMap_[referenceTypeNodeId].erase(nodeId);
+		if (referenceItemMultiMap_[referenceTypeNodeId].size() == 0) {
+			referenceItemMultiMap_.erase(referenceTypeNodeId);
+		}
 	}
 		
 //	ReferenceItemMultiMap&
@@ -141,7 +144,7 @@ namespace OpcUaStackServer
 	bool
 	ReferenceItemMap::erase(const_iterator it)
 	{
-		return referenceItemMultiMap_.find(it.refTypeIt->first)->second.erase(it.refItemIt->first);
+		return remove(it.refTypeIt->first, it.refItemIt->second);
 	}
 
 	std::pair<ReferenceItemTable::const_iterator, ReferenceItemTable::const_iterator>
