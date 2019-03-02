@@ -21,6 +21,7 @@ set COMMAND="local"
 set STACK_PREFIX=C:\ASNeG
 set BUILD_TYPE="Debug"
 set PACKAGE_TYPE="Bin"
+set VS_GENERATOR=""
 
 :parse
     if "%~1"=="" goto :execute
@@ -29,9 +30,9 @@ set PACKAGE_TYPE="Bin"
     if "%~1"=="-t"               set COMMAND=%2
     if "%~1"=="--target"         set COMMAND=%2
 
-    if "%~1"=="/i"               set INSTALL_PREFIX="%~2"
-    if "%~1"=="-i"               set INSTALL_PREFIX="%~2"
-    if "%~1"=="--install-prefix" set INSTALL_PREFIX="%~2"
+    if "%~1"=="/i"               set INSTALL_PREFIX=%~2
+    if "%~1"=="-i"               set INSTALL_PREFIX=%~2
+    if "%~1"=="--install-prefix" set INSTALL_PREFIX=%~2
 
     if "%~1"=="/s"               set STACK_PREFIX="%~2"
     if "%~1"=="-s"               set STACK_PREFIX="%~2"
@@ -54,7 +55,6 @@ set PACKAGE_TYPE="Bin"
     goto :parse
 
 :execute
-
 set ARCH="x86"
 if %VS_GENERATOR%=="" goto :set_build_suffix
 
@@ -67,34 +67,29 @@ set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
 if "%COMMAND%" == "" (
     call:build_local
 	
-	pause
 	goto:eof
 )
 
 if "%COMMAND%" == "local" (
     call:build_local
 	
-	pause
 	goto:eof
 )
 
 if "%COMMAND%" == "msi" (
     call:build_msi
 	
-	pause
 	goto:eof
 )
 
 if "%COMMAND%" == "tst" (
     call:build_tst
 	
-	pause
 	goto:eof
 )
 
 call:usage
 
-pause
 goto:eof
 
 

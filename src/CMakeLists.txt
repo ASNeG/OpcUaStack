@@ -171,7 +171,6 @@ message(STATUS "  libraries: ${Boost_LIBRARIES}")
 find_package(
     OpenSSL 
     "${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}" 
-    COMPONENTS openssl crypto 
     REQUIRED
 )
 
