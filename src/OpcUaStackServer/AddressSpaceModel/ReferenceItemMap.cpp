@@ -52,6 +52,17 @@ namespace OpcUaStackServer
 		return add(*referenceTypeNodeId, isForward, nodeId);
 	}
 
+	bool
+	ReferenceItemMap::add(ReferenceType referenceType, bool isForward, std::vector<OpcUaNodeId>& nodes)
+	{
+		for (auto& node : nodes) {
+			if (!add(referenceType, isForward, node)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	bool 
 	ReferenceItemMap::add(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem)
 	{
@@ -71,6 +82,17 @@ namespace OpcUaStackServer
 		referenceItem->isForward_ = isForward;
 		referenceItem->nodeId_ = nodeId;
 		return add(referenceTypeNodeId, referenceItem);
+	}
+
+	bool
+	ReferenceItemMap::add(OpcUaNodeId& referenceTypeNodeId, bool isForward, std::vector<OpcUaNodeId>& nodes)
+	{
+		for (auto& node : nodes) {
+			if (!add(referenceTypeNodeId, isForward, node)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	bool

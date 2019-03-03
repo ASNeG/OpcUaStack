@@ -58,10 +58,10 @@ namespace OpcUaStackServer
 		~ReferenceItemMap(void);
 
 		void clear(void);
-		bool add(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
+		bool add(ReferenceType referenceType, ReferenceItem::SPtr& referenceItem);
 		bool add(ReferenceType referenceType, bool isForward, OpcUaNodeId& nodeId);
 		bool add(ReferenceType referenceType, bool isForward, std::vector<OpcUaNodeId>& nodes);
-		bool add(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem);
+		bool add(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem);
 		bool add(OpcUaNodeId& referenceTypeNodeId, bool isForward, OpcUaNodeId& nodeId);
 		bool add(OpcUaNodeId& referenceTypeNodeId, bool isForward, std::vector<OpcUaNodeId>& nodes);
 
