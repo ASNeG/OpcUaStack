@@ -998,7 +998,7 @@ namespace OpcUaStackServer
 		for (uint32_t idx=0; idx<childBaseNodeClassVec.size(); idx++) {
 			BaseNodeClass::SPtr childBaseNodeClass = childBaseNodeClassVec[idx];
 
-			NodeClassType nodeClassType;
+			NodeClass::Enum nodeClassType;
 			childBaseNodeClass->getNodeClass(nodeClassType);
 
 			if (nodeClassType != NodeClass::EnumObject &&

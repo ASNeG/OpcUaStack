@@ -347,7 +347,7 @@ namespace OpcUaStackServer
 		// check decrypted password and server nonce
 		if (memcmp(serverNonce_, &plainTextBuf[plainTextLen-32] , 32) != 0) {
 			Log(Debug, "decrypt password server nonce error");
-				return BadIdentityTokenRejected;;
+			return BadIdentityTokenRejected;;
 		}
 
 		size_t passwordLen = plainTextLen-36;
@@ -356,7 +356,7 @@ namespace OpcUaStackServer
 			return BadIdentityTokenRejected;;
 		}
 
-		token->password((const OpcUaByte*)&plainTextBuf[4], passwordLen);
+		token->password().value((const OpcUaByte*)&plainTextBuf[4], passwordLen);
 
 		// create application context
 		ApplicationAuthenticationContext context;

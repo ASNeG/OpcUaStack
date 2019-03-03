@@ -773,8 +773,7 @@ namespace OpcUaStackServer
 	InformationModelAccess::getBinaryEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass)
 	{
 		// get all encoding reference items
-		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
-		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
 		if (it.first == it.second) {
 			Log(Warning, "HasEncodingTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
@@ -782,8 +781,7 @@ namespace OpcUaStackServer
 		}
 
 		// go through all encoding reference items
-		ReferenceItemMultiMap::iterator itl;
-		for (itl = it.first; itl != it.second; itl++) {
+		for (auto itl = it.first; itl != it.second; itl++) {
 			ReferenceItem::SPtr referenceItem  = itl->second;
 
 			if (!referenceItem->isForward_) continue;
@@ -816,8 +814,7 @@ namespace OpcUaStackServer
 	InformationModelAccess::getBinaryEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId)
 	{
 		// get all encoding reference items
-		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
-		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
 		if (it.first == it.second) {
 			Log(Warning, "HasEncodingTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
@@ -825,8 +822,7 @@ namespace OpcUaStackServer
 		}
 
 		// go through all encoding reference items
-		ReferenceItemMultiMap::iterator itl;
-		for (itl = it.first; itl != it.second; itl++) {
+		for (auto itl = it.first; itl != it.second; itl++) {
 			ReferenceItem::SPtr referenceItem  = itl->second;
 
 			if (!referenceItem->isForward_) continue;
@@ -859,8 +855,7 @@ namespace OpcUaStackServer
 	InformationModelAccess::getXMLEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass)
 	{
 		// get all encoding reference items
-		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
-		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
 		if (it.first == it.second) {
 			Log(Warning, "HasEncodingTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
@@ -868,8 +863,7 @@ namespace OpcUaStackServer
 		}
 
 		// go through all encoding reference items
-		ReferenceItemMultiMap::iterator itl;
-		for (itl = it.first; itl != it.second; itl++) {
+		for (auto itl = it.first; itl != it.second; itl++) {
 			ReferenceItem::SPtr referenceItem  = itl->second;
 
 			if (!referenceItem->isForward_) continue;
@@ -902,8 +896,7 @@ namespace OpcUaStackServer
 	InformationModelAccess::getXMLEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId)
 	{
 		// get all encoding reference items
-		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
-		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
 		if (it.first == it.second) {
 			Log(Warning, "HasEncodingTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
@@ -911,8 +904,7 @@ namespace OpcUaStackServer
 		}
 
 		// go through all encoding reference items
-		ReferenceItemMultiMap::iterator itl;
-		for (itl = it.first; itl != it.second; itl++) {
+		for (auto itl = it.first; itl != it.second; itl++) {
 			ReferenceItem::SPtr referenceItem  = itl->second;
 
 			if (!referenceItem->isForward_) continue;
@@ -945,8 +937,7 @@ namespace OpcUaStackServer
 	InformationModelAccess::getJSONEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass)
 	{
 		// get all encoding reference items
-		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
-		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
 		if (it.first == it.second) {
 			Log(Warning, "HasEncodingTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
@@ -954,8 +945,7 @@ namespace OpcUaStackServer
 		}
 
 		// go through all encoding reference items
-		ReferenceItemMultiMap::iterator itl;
-		for (itl = it.first; itl != it.second; itl++) {
+		for (auto itl = it.first; itl != it.second; itl++) {
 			ReferenceItem::SPtr referenceItem  = itl->second;
 
 			if (!referenceItem->isForward_) continue;
@@ -988,8 +978,7 @@ namespace OpcUaStackServer
 	InformationModelAccess::getJSONEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId)
 	{
 		// get all encoding reference items
-		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
-		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasEncodingTypeNodeId());
 		if (it.first == it.second) {
 			Log(Warning, "HasEncodingTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
@@ -997,8 +986,7 @@ namespace OpcUaStackServer
 		}
 
 		// go through all encoding reference items
-		ReferenceItemMultiMap::iterator itl;
-		for (itl = it.first; itl != it.second; itl++) {
+		for (auto itl = it.first; itl != it.second; itl++) {
 			ReferenceItem::SPtr referenceItem  = itl->second;
 
 			if (!referenceItem->isForward_) continue;
