@@ -59,11 +59,11 @@ namespace OpcUaStackServer
 
 		void clear(void);
 		bool add(ReferenceType referenceType, ReferenceItem::SPtr& referenceItem);
-		bool add(ReferenceType referenceType, bool isForward, OpcUaNodeId& nodeId);
+		bool add(ReferenceType referenceType, bool isForward, const OpcUaNodeId& nodeId);
 		bool add(ReferenceType referenceType, bool isForward, std::vector<OpcUaNodeId>& nodes);
-		bool add(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem);
-		bool add(OpcUaNodeId& referenceTypeNodeId, bool isForward, OpcUaNodeId& nodeId);
-		bool add(OpcUaNodeId& referenceTypeNodeId, bool isForward, std::vector<OpcUaNodeId>& nodes);
+		bool add(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem);
+		bool add(const OpcUaNodeId& referenceTypeNodeId, bool isForward, const OpcUaNodeId& nodeId);
+		bool add(const OpcUaNodeId& referenceTypeNodeId, bool isForward, std::vector<OpcUaNodeId>& nodes);
 
 		bool exist(OpcUaNodeId& referenceTypeNodeId, bool isForward, OpcUaNodeId& nodeId);
 
