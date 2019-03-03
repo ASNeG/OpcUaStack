@@ -824,8 +824,10 @@ namespace OpcUaStackServer
 		closeSessionResponse.opcUaBinaryEncode(iosres);
 
 		// close session
+		Log(Debug, "authentication close session");
 		authenticationCloseSession();
 
+		Log(Debug, "send close session response");
 		if (sessionIf_ != nullptr) {
 			ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
