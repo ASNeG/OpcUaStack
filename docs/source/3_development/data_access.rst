@@ -3,18 +3,81 @@
 Data Access
 ===========
 
-Every OPC UA application is to provide some data to its clients. In this document
-we're going to learn how OPC UA protocol determine data storage and access to it.
+Every OPC UA application is created to provide some data to its clients. In this document
+we're going to learn how OPC UA server stores data and provide access to it.
 Also we'll show you how you can organize the access data by using ASNeG OPC UA Stack.
 
-Some basic related with this topic conceptions were discussed in :ref:`hello_world`.
+Some basic conceptions related with the topic were described in :ref:`hello_world`.
 It'd be easier to understand the topic if you take a look at the document before.
 
-Information Model
------------------
-
 Node
-~~~~
+-----
+
+Before to learn how to access to data we need to understand how the data is stored
+in OPC UA Server. If you are familiar to OPC UA protocol, skip this
+section.
+
+OPC UA application stores its data in :term:`Information Model` as a collection of
+:term:`Node`\ s connected to each other with different kinds of relationships. These
+relationships are described by :term:`Reference`\ s and each :term:`Node` has a
+collection of them.
+
+Except :term:`Reference`\ s :term:`Node`\ s have :term:`Attribute`\ s that store
+data and provide it for clients to read and write.
+
+:term:`Node` has :term:`Attribute` *NodeId* to identify itself in :term:`Information Model`.
+*NodeId* contains of an identifier and a namespace index. The identifier should be
+unique inside of the namespace and can belong to the following types:
+
+* Numeric
+* String
+* GUID
+* Namespace specific format
+
+*NodeId* isn't only one identifier of :term:`Node`. Each :term:`Node` must have
+symbolic human-readable :term:`Attribute` *BrowseName* which is used to identifier the node by its path of
+*BrowseNames*. *BrowseName* shouldn't be unique for the whole server but its path
+must be. Like *NodeId* *BrowseName* belongs to some namespace. Usually namespaces
+of *NodeId* and *BrowseName* are the same, but the OPC UA Specfication does not
+demand it.
+
+OK. There are a lot of information here and we need some example to explain
+it. In our example :ref:`hello_world` we created a folder for our string message:
+
+.. code-block:: xml
+
+  <UAObject NodeId="ns=2;i=1" BrowseName="2:HelloWorldFolder">
+      <DisplayName>HelloWorldFolder</DisplayName>
+      <Description>The folder of the greeting string</Description>
+      <References>
+          <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+          <Reference ReferenceType="HasTypeDefinition">i=61</Reference>
+      </References>
+  </UAObject>
+
+The folder is :term:`Object` and it has *NodeId* with numeric identifier 1 in namsespace 2
+and *BrowseName* **HelloWorldFolder** in namsespace 2.
+
+The numeric ID is OK for machines but we (people) prefer to see data structures named with
+human-readable symbolic names, so all :term:`Node` have also :term:`Attribute` *DisplayName*.
+*DisplayName* of the folder is **HelloWorldFolder** and OPC UA Clients should show
+it to users.
+
+Optionally :term:`Node` can have *Description* where we can give some information
+about our folder.
+
+We've described :term:`Attribute`\ s of the folder. Let us to see how it relates
+to other :term:`Node`\ s in the server. The folder has two :term:`Reference`\ s.
+
+The first one has type *Organizes*  that determines the hierarchy of :term:`Node`\ s
+as it should see the users. Flag *IsForward* sets the direction of the reference.
+For reference *Organizes* **false** means, our folder is child of :term:`Node` with
+*NodeId* **i=85** in namespace 0. It's standard folder *Objects*. You can found it
+in file **Opc.Ua.NodeSet.xml**.
+
+The second :term:`Reference` has type *HasTypeDefinition* that means, :term:`Node`
+with *NodeId* **i=61** defines the type of the folder. This node is standard type
+*FolderType*.
 
 Variable
 ~~~~~~~~
@@ -38,3 +101,10 @@ Write
 
 Subscription
 ~~~~~~~~~~~~
+
+OPC UA Specification
+--------------------
+
+* Part 3 Address Space Model, 4.3 Node Model.
+* Part 3 Address Space Model, 5 Standard NodeClasses.
+* Part 3 Address Space Model, 8.2 NodeId.

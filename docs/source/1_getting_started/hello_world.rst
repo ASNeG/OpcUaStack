@@ -54,7 +54,6 @@ Create a file with name **HelloWorldNodeSet.xml** in directory
 .. code-block:: xml
   :emphasize-lines: 3,5
 
-
     <?xml version="1.0" encoding="utf-8"?>
     <UANodeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.02"          LastModified="2013-03-06T05:36:44.0862658Z" xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd">
         <NamespaceUris>

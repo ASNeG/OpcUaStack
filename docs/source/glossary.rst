@@ -8,6 +8,12 @@ OPC UA Glossary
   Address Space
     collection of information that an OPC UA Server makes visible to its Clients
 
+  Attribute
+    data element of :term:`Node` which can be read and written by a Client
+
+  BrowseName
+    attribute of :term:`Node` contains its human-readable name
+
   Communication Stack
     layered set of software modules between the application and the hardware that provides various
     functions to encode, encrypt and format a Message for sending, and to decode, decrypt and unpack

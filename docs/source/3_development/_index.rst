@@ -2,7 +2,8 @@ Development
 =================
 
 This part of the documentation is aimed to provide the necessary information to
-develop your own applications with ASNeG OPC UA Stack.
+develop your own applications with ASNeG OPC UA Stack without deep knowledge
+about OPC UA protocol.
 
 .. toctree::
 
