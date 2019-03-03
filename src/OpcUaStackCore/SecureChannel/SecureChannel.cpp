@@ -25,10 +25,13 @@ namespace OpcUaStackCore
 {
 
 	OpcUaUInt32 SecureChannel::gChannelId_ = 0;
+	uint32_t SecureChannel::gId_ = 1;
 
 	SecureChannel::SecureChannel(IOThread* ioThread)
+	: id_(gId_++)
+
 	// security
-	: securitySettings_()
+	, securitySettings_()
 
 	// actual header
 	, messageHeader_()
@@ -117,10 +120,7 @@ namespace OpcUaStackCore
 	SecureChannel::debugRead(const std::string& message)
 	{
 		Log(Debug, "opc ua secure channel read")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("Message", message);
 	}
 
@@ -141,10 +141,7 @@ namespace OpcUaStackCore
 		}
 
 		Log(Debug, "opc ua secure channel recv Header")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("SegmentFlag", messageHeader.segmentFlag())
 			.parameter("MessageType", messageType)
 			.parameter("MessageSize", messageHeader.messageSize());
@@ -154,11 +151,8 @@ namespace OpcUaStackCore
 	SecureChannel::debugRecvHello(HelloMessage& hello)
 	{
 		if (!isLogging_) return;
-		Log(Debug, "opc ua secure channel send Hello")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+		Log(Debug, "opc ua secure channel recv Hello")
+			.parameter("ChannelId", *this)
 			.parameter("ReceivedBufferSize", hello.receivedBufferSize())
 			.parameter("SendBufferSize", hello.sendBufferSize())
 			.parameter("MaxMessageSize", hello.maxMessageSize())
@@ -171,10 +165,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv Acknowledge")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("ReceivedBufferSize", acknowledge.receivedBufferSize())
 			.parameter("SendBufferSize", acknowledge.sendBufferSize())
 			.parameter("MaxMessageSize", acknowledge.maxMessageSize())
@@ -186,10 +177,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv OpenSecureChannelRequest")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("ChannelId", channelId_)
 			.parameter("SecurityMode", openSecureChannelRequest.securityMode())
 			.parameter("RequestedLifetime", openSecureChannelRequest.requestedLifetime());
@@ -200,10 +188,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv OpenSecureChannelResponse")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("ChannelId", openSecureChannelResponse.securityToken()->channelId())
 			.parameter("TokenId", openSecureChannelResponse.securityToken()->channelId())
 			.parameter("CreateAt", openSecureChannelResponse.securityToken()->createAt())
@@ -214,12 +199,8 @@ namespace OpcUaStackCore
 	SecureChannel::debugRecvCloseSecureChannelRequest(void)
 	{
 		if (!isLogging_) return;
-		Log(Debug, "opc ua secure channel recv OpenSecureChannelRequest")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
-			.parameter("ChannelId", channelId_);
+		Log(Debug, "opc ua secure channel recv CloseSecureChannelRequest")
+			.parameter("ChannelId", *this);
 	}
 
 	void
@@ -234,11 +215,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv MessageRequest")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
-			.parameter("ChannelId", channelId_)
+			.parameter("ChannelId", *this)
 			.parameter("ResponseType", secureChannelTransaction->responseTypeNodeId_.toString())
 			.parameter("RequestId", secureChannelTransaction->requestId_);
 	}
@@ -248,11 +225,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv MessageResponse")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
-			.parameter("ChannelId", channelId_)
+			.parameter("ChannelId", *this)
 			.parameter("ResponseType", secureChannelTransaction->responseTypeNodeId_.toString())
 			.parameter("RequestId", secureChannelTransaction->requestId_);
 	}
@@ -261,10 +234,7 @@ namespace OpcUaStackCore
 	SecureChannel::debugWrite(const std::string& message)
 	{
 		Log(Debug, "opc ua secure channel write")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("Message", message);
 	}
 
@@ -285,10 +255,7 @@ namespace OpcUaStackCore
 		}
 
 		Log(Debug, "opc ua secure channel send Header")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("SegmentFlag", messageHeader.segmentFlag())
 			.parameter("MessageType", messageType)
 			.parameter("MessageSize", messageHeader.messageSize());
@@ -299,10 +266,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send Hello")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("ReceivedBufferSize", hello.receivedBufferSize())
 			.parameter("SendBufferSize", hello.sendBufferSize())
 			.parameter("MaxMessageSize", hello.maxMessageSize())
@@ -315,10 +279,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send Acknowledge")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("ReceivedBufferSize", acknowledge.receivedBufferSize())
 			.parameter("SendBufferSize", acknowledge.sendBufferSize())
 			.parameter("MaxMessageSize", acknowledge.maxMessageSize())
@@ -330,10 +291,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send Error")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("Error", error.error())
 			.parameter("Reason", error.reason());
 	}
@@ -343,11 +301,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send OpenSecureChannelRequest")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
-			.parameter("ChannelId", channelId_)
+			.parameter("ChannelId", *this)
 			.parameter("RequestType", openSecureChannelRequest.requestType())
 			.parameter("SecurityMode", openSecureChannelRequest.securityMode())
 			.parameter("RequestedLifetime", openSecureChannelRequest.requestedLifetime());
@@ -358,10 +312,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send OpenSecureChannelResponse")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", *this)
 			.parameter("ChannelId", openSecureChannelResponse.securityToken()->channelId())
 			.parameter("TokenId", openSecureChannelResponse.securityToken()->channelId())
 			.parameter("CreateAt", openSecureChannelResponse.securityToken()->createAt())
@@ -373,11 +324,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send MessageRequest")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
-			.parameter("ChannelId", channelId_)
+			.parameter("ChannelId", *this)
 			.parameter("RequestType", secureChannelTransaction->requestTypeNodeId_.toString())
 			.parameter("RequestId", secureChannelTransaction->requestId_);
 	}
@@ -387,11 +334,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send MessageResponse")
-			.parameter("Local-Address", local_.address().to_string())
-			.parameter("Local-Port", local_.port())
-			.parameter("Partner-Address", partner_.address().to_string())
-			.parameter("Partner-Port", partner_.port())
-			.parameter("ChannelId", channelId_)
+			.parameter("ChannelId", *this)
 			.parameter("ResponseType", secureChannelTransaction->responseTypeNodeId_.toString())
 			.parameter("RequestId", secureChannelTransaction->requestId_);
 	}
