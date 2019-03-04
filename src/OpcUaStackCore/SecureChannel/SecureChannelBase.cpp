@@ -918,18 +918,41 @@ namespace OpcUaStackCore
 		// encode channel id
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
+		// encode token id
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->tokenId_);
+
+		// encode sequence number
+		secureChannel->sendSequenceNumber_++;
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_);
+
+		// encode request id
+		OpcUaNumber::opcUaBinaryEncode(ios1, 0);
+
 		// encode MessageHeader
 		secureChannel->messageHeader_.messageType(MessageType_CloseSecureChannel);
+		secureChannel->messageHeader_.segmentFlag('F');
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
 		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
 
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 
+		// handle security
+		MemoryBuffer plainText(sb2, sb1);
+		MemoryBuffer encryptedText;
+
+		if (secureSendMessageRequest(plainText, encryptedText, secureChannel) != Success) {
+			Log(Debug, "opc ua secure channel encrypt send message error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
+
+		encryptedText.get(secureChannel->sendBuffer_);
+
 		secureChannel->async_write(
-			sb2, sb1,
+			secureChannel->sendBuffer_,
 			boost::bind(
-				&SecureChannelBase::handleWriteCloseSecureChannelRequestComplete,
+				&SecureChannelBase::handleWriteMessageRequestComplete,
 				this,
 				boost::asio::placeholders::error,
 				secureChannel
