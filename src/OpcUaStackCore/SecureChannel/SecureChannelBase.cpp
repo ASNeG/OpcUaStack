@@ -841,6 +841,8 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		secureChannel->secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
+
 		// error accurred
 		if (error) {
 			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
@@ -952,7 +954,7 @@ namespace OpcUaStackCore
 		secureChannel->async_write(
 			secureChannel->sendBuffer_,
 			boost::bind(
-				&SecureChannelBase::handleWriteMessageRequestComplete,
+				&SecureChannelBase::handleWriteCloseSecureChannelRequestComplete,
 				this,
 				boost::asio::placeholders::error,
 				secureChannel

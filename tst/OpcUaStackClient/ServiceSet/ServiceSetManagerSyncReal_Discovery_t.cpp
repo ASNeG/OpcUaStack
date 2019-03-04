@@ -13,6 +13,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Discovery_)
 	std::cout << "ServiceSetManagerSyncReal_Discovery_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Discovery_discovery_GetEndpoints)
 {
 	ServiceSetManager serviceSetManager;
@@ -62,7 +63,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Discovery_discovery_GetEndpoints)
 	// disconnect secure channel
 	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
-
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 

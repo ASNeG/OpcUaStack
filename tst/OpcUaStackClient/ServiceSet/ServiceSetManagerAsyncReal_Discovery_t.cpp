@@ -13,6 +13,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_)
 	std::cout << "ServiceSetManagerAsyncReal_Discovery_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_discovery_GetEndpoints)
 {
 	ServiceSetManager serviceSetManager;
@@ -71,7 +72,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_discovery_GetEndpoints
 	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Disconnect);
 }
-
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 
