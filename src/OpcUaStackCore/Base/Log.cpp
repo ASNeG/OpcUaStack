@@ -113,7 +113,7 @@ namespace OpcUaStackCore
 		}
 
 		boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
-		std::cout << logLevel() << " " << now << " [" << threadId << "] " << message_;
+		std::cout << now << " " << logLevel() << " [" << threadId << "] " << message_;
 		if  (parameter_ != "") {
 			std::cout << ": " << parameter_;
 		}
