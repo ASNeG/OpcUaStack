@@ -862,18 +862,35 @@ namespace OpcUaStackCore
 
 		std::iostream is(&secureChannel->recvBuffer_);
 
-		OpcUaUInt32 channelId;
-		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+		// get channel id
+		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
+
+		// get security token
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_);
+
+		// handle security
+		if (secureReceivedMessageRequest(secureChannel) != Success) {
+			Log(Debug, "opc ua decrypt received message error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// encode sequence number
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
+
+		// encode request id
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->requestId_);
+
 		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
 		secureChannel->debugRecvCloseSecureChannelRequest();
 
-		// FIXME: ....
-
 		handleRecvCloseSecureChannelRequest(
 			secureChannel,
-			channelId
+			secureChannel->messageHeader_.channelId()
 		);
 		asyncRead(secureChannel);
 	}
