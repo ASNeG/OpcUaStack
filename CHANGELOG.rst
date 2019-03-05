@@ -27,6 +27,9 @@ Release 4.1.0
 
 Release 3.7.0
 ------------------------------------------------------------
+
+**Features**:
+
 * refactoring application service interface #65, by @huebl
 * add simple getter to password of UserNameIdentityToken #108, by @flipback 
 * improve performance of Information Model #120, by @flipback
