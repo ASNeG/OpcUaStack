@@ -511,8 +511,9 @@ namespace OpcUaStackClient
 		closeSessionRequest.requestHeader()->requestHandle(++requestHandle_);
 		closeSessionRequest.requestHeader()->sessionAuthenticationToken() = authenticationToken_;
 		closeSessionRequest.deleteSubscriptions(deleteSubscriptions);
-		closeSessionRequest.opcUaBinaryEncode(ios);
 
+		closeSessionRequest.requestHeader()->opcUaBinaryEncode(ios);
+		closeSessionRequest.opcUaBinaryEncode(ios);
 		Log(Debug, "session send CloseSessionRequest")
 		    .parameter("RequestId", secureChannelTransaction->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_)
