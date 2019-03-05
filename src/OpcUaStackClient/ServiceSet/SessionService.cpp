@@ -285,7 +285,7 @@ namespace OpcUaStackClient
 		}
 
 		secureChannelState_ = SCS_Disconnecting;
-		secureChannelClient_.disconnect(secureChannel_);
+		//secureChannelClient_.disconnect(secureChannel_);
 	}
 
 	OpcUaStatusCode
@@ -511,8 +511,9 @@ namespace OpcUaStackClient
 		closeSessionRequest.requestHeader()->requestHandle(++requestHandle_);
 		closeSessionRequest.requestHeader()->sessionAuthenticationToken() = authenticationToken_;
 		closeSessionRequest.deleteSubscriptions(deleteSubscriptions);
-		closeSessionRequest.opcUaBinaryEncode(ios);
 
+		closeSessionRequest.requestHeader()->opcUaBinaryEncode(ios);
+		closeSessionRequest.opcUaBinaryEncode(ios);
 		Log(Debug, "session send CloseSessionRequest")
 		    .parameter("RequestId", secureChannelTransaction->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_)
@@ -550,6 +551,8 @@ namespace OpcUaStackClient
 	void
 	SessionService::handleConnect(SecureChannel* secureChannel)
 	{
+		Log(Debug, "session service handle connect");
+
 		secureChannelState_ = SCS_Connected;
 		if (mode_ == M_SecureChannel) {
 
@@ -572,6 +575,8 @@ namespace OpcUaStackClient
 	void
 	SessionService::handleDisconnect(SecureChannel* secureChannel)
 	{
+		Log(Debug, "session service handle disconnect");
+
 		secureChannelState_ = SCS_Disconnected;
 		if (mode_ != M_SecureChannel) {
 			if (sessionConfig_->reconnectTimeout() != 0) {
@@ -712,6 +717,14 @@ namespace OpcUaStackClient
 	void
 	SessionService::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr responseHeader)
 	{
+		if (secureChannelTransaction->responseTypeNodeId_ == OpcUaNodeId(OpcUaId_CloseSessionResponse_Encoding_DefaultBinary)) {
+			Log(Debug, "receive close session response");
+
+			secureChannelClient_.disconnect(secureChannel_);
+
+			return;
+		}
+
 		std::iostream ios(&secureChannelTransaction->is_);
 
 		Object::SPtr objectSPtr = pendingQueue_.remove(secureChannelTransaction->requestId_);

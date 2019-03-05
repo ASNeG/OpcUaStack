@@ -81,6 +81,7 @@ namespace OpcUaStackCore
 		CryptoBase::SPtr cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
 		if (!cryptoBase) {
 			Log(Error, "security policy invalid")
+				.parameter("ChannelId", *secureChannel)
 				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
 				.parameter("SecurityPolicy", secureChannelClientConfig->securityPolicy());
 			return nullptr;
@@ -100,6 +101,7 @@ namespace OpcUaStackCore
 			);
 			if (!result) {
 				Log(Error, "partner certificate not found in certificate store")
+					.parameter("ChannelId", *secureChannel)
 					.parameter("EndpointUrl", secureChannelClientConfig->applicationUri());
 				return nullptr;
 			}
@@ -164,10 +166,12 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		Log(Info, "resolver complete");
+		Log(Info, "resolver complete")
+			.parameter("ChannelId", *secureChannel);
 
 		if (error) {
 			Log(Error, "address resolver error")
+				.parameter("ChannelId", *secureChannel)
 				.parameter("EndpointUrl", secureChannel->endpointUrl_)
 				.parameter("Message", error.message());
 
@@ -179,6 +183,7 @@ namespace OpcUaStackCore
 
 		// open connection from client to server
 		Log(Info, "connect secure channel to server")
+			.parameter("ChannelId", *secureChannel)
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 		secureChannel->state_ = SecureChannel::S_Connecting;
@@ -201,6 +206,7 @@ namespace OpcUaStackCore
 	{
 		if (error) {
 			Log(Info, "cannot connect secure channel to server")
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Address", secureChannel->partner_.address().to_string())
 				.parameter("Port", secureChannel->partner_.port())
 				.parameter("Message", error.message());
@@ -214,6 +220,7 @@ namespace OpcUaStackCore
 		secureChannel->local_ = secureChannel->socket().local_endpoint();
 
 		Log(Info, "secure channel to server connected")
+			.parameter("ChannelId", *secureChannel)
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 
@@ -297,6 +304,7 @@ namespace OpcUaStackCore
 			);
 			if (statusCode != Success) {
 				Log(Error, "create derived channel keyset error")
+					.parameter("ChannelId", *secureChannel)
 					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
 					.parameter("LocalEndpoint", secureChannel->local_)
 					.parameter("PartnerEndpont", secureChannel->partner_);
@@ -333,6 +341,7 @@ namespace OpcUaStackCore
 	SecureChannelClient::handleDisconnect(SecureChannel* secureChannel)
 	{
 		Log(Info, "secure channel to server closed")
+			.parameter("ChannelId", *secureChannel)
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 

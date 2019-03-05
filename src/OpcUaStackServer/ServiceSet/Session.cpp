@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -347,9 +347,16 @@ namespace OpcUaStackServer
 		// check decrypted password and server nonce
 		if (memcmp(serverNonce_, &plainTextBuf[plainTextLen-32] , 32) != 0) {
 			Log(Debug, "decrypt password server nonce error");
-				return BadIdentityTokenRejected;;
+			return BadIdentityTokenRejected;;
 		}
-		token->password().value((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
+
+		size_t passwordLen = plainTextLen-36;
+		if (passwordLen < 0) {
+			Log(Debug, "decrypted password length < 0");
+			return BadIdentityTokenRejected;;
+		}
+
+		token->password().value((const OpcUaByte*)&plainTextBuf[4], passwordLen);
 
 		// create application context
 		ApplicationAuthenticationContext context;
@@ -817,8 +824,10 @@ namespace OpcUaStackServer
 		closeSessionResponse.opcUaBinaryEncode(iosres);
 
 		// close session
+		Log(Debug, "authentication close session");
 		authenticationCloseSession();
 
+		Log(Debug, "send close session response");
 		if (sessionIf_ != nullptr) {
 			ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);

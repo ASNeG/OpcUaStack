@@ -202,6 +202,8 @@ namespace OpcUaStackServer
 	void
 	SessionManager::handleMessageRequest(SecureChannel* secureChannel)
 	{
+		Log(Debug, "session manager handle message request");
+
 		//
 		// this function is called by the secure channel when a new request
 		// message is received

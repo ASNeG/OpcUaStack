@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackServer_InformationModelManager_h__
@@ -66,10 +66,10 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<InformationModelManager> SPtr;
 
 		InformationModelManager(void);
-		InformationModelManager(InformationModel::SPtr informationModel);
+		InformationModelManager(InformationModel::SPtr& informationModel);
 		~InformationModelManager(void);
 
-		void informationModel(InformationModel::SPtr informationModel);
+		void informationModel(InformationModel::SPtr& informationModel);
 
 		bool addNode(
 			NodeClass::Enum nodeClassType,

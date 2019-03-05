@@ -1,0 +1,18 @@
+os:
+  - Visual Studio 2015
+install:
+  - set NINJA_URL="https://github.com/ninja-build/ninja/releases/download/v1.6.0/ninja-win.zip"
+  - appveyor DownloadFile %NINJA_URL% -FileName ninja.zip
+  - 7z x ninja.zip -oC:\projects\deps\ninja > nul
+  - set PATH=C:\projects\deps\ninja;%PATH%
+  - ninja --version
+
+before_build:
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64
+  - cd C:\projects\opcuastack
+build_script:
+  - set PATH=%PATH%;C:\Libraries\boost_1_67_0
+  - build.bat -t local -B Release -i ..\ASNeG -vs "Ninja"
+    #  - build.bat -t tst -B Release -s ASNeG -vs "Ninja"
+
+

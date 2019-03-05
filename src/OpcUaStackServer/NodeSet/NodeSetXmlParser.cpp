@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,11 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <OpcUaStackCore/StandardDataTypes/EnumDefinitionExpand.h>
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetDefinitionParser.h"
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinition.h"
+#include <OpcUaStackCore/StandardDataTypes/EnumDefinitionExpand.h>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
@@ -1116,13 +1116,12 @@ namespace OpcUaStackServer
 	{
 		boost::property_tree::ptree referenceTree;
 
-		ReferenceItemMultiMap::iterator it;
 		ReferenceItemMap& referenceItemMap = objectNodeClass->referenceItemMap();
 
-		for (it = referenceItemMap.referenceItemMultiMap().begin(); it != referenceItemMap.referenceItemMultiMap().end(); it++) {
+		for (auto it = referenceItemMap.begin(); it != referenceItemMap.end(); ++it) {
 			boost::property_tree::ptree reference;
-			ReferenceItem::SPtr referenceItem = it->second;
-			OpcUaNodeId referenceTypeNodeId = it->first;
+			ReferenceItem::SPtr referenceItem = *it;
+			OpcUaNodeId referenceTypeNodeId = referenceItem->typeId_;
 
 			//if (referenceItem->isForward_) continue;
 
@@ -1647,14 +1646,12 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetXmlParser::isProperty(VariableNodeClass::SPtr variableNodeClassSPtr)
+	NodeSetXmlParser::isProperty(VariableNodeClass::SPtr& variableNodeClassSPtr)
 	{
-		std::pair<ReferenceItemMultiMap::iterator, ReferenceItemMultiMap::iterator> itp;
-		ReferenceItemMultiMap& referenceItemMultiMap = variableNodeClassSPtr->referenceItemMap().referenceItemMultiMap();
 		OpcUaNodeId propertyTypeNodeId;
 		propertyTypeNodeId.nodeId(OpcUaId_HasProperty);
 
-		itp = referenceItemMultiMap.equal_range(propertyTypeNodeId);
+		auto itp = variableNodeClassSPtr->referenceItemMap().equal_range(propertyTypeNodeId);
 		if (itp.first == itp.second) return false;
 		return true;
 	}

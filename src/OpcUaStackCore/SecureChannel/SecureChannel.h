@@ -56,6 +56,11 @@ namespace OpcUaStackCore
 		SecureChannel(IOThread* ioThread);
 		virtual ~SecureChannel(void);
 
+		friend std::ostream& operator<< (std::ostream& os, const SecureChannel& secureChannel) {
+			os << secureChannel.id_ << "-" << secureChannel.channelId_;
+			return os;
+		}
+
 		// --------------------------------------------------------------------
 		//
 		// security
@@ -104,6 +109,7 @@ namespace OpcUaStackCore
 		// --------------------------------------------------------------------
 		MessageHeader messageHeader_;
 
+		uint32_t id_;
 		IOThread* ioThread_;
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
@@ -150,6 +156,7 @@ namespace OpcUaStackCore
 
 		Object::SPtr handle_;
 		static OpcUaUInt32 gChannelId_;
+		static uint32_t gId_;
 
 		bool isLogging_;
 

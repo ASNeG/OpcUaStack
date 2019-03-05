@@ -86,7 +86,7 @@ namespace OpcUaStackServer
 
 		bool uint32ArrayToString(std::string& value, OpcUaUInt32Array& array);
 		bool stringToNodeId(const std::string& nodeIdString, OpcUaNodeId& nodeId);
-		bool isProperty(VariableNodeClass::SPtr variableNodeClassSPtr);
+		bool isProperty(VariableNodeClass::SPtr& variableNodeClassSPtr);
 
 		bool enableDefinition_;
 		NodeSetAlias nodeSetAlias_;

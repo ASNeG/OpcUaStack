@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read)
 	connectContext.secureChannelLog_ = true;
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
@@ -54,14 +54,14 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read)
 		nodeId,
 		boost::bind(&VBIClientHandlerTest::readComplete, &vbiClientHandlerTest, _1, _2, _3)
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.readComplete_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.readComplete_.waitForEvent(3000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
 	vbiClientHandlerTest.dataValue_.out(std::cout);
 
 	// disconnect session
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write)
 	connectContext.secureChannelLog_ = true;
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
@@ -107,13 +107,13 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write)
 		dataValue,
 		boost::bind(&VBIClientHandlerTest::writeComplete, &vbiClientHandlerTest, _1, _2)
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.writeComplete_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.writeComplete_.waitForEvent(3000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
 
 	// disconnect session
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }

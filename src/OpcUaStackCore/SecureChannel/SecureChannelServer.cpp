@@ -187,6 +187,7 @@ namespace OpcUaStackCore
 	{
 		if (error) {
 			Log(Info, "cannot accept secure channel from client")
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Address", secureChannel->partner_.address().to_string())
 				.parameter("Port", secureChannel->partner_.port())
 				.parameter("Message", error.message());
@@ -209,8 +210,11 @@ namespace OpcUaStackCore
 		secureChannel->partner_ = secureChannel->socket().remote_endpoint();
 
 		Log(Info, "accepted new secure channel from client")
-			.parameter("Address", secureChannel->partner_.address().to_string())
-			.parameter("Port", secureChannel->partner_.port());
+		    .parameter("ChannelId", *secureChannel)
+			.parameter("Local-Address", secureChannel->local_.address().to_string())
+			.parameter("Local-Port", secureChannel->local_.port())
+			.parameter("Partner-Address", secureChannel->partner_.address().to_string())
+			.parameter("Partner-Port", secureChannel->partner_.port());
 
 		secureChannel->state_ = SecureChannel::S_Connected;
 		asyncRead(secureChannel);
@@ -224,6 +228,7 @@ namespace OpcUaStackCore
 	SecureChannelServer::handleDisconnect(SecureChannel* secureChannel)
 	{
 		Log(Info, "secure channel closed")
+			.parameter("ChannelId", *secureChannel)
 			.parameter("Local-Address", secureChannel->local_.address().to_string())
 			.parameter("Local-Port", secureChannel->local_.port())
 			.parameter("Partner-Address", secureChannel->partner_.address().to_string())
@@ -240,7 +245,8 @@ namespace OpcUaStackCore
 
 		// check protocol version
 		if (hello.protocolVersion() != 0) {
-			Log(Error, "receive invalid protocol version in hello request");
+			Log(Error, "receive invalid protocol version in hello request")
+				.parameter("ChannelId", *secureChannel);
 			secureChannel->socket().cancel();
 			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
 			return;
@@ -316,6 +322,7 @@ namespace OpcUaStackCore
 		}
 		if (securitySettings.endpointDescription().get() == nullptr) {
 			Log(Error, "server does not accept policy uri from client")
+				.parameter("ChannelId", *secureChannel)
 			    .parameter("LocalEndpoint", secureChannel->local_)
 				.parameter("PartnerEndpont", secureChannel->partner_)
 				.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
@@ -375,6 +382,7 @@ namespace OpcUaStackCore
 			);
 			if (statusCode != Success) {
 				Log(Error, "create derived channel keyset error")
+					.parameter("ChannelId", *secureChannel)
 					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
 					.parameter("LocalEndpoint", secureChannel->local_)
 					.parameter("PartnerEndpont", secureChannel->partner_);
@@ -395,6 +403,7 @@ namespace OpcUaStackCore
 			if (secureChannel->channelId_ != 0) {
 				success = false;
 				Log(Error, "receive invalid request type in OpenSecureChannelRequest")
+					.parameter("ChannelId", *secureChannel)
 					.parameter("Local-Address", secureChannel->local_.address().to_string())
 					.parameter("Local-Port", secureChannel->local_.port())
 					.parameter("Partner-Address", secureChannel->partner_.address().to_string())
@@ -411,6 +420,7 @@ namespace OpcUaStackCore
 			if (secureChannel->channelId_ != channelId) {
 				success = false;
 				Log(Error, "receive invalid channel id in OpenSecureChannelRequest")
+					.parameter("ChannelId", *secureChannel)
 					.parameter("Local-Address", secureChannel->local_.address().to_string())
 					.parameter("Local-Port", secureChannel->local_.port())
 					.parameter("Partner-Address", secureChannel->partner_.address().to_string())
@@ -421,6 +431,7 @@ namespace OpcUaStackCore
 		else {
 			success = false;
 			Log(Error, "receive invalid OpenSecureChannelRequest")
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Local-Address", secureChannel->local_.address().to_string())
 				.parameter("Local-Port", secureChannel->local_.port())
 				.parameter("Partner-Address", secureChannel->partner_.address().to_string())
@@ -447,6 +458,7 @@ namespace OpcUaStackCore
 			bool trusted = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(securitySettings.partnerCertificateChain());
 			if (!trusted) {
 				Log(Error, "client certificate not trusted")
+					.parameter("ChannelId", *secureChannel)
 				    .parameter("LocalEndpoint", secureChannel->local_)
 					.parameter("PartnerEndpont", secureChannel->partner_)
 					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
@@ -480,6 +492,7 @@ namespace OpcUaStackCore
 	SecureChannelServer::handleRecvCloseSecureChannelRequest(SecureChannel* secureChannel, uint32_t channelId)
 	{
 		Log(Debug, "close secure channel, because receive close secure channel from partner")
+			.parameter("ChannelId", *secureChannel)
 			.parameter("Local-Address", secureChannel->local_.address().to_string())
 			.parameter("Local-Port", secureChannel->local_.port())
 			.parameter("Partner-Address", secureChannel->partner_.address().to_string())
