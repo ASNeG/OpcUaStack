@@ -15,11 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackCore/Base/Url.h"
-#include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
@@ -58,22 +56,8 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SessionService::SessionService(IOThread* ioThread)
-	: sessionServiceContext_()
-
-
-	, mode_(M_SecureChannelAndSession)
-	, sessionServiceIf_(nullptr)
-	, sessionConfig_()
-	, secureChannelClientConfig_()
-
-	, secureChannelState_(SCS_Disconnected)
-
-	, ioThread_(ioThread)
-	, slotTimerElement_()
-	, sessionConnect_(false)
-
-	, secureChannelClient_(ioThread_)
-	, secureChannel_(nullptr)
+	: sm_()
+	, ctx_()
 
 	, sessionTransaction_()
 	, requestHandle_(0)
@@ -87,7 +71,7 @@ namespace OpcUaStackClient
 	, pendingQueue_(*ioThread->ioService().get())
 	{
 		Component::ioThread(ioThread);
-		slotTimerElement_ = constructSPtr<SlotTimerElement>();
+		ctx_.slotTimerElement_ = boost::make_shared<SlotTimerElement>();
 
 		// init pending queue callback
 		pendingQueue_.timeoutCallback().reset(
@@ -95,40 +79,44 @@ namespace OpcUaStackClient
 		);
 
 		// init state machine
-		sm_.setCtx(&sessionServiceContext_);
+		sm_.setCtx(&ctx_);
 		sm_.setStateId(SessionServiceStateId::Disconnected);
 	}
 
 	SessionService::~SessionService(void)
 	{
-		if (secureChannelState_ == SCS_DisconnectedWait) {
-			if (slotTimerElement_.get() != nullptr) {
-				ioThread_->slotTimer()->stop(slotTimerElement_);
-				slotTimerElement_.reset();
-			}
+		// stop timer element
+		if (ctx_.slotTimerElement_.get() != nullptr) {
+			ctx_.ioThread_->slotTimer()->stop(ctx_.slotTimerElement_);
+			ctx_.slotTimerElement_.reset();
 		}
+
 	}
 
 	void
 	SessionService::setConfiguration(
-		Mode mode,
+		SessionMode sessionMode,
 		SessionServiceIf* sessionServiceIf,
 		SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 		SessionConfig::SPtr& sessionConfig
 	)
 	{
-		mode_ = mode;
-		sessionServiceIf_ = sessionServiceIf;
-		secureChannelClientConfig_ = secureChannelClientConfig;
-		if (mode_ != M_SecureChannel) {
-			sessionConfig_ = sessionConfig;
-		}
+		ctx_.sessionMode_ = sessionMode;
+		ctx_.sessionServiceIf_ = sessionServiceIf;
+		ctx_.secureChannelClientConfig_ = secureChannelClientConfig;
+		ctx_.sessionConfig_ = sessionConfig;
 	}
 
 	void
 	SessionService::updateEndpointUrl(const std::string& endpointUrl)
 	{
-		secureChannelClientConfig_->endpointUrl(endpointUrl);
+		ctx_.secureChannelClientConfig_->endpointUrl(endpointUrl);
+	}
+
+	void
+	SessionService::sessionServiceIf(SessionServiceIf* sessionServiceIf)
+	{
+		ctx_.sessionServiceIf_ = sessionServiceIf;
 	}
 
 	// ------------------------------------------------------------------------
@@ -138,11 +126,6 @@ namespace OpcUaStackClient
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void
-	SessionService::sessionServiceIf(SessionServiceIf* sessionServiceIf)
-	{
-		sessionServiceIf_ = sessionServiceIf;
-	}
 
 	void
 	SessionService::reconnectTimeout(void)
@@ -156,87 +139,19 @@ namespace OpcUaStackClient
 	SessionService::asyncConnect(void)
 	{
 		SessionTransaction::SPtr sessionTransaction;
-		ioThread_->run(boost::bind(&SessionService::asyncConnectInternal, this, sessionTransaction));
+		ctx_.ioThread_->run(
+			boost::bind(&SessionService::asyncConnectInternal, this, sessionTransaction)
+		);
 	}
 
 	void
 	SessionService::asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction)
 	{
-
-#if 0
 		sm_.event(
 			[this](SessionServiceStateIf* sssif) {
 				return sssif->asyncConnect();
 			}
 		);
-#endif
-
-
-		// stop reconnect timer if necessary
-		if (secureChannelState_ == SCS_DisconnectedWait) {
-			ioThread_->slotTimer()->stop(slotTimerElement_);
-			secureChannelState_ = SCS_Disconnected;
-		}
-
-		// check secure channel state
-		if (secureChannelState_ != SCS_Disconnected) {
-			Log(Error, "connect operation in invalid state")
-			    .parameter("SessionName", mode_ != M_SecureChannel ? sessionConfig_->sessionName_ : "None")
-				.parameter("SecureChannelState", secureChannelState_);
-
-			if (sessionTransaction.get() != nullptr) {
-				sessionTransaction->statusCode_ = BadInvalidState;
-				sessionTransaction->condition_.conditionValueDec();
-			}
-			return;
-		}
-
-		// check configuration parameter
-		assert(sessionServiceIf_ != nullptr);
-		assert(secureChannelClientConfig_.get() != nullptr);
-		if (mode_ != M_SecureChannel) {
-			assert(sessionConfig_.get() != nullptr);
-			requestTimeout_ = sessionConfig_->requestTimeout_;
-		}
-
-		// check server uri. In case of an error inform the application
-		Url endpointUrl(secureChannelClientConfig_->endpointUrl());
-		if (!endpointUrl.good()) {
-			Log(Debug, "connect operation error - invalid endpoint url")
-			    .parameter("SessionName", mode_ != M_SecureChannel ? sessionConfig_->sessionName_ : "None")
-				.parameter("EndpointUrl", secureChannelClientConfig_->endpointUrl());
-
-			secureChannelState_ = SCS_Disconnected;
-			if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_ServerUriError);
-
-			if (mode_ != M_SecureChannel) {
-				if (sessionConfig_->reconnectTimeout() != 0) {
-
-					// start reconnect timer
-					slotTimerElement_->expireFromNow(sessionConfig_->reconnectTimeout());
-					slotTimerElement_->callback().reset(
-						boost::bind(&SessionService::reconnectTimeout, this)
-					);
-					ioThread_->slotTimer()->start(slotTimerElement_);
-					secureChannelState_ = SCS_DisconnectedWait;
-				}
-			}
-
-			if (sessionTransaction.get() != nullptr) {
-				sessionTransaction->statusCode_ = BadInvalidArgument;
-				sessionTransaction->condition_.conditionValueDec();
-			}
-
-			return;
-		}
-
-		// set session transaction
-		sessionTransaction_ = sessionTransaction;
-
-		// open secure channel
-		secureChannelState_ = SCS_Connecting;
-		secureChannelClient_.secureChannelClientIf(this);
-		secureChannel_ = secureChannelClient_.connect(secureChannelClientConfig_);
 	}
 
 	OpcUaStatusCode
@@ -245,7 +160,9 @@ namespace OpcUaStackClient
 		SessionTransaction::SPtr sessionTransaction = constructSPtr<SessionTransaction>();
 		sessionTransaction->operation_ = SessionTransaction::OP_Connect;
 		sessionTransaction->condition_.condition(1,0);
-		ioThread_->run(boost::bind(&SessionService::asyncConnectInternal, this, sessionTransaction));
+		ctx_.ioThread_->run(
+			boost::bind(&SessionService::asyncConnectInternal, this, sessionTransaction)
+		);
 		sessionTransaction->condition_.waitForCondition();
 		return sessionTransaction->statusCode_;
 	}
@@ -254,12 +171,20 @@ namespace OpcUaStackClient
 	SessionService::asyncDisconnect(bool deleteSubscriptions)
 	{
 		SessionTransaction::SPtr sessionTransaction;
-		ioThread_->run(boost::bind(&SessionService::asyncDisconnectInternal, this, sessionTransaction, deleteSubscriptions));
+		ctx_.ioThread_->run(
+			boost::bind(&SessionService::asyncDisconnectInternal, this, sessionTransaction, deleteSubscriptions)
+		);
 	}
 
 	void
 	SessionService::asyncDisconnectInternal(SessionTransaction::SPtr& sessionTransaction, bool deleteSubscriptions)
 	{
+		sm_.event(
+			[this](SessionServiceStateIf* sssif) {
+				return sssif->asyncDisconnect(deleteSubscriptions);
+			}
+		);
+
 		// check secure channel state
 		if (secureChannelState_ == SCS_Disconnecting || secureChannelState_ == SCS_Disconnected) {
 			Log(Error, "disconnect operation in invalid state")
@@ -342,45 +267,8 @@ namespace OpcUaStackClient
 		}
 	}
 
-	void
-	SessionService::sendCreateSessionRequest(SecureChannel* secureChannel)
-	{
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings_;
 
-		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
-		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
-		secureChannelTransaction->requestId_ = ++requestId_;
-		std::iostream ios(&secureChannelTransaction->os_);
 
-		// create session request
-		CreateSessionRequest createSessionRequest;
-		createSessionRequest.requestHeader()->requestHandle(++requestHandle_);
-		createSessionRequest.clientDescription(sessionConfig_->applicationDescription_);
-		createSessionRequest.endpointUrl(secureChannelClientConfig_->endpointUrl());
-		createSessionRequest.sessionName(sessionConfig_->sessionName_);
-		createSessionRequest.clientNonce((OpcUaStackCore::OpcUaByte*)"\000", 1);
-		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout_);
-		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize_);
-
-		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
-		if (certificate.get() != nullptr) {
-			createClientNonce();
-			createSessionRequest.clientNonce((const OpcUaByte*)clientNonce_, 32);
-			certificate->toDERBuf(createSessionRequest.clientCertificate());
-		}
-
-		// send create session request
-		createSessionRequest.requestHeader()->opcUaBinaryEncode(ios);
-		createSessionRequest.opcUaBinaryEncode(ios);
-
-		Log(Debug, "session send CreateSessionRequest")
-		    .parameter("RequestId", secureChannelTransaction->requestId_)
-		    .parameter("SessionName", sessionConfig_->sessionName_);
-		secureChannelClient_.asyncWriteMessageRequest(
-			secureChannel_,
-			secureChannelTransaction
-		);
-	}
 
 	void
 	SessionService::recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr& responseHeader)
@@ -568,6 +456,15 @@ namespace OpcUaStackClient
 	void
 	SessionService::handleConnect(SecureChannel* secureChannel)
 	{
+		secureChannel_ = secureChannel;
+		sm_.event(
+			[this, secureChannel](SessionServiceStateIf* sssif) {
+				return sssif->handleConnect(secureChannel);
+			}
+		);
+		return;
+
+
 		Log(Debug, "session service handle connect");
 
 		secureChannelState_ = SCS_Connected;
