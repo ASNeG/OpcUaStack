@@ -1,0 +1,114 @@
+/*
+   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+ */
+
+
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateError.h"
+#include "OpcUaStackClient/ServiceSet/SessionService.h"
+
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackClient
+{
+
+	SessionServiceStateError::SessionServiceStateError(void)
+	: SessionServiceStateIf("Error", SessionServiceStateId::Error)
+	{
+	}
+
+	SessionServiceStateError::~SessionServiceStateError(void)
+	{
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::asyncConnect(void)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::asyncDisconnect(bool deleteSubscriptions)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::asyncCancel(uint32_t requestHandle)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::handleConnect(SecureChannel* secureChannel)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::handleDisconnect(SecureChannel* secureChannel)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::handleErrorResponse(SecureChannel* secureChannel)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::handleActivateSessionResponse(SecureChannel* secureChannel)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::handleMessageResponse(SecureChannel* secureChannel)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::receive(Message::SPtr message)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::reconnectTimeout(void)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::pendingQueueTimeout(void)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+}
