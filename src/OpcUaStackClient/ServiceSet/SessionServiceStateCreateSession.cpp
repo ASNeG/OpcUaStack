@@ -17,6 +17,7 @@
 
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateCreateSession.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
 
@@ -70,28 +71,129 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateCreateSession::handleCreateSessionResponse(SecureChannel* secureChannel)
+	SessionServiceStateCreateSession::handleCreateSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
+	{
+		assert(ctx_ != nullptr);
+		assert(ctx_->sessionConfig_ != nullptr);
+		assert(secureChannel != nullptr);
+		assert(secureChannel->secureChannelTransaction_.get() != nullptr);
+		assert(responseHeader.get() != nullptr);
+
+		auto& securitySettings = secureChannel->securitySettings_;
+		auto trx = secureChannel->secureChannelTransaction_;
+		auto sessionConfig = ctx_->sessionConfig_;
+
+		// check service result
+		if (responseHeader->serviceResult() != Success) {
+			Log(Debug, "create session response error; close secure channel")
+				.parameter("SessId", ctx_->id_)
+				.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
+
+			// close secure channel -
+			ctx_->secureChannelClient_.disconnect(secureChannel);
+
+			return SessionServiceStateId::Error;
+		}
+
+		// decode create session response
+		std::iostream ios(&trx->is_);
+		CreateSessionResponse createSessionResponse;
+		createSessionResponse.opcUaBinaryDecode(ios);
+
+		ctx_->sessionTimeout_ = createSessionResponse.receivedSessionTimeout();
+		ctx_->maxResponseMessageSize_ = createSessionResponse.maxRequestMessageSize();
+		ctx_->authenticationToken_ = createSessionResponse.authenticationToken();
+
+		// check server signature
+		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
+		if (certificate.get() != nullptr) {
+			ctx_->serverNonce_ = createSessionResponse.serverNonce();
+
+			ctx_->serverCertificate_.fromDERBuf(
+				createSessionResponse.serverCertificate().memBuf(),
+				createSessionResponse.serverCertificate().size()
+			);
+
+			// get client certificate
+			MemoryBuffer clientCertificate;
+			certificate->toDERBuf(clientCertificate);
+
+			// verify signature
+			MemoryBuffer clientNonce(ctx_->clientNonce_, 32);
+			PublicKey publicKey = ctx_->serverCertificate_.publicKey();
+			OpcUaStatusCode statusCode = createSessionResponse.signatureData()->verifySignature(
+				clientCertificate,
+				clientNonce,
+				publicKey,
+				*securitySettings.cryptoBase()
+			);
+
+			if (statusCode != Success) {
+				Log(Error, "validate server signature error; close secure channel")
+					.parameter("SessId", ctx_->id_);
+
+				// close secure channel -
+				ctx_->secureChannelClient_.disconnect(secureChannel);
+
+				return SessionServiceStateId::Error;
+			}
+		}
+
+		Log(Debug, "session recv CreateSessionResponse")
+		    .parameter("SessId", ctx_->id_)
+		    .parameter("RequestId", trx->requestId_)
+		    .parameter("SessionName", sessionConfig->sessionName_)
+		    .parameter("AuthenticationToken", ctx_->authenticationToken_);
+
+		auto statusCode = ctx_->sendActivateSessionRequest(secureChannel);
+		if (statusCode != Success) {
+			Log(Error, "send activate session request error; close secure channel")
+				.parameter("SessId", ctx_->id_);
+
+			// close secure channel -
+			ctx_->secureChannelClient_.disconnect(secureChannel);
+
+			return SessionServiceStateId::Error;
+		}
+
+		return SessionServiceStateId::ActivateSession;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateCreateSession::handleActivateSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::CreateSession;
 	}
 
 	SessionServiceStateId
-	SessionServiceStateCreateSession::handleActivateSessionResponse(SecureChannel* secureChannel)
+	SessionServiceStateCreateSession::recvCloseSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::CreateSession;
 	}
 
 	SessionServiceStateId
-	SessionServiceStateCreateSession::handleMessageResponse(SecureChannel* secureChannel)
+	SessionServiceStateCreateSession::handleMessageResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::CreateSession;
 	}
 
 	SessionServiceStateId
-	SessionServiceStateCreateSession::receive(Message::SPtr message)
+	SessionServiceStateCreateSession::sendMessageRequest(Message::SPtr message)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::CreateSession;
@@ -105,7 +207,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateCreateSession::pendingQueueTimeout(void)
+	SessionServiceStateCreateSession::pendingQueueTimeout(Object::SPtr& object)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::CreateSession;

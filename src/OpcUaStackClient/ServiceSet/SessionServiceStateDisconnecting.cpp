@@ -70,28 +70,47 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnecting::handleDisconnectingResponse(SecureChannel* secureChannel)
+	SessionServiceStateDisconnecting::handleCreateSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Disconnecting;
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnecting::handleActivateSessionResponse(SecureChannel* secureChannel)
+	SessionServiceStateDisconnecting::handleActivateSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Disconnecting;
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnecting::handleMessageResponse(SecureChannel* secureChannel)
+	SessionServiceStateDisconnecting::recvCloseSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Disconnecting;
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnecting::receive(Message::SPtr message)
+	SessionServiceStateDisconnecting::handleMessageResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnecting;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnecting::sendMessageRequest(Message::SPtr message)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Disconnecting;
@@ -105,7 +124,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnecting::pendingQueueTimeout(void)
+	SessionServiceStateDisconnecting::pendingQueueTimeout(Object::SPtr& object)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Disconnecting;

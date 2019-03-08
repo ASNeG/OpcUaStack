@@ -17,8 +17,9 @@
 
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateDisconnected.h"
-#include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
+#include "OpcUaStackClient/ServiceSet/SessionService.h"
 
 using namespace OpcUaStackCore;
 
@@ -37,12 +38,122 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateDisconnected::asyncConnect(void)
 	{
-		return SessionServiceStateId::Disconnected;
+		// check configuration parameter
+		assert(ctx_ != nullptr);
+		assert(ctx_->secureChannelClientConfig_.get() != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
+
+		auto clientConfig = ctx_->secureChannelClientConfig_;
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto& secureChannelClient = ctx_->secureChannelClient_;
+		auto secureChannel = ctx_->secureChannel_;
+		auto sessionService = ctx_->sessionService_;
+
+		// check server uri. In case of an error inform the application
+		Url endpointUrl(clientConfig->endpointUrl());
+		if (!endpointUrl.good()) {
+			Log(Debug, "endpoint url error")
+				.parameter("SessId", ctx_->id_)
+				.parameter("EndpointUrl", clientConfig->endpointUrl());
+			sessionServiceIf->sessionStateUpdate(*sessionService, SS_ServerUriError);
+
+			ctx_->startReconnectTimer();
+			return SessionServiceStateId::Disconnected;
+		}
+
+		// open secure channel
+		secureChannelClient.secureChannelClientIf(sessionService);
+		secureChannel = secureChannelClient.connect(clientConfig);
+		return SessionServiceStateId::Connecting;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateDisconnected::asyncDisconnect(bool deleteSubscriptions)
 	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::asyncCancel(uint32_t requestHandle)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::handleConnect(SecureChannel* secureChannel)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::handleDisconnect(SecureChannel* secureChannel)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::handleCreateSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::handleActivateSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::recvCloseSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::handleMessageResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::sendMessageRequest(Message::SPtr message)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::reconnectTimeout(void)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateDisconnected::pendingQueueTimeout(Object::SPtr& object)
+	{
+		// FIXME: todo
 		return SessionServiceStateId::Disconnected;
 	}
 

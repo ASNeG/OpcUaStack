@@ -33,6 +33,31 @@ namespace OpcUaStackClient
 
 		virtual SessionServiceStateId asyncConnect(void) override;
 		virtual SessionServiceStateId asyncDisconnect(bool deleteSubscriptions) override;
+		virtual SessionServiceStateId asyncCancel(uint32_t requestHandle) override;
+
+		virtual SessionServiceStateId handleConnect(SecureChannel* secureChannel) override;
+		virtual SessionServiceStateId handleDisconnect(SecureChannel* secureChannel) override;
+		virtual SessionServiceStateId handleCreateSessionResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) override;
+		virtual SessionServiceStateId handleActivateSessionResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) override;
+		virtual SessionServiceStateId recvCloseSessionResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) = 0;
+		virtual SessionServiceStateId handleMessageResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) override;
+
+		virtual SessionServiceStateId sendMessageRequest(Message::SPtr message) override;
+
+		virtual SessionServiceStateId reconnectTimeout(void) override;
+		virtual SessionServiceStateId pendingQueueTimeout(Object::SPtr& object) override;
 	};
 
 }

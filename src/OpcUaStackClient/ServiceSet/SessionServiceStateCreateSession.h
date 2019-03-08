@@ -35,14 +35,27 @@ namespace OpcUaStackClient
 
 		virtual SessionServiceStateId handleConnect(SecureChannel* secureChannel) override;
 		virtual SessionServiceStateId handleDisconnect(SecureChannel* secureChannel) override;
-		virtual SessionServiceStateId handleCreateSessionResponse(SecureChannel* secureChannel) override;
-		virtual SessionServiceStateId handleActivateSessionResponse(SecureChannel* secureChannel) override;
-		virtual SessionServiceStateId handleMessageResponse(SecureChannel* secureChannel) override;
+		virtual SessionServiceStateId handleCreateSessionResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) override;
+		virtual SessionServiceStateId handleActivateSessionResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) override;
+		virtual SessionServiceStateId recvCloseSessionResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) = 0;
+		virtual SessionServiceStateId handleMessageResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) override;
 
-		virtual SessionServiceStateId receive(Message::SPtr message) override;
+		virtual SessionServiceStateId sendMessageRequest(Message::SPtr message) override;
 
 		virtual SessionServiceStateId reconnectTimeout(void) override;
-		virtual SessionServiceStateId pendingQueueTimeout(void) override;
+		virtual SessionServiceStateId pendingQueueTimeout(Object::SPtr& object) override;
 	};
 
 }

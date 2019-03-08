@@ -17,17 +17,27 @@
 #ifndef __OpcUaStackClient_SessionServiceStateIf_h__
 #define __OpcUaStackClient_SessionServiceStateIf_h__
 
-#include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Component/Message.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
+	class SessionServiceContext;
+
 	enum class DLLEXPORT SessionServiceStateId
 	{
 		None,
-		Disconnected
+		Disconnected,
+		Connecting,
+		CreateSession,
+		ActivateSession,
+		Established,
+		Disconnecting,
+		Error
 	};
 
 	template<typename T>
@@ -49,8 +59,37 @@ namespace OpcUaStackClient
 		std::string stateName(void);
 		SessionServiceStateId stateId(void);
 
+		// events from user interface
 		virtual SessionServiceStateId asyncConnect(void) = 0;
 		virtual SessionServiceStateId asyncDisconnect(bool deleteSubscriptions) = 0;
+		virtual SessionServiceStateId asyncCancel(uint32_t requestHandle) = 0;
+
+		// events from secure channel server
+		virtual SessionServiceStateId handleConnect(SecureChannel* secureChannel) = 0;
+		virtual SessionServiceStateId handleDisconnect(SecureChannel* secureChannel) = 0;
+		virtual SessionServiceStateId handleCreateSessionResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) = 0;
+		virtual SessionServiceStateId handleActivateSessionResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) = 0;
+		virtual SessionServiceStateId recvCloseSessionResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) = 0;
+		virtual SessionServiceStateId handleMessageResponse(
+			SecureChannel* secureChannel,
+			ResponseHeader::SPtr& responseHeader
+		) = 0;
+
+		// event to send a message to a opc ua server
+		virtual SessionServiceStateId sendMessageRequest(Message::SPtr message) = 0;
+
+		// internal events
+		virtual SessionServiceStateId reconnectTimeout(void) = 0;
+		virtual SessionServiceStateId pendingQueueTimeout(Object::SPtr& object) = 0;
 
 	  protected:
 		SessionServiceContext* ctx_;

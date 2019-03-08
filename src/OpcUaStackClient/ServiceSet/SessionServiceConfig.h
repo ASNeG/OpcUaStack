@@ -26,6 +26,11 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	enum class SessionMode {
+		SecureChannel,
+		SecureChannelAndSession
+	};
+
 	class DLLEXPORT SessionServiceConfig
 	: public ServiceConfigBase
 	{
@@ -35,7 +40,7 @@ namespace OpcUaStackClient
 		SessionServiceConfig(void);
 		~SessionServiceConfig(void);
 
-		SessionService::Mode mode_;
+		SessionMode sessionMode_;
 		SessionServiceIf* sessionServiceIf_;
 		SecureChannelClientConfig::SPtr secureChannelClient_;
 		SessionConfig::SPtr session_;

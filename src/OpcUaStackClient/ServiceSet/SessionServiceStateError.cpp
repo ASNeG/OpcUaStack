@@ -70,28 +70,47 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateError::handleErrorResponse(SecureChannel* secureChannel)
+	SessionServiceStateError::handleCreateSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
-	SessionServiceStateError::handleActivateSessionResponse(SecureChannel* secureChannel)
+	SessionServiceStateError::handleActivateSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
-	SessionServiceStateError::handleMessageResponse(SecureChannel* secureChannel)
+	SessionServiceStateError::recvCloseSessionResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
-	SessionServiceStateError::receive(Message::SPtr message)
+	SessionServiceStateError::handleMessageResponse(
+		SecureChannel* secureChannel,
+		ResponseHeader::SPtr& responseHeader
+	)
+	{
+		// FIXME: todo
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::sendMessageRequest(Message::SPtr message)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Error;
@@ -105,7 +124,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateError::pendingQueueTimeout(void)
+	SessionServiceStateError::pendingQueueTimeout(Object::SPtr& object)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Error;

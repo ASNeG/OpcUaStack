@@ -14,20 +14,20 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-#ifndef __OpcUaStackClient_SessionServiceStateError_h__
-#define __OpcUaStackClient_SessionServiceStateError_h__
+#ifndef __OpcUaStackClient_SessionServiceStateActivateSession_h__
+#define __OpcUaStackClient_SessionServiceStateActivateSession_h__
 
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateIf.h"
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT SessionServiceStateError
+	class DLLEXPORT SessionServiceStateActivateSession
 	: public SessionServiceStateIf
 	{
 	  public:
-		SessionServiceStateError(void);
-		~SessionServiceStateError(void);
+		SessionServiceStateActivateSession(void);
+		~SessionServiceStateActivateSession(void);
 
 		virtual SessionServiceStateId asyncConnect(void) override;
 		virtual SessionServiceStateId asyncDisconnect(bool deleteSubscriptions) override;

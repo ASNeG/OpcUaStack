@@ -18,8 +18,13 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateMachine.h"
-#include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateDisconnected.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateConnecting.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateCreateSession.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateActivateSession.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateEstablished.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateDisconnecting.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateError.h"
 
 using namespace OpcUaStackCore;
 
@@ -65,8 +70,36 @@ namespace OpcUaStackClient
 			case SessionServiceStateId::Disconnected:
 			{
 				state_.reset(new SessionServiceStateDisconnected());
-				state_->setCtx(ctx_);
-				logChangeState(oldStateName);
+				break;
+			}
+			case SessionServiceStateId::Connecting:
+			{
+				state_.reset(new SessionServiceStateConnecting());
+				break;
+			}
+			case SessionServiceStateId::CreateSession:
+			{
+				state_.reset(new SessionServiceStateCreateSession());
+				break;
+			}
+			case SessionServiceStateId::ActivateSession:
+			{
+				state_.reset(new SessionServiceStateActivateSession());
+				break;
+			}
+			case SessionServiceStateId::Established:
+			{
+				state_.reset(new SessionServiceStateEstablished());
+				break;
+			}
+			case SessionServiceStateId::Disconnecting:
+			{
+				state_.reset(new SessionServiceStateDisconnecting());
+				break;
+			}
+			case SessionServiceStateId::Error:
+			{
+				state_.reset(new SessionServiceStateError());
 				break;
 			}
 			default:
@@ -77,6 +110,8 @@ namespace OpcUaStackClient
 				return false;
 			}
 		}
+		state_->setCtx(ctx_);
+		logChangeState(oldStateName);
 		return true;
 	}
 
