@@ -582,8 +582,9 @@ namespace OpcUaStackServer
 		}
 
 		// check monitored item list
+		monitoredItemIds_.erase(it1);
 		if (newMonitoredItemIds.size() > 0) {
-			monitoredItemIds_.insert(std::make_pair(baseNodeClass->nodeId().data(), monitoredItemIds));
+			monitoredItemIds_.insert(std::make_pair(baseNodeClass->nodeId().data(), newMonitoredItemIds));
 			return;
 		}
 
