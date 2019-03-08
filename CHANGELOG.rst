@@ -3,7 +3,8 @@ Release 3.6.3
 
 **Documentation**:
 
-* fix install requirements command #128, by @flipback 
+* fix apt-get command in installation guide  #128, by @flipback 
+* add app build command for local stack #129, by @flipback 
 
 Release 3.6.2 (2019-02-01)
 ------------------------------------------------------------
