@@ -318,7 +318,7 @@ namespace OpcUaStackClient
 	{
 		// decode response header
 		std::iostream ios(&secureChannel->secureChannelTransaction_->is_);
-		ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
+		ResponseHeader::SPtr responseHeader = boost::make_shared<ResponseHeader>();
 		responseHeader->opcUaBinaryDecode(ios);
 
 		switch (secureChannel->secureChannelTransaction_->responseTypeNodeId_.nodeId<OpcUaUInt32>())

@@ -73,19 +73,19 @@ namespace OpcUaStackClient
 		virtual SessionServiceStateId handleDisconnect(SecureChannel* secureChannel) = 0;
 		virtual SessionServiceStateId recvCreateSessionResponse(
 			SecureChannel* secureChannel,
-			ResponseHeader::SPtr& responseHeader
+			const ResponseHeader::SPtr& responseHeader
 		) = 0;
 		virtual SessionServiceStateId recvActivateSessionResponse(
 			SecureChannel* secureChannel,
-			ResponseHeader::SPtr& responseHeader
+			const ResponseHeader::SPtr& responseHeader
 		) = 0;
 		virtual SessionServiceStateId recvCloseSessionResponse(
 			SecureChannel* secureChannel,
-			ResponseHeader::SPtr& responseHeader
+			const ResponseHeader::SPtr& responseHeader
 		) = 0;
 		virtual SessionServiceStateId recvMessageResponse(
 			SecureChannel* secureChannel,
-			ResponseHeader::SPtr& responseHeader
+			const ResponseHeader::SPtr& responseHeader
 		) = 0;
 
 		//
@@ -97,7 +97,7 @@ namespace OpcUaStackClient
 		// internal events
 		//
 		virtual SessionServiceStateId reconnectTimeout(void) = 0;
-		virtual SessionServiceStateId pendingQueueTimeout(Object::SPtr& object) = 0;
+		virtual SessionServiceStateId pendingQueueTimeout(const Object::SPtr& object) = 0;
 
 	  protected:
 		SessionServiceContext* ctx_;

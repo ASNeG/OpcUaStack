@@ -81,7 +81,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateEstablished::recvCreateSessionResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -91,7 +91,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateEstablished::recvActivateSessionResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -101,7 +101,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateEstablished::recvCloseSessionResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -111,7 +111,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateEstablished::recvMessageResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -193,7 +193,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateEstablished::pendingQueueTimeout(Object::SPtr& object)
+	SessionServiceStateEstablished::pendingQueueTimeout(const Object::SPtr& object)
 	{
 		auto trx = boost::static_pointer_cast<ServiceTransaction>(object);
 		auto responseType = trx->nodeTypeResponse().nodeId<uint32_t>();

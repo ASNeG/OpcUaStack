@@ -73,7 +73,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateCreateSession::recvCreateSessionResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		assert(ctx_ != nullptr);
@@ -165,7 +165,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateCreateSession::recvActivateSessionResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -175,7 +175,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateCreateSession::recvCloseSessionResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -185,7 +185,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateCreateSession::recvMessageResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -207,7 +207,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateCreateSession::pendingQueueTimeout(Object::SPtr& object)
+	SessionServiceStateCreateSession::pendingQueueTimeout(const Object::SPtr& object)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::CreateSession;

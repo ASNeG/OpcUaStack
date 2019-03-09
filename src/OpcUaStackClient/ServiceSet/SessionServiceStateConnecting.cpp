@@ -90,7 +90,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateConnecting::recvCreateSessionResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -100,7 +100,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateConnecting::recvActivateSessionResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -110,7 +110,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateConnecting::recvCloseSessionResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -120,7 +120,7 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateConnecting::recvMessageResponse(
 		SecureChannel* secureChannel,
-		ResponseHeader::SPtr& responseHeader
+		const ResponseHeader::SPtr& responseHeader
 	)
 	{
 		// FIXME: todo
@@ -142,7 +142,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateConnecting::pendingQueueTimeout(Object::SPtr& object)
+	SessionServiceStateConnecting::pendingQueueTimeout(const Object::SPtr& object)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Connecting;
