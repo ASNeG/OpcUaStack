@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceItem.h"
@@ -21,13 +21,22 @@ namespace OpcUaStackServer
 {
 
 	ReferenceItem::ReferenceItem(void)
-	: isForward_(false)
+	: typeId_()
+	, isForward_(false)
 	, nodeId_()
 	{
 	}
 
 	ReferenceItem::ReferenceItem(const bool& isForward, const OpcUaNodeId& nodeId)
-	: isForward_(isForward)
+	: typeId_()
+	, isForward_(isForward)
+	, nodeId_(nodeId)
+	{
+	}
+
+	ReferenceItem::ReferenceItem(const OpcUaNodeId& typeId, const bool& isForward, const OpcUaNodeId& nodeId)
+	: typeId_(typeId)
+	, isForward_(isForward)
 	, nodeId_(nodeId)
 	{
 	}
@@ -37,7 +46,7 @@ namespace OpcUaStackServer
 	}
 
 	void
-	ReferenceItem::copyTo(ReferenceItem::SPtr referenceItem)
+	ReferenceItem::copyTo(ReferenceItem::SPtr& referenceItem)
 	{
 		copyTo(*referenceItem);
 	}
@@ -45,6 +54,7 @@ namespace OpcUaStackServer
 	void
 	ReferenceItem::copyTo(ReferenceItem& referenceItem)
 	{
+		typeId_.copyTo(referenceItem.typeId_);
 		nodeId_.copyTo(referenceItem.nodeId_);
 		referenceItem.isForward_ = isForward_;
 	}
@@ -52,7 +62,9 @@ namespace OpcUaStackServer
 	bool 
 	ReferenceItem::operator==(const ReferenceItem& referenceItem)
 	{
-		return nodeId_ == referenceItem.nodeId_ && isForward_ == referenceItem.isForward_;
+		return typeId_ == referenceItem.typeId_
+				&& nodeId_ == referenceItem.nodeId_
+				&& isForward_ == referenceItem.isForward_;
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackServer_InformationModelManager_h__
@@ -68,10 +68,10 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<InformationModelManager> SPtr;
 
 		InformationModelManager(void);
-		InformationModelManager(InformationModel::SPtr informationModel);
+		InformationModelManager(InformationModel::SPtr& informationModel);
 		~InformationModelManager(void);
 
-		void informationModel(InformationModel::SPtr informationModel);
+		void informationModel(InformationModel::SPtr& informationModel);
 
 		bool addNode(
 			NodeClassType nodeClassType,

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
@@ -122,10 +122,8 @@ namespace OpcUaStackServer
 		for (it = informationModelMap_.begin(); it != informationModelMap_.end(); it++) {
 			BaseNodeClass::SPtr baseNodeClass = it->second;
 
-			ReferenceItemMultiMap::iterator itr;
-			for (itr = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin(); itr != baseNodeClass->referenceItemMap().referenceItemMultiMap().end(); itr++) {
-				OpcUaNodeId referenceTypeNodeId = itr->first;
-				ReferenceItem::SPtr referenceItem = itr->second;
+			for (auto referenceItem : baseNodeClass->referenceItemMap()) {
+				OpcUaNodeId referenceTypeNodeId = referenceItem->typeId_;
 				if (referenceItem->isForward_) {
 					BaseNodeClass::SPtr baseNodeClassTarget = find(referenceItem->nodeId_);
 					if (baseNodeClassTarget.get() == nullptr) {

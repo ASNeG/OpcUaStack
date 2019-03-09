@@ -4,11 +4,14 @@ Release 3.7.0
 **Features**:
 
 * refactoring application service interface #65, by @huebl
-* add simple getter to password of UserNameIdentityToken #108, by @flipback 
+* add simple getter to password of UserNameIdentityToken #108, by @flipback
+* improve performance of Information Model #120, by @flipback
 
 **Bugs**:
 
 * fix user changing during activated session #105, by @huebl
+* fix changing user in the same OPC UA session #105, by @huebl
+
 
 Release 3.6.1 (2018-12-28)
 ------------------------------------------------------------
@@ -16,6 +19,7 @@ Release 3.6.1 (2018-12-28)
 **Bugs**:
 
 * fix compilation on Winodws #71, by @flipback
+
 
 Release 3.6.0 (2018-12-26)
 ------------------------------------------------------------
@@ -85,6 +89,7 @@ Release 3.4.0 (2018-10-16)
 -------------------------------------------------------------
 
 **Features**:
+
 * add Docker support #17, by @flipback
 
 

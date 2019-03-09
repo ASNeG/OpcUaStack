@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -86,7 +86,7 @@ namespace OpcUaStackServer
 
 		bool uint32ArrayToString(std::string& value, OpcUaUInt32Array& array);
 		bool stringToNodeId(const std::string& nodeIdString, OpcUaNodeId& nodeId);
-		bool isProperty(VariableNodeClass::SPtr variableNodeClassSPtr);
+		bool isProperty(VariableNodeClass::SPtr& variableNodeClassSPtr);
 
 		bool enableDefinition_;
 		NodeSetAlias nodeSetAlias_;

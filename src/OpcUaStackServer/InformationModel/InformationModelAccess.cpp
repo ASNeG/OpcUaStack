@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include <sstream>
@@ -137,14 +137,7 @@ namespace OpcUaStackServer
 	{
 		childBaseNodeClassVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (!referenceItem->isForward_) continue;
 			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
 			if (childBaseNodeClass.get() == nullptr) {
@@ -188,17 +181,10 @@ namespace OpcUaStackServer
 		childBaseNodeClassVec.clear();
 		referenceItemVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (!referenceItem->isForward_) continue;
 
-			if (!isReferenceHierarchically(it->first)) continue;
+			if (!isReferenceHierarchically(referenceItem->typeId_)) continue;
 
 			if (informationModel_.get() == nullptr) return false;
 			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
@@ -225,18 +211,11 @@ namespace OpcUaStackServer
 		childBaseNodeClassVec.clear();
 		referenceTypeNodeIdVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			OpcUaNodeId referenceTypeNodeId = it->first;
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
+			OpcUaNodeId referenceTypeNodeId = referenceItem->typeId_;
 			if (!referenceItem->isForward_) continue;
 
-			if (!isReferenceHierarchically(it->first)) continue;
+			if (!isReferenceHierarchically(referenceTypeNodeId)) continue;
 
 			if (informationModel_.get() == nullptr) return false;
 			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
@@ -258,17 +237,10 @@ namespace OpcUaStackServer
 	{
 		childBaseNodeClassVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (!referenceItem->isForward_) continue;
 
-			if (isReferenceHierarchically(it->first)) continue;
+			if (isReferenceHierarchically(referenceItem->typeId_)) continue;
 
 			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
 			if (childBaseNodeClass.get() == nullptr) {
@@ -291,16 +263,9 @@ namespace OpcUaStackServer
 	{
 		childNodeIdVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			if (it->first != referenceTypeNodeId) continue;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
+			if (referenceItem->typeId_ != referenceTypeNodeId) continue;
 
-			ReferenceItem::SPtr referenceItem = it->second;
 			if (!referenceItem->isForward_) continue;
 
 			childNodeIdVec.push_back(referenceItem->nodeId_);
@@ -319,27 +284,21 @@ namespace OpcUaStackServer
 	{
 		childNodeIdVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			bool continueFlag = true;
 
 			std::vector<OpcUaNodeId>::iterator it2;
 			for (it2 = referenceTypeNodeIdVec.begin(); it2 != referenceTypeNodeIdVec.end(); it2++) {
 				OpcUaNodeId referenceTypeNodeId = *it2;
 
-				if (it->first == referenceTypeNodeId) {
+				if (referenceItem->typeId_ == referenceTypeNodeId) {
 					continueFlag = false;
 					break;
 				}
 			}
+
 			if (continueFlag) continue;
 
-			ReferenceItem::SPtr referenceItem = it->second;
 			if (!referenceItem->isForward_) continue;
 
 			childNodeIdVec.push_back(referenceItem->nodeId_);
@@ -362,16 +321,9 @@ namespace OpcUaStackServer
 		referenceTypeNodeIdVec.clear();
 		referenceItemVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (referenceItem->isForward_) continue;
-			referenceTypeNodeIdVec.push_back(it->first);
+			referenceTypeNodeIdVec.push_back(referenceItem->typeId_);
 			referenceItemVec.push_back(referenceItem);
 		}
 		return true;
@@ -382,14 +334,7 @@ namespace OpcUaStackServer
 	{
 		referenceItemVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (referenceItem->isForward_) continue;
 			referenceItemVec.push_back(referenceItem);
 		}
@@ -401,14 +346,7 @@ namespace OpcUaStackServer
 	{
 		nodeIdVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (referenceItem->isForward_) continue;
 			nodeIdVec.push_back(referenceItem->nodeId_);
 		}
@@ -420,14 +358,7 @@ namespace OpcUaStackServer
 	{
 		childBaseNodeClassVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (referenceItem->isForward_) continue;
 			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
 			if (childBaseNodeClass.get() == nullptr) {
@@ -450,16 +381,8 @@ namespace OpcUaStackServer
 	{
 		parentNodeIdVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			if (it->first != referenceTypeNodeId) continue;
-
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
+			if (referenceItem->typeId_ != referenceTypeNodeId) continue;
 			if (referenceItem->isForward_) continue;
 
 			parentNodeIdVec.push_back(referenceItem->nodeId_);
@@ -473,17 +396,10 @@ namespace OpcUaStackServer
 	{
 		childBaseNodeClassVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (referenceItem->isForward_) continue;
 
-			if (!isReferenceHierarchically(it->first)) continue;
+			if (!isReferenceHierarchically(referenceItem->typeId_)) continue;
 
 			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
 			if (childBaseNodeClass.get() == nullptr) {
@@ -502,17 +418,10 @@ namespace OpcUaStackServer
 	{
 		nodeIdVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (referenceItem->isForward_) continue;
 
-			if (!isReferenceHierarchically(it->first)) continue;
+			if (!isReferenceHierarchically(referenceItem->typeId_)) continue;
 
 			nodeIdVec.push_back(referenceItem->nodeId_);
 		}
@@ -524,17 +433,10 @@ namespace OpcUaStackServer
 	{
 		childBaseNodeClassVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (referenceItem->isForward_) continue;
 
-			if (isReferenceHierarchically(it->first)) continue;
+			if (isReferenceHierarchically(referenceItem->typeId_)) continue;
 
 			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
 			if (childBaseNodeClass.get() == nullptr) {
@@ -553,17 +455,10 @@ namespace OpcUaStackServer
 	{
 		nodeIdVec.clear();
 
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		)
-		{
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (referenceItem->isForward_) continue;
 
-			if (isReferenceHierarchically(it->first)) continue;
+			if (isReferenceHierarchically(referenceItem->typeId_)) continue;
 
 			nodeIdVec.push_back(referenceItem->nodeId_);
 		}
@@ -625,7 +520,6 @@ namespace OpcUaStackServer
 	InformationModelAccess::parentChange(BaseNodeClass::SPtr baseNodeClass, const OpcUaNodeId& oldParentNodeId, const OpcUaNodeId& newParentNodeId)
 	{
 		bool success;
-		ReferenceItemMultiMap::iterator it;
 		OpcUaNodeId nodeId = *baseNodeClass->getNodeId();
 
 		// get old parent base node class
@@ -650,16 +544,12 @@ namespace OpcUaStackServer
 
 		// remove reference from parent to node
 		success = false;
-		for (
-			it = oldParentBaseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != oldParentBaseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		) {
-			ReferenceItem::SPtr referenceItem = it->second;
-			if (referenceItem->nodeId_ == nodeId && referenceItem->isForward_ == true)
-			{
+		for (auto refIt = oldParentBaseNodeClass->referenceItemMap().begin();
+					refIt != oldParentBaseNodeClass->referenceItemMap().end(); ++refIt) {
+			auto referenceItem = *refIt;
+			if (referenceItem->nodeId_ == nodeId && referenceItem->isForward_ == true) {
 				success = true;
-				oldParentBaseNodeClass->referenceItemMap().referenceItemMultiMap().erase(it);
+				oldParentBaseNodeClass->referenceItemMap().erase(refIt);
 				break;
 			}
 		}
@@ -673,12 +563,7 @@ namespace OpcUaStackServer
 
 		// change reference from node to parent
 		success = false;
-		for (
-			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
-		) {
-			ReferenceItem::SPtr referenceItem = it->second;
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (referenceItem->nodeId_ == oldParentNodeId && referenceItem->isForward_ == false)
 			{
 				success = true;
@@ -772,17 +657,15 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getType(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& typeBaseNodeClass)
 	{
-		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
-		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
 		if (it.first == it.second) {
 			Log(Warning, "HasTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
 			return false;
 		}
 
-		ReferenceItemMultiMap::iterator itl;
-		for (itl = it.first; itl != it.second; itl++) {
-			ReferenceItem::SPtr referenceItem  = itl->second;
+
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 
 			if (!referenceItem->isForward_) continue;
 
@@ -804,18 +687,14 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getType(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& typeNodeId)
 	{
-		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
-		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
 		if (it.first == it.second) {
 			Log(Warning, "HasTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
 			return false;
 		}
 
-		ReferenceItemMultiMap::iterator itl;
-		for (itl = it.first; itl != it.second; itl++) {
-			ReferenceItem::SPtr referenceItem  = itl->second;
-
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (!referenceItem->isForward_) continue;
 			referenceItem->nodeId_.copyTo(typeNodeId);
 			return true;
@@ -840,18 +719,14 @@ namespace OpcUaStackServer
 		if (nodeId == OpcUaNodeId(31)) return false;
 		if (nodeId == OpcUaNodeId(62)) return false;
 
-		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
-		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasSubtypeTypeNodeId());
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasSubtypeTypeNodeId());
 		if (it.first == it.second) {
-			Log(Warning, "HasSubTypeDefinition reference not exist in node")
+			Log(Warning, "HasTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
 			return false;
 		}
 
-		ReferenceItemMultiMap::iterator itl;
-		for (itl = it.first; itl != it.second; itl++) {
-			ReferenceItem::SPtr referenceItem  = itl->second;
-
+		for (const auto& referenceItem : baseNodeClass->referenceItemMap()) {
 			if (referenceItem->isForward_) continue;
 
 			subTypeBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
@@ -873,17 +748,16 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getSubType(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& subTypeNodeId)
 	{
-		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
-		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasSubtypeTypeNodeId());
+
+		auto it = baseNodeClass->referenceItemMap().equal_range(*ReferenceTypeMap::hasSubtypeTypeNodeId());
 		if (it.first == it.second) {
-			Log(Warning, "HasSubTypeDefinition reference not exist in node")
+			Log(Warning, "HasTypeDefinition reference not exist in node")
 				.parameter("NodeId", baseNodeClass->nodeId());
 			return false;
 		}
 
-		ReferenceItemMultiMap::iterator itl;
-		for (itl = it.first; itl != it.second; itl++) {
-			ReferenceItem::SPtr referenceItem  = itl->second;
+		for (auto ref = it.first; ref != it.second; ++ref) {
+			ReferenceItem::SPtr referenceItem  = ref->second;
 
 			if (referenceItem->isForward_) continue;
 			referenceItem->nodeId_.copyTo(subTypeNodeId);
@@ -1267,22 +1141,16 @@ namespace OpcUaStackServer
 			it1++
 		) {
 			BaseNodeClass::SPtr baseNodeClass = it1->second;
-			ReferenceItemMultiMap::iterator it2;
-			std::vector<ReferenceItemMultiMap::iterator> it2Vec;
-			for (
-				it2 = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
-				it2 != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-				it2++
-			) {
-				ReferenceItem::SPtr referenceItem = it2->second;
-				if (referenceItem->nodeId_ == nodeId) {
-					it2Vec.push_back(it2);
+			std::vector<ReferenceItemMap::const_iterator> refVector;
+			for (auto refIt = baseNodeClass->referenceItemMap().begin();
+					refIt != baseNodeClass->referenceItemMap().end(); ++refIt) {
+				if ((*refIt)->nodeId_ == nodeId) {
+					refVector.push_back(refIt);
 				}
 			}
 
-			std::vector<ReferenceItemMultiMap::iterator>::iterator it3;
-			for (it3 = it2Vec.begin(); it3 != it2Vec.end(); it3++) {
-				baseNodeClass->referenceItemMap().referenceItemMultiMap().erase(*it3);
+			for (auto& refIt : refVector) {
+				baseNodeClass->referenceItemMap().erase(refIt);
 			}
 		}
 
