@@ -98,10 +98,6 @@ namespace OpcUaStackClient
 		void asyncCancelInternal(uint32_t requestHandle);
 
 		void pendingQueueTimeout(Object::SPtr object);
-		void receiveMessage(
-			SecureChannelTransaction::SPtr secureChannelTransaction,
-			ResponseHeader::SPtr responseHeader
-		);
 		void reconnectTimeout(void);
 
 		SessionServiceStateMachine sm_;

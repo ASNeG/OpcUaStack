@@ -248,7 +248,7 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncCancelInternal(uint32_t requestHandle)
 	{
-		ctx_->sendCancelRequest(requestHandle);
+		ctx_->sendCancelRequest(ctx_->secureChannel_, requestHandle);
 	}
 
 	// ------------------------------------------------------------------------
@@ -316,7 +316,6 @@ namespace OpcUaStackClient
 	void
 	SessionService::handleMessageResponse(SecureChannel* secureChannel)
 	{
-
 		// decode response header
 		std::iostream ios(&secureChannel->secureChannelTransaction_->is_);
 		ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
@@ -326,17 +325,41 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
 			{
-				recvCreateSessionResponse(secureChannel->secureChannelTransaction_, responseHeader);
+				sm_.event(
+					[this, secureChannel, responseHeader](SessionServiceStateIf* sssif) {
+						return sssif->recvCreateSessionResponse(secureChannel, responseHeader);
+					}
+				);
+
 				return;
 			}
 			case OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary:
 			{
-				recvActivateSessionResponse(secureChannel->secureChannelTransaction_, responseHeader);
+				sm_.event(
+					[this, secureChannel, responseHeader](SessionServiceStateIf* sssif) {
+						return sssif->recvActivateSessionResponse(secureChannel, responseHeader);
+					}
+				);
+
+				return;
+			}
+			case OpcUaId_CloseSessionResponse_Encoding_DefaultBinary:
+			{
+				sm_.event(
+					[this, secureChannel, responseHeader](SessionServiceStateIf* sssif) {
+						return sssif->recvCloseSessionResponse(secureChannel, responseHeader);
+					}
+				);
+
 				return;
 			}
 		}
 
-		receiveMessage(secureChannel->secureChannelTransaction_, responseHeader);
+		sm_.event(
+			[this, secureChannel, responseHeader](SessionServiceStateIf* sssif) {
+				return sssif->recvMessageResponse(secureChannel, responseHeader);
+			}
+		);
 	}
 
 	// ------------------------------------------------------------------------
@@ -349,6 +372,13 @@ namespace OpcUaStackClient
 	void
 	SessionService::receive(Message::SPtr message)
 	{
+		sm_.event(
+			[this, message](SessionServiceStateIf* sssif) {
+				return sssif->sendMessageRequest(message);
+			}
+		);
+
+#if 0
 		uint32_t requestTimeout = requestTimeout_;
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		serviceTransaction->calcRequestTimeout(requestTimeout);
@@ -398,11 +428,19 @@ namespace OpcUaStackClient
 		);
 
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
+#endif
 	}
 
 	void
 	SessionService::pendingQueueTimeout(Object::SPtr object)
 	{
+		sm_.event(
+			[this, object](SessionServiceStateIf* sssif) {
+				return sssif->pendingQueueTimeout(object);
+			}
+		);
+
+#if 0
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(object);
 
 		Log(Debug, "session send request timeout")
@@ -418,8 +456,10 @@ namespace OpcUaStackClient
 		serviceTransaction->statusCode(statusCode);
 		Component* componentService = serviceTransaction->componentService();
 		componentService->sendAsync(serviceTransaction);
+#endif
 	}
 
+#if 0
 	void
 	SessionService::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction, ResponseHeader::SPtr responseHeader)
 	{
@@ -460,5 +500,6 @@ namespace OpcUaStackClient
 		Component* componentService = serviceTransaction->componentService();
 		componentService->sendAsync(serviceTransaction);
 	}
+#endif
 
 }

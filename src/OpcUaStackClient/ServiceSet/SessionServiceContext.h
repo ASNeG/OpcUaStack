@@ -63,22 +63,30 @@ namespace OpcUaStackClient
 		static uint32_t gId_;
 		uint32_t id_;
 
+		//
 		// secure channel configuration
+		//
 		SecureChannelClientConfig::SPtr secureChannelClientConfig_;
 		SecureChannelClient secureChannelClient_;
 		SecureChannel* secureChannel_;
 
+		//
 		// session configuration
+		//
 		SessionService* sessionService_;
 		SessionMode sessionMode_;
 		SessionConfig::SPtr sessionConfig_;
 		SessionServiceIf* sessionServiceIf_;
 
+		//
 		// thread and timer
+		//
 		IOThread* ioThread_;
 		SlotTimerElement::SPtr slotTimerElement_;
 
+		//
 		// session lifetime data
+		//
 		PendingQueue pendingQueue_;				// request pending queue
 
 		char clientNonce_[32];					// client nonce from create session request
