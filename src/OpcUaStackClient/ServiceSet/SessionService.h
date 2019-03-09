@@ -64,15 +64,6 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<SessionService> SPtr;
 
-		typedef enum
-		{
-			SCS_Disconnected,
-			SCS_DisconnectedWait,
-			SCS_Connecting,
-			SCS_Connected,
-			SCS_Disconnecting
-		} SecureChannelState;
-
 		SessionService(IOThread* ioThread);
 		~SessionService(void);
 

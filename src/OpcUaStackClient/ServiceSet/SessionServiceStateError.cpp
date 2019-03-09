@@ -70,7 +70,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateError::handleCreateSessionResponse(
+	SessionServiceStateError::recvCreateSessionResponse(
 		SecureChannel* secureChannel,
 		ResponseHeader::SPtr& responseHeader
 	)
@@ -80,7 +80,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateError::handleActivateSessionResponse(
+	SessionServiceStateError::recvActivateSessionResponse(
 		SecureChannel* secureChannel,
 		ResponseHeader::SPtr& responseHeader
 	)
@@ -100,7 +100,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateError::handleMessageResponse(
+	SessionServiceStateError::recvMessageResponse(
 		SecureChannel* secureChannel,
 		ResponseHeader::SPtr& responseHeader
 	)

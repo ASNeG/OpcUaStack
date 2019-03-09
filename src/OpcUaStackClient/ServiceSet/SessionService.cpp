@@ -248,7 +248,7 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncCancelInternal(uint32_t requestHandle)
 	{
-		sendCancelRequest(requestHandle);
+		ctx_->sendCancelRequest(requestHandle);
 	}
 
 	// ------------------------------------------------------------------------

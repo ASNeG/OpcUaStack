@@ -59,19 +59,23 @@ namespace OpcUaStackClient
 		std::string stateName(void);
 		SessionServiceStateId stateId(void);
 
+		//
 		// events from user interface
+		//
 		virtual SessionServiceStateId asyncConnect(void) = 0;
 		virtual SessionServiceStateId asyncDisconnect(bool deleteSubscriptions) = 0;
 		virtual SessionServiceStateId asyncCancel(uint32_t requestHandle) = 0;
 
+		//
 		// events from secure channel server
+		//
 		virtual SessionServiceStateId handleConnect(SecureChannel* secureChannel) = 0;
 		virtual SessionServiceStateId handleDisconnect(SecureChannel* secureChannel) = 0;
-		virtual SessionServiceStateId handleCreateSessionResponse(
+		virtual SessionServiceStateId recvCreateSessionResponse(
 			SecureChannel* secureChannel,
 			ResponseHeader::SPtr& responseHeader
 		) = 0;
-		virtual SessionServiceStateId handleActivateSessionResponse(
+		virtual SessionServiceStateId recvActivateSessionResponse(
 			SecureChannel* secureChannel,
 			ResponseHeader::SPtr& responseHeader
 		) = 0;
@@ -79,15 +83,19 @@ namespace OpcUaStackClient
 			SecureChannel* secureChannel,
 			ResponseHeader::SPtr& responseHeader
 		) = 0;
-		virtual SessionServiceStateId handleMessageResponse(
+		virtual SessionServiceStateId recvMessageResponse(
 			SecureChannel* secureChannel,
 			ResponseHeader::SPtr& responseHeader
 		) = 0;
 
+		//
 		// event to send a message to a opc ua server
+		//
 		virtual SessionServiceStateId sendMessageRequest(Message::SPtr message) = 0;
 
+		//
 		// internal events
+		//
 		virtual SessionServiceStateId reconnectTimeout(void) = 0;
 		virtual SessionServiceStateId pendingQueueTimeout(Object::SPtr& object) = 0;
 

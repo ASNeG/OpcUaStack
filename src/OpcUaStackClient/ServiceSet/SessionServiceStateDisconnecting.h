@@ -35,11 +35,11 @@ namespace OpcUaStackClient
 
 		virtual SessionServiceStateId handleConnect(SecureChannel* secureChannel) override;
 		virtual SessionServiceStateId handleDisconnect(SecureChannel* secureChannel) override;
-		virtual SessionServiceStateId handleCreateSessionResponse(
+		virtual SessionServiceStateId recvCreateSessionResponse(
 			SecureChannel* secureChannel,
 			ResponseHeader::SPtr& responseHeader
 		) override;
-		virtual SessionServiceStateId handleActivateSessionResponse(
+		virtual SessionServiceStateId recvActivateSessionResponse(
 			SecureChannel* secureChannel,
 			ResponseHeader::SPtr& responseHeader
 		) override;
@@ -47,7 +47,7 @@ namespace OpcUaStackClient
 			SecureChannel* secureChannel,
 			ResponseHeader::SPtr& responseHeader
 		) = 0;
-		virtual SessionServiceStateId handleMessageResponse(
+		virtual SessionServiceStateId recvMessageResponse(
 			SecureChannel* secureChannel,
 			ResponseHeader::SPtr& responseHeader
 		) override;
