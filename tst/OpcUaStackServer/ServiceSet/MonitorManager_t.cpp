@@ -3,6 +3,7 @@
 #include "OpcUaStackServer/ServiceSet/MonitorManager.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStartContext.h"
+#include "OpcUaStackCore/Application/ApplicationMonitoredItemStopContext.h"
 
 using namespace OpcUaStackServer;
 
@@ -11,8 +12,9 @@ struct F {
     F() : mm()
     , informationModel(constructSPtr<InformationModel>())
     , ioThread(constructSPtr<IOThread>())
-    , tran(constructSPtr<ServiceTransactionCreateMonitoredItems>())
+    , createMonitoredItemTransaction(constructSPtr<ServiceTransactionCreateMonitoredItems>())
     , startMonitoredItemCallCount(0)
+    , stopMonitoredItemCallCount(0)
     {
 
 		mm.informationModel(informationModel);
@@ -29,7 +31,10 @@ struct F {
 
 		auto sync = constructSPtr<ForwardNodeSync>();
 		auto startMonitoredItemCallback = Callback(boost::bind(&F::startMonitored, this, _1));
+		auto stopMonitoredItemCallback = Callback(boost::bind(&F::stopMonitored, this, _1));
 		sync->monitoredItemStartService().setCallback(startMonitoredItemCallback);
+		sync->monitoredItemStopService().setCallback(stopMonitoredItemCallback);
+
 		nodeToMonitor->forwardNodeSync(sync);
 
 		informationModel->insert(nodeToMonitor);
@@ -46,7 +51,7 @@ struct F {
 		itemsToCreate->resize(1);
 		itemsToCreate->push_back(monitoredItemCreateRequest);
 
-		tran->request()->itemsToCreate(itemsToCreate);
+		createMonitoredItemTransaction->request()->itemsToCreate(itemsToCreate);
     }
 
 	void
@@ -55,15 +60,36 @@ struct F {
 		startMonitoredItemCallCount++;
 	}
 
+	void
+	stopMonitored(ApplicationMonitoredItemStopContext* context)
+	{
+		stopMonitoredItemCallCount++;
+	}
+
+	ServiceTransactionDeleteMonitoredItems::SPtr makeDeleteMonitredItemTransaction(CreateMonitoredItemsResponse::SPtr response) {
+		MonitoredItemCreateResult::SPtr result;
+		response->results()->get(0, result);
+
+		auto ids = constructSPtr<OpcUaUInt32Array>();
+		ids->resize(1);
+		ids->push_back(result->monitoredItemId());
+
+	    auto deleteMonitoredItemTransaction = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
+		deleteMonitoredItemTransaction->request()->monitoredItemIds(ids);
+
+		return deleteMonitoredItemTransaction;
+	}
+
     ~F() { }
 
 	MonitorManager mm;
 	InformationModel::SPtr informationModel;
 	IOThread::SPtr ioThread;
 
-	ServiceTransactionCreateMonitoredItems::SPtr tran;
+	ServiceTransactionCreateMonitoredItems::SPtr createMonitoredItemTransaction;
 
 	size_t startMonitoredItemCallCount;
+	size_t stopMonitoredItemCallCount;
 
 };
 
@@ -77,10 +103,10 @@ BOOST_AUTO_TEST_CASE(MonitorManager_)
 
 BOOST_AUTO_TEST_CASE(MonitorManager_CallStartMonitoredItemCallback)
 {
-	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(tran));
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(createMonitoredItemTransaction));
 
 	MonitoredItemCreateResult::SPtr result;
-	tran->response()->results()->get(0, result);
+	createMonitoredItemTransaction->response()->results()->get(0, result);
 
 	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, result->statusCode());
 	BOOST_REQUIRE_EQUAL(1, startMonitoredItemCallCount);
@@ -88,14 +114,53 @@ BOOST_AUTO_TEST_CASE(MonitorManager_CallStartMonitoredItemCallback)
 
 BOOST_AUTO_TEST_CASE(MonitorManager_CallStartMonitoredItemCallbackOnlyOnce)
 {
-	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(tran));
-	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(tran));
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(createMonitoredItemTransaction));
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(createMonitoredItemTransaction));
 
 	MonitoredItemCreateResult::SPtr result;
-	tran->response()->results()->get(0, result);
+	createMonitoredItemTransaction->response()->results()->get(0, result);
 
 	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, result->statusCode());
 	BOOST_REQUIRE_EQUAL(1, startMonitoredItemCallCount);
+}
+
+BOOST_AUTO_TEST_CASE(MonitorManager_CallStopMonitoredItemCallback)
+{
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(createMonitoredItemTransaction));
+
+	auto deleteMonitoredItemTransaction =
+			makeDeleteMonitredItemTransaction(createMonitoredItemTransaction->response());
+
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(deleteMonitoredItemTransaction));
+
+	OpcUaStatusCode status;
+	deleteMonitoredItemTransaction->response()->results()->get(0, status);
+
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, status);
+	BOOST_REQUIRE_EQUAL(1, stopMonitoredItemCallCount);
+}
+
+
+BOOST_AUTO_TEST_CASE(MonitorManager_CallStopMonitoredItemCallbackOnlyOnce)
+{
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(createMonitoredItemTransaction));
+
+	auto deleteMonitoredItemTransaction1 =
+			makeDeleteMonitredItemTransaction(createMonitoredItemTransaction->response());
+
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(createMonitoredItemTransaction));
+
+	auto deleteMonitoredItemTransaction2 =
+			makeDeleteMonitredItemTransaction(createMonitoredItemTransaction->response());
+
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(deleteMonitoredItemTransaction1));
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, mm.receive(deleteMonitoredItemTransaction2));
+
+	OpcUaStatusCode status;
+	deleteMonitoredItemTransaction2->response()->results()->get(0, status);
+
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, status);
+	BOOST_REQUIRE_EQUAL(1, stopMonitoredItemCallCount);
 }
 
 
