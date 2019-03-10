@@ -1,6 +1,10 @@
 Release 3.6.3
 ------------------------------------------------------------
 
+**Bugs**:
+
+* fix calling stop monitored item callback #132, by @flipback
+
 **Documentation**:
 
 * fix apt-get command in installation guide  #128, by @flipback 
