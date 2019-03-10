@@ -63,7 +63,7 @@ namespace OpcUaStackClient
 		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
-		sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
+		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 
@@ -103,10 +103,11 @@ namespace OpcUaStackClient
 	{
 		shutdown_ = true;
 
-		if (sessionService_->secureChannelState() != SessionService::SCS_Disconnected) {
+		// FIXME: todo
+		//if (sessionService_->secureChannelState() != SessionService::SCS_Disconnected) {
 			sessionService_->asyncDisconnect();
 			return;
-		}
+		//}
 
 		shutdownCond_.conditionValueDec();
 	}

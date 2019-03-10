@@ -64,7 +64,7 @@ namespace OpcUaClient
 
 		// check if session must be activated
 		if (!commandConnect->activateSession()) {
-			sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
+			sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		}
 
 		// create session

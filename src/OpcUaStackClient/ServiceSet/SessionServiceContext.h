@@ -39,7 +39,7 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<SessionServiceContext> SPtr;
 
-		SessionServiceContext(void);
+		SessionServiceContext(IOThread* ioThread);
 		~SessionServiceContext(void);
 
 		bool startReconnectTimer(void);

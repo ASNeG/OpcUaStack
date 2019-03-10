@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Utility/PendingQueue.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackClient/ServiceSet/SessionMode.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateMachine.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
@@ -92,13 +93,13 @@ namespace OpcUaStackClient
 		void receive(Message::SPtr message);
 		// - Component -------------------------------------------------------
 
+		void pendingQueueTimeout(Object::SPtr object);
+		void reconnectTimeout(void);
+
 	  private:
 		void asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction);
 		void asyncDisconnectInternal(SessionTransaction::SPtr& sessionTransaction, bool deleteSubscriptions);
 		void asyncCancelInternal(uint32_t requestHandle);
-
-		void pendingQueueTimeout(Object::SPtr object);
-		void reconnectTimeout(void);
 
 		SessionServiceStateMachine sm_;
 		SessionServiceContext* ctx_;

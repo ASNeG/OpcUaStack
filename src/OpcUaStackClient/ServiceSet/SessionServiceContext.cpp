@@ -29,10 +29,10 @@ namespace OpcUaStackClient
 
 	uint32_t SessionServiceContext::gId_ = 1;
 
-	SessionServiceContext::SessionServiceContext(void)
+	SessionServiceContext::SessionServiceContext(IOThread* ioThread)
 	: id_(gId_++)
 	, secureChannelClientConfig_()
-	, secureChannelClient_()
+	, secureChannelClient_(ioThread)
 	, secureChannel_(nullptr)
 
 	, sessionService_(nullptr)
@@ -40,7 +40,7 @@ namespace OpcUaStackClient
 	, sessionConfig_()
 	, sessionServiceIf_(nullptr)
 
-	, ioThread_(nullptr)
+	, ioThread_(ioThread)
 	, slotTimerElement_()
 
 	, sessionTimeout_(0)
@@ -68,9 +68,7 @@ namespace OpcUaStackClient
 			.parameter("Timeout", sessionConfig_->reconnectTimeout());
 
 		slotTimerElement_->expireFromNow(sessionConfig_->reconnectTimeout());
-		slotTimerElement_->callback().reset([this](void) {
-			sessionService_->reconnectTimeout();
-		});
+		slotTimerElement_->callback().reset(boost::bind(&SessionService::reconnectTimeout, sessionService_));
 		ioThread_->slotTimer()->start(slotTimerElement_);
 
 		return true;

@@ -51,11 +51,7 @@ namespace OpcUaStackCore
 	  private:
 		void renewSecurityToken(SecureChannel* secureChannel);
 		void connect(SecureChannel* secureChannel);
-		void resolveComplete(
-			const boost::system::error_code& error,
-			boost::asio::ip::tcp::resolver::iterator endpointIterator,
-			SecureChannel* secureChannel
-		);
+		void connectToServer(SecureChannel* secureChannel);
 		void connectComplete(
 			const boost::system::error_code& error,
 			SecureChannel* secureChannel
@@ -64,7 +60,6 @@ namespace OpcUaStackCore
 		void handleReconnect(SecureChannel* secureChannel);
 
 		IOThread* ioThread_;
-		boost::asio::ip::tcp::resolver resolver_;
 		SecureChannelClientIf* secureChannelClientIf_;
 		SlotTimerElement::SPtr slotTimerElementRenew_;
 		SlotTimerElement::SPtr slotTimerElementReconnect_;

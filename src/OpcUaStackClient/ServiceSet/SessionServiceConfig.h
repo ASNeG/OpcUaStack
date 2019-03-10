@@ -18,6 +18,7 @@
 #define __OpcUaStackClient_SessionServiceConfig_h__
 
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackClient/ServiceSet/SessionMode.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
 #include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
@@ -25,11 +26,6 @@ using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
-
-	enum class SessionMode {
-		SecureChannel,
-		SecureChannelAndSession
-	};
 
 	class DLLEXPORT SessionServiceConfig
 	: public ServiceConfigBase

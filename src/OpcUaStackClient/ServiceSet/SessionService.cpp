@@ -54,7 +54,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	SessionService::SessionService(IOThread* ioThread)
 	: sm_()
-	, ctx_(new SessionServiceContext())
+	, ctx_(new SessionServiceContext(ioThread))
 	{
 		Component::ioThread(ioThread);
 		ctx_->slotTimerElement_ = boost::make_shared<SlotTimerElement>();
