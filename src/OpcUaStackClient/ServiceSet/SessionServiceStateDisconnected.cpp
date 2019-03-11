@@ -65,6 +65,16 @@ namespace OpcUaStackClient
 		// open secure channel
 		secureChannelClient.secureChannelClientIf(sessionService);
 		secureChannel = secureChannelClient.connect(clientConfig);
+		if (secureChannel == nullptr) {
+			Log(Debug, "open secure channel error")
+				.parameter("SessId", ctx_->id_)
+				.parameter("EndpointUrl", clientConfig->endpointUrl());
+			sessionServiceIf->sessionStateUpdate(*sessionService, SS_Disconnect);
+
+			ctx_->startReconnectTimer();
+			return SessionServiceStateId::Disconnected;
+		}
+
 		return SessionServiceStateId::Connecting;
 	}
 

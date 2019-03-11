@@ -148,6 +148,7 @@ namespace OpcUaStackClient
 		    .parameter("SessionName", sessionConfig->sessionName_)
 		    .parameter("AuthenticationToken", ctx_->authenticationToken_);
 
+		// send activate session request
 		auto statusCode = ctx_->sendActivateSessionRequest(secureChannel);
 		if (statusCode != Success) {
 			Log(Error, "send activate session request error; close secure channel")

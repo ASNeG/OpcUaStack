@@ -18,6 +18,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateEstablished.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
 
@@ -38,7 +39,11 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateEstablished::asyncConnect(void)
 	{
-		// FIXME: todo
+		assert(ctx_ != nullptr);
+
+		Log(Warning, "async connect event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Established;
 	}
 
@@ -47,6 +52,7 @@ namespace OpcUaStackClient
 		bool deleteSubscriptions)
 	{
 		assert(ctx_ != nullptr);
+		assert(ctx_->secureChannel_ != nullptr);
 
 		// send close session request to server
 		ctx_->sendCloseSessionRequest(
@@ -67,7 +73,11 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateEstablished::handleConnect(SecureChannel* secureChannel)
 	{
-		// FIXME: todo
+		assert(ctx_ != nullptr);
+
+		Log(Warning, "handle connect event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Established;
 	}
 
@@ -84,8 +94,16 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
-		return SessionServiceStateId::Established;
+		assert(ctx_ != nullptr);
+
+		Log(Debug, "receive create session response in invalid state; close secure channel")
+			.parameter("SessId", ctx_->id_)
+			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
+
+		// close secure channel -
+		ctx_->secureChannelClient_.disconnect(secureChannel);
+
+		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
@@ -94,8 +112,16 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
-		return SessionServiceStateId::Established;
+		assert(ctx_ != nullptr);
+
+		Log(Debug, "receive activate session response in invalid state; close secure channel")
+			.parameter("SessId", ctx_->id_)
+			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
+
+		// close secure channel -
+		ctx_->secureChannelClient_.disconnect(secureChannel);
+
+		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
@@ -104,8 +130,16 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
-		return SessionServiceStateId::Established;
+		assert(ctx_ != nullptr);
+
+		Log(Debug, "receive close session response in invalid state; close secure channel")
+			.parameter("SessId", ctx_->id_)
+			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
+
+		// close secure channel -
+		ctx_->secureChannelClient_.disconnect(secureChannel);
+
+		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
@@ -114,7 +148,43 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		assert(ctx_ != nullptr);
+		assert(secureChannel != nullptr);
+		assert(secureChannel->secureChannelTransaction_.get() != nullptr);
+
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		uint32_t responseType = secureChannelTransaction->responseTypeNodeId_.nodeId<uint32_t>();
+
+		std::iostream ios(&secureChannelTransaction->is_);
+
+		// remove associated request from pending queue
+		Object::SPtr objectSPtr = ctx_->pendingQueue_.remove(secureChannelTransaction->requestId_);
+		if (objectSPtr.get() == nullptr) {
+			Log(Error, "receive message response error, because the request has already expired")
+				.parameter("SessId", ctx_->id_)
+				.parameter("RequestId", secureChannelTransaction->requestId_)
+				.parameter("AuthenticationToken", ctx_->authenticationToken_)
+				.parameter("ResponseType",  OpcUaIdMap::shortString(responseType))
+				.parameter("RequestHandle", responseHeader->requestHandle());
+			char c; while (ios.get(c));
+			return SessionServiceStateId::Established;
+		}
+
+		auto trx = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
+		trx->opcUaBinaryDecodeResponse(ios);
+		trx->responseHeader(responseHeader);
+		trx->statusCode(responseHeader->serviceResult());
+
+		Log(Debug, "session receive response")
+			.parameter("SessId", ctx_->id_)
+		    .parameter("RequestId", secureChannelTransaction->requestId_)
+	    	.parameter("AuthenticationToken", ctx_->authenticationToken_)
+			.parameter("ResponseType",  OpcUaIdMap::shortString(responseType))
+			.parameter("ServiceResult", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
+
+		Component* componentService = trx->componentService();
+		componentService->sendAsync(trx);
+
 		return SessionServiceStateId::Established;
 	}
 

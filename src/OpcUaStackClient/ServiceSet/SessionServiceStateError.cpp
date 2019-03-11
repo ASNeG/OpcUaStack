@@ -58,8 +58,17 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateError::handleConnect(SecureChannel* secureChannel)
 	{
-		// FIXME: todo
-		return SessionServiceStateId::Error;
+		assert(ctx_ != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
+
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto sessionService = ctx_->sessionService_;
+
+		sessionServiceIf->sessionStateUpdate(*sessionService, SS_Disconnect);
+
+		ctx_->startReconnectTimer();
+		return SessionServiceStateId::Disconnected;
 	}
 
 	SessionServiceStateId
