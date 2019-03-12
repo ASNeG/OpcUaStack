@@ -24,7 +24,7 @@ namespace OpcUaStackClient
 	SessionServiceIfTestHandler::SessionServiceIfTestHandler(void)
 	: SessionServiceIf()
 	, sessionStateUpdate_()
-	, sessionState_(SS_Disconnect)
+	, sessionState_(SessionState::Disconnected)
 	{
 	}
 

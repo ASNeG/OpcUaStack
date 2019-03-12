@@ -123,8 +123,7 @@ namespace OpcUaStackClient
 		    .parameter("SessionName", sessionConfig->sessionName_)
 		    .parameter("AuthenticationToken", ctx_->authenticationToken_);
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SS_Connect);
-
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Established);
 		return SessionServiceStateId::Established;
 	}
 

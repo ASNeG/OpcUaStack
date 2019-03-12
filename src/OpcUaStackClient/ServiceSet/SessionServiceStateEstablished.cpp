@@ -51,8 +51,19 @@ namespace OpcUaStackClient
 	SessionServiceStateEstablished::asyncDisconnect(
 		bool deleteSubscriptions)
 	{
+		Log(Debug, "async disconnect event")
+			.parameter("SessId", ctx_->id_);
+
 		assert(ctx_ != nullptr);
 		assert(ctx_->secureChannel_ != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
+
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto sessionService = ctx_->sessionService_;
+
+		// remove all requests from pending queue
+		removeAllRequestsFromPendingQueue();
 
 		// send close session request to server
 		ctx_->sendCloseSessionRequest(
@@ -60,6 +71,7 @@ namespace OpcUaStackClient
 			deleteSubscriptions
 		);
 
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnecting);
 		return SessionServiceStateId::Disconnecting;
 	}
 
@@ -84,8 +96,24 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateEstablished::handleDisconnect(SecureChannel* secureChannel)
 	{
-		// FIXME: todo
-		return SessionServiceStateId::Established;
+		Log(Debug, "handle disconnect event")
+			.parameter("SessId", ctx_->id_);
+
+		assert(ctx_ != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
+
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto sessionService = ctx_->sessionService_;
+
+		// remove all requests from pending queue
+		removeAllRequestsFromPendingQueue();
+
+		// start reconnect timer
+		ctx_->startReconnectTimer();
+
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
+		return SessionServiceStateId::Disconnected;
 	}
 
 	SessionServiceStateId
@@ -95,14 +123,26 @@ namespace OpcUaStackClient
 	)
 	{
 		assert(ctx_ != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
 
-		Log(Debug, "receive create session response in invalid state; close secure channel")
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto sessionService = ctx_->sessionService_;
+
+		Log(Debug, "create session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)
 			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
 
-		// close secure channel -
-		ctx_->secureChannelClient_.disconnect(secureChannel);
+		// remove all requests from pending queue
+		removeAllRequestsFromPendingQueue();
 
+		// send close session request to server
+		ctx_->sendCloseSessionRequest(
+			ctx_->secureChannel_,
+			false
+		);
+
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Error);
 		return SessionServiceStateId::Error;
 	}
 
@@ -113,14 +153,26 @@ namespace OpcUaStackClient
 	)
 	{
 		assert(ctx_ != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
 
-		Log(Debug, "receive activate session response in invalid state; close secure channel")
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto sessionService = ctx_->sessionService_;
+
+		Log(Debug, "activate session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)
 			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
 
-		// close secure channel -
-		ctx_->secureChannelClient_.disconnect(secureChannel);
+		// remove all requests from pending queue
+		removeAllRequestsFromPendingQueue();
 
+		// send close session request to server
+		ctx_->sendCloseSessionRequest(
+			ctx_->secureChannel_,
+			false
+		);
+
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Error);
 		return SessionServiceStateId::Error;
 	}
 
@@ -131,14 +183,23 @@ namespace OpcUaStackClient
 	)
 	{
 		assert(ctx_ != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
 
-		Log(Debug, "receive close session response in invalid state; close secure channel")
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto sessionService = ctx_->sessionService_;
+
+		Log(Warning, "receive close session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)
 			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
 
-		// close secure channel -
+		// remove all requests from pending queue
+		removeAllRequestsFromPendingQueue();
+
+		// disconnect secure channel
 		ctx_->secureChannelClient_.disconnect(secureChannel);
 
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Error);
 		return SessionServiceStateId::Error;
 	}
 
@@ -258,7 +319,9 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateEstablished::reconnectTimeout(void)
 	{
-		// FIXME: todo
+		Log(Warning, "reconnect timeout event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Established;
 	}
 
@@ -279,6 +342,28 @@ namespace OpcUaStackClient
 		componentService->sendAsync(trx);
 
 		return SessionServiceStateId::Established;
+	}
+
+	void
+	SessionServiceStateEstablished::removeAllRequestsFromPendingQueue(void)
+	{
+		std::vector<uint32_t> keys;
+		ctx_->pendingQueue_.keys(keys);
+		for (auto key : keys) {
+			auto object = ctx_->pendingQueue_.remove(key);
+			auto trx = boost::static_pointer_cast<ServiceTransaction>(object);
+			auto responseType = trx->nodeTypeResponse().nodeId<uint32_t>();
+
+			Log(Debug, "remove request from pending queue, because session closed")
+				.parameter("SessId", ctx_->id_)
+			    .parameter("RequestId", trx->requestId_)
+		    	.parameter("AuthenticationToken", ctx_->authenticationToken_)
+				.parameter("ResponseType", OpcUaIdMap::longString(responseType));
+
+			trx->statusCode(BadSessionClosed);
+			Component* componentService = trx->componentService();
+			componentService->sendAsync(trx);
+		}
 	}
 
 }

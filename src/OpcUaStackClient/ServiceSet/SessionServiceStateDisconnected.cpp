@@ -56,9 +56,11 @@ namespace OpcUaStackClient
 			Log(Debug, "endpoint url error")
 				.parameter("SessId", ctx_->id_)
 				.parameter("EndpointUrl", clientConfig->endpointUrl());
-			sessionServiceIf->sessionStateUpdate(*sessionService, SS_ServerUriError);
 
+			// start reconnect timer
 			ctx_->startReconnectTimer();
+
+			sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
 			return SessionServiceStateId::Disconnected;
 		}
 
@@ -69,9 +71,11 @@ namespace OpcUaStackClient
 			Log(Debug, "open secure channel error")
 				.parameter("SessId", ctx_->id_)
 				.parameter("EndpointUrl", clientConfig->endpointUrl());
-			sessionServiceIf->sessionStateUpdate(*sessionService, SS_Disconnect);
 
+			// start reconnect timer
 			ctx_->startReconnectTimer();
+
+			sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
 			return SessionServiceStateId::Disconnected;
 		}
 

@@ -56,6 +56,9 @@ namespace OpcUaStackClient
 
 		virtual SessionServiceStateId reconnectTimeout(void) override;
 		virtual SessionServiceStateId pendingQueueTimeout(const Object::SPtr& object) override;
+
+	  private:
+		void removeAllRequestsFromPendingQueue(void);
 	};
 
 }

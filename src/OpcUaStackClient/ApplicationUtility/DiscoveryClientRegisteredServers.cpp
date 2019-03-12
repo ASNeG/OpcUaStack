@@ -180,7 +180,7 @@ namespace OpcUaStackClient
 	void
 	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
-		if (sessionState == SS_Connect) {
+		if (sessionState == SessionState::Established) {
 			sendDiscoveryServiceRegisterServer();
 			return;
 		}

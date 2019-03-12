@@ -58,6 +58,12 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateError::handleConnect(SecureChannel* secureChannel)
 	{
+
+	}
+
+	SessionServiceStateId
+	SessionServiceStateError::handleDisconnect(SecureChannel* secureChannel)
+	{
 		assert(ctx_ != nullptr);
 		assert(ctx_->sessionServiceIf_ != nullptr);
 		assert(ctx_->sessionService_ != nullptr);
@@ -65,17 +71,11 @@ namespace OpcUaStackClient
 		auto sessionServiceIf = ctx_->sessionServiceIf_;
 		auto sessionService = ctx_->sessionService_;
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SS_Disconnect);
-
+		// start reconnect timer
 		ctx_->startReconnectTimer();
-		return SessionServiceStateId::Disconnected;
-	}
 
-	SessionServiceStateId
-	SessionServiceStateError::handleDisconnect(SecureChannel* secureChannel)
-	{
-		// FIXME: todo
-		return SessionServiceStateId::Error;
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
+		return SessionServiceStateId::Disconnected;
 	}
 
 	SessionServiceStateId

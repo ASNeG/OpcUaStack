@@ -71,7 +71,8 @@ namespace OpcUaStackClient
 
 		// if we do not need a session we are ready.
 		if (ctx_->sessionMode_ == SessionMode::SecureChannel) {
-			sessionServiceIf->sessionStateUpdate(*sessionService, SS_Connect);
+
+			sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Established);
 			return SessionServiceStateId::Established;
 		}
 
