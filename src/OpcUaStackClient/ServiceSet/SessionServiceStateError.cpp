@@ -37,15 +37,29 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateError::asyncConnect(void)
 	{
-		// FIXME: todo
+		assert(ctx_ != nullptr);
+
+		Log(Warning, "async connect event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateError::asyncDisconnect(bool deleteSubscriptions)
 	{
-		// FIXME: todo
-		return SessionServiceStateId::Error;
+		assert(ctx_ != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
+
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto sessionService = ctx_->sessionService_;
+
+		Log(Warning, "async disconnect event")
+			.parameter("SessId", ctx_->id_);
+
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnecting);
+		return SessionServiceStateId::Disconnecting;
 	}
 
 	SessionServiceStateId
@@ -58,7 +72,11 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateError::handleConnect(SecureChannel* secureChannel)
 	{
+		Log(Error, "handle connect event in invalid state; abort")
+			.parameter("SessId", ctx_->id_);
+		std::abort();
 
+		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
@@ -84,7 +102,9 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "create session response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Error;
 	}
 
@@ -94,7 +114,9 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "activate session response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Error;
 	}
 
@@ -104,7 +126,9 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "close session response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Error;
 	}
 
@@ -114,28 +138,48 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "message response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateError::sendMessageRequest(Message::SPtr message)
 	{
-		// FIXME: todo
+		assert(ctx_ != nullptr);
+		assert(message.get() != nullptr);
+
+		Log(Warning, "message request event in invalid state")
+			.parameter("SessId", ctx_->id_);
+
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+
+		// send response
+		serviceTransaction->statusCode(BadSessionClosed);
+		Component* componentService = serviceTransaction->componentService();
+		componentService->sendAsync(serviceTransaction);
+
 		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateError::reconnectTimeout(void)
 	{
-		// FIXME: todo
+		Log(Error, "reconnect timeout event in invalid state; abort")
+			.parameter("SessId", ctx_->id_);
+		std::abort();
+
 		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateError::pendingQueueTimeout(const Object::SPtr& object)
 	{
-		// FIXME: todo
+		Log(Error, "pending queue timeout event in invalid state; abort")
+			.parameter("SessId", ctx_->id_);
+		std::abort();
+
 		return SessionServiceStateId::Error;
 	}
 

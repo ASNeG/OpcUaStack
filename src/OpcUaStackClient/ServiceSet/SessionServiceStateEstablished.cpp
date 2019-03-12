@@ -59,17 +59,27 @@ namespace OpcUaStackClient
 		assert(ctx_->sessionServiceIf_ != nullptr);
 		assert(ctx_->sessionService_ != nullptr);
 
+		auto secureChannel = ctx_->secureChannel_;
 		auto sessionServiceIf = ctx_->sessionServiceIf_;
 		auto sessionService = ctx_->sessionService_;
 
 		// remove all requests from pending queue
 		removeAllRequestsFromPendingQueue();
 
-		// send close session request to server
-		ctx_->sendCloseSessionRequest(
-			ctx_->secureChannel_,
-			deleteSubscriptions
-		);
+		// check if session exists
+		if (ctx_->sessionMode_ == SessionMode::SecureChannel) {
+
+			// no session exists - close secure channel
+			ctx_->secureChannelClient_.disconnect(secureChannel);
+		}
+		else {
+
+			// session exists send close session request to server
+			ctx_->sendCloseSessionRequest(
+				ctx_->secureChannel_,
+				deleteSubscriptions
+			);
+		}
 
 		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnecting);
 		return SessionServiceStateId::Disconnecting;
@@ -85,10 +95,9 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateEstablished::handleConnect(SecureChannel* secureChannel)
 	{
-		assert(ctx_ != nullptr);
-
-		Log(Warning, "handle connect event in invalid state; ignore event")
+		Log(Error, "handle connect event in invalid state; abort")
 			.parameter("SessId", ctx_->id_);
+		std::abort();
 
 		return SessionServiceStateId::Established;
 	}
@@ -112,8 +121,8 @@ namespace OpcUaStackClient
 		// start reconnect timer
 		ctx_->startReconnectTimer();
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
-		return SessionServiceStateId::Disconnected;
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Error);
+		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
@@ -129,18 +138,15 @@ namespace OpcUaStackClient
 		auto sessionServiceIf = ctx_->sessionServiceIf_;
 		auto sessionService = ctx_->sessionService_;
 
-		Log(Debug, "create session response in invalid state; close secure channel")
+		Log(Warning, "create session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)
 			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
 
 		// remove all requests from pending queue
 		removeAllRequestsFromPendingQueue();
 
-		// send close session request to server
-		ctx_->sendCloseSessionRequest(
-			ctx_->secureChannel_,
-			false
-		);
+		// close secure channel
+		ctx_->secureChannelClient_.disconnect(secureChannel);
 
 		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Error);
 		return SessionServiceStateId::Error;
@@ -159,18 +165,15 @@ namespace OpcUaStackClient
 		auto sessionServiceIf = ctx_->sessionServiceIf_;
 		auto sessionService = ctx_->sessionService_;
 
-		Log(Debug, "activate session response in invalid state; close secure channel")
+		Log(Warning, "activate session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)
 			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
 
 		// remove all requests from pending queue
 		removeAllRequestsFromPendingQueue();
 
-		// send close session request to server
-		ctx_->sendCloseSessionRequest(
-			ctx_->secureChannel_,
-			false
-		);
+		// close secure channel
+		ctx_->secureChannelClient_.disconnect(secureChannel);
 
 		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Error);
 		return SessionServiceStateId::Error;
@@ -196,7 +199,7 @@ namespace OpcUaStackClient
 		// remove all requests from pending queue
 		removeAllRequestsFromPendingQueue();
 
-		// disconnect secure channel
+		// close secure channel
 		ctx_->secureChannelClient_.disconnect(secureChannel);
 
 		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Error);
@@ -319,8 +322,9 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateEstablished::reconnectTimeout(void)
 	{
-		Log(Warning, "reconnect timeout event in invalid state; ignore event")
+		Log(Error, "reconnect timeout event in invalid state; abort")
 			.parameter("SessId", ctx_->id_);
+		std::abort();
 
 		return SessionServiceStateId::Established;
 	}

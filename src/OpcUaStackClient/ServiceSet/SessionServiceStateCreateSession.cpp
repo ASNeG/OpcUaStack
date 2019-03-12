@@ -38,15 +38,34 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateCreateSession::asyncConnect(void)
 	{
-		// FIXME: todo
+		assert(ctx_ != nullptr);
+
+		Log(Warning, "async connect event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::CreateSession;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateCreateSession::asyncDisconnect(bool deleteSubscriptions)
 	{
-		// FIXME: todo
-		return SessionServiceStateId::CreateSession;
+		assert(ctx_ != nullptr);
+		assert(ctx_->secureChannel_ != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
+
+		auto secureChannel = ctx_->secureChannel_;
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto sessionService = ctx_->sessionService_;
+
+		Log(Debug, "async disconnect event")
+			.parameter("SessId", ctx_->id_);
+
+		// close secure channel
+		ctx_->secureChannelClient_.disconnect(secureChannel);
+
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnecting);
+		return SessionServiceStateId::Disconnecting;
 	}
 
 	SessionServiceStateId
@@ -59,15 +78,31 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateCreateSession::handleConnect(SecureChannel* secureChannel)
 	{
-		// FIXME: todo
+		Log(Error, "handle connect event in invalid state; abort")
+			.parameter("SessId", ctx_->id_);
+		std::abort();
+
 		return SessionServiceStateId::CreateSession;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateCreateSession::handleDisconnect(SecureChannel* secureChannel)
 	{
-		// FIXME: todo
-		return SessionServiceStateId::CreateSession;
+		Log(Debug, "handle disconnect event")
+			.parameter("SessId", ctx_->id_);
+
+		assert(ctx_ != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
+
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto sessionService = ctx_->sessionService_;
+
+		// start reconnect timer
+		ctx_->startReconnectTimer();
+
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Error);
+		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
@@ -169,7 +204,9 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "activate session response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::CreateSession;
 	}
 
@@ -179,7 +216,9 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "close session response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::CreateSession;
 	}
 
@@ -189,28 +228,48 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "message response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::CreateSession;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateCreateSession::sendMessageRequest(Message::SPtr message)
 	{
-		// FIXME: todo
+		assert(ctx_ != nullptr);
+		assert(message.get() != nullptr);
+
+		Log(Warning, "message request event in invalid state")
+			.parameter("SessId", ctx_->id_);
+
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+
+		// send response
+		serviceTransaction->statusCode(BadSessionClosed);
+		Component* componentService = serviceTransaction->componentService();
+		componentService->sendAsync(serviceTransaction);
+
 		return SessionServiceStateId::CreateSession;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateCreateSession::reconnectTimeout(void)
 	{
-		// FIXME: todo
+		Log(Error, "reconnect timeout event in invalid state; abort")
+			.parameter("SessId", ctx_->id_);
+		std::abort();
+
 		return SessionServiceStateId::CreateSession;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateCreateSession::pendingQueueTimeout(const Object::SPtr& object)
 	{
-		// FIXME: todo
+		Log(Error, "pending queue timeout event in invalid state; abort")
+			.parameter("SessId", ctx_->id_);
+		std::abort();
+
 		return SessionServiceStateId::CreateSession;
 	}
 

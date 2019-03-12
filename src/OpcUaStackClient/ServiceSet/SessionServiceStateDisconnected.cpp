@@ -50,10 +50,13 @@ namespace OpcUaStackClient
 		auto secureChannel = ctx_->secureChannel_;
 		auto sessionService = ctx_->sessionService_;
 
+		Log(Debug, "async connect event")
+			.parameter("SessId", ctx_->id_);
+
 		// check server uri. In case of an error inform the application
 		Url endpointUrl(clientConfig->endpointUrl());
 		if (!endpointUrl.good()) {
-			Log(Debug, "endpoint url error")
+			Log(Error, "endpoint url error")
 				.parameter("SessId", ctx_->id_)
 				.parameter("EndpointUrl", clientConfig->endpointUrl());
 
@@ -68,7 +71,7 @@ namespace OpcUaStackClient
 		secureChannelClient.secureChannelClientIf(sessionService);
 		secureChannel = secureChannelClient.connect(clientConfig);
 		if (secureChannel == nullptr) {
-			Log(Debug, "open secure channel error")
+			Log(Error, "open secure channel error")
 				.parameter("SessId", ctx_->id_)
 				.parameter("EndpointUrl", clientConfig->endpointUrl());
 
@@ -79,13 +82,28 @@ namespace OpcUaStackClient
 			return SessionServiceStateId::Disconnected;
 		}
 
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Connecting);
 		return SessionServiceStateId::Connecting;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateDisconnected::asyncDisconnect(bool deleteSubscriptions)
 	{
-		// FIXME: todo
+		// check configuration parameter
+		assert(ctx_ != nullptr);
+		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->sessionService_ != nullptr);
+
+		auto sessionServiceIf = ctx_->sessionServiceIf_;
+		auto sessionService = ctx_->sessionService_;
+
+		Log(Debug, "async disconnect event")
+			.parameter("SessId", ctx_->id_);
+
+		// stop reconnect timer
+		ctx_->stopReconnectTimer();
+
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
 		return SessionServiceStateId::Disconnected;
 	}
 
@@ -99,14 +117,20 @@ namespace OpcUaStackClient
 	SessionServiceStateId
 	SessionServiceStateDisconnected::handleConnect(SecureChannel* secureChannel)
 	{
-		// FIXME: todo
+		Log(Error, "handle connect event in invalid state; abort")
+			.parameter("SessId", ctx_->id_);
+		std::abort();
+
 		return SessionServiceStateId::Disconnected;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateDisconnected::handleDisconnect(SecureChannel* secureChannel)
 	{
-		// FIXME: todo
+		Log(Error, "handle disconnect event in invalid state; abort")
+			.parameter("SessId", ctx_->id_);
+		std::abort();
+
 		return SessionServiceStateId::Disconnected;
 	}
 
@@ -116,7 +140,9 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "create session response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Disconnected;
 	}
 
@@ -126,7 +152,9 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "activate session response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Disconnected;
 	}
 
@@ -136,7 +164,9 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "close session response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Disconnected;
 	}
 
@@ -146,28 +176,46 @@ namespace OpcUaStackClient
 		const ResponseHeader::SPtr& responseHeader
 	)
 	{
-		// FIXME: todo
+		Log(Warning, "message response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
 		return SessionServiceStateId::Disconnected;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateDisconnected::sendMessageRequest(Message::SPtr message)
 	{
-		// FIXME: todo
+		assert(ctx_ != nullptr);
+		assert(message.get() != nullptr);
+
+		Log(Warning, "message request event in invalid state")
+			.parameter("SessId", ctx_->id_);
+
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+
+		// send response
+		serviceTransaction->statusCode(BadSessionClosed);
+		Component* componentService = serviceTransaction->componentService();
+		componentService->sendAsync(serviceTransaction);
+
 		return SessionServiceStateId::Disconnected;
 	}
 
 	SessionServiceStateId
 	SessionServiceStateDisconnected::reconnectTimeout(void)
 	{
-		// FIXME: todo
-		return SessionServiceStateId::Disconnected;
+		Log(Debug, "reconnect timeout event")
+			.parameter("SessId", ctx_->id_);
+		return asyncConnect();
 	}
 
 	SessionServiceStateId
 	SessionServiceStateDisconnected::pendingQueueTimeout(const Object::SPtr& object)
 	{
-		// FIXME: todo
+		Log(Error, "pending queue timeout event in invalid state; abort")
+			.parameter("SessId", ctx_->id_);
+		std::abort();
+
 		return SessionServiceStateId::Disconnected;
 	}
 
