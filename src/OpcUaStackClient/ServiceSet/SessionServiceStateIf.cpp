@@ -27,8 +27,8 @@ namespace OpcUaStackClient
 
 	SessionServiceStateIf::SessionServiceStateIf(const std::string& stateName, SessionServiceStateId stateId)
 	: ctx_(nullptr)
-	, stateName_("")
-	, stateId_(stateId_)
+	, stateName_(stateName)
+	, stateId_(stateId)
 	{
 	}
 

@@ -117,8 +117,8 @@ namespace OpcUaStackClient
 		// start reconnect timer
 		ctx_->startReconnectTimer();
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
-		return SessionServiceStateId::Disconnected;
+		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Error);
+		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId

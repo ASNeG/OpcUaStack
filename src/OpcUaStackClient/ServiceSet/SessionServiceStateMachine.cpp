@@ -64,7 +64,6 @@ namespace OpcUaStackClient
 			oldStateName = state_->stateName();
 		}
 
-
 		switch (stateId)
 		{
 			case SessionServiceStateId::Disconnected:
@@ -111,7 +110,9 @@ namespace OpcUaStackClient
 			}
 		}
 		state_->setCtx(ctx_);
-		logChangeState(oldStateName);
+		if (stateId != oldStateId) {
+			logChangeState(oldStateName);
+		}
 		return true;
 	}
 

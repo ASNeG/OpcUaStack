@@ -59,6 +59,7 @@ namespace OpcUaStackClient
 		Component::ioThread(ioThread);
 		ctx_->slotTimerElement_ = boost::make_shared<SlotTimerElement>();
 		ctx_->ioThread_ = ioThread;
+		ctx_->sessionService_ = this;
 
 		// init pending queue callback
 		ctx_->pendingQueue_.ioService(*ioThread->ioService().get());

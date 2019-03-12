@@ -69,6 +69,9 @@ namespace OpcUaStackClient
 		SessionState sessionState_;
 		Condition sessionStateUpdate_;
 		void sessionStateUpdate(uint32_t clientHandle, SessionBase& session, SessionState sessionState) {
+			if (sessionState != SessionState::Disconnected && sessionState != SessionState::Established) {
+				return;
+			}
 			clientHandle_ = clientHandle;
 			sessionState_ = sessionState;
 			sessionStateUpdate_.sendEvent();
