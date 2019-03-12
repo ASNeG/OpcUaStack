@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 		VBIClientHandlerTest(void)
 	    : clientHandle_(0)
 	    , statusCode_(Success)
-	    , sessionState_(SS_Disconnect)
+	    , sessionState_(SessionState::Disconnected)
 	    , sessionStateUpdate_()
 	    , subscriptionId_(0)
 	    , monitoredItemId_(0)

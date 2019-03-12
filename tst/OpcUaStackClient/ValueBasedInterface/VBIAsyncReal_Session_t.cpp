@@ -39,14 +39,14 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Session_session_connect_disconnect)
 	vbiClientHandlerTest.sessionStateUpdate_.condition(1,0);
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionState::Established);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// disconnect session
 	vbiClientHandlerTest.sessionStateUpdate_.condition(1,0);
 	client.asyncDisconnect();
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionState::Disconnected);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
 
@@ -75,28 +75,28 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Session_session_connect_disconnect_two_times)
 	vbiClientHandlerTest.sessionStateUpdate_.condition(1,0);
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionState::Established);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// disconnect session
 	vbiClientHandlerTest.sessionStateUpdate_.condition(1,0);
 	client.asyncDisconnect();
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionState::Disconnected);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// connect session
 	vbiClientHandlerTest.sessionStateUpdate_.condition(1,0);
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionState::Established);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// disconnect session
 	vbiClientHandlerTest.sessionStateUpdate_.condition(1,0);
 	client.asyncDisconnect();
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionState::Disconnected);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
 

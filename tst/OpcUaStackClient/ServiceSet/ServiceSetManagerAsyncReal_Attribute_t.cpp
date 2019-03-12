@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read)
 	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncConnect();
 	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionState::Established);
 
 	// create attribute service
 	AttributeService::SPtr attributeService;
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read)
 	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncDisconnect();
 	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionState::Disconnected);
 }
 
 
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write)
 	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncConnect();
 	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionState::Established);
 
 	// create attribute service
 	AttributeService::SPtr attributeService;
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write)
 	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncDisconnect();
 	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionState::Disconnected);
 }
 
 
