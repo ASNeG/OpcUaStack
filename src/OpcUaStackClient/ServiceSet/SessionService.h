@@ -22,13 +22,13 @@
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
-#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionMode.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateMachine.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
+#include "OpcUaStackClient/ServiceSet/SessionTransaction.h"
 
 using namespace OpcUaStackCore;
 
@@ -36,26 +36,6 @@ namespace OpcUaStackClient
 {
 
 	class SessionServiceContext;
-
-	class DLLEXPORT SessionTransaction
-	{
-	  public:
-		typedef enum
-		{
-			OP_None,
-			OP_Connect,
-			OP_Disconnect
-		} Operation;
-
-		typedef boost::shared_ptr<SessionTransaction> SPtr;
-
-		SessionTransaction(void);
-		~SessionTransaction(void);
-
-		Operation operation_;
-		Condition condition_;
-		OpcUaStatusCode statusCode_;
-	};
 
 	class DLLEXPORT SessionService
 	: public SessionBase
@@ -101,6 +81,7 @@ namespace OpcUaStackClient
 		void asyncDisconnectInternal(SessionTransaction::SPtr& sessionTransaction, bool deleteSubscriptions);
 		void asyncCancelInternal(uint32_t requestHandle);
 
+		SessionTransaction::SPtr nullSessionTransaction_ = nullptr;
 		SessionServiceStateMachine sm_;
 		SessionServiceContext* ctx_;
 

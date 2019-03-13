@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateEstablished.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
 
@@ -37,7 +38,9 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateEstablished::asyncConnect(void)
+	SessionServiceStateEstablished::asyncConnect(
+		SessionTransaction::SPtr& sessionTransaction
+	)
 	{
 		assert(ctx_ != nullptr);
 
@@ -49,6 +52,7 @@ namespace OpcUaStackClient
 
 	SessionServiceStateId
 	SessionServiceStateEstablished::asyncDisconnect(
+		SessionTransaction::SPtr& sessionTransaction,
 		bool deleteSubscriptions)
 	{
 		Log(Debug, "async disconnect event")
@@ -85,7 +89,10 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateEstablished::asyncCancel(uint32_t requestHandle)
+	SessionServiceStateEstablished::asyncCancel(
+		SessionTransaction::SPtr& sessionTransaction,
+		uint32_t requestHandle
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Established;

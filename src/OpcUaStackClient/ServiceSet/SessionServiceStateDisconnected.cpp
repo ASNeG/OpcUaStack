@@ -18,6 +18,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Url.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateDisconnected.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
 
@@ -36,7 +37,9 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnected::asyncConnect(void)
+	SessionServiceStateDisconnected::asyncConnect(
+		SessionTransaction::SPtr& sessionTransaction
+	)
 	{
 		// check configuration parameter
 		assert(ctx_ != nullptr);
@@ -84,7 +87,10 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnected::asyncDisconnect(bool deleteSubscriptions)
+	SessionServiceStateDisconnected::asyncDisconnect(
+		SessionTransaction::SPtr& sessionTransaction,
+		bool deleteSubscriptions
+	)
 	{
 		// check configuration parameter
 		assert(ctx_ != nullptr);
@@ -104,7 +110,10 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnected::asyncCancel(uint32_t requestHandle)
+	SessionServiceStateDisconnected::asyncCancel(
+		SessionTransaction::SPtr& sessionTransaction,
+		uint32_t requestHandle
+	)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Disconnected;
@@ -202,7 +211,9 @@ namespace OpcUaStackClient
 	{
 		Log(Debug, "reconnect timeout event")
 			.parameter("SessId", ctx_->id_);
-		return asyncConnect();
+
+		SessionTransaction::SPtr sessionTransaction;
+		return asyncConnect(sessionTransaction);
 	}
 
 	SessionServiceStateId

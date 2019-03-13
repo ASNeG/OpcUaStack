@@ -37,6 +37,7 @@ namespace OpcUaStackClient
 		SessionServiceStateMachine(void);
 		~SessionServiceStateMachine(void);
 
+		void setSessionServiceName(const std::string& sessionServiceName);
 		void setCtx(SessionServiceContext* ctx);
 		bool setStateId(SessionServiceStateId stateId);
 		void setUpdateCallback(UpdateCallback updateCallback);

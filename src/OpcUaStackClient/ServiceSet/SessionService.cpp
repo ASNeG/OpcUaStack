@@ -28,30 +28,6 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// SessionTransaction
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	SessionTransaction::SessionTransaction(void)
-	: condition_()
-	, statusCode_(Success)
-	{
-	}
-
-	SessionTransaction::~SessionTransaction(void)
-	{
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// SessionService
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
 	SessionService::SessionService(IOThread* ioThread)
 	: sm_()
 	, ctx_(new SessionServiceContext(ioThread))
@@ -97,6 +73,7 @@ namespace OpcUaStackClient
 		ctx_->secureChannelClientConfig_ = secureChannelClientConfig;
 		ctx_->sessionConfig_ = sessionConfig;
 
+		sm_.setSessionServiceName(sessionConfig->sessionName_);
 		sm_.setUpdateCallback(
 			[this](SessionServiceStateId state) {
 				ctx_->sessionServiceIf_->sessionStateUpdate(*ctx_->sessionService_, state);
@@ -134,9 +111,8 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncConnect(void)
 	{
-		SessionTransaction::SPtr sessionTransaction;
 		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncConnectInternal, this, sessionTransaction)
+			boost::bind(&SessionService::asyncConnectInternal, this, nullSessionTransaction_)
 		);
 	}
 
@@ -144,8 +120,8 @@ namespace OpcUaStackClient
 	SessionService::asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction)
 	{
 		sm_.event(
-			[this](SessionServiceStateIf* sssif) {
-				return sssif->asyncConnect();
+			[this, &sessionTransaction](SessionServiceStateIf* sssif) {
+				return sssif->asyncConnect(sessionTransaction);
 			}
 		);
 	}
@@ -154,21 +130,20 @@ namespace OpcUaStackClient
 	SessionService::syncConnect(void)
 	{
 		SessionTransaction::SPtr sessionTransaction = constructSPtr<SessionTransaction>();
-		sessionTransaction->operation_ = SessionTransaction::OP_Connect;
-		sessionTransaction->condition_.condition(1,0);
+		sessionTransaction->operation_ = Operation::Connect;
+		auto fut = sessionTransaction->prom_.get_future();
 		ctx_->ioThread_->run(
 			boost::bind(&SessionService::asyncConnectInternal, this, sessionTransaction)
 		);
-		sessionTransaction->condition_.waitForCondition();
-		return sessionTransaction->statusCode_;
+		fut.wait();
+		return fut.get();
 	}
 
 	void
 	SessionService::asyncDisconnect(bool deleteSubscriptions)
 	{
-		SessionTransaction::SPtr sessionTransaction;
 		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncDisconnectInternal, this, sessionTransaction, deleteSubscriptions)
+			boost::bind(&SessionService::asyncDisconnectInternal, this, nullSessionTransaction_, deleteSubscriptions)
 		);
 	}
 
@@ -176,8 +151,8 @@ namespace OpcUaStackClient
 	SessionService::asyncDisconnectInternal(SessionTransaction::SPtr& sessionTransaction, bool deleteSubscriptions)
 	{
 		sm_.event(
-			[this, deleteSubscriptions](SessionServiceStateIf* sssif) {
-				return sssif->asyncDisconnect(deleteSubscriptions);
+			[this, &sessionTransaction, deleteSubscriptions] (SessionServiceStateIf* sssif) {
+				return sssif->asyncDisconnect(sessionTransaction, deleteSubscriptions);
 			}
 		);
 	}
@@ -191,11 +166,11 @@ namespace OpcUaStackClient
 		//
 
 		SessionTransaction::SPtr sessionTransaction = constructSPtr<SessionTransaction>();
-		sessionTransaction->operation_ = SessionTransaction::OP_Disconnect;
-		sessionTransaction->condition_.condition(1,0);
+		sessionTransaction->operation_ = Operation::Disconnect;
+		auto fut = sessionTransaction->prom_.get_future();
 		ctx_->ioThread_->run(boost::bind(&SessionService::asyncDisconnectInternal, this, sessionTransaction, deleteSubscriptions));
-		sessionTransaction->condition_.waitForCondition();
-		return sessionTransaction->statusCode_;
+		fut.wait();
+		return fut.get();
 	}
 
 	void

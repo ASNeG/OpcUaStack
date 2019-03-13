@@ -44,6 +44,12 @@ namespace OpcUaStackClient
 	}
 
 	void
+	SessionServiceStateMachine::setSessionServiceName(const std::string& sessionServiceName)
+	{
+		sessionServiceName_ = sessionServiceName;
+	}
+
+	void
 	SessionServiceStateMachine::setCtx(SessionServiceContext* ctx)
 	{
 		ctx_ = ctx;
@@ -115,6 +121,9 @@ namespace OpcUaStackClient
 			logChangeState(oldStateName);
 			if (updateCallback_) {
 				updateCallback_(stateId);
+			}
+			else {
+				Log(Warning, "update callback not available");
 			}
 		}
 		return true;

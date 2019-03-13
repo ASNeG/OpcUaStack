@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Message.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackClient/ServiceSet/SessionTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateId.h"
 
 using namespace OpcUaStackCore;
@@ -45,9 +46,17 @@ namespace OpcUaStackClient
 		//
 		// events from user interface
 		//
-		virtual SessionServiceStateId asyncConnect(void) = 0;
-		virtual SessionServiceStateId asyncDisconnect(bool deleteSubscriptions) = 0;
-		virtual SessionServiceStateId asyncCancel(uint32_t requestHandle) = 0;
+		virtual SessionServiceStateId asyncConnect(
+			SessionTransaction::SPtr& sessionTransaction
+		) = 0;
+		virtual SessionServiceStateId asyncDisconnect(
+			SessionTransaction::SPtr& sessionTransaction,
+			bool deleteSubscriptions
+		) = 0;
+		virtual SessionServiceStateId asyncCancel(
+			SessionTransaction::SPtr& sessionTransaction,
+			uint32_t requestHandle
+		) = 0;
 
 		//
 		// events from secure channel server

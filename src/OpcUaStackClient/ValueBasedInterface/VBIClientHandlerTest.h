@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackClient_VBIClientHandlerTest_h__
 #define __OpcUaStackClient_VBIClientHandlerTest_h__
 
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
 
 using namespace OpcUaStackCore;
@@ -72,6 +73,14 @@ namespace OpcUaStackClient
 			if (sessionState != SessionServiceStateId::Disconnected && sessionState != SessionServiceStateId::Established) {
 				return;
 			}
+
+			if (sessionState == SessionServiceStateId::Disconnected) {
+				Log(Debug, "receive Disconnected in test handler");
+			}
+			else {
+				Log(Debug, "receive Established in test handler");
+			}
+
 			clientHandle_ = clientHandle;
 			sessionState_ = sessionState;
 			sessionStateUpdate_.sendEvent();
