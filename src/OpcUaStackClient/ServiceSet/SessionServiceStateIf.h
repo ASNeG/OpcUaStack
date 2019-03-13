@@ -20,7 +20,6 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Message.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
-#include "OpcUaStackClient/ServiceSet/SessionTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateId.h"
 
 using namespace OpcUaStackCore;

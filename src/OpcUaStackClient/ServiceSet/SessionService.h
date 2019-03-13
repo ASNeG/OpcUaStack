@@ -28,7 +28,6 @@
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
-#include "OpcUaStackClient/ServiceSet/SessionTransaction.h"
 
 using namespace OpcUaStackCore;
 

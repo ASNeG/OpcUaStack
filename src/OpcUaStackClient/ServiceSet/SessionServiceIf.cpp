@@ -35,6 +35,9 @@ namespace OpcUaStackClient
 	void
 	SessionServiceIfTestHandler::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
 	{
+		if (sessionState != SessionServiceStateId::Established && sessionState != SessionServiceStateId::Disconnected) {
+			return;
+		}
 		sessionState_ = sessionState;
 		sessionStateUpdate_.conditionValueDec();
 	}
