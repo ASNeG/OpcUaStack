@@ -37,9 +37,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnected::asyncConnect(
-		SessionTransaction::SPtr& sessionTransaction
-	)
+	SessionServiceStateDisconnected::asyncConnect(void)
 	{
 		// check configuration parameter
 		assert(ctx_ != nullptr);
@@ -87,10 +85,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnected::asyncDisconnect(
-		SessionTransaction::SPtr& sessionTransaction,
-		bool deleteSubscriptions
-	)
+	SessionServiceStateDisconnected::asyncDisconnect(bool deleteSubscriptions)
 	{
 		// check configuration parameter
 		assert(ctx_ != nullptr);
@@ -110,10 +105,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateDisconnected::asyncCancel(
-		SessionTransaction::SPtr& sessionTransaction,
-		uint32_t requestHandle
-	)
+	SessionServiceStateDisconnected::asyncCancel(uint32_t requestHandle)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Disconnected;
@@ -212,8 +204,7 @@ namespace OpcUaStackClient
 		Log(Debug, "reconnect timeout event")
 			.parameter("SessId", ctx_->id_);
 
-		SessionTransaction::SPtr sessionTransaction;
-		return asyncConnect(sessionTransaction);
+		return asyncConnect();
 	}
 
 	SessionServiceStateId

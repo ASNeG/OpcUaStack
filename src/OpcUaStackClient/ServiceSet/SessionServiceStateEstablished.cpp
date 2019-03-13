@@ -38,9 +38,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateEstablished::asyncConnect(
-		SessionTransaction::SPtr& sessionTransaction
-	)
+	SessionServiceStateEstablished::asyncConnect(void)
 	{
 		assert(ctx_ != nullptr);
 
@@ -51,9 +49,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateEstablished::asyncDisconnect(
-		SessionTransaction::SPtr& sessionTransaction,
-		bool deleteSubscriptions)
+	SessionServiceStateEstablished::asyncDisconnect(bool deleteSubscriptions)
 	{
 		Log(Debug, "async disconnect event")
 			.parameter("SessId", ctx_->id_);
@@ -89,10 +85,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateEstablished::asyncCancel(
-		SessionTransaction::SPtr& sessionTransaction,
-		uint32_t requestHandle
-	)
+	SessionServiceStateEstablished::asyncCancel(uint32_t requestHandle)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::Established;

@@ -37,9 +37,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateActivateSession::asyncConnect(
-		SessionTransaction::SPtr& sessionTransaction
-	)
+	SessionServiceStateActivateSession::asyncConnect(void)
 	{
 		assert(ctx_ != nullptr);
 
@@ -50,10 +48,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateActivateSession::asyncDisconnect(
-		SessionTransaction::SPtr& sessionTransaction,
-		bool deleteSubscriptions
-	)
+	SessionServiceStateActivateSession::asyncDisconnect(bool deleteSubscriptions)
 	{
 		assert(ctx_ != nullptr);
 		assert(ctx_->secureChannel_ != nullptr);
@@ -74,10 +69,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
-	SessionServiceStateActivateSession::asyncCancel(
-		SessionTransaction::SPtr& sessionTransaction,
-		uint32_t requestHandle
-	)
+	SessionServiceStateActivateSession::asyncCancel(uint32_t requestHandle)
 	{
 		// FIXME: todo
 		return SessionServiceStateId::ActivateSession;

@@ -16,6 +16,7 @@
  */
 
 #include <boost/make_shared.hpp>
+#include <future>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
@@ -104,24 +105,23 @@ namespace OpcUaStackClient
 	void
 	SessionService::reconnectTimeout(void)
 	{
-		SessionTransaction::SPtr sessionTransaction;
-		asyncConnectInternal(sessionTransaction);
+		asyncConnectInternal();
 	}
 
 	void
 	SessionService::asyncConnect(void)
 	{
 		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncConnectInternal, this, nullSessionTransaction_)
+			boost::bind(&SessionService::asyncConnectInternal, this)
 		);
 	}
 
 	void
-	SessionService::asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction)
+	SessionService::asyncConnectInternal(void)
 	{
 		sm_.event(
-			[this, &sessionTransaction](SessionServiceStateIf* sssif) {
-				return sssif->asyncConnect(sessionTransaction);
+			[this](SessionServiceStateIf* sssif) {
+				return sssif->asyncConnect();
 			}
 		);
 	}
@@ -129,30 +129,46 @@ namespace OpcUaStackClient
 	OpcUaStatusCode
 	SessionService::syncConnect(void)
 	{
-		SessionTransaction::SPtr sessionTransaction = constructSPtr<SessionTransaction>();
-		sessionTransaction->operation_ = Operation::Connect;
-		auto fut = sessionTransaction->prom_.get_future();
+		if (sm_.stateId() != SessionServiceStateId::Disconnected) {
+			return BadResourceUnavailable;
+		}
+
+		std::promise<OpcUaStatusCode> prom;
+		auto future = prom.get_future();
+
+		auto updateCallback = [&prom](SessionServiceStateId state) {
+			if (state == SessionServiceStateId::Disconnected) {
+				prom.set_value(BadResourceUnavailable);
+			}
+
+			else if (state == SessionServiceStateId::Established) {
+				prom.set_value(Success);
+			}
+		};
+		sm_.setUpdateCallback(updateCallback);
+
 		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncConnectInternal, this, sessionTransaction)
+			boost::bind(&SessionService::asyncConnectInternal, this)
 		);
-		fut.wait();
-		return fut.get();
+
+		future.wait();
+		return future.get();
 	}
 
 	void
 	SessionService::asyncDisconnect(bool deleteSubscriptions)
 	{
 		ctx_->ioThread_->run(
-			boost::bind(&SessionService::asyncDisconnectInternal, this, nullSessionTransaction_, deleteSubscriptions)
+			boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions)
 		);
 	}
 
 	void
-	SessionService::asyncDisconnectInternal(SessionTransaction::SPtr& sessionTransaction, bool deleteSubscriptions)
+	SessionService::asyncDisconnectInternal(bool deleteSubscriptions)
 	{
 		sm_.event(
-			[this, &sessionTransaction, deleteSubscriptions] (SessionServiceStateIf* sssif) {
-				return sssif->asyncDisconnect(sessionTransaction, deleteSubscriptions);
+			[this, deleteSubscriptions] (SessionServiceStateIf* sssif) {
+				return sssif->asyncDisconnect(deleteSubscriptions);
 			}
 		);
 	}
@@ -160,17 +176,27 @@ namespace OpcUaStackClient
 	OpcUaStatusCode
 	SessionService::syncDisconnect(bool deleteSubscriptions)
 	{
-		//
-		// Only a separate shutdown thread can be used. Do not use
-		// the thread from io service
-		//
+		if (sm_.stateId() == SessionServiceStateId::Disconnected) {
+			return Success;
+		}
 
-		SessionTransaction::SPtr sessionTransaction = constructSPtr<SessionTransaction>();
-		sessionTransaction->operation_ = Operation::Disconnect;
-		auto fut = sessionTransaction->prom_.get_future();
-		ctx_->ioThread_->run(boost::bind(&SessionService::asyncDisconnectInternal, this, sessionTransaction, deleteSubscriptions));
-		fut.wait();
-		return fut.get();
+		std::promise<OpcUaStatusCode> prom;
+		auto future = prom.get_future();
+
+		auto updateCallback = [&prom](SessionServiceStateId state) {
+			if (state == SessionServiceStateId::Disconnected) {
+				prom.set_value(Success);
+			}
+		};
+		sm_.setUpdateCallback(updateCallback);
+
+
+		ctx_->ioThread_->run(
+			boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions)
+		);
+
+		future.wait();
+		return future.get();
 	}
 
 	void

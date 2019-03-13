@@ -77,11 +77,10 @@ namespace OpcUaStackClient
 		void reconnectTimeout(void);
 
 	  private:
-		void asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction);
-		void asyncDisconnectInternal(SessionTransaction::SPtr& sessionTransaction, bool deleteSubscriptions);
+		void asyncConnectInternal(void);
+		void asyncDisconnectInternal(bool deleteSubscriptions);
 		void asyncCancelInternal(uint32_t requestHandle);
 
-		SessionTransaction::SPtr nullSessionTransaction_ = nullptr;
 		SessionServiceStateMachine sm_;
 		SessionServiceContext* ctx_;
 

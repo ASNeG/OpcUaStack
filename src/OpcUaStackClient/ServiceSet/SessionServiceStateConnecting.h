@@ -29,17 +29,9 @@ namespace OpcUaStackClient
 		SessionServiceStateConnecting(void);
 		~SessionServiceStateConnecting(void);
 
-		virtual SessionServiceStateId asyncConnect(
-			SessionTransaction::SPtr& sessionTransaction
-		) override;
-		virtual SessionServiceStateId asyncDisconnect(
-			SessionTransaction::SPtr& sessionTransaction,
-			bool deleteSubscriptions
-		) override;
-		virtual SessionServiceStateId asyncCancel(
-			SessionTransaction::SPtr& sessionTransaction,
-			uint32_t requestHandle
-		) override;
+		virtual SessionServiceStateId asyncConnect(void) override;
+		virtual SessionServiceStateId asyncDisconnect(bool deleteSubscriptions) override;
+		virtual SessionServiceStateId asyncCancel(uint32_t requestHandle) override;
 
 		virtual SessionServiceStateId handleConnect(SecureChannel* secureChannel) override;
 		virtual SessionServiceStateId handleDisconnect(SecureChannel* secureChannel) override;

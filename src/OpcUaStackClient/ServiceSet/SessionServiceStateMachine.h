@@ -42,6 +42,7 @@ namespace OpcUaStackClient
 		bool setStateId(SessionServiceStateId stateId);
 		void setUpdateCallback(UpdateCallback updateCallback);
 		bool event(std::function<SessionServiceStateId(SessionServiceStateIf*)> event);
+		SessionServiceStateId stateId(void);
 
 	  private:
 		void logChangeState(const std::string& oldStateName);

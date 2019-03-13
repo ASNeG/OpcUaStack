@@ -135,6 +135,15 @@ namespace OpcUaStackClient
 		updateCallback_ = updateCallback;
 	}
 
+	SessionServiceStateId
+	SessionServiceStateMachine::stateId(void)
+	{
+		if (!state_) {
+			return SessionServiceStateId::None;
+		}
+		return state_->stateId();
+	}
+
 	bool
 	SessionServiceStateMachine::event(std::function<SessionServiceStateId(SessionServiceStateIf*)> event)
 	{
