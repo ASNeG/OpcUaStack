@@ -18,7 +18,6 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_read)
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
-
 	//
 	// init certificate and crypto manager
 	//
