@@ -77,7 +77,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	VBIClient::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
 	{
 		if (sessionChangeCallback_.exist()) {
 			sessionChangeCallback_(session, sessionState);

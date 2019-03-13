@@ -178,9 +178,9 @@ namespace OpcUaStackClient
     }
 
 	void
-	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
 	{
-		if (sessionState == SessionState::Established) {
+		if (sessionState == SessionServiceStateId::Established) {
 			sendDiscoveryServiceRegisterServer();
 			return;
 		}

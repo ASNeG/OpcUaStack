@@ -21,29 +21,19 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateId.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	enum class DLLEXPORT SessionState
-	{
-		Disconnected,
-		Connecting,
-		CreateSession,
-		ActivateSession,
-		Established,
-		Disconnecting,
-		Error
-	};
-
 	class DLLEXPORT SessionServiceIf
 	{
 	  public:
 		virtual ~SessionServiceIf(void) {}
 
-		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState) = 0;
+		virtual void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState) = 0;
 	};
 
 	class DLLEXPORT SessionServiceIfTestHandler
@@ -53,9 +43,9 @@ namespace OpcUaStackClient
 		SessionServiceIfTestHandler(void);
 		virtual ~SessionServiceIfTestHandler(void);
 
-		SessionState sessionState_;
+		SessionServiceStateId sessionState_;
 		Condition sessionStateUpdate_;
-		void sessionStateUpdate(SessionBase& session, SessionState sessionState);
+		void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState);
 	};
 
 }

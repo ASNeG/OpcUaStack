@@ -63,7 +63,6 @@ namespace OpcUaStackClient
 		// close secure channel
 		ctx_->secureChannelClient_.disconnect(secureChannel);
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnecting);
 		return SessionServiceStateId::Disconnecting;
 	}
 
@@ -90,14 +89,11 @@ namespace OpcUaStackClient
 
 		// if we do not need a session we are ready.
 		if (ctx_->sessionMode_ == SessionMode::SecureChannel) {
-
-			sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Established);
 			return SessionServiceStateId::Established;
 		}
 
 		// create CreateSessionRequest
 		ctx_->sendCreateSessionRequest(secureChannel);
-		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::CreateSession);
 		return SessionServiceStateId::CreateSession;
 	}
 
@@ -117,7 +113,6 @@ namespace OpcUaStackClient
 		// start reconnect timer
 		ctx_->startReconnectTimer();
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Error);
 		return SessionServiceStateId::Error;
 	}
 

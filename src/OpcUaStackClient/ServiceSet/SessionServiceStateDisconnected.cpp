@@ -63,7 +63,6 @@ namespace OpcUaStackClient
 			// start reconnect timer
 			ctx_->startReconnectTimer();
 
-			sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
 			return SessionServiceStateId::Disconnected;
 		}
 
@@ -78,11 +77,9 @@ namespace OpcUaStackClient
 			// start reconnect timer
 			ctx_->startReconnectTimer();
 
-			sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
 			return SessionServiceStateId::Disconnected;
 		}
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Connecting);
 		return SessionServiceStateId::Connecting;
 	}
 
@@ -103,7 +100,6 @@ namespace OpcUaStackClient
 		// stop reconnect timer
 		ctx_->stopReconnectTimer();
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
 		return SessionServiceStateId::Disconnected;
 	}
 

@@ -81,7 +81,6 @@ namespace OpcUaStackClient
 		auto sessionServiceIf = ctx_->sessionServiceIf_;
 		auto sessionService = ctx_->sessionService_;
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
 		return SessionServiceStateId::Disconnected;
 	}
 

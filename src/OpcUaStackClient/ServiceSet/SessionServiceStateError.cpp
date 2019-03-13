@@ -58,7 +58,6 @@ namespace OpcUaStackClient
 		Log(Warning, "async disconnect event")
 			.parameter("SessId", ctx_->id_);
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnecting);
 		return SessionServiceStateId::Disconnecting;
 	}
 
@@ -92,7 +91,6 @@ namespace OpcUaStackClient
 		// start reconnect timer
 		ctx_->startReconnectTimer();
 
-		sessionServiceIf->sessionStateUpdate(*sessionService, SessionState::Disconnected);
 		return SessionServiceStateId::Disconnected;
 	}
 

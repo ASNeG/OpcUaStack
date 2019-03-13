@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,7 +24,7 @@ namespace OpcUaStackClient
 	SessionServiceIfTestHandler::SessionServiceIfTestHandler(void)
 	: SessionServiceIf()
 	, sessionStateUpdate_()
-	, sessionState_(SessionState::Disconnected)
+	, sessionState_(SessionServiceStateId::Disconnected)
 	{
 	}
 
@@ -33,7 +33,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SessionServiceIfTestHandler::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	SessionServiceIfTestHandler::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
 	{
 		sessionState_ = sessionState;
 		sessionStateUpdate_.conditionValueDec();
