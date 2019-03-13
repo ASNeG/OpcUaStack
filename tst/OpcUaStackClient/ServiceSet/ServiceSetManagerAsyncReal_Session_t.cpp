@@ -40,13 +40,13 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Session_session_connect_disconne
 	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncConnect();
 	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionState::Established);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionServiceStateId::Established);
 
 	// disconnect session
 	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncDisconnect();
 	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionState::Disconnected);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Session_session_connect_disconnect_two_times)
@@ -77,25 +77,25 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Session_session_connect_disconne
 	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncConnect();
 	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionState::Established);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionServiceStateId::Established);
 
 	// disconnect session
 	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncDisconnect();
 	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionState::Disconnected);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
 
 	// connect session
 	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncConnect();
 	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionState::Established);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionServiceStateId::Established);
 
 	// disconnect session
 	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncDisconnect();
 	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionState::Disconnected);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 

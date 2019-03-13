@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_read)
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionState::Established);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// read
@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_read)
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncDisconnect();
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionState::Disconnected);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
 
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_write)
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionState::Established);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// write
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_write)
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncDisconnect();
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionState::Disconnected);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
 #endif

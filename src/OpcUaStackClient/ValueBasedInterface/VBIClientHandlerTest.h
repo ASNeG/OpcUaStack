@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 		VBIClientHandlerTest(void)
 	    : clientHandle_(0)
 	    , statusCode_(Success)
-	    , sessionState_(SessionState::Disconnected)
+	    , sessionState_(SessionServiceStateId::Disconnected)
 	    , sessionStateUpdate_()
 	    , subscriptionId_(0)
 	    , monitoredItemId_(0)
@@ -66,10 +66,10 @@ namespace OpcUaStackClient
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
-		SessionState sessionState_;
+		SessionServiceStateId sessionState_;
 		Condition sessionStateUpdate_;
-		void sessionStateUpdate(uint32_t clientHandle, SessionBase& session, SessionState sessionState) {
-			if (sessionState != SessionState::Disconnected && sessionState != SessionState::Established) {
+		void sessionStateUpdate(uint32_t clientHandle, SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState != SessionServiceStateId::Disconnected && sessionState != SessionServiceStateId::Established) {
 				return;
 			}
 			clientHandle_ = clientHandle;
