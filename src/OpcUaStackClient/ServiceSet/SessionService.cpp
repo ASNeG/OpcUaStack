@@ -96,6 +96,12 @@ namespace OpcUaStackClient
 		ctx_->sessionServiceIf_ = sessionServiceIf;
 		ctx_->secureChannelClientConfig_ = secureChannelClientConfig;
 		ctx_->sessionConfig_ = sessionConfig;
+
+		sm_.setUpdateCallback(
+			[this](SessionServiceStateId state) {
+				//ctx_->sessionServiceIf_->sessionStateUpdate(*ctx_->sessionService_, state);
+			}
+		);
 	}
 
 	void

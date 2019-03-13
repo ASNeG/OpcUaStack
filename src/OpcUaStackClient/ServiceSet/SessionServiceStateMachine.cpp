@@ -35,6 +35,7 @@ namespace OpcUaStackClient
 	: ctx_(nullptr)
 	, sessionServiceName_("")
 	, state_()
+	, updateCallback_()
 	{
 	}
 
@@ -112,8 +113,17 @@ namespace OpcUaStackClient
 		state_->setCtx(ctx_);
 		if (stateId != oldStateId) {
 			logChangeState(oldStateName);
+			if (updateCallback_) {
+				updateCallback_(stateId);
+			}
 		}
 		return true;
+	}
+
+	void
+	SessionServiceStateMachine::setUpdateCallback(UpdateCallback updateCallback)
+	{
+		updateCallback_ = updateCallback;
 	}
 
 	bool

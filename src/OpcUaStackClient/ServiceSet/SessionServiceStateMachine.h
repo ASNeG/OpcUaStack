@@ -19,6 +19,7 @@
 
 #include <memory>
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateIf.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateId.h"
 
 using namespace OpcUaStackCore;
 
@@ -31,18 +32,21 @@ namespace OpcUaStackClient
 	{
 	  public:
 		typedef boost::shared_ptr<SessionServiceStateMachine> SPtr;
+		typedef std::function<void (SessionServiceStateId state)> UpdateCallback;
 
 		SessionServiceStateMachine(void);
 		~SessionServiceStateMachine(void);
 
 		void setCtx(SessionServiceContext* ctx);
 		bool setStateId(SessionServiceStateId stateId);
+		void setUpdateCallback(UpdateCallback updateCallback);
 		bool event(std::function<SessionServiceStateId(SessionServiceStateIf*)> event);
 
 	  private:
 		void logChangeState(const std::string& oldStateName);
 
 		SessionServiceContext* ctx_;
+		UpdateCallback updateCallback_;
 		std::string sessionServiceName_;
 		SessionServiceStateIf::UPtr state_;
 	};

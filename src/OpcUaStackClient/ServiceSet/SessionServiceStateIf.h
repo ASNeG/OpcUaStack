@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Message.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateId.h"
 
 using namespace OpcUaStackCore;
 
@@ -27,24 +28,6 @@ namespace OpcUaStackClient
 {
 
 	class SessionServiceContext;
-
-	enum class DLLEXPORT SessionServiceStateId
-	{
-		None,
-		Disconnected,
-		Connecting,
-		CreateSession,
-		ActivateSession,
-		Established,
-		Disconnecting,
-		Error
-	};
-
-	template<typename T>
-	std::ostream& operator<<(typename std::enable_if<std::is_enum<T>::value, std::ostream>::type& stream, const T& e)
-	{
-	    return stream << static_cast<typename std::underlying_type<T>::type>(e);
-	}
 
 	class DLLEXPORT SessionServiceStateIf
 	{
