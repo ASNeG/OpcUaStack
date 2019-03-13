@@ -25,6 +25,7 @@
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateEstablished.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateDisconnecting.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateError.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateGetEndpoint.h"
 
 using namespace OpcUaStackCore;
 
@@ -106,6 +107,11 @@ namespace OpcUaStackClient
 			case SessionServiceStateId::Error:
 			{
 				state_.reset(new SessionServiceStateError());
+				break;
+			}
+			case SessionServiceStateId::GetEndpoint:
+			{
+				state_.reset(new SessionServiceStateGetEndpoint());
 				break;
 			}
 			default:

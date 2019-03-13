@@ -31,7 +31,8 @@ namespace OpcUaStackClient
 		ActivateSession,
 		Established,
 		Disconnecting,
-		Error
+		Error,
+		GetEndpoint
 	};
 
 	template<typename T>
