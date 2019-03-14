@@ -32,7 +32,8 @@ namespace OpcUaStackClient
 		Established,
 		Disconnecting,
 		Error,
-		GetEndpoint
+		GetEndpoint,
+		Reconnecting
 	};
 
 	template<typename T>
