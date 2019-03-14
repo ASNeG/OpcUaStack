@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -301,7 +301,13 @@ namespace OpcUaStackCore
 		secureChannelClientIf_->handleDisconnect(secureChannel);
 
 		// start reconnect timer
-		if (reconnectTimeout_ == 0) return;
+		if (reconnectTimeout_ == 0) {
+			Log(Info, "secure channel closed")
+				.parameter("Address", secureChannel->partner_.address().to_string())
+				.parameter("Port", secureChannel->partner_.port());
+			delete secureChannel;
+			return;
+		}
 		slotTimerElementReconnect_->expireFromNow(reconnectTimeout_);
 		slotTimerElementReconnect_->callback().reset(boost::bind(&SecureChannelClient::handleReconnect, this, secureChannel));
 		ioThread_->slotTimer()->start(slotTimerElementReconnect_);

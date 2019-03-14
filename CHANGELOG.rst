@@ -1,3 +1,16 @@
+Release 3.6.3 (2019-03-05)
+------------------------------------------------------------
+
+**Bugs**:
+
+* delete discovery client connection on error #126, by @huebl
+* fix calling stop monitored item callback #132, by @flipback
+
+**Documentation**:
+
+* fix apt-get command in installation guide  #128, by @flipback 
+* add app build command for local stack #129, by @flipback 
+
 Release 3.6.2 (2019-02-01)
 ------------------------------------------------------------
 
