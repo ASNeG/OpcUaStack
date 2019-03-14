@@ -57,7 +57,7 @@ namespace OpcUaStackClient
 		// check server uri. In case of an error inform the application
 		Url endpointUrl(clientConfig->endpointUrl());
 		if (!endpointUrl.good()) {
-			Log(Error, "endpoint url error")
+			Log(Error, "url error")
 				.parameter("SessId", ctx_->id_)
 				.parameter("EndpointUrl", clientConfig->endpointUrl());
 
@@ -156,6 +156,18 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
+	SessionServiceStateDisconnected::recvGetEndpointsResponse(
+		SecureChannel* secureChannel,
+		const ResponseHeader::SPtr& responseHeader
+	)
+	{
+		Log(Warning, "get endpoints response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
+		return SessionServiceStateId::Disconnected;
+	}
+
+	SessionServiceStateId
 	SessionServiceStateDisconnected::recvCloseSessionResponse(
 		SecureChannel* secureChannel,
 		const ResponseHeader::SPtr& responseHeader
@@ -204,6 +216,7 @@ namespace OpcUaStackClient
 		Log(Debug, "reconnect timeout event")
 			.parameter("SessId", ctx_->id_);
 
+		ctx_->setGetEndpointMode();
 		return asyncConnect();
 	}
 

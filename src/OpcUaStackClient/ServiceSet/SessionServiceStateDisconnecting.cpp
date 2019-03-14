@@ -110,6 +110,18 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
+	SessionServiceStateDisconnecting::recvGetEndpointsResponse(
+		SecureChannel* secureChannel,
+		const ResponseHeader::SPtr& responseHeader
+	)
+	{
+		Log(Warning, "get endpoints response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
+		return SessionServiceStateId::Disconnecting;
+	}
+
+	SessionServiceStateId
 	SessionServiceStateDisconnecting::recvCloseSessionResponse(
 		SecureChannel* secureChannel,
 		const ResponseHeader::SPtr& responseHeader

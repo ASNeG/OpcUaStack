@@ -73,6 +73,7 @@ namespace OpcUaStackClient
 		ctx_->sessionServiceIf_ = sessionServiceIf;
 		ctx_->secureChannelClientConfig_ = secureChannelClientConfig;
 		ctx_->sessionConfig_ = sessionConfig;
+		ctx_->setGetEndpointMode();
 
 		sm_.setSessionServiceName(sessionConfig->sessionName_);
 		sm_.setUpdateCallback(
@@ -266,6 +267,16 @@ namespace OpcUaStackClient
 				sm_.event(
 					[this, secureChannel, responseHeader](SessionServiceStateIf* sssif) {
 						return sssif->recvActivateSessionResponse(secureChannel, responseHeader);
+					}
+				);
+
+				return;
+			}
+			case OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary:
+			{
+				sm_.event(
+					[this, secureChannel, responseHeader](SessionServiceStateIf* sssif) {
+						return sssif->recvGetEndpointsResponse(secureChannel, responseHeader);
 					}
 				);
 

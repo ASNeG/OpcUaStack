@@ -88,6 +88,13 @@ namespace OpcUaStackClient
 		Log(Debug, "session service handle connect")
 			.parameter("SessId", ctx_->id_);
 
+		// check if the session is in the get endpoint mode.
+		if (ctx_->isGetEndpointMode()) {
+			// send get endpoint request
+			ctx_->sendGetEndpointsRequest(secureChannel);
+			return SessionServiceStateId::GetEndpoint;
+		}
+
 		// if we do not need a session we are ready.
 		if (ctx_->sessionMode_ == SessionMode::SecureChannel) {
 			return SessionServiceStateId::Established;
@@ -136,6 +143,18 @@ namespace OpcUaStackClient
 	)
 	{
 		Log(Warning, "activate session response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
+		return SessionServiceStateId::Connecting;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateConnecting::recvGetEndpointsResponse(
+		SecureChannel* secureChannel,
+		const ResponseHeader::SPtr& responseHeader
+	)
+	{
+		Log(Warning, "get endpoints response event in invalid state; ignore event")
 			.parameter("SessId", ctx_->id_);
 
 		return SessionServiceStateId::Connecting;

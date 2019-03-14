@@ -17,6 +17,7 @@
 
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateReconnecting.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
@@ -61,9 +62,6 @@ namespace OpcUaStackClient
 		Log(Debug, "async disconnect event")
 			.parameter("SessId", ctx_->id_);
 
-		// close secure channel
-		ctx_->secureChannelClient_.disconnect(secureChannel);
-
 		return SessionServiceStateId::Disconnecting;
 	}
 
@@ -92,14 +90,47 @@ namespace OpcUaStackClient
 		assert(ctx_ != nullptr);
 		assert(ctx_->sessionServiceIf_ != nullptr);
 		assert(ctx_->sessionService_ != nullptr);
+		assert(ctx_->secureChannelClientConfig_.get() != nullptr);
 
+		auto& secureChannelClient = ctx_->secureChannelClient_;
+		auto clientConfig = ctx_->secureChannelClientConfig_;
 		auto sessionServiceIf = ctx_->sessionServiceIf_;
 		auto sessionService = ctx_->sessionService_;
 
-		// start reconnect timer
-		ctx_->startReconnectTimer();
+		// clear endpoint mode
+		ctx_->clearGetEndpointMode();
 
-		return SessionServiceStateId::Error;
+		Log(Debug, "reconnect secure channel")
+			.parameter("SessId", ctx_->id_);
+
+		// check server uri. In case of an error inform the application
+		Url endpointUrl(clientConfig->endpointUrl());
+		if (!endpointUrl.good()) {
+			Log(Error, "url error")
+				.parameter("SessId", ctx_->id_)
+				.parameter("EndpointUrl", clientConfig->endpointUrl());
+
+			// start reconnect timer
+			ctx_->startReconnectTimer();
+
+			return SessionServiceStateId::Disconnected;
+		}
+
+		// open secure channel
+		secureChannelClient.secureChannelClientIf(sessionService);
+		secureChannel = secureChannelClient.connect(clientConfig);
+		if (secureChannel == nullptr) {
+			Log(Error, "open secure channel error")
+				.parameter("SessId", ctx_->id_)
+				.parameter("EndpointUrl", clientConfig->endpointUrl());
+
+			// start reconnect timer
+			ctx_->startReconnectTimer();
+
+			return SessionServiceStateId::Disconnected;
+		}
+
+		return SessionServiceStateId::Connecting;
 	}
 
 	SessionServiceStateId
@@ -121,6 +152,18 @@ namespace OpcUaStackClient
 	)
 	{
 		Log(Warning, "activate session response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
+		return SessionServiceStateId::Reconnecting;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateReconnecting::recvGetEndpointsResponse(
+		SecureChannel* secureChannel,
+		const ResponseHeader::SPtr& responseHeader
+	)
+	{
+		Log(Warning, "get endpoints response event in invalid state; ignore event")
 			.parameter("SessId", ctx_->id_);
 
 		return SessionServiceStateId::Reconnecting;

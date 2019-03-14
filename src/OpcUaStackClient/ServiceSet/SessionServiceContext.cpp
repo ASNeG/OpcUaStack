@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
@@ -49,6 +50,8 @@ namespace OpcUaStackClient
 	, serverNonce_()
 	, requestId_(0)
 	, requestHandle_(0)
+	, getEndpointMode_(false)
+	, secureChannelClientConfigBackup_()
 	{
 	}
 
@@ -188,7 +191,27 @@ namespace OpcUaStackClient
 			.parameter("RequestId", trx->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_)
 		    .parameter("AuthenticationToken", authenticationToken_);
-		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, trx);
+		secureChannelClient_.asyncWriteMessageRequest(secureChannel, trx);
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SessionServiceContext::sendGetEndpointsRequest(
+			SecureChannel* secureChannel
+	)
+	{
+		auto trx = constructSPtr<SecureChannelTransaction>();
+		trx->requestTypeNodeId_.nodeId(OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary);
+		trx->requestId_ = ++requestId_;
+		std::iostream ios(&trx->os_);
+
+		GetEndpointsRequest getEndpointsRequest;
+		getEndpointsRequest.requestHeader()->requestHandle(++requestHandle_);
+
+		Log(Debug, "session send GetEndpointsRequest")
+		 	.parameter("SessId", id_)
+			.parameter("RequestId", trx->requestId_);
+		secureChannelClient_.asyncWriteMessageRequest(secureChannel, trx);
 		return Success;
 	}
 
@@ -245,6 +268,77 @@ namespace OpcUaStackClient
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, trx);
 
 		return Success;
+	}
+
+	void
+	SessionServiceContext::setGetEndpointMode(void)
+	{
+		secureChannelClientConfigBackup_ = secureChannelClientConfig_;
+
+		if (getEndpointMode_) {
+			return;
+		}
+		if (secureChannelClientConfig_->discoveryUrl().empty()) {
+			return;
+		}
+
+		Log(Debug, "session endpoint mode on")
+			.parameter("SessId", id_);
+
+		//
+		// Before establishing a communication connection, the endpoints are queried by the
+		// server with the Get Endpoint Request.
+		//
+		// - The Get Endpoint Request is sent without encryption.
+		// - The target for the Get Endpoint Request is the Discovery Url.
+		//
+		getEndpointMode_ = true;
+		secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());
+		secureChannelClientConfig_->endpointUrl(secureChannelClientConfig_->discoveryUrl());
+		secureChannelClientConfig_->securityMode(SecurityMode::SM_None);
+		secureChannelClientConfig_->securityPolicy(SecurityPolicy::SP_None);
+	}
+
+	void
+	SessionServiceContext::clearGetEndpointMode(void)
+	{
+		if (!getEndpointMode_) {
+			return;
+		}
+
+		Log(Debug, "session endpoint mode off")
+			.parameter("SessId", id_);
+
+		getEndpointMode_ = false;
+		secureChannelClientConfig_ = secureChannelClientConfigBackup_;
+	}
+
+	bool
+	SessionServiceContext::isGetEndpointMode(void)
+	{
+		return getEndpointMode_;
+	}
+
+	bool
+	SessionServiceContext::checkEndpoint(EndpointDescription::SPtr& endpoint)
+	{
+		// compare application uri
+		if (endpoint->server().applicationUri() != secureChannelClientConfig_->applicationUri()) {
+			return false;
+		}
+
+		// compare security mode
+		if (endpoint->securityMode().enumeration() != secureChannelClientConfig_->securityMode()) {
+			return false;
+		}
+
+		// compare security policy uri
+		auto securityPolicy = secureChannelClientConfig_->cryptoManager()->securityPolicy(endpoint->securityPolicyUri());
+		if (securityPolicy != secureChannelClientConfig_->securityPolicy()) {
+			return false;
+		}
+
+		return true;
 	}
 
 }

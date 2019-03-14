@@ -43,6 +43,10 @@ namespace OpcUaStackClient
 			SecureChannel* secureChannel,
 			const ResponseHeader::SPtr& responseHeader
 		) override;
+		virtual SessionServiceStateId recvGetEndpointsResponse(
+			SecureChannel* secureChannel,
+			const ResponseHeader::SPtr& responseHeader
+		) override;
 		virtual SessionServiceStateId recvCloseSessionResponse(
 			SecureChannel* secureChannel,
 			const ResponseHeader::SPtr& responseHeader

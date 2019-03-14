@@ -17,6 +17,7 @@
 
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/ServiceSet/GetEndpointsResponse.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateGetEndpoint.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
@@ -64,7 +65,7 @@ namespace OpcUaStackClient
 		// close secure channel
 		ctx_->secureChannelClient_.disconnect(secureChannel);
 
-		return SessionServiceStateId::Disconnecting;
+		return SessionServiceStateId::Error;
 	}
 
 	SessionServiceStateId
@@ -124,6 +125,75 @@ namespace OpcUaStackClient
 			.parameter("SessId", ctx_->id_);
 
 		return SessionServiceStateId::GetEndpoint;
+	}
+
+	SessionServiceStateId
+	SessionServiceStateGetEndpoint::recvGetEndpointsResponse(
+		SecureChannel* secureChannel,
+		const ResponseHeader::SPtr& responseHeader
+	)
+	{
+		assert(ctx_ != nullptr);
+		assert(secureChannel != nullptr);
+		assert(secureChannel->secureChannelTransaction_.get() != nullptr);
+		assert(responseHeader.get() != nullptr);
+
+		auto trx = secureChannel->secureChannelTransaction_;
+
+		// check service result
+		if (responseHeader->serviceResult() != Success) {
+			Log(Debug, "get endpoints response error; close secure channel")
+				.parameter("SessId", ctx_->id_)
+				.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
+
+			// close secure channel -
+			ctx_->secureChannelClient_.disconnect(secureChannel);
+
+			return SessionServiceStateId::Error;
+		}
+
+		// decode get endpoints response
+		std::iostream ios(&trx->is_);
+		GetEndpointsResponse getEndpointsResponse;
+		getEndpointsResponse.opcUaBinaryDecode(ios);
+
+		// read endpoints from endpoint response
+		bool found = false;
+		EndpointDescription::SPtr endpoint;
+		for (uint32_t idx = 0; idx < getEndpointsResponse.endpoints()->size(); idx++) {
+			getEndpointsResponse.endpoints()->get(idx, endpoint);
+
+			Log(Debug, "endpoint")
+				.parameter("EndpointUrl", endpoint->endpointUrl())
+				.parameter("SecurityMode", endpoint->securityMode().enum2Str())
+				.parameter("SecurityPolicyUri", endpoint->securityPolicyUri())
+				.parameter("ApplicationUri", endpoint->server().applicationUri());
+
+			if (ctx_->checkEndpoint(endpoint)) {
+				found = true;
+			}
+
+			// FIXME: todo - set endpoint url in secure channel client config
+			std::string url = ctx_->secureChannelClientConfigBackup_->discoveryUrl();
+			ctx_->secureChannelClientConfigBackup_->endpointUrl(url);
+		}
+
+		// check if endpoint is found
+		if (!found) {
+			Log(Debug, "no valid endpoint found; close secure channel")
+				.parameter("SessId", ctx_->id_)
+				.parameter("ApplicationUri", ctx_->secureChannelClientConfig_->applicationUri());
+
+			// close secure channel -
+			ctx_->secureChannelClient_.disconnect(secureChannel);
+
+			return SessionServiceStateId::Error;
+		}
+
+		// disconnect secure channel
+		ctx_->clearGetEndpointMode();
+		secureChannel->close();
+		return SessionServiceStateId::Reconnecting;
 	}
 
 	SessionServiceStateId

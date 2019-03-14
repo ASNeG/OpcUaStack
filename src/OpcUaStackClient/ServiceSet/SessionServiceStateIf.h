@@ -62,6 +62,10 @@ namespace OpcUaStackClient
 			SecureChannel* secureChannel,
 			const ResponseHeader::SPtr& responseHeader
 		) = 0;
+		virtual SessionServiceStateId recvGetEndpointsResponse(
+			SecureChannel* secureChannel,
+			const ResponseHeader::SPtr& responseHeader
+		) = 0;
 		virtual SessionServiceStateId recvCloseSessionResponse(
 			SecureChannel* secureChannel,
 			const ResponseHeader::SPtr& responseHeader

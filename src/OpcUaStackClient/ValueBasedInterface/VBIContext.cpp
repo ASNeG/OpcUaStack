@@ -50,7 +50,8 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	ConnectContext::ConnectContext(void)
 	: secureChannelLog_(false)
-	, endpointUrl_("Unknown")
+	, endpointUrl_("")
+	, discoveryUrl_("")
 	, applicationUri_("Unknown")
 	, securityMode_(SM_None)
 	, securityPolicy_(SP_None)

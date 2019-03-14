@@ -120,6 +120,18 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
+	SessionServiceStateError::recvGetEndpointsResponse(
+		SecureChannel* secureChannel,
+		const ResponseHeader::SPtr& responseHeader
+	)
+	{
+		Log(Warning, "get endpoints response event in invalid state; ignore event")
+			.parameter("SessId", ctx_->id_);
+
+		return SessionServiceStateId::Error;
+	}
+
+	SessionServiceStateId
 	SessionServiceStateError::recvCloseSessionResponse(
 		SecureChannel* secureChannel,
 		const ResponseHeader::SPtr& responseHeader

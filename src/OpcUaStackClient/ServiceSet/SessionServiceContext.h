@@ -51,6 +51,9 @@ namespace OpcUaStackClient
 		OpcUaStatusCode sendActivateSessionRequest(
 			SecureChannel* secureChannel
 		);
+		OpcUaStatusCode sendGetEndpointsRequest(
+				SecureChannel* secureChannel
+		);
 		OpcUaStatusCode sendCloseSessionRequest(
 			SecureChannel* secureChannel,
 			bool deleteSubscriptions
@@ -59,6 +62,12 @@ namespace OpcUaStackClient
 			SecureChannel* secureChannel,
 			uint32_t requestHandle
 		);
+
+		void setGetEndpointMode(void);
+		void clearGetEndpointMode(void);
+		bool isGetEndpointMode(void);
+
+		bool checkEndpoint(EndpointDescription::SPtr& endpoint);
 
 		static uint32_t gId_;
 		uint32_t id_;
@@ -98,6 +107,9 @@ namespace OpcUaStackClient
 		Certificate serverCertificate_;			// server certificate from create session response
 		OpcUaUInt32 requestId_;
 		OpcUaUInt32 requestHandle_;
+
+		bool getEndpointMode_;						// a get endpoint request must send to the opc ua server
+		SecureChannelClientConfig::SPtr secureChannelClientConfigBackup_;
 	};
 
 }
