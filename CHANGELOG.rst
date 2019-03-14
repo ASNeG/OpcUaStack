@@ -3,6 +3,7 @@ Release 3.6.3 (2019-03-05)
 
 **Bugs**:
 
+* allow relative install path #130, by @huebl
 * delete discovery client connection on error #126, by @huebl
 * fix calling stop monitored item callback #132, by @flipback
 
