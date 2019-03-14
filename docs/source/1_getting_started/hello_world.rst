@@ -179,10 +179,12 @@ and it doesn't have any other information. In OPC UA the data is stored in
 As you can see from the XML snippet, the main difference between :term:`Object`\ s
 and :term:`Variable`\ s is, that the :term:`Variable`\ s have values. Variable
 **GreatingString** has value of type string (ns=0,i=12) with default value *Ehmm*
-and placed on **HelloWorldFolder** (ns=1;i=1)
+and placed on **HelloWorldFolder** (ns=1;i=1).
 
 Now our information model is described completely and we can see it with an
-OPC UA client. But we need to compile and launch the application before.
+OPC UA client, but we need to compile and launch the application before. If you
+are keen on knowing more about :term:`Information Model` you can do it in
+:ref:`data_access_node_model`.
 
 Building and running
 ---------------------------

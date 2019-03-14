@@ -8,12 +8,14 @@ we're going to learn how OPC UA server stores data and provide access to it.
 Also we'll show you how you can organize the access data by using ASNeG OPC UA Stack.
 
 Some basic conceptions related with the topic were described in :ref:`hello_world`.
-It'd be easier to understand the topic if you take a look at the document before.
+It'd be easier to understand the topic if you take a look at this document before.
 
-Node
------
+.. _data_access_node_model:
 
-Before to learn how to access to data we need to understand how the data is stored
+Node Model
+-----------
+
+Before to learn how to access to data we need to understand how information is stored
 in OPC UA Server. If you are familiar to OPC UA protocol, skip this
 section.
 
@@ -35,13 +37,13 @@ unique inside of the namespace and can belong to the following types:
 * Namespace specific format
 
 *NodeId* isn't only one identifier of :term:`Node`. Each :term:`Node` must have
-symbolic human-readable :term:`Attribute` *BrowseName* which is used to identifier the node by its path of
-*BrowseNames*. *BrowseName* shouldn't be unique for the whole server but its path
-must be. Like *NodeId* *BrowseName* belongs to some namespace. Usually namespaces
-of *NodeId* and *BrowseName* are the same, but the OPC UA Specfication does not
-demand it.
+symbolic human-readable :term:`Attribute` *BrowseName* which is used to identifier
+the node by its path of *BrowseNames*. *BrowseName* shouldn't be unique for the
+whole server but its path must be. Like *NodeId* *BrowseName* belongs to some
+namespace. Usually namespaces of *NodeId* and *BrowseName* are the same, but
+the OPC UA Specfication does not demand it.
 
-OK. There are a lot of information here and we need some example to explain
+OK. There are a lot of information here and we need an example to explain
 it. In our example :ref:`hello_world` we created a folder for our string message:
 
 .. code-block:: xml
@@ -81,6 +83,84 @@ with *NodeId* **i=61** defines the type of the folder. This node is standard typ
 
 Variable
 ~~~~~~~~
+
+To store data witch can be read\\written by the client, OPC UA server has a special
+node type :term:`Variable`. It has :term:`Attriubte` *Value* where :term:`Variable`
+stores a data value of some type.
+
+From our example :ref:`hello_world`:
+
+.. code-block:: xml
+
+    <UAVariable NodeId="ns=2;i=222" BrowseName="1:GreetingString" DataType="i=12">
+        <DisplayName>GreetingString</DisplayName>
+        <Description>The greeting string</Description>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;i=1</Reference>
+        </References>
+        <Value>
+            <uax:String>Ehmm</uax:String>
+        </Value>
+    </UAVariable>
+
+The definition is very similar to :term:`Node` but has additional
+attribute *DataType* which has *NodeId* of data value type.
+
+We can create not only scalar variables but arrays as well. Here we're describing
+an array of 3 bytes with values [1,2,3]:
+
+.. code-block:: xml
+
+  <UAVariable NodeId="ns=1;i=203" BrowseName="1:ByteArray" DataType="i=3" ValueRank="1" ArrayDimensions="3">
+    <DisplayName>ByteArrayValue</DisplayName>
+    <Description>Byte array test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+      <Reference ReferenceType="Organizes" IsForward="false">ns=1;i=2</Reference>
+    </References>
+  <Value>
+      <uax:ListOfByte>
+        <uax:Byte>1</uax:Byte>
+        <uax:Byte>2</uax:Byte>
+        <uax:Byte>3</uax:Byte>
+      </uax:ListOfByte>
+    </Value>
+  </UAVariable>
+
+You can create :term:`Node` in :term:`Application Model` by using not only XML
+but the stack's API. It cab be useful when your application should create some
+:term:`Node` dynamically:
+
+.. code-block:: cpp
+
+  CreateNodeInstance createNodeInstance(
+    "DynamicVariable",                            // name
+    NodeClassType_Variable,                       // node class
+    OpcUaNodeId(85),                              // parent node id (Objects)
+    OpcUaNodeId("Dynamic", 1),						        // node id
+    OpcUaLocalizedText("en", "DynamicVariable"),  // display name
+    OpcUaQualifiedName("DynamicVariable", 1),     // browse name
+    OpcUaNodeId(47),                              // reference type id
+    OpcUaNodeId(62)                               // type node id
+  );
+
+  if (!createNodeInstance.query(applicationServiceIf_)) {
+    std::cout << "createNodeInstance response error" << std::endl;
+    return;
+  }
+
+
+Of course sometimes we need to delete :term:`Node`:
+
+.. code-block:: cpp
+
+  DeleteNodeInstance deleteNodeInstance(OpcUaNodeId("Dynamic", 1));
+
+  if (!deleteNodeInstance.query(applicationServiceIf_)) {
+  	std::cout << "deleteNodeInstance response error" << std::endl;
+  	return;
+  }
 
 Data Value
 ~~~~~~~~~~
