@@ -19,6 +19,7 @@ Release 4.1.0
 
 **Bugs**:
 
+* Added server namespace 1 #92, by @huebl
 * OPC UA server chrashes at startup #99, by @huebl
 * Ignore optional placeholder element in code generator #78, by @huebl
 * Double entry of CTRL C leads to crash #74, by @huebl
