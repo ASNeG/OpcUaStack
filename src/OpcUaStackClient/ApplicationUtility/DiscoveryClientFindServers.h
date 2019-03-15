@@ -57,7 +57,7 @@ namespace OpcUaStackClient
 		//- DiscoveryClientFindServerIf ---------------------------------------
 
 		//- SessionServiceIf --------------------------------------------------
-		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);
+		virtual void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState);
 		//- SessionServiceIf --------------------------------------------------
 
         //- DiscoveryServiceIf ------------------------------------------------

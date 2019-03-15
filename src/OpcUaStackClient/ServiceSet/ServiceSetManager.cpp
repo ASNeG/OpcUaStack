@@ -104,7 +104,7 @@ namespace OpcUaStackClient
 
 		// set session configuration
 		sessionService->setConfiguration(
-			sessionServiceConfig.mode_,
+			sessionServiceConfig.sessionMode_,
 			sessionServiceConfig.sessionServiceIf_,
 			sessionServiceConfig.secureChannelClient_,
 			sessionServiceConfig.session_

@@ -40,7 +40,7 @@
   <Endpoints>
     <EndpointDescription>
 	  <EndpointUrl>opc.tcp://0.0.0.0:ProjectPort</EndpointUrl>
-	  <ApplicationUri>urn:0.0.0.0:ASNeG:ProjectName</ApplicationUri>
+	  <ApplicationUri>urn:@HOSTNAME@:ASNeG:ProjectName</ApplicationUri>
 	  <ProductUri>urn:ASNeG:ProjectName</ProductUri>
 	  <ApplicationName>ProjectName</ApplicationName>
 	  <DiscoveryUrl>opc.tcp://0.0.0.0:ProjectPort</DiscoveryUrl>	

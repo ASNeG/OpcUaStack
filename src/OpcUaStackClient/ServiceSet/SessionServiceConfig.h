@@ -18,6 +18,7 @@
 #define __OpcUaStackClient_SessionServiceConfig_h__
 
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackClient/ServiceSet/SessionMode.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
 #include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
@@ -35,7 +36,7 @@ namespace OpcUaStackClient
 		SessionServiceConfig(void);
 		~SessionServiceConfig(void);
 
-		SessionService::Mode mode_;
+		SessionMode sessionMode_;
 		SessionServiceIf* sessionServiceIf_;
 		SecureChannelClientConfig::SPtr secureChannelClient_;
 		SessionConfig::SPtr session_;

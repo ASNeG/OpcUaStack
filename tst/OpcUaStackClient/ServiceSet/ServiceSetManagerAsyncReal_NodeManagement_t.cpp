@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_cc)
 	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncConnect();
 	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Established);
 
 	// create nodeManagement service
 	NodeManagementService::SPtr nodeManagementService;
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_cc)
 	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncDisconnect();
 	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 

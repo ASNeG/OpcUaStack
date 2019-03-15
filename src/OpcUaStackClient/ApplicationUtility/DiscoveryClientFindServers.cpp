@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -63,7 +63,7 @@ namespace OpcUaStackClient
 		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
-		sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
+		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 
@@ -103,10 +103,11 @@ namespace OpcUaStackClient
 	{
 		shutdown_ = true;
 
-		if (sessionService_->secureChannelState() != SessionService::SCS_Disconnected) {
+		// FIXME: todo
+		//if (sessionService_->secureChannelState() != SessionService::SCS_Disconnected) {
 			sessionService_->asyncDisconnect();
 			return;
-		}
+		//}
 
 		shutdownCond_.conditionValueDec();
 	}
@@ -123,9 +124,9 @@ namespace OpcUaStackClient
 	}
 
 	void
-	DiscoveryClientFindServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	DiscoveryClientFindServers::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
 	{
-		if (sessionState != SS_Connect) {
+		if (sessionState != SessionServiceStateId::Established) {
 
 			if (shutdown_) {
 				shutdownCond_.conditionValueDec();

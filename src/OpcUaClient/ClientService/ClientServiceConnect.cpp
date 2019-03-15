@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -64,7 +64,7 @@ namespace OpcUaClient
 
 		// check if session must be activated
 		if (!commandConnect->activateSession()) {
-			sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
+			sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		}
 
 		// create session
@@ -95,7 +95,7 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceConnect::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	ClientServiceConnect::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
 	{
 		// FIXME: todo
 	}

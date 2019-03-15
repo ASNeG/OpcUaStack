@@ -15,9 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackCore/SecureChannel/Resolver.h"
 
 namespace OpcUaStackCore
 {
@@ -33,7 +35,6 @@ namespace OpcUaStackCore
 	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	, secureChannelClientIf_(nullptr)
 	, ioThread_(ioThread)
-	, resolver_(ioThread->ioService()->io_service())
 	, slotTimerElementRenew_(constructSPtr<SlotTimerElement>())
 	, slotTimerElementReconnect_(constructSPtr<SlotTimerElement>())
 	, renewTimeout_(300000)
@@ -146,41 +147,28 @@ namespace OpcUaStackCore
 		// get ip address from hostname
 		Url url(config->endpointUrl());
 		secureChannel->partner_.port(url.port());
-		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
-		resolver_.async_resolve(
-			query,
-			boost::bind(
-				&SecureChannelClient::resolveComplete,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::iterator,
-				secureChannel
-			)
+		auto resolver = std::make_shared<Resolver>(ioThread_->ioService()->io_service());
+		resolver->getAddrFromUrl(
+			config->endpointUrl(),
+			[this, secureChannel](bool error, const boost::asio::ip::address addr) {
+				if (error) {
+					Log(Error, "address resolver error")
+						.parameter("ChannelId", *secureChannel)
+						.parameter("EndpointUrl", secureChannel->endpointUrl_);
+
+					reconnect(secureChannel);
+
+					return;
+				}
+				secureChannel->partner_.address(addr);
+				connectToServer(secureChannel);
+			}
 		);
 	}
 
 	void
-	SecureChannelClient::resolveComplete(
-		const boost::system::error_code& error,
-		boost::asio::ip::tcp::resolver::iterator endpointIterator,
-		SecureChannel* secureChannel
-	)
+	SecureChannelClient:: connectToServer(SecureChannel* secureChannel)
 	{
-		Log(Info, "resolver complete")
-			.parameter("ChannelId", *secureChannel);
-
-		if (error) {
-			Log(Error, "address resolver error")
-				.parameter("ChannelId", *secureChannel)
-				.parameter("EndpointUrl", secureChannel->endpointUrl_)
-				.parameter("Message", error.message());
-
-			reconnect(secureChannel);
-
-			return;
-		}
-		secureChannel->partner_.address((*endpointIterator).endpoint().address());
-
 		// open connection from client to server
 		Log(Info, "connect secure channel to server")
 			.parameter("ChannelId", *secureChannel)

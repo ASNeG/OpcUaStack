@@ -77,7 +77,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	VBIClient::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
 	{
 		if (sessionChangeCallback_.exist()) {
 			sessionChangeCallback_(session, sessionState);
@@ -117,6 +117,7 @@ namespace OpcUaStackClient
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
+		sessionServiceConfig.secureChannelClient_->discoveryUrl(connectContext.discoveryUrl_);
 		sessionServiceConfig.secureChannelClient_->applicationUri(connectContext.applicationUri_);
 		sessionServiceConfig.secureChannelClient_->securityMode(connectContext.securityMode_);
 		sessionServiceConfig.secureChannelClient_->securityPolicy(connectContext.securityPolicy_);

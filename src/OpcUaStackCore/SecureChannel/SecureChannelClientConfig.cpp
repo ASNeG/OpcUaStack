@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::SecureChannelClientConfig(void)
 	: SecureChannelConfig()
 	, endpointUrl_("")
+	, discoveryUrl_("")
 	, applicationUri_("")
 	, securityMode_(SM_None)
 	, securityPolicy_(SP_None)
@@ -40,6 +41,23 @@ namespace OpcUaStackCore
 	, cryptoManager_()
 
 	, secureChannelLog_(false)
+	{
+	}
+
+	SecureChannelClientConfig::SecureChannelClientConfig(const SecureChannelClientConfig& secureChannelClientConfig)
+	: SecureChannelConfig(secureChannelClientConfig)
+	, endpointUrl_(secureChannelClientConfig.endpointUrl_)
+	, discoveryUrl_(secureChannelClientConfig.discoveryUrl_)
+	, applicationUri_(secureChannelClientConfig.applicationUri_)
+	, securityMode_(secureChannelClientConfig.securityMode_)
+	, securityPolicy_(secureChannelClientConfig.securityPolicy_)
+	, connectTimeout_(secureChannelClientConfig.connectTimeout_)
+	, renewTimeout_(secureChannelClientConfig.renewTimeout_)
+	, reconnectTimeout_(secureChannelClientConfig.reconnectTimeout_)
+
+	, cryptoManager_(secureChannelClientConfig.cryptoManager_)
+
+	, secureChannelLog_(secureChannelClientConfig.secureChannelLog_)
 	{
 	}
 
@@ -57,6 +75,18 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::endpointUrl(void)
 	{
 		return endpointUrl_;
+	}
+
+	void
+	SecureChannelClientConfig::discoveryUrl(const std::string& discoveryUrl)
+	{
+		discoveryUrl_ = discoveryUrl;
+	}
+
+	std::string&
+	SecureChannelClientConfig::discoveryUrl(void)
+	{
+		return discoveryUrl_;
 	}
 
 	void

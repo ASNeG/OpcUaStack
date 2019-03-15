@@ -21,24 +21,19 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceStateId.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	typedef enum {
-		SS_Disconnect,		// The session or the secure channel is closed
-		SS_Connect,			// The session or the secure channel is connected
-		SS_ServerUriError	// The server uri is invalid
-	} SessionState;
-
 	class DLLEXPORT SessionServiceIf
 	{
 	  public:
 		virtual ~SessionServiceIf(void) {}
 
-		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState) = 0;
+		virtual void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState) = 0;
 	};
 
 	class DLLEXPORT SessionServiceIfTestHandler
@@ -48,9 +43,9 @@ namespace OpcUaStackClient
 		SessionServiceIfTestHandler(void);
 		virtual ~SessionServiceIfTestHandler(void);
 
-		SessionState sessionState_;
+		SessionServiceStateId sessionState_;
 		Condition sessionStateUpdate_;
-		void sessionStateUpdate(SessionBase& session, SessionState sessionState);
+		void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState);
 	};
 
 }

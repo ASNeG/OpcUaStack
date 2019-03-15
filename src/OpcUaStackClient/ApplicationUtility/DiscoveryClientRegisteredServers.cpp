@@ -77,7 +77,7 @@ namespace OpcUaStackClient
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager_);
-		sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
+		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 
@@ -178,9 +178,9 @@ namespace OpcUaStackClient
     }
 
 	void
-	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
 	{
-		if (sessionState == SS_Connect) {
+		if (sessionState == SessionServiceStateId::Established) {
 			sendDiscoveryServiceRegisterServer();
 			return;
 		}

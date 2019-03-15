@@ -236,7 +236,7 @@ namespace OpcUaStackClient
 
 	  private:
 		// BEGIN SessionServiceIf
-		void sessionStateUpdate(SessionBase& session, SessionState sessionState);
+		void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState);
 		// END SessionServiceIf
 
 		// BEGIN AttributeServiceIf

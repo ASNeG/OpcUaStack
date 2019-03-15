@@ -32,10 +32,13 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<SecureChannelClientConfig> SPtr;
 
 		SecureChannelClientConfig(void);
+		SecureChannelClientConfig(const SecureChannelClientConfig& secureChannelClientConfig);
 		~SecureChannelClientConfig(void);
 
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
+		void discoveryUrl(const std::string& discoveryUrl);
+		std::string& discoveryUrl(void);
 		void applicationUri(const std::string& applicationUri);
 		std::string& applicationUri(void);
 		void securityMode(SecurityMode securityMode);
@@ -55,10 +58,11 @@ namespace OpcUaStackCore
 		bool secureChannelLog(void);
 
 	  private:
-		std::string endpointUrl_;
-		std::string applicationUri_;
-		SecurityMode securityMode_;
-		SecurityPolicy securityPolicy_;
+		std::string endpointUrl_;			// opc ua server endpoint url
+		std::string discoveryUrl_;			// opc ua server discovery url
+		std::string applicationUri_;		// application uri
+		SecurityMode securityMode_;			// security mode
+		SecurityPolicy securityPolicy_;		// security policy
 
 		CryptoManager::SPtr cryptoManager_;
 

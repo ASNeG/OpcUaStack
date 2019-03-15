@@ -48,7 +48,8 @@ namespace OpcUaStackClient
 		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
 		bool secureChannelLog_;
-		std::string endpointUrl_;
+		std::string endpointUrl_;			//! endpoint url
+		std::string discoveryUrl_;			//! discovery url
 		std::string applicationUri_;
 		SecurityMode securityMode_;
 		SecurityPolicy securityPolicy_;

@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete)
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// create subscription
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete)
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncDisconnect();
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
 
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// set data change callback
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncDisconnect();
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
 
@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change)
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// set data change callback
@@ -285,7 +285,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change)
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncDisconnect();
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
 
