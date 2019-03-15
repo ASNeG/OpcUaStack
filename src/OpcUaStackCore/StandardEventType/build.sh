@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype BaseEventType --buildSubTypes 1 \
+OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet2.xml --eventtype BaseEventType --buildSubTypes 1 \
 	--ignoreEventTypeName AuditActivateSessionEventType \
 	--ignoreEventTypeName AuditAddNodesEventType \
 	--ignoreEventTypeName AuditAddReferencesEventType \
