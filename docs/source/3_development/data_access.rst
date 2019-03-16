@@ -128,7 +128,11 @@ an array of 3 bytes with values [1,2,3]:
     </Value>
   </UAVariable>
 
-You can create :term:`Node` in :term:`Application Model` by using not only XML
+
+Creating\\Deleting Node API
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can create :term:`Node` in :term:`Information Model` by using not only XML
 but the stack's API. It cab be useful when your application should create some
 :term:`Node` dynamically:
 
@@ -138,7 +142,7 @@ but the stack's API. It cab be useful when your application should create some
     "DynamicVariable",                            // name
     NodeClassType_Variable,                       // node class
     OpcUaNodeId(85),                              // parent node id (Objects)
-    OpcUaNodeId("Dynamic", 1),						        // node id
+    OpcUaNodeId("Dynamic", 1),                    // node id
     OpcUaLocalizedText("en", "DynamicVariable"),  // display name
     OpcUaQualifiedName("DynamicVariable", 1),     // browse name
     OpcUaNodeId(47),                              // reference type id
@@ -158,15 +162,52 @@ Of course sometimes we need to delete :term:`Node`:
   DeleteNodeInstance deleteNodeInstance(OpcUaNodeId("Dynamic", 1));
 
   if (!deleteNodeInstance.query(applicationServiceIf_)) {
-  	std::cout << "deleteNodeInstance response error" << std::endl;
-  	return;
+    std::cout << "deleteNodeInstance response error" << std::endl;
+    return;
   }
 
 Data Value
 ~~~~~~~~~~
 
-Monitored Item
-~~~~~~~~~~~~~
+As we already know, :term:`Variable`\ s are used to store data of OPC UA applications
+in :term:`Attribute` *Value*. It is not just a value of some type it is structure
+which has some additional information:
+
+* *StatusCode* is used to indicate condition of the data. If data is Ok, it should
+be *Success*. Otherwise is has some suitable "bad" status from OPC UA specification.
+See **Part 4 Services, Table 172 – Common Service Result Codes** for more Information.
+* *ServerTimestamp* is time when the value data has been received by *Server*
+* *SourceTimestamp* is time applied by source of data and indicates when the
+value or *StatusCode* has been changed in the source.
+
+Below you can see a simple example where we initialize *DataValue* and set to
+:term:`Variable` which we've created before.
+
+.. code-block:: cpp
+
+		OpcUaDataValue value(OpcUaInt32(500));
+
+		value.statusCode(OpcUaStatusCode::Success);
+		value.serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+		value.sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+
+    GetNodeReference getNodeReference(OpcUaNodeId("Dynamic", 1));
+    if (!getNodeReference.query(&this->service())) {
+        Log(Error, "response error");
+        return false;
+    }
+
+    if (getNodeReference.statuses()[0] != Success) {
+        Log(Error, "node reference error");
+        return false;
+    }
+
+    auto ptr = getNodeReference.nodeReferences()[0].lock();
+    if (!ptr) {
+        Log(Error, "node no longer exist");
+        return false;
+    }
+
 
 
 Callback Model
@@ -188,3 +229,5 @@ OPC UA Specification
 * Part 3 Address Space Model, 4.3 Node Model.
 * Part 3 Address Space Model, 5 Standard NodeClasses.
 * Part 3 Address Space Model, 8.2 NodeId.
+* Part 4 Services, Table 172 – Common Service Result Codes
+* Part 4 Services, 7.7 DataValue
