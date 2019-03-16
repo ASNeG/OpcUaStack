@@ -31,7 +31,7 @@ namespace OpcUaStackServer
 	, config_(nullptr)
 	, endpointDescriptionSet_()
 	, cryptoManager_()
-	, secureChannelServerShutdown_()
+	, shutdownComplete_()
 	, discoveryService_()
 	, transactionManagerSPtr_()
 	, channelSessionHandleMap_()
@@ -138,9 +138,9 @@ namespace OpcUaStackServer
 		for (it = secureChannelServerMap_.begin(); it != secureChannelServerMap_.end(); it++) {
 			SecureChannelServer::SPtr secureChannelServer = it->second;
 
-			secureChannelServerShutdown_.start();
+			auto future = shutdownComplete_.get_future();
 			secureChannelServer->disconnect();
-			secureChannelServerShutdown_.waitForReady();
+			future.wait();
 		}
 
 		// delete secure channel server
@@ -195,7 +195,7 @@ namespace OpcUaStackServer
 
 		// no further secure channel handle available
 		if (channelSessionHandleMap_.secureChannelSize() == 0) {
-			secureChannelServerShutdown_.ready();
+			shutdownComplete_.set_value(true);
 		}
 	}
 
@@ -638,7 +638,7 @@ namespace OpcUaStackServer
 		}
 
 		if (secureChannelList.size() == 0) {
-			secureChannelServerShutdown_.ready();
+			shutdownComplete_.set_value(true);
 		}
 	}
 
