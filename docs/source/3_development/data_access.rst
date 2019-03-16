@@ -136,6 +136,8 @@ You can create :term:`Node` in :term:`Information Model` by using not only XML
 but the stack's API. It cab be useful when your application should create some
 :term:`Node` dynamically:
 
+.. TODO: Describe arguments
+
 .. code-block:: cpp
 
   CreateNodeInstance createNodeInstance(
@@ -209,9 +211,16 @@ Below you can see a simple example where we initialize *DataValue* and set to
     }
 
 
-
 Callback Model
 --------------
+
+Developing your OPC UA application you'll need to know when the client read or write
+the data. The stack provides several callbacks to notify the user application about:
+
+* *Client* reads :term:`Attribute`
+* *Client* writes a new value into :term:`Attribute`
+* *Client* subscribes to changes of :term:`Attribute`
+* *Client* unsubscribes from changes of :term:`Attribute`
 
 
 Read
