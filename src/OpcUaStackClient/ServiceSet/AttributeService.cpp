@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -61,9 +61,9 @@ namespace OpcUaStackClient
 	AttributeService::syncSend(ServiceTransactionRead::SPtr serviceTransactionRead)
 	{
 		serviceTransactionRead->sync(true);
-		serviceTransactionRead->conditionBool().conditionInit();
+		auto future = serviceTransactionRead->promise().get_future();
 		asyncSend(serviceTransactionRead);
-		serviceTransactionRead->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -77,9 +77,9 @@ namespace OpcUaStackClient
 	AttributeService::syncSend(ServiceTransactionWrite::SPtr serviceTransactionWrite)
 	{
 		serviceTransactionWrite->sync(true);
-		serviceTransactionWrite->conditionBool().conditionInit();
+		auto future = serviceTransactionWrite->promise().get_future();
 		asyncSend(serviceTransactionWrite);
-		serviceTransactionWrite->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -93,9 +93,9 @@ namespace OpcUaStackClient
 	AttributeService::syncSend(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
 		serviceTransactionHistoryRead->sync(true);
-		serviceTransactionHistoryRead->conditionBool().conditionInit();
+		auto future = serviceTransactionHistoryRead->promise().get_future();
 		asyncSend(serviceTransactionHistoryRead);
-		serviceTransactionHistoryRead->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -109,9 +109,9 @@ namespace OpcUaStackClient
 	AttributeService::syncSend(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
 	{
 		serviceTransactionHistoryUpdate->sync(true);
-		serviceTransactionHistoryUpdate->conditionBool().conditionInit();
+		auto future = serviceTransactionHistoryUpdate->promise().get_future();
 		asyncSend(serviceTransactionHistoryUpdate);
-		serviceTransactionHistoryUpdate->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -128,7 +128,7 @@ namespace OpcUaStackClient
 		
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 		

@@ -152,6 +152,7 @@ namespace OpcUaStackServer
 		EndpointDescriptionSet::SPtr endpointDescriptionSet_;
 		CryptoManager::SPtr cryptoManager_;
 
+		bool shutdownFlag_;
 		std::promise<bool> shutdownComplete_;
 		SecureChannelServer::Map secureChannelServerMap_;
 		ForwardGlobalSync::SPtr forwardGlobalSync_;

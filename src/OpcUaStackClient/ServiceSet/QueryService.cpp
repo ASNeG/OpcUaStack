@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -60,9 +60,9 @@ namespace OpcUaStackClient
 	QueryService::syncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
 	{
 		serviceTransactionQueryFirst->sync(true);
-		serviceTransactionQueryFirst->conditionBool().conditionInit();
+		auto future = serviceTransactionQueryFirst->promise().get_future();
 		asyncSend(serviceTransactionQueryFirst);
-		serviceTransactionQueryFirst->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -76,9 +76,9 @@ namespace OpcUaStackClient
 	QueryService::syncSend(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
 	{
 		serviceTransactionQueryNext->sync(true);
-		serviceTransactionQueryNext->conditionBool().conditionInit();
+		auto future = serviceTransactionQueryNext->promise().get_future();
 		asyncSend(serviceTransactionQueryNext);
-		serviceTransactionQueryNext->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -96,7 +96,7 @@ namespace OpcUaStackClient
 		
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 		

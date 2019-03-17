@@ -24,6 +24,7 @@ add_library(
 target_link_libraries(
     OpcUaStackServer
     OpcUaStackCore
+    ${CMAKE_THREAD_LIBS_INIT}
     ${CMAKE_DL_LIBS}
     ${Boost_LIBRARIES}
 )

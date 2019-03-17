@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -56,9 +56,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
 		serviceTransactionCreateSubscription->sync(true);
-		serviceTransactionCreateSubscription->conditionBool().conditionInit();
+		auto future = serviceTransactionCreateSubscription->promise().get_future();
 		asyncSend(serviceTransactionCreateSubscription);
-		serviceTransactionCreateSubscription->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -72,9 +72,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
 		serviceTransactionModifySubscription->sync(true);
-		serviceTransactionModifySubscription->conditionBool().conditionInit();
+		auto future = serviceTransactionModifySubscription->promise().get_future();
 		asyncSend(serviceTransactionModifySubscription);
-		serviceTransactionModifySubscription->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -88,9 +88,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
 		serviceTransactionTransferSubscriptions->sync(true);
-		serviceTransactionTransferSubscriptions->conditionBool().conditionInit();
+		auto future = serviceTransactionTransferSubscriptions->promise().get_future();
 		asyncSend(serviceTransactionTransferSubscriptions);
-		serviceTransactionTransferSubscriptions->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -104,9 +104,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		serviceTransactionDeleteSubscriptions->sync(true);
-		serviceTransactionDeleteSubscriptions->conditionBool().conditionInit();
+		auto future = serviceTransactionDeleteSubscriptions->promise().get_future();
 		asyncSend(serviceTransactionDeleteSubscriptions);
-		serviceTransactionDeleteSubscriptions->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -120,9 +120,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
 		serviceTransactionSetPublishingMode->sync(true);
-		serviceTransactionSetPublishingMode->conditionBool().conditionInit();
+		auto future = serviceTransactionSetPublishingMode->promise().get_future();
 		asyncSend(serviceTransactionSetPublishingMode);
-		serviceTransactionSetPublishingMode->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -136,9 +136,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
 		serviceTransactionPublish->sync(true);
-		serviceTransactionPublish->conditionBool().conditionInit();
+		auto future = serviceTransactionPublish->promise().get_future();
 		asyncSend(serviceTransactionPublish);
-		serviceTransactionPublish->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -152,9 +152,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
 		serviceTransactionRepublish->sync(true);
-		serviceTransactionRepublish->conditionBool().conditionInit();
+		auto future = serviceTransactionRepublish->promise().get_future();
 		asyncSend(serviceTransactionRepublish);
-		serviceTransactionRepublish->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -171,7 +171,7 @@ namespace OpcUaStackClient
 
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 
