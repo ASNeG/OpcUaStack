@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_data_change)
 	monCreateReq->subscriptionId(subscriptionId);
 
 	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
-	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(218,2);
+	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(218,3);
 	monitoredItemCreateRequest->requestedParameters().clientHandle(218);
 
 	monCreateReq->itemsToCreate()->resize(1);
