@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -68,6 +68,8 @@ namespace OpcUaClient
 	{
 		OpcUaStatusCode statusCode;
 		CommandNodeSetServer::SPtr commandNodeSetServer = boost::static_pointer_cast<CommandNodeSetServer>(commandBase);
+
+		auto future = browseCompleted_.get_future();
 
 		// create new or get existing client object
 		ClientAccessObject::SPtr clientAccessObject;
@@ -149,7 +151,7 @@ namespace OpcUaClient
 		viewServiceBrowse.asyncBrowse();
 
 		// wait for the end of the browse request
-		browseCompleted_.waitForCondition();
+		future.wait();
 		if (browseStatusCode_ != Success) {
 			std::stringstream ss;
 			ss << "browse error"
@@ -204,7 +206,7 @@ namespace OpcUaClient
 		    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 
 		browseStatusCode_ = statusCode;
-		browseCompleted_.conditionTrue();
+		browseCompleted_.set_value(true);
 
 	}
 
@@ -337,11 +339,11 @@ namespace OpcUaClient
 		attributeServiceNode.attributeServiceNodeIf(this);
 
 		// send read node request
-		readCompleted_.conditionInit();
+		auto future = readCompleted_.get_future();
 		attributeServiceNode.asyncReadNode();
 
 		// wait for the end of the read node request
-		readCompleted_.waitForCondition();
+		future.wait();
 
 		// insert new node
 		if (readStatusCode_ == Success) {
@@ -381,11 +383,11 @@ namespace OpcUaClient
 		attributeServiceNode.attributeServiceNodeIf(this);
 
 		// send read node request
-		readCompleted_.conditionInit();
+		auto future = readCompleted_.get_future();
 		attributeServiceNode.asyncReadNode();
 
 		// wait for the end of the read node request
-		readCompleted_.waitForCondition();
+		future.wait();
 		if (readStatusCode_ != Success) return readStatusCode_;
 		return readNamespaceArrayStatusCode_;
 	}
@@ -399,7 +401,7 @@ namespace OpcUaClient
 				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 		}
 		readStatusCode_ = statusCode;
-		readCompleted_.conditionTrue();
+		readCompleted_.set_value(true);
 	}
 
 	void

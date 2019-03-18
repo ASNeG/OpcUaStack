@@ -26,6 +26,7 @@ target_link_libraries(
     OpcUaStackPubSub
     ${CMAKE_DL_LIBS}
     ${Boost_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
     ${OPENSSL_LIBRARIES}
     ${MOSQUITTO_LIBRARIES}
 )

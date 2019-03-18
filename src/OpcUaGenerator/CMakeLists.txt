@@ -26,6 +26,7 @@ target_link_libraries(
     OpcUaDataTypeGenerator${VERSION_MAJOR}
     ${CMAKE_DL_LIBS}
     ${Boost_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
     OpcUaStackCore
     OpcUaStackClient
     OpcUaStackServer

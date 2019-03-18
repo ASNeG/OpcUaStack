@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -119,7 +119,7 @@ namespace OpcUaStackServer
 
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 
@@ -148,9 +148,9 @@ namespace OpcUaStackServer
 		updateServiceTransactionRequest(serviceTransaction);
 		serviceTransaction->sync(true);
 
-		serviceTransaction->conditionBool().conditionInit();
+		auto future = serviceTransaction->promise().get_future();
 		serviceComponent_->send(serviceTransaction);
-		serviceTransaction->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void

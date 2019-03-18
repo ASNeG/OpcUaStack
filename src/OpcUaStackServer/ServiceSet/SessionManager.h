@@ -18,10 +18,10 @@
 #ifndef __OpcUaStackServer_SessionManager_h__
 #define __OpcUaStackServer_SessionManager_h__
 
+#include <future>
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/Url.h"
-#include "OpcUaStackCore/Base/ConditionProcess.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
@@ -152,7 +152,8 @@ namespace OpcUaStackServer
 		EndpointDescriptionSet::SPtr endpointDescriptionSet_;
 		CryptoManager::SPtr cryptoManager_;
 
-		ConditionProcess secureChannelServerShutdown_;
+		bool shutdownFlag_;
+		std::promise<bool> shutdownComplete_;
 		SecureChannelServer::Map secureChannelServerMap_;
 		ForwardGlobalSync::SPtr forwardGlobalSync_;
 

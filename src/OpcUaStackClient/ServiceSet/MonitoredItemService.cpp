@@ -60,9 +60,9 @@ namespace OpcUaStackClient
 	MonitoredItemService::syncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
 	{
 		serviceTransactionCreateMonitoredItems->sync(true);
-		serviceTransactionCreateMonitoredItems->conditionBool().conditionInit();
+		auto future = serviceTransactionCreateMonitoredItems->promise().get_future();
 		asyncSend(serviceTransactionCreateMonitoredItems);
-		serviceTransactionCreateMonitoredItems->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -76,9 +76,9 @@ namespace OpcUaStackClient
 	MonitoredItemService::syncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
 	{
 		serviceTransactionDeleteMonitoredItems->sync(true);
-		serviceTransactionDeleteMonitoredItems->conditionBool().conditionInit();
+		auto future = serviceTransactionDeleteMonitoredItems->promise().get_future();
 		asyncSend(serviceTransactionDeleteMonitoredItems);
-		serviceTransactionDeleteMonitoredItems->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -92,9 +92,9 @@ namespace OpcUaStackClient
 	MonitoredItemService::syncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
 	{
 		serviceTransactionModifyMonitoredItems->sync(true);
-		serviceTransactionModifyMonitoredItems->conditionBool().conditionInit();
+		auto future = serviceTransactionModifyMonitoredItems->promise().get_future();
 		asyncSend(serviceTransactionModifyMonitoredItems);
-		serviceTransactionModifyMonitoredItems->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -108,9 +108,9 @@ namespace OpcUaStackClient
 	MonitoredItemService::syncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
 	{
 		serviceTransactionSetMonitoringMode->sync(true);
-		serviceTransactionSetMonitoringMode->conditionBool().conditionInit();
+		auto future = serviceTransactionSetMonitoringMode->promise().get_future();
 		asyncSend(serviceTransactionSetMonitoringMode);
-		serviceTransactionSetMonitoringMode->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -124,9 +124,9 @@ namespace OpcUaStackClient
 	MonitoredItemService::syncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
 	{
 		serviceTransactionSetTriggering->sync(true);
-		serviceTransactionSetTriggering->conditionBool().conditionInit();
+		auto future = serviceTransactionSetTriggering->promise().get_future();
 		asyncSend(serviceTransactionSetTriggering);
-		serviceTransactionSetTriggering->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -143,7 +143,7 @@ namespace OpcUaStackClient
 
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 

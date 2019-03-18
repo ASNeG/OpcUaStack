@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -61,9 +61,9 @@ namespace OpcUaStackClient
 	NodeManagementService::syncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes)
 	{
 		serviceTransactionAddNodes->sync(true);
-		serviceTransactionAddNodes->conditionBool().conditionInit();
+		auto future = serviceTransactionAddNodes->promise().get_future();
 		asyncSend(serviceTransactionAddNodes);
-		serviceTransactionAddNodes->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -77,9 +77,9 @@ namespace OpcUaStackClient
 	NodeManagementService::syncSend(ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences)
 	{
 		serviceTransactionAddReferences->sync(true);
-		serviceTransactionAddReferences->conditionBool().conditionInit();
+		auto future = serviceTransactionAddReferences->promise().get_future();
 		asyncSend(serviceTransactionAddReferences);
-		serviceTransactionAddReferences->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -93,9 +93,9 @@ namespace OpcUaStackClient
 	NodeManagementService::syncSend(ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes)
 	{
 		serviceTransactionDeleteNodes->sync(true);
-		serviceTransactionDeleteNodes->conditionBool().conditionInit();
+		auto future = serviceTransactionDeleteNodes->promise().get_future();
 		asyncSend(serviceTransactionDeleteNodes);
-		serviceTransactionDeleteNodes->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -109,9 +109,9 @@ namespace OpcUaStackClient
 	NodeManagementService::syncSend(ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences)
 	{
 		serviceTransactionDeleteReferences->sync(true);
-		serviceTransactionDeleteReferences->conditionBool().conditionInit();
+		auto future = serviceTransactionDeleteReferences->promise().get_future();
 		asyncSend(serviceTransactionDeleteReferences);
-		serviceTransactionDeleteReferences->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -128,7 +128,7 @@ namespace OpcUaStackClient
 		
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 		
