@@ -85,8 +85,8 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints)
 	inArgument2->set((uint32_t)2);
 
 	CallMethodRequest::SPtr callMethodRequest = constructSPtr<CallMethodRequest>();
-	callMethodRequest->objectId()->set("Function" ,5);
-	callMethodRequest->methodId()->set("funcMult" ,5);
+	callMethodRequest->objectId()->set("Function" ,6);
+	callMethodRequest->methodId()->set("funcMult" ,6);
 	callMethodRequest->inputArguments()->resize(2);
 	callMethodRequest->inputArguments()->set(0, inArgument1);
 	callMethodRequest->inputArguments()->set(1, inArgument2);
