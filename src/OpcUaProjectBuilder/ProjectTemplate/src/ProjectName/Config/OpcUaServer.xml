@@ -140,6 +140,7 @@
   
   <InformationModel>
     <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet2.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.ASNeGServer.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>
