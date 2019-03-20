@@ -33,8 +33,6 @@ namespace OpcUaStackClient
 		VBIClientHandlerTest(void)
 	    : clientHandle_(0)
 	    , statusCode_(Success)
-	    , sessionState_(SessionServiceStateId::Disconnected)
-	    , sessionStateUpdate_()
 	    , subscriptionId_(0)
 	    , monitoredItemId_(0)
 
@@ -59,32 +57,6 @@ namespace OpcUaStackClient
 		uint32_t subscriptionId_;
 		uint32_t monitoredItemId_;
 		SubscriptionState subscriptionState_;
-
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		//
-		// SessionService
-		//
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		SessionServiceStateId sessionState_;
-		Condition sessionStateUpdate_;
-		void sessionStateUpdate(uint32_t clientHandle, SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState != SessionServiceStateId::Disconnected && sessionState != SessionServiceStateId::Established) {
-				return;
-			}
-
-			if (sessionState == SessionServiceStateId::Disconnected) {
-				Log(Debug, "receive Disconnected in test handler");
-			}
-			else {
-				Log(Debug, "receive Established in test handler");
-			}
-
-			clientHandle_ = clientHandle;
-			sessionState_ = sessionState;
-			sessionStateUpdate_.sendEvent();
-		}
 
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------

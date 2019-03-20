@@ -52,7 +52,7 @@ namespace OpcUaStackClient
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
 		template<typename HANDLER>
-		  //[[deprecated("Replace by setSessionChangeHandler")]]
+		  [[deprecated("Replace by setSessionChangeHandler")]]
 		  void setSessionChangeCallback(HANDLER handler) {
 			  Callback callback = handler;
 			  setSessionChangeCallback(callback);
