@@ -9,21 +9,39 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(VBIAsyncReal_Attribute_SignAndEncrypt_)
 
+struct GValueFixture {
+	GValueFixture(void)
+    : cond_()
+	, sessionState_(SessionServiceStateId::None)
+    {}
+    ~GValueFixture(void)
+    {}
+
+    Condition cond_;
+    SessionServiceStateId sessionState_;
+};
+
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_)
 {
 	std::cout << "VBIAsyncReal_Attribute_SignAndEncrypt_t" << std::endl;
 }
 
 #ifdef REAL_SERVER
-BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read, GValueFixture)
 {
 
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	// set session change callback
-	client.setSessionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
 	);
 
 	// connect session
@@ -40,11 +58,10 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read)
 	connectContext.securityPolicy_ = SP_Basic128Rsa15;					// security policy
 	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();
 	connectContext.secureChannelLog_ = true;
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// read
 	OpcUaNodeId nodeId;
@@ -59,21 +76,26 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read)
 	vbiClientHandlerTest.dataValue_.out(std::cout);
 
 	// disconnect session
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write, GValueFixture)
 {
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	// set session change callback
-	client.setSessionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
 	);
 
 	// connect session
@@ -90,11 +112,10 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write)
 	connectContext.securityPolicy_ = SP_Basic128Rsa15;					// security policy
 	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();;
 	connectContext.secureChannelLog_ = true;
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// write
 	OpcUaNodeId nodeId;
@@ -111,11 +132,10 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write)
 	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
 
 	// disconnect session
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 #endif
 

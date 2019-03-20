@@ -34,6 +34,8 @@ namespace OpcUaStackClient
 	, subscriptionChangeCallback_()
 	, dataChangeCallback_()
 
+	, sessionChangeHandler_()
+
 	, defaultReadContext_()
 	, defaultWriteContext_()
 	, defaultCreateSubscriptionContext_()
@@ -79,9 +81,20 @@ namespace OpcUaStackClient
 	void
 	VBIClient::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
 	{
+		if (sessionChangeHandler_) {
+			sessionChangeHandler_(session, sessionState);
+			return;
+		}
+
 		if (sessionChangeCallback_.exist()) {
 			sessionChangeCallback_(session, sessionState);
 		}
+	}
+
+	void
+	VBIClient::setSessionChangeHandler(SessionChangeHandler sessionChangeHandler)
+	{
+		sessionChangeHandler_ = sessionChangeHandler;
 	}
 
 	//

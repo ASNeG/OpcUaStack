@@ -38,6 +38,10 @@ namespace OpcUaStackClient
 		VBIClient(void);
 		~VBIClient(void);
 
+		typedef std::function<
+			void (SessionBase& session, SessionServiceStateId sessionState)
+		> SessionChangeHandler;
+
 		void ioThreadName(const std::string& ioThreadName);
 
 		// --------------------------------------------------------------------
@@ -48,11 +52,14 @@ namespace OpcUaStackClient
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
 		template<typename HANDLER>
+		  //[[deprecated("Replace by setSessionChangeHandler")]]
 		  void setSessionChangeCallback(HANDLER handler) {
 			  Callback callback = handler;
 			  setSessionChangeCallback(callback);
 		  }
+		[[deprecated("Replace by setSessionChangeHandler")]]
 		void setSessionChangeCallback(Callback& callback);
+		void setSessionChangeHandler(SessionChangeHandler sessionChangeHandler);
 
 		OpcUaStatusCode syncConnect(ConnectContext& connectContext);
 		void asyncConnect(ConnectContext& connectContext);
@@ -277,6 +284,8 @@ namespace OpcUaStackClient
 		Callback sessionChangeCallback_;
 		Callback subscriptionChangeCallback_;
 		Callback dataChangeCallback_;
+
+		SessionChangeHandler sessionChangeHandler_;
 
 		ReadContext defaultReadContext_;
 		WriteContext defaultWriteContext_;

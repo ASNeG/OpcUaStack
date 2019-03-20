@@ -1,20 +1,34 @@
 #include "unittest.h"
+#include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
+using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
 #ifdef REAL_SERVER
 
 BOOST_AUTO_TEST_SUITE(VBIAsyncReal_MonitoredItem_)
 
+struct GValueFixture {
+	GValueFixture(void)
+    : cond_()
+	, sessionState_(SessionServiceStateId::None)
+    {}
+    ~GValueFixture(void)
+    {}
+
+    Condition cond_;
+    SessionServiceStateId sessionState_;
+};
+
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_)
 {
 	std::cout << "VBIAsyncReal_MonitoredItem_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete, GValueFixture)
 {
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
@@ -26,9 +40,15 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete)
 	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
-	// set session change callback
-	client.setSessionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	// set session change handler
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
 	);
 
 	// connect session
@@ -37,11 +57,10 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create subscription
 	vbiClientHandlerTest.createSubscriptionComplete_.initEvent();
@@ -90,14 +109,13 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete)
 	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionId_ == subscriptionId);
 
 	// disconnect session
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback, GValueFixture)
 {
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
@@ -109,8 +127,14 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set session change callback
-	client.setSessionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
 	);
 
 	// connect session
@@ -119,11 +143,10 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// set data change callback
 	client.setDataChangeCallback(
@@ -187,14 +210,13 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
 	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionId_ == subscriptionId);
 
 	// disconnect session
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change, GValueFixture)
 {
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
@@ -206,8 +228,14 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change)
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set session change callback
-	client.setSessionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
 	);
 
 	// connect session
@@ -216,11 +244,10 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// set data change callback
 	client.setDataChangeCallback(
@@ -282,11 +309,10 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change)
 	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionId_ == subscriptionId);
 
 	// disconnect session
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
