@@ -220,6 +220,11 @@ namespace OpcUaStackCore
 		helloMessage.maxChunkCount(secureChannel->maxChunkCount_);
 		helloMessage.endpointUrl(secureChannel->endpointUrl_);
 
+		Log(Info, "send hello request")
+			.parameter("ChannelId", *secureChannel)
+			.parameter("Address", secureChannel->partner_.address().to_string())
+			.parameter("Port", secureChannel->partner_.port());
+
 		// send hellp message
 		secureChannel->state_ = SecureChannel::S_Hello;
 		asyncWriteHello(secureChannel, helloMessage);
@@ -228,6 +233,11 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::handleRecvAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
 	{
+		Log(Info, "receive acknowledge")
+			.parameter("ChannelId", *secureChannel)
+			.parameter("Address", secureChannel->partner_.address().to_string())
+			.parameter("Port", secureChannel->partner_.port());
+
 		// set acknowledge parameter in secure channel
 		secureChannel->receivedBufferSize_ = acknowledge.receivedBufferSize();
 		secureChannel->sendBufferSize_ = acknowledge.receivedBufferSize();
