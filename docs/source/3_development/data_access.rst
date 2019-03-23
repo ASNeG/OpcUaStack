@@ -222,12 +222,14 @@ the data. The stack provides several callbacks to notify the user application ab
 * *Client* subscribes to changes of :term:`Attribute`
 * *Client* unsubscribes from changes of :term:`Attribute`
 
+These callbacks especially useful when the data source of your application is
+remote (e.g. PLC, data base etc.) and you need to transport  between the data source
+and the client like a gateway.
 
-Read
-~~~~
+Read\\Write
+~~~~~~~~~~~
 
-Write
-~~~~~
+
 
 Subscription
 ~~~~~~~~~~~~
@@ -240,3 +242,4 @@ OPC UA Specification
 * Part 3 Address Space Model, 8.2 NodeId.
 * Part 4 Services, Table 172 – Common Service Result Codes
 * Part 4 Services, 7.7 DataValue
+* Part 4 Services, 5.10 Attribute Service Set
