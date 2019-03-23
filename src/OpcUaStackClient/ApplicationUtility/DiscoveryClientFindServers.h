@@ -31,8 +31,7 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT DiscoveryClientFindServers
-	: public SessionServiceIf
-	, public DiscoveryServiceIf
+	: public DiscoveryServiceIf
 	, public DiscoveryClientFindServersIf
 	{
 	  public:
@@ -55,10 +54,6 @@ namespace OpcUaStackClient
 		//
 		virtual void asyncFind(const std::string serverUri, Callback& findResultCallback);
 		//- DiscoveryClientFindServerIf ---------------------------------------
-
-		//- SessionServiceIf --------------------------------------------------
-		virtual void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState);
-		//- SessionServiceIf --------------------------------------------------
 
         //- DiscoveryServiceIf ------------------------------------------------
         virtual void discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);

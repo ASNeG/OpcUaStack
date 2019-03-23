@@ -29,7 +29,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Query_cc, GValueFixture)
 {
 	ServiceSetManager serviceSetManager;
 	QueryServiceIfTestHandler queryServiceIfTestHandler;
-	SessionServiceIfTestHandler sessionIfTestHandler;
 
 	//
 	// init certificate and crypto manager

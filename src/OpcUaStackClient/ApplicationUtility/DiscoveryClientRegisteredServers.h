@@ -34,8 +34,7 @@ namespace OpcUaStackClient
 	 * The discovery client registered server is used to register all endpoints.
 	 */
 	class DLLEXPORT DiscoveryClientRegisteredServers
-	: public SessionServiceIf
-	, public DiscoveryServiceIf
+	: public DiscoveryServiceIf
 	{
 	  public:
 		DiscoveryClientRegisteredServers(void);
@@ -51,10 +50,6 @@ namespace OpcUaStackClient
 
 		void addRegisteredServer(const std::string& name, RegisteredServer::SPtr& registeredServer);
 		void removeRegisteredServer(const std::string& name);
-
-		//- SessionServiceIf --------------------------------------------------
-		virtual void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState);
-		//- SessionServiceIf --------------------------------------------------
 
         //- DiscoveryServiceIf ------------------------------------------------
         virtual void discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);

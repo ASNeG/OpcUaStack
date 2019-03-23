@@ -17,7 +17,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_create_delete)
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
 	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 
@@ -123,7 +122,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_data_change)
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
 	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 

@@ -27,7 +27,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_)
 
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read, GValueFixture)
 {
-	SessionServiceIfTestHandler sessionIfTestHandler;
 	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 
@@ -100,7 +99,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read, GValueFixture
 
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write, GValueFixture)
 {
-	SessionServiceIfTestHandler sessionIfTestHandler;
 	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 

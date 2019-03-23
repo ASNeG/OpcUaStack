@@ -17,7 +17,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Method_discovery_GetEndpoints)
 {
 	ServiceSetManager serviceSetManager;
 	MethodServiceIfTestHandler methodServiceIfTestHandler;
-	SessionServiceIfTestHandler sessionIfTestHandler;
 
 	//
 	// init certificate and crypto manager

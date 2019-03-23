@@ -38,8 +38,6 @@ namespace OpcUaStackClient
 		~SessionServiceConfig(void);
 
 		SessionMode sessionMode_;
-		[[deprecated("Replace by sessionServiceIf_")]]
-		SessionServiceIf* sessionServiceIf_;
 		SessionServiceChangeHandler sessionServiceChangeHandler_;
 		SecureChannelClientConfig::SPtr secureChannelClient_;
 		SessionConfig::SPtr session_;

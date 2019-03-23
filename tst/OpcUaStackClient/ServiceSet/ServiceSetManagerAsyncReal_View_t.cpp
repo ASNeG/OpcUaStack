@@ -29,7 +29,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints, 
 {
 	ServiceSetManager serviceSetManager;
 	ViewServiceIfTestHandler viewServiceIfTestHandler;
-	SessionServiceIfTestHandler sessionIfTestHandler;
 
 	//
 	// init certificate and crypto manager

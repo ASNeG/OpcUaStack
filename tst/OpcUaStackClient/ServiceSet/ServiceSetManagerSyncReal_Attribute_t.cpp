@@ -15,7 +15,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Attribute_)
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Attribute_read)
 {
-	SessionServiceIfTestHandler sessionIfTestHandler;
 	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 
@@ -27,7 +26,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Attribute_read)
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
@@ -69,7 +67,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Attribute_read)
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Attribute_write)
 {
-	SessionServiceIfTestHandler sessionIfTestHandler;
 	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 

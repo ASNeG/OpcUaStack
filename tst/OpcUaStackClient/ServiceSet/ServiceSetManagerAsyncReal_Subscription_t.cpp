@@ -28,7 +28,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Subscription)
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Subscriptionsubscription_create_delete, GValueFixture)
 {
 	ServiceSetManager serviceSetManager;
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
 
 	//

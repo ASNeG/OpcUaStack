@@ -232,7 +232,7 @@ namespace OpcUaStackClient
 		if (attributeService_.get() == nullptr) {
 			// create attribute service
 			AttributeServiceConfig attributeServiceConfig;
-			attributeServiceConfig.attributeServiceIf_ = this;
+			attributeServiceConfig.attributeServiceIf(this);
 			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
 			assert(attributeService_.get() != nullptr);
 		}
@@ -340,7 +340,7 @@ namespace OpcUaStackClient
 		if (attributeService_.get() == nullptr) {
 			// create attribute service
 			AttributeServiceConfig attributeServiceConfig;
-			attributeServiceConfig.attributeServiceIf_ = this;
+			attributeServiceConfig.attributeServiceIf(this);
 			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
 			assert(attributeService_.get() != nullptr);
 		}
@@ -379,7 +379,7 @@ namespace OpcUaStackClient
 		if (attributeService_.get() == nullptr) {
 			// create attribute service
 			AttributeServiceConfig attributeServiceConfig;
-			attributeServiceConfig.attributeServiceIf_ = this;
+			attributeServiceConfig.attributeServiceIf(this);
 			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
 			assert(attributeService_.get() != nullptr);
 		}

@@ -50,19 +50,12 @@ namespace OpcUaStackClient
 
 		void setConfiguration(
 			SessionMode sessionMode,
-			SessionServiceIf* sessionServiceIf,
-			SecureChannelClientConfig::SPtr& secureChannelClientConfig,
-			SessionConfig::SPtr& sessionConfig
-		);
-		void setConfiguration(
-			SessionMode sessionMode,
 			SessionServiceChangeHandler& sessionServiceChangeHandler,
 			SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 			SessionConfig::SPtr& sessionConfig
 		);
 		void updateEndpointUrl(const std::string& endpointUrl);
 
-		void sessionServiceIf(SessionServiceIf* sessionServiceIf);
 		void asyncConnect(void);
 		OpcUaStatusCode syncConnect(void);
 		void asyncDisconnect(bool deleteSubscriptions = true);

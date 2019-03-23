@@ -16,7 +16,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Subscription)
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Subscriptionsubscription_create_delete)
 {
 	ServiceSetManager serviceSetManager;
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
 
 	//

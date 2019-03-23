@@ -29,7 +29,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_cc, GValueFixt
 {
 	ServiceSetManager serviceSetManager;
 	NodeManagementServiceIfTestHandler nodeManagementServiceIfTestHandler;
-	SessionServiceIfTestHandler sessionIfTestHandler;
 
 	//
 	// init certificate and crypto manager

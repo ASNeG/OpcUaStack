@@ -28,7 +28,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Session_)
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Session_session_connect_disconnect, GValueFixture)
 {
 	ServiceSetManager serviceSetManager;
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -70,7 +69,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Session_session_connect_disco
 
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Session_session_connect_disconnect_two_times, GValueFixture)
 {
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 	SessionServiceConfig sessionServiceConfig;
 

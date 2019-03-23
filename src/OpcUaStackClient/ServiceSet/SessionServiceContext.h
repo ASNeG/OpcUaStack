@@ -24,7 +24,6 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
-#include "OpcUaStackClient/ServiceSet/SessionServiceIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
 
@@ -86,7 +85,6 @@ namespace OpcUaStackClient
 		SessionService* sessionService_;
 		SessionMode sessionMode_;
 		SessionConfig::SPtr sessionConfig_;
-		SessionServiceIf* sessionServiceIf_;
 		SessionServiceChangeHandler sessionServiceChangeHandler_;
 
 		//

@@ -58,12 +58,28 @@ namespace OpcUaStackClient
 	bool 
 	DiscoveryClientFindServers::startup(void)
 	{
+		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState != SessionServiceStateId::Established) {
+
+				if (shutdown_) {
+					shutdownCond_.conditionValueDec();
+					return;
+				}
+
+				findResultCallback_(findStatusCode_, findResults_);
+				return;
+			}
+
+			sendFindServersRequest();
+		};
+
 		// create service set manager
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
-		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
+		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
+
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 
@@ -121,23 +137,6 @@ namespace OpcUaStackClient
 		serverUri_ = serverUri;
 		findResultCallback_ = findResultCallback;
 		sessionService_->asyncConnect();
-	}
-
-	void
-	DiscoveryClientFindServers::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
-	{
-		if (sessionState != SessionServiceStateId::Established) {
-
-			if (shutdown_) {
-				shutdownCond_.conditionValueDec();
-				return;
-			}
-
-			findResultCallback_(findStatusCode_, findResults_);
-			return;
-		}
-
-		sendFindServersRequest();
 	}
 
 	void

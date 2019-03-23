@@ -17,7 +17,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Query_cc)
 {
 	ServiceSetManager serviceSetManager;
 	QueryServiceIfTestHandler queryServiceIfTestHandler;
-	SessionServiceIfTestHandler sessionIfTestHandler;
 
 	//
 	// init certificate and crypto manager

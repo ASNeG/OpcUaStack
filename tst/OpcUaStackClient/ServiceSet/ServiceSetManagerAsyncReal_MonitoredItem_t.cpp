@@ -29,7 +29,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
 	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 
@@ -157,7 +156,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
 	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 

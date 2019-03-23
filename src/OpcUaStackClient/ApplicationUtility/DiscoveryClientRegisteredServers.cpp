@@ -71,13 +71,25 @@ namespace OpcUaStackClient
 	bool 
 	DiscoveryClientRegisteredServers::startup(void)
 	{
+		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established) {
+				sendDiscoveryServiceRegisterServer();
+				return;
+			}
+
+			if (shutdown_) {
+				shutdownCond_.conditionValueDec();
+			}
+		};
+
 		// create service set manager
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
-		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager_);
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
+		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
+
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 
@@ -176,19 +188,6 @@ namespace OpcUaStackClient
 	    sessionService_->asyncDisconnect();
 	    shutdownCond_.conditionValueDec();
     }
-
-	void
-	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
-	{
-		if (sessionState == SessionServiceStateId::Established) {
-			sendDiscoveryServiceRegisterServer();
-			return;
-		}
-
-		if (shutdown_) {
-			shutdownCond_.conditionValueDec();
-		}
-	}
 
 	void
 	DiscoveryClientRegisteredServers::sendDiscoveryServiceRegisterServer(void)
