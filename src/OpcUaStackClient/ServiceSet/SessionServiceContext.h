@@ -26,6 +26,7 @@
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
 
 using namespace OpcUaStackCore;
 
@@ -86,6 +87,7 @@ namespace OpcUaStackClient
 		SessionMode sessionMode_;
 		SessionConfig::SPtr sessionConfig_;
 		SessionServiceIf* sessionServiceIf_;
+		SessionServiceChangeHandler sessionServiceChangeHandler_;
 
 		//
 		// thread and timer

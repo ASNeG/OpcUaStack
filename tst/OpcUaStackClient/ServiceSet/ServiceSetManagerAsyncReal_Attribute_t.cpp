@@ -8,12 +8,24 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_Attribute_)
 
+struct GValueFixture {
+	GValueFixture(void)
+    : cond_()
+	, sessionState_(SessionServiceStateId::None)
+    {}
+    ~GValueFixture(void)
+    {}
+
+    Condition cond_;
+    SessionServiceStateId sessionState_;
+};
+
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_)
 {
 	std::cout << "ServiceSetManagerAsyncReal_Attribute_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read)
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read, GValueFixture)
 {
 	SessionServiceIfTestHandler sessionIfTestHandler;
 	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
@@ -27,10 +39,17 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read)
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
 
 
 	// create session
@@ -39,10 +58,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read)
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create attribute service
 	AttributeService::SPtr attributeService;
@@ -72,14 +91,14 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read)
 	BOOST_REQUIRE(res->results()->size() == 1);
 
 	// disconnect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write)
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write, GValueFixture)
 {
 	SessionServiceIfTestHandler sessionIfTestHandler;
 	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
@@ -93,10 +112,17 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write)
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
 
 	// create session
 	SessionService::SPtr sessionService;
@@ -104,10 +130,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write)
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create attribute service
 	AttributeService::SPtr attributeService;
@@ -134,10 +160,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write)
 	BOOST_REQUIRE(res->dataValueArray()->size() == 1);
 
 	// disconnect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 

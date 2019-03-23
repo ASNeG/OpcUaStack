@@ -52,12 +52,8 @@ namespace OpcUaStackClient
 	{
 		assert(ctx_ != nullptr);
 		assert(ctx_->secureChannel_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
 
 		auto secureChannel = ctx_->secureChannel_;
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		Log(Debug, "async disconnect event")
 			.parameter("SessId", ctx_->id_);
@@ -92,11 +88,6 @@ namespace OpcUaStackClient
 			.parameter("SessId", ctx_->id_);
 
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
-
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		// start reconnect timer
 		ctx_->startReconnectTimer();
@@ -123,18 +114,14 @@ namespace OpcUaStackClient
 	)
 	{
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
 		assert(ctx_->sessionConfig_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
 		assert(secureChannel != nullptr);
 		assert(secureChannel->secureChannelTransaction_.get() != nullptr);
 		assert(responseHeader.get() != nullptr);
 
 		auto& securitySettings = secureChannel->securitySettings_;
 		auto trx = secureChannel->secureChannelTransaction_;
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
 		auto sessionConfig = ctx_->sessionConfig_;
-		auto sessionService = ctx_->sessionService_;
 
 		// check service result
 		if (responseHeader->serviceResult() != Success) {

@@ -103,12 +103,32 @@ namespace OpcUaStackClient
 		SessionService::SPtr sessionService = constructSPtr<SessionService>(ioThread.get());
 
 		// set session configuration
-		sessionService->setConfiguration(
-			sessionServiceConfig.sessionMode_,
-			sessionServiceConfig.sessionServiceIf_,
-			sessionServiceConfig.secureChannelClient_,
-			sessionServiceConfig.session_
-		);
+		if (sessionServiceConfig.sessionServiceIf_ != nullptr) {
+			sessionService->setConfiguration(
+				sessionServiceConfig.sessionMode_,
+				sessionServiceConfig.sessionServiceIf_,
+				sessionServiceConfig.secureChannelClient_,
+				sessionServiceConfig.session_
+			);
+		}
+
+		else if (sessionServiceConfig.sessionServiceChangeHandler_) {
+			sessionService->setConfiguration(
+				sessionServiceConfig.sessionMode_,
+				sessionServiceConfig.sessionServiceChangeHandler_,
+				sessionServiceConfig.secureChannelClient_,
+				sessionServiceConfig.session_
+			);
+		}
+
+		else {
+			sessionService->setConfiguration(
+				sessionServiceConfig.sessionMode_,
+				nullptr,
+				sessionServiceConfig.secureChannelClient_,
+				sessionServiceConfig.session_
+			);
+		}
 
 		return sessionService;
 	}

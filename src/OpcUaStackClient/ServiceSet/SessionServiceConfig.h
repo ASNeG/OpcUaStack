@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/SessionMode.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
 #include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
 using namespace OpcUaStackCore;
@@ -37,7 +38,9 @@ namespace OpcUaStackClient
 		~SessionServiceConfig(void);
 
 		SessionMode sessionMode_;
+		[[deprecated("Replace by sessionServiceIf_")]]
 		SessionServiceIf* sessionServiceIf_;
+		SessionServiceChangeHandler sessionServiceChangeHandler_;
 		SecureChannelClientConfig::SPtr secureChannelClient_;
 		SessionConfig::SPtr session_;
 	};

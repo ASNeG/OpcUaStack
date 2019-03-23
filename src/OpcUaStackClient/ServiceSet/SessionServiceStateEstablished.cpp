@@ -56,12 +56,8 @@ namespace OpcUaStackClient
 
 		assert(ctx_ != nullptr);
 		assert(ctx_->secureChannel_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
 
 		auto secureChannel = ctx_->secureChannel_;
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		// remove all requests from pending queue
 		removeAllRequestsFromPendingQueue();
@@ -108,11 +104,6 @@ namespace OpcUaStackClient
 			.parameter("SessId", ctx_->id_);
 
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
-
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		// remove all requests from pending queue
 		removeAllRequestsFromPendingQueue();
@@ -130,11 +121,6 @@ namespace OpcUaStackClient
 	)
 	{
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
-
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		Log(Warning, "create session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)
@@ -156,11 +142,6 @@ namespace OpcUaStackClient
 	)
 	{
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
-
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		Log(Warning, "activate session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)
@@ -194,11 +175,6 @@ namespace OpcUaStackClient
 	)
 	{
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
-
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		Log(Warning, "receive close session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)

@@ -33,6 +33,7 @@ namespace OpcUaStackClient
 	: ServiceConfigBase("Session")
 	, sessionMode_(SessionMode::SecureChannelAndSession)
 	, sessionServiceIf_(nullptr)
+	, sessionServiceChangeHandler_()
 	, secureChannelClient_(constructSPtr<SecureChannelClientConfig>())
 	, session_(constructSPtr<SessionConfig>())
 	{

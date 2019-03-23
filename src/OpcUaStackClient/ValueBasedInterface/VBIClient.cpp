@@ -79,19 +79,6 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
-	{
-		if (sessionChangeHandler_) {
-			sessionChangeHandler_(session, sessionState);
-			return;
-		}
-
-		if (sessionChangeCallback_.exist()) {
-			sessionChangeCallback_(session, sessionState);
-		}
-	}
-
-	void
 	VBIClient::setSessionChangeHandler(SessionChangeHandler sessionChangeHandler)
 	{
 		sessionChangeHandler_ = sessionChangeHandler;
@@ -103,9 +90,20 @@ namespace OpcUaStackClient
 	OpcUaStatusCode
 	VBIClient::syncConnect(ConnectContext& connectContext)
 	{
+		auto sessionServiceChangeHandler = [this](SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionChangeHandler_) {
+				sessionChangeHandler_(session, sessionState);
+				return;
+			}
+
+			if (sessionChangeCallback_.exist()) {
+				sessionChangeCallback_(session, sessionState);
+			}
+		};
+
 		// set secure channel configuration
 		SessionServiceConfig sessionServiceConfig;
-		sessionServiceConfig.sessionServiceIf_ = this;
+		sessionServiceConfig.sessionServiceChangeHandler_ = sessionServiceChangeHandler;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
 		sessionServiceConfig.secureChannelClient_->applicationUri(connectContext.applicationUri_);
 		sessionServiceConfig.secureChannelClient_->securityMode(connectContext.securityMode_);
@@ -126,9 +124,20 @@ namespace OpcUaStackClient
 	void
 	VBIClient::asyncConnect(ConnectContext& connectContext)
 	{
+		auto sessionServiceChangeHandler = [this](SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionChangeHandler_) {
+				sessionChangeHandler_(session, sessionState);
+				return;
+			}
+
+			if (sessionChangeCallback_.exist()) {
+				sessionChangeCallback_(session, sessionState);
+			}
+		};
+
 		// set secure channel configuration
 		SessionServiceConfig sessionServiceConfig;
-		sessionServiceConfig.sessionServiceIf_ = this;
+		sessionServiceConfig.sessionServiceChangeHandler_ = sessionServiceChangeHandler;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
 		sessionServiceConfig.secureChannelClient_->discoveryUrl(connectContext.discoveryUrl_);
 		sessionServiceConfig.secureChannelClient_->applicationUri(connectContext.applicationUri_);

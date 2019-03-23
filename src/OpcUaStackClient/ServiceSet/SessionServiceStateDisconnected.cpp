@@ -42,11 +42,9 @@ namespace OpcUaStackClient
 		// check configuration parameter
 		assert(ctx_ != nullptr);
 		assert(ctx_->secureChannelClientConfig_.get() != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
 		assert(ctx_->sessionService_ != nullptr);
 
 		auto clientConfig = ctx_->secureChannelClientConfig_;
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
 		auto& secureChannelClient = ctx_->secureChannelClient_;
 		auto secureChannel = ctx_->secureChannel_;
 		auto sessionService = ctx_->sessionService_;
@@ -89,11 +87,6 @@ namespace OpcUaStackClient
 	{
 		// check configuration parameter
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
-
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		Log(Debug, "async disconnect event")
 			.parameter("SessId", ctx_->id_);

@@ -29,8 +29,7 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT VBIClient
-	: public SessionServiceIf
-	, public AttributeServiceIf
+	: public AttributeServiceIf
 	, public SubscriptionServiceIf
 	, public MonitoredItemServiceIf
 	{
@@ -242,9 +241,6 @@ namespace OpcUaStackClient
 		OpcUaStatusCode syncViewServiceBrowse(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& references);
 
 	  private:
-		// BEGIN SessionServiceIf
-		void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState);
-		// END SessionServiceIf
 
 		// BEGIN AttributeServiceIf
         void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);

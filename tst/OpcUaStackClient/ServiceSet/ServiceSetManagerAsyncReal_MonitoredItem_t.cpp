@@ -8,12 +8,24 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_MonitoredItem)
 
+struct GValueFixture {
+	GValueFixture(void)
+    : cond_()
+	, sessionState_(SessionServiceStateId::None)
+    {}
+    ~GValueFixture(void)
+    {}
+
+    Condition cond_;
+    SessionServiceStateId sessionState_;
+};
+
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem)
 {
 	std::cout << "ServiceSetManagerAsyncReal_MonitoredItem_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, GValueFixture)
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
@@ -29,10 +41,17 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
 
 	// create session
 	SessionService::SPtr sessionService;
@@ -40,10 +59,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create subscription service
 	SubscriptionServiceConfig subscriptionServiceConfig;
@@ -127,14 +146,14 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 	BOOST_REQUIRE(statusCode == Success);
 
 	// disconnect secure channel
-	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change)
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GValueFixture)
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
@@ -150,10 +169,17 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change)
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
 
 	// create session
 	SessionService::SPtr sessionService;
@@ -161,10 +187,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change)
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create subscription service
 	SubscriptionServiceConfig subscriptionServiceConfig;
@@ -255,10 +281,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change)
 	BOOST_REQUIRE(statusCode == Success);
 
 	// disconnect secure channel
-	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 

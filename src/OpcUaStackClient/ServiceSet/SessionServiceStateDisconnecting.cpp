@@ -76,11 +76,6 @@ namespace OpcUaStackClient
 			.parameter("SessId", ctx_->id_);
 
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
-
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		return SessionServiceStateId::Disconnected;
 	}
