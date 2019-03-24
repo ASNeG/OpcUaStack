@@ -187,28 +187,28 @@ Below you can see a simple example where we initialize *DataValue* and set to
 
 .. code-block:: cpp
 
-		OpcUaDataValue value(OpcUaInt32(500));
+  OpcUaDataValue value(OpcUaInt32(500));
 
-		value.statusCode(OpcUaStatusCode::Success);
-		value.serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
-		value.sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+  value.statusCode(OpcUaStatusCode::Success);
+  value.serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+  value.sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 
-    GetNodeReference getNodeReference(OpcUaNodeId("Dynamic", 1));
-    if (!getNodeReference.query(&this->service())) {
-        Log(Error, "response error");
-        return false;
-    }
+  GetNodeReference getNodeReference(OpcUaNodeId("Dynamic", 1));
+  if (!getNodeReference.query(&this->service())) {
+      Log(Error, "response error");
+      return false;
+  }
 
-    if (getNodeReference.statuses()[0] != Success) {
-        Log(Error, "node reference error");
-        return false;
-    }
+  if (getNodeReference.statuses()[0] != Success) {
+      Log(Error, "node reference error");
+      return false;
+  }
 
-    auto ptr = getNodeReference.nodeReferences()[0].lock();
-    if (!ptr) {
-        Log(Error, "node no longer exist");
-        return false;
-    }
+  auto ptr = getNodeReference.nodeReferences()[0].lock();
+  if (!ptr) {
+      Log(Error, "node no longer exist");
+      return false;
+  }
 
 
 Callback Model
@@ -229,7 +229,71 @@ and the client like a gateway.
 Read\\Write
 ~~~~~~~~~~~
 
+The stack can notify a user application if some :term:`Attribute` of a :term:`Node`
+has been read or written by the OPC UA client. For that we have to create
+handler-methods and register them in the stack as callbacks.
 
+Let's do it in a new application (see :link:`hello_world` if don't know how to
+create an application):
+
+.. code-block:: cpp
+
+  void
+  Library::startup(void)
+  {
+    Log(Debug, "Library::startup");
+
+    RegisterForwardNode registerForwardNode;
+
+    registerForwardNode.setReadCallback(boost::bind(&Library::readValue, this, _1));
+    registerForwardNode.setWriteCallback(boost::bind(&Library::writeValue, this, _1));
+    registerForwardNode.addNode(OpcUaNodeId(203,1));
+
+    if (!registerForwardNode.query(&this->service())) {
+      Log(Error, "registerForwardNode response error");
+      return false;
+    }
+
+    return true;
+  }
+
+  void
+  Library::readValue(ApplicationReadContext* context)
+  {
+    Log(Info, "Read data from node")
+        .parameter("nodeId", context->nodeId_)
+        .parameter("attributeId", context->attributeId_);
+
+    context->statusCode_ = OpcUaStatusCode::Success;
+
+    if (context->attributeId_ == AttributeId::AttributeId_Value) {
+      context->dataValue_.copyFrom(sourceValue_);
+    }
+  }
+
+  void
+  Library::writeValue(ApplicationWriteContext* context)
+  {
+    Log(Info, "Write data to node")
+        .parameter("nodeId", context->nodeId_)
+        .parameter("attributeId", context->attributeId_);
+
+    context->statusCode_ = OpcUaStatusCode::Success;
+
+    if (context->attributeId_ == AttributeId::AttributeId_Value) {
+      context->dataValue_.copyTo(sourceValue_);
+    }
+  }
+
+This example application has only one :term:`Variable` of type *OpcUaByte* and
+registers for this :term:`Node` callbacks for read and write operation by using
+class *RegisterForwardNode*. This class can register loads other callbacks but for
+our purpose we need only two: *ReadCallback* and *WriteCallback* ,
+
+Methods *readValue* and *writeValue* work with *sourceValue* of type *OpcUaDataValue*.
+It is some trivial imitation of the case where the real data stored not
+in :term:`InformationModel` but in another part of the system and just mapped into
+:term:`Variable`\ s of the user application.
 
 Subscription
 ~~~~~~~~~~~~
