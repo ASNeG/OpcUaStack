@@ -167,7 +167,7 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::receive(Message::SPtr message)
 	{
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {

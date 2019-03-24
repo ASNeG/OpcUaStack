@@ -17,7 +17,6 @@
 #ifndef __OpcUaStackClient_AttributeServiceConfig_h__
 #define __OpcUaStackClient_AttributeServiceConfig_h__
 
-#include "OpcUaStackClient/ServiceSet/AttributeServiceIf.h"
 #include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
 using namespace OpcUaStackCore;
@@ -33,8 +32,6 @@ namespace OpcUaStackClient
 
 		AttributeServiceConfig(void);
 		~AttributeServiceConfig(void);
-
-		AttributeServiceIf* attributeServiceIf_;
 	};
 
 }

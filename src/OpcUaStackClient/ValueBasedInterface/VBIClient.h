@@ -40,6 +40,12 @@ namespace OpcUaStackClient
 		typedef std::function<
 			void (SessionBase& session, SessionServiceStateId sessionState)
 		> SessionChangeHandler;
+		typedef std::function<
+			void (SubscriptionState subscriptionState, uint32_t subscriptionId)
+		> SubscriptionChangeHandler;
+		typedef std::function<
+			void (OpcUaUInt32 clientHandle, OpcUaDataValue& dataValue)
+		> DataChangeHandler;
 
 		void ioThreadName(const std::string& ioThreadName);
 
@@ -50,14 +56,6 @@ namespace OpcUaStackClient
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
-		template<typename HANDLER>
-		  [[deprecated("Replace by setSessionChangeHandler")]]
-		  void setSessionChangeCallback(HANDLER handler) {
-			  Callback callback = handler;
-			  setSessionChangeCallback(callback);
-		  }
-		[[deprecated("Replace by setSessionChangeHandler")]]
-		void setSessionChangeCallback(Callback& callback);
 		void setSessionChangeHandler(SessionChangeHandler sessionChangeHandler);
 
 		OpcUaStatusCode syncConnect(ConnectContext& connectContext);
@@ -285,7 +283,6 @@ namespace OpcUaStackClient
 
 		Callback sessionCompleteCallback_;
 
-		Callback sessionChangeCallback_;
 		Callback subscriptionChangeCallback_;
 		Callback dataChangeCallback_;
 

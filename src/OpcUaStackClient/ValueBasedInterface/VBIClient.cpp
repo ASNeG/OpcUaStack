@@ -30,7 +30,6 @@ namespace OpcUaStackClient
 	, monitoredItemService_()
 	, viewService_()
 
-	, sessionChangeCallback_()
 	, subscriptionChangeCallback_()
 	, dataChangeCallback_()
 
@@ -53,7 +52,6 @@ namespace OpcUaStackClient
 		monitoredItemService_.reset();
 		viewService_.reset();
 
-		sessionChangeCallback_.reset();
 		subscriptionChangeCallback_.reset();
 		dataChangeCallback_.reset();
 
@@ -73,12 +71,6 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	VBIClient::setSessionChangeCallback(Callback& callback)
-	{
-		sessionChangeCallback_ = callback;
-	}
-
-	void
 	VBIClient::setSessionChangeHandler(SessionChangeHandler sessionChangeHandler)
 	{
 		sessionChangeHandler_ = sessionChangeHandler;
@@ -94,10 +86,6 @@ namespace OpcUaStackClient
 			if (sessionChangeHandler_) {
 				sessionChangeHandler_(session, sessionState);
 				return;
-			}
-
-			if (sessionChangeCallback_.exist()) {
-				sessionChangeCallback_(session, sessionState);
 			}
 		};
 
@@ -128,10 +116,6 @@ namespace OpcUaStackClient
 			if (sessionChangeHandler_) {
 				sessionChangeHandler_(session, sessionState);
 				return;
-			}
-
-			if (sessionChangeCallback_.exist()) {
-				sessionChangeCallback_(session, sessionState);
 			}
 		};
 

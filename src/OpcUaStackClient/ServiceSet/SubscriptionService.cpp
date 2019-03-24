@@ -168,7 +168,7 @@ namespace OpcUaStackClient
 	void
 	SubscriptionService::receive(Message::SPtr message)
 	{
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
 		{
 			case OpcUaId_CreateSubscriptionResponse_Encoding_DefaultBinary:

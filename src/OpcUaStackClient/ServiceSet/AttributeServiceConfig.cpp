@@ -33,7 +33,6 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	AttributeServiceConfig::AttributeServiceConfig(void)
 	: ServiceConfigBase("Attribute")
-	, attributeServiceIf_(nullptr)
 	{
 	}
 

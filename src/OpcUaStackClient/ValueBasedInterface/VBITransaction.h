@@ -73,6 +73,7 @@ namespace OpcUaStackClient
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionCreateSubscription> SPtr;
+		typedef std::function<void(OpcUaStatusCode statusCode, uint32_t subscriptionId)> VBIResultHandler;
 
 		VBITransactionCreateSubscription(void);
 		virtual ~VBITransactionCreateSubscription(void);
@@ -85,6 +86,7 @@ namespace OpcUaStackClient
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionDeleteSubscription> SPtr;
+		typedef std::function<void(OpcUaStatusCode statusCode, uint32_t subscriptionId)> VBIResultHandler;
 
 		VBITransactionDeleteSubscription(void);
 		virtual ~VBITransactionDeleteSubscription(void);
@@ -105,6 +107,7 @@ namespace OpcUaStackClient
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionCreateMonitoredItem> SPtr;
+		typedef std::function<void(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, uint32_t monitoredItemId)> VBIResultHandler;
 
 		VBITransactionCreateMonitoredItem(void);
 		virtual ~VBITransactionCreateMonitoredItem(void);
@@ -117,6 +120,7 @@ namespace OpcUaStackClient
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionDeleteMonitoredItem> SPtr;
+		typedef std::function<void(OpcUaStatusCode statusCode, uint32_t subscriptionId, uint32_t monitoredItemId)> VBIResultHandler;
 
 		VBITransactionDeleteMonitoredItem(void);
 		virtual ~VBITransactionDeleteMonitoredItem(void);
