@@ -168,7 +168,7 @@ namespace OpcUaStackClient
 		// set attribute configuration
 		attributeService->setConfiguration(
 			sessionService->component(),
-			attributeServiceConfig.attributeServiceIf()
+			attributeServiceConfig.attributeServiceIf_
 		);
 
 		return attributeService;
