@@ -38,11 +38,14 @@ namespace OpcUaStackClient
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionRead> SPtr;
+		typedef std::function<
+			void(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
+		> VBIResultHandler;
 
 		VBITransactionRead(void);
 		virtual ~VBITransactionRead(void);
 
-		Callback callback_;
+		VBIResultHandler VBIResultHandler_;
 	};
 
 	class DLLEXPORT VBITransactionWrite
@@ -50,11 +53,12 @@ namespace OpcUaStackClient
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionWrite> SPtr;
+		typedef std::function<void(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId)> VBIResultHandler;
 
 		VBITransactionWrite(void);
 		virtual ~VBITransactionWrite(void);
 
-		Callback callback_;
+		VBIResultHandler VBIResultHandler_;
 	};
 
 	// ------------------------------------------------------------------------

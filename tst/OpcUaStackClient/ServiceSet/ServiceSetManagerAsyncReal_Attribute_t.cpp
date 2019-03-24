@@ -27,13 +27,12 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_)
 
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read, GValueFixture)
 {
-	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
@@ -52,8 +51,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read, GValueFixture
 
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
@@ -62,30 +60,31 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read, GValueFixture
 	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
-	// create attribute service
-	AttributeService::SPtr attributeService;
+	// create attribute servic
 	AttributeServiceConfig attributeServiceConfig;
-	attributeServiceConfig.attributeServiceIf_ = &attributeServiceIfTestHandler;
-	attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
+	auto attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
 	BOOST_REQUIRE(attributeService.get() != nullptr);
 
 	// create and send WriteRequest
-	ServiceTransactionWrite::SPtr trx;
-	trx = constructSPtr<ServiceTransactionWrite>();
-	WriteRequest::SPtr req = trx->request();
-
+	auto trx = constructSPtr<ServiceTransactionWrite>();
+	auto req = trx->request();
+	auto writeValue = constructSPtr<WriteValue>();
 	OpcUaBoolean value = 1;
-	WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
 	writeValue->nodeId()->set("Demo.Static.Scalar.Boolean", 2);
 	writeValue->attributeId((OpcUaInt32) 13);
 	writeValue->dataValue().variant()->set(value);
 	req->writeValueArray()->resize(1);
 	req->writeValueArray()->set(writeValue);
 
-	attributeServiceIfTestHandler.attributeServiceWriteResponse_.condition(1,0);
+	cond_.condition(1,0);
+	trx->resultHandler(
+		[this](ServiceTransactionWrite::SPtr& trx) {
+			cond_.conditionValueDec();
+		}
+	);
 	attributeService->asyncSend(trx);
-	attributeServiceIfTestHandler.attributeServiceWriteResponse_.waitForCondition(1000);
-	WriteResponse::SPtr res = trx->response();
+	cond_.waitForCondition(1000);
+	auto res = trx->response();
 	BOOST_REQUIRE(trx->statusCode() == Success);
 	BOOST_REQUIRE(res->results()->size() == 1);
 
@@ -99,13 +98,12 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read, GValueFixture
 
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write, GValueFixture)
 {
-	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
@@ -123,8 +121,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write, GValueFixtur
 		};
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
@@ -134,25 +131,27 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write, GValueFixtur
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create attribute service
-	AttributeService::SPtr attributeService;
 	AttributeServiceConfig attributeServiceConfig;
-	attributeServiceConfig.attributeServiceIf_ = &attributeServiceIfTestHandler;
-	attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
+	auto attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
 	BOOST_REQUIRE(attributeService.get() != nullptr);
 
 	// create and send ReadRequest
-	ServiceTransactionRead::SPtr trx;
-	trx = constructSPtr<ServiceTransactionRead>();
-	ReadRequest::SPtr req = trx->request();
-	ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
+	auto trx = constructSPtr<ServiceTransactionRead>();
+	auto req = trx->request();
+	auto readValueIdSPtr = constructSPtr<ReadValueId>();
 	readValueIdSPtr->nodeId((OpcUaInt16)0, (OpcUaInt32)2259);
 	readValueIdSPtr->attributeId((OpcUaInt32) 13);
 	readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 	req->readValueIdArray()->set(readValueIdSPtr);
 
-	attributeServiceIfTestHandler.attributeServiceReadResponse_.condition(1,0);
+	cond_.condition(1,0);
+	trx->resultHandler(
+		[this](ServiceTransactionRead::SPtr& trx) {
+			cond_.conditionValueDec();
+		}
+	);
 	attributeService->asyncSend(trx);
-	attributeServiceIfTestHandler.attributeServiceReadResponse_.waitForCondition(1000);
+	cond_.waitForCondition(1000);
 	ReadResponse::SPtr res = trx->response();
 	BOOST_REQUIRE(trx->statusCode() == Success);
 	BOOST_REQUIRE(res->dataValueArray()->size() == 1);

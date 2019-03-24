@@ -184,34 +184,38 @@ namespace OpcUaStackClient
 	// read
 	// ------------------------------------------------------------------------
     void
-    VBIClient::attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead)
+    VBIClient::attributeServiceReadResponse(
+    	ServiceTransactionRead::SPtr serviceTransactionRead
+	)
     {
-    	VBITransactionRead::SPtr trx = boost::static_pointer_cast<VBITransactionRead>(serviceTransactionRead);
+    	auto trx = boost::static_pointer_cast<VBITransactionRead>(serviceTransactionRead);
+    	if (!trx->VBIResultHandler_) {
+    		return;
+    	}
 
-		if (trx->callback_.exist()) {
-			OpcUaNodeId nodeId;
-			OpcUaDataValue dataValue;
+		OpcUaNodeId nodeId;
+		OpcUaDataValue dataValue;
 
-			if (trx->statusCode() != Success) {
-				trx->callback_(trx->statusCode(), nodeId, dataValue);
-				return;
-			}
-			ReadResponse::SPtr res = trx->response();
-			if (res->dataValueArray()->size() != 1) {
-				trx->callback_(BadUnexpectedError, nodeId, dataValue);
-				return;
-			}
-			OpcUaDataValue::SPtr dataValueSPtr;
-			res->dataValueArray()->get(0, dataValueSPtr);
-			dataValue.copyFrom(*dataValueSPtr);
-
-			ReadRequest::SPtr req = trx->request();
-			ReadValueId::SPtr readValueIdSPtr;
-			req->readValueIdArray()->get(0, readValueIdSPtr);
-			readValueIdSPtr->nodeId()->copyTo(nodeId);
-
-			trx->callback_(Success, nodeId, dataValue);
+		if (trx->statusCode() != Success) {
+			trx->VBIResultHandler_(trx->statusCode(), nodeId, dataValue);
+			return;
 		}
+
+		auto res = trx->response();
+		if (res->dataValueArray()->size() != 1) {
+			trx->VBIResultHandler_(BadUnexpectedError, nodeId, dataValue);
+			return;
+		}
+		OpcUaDataValue::SPtr dataValueSPtr;
+		res->dataValueArray()->get(0, dataValueSPtr);
+		dataValue.copyFrom(*dataValueSPtr);
+
+		auto req = trx->request();
+		ReadValueId::SPtr readValueIdSPtr;
+		req->readValueIdArray()->get(0, readValueIdSPtr);
+		readValueIdSPtr->nodeId()->copyTo(nodeId);
+
+		trx->VBIResultHandler_(Success, nodeId, dataValue);
     }
 
 	ReadContext&
@@ -221,27 +225,32 @@ namespace OpcUaStackClient
 	}
 
 	OpcUaStatusCode
-	VBIClient::syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
+	VBIClient::syncRead(
+		OpcUaNodeId& nodeId,
+		OpcUaDataValue& dataValue
+	)
 	{
 		return syncRead(nodeId, dataValue, defaultReadContext_);
 	}
 
 	OpcUaStatusCode
-	VBIClient::syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, ReadContext& readContext)
+	VBIClient::syncRead(
+		OpcUaNodeId& nodeId,
+		OpcUaDataValue& dataValue,
+		ReadContext& readContext
+	)
 	{
 		if (attributeService_.get() == nullptr) {
 			// create attribute service
 			AttributeServiceConfig attributeServiceConfig;
-			attributeServiceConfig.attributeServiceIf_ = this;
 			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
 			assert(attributeService_.get() != nullptr);
 		}
 
 		// create and send ReadRequest
-		VBITransactionRead::SPtr trx;
-		trx = constructSPtr<VBITransactionRead>();
-		ReadRequest::SPtr req = trx->request();
-		ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
+		auto trx = constructSPtr<VBITransactionRead>();
+		auto req = trx->request();
+		auto readValueIdSPtr = constructSPtr<ReadValueId>();
 		readValueIdSPtr->nodeId()->copyFrom(nodeId);
 		readValueIdSPtr->attributeId(readContext.attributeId_);
 		readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
@@ -250,7 +259,7 @@ namespace OpcUaStackClient
 		attributeService_->syncSend(trx);
 
 		if (trx->statusCode() != Success) return trx->statusCode();
-		ReadResponse::SPtr res = trx->response();
+		auto res = trx->response();
 		if (res->dataValueArray()->size() != 1) return BadUnexpectedError;
 		OpcUaDataValue::SPtr dataValueSPtr;
 		res->dataValueArray()->get(0, dataValueSPtr);
@@ -259,32 +268,43 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::asyncRead(OpcUaNodeId& nodeId, Callback& callback)
+	VBIClient::asyncRead(
+		OpcUaNodeId& nodeId,
+		const VBITransactionRead::VBIResultHandler& resultHandler
+	)
 	{
-		asyncRead(nodeId, callback, defaultReadContext_);
+		asyncRead(nodeId, resultHandler, defaultReadContext_);
 	}
 
 	void
-	VBIClient::asyncRead(OpcUaNodeId& nodeId, Callback& callback, ReadContext& readContext)
+	VBIClient::asyncRead(
+		OpcUaNodeId& nodeId,
+		const VBITransactionRead::VBIResultHandler& resultHandler,
+		ReadContext& readContext
+	)
 	{
 		if (attributeService_.get() == nullptr) {
 			// create attribute service
 			AttributeServiceConfig attributeServiceConfig;
-			attributeServiceConfig.attributeServiceIf_ = this;
 			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
 			assert(attributeService_.get() != nullptr);
 		}
 
 		// create and send ReadRequest
-		VBITransactionRead::SPtr trx = constructSPtr<VBITransactionRead>();
-		trx->callback_ = callback;
-		ReadRequest::SPtr req = trx->request();
-		ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
+		auto trx = constructSPtr<VBITransactionRead>();
+		auto req = trx->request();
+		auto readValueIdSPtr = constructSPtr<ReadValueId>();
+		trx->VBIResultHandler_ = resultHandler;
 		readValueIdSPtr->nodeId()->copyFrom(nodeId);
 		readValueIdSPtr->attributeId(readContext.attributeId_);
 		readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 		req->readValueIdArray()->set(readValueIdSPtr);
 
+		trx->resultHandler(
+			[this](ServiceTransactionRead::SPtr& trx) {
+				attributeServiceReadResponse(trx);
+			}
+		);
 		attributeService_->asyncSend(trx);
 	}
 
@@ -293,33 +313,36 @@ namespace OpcUaStackClient
 	// write
 	// ------------------------------------------------------------------------
 	void
-	VBIClient::attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite)
+	VBIClient::attributeServiceWriteResponse(
+		ServiceTransactionWrite::SPtr serviceTransactionWrite
+	)
 	{
-    	VBITransactionWrite::SPtr trx = boost::static_pointer_cast<VBITransactionWrite>(serviceTransactionWrite);
+    	auto trx = boost::static_pointer_cast<VBITransactionWrite>(serviceTransactionWrite);
+    	if (!trx->VBIResultHandler_) {
+    		return;
+    	}
 
-		if (trx->callback_.exist()) {
-			OpcUaNodeId nodeId;
+		OpcUaNodeId nodeId;
 
-			if (trx->statusCode() != Success) {
-				trx->callback_(trx->statusCode(), nodeId);
-				return;
-			}
-			WriteResponse::SPtr res = trx->response();
-			if (res->results()->size() != 1) {
-				trx->callback_(BadUnexpectedError, nodeId);
-				return;
-			}
-
-			OpcUaStatusCode statusCode;
-			res->results()->get(0, statusCode);
-
-			WriteRequest::SPtr req = trx->request();
-			WriteValue::SPtr writeValue;
-			req->writeValueArray()->get(0, writeValue);
-			writeValue->nodeId()->copyTo(nodeId);
-
-			trx->callback_(statusCode, nodeId);
+		if (trx->statusCode() != Success) {
+			trx->VBIResultHandler_(trx->statusCode(), nodeId);
+			return;
 		}
+		auto res = trx->response();
+		if (res->results()->size() != 1) {
+			trx->VBIResultHandler_(BadUnexpectedError, nodeId);
+			return;
+		}
+
+		OpcUaStatusCode statusCode;
+		res->results()->get(0, statusCode);
+
+		auto req = trx->request();
+		WriteValue::SPtr writeValue;
+		req->writeValueArray()->get(0, writeValue);
+		writeValue->nodeId()->copyTo(nodeId);
+
+		trx->VBIResultHandler_(statusCode, nodeId);
 	}
 
 	WriteContext&
@@ -329,28 +352,33 @@ namespace OpcUaStackClient
 	}
 
 	OpcUaStatusCode
-	VBIClient::syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
+	VBIClient::syncWrite(
+		OpcUaNodeId& nodeId,
+		OpcUaDataValue& dataValue
+	)
 	{
 		return syncWrite(nodeId, dataValue, defaultWriteContext_);
 	}
 
 	OpcUaStatusCode
-	VBIClient::syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, WriteContext& writeContext)
+	VBIClient::syncWrite(
+		OpcUaNodeId& nodeId,
+		OpcUaDataValue& dataValue,
+		WriteContext& writeContext
+	)
 	{
 		if (attributeService_.get() == nullptr) {
 			// create attribute service
 			AttributeServiceConfig attributeServiceConfig;
-			attributeServiceConfig.attributeServiceIf_ = this;
 			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
 			assert(attributeService_.get() != nullptr);
 		}
 
 		// create and send WriteRequest
-		VBITransactionWrite::SPtr trx;
-		trx = constructSPtr<VBITransactionWrite>();
-		WriteRequest::SPtr req = trx->request();
+		auto trx = constructSPtr<VBITransactionWrite>();
+		auto req = trx->request();
 
-		WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
+		auto writeValue = constructSPtr<WriteValue>();
 		writeValue->nodeId()->copyFrom(nodeId);
 		writeValue->attributeId(writeContext.attributeId_);
 		writeValue->dataValue().copyFrom(dataValue);
@@ -359,7 +387,7 @@ namespace OpcUaStackClient
 
 		attributeService_->syncSend(trx);
 		if (trx->statusCode() != Success) return trx->statusCode();
-		WriteResponse::SPtr res = trx->response();
+		auto res = trx->response();
 		if (res->results()->size() != 1) return BadUnexpectedError;
 
 		OpcUaStatusCode statusCode;
@@ -368,35 +396,47 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback)
+	VBIClient::asyncWrite(
+		OpcUaNodeId& nodeId,
+		OpcUaDataValue& dataValue,
+		const VBITransactionWrite::VBIResultHandler& resultHandler
+	)
 	{
-		asyncWrite(nodeId, dataValue, callback, defaultWriteContext_);
+		asyncWrite(nodeId, dataValue, resultHandler, defaultWriteContext_);
 	}
 
 	void
-	VBIClient::asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback, WriteContext& writeContext)
+	VBIClient::asyncWrite(
+		OpcUaNodeId& nodeId,
+		OpcUaDataValue& dataValue,
+		const VBITransactionWrite::VBIResultHandler& resultHandler,
+		WriteContext& writeContext
+	)
 	{
 		if (attributeService_.get() == nullptr) {
 			// create attribute service
 			AttributeServiceConfig attributeServiceConfig;
-			attributeServiceConfig.attributeServiceIf_ = this;
 			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
 			assert(attributeService_.get() != nullptr);
 		}
 
 		// create and send WriteRequest
-		VBITransactionWrite::SPtr trx;
-		trx = constructSPtr<VBITransactionWrite>();
-		trx->callback_ = callback;
-		WriteRequest::SPtr req = trx->request();
+		auto trx = constructSPtr<VBITransactionWrite>();
+		trx->VBIResultHandler_ = resultHandler;
+		auto req = trx->request();
 
-		WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
+		auto writeValue = constructSPtr<WriteValue>();
 		writeValue->nodeId()->copyFrom(nodeId);
 		writeValue->attributeId(writeContext.attributeId_);
 		writeValue->dataValue().copyFrom(dataValue);
 		req->writeValueArray()->resize(1);
 		req->writeValueArray()->set(writeValue);
 
+		trx->resultHandler(
+			[this](ServiceTransactionWrite::SPtr& trx) {
+				attributeServiceWriteResponse(trx);
+			}
+		);
 		attributeService_->asyncSend(trx);
 	}
 

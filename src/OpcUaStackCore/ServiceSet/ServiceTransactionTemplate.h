@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 	  {
 	    public:
 		  typedef boost::shared_ptr<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> > SPtr;
+		  typedef std::function<void(SPtr& handler)> ResultHandler;
 
 		  static void name(const std::string& name);
 		  static std::string name(void);
@@ -45,12 +46,16 @@ namespace OpcUaStackCore
 		  std::string requestName(void);
 		  std::string responseName(void); 
 
+		  void resultHandler(const ResultHandler& resultHandler);
+		  ResultHandler& resultHandler(void);
+
 		  void opcUaBinaryEncodeRequest(std::ostream& os) const;
 		  void opcUaBinaryEncodeResponse(std::ostream& os) const;
 		  void opcUaBinaryDecodeRequest(std::istream& is);
 		  void opcUaBinaryDecodeResponse(std::istream& is);
 
 	    private:
+		  ResultHandler resultHandler_;
 		  ResponseHeader::SPtr responseHeader_;
 		  typename REQTYPE::SPtr request_;
 		  typename RESTYPE::SPtr response_;

@@ -20,6 +20,7 @@
 
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIContext.h"
+#include "OpcUaStackClient/ValueBasedInterface/VBITransaction.h"
 #include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 
 using namespace OpcUaStackCore;
@@ -29,8 +30,7 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT VBIClient
-	: public AttributeServiceIf
-	, public SubscriptionServiceIf
+	: public SubscriptionServiceIf
 	, public MonitoredItemServiceIf
 	{
 	  public:
@@ -77,38 +77,48 @@ namespace OpcUaStackClient
 
 		// read
 		ReadContext& defaultReadContext(void);
-		OpcUaStatusCode syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
-		OpcUaStatusCode syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, ReadContext& readContext);
-		void asyncRead(OpcUaNodeId& nodeId, Callback& callback);
-		template<typename HANDLER>
-		    void asyncRead(OpcUaNodeId& nodeId, HANDLER handler) {
-				Callback callback = handler;
-				asyncRead(nodeId, callback);
-			}
-		void asyncRead(OpcUaNodeId& nodeId, Callback& callback, ReadContext& readContext);
-		template<typename HANDLER>
-			void asyncRead(OpcUaNodeId& nodeId, HANDLER handler, ReadContext& readContext) {
-				Callback callback = handler;
-				asyncRead(nodeId, callback, readContext);
-			}
+		OpcUaStatusCode syncRead(
+			OpcUaNodeId& nodeId,
+			OpcUaDataValue& dataValue
+		);
+		OpcUaStatusCode syncRead(
+			OpcUaNodeId& nodeId,
+			OpcUaDataValue& dataValue,
+			ReadContext& readContext
+		);
+		void asyncRead(
+			OpcUaNodeId& nodeId,
+			const VBITransactionRead::VBIResultHandler& resultHandler
+		);
+		void asyncRead(
+			OpcUaNodeId& nodeId,
+			const VBITransactionRead::VBIResultHandler& resultHandler,
+			ReadContext& readContext
+		);
 
 
 		// write
 		WriteContext& defaultWriteContext(void);
-		OpcUaStatusCode syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
-		OpcUaStatusCode syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, WriteContext& writeContext);
-		void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback);
-		template<typename HANDLER>
-		    void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, HANDLER handler) {
-				Callback callback = handler;
-				asyncWrite(nodeId, dataValue, callback);
-			}
-		void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback, WriteContext& writeContext);
-		template<typename HANDLER>
-		    void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, HANDLER handler, WriteContext& writeContext) {
-				Callback callback = handler;
-				asyncWrite(nodeId, dataValue, callback, writeContext);
-			}
+		OpcUaStatusCode syncWrite(
+			OpcUaNodeId& nodeId,
+			OpcUaDataValue& dataValue
+		);
+		OpcUaStatusCode syncWrite(
+			OpcUaNodeId& nodeId,
+			OpcUaDataValue& dataValue,
+			WriteContext& writeContext
+		);
+		void asyncWrite(
+			OpcUaNodeId& nodeId,
+			OpcUaDataValue& dataValue,
+			const VBITransactionWrite::VBIResultHandler& resultHandler
+		);
+		void asyncWrite(
+			OpcUaNodeId& nodeId,
+			OpcUaDataValue& dataValue,
+			const VBITransactionWrite::VBIResultHandler& resultHandler,
+			WriteContext& writeContext
+		);
 
 		// history read
 		// FIXME: todo
@@ -242,12 +252,10 @@ namespace OpcUaStackClient
 
 	  private:
 
-		// BEGIN AttributeServiceIf
         void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
 		void attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite);
 		void attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
 		void attributeServiceHistoryUpdateResponse(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
-		// END AttributeServiceIf
 
 		// BEGIN SubscriptionServiceIf
 		void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);

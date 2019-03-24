@@ -26,7 +26,6 @@ namespace OpcUaStackClient
 	AttributeService::AttributeService(IOThread* ioThread)
 	: Component()
 	, componentSession_(nullptr)
-	, attributeServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -37,24 +36,16 @@ namespace OpcUaStackClient
 
 	void
 	AttributeService::setConfiguration(
-		Component* componentSession,
-		AttributeServiceIf* attributeServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		attributeServiceIf_ = attributeServiceIf;
 	}
 
 	void 
 	AttributeService::componentSession(Component* componentSession)
 	{
 		componentSession_ = componentSession;
-	}
-
-	void 
-	AttributeService::attributeServiceIf(AttributeServiceIf* attributeServiceIf)
-	{
-		attributeServiceIf_ = attributeServiceIf;
 	}
 
 	void 
@@ -136,37 +127,37 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_ReadResponse_Encoding_DefaultBinary:
 			{
-				if (attributeServiceIf_ != nullptr) {
-					attributeServiceIf_->attributeServiceReadResponse(
-						boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_WriteResponse_Encoding_DefaultBinary:
 			{
-				if (attributeServiceIf_ != nullptr) {
-					attributeServiceIf_->attributeServiceWriteResponse(
-						boost::static_pointer_cast<ServiceTransactionWrite>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionWrite>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_HistoryReadResponse_Encoding_DefaultBinary:
 			{
-				if (attributeServiceIf_ != nullptr) {
-					attributeServiceIf_->attributeServiceHistoryReadResponse(
-						boost::static_pointer_cast<ServiceTransactionHistoryRead>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionHistoryRead>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_HistoryUpdateResponse_Encoding_DefaultBinary:
-				{
-				if (attributeServiceIf_ != nullptr) {
-					attributeServiceIf_->attributeServiceHistoryUpdateResponse(
-						boost::static_pointer_cast<ServiceTransactionHistoryUpdate>(serviceTransaction)
-					);
+			{
+				auto trx = boost::static_pointer_cast<ServiceTransactionHistoryUpdate>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -162,13 +162,12 @@ namespace OpcUaStackClient
 	{
 		// create attribute service
 		createIOThread(attributeServiceConfig.ioThreadName());
-		IOThread::SPtr ioThread = getIOThread(attributeServiceConfig.ioThreadName());
-		AttributeService::SPtr attributeService = constructSPtr<AttributeService>(ioThread.get());
+		auto ioThread = getIOThread(attributeServiceConfig.ioThreadName());
+		auto attributeService = constructSPtr<AttributeService>(ioThread.get());
 
 		// set attribute configuration
 		attributeService->setConfiguration(
-			sessionService->component(),
-			attributeServiceConfig.attributeServiceIf_
+			sessionService->component()
 		);
 
 		return attributeService;

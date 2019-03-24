@@ -28,7 +28,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VBITransactionRead::VBITransactionRead(void)
-	: callback_()
+	: VBIResultHandler_()
 	{
 	}
 
@@ -38,7 +38,7 @@ namespace OpcUaStackClient
 
 
 	VBITransactionWrite::VBITransactionWrite(void)
-	: callback_()
+	: VBIResultHandler_()
 	{
 	}
 
