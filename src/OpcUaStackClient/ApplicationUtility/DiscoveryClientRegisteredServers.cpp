@@ -99,7 +99,6 @@ namespace OpcUaStackClient
 		// create discovery service
 		DiscoveryServiceConfig discoveryServiceConfig;
 		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
-		discoveryServiceConfig.discoveryServiceIf_ = this;
 		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
 
 	  	// start timer to check server entries
@@ -205,13 +204,20 @@ namespace OpcUaStackClient
 
 			it->second->copyTo(req->server());
 
+			trx->resultHandler(
+				[this](ServiceTransactionRegisterServer::SPtr& trx) {
+					discoveryServiceRegisterServerResponse(trx);
+				}
+			);
 			discoveryService_->asyncSend(trx);
 		}
 
 	}
 
 	void
-	DiscoveryClientRegisteredServers::discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer)
+	DiscoveryClientRegisteredServers::discoveryServiceRegisterServerResponse(
+		ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer
+	)
 	{
 		if (serviceTransactionRegisterServer->statusCode() != Success) {
 			Log(Error, "receive register server response error")
@@ -232,8 +238,6 @@ namespace OpcUaStackClient
 			RegisteredServer::SPtr rs = it->second;
 			rs->isOnline() = false;
 		}
-
-		;
 	}
 
 }

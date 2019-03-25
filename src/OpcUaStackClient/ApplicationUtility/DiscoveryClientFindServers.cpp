@@ -89,7 +89,6 @@ namespace OpcUaStackClient
 		// create discovery service
 		DiscoveryServiceConfig discoveryServiceConfig;
 		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
-		discoveryServiceConfig.discoveryServiceIf_ = this;
 		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
 
 		return true;
@@ -153,11 +152,18 @@ namespace OpcUaStackClient
 		serverUris->push_back(serverUri);
 		req->serverUris(serverUris);
 
+		trx->resultHandler(
+			[this](ServiceTransactionFindServers::SPtr& trx) {
+				discoveryServiceFindServersResponse(trx);
+			}
+		);
 		discoveryService_->asyncSend(trx);
 	}
 
     void
-    DiscoveryClientFindServers::discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers)
+    DiscoveryClientFindServers::discoveryServiceFindServersResponse(
+    	ServiceTransactionFindServers::SPtr serviceTransactionFindServers
+	)
     {
 		if (serviceTransactionFindServers->statusCode() != Success) {
 			Log(Error, "receive find servers response error")

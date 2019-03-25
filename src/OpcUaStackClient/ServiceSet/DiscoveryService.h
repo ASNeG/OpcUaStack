@@ -19,7 +19,7 @@
 #define __OpcUaStackClient_DiscoveryService_h__
 
 #include "OpcUaStackCore/Component/Component.h"
-#include "OpcUaStackClient/ServiceSet/DiscoveryServiceIf.h"
+#include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
 
 using namespace OpcUaStackCore;
 
@@ -36,11 +36,9 @@ namespace OpcUaStackClient
 		~DiscoveryService(void);
 
 		void setConfiguration(
-			Component* componentSession,
-			DiscoveryServiceIf* discoveryServiceIf
+			Component* componentSession
 		);
 		void componentSession(Component* componentSession);
-		void discoveryServiceIf(DiscoveryServiceIf* discoveryServiceIf);
 
 		void syncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
 		void asyncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
@@ -55,8 +53,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
-		DiscoveryServiceIf* discoveryServiceIf_;
 	};
 
 }

@@ -141,8 +141,7 @@ namespace OpcUaStackClient
 
 		// set discovery configuration
 		discoveryService->setConfiguration(
-			sessionService->component(),
-			discoveryServiceConfig.discoveryServiceIf_
+			sessionService->component()
 		);
 
 		return discoveryService;

@@ -31,8 +31,7 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT DiscoveryClientFindServers
-	: public DiscoveryServiceIf
-	, public DiscoveryClientFindServersIf
+	: public DiscoveryClientFindServersIf
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryClientFindServers> SPtr;
@@ -55,11 +54,9 @@ namespace OpcUaStackClient
 		virtual void asyncFind(const std::string serverUri, Callback& findResultCallback);
 		//- DiscoveryClientFindServerIf ---------------------------------------
 
-        //- DiscoveryServiceIf ------------------------------------------------
-        virtual void discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
-        //- DiscoveryServiceIf ------------------------------------------------
-
 	  public:
+		void discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
+
         void sendFindServersRequest(void);
         void shutdownTask(void);
 
