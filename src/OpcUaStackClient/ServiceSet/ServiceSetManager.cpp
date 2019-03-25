@@ -270,8 +270,7 @@ namespace OpcUaStackClient
 
 		// set view configuration
 		viewService->setConfiguration(
-			sessionService->component(),
-			viewServiceConfig.viewServiceIf_
+			sessionService->component()
 		);
 
 		return viewService;

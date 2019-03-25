@@ -28,7 +28,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_View_)
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints, GValueFixture)
 {
 	ServiceSetManager serviceSetManager;
-	ViewServiceIfTestHandler viewServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -64,7 +63,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints, 
 	// create view service
 	ViewService::SPtr viewService;
 	ViewServiceConfig viewServiceConfig;
-	viewServiceConfig.viewServiceIf_ = &viewServiceIfTestHandler;
 	viewService = serviceSetManager.viewService(sessionService, viewServiceConfig);
 	BOOST_REQUIRE(viewService.get() != nullptr);
 
@@ -80,9 +78,14 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints, 
 	browseDescription->resultMask(0xFFFFFFFF);
 	req->nodesToBrowse()->push_back(browseDescription);
 
-	viewServiceIfTestHandler.viewServiceBrowseResponse_.condition(1,0);
+	cond_.initEvent();
+	trx->resultHandler(
+		[this](ServiceTransactionBrowse::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
 	viewService->asyncSend(trx);
-	BOOST_REQUIRE(viewServiceIfTestHandler.viewServiceBrowseResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(trx->responseHeader()->serviceResult() == Success);
 
 	BrowseResponse::SPtr res = trx->response();
