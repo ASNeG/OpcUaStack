@@ -26,7 +26,6 @@ namespace OpcUaStackClient
 	NodeManagementService::NodeManagementService(IOThread* ioThread)
 	: Component()
 	, componentSession_(nullptr)
-	, nodeManagementServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -37,24 +36,16 @@ namespace OpcUaStackClient
 
 	void
 	NodeManagementService::setConfiguration(
-		Component* componentSession,
-		NodeManagementServiceIf* nodeManagementServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		nodeManagementServiceIf_ = nodeManagementServiceIf;
 	}
 
 	void 
 	NodeManagementService::componentSession(Component* componentSession)
 	{
 		componentSession_ = componentSession;
-	}
-
-	void 
-	NodeManagementService::nodeManagementServiceIf(NodeManagementServiceIf* nodeManagementServiceIf)
-	{
-		nodeManagementServiceIf_ = nodeManagementServiceIf;
 	}
 
 	void 
@@ -136,37 +127,37 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_AddNodesResponse_Encoding_DefaultBinary:
 			{
-				if (nodeManagementServiceIf_ != nullptr) {
-					nodeManagementServiceIf_->nodeManagementServiceAddNodesResponse(
-						boost::static_pointer_cast<ServiceTransactionAddNodes>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionAddNodes>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_AddReferencesResponse_Encoding_DefaultBinary:
 			{
-				if (nodeManagementServiceIf_ != nullptr) {
-					nodeManagementServiceIf_->nodeManagementServiceAddReferencesResponse(
-						boost::static_pointer_cast<ServiceTransactionAddReferences>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionAddReferences>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_DeleteNodesResponse_Encoding_DefaultBinary:
 			{
-				if (nodeManagementServiceIf_ != nullptr) {
-					nodeManagementServiceIf_->nodeManagementServiceDeleteNodesResponse(
-						boost::static_pointer_cast<ServiceTransactionDeleteNodes>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionDeleteNodes>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_DeleteReferencesResponse_Encoding_DefaultBinary:
-				{
-				if (nodeManagementServiceIf_ != nullptr) {
-					nodeManagementServiceIf_->nodeManagementServiceDeleteReferencesResponse(
-						boost::static_pointer_cast<ServiceTransactionDeleteReferences>(serviceTransaction)
-					);
+			{
+				auto trx = boost::static_pointer_cast<ServiceTransactionDeleteReferences>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

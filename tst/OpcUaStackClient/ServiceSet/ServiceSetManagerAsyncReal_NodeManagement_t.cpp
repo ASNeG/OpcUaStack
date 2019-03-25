@@ -28,7 +28,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_)
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_cc, GValueFixture)
 {
 	ServiceSetManager serviceSetManager;
-	NodeManagementServiceIfTestHandler nodeManagementServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -64,7 +63,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_NodeManagement_cc, GValueFixt
 	// create nodeManagement service
 	NodeManagementService::SPtr nodeManagementService;
 	NodeManagementServiceConfig nodeManagementServiceConfig;
-	nodeManagementServiceConfig.nodeManagementServiceIf_ = &nodeManagementServiceIfTestHandler;
 	nodeManagementService = serviceSetManager.nodeManagementService(sessionService, nodeManagementServiceConfig);
 	BOOST_REQUIRE(nodeManagementService.get() != nullptr);
 

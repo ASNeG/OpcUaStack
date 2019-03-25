@@ -20,7 +20,6 @@
 
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/NodeManagementServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/NodeManagementServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -37,11 +36,9 @@ namespace OpcUaStackClient
 		~NodeManagementService(void);
 
 		void setConfiguration(
-			Component* componentSession,
-			NodeManagementServiceIf* nodeManagementServiceIf
+			Component* componentSession
 		);
 		void componentSession(Component* componentSession);
-		void nodeManagementServiceIf(NodeManagementServiceIf* nodeManagementServiceIf);
 
 		void syncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes);
 		void asyncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes);
@@ -58,8 +55,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
-		NodeManagementServiceIf* nodeManagementServiceIf_;
 	};
 
 }

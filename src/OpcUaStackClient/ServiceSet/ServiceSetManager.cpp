@@ -322,8 +322,7 @@ namespace OpcUaStackClient
 
 		// set node management configuration
 		nodeManagementService->setConfiguration(
-			sessionService->component(),
-			nodeManagementServiceConfig.nodeManagementServiceIf_
+			sessionService->component()
 		);
 
 		return nodeManagementService;

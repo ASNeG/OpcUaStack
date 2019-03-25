@@ -18,7 +18,6 @@
 #define __OpcUaStackClient_NodeManagementServiceConfig_h__
 
 #include "OpcUaStackCore/Utility/IOThread.h"
-#include "OpcUaStackClient/ServiceSet/NodeManagementServiceIf.h"
 #include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
 using namespace OpcUaStackCore;
@@ -34,8 +33,6 @@ namespace OpcUaStackClient
 
 		NodeManagementServiceConfig(void);
 		~NodeManagementServiceConfig(void);
-
-		NodeManagementServiceIf* nodeManagementServiceIf_;
 	};
 
 }
