@@ -25,7 +25,6 @@ namespace OpcUaStackClient
 
 	SubscriptionServiceBase::SubscriptionServiceBase(void)
 	: componentSession_(nullptr)
-	, subscriptionServiceIf_(nullptr)
 	, subscriptionServicePublishIf_(nullptr)
 	{
 	}
@@ -39,13 +38,6 @@ namespace OpcUaStackClient
 	{
 		componentSession_ = componentSession;
 	}
-
-	void
-	SubscriptionServiceBase::subscriptionServiceIf(SubscriptionServiceIf* subscriptionServiceIf)
-	{
-		subscriptionServiceIf_ = subscriptionServiceIf;
-	}
-
 	void
 	SubscriptionServiceBase::subscriptionServicePublishIf(SubscriptionServicePublishIf* subscriptionServicePublishIf)
 	{
@@ -179,40 +171,40 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_CreateSubscriptionResponse_Encoding_DefaultBinary:
 			{
-				if (subscriptionServiceIf_ != nullptr) {
- 					subscriptionServiceIf_->subscriptionServiceCreateSubscriptionResponse(
-						boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_ModifySubscriptionResponse_Encoding_DefaultBinary:
 			{
-				if (subscriptionServiceIf_ != nullptr) {
-					subscriptionServiceIf_->subscriptionServiceModifySubscriptionResponse(
-						boost::static_pointer_cast<ServiceTransactionModifySubscription>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionModifySubscription>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_TransferSubscriptionsResponse_Encoding_DefaultBinary:
 			{
-				if (subscriptionServiceIf_ != nullptr) {
-					subscriptionServiceIf_->subscriptionServiceTransferSubscriptionsResponse(
-						boost::static_pointer_cast<ServiceTransactionTransferSubscriptions>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionTransferSubscriptions>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_DeleteSubscriptionsResponse_Encoding_DefaultBinary:
 			{
-				if (subscriptionServiceIf_ != nullptr) {
-					subscriptionServiceIf_->subscriptionServiceDeleteSubscriptionsResponse(
-						boost::static_pointer_cast<ServiceTransactionDeleteSubscriptions>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionDeleteSubscriptions>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

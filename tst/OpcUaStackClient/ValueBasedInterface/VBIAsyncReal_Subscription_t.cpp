@@ -12,13 +12,21 @@ BOOST_AUTO_TEST_SUITE(VBIAsyncReal_Subscription_)
 struct GValueFixture {
 	GValueFixture(void)
     : cond_()
+	, cond1_()
 	, sessionState_(SessionServiceStateId::None)
+	, statusCode_(Success)
+	, subscriptionState_()
+	, subscriptionId_(0)
     {}
     ~GValueFixture(void)
     {}
 
     Condition cond_;
+    Condition cond1_;
     SessionServiceStateId sessionState_;
+    OpcUaStatusCode statusCode_;
+    SubscriptionState subscriptionState_;
+    uint32_t subscriptionId_;
 };
 
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Subscription_)
@@ -61,23 +69,31 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Subscription_create_delete, GValueFixture)
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create subscription
-	vbiClientHandlerTest.createSubscriptionComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateSubscription(
-		boost::bind(&VBIClientHandlerTest::createSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.createSubscriptionComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	uint32_t subscriptionId = vbiClientHandlerTest.subscriptionId_;
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	uint32_t subscriptionId = subscriptionId_;
 
 	// delete subscription
-	vbiClientHandlerTest.deleteSubscriptionComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteSubscription(
 		subscriptionId,
-		boost::bind(&VBIClientHandlerTest::deleteSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteSubscriptionComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionId_ == subscriptionId);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(subscriptionId_ == subscriptionId);
 
 	// disconnect session
 	cond_.initEvent();
@@ -119,35 +135,47 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Subscription_create_delete_callback, GValue
 	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
-	// set subscription change callback
-	client.setSubscriptionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::subscriptionChangeCallback, &vbiClientHandlerTest, _1, _2)
+	// set subscription change handler
+	client.setSubscriptionChangeHandler(
+		[this](SubscriptionState subscriptionState, uint32_t subscriptionId) {
+			subscriptionState_ = subscriptionState;
+			subscriptionId_ = subscriptionId;
+			cond1_.sendEvent();
+		}
 	);
 
 	// create subscription
-	vbiClientHandlerTest.subscriptionChangeCallback_.initEvent();
-	vbiClientHandlerTest.createSubscriptionComplete_.initEvent();
+	cond1_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateSubscription(
-		boost::bind(&VBIClientHandlerTest::createSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionChangeCallback_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionState_ == SS_Open);
-	BOOST_REQUIRE(vbiClientHandlerTest.createSubscriptionComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
+	BOOST_REQUIRE(cond1_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(subscriptionState_ == SS_Open);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
 	uint32_t subscriptionId = vbiClientHandlerTest.subscriptionId_;
 
 	// delete subscription
-	vbiClientHandlerTest.subscriptionChangeCallback_.initEvent();
-	vbiClientHandlerTest.deleteSubscriptionComplete_.initEvent();
+	cond1_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteSubscription(
 		subscriptionId,
-		boost::bind(&VBIClientHandlerTest::deleteSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionChangeCallback_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionState_ == SS_Close);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteSubscriptionComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionId_ == subscriptionId);
+	BOOST_REQUIRE(cond1_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(subscriptionState_ == SS_Close);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(subscriptionId_ == subscriptionId);
 
 	// disconnect session
 	cond_.initEvent();

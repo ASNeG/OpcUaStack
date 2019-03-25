@@ -16,12 +16,11 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Subscription)
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Subscriptionsubscription_create_delete)
 {
 	ServiceSetManager serviceSetManager;
-	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
@@ -31,8 +30,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Subscriptionsubscription_create_d
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
@@ -41,21 +39,26 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Subscriptionsubscription_create_d
 	// create subscription service
 	SubscriptionService::SPtr subscriptionService;
 	SubscriptionServiceConfig subscriptionServiceConfig;
-	subscriptionServiceConfig.subscriptionServiceIf_ = &subscriptionServiceIfTestHandler;
+	subscriptionServiceConfig.subscriptionStateUpdateHandler_ =
+		[this](SubscriptionState subscriptionState, uint32_t subscriptionId) {
+		};
+	subscriptionServiceConfig.dataChangeNotificationHandler_ =
+		[this](const MonitoredItemNotification::SPtr& monitoredItem) {
+		};
 	subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	ServiceTransactionCreateSubscription::SPtr subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
-	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
-	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
+	auto subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
+	auto subCreateReq = subCreateTrx->request();
+	auto subCreateRes = subCreateTrx->response();
 	subscriptionService->syncSend(subCreateTrx);
 	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
 	uint32_t subscriptionId = subCreateRes->subscriptionId();
 
 	// delete subscription
-	ServiceTransactionDeleteSubscriptions::SPtr subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
-	DeleteSubscriptionsRequest::SPtr subDeleteReq = subDeleteTrx->request();
-	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
+	auto subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+	auto subDeleteReq = subDeleteTrx->request();
+	auto subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subscriptionId);
 	subscriptionService->syncSend(subDeleteTrx);

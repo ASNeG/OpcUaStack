@@ -11,12 +11,14 @@ struct GValueFixture {
 	GValueFixture(void)
     : cond_()
 	, sessionState_(SessionServiceStateId::None)
+	, statusCode_(Success)
     {}
     ~GValueFixture(void)
     {}
 
     Condition cond_;
     SessionServiceStateId sessionState_;
+    OpcUaStatusCode statusCode_;
 };
 
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_)
@@ -61,14 +63,16 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_read, GValueFixture)
 	// read
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaInt32)2259);
-	vbiClientHandlerTest.readComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncRead(
 		nodeId,
-		boost::bind(&VBIClientHandlerTest::readComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue) {
+			statusCode_ = statusCode;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.readComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	vbiClientHandlerTest.dataValue_.out(std::cout);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
 
 	// disconnect session
 	cond_.initEvent();
@@ -116,14 +120,17 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_write, GValueFixture)
 	OpcUaDataValue dataValue;
 	dataValue.variant()->set((OpcUaBoolean)1);
 	nodeId.set(220, 2);
-	vbiClientHandlerTest.writeComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncWrite(
 		nodeId,
 		dataValue,
-		boost::bind(&VBIClientHandlerTest::writeComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId) {
+			statusCode_ = statusCode;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.writeComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
 
 	// disconnect session
 	cond_.initEvent();

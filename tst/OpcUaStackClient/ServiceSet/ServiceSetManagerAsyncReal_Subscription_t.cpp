@@ -28,12 +28,11 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Subscription)
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Subscriptionsubscription_create_delete, GValueFixture)
 {
 	ServiceSetManager serviceSetManager;
-	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
@@ -51,8 +50,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Subscriptionsubscription_crea
 		};
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
@@ -62,30 +60,45 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Subscriptionsubscription_crea
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create subscription service
-	SubscriptionService::SPtr subscriptionService;
 	SubscriptionServiceConfig subscriptionServiceConfig;
-	subscriptionServiceConfig.subscriptionServiceIf_ = &subscriptionServiceIfTestHandler;
-	subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
+	subscriptionServiceConfig.subscriptionStateUpdateHandler_ =
+		[this](SubscriptionState subscriptionState, uint32_t subscriptionId) {
+		};
+	subscriptionServiceConfig.dataChangeNotificationHandler_ =
+		[this](const MonitoredItemNotification::SPtr& monitoredItem) {
+
+		};
+	auto subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	ServiceTransactionCreateSubscription::SPtr subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
-	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
-	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
-	subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
+	auto subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
+	auto subCreateReq = subCreateTrx->request();
+	auto subCreateRes = subCreateTrx->response();
+	subCreateTrx->resultHandler(
+		[this](ServiceTransactionCreateSubscription::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
+	cond_.initEvent();
 	subscriptionService->asyncSend(subCreateTrx);
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
 	uint32_t subscriptionId = subCreateRes->subscriptionId();
 
 	// delete subscription
-	ServiceTransactionDeleteSubscriptions::SPtr subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
-	DeleteSubscriptionsRequest::SPtr subDeleteReq = subDeleteTrx->request();
-	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
+	auto subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+	auto subDeleteReq = subDeleteTrx->request();
+	auto subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subscriptionId);
-	subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.condition(1,0);
+	subDeleteTrx->resultHandler(
+		[this](ServiceTransactionDeleteSubscriptions::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
+	cond_.initEvent();
 	subscriptionService->asyncSend(subDeleteTrx);
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
 	OpcUaStatusCode statusCode;

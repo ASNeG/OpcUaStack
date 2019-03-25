@@ -44,8 +44,7 @@ namespace OpcUaStackClient
 
 
 	class DLLEXPORT ClientSubscription
-	: public SubscriptionServiceIf
-	, public MonitoredItemServiceIf
+	: public MonitoredItemServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<ClientSubscription> SPtr;
@@ -89,14 +88,13 @@ namespace OpcUaStackClient
 		void close(void);
 		void error(void);
 
-		//- SubscriptionServiceIf ---------------------------------------------
-	    virtual void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
-	    virtual void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
-	    virtual void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
-	    virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+	    void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
+	    void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
+	    void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
+	    void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
-		virtual void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
-		virtual void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
+		void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
+		void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
 		//- SubscriptionServiceIf ---------------------------------------------
 
 		//- MonitoredItemServiceIf --------------------------------------------

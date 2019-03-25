@@ -78,7 +78,7 @@ namespace OpcUaStackClient
 		VBITransactionCreateSubscription(void);
 		virtual ~VBITransactionCreateSubscription(void);
 
-		Callback callback_;
+		VBIResultHandler VBIResultHandler_;
 	};
 
 	class DLLEXPORT VBITransactionDeleteSubscription
@@ -91,7 +91,7 @@ namespace OpcUaStackClient
 		VBITransactionDeleteSubscription(void);
 		virtual ~VBITransactionDeleteSubscription(void);
 
-		Callback callback_;
+		VBIResultHandler VBIResultHandler_;
 	};
 
 
@@ -113,6 +113,7 @@ namespace OpcUaStackClient
 		virtual ~VBITransactionCreateMonitoredItem(void);
 
 		Callback callback_;
+		VBIResultHandler VBIResultHandler_;
 	};
 
 	class DLLEXPORT VBITransactionDeleteMonitoredItem
@@ -126,6 +127,7 @@ namespace OpcUaStackClient
 		virtual ~VBITransactionDeleteMonitoredItem(void);
 
 		Callback callback_;
+		VBIResultHandler VBIResultHandler_;
 	};
 
 

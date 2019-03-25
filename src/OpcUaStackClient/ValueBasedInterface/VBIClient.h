@@ -30,8 +30,7 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT VBIClient
-	: public SubscriptionServiceIf
-	, public MonitoredItemServiceIf
+	: public MonitoredItemServiceIf
 	{
 	  public:
 		VBIClient(void);
@@ -132,53 +131,44 @@ namespace OpcUaStackClient
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
-
-		template<typename HANDLER>
-		  void setSubscriptionChangeCallback(HANDLER handler) {
-			  Callback callback = handler;
-			  setSubscriptionChangeCallback(callback);
-		  }
-		void setSubscriptionChangeCallback(Callback& callback);
-		template<typename HANDLER>
-		  void setDataChangeCallback(HANDLER handler) {
-			  Callback callback = handler;
-			  setDataChangeCallback(callback);
-		  }
-		void setDataChangeCallback(Callback& callback);
+		void setSubscriptionChangeHandler(const SubscriptionChangeHandler& subscriptionChangeHandler);
+		void setDataChangeHandler(const DataChangeHandler& dataChangeHandler);
 
 		// create subscription
 		CreateSubscriptionContext& defaultCreateSubscriptionContext(void);
-		OpcUaStatusCode syncCreateSubscription(uint32_t& subscriptionId);
-		OpcUaStatusCode syncCreateSubscription(uint32_t& subscriptionId, CreateSubscriptionContext& createSubscriptionContext);
-		void asyncCreateSubscription(Callback& callback);
-		template<typename HANDLER>
-		    void asyncCreateSubscription(HANDLER handler) {
-				Callback callback = handler;
-				asyncCreateSubscription(callback);
-			}
-		void asyncCreateSubscription(Callback& callback, CreateSubscriptionContext& createSubscriptionContext);
-		template<typename HANDLER>
-		    void asyncCreateSubscription(HANDLER handler, CreateSubscriptionContext& createSubscriptionContext) {
-				Callback callback = handler;
-				asyncCreateSubscription(callback, createSubscriptionContext);
-			}
+		OpcUaStatusCode syncCreateSubscription(
+			uint32_t& subscriptionId
+		);
+		OpcUaStatusCode syncCreateSubscription(
+			uint32_t& subscriptionId,
+			CreateSubscriptionContext& createSubscriptionContext
+		);
+		void asyncCreateSubscription(
+			const VBITransactionCreateSubscription::VBIResultHandler& resultHandler
+		);
+		void asyncCreateSubscription(
+			const VBITransactionCreateSubscription::VBIResultHandler& resultHandler,
+			CreateSubscriptionContext& createSubscriptionContext
+		);
 
 		// delete subscription
 		DeleteSubscriptionContext& defaultDeleteSubscriptionContext(void);
-		OpcUaStatusCode syncDeleteSubscription(uint32_t subscriptionId);
-		OpcUaStatusCode syncDeleteSubscription(uint32_t subscriptionId, DeleteSubscriptionContext& deleteSubscriptionContext);
-		void asyncDeleteSubscription(uint32_t subscriptionId, Callback& callback);
-		template<typename HANDLER>
-		    void asyncDeleteSubscription(uint32_t subscriptionId, HANDLER handler) {
-				Callback callback = handler;
-				asyncDeleteSubscription(subscriptionId, callback);
-			}
-		void asyncDeleteSubscription(uint32_t subscriptionId, Callback& callback, DeleteSubscriptionContext& deleteSubscriptionContext);
-		template<typename HANDLER>
-		    void asyncDeleteSubscription(uint32_t subscriptionId, HANDLER handler, DeleteSubscriptionContext& deleteSubscriptionContext) {
-				Callback callback = handler;
-				asyncDeleteSubscription(subscriptionId, callback, deleteSubscriptionContext);
-			}
+		OpcUaStatusCode syncDeleteSubscription(
+			uint32_t subscriptionId
+		);
+		OpcUaStatusCode syncDeleteSubscription(
+			uint32_t subscriptionId,
+			DeleteSubscriptionContext& deleteSubscriptionContext
+		);
+		void asyncDeleteSubscription(
+			uint32_t subscriptionId,
+			const VBITransactionDeleteSubscription::VBIResultHandler& resultHandler
+		);
+		void asyncDeleteSubscription(
+			uint32_t subscriptionId,
+			const VBITransactionDeleteSubscription::VBIResultHandler& resultHandler,
+			DeleteSubscriptionContext& deleteSubscriptionContext
+		);
 
 		// modify subscription
 		// FIXME: todo
@@ -255,14 +245,12 @@ namespace OpcUaStackClient
 		void attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
 		void attributeServiceHistoryUpdateResponse(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
 
-		// BEGIN SubscriptionServiceIf
 		void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
 		void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
 		void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
 		void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 		void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
 	    void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
-		// END SubscriptionServiceIf
 
 	    // BEGIN MonitoredItemServiceIf
 	    void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
@@ -283,9 +271,8 @@ namespace OpcUaStackClient
 
 		Callback sessionCompleteCallback_;
 
-		Callback subscriptionChangeCallback_;
-		Callback dataChangeCallback_;
-
+		DataChangeHandler dataChangeHandler_;
+		SubscriptionChangeHandler subscriptionChangeHandler_;
 		SessionChangeHandler sessionChangeHandler_;
 
 		ReadContext defaultReadContext_;

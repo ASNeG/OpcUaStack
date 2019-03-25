@@ -17,6 +17,7 @@ struct GValueFixture {
     {}
 
     Condition cond_;
+    Condition cond1_;
     SessionServiceStateId sessionState_;
 };
 
@@ -29,13 +30,12 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
-	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
 	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
@@ -53,8 +53,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 		};
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
@@ -65,39 +64,48 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 
 	// create subscription service
 	SubscriptionServiceConfig subscriptionServiceConfig;
-	subscriptionServiceConfig.subscriptionServiceIf_ = &subscriptionServiceIfTestHandler;
-	SubscriptionService::SPtr subscriptionService;
-	subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
+	subscriptionServiceConfig.subscriptionStateUpdateHandler_ =
+		[this](SubscriptionState subscriptionState, uint32_t subscriptionId) {
+		};
+	subscriptionServiceConfig.dataChangeNotificationHandler_ =
+		[this](const MonitoredItemNotification::SPtr& monitoredItem) {
+			cond1_.sendEvent();
+		};
+	auto subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	ServiceTransactionCreateSubscription::SPtr subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
-	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
-	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
-	subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
+	auto subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
+	auto subCreateReq = subCreateTrx->request();
+	auto subCreateRes = subCreateTrx->response();
+	subCreateTrx->resultHandler(
+		[this](ServiceTransactionCreateSubscription::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
+	cond_.initEvent();
 	subscriptionService->asyncSend(subCreateTrx);
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
 	uint32_t subscriptionId = subCreateRes->subscriptionId();
 
 	// create monitored item service
 	MonitoredItemServiceConfig monitoredItemServiceConfig;
 	monitoredItemServiceConfig.monitoredItemServiceIf_ = &monitoredItemServiceIfTestHandler;
-	MonitoredItemService::SPtr monitoredItemService;
-	monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
+	auto monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
-	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
-	CreateMonitoredItemsRequest::SPtr monCreateReq = monCreateTrx->request();
-	CreateMonitoredItemsResponse::SPtr monCreateRes = monCreateTrx->response();
+	auto monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
+	auto monCreateReq = monCreateTrx->request();
+	auto monCreateRes = monCreateTrx->response();
 	monCreateReq->subscriptionId(subscriptionId);
 
-	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+	auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
 	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(2258,0);
 	monitoredItemCreateRequest->requestedParameters().clientHandle(2258);
 
 	monCreateReq->itemsToCreate()->resize(1);
 	monCreateReq->itemsToCreate()->set(0, monitoredItemCreateRequest);
-	subscriptionServiceIfTestHandler.dataChangeNotification_.condition(1, 0);
+	cond1_.initEvent();
 	monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.condition(1,0);
 	monitoredItemService->asyncSend(monCreateTrx);
 	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.waitForCondition(1000) == true);
@@ -109,12 +117,12 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 	BOOST_REQUIRE(createMonResult->statusCode() == Success);
 	uint32_t monitoredItemId = createMonResult->monitoredItemId();
 
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.dataChangeNotification_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond1_.waitForCondition(1000) == true);
 
 
 	// delete monitored item
-	ServiceTransactionDeleteMonitoredItems::SPtr monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
-	DeleteMonitoredItemsRequest::SPtr monDeleteReq = monDeleteTrx->request();
+	auto monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
+	auto monDeleteReq = monDeleteTrx->request();
 	monDeleteReq->subscriptionId(subscriptionId);
 
 	monDeleteReq->monitoredItemIds()->resize(1);
@@ -131,14 +139,19 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 	BOOST_REQUIRE(statusCode == Success);
 
 	// delete subscription
-	ServiceTransactionDeleteSubscriptions::SPtr subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
-	DeleteSubscriptionsRequest::SPtr subDeleteReq = subDeleteTrx->request();
-	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
+	auto subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+	auto subDeleteReq = subDeleteTrx->request();
+	auto subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subscriptionId);
-	subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.condition(1,0);
+	subDeleteTrx->resultHandler(
+		[this](ServiceTransactionDeleteSubscriptions::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
+	cond_.initEvent();
 	subscriptionService->asyncSend(subDeleteTrx);
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
 	subDeleteRes->results()->get(0, statusCode);
@@ -156,13 +169,12 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
-	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
 	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
@@ -180,8 +192,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 		};
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
@@ -192,30 +203,40 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 
 	// create subscription service
 	SubscriptionServiceConfig subscriptionServiceConfig;
-	subscriptionServiceConfig.subscriptionServiceIf_ = &subscriptionServiceIfTestHandler;
+	subscriptionServiceConfig.subscriptionStateUpdateHandler_ =
+		[this](SubscriptionState subscriptionState, uint32_t subscriptionId) {
+		};
+	subscriptionServiceConfig.dataChangeNotificationHandler_ =
+		[this](const MonitoredItemNotification::SPtr& monitoredItem) {
+			cond1_.sendEvent();
+		};
 	SubscriptionService::SPtr subscriptionService;
 	subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	ServiceTransactionCreateSubscription::SPtr subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
-	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
-	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
-	subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
+	auto subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
+	auto subCreateReq = subCreateTrx->request();
+	auto subCreateRes = subCreateTrx->response();
+	subCreateTrx->resultHandler(
+		[this](ServiceTransactionCreateSubscription::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
+	cond_.initEvent();
 	subscriptionService->asyncSend(subCreateTrx);
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
 	uint32_t subscriptionId = subCreateRes->subscriptionId();
 
 	// create monitored item service
 	MonitoredItemServiceConfig monitoredItemServiceConfig;
 	monitoredItemServiceConfig.monitoredItemServiceIf_ = &monitoredItemServiceIfTestHandler;
-	MonitoredItemService::SPtr monitoredItemService;
-	monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
+	auto monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
-	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
-	CreateMonitoredItemsRequest::SPtr monCreateReq = monCreateTrx->request();
-	CreateMonitoredItemsResponse::SPtr monCreateRes = monCreateTrx->response();
+	auto monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
+	auto monCreateReq = monCreateTrx->request();
+	auto monCreateRes = monCreateTrx->response();
 	monCreateReq->subscriptionId(subscriptionId);
 
 	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
@@ -224,7 +245,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 
 	monCreateReq->itemsToCreate()->resize(1);
 	monCreateReq->itemsToCreate()->set(0, monitoredItemCreateRequest);
-	subscriptionServiceIfTestHandler.dataChangeNotification_.condition(1, 0);
+	cond1_.initEvent();
 	monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.condition(1,0);
 	monitoredItemService->asyncSend(monCreateTrx);
 	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.waitForCondition(1000) == true);
@@ -236,19 +257,20 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 	BOOST_REQUIRE(createMonResult->statusCode() == Success);
 	uint32_t monitoredItemId = createMonResult->monitoredItemId();
 
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.dataChangeNotification_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond1_.waitForCondition(1000) == true);
 
 
 	// data change
 	for (uint32_t idx=0; idx<2; idx++) {
-		subscriptionServiceIfTestHandler.dataChangeNotification_.initEvent();
-		BOOST_REQUIRE(subscriptionServiceIfTestHandler.dataChangeNotification_.waitForEvent(3000) == true);
+		cond1_.initEvent();
+		BOOST_REQUIRE(cond1_.waitForEvent(3000) == true);
 	}
 
 
 	// delete monitored item
-	ServiceTransactionDeleteMonitoredItems::SPtr monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
-	DeleteMonitoredItemsRequest::SPtr monDeleteReq = monDeleteTrx->request();
+	auto monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
+	auto monDeleteReq = monDeleteTrx->request();
+	auto monDeleteRes = monDeleteTrx->response();
 	monDeleteReq->subscriptionId(subscriptionId);
 
 	monDeleteReq->monitoredItemIds()->resize(1);
@@ -258,21 +280,25 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(monDeleteTrx->statusCode() == Success);
 
-	DeleteMonitoredItemsResponse::SPtr monDeleteRes = monDeleteTrx->response();
-	BOOST_REQUIRE(monDeleteRes->results()->size() == 1);
 
+	BOOST_REQUIRE(monDeleteRes->results()->size() == 1);
 	monDeleteRes->results()->get(0, statusCode);
 	BOOST_REQUIRE(statusCode == Success);
 
 	// delete subscription
-	ServiceTransactionDeleteSubscriptions::SPtr subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
-	DeleteSubscriptionsRequest::SPtr subDeleteReq = subDeleteTrx->request();
-	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
+	auto subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+	auto subDeleteReq = subDeleteTrx->request();
+	auto subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subscriptionId);
-	subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.condition(1,0);
+	subDeleteTrx->resultHandler(
+		[this](ServiceTransactionDeleteSubscriptions::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
+	cond_.initEvent();
 	subscriptionService->asyncSend(subDeleteTrx);
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
 	subDeleteRes->results()->get(0, statusCode);

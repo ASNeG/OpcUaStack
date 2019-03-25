@@ -20,6 +20,7 @@
 
 #include <set>
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceBase.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionServiceHandler.h"
 
 namespace OpcUaStackClient
 {
@@ -31,14 +32,18 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<SubscriptionService> SPtr;
 
+		//void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem) {};
+		//void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId) {};
+
 		SubscriptionService(IOThread* ioThread);
 		virtual ~SubscriptionService(void);
 
 		void setConfiguration(
 			Component* componentSession,
+			const DataChangeNotificationHandler& dataChangeNotificationHandler,
+			const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
 			uint32_t publishCount,
-			uint32_t requestTimeout,
-			SubscriptionServiceIf* subscriptionServiceIf
+			uint32_t requestTimeout
 		);
 		void publishCount(uint32_t publishCount);
 		uint32_t publishCount(void);
@@ -81,6 +86,8 @@ namespace OpcUaStackClient
 	    void receivePublishResponse(const PublishResponse::SPtr& publishResponse);
 	    void dataChangeNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter);
 
+		DataChangeNotificationHandler dataChangeNotificationHandler_;
+		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;
 	    uint32_t publishCount_;
 	    uint32_t actPublishCount_;
 	    uint32_t requestTimeout_;

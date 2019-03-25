@@ -193,9 +193,10 @@ namespace OpcUaStackClient
 		// set subscription configuration
 		subscriptionService->setConfiguration(
 			sessionService->component(),
+			subscriptionServiceConfig.dataChangeNotificationHandler_,
+			subscriptionServiceConfig.subscriptionStateUpdateHandler_,
 			subscriptionServiceConfig.publishCount_,
-			subscriptionServiceConfig.requestTimeout_,
-			subscriptionServiceConfig.subscriptionServiceIf_
+			subscriptionServiceConfig.requestTimeout_
 		);
 
 		return subscriptionService;

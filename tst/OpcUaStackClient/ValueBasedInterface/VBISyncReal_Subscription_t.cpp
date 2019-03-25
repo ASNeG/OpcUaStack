@@ -9,6 +9,20 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(VBISyncReal_Subscription_)
 
+struct GValueFixture {
+	GValueFixture(void)
+    : cond_()
+	, subscriptionState_()
+	, subscriptionId_(0)
+    {}
+    ~GValueFixture(void)
+    {}
+
+    Condition cond_;
+    SubscriptionState subscriptionState_;
+    uint32_t subscriptionId_;
+};
+
 BOOST_AUTO_TEST_CASE(VBISyncReal_Subscription_)
 {
 	std::cout << "VBISyncReal_Subscription_t" << std::endl;
@@ -44,7 +58,7 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Subscription_create_delete)
 	BOOST_REQUIRE(client.syncDisconnect() == Success);
 }
 
-BOOST_AUTO_TEST_CASE(VBISyncReal_Subscription_create_delete_callback)
+BOOST_FIXTURE_TEST_CASE(VBISyncReal_Subscription_create_delete_callback, GValueFixture)
 {
 	VBIClientHandlerTest vbiClientHandlerTest;
 	OpcUaStatusCode statusCode;
@@ -64,23 +78,27 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Subscription_create_delete_callback)
 	connectContext.secureChannelLog_ = true;
 	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
 
-	// set subscription change callback
-	client.setSubscriptionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::subscriptionChangeCallback, &vbiClientHandlerTest, _1, _2)
+	// set subscription change handler
+	client.setSubscriptionChangeHandler(
+		[this](SubscriptionState subscriptionState, uint32_t subscriptionId) {
+			subscriptionState_ = subscriptionState;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
 
 	// create subscription
 	uint32_t subscriptionId;
-	vbiClientHandlerTest.subscriptionChangeCallback_.initEvent();
+	cond_.initEvent();
 	BOOST_REQUIRE(client.syncCreateSubscription(subscriptionId) == Success);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionChangeCallback_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionState_ == SS_Open);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(subscriptionState_ == SS_Open);
 
 	// delete subscription
-	vbiClientHandlerTest.subscriptionChangeCallback_.initEvent();
+	cond_.initEvent();
 	BOOST_REQUIRE(client.syncDeleteSubscription(subscriptionId) == Success);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionChangeCallback_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionState_ == SS_Close);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(subscriptionState_ == SS_Close);
 
 	// disconnect session
 	BOOST_REQUIRE(client.syncDisconnect() == Success);

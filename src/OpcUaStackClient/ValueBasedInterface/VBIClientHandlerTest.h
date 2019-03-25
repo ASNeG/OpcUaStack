@@ -35,13 +35,6 @@ namespace OpcUaStackClient
 	    , statusCode_(Success)
 	    , subscriptionId_(0)
 	    , monitoredItemId_(0)
-
-	    , readComplete_()
-	    , writeComplete_()
-	    , subscriptionChangeCallback_()
-	    , dataChangeCallback_()
-	    , createSubscriptionComplete_()
-	    , deleteSubscriptionComplete_()
 	    , createMonitoredItemComplete_()
 	    , deleteMonitoredItemComplete_()
 	    {
@@ -58,65 +51,7 @@ namespace OpcUaStackClient
 		uint32_t monitoredItemId_;
 		SubscriptionState subscriptionState_;
 
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		//
-		// AttributeService
-		//
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		Condition readComplete_;
-		void readComplete(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue) {
-			statusCode_ = statusCode;
-			nodeId_ = nodeId;
-			dataValue_ = dataValue;
-			readComplete_.sendEvent();
-		}
 
-		Condition writeComplete_;
-		void writeComplete(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId) {
-			statusCode_ = statusCode;
-			nodeId_ = nodeId;
-			writeComplete_.sendEvent();
-		}
-
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		//
-		// SubscriptionService
-		//
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		Condition subscriptionChangeCallback_;
-		void subscriptionChangeCallback(SubscriptionState subscriptionState, uint32_t subscriptionId)
-		{
-			subscriptionState_ = subscriptionState;
-			subscriptionId_ = subscriptionId;
-			subscriptionChangeCallback_.sendEvent();
-		}
-
-		Condition dataChangeCallback_;
-		void dataChangeCallback(OpcUaUInt32 clientHandle, OpcUaDataValue& dataValue)
-		{
-			std::cout << "dataChangeCallback" << std::endl;
-			clientHandle_ = clientHandle;
-			dataValue_.copyFrom(dataValue);
-			dataChangeCallback_.sendEvent();
-		}
-
-		Condition createSubscriptionComplete_;
-		void createSubscriptionComplete(OpcUaStatusCode statusCode, uint32_t subscriptionId) {
-			statusCode_ = statusCode;
-			subscriptionId_ = subscriptionId;
-			createSubscriptionComplete_.sendEvent();
-		}
-
-		Condition deleteSubscriptionComplete_;
-		void deleteSubscriptionComplete(OpcUaStatusCode statusCode, uint32_t subscriptionId) {
-			statusCode_ = statusCode;
-			subscriptionId_ = subscriptionId;
-			deleteSubscriptionComplete_.sendEvent();
-		}
 
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
