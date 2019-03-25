@@ -34,8 +34,6 @@ namespace OpcUaStackClient
 
 		MethodServiceConfig(void);
 		virtual ~MethodServiceConfig(void);
-
-		MethodServiceIf* methodServiceIf_;
 	};
 
 }

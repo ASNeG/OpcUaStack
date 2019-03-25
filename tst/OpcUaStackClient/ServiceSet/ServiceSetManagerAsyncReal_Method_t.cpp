@@ -28,12 +28,11 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_)
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints, GValueFixture)
 {
 	ServiceSetManager serviceSetManager;
-	MethodServiceIfTestHandler methodServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
@@ -51,8 +50,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints
 		};
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
@@ -62,37 +60,38 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create method service
-	MethodService::SPtr methodService;
 	MethodServiceConfig methodServiceConfig;
-	methodServiceConfig.methodServiceIf_ = &methodServiceIfTestHandler;
-	methodService = serviceSetManager.methodService(sessionService, methodServiceConfig);
+	auto methodService = serviceSetManager.methodService(sessionService, methodServiceConfig);
 	BOOST_REQUIRE(methodService.get() != nullptr);
 
 	// call method
-	OpcUaVariant::SPtr inArgument1 = constructSPtr<OpcUaVariant>();
+	auto inArgument1 = constructSPtr<OpcUaVariant>();
 	inArgument1->set((uint32_t)1);
-	OpcUaVariant::SPtr inArgument2 = constructSPtr<OpcUaVariant>();
+	auto inArgument2 = constructSPtr<OpcUaVariant>();
 	inArgument2->set((uint32_t)2);
 
-	CallMethodRequest::SPtr callMethodRequest = constructSPtr<CallMethodRequest>();
+	auto callMethodRequest = constructSPtr<CallMethodRequest>();
 	callMethodRequest->objectId()->set("Function" ,6);
 	callMethodRequest->methodId()->set("funcMult" ,6);
 	callMethodRequest->inputArguments()->resize(2);
 	callMethodRequest->inputArguments()->set(0, inArgument1);
 	callMethodRequest->inputArguments()->set(1, inArgument2);
 
-	ServiceTransactionCall::SPtr trx;
-	trx = constructSPtr<ServiceTransactionCall>();
-	CallRequest::SPtr req = trx->request();
+	auto trx = constructSPtr<ServiceTransactionCall>();
+	auto req = trx->request();
+	auto res = trx->response();
 	req->methodsToCall()->resize(1);
 	req->methodsToCall()->set(0, callMethodRequest);
 
-	methodServiceIfTestHandler.methodServiceCallResponse_.condition(1,0);
+	trx->resultHandler(
+		[this](ServiceTransactionCall::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
+	cond_.initEvent();
 	methodService->asyncSend(trx);
-	BOOST_REQUIRE(methodServiceIfTestHandler.methodServiceCallResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(trx->responseHeader()->serviceResult() == Success);
-
-	CallResponse::SPtr res = trx->response();
 	BOOST_REQUIRE(res->results()->size() == 1);
 
 	CallMethodResult::SPtr callMethodResult;

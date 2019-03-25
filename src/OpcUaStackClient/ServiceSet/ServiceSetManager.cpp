@@ -240,13 +240,12 @@ namespace OpcUaStackClient
 	{
 		// create monitored item service
 		createIOThread(methodServiceConfig.ioThreadName());
-		IOThread::SPtr ioThread = getIOThread(methodServiceConfig.ioThreadName());
-		MethodService::SPtr methodService = constructSPtr<MethodService>(ioThread.get());
+		auto ioThread = getIOThread(methodServiceConfig.ioThreadName());
+		auto methodService = constructSPtr<MethodService>(ioThread.get());
 
 		// set method configuration
 		methodService->setConfiguration(
-			sessionService->component(),
-			methodServiceConfig.methodServiceIf_
+			sessionService->component()
 		);
 
 		return methodService;
