@@ -81,7 +81,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VBITransactionCreateMonitoredItem::VBITransactionCreateMonitoredItem(void)
-	: callback_()
+	: VBIResultHandler_()
 	{
 	}
 
@@ -90,7 +90,7 @@ namespace OpcUaStackClient
 	}
 
 	VBITransactionDeleteMonitoredItem::VBITransactionDeleteMonitoredItem(void)
-	: callback_()
+	: VBIResultHandler_()
 	{
 	}
 

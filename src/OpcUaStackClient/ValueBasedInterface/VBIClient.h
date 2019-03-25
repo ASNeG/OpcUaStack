@@ -30,7 +30,6 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT VBIClient
-	: public MonitoredItemServiceIf
 	{
 	  public:
 		VBIClient(void);
@@ -187,37 +186,55 @@ namespace OpcUaStackClient
 
 		// create monitored item
 		CreateMonitoredItemContext& defaultCreateMonitoredItemContext(void);
-		OpcUaStatusCode syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, uint32_t& monitoredItemId);
-		OpcUaStatusCode syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext);
-		void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, Callback& callback);
-		template<typename HANDLER>
-		    void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, HANDLER handler) {
-				Callback callback = handler;
-				asyncCreateMonitoredItem(nodeId, subscriptionId, clientHandle, callback);
-			}
-		void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext);
-		template<typename HANDLER>
-		    void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, HANDLER handler, CreateMonitoredItemContext& createMonitoredItemContext) {
-				Callback callback = handler;
-				asyncCreateMonitoredItem(nodeId, subscriptionId, clientHandle, callback, createMonitoredItemContext);
-			}
+		OpcUaStatusCode syncCreateMonitoredItem(
+			OpcUaNodeId& nodeId,
+			uint32_t subscriptionId,
+			uint32_t clientHandle,
+			uint32_t& monitoredItemId
+		);
+		OpcUaStatusCode syncCreateMonitoredItem(
+			OpcUaNodeId& nodeId,
+			uint32_t subscriptionId,
+			uint32_t clientHandle,
+			uint32_t& monitoredItemId,
+			CreateMonitoredItemContext& createMonitoredItemContext
+		);
+		void asyncCreateMonitoredItem(
+			OpcUaNodeId& nodeId,
+			uint32_t subscriptionId, uint32_t
+			clientHandle,
+			const VBITransactionCreateMonitoredItem::VBIResultHandler& resultHandler
+		);
+		void asyncCreateMonitoredItem(
+			OpcUaNodeId& nodeId,
+			uint32_t subscriptionId,
+			uint32_t clientHandle,
+			const VBITransactionCreateMonitoredItem::VBIResultHandler& resultHandler,
+			CreateMonitoredItemContext& createMonitoredItemContext
+		);
 
 		// delete monitored item
 		DeleteMonitoredItemContext& defaultDeleteMonitoredItemContext(void);
-		OpcUaStatusCode syncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId);
-		OpcUaStatusCode syncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, DeleteMonitoredItemContext& deleteMonitoredItemContext);
-		void asyncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, Callback& callback);
-		template<typename HANDLER>
-		    void asyncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, HANDLER handler) {
-				Callback callback = handler;
-				asyncDeleteMonitoredItem(subscriptionId, monitoredItemId, callback);
-			}
-		void asyncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, Callback& callback, DeleteMonitoredItemContext& deleteMonitoredItemContext);
-		template<typename HANDLER>
-		    void asyncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, HANDLER handler, DeleteMonitoredItemContext& deleteMonitoredItemContext) {
-				Callback callback = handler;
-				asyncDeleteMonitoredItem(subscriptionId, monitoredItemId, callback, deleteMonitoredItemContext);
-			}
+		OpcUaStatusCode syncDeleteMonitoredItem(
+			uint32_t subscriptionId,
+			uint32_t monitoredItemId
+		);
+		OpcUaStatusCode syncDeleteMonitoredItem(
+			uint32_t subscriptionId,
+			uint32_t monitoredItemId,
+			DeleteMonitoredItemContext& deleteMonitoredItemContext
+		);
+		void asyncDeleteMonitoredItem(
+			uint32_t subscriptionId,
+			uint32_t monitoredItemId,
+			const VBITransactionDeleteMonitoredItem::VBIResultHandler& resultHandler
+		);
+		void asyncDeleteMonitoredItem(
+			uint32_t subscriptionId,
+			uint32_t monitoredItemId,
+			const VBITransactionDeleteMonitoredItem::VBIResultHandler& resultHandler,
+			DeleteMonitoredItemContext& deleteMonitoredItemContext
+		);
 
 		// modify monitored item
 		// FIXME: todo
@@ -252,13 +269,11 @@ namespace OpcUaStackClient
 		void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
 	    void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
 
-	    // BEGIN MonitoredItemServiceIf
 	    void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
 	    void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
 	    void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
 	    void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
 	    void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
-	    // END MonitoredItemServiceIf
 
 		ServiceSetManager serviceSetManager_;
 		std::string ioThreadName_;
@@ -268,8 +283,6 @@ namespace OpcUaStackClient
 		SubscriptionService::SPtr subscriptionService_;
 		MonitoredItemService::SPtr monitoredItemService_;
 		ViewService::SPtr viewService_;
-
-		Callback sessionCompleteCallback_;
 
 		DataChangeHandler dataChangeHandler_;
 		SubscriptionChangeHandler subscriptionChangeHandler_;

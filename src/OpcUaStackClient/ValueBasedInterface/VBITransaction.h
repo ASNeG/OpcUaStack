@@ -20,7 +20,6 @@
 
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
-using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
 namespace OpcUaStackClient
@@ -112,7 +111,6 @@ namespace OpcUaStackClient
 		VBITransactionCreateMonitoredItem(void);
 		virtual ~VBITransactionCreateMonitoredItem(void);
 
-		Callback callback_;
 		VBIResultHandler VBIResultHandler_;
 	};
 
@@ -126,7 +124,6 @@ namespace OpcUaStackClient
 		VBITransactionDeleteMonitoredItem(void);
 		virtual ~VBITransactionDeleteMonitoredItem(void);
 
-		Callback callback_;
 		VBIResultHandler VBIResultHandler_;
 	};
 

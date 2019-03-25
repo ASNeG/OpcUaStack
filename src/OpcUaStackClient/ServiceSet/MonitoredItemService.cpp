@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,7 +25,6 @@ namespace OpcUaStackClient
 
 	MonitoredItemService::MonitoredItemService(IOThread* ioThread)
 	: componentSession_(nullptr)
-	, monitoredItemServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -36,24 +35,16 @@ namespace OpcUaStackClient
 
 	void
 	MonitoredItemService::setConfiguration(
-		Component* componentSession,
-		MonitoredItemServiceIf* monitoredItemServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		monitoredItemServiceIf_ = monitoredItemServiceIf;
 	}
 
 	void
 	MonitoredItemService::componentSession(Component* componentSession)
 	{
 		componentSession_ = componentSession;
-	}
-
-	void
-	MonitoredItemService::monitoredItemServiceIf(MonitoredItemServiceIf* monitoredItemServiceIf)
-	{
-		monitoredItemServiceIf_ = monitoredItemServiceIf;
 	}
 
 	void
@@ -151,50 +142,50 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_CreateMonitoredItemsResponse_Encoding_DefaultBinary:
 			{
-				if (monitoredItemServiceIf_ != nullptr) {
-					monitoredItemServiceIf_->monitoredItemServiceCreateMonitoredItemsResponse(
-						boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_DeleteMonitoredItemsResponse_Encoding_DefaultBinary:
 			{
-				if (monitoredItemServiceIf_ != nullptr) {
-					monitoredItemServiceIf_->monitoredItemServiceDeleteMonitoredItemsResponse(
-						boost::static_pointer_cast<ServiceTransactionDeleteMonitoredItems>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionDeleteMonitoredItems>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_ModifyMonitoredItemsResponse_Encoding_DefaultBinary:
 			{
-				if (monitoredItemServiceIf_ != nullptr) {
-					monitoredItemServiceIf_->monitoredItemServiceModifyMonitoredItemsResponse(
-						boost::static_pointer_cast<ServiceTransactionModifyMonitoredItems>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionModifyMonitoredItems>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_SetMonitoringModeResponse_Encoding_DefaultBinary:
 			{
-				if (monitoredItemServiceIf_ != nullptr) {
-					monitoredItemServiceIf_->monitoredItemServiceSetMonitoringModeResponse(
-						boost::static_pointer_cast<ServiceTransactionSetMonitoringMode>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionSetMonitoringMode>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_SetTriggeringResponse_Encoding_DefaultBinary:
 			{
-				if (monitoredItemServiceIf_ != nullptr) {
-					monitoredItemServiceIf_->monitoredItemServiceSetTriggeringResponse(
-						boost::static_pointer_cast<ServiceTransactionSetTriggering>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionSetTriggering>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

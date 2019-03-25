@@ -34,8 +34,6 @@ namespace OpcUaStackClient
 
 		MonitoredItemServiceConfig(void);
 		virtual ~MonitoredItemServiceConfig(void);
-
-		MonitoredItemServiceIf* monitoredItemServiceIf_;
 	};
 
 }

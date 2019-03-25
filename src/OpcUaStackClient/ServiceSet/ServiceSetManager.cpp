@@ -221,8 +221,7 @@ namespace OpcUaStackClient
 
 		// set monitored item configuration
 		monitoredItemService->setConfiguration(
-			sessionService->component(),
-			monitoredItemServiceConfig.monitoredItemServiceIf_
+			sessionService->component()
 		);
 
 		return monitoredItemService;

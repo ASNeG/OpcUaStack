@@ -30,7 +30,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
-	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -90,7 +89,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 
 	// create monitored item service
 	MonitoredItemServiceConfig monitoredItemServiceConfig;
-	monitoredItemServiceConfig.monitoredItemServiceIf_ = &monitoredItemServiceIfTestHandler;
 	auto monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
@@ -106,9 +104,14 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 	monCreateReq->itemsToCreate()->resize(1);
 	monCreateReq->itemsToCreate()->set(0, monitoredItemCreateRequest);
 	cond1_.initEvent();
-	monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.condition(1,0);
+	cond_.initEvent();
+	monCreateTrx->resultHandler(
+		[this](ServiceTransactionCreateMonitoredItems::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
 	monitoredItemService->asyncSend(monCreateTrx);
-	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(monCreateTrx->statusCode() == Success);
 	BOOST_REQUIRE(monCreateRes->results()->size() == 1);
 
@@ -127,9 +130,14 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 
 	monDeleteReq->monitoredItemIds()->resize(1);
 	monDeleteReq->monitoredItemIds()->set(0, createMonResult->monitoredItemId());
-	monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.condition(1,0);
+	cond_.initEvent();
+	monDeleteTrx->resultHandler(
+		[this](ServiceTransactionDeleteMonitoredItems::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
 	monitoredItemService->asyncSend(monDeleteTrx);
-	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(monDeleteTrx->statusCode() == Success);
 
 	DeleteMonitoredItemsResponse::SPtr monDeleteRes = monDeleteTrx->response();
@@ -169,7 +177,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
-	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -230,7 +237,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 
 	// create monitored item service
 	MonitoredItemServiceConfig monitoredItemServiceConfig;
-	monitoredItemServiceConfig.monitoredItemServiceIf_ = &monitoredItemServiceIfTestHandler;
 	auto monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
@@ -239,16 +245,14 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 	auto monCreateRes = monCreateTrx->response();
 	monCreateReq->subscriptionId(subscriptionId);
 
-	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+	auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
 	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(218,3);
 	monitoredItemCreateRequest->requestedParameters().clientHandle(2258);
 
 	monCreateReq->itemsToCreate()->resize(1);
 	monCreateReq->itemsToCreate()->set(0, monitoredItemCreateRequest);
 	cond1_.initEvent();
-	monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.condition(1,0);
-	monitoredItemService->asyncSend(monCreateTrx);
-	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.waitForCondition(1000) == true);
+	monitoredItemService->syncSend(monCreateTrx);
 	BOOST_REQUIRE(monCreateTrx->statusCode() == Success);
 	BOOST_REQUIRE(monCreateRes->results()->size() == 1);
 
@@ -275,9 +279,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 
 	monDeleteReq->monitoredItemIds()->resize(1);
 	monDeleteReq->monitoredItemIds()->set(0, createMonResult->monitoredItemId());
-	monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.condition(1,0);
-	monitoredItemService->asyncSend(monDeleteTrx);
-	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.waitForCondition(1000) == true);
+	monitoredItemService->syncSend(monDeleteTrx);
 	BOOST_REQUIRE(monDeleteTrx->statusCode() == Success);
 
 

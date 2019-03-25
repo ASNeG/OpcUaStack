@@ -132,12 +132,6 @@ namespace OpcUaStackClient
 	}
 
 	void
-	ClientSubscription::clientSubscriptionIf(ClientSubscriptionIf* clientSubscriptionIf)
-	{
-		clientSubscriptionIf_ = clientSubscriptionIf;
-	}
-
-	void
 	ClientSubscription::state(State state)
 	{
 		state_ = state;
@@ -172,7 +166,6 @@ namespace OpcUaStackClient
 		// create monitored item service
 		MonitoredItemServiceConfig monitoredItemServiceConfig;
 		monitoredItemServiceConfig.ioThreadName("GlobalIOThread");
-		monitoredItemServiceConfig.monitoredItemServiceIf_ = this;
 		monitoredItemService_ = serviceSetManager_->monitoredItemService(sessionService_, monitoredItemServiceConfig);
 	}
 
@@ -182,6 +175,9 @@ namespace OpcUaStackClient
 		namespaceMap_ = &namespaceMap;
 		state_ = S_Opening;
 		auto trx = constructSPtr<ServiceTransactionCreateSubscription>();
+		trx->resultHandler([this](ServiceTransactionCreateSubscription::SPtr& trx) {
+			subscriptionServiceCreateSubscriptionResponse(trx);
+		});
 		subscriptionService_->asyncSend(trx);
 	}
 
@@ -198,6 +194,9 @@ namespace OpcUaStackClient
 		req->subscriptionIds()->resize(1);
 		req->subscriptionIds()->set(0, subscriptionId_);
 
+		trx->resultHandler([this](ServiceTransactionDeleteSubscriptions::SPtr& trx) {
+			subscriptionServiceDeleteSubscriptionsResponse(trx);
+		});
 		subscriptionService_->asyncSend(trx);
 	}
 
@@ -293,6 +292,9 @@ namespace OpcUaStackClient
 			req->itemsToCreate()->push_back(monitoredItemCreateRequest);
 		}
 
+		trx->resultHandler([this](ServiceTransactionCreateMonitoredItems::SPtr& trx) {
+			monitoredItemServiceCreateMonitoredItemsResponse(trx);
+		});
 		monitoredItemService_->asyncSend(trx);
 	}
 
@@ -354,6 +356,9 @@ namespace OpcUaStackClient
 			cmi->monitoredItemId(0);
 		}
 
+		trx->resultHandler([this](ServiceTransactionDeleteMonitoredItems::SPtr& trx) {
+			monitoredItemServiceDeleteMonitoredItemsResponse(trx);
+		});
 		monitoredItemService_->asyncSend(trx);
 	}
 

@@ -10,11 +10,13 @@ BOOST_AUTO_TEST_SUITE(ServiceSetManagerSyncReal_MonitoredItem)
 
 struct GValueFixture {
 	GValueFixture(void)
-    : cond1_()
+    : cond_()
+	, cond1_()
     {}
     ~GValueFixture(void)
     {}
 
+    Condition cond_;
     Condition cond1_;
 };
 
@@ -27,7 +29,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_create_delete, G
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
-	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -69,7 +70,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_create_delete, G
 
 	// create monitored item service
 	MonitoredItemServiceConfig monitoredItemServiceConfig;
-	monitoredItemServiceConfig.monitoredItemServiceIf_ = &monitoredItemServiceIfTestHandler;
 	MonitoredItemService::SPtr monitoredItemService;
 	monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
@@ -105,6 +105,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_create_delete, G
 
 	monDeleteReq->monitoredItemIds()->resize(1);
 	monDeleteReq->monitoredItemIds()->set(0, createMonResult->monitoredItemId());
+
 	monitoredItemService->syncSend(monDeleteTrx);
 	BOOST_REQUIRE(monDeleteTrx->statusCode() == Success);
 
@@ -135,7 +136,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_data_change, GVa
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
-	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -179,7 +179,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_data_change, GVa
 
 	// create monitored item service
 	MonitoredItemServiceConfig monitoredItemServiceConfig;
-	monitoredItemServiceConfig.monitoredItemServiceIf_ = &monitoredItemServiceIfTestHandler;
 	auto monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
@@ -221,6 +220,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_data_change, GVa
 
 	monDeleteReq->monitoredItemIds()->resize(1);
 	monDeleteReq->monitoredItemIds()->set(0, createMonResult->monitoredItemId());
+
 	monitoredItemService->syncSend(monDeleteTrx);
 	BOOST_REQUIRE(monDeleteTrx->statusCode() == Success);
 
@@ -236,6 +236,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_data_change, GVa
 	auto subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subscriptionId);
+
 	subscriptionService->syncSend(subDeleteTrx);
 	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
