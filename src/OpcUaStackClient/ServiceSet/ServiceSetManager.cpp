@@ -296,8 +296,7 @@ namespace OpcUaStackClient
 
 		// set query configuration
 		queryService->setConfiguration(
-			sessionService->component(),
-			queryServiceConfig.queryServiceIf_
+			sessionService->component()
 		);
 
 		return queryService;

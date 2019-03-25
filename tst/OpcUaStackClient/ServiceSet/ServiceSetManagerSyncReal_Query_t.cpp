@@ -16,7 +16,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Query_)
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Query_cc)
 {
 	ServiceSetManager serviceSetManager;
-	QueryServiceIfTestHandler queryServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -41,7 +40,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Query_cc)
 	// create query service
 	QueryService::SPtr queryService;
 	QueryServiceConfig queryServiceConfig;
-	queryServiceConfig.queryServiceIf_ = &queryServiceIfTestHandler;
 	queryService = serviceSetManager.queryService(sessionService, queryServiceConfig);
 	BOOST_REQUIRE(queryService.get() != nullptr);
 
