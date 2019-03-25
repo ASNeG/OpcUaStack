@@ -298,6 +298,72 @@ in :term:`InformationModel` but in another part of the system and just mapped in
 Subscription
 ~~~~~~~~~~~~
 
+Usually the OPC UA Client doesn't read :term:`Attribute`\ s every time when it needs
+new data. It subscribes to them by using *Subscription* model. The client creates
+a *Subscription* as a buffer where new data values are added when :term:`Attribute`\ s'
+states are changed. To specify which :term:`Attribute`\ s must be subscribed and
+how often the stack must check them for the new states (value, status or\\and timestamp)
+the client create *MonitoredItems* in *Subscription*. The *MonitoredItems* check
+changes of the :term:`Attribute`\ s with specified rate and if the :term:`Attribute`\ s
+are changed they store the new value in the buffer of its *Subscription*. To
+get the values from the *Subscription* the client calls Service :term:`Publish`.
+
+*Subscription* model in OPC UA might seem to be complicated. Actually the model is even
+more complicated than we have described it above because there are a lot of settings,
+modes and filters that we have skipped. However it doesn't matter for our purpose, since
+it is communication level of the stack and a user application doesn't need to know
+about the subscription settings. But if you're interested in learning OPC UA protocol
+dipper, you can find references on the corresponded section in OPC UA specification
+at the end of this tutorial.
+
+The user application may need to know that the client has subscribed or unsubscribed
+to an :term:`Attribute`. For an instance you want to spare network traffic between your
+server and data source and update only data that is really needed by the clients.
+For this purpose the stack provides two callbacks: *MonitoredItemStartCallback* and
+*MonitoredItemStopCallback*.
+
+The following code shows how to use them:
+
+.. code-block:: cpp
+
+  void
+  Library::startup(void)
+  {
+    Log(Debug, "Library::startup");
+
+    RegisterForwardNode registerForwardNode;
+
+    registerForwardNode.setMonitoredItemStartCallback(boost::bind(&Library::startMonitoredItems, this, _1));
+    registerForwardNode.setMonitoredItemStopCallback(boost::bind(&Library::stopMonitoredItems, this, _1));
+    registerForwardNode.addNode(OpcUaNodeId(203,1));
+
+    if (!registerForwardNode.query(&this->service())) {
+      Log(Error, "registerForwardNode response error");
+      return false;
+    }
+
+    return true;
+  }
+
+  void
+  Library::startMonitoredItems(ApplicationMonitoredItemStartContext* context)
+  {
+    Log(Info, "Start monitoring.")
+        .parameter("nodeId", context->nodeId_);
+  }
+
+  void
+  Library::stopMonitoredItems(ApplicationMonitoredItemStopContext* context)
+  {
+    Log(Info, "Stop monitoring.")
+        .parameter("nodeId", context->nodeId_);
+  }
+
+Hire we are following the same approach as with the read\\write callbacks and using
+*RegisterForwardNode* class to register your method-handlers in the stack which
+do nothing but write some log message.
+
+
 OPC UA Specification
 --------------------
 
@@ -307,3 +373,5 @@ OPC UA Specification
 * Part 4 Services, Table 172 – Common Service Result Codes
 * Part 4 Services, 7.7 DataValue
 * Part 4 Services, 5.10 Attribute Service Set
+* Part 4 Services, 5.12 MonitoredItem Service Set
+* Part 4 Services, 5.13 Subscription Service Set
