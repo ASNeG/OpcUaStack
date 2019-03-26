@@ -15,10 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBITransaction.h"
+#include "OpcUaStackClient/ValueBasedInterface/HistoryRead.h"
 
 using namespace OpcUaStackCore;
 
@@ -466,9 +468,17 @@ namespace OpcUaStackClient
 			assert(attributeService_.get() != nullptr);
 		}
 
-		// FIXME: todo
+		HistoryRead historyRead;
+		historyRead.attributeService(attributeService_);
+		historyRead.maxNumResultValuesPerRequest(historyReadContext.maxNumResultValuesPerRequest_);
+		historyRead.maxNumResultValuesPerNode(historyReadContext.maxNumResultValuesPerNode_);
 
-		return Success;
+		return historyRead.syncHistoryRead(
+			nodeId,
+			startTime,
+			endTime,
+			dataValueVec
+		);
 	}
 
 	void
@@ -491,7 +501,26 @@ namespace OpcUaStackClient
 		HistoryReadContext& historyReadContext
 	)
 	{
-		// FIXME: todo
+		if (attributeService_.get() == nullptr) {
+			// create attribute service
+			AttributeServiceConfig attributeServiceConfig;
+			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
+			assert(attributeService_.get() != nullptr);
+		}
+
+		auto historyRead = boost::make_shared<HistoryRead>();
+		historyRead->attributeService(attributeService_);
+		historyRead->maxNumResultValuesPerRequest(historyReadContext.maxNumResultValuesPerRequest_);
+		historyRead->maxNumResultValuesPerNode(historyReadContext.maxNumResultValuesPerNode_);
+
+		historyRead->asyncHistoryRead(
+			nodeId,
+			startTime,
+			endTime,
+			[this, resultHandler](OpcUaStatusCode statusCode, std::vector<OpcUaDataValue::SPtr>& dataValueVec) {
+				resultHandler(statusCode, dataValueVec);
+			}
+		);
 	}
 
 	// ------------------------------------------------------------------------

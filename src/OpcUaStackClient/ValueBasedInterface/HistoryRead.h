@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackClient_HistoryRead_h__
 #define __OpcUaStackClient_HistoryRead_h__
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
@@ -32,6 +33,7 @@ namespace OpcUaStackClient
 	class DLLEXPORT HistoryRead
 	{
 	  public:
+		typedef boost::shared_ptr<HistoryRead> SPtr;
 		typedef std::function<
 			void (OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValueVec)
 		> ResultHandler;
