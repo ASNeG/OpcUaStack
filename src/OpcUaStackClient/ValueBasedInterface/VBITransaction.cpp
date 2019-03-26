@@ -46,6 +46,14 @@ namespace OpcUaStackClient
 	{
 	}
 
+	VBITransactionHistoryRead::VBITransactionHistoryRead(void)
+	: VBIResultHandler_()
+	{
+	}
+
+	VBITransactionHistoryRead::~VBITransactionHistoryRead(void)
+	{
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

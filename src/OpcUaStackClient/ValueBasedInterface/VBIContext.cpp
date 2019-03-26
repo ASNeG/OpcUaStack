@@ -136,7 +136,6 @@ namespace OpcUaStackClient
 		return true;
 	}
 
-
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -180,6 +179,33 @@ namespace OpcUaStackClient
 				return false;
 			}
 		}
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// HistoryReadContext
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	HistoryReadContext::HistoryReadContext(void)
+	{
+	}
+
+	HistoryReadContext::~HistoryReadContext(void)
+	{
+	}
+
+	void
+	HistoryReadContext::reset(void)
+	{
+	}
+
+	bool
+	HistoryReadContext::setContextParameter(ContextParameter::Vec& contextParameterVec)
+	{
 		return true;
 	}
 

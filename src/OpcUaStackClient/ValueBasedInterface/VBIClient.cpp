@@ -36,6 +36,7 @@ namespace OpcUaStackClient
 
 	, defaultReadContext_()
 	, defaultWriteContext_()
+	, defaultHistoryReadContext_()
 	, defaultCreateSubscriptionContext_()
 	, defaultDeleteSubscriptionContext_()
 	, defaultCreateMonitoredItemContext_()
@@ -427,7 +428,60 @@ namespace OpcUaStackClient
 	VBIClient::attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
 	}
-	// FIXME: todo
+
+	HistoryReadContext&
+	VBIClient::defaultHistoryReadContext(void)
+	{
+		return defaultHistoryReadContext_;
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncHistoryRead(
+		OpcUaNodeId& nodeId,
+		boost::posix_time::ptime startTime,
+		boost::posix_time::ptime endTime,
+		std::vector<OpcUaDataValue::SPtr> dataValueVec
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncHistoryRead(
+		OpcUaNodeId& nodeId,
+		boost::posix_time::ptime startTime,
+		boost::posix_time::ptime endTime,
+		HistoryReadContext& historyReadContext,
+		std::vector<OpcUaDataValue::SPtr> dataValueVec
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	void
+	VBIClient::asyncHistoryRead(
+		OpcUaNodeId& nodeId,
+		boost::posix_time::ptime startTime,
+		boost::posix_time::ptime endTime,
+		const VBITransactionHistoryRead::VBIResultHandler& resultHandler
+	)
+	{
+		// FIXME: todo
+	}
+
+	void
+	VBIClient::asyncHistoryRead(
+		OpcUaNodeId& nodeId,
+		boost::posix_time::ptime startTime,
+		boost::posix_time::ptime endTime,
+		const VBITransactionHistoryRead::VBIResultHandler& resultHandler,
+		HistoryReadContext& historyReadContext
+	)
+	{
+		// FIXME: todo
+	}
 
 	// ------------------------------------------------------------------------
 	// history update

@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackClient_VBIClient_h__
 #define __OpcUaStackClient_VBIClient_h__
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIContext.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBITransaction.h"
@@ -117,7 +118,33 @@ namespace OpcUaStackClient
 		);
 
 		// history read
-		// FIXME: todo
+		HistoryReadContext& defaultHistoryReadContext(void);
+		OpcUaStatusCode syncHistoryRead(
+			OpcUaNodeId& nodeId,
+			boost::posix_time::ptime startTime,
+			boost::posix_time::ptime endTime,
+			std::vector<OpcUaDataValue::SPtr> dataValueVec
+		);
+		OpcUaStatusCode syncHistoryRead(
+			OpcUaNodeId& nodeId,
+			boost::posix_time::ptime startTime,
+			boost::posix_time::ptime endTime,
+			HistoryReadContext& historyReadContext,
+			std::vector<OpcUaDataValue::SPtr> dataValueVec
+		);
+		void asyncHistoryRead(
+			OpcUaNodeId& nodeId,
+			boost::posix_time::ptime startTime,
+			boost::posix_time::ptime endTime,
+			const VBITransactionHistoryRead::VBIResultHandler& resultHandler
+		);
+		void asyncHistoryRead(
+			OpcUaNodeId& nodeId,
+			boost::posix_time::ptime startTime,
+			boost::posix_time::ptime endTime,
+			const VBITransactionHistoryRead::VBIResultHandler& resultHandler,
+			HistoryReadContext& historyReadContext
+		);
 
 		// history write
 		// FIXME: todo
@@ -290,6 +317,7 @@ namespace OpcUaStackClient
 
 		ReadContext defaultReadContext_;
 		WriteContext defaultWriteContext_;
+		HistoryReadContext defaultHistoryReadContext_;
 		CreateSubscriptionContext defaultCreateSubscriptionContext_;
 		DeleteSubscriptionContext defaultDeleteSubscriptionContext_;
 		CreateMonitoredItemContext defaultCreateMonitoredItemContext_;
