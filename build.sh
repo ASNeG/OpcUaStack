@@ -427,6 +427,13 @@ case $key in
 esac
 done
 
+
+case ${INSTALL_PREFIX} in
+  /*) ;;
+  *) INSTALL_PREFIX=${PWD}/${INSTALL_PREFIX} ;;
+esac
+
+
 if [ "${TARGET}" = "info" ] ;
 then
     build_info
