@@ -17,8 +17,9 @@ Release 3.7.0
 
 **Documentation**:
 
-* fix apt-get command in installation guide  #128, by @flipback 
-* add app build command for local stack #129, by @flipback 
+* fix apt-get command in installation guide  #128, by @flipback
+* add app build command for local stack #129, by @flipback
+* add tutorials *Discovery Proccess*, *Data Access* and *Access Control* #82, by @flipback
 
 Release 3.6.2 (2019-02-01)
 ------------------------------------------------------------
@@ -47,7 +48,7 @@ Release 3.6.0 (2018-12-26)
 * implement RPM distribution for the stack and user applications #13, by @flipback
 
 **Bugs**:
- 
+
 * fix crash during shutdown #10, by @huebl
 * fix runing client tests on CI server #45, by @flipback
 * fix too specific params of *build.bat* #16, by @flipback
@@ -105,5 +106,3 @@ Release 3.4.0 (2018-10-16)
 **Features**:
 
 * add Docker support #17, by @flipback
-
-
