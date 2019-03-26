@@ -39,7 +39,7 @@ namespace OpcUaStackClient
 	, sessionService_(nullptr)
 	, sessionMode_(SessionMode::SecureChannelAndSession)
 	, sessionConfig_()
-	, sessionServiceIf_(nullptr)
+	, sessionServiceChangeHandler_()
 
 	, ioThread_(ioThread)
 	, slotTimerElement_()

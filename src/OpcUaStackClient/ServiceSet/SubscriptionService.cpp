@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,6 +30,8 @@ namespace OpcUaStackClient
 	, subscriptionSetPendingDelete_()
 	, publishCount_(5)
 	, actPublishCount_(0)
+	, dataChangeNotificationHandler_()
+	, subscriptionStateUpdateHandler_()
 	{
 		Component::ioThread(ioThread);
 		subscriptionServicePublishIf(this);
@@ -42,15 +44,17 @@ namespace OpcUaStackClient
 	void
 	SubscriptionService::setConfiguration(
 		Component* componentSession,
+		const DataChangeNotificationHandler& dataChangeNotificationHandler,
+		const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
 		uint32_t publishCount,
-		uint32_t requestTimeout,
-		SubscriptionServiceIf* subscriptionServiceIf
+		uint32_t requestTimeout
 	)
 	{
 		this->componentSession(componentSession);
+		dataChangeNotificationHandler_ = dataChangeNotificationHandler;
+		subscriptionStateUpdateHandler_ = subscriptionStateUpdateHandler;
 		publishCount_ = publishCount;
 		requestTimeout_ = requestTimeout;
-		this->subscriptionServiceIf(subscriptionServiceIf);
 	}
 
 	void
@@ -168,7 +172,7 @@ namespace OpcUaStackClient
 	void
 	SubscriptionService::receive(Message::SPtr message)
 	{
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
 		{
 			case OpcUaId_CreateSubscriptionResponse_Encoding_DefaultBinary:
@@ -302,8 +306,8 @@ namespace OpcUaStackClient
     	}
 
     	subscriptionSet_.insert(subscriptionId);
-   		if (subscriptionServiceIf_ != NULL) {
-    		subscriptionServiceIf_->subscriptionStateUpdate(SS_Open, subscriptionId);
+   		if (subscriptionStateUpdateHandler_) {
+   			subscriptionStateUpdateHandler_(SS_Open, subscriptionId);
     	}
 
     	if (subscriptionSet_.size() != 1) return;
@@ -327,8 +331,8 @@ namespace OpcUaStackClient
     void
     SubscriptionService::deleteSubscriptionResponse(uint32_t subscriptionId)
     {
-   		if (subscriptionServiceIf_ != NULL) {
-    		subscriptionServiceIf_->subscriptionStateUpdate(SS_Close, subscriptionId);
+   		if (subscriptionStateUpdateHandler_) {
+   			subscriptionStateUpdateHandler_(SS_Close, subscriptionId);
     	}
     }
 
@@ -379,8 +383,8 @@ namespace OpcUaStackClient
     		MonitoredItemNotification::SPtr monitoredItem;
     		dataChange->monitoredItems().get(idx, monitoredItem);
 
-    		if (subscriptionServiceIf_ != NULL) {
-    			subscriptionServiceIf_->dataChangeNotification(monitoredItem);
+    		if (dataChangeNotificationHandler_) {
+    			dataChangeNotificationHandler_(monitoredItem);
     		}
     	}
     }

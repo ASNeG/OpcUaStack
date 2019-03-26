@@ -28,6 +28,7 @@
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
 
 using namespace OpcUaStackCore;
 
@@ -49,13 +50,12 @@ namespace OpcUaStackClient
 
 		void setConfiguration(
 			SessionMode sessionMode,
-			SessionServiceIf* sessionServiceIf,
+			SessionServiceChangeHandler& sessionServiceChangeHandler,
 			SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 			SessionConfig::SPtr& sessionConfig
 		);
 		void updateEndpointUrl(const std::string& endpointUrl);
 
-		void sessionServiceIf(SessionServiceIf* sessionServiceIf);
 		void asyncConnect(void);
 		OpcUaStatusCode syncConnect(void);
 		void asyncDisconnect(bool deleteSubscriptions = true);

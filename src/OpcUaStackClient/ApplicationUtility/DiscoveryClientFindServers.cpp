@@ -58,12 +58,28 @@ namespace OpcUaStackClient
 	bool 
 	DiscoveryClientFindServers::startup(void)
 	{
+		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState != SessionServiceStateId::Established) {
+
+				if (shutdown_) {
+					shutdownCond_.conditionValueDec();
+					return;
+				}
+
+				findResultCallback_(findStatusCode_, findResults_);
+				return;
+			}
+
+			sendFindServersRequest();
+		};
+
 		// create service set manager
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
-		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
+		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
+
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 
@@ -73,7 +89,6 @@ namespace OpcUaStackClient
 		// create discovery service
 		DiscoveryServiceConfig discoveryServiceConfig;
 		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
-		discoveryServiceConfig.discoveryServiceIf_ = this;
 		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
 
 		return true;
@@ -124,23 +139,6 @@ namespace OpcUaStackClient
 	}
 
 	void
-	DiscoveryClientFindServers::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
-	{
-		if (sessionState != SessionServiceStateId::Established) {
-
-			if (shutdown_) {
-				shutdownCond_.conditionValueDec();
-				return;
-			}
-
-			findResultCallback_(findStatusCode_, findResults_);
-			return;
-		}
-
-		sendFindServersRequest();
-	}
-
-	void
 	DiscoveryClientFindServers::sendFindServersRequest(void)
 	{
 		ServiceTransactionFindServers::SPtr trx;
@@ -154,11 +152,18 @@ namespace OpcUaStackClient
 		serverUris->push_back(serverUri);
 		req->serverUris(serverUris);
 
+		trx->resultHandler(
+			[this](ServiceTransactionFindServers::SPtr& trx) {
+				discoveryServiceFindServersResponse(trx);
+			}
+		);
 		discoveryService_->asyncSend(trx);
 	}
 
     void
-    DiscoveryClientFindServers::discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers)
+    DiscoveryClientFindServers::discoveryServiceFindServersResponse(
+    	ServiceTransactionFindServers::SPtr serviceTransactionFindServers
+	)
     {
 		if (serviceTransactionFindServers->statusCode() != Success) {
 			Log(Error, "receive find servers response error")

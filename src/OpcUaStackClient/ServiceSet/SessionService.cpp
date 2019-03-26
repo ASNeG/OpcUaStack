@@ -64,13 +64,13 @@ namespace OpcUaStackClient
 	void
 	SessionService::setConfiguration(
 		SessionMode sessionMode,
-		SessionServiceIf* sessionServiceIf,
+		SessionServiceChangeHandler& sessionServiceChangeHandler,
 		SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 		SessionConfig::SPtr& sessionConfig
 	)
 	{
 		ctx_->sessionMode_ = sessionMode;
-		ctx_->sessionServiceIf_ = sessionServiceIf;
+		ctx_->sessionServiceChangeHandler_ = sessionServiceChangeHandler;
 		ctx_->secureChannelClientConfig_ = secureChannelClientConfig;
 		ctx_->sessionConfig_ = sessionConfig;
 		ctx_->setGetEndpointMode();
@@ -78,7 +78,9 @@ namespace OpcUaStackClient
 		sm_.setSessionServiceName(sessionConfig->sessionName_);
 		sm_.setUpdateCallback(
 			[this](SessionServiceStateId state) {
-				ctx_->sessionServiceIf_->sessionStateUpdate(*ctx_->sessionService_, state);
+				if (ctx_->sessionServiceChangeHandler_) {
+					ctx_->sessionServiceChangeHandler_(*ctx_->sessionService_, state);
+				}
 			}
 		);
 	}
@@ -87,12 +89,6 @@ namespace OpcUaStackClient
 	SessionService::updateEndpointUrl(const std::string& endpointUrl)
 	{
 		ctx_->secureChannelClientConfig_->endpointUrl(endpointUrl);
-	}
-
-	void
-	SessionService::sessionServiceIf(SessionServiceIf* sessionServiceIf)
-	{
-		ctx_->sessionServiceIf_ = sessionServiceIf;
 	}
 
 	// ------------------------------------------------------------------------

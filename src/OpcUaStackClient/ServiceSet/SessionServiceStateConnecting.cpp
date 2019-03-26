@@ -51,11 +51,9 @@ namespace OpcUaStackClient
 	{
 		assert(ctx_ != nullptr);
 		assert(ctx_->secureChannel_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
 		assert(ctx_->sessionService_ != nullptr);
 
 		auto secureChannel = ctx_->secureChannel_;
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
 		auto sessionService = ctx_->sessionService_;
 
 		Log(Debug, "async disconnect event")
@@ -79,10 +77,9 @@ namespace OpcUaStackClient
 	{
 		// check configuration parameter
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
+		assert(ctx_->secureChannel_ != nullptr);
 		assert(ctx_->sessionService_ != nullptr);
 
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
 		auto sessionService = ctx_->sessionService_;
 
 		Log(Debug, "session service handle connect")
@@ -112,11 +109,6 @@ namespace OpcUaStackClient
 			.parameter("SessId", ctx_->id_);
 
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
-
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		// start reconnect timer
 		ctx_->startReconnectTimer();

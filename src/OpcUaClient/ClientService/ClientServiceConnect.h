@@ -27,7 +27,6 @@ namespace OpcUaClient
 
 	class ClientServiceConnect
 	: public ClientServiceBase
-	, public SessionServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<ClientServiceConnect> SPtr;
@@ -39,10 +38,6 @@ namespace OpcUaClient
 		virtual ClientServiceBase::SPtr createClientService(void);
 		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase);
 		//- ClientServiceConnect interface ------------------------------------
-
-		// SessionServiceIf interface -----------------------------------------
-		virtual void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState);
-		// SessionServiceIf interface -----------------------------------------
 
       private:
 

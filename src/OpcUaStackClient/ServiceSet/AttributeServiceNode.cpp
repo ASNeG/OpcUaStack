@@ -24,8 +24,7 @@ namespace OpcUaStackClient
 {
 
 	AttributeServiceNode::AttributeServiceNode(void)
-	: AttributeServiceIf()
-	, attributeServiceNodeIf_(nullptr)
+	: attributeServiceNodeIf_(nullptr)
 	, attributeService_()
 	, nodeId_()
 	, attributeIdVec_()
@@ -40,7 +39,6 @@ namespace OpcUaStackClient
 	AttributeServiceNode::attributeService(AttributeService::SPtr& attributeService)
 	{
 		attributeService_ = attributeService;
-		attributeService_->attributeServiceIf(this);
 	}
 
 	void
@@ -205,16 +203,13 @@ namespace OpcUaStackClient
 	void
 	AttributeServiceNode::asyncReadNode(void)
 	{
-		AttributeServiceIfTestHandler attributeServiceIfTestHandler;
-
 		// create read transaction
-		ServiceTransactionRead::SPtr trx = constructSPtr<ServiceTransactionRead>();
-		ReadRequest::SPtr req = trx->request();
+		auto trx = constructSPtr<ServiceTransactionRead>();
+		auto req = trx->request();
 
 		// create read request
 		req->readValueIdArray()->resize(attributeIdVec_.size());
-		std::vector<AttributeId>::iterator it;
-		for (it = attributeIdVec_.begin(); it != attributeIdVec_.end(); it++) {
+		for (auto it = attributeIdVec_.begin(); it != attributeIdVec_.end(); it++) {
 			ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
 			readValueIdSPtr->nodeId()->copyFrom(nodeId_);
 			readValueIdSPtr->attributeId((OpcUaInt32)*it);
@@ -223,6 +218,11 @@ namespace OpcUaStackClient
 		}
 
 		// send read request
+		trx->resultHandler(
+			[this](ServiceTransactionRead::SPtr serviceTransactionRead) {
+				attributeServiceReadResponse(serviceTransactionRead);
+			}
+		);
 		attributeService_->asyncSend(trx);
 	}
 
@@ -230,7 +230,7 @@ namespace OpcUaStackClient
 	AttributeServiceNode::attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead)
 	{
 	   	OpcUaStatusCode statusCode;
-	    ReadResponse::SPtr res = serviceTransactionRead->response();
+	    auto res = serviceTransactionRead->response();
 
 	    // check response
 	    statusCode = serviceTransactionRead->responseHeader()->serviceResult();

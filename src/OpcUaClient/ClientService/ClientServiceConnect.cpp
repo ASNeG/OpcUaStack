@@ -56,11 +56,15 @@ namespace OpcUaClient
 			return false;
 		}
 
+		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
+			// FIXME: todo
+		};
+
 		// set secure channel configuration
 		SessionServiceConfig sessionServiceConfig;
-		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(commandConnect->endpointUrl());
 		sessionServiceConfig.session_->sessionName(commandConnect->session());
+		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
 
 		// check if session must be activated
 		if (!commandConnect->activateSession()) {
@@ -92,12 +96,6 @@ namespace OpcUaClient
 		}
 
 		return true;
-	}
-
-	void
-	ClientServiceConnect::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
-	{
-		// FIXME: todo
 	}
 
 }

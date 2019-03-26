@@ -71,13 +71,25 @@ namespace OpcUaStackClient
 	bool 
 	DiscoveryClientRegisteredServers::startup(void)
 	{
+		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established) {
+				sendDiscoveryServiceRegisterServer();
+				return;
+			}
+
+			if (shutdown_) {
+				shutdownCond_.conditionValueDec();
+			}
+		};
+
 		// create service set manager
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
-		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager_);
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
+		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
+
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 
@@ -87,7 +99,6 @@ namespace OpcUaStackClient
 		// create discovery service
 		DiscoveryServiceConfig discoveryServiceConfig;
 		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
-		discoveryServiceConfig.discoveryServiceIf_ = this;
 		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
 
 	  	// start timer to check server entries
@@ -178,19 +189,6 @@ namespace OpcUaStackClient
     }
 
 	void
-	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState)
-	{
-		if (sessionState == SessionServiceStateId::Established) {
-			sendDiscoveryServiceRegisterServer();
-			return;
-		}
-
-		if (shutdown_) {
-			shutdownCond_.conditionValueDec();
-		}
-	}
-
-	void
 	DiscoveryClientRegisteredServers::sendDiscoveryServiceRegisterServer(void)
 	{
 		if (registeredServerMap_.size() == 0) {
@@ -206,13 +204,20 @@ namespace OpcUaStackClient
 
 			it->second->copyTo(req->server());
 
+			trx->resultHandler(
+				[this](ServiceTransactionRegisterServer::SPtr& trx) {
+					discoveryServiceRegisterServerResponse(trx);
+				}
+			);
 			discoveryService_->asyncSend(trx);
 		}
 
 	}
 
 	void
-	DiscoveryClientRegisteredServers::discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer)
+	DiscoveryClientRegisteredServers::discoveryServiceRegisterServerResponse(
+		ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer
+	)
 	{
 		if (serviceTransactionRegisterServer->statusCode() != Success) {
 			Log(Error, "receive register server response error")
@@ -233,8 +238,6 @@ namespace OpcUaStackClient
 			RegisteredServer::SPtr rs = it->second;
 			rs->isOnline() = false;
 		}
-
-		;
 	}
 
 }

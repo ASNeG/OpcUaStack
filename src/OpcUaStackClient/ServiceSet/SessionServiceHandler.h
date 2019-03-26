@@ -14,39 +14,18 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
+#ifndef __OpcUaStackClient_SessionServiceHandler_h__
+#define __OpcUaStackClient_SessionServiceHandler_h__
 
-#ifndef __OpcUaStackClient_SessionServiceIf_h__
-#define __OpcUaStackClient_SessionServiceIf_h__
-
-#include "boost/asio.hpp"
-#include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateId.h"
-
-using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT SessionServiceIf
-	{
-	  public:
-		virtual ~SessionServiceIf(void) {}
-
-		virtual void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState) = 0;
-	};
-
-	class DLLEXPORT SessionServiceIfTestHandler
-	: public SessionServiceIf
-	{
-	  public:
-		SessionServiceIfTestHandler(void);
-		virtual ~SessionServiceIfTestHandler(void);
-
-		SessionServiceStateId sessionState_;
-		Condition sessionStateUpdate_;
-		void sessionStateUpdate(SessionBase& session, SessionServiceStateId sessionState);
-	};
+	typedef std::function<
+		void (SessionBase& session, SessionServiceStateId sessionState)
+	> SessionServiceChangeHandler;
 
 }
 

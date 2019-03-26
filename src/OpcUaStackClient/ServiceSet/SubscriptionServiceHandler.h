@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -14,25 +14,30 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
+#ifndef __OpcUaStackClient_SubscriptionServiceHandler_h__
+#define __OpcUaStackClient_SubscriptionServiceHandler_h__
 
+#include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
+#include "OpcUaStackCore/StandardDataTypes/MonitoredItemNotification.h"
 
-#include "OpcUaStackClient/ServiceSet/MethodServiceIf.h"
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
-	MethodServiceIfTestHandler::MethodServiceIfTestHandler(void)
-	: methodServiceCallResponse_()
-	{
-	}
 
-	MethodServiceIfTestHandler::~MethodServiceIfTestHandler(void)
-	{
-	}
+	typedef enum {
+		SS_Close,
+		SS_Open,
+	} SubscriptionState;
 
-    void
-    MethodServiceIfTestHandler::methodServiceCallResponse(ServiceTransactionCall::SPtr serviceTransactionCall)
-    {
-    	methodServiceCallResponse_.conditionValueDec();
-    }
+	typedef std::function<
+		void (const MonitoredItemNotification::SPtr& monitoredItem)
+	> DataChangeNotificationHandler;
+
+	typedef std::function<
+		void (SubscriptionState subscriptionState, uint32_t subscriptionId)
+	> SubscriptionStateUpdateHandler;
 
 }
+
+#endif

@@ -25,7 +25,6 @@ namespace OpcUaStackClient
 
 	ViewService::ViewService(IOThread* ioThread)
 	: componentSession_(nullptr)
-	, viewServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -36,24 +35,16 @@ namespace OpcUaStackClient
 
 	void
 	ViewService::setConfiguration(
-		Component* componentSession,
-		ViewServiceIf* viewServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		viewServiceIf_ = viewServiceIf;
 	}
 
 	void 
 	ViewService::componentSession(Component* componentSession)
 	{
 		componentSession_ = componentSession;
-	}
-
-	void 
-	ViewService::viewServiceIf(ViewServiceIf* viewServiceIf)
-	{
-		viewServiceIf_ = viewServiceIf;
 	}
 
 	void 
@@ -120,28 +111,28 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_BrowseResponse_Encoding_DefaultBinary:
 			{
-				if (viewServiceIf_ != nullptr) {
-					viewServiceIf_->viewServiceBrowseResponse(
-						boost::static_pointer_cast<ServiceTransactionBrowse>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionBrowse>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_BrowseNextResponse_Encoding_DefaultBinary:
 			{
-				if (viewServiceIf_ != nullptr) {
-					viewServiceIf_->viewServiceBrowseNextResponse(
-						boost::static_pointer_cast<ServiceTransactionBrowseNext>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionBrowseNext>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_TranslateBrowsePathsToNodeIdsResponse_Encoding_DefaultBinary:
 			{
-				if (viewServiceIf_ != nullptr) {
-					viewServiceIf_->viewServiceTranslateBrowsePathsToNodeIdsResponse(
-						boost::static_pointer_cast<ServiceTransactionTranslateBrowsePathsToNodeIds>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionTranslateBrowsePathsToNodeIds>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

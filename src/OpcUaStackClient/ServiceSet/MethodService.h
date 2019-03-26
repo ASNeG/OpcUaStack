@@ -20,7 +20,6 @@
 
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/MethodServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -37,11 +36,9 @@ namespace OpcUaStackClient
 		~MethodService(void);
 
 		void setConfiguration(
-			Component* componentSession,
-			MethodServiceIf* methodServiceIf
+			Component* componentSession
 		);
 		void componentSession(Component* componentSession);
-		void methodServiceIf(MethodServiceIf* methodServiceIf);
 
 		void syncSend(ServiceTransactionCall::SPtr serviceTransactionRead);
 		void asyncSend(ServiceTransactionCall::SPtr serviceTransactionRead);
@@ -52,8 +49,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
-		MethodServiceIf* methodServiceIf_;
 	};
 
 }

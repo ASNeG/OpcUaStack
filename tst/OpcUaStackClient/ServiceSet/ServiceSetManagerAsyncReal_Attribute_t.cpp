@@ -8,136 +8,159 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_Attribute_)
 
+struct GValueFixture {
+	GValueFixture(void)
+    : cond_()
+	, sessionState_(SessionServiceStateId::None)
+    {}
+    ~GValueFixture(void)
+    {}
+
+    Condition cond_;
+    SessionServiceStateId sessionState_;
+};
+
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_)
 {
 	std::cout << "ServiceSetManagerAsyncReal_Attribute_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read)
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read, GValueFixture)
 {
-	SessionServiceIfTestHandler sessionIfTestHandler;
-	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
 
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
-	// create attribute service
-	AttributeService::SPtr attributeService;
+	// create attribute servic
 	AttributeServiceConfig attributeServiceConfig;
-	attributeServiceConfig.attributeServiceIf_ = &attributeServiceIfTestHandler;
-	attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
+	auto attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
 	BOOST_REQUIRE(attributeService.get() != nullptr);
 
 	// create and send WriteRequest
-	ServiceTransactionWrite::SPtr trx;
-	trx = constructSPtr<ServiceTransactionWrite>();
-	WriteRequest::SPtr req = trx->request();
-
+	auto trx = constructSPtr<ServiceTransactionWrite>();
+	auto req = trx->request();
+	auto writeValue = constructSPtr<WriteValue>();
 	OpcUaBoolean value = 1;
-	WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
 	writeValue->nodeId()->set("Demo.Static.Scalar.Boolean", 2);
 	writeValue->attributeId((OpcUaInt32) 13);
 	writeValue->dataValue().variant()->set(value);
 	req->writeValueArray()->resize(1);
 	req->writeValueArray()->set(writeValue);
 
-	attributeServiceIfTestHandler.attributeServiceWriteResponse_.condition(1,0);
+	cond_.condition(1,0);
+	trx->resultHandler(
+		[this](ServiceTransactionWrite::SPtr& trx) {
+			cond_.conditionValueDec();
+		}
+	);
 	attributeService->asyncSend(trx);
-	attributeServiceIfTestHandler.attributeServiceWriteResponse_.waitForCondition(1000);
-	WriteResponse::SPtr res = trx->response();
+	cond_.waitForCondition(1000);
+	auto res = trx->response();
 	BOOST_REQUIRE(trx->statusCode() == Success);
 	BOOST_REQUIRE(res->results()->size() == 1);
 
 	// disconnect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write)
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write, GValueFixture)
 {
-	SessionServiceIfTestHandler sessionIfTestHandler;
-	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create attribute service
-	AttributeService::SPtr attributeService;
 	AttributeServiceConfig attributeServiceConfig;
-	attributeServiceConfig.attributeServiceIf_ = &attributeServiceIfTestHandler;
-	attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
+	auto attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
 	BOOST_REQUIRE(attributeService.get() != nullptr);
 
 	// create and send ReadRequest
-	ServiceTransactionRead::SPtr trx;
-	trx = constructSPtr<ServiceTransactionRead>();
-	ReadRequest::SPtr req = trx->request();
-	ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
+	auto trx = constructSPtr<ServiceTransactionRead>();
+	auto req = trx->request();
+	auto readValueIdSPtr = constructSPtr<ReadValueId>();
 	readValueIdSPtr->nodeId((OpcUaInt16)0, (OpcUaInt32)2259);
 	readValueIdSPtr->attributeId((OpcUaInt32) 13);
 	readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 	req->readValueIdArray()->set(readValueIdSPtr);
 
-	attributeServiceIfTestHandler.attributeServiceReadResponse_.condition(1,0);
+	cond_.condition(1,0);
+	trx->resultHandler(
+		[this](ServiceTransactionRead::SPtr& trx) {
+			cond_.conditionValueDec();
+		}
+	);
 	attributeService->asyncSend(trx);
-	attributeServiceIfTestHandler.attributeServiceReadResponse_.waitForCondition(1000);
+	cond_.waitForCondition(1000);
 	ReadResponse::SPtr res = trx->response();
 	BOOST_REQUIRE(trx->statusCode() == Success);
 	BOOST_REQUIRE(res->dataValueArray()->size() == 1);
 
 	// disconnect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 

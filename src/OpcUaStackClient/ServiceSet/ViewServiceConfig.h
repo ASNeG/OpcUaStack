@@ -34,8 +34,6 @@ namespace OpcUaStackClient
 
 		ViewServiceConfig(void);
 		virtual ~ViewServiceConfig(void);
-
-		ViewServiceIf* viewServiceIf_;
 	};
 
 }

@@ -20,7 +20,6 @@
 
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/MonitoredItemServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -36,11 +35,9 @@ namespace OpcUaStackClient
 		~MonitoredItemService(void);
 
 		void setConfiguration(
-			Component* componentSession,
-			MonitoredItemServiceIf* monitoredItemServiceIf
+			Component* componentSession
 		);
 		void componentSession(Component* componentSession);
-		void monitoredItemServiceIf(MonitoredItemServiceIf* monitoredItemServiceIf);
 
 		void syncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
 		void asyncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
@@ -59,8 +56,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
-		MonitoredItemServiceIf* monitoredItemServiceIf_;
 	};
 
 }

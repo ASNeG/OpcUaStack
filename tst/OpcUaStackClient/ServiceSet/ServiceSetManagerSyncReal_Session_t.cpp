@@ -16,7 +16,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_)
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnect)
 {
 	ServiceSetManager serviceSetManager;
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -26,7 +25,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnec
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
@@ -45,7 +43,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnec
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnect_two_times)
 {
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 	SessionServiceConfig sessionServiceConfig;
 
@@ -56,7 +53,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnec
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
-	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);

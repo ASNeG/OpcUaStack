@@ -20,7 +20,6 @@
 
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/SubscriptionServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -46,7 +45,6 @@ namespace OpcUaStackClient
 		~SubscriptionServiceBase(void);
 
 		virtual void componentSession(Component* componentSession);
-		virtual void subscriptionServiceIf(SubscriptionServiceIf* subscriptionServiceIf);
 		void subscriptionServicePublishIf(SubscriptionServicePublishIf* subscriptionServicePublishIf);
 
 		void syncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
@@ -67,9 +65,6 @@ namespace OpcUaStackClient
 		//- Component -----------------------------------------------------------------
 		virtual void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
-
-	  protected:
-		SubscriptionServiceIf* subscriptionServiceIf_;
 
 	  private:
 		Component* componentSession_;

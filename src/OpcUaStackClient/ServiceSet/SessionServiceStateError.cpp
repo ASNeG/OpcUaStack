@@ -50,11 +50,6 @@ namespace OpcUaStackClient
 	SessionServiceStateError::asyncDisconnect(bool deleteSubscriptions)
 	{
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
-
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		Log(Warning, "async disconnect event")
 			.parameter("SessId", ctx_->id_);
@@ -83,11 +78,6 @@ namespace OpcUaStackClient
 	SessionServiceStateError::handleDisconnect(SecureChannel* secureChannel)
 	{
 		assert(ctx_ != nullptr);
-		assert(ctx_->sessionServiceIf_ != nullptr);
-		assert(ctx_->sessionService_ != nullptr);
-
-		auto sessionServiceIf = ctx_->sessionServiceIf_;
-		auto sessionService = ctx_->sessionService_;
 
 		// start reconnect timer
 		ctx_->startReconnectTimer();

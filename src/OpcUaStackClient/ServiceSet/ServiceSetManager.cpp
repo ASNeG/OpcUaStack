@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -105,7 +105,7 @@ namespace OpcUaStackClient
 		// set session configuration
 		sessionService->setConfiguration(
 			sessionServiceConfig.sessionMode_,
-			sessionServiceConfig.sessionServiceIf_,
+			sessionServiceConfig.sessionServiceChangeHandler_,
 			sessionServiceConfig.secureChannelClient_,
 			sessionServiceConfig.session_
 		);
@@ -141,8 +141,7 @@ namespace OpcUaStackClient
 
 		// set discovery configuration
 		discoveryService->setConfiguration(
-			sessionService->component(),
-			discoveryServiceConfig.discoveryServiceIf_
+			sessionService->component()
 		);
 
 		return discoveryService;
@@ -162,13 +161,12 @@ namespace OpcUaStackClient
 	{
 		// create attribute service
 		createIOThread(attributeServiceConfig.ioThreadName());
-		IOThread::SPtr ioThread = getIOThread(attributeServiceConfig.ioThreadName());
-		AttributeService::SPtr attributeService = constructSPtr<AttributeService>(ioThread.get());
+		auto ioThread = getIOThread(attributeServiceConfig.ioThreadName());
+		auto attributeService = constructSPtr<AttributeService>(ioThread.get());
 
 		// set attribute configuration
 		attributeService->setConfiguration(
-			sessionService->component(),
-			attributeServiceConfig.attributeServiceIf_
+			sessionService->component()
 		);
 
 		return attributeService;
@@ -194,9 +192,10 @@ namespace OpcUaStackClient
 		// set subscription configuration
 		subscriptionService->setConfiguration(
 			sessionService->component(),
+			subscriptionServiceConfig.dataChangeNotificationHandler_,
+			subscriptionServiceConfig.subscriptionStateUpdateHandler_,
 			subscriptionServiceConfig.publishCount_,
-			subscriptionServiceConfig.requestTimeout_,
-			subscriptionServiceConfig.subscriptionServiceIf_
+			subscriptionServiceConfig.requestTimeout_
 		);
 
 		return subscriptionService;
@@ -221,8 +220,7 @@ namespace OpcUaStackClient
 
 		// set monitored item configuration
 		monitoredItemService->setConfiguration(
-			sessionService->component(),
-			monitoredItemServiceConfig.monitoredItemServiceIf_
+			sessionService->component()
 		);
 
 		return monitoredItemService;
@@ -242,13 +240,12 @@ namespace OpcUaStackClient
 	{
 		// create monitored item service
 		createIOThread(methodServiceConfig.ioThreadName());
-		IOThread::SPtr ioThread = getIOThread(methodServiceConfig.ioThreadName());
-		MethodService::SPtr methodService = constructSPtr<MethodService>(ioThread.get());
+		auto ioThread = getIOThread(methodServiceConfig.ioThreadName());
+		auto methodService = constructSPtr<MethodService>(ioThread.get());
 
 		// set method configuration
 		methodService->setConfiguration(
-			sessionService->component(),
-			methodServiceConfig.methodServiceIf_
+			sessionService->component()
 		);
 
 		return methodService;
@@ -273,8 +270,7 @@ namespace OpcUaStackClient
 
 		// set view configuration
 		viewService->setConfiguration(
-			sessionService->component(),
-			viewServiceConfig.viewServiceIf_
+			sessionService->component()
 		);
 
 		return viewService;
@@ -299,8 +295,7 @@ namespace OpcUaStackClient
 
 		// set query configuration
 		queryService->setConfiguration(
-			sessionService->component(),
-			queryServiceConfig.queryServiceIf_
+			sessionService->component()
 		);
 
 		return queryService;
@@ -325,8 +320,7 @@ namespace OpcUaStackClient
 
 		// set node management configuration
 		nodeManagementService->setConfiguration(
-			sessionService->component(),
-			nodeManagementServiceConfig.nodeManagementServiceIf_
+			sessionService->component()
 		);
 
 		return nodeManagementService;

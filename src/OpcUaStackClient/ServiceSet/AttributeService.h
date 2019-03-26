@@ -20,7 +20,6 @@
 
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/AttributeServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -37,11 +36,9 @@ namespace OpcUaStackClient
 		~AttributeService(void);
 
 		void setConfiguration(
-			Component* componentSession,
-			AttributeServiceIf* attributeServiceIf
+			Component* componentSession
 		);
 		void componentSession(Component* componentSession);
-		void attributeServiceIf(AttributeServiceIf* attributeServiceIf);
 
 		void syncSend(ServiceTransactionRead::SPtr serviceTransactionRead);
 		void asyncSend(ServiceTransactionRead::SPtr serviceTransactionRead);
@@ -58,8 +55,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
-		AttributeServiceIf* attributeServiceIf_;
 	};
 
 }

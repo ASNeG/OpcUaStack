@@ -39,7 +39,6 @@ namespace OpcUaStackClient
 
 
 	class DLLEXPORT AttributeServiceNode
-	: public AttributeServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<AttributeServiceNode> SPtr;
@@ -79,11 +78,9 @@ namespace OpcUaStackClient
 
 		void asyncReadNode(void);
 
-		//- AttributeServiceIf -----------------------------------------------------
-	    virtual void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
-	    //- AttributeServiceIf -----------------------------------------------------
-
 	  private:
+		void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
+
 		AttributeService::SPtr attributeService_;
 		AttributeServiceNodeIf* attributeServiceNodeIf_;
 

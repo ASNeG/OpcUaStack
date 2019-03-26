@@ -9,21 +9,41 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(VBIAsyncReal_Attribute_GetEndpointRequest_)
 
+struct GValueFixture {
+	GValueFixture(void)
+    : cond_()
+	, sessionState_(SessionServiceStateId::None)
+	, statusCode_(Success)
+    {}
+    ~GValueFixture(void)
+    {}
+
+    Condition cond_;
+    SessionServiceStateId sessionState_;
+    OpcUaStatusCode statusCode_;
+};
+
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest_)
 {
 	std::cout << "VBIAsyncReal_Attribute_GetEndpointRequest_t" << std::endl;
 }
 
 #ifdef REAL_SERVER
-BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest, GValueFixture)
 {
 
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	// set session change callback
-	client.setSessionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
 	);
 
 	// connect session
@@ -40,40 +60,46 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest)
 	connectContext.securityPolicy_ = SP_Basic128Rsa15;					// security policy
 	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();
 	connectContext.secureChannelLog_ = true;
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// read
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaInt32)2259);
-	vbiClientHandlerTest.readComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncRead(
 		nodeId,
-		boost::bind(&VBIClientHandlerTest::readComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue) {
+			statusCode_ = statusCode;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.readComplete_.waitForEvent(3000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	vbiClientHandlerTest.dataValue_.out(std::cout);
+	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
 
 	// disconnect session
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest_write)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest_write, GValueFixture)
 {
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	// set session change callback
-	client.setSessionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
 	);
 
 	// connect session
@@ -90,32 +116,33 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest_write)
 	connectContext.securityPolicy_ = SP_Basic128Rsa15;					// security policy
 	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();;
 	connectContext.secureChannelLog_ = true;
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Established);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// write
 	OpcUaNodeId nodeId;
 	OpcUaDataValue dataValue;
 	dataValue.variant()->set((OpcUaBoolean)1);
 	nodeId.set(220, 2);
-	vbiClientHandlerTest.writeComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncWrite(
 		nodeId,
 		dataValue,
-		boost::bind(&VBIClientHandlerTest::writeComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId) {
+			statusCode_ = statusCode;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.writeComplete_.waitForEvent(3000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
+	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
 
 	// disconnect session
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(3000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SessionServiceStateId::Disconnected);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 #endif
 

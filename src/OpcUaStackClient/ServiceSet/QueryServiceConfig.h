@@ -34,8 +34,6 @@ namespace OpcUaStackClient
 
 		QueryServiceConfig(void);
 		~QueryServiceConfig(void);
-
-		QueryServiceIf* queryServiceIf_;
 	};
 
 }

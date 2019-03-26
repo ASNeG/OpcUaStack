@@ -16,8 +16,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Query_)
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Query_cc)
 {
 	ServiceSetManager serviceSetManager;
-	QueryServiceIfTestHandler queryServiceIfTestHandler;
-	SessionServiceIfTestHandler sessionIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -27,7 +25,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Query_cc)
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
@@ -43,7 +40,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Query_cc)
 	// create query service
 	QueryService::SPtr queryService;
 	QueryServiceConfig queryServiceConfig;
-	queryServiceConfig.queryServiceIf_ = &queryServiceIfTestHandler;
 	queryService = serviceSetManager.queryService(sessionService, queryServiceConfig);
 	BOOST_REQUIRE(queryService.get() != nullptr);
 

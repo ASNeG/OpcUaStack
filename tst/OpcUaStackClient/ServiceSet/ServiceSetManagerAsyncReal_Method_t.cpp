@@ -8,73 +8,90 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_Method_)
 
+struct GValueFixture {
+	GValueFixture(void)
+    : cond_()
+	, sessionState_(SessionServiceStateId::None)
+    {}
+    ~GValueFixture(void)
+    {}
+
+    Condition cond_;
+    SessionServiceStateId sessionState_;
+};
+
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_)
 {
 	std::cout << "ServiceSetManagerAsyncReal_Method_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints)
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints, GValueFixture)
 {
 	ServiceSetManager serviceSetManager;
-	MethodServiceIfTestHandler methodServiceIfTestHandler;
-	SessionServiceIfTestHandler sessionIfTestHandler;
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	auto cryptoManager = CryptoManagerTest::getInstance();
 	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
 
 	// create session
-	SessionService::SPtr sessionService;
-	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create method service
-	MethodService::SPtr methodService;
 	MethodServiceConfig methodServiceConfig;
-	methodServiceConfig.methodServiceIf_ = &methodServiceIfTestHandler;
-	methodService = serviceSetManager.methodService(sessionService, methodServiceConfig);
+	auto methodService = serviceSetManager.methodService(sessionService, methodServiceConfig);
 	BOOST_REQUIRE(methodService.get() != nullptr);
 
 	// call method
-	OpcUaVariant::SPtr inArgument1 = constructSPtr<OpcUaVariant>();
+	auto inArgument1 = constructSPtr<OpcUaVariant>();
 	inArgument1->set((uint32_t)1);
-	OpcUaVariant::SPtr inArgument2 = constructSPtr<OpcUaVariant>();
+	auto inArgument2 = constructSPtr<OpcUaVariant>();
 	inArgument2->set((uint32_t)2);
 
-	CallMethodRequest::SPtr callMethodRequest = constructSPtr<CallMethodRequest>();
+	auto callMethodRequest = constructSPtr<CallMethodRequest>();
 	callMethodRequest->objectId()->set("Function" ,6);
 	callMethodRequest->methodId()->set("funcMult" ,6);
 	callMethodRequest->inputArguments()->resize(2);
 	callMethodRequest->inputArguments()->set(0, inArgument1);
 	callMethodRequest->inputArguments()->set(1, inArgument2);
 
-	ServiceTransactionCall::SPtr trx;
-	trx = constructSPtr<ServiceTransactionCall>();
-	CallRequest::SPtr req = trx->request();
+	auto trx = constructSPtr<ServiceTransactionCall>();
+	auto req = trx->request();
+	auto res = trx->response();
 	req->methodsToCall()->resize(1);
 	req->methodsToCall()->set(0, callMethodRequest);
 
-	methodServiceIfTestHandler.methodServiceCallResponse_.condition(1,0);
+	trx->resultHandler(
+		[this](ServiceTransactionCall::SPtr& trx) {
+			cond_.sendEvent();
+		}
+	);
+	cond_.initEvent();
 	methodService->asyncSend(trx);
-	BOOST_REQUIRE(methodServiceIfTestHandler.methodServiceCallResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(trx->responseHeader()->serviceResult() == Success);
-
-	CallResponse::SPtr res = trx->response();
 	BOOST_REQUIRE(res->results()->size() == 1);
 
 	CallMethodResult::SPtr callMethodResult;
@@ -88,10 +105,10 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints)
 	uint32_t number = outArgument1->get<uint32_t>();
 
 	// disconnect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	cond_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 

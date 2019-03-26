@@ -16,8 +16,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_)
 BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_cc)
 {
 	ServiceSetManager serviceSetManager;
-	NodeManagementServiceIfTestHandler nodeManagementServiceIfTestHandler;
-	SessionServiceIfTestHandler sessionIfTestHandler;
 
 	//
 	// init certificate and crypto manager
@@ -27,7 +25,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_cc)
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
-	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
@@ -43,7 +40,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_NodeManagement_cc)
 	// create nodeManagement service
 	NodeManagementService::SPtr nodeManagementService;
 	NodeManagementServiceConfig nodeManagementServiceConfig;
-	nodeManagementServiceConfig.nodeManagementServiceIf_ = &nodeManagementServiceIfTestHandler;
 	nodeManagementService = serviceSetManager.nodeManagementService(sessionService, nodeManagementServiceConfig);
 	BOOST_REQUIRE(nodeManagementService.get() != nullptr);
 

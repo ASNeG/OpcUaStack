@@ -34,8 +34,6 @@ namespace OpcUaStackClient
 
 		DiscoveryServiceConfig(void);
 		virtual ~DiscoveryServiceConfig(void);
-
-		DiscoveryServiceIf* discoveryServiceIf_;
 	};
 
 }

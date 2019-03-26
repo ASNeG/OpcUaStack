@@ -26,7 +26,6 @@ namespace OpcUaStackClient
 	DiscoveryService::DiscoveryService(IOThread* ioThread)
 	: Component()
 	, componentSession_(nullptr)
-	, discoveryServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -37,24 +36,16 @@ namespace OpcUaStackClient
 
 	void
 	DiscoveryService::setConfiguration(
-		Component* componentSession,
-		DiscoveryServiceIf* discoveryServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		discoveryServiceIf_ = discoveryServiceIf;
 	}
 
 	void 
 	DiscoveryService::componentSession(Component* componentSession)
 	{
 		componentSession_ = componentSession;
-	}
-
-	void 
-	DiscoveryService::discoveryServiceIf(DiscoveryServiceIf* discoveryServiceIf)
-	{
-		discoveryServiceIf_ = discoveryServiceIf;
 	}
 
 	void 
@@ -108,7 +99,7 @@ namespace OpcUaStackClient
 	void 
 	DiscoveryService::receive(Message::SPtr message)
 	{
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
@@ -120,30 +111,30 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_FindServersResponse_Encoding_DefaultBinary:
 			{
-				if (discoveryServiceIf_ != nullptr) {
-					discoveryServiceIf_->discoveryServiceFindServersResponse(
-						boost::static_pointer_cast<ServiceTransactionFindServers>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionFindServers>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary:
 			{
-				if (discoveryServiceIf_ != nullptr) {
-					discoveryServiceIf_->discoveryServiceGetEndpointsResponse(
-						boost::static_pointer_cast<ServiceTransactionGetEndpoints>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionGetEndpoints>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_RegisterServerResponse_Encoding_DefaultBinary:
 			{
-				if (discoveryServiceIf_ != nullptr) {
-					discoveryServiceIf_->discoveryServiceRegisterServerResponse(
-						boost::static_pointer_cast<ServiceTransactionRegisterServer>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionRegisterServer>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

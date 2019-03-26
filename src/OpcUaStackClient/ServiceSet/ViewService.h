@@ -20,7 +20,6 @@
 
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/ViewServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -37,11 +36,9 @@ namespace OpcUaStackClient
 		~ViewService(void);
 
 		void setConfiguration(
-			Component* componentSession,
-			ViewServiceIf* viewServiceIf
+			Component* componentSession
 		);
 		void componentSession(Component* componentSession);
-		void viewServiceIf(ViewServiceIf* viewServiceIf);
 
 		void syncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
 		void asyncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
@@ -57,8 +54,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
-		ViewServiceIf* viewServiceIf_;
 	};
 
 }

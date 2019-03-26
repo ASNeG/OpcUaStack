@@ -20,7 +20,6 @@
 
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/QueryServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/QueryServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -36,11 +35,9 @@ namespace OpcUaStackClient
 		~QueryService(void);
 
 		void setConfiguration(
-			Component* componentSession,
-			QueryServiceIf* queryServiceIf
+			Component* componentSession
 		);
 		void componentSession(Component* componentSession);
-		void queryServiceIf(QueryServiceIf* queryServiceIf);
 
 		void syncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
 		void asyncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
@@ -53,8 +50,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
-		QueryServiceIf* queryServiceIf_;
 	};
 
 }

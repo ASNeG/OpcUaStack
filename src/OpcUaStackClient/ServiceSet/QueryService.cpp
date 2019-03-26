@@ -25,7 +25,6 @@ namespace OpcUaStackClient
 
 	QueryService::QueryService(IOThread* ioThread)
 	: componentSession_(nullptr)
-	, queryServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -36,24 +35,16 @@ namespace OpcUaStackClient
 
 	void
 	QueryService::setConfiguration(
-		Component* componentSession,
-		QueryServiceIf* queryServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		queryServiceIf_ = queryServiceIf;
 	}
 
 	void 
 	QueryService::componentSession(Component* componentSession)
 	{
 		componentSession_ = componentSession;
-	}
-
-	void 
-	QueryService::queryServiceIf(QueryServiceIf* queryServiceIf)
-	{
-		queryServiceIf_ = queryServiceIf;
 	}
 
 	void 
@@ -104,20 +95,20 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_QueryFirstResponse_Encoding_DefaultBinary:
 			{
-				if (queryServiceIf_ != nullptr) {
-					queryServiceIf_->queryServiceQueryFirstResponse(
-						boost::static_pointer_cast<ServiceTransactionQueryFirst>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionQueryFirst>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_QueryNextResponse_Encoding_DefaultBinary:
 			{
-				if (queryServiceIf_ != nullptr) {
-					queryServiceIf_->queryServiceQueryNextResponse(
-						boost::static_pointer_cast<ServiceTransactionQueryNext>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionQueryNext>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

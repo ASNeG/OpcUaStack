@@ -44,8 +44,6 @@ namespace OpcUaStackClient
 
 
 	class DLLEXPORT ClientSubscription
-	: public SubscriptionServiceIf
-	, public MonitoredItemServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<ClientSubscription> SPtr;
@@ -78,7 +76,6 @@ namespace OpcUaStackClient
 		void maxNotificationsPerPublish(uint32_t maxNotificationsPerPublish);
 		void serviceSetManager(ServiceSetManager* serviceSetManager);
 		void sessionService(SessionService::SPtr& sessionService);
-		void clientSubscriptionIf(ClientSubscriptionIf* clientSubscriptionIf);
 
 		void addMonitoredItem(ClientMonitoredItem::SPtr& clientMonitoredItem);
 
@@ -89,23 +86,19 @@ namespace OpcUaStackClient
 		void close(void);
 		void error(void);
 
-		//- SubscriptionServiceIf ---------------------------------------------
-	    virtual void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
-	    virtual void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
-	    virtual void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
-	    virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+	    void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
+	    void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
+	    void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
+	    void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
-		virtual void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
-		virtual void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
-		//- SubscriptionServiceIf ---------------------------------------------
+		void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
+		void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
 
-		//- MonitoredItemServiceIf --------------------------------------------
-	    virtual void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
-	    virtual void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
-	    virtual void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
-	    virtual void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
-	    virtual void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
-		//- MonitoredItemServiceIf --------------------------------------------
+	    void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
+	    void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
+	    void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
+	    void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
+	    void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
 
 	  private:
 		void init(void);

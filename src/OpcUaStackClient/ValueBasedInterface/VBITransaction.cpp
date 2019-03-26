@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -28,7 +28,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VBITransactionRead::VBITransactionRead(void)
-	: callback_()
+	: VBIResultHandler_()
 	{
 	}
 
@@ -38,7 +38,7 @@ namespace OpcUaStackClient
 
 
 	VBITransactionWrite::VBITransactionWrite(void)
-	: callback_()
+	: VBIResultHandler_()
 	{
 	}
 
@@ -55,7 +55,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VBITransactionCreateSubscription::VBITransactionCreateSubscription(void)
-	: callback_()
+	: VBIResultHandler_()
 	{
 	}
 
@@ -64,7 +64,7 @@ namespace OpcUaStackClient
 	}
 
 	VBITransactionDeleteSubscription::VBITransactionDeleteSubscription(void)
-	: callback_()
+	: VBIResultHandler_()
 	{
 	}
 
@@ -81,7 +81,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VBITransactionCreateMonitoredItem::VBITransactionCreateMonitoredItem(void)
-	: callback_()
+	: VBIResultHandler_()
 	{
 	}
 
@@ -90,7 +90,7 @@ namespace OpcUaStackClient
 	}
 
 	VBITransactionDeleteMonitoredItem::VBITransactionDeleteMonitoredItem(void)
-	: callback_()
+	: VBIResultHandler_()
 	{
 	}
 
