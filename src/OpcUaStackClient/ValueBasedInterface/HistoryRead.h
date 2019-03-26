@@ -53,9 +53,8 @@ namespace OpcUaStackClient
 			const OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
-			ResultHandler& resultHandler
+			const ResultHandler& resultHandler
 		);
-		void syncCancel(void);
 		void asyncCancel(void);
 
 	  private:

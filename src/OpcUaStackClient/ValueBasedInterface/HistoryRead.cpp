@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <future>
 #include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
@@ -73,8 +74,21 @@ namespace OpcUaStackClient
 		OpcUaDataValue::Vec& dataValueVec
 	)
 	{
-		// FIXME: todo
-		return Success;
+		OpcUaStatusCode statusCode = Success;
+		auto promise = boost::make_shared<std::promise<void>>();
+		auto future = promise->get_future();
+		asyncHistoryRead(
+			nodeId,
+			startTime,
+			endTime,
+			[this, &statusCode, &dataValueVec, promise] (OpcUaStatusCode sc, OpcUaDataValue::Vec& dvv) {
+				statusCode = sc;
+				dataValueVec = dvv;
+				promise->set_value();
+			}
+		);
+		future.wait();
+		return statusCode;
 	}
 
 	void
@@ -82,7 +96,7 @@ namespace OpcUaStackClient
 		const OpcUaNodeId& nodeId,
 		boost::posix_time::ptime startTime,
 		boost::posix_time::ptime endTime,
-		ResultHandler& resultHandler
+		const ResultHandler& resultHandler
 	)
 	{
 		// set input parameter
@@ -95,15 +109,9 @@ namespace OpcUaStackClient
 	}
 
 	void
-	HistoryRead::syncCancel(void)
-	{
-		// FIXME: todo
-	}
-
-	void
 	HistoryRead::asyncCancel(void)
 	{
-		// FIXME: todo
+		cancel_ = true;
 	}
 
 	void
@@ -163,6 +171,12 @@ namespace OpcUaStackClient
 		ServiceTransactionHistoryRead::SPtr& trx
 	)
 	{
+		// check cancel state
+		if (cancel_) {
+			resultHandler_(BadShutdown, dataValueVec_);
+			return;
+		}
+
 		// check result code
 		if (trx->statusCode() != Success) {
 			Log(Error, "historical read transaction error")
@@ -205,7 +219,8 @@ namespace OpcUaStackClient
 			continuationPoint_ = readResult->continuationPoint();
 		}
 
-		// continuation point not exist - answer inquiry
+		// continuation point not exist or release continuation point
+		// -> answer inquiry
 		if (!continuationPoint_.exist() || releaseContinuationPoints) {
 			resultHandler_(Success, dataValueVec_);
 			return;
