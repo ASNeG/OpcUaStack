@@ -6,7 +6,7 @@ Session and Access Control
 In this document we'll learn how to implement authentication and authorization
 functionality in your application with ASNeG OPC UA Stack.
 
-You can download the source code of the example from
+You can download the source code of the tutorial from
 :download:`here <access_control_example.zip>`.
 
 Overview
