@@ -11,7 +11,29 @@ Release 3.7.0
 
 * fix changing user in the same OPC UA session #105, by @huebl
 
-Release 3.6.1 (2018-12-28)
+Release 3.6.3 (2019-03-05)
+------------------------------------------------------------
+
+**Bugs**:
+
+* allow relative install path #130, by @huebl
+* delete discovery client connection on error #126, by @huebl
+* fix calling stop monitored item callback #132, by @flipback
+
+**Documentation**:
+
+* fix apt-get command in installation guide  #128, by @flipback 
+* add app build command for local stack #129, by @flipback 
+
+Release 3.6.2 (2019-02-01)
+------------------------------------------------------------
+
+**Bugs**:
+
+* fix_wrong_monitored_items_filtering #101, by @TYZzzzzzz
+
+>>>>>>> github/Release3_Bugs
+
 ------------------------------------------------------------
 
 **Bugs**:
