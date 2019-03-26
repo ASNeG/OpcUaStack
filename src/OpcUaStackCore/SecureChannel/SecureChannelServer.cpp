@@ -345,7 +345,7 @@ namespace OpcUaStackCore
 				.parameter("ChannelId", channelId);
 		}
 		if (!success) {
-			secureChannel->socket().cancel();
+			secureChannel->socket().close();
 			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
 			return;
 		}

@@ -11,7 +11,21 @@ Release 3.7.0
 
 * fix user changing during activated session #105, by @huebl
 * fix changing user in the same OPC UA session #105, by @huebl
+* allow relative install path #130, by @huebl
+* delete discovery client connection on error #126, by @huebl
+* fix calling stop monitored item callback #132, by @flipback
 
+**Documentation**:
+
+* fix apt-get command in installation guide  #128, by @flipback 
+* add app build command for local stack #129, by @flipback 
+
+Release 3.6.2 (2019-02-01)
+------------------------------------------------------------
+
+**Bugs**:
+
+* fix filter in monitored item #101, by @TYZzzzzzz
 
 Release 3.6.1 (2018-12-28)
 ------------------------------------------------------------

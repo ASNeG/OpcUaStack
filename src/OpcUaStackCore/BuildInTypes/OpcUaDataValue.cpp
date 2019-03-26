@@ -1035,7 +1035,6 @@ namespace OpcUaStackCore
 			case DCT_StatusValueTimestamp:
 			{
 				if (dataValue.sourceTimestamp() != sourceTimestamp()) return true;
-				break;
 			}
 			case DCT_StatusValue:
 			{
@@ -1044,12 +1043,10 @@ namespace OpcUaStackCore
 				if (!dataValue.isNullVariant() && !isNullVariant()) {
 					if (*dataValue.variant() != *variant()) return true;
 				}
-				break;
 			}
 			case DCT_Status:
 			{
 				if (dataValue.statusCode() != statusCode()) return true;
-				break;
 			}
 		}
 		return false;

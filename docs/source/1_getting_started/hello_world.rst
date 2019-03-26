@@ -197,13 +197,28 @@ On Linux:
 
 ::
 
-    $ sh build.sh -t local -i path/to/install
+  $ sh build.sh -t local -i path/to/install
 
 On Windows:
 
 ::
 
 	$ build.bat -t local -i path\to\install
+
+If you've installed the stack locally, you should use option `-s` to point the directory
+with the stack:
+
+On Linux:
+
+::
+
+  $ sh build.sh -t local -i path/to/install -s ~/.ASNeG
+
+On Windows:
+
+::
+
+	$ build.bat -t local -i path\to\install -s C:\ASNeG
 
 The application will be built as a shared library and copied with its
 configuration into the installation directory.

@@ -23,7 +23,7 @@ Ubuntu or Debian users can install the requirements by using *apt-get* command:
 
 ::
 
-  $ sudo apt-get install apt-get install libboost-all-dev cmake libssl-dev  build-essential
+  $ sudo apt-get install libboost-all-dev cmake libssl-dev  build-essential
 
 
 The next step is the compilation of the source code and its installation. You should run in
