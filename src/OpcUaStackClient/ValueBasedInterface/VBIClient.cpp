@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
@@ -467,59 +466,7 @@ namespace OpcUaStackClient
 			assert(attributeService_.get() != nullptr);
 		}
 
-		// create transaction
-		auto trx = constructSPtr<ServiceTransactionHistoryRead>();
-		auto req = trx->request();
-		auto res = trx->response();
-
-		// create request
-		req->historyReadDetails()->parameterTypeId().set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
-		req->timestampsToReturn(defaultHistoryReadContext_.timestampToReturn_);
-		auto readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
-		readDetails->startTime() = startTime;
-		readDetails->endTime() = endTime;
-		readDetails->numValuesPerNode() = defaultHistoryReadContext_.maxNumResultValuesPerNode_;
-
-		req->nodesToRead()->resize(1);
-		auto readValueId = constructSPtr<HistoryReadValueId>();
-		readValueId->nodeId(boost::make_shared<OpcUaNodeId>(nodeId));
-		readValueId->dataEncoding().namespaceIndex((OpcUaInt16) 0);
-		req->nodesToRead()->push_back(readValueId);
-
-		// send historical read request
-		attributeService_->syncSend(trx);
-
-		// check result code
-		if (trx->statusCode() != Success) {
-			Log(Error, "historical read transaction error")
-				.parameter("NodeId", nodeId)
-				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx->statusCode()));
-			return trx->statusCode();
-		}
-		if (res->results()->size() != 1) {
-			Log(Error, "historical read result size error")
-				.parameter("NodeId", nodeId)
-				.parameter("NodeId", nodeId);
-			return BadUnexpectedError;
-		}
-
-		// handle response
-		HistoryReadResult::SPtr readResult;
-		res->results()->get(0, readResult);
-		if (readResult->statusCode() != Success) {
-			Log(Error, "historical read result error")
-				.parameter("NodeId", nodeId)
-				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx->statusCode()));
-			return readResult->statusCode();
-		}
-
-		// read data values
-		auto historyData = readResult->historyData()->parameter<HistoryData>();
-		for (auto idx=0; idx<historyData->dataValues().size(); idx++) {
-			OpcUaDataValue::SPtr dataValue;
-			historyData->dataValues().get(idx, dataValue);
-			dataValueVec.push_back(dataValue);
-		}
+		// FIXME: todo
 
 		return Success;
 	}

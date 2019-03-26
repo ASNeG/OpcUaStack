@@ -93,6 +93,7 @@ namespace OpcUaStackClient
 
 		TimestampsToReturn timestampToReturn_;
 		uint32_t maxNumResultValuesPerNode_;
+		uint32_t maxNumResultValuesPerRequest_;
 	};
 
 	class DLLEXPORT CreateSubscriptionContext

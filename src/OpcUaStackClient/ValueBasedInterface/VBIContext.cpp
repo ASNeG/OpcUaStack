@@ -193,6 +193,7 @@ namespace OpcUaStackClient
 	HistoryReadContext::HistoryReadContext(void)
 	: timestampToReturn_(TimestampsToReturn_Both)
 	, maxNumResultValuesPerNode_(0)
+	, maxNumResultValuesPerRequest_(0)
 	{
 	}
 
@@ -229,6 +230,16 @@ namespace OpcUaStackClient
 			else if (para.parameter_ == "MAXNUMRESULTVALUESPERNODE") {
 				try {
 					maxNumResultValuesPerNode_ = boost::lexical_cast<uint32_t>(para.value_);
+				}
+				catch (...)
+				{
+					return false;
+			    }
+
+			}
+			else if (para.parameter_ == "MAXNUMRESULTVALUESPERREQUEST") {
+				try {
+					maxNumResultValuesPerRequest_ = boost::lexical_cast<uint32_t>(para.value_);
 				}
 				catch (...)
 				{
