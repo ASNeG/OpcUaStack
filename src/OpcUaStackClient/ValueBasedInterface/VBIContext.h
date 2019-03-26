@@ -90,6 +90,9 @@ namespace OpcUaStackClient
 
 		void reset(void);
 		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
+
+		TimestampsToReturn timestampToReturn_;
+		uint32_t maxNumResultValuesPerNode_;
 	};
 
 	class DLLEXPORT CreateSubscriptionContext

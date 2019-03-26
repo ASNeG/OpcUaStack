@@ -66,7 +66,7 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<ServiceTransactionHistoryRead> SPtr;
 		typedef std::function<
-			void(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
+			void(OpcUaStatusCode statusCode, std::vector<OpcUaDataValue::SPtr>& dataValueVec)
 		> VBIResultHandler;
 
 		VBITransactionHistoryRead(void);

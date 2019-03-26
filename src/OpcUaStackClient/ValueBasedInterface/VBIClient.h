@@ -123,14 +123,14 @@ namespace OpcUaStackClient
 			OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
-			std::vector<OpcUaDataValue::SPtr> dataValueVec
+			std::vector<OpcUaDataValue::SPtr>& dataValueVec
 		);
 		OpcUaStatusCode syncHistoryRead(
 			OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
 			HistoryReadContext& historyReadContext,
-			std::vector<OpcUaDataValue::SPtr> dataValueVec
+			std::vector<OpcUaDataValue::SPtr>& dataValueVec
 		);
 		void asyncHistoryRead(
 			OpcUaNodeId& nodeId,

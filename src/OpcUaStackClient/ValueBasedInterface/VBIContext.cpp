@@ -191,6 +191,8 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	HistoryReadContext::HistoryReadContext(void)
+	: timestampToReturn_(TimestampsToReturn_Both)
+	, maxNumResultValuesPerNode_(0)
 	{
 	}
 
@@ -206,6 +208,38 @@ namespace OpcUaStackClient
 	bool
 	HistoryReadContext::setContextParameter(ContextParameter::Vec& contextParameterVec)
 	{
+		for (auto para : contextParameterVec) {
+			if (para.parameter_ == "TIMESTAMPSTORETURN") {
+				if (para.value_ == "Source") {
+					timestampToReturn_ = TimestampsToReturn_Source;
+				}
+				else if (para.value_ == "Server") {
+					timestampToReturn_ = TimestampsToReturn_Server;
+				}
+				else if (para.value_ == "Both") {
+					timestampToReturn_ = TimestampsToReturn_Both;
+				}
+				else if (para.value_ == "Neither") {
+					timestampToReturn_ = TimestampsToReturn_Neither;
+				}
+				else {
+					return false;
+				}
+			}
+			else if (para.parameter_ == "MAXNUMRESULTVALUESPERNODE") {
+				try {
+					maxNumResultValuesPerNode_ = boost::lexical_cast<uint32_t>(para.value_);
+				}
+				catch (...)
+				{
+					return false;
+			    }
+
+			}
+			else {
+				return false;
+			}
+		}
 		return true;
 	}
 
