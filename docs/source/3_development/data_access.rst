@@ -7,8 +7,8 @@ Every OPC UA application is created to provide some data to its clients. In this
 we're going to learn how OPC UA server stores data and provide access to it.
 Also we'll show you how you can organize the access data by using ASNeG OPC UA Stack.
 
-Some basic conceptions related with the topic were described in :ref:`hello_world`.
-It'd be easier to understand the topic if you take a look at this document before.
+Some basic conceptions related to the tutorial were described in :ref:`hello_world`.
+It'd be easier to understand the following text if you take a look at this document before.
 
 You can download the source code of the tutorial from
 :download:`here <data_access_example.zip>`.
@@ -19,7 +19,7 @@ Node Model
 -----------
 
 Before to learn how to access to data we need to understand how information is stored
-in OPC UA Server. If you are familiar to OPC UA protocol, skip this
+in OPC UA Server. If you are familiar to OPC UA protocol, just skip this
 section.
 
 OPC UA application stores its data in :term:`Information Model` as a collection of
@@ -42,7 +42,7 @@ unique inside of the namespace and can belong to the following types:
 *NodeId* isn't only one identifier of :term:`Node`. Each :term:`Node` must have
 symbolic human-readable :term:`Attribute` *BrowseName* which is used to identifier
 the node by its path of *BrowseNames*. *BrowseName* shouldn't be unique for the
-whole server but its path must be. Like *NodeId* *BrowseName* belongs to some
+whole server but its path must be. Like *NodeId*, *BrowseName* belongs to some
 namespace. Usually namespaces of *NodeId* and *BrowseName* are the same, but
 the OPC UA Specfication does not demand it.
 
@@ -289,8 +289,8 @@ create an application):
   }
 
 This example application has only one :term:`Variable` of type *OpcUaByte* and
-registers for this :term:`Node` callbacks for read and write operation by using
-class *RegisterForwardNode*. This class can register loads other callbacks but for
+registers callbacks for read and write operation with this :term:`Node` by using
+class *RegisterForwardNode*. This class can register a lot of other callbacks but for
 our purpose we need only two: *ReadCallback* and *WriteCallback* ,
 
 Methods *readValue* and *writeValue* work with *sourceValue* of type *OpcUaDataValue*.
@@ -305,14 +305,14 @@ Usually the OPC UA Client doesn't read :term:`Attribute`\ s every time when it n
 new data. It subscribes to them by using *Subscription* model. The client creates
 a *Subscription* as a buffer where new data values are added when :term:`Attribute`\ s'
 states are changed. To specify which :term:`Attribute`\ s must be subscribed and
-how often the stack must check them for the new states (value, status or\\and timestamp)
-the client create *MonitoredItems* in *Subscription*. The *MonitoredItems* check
+how often the stack must check them for the new states (value, status or\\and timestamp),
+the client creates *MonitoredItems* in *Subscription*. The *MonitoredItems* check
 changes of the :term:`Attribute`\ s with specified rate and if the :term:`Attribute`\ s
 are changed they store the new value in the buffer of its *Subscription*. To
 get the values from the *Subscription* the client calls Service :term:`Publish`.
 
 *Subscription* model in OPC UA might seem to be complicated. Actually the model is even
-more complicated than we have described it above because there are a lot of settings,
+more complicated than we have described it, because there are a lot of settings,
 modes and filters that we have skipped. However it doesn't matter for our purpose, since
 it is communication level of the stack and a user application doesn't need to know
 about the subscription settings. But if you're interested in learning OPC UA protocol

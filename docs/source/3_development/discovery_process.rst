@@ -3,7 +3,7 @@
 Discovery Process
 ==================
 
-This document describes how you can make your OPC UA application visible for OPC
+This tutorial describes how you can make your OPC UA application visible for OPC
 UA clients on the network with  ASNeG OPC UA Stack.
 
 Overview
@@ -108,7 +108,7 @@ The local discovery server provides the list of the registered servers to the cl
 If an OPC UA Server needs to be discovered by the clients, it should register itself
 on the discovery server by using RegiserServer() or RegisterServer2() :term:`Service`\ s
 
-In order to connect to the registered server, the client calls FindRegister()
+In order to connect to the registered server, the client calls *FindRegister*
 :term:`Service` on the discovery server to get the list of the servers. So that
 the client needn't to know any :term:`DiscoveryUrl`\ s of servers excepting the
 discovery server.
@@ -145,7 +145,7 @@ discovery server.
                                                       Endpoint   Endpoint
 
 If you use ASNeG OPC UA Stack you don't need to code the behavior described above.
-You should just configure the local discovery server in configuration file **OpcUaServer.xml**:
+You should configure the local discovery server in configuration file **OpcUaServer.xml**:
 
 .. code-block:: xml
 

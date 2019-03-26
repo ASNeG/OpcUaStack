@@ -3,7 +3,7 @@
 Session and Access Control
 ==========================
 
-In this document we'll learn how to implement authentication and authorization
+In this tutorial we'll learn how to implement authentication and authorization
 functionality in your application with ASNeG OPC UA Stack.
 
 You can download the source code of the tutorial from
