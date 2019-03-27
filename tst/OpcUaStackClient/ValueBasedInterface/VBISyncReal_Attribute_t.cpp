@@ -72,6 +72,77 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Attribute_write)
 	BOOST_REQUIRE(client.syncDisconnect() == Success);
 }
 
+BOOST_AUTO_TEST_CASE(VBISyncReal_Attribute_historyRead_10)
+{
+	VBIClient client;
+
+	//
+	// init certificate and crypto manager
+	//
+	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+
+	// connect session
+	ConnectContext connectContext;
+	connectContext.endpointUrl_ = REAL_SERVER_URI;
+	connectContext.sessionName_ = REAL_SESSION_NAME;
+	connectContext.cryptoManager_ = cryptoManager;
+	connectContext.secureChannelLog_ = true;
+	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
+
+	client.defaultHistoryReadContext().maxNumResultValuesPerNode_ = 10;
+	client.defaultHistoryReadContext().maxNumResultValuesPerRequest_ = 5;
+
+	// history read
+	OpcUaDataValue::Vec dataValueVec;
+	auto statusCode = client.syncHistoryRead(
+		OpcUaNodeId("DoubleValue", 12),
+		boost::posix_time::microsec_clock::local_time(),
+		boost::posix_time::microsec_clock::local_time(),
+		dataValueVec
+	);
+	BOOST_REQUIRE(statusCode == Success);
+	BOOST_REQUIRE(dataValueVec.size() == 10);
+
+	// disconnect session
+	BOOST_REQUIRE(client.syncDisconnect() == Success);
+}
+
+BOOST_AUTO_TEST_CASE(VBISyncReal_Attribute_historyRead_8)
+{
+	VBIClient client;
+
+	//
+	// init certificate and crypto manager
+	//
+	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+
+	// connect session
+	ConnectContext connectContext;
+	connectContext.endpointUrl_ = REAL_SERVER_URI;
+	connectContext.sessionName_ = REAL_SESSION_NAME;
+	connectContext.cryptoManager_ = cryptoManager;
+	connectContext.secureChannelLog_ = true;
+	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
+
+	client.defaultHistoryReadContext().maxNumResultValuesPerNode_ = 8;
+	client.defaultHistoryReadContext().maxNumResultValuesPerRequest_ = 5;
+
+	// history read
+	OpcUaDataValue::Vec dataValueVec;
+	auto statusCode = client.syncHistoryRead(
+		OpcUaNodeId("DoubleValue", 12),
+		boost::posix_time::microsec_clock::local_time(),
+		boost::posix_time::microsec_clock::local_time(),
+		dataValueVec
+	);
+	BOOST_REQUIRE(statusCode == Success);
+	BOOST_REQUIRE(dataValueVec.size() == 8);
+
+	// disconnect session
+	BOOST_REQUIRE(client.syncDisconnect() == Success);
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
