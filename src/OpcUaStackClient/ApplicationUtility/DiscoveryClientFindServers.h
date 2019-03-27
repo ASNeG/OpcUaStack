@@ -23,7 +23,6 @@
 #include "OpcUaStackCore/StandardDataTypes/RegisteredServer.h"
 #include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
-#include "OpcUaStackClient/ApplicationUtility/DiscoveryClientFindServersIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -35,7 +34,6 @@ namespace OpcUaStackClient
 	> FindServerHandler;
 
 	class DLLEXPORT DiscoveryClientFindServers
-	: public DiscoveryClientFindServersIf
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryClientFindServers> SPtr;
