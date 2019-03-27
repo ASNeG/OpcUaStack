@@ -15,8 +15,14 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
+#include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBITransaction.h"
+#include "OpcUaStackClient/ValueBasedInterface/HistoryRead.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
@@ -36,6 +42,7 @@ namespace OpcUaStackClient
 
 	, defaultReadContext_()
 	, defaultWriteContext_()
+	, defaultHistoryReadContext_()
 	, defaultCreateSubscriptionContext_()
 	, defaultDeleteSubscriptionContext_()
 	, defaultCreateMonitoredItemContext_()
@@ -427,7 +434,94 @@ namespace OpcUaStackClient
 	VBIClient::attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
 	}
-	// FIXME: todo
+
+	HistoryReadContext&
+	VBIClient::defaultHistoryReadContext(void)
+	{
+		return defaultHistoryReadContext_;
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncHistoryRead(
+		const OpcUaNodeId& nodeId,
+		boost::posix_time::ptime startTime,
+		boost::posix_time::ptime endTime,
+		std::vector<OpcUaDataValue::SPtr>& dataValueVec
+	)
+	{
+		return syncHistoryRead(nodeId, startTime, endTime, defaultHistoryReadContext_, dataValueVec);
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncHistoryRead(
+		const OpcUaNodeId& nodeId,
+		boost::posix_time::ptime startTime,
+		boost::posix_time::ptime endTime,
+		HistoryReadContext& historyReadContext,
+		std::vector<OpcUaDataValue::SPtr>& dataValueVec
+	)
+	{
+		if (attributeService_.get() == nullptr) {
+			// create attribute service
+			AttributeServiceConfig attributeServiceConfig;
+			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
+			assert(attributeService_.get() != nullptr);
+		}
+
+		HistoryRead historyRead;
+		historyRead.attributeService(attributeService_);
+		historyRead.maxNumResultValuesPerRequest(historyReadContext.maxNumResultValuesPerRequest_);
+		historyRead.maxNumResultValuesPerNode(historyReadContext.maxNumResultValuesPerNode_);
+
+		return historyRead.syncHistoryRead(
+			nodeId,
+			startTime,
+			endTime,
+			dataValueVec
+		);
+	}
+
+	void
+	VBIClient::asyncHistoryRead(
+		const OpcUaNodeId& nodeId,
+		boost::posix_time::ptime startTime,
+		boost::posix_time::ptime endTime,
+		const VBITransactionHistoryRead::VBIResultHandler& resultHandler
+	)
+	{
+		return asyncHistoryRead(nodeId, startTime, endTime, resultHandler, defaultHistoryReadContext_);
+	}
+
+	void
+	VBIClient::asyncHistoryRead(
+		const OpcUaNodeId& nodeId,
+		boost::posix_time::ptime startTime,
+		boost::posix_time::ptime endTime,
+		const VBITransactionHistoryRead::VBIResultHandler& resultHandler,
+		HistoryReadContext& historyReadContext
+	)
+	{
+		if (attributeService_.get() == nullptr) {
+			// create attribute service
+			AttributeServiceConfig attributeServiceConfig;
+			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
+			assert(attributeService_.get() != nullptr);
+		}
+
+		auto historyRead = boost::make_shared<HistoryRead>();
+		historyRead->attributeService(attributeService_);
+		historyRead->maxNumResultValuesPerRequest(historyReadContext.maxNumResultValuesPerRequest_);
+		historyRead->maxNumResultValuesPerNode(historyReadContext.maxNumResultValuesPerNode_);
+
+		historyRead->asyncHistoryRead(
+			nodeId,
+			startTime,
+			endTime,
+			[this, resultHandler](OpcUaStatusCode statusCode, std::vector<OpcUaDataValue::SPtr>& dataValueVec) {
+				resultHandler(statusCode, dataValueVec);
+			}
+		);
+	}
 
 	// ------------------------------------------------------------------------
 	// history update

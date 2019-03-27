@@ -60,6 +60,21 @@ namespace OpcUaStackClient
 		VBIResultHandler VBIResultHandler_;
 	};
 
+	class DLLEXPORT VBITransactionHistoryRead
+	: public ServiceTransactionHistoryRead
+	{
+	  public:
+		typedef boost::shared_ptr<ServiceTransactionHistoryRead> SPtr;
+		typedef std::function<
+			void(OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValueVec)
+		> VBIResultHandler;
+
+		VBITransactionHistoryRead(void);
+		virtual ~VBITransactionHistoryRead(void);
+
+		VBIResultHandler VBIResultHandler_;
+	};
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//

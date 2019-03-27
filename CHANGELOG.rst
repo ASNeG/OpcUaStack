@@ -3,6 +3,7 @@ Release 4.1.0
 
 **Features**:
 
+* Added historical access vbi interface #155, by @huebl
 * Remove class Pool and PoolBase #118, @huebl
 * Use get endpoint request in opc ua client #112, by @huebl
 * Implemented client security #5, by @huebl

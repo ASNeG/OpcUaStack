@@ -70,7 +70,6 @@ namespace OpcUaStackClient
 		OpcUaInt32 attributeId_;
 	};
 
-
 	class DLLEXPORT WriteContext
 	{
 	  public:
@@ -81,6 +80,20 @@ namespace OpcUaStackClient
 		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
 		OpcUaInt32 attributeId_;
+	};
+
+	class DLLEXPORT HistoryReadContext
+	{
+	  public:
+		HistoryReadContext(void);
+		~HistoryReadContext(void);
+
+		void reset(void);
+		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
+
+		TimestampsToReturn timestampToReturn_;
+		uint32_t maxNumResultValuesPerNode_;
+		uint32_t maxNumResultValuesPerRequest_;
 	};
 
 	class DLLEXPORT CreateSubscriptionContext
