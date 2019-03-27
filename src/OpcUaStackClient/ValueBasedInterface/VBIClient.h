@@ -120,26 +120,26 @@ namespace OpcUaStackClient
 		// history read
 		HistoryReadContext& defaultHistoryReadContext(void);
 		OpcUaStatusCode syncHistoryRead(
-			OpcUaNodeId& nodeId,
+			const OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
 			std::vector<OpcUaDataValue::SPtr>& dataValueVec
 		);
 		OpcUaStatusCode syncHistoryRead(
-			OpcUaNodeId& nodeId,
+			const OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
 			HistoryReadContext& historyReadContext,
 			std::vector<OpcUaDataValue::SPtr>& dataValueVec
 		);
 		void asyncHistoryRead(
-			OpcUaNodeId& nodeId,
+			const OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
 			const VBITransactionHistoryRead::VBIResultHandler& resultHandler
 		);
 		void asyncHistoryRead(
-			OpcUaNodeId& nodeId,
+			const OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
 			const VBITransactionHistoryRead::VBIResultHandler& resultHandler,

@@ -443,7 +443,7 @@ namespace OpcUaStackClient
 
 	OpcUaStatusCode
 	VBIClient::syncHistoryRead(
-		OpcUaNodeId& nodeId,
+		const OpcUaNodeId& nodeId,
 		boost::posix_time::ptime startTime,
 		boost::posix_time::ptime endTime,
 		std::vector<OpcUaDataValue::SPtr>& dataValueVec
@@ -454,7 +454,7 @@ namespace OpcUaStackClient
 
 	OpcUaStatusCode
 	VBIClient::syncHistoryRead(
-		OpcUaNodeId& nodeId,
+		const OpcUaNodeId& nodeId,
 		boost::posix_time::ptime startTime,
 		boost::posix_time::ptime endTime,
 		HistoryReadContext& historyReadContext,
@@ -483,7 +483,7 @@ namespace OpcUaStackClient
 
 	void
 	VBIClient::asyncHistoryRead(
-		OpcUaNodeId& nodeId,
+		const OpcUaNodeId& nodeId,
 		boost::posix_time::ptime startTime,
 		boost::posix_time::ptime endTime,
 		const VBITransactionHistoryRead::VBIResultHandler& resultHandler
@@ -494,7 +494,7 @@ namespace OpcUaStackClient
 
 	void
 	VBIClient::asyncHistoryRead(
-		OpcUaNodeId& nodeId,
+		const OpcUaNodeId& nodeId,
 		boost::posix_time::ptime startTime,
 		boost::posix_time::ptime endTime,
 		const VBITransactionHistoryRead::VBIResultHandler& resultHandler,

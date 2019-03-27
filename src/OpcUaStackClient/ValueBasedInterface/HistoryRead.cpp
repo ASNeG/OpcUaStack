@@ -199,8 +199,8 @@ namespace OpcUaStackClient
 		if (readResult->statusCode() != Success) {
 			Log(Error, "historical read result error")
 				.parameter("NodeId", nodeId_)
-				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx->statusCode()));
-			resultHandler_(trx->statusCode(), dataValueVec_);
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readResult->statusCode()));
+			resultHandler_(readResult->statusCode(), dataValueVec_);
 			return;
 		}
 
