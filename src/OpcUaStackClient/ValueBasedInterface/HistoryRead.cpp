@@ -127,9 +127,11 @@ namespace OpcUaStackClient
 
 		// calculate limits
 		uint32_t limitValuesPerRequest = maxNumResultValuesPerRequest_;
-		if (maxNumResultValuesPerNode_ != 0) {
-			if (maxNumResultValuesPerNode_ > limitValuesPerRequest) {
-				limitValuesPerRequest = maxNumResultValuesPerNode_;
+		if (maxNumResultValuesPerRequest_ != 0 && maxNumResultValuesPerNode_ != 0) {
+			uint32_t rest = maxNumResultValuesPerNode_ - actNumResultValuesPerNode_;
+			if (rest < limitValuesPerRequest) {
+				limitValuesPerRequest = rest;
+				releaseContinuationPoints = true;
 			}
 		}
 
@@ -204,8 +206,14 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		// read data values
+		// check if server has no more data
 		auto historyData = readResult->historyData()->parameter<HistoryData>();
+		if (historyData->dataValues().size() == 0) {
+			resultHandler_(Success, dataValueVec_);
+			return;
+		}
+
+		// read data values
 		for (auto idx=0; idx<historyData->dataValues().size(); idx++) {
 			OpcUaDataValue::SPtr dataValue;
 			historyData->dataValues().get(idx, dataValue);
