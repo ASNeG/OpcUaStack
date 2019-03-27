@@ -35,7 +35,7 @@ namespace OpcUaStackClient
 	, findResults_()
 	, findStatusCode_(BadCommunicationError)
 	, shutdown_()
-	, shutdownCond_()
+	, shutdownProm_()
 	, sessionStateId_(SessionServiceStateId::Disconnected)
 	{
 	}
@@ -73,7 +73,7 @@ namespace OpcUaStackClient
 			if (sessionState == SessionServiceStateId::Disconnected) {
 
 				if (shutdown_) {
-					shutdownCond_.conditionValueDec();
+					shutdownProm_.set_value();
 					return;
 				}
 
@@ -117,7 +117,7 @@ namespace OpcUaStackClient
 		//
 
 		// start shutdown task and wait for shutdown signal
-	   	shutdownCond_.condition(1,0);
+		auto shutdownFuture = shutdownProm_.get_future();
 	    ioThread_->run(
 	    	[this](void) {
 	    		shutdown_ = true;
@@ -127,10 +127,10 @@ namespace OpcUaStackClient
 	    			return;
 	    		}
 
-	    		shutdownCond_.conditionValueDec();
+	    		shutdownProm_.set_value();
 	    	}
 	    );
-	    shutdownCond_.waitForCondition(3000);
+	    shutdownFuture.wait_for(std::chrono::milliseconds(3000));
 
     	// deregister io thread from service set manager
     	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");

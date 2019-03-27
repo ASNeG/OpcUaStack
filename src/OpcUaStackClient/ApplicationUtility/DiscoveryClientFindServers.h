@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackClient_DiscoveryClientFindServers_h__
 #define __OpcUaStackClient_DiscoveryClientFindServers_h__
 
+#include <future>
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/StandardDataTypes/RegisteredServer.h"
@@ -73,7 +74,7 @@ namespace OpcUaStackClient
 		OpcUaStatusCode findStatusCode_;
 
 		bool shutdown_;
-		Condition shutdownCond_;
+		std::promise<void> shutdownProm_;
 		SessionServiceStateId sessionStateId_;
 	};
 
