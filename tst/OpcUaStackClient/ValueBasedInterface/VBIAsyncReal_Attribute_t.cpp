@@ -1,7 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
-#include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
 using namespace OpcUaStackClient;
 
@@ -12,6 +11,7 @@ struct GValueFixture {
     : cond_()
 	, sessionState_(SessionServiceStateId::None)
 	, statusCode_(Success)
+	, dataValue_()
     {}
     ~GValueFixture(void)
     {}
@@ -19,6 +19,7 @@ struct GValueFixture {
     Condition cond_;
     SessionServiceStateId sessionState_;
     OpcUaStatusCode statusCode_;
+    OpcUaDataValue::Vec dataValue_;
 };
 
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_)
@@ -29,7 +30,6 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_)
 #ifdef REAL_SERVER
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_read, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	//
@@ -83,7 +83,6 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_read, GValueFixture)
 
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_write, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 
@@ -138,6 +137,123 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_write, GValueFixture)
 	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
+
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_historyRead_10, GValueFixture)
+{
+	VBIClient client;
+
+	//
+	// init certificate and crypto manager
+	//
+	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+
+	// set session change callback
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
+	);
+
+	// connect session
+	ConnectContext connectContext;
+	connectContext.endpointUrl_ = REAL_SERVER_URI;
+	connectContext.sessionName_ = REAL_SESSION_NAME;
+	connectContext.cryptoManager_ = cryptoManager;
+	connectContext.secureChannelLog_ = true;
+	cond_.initEvent();
+	client.asyncConnect(connectContext);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+
+	client.defaultHistoryReadContext().maxNumResultValuesPerNode_ = 10;
+	client.defaultHistoryReadContext().maxNumResultValuesPerRequest_ = 5;
+
+	// history read
+	cond_.initEvent();
+	client.asyncHistoryRead(
+		OpcUaNodeId("DoubleValue", 12),
+		boost::posix_time::microsec_clock::local_time(),
+		boost::posix_time::microsec_clock::local_time(),
+		[this](OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValue) {
+			statusCode_ = statusCode;
+			dataValue_ = dataValue;
+			cond_.sendEvent();
+		}
+	);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(dataValue_.size() == 10);
+
+	// disconnect session
+	cond_.initEvent();
+	client.asyncDisconnect();
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+}
+
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_historyRead_8, GValueFixture)
+{
+	VBIClient client;
+
+	//
+	// init certificate and crypto manager
+	//
+	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+
+	// set session change callback
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
+	);
+
+	// connect session
+	ConnectContext connectContext;
+	connectContext.endpointUrl_ = REAL_SERVER_URI;
+	connectContext.sessionName_ = REAL_SESSION_NAME;
+	connectContext.cryptoManager_ = cryptoManager;
+	connectContext.secureChannelLog_ = true;
+	cond_.initEvent();
+	client.asyncConnect(connectContext);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+
+	client.defaultHistoryReadContext().maxNumResultValuesPerNode_ = 8;
+	client.defaultHistoryReadContext().maxNumResultValuesPerRequest_ = 5;
+
+	// history read
+	cond_.initEvent();
+	client.asyncHistoryRead(
+		OpcUaNodeId("DoubleValue", 12),
+		boost::posix_time::microsec_clock::local_time(),
+		boost::posix_time::microsec_clock::local_time(),
+		[this](OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValue) {
+			statusCode_ = statusCode;
+			dataValue_ = dataValue;
+			cond_.sendEvent();
+		}
+	);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(dataValue_.size() == 8);
+
+	// disconnect session
+	cond_.initEvent();
+	client.asyncDisconnect();
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+}
+
 #endif
 
 BOOST_AUTO_TEST_SUITE_END()
