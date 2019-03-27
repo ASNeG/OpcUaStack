@@ -138,7 +138,7 @@ namespace OpcUaStackClient
 
 	void
 	DiscoveryClientFindServers::asyncFind(
-		const std::string serverUri,
+		const std::string& serverUri,
 		const FindServerHandler& resultHandler
 	)
 	{

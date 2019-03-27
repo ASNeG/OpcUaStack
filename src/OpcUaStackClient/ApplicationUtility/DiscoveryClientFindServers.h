@@ -49,7 +49,7 @@ namespace OpcUaStackClient
 		void shutdown(void);
 
 		void asyncFind(
-			const std::string serverUri,
+			const std::string& serverUri,
 			const FindServerHandler& resultHandler
 		);
 
