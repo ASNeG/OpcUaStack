@@ -30,6 +30,10 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	typedef std::function<
+		void (OpcUaStatusCode statusCode, ApplicationDescription::Vec& applicationDescriptionVec)
+	> FindServerHandler;
+
 	class DLLEXPORT DiscoveryClientFindServers
 	: public DiscoveryClientFindServersIf
 	{
@@ -45,20 +49,17 @@ namespace OpcUaStackClient
 		bool startup(void);
 		void shutdown(void);
 
-		//- DiscoveryClientFindServerIf ---------------------------------------
-		//
-		// asyncFind
-		//   server uri of the discovery server
-		//   findResultCallback(OpcUaStatusCode, ApplicationDescription::Vec&)
-		//
-		virtual void asyncFind(const std::string serverUri, Callback& findResultCallback);
-		//- DiscoveryClientFindServerIf ---------------------------------------
+		void asyncFind(
+			const std::string serverUri,
+			const FindServerHandler& resultHandler
+		);
 
 	  public:
-		void discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
+		void discoveryServiceFindServersResponse(
+			ServiceTransactionFindServers::SPtr& serviceTransactionFindServers
+		);
 
         void sendFindServersRequest(void);
-        void shutdownTask(void);
 
 		IOThread::SPtr ioThread_;
 		std::string discoveryUri_;
@@ -68,13 +69,14 @@ namespace OpcUaStackClient
 		DiscoveryService::SPtr discoveryService_;
 
 		std::string serverUri_;
-		Callback findResultCallback_;
+		FindServerHandler resultHandler_;
 
 		ApplicationDescription::Vec findResults_;
 		OpcUaStatusCode findStatusCode_;
 
 		bool shutdown_;
 		Condition shutdownCond_;
+		SessionServiceStateId sessionStateId_;
 	};
 
 }
