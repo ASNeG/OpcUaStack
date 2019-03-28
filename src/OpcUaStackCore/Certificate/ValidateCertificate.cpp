@@ -29,8 +29,31 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	ValidateCertificate::validateCertificate(void)
+	ValidateCertificate::validateCertificate(
+		OpcUaByteString& certificateChain
+	)
 	{
+		OpcUaStatusCode statusCode;
+
+		// verify certificate structure
+		statusCode = verifyCertificateStructure(certificateChain);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		// FIXME: todo
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	ValidateCertificate::verifyCertificateStructure(OpcUaByteString& certificateChain)
+	{
+
+		if (!CertificateChain_.fromByteString(certificateChain)) {
+			return BadCertificateInvalid;
+		}
+
 		return Success;
 	}
 

@@ -16,6 +16,8 @@
 #define __OpcUaStackCore_ValidateCertificate_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
+#include "OpcUaStackCore/Certificate/CertificateChain.h"
 
 using namespace OpcUaStackCore;
 
@@ -28,7 +30,14 @@ namespace OpcUaStackCore
 		ValidateCertificate(void);
 		~ValidateCertificate(void);
 
-		OpcUaStatusCode validateCertificate(void);
+		OpcUaStatusCode validateCertificate(
+			OpcUaByteString& certificateChain
+		);
+
+	  private:
+		OpcUaStatusCode verifyCertificateStructure(OpcUaByteString& certificateChain);
+
+		CertificateChain CertificateChain_;
 	};
 
 }
