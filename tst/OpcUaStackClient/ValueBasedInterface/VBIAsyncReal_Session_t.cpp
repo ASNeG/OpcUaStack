@@ -1,7 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
-#include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
 using namespace OpcUaStackClient;
 
@@ -28,7 +27,6 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Session_)
 
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Session_session_connect_disconnect, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	//
@@ -68,7 +66,6 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Session_session_connect_disconnect, GValueF
 
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Session_session_connect_disconnect_two_times, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	//

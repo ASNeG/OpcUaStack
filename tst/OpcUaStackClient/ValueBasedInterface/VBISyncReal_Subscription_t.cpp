@@ -1,7 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
-#include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
 using namespace OpcUaStackClient;
 
@@ -60,7 +59,6 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Subscription_create_delete)
 
 BOOST_FIXTURE_TEST_CASE(VBISyncReal_Subscription_create_delete_callback, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	OpcUaStatusCode statusCode;
 	VBIClient client;
 

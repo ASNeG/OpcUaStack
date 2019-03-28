@@ -1,7 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
-#include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
 using namespace OpcUaStackClient;
 
@@ -36,7 +35,6 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Subscription_)
 
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Subscription_create_delete, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 
@@ -104,7 +102,6 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Subscription_create_delete, GValueFixture)
 
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Subscription_create_delete_callback, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	//
@@ -158,7 +155,7 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Subscription_create_delete_callback, GValue
 	BOOST_REQUIRE(subscriptionState_ == SS_Open);
 	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
 	BOOST_REQUIRE(statusCode_ == Success);
-	uint32_t subscriptionId = vbiClientHandlerTest.subscriptionId_;
+	uint32_t subscriptionId = subscriptionId_;
 
 	// delete subscription
 	cond1_.initEvent();

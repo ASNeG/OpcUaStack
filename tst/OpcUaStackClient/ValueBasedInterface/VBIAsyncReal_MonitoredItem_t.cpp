@@ -2,7 +2,6 @@
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
-#include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
@@ -20,6 +19,7 @@ struct GValueFixture {
 	, subscriptionId_(0)
 	, clientHandle_(0)
 	, dataValue_()
+	, monitoredItemId_(0)
     {}
     ~GValueFixture(void)
     {}
@@ -31,6 +31,7 @@ struct GValueFixture {
     uint32_t subscriptionId_;
     OpcUaUInt32 clientHandle_;
     OpcUaDataValue dataValue_;
+    uint32_t monitoredItemId_;
 };
 
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_)
@@ -40,7 +41,6 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_)
 
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 
@@ -89,28 +89,37 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete, GValueFixture)
 	uint32_t clientHandle = 334455;
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaUInt32)2258);
-	vbiClientHandlerTest.createMonitoredItemComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateMonitoredItem(
 		nodeId,
 		subscriptionId,
 		clientHandle,
-		boost::bind(&VBIClientHandlerTest::createMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.createMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	uint32_t monitoredItemId = vbiClientHandlerTest.monitoredItemId_;
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	uint32_t monitoredItemId = monitoredItemId_;
 
 	// delete monitored item
-	vbiClientHandlerTest.deleteMonitoredItemComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteMonitoredItem(
 		subscriptionId,
 		monitoredItemId,
-		boost::bind(&VBIClientHandlerTest::deleteMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(monitoredItemId == vbiClientHandlerTest.monitoredItemId_);
-	BOOST_REQUIRE(subscriptionId == vbiClientHandlerTest.subscriptionId_);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(monitoredItemId == monitoredItemId_);
+	BOOST_REQUIRE(subscriptionId == subscriptionId_);
 
 	// delete subscription
 	cond_.initEvent();
@@ -135,7 +144,6 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete, GValueFixture)
 
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	//
@@ -193,16 +201,20 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback, GValu
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaUInt32)2258);
 	cond1_.initEvent();
-	vbiClientHandlerTest.createMonitoredItemComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateMonitoredItem(
 		nodeId,
 		subscriptionId,
 		clientHandle,
-		boost::bind(&VBIClientHandlerTest::createMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.createMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	uint32_t monitoredItemId = vbiClientHandlerTest.monitoredItemId_;
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	uint32_t monitoredItemId = monitoredItemId_;
 	BOOST_REQUIRE(cond1_.waitForEvent(1000) == true);
 
 #if 0
@@ -213,16 +225,21 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback, GValu
 #endif
 
 	// delete monitored item
-	vbiClientHandlerTest.deleteMonitoredItemComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteMonitoredItem(
 		subscriptionId,
 		monitoredItemId,
-		boost::bind(&VBIClientHandlerTest::deleteMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(monitoredItemId == vbiClientHandlerTest.monitoredItemId_);
-	BOOST_REQUIRE(subscriptionId == vbiClientHandlerTest.subscriptionId_);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(monitoredItemId == monitoredItemId_);
+	BOOST_REQUIRE(subscriptionId == subscriptionId_);
 
 	// delete subscription
 	cond_.initEvent();
@@ -247,7 +264,6 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback, GValu
 
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	//
@@ -305,16 +321,20 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change, GValueFixture)
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaUInt32)2258);
 	cond1_.initEvent();
-	vbiClientHandlerTest.createMonitoredItemComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateMonitoredItem(
 		nodeId,
 		subscriptionId,
 		clientHandle,
-		boost::bind(&VBIClientHandlerTest::createMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.createMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	uint32_t monitoredItemId = vbiClientHandlerTest.monitoredItemId_;
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	uint32_t monitoredItemId = monitoredItemId_;
 	BOOST_REQUIRE(cond1_.waitForEvent(1000) == true);
 
 	for (uint32_t idx=0; idx<2; idx++) {
@@ -323,16 +343,21 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change, GValueFixture)
 	}
 
 	// delete monitored item
-	vbiClientHandlerTest.deleteMonitoredItemComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteMonitoredItem(
 		subscriptionId,
 		monitoredItemId,
-		boost::bind(&VBIClientHandlerTest::deleteMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(monitoredItemId == vbiClientHandlerTest.monitoredItemId_);
-	BOOST_REQUIRE(subscriptionId == vbiClientHandlerTest.subscriptionId_);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(monitoredItemId == monitoredItemId_);
+	BOOST_REQUIRE(subscriptionId == subscriptionId_);
 
 	// delete subscription
 	cond_.initEvent();

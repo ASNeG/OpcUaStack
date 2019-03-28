@@ -2,7 +2,6 @@
 #include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
-#include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
@@ -31,8 +30,6 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_)
 #ifdef REAL_SERVER
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read, GValueFixture)
 {
-
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	// set session change callback
@@ -78,7 +75,6 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read, GValueFixtur
 	);
 	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
 	BOOST_REQUIRE(statusCode_ == Success);
-	vbiClientHandlerTest.dataValue_.out(std::cout);
 
 	// disconnect session
 	cond_.initEvent();
@@ -89,7 +85,6 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_read, GValueFixtur
 
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_SignAndEncrypt_write, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	// set session change callback
