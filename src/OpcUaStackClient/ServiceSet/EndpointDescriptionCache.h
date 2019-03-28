@@ -18,17 +18,35 @@
 #ifndef __OpcUaStackClient_EndpointDescriptionCache_h__
 #define __OpcUaStackClient_EndpointDescriptionCache_h__
 
+#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
+
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT EndpointDescriptionCache
 	{
 	  public:
+		typedef std::map<std::string, EndpointDescriptionArray::SPtr> EndpointDescriptionMap;
 
 		EndpointDescriptionCache(void);
 		~EndpointDescriptionCache(void);
 
+		void clear(void);
+		void insertEndpointDescription(
+			const std::string& endpointUrl,
+			EndpointDescriptionArray::SPtr& endpointDescriptionArray
+		);
+		void deleteEndpointDescription(
+			const std::string& endpointUrl
+		);
+		EndpointDescriptionArray::SPtr getEndpointDescription(
+			const std::string& endpointUrl
+		);
+
 	  private:
+		EndpointDescriptionMap endpointDescriptionMap_;
 	};
 
 }

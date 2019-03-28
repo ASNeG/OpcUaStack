@@ -24,11 +24,56 @@ namespace OpcUaStackClient
 {
 
 	EndpointDescriptionCache::EndpointDescriptionCache(void)
+	: endpointDescriptionMap_()
 	{
 	}
 
 	EndpointDescriptionCache::~EndpointDescriptionCache(void)
 	{
+	}
+
+	void
+	EndpointDescriptionCache::clear(void)
+	{
+		endpointDescriptionMap_.clear();
+	}
+
+	void
+	EndpointDescriptionCache::insertEndpointDescription(
+		const std::string& endpointUrl,
+		EndpointDescriptionArray::SPtr& endpointDescriptionArray
+	)
+	{
+		// if an entry already exists then delete it
+		deleteEndpointDescription(endpointUrl);
+
+		// insert new entry
+		endpointDescriptionMap_.insert(std::make_pair(endpointUrl, endpointDescriptionArray));
+	}
+
+	void
+	EndpointDescriptionCache::deleteEndpointDescription(
+		const std::string& endpointUrl
+	)
+	{
+		auto it = endpointDescriptionMap_.find(endpointUrl);
+		if (it != endpointDescriptionMap_.end()) {
+			endpointDescriptionMap_.erase(it);
+		}
+	}
+
+	EndpointDescriptionArray::SPtr
+	EndpointDescriptionCache::getEndpointDescription(
+		const std::string& endpointUrl
+	)
+	{
+		auto it = endpointDescriptionMap_.find(endpointUrl);
+		if (it != endpointDescriptionMap_.end()) {
+			return it->second;
+		}
+
+		EndpointDescriptionArray::SPtr endpointDescriptionArray;
+		return endpointDescriptionArray;
 	}
 
 }
