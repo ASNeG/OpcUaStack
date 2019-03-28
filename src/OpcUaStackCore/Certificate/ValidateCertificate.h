@@ -36,6 +36,16 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaStatusCode verifyCertificateStructure(OpcUaByteString& certificateChain);
+		OpcUaStatusCode buildCertificateChain(void);
+		OpcUaStatusCode validateSignature(void);
+		OpcUaStatusCode securityPolicyCheck(void);
+		OpcUaStatusCode trustListCheck(void);
+		OpcUaStatusCode validityPeriod(void);
+		OpcUaStatusCode hostName(void);
+		OpcUaStatusCode URI(void);
+		OpcUaStatusCode certificateUsage(void);
+		OpcUaStatusCode findRevocationList(void);
+		OpcUaStatusCode revocationCheck(void);
 
 		CertificateChain CertificateChain_;
 	};
