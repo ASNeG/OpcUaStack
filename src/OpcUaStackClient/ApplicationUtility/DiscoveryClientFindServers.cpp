@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientFindServers.h"
 
@@ -30,11 +31,12 @@ namespace OpcUaStackClient
 	, sessionService_()
 	, discoveryService_()
 	, serverUri_("")
-	, findResultCallback_()
+	, resultHandler_()
 	, findResults_()
 	, findStatusCode_(BadCommunicationError)
 	, shutdown_()
-	, shutdownCond_()
+	, shutdownProm_()
+	, sessionStateId_(SessionServiceStateId::Disconnected)
 	{
 	}
 
@@ -54,22 +56,34 @@ namespace OpcUaStackClient
     	discoveryUri_ = discoveryUri;
     }
 
-
 	bool 
 	DiscoveryClientFindServers::startup(void)
 	{
 		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState != SessionServiceStateId::Established) {
 
-				if (shutdown_) {
-					shutdownCond_.conditionValueDec();
-					return;
-				}
+			sessionStateId_ = sessionState;
 
-				findResultCallback_(findStatusCode_, findResults_);
+			// ignore some states
+			if (sessionState != SessionServiceStateId::Established &&
+				sessionState != SessionServiceStateId::Disconnected) {
 				return;
 			}
 
+			// the connection could not be opened
+			if (sessionState == SessionServiceStateId::Disconnected) {
+
+				if (shutdown_) {
+					shutdownProm_.set_value();
+					return;
+				}
+
+				if (resultHandler_) {
+					resultHandler_(findStatusCode_, findResults_);
+				}
+				return;
+			}
+
+			// the connection has been opened
 			sendFindServersRequest();
 		};
 
@@ -103,51 +117,48 @@ namespace OpcUaStackClient
 		//
 
 		// start shutdown task and wait for shutdown signal
-	   	shutdownCond_.condition(1,0);
+		auto shutdownFuture = shutdownProm_.get_future();
 	    ioThread_->run(
-	    	boost::bind(&DiscoveryClientFindServers::shutdownTask, this)
+	    	[this](void) {
+	    		shutdown_ = true;
+
+	    		if (sessionStateId_ != SessionServiceStateId::Disconnected) {
+	    			sessionService_->asyncDisconnect();
+	    			return;
+	    		}
+
+	    		shutdownProm_.set_value();
+	    	}
 	    );
-	    shutdownCond_.waitForCondition(3000);
+	    shutdownFuture.wait_for(std::chrono::milliseconds(3000));
 
     	// deregister io thread from service set manager
     	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
 	}
 
 	void
-	DiscoveryClientFindServers::shutdownTask(void)
-	{
-		shutdown_ = true;
-
-		// FIXME: todo
-		//if (sessionService_->secureChannelState() != SessionService::SCS_Disconnected) {
-			sessionService_->asyncDisconnect();
-			return;
-		//}
-
-		shutdownCond_.conditionValueDec();
-	}
-
-	void
-	DiscoveryClientFindServers::asyncFind(const std::string serverUri, Callback& findResultCallback)
+	DiscoveryClientFindServers::asyncFind(
+		const std::string& serverUri,
+		const FindServerHandler& resultHandler
+	)
 	{
 		findResults_.clear();
 		findStatusCode_ = BadCommunicationError;
 
 		serverUri_ = serverUri;
-		findResultCallback_ = findResultCallback;
+		resultHandler_ = resultHandler;
 		sessionService_->asyncConnect();
 	}
 
 	void
 	DiscoveryClientFindServers::sendFindServersRequest(void)
 	{
-		ServiceTransactionFindServers::SPtr trx;
-		trx = constructSPtr<ServiceTransactionFindServers>();
-		FindServersRequest::SPtr req = trx->request();
+		auto trx = constructSPtr<ServiceTransactionFindServers>();
+		auto req = trx->request();
 
-		OpcUaStringArray::SPtr serverUris = constructSPtr<OpcUaStringArray>();
+		auto serverUris = boost::make_shared<OpcUaStringArray>();
 		serverUris->resize(1);
-		OpcUaString::SPtr serverUri = constructSPtr<OpcUaString>();
+		auto serverUri = boost::make_shared<OpcUaString>();
 		serverUri->value(serverUri_);
 		serverUris->push_back(serverUri);
 		req->serverUris(serverUris);
@@ -162,7 +173,7 @@ namespace OpcUaStackClient
 
     void
     DiscoveryClientFindServers::discoveryServiceFindServersResponse(
-    	ServiceTransactionFindServers::SPtr serviceTransactionFindServers
+    	ServiceTransactionFindServers::SPtr& serviceTransactionFindServers
 	)
     {
 		if (serviceTransactionFindServers->statusCode() != Success) {
@@ -171,7 +182,7 @@ namespace OpcUaStackClient
 		}
 
 		else {
-			FindServersResponse::SPtr res = serviceTransactionFindServers->response();
+			auto res = serviceTransactionFindServers->response();
 
 			findStatusCode_ = Success;
 			findResults_.clear();

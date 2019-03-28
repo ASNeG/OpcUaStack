@@ -2,7 +2,6 @@
 #include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
-#include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
@@ -31,8 +30,6 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest_)
 #ifdef REAL_SERVER
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest, GValueFixture)
 {
-
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	// set session change callback
@@ -88,7 +85,6 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest, GValueFixture
 
 BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest_write, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	// set session change callback
