@@ -14,7 +14,7 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientRegisteredServers.h"
 
@@ -72,6 +72,10 @@ namespace OpcUaStackClient
 	DiscoveryClientRegisteredServers::startup(void)
 	{
 		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState != SessionServiceStateId::Established && sessionState == SessionServiceStateId::Disconnected) {
+				return;
+			}
+
 			if (sessionState == SessionServiceStateId::Established) {
 				sendDiscoveryServiceRegisterServer();
 				return;
@@ -102,7 +106,7 @@ namespace OpcUaStackClient
 		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
 
 	  	// start timer to check server entries
-	  	slotTimerElement_ = constructSPtr<SlotTimerElement>();
+	  	slotTimerElement_ = boost::make_shared<SlotTimerElement>();
 	  	slotTimerElement_->callback().reset(boost::bind(&DiscoveryClientRegisteredServers::loop, this));
 	  	slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), registerInterval_);
 	  	ioThread_->slotTimer()->start(slotTimerElement_);
@@ -143,8 +147,7 @@ namespace OpcUaStackClient
 		boost::mutex::scoped_lock g(mutex_);
 
 		// check existing registered server entry
-		RegisteredServerMap::iterator it;
-		it = registeredServerMap_.find(name);
+		auto it = registeredServerMap_.find(name);
 		if (it != registeredServerMap_.end()) {
 			// remove existing registered server entry
 			registeredServerMap_.erase(it);
@@ -160,14 +163,13 @@ namespace OpcUaStackClient
 		boost::mutex::scoped_lock g(mutex_);
 
 		// check existing registered server entry
-		RegisteredServerMap::iterator it;
-		it = registeredServerMap_.find(name);
+		auto it = registeredServerMap_.find(name);
 		if (it == registeredServerMap_.end()) {
 			return;
 		}
 
 		// set online flag off
-		RegisteredServer::SPtr registeredServer = it->second;
+		auto registeredServer = it->second;
 		registeredServer->isOnline() = false;
 	}
 
@@ -195,12 +197,10 @@ namespace OpcUaStackClient
 			sessionService_->asyncDisconnect();
 		}
 
-		RegisteredServerMap::iterator it;
-		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
+		for (auto it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
 
-			ServiceTransactionRegisterServer::SPtr trx;
-			trx = constructSPtr<ServiceTransactionRegisterServer>();
-			RegisterServerRequest::SPtr req = trx->request();
+			auto trx = constructSPtr<ServiceTransactionRegisterServer>();
+			auto req = trx->request();
 
 			it->second->copyTo(req->server());
 
@@ -216,7 +216,7 @@ namespace OpcUaStackClient
 
 	void
 	DiscoveryClientRegisteredServers::discoveryServiceRegisterServerResponse(
-		ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer
+		ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer
 	)
 	{
 		if (serviceTransactionRegisterServer->statusCode() != Success) {
@@ -233,8 +233,7 @@ namespace OpcUaStackClient
 	{
 		// all server entries must be deregister from dicovery server. We must
 		// disable the isOnline flag
-		RegisteredServerMap::iterator it;
-		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
+		for (auto it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
 			RegisteredServer::SPtr rs = it->second;
 			rs->isOnline() = false;
 		}

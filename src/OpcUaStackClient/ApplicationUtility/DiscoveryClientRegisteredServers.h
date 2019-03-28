@@ -47,11 +47,18 @@ namespace OpcUaStackClient
 		bool startup(void);
 		void shutdown(void);
 
-		void addRegisteredServer(const std::string& name, RegisteredServer::SPtr& registeredServer);
-		void removeRegisteredServer(const std::string& name);
+		void addRegisteredServer(
+			const std::string& name,
+			RegisteredServer::SPtr& registeredServer
+		);
+		void removeRegisteredServer(
+			const std::string& name
+		);
 
 	  public:
-		void discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
+		void discoveryServiceRegisterServerResponse(
+			ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer
+		);
 
         void sendDiscoveryServiceRegisterServer(void);
         void deregisterServers(void);
