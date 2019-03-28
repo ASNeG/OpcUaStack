@@ -21,8 +21,8 @@ namespace OpcUaStackClient
 {
 
 	enum class SessionMode {
-		SecureChannel,
-		SecureChannelAndSession
+		SecureChannel,				//! only a secure channel will be opened.
+		SecureChannelAndSession		//! a secure channel an a session will be opened.
 	};
 
 }

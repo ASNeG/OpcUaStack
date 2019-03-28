@@ -273,15 +273,18 @@ namespace OpcUaStackClient
 	void
 	SessionServiceContext::setGetEndpointMode(void)
 	{
-		secureChannelClientConfigBackup_ = secureChannelClientConfig_;
-
+		// check if the endpoint mode is already active
 		if (getEndpointMode_) {
 			return;
 		}
+
+		// we need the discovery url to send the get endpoint request to
+		// the opc ua server.
 		if (secureChannelClientConfig_->discoveryUrl().empty()) {
 			return;
 		}
 
+		secureChannelClientConfigBackup_ = secureChannelClientConfig_;
 		Log(Debug, "session endpoint mode on")
 			.parameter("SessId", id_);
 
