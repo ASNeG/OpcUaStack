@@ -85,8 +85,10 @@ namespace OpcUaStackClient
 		Log(Debug, "session service handle connect")
 			.parameter("SessId", ctx_->id_);
 
-		// check if the session is in the get endpoint mode.
+		// check if the session is in the get endpoint mode. In this mode no session
+		// needs to be open.
 		if (ctx_->isGetEndpointMode()) {
+
 			// send get endpoint request
 			ctx_->sendGetEndpointsRequest(secureChannel);
 			return SessionServiceStateId::GetEndpoint;
