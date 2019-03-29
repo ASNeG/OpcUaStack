@@ -691,6 +691,22 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	Certificate::isIssuerFrom(Certificate&  certificate)
+	{
+		Identity issuer1, issuer2;
+
+		// get issuer from certificates
+		if (!certificate.getIssuer(issuer1)) {
+			return false;
+		}
+		if (!getIssuer(issuer2)) {
+			return false;
+		}
+
+		return issuer1 != issuer2;
+	}
+
+	bool
 	Certificate::isSelfSigned(void) const
 	{
 	    if (X509_check_issued(cert_, cert_) != 0) {

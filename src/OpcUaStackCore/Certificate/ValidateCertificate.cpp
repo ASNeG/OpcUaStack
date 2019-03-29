@@ -131,7 +131,20 @@ namespace OpcUaStackCore
 		// the error Bad_SecurityChecksFailed shall be reported back to the Client.
 		//
 
-		// FIXME_ todo - BadCertificateChainIncomplete
+		// check certificate chain received from opc ua partner
+		Certificate::SPtr lastCertificate;
+		for (auto certificate : CertificateChain_.certificateVec()) {
+			if (lastCertificate.get() != nullptr) {
+				if (certificate->isIssuerFrom(*lastCertificate.get())) {
+					Log(Error, "received certificate chain incomplete - issuer invalid");
+					return BadCertificateChainIncomplete;
+				}
+			}
+
+			lastCertificate = certificate;
+		}
+
+		// FIXME: todo
 
 		return Success;
 	}

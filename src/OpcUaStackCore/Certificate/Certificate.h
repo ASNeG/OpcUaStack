@@ -82,6 +82,8 @@ namespace OpcUaStackCore
 		bool fromDERBuf(char* buf, uint32_t bufLen);
 		bool fromDERBuf(MemoryBuffer& derBuf);
 
+		bool isIssuerFrom(Certificate&  certificate);
+
 		uint32_t getDERBufSize(void);
 		PublicKey publicKey(void);
 
