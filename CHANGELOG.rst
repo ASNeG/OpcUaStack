@@ -9,11 +9,12 @@ Release 3.7.0
 
 **Bugs**:
 
-* fix user changing during activated session #105, by @huebl
 * fix changing user in the same OPC UA session #105, by @huebl
 * allow relative install path #130, by @huebl
-* delete discovery client connection on error #126, by @huebl
+* fix socket leak in discovery client #126, by @huebl
 * fix calling stop monitored item callback #132, by @flipback
+* fix crash  server during restart #109, by @huebl
+* fix processing of create\delete node requests #158, by @huebl
 
 **Documentation**:
 
