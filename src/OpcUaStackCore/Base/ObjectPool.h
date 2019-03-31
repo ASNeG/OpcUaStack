@@ -131,6 +131,11 @@ namespace OpcUaStackCore
 		return typename OBJ::SPtr(new OBJ(p1, p2, p3, p4, p5));
 	  }
 
+	template<typename OBJ, typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
+	  typename OBJ::SPtr constructSPtr(const P1& p1, const P2& p2, const P3& p3, const P4& p4, const P5& p5, const P6& p6) {
+		return typename OBJ::SPtr(new OBJ(p1, p2, p3, p4, p5, p6));
+	  }
+
 }
 
 #endif

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
@@ -211,7 +211,7 @@ namespace OpcUaStackServer
 	{
 	}
 
-	InformationModelManager::InformationModelManager(InformationModel::SPtr informationModel)
+	InformationModelManager::InformationModelManager(InformationModel::SPtr& informationModel)
 	{
 		informationModel_ = informationModel;
 	}
@@ -221,7 +221,7 @@ namespace OpcUaStackServer
 	}
 
 	void
-	InformationModelManager::informationModel(InformationModel::SPtr informationModel)
+	InformationModelManager::informationModel(InformationModel::SPtr& informationModel)
 	{
 		informationModel_ = informationModel;
 	}
@@ -928,15 +928,14 @@ namespace OpcUaStackServer
 		}
 
 		// remove all references from node class
-		ReferenceItemMultiMap::iterator it;
-		for (
-			it = nodeClass->referenceItemMap().referenceItemMultiMap().begin();
-			it != nodeClass->referenceItemMap().referenceItemMultiMap().end();
-			it++
+		for (auto it = nodeClass->referenceItemMap().begin();
+			it != nodeClass->referenceItemMap().end();
+			++it
 		) {
-			OpcUaNodeId referenceTypeId = it->first;
-			ReferenceItem::SPtr referenceItem = it->second;
+
+			ReferenceItem::SPtr referenceItem = *it;
 			OpcUaNodeId targetNodeId = referenceItem->nodeId_;
+			OpcUaNodeId referenceTypeId = referenceItem->typeId_;
 
 			delReference(targetNodeId, referenceTypeId, nodeId);
 		}
@@ -1101,7 +1100,7 @@ namespace OpcUaStackServer
 		// clone node class
 		//
 		BaseNodeClass::SPtr objectNodeClass = cloneBaseNodeClass->clone();
-		objectNodeClass->referenceItemMap().referenceItemMultiMap().clear();
+		objectNodeClass->referenceItemMap().clear();
 
 		//
 		// get parent node id
@@ -1193,7 +1192,7 @@ namespace OpcUaStackServer
 		// clone node class
 		//
 		BaseNodeClass::SPtr variableNodeClass = cloneBaseNodeClass->clone();
-		variableNodeClass->referenceItemMap().referenceItemMultiMap().clear();
+		variableNodeClass->referenceItemMap().clear();
 
 		//
 		// get parent node id
@@ -1284,7 +1283,7 @@ namespace OpcUaStackServer
 		// clone node class
 		//
 		BaseNodeClass::SPtr methodNodeClass = cloneBaseNodeClass->clone();
-		methodNodeClass->referenceItemMap().referenceItemMultiMap().clear();
+		methodNodeClass->referenceItemMap().clear();
 
 		//
 		// get parent node id

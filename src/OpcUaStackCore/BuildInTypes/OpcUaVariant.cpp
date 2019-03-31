@@ -1833,6 +1833,226 @@ namespace OpcUaStackCore
 	{
 		clear();
 	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaBoolean value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaByte value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaSByte value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaUInt16 value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaInt16 value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaUInt32 value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaInt32 value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaUInt64 value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaInt64 value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaFloat value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaDouble value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaString& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaDateTime& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaGuid& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaByteString& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaXmlElement& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaNodeId& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaExpandedNodeId& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaStatusCode& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaQualifiedName& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaLocalizedText& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
+
+	OpcUaVariant::OpcUaVariant(const OpcUaExtensionObject& value)
+	:  Object()
+	, variantValueVec_()
+	, arrayLength_(-1)
+	, arrayDimensionsVec_()
+	{
+		clear();
+		setValue(value);
+	}
 		
 	OpcUaVariant::~OpcUaVariant(void)
 	{

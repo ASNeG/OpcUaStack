@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -532,12 +532,12 @@ namespace OpcUaStackServer
 			browseName->pathNames()->get(idx, pathElement);
 
 			ReferenceItemMap& referenceItemMap = baseNodeClass->referenceItemMap();
-			ReferenceItemMultiMap::iterator it;
+
 
 			bool found = false;
-			for (it = referenceItemMap.referenceItemMultiMap().begin(); it != referenceItemMap.referenceItemMultiMap().end(); it++) {
-				OpcUaNodeId referenceTypeNodeId = it->first;
-				ReferenceItem::SPtr referenceItem = it->second;
+			for (auto it = referenceItemMap.begin(); it != referenceItemMap.end(); ++it) {
+				ReferenceItem::SPtr referenceItem = *it;
+				OpcUaNodeId referenceTypeNodeId = referenceItem->typeId_;
 
 				BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
 				if (baseNodeClassTarget.get() == nullptr) {

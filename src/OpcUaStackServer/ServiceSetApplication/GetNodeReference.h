@@ -37,6 +37,7 @@ namespace OpcUaStackServer
 		GetNodeReference(void);
 		GetNodeReference(const OpcUaNodeId& node);
 		GetNodeReference(const std::vector<OpcUaNodeId>& nodes);
+		GetNodeReference(std::initializer_list<OpcUaNodeId> nodes);
 		virtual ~GetNodeReference(void);
 
 		void addNode(const OpcUaNodeId& node);
@@ -45,7 +46,7 @@ namespace OpcUaStackServer
 		void nodes(const std::vector<OpcUaNodeId>& nodes);
 		std::vector<OpcUaNodeId>& nodes(void);
 
-		bool query(ApplicationServiceIf* applicationServiceIf);
+		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
 		OpcUaStatusCode resultCode(void);
 
 		std::vector<OpcUaStatusCode>& statuses(void);

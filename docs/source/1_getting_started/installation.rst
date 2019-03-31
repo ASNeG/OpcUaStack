@@ -1,11 +1,9 @@
+.. _installation:
+
 Installation
 ===========================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Installation:
 OpcUaStack provides different ways of installing.
-
 
 Source Code
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

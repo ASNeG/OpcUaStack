@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -355,7 +355,14 @@ namespace OpcUaStackServer
 			Log(Debug, "decrypt password server nonce error");
 				return BadIdentityTokenRejected;;
 		}
-		token->password((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
+
+		size_t passwordLen = plainTextLen-36;
+		if (passwordLen < 0) {
+			Log(Debug, "decrypted password length < 0");
+			return BadIdentityTokenRejected;;
+		}
+
+		token->password((const OpcUaByte*)&plainTextBuf[4], passwordLen);
 
 		// create application context
 		ApplicationAuthenticationContext context;
@@ -707,7 +714,7 @@ namespace OpcUaStackServer
 		ActivateSessionRequest activateSessionRequest;
 		activateSessionRequest.opcUaBinaryDecode(ios);
 
-		if (sessionState_ != SessionState_CreateSessionResponse) {
+		if (sessionState_ != SessionState_CreateSessionResponse && sessionState_ != SessionState_Ready) {
 			Log(Error, "receive activate session request in invalid state")
 				.parameter("SessionState", sessionState_);
 			activateSessionRequestError(requestHeader, secureChannelTransaction, BadIdentityTokenInvalid);

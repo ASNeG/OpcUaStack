@@ -16,3 +16,5 @@ build_*
 .vs
 *.json
 pki
+test.xml
+tst/data/opc.ua.roby_save.xml

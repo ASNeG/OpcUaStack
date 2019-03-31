@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,6 +34,37 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<BrowseName> SPtr;
 
 		BrowseName(void);
+		BrowseName(const BrowseName& browseName);
+		BrowseName(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement
+		);
+		BrowseName(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2
+		);
+		BrowseName(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3
+		);
+		BrowseName(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3,
+			const OpcUaQualifiedName& pathElement4
+		);
+		BrowseName(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3,
+			const OpcUaQualifiedName& pathElement4,
+			const OpcUaQualifiedName& pathElement5
+		);
 		~BrowseName(void);
 
 		void nodeId(OpcUaNodeId& nodeId);
