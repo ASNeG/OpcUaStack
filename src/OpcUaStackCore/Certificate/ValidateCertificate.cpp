@@ -38,66 +38,77 @@ namespace OpcUaStackCore
 		// verify certificate structure
 		statusCode = verifyCertificateStructure(certificateChain);
 		if (statusCode != Success) {
+			Log(Error, "verify certificate structure error");
 			return statusCode;
 		}
 
 		// build certificate chain
 		statusCode = buildCertificateChain();
 		if (statusCode != Success) {
+			Log(Error, "build certificate chain error");
 			return statusCode;
 		}
 
 		// validate signature
 		statusCode = validateSignature();
 		if (statusCode != Success) {
+			Log(Error, "validate signature error");
 			return statusCode;
 		}
 
 		// security policy check
 		statusCode = securityPolicyCheck();
 		if (statusCode != Success) {
+			Log(Error, "security policy check error");
 			return statusCode;
 		}
 
 		// trust list check
 		statusCode = trustListCheck();
 		if (statusCode != Success) {
+			Log(Error, "trust list check error");
 			return statusCode;
 		}
 
 		// Validity Period
 		statusCode = validityPeriod();
 		if (statusCode != Success) {
+			Log(Error, "validity period error");
 			return statusCode;
 		}
 
 		// Host Name
 		statusCode = hostName();
 		if (statusCode != Success) {
+			Log(Error, "host name error");
 			return statusCode;
 		}
 
 		// URI
 		statusCode = URI();
 		if (statusCode != Success) {
+			Log(Error, "uri error");
 			return statusCode;
 		}
 
 		// Certificate Usage
 		statusCode = certificateUsage();
 		if (statusCode != Success) {
+			Log(Error, "certificate usage error");
 			return statusCode;
 		}
 
 		// Find RevocationList
 		statusCode = findRevocationList();
 		if (statusCode != Success) {
+			Log(Error, "find revocation list error");
 			return statusCode;
 		}
 
 		// Revocation Check
 		statusCode = revocationCheck();
 		if (statusCode != Success) {
+			Log(Error, "revocation check error");
 			return statusCode;
 		}
 
