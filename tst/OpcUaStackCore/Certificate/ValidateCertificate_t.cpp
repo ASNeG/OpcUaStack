@@ -1,11 +1,12 @@
 #include "unittest.h"
+#include <boost/make_shared.hpp>
 #include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 #include "OpcUaStackCore/Certificate/CertificateManager.h"
 
 using namespace OpcUaStackCore;
 
-BOOST_AUTO_TEST_SUITE(ValidateCertificate_)
+//BOOST_AUTO_TEST_SUITE(ValidateCertificate_)
 
 
 /*
@@ -24,23 +25,38 @@ BOOST_AUTO_TEST_SUITE(ValidateCertificate_)
  * 		Signed with DEP
  */
 
+//BOOST_AUTO_TEST_SUITE(ValidateCertificate_)
 
 struct GCertificateFixture {
 	GCertificateFixture(void)
-	: certificateManager_()
+	: certificateManager_(boost::make_shared<CertificateManager>())
 
 	, keySelfSigned_(2048)
 	, keyCA_(2048)
 	, keyDEP_(2048)
 	, keySRV_(2048)
 
-	, certificateSelfSigned_()
-	, certificateCA_()
-	, certificateDEP_()
-	, certificateSRV_()
-    {}
+	, certificateSelfSigned_(boost::make_shared<Certificate>())
+	, certificateCA_(boost::make_shared<Certificate>())
+	, certificateDEP_(boost::make_shared<Certificate>())
+	, certificateSRV_(boost::make_shared<Certificate>())
+    {
+		std::cout << "ctor GCertificateFixture" << std::endl;
+    }
+
     ~GCertificateFixture(void)
-    {}
+    {
+    	std::cout << "dtor GCertificateFixture" << std::endl;
+    }
+
+    static GCertificateFixture* instance_;
+    static GCertificateFixture* instance(void)
+    {
+    	if (instance_ == nullptr) {
+    		instance_ = new GCertificateFixture();
+    	}
+    	return instance_;
+    }
 
     CertificateManager::SPtr certificateManager_;
 
@@ -49,34 +65,40 @@ struct GCertificateFixture {
     RSAKey keyDEP_;
     RSAKey keySRV_;
 
-    Certificate certificateSelfSigned_;
-    Certificate certificateCA_;
-    Certificate certificateDEP_;
-    Certificate certificateSRV_;
+    Certificate::SPtr certificateSelfSigned_;
+    Certificate::SPtr certificateCA_;
+    Certificate::SPtr certificateDEP_;
+    Certificate::SPtr certificateSRV_;
 };
+
+GCertificateFixture* GCertificateFixture::instance_ = nullptr;
+
+BOOST_AUTO_TEST_SUITE(ValidateCertificate_)
+
+BOOST_GLOBAL_FIXTURE( GCertificateFixture );
 
 BOOST_AUTO_TEST_CASE(ValidateCertificate_)
 {
 	std::cout << "ValidateCertificate_t" << std::endl;
 }
 
-BOOST_FIXTURE_TEST_CASE(ValidateCertificate_Build_Test_Certs, GCertificateFixture)
+BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 {
+	auto* gf = GCertificateFixture::instance();
+
 	CertificateInfo info;
 	std::string fileName;
-	CertificateManager cm;
 
 	// create certificate manager
 	boost::filesystem::remove_all("pkitest");
-	certificateManager_ = constructSPtr<CertificateManager>();
-	certificateManager_->certificateTrustListLocation("./pkitest/trusted/certs/");
-	certificateManager_->certificateRejectListLocation("./pkitest/reject/certs/.");
-	certificateManager_->certificateRevocationListLocation("./pkitest/trusted/crl/");
-	certificateManager_->issuersCertificatesLocation("./pkitest/issuers/certs/");
-	certificateManager_->issuersRevocationListLocation("./pkitest/issuers/crl/");
-	certificateManager_->ownCertificateFile("./pkitest/own/certs/XXX.der");
-	certificateManager_->ownPrivateKeyFile("./pkitest/own/private/XXX.pem");
-	BOOST_REQUIRE(certificateManager_->init() == true);
+	gf->certificateManager_->certificateTrustListLocation("./pkitest/trusted/certs/");
+	gf->certificateManager_->certificateRejectListLocation("./pkitest/reject/certs/.");
+	gf->certificateManager_->certificateRevocationListLocation("./pkitest/trusted/crl/");
+	gf->certificateManager_->issuersCertificatesLocation("./pkitest/issuers/certs/");
+	gf->certificateManager_->issuersRevocationListLocation("./pkitest/issuers/crl/");
+	gf->certificateManager_->ownCertificateFile("./pkitest/own/certs/XXX.der");
+	gf->certificateManager_->ownPrivateKeyFile("./pkitest/own/private/XXX.pem");
+	BOOST_REQUIRE(gf->certificateManager_->init() == true);
 
 	//
 	// create self signed certificate
@@ -103,13 +125,13 @@ BOOST_FIXTURE_TEST_CASE(ValidateCertificate_Build_Test_Certs, GCertificateFixtur
 	info.serialNumber(time(0));
 	info.validFrom(boost::posix_time::microsec_clock::local_time());
 
-	BOOST_REQUIRE(certificateSelfSigned_.createCertificate(info, identity, keySelfSigned_, false, SignatureAlgorithm_Sha256) == true);
-	BOOST_REQUIRE(certificateSelfSigned_.isError() == false);
+	BOOST_REQUIRE(gf->certificateSelfSigned_->createCertificate(info, identity, gf->keySelfSigned_, false, SignatureAlgorithm_Sha256) == true);
+	BOOST_REQUIRE(gf->certificateSelfSigned_->isError() == false);
 
-	fileName = certificateManager_->issuersCertificatesLocation() +
-		certificateSelfSigned_.thumbPrint().toHexString() + ".der";
-	BOOST_REQUIRE(certificateManager_->writeCertificate(fileName, certificateSelfSigned_) == true);
-	BOOST_REQUIRE(certificateSelfSigned_.isError() == false);
+	fileName = gf->certificateManager_->issuersCertificatesLocation() +
+		gf->certificateSelfSigned_->thumbPrint().toHexString() + ".der";
+	BOOST_REQUIRE(gf->certificateManager_->writeCertificate(fileName, gf->certificateSelfSigned_) == true);
+	BOOST_REQUIRE(gf->certificateSelfSigned_->isError() == false);
 
 
 	//
@@ -137,16 +159,16 @@ BOOST_FIXTURE_TEST_CASE(ValidateCertificate_Build_Test_Certs, GCertificateFixtur
 	info.validFrom(boost::posix_time::microsec_clock::local_time());
 
 	BOOST_REQUIRE(
-		certificateCA_.createCertificate(
-			info, identity, keyCA_, true, SignatureAlgorithm_Sha256
+		gf->certificateCA_->createCertificate(
+			info, identity, gf->keyCA_, true, SignatureAlgorithm_Sha256
 		) == true
 	);
-	BOOST_REQUIRE(certificateCA_.isError() == false);
+	BOOST_REQUIRE(gf->certificateCA_->isError() == false);
 
-	fileName = certificateManager_->certificateTrustListLocation() +
-		certificateCA_.thumbPrint().toHexString() + ".der";
-	BOOST_REQUIRE(certificateManager_->writeCertificate(fileName, certificateCA_) == true);
-	BOOST_REQUIRE(certificateCA_.isError() == false);
+	fileName = gf->certificateManager_->certificateTrustListLocation() +
+		gf->certificateCA_->thumbPrint().toHexString() + ".der";
+	BOOST_REQUIRE(gf->certificateManager_->writeCertificate(fileName, gf->certificateCA_) == true);
+	BOOST_REQUIRE(gf->certificateCA_->isError() == false);
 
 
 	//
@@ -173,16 +195,16 @@ BOOST_FIXTURE_TEST_CASE(ValidateCertificate_Build_Test_Certs, GCertificateFixtur
 	info.serialNumber(time(0));
 	info.validFrom(boost::posix_time::microsec_clock::local_time());
 
-	PublicKey publicKeyDEP = keyDEP_.publicKey();
-	PrivateKey privateKeyCA = keyCA_.privateKey();
+	auto publicKeyDEP = gf->keyDEP_.publicKey();
+	auto privateKeyCA = gf->keyCA_.privateKey();
 	BOOST_REQUIRE(
-		certificateDEP_.createCertificate(
+		gf->certificateDEP_->createCertificate(
 			info, identity, publicKeyDEP,
-			certificateCA_, privateKeyCA,
+			*gf->certificateCA_.get(), privateKeyCA,
 			true, SignatureAlgorithm_Sha256
 		) == true
 	);
-	BOOST_REQUIRE(certificateDEP_.isError() == false);
+	BOOST_REQUIRE(gf->certificateDEP_->isError() == false);
 
 
 	//
@@ -212,17 +234,31 @@ BOOST_FIXTURE_TEST_CASE(ValidateCertificate_Build_Test_Certs, GCertificateFixtur
 	info.serialNumber(time(0));
 	info.validFrom(boost::posix_time::microsec_clock::local_time());
 
-	PublicKey publicKeySRV = keySRV_.publicKey();
-	PrivateKey privateKeyDEP = keyDEP_.privateKey();
+	auto publicKeySRV = gf->keySRV_.publicKey();
+	auto privateKeyDEP = gf->keyDEP_.privateKey();
 	BOOST_REQUIRE(
-		certificateSRV_.createCertificate(
+		gf->certificateSRV_->createCertificate(
 			info, identity, publicKeySRV,
-			certificateDEP_, privateKeyDEP,
+			*gf->certificateDEP_.get(), privateKeyDEP,
 			true, SignatureAlgorithm_Sha256
 		) == true
 	);
-	BOOST_REQUIRE(certificateDEP_.isError() == false);
+	BOOST_REQUIRE(gf->certificateDEP_->isError() == false);
+}
 
+BOOST_AUTO_TEST_CASE(ValidateCertificate_Validate_SelfSigned)
+{
+	auto* gf = GCertificateFixture::instance();
+
+	// create certificate chain
+	OpcUaByteString byteString;
+	CertificateChain certificateChain;
+	certificateChain.addCertificate(gf->certificateSelfSigned_);
+	BOOST_REQUIRE(certificateChain.toByteString(byteString) == true);
+
+	// validate certificate
+	ValidateCertificate vc;
+	BOOST_REQUIRE(vc.validateCertificate(byteString) == Success);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
