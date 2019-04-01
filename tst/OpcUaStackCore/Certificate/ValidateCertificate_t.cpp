@@ -261,4 +261,37 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Validate_SelfSigned)
 	BOOST_REQUIRE(vc.validateCertificate(byteString) == Success);
 }
 
+BOOST_AUTO_TEST_CASE(ValidateCertificate_Validate_DEP)
+{
+	auto* gf = GCertificateFixture::instance();
+
+	// create certificate chain
+	OpcUaByteString byteString;
+	CertificateChain certificateChain;
+	certificateChain.addCertificate(gf->certificateDEP_);
+	certificateChain.addCertificate(gf->certificateCA_);
+	BOOST_REQUIRE(certificateChain.toByteString(byteString) == true);
+
+	// validate certificate
+	ValidateCertificate vc;
+	BOOST_REQUIRE(vc.validateCertificate(byteString) == Success);
+}
+
+BOOST_AUTO_TEST_CASE(ValidateCertificate_Validate_SRV)
+{
+	auto* gf = GCertificateFixture::instance();
+
+	// create certificate chain
+	OpcUaByteString byteString;
+	CertificateChain certificateChain;
+	certificateChain.addCertificate(gf->certificateSRV_);
+	certificateChain.addCertificate(gf->certificateDEP_);
+	certificateChain.addCertificate(gf->certificateCA_);
+	BOOST_REQUIRE(certificateChain.toByteString(byteString) == true);
+
+	// validate certificate
+	ValidateCertificate vc;
+	BOOST_REQUIRE(vc.validateCertificate(byteString) == Success);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
