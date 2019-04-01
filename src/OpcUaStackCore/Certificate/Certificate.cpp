@@ -44,10 +44,63 @@ namespace OpcUaStackCore
 	{
 		OpenSSL_add_all_algorithms();
 
+		createCertificate(
+			info,
+			subject,
+			rsaKey,
+			useCACert,
+			signatureAlgorithm
+		);
+	}
+
+	Certificate::Certificate(
+		CertificateInfo& info,
+		Identity& subject,
+		PublicKey& subjectPublicKey,
+		Certificate&  issuerCertificate,
+		PrivateKey& issuerPrivateKey,
+	    bool useCACert,
+	    SignatureAlgorithm signatureAlgorithm
+	)
+	: OpenSSLError()
+	, cert_(nullptr)
+	{
+		OpenSSL_add_all_algorithms();
+
+		createCertificate(
+			info,
+			subject,
+			subjectPublicKey,
+			issuerCertificate,
+			issuerPrivateKey,
+			useCACert,
+			signatureAlgorithm
+		);
+	}
+
+	Certificate::~Certificate(void)
+	{
+		if (cert_ != nullptr) {
+		    X509_free(cert_);
+		    cert_ = nullptr;
+		}
+	}
+
+	bool
+	Certificate::createCertificate(
+		CertificateInfo& info,
+		Identity& subject,
+		RSAKey& rsaKey,
+		bool useCACert,
+		SignatureAlgorithm signatureAlgorithm
+	)
+	{
+		assert(cert_ == nullptr);
+
 		cert_ = X509_new();
 		if (cert_ == nullptr) {
 			addError("create certificate error in constructor");
-			return;
+			return false;
 		}
 
 		bool error = false;
@@ -167,26 +220,27 @@ namespace OpcUaStackCore
 	       X509_free(cert_);
 	       cert_ = nullptr;
 	    }
+
+		return !error;
 	}
 
-	Certificate::Certificate(
+	bool
+	Certificate::createCertificate(
 		CertificateInfo& info,
 		Identity& subject,
 		PublicKey& subjectPublicKey,
 		Certificate&  issuerCertificate,
 		PrivateKey& issuerPrivateKey,
-	    bool useCACert,
-	    SignatureAlgorithm signatureAlgorithm
+		bool useCACert,
+		SignatureAlgorithm signatureAlgorithm
 	)
-	: OpenSSLError()
-	, cert_(nullptr)
 	{
-		OpenSSL_add_all_algorithms();
+		assert(cert_ == nullptr);
 
 		cert_ = X509_new();
 		if (cert_ == nullptr) {
 			addError("create certificate error in constructor");
-			return;
+			return false;
 		}
 
 		bool error = false;
@@ -323,14 +377,7 @@ namespace OpcUaStackCore
   	       cert_ = nullptr;
   	    }
 
-	}
-
-	Certificate::~Certificate(void)
-	{
-		if (cert_ != nullptr) {
-		    X509_free(cert_);
-		    cert_ = nullptr;
-		}
+		return !error;
 	}
 
 	bool

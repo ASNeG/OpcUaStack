@@ -1,4 +1,5 @@
 #include "unittest.h"
+#include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 #include "OpcUaStackCore/Certificate/CertificateManager.h"
 
@@ -6,22 +7,80 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(ValidateCertificate_)
 
+
+/*
+ * This test uses the following certifcates
+ *
+ * 1. SelfSigned
+ * 		Self signed certificate
+ * 		Save in "./pkitest/trusted/certs/"
+ * 2. CA (Root CA)
+ *      Self signed certificate
+ * 		Root CA
+ * 		Save in "./pkitest/issuers/certs/"
+ * 3. DEP (Department)
+ * 		Signed with CA
+ * 4. SRV (Server)
+ * 		Signed with DEP
+ */
+
+
+struct GCertificateFixture {
+	GCertificateFixture(void)
+	: certificateManager_()
+
+	, keySelfSigned_(2048)
+	, keyCA_(2048)
+	, keyDEP_(2048)
+	, keySRV_(2048)
+
+	, certificateSelfSigned_()
+	, certificateCA_()
+	, certificateDEP_()
+	, certificateSRV_()
+    {}
+    ~GCertificateFixture(void)
+    {}
+
+    CertificateManager::SPtr certificateManager_;
+
+    RSAKey keySelfSigned_;
+    RSAKey keyCA_;
+    RSAKey keyDEP_;
+    RSAKey keySRV_;
+
+    Certificate certificateSelfSigned_;
+    Certificate certificateCA_;
+    Certificate certificateDEP_;
+    Certificate certificateSRV_;
+};
+
 BOOST_AUTO_TEST_CASE(ValidateCertificate_)
 {
 	std::cout << "ValidateCertificate_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
+BOOST_FIXTURE_TEST_CASE(ValidateCertificate_Build_Test_Certs, GCertificateFixture)
 {
 	CertificateInfo info;
+	std::string fileName;
 	CertificateManager cm;
+
+	// create certificate manager
+	boost::filesystem::remove_all("pkitest");
+	certificateManager_ = constructSPtr<CertificateManager>();
+	certificateManager_->certificateTrustListLocation("./pkitest/trusted/certs/");
+	certificateManager_->certificateRejectListLocation("./pkitest/reject/certs/.");
+	certificateManager_->certificateRevocationListLocation("./pkitest/trusted/crl/");
+	certificateManager_->issuersCertificatesLocation("./pkitest/issuers/certs/");
+	certificateManager_->issuersRevocationListLocation("./pkitest/issuers/crl/");
+	certificateManager_->ownCertificateFile("./pkitest/own/certs/XXX.der");
+	certificateManager_->ownPrivateKeyFile("./pkitest/own/private/XXX.pem");
+	BOOST_REQUIRE(certificateManager_->init() == true);
 
 	//
 	// create self signed certificate
 	//
-	RSAKey key(2048);
-	BOOST_REQUIRE(key.isError() == false);
-
 	Identity identity;
 	identity.organization("ASNeG");
 	identity.organizationUnit("OPC UA Service Department");
@@ -44,22 +103,18 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	info.serialNumber(time(0));
 	info.validFrom(boost::posix_time::microsec_clock::local_time());
 
-	Certificate certificate(info, identity, key, false, SignatureAlgorithm_Sha256);
-	BOOST_REQUIRE(certificate.isError() == false);
+	BOOST_REQUIRE(certificateSelfSigned_.createCertificate(info, identity, keySelfSigned_, false, SignatureAlgorithm_Sha256) == true);
+	BOOST_REQUIRE(certificateSelfSigned_.isError() == false);
 
-	cm.ownCertificateFile("ASNeG-Self-Signed.der");
-	BOOST_REQUIRE(cm.writeOwnCertificate(certificate) == true);
+	fileName = certificateManager_->issuersCertificatesLocation() +
+		certificateSelfSigned_.thumbPrint().toHexString() + ".der";
+	BOOST_REQUIRE(certificateManager_->writeCertificate(fileName, certificateSelfSigned_) == true);
+	BOOST_REQUIRE(certificateSelfSigned_.isError() == false);
 
-	PrivateKey privateKey = key.privateKey();
-	cm.ownPrivateKeyFile("ASNeG-Self-Signed.pem");
-	BOOST_REQUIRE(cm.writeOwnPrivateKey(privateKey) == true);
 
 	//
 	// create root CA certificate
 	//
-	RSAKey keyCA(2048);
-	BOOST_REQUIRE(keyCA.isError() == false);
-
 	identity.organization("ASNeG");
 	identity.organizationUnit("OPC UA Service Department");
 	identity.commonName("ASNeG-CA");
@@ -81,22 +136,22 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	info.serialNumber(time(0));
 	info.validFrom(boost::posix_time::microsec_clock::local_time());
 
-	Certificate certificateCA(info, identity, keyCA, true, SignatureAlgorithm_Sha256);
-	BOOST_REQUIRE(certificateCA.isError() == false);
+	BOOST_REQUIRE(
+		certificateCA_.createCertificate(
+			info, identity, keyCA_, true, SignatureAlgorithm_Sha256
+		) == true
+	);
+	BOOST_REQUIRE(certificateCA_.isError() == false);
 
-	cm.ownCertificateFile("ASNeG-CA.der");
-	BOOST_REQUIRE(cm.writeOwnCertificate(certificateCA) == true);
+	fileName = certificateManager_->certificateTrustListLocation() +
+		certificateCA_.thumbPrint().toHexString() + ".der";
+	BOOST_REQUIRE(certificateManager_->writeCertificate(fileName, certificateCA_) == true);
+	BOOST_REQUIRE(certificateCA_.isError() == false);
 
-	PrivateKey privateKeyCA = keyCA.privateKey();
-	cm.ownPrivateKeyFile("ASNeG-CA.pem");
-	BOOST_REQUIRE(cm.writeOwnPrivateKey(privateKeyCA) == true);
 
 	//
 	// create department certificate
 	//
-	RSAKey keyDEP(2048);
-	BOOST_REQUIRE(keyDEP.isError() == false);
-
 	identity.organization("ASNeG");
 	identity.organizationUnit("OPC UA Service Department");
 	identity.commonName("ASNeG-DEP");
@@ -118,19 +173,17 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	info.serialNumber(time(0));
 	info.validFrom(boost::posix_time::microsec_clock::local_time());
 
-	PublicKey publicKeyDEP = keyDEP.publicKey();
-	Certificate certificateDEP(
-		info, identity, publicKeyDEP,
-		certificateCA, privateKeyCA,
-		true, SignatureAlgorithm_Sha256);
-	BOOST_REQUIRE(certificateDEP.isError() == false);
+	PublicKey publicKeyDEP = keyDEP_.publicKey();
+	PrivateKey privateKeyCA = keyCA_.privateKey();
+	BOOST_REQUIRE(
+		certificateDEP_.createCertificate(
+			info, identity, publicKeyDEP,
+			certificateCA_, privateKeyCA,
+			true, SignatureAlgorithm_Sha256
+		) == true
+	);
+	BOOST_REQUIRE(certificateDEP_.isError() == false);
 
-	cm.ownCertificateFile("ASNeG-DEP.der");
-	BOOST_REQUIRE(cm.writeOwnCertificate(certificateDEP) == true);
-
-	PrivateKey privateKeyDEP = keyDEP.privateKey();
-	cm.ownPrivateKeyFile("ASNeG-DEP.pem");
-	BOOST_REQUIRE(cm.writeOwnPrivateKey(privateKeyDEP) == true);
 
 	//
 	// create server certificate
@@ -159,19 +212,17 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	info.serialNumber(time(0));
 	info.validFrom(boost::posix_time::microsec_clock::local_time());
 
-	PublicKey publicKeySRV = keySRV.publicKey();
-	Certificate certificateSRV(
-		info, identity, publicKeySRV,
-		certificateDEP, privateKeyDEP,
-		false, SignatureAlgorithm_Sha256);
-	BOOST_REQUIRE(certificateSRV.isError() == false);
+	PublicKey publicKeySRV = keySRV_.publicKey();
+	PrivateKey privateKeyDEP = keyDEP_.privateKey();
+	BOOST_REQUIRE(
+		certificateSRV_.createCertificate(
+			info, identity, publicKeySRV,
+			certificateDEP_, privateKeyDEP,
+			true, SignatureAlgorithm_Sha256
+		) == true
+	);
+	BOOST_REQUIRE(certificateDEP_.isError() == false);
 
-	cm.ownCertificateFile("ASNeG-SRV.der");
-	BOOST_REQUIRE(cm.writeOwnCertificate(certificateSRV) == true);
-
-	PrivateKey privateKeySRV = keySRV.privateKey();
-	cm.ownPrivateKeyFile("ASNeG-SRV.pem");
-	BOOST_REQUIRE(cm.writeOwnPrivateKey(privateKeySRV) == true);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

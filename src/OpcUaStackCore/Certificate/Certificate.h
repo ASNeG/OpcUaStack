@@ -66,6 +66,23 @@ namespace OpcUaStackCore
 		);
 		~Certificate(void);
 
+		bool createCertificate(
+			CertificateInfo& info,
+			Identity& subject,
+			RSAKey& rsaKey,
+			bool useCACert = false,
+			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
+		);
+		bool createCertificate(
+			CertificateInfo& info,
+			Identity& subject,
+			PublicKey& subjectPublicKey,
+			Certificate&  issuerCertificate,
+			PrivateKey& issuerPrivateKey,
+			bool useCACert = false,
+			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
+		);
+
 		bool getSubject(Identity& subject);
 		bool getIssuer(Identity& issuer);
 		bool getInfo(CertificateInfo& info);
