@@ -86,6 +86,7 @@ namespace OpcUaStackCore
 		int32_t certLen = 0;
 		byteString.value(&certBuf, &certLen);
 		if (certLen <= 0) {
+			Log(Error, "input paameter error");
 			return false;
 		}
 
@@ -123,7 +124,8 @@ namespace OpcUaStackCore
 	CertificateChain::toByteString(OpcUaByteString& byteString) const
 	{
 		if (certificateVec_.empty()) {
-			return true;
+			Log(Error, "certificate vector empty");
+			return false;
 		}
 
 		// calculate buffer size
@@ -133,7 +135,8 @@ namespace OpcUaStackCore
 		}
 
 		if (usedBufferSize == 0) {
-			return true;
+			Log(Error, "certificate length is 0");
+			return false;
 		}
 
 		// create buffer
