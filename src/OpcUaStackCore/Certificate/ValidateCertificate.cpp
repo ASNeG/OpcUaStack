@@ -234,7 +234,25 @@ namespace OpcUaStackCore
 		// the Client.
 		//
 
-		// FIXME: todo - BadCertificateInvalid
+		auto size = certificateChain_.certificateVec().size();
+		for (auto idx = 1; idx < size; idx++) {
+			auto subjectCertificate = certificateChain_.certificateVec()[idx-1];
+			auto issuerCertificate = certificateChain_.certificateVec()[idx];
+
+			if (!subjectCertificate->verifySignature(*issuerCertificate.get())) {
+				Log(Debug, "verify signature error");
+
+				Identity subject;
+				subjectCertificate->getSubject(subject);
+				subject.log("Subject");
+
+				Identity issuer;
+				subjectCertificate->getSubject(issuer);
+				subject.log("Issuer");
+
+				return BadCertificateInvalid;
+			}
+		}
 
 		return Success;
 	}

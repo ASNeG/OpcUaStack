@@ -380,6 +380,12 @@ namespace OpcUaStackCore
 		return !error;
 	}
 
+	X509*
+	Certificate::getX509(void)
+	{
+		return cert_;
+	}
+
 	bool
 	Certificate::getSubject(Identity& subject)
 	{
@@ -740,17 +746,10 @@ namespace OpcUaStackCore
 	bool
 	Certificate::isIssuerFrom(Certificate&  certificate)
 	{
-		Identity issuer1, issuer2;
-
-		// get issuer from certificates
-		if (!certificate.getIssuer(issuer1)) {
-			return false;
-		}
-		if (!getIssuer(issuer2)) {
-			return false;
-		}
-
-		return issuer1 != issuer2;
+	    if (X509_check_issued(certificate.getX509(), cert_) != 0) {
+	        return false;
+	    }
+	    return true;
 	}
 
 	bool
@@ -775,6 +774,31 @@ namespace OpcUaStackCore
 	        return false;
 	    }
 	    return true;
+	}
+
+	bool
+	Certificate::verifySignature(Certificate& issuerCertificate) const
+	{
+	    if (X509_check_issued(issuerCertificate.getX509(), cert_) != 0) {
+	        return false;
+	    }
+
+	    EVP_PKEY* issuerPublicKey = X509_get_pubkey(issuerCertificate.getX509());
+	    if (issuerPublicKey == nullptr)  {
+	        return false;
+	    }
+
+	    int32_t result = X509_verify(cert_, issuerPublicKey);
+	    if (result <= 0) {
+	    	const_cast<Certificate*>(this)->addOpenSSLError();
+	    }
+	    EVP_PKEY_free(issuerPublicKey);
+
+	    if (result <= 0) {
+	        return false;
+	    }
+
+		return true;
 	}
 
 	PublicKey

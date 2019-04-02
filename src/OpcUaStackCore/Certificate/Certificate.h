@@ -83,6 +83,7 @@ namespace OpcUaStackCore
 			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
 
+		X509* getX509(void);
 		bool getSubject(Identity& subject);
 		bool getIssuer(Identity& issuer);
 		bool getInfo(CertificateInfo& info);
@@ -105,6 +106,7 @@ namespace OpcUaStackCore
 		PublicKey publicKey(void);
 
 		bool isSelfSigned(void) const;
+		bool verifySignature(Certificate& issuerCertificate) const;
 
 	  private:
 		X509 *cert_;
