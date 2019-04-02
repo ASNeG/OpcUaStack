@@ -405,7 +405,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		X509_NAME* name = X509_get_subject_name(cert_);
+		X509_NAME* name = X509_get_issuer_name(cert_);
 		if (name == nullptr) {
 			addOpenSSLError();
 			return false;
