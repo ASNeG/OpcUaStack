@@ -47,6 +47,7 @@ namespace OpcUaStackCore
 		void domainComponent(const std::string& domainComponent);
 		std::string& domainComponent(void);
 
+		Identity& operator=(const Identity& value);
 	    bool operator==(const Identity &identity) const;
 	    bool operator!=(const Identity &identity) const;
 	    bool isEmpty(void) const;

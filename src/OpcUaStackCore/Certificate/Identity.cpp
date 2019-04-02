@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -118,6 +118,19 @@ namespace OpcUaStackCore
 	Identity::domainComponent(void)
 	{
 		return domainComponent_;
+	}
+
+	Identity&
+	Identity::operator=(const Identity& value)
+	{
+   		organization_ = value.organization_;
+		organizationUnit_ = value.organizationUnit_;
+		locality_ = value.locality_;
+		state_ = value.state_;
+		country_ = value.country_;
+		commonName_ = value.commonName_;
+		domainComponent_ = value.domainComponent_;
+		return *this;
 	}
 
     bool
