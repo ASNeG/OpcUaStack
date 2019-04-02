@@ -166,6 +166,19 @@ namespace OpcUaStackCore
 		);
     }
 
+    void
+	Identity::log(const std::string& message)
+    {
+    	Log(Debug, message)
+    	    .parameter("CommonName", commonName_)
+			.parameter("Organization", organization_)
+			.parameter("OrganizationUnit", organizationUnit_)
+			.parameter("Locality", locality_)
+			.parameter("State", state_)
+			.parameter("Countery", country_)
+			.parameter("DomainComponent", domainComponent_);
+    }
+
     X509_NAME*
 	Identity::encodeX509(void)
     {

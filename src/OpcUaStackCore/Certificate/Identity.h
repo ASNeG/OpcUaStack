@@ -51,6 +51,7 @@ namespace OpcUaStackCore
 	    bool operator==(const Identity &identity) const;
 	    bool operator!=(const Identity &identity) const;
 	    bool isEmpty(void) const;
+	    void log(const std::string& message);
 
 	    X509_NAME* encodeX509(void);
 	    bool decodeX509(X509_NAME* name);
