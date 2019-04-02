@@ -18,6 +18,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/Certificate/CertificateChain.h"
+#include "OpcUaStackCore/Certificate/CertificateManager.h"
 
 using namespace OpcUaStackCore;
 
@@ -29,6 +30,10 @@ namespace OpcUaStackCore
 	  public:
 		ValidateCertificate(void);
 		~ValidateCertificate(void);
+
+		void certificateManager(
+			CertificateManager::SPtr& certificateManager
+		);
 
 		OpcUaStatusCode validateCertificate(
 			OpcUaByteString& certificateChain
@@ -47,7 +52,8 @@ namespace OpcUaStackCore
 		OpcUaStatusCode findRevocationList(void);
 		OpcUaStatusCode revocationCheck(void);
 
-		CertificateChain CertificateChain_;
+		CertificateChain certificateChain_;
+		CertificateManager::SPtr certificateManager_;
 	};
 
 }

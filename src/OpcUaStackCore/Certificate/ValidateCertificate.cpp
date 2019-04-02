@@ -21,6 +21,8 @@ namespace OpcUaStackCore
 {
 
 	ValidateCertificate::ValidateCertificate(void)
+	: certificateChain_()
+	, certificateManager_()
 	{
 	}
 
@@ -28,11 +30,21 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	ValidateCertificate::certificateManager(
+		CertificateManager::SPtr& certificateManager
+	)
+	{
+		certificateManager_ = certificateManager;
+	}
+
 	OpcUaStatusCode
 	ValidateCertificate::validateCertificate(
 		OpcUaByteString& certificateChain
 	)
 	{
+		assert(certificateManager_ != nullptr);
+
 		OpcUaStatusCode statusCode;
 
 		// verify certificate structure
@@ -125,7 +137,7 @@ namespace OpcUaStackCore
 		// shall be reported back to the Client.
 		//
 
-		if (!CertificateChain_.fromByteString(certificateChain)) {
+		if (!certificateChain_.fromByteString(certificateChain)) {
 			return BadCertificateInvalid;
 		}
 
@@ -142,8 +154,70 @@ namespace OpcUaStackCore
 		// the error Bad_SecurityChecksFailed shall be reported back to the Client.
 		//
 
+		// check number of certificates in cetificate chain
+		if (certificateChain_.certificateVec().empty()) {
+			Log(Error, "certificate chain empty");
+			return BadSecurityChecksFailed;
+		}
 
-		// FIXME: todo
+		// check certificates in chain
+		auto size = certificateChain_.certificateVec().size();
+		for (auto idx = 1; idx < size; idx++) {
+
+			// get issuer from first certificate
+			Identity issuer;
+			if (!certificateChain_.certificateVec()[idx-1]->getIssuer(issuer)) {
+				Log(Error, "read issuer from certificate error");
+				return BadSecurityChecksFailed;
+			}
+
+			// get subject from second certificate
+			Identity subject;
+			if (!certificateChain_.certificateVec()[idx]->getSubject(subject)) {
+				Log(Error, "read subject from certificate error");
+				return BadSecurityChecksFailed;
+			}
+
+			// issuer and subject must be equal
+			if (issuer != subject) {
+				Log(Error, "issuer not equal following subject in certificate chain");
+				issuer.log("Issuer");
+				subject.log("Subject");
+				return BadSecurityChecksFailed;
+			}
+		}
+
+		auto actCertificate = certificateChain_.certificateVec()[size-1];
+		do {
+			if (actCertificate->isSelfSigned()) {
+				return Success;
+			}
+
+			// get issuer from actual certificate
+			Identity issuer;
+			actCertificate->getIssuer(issuer);
+
+			// search next issuer certificate in trusted folder
+			auto certificate = certificateManager_->getTrustedCertificate(issuer);
+			if (certificate.get() != nullptr) {
+				certificateChain_.certificateVec().push_back(certificate);
+				actCertificate = certificate;
+				continue;
+			}
+
+			// search next issuer certificate in CA folder
+			certificate = certificateManager_->getCACertificate(issuer);
+			if (certificate.get() != nullptr) {
+				certificateChain_.certificateVec().push_back(certificate);
+				actCertificate = certificate;
+				continue;
+			}
+
+			// no further certificate found
+			Log(Debug, "no further certificate found");
+			issuer.log("Last issuer");
+			return Success;
+		} while (true);
 
 		return Success;
 	}

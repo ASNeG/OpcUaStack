@@ -259,7 +259,7 @@ namespace OpcUaStackCore
 	bool
 	CertificateManager::isPartnerCertificateTrusted(CertificateChain& partnerCertificateChain)
 	{
-		Certificate::SPtr certificate = partnerCertificateChain.getCertificate();
+		auto certificate = partnerCertificateChain.getCertificate();
 		std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
 
 		// check if certificate is in reject list location
@@ -391,6 +391,52 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	Certificate::SPtr
+	CertificateManager::getTrustedCertificate(Identity& issuer)
+	{
+		return getCertificate(certificateTrustListLocation_, issuer);
+	}
+
+	Certificate::SPtr
+	CertificateManager::getCACertificate(Identity& issuer)
+	{
+		return getCertificate(issuersCertificatesLocation_, issuer);
+	}
+
+	Certificate::SPtr
+	CertificateManager::getCertificate(const std::string& directory, Identity& issuer)
+	{
+		boost::filesystem::path trustFilePath(certificateTrustListLocation_);
+		for (auto file : boost::filesystem::directory_iterator(trustFilePath)) {
+			if (boost::filesystem::is_directory(file)) {
+				continue;
+			}
+			if (file.path().extension().string() != ".der") {
+				continue;
+			}
+
+			auto certificate = constructSPtr<Certificate>();
+			if (!certificate->fromDERFile(file.path().string())) {
+				certificate->log(Error, "read certificate from file error: " + file.path().string());
+				continue;
+			}
+
+			Identity subject;
+			if (!certificate->getSubject(subject)) {
+				certificate->log(Error, "read subject from certificate error: " + file.path().string());
+				continue;
+			}
+
+			if (issuer == subject) {
+				return certificate;
+			}
+		}
+
+
+		Certificate::SPtr certificate;
+		return certificate;
+	}
+
 	bool
 	CertificateManager::checkAndCreateDirectory(const std::string& directory)
 	{
@@ -406,8 +452,7 @@ namespace OpcUaStackCore
 			.parameter("Directory", directory);
 
 		boost::filesystem::path createPath;
-		boost::filesystem::path::iterator it;
-		for (it = path.begin(); it != path.end(); it++) {
+		for (auto it = path.begin(); it != path.end(); it++) {
 			std::string str = it->string();
 
 			//createPath.append(str);
