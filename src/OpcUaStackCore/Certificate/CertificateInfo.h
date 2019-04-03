@@ -32,6 +32,8 @@ namespace OpcUaStackCore
 		CertificateInfo(void);
 		~CertificateInfo(void);
 
+		void clear(void);
+
 		void uri(const std::string& uri);
 		std::string& uri(void);
 		void ipAddresses(const std::vector<std::string>& ipAddresses);

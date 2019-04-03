@@ -112,20 +112,24 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	identity.country("DE");
 	identity.domainComponent("devel");
 
-	info.dnsNames().clear();
-	info.eMail().clear();
+	info.clear();
 	info.uri("urn:devel:ASNeG:ASNeG-Server");
 	info.ipAddresses().push_back("127.0.0.1");
 	info.dnsNames().push_back("devel");
 	info.eMail("info@ASNeG.de");
 	info.validTime(
-		boost::posix_time::microsec_clock::local_time() +
+		boost::posix_time::microsec_clock::universal_time() +
 		boost::posix_time::seconds(3600*24*365*5)
 	);
 	info.serialNumber(time(0));
-	info.validFrom(boost::posix_time::microsec_clock::local_time());
+	info.validFrom(boost::posix_time::microsec_clock::universal_time());
 
-	BOOST_REQUIRE(gf->certificateSelfSigned_->createCertificate(info, identity, gf->keySelfSigned_, false, SignatureAlgorithm_Sha256) == true);
+	BOOST_REQUIRE(gf->certificateSelfSigned_->createCertificate(
+		info, identity,
+		gf->keySelfSigned_,
+		false,
+		SignatureAlgorithm_Sha256) == true
+	);
 	BOOST_REQUIRE(gf->certificateSelfSigned_->isError() == false);
 
 	fileName = gf->certificateManager_->issuersCertificatesLocation() +
@@ -133,6 +137,7 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	BOOST_REQUIRE(gf->certificateManager_->writeCertificate(fileName, gf->certificateSelfSigned_) == true);
 	BOOST_REQUIRE(gf->certificateSelfSigned_->isError() == false);
 
+	BOOST_REQUIRE(gf->certificateManager_->writeCertificate("SelfSigned.der", gf->certificateSelfSigned_) == true);
 
 	//
 	// create root CA certificate
@@ -145,18 +150,17 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	identity.country("DE");
 	identity.domainComponent("devel");
 
-	info.dnsNames().clear();
-	info.eMail().clear();
+	info.clear();
 	info.uri("urn:devel:ASNeG:ASNeG-CA");
 	info.ipAddresses().push_back("127.0.0.1");
 	info.dnsNames().push_back("devel");
 	info.eMail("info@ASNeG.de");
 	info.validTime(
-		boost::posix_time::microsec_clock::local_time() +
+		boost::posix_time::microsec_clock::universal_time() +
 		boost::posix_time::seconds(3600*24*365*5)
 	);
 	info.serialNumber(time(0));
-	info.validFrom(boost::posix_time::microsec_clock::local_time());
+	info.validFrom(boost::posix_time::microsec_clock::universal_time());
 
 	BOOST_REQUIRE(
 		gf->certificateCA_->createCertificate(
@@ -170,6 +174,8 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	BOOST_REQUIRE(gf->certificateManager_->writeCertificate(fileName, gf->certificateCA_) == true);
 	BOOST_REQUIRE(gf->certificateCA_->isError() == false);
 
+	BOOST_REQUIRE(gf->certificateManager_->writeCertificate("CA.der", gf->certificateCA_) == true);
+
 
 	//
 	// create department certificate
@@ -182,18 +188,17 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	identity.country("DE");
 	identity.domainComponent("devel");
 
-	info.dnsNames().clear();
-	info.eMail().clear();
+	info.clear();
 	info.uri("urn:devel:ASNeG:ASNeG-DEP");
 	info.ipAddresses().push_back("127.0.0.1");
 	info.dnsNames().push_back("devel");
 	info.eMail("info@ASNeG.de");
 	info.validTime(
-		boost::posix_time::microsec_clock::local_time() +
+		boost::posix_time::microsec_clock::universal_time() +
 		boost::posix_time::seconds(3600*24*365*5)
 	);
 	info.serialNumber(time(0));
-	info.validFrom(boost::posix_time::microsec_clock::local_time());
+	info.validFrom(boost::posix_time::microsec_clock::universal_time());
 
 	auto publicKeyDEP = gf->keyDEP_.publicKey();
 	auto privateKeyCA = gf->keyCA_.privateKey();
@@ -205,6 +210,9 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 		) == true
 	);
 	BOOST_REQUIRE(gf->certificateDEP_->isError() == false);
+
+	BOOST_REQUIRE(gf->certificateManager_->writeCertificate("DEP.der", gf->certificateDEP_) == true);
+
 
 
 	//
@@ -221,18 +229,17 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 	identity.country("DE");
 	identity.domainComponent("devel");
 
-	info.dnsNames().clear();
-	info.eMail().clear();
+	info.clear();
 	info.uri("urn:devel:ASNeG:ASNeG-SRV");
 	info.ipAddresses().push_back("127.0.0.1");
 	info.dnsNames().push_back("devel");
 	info.eMail("info@ASNeG.de");
 	info.validTime(
-		boost::posix_time::microsec_clock::local_time() +
+		boost::posix_time::microsec_clock::universal_time() +
 		boost::posix_time::seconds(3600*24*365*5)
 	);
 	info.serialNumber(time(0));
-	info.validFrom(boost::posix_time::microsec_clock::local_time());
+	info.validFrom(boost::posix_time::microsec_clock::universal_time());
 
 	auto publicKeySRV = gf->keySRV_.publicKey();
 	auto privateKeyDEP = gf->keyDEP_.privateKey();
@@ -240,10 +247,14 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Build_Test_Certs)
 		gf->certificateSRV_->createCertificate(
 			info, identity, publicKeySRV,
 			*gf->certificateDEP_.get(), privateKeyDEP,
-			true, SignatureAlgorithm_Sha256
+			false, SignatureAlgorithm_Sha256
 		) == true
 	);
 	BOOST_REQUIRE(gf->certificateDEP_->isError() == false);
+
+	BOOST_REQUIRE(gf->certificateManager_->writeCertificate("SRV.der", gf->certificateSRV_) == true);
+
+
 }
 
 BOOST_AUTO_TEST_CASE(ValidateCertificate_Validate_SelfSigned)

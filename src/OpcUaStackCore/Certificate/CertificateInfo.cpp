@@ -27,14 +27,26 @@ namespace OpcUaStackCore
 	, ipAddresses_()
 	, dnsNames_()
 	, eMail_("")
-	, validTime_(boost::posix_time::microsec_clock::local_time())
+	, validTime_(boost::posix_time::microsec_clock::universal_time())
 	, serialNumber_(0)
-	, validFrom_(boost::posix_time::microsec_clock::local_time())
+	, validFrom_(boost::posix_time::microsec_clock::universal_time())
 	{
 	}
 
 	CertificateInfo::~CertificateInfo(void)
 	{
+	}
+
+	void
+	CertificateInfo::clear(void)
+	{
+		uri_ = "";
+		ipAddresses_.clear();
+		dnsNames_.clear();
+		eMail_ = "";
+		validTime_ = boost::posix_time::microsec_clock::universal_time();
+		serialNumber_ = 0;
+		validFrom_ = boost::posix_time::microsec_clock::universal_time();
 	}
 
 	void

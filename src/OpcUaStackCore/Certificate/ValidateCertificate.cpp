@@ -240,15 +240,15 @@ namespace OpcUaStackCore
 			auto issuerCertificate = certificateChain_.certificateVec()[idx];
 
 			if (!subjectCertificate->verifySignature(*issuerCertificate.get())) {
-				Log(Debug, "verify signature error");
+				Log(Error, "verify signature error");
 
 				Identity subject;
 				subjectCertificate->getSubject(subject);
 				subject.log("Subject");
 
 				Identity issuer;
-				subjectCertificate->getSubject(issuer);
-				subject.log("Issuer");
+				subjectCertificate->getIssuer(issuer);
+				issuer.log("Issuer");
 
 				return BadCertificateInvalid;
 			}
@@ -307,8 +307,20 @@ namespace OpcUaStackCore
 		// The current time shall be after the start of the validity period and before
 		// the end. This error may be suppressed.
 		//
+		auto now = boost::posix_time::microsec_clock::universal_time();
+		for (auto certificate : certificateChain_.certificateVec()) {
+			CertificateInfo info;
+			if (!certificate->getInfo(info)) {
+				certificate->log(Error, "get info error");
+				return BadCertificateTimeInvalid;
+			}
 
-		// FIXME: todo - Bad_CertificateTimeInvalid
+			Identity subject;
+			certificate->getSubject(subject);
+			std::cout << subject.commonName() << " xxxx " << info.validFrom() << " xxxx " << now << " xxxx " << info.validTime() << std::endl;
+			if (info.validFrom() > now) return BadCertificateTimeInvalid;
+			if (info.validTime() < now) return BadCertificateTimeInvalid;
+		}
 
 		return Success;
 	}

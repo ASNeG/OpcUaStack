@@ -152,14 +152,14 @@ namespace OpcUaStackCore
 
         // set certificate valid times
         if (!error) {
-        	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+        	auto now = boost::posix_time::microsec_clock::universal_time();
 
            	uint32_t validFrom;
         	if (info.validFrom() < now) {
         		validFrom = 0;
         	}
         	else {
-        		 boost::posix_time::time_duration dt = info.validFrom() - now;
+        		 auto dt = info.validFrom() - now;
         		 validFrom = dt.total_seconds();
         	}
 
@@ -168,7 +168,7 @@ namespace OpcUaStackCore
            		validTime = 0;
             }
             else {
-            	boost::posix_time::time_duration dt = info.validTime() - now;
+            	auto dt = info.validTime() - now;
             	validTime = dt.total_seconds();
             }
 
@@ -193,6 +193,7 @@ namespace OpcUaStackCore
         if (!error) {
             CertificateExtension certificateExtension(useCACert);
             certificateExtension.subjectAltName(info.subjectAltName());
+            certificateExtension.logContent(std::string("create certificate ") + subject.commonName());
             if (!certificateExtension.encodeX509(cert_, ctx)) {
             	error = true;
             	addError(certificateExtension.errorList());
@@ -309,15 +310,15 @@ namespace OpcUaStackCore
 
         // set certificate valid times
         if (!error) {
-           	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+           	auto now = boost::posix_time::microsec_clock::universal_time();
 
             uint32_t validFrom;
             if (info.validFrom() < now) {
             	validFrom = 0;
             }
             else {
-            	boost::posix_time::time_duration dt = info.validFrom() - now;
-            	validFrom = dt.seconds();
+            	auto dt = info.validFrom() - now;
+            	validFrom = dt.total_seconds();
             }
 
             uint32_t validTime;
@@ -325,8 +326,8 @@ namespace OpcUaStackCore
                	validTime = 0;
             }
             else {
-                boost::posix_time::time_duration dt = info.validTime() - now;
-                validTime = dt.seconds();
+                auto dt = info.validTime() - now;
+                validTime = dt.total_seconds();
             }
 
             X509_gmtime_adj(X509_get_notBefore(cert_), validFrom);
@@ -350,6 +351,7 @@ namespace OpcUaStackCore
          if (!error) {
              CertificateExtension certificateExtension(useCACert);
              certificateExtension.subjectAltName(info.subjectAltName());
+             certificateExtension.logContent(std::string("create certificate ") + subject.commonName());
              if (!certificateExtension.encodeX509(cert_, ctx)) {
                  error = true;
               	 addError(certificateExtension.errorList());
@@ -423,18 +425,23 @@ namespace OpcUaStackCore
 	bool
 	Certificate::getInfo(CertificateInfo& info)
 	{
+		auto timeDiff = (boost::posix_time::microsec_clock::local_time() -
+	        boost::posix_time::microsec_clock::universal_time()).total_seconds();
+
 		if (cert_ == nullptr) {
 			addError("certificate is empty");
 			return false;
 		}
 
 		// get extensions
-		bool selfSigned = isSelfSigned();
-		CertificateExtension ext(!selfSigned);
+		auto isCACert = CertificateExtension::isCACert(cert_);
+		std::cout << "ISCA=" << isCACert << std::endl;
+		CertificateExtension ext(isCACert);
 		if (!ext.decodeX509(cert_)) {
+			addError(ext.errorList());
 			return false;
 		}
-		if (selfSigned) {
+		if (!isCACert) {
 			info.subjectAltName(ext.subjectAltName());
 		}
 
@@ -453,11 +460,14 @@ namespace OpcUaStackCore
 			}
 		}
 		else if (X509_get_notBefore(cert_)->type == V_ASN1_GENERALIZEDTIME) {
-			notBeforTime.tm_year = (notBefor[i++] - '0') * 1000 + (notBefor[i++] - '0') * 100 + (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
+			notBeforTime.tm_year = (notBefor[i++] - '0') * 1000 +
+					               (notBefor[i++] - '0') * 100 +
+								   (notBefor[i++] - '0') * 10 +
+								   (notBefor[i++] - '0');
 			notBeforTime.tm_year -= 1900;
 		}
 		else {
-			addError("not befor time format invalid");
+			addError("not before time format invalid");
 			return false;
 		}
 		notBeforTime.tm_mon = ((notBefor[i++] - '0') * 10 + (notBefor[i++] - '0')) - 1; // -1 since January is 0 not 1.
@@ -465,7 +475,10 @@ namespace OpcUaStackCore
 		notBeforTime.tm_hour = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
 		notBeforTime.tm_min  = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
 		notBeforTime.tm_sec  = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
-		info.validFrom(boost::posix_time::from_time_t(mktime(&notBeforTime)));
+
+		auto beforeTimeLocal = boost::posix_time::from_time_t(mktime(&notBeforTime));
+		std::cout << "Before=" << beforeTimeLocal << std::endl;
+		info.validFrom(beforeTimeLocal + boost::posix_time::seconds(timeDiff));
 
 		// get valid from
 	    i = 0;
@@ -478,7 +491,10 @@ namespace OpcUaStackCore
 				notAfterTime.tm_year += 100;
 		}
 		else if (X509_get_notAfter(cert_)->type == V_ASN1_GENERALIZEDTIME) {
-			notAfterTime.tm_year = (notAfter[i++] - '0') * 1000 + (notAfter[i++] - '0') * 100 + (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
+			notAfterTime.tm_year = (notAfter[i++] - '0') * 1000 +
+					               (notAfter[i++] - '0') * 100 +
+								   (notAfter[i++] - '0') * 10 +
+								   (notAfter[i++] - '0');
 			notAfterTime.tm_year -= 1900;
 		}
 		else {
@@ -490,7 +506,10 @@ namespace OpcUaStackCore
 		notAfterTime.tm_hour = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
 		notAfterTime.tm_min  = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
 		notAfterTime.tm_sec  = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
-		info.validTime(boost::posix_time::from_time_t(mktime(&notAfterTime)));
+
+		auto afterTimeLocal = boost::posix_time::from_time_t(mktime(&notAfterTime));
+		std::cout << "After=" << afterTimeLocal << std::endl;
+		info.validTime(afterTimeLocal + boost::posix_time::seconds(timeDiff));
 
 		return true;
 	}
@@ -779,12 +798,16 @@ namespace OpcUaStackCore
 	bool
 	Certificate::verifySignature(Certificate& issuerCertificate) const
 	{
+#if 0
 	    if (X509_check_issued(issuerCertificate.getX509(), cert_) != 0) {
+	    	Log(Error, "check issued certificate error");
 	        return false;
 	    }
+#endif
 
 	    EVP_PKEY* issuerPublicKey = X509_get_pubkey(issuerCertificate.getX509());
 	    if (issuerPublicKey == nullptr)  {
+	    	Log(Error, "issuer public key is null");
 	        return false;
 	    }
 
