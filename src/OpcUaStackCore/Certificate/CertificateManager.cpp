@@ -403,6 +403,28 @@ namespace OpcUaStackCore
 		return getCertificate(issuersCertificatesLocation_, issuer);
 	}
 
+	bool
+	CertificateManager::isCertificateInTrustedList(Certificate::SPtr& certificate)
+	{
+		std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
+		boost::filesystem::path trustFilePath(certificateTrustListLocation_ + "/" + certFileName);
+		if (boost::filesystem::exists(trustFilePath)) {
+			return true;
+		}
+		return false;
+	}
+
+	bool
+	CertificateManager::isCertificateInIssuerList(Certificate::SPtr& certificate)
+	{
+		std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
+		boost::filesystem::path issuerFilePath(issuersCertificatesLocation_ + "/" + certFileName);
+		if (boost::filesystem::exists(issuerFilePath)) {
+			return true;
+		}
+		return false;
+	}
+
 	Certificate::SPtr
 	CertificateManager::getCertificate(const std::string& directory, Identity& issuer)
 	{

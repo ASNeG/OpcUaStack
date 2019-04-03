@@ -77,6 +77,8 @@ namespace OpcUaStackCore
 
 		Certificate::SPtr getTrustedCertificate(Identity& issuer);
 		Certificate::SPtr getCACertificate(Identity& issuer);
+		bool isCertificateInTrustedList(Certificate::SPtr& certificate);
+		bool isCertificateInIssuerList(Certificate::SPtr& certificate);
 
 	  private:
 		Certificate::SPtr getCertificate(const std::string& directory, Identity& issuer);

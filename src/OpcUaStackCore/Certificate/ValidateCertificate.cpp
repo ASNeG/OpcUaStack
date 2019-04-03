@@ -286,7 +286,15 @@ namespace OpcUaStackCore
 		// the Client.
 		//
 
-		// FIXME: todo - Bad_CertificateUntrusted
+		for (auto certificate : certificateChain_.certificateVec()) {
+			if (certificateManager_->isCertificateInTrustedList(certificate)) {
+				return Success;
+			}
+
+			if (certificateManager_->isCertificateInIssuerList(certificate)) {
+				return Success;
+			}
+		}
 
 		return Success;
 	}
