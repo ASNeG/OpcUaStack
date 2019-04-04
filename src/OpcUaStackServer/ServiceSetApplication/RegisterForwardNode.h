@@ -98,7 +98,7 @@ namespace OpcUaStackServer
 		  void setMonitoredItemStopCallback(T handler) {
 			  Callback callback;
 			  callback.reset(handler);
-			  setMonitoredItemStartCallback(callback);
+			  setMonitoredItemStopCallback(callback);
 		  }
 
 		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
