@@ -270,6 +270,8 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Validate_SelfSigned)
 	// validate certificate
 	ValidateCertificate vc;
 	vc.certificateManager(gf->certificateManager_);
+	vc.hostname("devel");
+	vc.uri("urn:devel:ASNeG:ASNeG-Server");
 	BOOST_REQUIRE(vc.validateCertificate(byteString) == Success);
 }
 
@@ -305,6 +307,8 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Validate_SRV)
 	// validate certificate
 	ValidateCertificate vc;
 	vc.certificateManager(gf->certificateManager_);
+	vc.hostname("devel");
+	vc.uri("urn:devel:ASNeG:ASNeG-SRV");
 	BOOST_REQUIRE(vc.validateCertificate(byteString) == Success);
 }
 
@@ -322,6 +326,8 @@ BOOST_AUTO_TEST_CASE(ValidateCertificate_Validate_SRV_without_CA)
 	// validate certificate
 	ValidateCertificate vc;
 	vc.certificateManager(gf->certificateManager_);
+	vc.hostname("devel");
+	vc.uri("urn:devel:ASNeG:ASNeG-SRV");
 	BOOST_REQUIRE(vc.validateCertificate(byteString) == Success);
 }
 

@@ -23,6 +23,8 @@ namespace OpcUaStackCore
 	ValidateCertificate::ValidateCertificate(void)
 	: certificateChain_()
 	, certificateManager_()
+	, hostname_("")
+	, uri_("")
 	{
 	}
 
@@ -36,6 +38,18 @@ namespace OpcUaStackCore
 	)
 	{
 		certificateManager_ = certificateManager;
+	}
+
+	void
+	ValidateCertificate::hostname(const std::string& hostname)
+	{
+		hostname_ = hostname;
+	}
+
+	void
+	ValidateCertificate::uri(const std::string& uri)
+	{
+		uri_ = uri;
 	}
 
 	OpcUaStatusCode
@@ -92,14 +106,16 @@ namespace OpcUaStackCore
 		// Host Name
 		statusCode = hostName();
 		if (statusCode != Success) {
-			Log(Error, "host name error");
+			Log(Error, "host name error")
+				.parameter("Hostname", hostname_);
 			return statusCode;
 		}
 
 		// URI
 		statusCode = URI();
 		if (statusCode != Success) {
-			Log(Error, "uri error");
+			Log(Error, "uri error")
+				.parameter("Uri", uri_);
 			return statusCode;
 		}
 
@@ -317,7 +333,6 @@ namespace OpcUaStackCore
 
 			Identity subject;
 			certificate->getSubject(subject);
-			std::cout << subject.commonName() << " xxxx " << info.validFrom() << " xxxx " << now << " xxxx " << info.validTime() << std::endl;
 			if (info.validFrom() > now) return BadCertificateTimeInvalid;
 			if (info.validTime() < now) return BadCertificateTimeInvalid;
 		}
@@ -335,10 +350,33 @@ namespace OpcUaStackCore
 		// for CA Certificates. This check is skipped for Server side validation. This
 		// error may be suppressed.
 		//
+		if (hostname_.empty()) {
+			return Success;
+		}
 
-		// FIXME: todo - Bad_CertificateHostNameInvalid
+		// get info from certificate
+		auto certificate = certificateChain_.certificateVec()[0];
+		CertificateInfo info;
+		if (!certificate->getInfo(info)) {
+			certificate->log(Error, "get info error");
+			return BadCertificateHostNameInvalid;
+		}
 
-		return Success;
+		// check dns names
+		for (auto dnsName : info.dnsNames()) {
+			if (dnsName == hostname_) {
+				return Success;
+			}
+		}
+
+		// check ip addresses
+		for (auto ip : info.ipAddresses()) {
+			if (ip == hostname_) {
+				return Success;
+			}
+		}
+
+		return BadCertificateHostNameInvalid;
 	}
 
 	OpcUaStatusCode
@@ -353,9 +391,24 @@ namespace OpcUaStackCore
 		// an Application Certificate when connecting to a Gateway Server (see 7.1).
 		//
 
-		// FIXME: todo - Bad_CertificateUriInvalid
+		if (uri_.empty()) {
+			return Success;
+		}
 
-		return Success;
+		// get info from certificate
+		auto certificate = certificateChain_.certificateVec()[0];
+		CertificateInfo info;
+		if (!certificate->getInfo(info)) {
+			certificate->log(Error, "get info error");
+			return BadCertificateUriInvalid;
+		}
+
+		// check uri
+		if (info.uri() == uri_) {
+			return Success;
+		}
+
+		return BadCertificateUriInvalid;
 	}
 
 	OpcUaStatusCode

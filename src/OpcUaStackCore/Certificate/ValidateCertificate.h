@@ -31,9 +31,9 @@ namespace OpcUaStackCore
 		ValidateCertificate(void);
 		~ValidateCertificate(void);
 
-		void certificateManager(
-			CertificateManager::SPtr& certificateManager
-		);
+		void certificateManager(CertificateManager::SPtr& certificateManager);
+		void hostname(const std::string& hostname);
+		void uri(const std::string& uri);
 
 		OpcUaStatusCode validateCertificate(
 			OpcUaByteString& certificateChain
@@ -54,6 +54,8 @@ namespace OpcUaStackCore
 
 		CertificateChain certificateChain_;
 		CertificateManager::SPtr certificateManager_;
+		std::string hostname_;
+		std::string uri_;
 	};
 
 }

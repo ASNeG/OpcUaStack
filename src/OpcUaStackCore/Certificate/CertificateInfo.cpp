@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,6 +18,7 @@
 #include <boost/algorithm/string.hpp>
 #include <sstream>
 #include "OpcUaStackCore/Certificate/CertificateInfo.h"
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
@@ -189,6 +190,35 @@ namespace OpcUaStackCore
 		}
 
 		return ss.str();
+	}
+
+	void
+	CertificateInfo::log(const std::string& message)
+	{
+		std::string ipAddresses = "";
+		for (auto ipAddress : ipAddresses_) {
+			if (!ipAddresses.empty()) {
+				ipAddresses += ",";
+			}
+			ipAddresses += ipAddress;
+		}
+
+		std::string dnsNames = "";
+		for (auto dnsName : dnsNames_) {
+			if (!dnsNames.empty()) {
+				dnsNames += ",";
+			}
+			dnsNames += dnsName;
+		}
+
+		Log(Debug, message)
+		    .parameter("Uri", uri_)
+			.parameter("IPAdresses", ipAddresses)
+			.parameter("DNSNames", dnsNames)
+			.parameter("EMail", eMail_)
+			.parameter("ValidTime", validTime_)
+			.parameter("ValidFrom", validFrom_)
+			.parameter("SerialNumber", serialNumber_);
 	}
 
 }

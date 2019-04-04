@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -435,7 +435,6 @@ namespace OpcUaStackCore
 
 		// get extensions
 		auto isCACert = CertificateExtension::isCACert(cert_);
-		std::cout << "ISCA=" << isCACert << std::endl;
 		CertificateExtension ext(isCACert);
 		if (!ext.decodeX509(cert_)) {
 			addError(ext.errorList());
@@ -477,7 +476,6 @@ namespace OpcUaStackCore
 		notBeforTime.tm_sec  = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
 
 		auto beforeTimeLocal = boost::posix_time::from_time_t(mktime(&notBeforTime));
-		std::cout << "Before=" << beforeTimeLocal << std::endl;
 		info.validFrom(beforeTimeLocal + boost::posix_time::seconds(timeDiff));
 
 		// get valid from
@@ -508,7 +506,6 @@ namespace OpcUaStackCore
 		notAfterTime.tm_sec  = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
 
 		auto afterTimeLocal = boost::posix_time::from_time_t(mktime(&notAfterTime));
-		std::cout << "After=" << afterTimeLocal << std::endl;
 		info.validTime(afterTimeLocal + boost::posix_time::seconds(timeDiff));
 
 		return true;
