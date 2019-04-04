@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(MonitorManager_CallStartMonitoredItemCallback)
 	MonitoredItemCreateResult::SPtr result;
 	createMonitoredItemTransaction->response()->results()->get(0, result);
 
-	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, result->statusCode());
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, result->statusCode().enumeration());
 	BOOST_REQUIRE_EQUAL(1, startMonitoredItemCallCount);
 }
 
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(MonitorManager_CallStartMonitoredItemCallbackOnlyOnce)
 	MonitoredItemCreateResult::SPtr result;
 	createMonitoredItemTransaction->response()->results()->get(0, result);
 
-	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, result->statusCode());
+	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, result->statusCode().enumeration());
 	BOOST_REQUIRE_EQUAL(1, startMonitoredItemCallCount);
 }
 
