@@ -58,6 +58,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Session_session_connect_disconne
 	sessionServiceConfig.secureChannelClient_->applicationCertificate(applicationCertificate);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.session_->policyId("Anonymous_Policy");
 
 	// create session
 	SessionService::SPtr sessionService;
