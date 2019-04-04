@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -46,6 +46,8 @@ namespace OpcUaStackClient
 		uint32_t reconnectTimeout(void);
 		void maxResponseMessageSize(uint32_t maxResponseMessageSize);
 		uint32_t maxResponseMessageSize(void);
+		void policyId(const std::string& policyId);
+		std::string& policyId(void);
 
 	  //private:
 		ApplicationDescription::SPtr applicationDescription_;
@@ -54,6 +56,7 @@ namespace OpcUaStackClient
 		uint32_t sessionTimeout_;
 		uint32_t reconnectTimeout_;
 		uint32_t maxResponseMessageSize_;
+		std::string policyId_;
 
 	};
 
