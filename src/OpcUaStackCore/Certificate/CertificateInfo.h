@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,6 +32,8 @@ namespace OpcUaStackCore
 		CertificateInfo(void);
 		~CertificateInfo(void);
 
+		void clear(void);
+
 		void uri(const std::string& uri);
 		std::string& uri(void);
 		void ipAddresses(const std::vector<std::string>& ipAddresses);
@@ -46,9 +48,13 @@ namespace OpcUaStackCore
 		uint32_t serialNumber(void);
 		void validFrom(boost::posix_time::ptime validFrom);
 		boost::posix_time::ptime validFrom(void);
+		void keyUsage(const std::string& keyUsage);
+		std::string& keyUsage(void);
 
 		void subjectAltName(const std::string& subjectAltName);
 		std::string subjectAltName(void);
+
+		void log(const std::string& message);
 
 	  private:
 		std::string uri_;
@@ -58,6 +64,7 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime validTime_;
 		uint32_t serialNumber_;
 		boost::posix_time::ptime validFrom_;
+		std::string keyUsage_;
 	};
 
 }

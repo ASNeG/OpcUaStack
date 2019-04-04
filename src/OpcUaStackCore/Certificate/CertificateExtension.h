@@ -32,6 +32,8 @@ namespace OpcUaStackCore
 		CertificateExtension(bool useCACert = false);
 		~CertificateExtension(void);
 
+		static bool isCACert(X509 *cert);
+
 		void clear(void);
 		void basicConstraints(const std::string& basicConstraints);
 		std::string& basicConstraints(void);
@@ -50,6 +52,8 @@ namespace OpcUaStackCore
 
 		bool encodeX509(X509 *cert, X509V3_CTX& ctx);
 		bool decodeX509(X509 *cert);
+
+		void logContent(const std::string& message);
 
 	  private:
 		bool encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value);

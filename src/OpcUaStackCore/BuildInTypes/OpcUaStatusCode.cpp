@@ -131,6 +131,7 @@ namespace OpcUaStackCore
 		insert(BadTooManyMonitoredItems,						"BadTooManyMonitoredItems",						"The request could not be processed because there are too many monitored items in the subscription");
 		insert(BadDataTypeIdUnknown,							"BadDataTypeIdUnknown",							"The extension object cannot be (de)serialized because the data type id is not recognized");
 		insert(BadCertificateInvalid,							"BadCertificateInvalid",						"The certificate provided as a parameter is not valid");
+		insert(BadCertificateChainIncomplete,					"BadCertificateChainIncomplete",				"The certificate chain is invalid");
 		insert(BadSecurityChecksFailed,							"BadSecurityChecksFailed",						"An error occurred verifying security");
 		insert(BadCertificateTimeInvalid,						"BadCertificateTimeInvalid",					"The Certificate has expired or is not yet valid");
 		insert(BadCertificateIssuerTimeInvalid,					"BadCertificateIssuerTimeInvalid",				"An Issuer Certificate has expired or is not yet valid");

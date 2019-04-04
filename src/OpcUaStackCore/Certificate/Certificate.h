@@ -66,6 +66,24 @@ namespace OpcUaStackCore
 		);
 		~Certificate(void);
 
+		bool createCertificate(
+			CertificateInfo& info,
+			Identity& subject,
+			RSAKey& rsaKey,
+			bool useCACert = false,
+			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
+		);
+		bool createCertificate(
+			CertificateInfo& info,
+			Identity& subject,
+			PublicKey& subjectPublicKey,
+			Certificate&  issuerCertificate,
+			PrivateKey& issuerPrivateKey,
+			bool useCACert = false,
+			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
+		);
+
+		X509* getX509(void);
 		bool getSubject(Identity& subject);
 		bool getIssuer(Identity& issuer);
 		bool getInfo(CertificateInfo& info);
@@ -82,10 +100,13 @@ namespace OpcUaStackCore
 		bool fromDERBuf(char* buf, uint32_t bufLen);
 		bool fromDERBuf(MemoryBuffer& derBuf);
 
+		bool isIssuerFrom(Certificate&  certificate);
+
 		uint32_t getDERBufSize(void);
 		PublicKey publicKey(void);
 
 		bool isSelfSigned(void) const;
+		bool verifySignature(Certificate& issuerCertificate) const;
 
 	  private:
 		X509 *cert_;

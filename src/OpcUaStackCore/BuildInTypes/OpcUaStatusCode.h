@@ -48,6 +48,7 @@ namespace OpcUaStackCore
 		BadTooManyMonitoredItems =				0x80DB0000,
 		BadDataTypeIdUnknown =					0x80110000,
 		BadCertificateInvalid =					0x80120000,
+		BadCertificateChainIncomplete =			0x810D0000,
 		BadSecurityChecksFailed =				0x80130000,
 		BadCertificateTimeInvalid =				0x80140000,
 		BadCertificateIssuerTimeInvalid =		0x80150000,

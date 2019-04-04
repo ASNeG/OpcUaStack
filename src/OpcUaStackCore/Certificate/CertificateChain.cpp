@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/Certificate/CertificateChain.h"
 
@@ -86,13 +87,14 @@ namespace OpcUaStackCore
 		int32_t certLen = 0;
 		byteString.value(&certBuf, &certLen);
 		if (certLen <= 0) {
+			Log(Error, "input parameter error");
 			return false;
 		}
 
 		char* mem = certBuf;
 		while (certLen > 0) {
-			Certificate::SPtr certificate = constructSPtr<Certificate>();
-			if (!certificate->fromDERBuf(certBuf, (uint32_t)certLen)) {
+			auto certificate = boost::make_shared<Certificate>();
+			if (!certificate->fromDERBuf(mem, (uint32_t)certLen)) {
 				certificate->log(Error, "decode certificate chain error - Certificate::fromDERBuf");
 				return false;
 			}
@@ -123,7 +125,8 @@ namespace OpcUaStackCore
 	CertificateChain::toByteString(OpcUaByteString& byteString) const
 	{
 		if (certificateVec_.empty()) {
-			return true;
+			Log(Error, "certificate vector empty");
+			return false;
 		}
 
 		// calculate buffer size
@@ -133,7 +136,8 @@ namespace OpcUaStackCore
 		}
 
 		if (usedBufferSize == 0) {
-			return true;
+			Log(Error, "certificate length is 0");
+			return false;
 		}
 
 		// create buffer
