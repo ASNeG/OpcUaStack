@@ -464,7 +464,6 @@ namespace OpcUaStackCore
 		// revocation checks for a CA Certificate. This error may be suppressed.
 		//
 
-		// FIXME: todo - Bad_CertificateRevocationUnknown
 
 		return Success;
 	}
@@ -479,7 +478,12 @@ namespace OpcUaStackCore
 		// Bad_SecurityChecksFailed shall be reported back to the Client.
 		//
 
-		// FIXME: todo - Bad_CertificateRevoked
+		for (auto certificate : certificateChain_.certificateVec()) {
+			if (certificateManager_->isCertificateInRevocationList(certificate)) {
+				return BadCertificateRevoked;
+			}
+		}
+
 		return Success;
 	}
 

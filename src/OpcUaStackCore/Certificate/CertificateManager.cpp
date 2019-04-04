@@ -425,6 +425,24 @@ namespace OpcUaStackCore
 		return false;
 	}
 
+	bool
+	CertificateManager::isCertificateInRevocationList(Certificate::SPtr& certificate)
+	{
+		std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
+
+		boost::filesystem::path certificateRevocationPath(certificateRevocationListLocation_ + "/" + certFileName);
+		if (boost::filesystem::exists(certificateRevocationPath)) {
+			return true;
+		}
+
+		boost::filesystem::path issuerRevocationPath(issuersRevocationListLocation_ + "/" + certFileName);
+		if (boost::filesystem::exists(issuerRevocationPath)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	Certificate::SPtr
 	CertificateManager::getCertificate(const std::string& directory, Identity& issuer)
 	{
