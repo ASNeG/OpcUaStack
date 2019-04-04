@@ -31,6 +31,7 @@ namespace OpcUaStackCore
 	, validTime_(boost::posix_time::microsec_clock::universal_time())
 	, serialNumber_(0)
 	, validFrom_(boost::posix_time::microsec_clock::universal_time())
+	, keyUsage_("")
 	{
 	}
 
@@ -131,6 +132,18 @@ namespace OpcUaStackCore
 	CertificateInfo::validFrom(void)
 	{
 		return validFrom_;
+	}
+
+	void
+	CertificateInfo::keyUsage(const std::string& keyUsage)
+	{
+		keyUsage_ = keyUsage;
+	}
+
+	std::string&
+	CertificateInfo::keyUsage(void)
+	{
+		return keyUsage_;
 	}
 
 	void

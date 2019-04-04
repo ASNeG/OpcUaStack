@@ -193,6 +193,9 @@ namespace OpcUaStackCore
         if (!error) {
             CertificateExtension certificateExtension(useCACert);
             certificateExtension.subjectAltName(info.subjectAltName());
+            if (!info.keyUsage().empty()) {
+           	   certificateExtension.keyUsage(info.keyUsage());
+            }
             certificateExtension.logContent(std::string("create certificate ") + subject.commonName());
             if (!certificateExtension.encodeX509(cert_, ctx)) {
             	error = true;
@@ -351,6 +354,9 @@ namespace OpcUaStackCore
          if (!error) {
              CertificateExtension certificateExtension(useCACert);
              certificateExtension.subjectAltName(info.subjectAltName());
+             if (!info.keyUsage().empty()) {
+            	 certificateExtension.keyUsage(info.keyUsage());
+             }
              certificateExtension.logContent(std::string("create certificate ") + subject.commonName());
              if (!certificateExtension.encodeX509(cert_, ctx)) {
                  error = true;
@@ -440,6 +446,7 @@ namespace OpcUaStackCore
 			addError(ext.errorList());
 			return false;
 		}
+		info.keyUsage(ext.keyUsage());
 		if (!isCACert) {
 			info.subjectAltName(ext.subjectAltName());
 		}

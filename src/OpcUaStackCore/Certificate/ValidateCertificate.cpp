@@ -421,8 +421,34 @@ namespace OpcUaStackCore
 		// Software or CA). This error may be suppressed unless the Certificate
 		// indicates that the usage is mandatory
 		//
+		// Shall include:
+		//   Digital Signature
+		//   Non Repudiation
+		//   Key Encipherment
+		//   Data Encipherment
+		//
 
-		// FIXME: todo - Bad_CertificateUseNotAllowed
+		// get info from certificate
+		auto certificate = certificateChain_.certificateVec()[0];
+		CertificateInfo info;
+		if (!certificate->getInfo(info)) {
+			certificate->log(Error, "get info error");
+			return BadCertificateUseNotAllowed;
+		}
+
+		// check key usage
+		if (info.keyUsage().find("Digital Signature") == std::string::npos) {
+			return BadCertificateUseNotAllowed;
+		}
+		if (info.keyUsage().find("Non Repudiation") == std::string::npos) {
+			return BadCertificateUseNotAllowed;
+		}
+		if (info.keyUsage().find("Key Encipherment") == std::string::npos) {
+			return BadCertificateUseNotAllowed;
+		}
+		if (info.keyUsage().find("Data Encipherment") == std::string::npos) {
+			return BadCertificateUseNotAllowed;
+		}
 
 		return Success;
 	}

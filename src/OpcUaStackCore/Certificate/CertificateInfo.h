@@ -48,6 +48,8 @@ namespace OpcUaStackCore
 		uint32_t serialNumber(void);
 		void validFrom(boost::posix_time::ptime validFrom);
 		boost::posix_time::ptime validFrom(void);
+		void keyUsage(const std::string& keyUsage);
+		std::string& keyUsage(void);
 
 		void subjectAltName(const std::string& subjectAltName);
 		std::string subjectAltName(void);
@@ -62,6 +64,7 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime validTime_;
 		uint32_t serialNumber_;
 		boost::posix_time::ptime validFrom_;
+		std::string keyUsage_;
 	};
 
 }
