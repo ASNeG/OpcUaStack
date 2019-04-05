@@ -228,10 +228,12 @@ namespace OpcUaStackServer
 
 	size_t
 	ReferenceItemMap::size() const {
-		return std::accumulate(referenceItemMultiMap_.begin(), referenceItemMultiMap_.end(), 0,
-				[](size_t accum, const ReferenceItemMultiMap::value_type& table) {
-			return accum + table.second.size();
-		});
+		return std::accumulate(
+			referenceItemMultiMap_.begin(), referenceItemMultiMap_.end(), 0,
+			[](size_t accum, const ReferenceItemMultiMap::value_type& table) {
+				return accum + table.second.size();
+			}
+		);
 	}
 
 	ReferenceItemMap::const_iterator::const_iterator()

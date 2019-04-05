@@ -35,12 +35,30 @@ Release 3.7.0
 **Features**:
 
 * refactoring application service interface #65, by @huebl
-* add simple getter to password of UserNameIdentityToken #108, by @flipback 
+* add simple getter to password of UserNameIdentityToken #108, by @flipback
 * improve performance of Information Model #120, by @flipback
 
 **Bugs**:
 
 * fix changing user in the same OPC UA session #105, by @huebl
+* allow relative install path #130, by @huebl
+* fix socket leak in discovery client #126, by @huebl
+* fix calling stop monitored item callback #132, by @flipback
+* fix crash  server during restart #109, by @huebl
+* fix processing of create\delete node requests #158, by @huebl
+
+**Documentation**:
+
+* fix apt-get command in installation guide  #128, by @flipback
+* add app build command for local stack #129, by @flipback
+* add tutorials *Discovery Proccess*, *Data Access* and *Access Control* #82, by @flipback
+
+Release 3.6.2 (2019-02-01)
+------------------------------------------------------------
+
+**Bugs**:
+
+* fix filter in monitored item #101, by @TYZzzzzzz
 
 Release 3.6.1 (2018-12-28)
 ------------------------------------------------------------
@@ -48,6 +66,7 @@ Release 3.6.1 (2018-12-28)
 **Bugs**:
 
 * fix compilation on Winodws #71, by @flipback
+
 
 Release 3.6.0 (2018-12-26)
 ------------------------------------------------------------
@@ -61,7 +80,7 @@ Release 3.6.0 (2018-12-26)
 * implement RPM distribution for the stack and user applications #13, by @flipback
 
 **Bugs**:
- 
+
 * fix crash during shutdown #10, by @huebl
 * fix runing client tests on CI server #45, by @flipback
 * fix too specific params of *build.bat* #16, by @flipback
@@ -117,6 +136,5 @@ Release 3.4.0 (2018-10-16)
 -------------------------------------------------------------
 
 **Features**:
+
 * add Docker support #17, by @flipback
-
-
