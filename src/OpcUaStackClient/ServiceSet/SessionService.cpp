@@ -73,7 +73,7 @@ namespace OpcUaStackClient
 		ctx_->sessionServiceChangeHandler_ = sessionServiceChangeHandler;
 		ctx_->secureChannelClientConfig_ = secureChannelClientConfig;
 		ctx_->sessionConfig_ = sessionConfig;
-		ctx_->setGetEndpointMode();
+		ctx_->setSessionServiceMode();
 
 		sm_.setSessionServiceName(sessionConfig->sessionName_);
 		sm_.setUpdateCallback(

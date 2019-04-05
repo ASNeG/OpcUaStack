@@ -182,7 +182,7 @@ namespace OpcUaStackClient
 		}
 
 		// disconnect secure channel
-		ctx_->clearGetEndpointMode();
+		ctx_->clearSessionServiceMode();
 		secureChannel->close();
 		return SessionServiceStateId::Reconnecting;
 	}

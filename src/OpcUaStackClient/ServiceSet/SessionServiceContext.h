@@ -69,8 +69,8 @@ namespace OpcUaStackClient
 			uint32_t requestHandle
 		);
 
-		void setGetEndpointMode(void);
-		void clearGetEndpointMode(void);
+		void setSessionServiceMode(void);
+		void clearSessionServiceMode(void);
 		SessionServiceMode sessionServiceMode(void);
 
 		bool checkEndpoint(EndpointDescription::SPtr& endpoint);

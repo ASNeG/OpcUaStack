@@ -90,7 +90,7 @@ namespace OpcUaStackClient
 		auto sessionService = ctx_->sessionService_;
 
 		// clear endpoint mode
-		ctx_->clearGetEndpointMode();
+		ctx_->clearSessionServiceMode();
 
 		Log(Debug, "reconnect secure channel")
 			.parameter("SessId", ctx_->id_);

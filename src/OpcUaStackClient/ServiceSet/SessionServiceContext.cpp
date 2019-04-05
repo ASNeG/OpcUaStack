@@ -271,7 +271,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SessionServiceContext::setGetEndpointMode(void)
+	SessionServiceContext::setSessionServiceMode(void)
 	{
 		// check if the endpoint mode is already active
 		if (sessionServiceMode_ == SessionServiceMode::GetEndpoint) {
@@ -303,7 +303,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SessionServiceContext::clearGetEndpointMode(void)
+	SessionServiceContext::clearSessionServiceMode(void)
 	{
 		if (sessionServiceMode_ != SessionServiceMode::GetEndpoint) {
 			return;

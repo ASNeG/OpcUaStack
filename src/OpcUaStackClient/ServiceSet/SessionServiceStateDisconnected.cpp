@@ -209,7 +209,7 @@ namespace OpcUaStackClient
 		Log(Debug, "reconnect timeout event")
 			.parameter("SessId", ctx_->id_);
 
-		ctx_->setGetEndpointMode();
+		ctx_->setSessionServiceMode();
 		return asyncConnect();
 	}
 
