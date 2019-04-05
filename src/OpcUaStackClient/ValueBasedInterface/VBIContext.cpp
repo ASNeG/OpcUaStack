@@ -53,7 +53,7 @@ namespace OpcUaStackClient
 	, endpointUrl_("")
 	, discoveryUrl_("")
 	, applicationUri_("Unknown")
-	, securityMode_(SM_None)
+	, securityMode_(MessageSecurityMode::EnumNone)
 	, securityPolicy_(SP_None)
 	, sessionName_("Unknown")
 	, cryptoManager_()

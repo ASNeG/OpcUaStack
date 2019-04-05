@@ -21,6 +21,7 @@
 
 #include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
+#include "OpcUaStackCore/StandardDataTypes/MessageSecurityMode.h"
 
 namespace OpcUaStackCore
 {
@@ -41,8 +42,8 @@ namespace OpcUaStackCore
 		std::string& discoveryUrl(void);
 		void applicationUri(const std::string& applicationUri);
 		std::string& applicationUri(void);
-		void securityMode(SecurityMode securityMode);
-		SecurityMode securityMode(void);
+		void securityMode(MessageSecurityMode::Enum securityMode);
+		MessageSecurityMode::Enum securityMode(void);
 		void securityPolicy(SecurityPolicy securityPolicy);
 		SecurityPolicy securityPolicy(void);
 		void connectTimeout(uint32_t connectTimeout);
@@ -61,7 +62,7 @@ namespace OpcUaStackCore
 		std::string endpointUrl_;			// opc ua server endpoint url
 		std::string discoveryUrl_;			// opc ua server discovery url
 		std::string applicationUri_;		// application uri
-		SecurityMode securityMode_;			// security mode
+		MessageSecurityMode::Enum securityMode_;// security mode
 		SecurityPolicy securityPolicy_;		// security policy
 
 		CryptoManager::SPtr cryptoManager_;

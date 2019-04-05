@@ -34,14 +34,6 @@ namespace OpcUaStackCore
 		RT_RENEW = 1
 	} RequestType;
 
-
-	typedef enum {
-		SN_Unknown,
-		SM_None,
-		SM_Sign,
-		SM_SignAndEncrypt
-	} SecurityMode;
-
 	typedef enum
 	{
 		SP_None,

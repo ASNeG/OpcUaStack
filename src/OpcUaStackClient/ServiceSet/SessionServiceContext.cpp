@@ -295,7 +295,7 @@ namespace OpcUaStackClient
 		getEndpointMode_ = true;
 		secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());
 		secureChannelClientConfig_->endpointUrl(secureChannelClientConfig_->discoveryUrl());
-		secureChannelClientConfig_->securityMode(SecurityMode::SM_None);
+		secureChannelClientConfig_->securityMode(MessageSecurityMode::EnumNone);
 		secureChannelClientConfig_->securityPolicy(SecurityPolicy::SP_None);
 	}
 

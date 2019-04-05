@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	, endpointUrl_("")
 	, discoveryUrl_("")
 	, applicationUri_("")
-	, securityMode_(SM_None)
+	, securityMode_(MessageSecurityMode::EnumNone)
 	, securityPolicy_(SP_None)
 	, connectTimeout_(0)
 	, renewTimeout_(300000)
@@ -102,12 +102,12 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClientConfig::securityMode(SecurityMode securityMode)
+	SecureChannelClientConfig::securityMode(MessageSecurityMode::Enum securityMode)
 	{
 		securityMode_ = securityMode;
 	}
 
-	SecurityMode
+	MessageSecurityMode::Enum
 	SecureChannelClientConfig::securityMode(void)
 	{
 		return securityMode_;

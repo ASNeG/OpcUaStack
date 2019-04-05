@@ -32,6 +32,7 @@
 #include "OpcUaStackCore/SecureChannel/ErrorMessage.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
+#include "OpcUaStackCore/StandardDataTypes/MessageSecurityMode.h"
 
 namespace OpcUaStackCore
 {
@@ -151,7 +152,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxChunkCount_;
 		std::string endpointUrl_;
 
-		SecurityMode securityMode_;
+		MessageSecurityMode::Enum securityMode_;
 		SecurityPolicy securityPolicy_;
 
 		Object::SPtr handle_;

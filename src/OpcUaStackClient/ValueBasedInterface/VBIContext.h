@@ -51,7 +51,7 @@ namespace OpcUaStackClient
 		std::string endpointUrl_;			//! endpoint url
 		std::string discoveryUrl_;			//! discovery url
 		std::string applicationUri_;
-		SecurityMode securityMode_;
+		MessageSecurityMode::Enum securityMode_;
 		SecurityPolicy securityPolicy_;
 		std::string sessionName_;
 		CryptoManager::SPtr cryptoManager_;

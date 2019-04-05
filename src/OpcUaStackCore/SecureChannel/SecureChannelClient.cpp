@@ -90,12 +90,12 @@ namespace OpcUaStackCore
 		securitySettings.cryptoBase(cryptoBase);
 		securitySettings.ownSecurityPolicyUri() = cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy());
 
-		if (secureChannelClientConfig->securityMode() == SM_Sign ||
-			secureChannelClientConfig->securityMode() == SM_SignAndEncrypt) {
+		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSign ||
+			secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			securitySettings.ownCertificateChain().addCertificate(cryptoManager()->applicationCertificate()->certificate());
 		}
 
-		if (secureChannelClientConfig->securityMode() == SM_SignAndEncrypt) {
+		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			bool result = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(
 				secureChannelClientConfig->applicationUri(),
 				securitySettings.partnerCertificateChain()
