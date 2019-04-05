@@ -50,7 +50,7 @@ namespace OpcUaStackClient
 	, serverNonce_()
 	, requestId_(0)
 	, requestHandle_(0)
-	, getEndpointMode_(false)
+	, sessionServiceMode_(SessionServiceMode::Normal)
 	, secureChannelClientConfigBackup_()
 	{
 	}
@@ -274,7 +274,7 @@ namespace OpcUaStackClient
 	SessionServiceContext::setGetEndpointMode(void)
 	{
 		// check if the endpoint mode is already active
-		if (getEndpointMode_) {
+		if (sessionServiceMode_ == SessionServiceMode::GetEndpoint) {
 			return;
 		}
 
@@ -295,7 +295,7 @@ namespace OpcUaStackClient
 		// - The Get Endpoint Request is sent without encryption.
 		// - The target for the Get Endpoint Request is the Discovery Url.
 		//
-		getEndpointMode_ = true;
+		sessionServiceMode_ = SessionServiceMode::GetEndpoint;
 		secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());
 		secureChannelClientConfig_->endpointUrl(secureChannelClientConfig_->discoveryUrl());
 		secureChannelClientConfig_->securityMode(MessageSecurityMode::EnumNone);
@@ -305,21 +305,21 @@ namespace OpcUaStackClient
 	void
 	SessionServiceContext::clearGetEndpointMode(void)
 	{
-		if (!getEndpointMode_) {
+		if (sessionServiceMode_ != SessionServiceMode::GetEndpoint) {
 			return;
 		}
 
 		Log(Debug, "session endpoint mode off")
 			.parameter("SessId", id_);
 
-		getEndpointMode_ = false;
+		sessionServiceMode_ = SessionServiceMode::Normal;
 		secureChannelClientConfig_ = secureChannelClientConfigBackup_;
 	}
 
-	bool
-	SessionServiceContext::isGetEndpointMode(void)
+	SessionServiceMode
+	SessionServiceContext::sessionServiceMode(void)
 	{
-		return getEndpointMode_;
+		return sessionServiceMode_;
 	}
 
 	bool

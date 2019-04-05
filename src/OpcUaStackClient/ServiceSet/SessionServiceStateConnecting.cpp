@@ -87,7 +87,7 @@ namespace OpcUaStackClient
 
 		// check if the session is in the get endpoint mode. In this mode no session
 		// needs to be open.
-		if (ctx_->isGetEndpointMode()) {
+		if (ctx_->sessionServiceMode() == SessionServiceMode::GetEndpoint) {
 
 			// send get endpoint request
 			ctx_->sendGetEndpointsRequest(secureChannel);

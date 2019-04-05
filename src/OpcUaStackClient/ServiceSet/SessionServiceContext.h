@@ -34,6 +34,12 @@ namespace OpcUaStackClient
 
 	class SessionService;
 
+	enum class SessionServiceMode {
+		Normal,			// direct access to opc ua server
+		GetEndpoint,	// get endpoint from opc ua server
+		UseCache		// use endpoint from cache
+	};
+
 	class DLLEXPORT SessionServiceContext
 	{
 	  public:
@@ -65,7 +71,7 @@ namespace OpcUaStackClient
 
 		void setGetEndpointMode(void);
 		void clearGetEndpointMode(void);
-		bool isGetEndpointMode(void);
+		SessionServiceMode sessionServiceMode(void);
 
 		bool checkEndpoint(EndpointDescription::SPtr& endpoint);
 
@@ -108,7 +114,7 @@ namespace OpcUaStackClient
 		OpcUaUInt32 requestId_;
 		OpcUaUInt32 requestHandle_;
 
-		bool getEndpointMode_;						// a get endpoint request must send to the opc ua server
+		SessionServiceMode sessionServiceMode_;
 		SecureChannelClientConfig::SPtr secureChannelClientConfigBackup_;
 	};
 
