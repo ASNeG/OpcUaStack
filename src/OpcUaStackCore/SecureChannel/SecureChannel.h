@@ -19,7 +19,8 @@
 #ifndef __OpcUaStackCore_SecureChannel_h__
 #define __OpcUaStackCore_SecureChannel_h__
 
-#include <OpcUaStackCore/Network/TCPConnection.h>
+#include "OpcUaStackCore/BuildInTypes/SecurityPolicy.h"
+#include "OpcUaStackCore/Network/TCPConnection.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/Certificate/SecurityKeySet.h"
@@ -153,7 +154,7 @@ namespace OpcUaStackCore
 		std::string endpointUrl_;
 
 		MessageSecurityMode::Enum securityMode_;
-		SecurityPolicy securityPolicy_;
+		SecurityPolicy::Enum securityPolicy_;
 
 		Object::SPtr handle_;
 		static OpcUaUInt32 gChannelId_;

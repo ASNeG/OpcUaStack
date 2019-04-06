@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 	, discoveryUrl_("")
 	, applicationUri_("")
 	, securityMode_(MessageSecurityMode::EnumNone)
-	, securityPolicy_(SP_None)
+	, securityPolicy_(SecurityPolicy::EnumNone)
 	, connectTimeout_(0)
 	, renewTimeout_(300000)
 	, reconnectTimeout_(0)
@@ -114,12 +114,12 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClientConfig::securityPolicy(SecurityPolicy securityPolicy)
+	SecureChannelClientConfig::securityPolicy(SecurityPolicy::Enum securityPolicy)
 	{
 		securityPolicy_ = securityPolicy;
 	}
 
-	SecurityPolicy
+	SecurityPolicy::Enum
 	SecureChannelClientConfig::securityPolicy(void)
 	{
 		return securityPolicy_;

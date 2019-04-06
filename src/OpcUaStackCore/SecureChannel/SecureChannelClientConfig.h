@@ -44,8 +44,8 @@ namespace OpcUaStackCore
 		std::string& applicationUri(void);
 		void securityMode(MessageSecurityMode::Enum securityMode);
 		MessageSecurityMode::Enum securityMode(void);
-		void securityPolicy(SecurityPolicy securityPolicy);
-		SecurityPolicy securityPolicy(void);
+		void securityPolicy(SecurityPolicy::Enum securityPolicy);
+		SecurityPolicy::Enum securityPolicy(void);
 		void connectTimeout(uint32_t connectTimeout);
 		uint32_t connectTimeout(void);
 		void renewTimeout(uint32_t renewTimeout);
@@ -63,7 +63,7 @@ namespace OpcUaStackCore
 		std::string discoveryUrl_;			// opc ua server discovery url
 		std::string applicationUri_;		// application uri
 		MessageSecurityMode::Enum securityMode_;// security mode
-		SecurityPolicy securityPolicy_;		// security policy
+		SecurityPolicy::Enum securityPolicy_;	// security policy
 
 		CryptoManager::SPtr cryptoManager_;
 

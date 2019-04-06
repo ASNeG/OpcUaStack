@@ -34,14 +34,6 @@ namespace OpcUaStackCore
 		RT_RENEW = 1
 	} RequestType;
 
-	typedef enum
-	{
-		SP_None,
-		SP_Basic128Rsa15,
-		SP_Basic256,
-		SP_Basic256Sha256
-	} SecurityPolicy;
-
 }
 
 #endif
