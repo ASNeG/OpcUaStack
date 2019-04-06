@@ -82,7 +82,7 @@ References
 * `OPC UA Specifications`_
 * ASNeG-Demo_
 
-.. _example: https://opcuastack.readthedocs.io/en/latest/1_getting_started/installation.html
+.. _example: https://opcuastack.readthedocs.io/en/latest/1_getting_started/hello_world.html
 .. _Documentation: http://opcuastack.rtfd.io/
 .. _ASNeG Home Page: http://asneg.de/
 .. _OPC UA Specifications: https://opcfoundation.org/developer-tools/specifications-unified-architecture
