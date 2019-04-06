@@ -35,6 +35,10 @@ In the development stage:
 
 * Code generator to create C++ classes representing OPC UA types, objects and events from XML (Nodesets)
 * Multi-thread model (currently all application modules run in only one thread)
+* PubSub (Part 14) implementation
+
+The information about the coverage of OPC UA specification you can find
+`here <https://opcuastack.readthedocs.io/en/latest/1_getting_started/overview.html#opc-ua-specification-coverage>`_
 
 Installing
 ------------------------------
@@ -44,7 +48,7 @@ See `here <https://opcuastack.readthedocs.io/en/latest/1_getting_started/install
 Usage
 ------------------------------
 
-In order to create a user application OpcUa Stack provides a project builder:
+In order to create a user application OPC UA Stack provides a project builder:
 
 ::
 
