@@ -20,7 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaBaseEnums.h"
+#include "OpcUaStackCore/BuildInTypes/SecurityPolicy.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/Certificate/CertificateManager.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
@@ -37,15 +37,15 @@ namespace OpcUaStackCore
 		~CryptoManager(void);
 
 		bool insert(
-			SecurityPolicy securityPolicy,
+			SecurityPolicy::Enum securityPolicy,
 			const std::string& securityPolicyString,
 			CryptoBase::SPtr& cryptoBase
 		);
-		bool remove(SecurityPolicy securityPolicy);
-		std::string securityPolicy(SecurityPolicy securityPolicy);
-		SecurityPolicy securityPolicy(const std::string securityPolicy);
+		bool remove(SecurityPolicy::Enum securityPolicy);
+		std::string securityPolicy(SecurityPolicy::Enum securityPolicy);
+		SecurityPolicy::Enum securityPolicy(const std::string securityPolicy);
 		CryptoBase::SPtr get(const std::string& name);
-		CryptoBase::SPtr get(SecurityPolicy securityPolicy);
+		CryptoBase::SPtr get(SecurityPolicy::Enum securityPolicy);
 
 		void certificateManager(CertificateManager::SPtr& certificateManager);
 		bool createCertificateManager(
@@ -60,8 +60,8 @@ namespace OpcUaStackCore
 		ApplicationCertificate::SPtr& applicationCertificate(void);
 
 	  private:
-		std::map<SecurityPolicy,CryptoBase::SPtr> cryptoBaseMap_;
-		std::map<std::string, SecurityPolicy> securityPolicyMap_;
+		std::map<SecurityPolicy::Enum,CryptoBase::SPtr> cryptoBaseMap_;
+		std::map<std::string, SecurityPolicy::Enum> securityPolicyMap_;
 		CertificateManager::SPtr certificateManager_;
 		ApplicationCertificate::SPtr applicationCertificate_;
 	};

@@ -512,7 +512,7 @@ namespace OpcUaStackCore
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// create client nonce
-		if (secureChannel->securityPolicy_ != SP_None) {
+		if (secureChannel->securityPolicy_ != SecurityPolicy::EnumNone) {
 			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
 			securitySettings.ownNonce().resize(keyLen);
 

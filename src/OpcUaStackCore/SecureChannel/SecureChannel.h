@@ -19,7 +19,8 @@
 #ifndef __OpcUaStackCore_SecureChannel_h__
 #define __OpcUaStackCore_SecureChannel_h__
 
-#include <OpcUaStackCore/Network/TCPConnection.h>
+#include "OpcUaStackCore/BuildInTypes/SecurityPolicy.h"
+#include "OpcUaStackCore/Network/TCPConnection.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/Certificate/SecurityKeySet.h"
@@ -32,6 +33,7 @@
 #include "OpcUaStackCore/SecureChannel/ErrorMessage.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
+#include "OpcUaStackCore/StandardDataTypes/MessageSecurityMode.h"
 
 namespace OpcUaStackCore
 {
@@ -151,8 +153,8 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxChunkCount_;
 		std::string endpointUrl_;
 
-		SecurityMode securityMode_;
-		SecurityPolicy securityPolicy_;
+		MessageSecurityMode::Enum securityMode_;
+		SecurityPolicy::Enum securityPolicy_;
 
 		Object::SPtr handle_;
 		static OpcUaUInt32 gChannelId_;

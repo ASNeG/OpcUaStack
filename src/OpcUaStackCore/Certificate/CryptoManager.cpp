@@ -35,7 +35,7 @@ namespace OpcUaStackCore
 		// register open ssl security policy NONE
 		CryptoOpenSSLNONE::SPtr cryptoOpenSSLNone(constructSPtr<CryptoOpenSSLNONE>());
 		insert(
-			SP_None,
+			SecurityPolicy::EnumNone,
 			"http://opcfoundation.org/UA/SecurityPolicy#None",
 			cryptoOpenSSLNone
 		);
@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 		// register open ssl security policy BASIC256SHA256
 		CryptoOpenSSLBASIC256SHA256::SPtr cryptoOpenSSLBASIC256SHA256(constructSPtr<CryptoOpenSSLBASIC256SHA256>());
 		insert(
-			SP_Basic256Sha256,
+			SecurityPolicy::EnumBasic256Sha256,
 			"http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256",
 			cryptoOpenSSLBASIC256SHA256
 		);
@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 		// register open ssl security policy BASIC256
 		CryptoOpenSSLBASIC256::SPtr cryptoOpenSSLBASIC256(constructSPtr<CryptoOpenSSLBASIC256>());
 		insert(
-			SP_Basic256,
+			SecurityPolicy::EnumBasic256,
 			"http://opcfoundation.org/UA/SecurityPolicy#Basic256",
 			cryptoOpenSSLBASIC256
 		);
@@ -59,7 +59,7 @@ namespace OpcUaStackCore
 		// register open ssl security policy BASIC128RSA15
 		CryptoOpenSSLBASIC128RSA15::SPtr cryptoOpenSSLBASIC128RSA15(constructSPtr<CryptoOpenSSLBASIC128RSA15>());
 		insert(
-			SP_Basic128Rsa15,
+			SecurityPolicy::EnumBasic128Rsa15,
 			"http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15",
 			cryptoOpenSSLBASIC128RSA15
 		);
@@ -74,23 +74,27 @@ namespace OpcUaStackCore
 
 	bool
 	CryptoManager::insert(
-		SecurityPolicy securityPolicy,
+		SecurityPolicy::Enum securityPolicy,
 		const std::string& securityPolicyString,
 		CryptoBase::SPtr& cryptoBase
 	)
 	{
-		securityPolicyMap_.insert(std::make_pair(securityPolicyString, securityPolicy));
-		return cryptoBaseMap_.insert(std::make_pair(securityPolicy, cryptoBase)).second;
+		securityPolicyMap_.insert(
+			std::make_pair(securityPolicyString, securityPolicy)
+		);
+		return cryptoBaseMap_.insert(
+			std::make_pair(securityPolicy, cryptoBase)
+		).second;
 	}
 
 	bool
-	CryptoManager::remove(SecurityPolicy securityPolicy)
+	CryptoManager::remove(SecurityPolicy::Enum securityPolicy)
 	{
 		return cryptoBaseMap_.erase(securityPolicy) == 1;
 	}
 
 	std::string
-	CryptoManager::securityPolicy(SecurityPolicy securityPolicy)
+	CryptoManager::securityPolicy(SecurityPolicy::Enum securityPolicy)
 	{
 		auto it = cryptoBaseMap_.find(securityPolicy);
 		if (it == cryptoBaseMap_.end()) {
@@ -99,12 +103,12 @@ namespace OpcUaStackCore
 		return it->second->securityPolicy();
 	}
 
-	SecurityPolicy
+	SecurityPolicy::Enum
 	CryptoManager::securityPolicy(const std::string securityPolicy)
 	{
 		auto it = securityPolicyMap_.find(securityPolicy);
 		if (it == securityPolicyMap_.end()) {
-			return SP_None;
+			return SecurityPolicy::EnumNone;
 		}
 		return it->second;
 	}
@@ -122,7 +126,7 @@ namespace OpcUaStackCore
 	}
 
 	CryptoBase::SPtr
-	CryptoManager::get(SecurityPolicy securityPolicy)
+	CryptoManager::get(SecurityPolicy::Enum securityPolicy)
 	{
 		CryptoBase::Map::iterator it;
 		it = cryptoBaseMap_.find(securityPolicy);

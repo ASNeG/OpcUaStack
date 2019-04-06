@@ -74,8 +74,8 @@ namespace OpcUaStackCore
 	, sendSequenceNumber_(0)
 	, recvSequenceNumber_(0)
 
-	, securityMode_(SM_None)
-	, securityPolicy_(SP_None)
+	, securityMode_(MessageSecurityMode::EnumNone)
+	, securityPolicy_(SecurityPolicy::EnumNone)
 
 	, handle_()
 

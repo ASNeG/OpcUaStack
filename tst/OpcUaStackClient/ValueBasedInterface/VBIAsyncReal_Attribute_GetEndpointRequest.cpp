@@ -53,8 +53,8 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest, GValueFixture
 	connectContext.discoveryUrl_ = REAL_SERVER_URI;						// use get endpoint request to find endpoint url
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.applicationUri_ = applicationUri;					// needed to detect right certificate
-	connectContext.securityMode_ = SM_SignAndEncrypt;					// security mode
-	connectContext.securityPolicy_ = SP_Basic128Rsa15;					// security policy
+	connectContext.securityMode_ = MessageSecurityMode::EnumSignAndEncrypt;	// security mode
+	connectContext.securityPolicy_ = SecurityPolicy::EnumBasic128Rsa15;		// security policy
 	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();
 	connectContext.secureChannelLog_ = true;
 	cond_.initEvent();
@@ -108,8 +108,8 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest_write, GValueF
 	connectContext.discoveryUrl_ = REAL_SERVER_URI;						// use get endpoint request to find endpoint url
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	connectContext.applicationUri_ = applicationUri;					// needed to detect right certificate
-	connectContext.securityMode_ = SM_SignAndEncrypt;					// security mode
-	connectContext.securityPolicy_ = SP_Basic128Rsa15;					// security policy
+	connectContext.securityMode_ = MessageSecurityMode::EnumSignAndEncrypt;// security mode
+	connectContext.securityPolicy_ = SecurityPolicy::EnumBasic128Rsa15;	   // security policy
 	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();;
 	connectContext.secureChannelLog_ = true;
 	cond_.initEvent();

@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaBaseEnums.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.h"
+#include "OpcUaStackCore/StandardDataTypes/MessageSecurityMode.h"
 
 namespace OpcUaStackCore
 {
@@ -42,8 +43,8 @@ namespace OpcUaStackCore
 		OpcUaInt32 clientProtocolVersion(void);
 		void requestType(const RequestType& requestType);
 		RequestType requestType(void);
-		void securityMode(const SecurityMode& securityMode);
-		SecurityMode securityMode(void) const;
+		void securityMode(MessageSecurityMode::Enum securityMode);
+		MessageSecurityMode::Enum securityMode(void) const;
 		void clientNonce(OpcUaByte **buf, OpcUaInt32* bufLen) const;
 		void clientNonce(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void requestedLifetime(const OpcUaInt32& requestedLifetime);
@@ -56,7 +57,7 @@ namespace OpcUaStackCore
 		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaInt32 clientProtocolVersion_;
 		RequestType requestType_;
-		SecurityMode securityMode_;
+		MessageSecurityMode::Enum securityMode_;
 		OpcUaByteString clientNonce_;
 		OpcUaInt32 requestedLifetime_;
 	};

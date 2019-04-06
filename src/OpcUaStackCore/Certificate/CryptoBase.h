@@ -23,6 +23,7 @@
 #include <string>
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaBaseEnums.h"
+#include "OpcUaStackCore/BuildInTypes/SecurityPolicy.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
 #include "OpcUaStackCore/Certificate/PublicKey.h"
 #include "OpcUaStackCore/Certificate/CryptoAES.h"
@@ -75,7 +76,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<CryptoBase> SPtr;
-		typedef std::map<SecurityPolicy, CryptoBase::SPtr> Map;
+		typedef std::map<SecurityPolicy::Enum, CryptoBase::SPtr> Map;
 
 		CryptoBase(void);
 		virtual ~CryptoBase(void);

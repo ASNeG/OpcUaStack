@@ -32,8 +32,8 @@ namespace OpcUaStackCore
 	, endpointUrl_("")
 	, discoveryUrl_("")
 	, applicationUri_("")
-	, securityMode_(SM_None)
-	, securityPolicy_(SP_None)
+	, securityMode_(MessageSecurityMode::EnumNone)
+	, securityPolicy_(SecurityPolicy::EnumNone)
 	, connectTimeout_(0)
 	, renewTimeout_(300000)
 	, reconnectTimeout_(0)
@@ -102,24 +102,24 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClientConfig::securityMode(SecurityMode securityMode)
+	SecureChannelClientConfig::securityMode(MessageSecurityMode::Enum securityMode)
 	{
 		securityMode_ = securityMode;
 	}
 
-	SecurityMode
+	MessageSecurityMode::Enum
 	SecureChannelClientConfig::securityMode(void)
 	{
 		return securityMode_;
 	}
 
 	void
-	SecureChannelClientConfig::securityPolicy(SecurityPolicy securityPolicy)
+	SecureChannelClientConfig::securityPolicy(SecurityPolicy::Enum securityPolicy)
 	{
 		securityPolicy_ = securityPolicy;
 	}
 
-	SecurityPolicy
+	SecurityPolicy::Enum
 	SecureChannelClientConfig::securityPolicy(void)
 	{
 		return securityPolicy_;

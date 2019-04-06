@@ -48,11 +48,13 @@ namespace OpcUaStackClient
 		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
 		bool secureChannelLog_;
-		std::string endpointUrl_;			//! endpoint url
-		std::string discoveryUrl_;			//! discovery url
-		std::string applicationUri_;
-		SecurityMode securityMode_;
-		SecurityPolicy securityPolicy_;
+		std::string endpointUrl_;			//! direct access without get endpoint request.
+		std::string discoveryUrl_;			//! use get endpoint request to find endpoint url. If an
+											//! endpoint url exists, it will be ignored.
+		std::string applicationUri_;		//! needed to detect right certificate, if get endpoint request
+											//! is not used
+		MessageSecurityMode::Enum securityMode_;
+		SecurityPolicy::Enum securityPolicy_;
 		std::string sessionName_;
 		CryptoManager::SPtr cryptoManager_;
 	};
