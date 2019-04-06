@@ -51,6 +51,7 @@ namespace OpcUaStackClient
 	, requestId_(0)
 	, requestHandle_(0)
 	, sessionServiceMode_(SessionServiceMode::Normal)
+	, endpointDescriptionCache_()
 	, secureChannelClientConfigBackup_()
 	{
 	}
@@ -274,7 +275,8 @@ namespace OpcUaStackClient
 	SessionServiceContext::setSessionServiceMode(void)
 	{
 		// check if the endpoint mode is already active
-		if (sessionServiceMode_ == SessionServiceMode::GetEndpoint) {
+		if (sessionServiceMode_ == SessionServiceMode::GetEndpoint ||
+			sessionServiceMode_ == SessionServiceMode::UseCache) {
 			return;
 		}
 
@@ -287,6 +289,31 @@ namespace OpcUaStackClient
 		secureChannelClientConfigBackup_ = secureChannelClientConfig_;
 		Log(Debug, "session endpoint mode on")
 			.parameter("SessId", id_);
+
+		// Now it is checked if we can use a cache entry
+		auto endpointDescriptions = endpointDescriptionCache_.getEndpointDescription(
+			secureChannelClientConfig_->discoveryUrl()
+		);
+		if (endpointDescriptions.get() != nullptr) {
+			// we found an endpoint description array in the endpoint description cache
+
+			auto endpointDescription = selectEndpointDescriptionFromCache(
+				endpointDescriptions
+			);
+			if (endpointDescription.get() != nullptr) {
+				// we found a endpoint description
+
+				sessionServiceMode_ = SessionServiceMode::UseCache;
+				secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());
+				secureChannelClientConfig_->endpointUrl(endpointDescription->endpointUrl());
+				secureChannelClientConfig_->securityMode(endpointDescription->securityMode().enumeration());
+				secureChannelClientConfig_->securityPolicy(SecurityPolicy::str2Enum(endpointDescription->securityPolicyUri().toStdString()));
+				return;
+			}
+
+			Log(Debug, "no endpoint in cache found")
+				.parameter("DiscoveryUrl", secureChannelClientConfig_->discoveryUrl());
+		}
 
 		//
 		// Before establishing a communication connection, the endpoints are queried by the
@@ -320,6 +347,29 @@ namespace OpcUaStackClient
 	SessionServiceContext::sessionServiceMode(void)
 	{
 		return sessionServiceMode_;
+	}
+
+	EndpointDescription::SPtr
+	SessionServiceContext::selectEndpointDescriptionFromCache(
+		EndpointDescriptionArray::SPtr& endpointDescriptions
+	)
+	{
+		for (auto idx = 0; idx < endpointDescriptions->size(); idx++) {
+			EndpointDescription::SPtr endpointDescription;
+			endpointDescriptions->get(idx, endpointDescription);
+
+			if (secureChannelClientConfigBackup_->securityMode() != endpointDescription->securityMode().enumeration()) {
+				continue;
+			}
+
+			if (secureChannelClientConfigBackup_->securityPolicy() != SecurityPolicy::str2Enum(endpointDescription->securityPolicyUri())) {
+				continue;
+			}
+
+			return endpointDescription;
+		}
+
+		return nullptr;
 	}
 
 	bool

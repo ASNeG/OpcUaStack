@@ -26,6 +26,7 @@
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
+#include "OpcUaStackClient/ServiceSet/EndpointDescriptionCache.h"
 
 using namespace OpcUaStackCore;
 
@@ -72,6 +73,9 @@ namespace OpcUaStackClient
 		void setSessionServiceMode(void);
 		void clearSessionServiceMode(void);
 		SessionServiceMode sessionServiceMode(void);
+		EndpointDescription::SPtr selectEndpointDescriptionFromCache(
+			EndpointDescriptionArray::SPtr& endpointDescriptions
+		);
 
 		bool checkEndpoint(EndpointDescription::SPtr& endpoint);
 
@@ -115,6 +119,7 @@ namespace OpcUaStackClient
 		OpcUaUInt32 requestHandle_;
 
 		SessionServiceMode sessionServiceMode_;
+		EndpointDescriptionCache endpointDescriptionCache_;
 		SecureChannelClientConfig::SPtr secureChannelClientConfigBackup_;
 	};
 
