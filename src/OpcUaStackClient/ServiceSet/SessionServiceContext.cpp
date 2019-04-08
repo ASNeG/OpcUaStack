@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
+#include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 
 namespace OpcUaStackClient
@@ -306,6 +307,7 @@ namespace OpcUaStackClient
 				sessionServiceMode_ = SessionServiceMode::UseCache;
 				secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());
 				secureChannelClientConfig_->endpointUrl(endpointDescription->endpointUrl());
+				secureChannelClientConfig_->applicationUri(endpointDescription->server().applicationUri());
 				secureChannelClientConfig_->securityMode(endpointDescription->securityMode().enumeration());
 				secureChannelClientConfig_->securityPolicy(SecurityPolicy::str2Enum(endpointDescription->securityPolicyUri().toStdString()));
 				return;
@@ -358,10 +360,12 @@ namespace OpcUaStackClient
 			EndpointDescription::SPtr endpointDescription;
 			endpointDescriptions->get(idx, endpointDescription);
 
+			// check security mode
 			if (secureChannelClientConfigBackup_->securityMode() != endpointDescription->securityMode().enumeration()) {
 				continue;
 			}
 
+			// check security policy
 			if (secureChannelClientConfigBackup_->securityPolicy() != SecurityPolicy::str2Enum(endpointDescription->securityPolicyUri())) {
 				continue;
 			}

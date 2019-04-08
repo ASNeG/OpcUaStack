@@ -76,8 +76,9 @@ namespace OpcUaStackClient
 		EndpointDescription::SPtr selectEndpointDescriptionFromCache(
 			EndpointDescriptionArray::SPtr& endpointDescriptions
 		);
-
-		bool checkEndpoint(EndpointDescription::SPtr& endpoint);
+		bool checkEndpoint(
+			EndpointDescription::SPtr& endpointDescription
+		);
 
 		static uint32_t gId_;
 		uint32_t id_;

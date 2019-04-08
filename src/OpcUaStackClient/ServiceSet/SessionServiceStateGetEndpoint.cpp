@@ -148,7 +148,7 @@ namespace OpcUaStackClient
 		GetEndpointsResponse getEndpointsResponse;
 		getEndpointsResponse.opcUaBinaryDecode(ios);
 
-		// read endpoints from endpoint response
+		// read endpoints from get endpoint response
 		bool found = false;
 		EndpointDescription::SPtr endpoint;
 		for (uint32_t idx = 0; idx < getEndpointsResponse.endpoints()->size(); idx++) {
