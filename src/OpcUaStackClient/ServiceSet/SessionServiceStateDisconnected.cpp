@@ -44,6 +44,9 @@ namespace OpcUaStackClient
 		assert(ctx_->secureChannelClientConfig_.get() != nullptr);
 		assert(ctx_->sessionService_ != nullptr);
 
+		// set session service mode
+		ctx_->setSessionServiceMode();
+
 		auto clientConfig = ctx_->secureChannelClientConfig_;
 		auto& secureChannelClient = ctx_->secureChannelClient_;
 		auto secureChannel = ctx_->secureChannel_;

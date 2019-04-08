@@ -275,21 +275,17 @@ namespace OpcUaStackClient
 	void
 	SessionServiceContext::setSessionServiceMode(void)
 	{
-		// check if the endpoint mode is already active
-		if (sessionServiceMode_ == SessionServiceMode::GetEndpoint ||
-			sessionServiceMode_ == SessionServiceMode::UseCache) {
-			return;
-		}
+		secureChannelClientConfig_ = secureChannelClientConfigBackup_;
+		sessionServiceMode_ = SessionServiceMode::Normal;
 
 		// we need the discovery url to send the get endpoint request to
 		// the opc ua server.
 		if (secureChannelClientConfig_->discoveryUrl().empty()) {
+			Log(Debug, "set session service mode")
+				.parameter("SessId", id_)
+				.parameter("SessServiceMode", "Normal");
 			return;
 		}
-
-		secureChannelClientConfigBackup_ = secureChannelClientConfig_;
-		Log(Debug, "session endpoint mode on")
-			.parameter("SessId", id_);
 
 		// Now it is checked if we can use a cache entry
 		auto endpointDescriptions = endpointDescriptionCache_.getEndpointDescription(
@@ -304,6 +300,10 @@ namespace OpcUaStackClient
 			if (endpointDescription.get() != nullptr) {
 				// we found a endpoint description
 
+				Log(Debug, "set session service mode")
+					.parameter("SessId", id_)
+					.parameter("SessServiceMode", "UseCache");
+
 				sessionServiceMode_ = SessionServiceMode::UseCache;
 				secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());
 				secureChannelClientConfig_->endpointUrl(endpointDescription->endpointUrl());
@@ -312,9 +312,6 @@ namespace OpcUaStackClient
 				secureChannelClientConfig_->securityPolicy(SecurityPolicy::str2Enum(endpointDescription->securityPolicyUri().toStdString()));
 				return;
 			}
-
-			Log(Debug, "no endpoint in cache found")
-				.parameter("DiscoveryUrl", secureChannelClientConfig_->discoveryUrl());
 		}
 
 		//
@@ -324,25 +321,15 @@ namespace OpcUaStackClient
 		// - The Get Endpoint Request is sent without encryption.
 		// - The target for the Get Endpoint Request is the Discovery Url.
 		//
+		Log(Debug, "set session service mode")
+			.parameter("SessId", id_)
+			.parameter("SessServiceMode", "GetEndpoint");
+
 		sessionServiceMode_ = SessionServiceMode::GetEndpoint;
 		secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());
 		secureChannelClientConfig_->endpointUrl(secureChannelClientConfig_->discoveryUrl());
 		secureChannelClientConfig_->securityMode(MessageSecurityMode::EnumNone);
 		secureChannelClientConfig_->securityPolicy(SecurityPolicy::EnumNone);
-	}
-
-	void
-	SessionServiceContext::clearSessionServiceMode(void)
-	{
-		if (sessionServiceMode_ != SessionServiceMode::GetEndpoint) {
-			return;
-		}
-
-		Log(Debug, "session endpoint mode off")
-			.parameter("SessId", id_);
-
-		sessionServiceMode_ = SessionServiceMode::Normal;
-		secureChannelClientConfig_ = secureChannelClientConfigBackup_;
 	}
 
 	SessionServiceMode

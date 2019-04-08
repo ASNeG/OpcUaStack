@@ -36,8 +36,8 @@ namespace OpcUaStackCore
 
 		void responseHeader(const ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void) const;
-		void endpoints(const EndpointDescriptionArray::SPtr endpoints);
-		EndpointDescriptionArray::SPtr endpoints(void) const;
+		void endpoints(const EndpointDescriptionArray::SPtr& endpoints);
+		EndpointDescriptionArray::SPtr& endpoints(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

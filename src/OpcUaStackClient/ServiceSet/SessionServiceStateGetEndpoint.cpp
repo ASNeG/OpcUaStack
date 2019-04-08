@@ -148,6 +148,17 @@ namespace OpcUaStackClient
 		GetEndpointsResponse getEndpointsResponse;
 		getEndpointsResponse.opcUaBinaryDecode(ios);
 
+		// check endpoints
+		if (getEndpointsResponse.endpoints()->size() == 0) {
+			Log(Debug, "no endpoints found in get endpoint request; close secure channel")
+				.parameter("SessId", ctx_->id_);
+
+			// close secure channel -
+			ctx_->secureChannelClient_.disconnect(secureChannel);
+
+			return SessionServiceStateId::Error;
+		}
+
 		// read endpoints from get endpoint response
 		bool found = false;
 		EndpointDescription::SPtr endpoint;
@@ -159,30 +170,15 @@ namespace OpcUaStackClient
 				.parameter("SecurityMode", endpoint->securityMode().enum2Str())
 				.parameter("SecurityPolicyUri", endpoint->securityPolicyUri())
 				.parameter("ApplicationUri", endpoint->server().applicationUri());
-
-			if (ctx_->checkEndpoint(endpoint)) {
-				found = true;
-			}
-
-			// FIXME: todo - set endpoint url in secure channel client config
-			std::string url = ctx_->secureChannelClientConfigBackup_->discoveryUrl();
-			ctx_->secureChannelClientConfigBackup_->endpointUrl(url);
 		}
 
-		// check if endpoint is found
-		if (!found) {
-			Log(Debug, "no valid endpoint found; close secure channel")
-				.parameter("SessId", ctx_->id_)
-				.parameter("ApplicationUri", ctx_->secureChannelClientConfig_->applicationUri());
-
-			// close secure channel -
-			ctx_->secureChannelClient_.disconnect(secureChannel);
-
-			return SessionServiceStateId::Error;
-		}
+		// insert endpoints into endpoint description cache
+		ctx_->endpointDescriptionCache_.insertEndpointDescription(
+			ctx_->secureChannelClientConfig_->endpointUrl(),
+			getEndpointsResponse.endpoints()
+		);
 
 		// disconnect secure channel
-		ctx_->clearSessionServiceMode();
 		secureChannel->close();
 		return SessionServiceStateId::Reconnecting;
 	}

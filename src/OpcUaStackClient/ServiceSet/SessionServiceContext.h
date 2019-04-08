@@ -71,7 +71,6 @@ namespace OpcUaStackClient
 		);
 
 		void setSessionServiceMode(void);
-		void clearSessionServiceMode(void);
 		SessionServiceMode sessionServiceMode(void);
 		EndpointDescription::SPtr selectEndpointDescriptionFromCache(
 			EndpointDescriptionArray::SPtr& endpointDescriptions
