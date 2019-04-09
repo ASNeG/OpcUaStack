@@ -53,6 +53,7 @@ namespace OpcUaStackClient
 		EndpointDescriptionArray::SPtr getEndpointDescription(
 			const std::string& endpointUrl
 		);
+		void getEndpointUrls(std::vector<std::string>& endpointUrls);
 
 	  private:
 		boost::mutex mutex_;

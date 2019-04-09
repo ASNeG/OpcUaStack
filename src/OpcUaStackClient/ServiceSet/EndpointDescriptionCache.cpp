@@ -94,4 +94,12 @@ namespace OpcUaStackClient
 		return endpointDescriptionArray;
 	}
 
+	void
+	EndpointDescriptionCache::getEndpointUrls(std::vector<std::string>& endpointUrls)
+	{
+		for (auto it = endpointDescriptionMap_.begin(); it != endpointDescriptionMap_.end(); it++) {
+			endpointUrls.push_back(it->first);
+		}
+	}
+
 }

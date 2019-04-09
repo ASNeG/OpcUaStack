@@ -118,7 +118,7 @@ namespace OpcUaStackClient
 			ctx_->secureChannelClientConfigBackup_->discoveryUrl()
 		);
 
-		return SessionServiceStateId::Error;
+		return SessionServiceStateId::Disconnected;
 	}
 
 	SessionServiceStateId
