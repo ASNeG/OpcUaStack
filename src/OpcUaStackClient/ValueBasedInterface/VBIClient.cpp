@@ -174,6 +174,12 @@ namespace OpcUaStackClient
 		sessionService_->getEndpointDescriptionCache().clear();
 	}
 
+	EndpointDescriptionCache&
+	VBIClient::getEndpointDescriptionCache(void)
+	{
+		return sessionService_->getEndpointDescriptionCache();
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//

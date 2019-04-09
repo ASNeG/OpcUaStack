@@ -62,7 +62,9 @@ namespace OpcUaStackClient
 
 		OpcUaStatusCode syncDisconnect(void);
 		void asyncDisconnect(void);
+
 		void deleteEndpointDescriptionCache(void);
+		EndpointDescriptionCache& getEndpointDescriptionCache(void);
 
 
 		// --------------------------------------------------------------------

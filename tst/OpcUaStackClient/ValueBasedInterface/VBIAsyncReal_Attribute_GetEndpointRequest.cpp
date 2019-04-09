@@ -143,7 +143,7 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest_write, GValueF
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_EndpointCache, GValueFixture)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_UseEndpointCache, GValueFixture)
 {
 	VBIClient client;
 
