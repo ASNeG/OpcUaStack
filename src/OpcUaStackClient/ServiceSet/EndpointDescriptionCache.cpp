@@ -24,7 +24,8 @@ namespace OpcUaStackClient
 {
 
 	EndpointDescriptionCache::EndpointDescriptionCache(void)
-	: endpointDescriptionMap_()
+	: mutex_()
+	, endpointDescriptionMap_()
 	{
 	}
 
@@ -32,9 +33,17 @@ namespace OpcUaStackClient
 	{
 	}
 
+	uint32_t
+	EndpointDescriptionCache::size(void)
+	{
+		return endpointDescriptionMap_.size();
+	}
+
 	void
 	EndpointDescriptionCache::clear(void)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+
 		endpointDescriptionMap_.clear();
 	}
 
@@ -44,8 +53,13 @@ namespace OpcUaStackClient
 		EndpointDescriptionArray::SPtr& endpointDescriptionArray
 	)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+
 		// if an entry already exists then delete it
-		deleteEndpointDescription(endpointUrl);
+		auto it = endpointDescriptionMap_.find(endpointUrl);
+		if (it != endpointDescriptionMap_.end()) {
+			endpointDescriptionMap_.erase(it);
+		}
 
 		// insert new entry
 		endpointDescriptionMap_.insert(std::make_pair(endpointUrl, endpointDescriptionArray));
@@ -56,6 +70,8 @@ namespace OpcUaStackClient
 		const std::string& endpointUrl
 	)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+
 		auto it = endpointDescriptionMap_.find(endpointUrl);
 		if (it != endpointDescriptionMap_.end()) {
 			endpointDescriptionMap_.erase(it);
@@ -67,6 +83,8 @@ namespace OpcUaStackClient
 		const std::string& endpointUrl
 	)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+
 		auto it = endpointDescriptionMap_.find(endpointUrl);
 		if (it != endpointDescriptionMap_.end()) {
 			return it->second;

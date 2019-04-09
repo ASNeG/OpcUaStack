@@ -168,8 +168,9 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_EndpointCache, GValueFixture)
 	connectContext.applicationUri_ = applicationUri;					// needed to detect right certificate
 	connectContext.securityMode_ = MessageSecurityMode::EnumNone;		// security mode
 	connectContext.securityPolicy_ = SecurityPolicy::EnumNone;	   		// security policy
-	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();;
+	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();
 	connectContext.secureChannelLog_ = true;
+	connectContext.deleteEndpointDescriptionCache_ = true;
 	cond_.initEvent();
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
@@ -190,6 +191,7 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_EndpointCache, GValueFixture)
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 
 	// connect - entry in endpoint cache available
+	sessionStateVec_.clear();
 	applicationUri = std::string("urn:") + CryptoManagerTest::getServerHostName() + std::string(":ASNeG:ASNeG-Demo");
 	connectContext.discoveryUrl_ = REAL_SERVER_URI;						// use get endpoint request to find endpoint url
 	connectContext.sessionName_ = REAL_SESSION_NAME;
@@ -198,18 +200,16 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_EndpointCache, GValueFixture)
 	connectContext.securityPolicy_ = SecurityPolicy::EnumNone;	   		// security policy
 	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();;
 	connectContext.secureChannelLog_ = true;
+	connectContext.deleteEndpointDescriptionCache_ = false;
 	cond_.initEvent();
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	BOOST_REQUIRE(sessionStateVec_[0] == SessionServiceStateId::Connecting);
-	BOOST_REQUIRE(sessionStateVec_[1] == SessionServiceStateId::GetEndpoint);
-	BOOST_REQUIRE(sessionStateVec_[2] == SessionServiceStateId::Reconnecting);
-	BOOST_REQUIRE(sessionStateVec_[3] == SessionServiceStateId::Connecting);
-	BOOST_REQUIRE(sessionStateVec_[4] == SessionServiceStateId::CreateSession);
-	BOOST_REQUIRE(sessionStateVec_[5] == SessionServiceStateId::ActivateSession);
-	BOOST_REQUIRE(sessionStateVec_[6] == SessionServiceStateId::Established);
+	BOOST_REQUIRE(sessionStateVec_[1] == SessionServiceStateId::CreateSession);
+	BOOST_REQUIRE(sessionStateVec_[2] == SessionServiceStateId::ActivateSession);
+	BOOST_REQUIRE(sessionStateVec_[3] == SessionServiceStateId::Established);
 
 	// disconnect session
 	cond_.initEvent();

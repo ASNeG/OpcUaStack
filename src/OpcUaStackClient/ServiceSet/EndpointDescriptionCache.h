@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackClient_EndpointDescriptionCache_h__
 #define __OpcUaStackClient_EndpointDescriptionCache_h__
 
+#include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 
 using namespace OpcUaStackCore;
@@ -28,11 +29,19 @@ namespace OpcUaStackClient
 	class DLLEXPORT EndpointDescriptionCache
 	{
 	  public:
+		typedef boost::shared_ptr<EndpointDescriptionCache> SPtr;
 		typedef std::map<std::string, EndpointDescriptionArray::SPtr> EndpointDescriptionMap;
 
 		EndpointDescriptionCache(void);
 		~EndpointDescriptionCache(void);
 
+		static EndpointDescriptionCache& instance(void)
+		{
+			static EndpointDescriptionCache instance_;
+			return instance_;
+		}
+
+		uint32_t size(void);
 		void clear(void);
 		void insertEndpointDescription(
 			const std::string& endpointUrl,
@@ -46,6 +55,7 @@ namespace OpcUaStackClient
 		);
 
 	  private:
+		boost::mutex mutex_;
 		EndpointDescriptionMap endpointDescriptionMap_;
 	};
 

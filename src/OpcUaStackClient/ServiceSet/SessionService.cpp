@@ -214,7 +214,6 @@ namespace OpcUaStackClient
 	SessionService::getEndpointDescriptionCache(void)
 	{
 		assert(ctx_ != nullptr);
-
 		return ctx_->endpointDescriptionCache_;
 	}
 

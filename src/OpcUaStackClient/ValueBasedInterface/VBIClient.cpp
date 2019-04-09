@@ -107,6 +107,11 @@ namespace OpcUaStackClient
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
 		assert(sessionService_.get() != nullptr);
 
+		if (connectContext.deleteEndpointDescriptionCache_) {
+			Log(Debug, "clear endpoint description cache");
+			deleteEndpointDescriptionCache();
+		}
+
 		// connect to opc ua server
 		return sessionService_->syncConnect();
 	}
@@ -137,6 +142,11 @@ namespace OpcUaStackClient
 		// create session service
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
 		assert(sessionService_.get() != nullptr);
+
+		if (connectContext.deleteEndpointDescriptionCache_) {
+			Log(Debug, "clear endpoint description cache");
+			deleteEndpointDescriptionCache();
+		}
 
 		// connect to opc ua server
 		sessionService_->asyncConnect();

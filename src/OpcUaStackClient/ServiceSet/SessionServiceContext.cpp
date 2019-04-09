@@ -52,7 +52,7 @@ namespace OpcUaStackClient
 	, requestId_(0)
 	, requestHandle_(0)
 	, sessionServiceMode_(SessionServiceMode::Normal)
-	, endpointDescriptionCache_()
+	, endpointDescriptionCache_(EndpointDescriptionCache::instance())
 	, secureChannelClientConfigBackup_()
 	{
 	}
@@ -283,7 +283,8 @@ namespace OpcUaStackClient
 		if (secureChannelClientConfig_->discoveryUrl().empty()) {
 			Log(Debug, "set session service mode")
 				.parameter("SessId", id_)
-				.parameter("SessServiceMode", "Normal");
+				.parameter("SessServiceMode", "Normal")
+				.parameter("CacheSize", endpointDescriptionCache_.size());
 			return;
 		}
 
@@ -302,7 +303,8 @@ namespace OpcUaStackClient
 
 				Log(Debug, "set session service mode")
 					.parameter("SessId", id_)
-					.parameter("SessServiceMode", "UseCache");
+					.parameter("SessServiceMode", "UseCache")
+					.parameter("CacheSize", endpointDescriptionCache_.size());
 
 				sessionServiceMode_ = SessionServiceMode::UseCache;
 				secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());
@@ -323,7 +325,8 @@ namespace OpcUaStackClient
 		//
 		Log(Debug, "set session service mode")
 			.parameter("SessId", id_)
-			.parameter("SessServiceMode", "GetEndpoint");
+			.parameter("SessServiceMode", "GetEndpoint")
+			.parameter("CacheSize", endpointDescriptionCache_.size());
 
 		sessionServiceMode_ = SessionServiceMode::GetEndpoint;
 		secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());

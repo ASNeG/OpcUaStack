@@ -119,7 +119,7 @@ namespace OpcUaStackClient
 		OpcUaUInt32 requestHandle_;
 
 		SessionServiceMode sessionServiceMode_;
-		EndpointDescriptionCache endpointDescriptionCache_;
+		EndpointDescriptionCache& endpointDescriptionCache_;
 		SecureChannelClientConfig::SPtr secureChannelClientConfigBackup_;
 	};
 
