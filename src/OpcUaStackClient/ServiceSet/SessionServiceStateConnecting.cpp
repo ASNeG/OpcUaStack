@@ -112,8 +112,11 @@ namespace OpcUaStackClient
 
 		assert(ctx_ != nullptr);
 
-		// start reconnect timer
+		// start reconnect timer and delete endpoint description entry
 		ctx_->startReconnectTimer();
+		ctx_->endpointDescriptionCache_.deleteEndpointDescription(
+			ctx_->secureChannelClientConfigBackup_->discoveryUrl()
+		);
 
 		return SessionServiceStateId::Error;
 	}

@@ -62,8 +62,11 @@ namespace OpcUaStackClient
 				.parameter("SessId", ctx_->id_)
 				.parameter("EndpointUrl", clientConfig->endpointUrl());
 
-			// start reconnect timer
+			// start reconnect timer and delete endpoint description cache entry
 			ctx_->startReconnectTimer();
+			ctx_->endpointDescriptionCache_.deleteEndpointDescription(
+				ctx_->secureChannelClientConfigBackup_->discoveryUrl()
+			);
 
 			return SessionServiceStateId::Disconnected;
 		}
@@ -76,8 +79,11 @@ namespace OpcUaStackClient
 				.parameter("SessId", ctx_->id_)
 				.parameter("EndpointUrl", clientConfig->endpointUrl());
 
-			// start reconnect timer
+			// start reconnect timer and delete endpoint description cache entry
 			ctx_->startReconnectTimer();
+			ctx_->endpointDescriptionCache_.deleteEndpointDescription(
+				ctx_->secureChannelClientConfigBackup_->discoveryUrl()
+			);
 
 			return SessionServiceStateId::Disconnected;
 		}
