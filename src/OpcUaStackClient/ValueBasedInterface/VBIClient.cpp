@@ -158,6 +158,12 @@ namespace OpcUaStackClient
 		sessionService_->asyncDisconnect();
 	}
 
+	void
+	VBIClient::deleteEndpointDescriptionCache(void)
+	{
+		sessionService_->getEndpointDescriptionCache().clear();
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//

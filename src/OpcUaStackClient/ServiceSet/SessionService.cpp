@@ -210,6 +210,14 @@ namespace OpcUaStackClient
 		ctx_->sendCancelRequest(ctx_->secureChannel_, requestHandle);
 	}
 
+	EndpointDescriptionCache&
+	SessionService::getEndpointDescriptionCache(void)
+	{
+		assert(ctx_ != nullptr);
+
+		return ctx_->endpointDescriptionCache_;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
