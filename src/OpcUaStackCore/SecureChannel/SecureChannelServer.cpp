@@ -144,7 +144,7 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 
 			// we do not need the secure channel anymore.
-			std::string endpointUrl = secureChannel->endpointUrl_;
+			auto endpointUrl = secureChannel->endpointUrl_;
 			delete secureChannel;
 
 			// handle acceptor socket error
@@ -197,7 +197,7 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 
 			// we do not need the secure channel anymore.
-			std::string endpointUrl = secureChannel->endpointUrl_;
+			auto endpointUrl = secureChannel->endpointUrl_;
 			delete secureChannel;
 
 			// handle acceptor socket error
@@ -223,8 +223,7 @@ namespace OpcUaStackCore
 		secureChannel->state_ = SecureChannel::S_Connected;
 		asyncRead(secureChannel);
 
-		SecureChannelServerConfig::SPtr config;
-		config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		auto config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 		accept(config);
 	}
 
@@ -309,8 +308,8 @@ namespace OpcUaStackCore
 
 
 		// get server configuration and security settings
-		SecureChannelServerConfig::SPtr secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		auto& securitySettings = secureChannel->securitySettings();
 
 
 		// find endpoint description
