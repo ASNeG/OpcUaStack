@@ -61,6 +61,7 @@ BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_GetEndpointRequest, GValueFixture
 	connectContext.cryptoManager_ = CryptoManagerTest::getInstance();
 	connectContext.secureChannelLog_ = true;
 	connectContext.deleteEndpointDescriptionCache_ = true;
+
 	cond_.initEvent();
 	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(cond_.waitForEvent(3000) == true);

@@ -18,6 +18,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Url.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateDisconnected.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
@@ -54,6 +55,14 @@ namespace OpcUaStackClient
 
 		Log(Debug, "async connect event")
 			.parameter("SessId", ctx_->id_);
+
+		// FIXME: workaround - begin, if endpoint address is 0.0.0.0
+		Url url(clientConfig->endpointUrl());
+		if (url.isAnyAddress()) {
+			url.host(Environment::hostname());
+			clientConfig->endpointUrl() = url.url();
+		}
+		// FIXME: workaround - end
 
 		// check server uri. In case of an error inform the application
 		Url endpointUrl(clientConfig->endpointUrl());
