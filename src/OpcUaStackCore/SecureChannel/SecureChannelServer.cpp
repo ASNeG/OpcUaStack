@@ -61,7 +61,7 @@ namespace OpcUaStackCore
 		}
 
 		// create new secure channel
-		SecureChannel* secureChannel = new SecureChannel(ioThread_);
+		auto secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelServerConfig;
 		accept(secureChannel);
 		return true;
@@ -99,8 +99,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannelServer::accept(SecureChannel* secureChannel)
 	{
-		SecureChannelServerConfig::SPtr config;
-		config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		auto config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 
 		endpointUrl_ = config->endpointUrl();
 
@@ -111,8 +110,13 @@ namespace OpcUaStackCore
 		secureChannel->maxChunkCount_ = config->maxChunkCount();
 		secureChannel->endpointUrl_ = config->endpointUrl();
 
-		// get ip address from endpoint hostname
+		// check if host part of the url is a domain name. If so use as any address.
 		Url url(config->endpointUrl());
+		if (url.isHostAddress()) {
+			url.host("0.0.0.0");
+		}
+
+		// get ip address from endpoint hostname
 		secureChannel->partner_.port(url.port());
 		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
 		resolver_.async_resolve(
@@ -140,7 +144,7 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 
 			// we do not need the secure channel anymore.
-			std::string endpointUrl = secureChannel->endpointUrl_;
+			auto endpointUrl = secureChannel->endpointUrl_;
 			delete secureChannel;
 
 			// handle acceptor socket error
@@ -193,7 +197,7 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 
 			// we do not need the secure channel anymore.
-			std::string endpointUrl = secureChannel->endpointUrl_;
+			auto endpointUrl = secureChannel->endpointUrl_;
 			delete secureChannel;
 
 			// handle acceptor socket error
@@ -219,8 +223,7 @@ namespace OpcUaStackCore
 		secureChannel->state_ = SecureChannel::S_Connected;
 		asyncRead(secureChannel);
 
-		SecureChannelServerConfig::SPtr config;
-		config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		auto config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 		accept(config);
 	}
 
@@ -305,8 +308,8 @@ namespace OpcUaStackCore
 
 
 		// get server configuration and security settings
-		SecureChannelServerConfig::SPtr secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		auto& securitySettings = secureChannel->securitySettings();
 
 
 		// find endpoint description

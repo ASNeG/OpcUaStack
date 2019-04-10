@@ -99,8 +99,7 @@ namespace OpcUaStackServer
 		endpointDescriptionSet_->getEndpointUrls(endpointUrls);
 
 		// create secure channel server for each endpoint url
-		std::vector<std::string>::iterator it;
-		for (it = endpointUrls.begin(); it != endpointUrls.end(); it++) {
+		for (auto it = endpointUrls.begin(); it != endpointUrls.end(); it++) {
 
 			// get endpoint description array
 			std::string endpointUrl = *it;
@@ -115,7 +114,7 @@ namespace OpcUaStackServer
 			secureChannelServerConfig->cryptoManager(cryptoManager_);
 
 			// create new secure channel
-			SecureChannelServer::SPtr secureChannelServer = constructSPtr<SecureChannelServer>(ioThread_);
+			auto secureChannelServer = constructSPtr<SecureChannelServer>(ioThread_);
 			secureChannelServer->secureChannelServerIf(this);
 
 			// open server socket
