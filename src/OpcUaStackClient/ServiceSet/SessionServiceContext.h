@@ -26,6 +26,7 @@
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
+#include "OpcUaStackClient/ServiceSet/EndpointDescriptionCache.h"
 
 using namespace OpcUaStackCore;
 
@@ -33,6 +34,12 @@ namespace OpcUaStackClient
 {
 
 	class SessionService;
+
+	enum class SessionServiceMode {
+		Normal,			// direct access to opc ua server
+		GetEndpoint,	// get endpoint from opc ua server
+		UseCache		// use endpoint from cache
+	};
 
 	class DLLEXPORT SessionServiceContext
 	{
@@ -63,11 +70,14 @@ namespace OpcUaStackClient
 			uint32_t requestHandle
 		);
 
-		void setGetEndpointMode(void);
-		void clearGetEndpointMode(void);
-		bool isGetEndpointMode(void);
-
-		bool checkEndpoint(EndpointDescription::SPtr& endpoint);
+		void setSessionServiceMode(void);
+		SessionServiceMode sessionServiceMode(void);
+		EndpointDescription::SPtr selectEndpointDescriptionFromCache(
+			EndpointDescriptionArray::SPtr& endpointDescriptions
+		);
+		bool checkEndpoint(
+			EndpointDescription::SPtr& endpointDescription
+		);
 
 		static uint32_t gId_;
 		uint32_t id_;
@@ -108,7 +118,8 @@ namespace OpcUaStackClient
 		OpcUaUInt32 requestId_;
 		OpcUaUInt32 requestHandle_;
 
-		bool getEndpointMode_;						// a get endpoint request must send to the opc ua server
+		SessionServiceMode sessionServiceMode_;
+		EndpointDescriptionCache& endpointDescriptionCache_;
 		SecureChannelClientConfig::SPtr secureChannelClientConfigBackup_;
 	};
 

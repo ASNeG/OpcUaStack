@@ -52,8 +52,8 @@ namespace OpcUaStackCore
         int32_t& value(void);
         void enumeration(Enum enumeration);
         Enum enumeration(void);
-        Enum str2Enum(const std::string& enumerationString);
-        std::string enum2Str(Enum enumeration);
+        static Enum str2Enum(const std::string& enumerationString);
+        static std::string enum2Str(Enum enumeration);
         std::string enum2Str(void);
         std::string toString(void);
         bool exist(const std::string& enumerationString);

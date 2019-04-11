@@ -72,8 +72,8 @@ namespace OpcUaStackClient
 		ctx_->sessionMode_ = sessionMode;
 		ctx_->sessionServiceChangeHandler_ = sessionServiceChangeHandler;
 		ctx_->secureChannelClientConfig_ = secureChannelClientConfig;
+		ctx_->secureChannelClientConfigBackup_ = secureChannelClientConfig;
 		ctx_->sessionConfig_ = sessionConfig;
-		ctx_->setGetEndpointMode();
 
 		sm_.setSessionServiceName(sessionConfig->sessionName_);
 		sm_.setUpdateCallback(
@@ -208,6 +208,13 @@ namespace OpcUaStackClient
 	SessionService::asyncCancelInternal(uint32_t requestHandle)
 	{
 		ctx_->sendCancelRequest(ctx_->secureChannel_, requestHandle);
+	}
+
+	EndpointDescriptionCache&
+	SessionService::getEndpointDescriptionCache(void)
+	{
+		assert(ctx_ != nullptr);
+		return ctx_->endpointDescriptionCache_;
 	}
 
 	// ------------------------------------------------------------------------

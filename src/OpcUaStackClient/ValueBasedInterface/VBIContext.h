@@ -57,6 +57,8 @@ namespace OpcUaStackClient
 		SecurityPolicy::Enum securityPolicy_;
 		std::string sessionName_;
 		CryptoManager::SPtr cryptoManager_;
+
+		bool deleteEndpointDescriptionCache_;
 	};
 
 

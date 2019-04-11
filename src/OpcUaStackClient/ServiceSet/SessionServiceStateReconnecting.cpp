@@ -89,8 +89,8 @@ namespace OpcUaStackClient
 		auto clientConfig = ctx_->secureChannelClientConfig_;
 		auto sessionService = ctx_->sessionService_;
 
-		// clear endpoint mode
-		ctx_->clearGetEndpointMode();
+		// set session service mode
+		ctx_->setSessionServiceMode();
 
 		Log(Debug, "reconnect secure channel")
 			.parameter("SessId", ctx_->id_);

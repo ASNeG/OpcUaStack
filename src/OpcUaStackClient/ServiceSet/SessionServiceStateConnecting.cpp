@@ -85,8 +85,10 @@ namespace OpcUaStackClient
 		Log(Debug, "session service handle connect")
 			.parameter("SessId", ctx_->id_);
 
-		// check if the session is in the get endpoint mode.
-		if (ctx_->isGetEndpointMode()) {
+		// check if the session is in the get endpoint mode. In this mode no session
+		// needs to be open.
+		if (ctx_->sessionServiceMode() == SessionServiceMode::GetEndpoint) {
+
 			// send get endpoint request
 			ctx_->sendGetEndpointsRequest(secureChannel);
 			return SessionServiceStateId::GetEndpoint;
@@ -110,10 +112,13 @@ namespace OpcUaStackClient
 
 		assert(ctx_ != nullptr);
 
-		// start reconnect timer
+		// start reconnect timer and delete endpoint description entry
 		ctx_->startReconnectTimer();
+		ctx_->endpointDescriptionCache_.deleteEndpointDescription(
+			ctx_->secureChannelClientConfigBackup_->discoveryUrl()
+		);
 
-		return SessionServiceStateId::Error;
+		return SessionServiceStateId::Disconnected;
 	}
 
 	SessionServiceStateId

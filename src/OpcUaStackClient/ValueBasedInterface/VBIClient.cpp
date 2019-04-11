@@ -107,6 +107,11 @@ namespace OpcUaStackClient
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
 		assert(sessionService_.get() != nullptr);
 
+		if (connectContext.deleteEndpointDescriptionCache_) {
+			Log(Debug, "clear endpoint description cache");
+			deleteEndpointDescriptionCache();
+		}
+
 		// connect to opc ua server
 		return sessionService_->syncConnect();
 	}
@@ -138,6 +143,11 @@ namespace OpcUaStackClient
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
 		assert(sessionService_.get() != nullptr);
 
+		if (connectContext.deleteEndpointDescriptionCache_) {
+			Log(Debug, "clear endpoint description cache");
+			deleteEndpointDescriptionCache();
+		}
+
 		// connect to opc ua server
 		sessionService_->asyncConnect();
 	}
@@ -156,6 +166,18 @@ namespace OpcUaStackClient
 	VBIClient::asyncDisconnect(void)
 	{
 		sessionService_->asyncDisconnect();
+	}
+
+	void
+	VBIClient::deleteEndpointDescriptionCache(void)
+	{
+		sessionService_->getEndpointDescriptionCache().clear();
+	}
+
+	EndpointDescriptionCache&
+	VBIClient::getEndpointDescriptionCache(void)
+	{
+		return sessionService_->getEndpointDescriptionCache();
 	}
 
 	// ------------------------------------------------------------------------

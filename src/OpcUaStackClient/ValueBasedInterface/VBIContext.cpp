@@ -57,6 +57,7 @@ namespace OpcUaStackClient
 	, securityPolicy_(SecurityPolicy::EnumNone)
 	, sessionName_("Unknown")
 	, cryptoManager_()
+	, deleteEndpointDescriptionCache_(false)
 	{
 	}
 

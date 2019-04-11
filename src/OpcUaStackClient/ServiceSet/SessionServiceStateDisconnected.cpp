@@ -18,6 +18,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Url.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateDisconnected.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
@@ -44,6 +45,9 @@ namespace OpcUaStackClient
 		assert(ctx_->secureChannelClientConfig_.get() != nullptr);
 		assert(ctx_->sessionService_ != nullptr);
 
+		// set session service mode
+		ctx_->setSessionServiceMode();
+
 		auto clientConfig = ctx_->secureChannelClientConfig_;
 		auto& secureChannelClient = ctx_->secureChannelClient_;
 		auto secureChannel = ctx_->secureChannel_;
@@ -52,6 +56,14 @@ namespace OpcUaStackClient
 		Log(Debug, "async connect event")
 			.parameter("SessId", ctx_->id_);
 
+		// FIXME: workaround - begin, if endpoint address is 0.0.0.0
+		Url url(clientConfig->endpointUrl());
+		if (url.isAnyAddress()) {
+			url.host(Environment::hostname());
+			clientConfig->endpointUrl() = url.url();
+		}
+		// FIXME: workaround - end
+
 		// check server uri. In case of an error inform the application
 		Url endpointUrl(clientConfig->endpointUrl());
 		if (!endpointUrl.good()) {
@@ -59,8 +71,11 @@ namespace OpcUaStackClient
 				.parameter("SessId", ctx_->id_)
 				.parameter("EndpointUrl", clientConfig->endpointUrl());
 
-			// start reconnect timer
+			// start reconnect timer and delete endpoint description cache entry
 			ctx_->startReconnectTimer();
+			ctx_->endpointDescriptionCache_.deleteEndpointDescription(
+				ctx_->secureChannelClientConfigBackup_->discoveryUrl()
+			);
 
 			return SessionServiceStateId::Disconnected;
 		}
@@ -73,8 +88,11 @@ namespace OpcUaStackClient
 				.parameter("SessId", ctx_->id_)
 				.parameter("EndpointUrl", clientConfig->endpointUrl());
 
-			// start reconnect timer
+			// start reconnect timer and delete endpoint description cache entry
 			ctx_->startReconnectTimer();
+			ctx_->endpointDescriptionCache_.deleteEndpointDescription(
+				ctx_->secureChannelClientConfigBackup_->discoveryUrl()
+			);
 
 			return SessionServiceStateId::Disconnected;
 		}
@@ -209,7 +227,7 @@ namespace OpcUaStackClient
 		Log(Debug, "reconnect timeout event")
 			.parameter("SessId", ctx_->id_);
 
-		ctx_->setGetEndpointMode();
+		ctx_->setSessionServiceMode();
 		return asyncConnect();
 	}
 

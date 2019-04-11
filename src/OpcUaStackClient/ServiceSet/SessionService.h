@@ -29,6 +29,7 @@
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
+#include "OpcUaStackClient/ServiceSet/EndpointDescriptionCache.h"
 
 using namespace OpcUaStackCore;
 
@@ -61,6 +62,8 @@ namespace OpcUaStackClient
 		void asyncDisconnect(bool deleteSubscriptions = true);
 		OpcUaStatusCode syncDisconnect(bool deleteSubscriptions = true);
 		void asyncCancel(uint32_t requestHandle);
+
+		EndpointDescriptionCache& getEndpointDescriptionCache(void);
 
 		//- SecureChannelClientIf ---------------------------------------------
 		virtual void handleConnect(SecureChannel* secureChannel);

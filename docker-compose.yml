@@ -1,6 +1,6 @@
 version: '2'
 services:
-  demo_server:
+  asneg-demo:
     image: asneg/asneg-demo:release-4
     hostname: asneg-demo
     ports:
@@ -9,7 +9,7 @@ services:
       - server_pki:/etc/OpcUaStack/ASNeG-Demo/pki
   stack:
     depends_on:
-      - demo_server
+      - asneg-demo
     hostname: asneg-test
     environment:
       - SERVER_PKI_ROOT_DIR=/tmp/
