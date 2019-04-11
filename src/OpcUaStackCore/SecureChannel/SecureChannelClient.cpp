@@ -154,7 +154,7 @@ namespace OpcUaStackCore
 				if (error) {
 					Log(Error, "address resolver error")
 						.parameter("ChannelId", *secureChannel)
-						.parameter("EndpointUrl", secureChannel->endpointUrl_);
+						.parameter("EndpointUrl", config->endpointUrl());
 
 					reconnect(secureChannel);
 
