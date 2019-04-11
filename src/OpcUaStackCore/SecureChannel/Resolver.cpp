@@ -50,6 +50,9 @@ namespace OpcUaStackCore
 
 		// get address from url
 		auto self = shared_from_this();
+		Log(Debug, "resolve host")
+			.parameter("Host", url.host())
+			.parameter("Port", url.portToString());
 		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
 		resolver_.async_resolve(
 			query,
