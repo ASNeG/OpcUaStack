@@ -1,7 +1,7 @@
 version: '2'
 services:
   demo_server:
-    image: asneg/asneg-demo:latest
+    image: asneg/asneg-demo:release-4
     hostname: asneg-demo
     ports:
       - 127.0.0.1:8889:8889
