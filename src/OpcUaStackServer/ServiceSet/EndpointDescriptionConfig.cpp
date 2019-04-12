@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,6 +17,8 @@
 
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Url.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 
 using namespace OpcUaStackCore;
 
@@ -42,7 +44,6 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		std::vector<Config>::iterator it;
 		std::vector<Config> endpointDescriptionVec;
 		config->getChilds("EndpointDescription", endpointDescriptionVec);
 		if (endpointDescriptionVec.size() == 0) {
@@ -53,11 +54,12 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		for (it = endpointDescriptionVec.begin(); it != endpointDescriptionVec.end(); it++) {
+		for (auto it = endpointDescriptionVec.begin(); it != endpointDescriptionVec.end(); it++) {
 		    Config* config = &*it; 
 
 			EndpointDescription::SPtr endpointDescription = constructSPtr<EndpointDescription>();
 
+			// read endpoint url
 			if (config->getConfigParameter("EndpointUrl", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -65,8 +67,22 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "EndpointUrl");
 				return false;
 			}
-			endpointDescription->endpointUrl().value(stringValue);
+			Url endpointUrl(stringValue);
+			if (!endpointUrl.good()) {
+				Log(Error, "endpoint url invalid in configuration")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
+					.parameter("ParameterName", "EndpointUrl")
+					.parameter("EndpointUrl", stringValue);
+				return false;
+			}
+			if (endpointUrl.isAnyAddress()) {
+				// replany address by hostname
+				endpointUrl.host(Environment::hostname());
+			}
+			endpointDescription->endpointUrl().value(endpointUrl.url());
 
+			// read application uri
 			if (config->getConfigParameter("ApplicationUri", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -76,6 +92,7 @@ namespace OpcUaStackServer
 			}
 			endpointDescription->server().applicationUri().value(stringValue);
 
+			// read product uri
 			if (config->getConfigParameter("ProductUri", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -85,6 +102,7 @@ namespace OpcUaStackServer
 			}
 			endpointDescription->server().productUri().value(stringValue);
 
+			// read application name
 			if (config->getConfigParameter("ApplicationName", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -158,8 +176,7 @@ namespace OpcUaStackServer
 			);
 			if (!rc) return false;
 
-			EndpointDescription::Vec::iterator it;
-			for (it = endpointDescriptionVec0.begin(); it != endpointDescriptionVec0.end(); it++) {
+			for (auto it = endpointDescriptionVec0.begin(); it != endpointDescriptionVec0.end(); it++) {
 				EndpointDescription::SPtr endpointDescriptionTmp = *it;
 				endpointDescriptionSet->addEndpoint(
 					endpointDescriptionTmp->endpointUrl(),

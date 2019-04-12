@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -38,16 +38,13 @@ namespace OpcUaStackCore
 	void
 	EndpointDescriptionSet::getEndpoints(const std::string& endpointUrl, EndpointDescriptionArray::SPtr& endpointDescriptionArray)
 	{
-		EndpointDescriptionMultimap::iterator it;
-		std::pair<EndpointDescriptionMultimap::iterator, EndpointDescriptionMultimap::iterator> ret;
-
-		ret = endpointDescriptionMap_.equal_range(endpointUrl);
+		auto ret = endpointDescriptionMap_.equal_range(endpointUrl);
 
 		uint32_t count = endpointDescriptionMap_.count(endpointUrl);
 		if (count == 0) return;
 
 		endpointDescriptionArray->resize(count);
-		for (it = ret.first; it != ret.second; it++) {
+		for (auto it = ret.first; it != ret.second; it++) {
 			EndpointDescription::SPtr endpointDescription = it->second;
 			endpointDescriptionArray->push_back(endpointDescription);
 		}
@@ -56,11 +53,9 @@ namespace OpcUaStackCore
 	void
 	EndpointDescriptionSet::getEndpoints(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
 	{
-		EndpointDescriptionMultimap::iterator it;
-
 		endpointDescriptionArray->resize(endpointDescriptionMap_.size());
 
-		for (it = endpointDescriptionMap_.begin(); it != endpointDescriptionMap_.end(); it++) {
+		for (auto it = endpointDescriptionMap_.begin(); it != endpointDescriptionMap_.end(); it++) {
 			endpointDescriptionArray->push_back(it->second);
 		}
 	}
@@ -68,10 +63,9 @@ namespace OpcUaStackCore
 	void
 	EndpointDescriptionSet::getEndpointUrls(std::vector<std::string>& endpointUrls)
 	{
-		EndpointDescriptionMultimap::iterator it;
 		std::set<std::string> endpointSet;
 
-		for (it = endpointDescriptionMap_.begin(); it != endpointDescriptionMap_.end(); it++) {
+		for (auto it = endpointDescriptionMap_.begin(); it != endpointDescriptionMap_.end(); it++) {
 			if (endpointSet.insert(it->first).second) {
 				endpointUrls.push_back(it->first);
 			}
