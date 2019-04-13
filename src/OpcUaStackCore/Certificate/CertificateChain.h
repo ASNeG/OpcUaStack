@@ -38,6 +38,7 @@ namespace OpcUaStackCore
 		void addCertificate(Certificate::SPtr& certificate);
 		Certificate::SPtr getCertificate(uint32_t idx = 0);
 
+		bool empty(void);
 		uint32_t size(void);
 		uint32_t lastCertificateSize(void);
 		bool fromByteString(OpcUaByteString& byteString);

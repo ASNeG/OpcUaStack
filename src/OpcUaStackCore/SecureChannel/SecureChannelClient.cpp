@@ -74,12 +74,12 @@ namespace OpcUaStackCore
 		reconnectTimeout_ = secureChannelClientConfig->reconnectTimeout();
 
 		// create new secure channel
-		SecureChannel* secureChannel = new SecureChannel(ioThread_);
+		auto secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelClientConfig;
 
 		// create security settings
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings_;
-		CryptoBase::SPtr cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
+		auto& securitySettings = secureChannel->securitySettings_;
+		auto cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
 		if (!cryptoBase) {
 			Log(Error, "security policy invalid")
 				.parameter("ChannelId", *secureChannel)
@@ -96,17 +96,32 @@ namespace OpcUaStackCore
 		}
 
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
-			bool result = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(
-				secureChannelClientConfig->applicationUri(),
-				securitySettings.partnerCertificateChain()
-			);
-			if (!result) {
-				Log(Error, "partner certificate not found in certificate store")
-					.parameter("ChannelId", *secureChannel)
-					.parameter("EndpointUrl", secureChannelClientConfig->applicationUri());
-				return nullptr;
+			if (secureChannelClientConfig->certificateChain().empty()) {
+
+				// no certificate in certificate chain available. Therefore, we are looking for a
+				// certificate in the certificate store
+
+				bool result = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(
+					secureChannelClientConfig->applicationUri(),
+					securitySettings.partnerCertificateChain()
+				);
+				if (!result) {
+					Log(Error, "partner certificate not found in certificate store")
+						.parameter("ChannelId", *secureChannel)
+						.parameter("EndpointUrl", secureChannelClientConfig->applicationUri());
+					return nullptr;
+				}
+			}
+			else {
+
+				// a certificate is available in the certificate chain.
+
+				securitySettings.partnerCertificateChain() = secureChannelClientConfig->certificateChain();
 			}
 			securitySettings.partnerCertificateThumbprint() = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
+
+			// check certificate
+			// FIXME: todo
 		}
 
 		// connect to opc ua server

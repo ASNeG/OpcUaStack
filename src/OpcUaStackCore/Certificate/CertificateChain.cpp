@@ -60,6 +60,12 @@ namespace OpcUaStackCore
 		return certificateVec_[idx];
 	}
 
+	bool
+	CertificateChain::empty(void)
+	{
+		return certificateVec_.size() == 0;
+	}
+
 	uint32_t
 	CertificateChain::size(void)
 	{
