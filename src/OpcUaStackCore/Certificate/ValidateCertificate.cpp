@@ -54,6 +54,15 @@ namespace OpcUaStackCore
 
 	OpcUaStatusCode
 	ValidateCertificate::validateCertificate(
+		CertificateChain& certificateChain
+	)
+	{
+		certificateChain_ = certificateChain;
+		return validateCertificate();
+	}
+
+	OpcUaStatusCode
+	ValidateCertificate::validateCertificate(
 		OpcUaByteString& certificateChain
 	)
 	{
@@ -68,8 +77,14 @@ namespace OpcUaStackCore
 			return statusCode;
 		}
 
+		return validateCertificate();
+	}
+
+	OpcUaStatusCode
+	ValidateCertificate::validateCertificate(void)
+	{
 		// build certificate chain
-		statusCode = buildCertificateChain();
+		auto statusCode = buildCertificateChain();
 		if (statusCode != Success) {
 			Log(Error, "build certificate chain error");
 			return statusCode;

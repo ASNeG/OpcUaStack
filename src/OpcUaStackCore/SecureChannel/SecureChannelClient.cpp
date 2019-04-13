@@ -18,6 +18,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Url.h"
+#include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/Resolver.h"
 
@@ -59,7 +60,7 @@ namespace OpcUaStackCore
 	}
 
 	SecureChannel*
-	SecureChannelClient::connect(SecureChannelClientConfig::SPtr secureChannelClientConfig)
+	SecureChannelClient::connect(SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
 		cryptoManager(secureChannelClientConfig->cryptoManager());
 
@@ -108,7 +109,8 @@ namespace OpcUaStackCore
 				if (!result) {
 					Log(Error, "partner certificate not found in certificate store")
 						.parameter("ChannelId", *secureChannel)
-						.parameter("EndpointUrl", secureChannelClientConfig->applicationUri());
+						.parameter("ApplicationUri", secureChannelClientConfig->applicationUri())
+						.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl());
 					return nullptr;
 				}
 			}
@@ -121,12 +123,38 @@ namespace OpcUaStackCore
 			securitySettings.partnerCertificateThumbprint() = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
 
 			// check certificate
-			// FIXME: todo
+			auto statusCode = checkCertificateChain(secureChannel, secureChannelClientConfig);
+			if (statusCode != Success) {
+				Log(Error, "partner certificate check error")
+					.parameter("ChannelId", *secureChannel)
+					.parameter("ApplicationUri", secureChannelClientConfig->applicationUri())
+					.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+				return nullptr;
+			}
 		}
 
 		// connect to opc ua server
 		connect(secureChannel);
 		return secureChannel;
+	}
+
+	OpcUaStatusCode
+	SecureChannelClient::checkCertificateChain(
+		SecureChannel* secureChannel,
+		SecureChannelClientConfig::SPtr& secureChannelClientConfig)
+	{
+		auto& securitySettings = secureChannel->securitySettings_;
+		Url endpointUrl(secureChannelClientConfig->endpointUrl());
+
+		ValidateCertificate validateCertificate;
+		validateCertificate.certificateManager(secureChannelClientConfig->cryptoManager()->certificateManager());
+		validateCertificate.hostname(endpointUrl.host());
+		validateCertificate.uri(secureChannelClientConfig->applicationUri());
+
+		return validateCertificate.validateCertificate(
+			securitySettings.partnerCertificateChain()
+		);
 	}
 
 	void SecureChannelClient::disconnect(SecureChannel* secureChannel)
