@@ -16,6 +16,7 @@
  */
 
 #include <boost/shared_ptr.hpp>
+#include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/Certificate/ValidateCertificate.h"
@@ -145,16 +146,33 @@ namespace OpcUaStackCore
 		SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
 		auto& securitySettings = secureChannel->securitySettings_;
+		auto certificateManager = secureChannelClientConfig->cryptoManager()->certificateManager();
 		Url endpointUrl(secureChannelClientConfig->endpointUrl());
 
 		ValidateCertificate validateCertificate;
-		validateCertificate.certificateManager(secureChannelClientConfig->cryptoManager()->certificateManager());
+		validateCertificate.certificateManager(certificateManager);
 		validateCertificate.hostname(endpointUrl.host());
 		validateCertificate.uri(secureChannelClientConfig->applicationUri());
 
-		return validateCertificate.validateCertificate(
+		auto statusCode = validateCertificate.validateCertificate(
 			securitySettings.partnerCertificateChain()
 		);
+
+		if (statusCode != Success) {
+
+			// on error we save the certificate in the reject folder.
+
+			auto certificate = securitySettings.partnerCertificateChain().getCertificate();
+			std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
+			boost::filesystem::path rejectFilePath(certificateManager->certificateRejectListLocation() + "/" + certFileName);
+			certificateManager->writeCertificate(
+				rejectFilePath.string(),
+				*certificate.get()
+			);
+
+		}
+
+		return statusCode;
 	}
 
 	void SecureChannelClient::disconnect(SecureChannel* secureChannel)
