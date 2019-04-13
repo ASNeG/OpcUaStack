@@ -21,6 +21,7 @@
 
 #include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
+#include "OpcUaStackCore/Certificate/CertificateChain.h"
 #include "OpcUaStackCore/StandardDataTypes/MessageSecurityMode.h"
 
 namespace OpcUaStackCore
@@ -54,6 +55,8 @@ namespace OpcUaStackCore
 		uint32_t reconnectTimeout(void);
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		CryptoManager::SPtr& cryptoManager(void);
+		void certificateChain(CertificateChain& certificateChain);
+		CertificateChain& certificateChain(void);
 
 		void secureChannelLog(bool secureChannelLog);
 		bool secureChannelLog(void);
@@ -66,6 +69,7 @@ namespace OpcUaStackCore
 		SecurityPolicy::Enum securityPolicy_;	// security policy
 
 		CryptoManager::SPtr cryptoManager_;
+		CertificateChain certificateChain_;
 
 		uint32_t connectTimeout_;
 		uint32_t renewTimeout_;

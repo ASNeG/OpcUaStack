@@ -113,6 +113,15 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	CertificateChain&
+	CertificateChain::operator = (const CertificateChain& other)
+	{
+		for (auto certificate : other.certificateVec_) {
+			certificateVec_.push_back(certificate);
+		}
+		return *this;
+	}
+
 	bool
 	CertificateChain::opcUaBinaryDecode(std::istream& is)
 	{

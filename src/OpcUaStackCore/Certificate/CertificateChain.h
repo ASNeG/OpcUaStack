@@ -42,6 +42,7 @@ namespace OpcUaStackCore
 		uint32_t lastCertificateSize(void);
 		bool fromByteString(OpcUaByteString& byteString);
 		bool toByteString(OpcUaByteString& byteString) const;
+		CertificateChain& operator = (const CertificateChain& other);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);

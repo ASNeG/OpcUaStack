@@ -39,6 +39,7 @@ namespace OpcUaStackCore
 	, reconnectTimeout_(0)
 
 	, cryptoManager_()
+	, certificateChain_()
 
 	, secureChannelLog_(false)
 	{
@@ -183,6 +184,18 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::secureChannelLog(void)
 	{
 		return secureChannelLog_;
+	}
+
+	void
+	SecureChannelClientConfig::certificateChain(CertificateChain& certificateChain)
+	{
+		certificateChain_ = certificateChain;
+	}
+
+	CertificateChain&
+	SecureChannelClientConfig::certificateChain(void)
+	{
+		return certificateChain_;
 	}
 
 }
