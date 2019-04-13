@@ -60,6 +60,12 @@ namespace OpcUaStackCore
 		return certificateVec_[idx];
 	}
 
+	bool
+	CertificateChain::empty(void)
+	{
+		return certificateVec_.size() == 0;
+	}
+
 	uint32_t
 	CertificateChain::size(void)
 	{
@@ -111,6 +117,15 @@ namespace OpcUaStackCore
 		}
 
 		return true;
+	}
+
+	CertificateChain&
+	CertificateChain::operator = (const CertificateChain& other)
+	{
+		for (auto certificate : other.certificateVec_) {
+			certificateVec_.push_back(certificate);
+		}
+		return *this;
 	}
 
 	bool

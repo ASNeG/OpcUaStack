@@ -38,10 +38,12 @@ namespace OpcUaStackCore
 		void addCertificate(Certificate::SPtr& certificate);
 		Certificate::SPtr getCertificate(uint32_t idx = 0);
 
+		bool empty(void);
 		uint32_t size(void);
 		uint32_t lastCertificateSize(void);
 		bool fromByteString(OpcUaByteString& byteString);
 		bool toByteString(OpcUaByteString& byteString) const;
+		CertificateChain& operator = (const CertificateChain& other);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);

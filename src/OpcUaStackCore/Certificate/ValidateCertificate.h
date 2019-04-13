@@ -38,8 +38,12 @@ namespace OpcUaStackCore
 		OpcUaStatusCode validateCertificate(
 			OpcUaByteString& certificateChain
 		);
+		OpcUaStatusCode validateCertificate(
+			CertificateChain& certificateChain
+		);
 
 	  private:
+		OpcUaStatusCode validateCertificate(void);
 		OpcUaStatusCode verifyCertificateStructure(OpcUaByteString& certificateChain);
 		OpcUaStatusCode buildCertificateChain(void);
 		OpcUaStatusCode validateSignature(void);

@@ -16,8 +16,10 @@
  */
 
 #include <boost/shared_ptr.hpp>
+#include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Url.h"
+#include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/Resolver.h"
 
@@ -59,7 +61,7 @@ namespace OpcUaStackCore
 	}
 
 	SecureChannel*
-	SecureChannelClient::connect(SecureChannelClientConfig::SPtr secureChannelClientConfig)
+	SecureChannelClient::connect(SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
 		cryptoManager(secureChannelClientConfig->cryptoManager());
 
@@ -74,12 +76,12 @@ namespace OpcUaStackCore
 		reconnectTimeout_ = secureChannelClientConfig->reconnectTimeout();
 
 		// create new secure channel
-		SecureChannel* secureChannel = new SecureChannel(ioThread_);
+		auto secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelClientConfig;
 
 		// create security settings
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings_;
-		CryptoBase::SPtr cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
+		auto& securitySettings = secureChannel->securitySettings_;
+		auto cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
 		if (!cryptoBase) {
 			Log(Error, "security policy invalid")
 				.parameter("ChannelId", *secureChannel)
@@ -96,22 +98,81 @@ namespace OpcUaStackCore
 		}
 
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
-			bool result = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(
-				secureChannelClientConfig->applicationUri(),
-				securitySettings.partnerCertificateChain()
-			);
-			if (!result) {
-				Log(Error, "partner certificate not found in certificate store")
-					.parameter("ChannelId", *secureChannel)
-					.parameter("EndpointUrl", secureChannelClientConfig->applicationUri());
-				return nullptr;
+			if (secureChannelClientConfig->certificateChain().empty()) {
+
+				// no certificate in certificate chain available. Therefore, we are looking for a
+				// certificate in the certificate store
+
+				bool result = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(
+					secureChannelClientConfig->applicationUri(),
+					securitySettings.partnerCertificateChain()
+				);
+				if (!result) {
+					Log(Error, "partner certificate not found in certificate store")
+						.parameter("ChannelId", *secureChannel)
+						.parameter("ApplicationUri", secureChannelClientConfig->applicationUri())
+						.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl());
+					return nullptr;
+				}
+			}
+			else {
+
+				// a certificate is available in the certificate chain.
+
+				securitySettings.partnerCertificateChain() = secureChannelClientConfig->certificateChain();
 			}
 			securitySettings.partnerCertificateThumbprint() = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
+
+			// check certificate
+			auto statusCode = checkCertificateChain(secureChannel, secureChannelClientConfig);
+			if (statusCode != Success) {
+				Log(Error, "partner certificate check error")
+					.parameter("ChannelId", *secureChannel)
+					.parameter("ApplicationUri", secureChannelClientConfig->applicationUri())
+					.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+				return nullptr;
+			}
 		}
 
 		// connect to opc ua server
 		connect(secureChannel);
 		return secureChannel;
+	}
+
+	OpcUaStatusCode
+	SecureChannelClient::checkCertificateChain(
+		SecureChannel* secureChannel,
+		SecureChannelClientConfig::SPtr& secureChannelClientConfig)
+	{
+		auto& securitySettings = secureChannel->securitySettings_;
+		auto certificateManager = secureChannelClientConfig->cryptoManager()->certificateManager();
+		Url endpointUrl(secureChannelClientConfig->endpointUrl());
+
+		ValidateCertificate validateCertificate;
+		validateCertificate.certificateManager(certificateManager);
+		validateCertificate.hostname(endpointUrl.host());
+		validateCertificate.uri(secureChannelClientConfig->applicationUri());
+
+		auto statusCode = validateCertificate.validateCertificate(
+			securitySettings.partnerCertificateChain()
+		);
+
+		if (statusCode != Success) {
+
+			// on error we save the certificate in the reject folder.
+
+			auto certificate = securitySettings.partnerCertificateChain().getCertificate();
+			std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
+			boost::filesystem::path rejectFilePath(certificateManager->certificateRejectListLocation() + "/" + certFileName);
+			certificateManager->writeCertificate(
+				rejectFilePath.string(),
+				*certificate.get()
+			);
+
+		}
+
+		return statusCode;
 	}
 
 	void SecureChannelClient::disconnect(SecureChannel* secureChannel)

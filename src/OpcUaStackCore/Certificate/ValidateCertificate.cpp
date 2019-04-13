@@ -54,6 +54,15 @@ namespace OpcUaStackCore
 
 	OpcUaStatusCode
 	ValidateCertificate::validateCertificate(
+		CertificateChain& certificateChain
+	)
+	{
+		certificateChain_ = certificateChain;
+		return validateCertificate();
+	}
+
+	OpcUaStatusCode
+	ValidateCertificate::validateCertificate(
 		OpcUaByteString& certificateChain
 	)
 	{
@@ -68,8 +77,14 @@ namespace OpcUaStackCore
 			return statusCode;
 		}
 
+		return validateCertificate();
+	}
+
+	OpcUaStatusCode
+	ValidateCertificate::validateCertificate(void)
+	{
 		// build certificate chain
-		statusCode = buildCertificateChain();
+		auto statusCode = buildCertificateChain();
 		if (statusCode != Success) {
 			Log(Error, "build certificate chain error");
 			return statusCode;
@@ -363,10 +378,14 @@ namespace OpcUaStackCore
 		}
 
 		// check dns names
+		std::stringstream ss;
 		for (auto dnsName : info.dnsNames()) {
 			if (dnsName == hostname_) {
 				return Success;
 			}
+
+			if (!ss.str().empty()) ss << ", ";
+			ss << dnsName;
 		}
 
 		// check ip addresses
@@ -374,8 +393,13 @@ namespace OpcUaStackCore
 			if (ip == hostname_) {
 				return Success;
 			}
+
+			if (!ss.str().empty()) ss << ", ";
+			ss << ip;
 		}
 
+		Log(Debug, "hosts and ips")
+		    .parameter("List", ss.str());
 		return BadCertificateHostNameInvalid;
 	}
 

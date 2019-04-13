@@ -38,7 +38,7 @@ namespace OpcUaStackCore
 		void secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf);
 		SecureChannelClientIf* secureChannelClientIf(void);
 
-		SecureChannel* connect(SecureChannelClientConfig::SPtr secureChannelClientConfig);
+		SecureChannel* connect(SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void disconnect(SecureChannel* secureChannel);
 
 		//- SecureChannelBase -------------------------------------------------
@@ -49,6 +49,10 @@ namespace OpcUaStackCore
 		//- SecureChannelBase -------------------------------------------------
 
 	  private:
+		OpcUaStatusCode checkCertificateChain(
+			SecureChannel* secureChannel,
+			SecureChannelClientConfig::SPtr& secureChannelClientConfig
+		);
 		void renewSecurityToken(SecureChannel* secureChannel);
 		void connect(SecureChannel* secureChannel);
 		void connectToServer(SecureChannel* secureChannel);
