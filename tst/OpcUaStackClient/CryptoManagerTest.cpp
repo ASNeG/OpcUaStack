@@ -45,6 +45,7 @@ CryptoManagerTest::getInstance(void)
 	certificateSettings.certificateType("RsaSha256");
 	certificateSettings.ipAddress().push_back("127.0.0.1");
 	certificateSettings.dnsName().push_back("ASNeG.de");
+	certificateSettings.dnsName().push_back(Environment::hostname());
 	certificateSettings.email("info@ASNeG.de");
 
 	// create application certificate
