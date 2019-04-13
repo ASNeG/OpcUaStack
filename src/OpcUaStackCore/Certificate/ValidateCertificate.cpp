@@ -378,10 +378,14 @@ namespace OpcUaStackCore
 		}
 
 		// check dns names
+		std::stringstream ss;
 		for (auto dnsName : info.dnsNames()) {
 			if (dnsName == hostname_) {
 				return Success;
 			}
+
+			if (!ss.str().empty()) ss << ", ";
+			ss << dnsName;
 		}
 
 		// check ip addresses
@@ -389,8 +393,13 @@ namespace OpcUaStackCore
 			if (ip == hostname_) {
 				return Success;
 			}
+
+			if (!ss.str().empty()) ss << ", ";
+			ss << ip;
 		}
 
+		Log(Debug, "hosts and ips")
+		    .parameter("List", ss.str());
 		return BadCertificateHostNameInvalid;
 	}
 
