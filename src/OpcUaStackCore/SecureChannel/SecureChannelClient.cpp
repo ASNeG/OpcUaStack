@@ -94,7 +94,7 @@ namespace OpcUaStackCore
 
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSign ||
 			secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
-			securitySettings.ownCertificateChain().addCertificate(cryptoManager()->applicationCertificate()->certificate());
+			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
 		}
 
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {

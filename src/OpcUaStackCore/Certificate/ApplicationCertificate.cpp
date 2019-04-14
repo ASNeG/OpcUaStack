@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 {
 
 	ApplicationCertificate::ApplicationCertificate(void)
-	: certificate_()
+	: certificateChain_()
 	, privateKey_()
 	, enable_(false)
 	{
@@ -73,7 +73,7 @@ namespace OpcUaStackCore
 	bool
 	ApplicationCertificate::cleanup(void)
 	{
-		certificate_.reset();
+		certificateChain_.clear();
 		privateKey_.reset();
 		return true;
 	}
@@ -84,10 +84,10 @@ namespace OpcUaStackCore
 		return enable_;
 	}
 
-	Certificate::SPtr&
-	ApplicationCertificate::certificate(void)
+	CertificateChain&
+	ApplicationCertificate::certificateChain(void)
 	{
-		return certificate_;
+		return certificateChain_;
 	}
 
 	PrivateKey::SPtr&
@@ -187,12 +187,20 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ApplicationCertificate::readCertificateAndPrivateKey(CertificateManager::SPtr& certificateManager)
+	ApplicationCertificate::readCertificateAndPrivateKey(
+		CertificateManager::SPtr& certificateManager
+	)
 	{
 		// read certificate from file
-		certificate_ = certificateManager->readOwnCertificate();
-		if (certificate_.get() == nullptr) {
+		auto certificate = certificateManager->readOwnCertificate();
+		if (certificate.get() == nullptr) {
 			Log(Error, "read own certificate error");
+			return false;
+		}
+
+		// read certificate chain
+		if (!readCertificateChain(certificate, certificateManager)) {
+			Log(Error, "read own certificate chain error");
 			return false;
 		}
 
@@ -204,6 +212,41 @@ namespace OpcUaStackCore
 		}
 
 		return true;
+	}
+
+	bool
+	ApplicationCertificate::readCertificateChain(
+		Certificate::SPtr& certificate,
+		CertificateManager::SPtr& certificateManager)
+	{
+		// added certificate to certificate chain
+		certificateChain_.addCertificate(certificate);
+		if (certificate->isSelfSigned()) {
+			return true;
+		}
+
+		// get issuer from first certificate
+		Identity issuer;
+		if (!certificate->getIssuer(issuer)) {
+			Log(Error, "read issuer from certificate error");
+			return false;
+		}
+
+		// search next issuer certificate in trusted folder
+		certificate = certificateManager->getTrustedCertificate(issuer);
+		if (certificate.get() != nullptr) {
+			certificateChain_.certificateVec().push_back(certificate);
+			return readCertificateChain(certificate, certificateManager);
+		}
+
+		// search next issuer certificate in CA folder
+		certificate = certificateManager->getCACertificate(issuer);
+		if (certificate.get() != nullptr) {
+			certificateChain_.certificateVec().push_back(certificate);
+			return readCertificateChain(certificate, certificateManager);
+		}
+
+		return false;
 	}
 
 }
