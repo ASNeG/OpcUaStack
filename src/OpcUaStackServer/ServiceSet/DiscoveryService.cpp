@@ -66,20 +66,14 @@ namespace OpcUaStackServer
 		assert(cryptoManager.get() != nullptr);
 
 		cryptoManager_ = cryptoManager;
-		ApplicationCertificate::SPtr applicationCertificate = cryptoManager->applicationCertificate();
+		auto applicationCertificate = cryptoManager->applicationCertificate();
 
 		if (!applicationCertificate->enable()) {
 			return;
 		}
 
-		Certificate::SPtr& certificate = applicationCertificate->certificate();
-		uint32_t certLen;
-		if (!certificate->toDERBufLen(&certLen)) {
-			return;
-		}
-		char* certBuf = new char[certLen];
-		if (!certificate->toDERBuf(certBuf, &certLen)) {
-			delete [] certBuf;
+		OpcUaByteString certByteString;
+		if (!applicationCertificate->certificateChain().toByteString(certByteString)) {
 			return;
 		}
 
@@ -91,10 +85,8 @@ namespace OpcUaStackServer
 			//	continue;
 			//}
 
-			endpointDescription->serverCertificate().value((const unsigned char*)certBuf, certLen);
+			endpointDescription->serverCertificate() = certByteString;
 		}
-
-		delete [] certBuf;
 	}
 
 	void

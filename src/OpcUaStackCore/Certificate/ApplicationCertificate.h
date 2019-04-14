@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 		bool cleanup(void);
 
 		bool enable(void);
-		Certificate::SPtr& certificate(void);
+		CertificateChain& certificateChain(void);
 		PrivateKey::SPtr& privateKey(void);
 
 	  private:
@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 		bool readCertificateAndPrivateKey(CertificateManager::SPtr& certificateManager);
 
 		bool enable_;
-		Certificate::SPtr certificate_;
+		CertificateChain certificateChain_;
 		PrivateKey::SPtr privateKey_;
 	};
 

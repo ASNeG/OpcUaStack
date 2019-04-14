@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 {
 
 	ApplicationCertificate::ApplicationCertificate(void)
-	: certificate_()
+	: certificateChain_()
 	, privateKey_()
 	, enable_(false)
 	{
@@ -73,7 +73,7 @@ namespace OpcUaStackCore
 	bool
 	ApplicationCertificate::cleanup(void)
 	{
-		certificate_.reset();
+		certificateChain_.clear();
 		privateKey_.reset();
 		return true;
 	}
@@ -84,10 +84,10 @@ namespace OpcUaStackCore
 		return enable_;
 	}
 
-	Certificate::SPtr&
-	ApplicationCertificate::certificate(void)
+	CertificateChain&
+	ApplicationCertificate::certificateChain(void)
 	{
-		return certificate_;
+		return certificateChain_;
 	}
 
 	PrivateKey::SPtr&
@@ -187,14 +187,17 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ApplicationCertificate::readCertificateAndPrivateKey(CertificateManager::SPtr& certificateManager)
+	ApplicationCertificate::readCertificateAndPrivateKey(
+		CertificateManager::SPtr& certificateManager
+	)
 	{
 		// read certificate from file
-		certificate_ = certificateManager->readOwnCertificate();
-		if (certificate_.get() == nullptr) {
+		auto certificate = certificateManager->readOwnCertificate();
+		if (certificate.get() == nullptr) {
 			Log(Error, "read own certificate error");
 			return false;
 		}
+		certificateChain_.addCertificate(certificate);
 
 		// read private key from file
 		privateKey_ = certificateManager->readOwnPrivateKey();

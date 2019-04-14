@@ -66,7 +66,7 @@ namespace OpcUaStackCore
 		}
 
 		// find crypto base
-		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securitySettings.partnerSecurityPolicyUri().toString());
+		auto cryptoBase = cryptoManager_->get(securitySettings.partnerSecurityPolicyUri().toString());
 		if (cryptoBase.get() == nullptr) {
 			Log(Error, "crypto base not available for security policy uri")
 				.parameter("SecurityPolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
@@ -102,14 +102,15 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		ApplicationCertificate::SPtr& applicationCertificate = cryptoManager_->applicationCertificate();
+		auto& securitySettings = secureChannel->securitySettings();
+		auto& applicationCertificate = cryptoManager_->applicationCertificate();
+		auto certificate = applicationCertificate->certificateChain().getCertificate();
 
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
 		OpcUaStatusCode statusCode;
 
 		// check receiver certificate
-		if (securitySettings.ownCertificateThumbprint() != applicationCertificate->certificate()->thumbPrint()) {
+		if (securitySettings.ownCertificateThumbprint() != certificate->thumbPrint()) {
 			Log(Error, "receiver certificate invalid")
 				.parameter("ReceiverCertificateThumbprint", securitySettings.ownCertificateThumbprint());
 			return BadCertificateInvalid;
@@ -152,11 +153,11 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		MessageHeader* messageHeader = &secureChannel->messageHeader_;
+		auto& securitySettings = secureChannel->securitySettings();
+		auto messageHeader = &secureChannel->messageHeader_;
 
 		// get public key from client certificate
-		PublicKey publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
+		auto publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
 		uint32_t signTextLen = publicKey.keySizeInBytes();
 
 		// create plain text buffer (with signature at end of buffer)
@@ -211,7 +212,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		auto& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
 		if (!securitySettings.isOwnEncryptionEnabled() && !securitySettings.isOwnSignatureEnabled()) {
@@ -249,10 +250,11 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		ApplicationCertificate::SPtr& applicationCertificate = cryptoManager_->applicationCertificate();
-		PublicKey publicKey = applicationCertificate->certificate()->publicKey();
-		PrivateKey::SPtr privateKey = applicationCertificate->privateKey();
+		auto& securitySettings = secureChannel->securitySettings();
+		auto& applicationCertificate = cryptoManager_->applicationCertificate();
+		auto certificate = applicationCertificate->certificateChain().getCertificate();
+		auto publicKey = certificate->publicKey();
+		auto privateKey = applicationCertificate->privateKey();
 
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
@@ -349,9 +351,9 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		CryptoBase::SPtr cryptoBase = securitySettings.cryptoBase();
-		PublicKey publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
+		auto& securitySettings = secureChannel->securitySettings();
+		auto cryptoBase = securitySettings.cryptoBase();
+		auto publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
 
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
@@ -443,7 +445,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		auto& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
 		if (!securitySettings.isPartnerEncryptionEnabled() && securitySettings.isPartnerSignatureEnabled()) {
@@ -451,7 +453,7 @@ namespace OpcUaStackCore
 		}
 
 		// find crypto base
-		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securitySettings.partnerSecurityPolicyUri().toString());
+		auto cryptoBase = cryptoManager_->get(securitySettings.partnerSecurityPolicyUri().toString());
 		if (cryptoBase.get() == nullptr) {
 			Log(Error, "crypto base not available for security policy uri")
 				.parameter("SecurityPolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
@@ -484,15 +486,15 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		ApplicationCertificate::SPtr& applicationCertificate = cryptoManager_->applicationCertificate();
-
+		auto& securitySettings = secureChannel->securitySettings();
+		auto& applicationCertificate = cryptoManager_->applicationCertificate();
+		auto certificate = applicationCertificate->certificateChain().getCertificate();
 
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
 		OpcUaStatusCode statusCode;
 
 		// check receiver certificate
-		if (securitySettings.ownCertificateThumbprint() != applicationCertificate->certificate()->thumbPrint()) {
+		if (securitySettings.ownCertificateThumbprint() != certificate->thumbPrint()) {
 			Log(Error, "receiver certificate invalid")
 				.parameter("ReceiverCertificateThumbprint", securitySettings.ownCertificateThumbprint());
 			return BadCertificateInvalid;
@@ -535,8 +537,8 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		MessageHeader* messageHeader = &secureChannel->messageHeader_;
+		auto& securitySettings = secureChannel->securitySettings();
+		auto messageHeader = &secureChannel->messageHeader_;
 
 		// get public key server certificate
 		PublicKey publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
@@ -631,11 +633,12 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-		ApplicationCertificate::SPtr& applicationCertificate = cryptoManager_->applicationCertificate();
+		auto& securitySettings = secureChannel->securitySettings();
+		auto& applicationCertificate = cryptoManager_->applicationCertificate();
+		auto certificate = applicationCertificate->certificateChain().getCertificate();
 
-		PublicKey publicKey = applicationCertificate->certificate()->publicKey();
-		PrivateKey::SPtr privateKey = applicationCertificate->privateKey();
+		auto publicKey = certificate->publicKey();
+		auto privateKey = applicationCertificate->privateKey();
 
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;

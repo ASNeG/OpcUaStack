@@ -311,7 +311,6 @@ namespace OpcUaStackCore
 		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 		auto& securitySettings = secureChannel->securitySettings();
 
-
 		// find endpoint description
 		securitySettings.endpointDescription().reset();
 		EndpointDescription::SPtr endpointDescription;
@@ -339,9 +338,7 @@ namespace OpcUaStackCore
 
 		// set certificate
 		if (securitySettings.isPartnerSignatureEnabled()) {
-			securitySettings.ownCertificateChain().addCertificate(
-				cryptoManager()->applicationCertificate()->certificate()
-			);
+			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
 		}
 
 		// set partner certificate thumbprint

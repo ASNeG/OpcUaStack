@@ -650,7 +650,9 @@ namespace OpcUaStackServer
 		createSessionResponse.maxRequestMessageSize(0);
 
 		// added server certificate
-		cryptoManager_->applicationCertificate()->certificate()->toDERBuf(createSessionResponse.serverCertificate());
+		OpcUaByteString certByteString;
+		cryptoManager_->applicationCertificate()->certificateChain().toByteString(certByteString);
+		createSessionResponse.serverCertificate() = certByteString;
 
 		if (cryptoManager_->applicationCertificate().get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
 
@@ -718,12 +720,9 @@ namespace OpcUaStackServer
 		// check client signature
 		if (secureChannelTransaction->cryptoBase_.get() != nullptr) {
 			// create certificate
-			uint32_t derCertSize = cryptoManager_->applicationCertificate()->certificate()->getDERBufSize();
-			MemoryBuffer certificate(derCertSize);
-			cryptoManager_->applicationCertificate()->certificate()->toDERBuf(
-				certificate.memBuf(),
-				&derCertSize
-			);
+			OpcUaByteString certByteString;
+			cryptoManager_->applicationCertificate()->certificateChain().toByteString(certByteString);
+			MemoryBuffer certificate(certByteString);
 
 			// create server nonce
 			MemoryBuffer serverNonce(serverNonce_, 32);
