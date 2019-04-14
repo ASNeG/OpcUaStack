@@ -49,6 +49,7 @@ namespace OpcUaStackCore
 	  private:
 		bool createSelfSignedCertificate(CertificateManager::SPtr& certificateManager);
 		bool readCertificateAndPrivateKey(CertificateManager::SPtr& certificateManager);
+		bool readCertificateChain(Certificate::SPtr& certificate, CertificateManager::SPtr& certificateManager);
 
 		bool enable_;
 		CertificateChain certificateChain_;

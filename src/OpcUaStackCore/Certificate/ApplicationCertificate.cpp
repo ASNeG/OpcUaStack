@@ -197,7 +197,12 @@ namespace OpcUaStackCore
 			Log(Error, "read own certificate error");
 			return false;
 		}
-		certificateChain_.addCertificate(certificate);
+
+		// read certificate chain
+		if (!readCertificateChain(certificate, certificateManager)) {
+			Log(Error, "read own certificate chain error");
+			return false;
+		}
 
 		// read private key from file
 		privateKey_ = certificateManager->readOwnPrivateKey();
@@ -207,6 +212,41 @@ namespace OpcUaStackCore
 		}
 
 		return true;
+	}
+
+	bool
+	ApplicationCertificate::readCertificateChain(
+		Certificate::SPtr& certificate,
+		CertificateManager::SPtr& certificateManager)
+	{
+		// added certificate to certificate chain
+		certificateChain_.addCertificate(certificate);
+		if (certificate->isSelfSigned()) {
+			return true;
+		}
+
+		// get issuer from first certificate
+		Identity issuer;
+		if (!certificate->getIssuer(issuer)) {
+			Log(Error, "read issuer from certificate error");
+			return false;
+		}
+
+		// search next issuer certificate in trusted folder
+		certificate = certificateManager->getTrustedCertificate(issuer);
+		if (certificate.get() != nullptr) {
+			certificateChain_.certificateVec().push_back(certificate);
+			return readCertificateChain(certificate, certificateManager);
+		}
+
+		// search next issuer certificate in CA folder
+		certificate = certificateManager->getCACertificate(issuer);
+		if (certificate.get() != nullptr) {
+			certificateChain_.certificateVec().push_back(certificate);
+			return readCertificateChain(certificate, certificateManager);
+		}
+
+		return false;
 	}
 
 }
