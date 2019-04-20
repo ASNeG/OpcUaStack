@@ -151,7 +151,15 @@ namespace OpcUaStackClient
 			}
 
 			// check server certificate
-			// FIXME: todo
+			if (serverCertificateChain != securitySettings.partnerCertificateChain()) {
+				Log(Error, "check server certificate error in create session response; close secure channel")
+					.parameter("SessId", ctx_->id_);
+
+				// close secure channel -
+				ctx_->secureChannelClient_.disconnect(secureChannel);
+
+				return SessionServiceStateId::Error;
+			}
 
 			// get client certificate
 			MemoryBuffer clientCertificate;

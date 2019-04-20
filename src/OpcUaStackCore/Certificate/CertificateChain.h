@@ -44,6 +44,8 @@ namespace OpcUaStackCore
 		bool fromByteString(OpcUaByteString& byteString);
 		bool toByteString(OpcUaByteString& byteString) const;
 		CertificateChain& operator = (const CertificateChain& other);
+		bool operator!=(const CertificateChain& rhs) const;
+		bool operator==(const CertificateChain& rhs) const;
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);

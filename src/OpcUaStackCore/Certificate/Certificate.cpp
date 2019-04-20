@@ -849,4 +849,19 @@ namespace OpcUaStackCore
 		return publicKey;
 	}
 
+	bool
+	Certificate::operator!=(const Certificate& rhs) const
+	{
+		return !operator==(rhs);
+	}
+
+	bool
+	Certificate::operator==(const Certificate& rhs) const
+	{
+		OpcUaByteString derBuf1, derBuf2;
+		const_cast<Certificate*>(this)->toDERBuf(derBuf1);
+		const_cast<Certificate*>(&rhs)->toDERBuf(derBuf2);
+		return derBuf1 == derBuf2;
+	}
+
 }

@@ -129,6 +129,26 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	CertificateChain::operator!=(const CertificateChain& rhs) const
+	{
+		return !operator==(rhs);
+	}
+
+	bool
+	CertificateChain::operator==(const CertificateChain& rhs) const
+	{
+		if (certificateVec_.size() != rhs.certificateVec_.size()) {
+			return false;
+		}
+		for (uint32_t idx=0; idx < certificateVec_.size(); idx++) {
+			auto cert1 = certificateVec_[idx];
+			auto cert2 = rhs.certificateVec_[idx];
+			if (*cert1.get() != *cert2.get()) return false;
+		}
+		return true;
+	}
+
+	bool
 	CertificateChain::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaByteString byteString;
