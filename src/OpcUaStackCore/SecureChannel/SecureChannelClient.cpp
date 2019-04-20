@@ -124,7 +124,7 @@ namespace OpcUaStackCore
 			securitySettings.partnerCertificateThumbprint() = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
 
 			// check certificate
-			auto statusCode = checkCertificateChain(secureChannel, secureChannelClientConfig);
+			auto statusCode = validateCertificateChain(secureChannel, secureChannelClientConfig);
 			if (statusCode != Success) {
 				Log(Error, "partner certificate check error")
 					.parameter("ChannelId", *secureChannel)
@@ -141,7 +141,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	SecureChannelClient::checkCertificateChain(
+	SecureChannelClient::validateCertificateChain(
 		SecureChannel* secureChannel,
 		SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{

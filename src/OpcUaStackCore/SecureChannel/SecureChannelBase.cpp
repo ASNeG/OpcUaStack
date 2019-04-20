@@ -413,7 +413,7 @@ namespace OpcUaStackCore
 
 		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
 
-		// error accurred
+		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelRequest message error; close channel")
 				.parameter("ChannelId", *secureChannel)

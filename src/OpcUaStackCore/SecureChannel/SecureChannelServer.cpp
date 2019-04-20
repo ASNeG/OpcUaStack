@@ -15,9 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
+#include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -302,7 +304,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
-		OpenSecureChannelResponse::SPtr openSecureChannelResponse = constructSPtr<OpenSecureChannelResponse>();
+		auto openSecureChannelResponse = constructSPtr<OpenSecureChannelResponse>();
 		openSecureChannelResponse->responseHeader()->requestHandle(openSecureChannelRequest.requestHeader()->requestHandle());
 		openSecureChannelResponse->responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
 
@@ -311,7 +313,7 @@ namespace OpcUaStackCore
 		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 		auto& securitySettings = secureChannel->securitySettings();
 
-		// find endpoint description
+		// find endpoint description in server configuration
 		securitySettings.endpointDescription().reset();
 		EndpointDescription::SPtr endpointDescription;
 		for (uint32_t idx = 0; idx < secureChannelServerConfig->endpointDescriptionArray()->size(); idx++) {
@@ -341,7 +343,7 @@ namespace OpcUaStackCore
 			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
 		}
 
-		// set partner certificate thumbprint
+		// set partner certificate thumbprint and check partner certificate chain
 		if (securitySettings.isPartnerEncryptionEnabled()) {
 			assert(securitySettings.partnerCertificateChain().getCertificate().get() != nullptr);
 
@@ -389,10 +391,6 @@ namespace OpcUaStackCore
 					return;
 			}
 		}
-
-
-		// check security parameter
-		// FIXME: todo - we must find the right endpoint
 
 		// check parameter
 		bool success = true;
@@ -453,10 +451,30 @@ namespace OpcUaStackCore
 		// start security checks
 		//
 
-		// check if client certificate is trusted
+		// validate client certificate chain
 		if (securitySettings.isPartnerEncryptionEnabled()) {
-			bool trusted = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(securitySettings.partnerCertificateChain());
-			if (!trusted) {
+
+			ValidateCertificate validateCertificate;
+			validateCertificate.certificateManager(cryptoManager()->certificateManager());
+			//validateCertificate.hostname(endpointUrl.host());
+			//validateCertificate.uri(secureChannelClientConfig->applicationUri());
+
+			auto statusCode = validateCertificate.validateCertificate(
+				securitySettings.partnerCertificateChain()
+			);
+
+			if (statusCode != Success) {
+
+				// on error we save the certificate in the reject folder.
+
+				auto certificate = securitySettings.partnerCertificateChain().getCertificate();
+				std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
+				boost::filesystem::path rejectFilePath(cryptoManager()->certificateManager()->certificateRejectListLocation() + "/" + certFileName);
+				cryptoManager()->certificateManager()->writeCertificate(
+					rejectFilePath.string(),
+					*certificate.get()
+				);
+
 				Log(Error, "client certificate not trusted")
 					.parameter("ChannelId", *secureChannel)
 				    .parameter("LocalEndpoint", secureChannel->local_)
