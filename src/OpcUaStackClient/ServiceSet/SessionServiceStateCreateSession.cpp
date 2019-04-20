@@ -134,14 +134,32 @@ namespace OpcUaStackClient
 		ctx_->authenticationToken_ = createSessionResponse.authenticationToken();
 
 		// check server signature
-		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
+		auto certificate = securitySettings.ownCertificateChain().getCertificate();
 		if (certificate.get() != nullptr) {
 			ctx_->serverNonce_ = createSessionResponse.serverNonce();
 
-			ctx_->serverCertificate_.fromDERBuf(
-				createSessionResponse.serverCertificate().memBuf(),
-				createSessionResponse.serverCertificate().size()
-			);
+			// get server certificate from create session response
+			CertificateChain serverCertificateChain;
+			if (!serverCertificateChain.fromByteString(createSessionResponse.serverCertificate())) {
+				Log(Error, "server certificate error in create session response; close secure channel")
+					.parameter("SessId", ctx_->id_);
+
+				// close secure channel -
+				ctx_->secureChannelClient_.disconnect(secureChannel);
+
+				return SessionServiceStateId::Error;
+			}
+
+			// check server certificate
+			if (serverCertificateChain != securitySettings.partnerCertificateChain()) {
+				Log(Error, "check server certificate error in create session response; close secure channel")
+					.parameter("SessId", ctx_->id_);
+
+				// close secure channel -
+				ctx_->secureChannelClient_.disconnect(secureChannel);
+
+				return SessionServiceStateId::Error;
+			}
 
 			// get client certificate
 			MemoryBuffer clientCertificate;
@@ -149,7 +167,7 @@ namespace OpcUaStackClient
 
 			// verify signature
 			MemoryBuffer clientNonce(ctx_->clientNonce_, 32);
-			PublicKey publicKey = ctx_->serverCertificate_.publicKey();
+			PublicKey publicKey = serverCertificateChain.getCertificate()->publicKey();
 			OpcUaStatusCode statusCode = createSessionResponse.signatureData()->verifySignature(
 				clientCertificate,
 				clientNonce,
@@ -166,6 +184,11 @@ namespace OpcUaStackClient
 
 				return SessionServiceStateId::Error;
 			}
+		}
+
+		// check server certificate from create session response
+		if (securitySettings.isOwnEncryptionEnabled()) {
+
 		}
 
 		Log(Debug, "session recv CreateSessionResponse")

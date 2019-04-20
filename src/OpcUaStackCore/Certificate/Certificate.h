@@ -107,6 +107,8 @@ namespace OpcUaStackCore
 
 		bool isSelfSigned(void) const;
 		bool verifySignature(Certificate& issuerCertificate) const;
+		bool operator!=(const Certificate& rhs) const;
+		bool operator==(const Certificate& rhs) const;
 
 	  private:
 		X509 *cert_;
