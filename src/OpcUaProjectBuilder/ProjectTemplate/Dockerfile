@@ -12,4 +12,4 @@ RUN make install
 
 # Start ProjectName
 EXPOSE ProjectPort 4840
-CMD ["OpcUaServer3", "/etc/OpcUaStack/ProjectName/OpcUaServer.xml"]
+CMD ["OpcUaServer4", "/etc/OpcUaStack/ProjectName/OpcUaServer.xml"]
