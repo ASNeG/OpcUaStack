@@ -114,7 +114,6 @@ namespace OpcUaStackClient
 		OpcUaUInt32 maxResponseMessageSize_;	// max response message size from create session response
 		OpcUaNodeId authenticationToken_;		// authentication token from create session response
 		OpcUaByteString serverNonce_;			// server nonce from create session response
-		Certificate serverCertificate_;			// server certificate from create session response
 		OpcUaUInt32 requestId_;
 		OpcUaUInt32 requestHandle_;
 

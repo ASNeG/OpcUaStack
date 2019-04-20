@@ -111,13 +111,13 @@ namespace OpcUaStackClient
 		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout_);
 		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize_);
 
-		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
-		if (certificate.get() != nullptr) {
+		// added client certificate chain and client nonce to create session request
+		if (!securitySettings.ownCertificateChain().empty()) {
 			for (uint32_t idx=0; idx<32; idx++) {
 				clientNonce_[idx] = (rand() / 256);
 			}
 			createSessionRequest.clientNonce((const OpcUaByte*)clientNonce_, 32);
-			certificate->toDERBuf(createSessionRequest.clientCertificate());
+			securitySettings.ownCertificateChain().toByteString(createSessionRequest.clientCertificate());
 		}
 
 		// send create session request
@@ -156,11 +156,12 @@ namespace OpcUaStackClient
 		activateSessionRequest.localeIds()->push_back(localeIdSPtr);
 
 		// create client signature
-		Certificate::SPtr certificate = securitySettings.ownCertificateChain().getCertificate();
+		auto certificate = securitySettings.ownCertificateChain().getCertificate();
+		auto partnerCertificate = securitySettings.partnerCertificateChain().getCertificate();
 		if (certificate.get() != nullptr) {
-			uint32_t derCertSize = serverCertificate_.getDERBufSize();
+			uint32_t derCertSize = partnerCertificate->getDERBufSize();
 			MemoryBuffer serverCertificate(derCertSize);
-			serverCertificate_.toDERBuf(
+			partnerCertificate->toDERBuf(
 				serverCertificate.memBuf(),
 				&derCertSize
 			);
