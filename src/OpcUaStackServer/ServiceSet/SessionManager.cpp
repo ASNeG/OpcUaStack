@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionResponse.h"
@@ -103,11 +104,11 @@ namespace OpcUaStackServer
 
 			// get endpoint description array
 			std::string endpointUrl = *it;
-			EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
+			auto endpointDescriptionArray = boost::make_shared<EndpointDescriptionArray>();
 			endpointDescriptionSet_->getEndpoints(endpointUrl, endpointDescriptionArray);
 
 			// create secure channel server configuration
-			SecureChannelServerConfig::SPtr secureChannelServerConfig = constructSPtr<SecureChannelServerConfig>();
+			auto secureChannelServerConfig = constructSPtr<SecureChannelServerConfig>();
 			secureChannelServerConfig->endpointDescriptionArray(endpointDescriptionArray);
 			secureChannelServerConfig->endpointUrl(endpointUrl);
 			secureChannelServerConfig->secureChannelLog(secureChannelLog);
@@ -165,8 +166,7 @@ namespace OpcUaStackServer
 			.parameter("SessionCount", channelSessionHandleMap_.sessionSize());
 
 		// find secure channel server
-		SecureChannelServer::Map::iterator it;
-		it = secureChannelServerMap_.find(secureChannel->endpointUrl_);
+		auto it = secureChannelServerMap_.find(secureChannel->endpointUrl_);
 		if (it == secureChannelServerMap_.end()) {
 			Log(Info, "secure channel server not found in handle connect")
 				.parameter("EndpointUrl", secureChannel->endpointUrl_);
@@ -210,7 +210,7 @@ namespace OpcUaStackServer
 
 		// decode request header
 		std::iostream ios(&secureChannel->secureChannelTransaction_->is_);
-		RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
+		auto requestHeader = constructSPtr<RequestHeader>();
 		requestHeader->opcUaBinaryDecode(ios);
 
 		// process request
@@ -271,9 +271,8 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		SecureChannelServerConfig::SPtr secureChannelServerConfig;
-		secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
-		EndpointDescriptionArray::SPtr endpointDescriptionArray = secureChannelServerConfig->endpointDescriptionArray();
+		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		auto endpointDescriptionArray = secureChannelServerConfig->endpointDescriptionArray();
 
 		// create new session
 		Session::SPtr session = constructSPtr<Session>();
@@ -305,19 +304,18 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
 
 		// get handle from secure channel
 		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
-		ChannelSessionHandle::SPtr channelSessionHandle;
-		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
+		auto channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
 		if (!channelSessionHandle->sessionIsValid()) {
 			// session do not exist anymore - send error response
 
 			errorActivateSessionRequest(secureChannel, requestHeader, BadSessionClosed);
 			return;
 		}
-		Session::SPtr session = channelSessionHandle->session();
+		auto session = channelSessionHandle->session();
 
 		// handle activate session request
 		session->activateSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
@@ -331,7 +329,7 @@ namespace OpcUaStackServer
 	)
 	{
 		// added response type
-		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary;
 
 		// get activate session request
@@ -350,7 +348,7 @@ namespace OpcUaStackServer
 		activateSessionResponse.opcUaBinaryEncode(iosres);
 
 		// send activate session response
-		ResponseHeader::SPtr responseHeader = activateSessionResponse.responseHeader();
+		auto responseHeader = activateSessionResponse.responseHeader();
 		responseMessage(responseHeader, secureChannelTransaction);
 	}
 
@@ -367,19 +365,18 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
 
 		// get handle from secure channel
 		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
-		ChannelSessionHandle::SPtr channelSessionHandle;
-		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
+		auto channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
 		if (!channelSessionHandle->sessionIsValid()) {
 			// session do not exist anymore - send error response
 
 			errorCloseSessionRequest(secureChannel, requestHeader, BadSessionClosed);
 			return;
 		}
-		Session::SPtr session = channelSessionHandle->session();
+		auto session = channelSessionHandle->session();
 
 		// handle activate session request
 		session->closeSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
@@ -393,7 +390,7 @@ namespace OpcUaStackServer
 	)
 	{
 		// added response type
-		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CloseSessionResponse_Encoding_DefaultBinary;
 
 		// get activate session request
@@ -412,7 +409,7 @@ namespace OpcUaStackServer
 		closeSessionResponse.opcUaBinaryEncode(iosres);
 
 		// send close session response
-		ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
+		auto responseHeader = closeSessionResponse.responseHeader();
 		responseMessage(responseHeader, secureChannelTransaction);
 	}
 
@@ -429,19 +426,18 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
 
 		// get handle from secure channel
 		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
-		ChannelSessionHandle::SPtr channelSessionHandle;
-		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
+		auto channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
 		if (!channelSessionHandle->sessionIsValid()) {
 			// session do not exist anymore - send error response
 
 			errorCancelRequest(secureChannel, requestHeader, BadSessionClosed);
 			return;
 		}
-		Session::SPtr session = channelSessionHandle->session();
+		auto session = channelSessionHandle->session();
 
 		// handle cancel request
 		session->cancelRequest(requestHeader, secureChannel->secureChannelTransaction_);
@@ -455,7 +451,7 @@ namespace OpcUaStackServer
 	)
 	{
 		// added response type
-		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CancelResponse_Encoding_DefaultBinary;
 
 		// get cancel request
@@ -474,7 +470,7 @@ namespace OpcUaStackServer
 		cancelResponse.opcUaBinaryEncode(iosres);
 
 		// send cancel response
-		ResponseHeader::SPtr responseHeader = cancelResponse.responseHeader();
+		auto responseHeader = cancelResponse.responseHeader();
 		responseMessage(responseHeader, secureChannelTransaction);
 	}
 
@@ -491,19 +487,18 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
 
 		// get handle from secure channel
 		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
-		ChannelSessionHandle::SPtr channelSessionHandle;
-		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
+		auto channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
 		if (!channelSessionHandle->sessionIsValid()) {
 			// session do not exist anymore - send error response
 
 			errorMessageRequest(secureChannel, requestHeader, BadSessionClosed);
 			return;
 		}
-		Session::SPtr session = channelSessionHandle->session();
+		auto session = channelSessionHandle->session();
 
 		// handle message request
 		session->messageRequest(requestHeader, secureChannel->secureChannelTransaction_);
@@ -606,8 +601,7 @@ namespace OpcUaStackServer
 
 		// find secure channel server
 		SecureChannelServer::SPtr secureChannelServer;
-		SecureChannelServer::Map::iterator it0;
-		it0 = secureChannelServerMap_.find(endpointUrl);
+		auto it0 = secureChannelServerMap_.find(endpointUrl);
 		if (it0 == secureChannelServerMap_.end()) {
 			Log(Info, "close opc ua endpoint error, because secure channel server not found")
 				.parameter("EndpointUrl", endpointUrl);
@@ -620,10 +614,9 @@ namespace OpcUaStackServer
 		// close all channels
 		//
 		std::vector<SecureChannel*> secureChannelList;
-		std::vector<SecureChannel*>::iterator it1;
 		channelSessionHandleMap_.getSecureChannelList(secureChannelList);
 		if (secureChannelServer.get() != nullptr) {
-			for (it1 = secureChannelList.begin(); it1 != secureChannelList.end(); it1++) {
+			for (auto it1 = secureChannelList.begin(); it1 != secureChannelList.end(); it1++) {
 				SecureChannel* secureChannel = *it1;
 
 				SecureChannelServerConfig::SPtr cfg = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
@@ -655,15 +648,14 @@ namespace OpcUaStackServer
 	)
 	{
 		// get channel session handle
-		ChannelSessionHandle::SPtr channelSessionHandle;
-		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannelTransaction->handle_);
+		auto channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannelTransaction->handle_);
 		if (!channelSessionHandle->secureChannelIsValid()) {
 			// channel do not exist anymore - ignore response
 			return;
 		}
 
 		// send response
-		SecureChannelServer::SPtr secureChannelServer = channelSessionHandle->secureChannelServer();
+		auto secureChannelServer = channelSessionHandle->secureChannelServer();
 		secureChannelServer->sendResponse(
 			channelSessionHandle->secureChannel(),
 			secureChannelTransaction
@@ -692,8 +684,7 @@ namespace OpcUaStackServer
 	)
 	{
 		// get channel session handle
-		ChannelSessionHandle::SPtr channelSessionHandle;
-		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannelTransaction->handle_);
+		auto channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannelTransaction->handle_);
 		if (!channelSessionHandle->secureChannelIsValid()) {
 			// channel do not exist anymore - ignore response
 			return;
