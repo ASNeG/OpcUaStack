@@ -39,7 +39,7 @@ namespace OpcUaStackCore
 		bool insert(
 			SecurityPolicy::Enum securityPolicy,
 			const std::string& securityPolicyString,
-			CryptoBase::SPtr& cryptoBase
+			const CryptoBase::SPtr& cryptoBase
 		);
 		bool remove(SecurityPolicy::Enum securityPolicy);
 		std::string securityPolicy(SecurityPolicy::Enum securityPolicy);
