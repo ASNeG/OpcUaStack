@@ -71,7 +71,6 @@ namespace OpcUaStackServer
 	, endpointDescriptionArray_()
 	, endpointDescription_()
 	, userContext_()
-	, clientCertificate_()
 	{
 		Log(Info, "session construct")
 			.parameter("SessionId", sessionId_)
@@ -610,6 +609,7 @@ namespace OpcUaStackServer
 	)
 	{
 		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto& securitySettings = secureChannel->securitySettings();
 
 		createServerNonce();
 
@@ -637,10 +637,20 @@ namespace OpcUaStackServer
 		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 
 		if (createSessionRequest.clientCertificate().exist()) {
-			clientCertificate_.fromDERBuf(
-				createSessionRequest.clientCertificate().memBuf(),
-				createSessionRequest.clientCertificate().size()
-			);
+			CertificateChain partnerCertificateChain;
+
+			if (!partnerCertificateChain.fromByteString(createSessionRequest.clientCertificate())) {
+				Log(Error, "received client certificate error");
+				createSessionRequestError(requestHeader, secureChannelTransaction, BadSecurityChecksFailed);
+				return;
+			}
+
+			// check client certificate
+			if (partnerCertificateChain != securitySettings.partnerCertificateChain()) {
+				Log(Error, "check client certificate error");
+				createSessionRequestError(requestHeader, secureChannelTransaction, BadSecurityChecksFailed);
+				return;
+			}
 		}
 
 		createSessionResponse.sessionId().namespaceIndex(1);
@@ -686,6 +696,28 @@ namespace OpcUaStackServer
 		}
 	}
 
+	void
+	Session::createSessionRequestError(
+		RequestHeader::SPtr& requestHeader,
+		SecureChannelTransaction::SPtr secureChannelTransaction,
+		OpcUaStatusCode statusCode
+	)
+	{
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		CreateSessionResponse createSessionResponse;
+		createSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
+		createSessionResponse.responseHeader()->serviceResult(statusCode);
+
+		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
+		createSessionResponse.opcUaBinaryEncode(iosres);
+
+		if (sessionIf_ != nullptr) {
+			ResponseHeader::SPtr responseHeader = createSessionResponse.responseHeader();
+			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
+		}
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -700,6 +732,7 @@ namespace OpcUaStackServer
 	)
 	{
 		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto& securitySettings = secureChannel->securitySettings();
 
 		OpcUaStatusCode statusCode;
 
@@ -732,7 +765,7 @@ namespace OpcUaStackServer
 			MemoryBuffer serverNonce(serverNonce_, 32);
 
 			// verify signature
-			auto publicKey = clientCertificate_.publicKey();
+			auto publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
 			statusCode = activateSessionRequest.clientSignature()->verifySignature(
 				certificate,
 				serverNonce,
