@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
@@ -65,12 +66,12 @@ namespace OpcUaStackServer
 		OpcUaUInt32 authenticationToken(void);
 
 		void createSessionRequest(
-			RequestHeader::SPtr requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction
+			RequestHeader::SPtr& requestHeader,
+			SecureChannel* secureChannel
 		);
 		void activateSessionRequest(
 			RequestHeader::SPtr requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction
+			SecureChannel* secureChannel
 		);
 		void closeSessionRequest(
 			RequestHeader::SPtr requestHeader,

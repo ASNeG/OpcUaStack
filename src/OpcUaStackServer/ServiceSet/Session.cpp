@@ -605,10 +605,12 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	void
 	Session::createSessionRequest(
-		RequestHeader::SPtr requestHeader,
-		SecureChannelTransaction::SPtr secureChannelTransaction
+		RequestHeader::SPtr& requestHeader,
+		SecureChannel* secureChannel
 	)
 	{
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
+
 		createServerNonce();
 
 		OpcUaStatusCode statusCode;
@@ -694,9 +696,11 @@ namespace OpcUaStackServer
 	void
 	Session::activateSessionRequest(
 		RequestHeader::SPtr requestHeader,
-		SecureChannelTransaction::SPtr secureChannelTransaction
+		SecureChannel* secureChannel
 	)
 	{
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
+
 		OpcUaStatusCode statusCode;
 
 		Log(Debug, "receive activate session request");
@@ -728,7 +732,7 @@ namespace OpcUaStackServer
 			MemoryBuffer serverNonce(serverNonce_, 32);
 
 			// verify signature
-			PublicKey publicKey = clientCertificate_.publicKey();
+			auto publicKey = clientCertificate_.publicKey();
 			statusCode = activateSessionRequest.clientSignature()->verifySignature(
 				certificate,
 				serverNonce,
@@ -762,7 +766,7 @@ namespace OpcUaStackServer
 		//secureChannelTransaction->authenticationToken_ = authenticationToken_;
 
 		if (sessionIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = activateSessionResponse.responseHeader();
+			auto responseHeader = activateSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
 		}
 	}
@@ -911,7 +915,7 @@ namespace OpcUaStackServer
 			return;
 		}
 
-		ServiceTransaction::SPtr serviceTransactionSPtr = transactionManagerSPtr_->getTransaction(secureChannelTransaction->requestTypeNodeId_);
+		auto serviceTransactionSPtr = transactionManagerSPtr_->getTransaction(secureChannelTransaction->requestTypeNodeId_);
 		if (serviceTransactionSPtr.get() == nullptr) {
 			Log(Error, "receive invalid message type")
 				.parameter("TypeId", secureChannelTransaction->requestTypeNodeId_);

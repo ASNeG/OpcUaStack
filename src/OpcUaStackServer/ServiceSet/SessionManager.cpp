@@ -288,7 +288,7 @@ namespace OpcUaStackServer
 		secureChannel->secureChannelTransaction_->handle_ = handle;
 
 		// handle create session request
-		session->createSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
+		session->createSessionRequest(requestHeader, secureChannel);
 	}
 
 	// ------------------------------------------------------------------------
@@ -318,7 +318,7 @@ namespace OpcUaStackServer
 		auto session = channelSessionHandle->session();
 
 		// handle activate session request
-		session->activateSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
+		session->activateSessionRequest(requestHeader, secureChannel);
 	}
 
 	void
