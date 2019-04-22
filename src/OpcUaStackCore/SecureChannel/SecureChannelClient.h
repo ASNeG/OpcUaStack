@@ -49,7 +49,7 @@ namespace OpcUaStackCore
 		//- SecureChannelBase -------------------------------------------------
 
 	  private:
-		OpcUaStatusCode checkCertificateChain(
+		OpcUaStatusCode validateCertificateChain(
 			SecureChannel* secureChannel,
 			SecureChannelClientConfig::SPtr& secureChannelClientConfig
 		);
