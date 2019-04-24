@@ -41,7 +41,7 @@ Installing
 
 See `here<_example: https://opcuastack.rtfd.io/en/latest/getting_started/installation.html>`_.
 
-Usage 
+Usage
 ------------------------------
 
 In order to create a user application OpcUa Stack provides a project builder:
@@ -50,7 +50,7 @@ In order to create a user application OpcUa Stack provides a project builder:
 
   $ OpcUaProjectBuilder3 MyProject ProjectDescription 9012
 
-The builder creates a template of OPC UA application project in directory MyProject. The template is 
+The builder creates a template of OPC UA application project in directory MyProject. The template is
 ready to be compiled and installed. Below there is an example for local installation (DEB installation is also possible):
 
 ::
@@ -61,25 +61,25 @@ ready to be compiled and installed. Below there is an example for local installa
 The user application is installed in directory $HOME/.ASNeG or C:\ASNeG by default. And you can run it by using OPC UA Server:
 
 ::
-  
+
   $ OpcUaServer3 $HOME/install/etc/OpcUaStack/MyProject/OpcUaServer.xml
 
-The server reads the setting from file **OpcUaServer.xml** and runs the user application. 
+The server reads the setting from file **OpcUaServer.xml** and runs the user application.
 Now the application is available via OPC UA protocol on port 9012.
-  
+
 For more information about how to write your own OPC UA client server application see example_ and ASNeG-Demo_.
 
 
 References
 ------------------------------
 
+* `Home Page`_
 * Documentation_
-* `ASNeG Home Page`_ (in German)
+* ASNeG-Demo_
 * `OPC UA Specifications`_
-* ASNeG-Demo_ 
 
 .. _example: https://opcuastack.rtfd.io/en/latest/getting_started/hello_world.html
 .. _Documentation: http://opcuastack.rtfd.io/
-.. _ASNeG Home Page: http://asneg.de/
+.. _Home Page: https://asneg.github.io/projects/opcuastack
 .. _OPC UA Specifications: https://opcfoundation.org/developer-tools/specifications-unified-architecture
 .. _ASNeG-Demo: https://github.com/ASNeG/ASNeG-Demo
