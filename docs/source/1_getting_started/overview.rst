@@ -1,11 +1,18 @@
 Overview
 ===========================
 
-ASNeG OPC UA Stack it is not only
+ASNeG OPC UA Stack it is not only an open source implementation of OPC UA protocol in
+C++. It is a framework that provides tools to create, develop, test and distribute
+OPC UA applications.
 
+Structure of ASNeG OPC UA Stack
+---------------------------------
 
-Structure
----------
+The stack contains the following components:
+
+* C++ Client\\Server SDK
+* Application Server
+* Development Tools
 
 .. figure:: stack_components.png
    :scale: 100 %
@@ -13,6 +20,35 @@ Structure
    :align: center
 
    **OPC UA Stack Components**
+
+**C++ Client\\Server SDK** is an implementation OPC UA client server in C++.
+The SDK provides API to write your own OPC UA server and client applications and
+you can use it without the rest of the stack.
+
+**Application Server** provides an *Application API* which automates many of typical
+for an OPC UA application operations. Moreover it has an *Application Manager*. It loads
+the user applications as shared libraries (.so, .dll) and runs them. You can learn more
+about :ref:`below <application_server>`
+
+**Development Tools** is a set of scripts and programs that automate creating,
+building and distributing OPC UA applications.
+
+*Project Builder* creates a template of a CMake project, that contains everything to
+start developing an application from scratch.
+
+*Build Scripts* are scripts that build the created by *Project Builder* project and
+package it to DEB, RPM or MSI packages for distribution. Also the scripts provides standalone packaging,
+when they include the whole stack with dependencies in the package, so that the application
+can run without the stack.
+
+*Type Generator* generates C++ classes from OPC UA types described in XML Node Set
+by *OPC UA Modeler*. With *Type Generator* users can describe their data as objects and implement the business
+logic in C++. Then they can make instances of the types without registering their
+variables in :ref:`Information Model`.
+
+*CLI OPC UA Client* is a simple console program which you can use to test your application.
+
+.. _application_server:
 
 Application Server
 ------------------
@@ -36,8 +72,16 @@ Development Process
    **Development Process**
 
 
+.. _coverage:
+
+
 OPC UA Specification Coverage
 ------------------------------
+
+Before to use the stack in your project, pay attention to the OPC UA services which
+the stack supports. If you doesn't find that you need in the tables below, feel free
+to make an issue `on Github <https://github.com/ASNeG/OpcUaStack/issues>`_ and we'll
+make our best to add it.
 
 .. |done| unicode:: U+2713 .. DONE
 
