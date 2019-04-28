@@ -332,5 +332,7 @@ Columns:
 References
 ---------------------------
 
+* `ASNeG OPC UA Designer`_
+* :ref:`hello_world`
 
 .. _ASNeG OPC UA Designer: https://github.com/ASNeG/OpcUaDesigner
