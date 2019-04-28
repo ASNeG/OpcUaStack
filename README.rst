@@ -44,7 +44,7 @@ In the development stage:
 Installing
 ------------------------------
 
-See `here<_example: https://opcuastack.rtfd.io/en/latest/1_getting_started/installation.html>`_.
+See `here <https://opcuastack.rtfd.io/en/latest/1_getting_started/installation.html>`_.
 
 Usage
 ------------------------------

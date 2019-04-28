@@ -37,7 +37,7 @@ building and distributing OPC UA applications.
 start developing an application from scratch.
 
 *Build Scripts* are scripts that build the created by *Project Builder* project and
-package it to DEB, RPM or MSI packages for distribution. Also, the scripts provide standalone packaging,
+package it into DEB, RPM or MSI packages for distribution. Also, the scripts provide standalone packaging,
 when they include the whole stack with dependencies in the package so that the application
 can run without the stack.
 
@@ -85,6 +85,9 @@ network.
 Development Process
 -------------------
 
+We have already describe the main components of the stack. In this section we'll
+show how they are used to develop a user application.
+
 .. figure:: development_process.png
    :scale: 100 %
    :alt: Development Process
@@ -92,9 +95,22 @@ Development Process
 
    **Development Process**
 
+At first we have to create a CMake project from a template with *Project Builder*.
+The project has empty *Application Library*'s classes, configuration files and
+*Build Scripts*.
+
+The next step is creation of *Application Model* manually or with a
+GUI tool (for example, `ASNeG OPC UA Designer`_). In *Application Model* we can
+describe some domain specific types and generate C++ classes from it by using  *Type Generator*.
+
+Then we implement the domain logic and build *Application Library* with
+*Build Scripts*. The application can be installed locally or run in Docker container
+to test and debug it.
+
+Finally we can use *Build Scripts* to package our application into MSI, DEB or RPM
+packages to distribute it on other machines.
 
 .. _coverage:
-
 
 OPC UA Specification Coverage
 ------------------------------
