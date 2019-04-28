@@ -3,7 +3,8 @@ Overview
 
 ASNeG OPC UA Stack is not only an open source implementation of OPC UA protocol in
 C++. It is a framework that provides tools to create, develop, test and distribute
-OPC UA applications.
+OPC UA applications. This document describes the most important components and features
+of the stack.
 
 Structure of ASNeG OPC UA Stack
 ---------------------------------
@@ -46,7 +47,7 @@ by *OPC UA Modeler*. With *Type Generator* users can describe their data as obje
 logic in C++. Then they can make instances of the types without registering their
 variables in :ref:`Information Model`.
 
-*CLI OPC UA Client* is a simple console program which you can use to test your application.
+*CLI OPC UA Client* is a simple console program which you can use to test your applications.
 
 .. _application_server:
 
@@ -54,7 +55,7 @@ Application Server
 ------------------
 
 Using **Application Server** a developer doesn't need to implement the communication
-part of the OPC server and can focus on the business logic of the user application.
+part of the OPC server and can focus on the domain logic of the user application.
 
 
 .. figure:: application_server.png
@@ -85,7 +86,7 @@ network.
 Development Process
 -------------------
 
-We have already describe the main components of the stack. In this section we'll
+We have already described the main components of the stack. In this section we'll
 show how they are used to develop a user application.
 
 .. figure:: development_process.png
@@ -99,9 +100,9 @@ At first we have to create a CMake project from a template with *Project Builder
 The project has empty *Application Library*'s classes, configuration files and
 *Build Scripts*.
 
-The next step is creation of *Application Model* manually or with a
+The next step is to create *Application Model* manually or with a
 GUI tool (for example, `ASNeG OPC UA Designer`_). In *Application Model* we can
-describe some domain specific types and generate C++ classes from it by using  *Type Generator*.
+describe some domain specific types and generate C++ classes from it by using *Type Generator*.
 
 Then we implement the domain logic and build *Application Library* with
 *Build Scripts*. The application can be installed locally or run in Docker container
@@ -115,7 +116,7 @@ packages to distribute it on other machines.
 OPC UA Specification Coverage
 ------------------------------
 
-Before to use the stack in your project, pay attention to the OPC UA services which
+Before using the stack in your project, pay attention to the OPC UA services which
 the stack supports. If you doesn't find that you need in the tables below, feel free
 to make an issue `on Github <https://github.com/ASNeG/OpcUaStack/issues>`_ and we'll
 make our best to add it.
