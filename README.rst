@@ -1,10 +1,14 @@
-OpcUaStack
+ASNeG OPC UA Stack
 ==============================
 
 .. image:: https://travis-ci.org/ASNeG/OpcUaStack.svg?branch=master
     :target: https://travis-ci.org/ASNeG/OpcUaStack
-.. image:: https://img.shields.io/github/downloads/ASNeG/OpcUaStack/total.svg?style=social   :alt: Github All Releases   :target: https://github.com/ASNeG/OpcUaStack
-.. image:: https://asneg-invate-form.herokuapp.com/badge.svg :alt: Slack Community :target: https://asneg-invate-form.herokuapp.com
+.. image:: https://img.shields.io/github/downloads/ASNeG/OpcUaStack/total.svg?style=social
+    :alt: Github All Releases
+    :target: https://github.com/ASNeG/OpcUaStack
+.. image:: https://asneg-invate-form.herokuapp.com/badge.svg
+    :alt: Slack Community
+    :target: https://asneg-invate-form.herokuapp.com
 
 About
 ------------------------------
@@ -40,7 +44,7 @@ In the development stage:
 Installing
 ------------------------------
 
-See `here<_example: https://opcuastack.rtfd.io/en/latest/getting_started/installation.html>`_.
+See `here<_example: https://opcuastack.rtfd.io/en/latest/1_getting_started/installation.html>`_.
 
 Usage
 ------------------------------
