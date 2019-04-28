@@ -28,6 +28,9 @@ Release 4.1.0
 * Class OpcUaDataValue does not have an "<" operator #54, by @huebl
 * Extensible Parameter us used incorrectly #36, by @huebl
 
+**Documentation**:
+
+* add *Overview* document #184, by @flipback
 
 Release 3.7.0
 ------------------------------------------------------------
