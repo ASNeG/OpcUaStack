@@ -1,7 +1,7 @@
 Overview
 ===========================
 
-ASNeG OPC UA Stack it is not only an open source implementation of OPC UA protocol in
+ASNeG OPC UA Stack is not only an open source implementation of OPC UA protocol in
 C++. It is a framework that provides tools to create, develop, test and distribute
 OPC UA applications.
 
@@ -26,19 +26,19 @@ The SDK provides API to write your own OPC UA server and client applications and
 you can use it without the rest of the stack.
 
 **Application Server** provides an *Application API* which automates many of typical
-for an OPC UA application operations. Moreover it has an *Application Manager*. It loads
+for an OPC UA application operations. Moreover, it has an *Application Manager*. It loads
 the user applications as shared libraries (.so, .dll) and runs them. You can learn more
 about :ref:`below <application_server>`
 
 **Development Tools** is a set of scripts and programs that automate creating,
 building and distributing OPC UA applications.
 
-*Project Builder* creates a template of a CMake project, that contains everything to
+*Project Builder* creates a template of a CMake project that contains everything to
 start developing an application from scratch.
 
 *Build Scripts* are scripts that build the created by *Project Builder* project and
-package it to DEB, RPM or MSI packages for distribution. Also the scripts provides standalone packaging,
-when they include the whole stack with dependencies in the package, so that the application
+package it to DEB, RPM or MSI packages for distribution. Also, the scripts provide standalone packaging,
+when they include the whole stack with dependencies in the package so that the application
 can run without the stack.
 
 *Type Generator* generates C++ classes from OPC UA types described in XML Node Set
@@ -53,6 +53,9 @@ variables in :ref:`Information Model`.
 Application Server
 ------------------
 
+Using **Application Server** a developer doesn't need to implement the communication
+part of the OPC server and can focus on the business logic of the user application.
+
 
 .. figure:: application_server.png
    :scale: 100 %
@@ -60,6 +63,24 @@ Application Server
    :align: center
 
    **Application Server**
+
+A user application contains an *Application Model* and an *Application Library*.
+
+The *Application Model* describes in XML how the application data is available in :term:`Information Model`
+for the OPC UA client. It contains information about types, :term:`Variable`\ s, :term:`Method`\ s and
+:term:`Reference`\ s between the :term:`Node`\ s. The **Application Server** loads
+the *Application Model* in the format specified by OPC UA Standard so that the developer
+can write it by using `ASNeG OPC UA Designer`_ or any other GUI tools.
+
+The *Application Library* implements the business logic of the user application
+in C++. The **Application Server** provides an *Application API*. The user application
+can use it to access to :term:`Information Model`, subscribe notifications about
+the actions of the client (e.g., read\\write operations, authentication),
+implement a :term:`Method`, fire an :term:`Event` and so on.
+
+Since a user application is developed by using **C++ Client\\Server SDK**,
+it can use its client part to exchange data with other OPC UA servers in the
+network.
 
 Development Process
 -------------------
@@ -293,3 +314,6 @@ Columns:
 
 References
 ---------------------------
+
+
+.. _ASNeG OPC UA Designer: https://github.com/ASNeG/OpcUaDesigner
