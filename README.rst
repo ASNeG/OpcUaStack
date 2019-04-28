@@ -4,6 +4,7 @@ OpcUaStack
 .. image:: https://travis-ci.org/ASNeG/OpcUaStack.svg?branch=master
     :target: https://travis-ci.org/ASNeG/OpcUaStack
 .. image:: https://img.shields.io/github/downloads/ASNeG/OpcUaStack/total.svg?style=social   :alt: Github All Releases   :target: https://github.com/ASNeG/OpcUaStack
+.. image:: https://asneg-invate-form.herokuapp.com/badge.svg :alt: Slack Community :target: https://asneg-invate-form.herokuapp.com
 
 About
 ------------------------------
@@ -74,6 +75,7 @@ References
 ------------------------------
 
 * `Home Page`_
+* `Slack Community`_
 * Documentation_
 * ASNeG-Demo_
 * `OPC UA Specifications`_
@@ -83,3 +85,4 @@ References
 .. _Home Page: https://asneg.github.io/projects/opcuastack
 .. _OPC UA Specifications: https://opcfoundation.org/developer-tools/specifications-unified-architecture
 .. _ASNeG-Demo: https://github.com/ASNeG/ASNeG-Demo
+.. _Slack Community: https://asneg-invate-form.herokuapp.com
