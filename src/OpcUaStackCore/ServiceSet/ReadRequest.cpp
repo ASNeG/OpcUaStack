@@ -94,4 +94,83 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	ReadRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "ReadRequest json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	ReadRequest::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode max age
+		if (maxAge_ != 0) {
+			if (!JsonNumber::jsonEncode(pt, maxAge_, "MaxAge")) {
+				Log(Error, "ReadRequest json encode error")
+					.parameter("Element", "MaxAge");
+				return false;
+			}
+		}
+
+		// encode timestamps to return
+		if (!JsonNumber::jsonEncode(pt, timestampsToReturn_, "TimestampsToReturn")) {
+			Log(Error, "ReadRequest json encode error")
+				.parameter("Element", "TimestampsToReturn");
+			return false;
+		}
+
+		// encode value id array
+		if (!readValueIdArraySPtr_->jsonEncode(pt, "NodesToRead")) {
+			Log(Error, "ReadRequest json encode error")
+				.parameter("Element", "ValueIds");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	ReadRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "ReadRequest json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	ReadRequest::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// decode max age
+		if (!JsonNumber::jsonDecode(pt, maxAge_, "MaxAge")) {
+			maxAge_ = 0;
+		}
+
+		// decode timestamps to return
+		if (!JsonNumber::jsonDecode(pt, timestampsToReturn_, "TimestampsToReturn")) {
+			timestampsToReturn_ = 0;
+		}
+
+		// decode value id array
+		if (!readValueIdArraySPtr_->jsonDecode(pt, "NodesToRead")) {
+			Log(Error, "ReadRequest json decode error")
+			    .parameter("Element", "NodesToRead");
+			return false;
+		}
+
+		return true;
+	}
+
 }
