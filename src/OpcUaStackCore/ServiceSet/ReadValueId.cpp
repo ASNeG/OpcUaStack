@@ -219,13 +219,21 @@ namespace OpcUaStackCore
 		}
 
 		// decode index range
-		if (!indexRange_.jsonDecode(pt, "IndexRange")) {
-			indexRange_ = "";
+		indexRange_ = "";
+		auto indexRange = pt.get_child_optional("IndexRange");
+		if (indexRange) {
+			if (!indexRange_.jsonDecode(*indexRange)) {
+				return false;
+			}
 		}
 
 		// decode data encoding
-		if (!dataEncoding_.jsonDecode(pt, "dataEncoding")) {
-			dataEncoding_ = "";
+		dataEncoding_ = "";
+		auto dataEncoding = pt.get_child_optional("dataEncoding");
+		if (dataEncoding) {
+			if (!dataEncoding_.jsonDecode(pt, "dataEncoding")) {
+				return false;
+			}
 		}
 
 		return true;

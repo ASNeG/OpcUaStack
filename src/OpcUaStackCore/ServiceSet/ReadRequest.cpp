@@ -127,7 +127,7 @@ namespace OpcUaStackCore
 		}
 
 		// encode value id array
-		if (!readValueIdArraySPtr_->jsonEncode(pt, "NodesToRead")) {
+		if (!readValueIdArraySPtr_->jsonEncode(pt, "NodesToRead", "")) {
 			Log(Error, "ReadRequest json encode error")
 				.parameter("Element", "ValueIds");
 			return false;
@@ -164,7 +164,7 @@ namespace OpcUaStackCore
 		}
 
 		// decode value id array
-		if (!readValueIdArraySPtr_->jsonDecode(pt, "NodesToRead")) {
+		if (!readValueIdArraySPtr_->jsonDecode(pt, "NodesToRead", "")) {
 			Log(Error, "ReadRequest json decode error")
 			    .parameter("Element", "NodesToRead");
 			return false;
