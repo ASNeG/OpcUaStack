@@ -22,6 +22,7 @@
 #include <map>
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include <vector>
 
 namespace OpcUaStackCore
 {
