@@ -160,9 +160,9 @@ namespace OpcUaStackCore
 		}
 
 		// encode data value
-		if (!dataValue_.jsonEncode(pt, "DataValue")) {
+		if (!dataValue_.jsonEncode(pt, "Value")) {
 			Log(Error, "WriteValue json encode error")
-				.parameter("Element", "DataValue");
+				.parameter("Element", "Value");
 			return false;
 		}
 	}
@@ -206,9 +206,9 @@ namespace OpcUaStackCore
 		}
 
 		// decode data value
-		if (!dataValue_.jsonDecode(pt, "DataValue")) {
+		if (!dataValue_.jsonDecode(pt, "Value")) {
 			Log(Error, "WriteValue json decode error")
-			    .parameter("Element", "DataValue");
+			    .parameter("Element", "Value");
 			return false;
 		}
 

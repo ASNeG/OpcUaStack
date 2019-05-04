@@ -3688,25 +3688,41 @@ namespace OpcUaStackCore
 		// get source timestamp
 		tmpTree = pt.get_child_optional("SourceTimestamp");
 		if (tmpTree) {
-			sourceTimestamp_.jsonDecode(pt, "SourceTimestamp");
+			if (!sourceTimestamp_.jsonDecode(pt, "SourceTimestamp")) {
+				Log(Error, "OpcUaDataValue json decode error")
+		        	.parameter("Element", "SourceTimestamp");
+				return false;
+			}
 		}
 
 		// get server timestamp
 		tmpTree = pt.get_child_optional("ServerTimestamp");
 		if (tmpTree) {
-			serverTimestamp_.jsonDecode(pt, "ServerTimestamp");
+			if (!serverTimestamp_.jsonDecode(pt, "ServerTimestamp")) {
+				Log(Error, "OpcUaDataValue json decode error")
+		        	.parameter("Element", "ServerTimestamp");
+				return false;
+			}
 		}
 
 		// get source pico seconds
 		tmpTree = pt.get_child_optional("SourcePicoSeconds");
 		if (tmpTree) {
-			JsonNumber::jsonDecode(pt, sourcePicoseconds_, "SourcePicoSeconds");
+			if (!JsonNumber::jsonDecode(pt, sourcePicoseconds_, "SourcePicoSeconds")) {
+				Log(Error, "OpcUaDataValue json decode error")
+		        	.parameter("Element", "SourcePicoSeconds");
+				return false;
+			}
 		}
 
 		// get server pico seconds
 		tmpTree = pt.get_child_optional("ServerPicoSeconds");
 		if (tmpTree) {
-			JsonNumber::jsonDecode(pt, serverPicoseconds_, "ServerPicoSeconds");
+			if (!JsonNumber::jsonDecode(pt, serverPicoseconds_, "ServerPicoSeconds")) {
+				Log(Error, "OpcUaDataValue json decode error")
+		        	.parameter("Element", "ServerPicoSeconds");
+				return false;
+			}
 		}
 
 		return true;

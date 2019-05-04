@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatus.h"
 #include "OpcUaStackCore/ServiceSet/WriteResponse.h"
 
 namespace OpcUaStackCore
@@ -95,8 +97,18 @@ namespace OpcUaStackCore
 	bool
 	WriteResponse::jsonEncode(boost::property_tree::ptree& pt)
 	{
+		OpcUaStatusArray statusArray;
+		statusArray.resize(statusCodeArraySPtr_->size());
+		for (uint32_t idx = 0; idx < statusCodeArraySPtr_->size(); idx++) {
+			OpcUaStatusCode statusCode;
+			statusCodeArraySPtr_->get(idx, statusCode);
+
+			auto status = boost::make_shared<OpcUaStatus>(statusCode);
+			statusArray.push_back(status);
+		}
+
 		// encode status code array
-		if (!statusCodeArraySPtr_->jsonEncode(pt, "Results", "")) {
+		if (!statusArray.jsonEncode(pt, "Results", "")) {
 			Log(Error, "WriteResponse json encode error")
 				.parameter("Element", "Results");
 			return false;
@@ -123,10 +135,17 @@ namespace OpcUaStackCore
 	WriteResponse::jsonDecode(boost::property_tree::ptree& pt)
 	{
 		// decode status code array
-		if (!statusCodeArraySPtr_->jsonDecode(pt, "Results", "")) {
+		OpcUaStatusArray statusArray;
+		if (!statusArray.jsonDecode(pt, "Results", "")) {
 			Log(Error, "WriteResponse json decode error")
 			    .parameter("Element", "Results");
 			return false;
+		}
+		statusCodeArraySPtr_->resize(statusArray.size());
+		for (uint32_t idx = 0; idx < statusArray.size(); idx++) {
+			OpcUaStatus::SPtr status;
+			statusArray.get(idx, status);
+			statusCodeArraySPtr_->push_back(status->enumeration());
 		}
 
 		return true;
