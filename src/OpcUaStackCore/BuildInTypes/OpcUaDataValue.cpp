@@ -3604,31 +3604,39 @@ namespace OpcUaStackCore
 		}
 
 		// add source timestamp
-		if (!sourceTimestamp_.jsonEncode(pt, "SourceTimestamp")) {
-			Log(Error, "OpcUaDataValue json encode error")
-		        .parameter("Element", "SourceTimestamp");
-			return false;
+		if (sourceTimestamp_.exist()) {
+			if (!sourceTimestamp_.jsonEncode(pt, "SourceTimestamp")) {
+				Log(Error, "OpcUaDataValue json encode error")
+		        	.parameter("Element", "SourceTimestamp");
+				return false;
+			}
 		}
 
 		// add server timestamp
-		if (!serverTimestamp_.jsonEncode(pt, "ServerTimestamp")) {
-			Log(Error, "OpcUaDataValue json encode error")
-		        .parameter("Element", "ServerTimestamp");
-			return false;
+		if (serverTimestamp_.exist()) {
+			if (!serverTimestamp_.jsonEncode(pt, "ServerTimestamp")) {
+				Log(Error, "OpcUaDataValue json encode error")
+		        	.parameter("Element", "ServerTimestamp");
+				return false;
+			}
 		}
 
 		// added source picoseconds
-		if (!JsonNumber::jsonEncode(pt, sourcePicoseconds_, "SourcePicoSeconds")) {
-			Log(Error, "OpcUaDataValue json encode error")
-		        .parameter("Element", "SourcePicoSeconds");
-			return false;
+		if (sourcePicoseconds_ != 0) {
+			if (!JsonNumber::jsonEncode(pt, sourcePicoseconds_, "SourcePicoSeconds")) {
+				Log(Error, "OpcUaDataValue json encode error")
+		        	.parameter("Element", "SourcePicoSeconds");
+				return false;
+			}
 		}
 
 		// added server picoseconds
-		if (!JsonNumber::jsonEncode(pt, serverPicoseconds_, "ServerPicoSeconds")) {
-			Log(Error, "OpcUaDataValue json encode error")
-		        .parameter("Element", "ServerPicoSeconds");
-			return false;
+		if (serverPicoseconds_ != 0) {
+			if (!JsonNumber::jsonEncode(pt, serverPicoseconds_, "ServerPicoSeconds")) {
+				Log(Error, "OpcUaDataValue json encode error")
+		    		.parameter("Element", "ServerPicoSeconds");
+				return false;
+			}
 		}
 
 		return true;
