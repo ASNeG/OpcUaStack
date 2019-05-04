@@ -133,4 +133,116 @@ namespace OpcUaStackCore
 		continuationPoint_.opcUaBinaryDecode(is);
 	}
 
+	bool
+	HistoryReadValueId::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "HistoryReadValueId json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	HistoryReadValueId::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode node id
+		if (!nodeIdSPtr_->jsonEncode(pt, "NodeId")) {
+			Log(Error, "HistoryReadValueId json encode error")
+				.parameter("Element", "NodeId");
+			return false;
+		}
+
+		// encode index range
+		if (indexRange_.exist()) {
+			if (!indexRange_.jsonEncode(pt, "IndexRange")) {
+				Log(Error, "HistoryReadValueId json encode error")
+					.parameter("Element", "IndexRange");
+				return false;
+			}
+		}
+
+		// encode data encoding
+		if (dataEncoding_.namespaceIndex() != 0 || dataEncoding_.name().exist()) {
+			if (!dataEncoding_.jsonEncode(pt, "DataEncoding")) {
+				Log(Error, "HistoryReadValueId json encode error")
+					.parameter("Element", "DataEncoding");
+				return false;
+			}
+		}
+
+		// encode continuation point
+		if (continuationPoint_.exist()) {
+			if (!continuationPoint_.jsonEncode(pt, "ContinuationPoint")) {
+				Log(Error, "HistoryReadValueId json encode error")
+					.parameter("Element", "ContinuationPoint");
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	HistoryReadValueId::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "HistoryReadValueId json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	HistoryReadValueId::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// decode node id
+		if (!nodeIdSPtr_->jsonDecode(pt, "NodeId")) {
+			Log(Error, "HistoryReadValueId json decode error")
+			    .parameter("Element", "NodeId");
+			return false;
+		}
+
+		// decode index range
+		indexRange_ = "";
+		auto indexRange = pt.get_child_optional("IndexRange");
+		if (indexRange) {
+			if (!indexRange_.jsonDecode(*indexRange)) {
+				Log(Error, "HistoryReadValueId json decode error")
+				    .parameter("Element", "IndexRange");
+				return false;
+			}
+		}
+
+		// decode data encoding
+		dataEncoding_ = "";
+		auto dataEncoding = pt.get_child_optional("DataEncoding");
+		if (dataEncoding) {
+			if (!dataEncoding_.jsonDecode(pt, "DataEncoding")) {
+				Log(Error, "HistoryReadValueId json decode error")
+				    .parameter("Element", "DataEncoding");
+				return false;
+			}
+		}
+
+		// decode continuation point
+		auto continuationPoint = pt.get_child_optional("ContinuationPoint");
+		if (continuationPoint) {
+			if (!continuationPoint_.jsonDecode(pt, "ContinuationPoint")) {
+				Log(Error, "HistoryReadValueId json decode error")
+				    .parameter("Element", "ContinuationPoint");
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 }

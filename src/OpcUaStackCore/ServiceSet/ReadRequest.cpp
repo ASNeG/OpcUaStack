@@ -129,7 +129,7 @@ namespace OpcUaStackCore
 		// encode value id array
 		if (!readValueIdArraySPtr_->jsonEncode(pt, "NodesToRead", "")) {
 			Log(Error, "ReadRequest json encode error")
-				.parameter("Element", "ValueIds");
+				.parameter("Element", "NodesToRead");
 			return false;
 		}
 

@@ -111,4 +111,107 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	HistoryReadRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "HistoryReadRequest json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	HistoryReadRequest::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode history read details
+		if (!historyReadDetailsSPtr_->jsonEncode(pt, "HistoryReadDetails")) {
+			Log(Error, "HistoryReadRequest json encode error")
+				.parameter("Element", "HistoryReadDetails");
+			return false;
+		}
+
+		// encode timestamps to return
+		auto timestampToReturn = (uint32_t)timestampsToReturn_;
+		if (!JsonNumber::jsonEncode(pt, timestampToReturn, "TimestampsToReturn")) {
+			Log(Error, "HistoryReadRequest json encode error")
+				.parameter("Element", "TimestampsToReturn");
+			return false;
+		}
+
+		// encode release continuation point
+		if (!JsonNumber::jsonEncode(pt, releaseContinuationPoints_, "ReleaseContinuationPoints")) {
+			Log(Error, "HistoryReadRequest json encode error")
+				.parameter("Element", "ReleaseContinuationPoints");
+			return false;
+		}
+
+		// encode value id array
+		if (!nodesToReadArraySPtr_->jsonEncode(pt, "NodesToRead", "")) {
+			Log(Error, "HistoryReadRequest json encode error")
+				.parameter("Element", "NodesToRead");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	HistoryReadRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "HistoryReadRequest json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	HistoryReadRequest::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		// encode history read details
+		if (!historyReadDetailsSPtr_->jsonDecode(pt, "HistoryReadDetails")) {
+			Log(Error, "HistoryReadRequest json decode error")
+				.parameter("Element", "HistoryReadDetails");
+			return false;
+		}
+
+		// decode timestamps to return
+		uint32_t timestampsToReturn;
+		if (!JsonNumber::jsonDecode(pt, timestampsToReturn, "TimestampsToReturn")) {
+			timestampsToReturn_ = TimestampsToReturn_Source;
+		}
+		else {
+			timestampsToReturn_ = (TimestampsToReturn)timestampsToReturn;
+		}
+
+		// decode release continuation point
+		tmpTree = pt.get_child_optional("ReleaseContinuationPoints");
+		if (tmpTree) {
+			if (!JsonNumber::jsonDecode(pt, releaseContinuationPoints_, "ReleaseContinuationPoints")) {
+				Log(Error, "HistoryReadRequest json decode error")
+					.parameter("Element", "ReleaseContinuationPoints");
+				return false;
+			}
+		}
+
+		// decode value id array
+		if (!nodesToReadArraySPtr_->jsonDecode(pt, "NodesToRead", "")) {
+			Log(Error, "HistoryReadRequest json decode error")
+			    .parameter("Element", "NodesToRead");
+			return false;
+		}
+
+		return true;
+	}
+
 }

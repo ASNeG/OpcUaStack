@@ -223,15 +223,19 @@ namespace OpcUaStackCore
 		auto indexRange = pt.get_child_optional("IndexRange");
 		if (indexRange) {
 			if (!indexRange_.jsonDecode(*indexRange)) {
+				Log(Error, "ReadValueId json decode error")
+					.parameter("Element", "IndexRange");
 				return false;
 			}
 		}
 
 		// decode data encoding
 		dataEncoding_ = "";
-		auto dataEncoding = pt.get_child_optional("dataEncoding");
+		auto dataEncoding = pt.get_child_optional("DataEncoding");
 		if (dataEncoding) {
-			if (!dataEncoding_.jsonDecode(pt, "dataEncoding")) {
+			if (!dataEncoding_.jsonDecode(pt, "DataEncoding")) {
+				Log(Error, "ReadValueId json decode error")
+				    .parameter("Element", "DataEncoding");
 				return false;
 			}
 		}
