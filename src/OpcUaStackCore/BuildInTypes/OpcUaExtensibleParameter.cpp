@@ -235,6 +235,8 @@ namespace OpcUaStackCore
     			.parameter("Element", "Body");
     		return false;
         }
+
+        return true;
     }
 
     void
