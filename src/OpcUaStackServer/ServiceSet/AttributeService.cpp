@@ -429,7 +429,8 @@ namespace OpcUaStackServer
 
 		Log(Debug, "attribute service historical read request")
 			.parameter("Trx", serviceTransaction->transactionId())
-			.parameter("NumberNodes", readRequest->nodesToRead()->size());
+			.parameter("NumberNodes", readRequest->nodesToRead()->size())
+			.parameter("ParameterTypeId", readRequest->historyReadDetails()->parameterTypeId());
 
 		// check timestampsToReturn attribute
 		if (readRequest->timestampsToReturn() == TimestampsToReturn_Neither) {
@@ -475,6 +476,7 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		Log(Error, "receive invalid attribute history read details");
 		trx->statusCode(BadServiceUnsupported);
 		trx->componentSession()->send(serviceTransaction);
 	}
