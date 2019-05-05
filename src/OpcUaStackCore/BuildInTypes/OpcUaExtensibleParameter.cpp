@@ -166,25 +166,75 @@ namespace OpcUaStackCore
     bool
 	OpcUaExtensibleParameter::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
     {
-    	// FIXME: todo
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "OpcUaExtensibleParameter json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
     }
 
     bool
 	OpcUaExtensibleParameter::jsonEncode(boost::property_tree::ptree& pt)
     {
-    	// FIXME: todo
+    	// encode type id
+    	if (!parameterTypeId_.jsonEncode(pt, "TypeId")) {
+			Log(Error, "OpcUaExtensibleParameter json encoder error")
+				.parameter("Element", "TypeId");
+			return false;
+    	}
+
+    	// encode body
+    	if (!eoSPtr_->jsonEncode(pt, "Body")) {
+			Log(Error, "OpcUaExtensibleParameter json encoder error")
+				.parameter("Element", "Body");
+			return false;
+    	}
+
+    	return true;
     }
 
     bool
 	OpcUaExtensibleParameter::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
     {
-    	// FIXME: todo
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "OpcUaExtensibleParameter json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
     }
 
     bool
 	OpcUaExtensibleParameter::jsonDecode(boost::property_tree::ptree& pt)
     {
-    	// FIXME: todo
+       	// decode type id
+        if (!parameterTypeId_.jsonDecode(pt, "TypeId")) {
+    		Log(Error, "OpcUaExtensibleParameter json decoder error")
+    			.parameter("Element", "TypeId");
+    		return false;
+        }
+
+        // decode body
+        OpcUaExtensionObject eo(parameterTypeId_);
+        if (!eo.createObject()) {
+       		Log(Error, "OpcUaExtensibleParameter create error")
+        			.parameter("Element", "TypeId")
+					.parameter("Attribute", parameterTypeId_);
+        	return false;
+        }
+        eoSPtr_ = eo.get();
+
+        if (!eoSPtr_->jsonDecode(pt, "Body")) {
+    		Log(Error, "OpcUaExtensibleParameter json decoder error")
+    			.parameter("Element", "Body");
+    		return false;
+        }
     }
 
     void
