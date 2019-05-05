@@ -78,6 +78,8 @@ namespace OpcUaStackCore
 		 */
 		static ExtensionObjectBase::SPtr findElement(OpcUaNodeId& opcUaNodeId);
 
+		static OpcUaNodeId getBinaryTypeIdFromJsonTypeId(OpcUaNodeId& jsonTypeId);
+
 		/**
 		 * Constructor
 		 */

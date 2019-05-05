@@ -38,9 +38,10 @@ namespace OpcUaStackCore
 	OpcUaExtensionObject::insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::SPtr epSPtr)
 	{
 		// check if extension object already exist
-		ExtensionObjectBase::Map::iterator it;
-		it = extentionObjectMap_.find(opcUaNodeId);
+		auto it = extentionObjectMap_.find(opcUaNodeId);
 		if (it != extentionObjectMap_.end()) {
+			Log(Error, "cannot insert new extension object, because object type id already exost")
+				.parameter("TypeId", opcUaNodeId);
 			return false;
 		}
 
@@ -53,8 +54,7 @@ namespace OpcUaStackCore
 	OpcUaExtensionObject::deleteElement(OpcUaNodeId& opcUaNodeId)
 	{
 		// check if extension object exists
-		ExtensionObjectBase::Map::iterator it;
-		it = extentionObjectMap_.find(opcUaNodeId);
+		auto it = extentionObjectMap_.find(opcUaNodeId);
 		if (it == extentionObjectMap_.end()) {
 			return false;
 		}
@@ -68,12 +68,23 @@ namespace OpcUaStackCore
 	OpcUaExtensionObject::findElement(OpcUaNodeId& opcUaNodeId)
 	{
 		ExtensionObjectBase::SPtr epSPtr;
-		ExtensionObjectBase::Map::iterator it;
-		it = extentionObjectMap_.find(opcUaNodeId);
+		auto it = extentionObjectMap_.find(opcUaNodeId);
 		if (it != extentionObjectMap_.end()) {
 			epSPtr = it->second;
 		}
 		return epSPtr;
+	}
+
+	OpcUaNodeId
+	OpcUaExtensionObject::getBinaryTypeIdFromJsonTypeId(OpcUaNodeId& jsonTypeId)
+	{
+		auto extenstionObject = findElement(jsonTypeId);
+		if (extenstionObject.get() == nullptr) {
+			return OpcUaNodeId(0,0);
+		}
+		else {
+			return extenstionObject->binaryTypeId();
+		}
 	}
 
 	OpcUaExtensionObject::OpcUaExtensionObject(void)
@@ -176,8 +187,7 @@ namespace OpcUaStackCore
 	OpcUaExtensionObject::createObject(void)
 	{
 		// find extension object
-		ExtensionObjectBase::Map::iterator it;
-		it = extentionObjectMap_.find(typeId_);
+		auto it = extentionObjectMap_.find(typeId_);
 		if (it == extentionObjectMap_.end()) {
 			return false;
 		}
@@ -185,6 +195,10 @@ namespace OpcUaStackCore
 		// create new extension object
 		style_ = S_Type;
 		epSPtr_ = it->second->factory();
+
+		if (epSPtr_.get() == nullptr) {
+			return false;
+		}
 		return true;
 	}
 

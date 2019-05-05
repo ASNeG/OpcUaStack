@@ -220,8 +220,18 @@ namespace OpcUaStackCore
     		return false;
         }
 
+        // get binary type id from json type id
+        auto binaryTypeId = OpcUaExtensionObject::getBinaryTypeIdFromJsonTypeId(parameterTypeId_);
+        if (binaryTypeId == OpcUaNodeId(0, 0)) {
+    		Log(Error, "OpcUaExtensibleParameter json decoder error, binary type id not found")
+    			.parameter("Element", "Body")
+				.parameter("JsonTypeId", parameterTypeId_);
+    		return false;
+        }
+
+        std::cout << "BinaryTypeId=" << binaryTypeId << std::endl;
         // decode body
-        OpcUaExtensionObject eo(parameterTypeId_);
+        OpcUaExtensionObject eo(binaryTypeId);
         if (!eo.createObject()) {
        		Log(Error, "OpcUaExtensibleParameter create error")
         			.parameter("Element", "TypeId")
