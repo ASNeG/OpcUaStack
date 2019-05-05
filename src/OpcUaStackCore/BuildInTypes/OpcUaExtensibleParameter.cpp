@@ -228,10 +228,10 @@ namespace OpcUaStackCore
 				.parameter("JsonTypeId", parameterTypeId_);
     		return false;
         }
+        parameterTypeId_ = binaryTypeId;
 
-        std::cout << "BinaryTypeId=" << binaryTypeId << std::endl;
         // decode body
-        OpcUaExtensionObject eo(binaryTypeId);
+        OpcUaExtensionObject eo(parameterTypeId_);
         if (!eo.createObject()) {
        		Log(Error, "OpcUaExtensibleParameter create error")
         			.parameter("Element", "TypeId")
