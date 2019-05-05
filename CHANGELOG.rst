@@ -7,6 +7,8 @@ Release 3.7.1
 
 **Bugs**:
 
+* fix dependence of start\\stop item monitoring on callbacks #133, by @flipback
+
 **Documentation**:
 
 
