@@ -18,3 +18,4 @@ build_*
 pki
 test.xml
 tst/data/opc.ua.roby_save.xml
+.idea
