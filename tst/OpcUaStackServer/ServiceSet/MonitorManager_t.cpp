@@ -8,8 +8,8 @@
 using namespace OpcUaStackServer;
 
 
-struct F {
-    F() : mm()
+struct InitMonitorManager {
+    InitMonitorManager() : mm()
     , informationModel(constructSPtr<InformationModel>())
     , ioThread(constructSPtr<IOThread>())
     , createMonitoredItemTransaction(constructSPtr<ServiceTransactionCreateMonitoredItems>())
@@ -30,8 +30,8 @@ struct F {
 		nodeToMonitor->setValue(value);
 
 		auto sync = constructSPtr<ForwardNodeSync>();
-		auto startMonitoredItemCallback = Callback(boost::bind(&F::startMonitored, this, _1));
-		auto stopMonitoredItemCallback = Callback(boost::bind(&F::stopMonitored, this, _1));
+		auto startMonitoredItemCallback = Callback(boost::bind(&InitMonitorManager::startMonitored, this, _1));
+		auto stopMonitoredItemCallback = Callback(boost::bind(&InitMonitorManager::stopMonitored, this, _1));
 		sync->monitoredItemStartService().setCallback(startMonitoredItemCallback);
 		sync->monitoredItemStopService().setCallback(stopMonitoredItemCallback);
 
@@ -80,7 +80,7 @@ struct F {
 		return deleteMonitoredItemTransaction;
 	}
 
-    ~F() { }
+    ~InitMonitorManager() { }
 
 	MonitorManager mm;
 	InformationModel::SPtr informationModel;
@@ -94,7 +94,7 @@ struct F {
 };
 
 
-BOOST_FIXTURE_TEST_SUITE(MonitorManager_, F)
+BOOST_FIXTURE_TEST_SUITE(MonitorManager_, InitMonitorManager)
 
 BOOST_AUTO_TEST_CASE(MonitorManager_)
 {

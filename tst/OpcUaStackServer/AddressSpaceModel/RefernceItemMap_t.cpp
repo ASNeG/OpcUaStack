@@ -6,8 +6,8 @@ using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
 
 
-struct F {
-    F() : map(), refId1(0), refId2(1), refId3(2), refId4(3)
+struct InitMap {
+    InitMap() : map(), refId1(0), refId2(1), refId3(2), refId4(3)
     {
 
     	map.add(ReferenceType::ReferenceType_Organizes, true, refId1);
@@ -17,7 +17,7 @@ struct F {
     	map.add(ReferenceType::ReferenceType_HasComponent, true, refId4);
     }
 
-    ~F() { }
+    ~InitMap() { }
 
     ReferenceItemMap map;
 	OpcUaNodeId refId1;
@@ -27,7 +27,7 @@ struct F {
 };
 
 
-BOOST_FIXTURE_TEST_SUITE(RefernceItemMap_, F)
+BOOST_FIXTURE_TEST_SUITE(RefernceItemMap_, InitMap)
 
 BOOST_AUTO_TEST_CASE(RefernceItemMap_)
 {
