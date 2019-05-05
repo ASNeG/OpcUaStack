@@ -179,8 +179,11 @@ namespace OpcUaStackCore
     bool
 	OpcUaExtensibleParameter::jsonEncode(boost::property_tree::ptree& pt)
     {
+    	// map binary type id to json type id
+    	auto jsonTypeId = eoSPtr_->jsonTypeId();
+
     	// encode type id
-    	if (!parameterTypeId_.jsonEncode(pt, "TypeId")) {
+    	if (!jsonTypeId.jsonEncode(pt, "TypeId")) {
 			Log(Error, "OpcUaExtensibleParameter json encoder error")
 				.parameter("Element", "TypeId");
 			return false;
@@ -223,7 +226,7 @@ namespace OpcUaStackCore
         // get binary type id from json type id
         auto binaryTypeId = OpcUaExtensionObject::getBinaryTypeIdFromJsonTypeId(parameterTypeId_);
         if (binaryTypeId == OpcUaNodeId(0, 0)) {
-    		Log(Error, "OpcUaExtensibleParameter json decoder error, binary type id not found")
+    		Log(Error, "OpcUaExtensibleParameter json decoder error, because binary type id not found")
     			.parameter("Element", "Body")
 				.parameter("JsonTypeId", parameterTypeId_);
     		return false;
