@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatus.h"
 #include "OpcUaStackCore/ServiceSet/CallMethodResult.h"
 
 namespace OpcUaStackCore
@@ -108,4 +110,115 @@ namespace OpcUaStackCore
 		inputArgumentDiagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 		outputArgumentArraySPtr_->opcUaBinaryDecode(is);
 	}
+
+	bool
+	CallMethodResult::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "CallMethodResult json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	CallMethodResult::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// add status code
+		OpcUaStatus status(statusCode_);
+		if (!status.jsonEncode(pt, "Status")) {
+			Log(Error, "CallMethodResult json encode error")
+		        .parameter("Element", "Status");
+			return false;
+		}
+
+		OpcUaStatusArray statusArray;
+		statusArray.resize(inputArgumentResultArraySPtr_->size());
+		for (uint32_t idx = 0; idx < inputArgumentResultArraySPtr_->size(); idx++) {
+			OpcUaStatusCode statusCode;
+			inputArgumentResultArraySPtr_->get(idx, statusCode);
+
+			auto status = boost::make_shared<OpcUaStatus>(statusCode);
+			statusArray.push_back(status);
+		}
+
+		// encode input argument results
+		if (statusArray.size() > 0) {
+			if (!statusArray.jsonEncode(pt, "InputArgumentResults", "")) {
+				Log(Error, "CallMethodResult json encode error")
+					.parameter("Element", "InputArgumentResults");
+				return false;
+			}
+		}
+
+		// encode output argument array
+		if (outputArgumentArraySPtr_->size() > 0) {
+			if (!outputArgumentArraySPtr_->jsonEncode(pt, "OutputArguments", "")) {
+				Log(Error, "CallMethodResult json encode error")
+			    	.parameter("Element", "OutputArguments");
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	CallMethodResult::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "CallMethodResult json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	CallMethodResult::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		// get status code
+		OpcUaStatus status(Success);
+		tmpTree = pt.get_child_optional("Status");
+		if (tmpTree) {
+			if (!status.jsonDecode(pt, "Status")) {
+				Log(Error, "CallMethodResult json decode error")
+		        	.parameter("Element", "Status");
+				return false;
+			}
+		}
+		statusCode_ = status.enumeration();
+
+		// decode input arguments result
+		OpcUaStatusArray statusArray;
+		if (!statusArray.jsonDecode(pt, "InputArgumentResults", "")) {
+			Log(Error, "CallMethodResult json decode error")
+			    .parameter("Element", "Results");
+			return false;
+		}
+		inputArgumentResultArraySPtr_->resize(statusArray.size());
+		for (uint32_t idx = 0; idx < statusArray.size(); idx++) {
+			OpcUaStatus::SPtr status;
+			statusArray.get(idx, status);
+			inputArgumentResultArraySPtr_->push_back(status->enumeration());
+		}
+
+		// encode output argument array
+		if (!outputArgumentArraySPtr_->jsonEncode(pt, "OutputArguments", "")) {
+			Log(Error, "CallMethodResult json encode error")
+			    .parameter("Element", "OutputArguments");
+			return false;
+		}
+
+		return true;
+	}
+
 }

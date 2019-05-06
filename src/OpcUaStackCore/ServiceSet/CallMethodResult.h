@@ -44,6 +44,10 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncode(boost::property_tree::ptree& pt);
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
 		 OpcUaStatusCode statusCode_;

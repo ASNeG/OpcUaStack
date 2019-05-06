@@ -123,10 +123,12 @@ namespace OpcUaStackCore
 		}
 
 		// encode input argument array
-		if (!inputArgumentArraySPtr_->jsonEncode(pt, "InputArguments", "")) {
-			Log(Error, "CallMethodRequest json encode error")
-			    .parameter("Element", "InputArguments");
-			return false;
+		if (inputArgumentArraySPtr_->size() != 0) {
+			if (!inputArgumentArraySPtr_->jsonEncode(pt, "InputArguments", "")) {
+				Log(Error, "CallMethodRequest json encode error")
+					.parameter("Element", "InputArguments");
+				return false;
+			}
 		}
 
 		return true;
