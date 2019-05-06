@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -74,4 +74,58 @@ namespace OpcUaStackCore
 	{
 		callMethodRequestArraySPtr_->opcUaBinaryDecode(is);
 	}
+
+	bool
+	CallRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "CallRequest json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	CallRequest::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode method requests
+		if (!callMethodRequestArraySPtr_->jsonEncode(pt, "MethodsToCall", "")) {
+			Log(Error, "CallRequest json encode error")
+				.parameter("Element", "MethodsToCall");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	CallRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "CallRequest json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	CallRequest::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// decode method requests
+		if (!callMethodRequestArraySPtr_->jsonDecode(pt, "MethodsToCall", "")) {
+			Log(Error, "CallRequest json decode error")
+			    .parameter("Element", "MethodsToCall");
+			return false;
+		}
+
+		return true;
+	}
+
 }
