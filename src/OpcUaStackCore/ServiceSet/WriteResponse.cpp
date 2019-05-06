@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatus.h"
 #include "OpcUaStackCore/ServiceSet/WriteResponse.h"
 
 namespace OpcUaStackCore
@@ -76,6 +78,76 @@ namespace OpcUaStackCore
 	{
 		statusCodeArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+		return true;
+	}
+
+	bool
+	WriteResponse::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "WriteResponse json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	WriteResponse::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		OpcUaStatusArray statusArray;
+		statusArray.resize(statusCodeArraySPtr_->size());
+		for (uint32_t idx = 0; idx < statusCodeArraySPtr_->size(); idx++) {
+			OpcUaStatusCode statusCode;
+			statusCodeArraySPtr_->get(idx, statusCode);
+
+			auto status = boost::make_shared<OpcUaStatus>(statusCode);
+			statusArray.push_back(status);
+		}
+
+		// encode status code array
+		if (!statusArray.jsonEncode(pt, "Results", "")) {
+			Log(Error, "WriteResponse json encode error")
+				.parameter("Element", "Results");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	WriteResponse::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "WriteResponse json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	WriteResponse::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// decode status code array
+		OpcUaStatusArray statusArray;
+		if (!statusArray.jsonDecode(pt, "Results", "")) {
+			Log(Error, "WriteResponse json decode error")
+			    .parameter("Element", "Results");
+			return false;
+		}
+		statusCodeArraySPtr_->resize(statusArray.size());
+		for (uint32_t idx = 0; idx < statusArray.size(); idx++) {
+			OpcUaStatus::SPtr status;
+			statusArray.get(idx, status);
+			statusCodeArraySPtr_->push_back(status->enumeration());
+		}
+
 		return true;
 	}
 }

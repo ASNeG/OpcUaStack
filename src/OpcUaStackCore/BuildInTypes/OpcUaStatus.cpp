@@ -270,10 +270,7 @@ namespace OpcUaStackCore
     OpcUaStatus::jsonEncode(boost::property_tree::ptree& pt)
     {
 		// added status
-		if (!JsonNumber::jsonEncode(pt, value_)) {
-			Log(Error, "OpcUaStatus json encode error");
-			return false;
-		}
+    	pt.put_value(toString());
 		return true;
     }
     
@@ -295,10 +292,8 @@ namespace OpcUaStackCore
     OpcUaStatus::jsonDecode(boost::property_tree::ptree& pt)
     {
 		// get source pico seconds
-		if (!JsonNumber::jsonDecode(pt, value_)) {
-			Log(Error, "OpcUaStatus json decoder error");
-			return false;
-		}
+    	auto sourceValue = pt.get_value<std::string>();
+    	enumeration(str2Enum(sourceValue));
 		return true;
     }
     

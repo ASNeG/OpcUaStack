@@ -280,7 +280,7 @@ namespace OpcUaStackCore
 			  const std::string& listElement
 		  )
 		  {
-			  return value->jsonEncode(pt);
+			  return value->jsonEncode(pt, listElement);
 		  }
 
 		  static bool jsonDecode(

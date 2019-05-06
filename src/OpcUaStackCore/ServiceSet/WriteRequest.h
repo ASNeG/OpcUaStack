@@ -38,6 +38,10 @@ namespace OpcUaStackCore
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncode(boost::property_tree::ptree& pt);
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecode(boost::property_tree::ptree& pt);
 
 	  private:
 		  RequestHeader::SPtr requestHeaderSPtr_;
