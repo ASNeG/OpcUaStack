@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -61,4 +61,58 @@ namespace OpcUaStackCore
 	{
 		subscriptionIdArraySPtr_->opcUaBinaryDecode(is);
 	}
+
+	bool
+	DeleteSubscriptionsRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "DeleteSubscriptionsRequest json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	DeleteSubscriptionsRequest::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode subscription ids
+		if (!subscriptionIdArraySPtr_->jsonEncode(pt, "SubscriptionIds", "")) {
+			Log(Error, "DeleteSubscriptionsRequest json encode error")
+				.parameter("Element", "SubscriptionIds");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	DeleteSubscriptionsRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "DeleteSubscriptionsRequest json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	DeleteSubscriptionsRequest::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// decode subscription ids
+		if (!subscriptionIdArraySPtr_->jsonDecode(pt, "SubscriptionIds", "")) {
+			Log(Error, "DeleteSubscriptionsRequest json encode error")
+				.parameter("Element", "SubscriptionIds");
+			return false;
+		}
+
+		return true;
+	}
+
 }
