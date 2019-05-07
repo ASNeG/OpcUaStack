@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_CertificateSettings_h__
 #define __OpcUaStackCore_CertificateSettings_h__
 
+#include <vector>
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 
