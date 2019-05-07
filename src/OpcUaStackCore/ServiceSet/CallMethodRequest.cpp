@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -90,5 +90,93 @@ namespace OpcUaStackCore
 		objectIdSPtr_->opcUaBinaryDecode(is);
 		methodIdSPtr_->opcUaBinaryDecode(is);
 		inputArgumentArraySPtr_->opcUaBinaryDecode(is);
+	}
+
+	bool
+	CallMethodRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "CallMethodRequest json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	CallMethodRequest::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode object id
+		if (!objectIdSPtr_->jsonEncode(pt, "ObjectId")) {
+			Log(Error, "CallMethodRequest json encode error")
+			    .parameter("Element", "ObjectId");
+			return false;
+		}
+
+		// encode method id
+		if (!methodIdSPtr_->jsonEncode(pt, "MethodId")) {
+			Log(Error, "CallMethodRequest json encode error")
+			    .parameter("Element", "MethodId");
+			return false;
+		}
+
+		// encode input argument array
+		if (inputArgumentArraySPtr_->size() != 0) {
+			if (!inputArgumentArraySPtr_->jsonEncode(pt, "InputArguments", "")) {
+				Log(Error, "CallMethodRequest json encode error")
+					.parameter("Element", "InputArguments");
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	CallMethodRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "CallMethodRequest json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	CallMethodRequest::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		// decode object id
+		if (!objectIdSPtr_->jsonDecode(pt, "ObjectId")) {
+			Log(Error, "CallMethodRequest json decode error")
+			    .parameter("Element", "ObjectId");
+			return false;
+		}
+
+		// decode method id
+		if (!methodIdSPtr_->jsonDecode(pt, "MethodId")) {
+			Log(Error, "CallMethodRequest json decode error")
+			    .parameter("Element", "MethodId");
+			return false;
+		}
+
+		// decode input argument array
+		tmpTree = pt.get_child_optional("InputArguments");
+		if (tmpTree) {
+			if (!inputArgumentArraySPtr_->jsonDecode(pt, "InputArguments", "")) {
+				Log(Error, "CallMethodRequest json decode error")
+			    	.parameter("Element", "InputArguments");
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
