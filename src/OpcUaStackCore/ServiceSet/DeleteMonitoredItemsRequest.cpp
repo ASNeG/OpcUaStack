@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -76,4 +76,72 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		monitoredItemIdArraySPtr_->opcUaBinaryDecode(is);
 	}
+
+	bool
+	DeleteMonitoredItemsRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "DeleteMonitoredItemsRequest json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	DeleteMonitoredItemsRequest::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode subscription id
+		if (!JsonNumber::jsonEncode(pt, subscriptionId_, "SubscriptionId")) {
+			Log(Error, "DeleteMonitoredItemsRequest json encode error")
+				.parameter("Element", "SubscriptionId");
+			return false;
+		}
+
+		// encode monitored item id array
+		if (!monitoredItemIdArraySPtr_->jsonEncode(pt, "MonitoredItemIds", "")) {
+			Log(Error, "DeleteMonitoredItemsRequest json encode error")
+				.parameter("Element", "MonitoredItemIds");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	DeleteMonitoredItemsRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "DeleteMonitoredItemsRequest json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	DeleteMonitoredItemsRequest::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// decode subscription id
+		if (!JsonNumber::jsonDecode(pt, subscriptionId_, "SubscriptionId")) {
+			Log(Error, "DeleteMonitoredItemsRequest json decode error")
+				.parameter("Element", "SubscriptionId");
+			return false;
+		}
+
+		// decode monitored item id array
+		if (!monitoredItemIdArraySPtr_->jsonDecode(pt, "MonitoredItemIds", "")) {
+			Log(Error, "DeleteMonitoredItemsRequest json decode error")
+				.parameter("Element", "MonitoredItemIds");
+			return false;
+		}
+
+		return true;
+	}
+
 }
