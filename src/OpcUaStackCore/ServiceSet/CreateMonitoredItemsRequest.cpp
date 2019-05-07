@@ -161,7 +161,7 @@ namespace OpcUaStackCore
 
 		// decode timestamps to return
 		timestampsToReturn_ = TimestampsToReturn_Source;
-		auto timestampsToReturn = pt.get_child_optional("");
+		auto timestampsToReturn = pt.get_child_optional("TimestampsToReturn");
 		if (timestampsToReturn) {
 			uint32_t ttr;
 			if (!JsonNumber::jsonDecode(pt, ttr, "TimestampsToReturn")) {
