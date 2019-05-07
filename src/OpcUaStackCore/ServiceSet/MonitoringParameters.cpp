@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -120,5 +120,130 @@ namespace OpcUaStackCore
 		filter_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, queueSize_);
 		OpcUaNumber::opcUaBinaryDecode(is, discardOldest_);
+	}
+
+	bool
+	MonitoringParameters::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "MonitoringParameters json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+
+		return true;
+	}
+
+	bool
+	MonitoringParameters::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode client handle
+		if (!JsonNumber::jsonEncode(pt, clientHandle_, "ClientHandle")) {
+			Log(Error, "MonitoringParameters json encode error")
+				.parameter("Element", "ClientHandle");
+			return false;
+		}
+
+		// encode sampling interval
+		if (!JsonNumber::jsonEncode(pt, samplingInterval_, "SamplingInterval")) {
+			Log(Error, "MonitoringParameters json encode error")
+				.parameter("Element", "SamplingInterval");
+			return false;
+		}
+
+		// encode filter
+		if (filter_.exist()) {
+			if (!filter_.jsonEncode(pt, "Filter")) {
+				Log(Error, "MonitoringParameters json encode error")
+					.parameter("Element", "Filter");
+				return false;
+			}
+		}
+
+		// encode queue size
+		if (!JsonNumber::jsonEncode(pt, queueSize_, "QueueSize")) {
+			Log(Error, "MonitoringParameters json encode error")
+				.parameter("Element", "QueueSize");
+			return false;
+		}
+
+		// encode discard oldest
+		if (!JsonNumber::jsonEncode(pt, discardOldest_, "DiscardOldest")) {
+			Log(Error, "MonitoringParameters json encode error")
+				.parameter("Element", "DiscardOldest");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	MonitoringParameters::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "MonitoringParameters json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	MonitoringParameters::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		// decode client handle
+		if (!JsonNumber::jsonDecode(pt, clientHandle_, "ClientHandle")) {
+			Log(Error, "MonitoringParameters json decode error")
+				.parameter("Element", "ClientHandle");
+			return false;
+		}
+
+		// decode sampling interval
+		if (!JsonNumber::jsonDecode(pt, samplingInterval_, "SamplingInterval")) {
+			Log(Error, "MonitoringParameters json decode error")
+				.parameter("Element", "SamplingInterval");
+			return false;
+		}
+
+		// decode filter
+		auto filter = pt.get_child_optional("Filter");
+		if (filter) {
+			if (!filter_.jsonDecode(pt, "Filter")) {
+				Log(Error, "MonitoringParameters json decode error")
+					.parameter("Element", "Filter");
+				return false;
+			}
+		}
+
+		// decode queue size
+		queueSize_ = 0;
+		auto queueSize =  pt.get_child_optional("QueueSize");
+		if (queueSize) {
+			if (!JsonNumber::jsonDecode(pt, queueSize_, "QueueSize")) {
+				Log(Error, "MonitoringParameters json decode error")
+					.parameter("Element", "QueueSize");
+				return false;
+			}
+		}
+
+		// decode discard oldest
+		discardOldest_ = true;
+		auto discardOldest =  pt.get_child_optional("DiscardOldest");
+		if (discardOldest) {
+			if (!JsonNumber::jsonDecode(pt, discardOldest_, "DiscardOldest")) {
+				Log(Error, "MonitoringParameters json decode error")
+					.parameter("Element", "DiscardOldest");
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -76,4 +76,58 @@ namespace OpcUaStackCore
 		resultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}
+
+	bool
+	CreateMonitoredItemsResponse::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "CreateMonitoredItemsResponse json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	CreateMonitoredItemsResponse::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode data value array
+		if (!resultArraySPtr_->jsonEncode(pt, "Results", "")) {
+			Log(Error, "CreateMonitoredItemsResponse json encode error")
+				.parameter("Element", "Results");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	CreateMonitoredItemsResponse::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "CreateMonitoredItemsResponse json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	CreateMonitoredItemsResponse::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// decode value id array
+		if (!resultArraySPtr_->jsonDecode(pt, "Results")) {
+			Log(Error, "CreateMonitoredItemsResponse json decode error")
+			    .parameter("Element", "Results");
+			return false;
+		}
+
+		return true;
+	}
+
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -92,5 +92,93 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		timestampsToReturn_ = (TimestampsToReturn)tmp;
 		itemsToCreateArraySPtr_->opcUaBinaryDecode(is);
+	}
+
+	bool
+	CreateMonitoredItemsRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "CreateMonitoredItemsRequest json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	CreateMonitoredItemsRequest::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode subscription id
+		if (!JsonNumber::jsonEncode(pt, subscriptionId_, "SubscriptionId")) {
+			Log(Error, "CreateMonitoredItemsRequest json encode error")
+				.parameter("Element", "SubscriptionId");
+			return false;
+		}
+
+		// encode timestamps to return
+		uint32_t timestampsToReturn = timestampsToReturn_;
+		if (!JsonNumber::jsonEncode(pt, timestampsToReturn, "TimestampsToReturn")) {
+			Log(Error, "CreateMonitoredItemsRequest json encode error")
+				.parameter("Element", "TimestampsToReturn");
+			return false;
+		}
+
+		// encode items to create array
+		if (!itemsToCreateArraySPtr_->jsonEncode(pt, "ItemsToCreate", "")) {
+			Log(Error, "CreateMonitoredItemsRequest json encode error")
+				.parameter("Element", "ItemsToCreate");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	CreateMonitoredItemsRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "CreateMonitoredItemsRequest json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	CreateMonitoredItemsRequest::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// decode subscription id
+		if (!JsonNumber::jsonDecode(pt, subscriptionId_, "SubscriptionId")) {
+			Log(Error, "CreateMonitoredItemsRequest json decode error")
+				.parameter("Element", "SubscriptionId");
+			return false;
+		}
+
+		// decode timestamps to return
+		timestampsToReturn_ = TimestampsToReturn_Source;
+		auto timestampsToReturn = pt.get_child_optional("TimestampsToReturn");
+		if (timestampsToReturn) {
+			uint32_t ttr;
+			if (!JsonNumber::jsonDecode(pt, ttr, "TimestampsToReturn")) {
+				Log(Error, "CreateMonitoredItemsRequest json decode error")
+					.parameter("Element", "TimestampsToReturn");
+				return false;
+			}
+			timestampsToReturn_ = (TimestampsToReturn)ttr;
+		}
+
+		// decode items to create array
+		if (!itemsToCreateArraySPtr_->jsonDecode(pt, "ItemsToCreate", "")) {
+			Log(Error, "CreateMonitoredItemsRequest json decode error")
+				.parameter("Element", "ItemsToCreate");
+			return false;
+		}
+
+		return true;
 	}
 }

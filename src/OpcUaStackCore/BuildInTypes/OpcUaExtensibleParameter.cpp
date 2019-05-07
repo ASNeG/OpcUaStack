@@ -179,6 +179,11 @@ namespace OpcUaStackCore
     bool
 	OpcUaExtensibleParameter::jsonEncode(boost::property_tree::ptree& pt)
     {
+    	// check pointer
+    	if (!exist()) {
+    		return true;
+    	}
+
     	// map binary type id to json type id
     	auto jsonTypeId = eoSPtr_->jsonTypeId();
 

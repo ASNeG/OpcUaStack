@@ -214,8 +214,12 @@ namespace OpcUaStackCore
 		}
 
 		// decode attribute id
-		if (!JsonNumber::jsonDecode(pt, attributeId_, "AttributeId")) {
-			attributeId_ = AttributeId_Value;
+		attributeId_ = AttributeId_Value;
+		auto attributeId = pt.get_child_optional("AttributeId");
+		if (attributeId) {
+			if (!JsonNumber::jsonDecode(pt, attributeId_, "AttributeId")) {
+				attributeId_ = AttributeId_Value;
+			}
 		}
 
 		// decode index range
