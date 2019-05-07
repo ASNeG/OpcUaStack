@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include <boost/lexical_cast.hpp>
@@ -637,9 +637,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaNodeIdBase::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaNodeIdBase::jsonDecode(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
+		boost::optional<const boost::property_tree::ptree&> tmpTree;
 
 		tmpTree = pt.get_child_optional(element);
 		if (!tmpTree) {
@@ -651,7 +651,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaNodeIdBase::jsonDecode(boost::property_tree::ptree& pt)
+	OpcUaNodeIdBase::jsonDecode(const boost::property_tree::ptree& pt)
 	{
 		OpcUaUInt32 idType = 0;
 		if (!JsonNumber::jsonDecode(pt, idType, "IdType")) {

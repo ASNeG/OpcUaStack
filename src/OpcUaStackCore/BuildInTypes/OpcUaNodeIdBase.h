@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_OpcUaNodeIdBase_h__
@@ -104,8 +104,8 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
 		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
+		bool jsonDecode(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecode(const boost::property_tree::ptree& pt);
 
 	  protected:
 		OpcUaUInt16 namespaceIndex_;

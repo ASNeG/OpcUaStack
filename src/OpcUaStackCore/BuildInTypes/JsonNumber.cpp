@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include <boost/algorithm/string/case_conv.hpp>
@@ -290,89 +290,89 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaBoolean& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaBoolean& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaByte& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaByte& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaSByte& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaSByte& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaUInt16& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaUInt16& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaInt16& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaInt16& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaUInt32& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaUInt32& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaInt32& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaInt32& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaUInt64& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaUInt64& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaInt64& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaInt64& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaFloat& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaFloat& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaDouble& value, const std::string& element)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaDouble& value, const std::string& element)
 	{
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
 		if (!tree) return false;
 		return JsonNumber::jsonDecode(*tree, value);
 	}
@@ -385,7 +385,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaBoolean& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaBoolean& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		boost::to_upper(sourceValue);
@@ -395,7 +395,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaByte& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaByte& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
@@ -409,7 +409,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaSByte& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaSByte& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
@@ -423,7 +423,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaUInt16& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaUInt16& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
@@ -437,7 +437,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaInt16& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaInt16& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
@@ -451,7 +451,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaUInt32& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaUInt32& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
@@ -465,7 +465,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaInt32& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaInt32& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
@@ -479,7 +479,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaUInt64& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaUInt64& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
@@ -493,7 +493,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaInt64& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaInt64& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
@@ -507,7 +507,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaFloat& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaFloat& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
@@ -521,7 +521,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	JsonNumber::jsonDecode(boost::property_tree::ptree& pt, OpcUaDouble& value)
+	JsonNumber::jsonDecode(const boost::property_tree::ptree& pt, OpcUaDouble& value)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
