@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/ServiceSet/BrowseDescription.h"
@@ -138,5 +138,32 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, nodeClassMask_);
 		OpcUaNumber::opcUaBinaryDecode(is, resultMask_);
 	}
+
+    bool
+    BrowseDescription::jsonEncode(boost::property_tree::ptree &pt) const {
+        bool rc = nodeIdSPtr_->jsonEncode(pt, "NodeId");
+        rc &= jsonNumberEncode(pt, (OpcUaUInt32)browseDirection_, "BrowseDirection");
+        rc &= referenceTypeIdSPtr_->jsonEncode(pt, "ReferenceTypeId");
+        rc &= jsonNumberEncode(pt, includeSubtypes_, "IncludeSubtypes");
+        rc &= jsonNumberEncode(pt, nodeClassMask_, "NodeClassMask");
+        rc &= jsonNumberEncode(pt, resultMask_, "ResultMask");
+
+        return rc;
+    }
+
+    bool
+    BrowseDescription::jsonDecode(const boost::property_tree::ptree &pt) {
+        OpcUaUInt32 tmp;
+
+        bool rc = nodeIdSPtr_->jsonDecode(pt, "NodeId");
+        rc &= jsonNumberDecode(pt, tmp, "ReferenceTypeId");
+        browseDirection_ = (BrowseDirectionEnum)tmp;
+        rc &= jsonNumberDecode(pt, includeSubtypes_, "IncludeSubtypes");
+        rc &= jsonNumberDecode(pt, nodeClassMask_, "NodeClassMask");
+        rc &= jsonNumberDecode(pt, resultMask_, "ResultMask");
+
+        return rc;
+    }
+
 
 }

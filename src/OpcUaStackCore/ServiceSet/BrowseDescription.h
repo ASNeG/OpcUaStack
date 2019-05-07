@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -34,6 +35,7 @@ namespace OpcUaStackCore
 	                
 	class DLLEXPORT BrowseDescription
 	: public  Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<BrowseDescription> SPtr;
@@ -57,7 +59,11 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
-	  private:
+        bool jsonEncode(boost::property_tree::ptree &pt) const override;
+
+        bool jsonDecode(const boost::property_tree::ptree &pt) override;
+
+    private:
 		OpcUaNodeId::SPtr nodeIdSPtr_;
 		BrowseDirectionEnum browseDirection_;
 		OpcUaNodeId::SPtr referenceTypeIdSPtr_;
