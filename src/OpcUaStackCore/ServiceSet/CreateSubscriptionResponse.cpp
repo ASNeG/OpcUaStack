@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -105,5 +105,100 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, revisedPublishingInterval_);
 		OpcUaNumber::opcUaBinaryDecode(is, revisedLifetimeCount_);
 		OpcUaNumber::opcUaBinaryDecode(is, revisedMaxKeepAliveCount_);
+	}
+
+	bool
+	CreateSubscriptionResponse::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "CreateSubscriptionResponse json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	CreateSubscriptionResponse::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode subscription id
+		if (!JsonNumber::jsonEncode(pt, subscriptionId_, "SubscriptionId")) {
+			Log(Error, "CreateSubscriptionResponse json encode error")
+				.parameter("Element", "SubscriptionId");
+			return false;
+		}
+
+		// encode revised publishing interval
+		if (!JsonNumber::jsonEncode(pt, revisedPublishingInterval_, "RevisedPublishingInterval")) {
+			Log(Error, "CreateSubscriptionResponse json encode error")
+				.parameter("Element", "RevisedPublishingInterval");
+			return false;
+		}
+
+		// encode revised life time count
+		if (!JsonNumber::jsonEncode(pt, revisedLifetimeCount_, "RevisedLifetimeCount")) {
+			Log(Error, "CreateSubscriptionResponse json encode error")
+				.parameter("Element", "RevisedLifetimeCount");
+			return false;
+		}
+
+		// encode revised max keepalive count
+		if (!JsonNumber::jsonEncode(pt, revisedMaxKeepAliveCount_, "RevisedMaxKeepAliveCount")) {
+			Log(Error, "CreateSubscriptionResponse json encode error")
+				.parameter("Element", "RevisedMaxKeepAliveCount");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	CreateSubscriptionResponse::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "CreateSubscriptionResponse json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	CreateSubscriptionResponse::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		// decode subscription id
+		if (!JsonNumber::jsonDecode(pt, subscriptionId_, "SubscriptionId")) {
+			Log(Error, "CreateSubscriptionResponse json decode error")
+				.parameter("Element", "SubscriptionId");
+			return false;
+		}
+
+		// decode revised publishing interval
+		if (!JsonNumber::jsonDecode(pt, revisedPublishingInterval_, "RevisedPublishingInterval")) {
+			Log(Error, "CreateSubscriptionResponse json decode error")
+				.parameter("Element", "RevisedPublishingInterval");
+			return false;
+		}
+
+		// decode revised life time count
+		if (!JsonNumber::jsonDecode(pt, revisedLifetimeCount_, "RevisedLifetimeCount")) {
+			Log(Error, "CreateSubscriptionResponse json decode error")
+				.parameter("Element", "RevisedLifetimeCount");
+			return false;
+		}
+
+		// decode revised max keepalive count
+		if (!JsonNumber::jsonDecode(pt, revisedMaxKeepAliveCount_, "RevisedMaxKeepAliveCount")) {
+			Log(Error, "CreateSubscriptionResponse json decode error")
+				.parameter("Element", "RevisedMaxKeepAliveCount");
+			return false;
+		}
+
+		return true;
 	}
 }
