@@ -93,7 +93,13 @@ namespace OpcUaStackCore
 	bool
 	CreateMonitoredItemsResponse::jsonEncode(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		// encode data value array
+		if (!resultArraySPtr_->jsonEncode(pt, "Results", "")) {
+			Log(Error, "CreateMonitoredItemsResponse json encode error")
+				.parameter("Element", "Results");
+			return false;
+		}
+
 		return true;
 	}
 
@@ -114,7 +120,13 @@ namespace OpcUaStackCore
 	bool
 	CreateMonitoredItemsResponse::jsonDecode(boost::property_tree::ptree& pt)
 	{
-		// FIXME: todo
+		// decode value id array
+		if (!resultArraySPtr_->jsonDecode(pt, "Results")) {
+			Log(Error, "CreateMonitoredItemsResponse json decode error")
+			    .parameter("Element", "Results");
+			return false;
+		}
+
 		return true;
 	}
 
