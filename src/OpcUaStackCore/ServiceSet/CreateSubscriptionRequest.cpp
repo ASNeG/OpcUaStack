@@ -136,4 +136,148 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, publishingEnabled_);
 		OpcUaNumber::opcUaBinaryDecode(is, priority_);
 	}
+
+	bool
+	CreateSubscriptionRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!jsonEncode(elementTree)) {
+			Log(Error, "CreateSubscriptionRequest json encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	CreateSubscriptionRequest::jsonEncode(boost::property_tree::ptree& pt)
+	{
+		// encode requested publishing interval
+		if (!JsonNumber::jsonEncode(pt, requestedPublishingInterval_, "RequestedPublishingInterval")) {
+			Log(Error, "CreateSubscriptionRequest json encode error")
+				.parameter("Element", "RequestedPublishingInterval");
+			return false;
+		}
+
+		// encode requested lifetime count
+		if (!JsonNumber::jsonEncode(pt, requestedPublishingInterval_, "RequestedPublishingInterval")) {
+			Log(Error, "CreateSubscriptionRequest json encode error")
+				.parameter("Element", "RequestedPublishingInterval");
+			return false;
+		}
+
+		// encode requested max keepalive count
+		if (!JsonNumber::jsonEncode(pt, requestedMaxKeepAliveCount_, "RequestedMaxKeepAliveCount")) {
+			Log(Error, "CreateSubscriptionRequest json encode error")
+				.parameter("Element", "RequestedMaxKeepAliveCount");
+			return false;
+		}
+
+		// encode max notifications per publish
+		if (!JsonNumber::jsonEncode(pt, maxNotificationsPerPublish_, "MaxNotificationsPerPublish")) {
+			Log(Error, "CreateSubscriptionRequest json encode error")
+				.parameter("Element", "MaxNotificationsPerPublish");
+			return false;
+		}
+
+		// encode publishing enabled
+		if (!JsonNumber::jsonEncode(pt, publishingEnabled_, "PublishingEnabled")) {
+			Log(Error, "CreateSubscriptionRequest json encode error")
+				.parameter("Element", "PublishingEnabled");
+			return false;
+		}
+
+		// encode priority
+		if (!JsonNumber::jsonEncode(pt, priority_, "Priority")) {
+			Log(Error, "CreateSubscriptionRequest json encode error")
+				.parameter("Element", "Priority");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	CreateSubscriptionRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(element);
+		if (!tmpTree) {
+			Log(Error, "CreateSubscriptionRequest json decoder error")
+				.parameter("Element", element);
+				return false;
+		}
+		return jsonDecode(*tmpTree);
+	}
+
+	bool
+	CreateSubscriptionRequest::jsonDecode(boost::property_tree::ptree& pt)
+	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		// decode requested publishing interval
+		tmpTree = pt.get_child_optional("RequestedPublishingInterval");
+		if (tmpTree) {
+			if (!JsonNumber::jsonDecode(pt, requestedPublishingInterval_, "RequestedPublishingInterval")) {
+				Log(Error, "CreateSubscriptionRequest json decode error")
+					.parameter("Element", "RequestedPublishingInterval");
+				return false;
+			}
+		}
+
+		// decode requested lifetime count
+		tmpTree = pt.get_child_optional("RequestedPublishingInterval");
+		if (tmpTree) {
+			if (!JsonNumber::jsonDecode(pt, requestedPublishingInterval_, "RequestedPublishingInterval")) {
+				Log(Error, "CreateSubscriptionRequest json decode error")
+					.parameter("Element", "RequestedPublishingInterval");
+				return false;
+			}
+		}
+
+		// decode requested max keepalive count
+		tmpTree = pt.get_child_optional("RequestedMaxKeepAliveCount");
+		if (tmpTree) {
+			if (!JsonNumber::jsonDecode(pt, requestedMaxKeepAliveCount_, "RequestedMaxKeepAliveCount")) {
+				Log(Error, "CreateSubscriptionRequest json decode error")
+					.parameter("Element", "RequestedMaxKeepAliveCount");
+				return false;
+			}
+		}
+
+		// decode max notifications per publish
+		tmpTree = pt.get_child_optional("MaxNotificationsPerPublish");
+		if (tmpTree) {
+			if (!JsonNumber::jsonDecode(pt, maxNotificationsPerPublish_, "MaxNotificationsPerPublish")) {
+				Log(Error, "CreateSubscriptionRequest json decode error")
+					.parameter("Element", "MaxNotificationsPerPublish");
+				return false;
+			}
+		}
+
+		// decode publishing enabled
+		tmpTree = pt.get_child_optional("PublishingEnabled");
+		if (tmpTree) {
+			if (!JsonNumber::jsonDecode(pt, publishingEnabled_, "PublishingEnabled")) {
+				Log(Error, "CreateSubscriptionRequest json decode error")
+					.parameter("Element", "PublishingEnabled");
+				return false;
+			}
+		}
+
+		// decode priority
+		tmpTree = pt.get_child_optional("Priority");
+		if (tmpTree) {
+			if (!JsonNumber::jsonDecode(pt, priority_, "Priority")) {
+				Log(Error, "CreateSubscriptionRequest json decode error")
+					.parameter("Element", "Priority");
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 }
