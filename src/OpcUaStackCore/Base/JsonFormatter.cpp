@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 
     }
 
-    JsonFormatter::~JsonFormatter(void)
+    JsonFormatter::~JsonFormatter()
     {
 
     }
@@ -38,7 +38,7 @@ namespace OpcUaStackCore
     JsonFormatter::jsonEncode(boost::property_tree::ptree &pt, const std::string &element) const
     {
         boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
+        if (!jsonEncodeImpl(elementTree)) {
             Log(Error, std::string(typeid(this).name()) + " json encoder error")
                     .parameter("Element", element);
             return false;
@@ -59,21 +59,59 @@ namespace OpcUaStackCore
             return false;
         }
 
-        return jsonDecode(*tmpTree);
+        return jsonDecodeImpl(*tmpTree);
     }
 
     bool
     JsonFormatter::jsonEncode(boost::property_tree::ptree &pt) const
     {
-        Log(Error, std::string(typeid(this).name()) + " doesn't implement JsonFormatter::jsonEncode method");
-        return false;
+        return jsonEncodeImpl(pt);
     }
 
     bool
     JsonFormatter::jsonDecode(const boost::property_tree::ptree &pt)
     {
-        Log(Error, std::string(typeid(this).name()) + " doesn't implement JsonFormatter::jsonDecode method");
+        return jsonDecodeImpl(pt);
+    }
+
+    bool
+    JsonFormatter::jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional) const
+    {
+
+        bool result = (valuePtr && valuePtr->jsonEncode(pt, element)) || optional;
+        if (!result) {
+            Log(Error, std::string(typeid(this).name()) + " json encoder error")
+                    .parameter("Element", element);
+            return false;
+        }
+
         return false;
+    }
+
+
+    bool
+    JsonFormatter::jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element) const
+    {
+        return jsonObjectSPtrEncode(pt, valuePtr, element, false);
+    }
+
+    bool
+    JsonFormatter::jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional)
+    {
+        bool result = (valuePtr && valuePtr->jsonDecode(pt, element)) || optional;
+        if (!result) {
+            Log(Error, std::string(typeid(this).name()) + " json decoder error")
+                    .parameter("Element", element);
+            return false;
+        }
+
+        return false;
+    }
+
+    bool
+    JsonFormatter::jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element)
+    {
+        return jsonObjectSPtrDecode(pt, valuePtr, element, false);
     }
 }
 

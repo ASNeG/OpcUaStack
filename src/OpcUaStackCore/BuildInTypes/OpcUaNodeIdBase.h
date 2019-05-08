@@ -26,6 +26,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaGuid.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
+#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -39,7 +40,9 @@ namespace OpcUaStackCore
 	typedef boost::variant<OpcUaNodeIdNullType, OpcUaUInt32,OpcUaString::SPtr,OpcUaGuid::SPtr,OpcUaByteString::SPtr> OpcUaNodeIdValue;
 
 	class DLLEXPORT OpcUaNodeIdBase
-	: public Object
+	: public JsonFormatter
+	, public Object
+
 	{
 	  public:
 	    OpcUaNodeIdBase(void);
@@ -102,12 +105,12 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(const boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(const boost::property_tree::ptree& pt);
+
 
 	  protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
+
 		OpcUaUInt16 namespaceIndex_;
 		OpcUaNodeIdValue nodeIdValue_;
 

@@ -59,9 +59,9 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
-        bool jsonEncode(boost::property_tree::ptree &pt) const override;
-
-        bool jsonDecode(const boost::property_tree::ptree &pt) override;
+    protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
     private:
 		OpcUaNodeId::SPtr nodeIdSPtr_;

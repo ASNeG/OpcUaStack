@@ -140,10 +140,10 @@ namespace OpcUaStackCore
 	}
 
     bool
-    BrowseDescription::jsonEncode(boost::property_tree::ptree &pt) const {
-        bool rc = nodeIdSPtr_->jsonEncode(pt, "NodeId");
+    BrowseDescription::jsonEncodeImpl(boost::property_tree::ptree &pt) const {
+        bool rc = jsonObjectSPtrEncode(pt, nodeIdSPtr_, "NodeId");
         rc &= jsonNumberEncode(pt, (OpcUaUInt32)browseDirection_, "BrowseDirection");
-        rc &= referenceTypeIdSPtr_->jsonEncode(pt, "ReferenceTypeId");
+        rc &= jsonObjectSPtrEncode(pt, referenceTypeIdSPtr_, "ReferenceTypeId", true);
         rc &= jsonNumberEncode(pt, includeSubtypes_, "IncludeSubtypes");
         rc &= jsonNumberEncode(pt, nodeClassMask_, "NodeClassMask");
         rc &= jsonNumberEncode(pt, resultMask_, "ResultMask");
@@ -152,12 +152,14 @@ namespace OpcUaStackCore
     }
 
     bool
-    BrowseDescription::jsonDecode(const boost::property_tree::ptree &pt) {
-        OpcUaUInt32 tmp;
+    BrowseDescription::jsonDecodeImpl(const boost::property_tree::ptree &pt) {
+        bool rc = jsonObjectSPtrDecode(pt, nodeIdSPtr_, "NodeId");
 
-        bool rc = nodeIdSPtr_->jsonDecode(pt, "NodeId");
-        rc &= jsonNumberDecode(pt, tmp, "ReferenceTypeId");
+        OpcUaUInt32 tmp;
+        rc &= jsonNumberDecode(pt, tmp, "BrowseDirection");
         browseDirection_ = (BrowseDirectionEnum)tmp;
+
+        rc &= jsonObjectSPtrDecode(pt, referenceTypeIdSPtr_, "ReferenceTypeId", true);
         rc &= jsonNumberDecode(pt, includeSubtypes_, "IncludeSubtypes");
         rc &= jsonNumberDecode(pt, nodeClassMask_, "NodeClassMask");
         rc &= jsonNumberDecode(pt, resultMask_, "ResultMask");

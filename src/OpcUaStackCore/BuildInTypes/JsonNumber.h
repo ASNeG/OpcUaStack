@@ -29,29 +29,29 @@ namespace OpcUaStackCore
 	class DLLEXPORT JsonNumber
 	{
 	  public:
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaBoolean& value, const std::string& element);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaByte& value, const std::string& element);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaSByte& value, const std::string& element);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt16& value, const std::string& element);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt16& value, const std::string& element);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt32& value, const std::string& element);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt32& value, const std::string& element);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt64& value, const std::string& element);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt64& value, const std::string& element);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaFloat& value, const std::string& element);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaDouble& value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaBoolean value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaByte value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaSByte value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt16 value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt16 value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt32 value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt32 value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt64 value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt64 value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaFloat value, const std::string& element);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaDouble value, const std::string& element);
 
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaBoolean& value);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaByte& value);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaSByte& value);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt16& value);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt16& value);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt32& value);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt32& value);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt64& value);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt64& value);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaFloat& value);
-		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaDouble& value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaBoolean value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaByte value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaSByte value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt16 value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt16 value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt32 value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt32 value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaUInt64 value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaInt64 value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaFloat value);
+		static bool jsonEncode(boost::property_tree::ptree& pt, OpcUaDouble value);
 
 		static bool jsonDecode(const boost::property_tree::ptree& pt, OpcUaBoolean& value, const std::string& element);
 		static bool jsonDecode(const boost::property_tree::ptree& pt, OpcUaByte& value, const std::string& element);
