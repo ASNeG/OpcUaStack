@@ -211,14 +211,19 @@ namespace OpcUaStackServer
 
 		responseHeader.serviceResult(ctx.statusCode_);
 		if (ctx.statusCode_ == Success) {
-			findServersResponse.servers(ctx.servers_);
+			if (ctx.servers_->size() == 0) {
+				ctx.statusCode_ = BadNotSupported;
+			}
+			else {
+				findServersResponse.servers(ctx.servers_);
+			}
 		}
 
 		responseHeader.opcUaBinaryEncode(os);
 		findServersResponse.opcUaBinaryEncode(os);
 
 		if (discoveryIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = findServersResponse.responseHeader();
+			auto responseHeader = findServersResponse.responseHeader();
 			discoveryIf_->discoveryResponseMessage(responseHeader, secureChannelTransaction);
 		}
 	}
