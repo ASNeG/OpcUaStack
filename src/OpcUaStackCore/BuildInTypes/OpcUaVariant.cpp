@@ -2926,6 +2926,11 @@ namespace OpcUaStackCore
 	OpcUaVariant::jsonEncode(boost::property_tree::ptree& pt)
 	{
 		pt.put("Type", variantType());
+
+		if (variantType() == 0) {
+			return true;
+		}
+
 		switch (variantType())
 		{
 			case OpcUaBuildInType_OpcUaBoolean:
@@ -3102,6 +3107,9 @@ namespace OpcUaStackCore
 			Log(Error, "OpcUaVariant json encode error - data type unknown")
 				.parameter("Element", "Type");
 			return false;
+		}
+		if (dataType == 0) {
+			return true;
 		}
 
 		// check if Body is an array
