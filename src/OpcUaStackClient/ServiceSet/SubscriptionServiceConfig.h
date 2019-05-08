@@ -36,6 +36,7 @@ namespace OpcUaStackClient
 		virtual ~SubscriptionServiceConfig(void);
 
 		DataChangeNotificationHandler dataChangeNotificationHandler_;
+		EventNotificationHandler eventNotificationHandler_;
 		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;
 		uint32_t publishCount_;
 		uint32_t requestTimeout_;
