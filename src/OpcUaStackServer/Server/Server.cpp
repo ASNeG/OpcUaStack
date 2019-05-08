@@ -198,7 +198,6 @@ namespace OpcUaStackServer
 	bool 
 	Server::readInformationModel(void)
 	{
-		std::vector<std::string>::iterator it;
 		std::vector<std::string> configVec;
 		config().getValues("OpcUaServer.InformationModel.NodeSetFile", configVec);
 		if  (configVec.size() == 0) {
@@ -208,7 +207,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		for (it=configVec.begin(); it!=configVec.end(); it++) {
+		for (auto it=configVec.begin(); it!=configVec.end(); it++) {
 			std::string nodeSetFileName = *it;
 
 			Log(Info, "read node set file")
