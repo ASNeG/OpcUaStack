@@ -259,17 +259,16 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionService::receiveDeleteMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		ServiceTransactionDeleteMonitoredItems::SPtr trx = boost::static_pointer_cast<ServiceTransactionDeleteMonitoredItems>(serviceTransaction);
+		auto trx = boost::static_pointer_cast<ServiceTransactionDeleteMonitoredItems>(serviceTransaction);
 		
 		// find subscription manager
-		SubscriptionManager::SPtr subscriptionManager;
-		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
+		auto it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
 			serviceTransaction->componentSession()->send(serviceTransaction);
 			return;
 		}
-		subscriptionManager = it->second;
+		auto subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));

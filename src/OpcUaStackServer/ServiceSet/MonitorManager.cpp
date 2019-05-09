@@ -331,8 +331,8 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	MonitorManager::receive(ServiceTransactionDeleteMonitoredItems::SPtr trx)
 	{
-		DeleteMonitoredItemsRequest::SPtr deleteMonitorItemRequest = trx->request();
-		DeleteMonitoredItemsResponse::SPtr deleteMonitorItemResponse = trx->response();
+		auto deleteMonitorItemRequest = trx->request();
+		auto deleteMonitorItemResponse = trx->response();
 
 		uint32_t size = deleteMonitorItemRequest->monitoredItemIds()->size();
 		deleteMonitorItemResponse->results()->resize(size);
@@ -349,14 +349,13 @@ namespace OpcUaStackServer
 			bool monitoredItem;
 
 			// find monitor item in monitor map
-			MonitorItemMap::iterator it1;
 			EventItem::Map::iterator it2;
-			it1 = monitorItemMap_.find(monitorItemId);
+			auto it1 = monitorItemMap_.find(monitorItemId);
 			if (it1 == monitorItemMap_.end()) {
 
 				it2 = eventItemMap_.find(monitorItemId);
 				if (it2 == eventItemMap_.end()) {
-					deleteMonitorItemResponse->results()->set(idx, Success);
+					deleteMonitorItemResponse->results()->set(idx, BadNothingToDo);
 					continue;
 				}
 				monitoredItem = false;
@@ -408,6 +407,7 @@ namespace OpcUaStackServer
 
 				it2->second->erase();
 				eventItemMap_.erase(it2);
+				deleteMonitorItemResponse->results()->set(idx, Success);
 			}
 		}
 
