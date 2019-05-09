@@ -44,6 +44,9 @@ namespace OpcUaStackClient
 		uint32_t reconnectTimeout(void);
 		void maxResponseMessageSize(uint32_t maxResponseMessageSize);
 		uint32_t maxResponseMessageSize(void);
+		void policyId(const std::string& policyId);
+		std::string& policyId(void);
+
 
 	  //private:
 		ApplicationDescription::SPtr applicationDescription_;
@@ -52,6 +55,7 @@ namespace OpcUaStackClient
 		uint32_t sessionTimeout_;
 		uint32_t reconnectTimeout_;
 		uint32_t maxResponseMessageSize_;
+		std::string policyId_;
 
 	};
 
