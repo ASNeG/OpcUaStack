@@ -85,7 +85,7 @@ namespace OpcUaStackCore
             return false;
         }
 
-        return false;
+        return true;
     }
 
 
@@ -105,7 +105,7 @@ namespace OpcUaStackCore
             return false;
         }
 
-        return false;
+        return true;
     }
 
     bool
