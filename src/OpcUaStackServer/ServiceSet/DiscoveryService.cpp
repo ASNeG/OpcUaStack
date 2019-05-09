@@ -211,14 +211,19 @@ namespace OpcUaStackServer
 
 		responseHeader.serviceResult(ctx.statusCode_);
 		if (ctx.statusCode_ == Success) {
-			findServersResponse.servers(ctx.servers_);
+			if (ctx.servers_->size() == 0) {
+				ctx.statusCode_ = BadNotSupported;
+			}
+			else {
+				findServersResponse.servers(ctx.servers_);
+			}
 		}
 
 		responseHeader.opcUaBinaryEncode(os);
 		findServersResponse.opcUaBinaryEncode(os);
 
 		if (discoveryIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = findServersResponse.responseHeader();
+			auto responseHeader = findServersResponse.responseHeader();
 			discoveryIf_->discoveryResponseMessage(responseHeader, secureChannelTransaction);
 		}
 	}
@@ -227,52 +232,6 @@ namespace OpcUaStackServer
 	void
 	DiscoveryService::receive(Message::SPtr message)
 	{
-#if 0
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
-		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>())
-		{
-			case OpcUaId_RegisterServerRequest_Encoding_DefaultBinary:
-				receiveRegisterServerRequest(serviceTransaction);
-				break;
-			default:
-			{
-				Log(Error, "discovery service received unknown message type")
-					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
-
-				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(serviceTransaction);
-				break;
-			}
-		}
-#endif
 	}
-#if 0
-	void
-	DiscoveryService::receiveRegisterServerRequest(ServiceTransaction::SPtr serviceTransaction)
-	{
-		ServiceTransactionRegisterServer::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterServer>(serviceTransaction);
-
-		RegisterServerRequest::SPtr registerServerRequest = trx->request();
-		RegisterServerResponse::SPtr registerServerResponse = trx->response();
-
-		Log(Debug, "discovery service register server request")
-			.parameter("Trx", serviceTransaction->transactionId());
-
-		// check forward callback functions
-		ApplicationRegisterServerContext ctx;
-		ctx.statusCode_ = BadNotSupported;
-		OpcUaStatusCode statusCode = BadNotSupported;
-		if (forwardGlobalSync()->registerServerService().isCallback()) {
-
-			// forward register server request
-			ctx.applicationContext_ = forwardGlobalSync()->registerServerService().applicationContext();
-			registerServerRequest->server().copyTo(ctx.server_);
-			forwardGlobalSync()->registerServerService().callback()(&ctx);
-		}
-
-		trx->statusCode(ctx.statusCode_);
-		trx->componentSession()->send(serviceTransaction);
-	}
-#endif
 
 }
