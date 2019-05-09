@@ -221,9 +221,10 @@ namespace OpcUaStackServer
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationAnonymous");
 
-		AnonymousIdentityToken::SPtr token = parameter->parameter<AnonymousIdentityToken>();
+		auto token = parameter->parameter<AnonymousIdentityToken>();
 
-		// check token policy
+		// The policy id and the policy type are checked. An endpoint must exist
+		// for this combination in the server configuration file.
 		UserTokenPolicy::SPtr userTokenPolicy;
 		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumAnonymous, userTokenPolicy);
 		if (statusCode != Success) {
@@ -257,7 +258,7 @@ namespace OpcUaStackServer
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationUserName");
 
-		UserNameIdentityToken::SPtr token = parameter->parameter<UserNameIdentityToken>();
+		auto token = parameter->parameter<UserNameIdentityToken>();
 
 		// check parameter and password
 		if (token->userName().size() == 0) {
@@ -265,7 +266,8 @@ namespace OpcUaStackServer
 			return BadIdentityTokenInvalid;
 		}
 
-		// check token policy
+		// The policy id and the policy type are checked. An endpoint must exist
+		// for this combination in the server configuration file.
 		UserTokenPolicy::SPtr userTokenPolicy;
 		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumUserName, userTokenPolicy);
 		if (statusCode != Success) {
@@ -329,7 +331,7 @@ namespace OpcUaStackServer
 		plainTextBuf = plainText.memBuf();
 		plainTextLen = plainText.memLen();
 
-		PrivateKey::SPtr privateKey = cryptoManager_->applicationCertificate()->privateKey();
+		auto privateKey = cryptoManager_->applicationCertificate()->privateKey();
 
 		statusCode = cryptoBase->asymmetricDecrypt(
 			encryptedTextBuf,
@@ -380,7 +382,7 @@ namespace OpcUaStackServer
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationX509");
 
-		X509IdentityToken::SPtr token = parameter->parameter<X509IdentityToken>();
+		auto token = parameter->parameter<X509IdentityToken>();
 
 		// check parameter and password
 		if (token->certificateData().size() == 0) {
@@ -396,7 +398,7 @@ namespace OpcUaStackServer
 		}
 
 		// get signature data
-		SignatureData::SPtr userTokenSignature = activateSessionRequest.userTokenSignature();
+		auto userTokenSignature = activateSessionRequest.userTokenSignature();
 		if (userTokenSignature.get() == nullptr) {
 			Log(Debug, "missing user token signature")
 				.parameter("PolicyId", token->policyId());
@@ -464,7 +466,7 @@ namespace OpcUaStackServer
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationIssued");
 
-		IssuedIdentityToken::SPtr token = parameter->parameter<IssuedIdentityToken>();
+		auto token = parameter->parameter<IssuedIdentityToken>();
 
 		// check parameter and password
 		if (token->tokenData().size() == 0) {
@@ -514,7 +516,7 @@ namespace OpcUaStackServer
 		plainTextBuf = plainText.memBuf();
 		plainTextLen = plainText.memLen();
 
-		PrivateKey::SPtr privateKey = cryptoManager_->applicationCertificate()->privateKey();
+		auto privateKey = cryptoManager_->applicationCertificate()->privateKey();
 
 		statusCode = cryptoBase->asymmetricDecrypt(
 			encryptedTextBuf,
