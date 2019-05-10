@@ -16,14 +16,18 @@
  */
 
 #include <boost/make_shared.hpp>
+#include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/UserNameIdentityToken.h"
 #include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
@@ -404,11 +408,19 @@ namespace OpcUaStackClient
 	}
 
 	OpcUaStatusCode
-	SessionServiceContext::authenticationAnonymous(ActivateSessionRequest& activateSessionRequest)
+	SessionServiceContext::authenticationAnonymous(
+		ActivateSessionRequest& activateSessionRequest,
+		const std::string& securityPolicyUri,
+		const std::string& policyId
+	)
 	{
+		Log(Debug, "authentication anonymous")
+		    .parameter("PolicyId", policyId);
+
+		// create anonymous identity token
 		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
-		auto anonymousIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
-		anonymousIdentityToken->policyId() = sessionConfig_->policyId();
+		auto userIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
+		userIdentityToken->policyId() = OpcUaString(policyId);
 
 		return Success;
 	}
@@ -416,19 +428,110 @@ namespace OpcUaStackClient
 	OpcUaStatusCode
 	SessionServiceContext::authenticationUserName(
 		ActivateSessionRequest& activateSessionRequest,
-		const OpcUaString& userName,
-		const OpcUaByteString password,
-		const OpcUaString encryptionAlgorithm
+		const std::string& securityPolicyUri,
+		const std::string& policyId,
+		const std::string& userName,
+		const std::string& password,
+		const std::string& encryptionAlgorithm
 	)
 	{
-		// FIXME: todo
+		Log(Debug, "authentication user name")
+		    .parameter("PolicyId", policyId)
+			.parameter("UserName", userName)
+			.parameter("EncyptionAlgorithmus", encryptionAlgorithm);
+
+		// create user name identity token
+		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
+		auto userIdentityToken = activateSessionRequest.userIdentityToken()->parameter<UserNameIdentityToken>();
+		userIdentityToken->policyId() = OpcUaString(policyId);
+		userIdentityToken->userName() = OpcUaString(userName);
+		userIdentityToken->password() = OpcUaByteString(password);
+		userIdentityToken->encryptionAlgorithm() = OpcUaString(encryptionAlgorithm);
+
+		if (userIdentityToken->encryptionAlgorithm() == OpcUaString("")) {
+			// we use a plain password
+			return Success;
+		}
+
+		// get cryption base and check cryption alg
+		auto cryptoBase = secureChannelClientConfig_->cryptoManager()->get(securityPolicyUri);
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", securityPolicyUri);
+			return BadIdentityTokenRejected;
+		}
+		auto securityPolicy = secureChannelClientConfig_->cryptoManager()->securityPolicy(securityPolicyUri);
+		if (securityPolicy == SecurityPolicy::EnumNone) {
+			// we use a plain password
+			return Success;
+		}
+
+		uint32_t encryptionAlg = EnryptionAlgs::uriToEncryptionAlg(encryptionAlgorithm);
+		if (encryptionAlg == 0) {
+			Log(Debug, "encryption alg invalid")
+				.parameter("EncryptionAlgorithm", encryptionAlgorithm);
+			return BadIdentityTokenRejected;;
+		}
+
+		// get public key from communication partner
+		auto& securitySettings = secureChannel_->securitySettings_;
+		if (securitySettings.partnerCertificateChain().empty()) {
+			Log(Debug, "partner certificate empty");
+			return BadIdentityTokenRejected;
+		}
+		auto publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
+
+		// create plain password buffer
+		MemoryBuffer plainText(password.size() + 36);
+		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(plainText.memBuf(), plainText.memLen());
+		memcpy(plainText.memBuf() + 4, password.c_str(), password.length());
+		memcpy(plainText.memBuf() + 4 + password.length(), securitySettings.partnerNonce().memBuf(), 32);
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		cryptoBase->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		asymmetricKeyLen /= 8;
+
+		// get plain and encrypted block lengths
+		uint32_t plainTextBlockSize = 0;
+		uint32_t cryptTextBlockSize = 0;
+		cryptoBase->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+
+		// calculate encrypted text length
+		uint32_t plainTextLen = plainText.memLen();
+		uint32_t rest = plainText.memLen() % plainTextBlockSize;
+		if (rest > 0) {
+			plainTextLen += (plainTextBlockSize - rest);
+		}
+		uint32_t encryptedTextLen = plainTextLen / plainTextBlockSize * cryptTextBlockSize;
+
+		// encrypt password
+		MemoryBuffer encryptedText(encryptedTextLen);
+		auto statusCode = cryptoBase->asymmetricEncrypt(
+			plainText.memBuf(),
+			plainText.memLen(),
+			publicKey,
+			encryptedText.memBuf(),
+			&encryptedTextLen
+		);
+		if (statusCode != Success) {
+			Log(Debug, "encrypt password error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadIdentityTokenRejected;
+		}
+
+		// set password
+		userIdentityToken->password().value(encryptedText.memBuf(), encryptedText.memLen());
+
 		return Success;
 	}
 
 	OpcUaStatusCode
 	SessionServiceContext::authenticationX509(
 		ActivateSessionRequest& activateSessionRequest,
-		const OpcUaByteString& certificateData
+		const std::string& securityPolicyUri,
+		const std::string& policyId,
+		const std::string& certificateData
 	)
 	{
 		// FIXME: todo
@@ -438,8 +541,10 @@ namespace OpcUaStackClient
 	OpcUaStatusCode
 	SessionServiceContext::authenticationIssued(
 		ActivateSessionRequest& activateSessionRequest,
-		const OpcUaByteString& certificateData,
-		const OpcUaString encryptionAlgorithm
+		const std::string& securityPolicyUri,
+		const std::string& policyId,
+		const std::string& certificateData,
+		const std::string& encryptionAlgorithm
 	)
 	{
 		// FIXME: todo

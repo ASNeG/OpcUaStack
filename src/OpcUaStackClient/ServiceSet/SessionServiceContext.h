@@ -84,22 +84,30 @@ namespace OpcUaStackClient
 			ActivateSessionRequest& activateSessionRequest
 		);
 		OpcUaStatusCode authenticationAnonymous(
-			ActivateSessionRequest& activateSessionRequest
+			ActivateSessionRequest& activateSessionRequest,
+			const std::string& securityPolicyUri,
+			const std::string& policyId
 		);
 		OpcUaStatusCode authenticationUserName(
 			ActivateSessionRequest& activateSessionRequest,
-			const OpcUaString& userName,
-			const OpcUaByteString password,
-			const OpcUaString encryptionAlgorithm
+			const std::string& securityPolicyUri,
+			const std::string& policyId,
+			const std::string& userName,
+			const std::string& password,
+			const std::string& encryptionAlgorithm
 		);
 		OpcUaStatusCode authenticationX509(
 			ActivateSessionRequest& activateSessionRequest,
-			const OpcUaByteString& certificateData
+			const std::string& securityPolicyUri,
+			const std::string& policyId,
+			const std::string& certificateData
 		);
 		OpcUaStatusCode authenticationIssued(
 			ActivateSessionRequest& activateSessionRequest,
-			const OpcUaByteString& certificateData,
-			const OpcUaString encryptionAlgorithm
+			const std::string& securityPolicyUri,
+			const std::string& policyId,
+			const std::string& certificateData,
+			const std::string& encryptionAlgorithm
 		);
 
 		static uint32_t gId_;

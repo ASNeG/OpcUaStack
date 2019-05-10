@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		auto& securitySettings = secureChannel->securitySettings();
 
 		// check if encryption or signature is enabled
 		// if receiver certificate thumprint exist -> encryption is enabled
