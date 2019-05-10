@@ -80,7 +80,27 @@ namespace OpcUaStackClient
 			EndpointDescription::SPtr& endpointDescription
 		);
 
-		OpcUaStatusCode authentication(ActivateSessionRequest& activateSessionRequest);
+		OpcUaStatusCode authentication(
+			ActivateSessionRequest& activateSessionRequest
+		);
+		OpcUaStatusCode authenticationAnonymous(
+			ActivateSessionRequest& activateSessionRequest
+		);
+		OpcUaStatusCode authenticationUserName(
+			ActivateSessionRequest& activateSessionRequest,
+			const OpcUaString& userName,
+			const OpcUaByteString password,
+			const OpcUaString encryptionAlgorithm
+		);
+		OpcUaStatusCode authenticationX509(
+			ActivateSessionRequest& activateSessionRequest,
+			const OpcUaByteString& certificateData
+		);
+		OpcUaStatusCode authenticationIssued(
+			ActivateSessionRequest& activateSessionRequest,
+			const OpcUaByteString& certificateData,
+			const OpcUaString encryptionAlgorithm
+		);
 
 		static uint32_t gId_;
 		uint32_t id_;

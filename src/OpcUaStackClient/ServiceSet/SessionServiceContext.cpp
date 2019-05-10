@@ -403,4 +403,47 @@ namespace OpcUaStackClient
 		return Success;
 	}
 
+	OpcUaStatusCode
+	SessionServiceContext::authenticationAnonymous(ActivateSessionRequest& activateSessionRequest)
+	{
+		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+		auto anonymousIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
+		anonymousIdentityToken->policyId() = sessionConfig_->policyId();
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SessionServiceContext::authenticationUserName(
+		ActivateSessionRequest& activateSessionRequest,
+		const OpcUaString& userName,
+		const OpcUaByteString password,
+		const OpcUaString encryptionAlgorithm
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SessionServiceContext::authenticationX509(
+		ActivateSessionRequest& activateSessionRequest,
+		const OpcUaByteString& certificateData
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SessionServiceContext::authenticationIssued(
+		ActivateSessionRequest& activateSessionRequest,
+		const OpcUaByteString& certificateData,
+		const OpcUaString encryptionAlgorithm
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
 }
