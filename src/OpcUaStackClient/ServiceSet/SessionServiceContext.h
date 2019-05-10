@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
@@ -78,6 +79,8 @@ namespace OpcUaStackClient
 		bool checkEndpoint(
 			EndpointDescription::SPtr& endpointDescription
 		);
+
+		OpcUaStatusCode authentication(ActivateSessionRequest& activateSessionRequest);
 
 		static uint32_t gId_;
 		uint32_t id_;

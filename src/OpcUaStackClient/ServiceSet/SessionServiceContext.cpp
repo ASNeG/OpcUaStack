@@ -19,7 +19,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
-#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
@@ -182,10 +181,15 @@ namespace OpcUaStackClient
 			}
 		}
 
-		// user identity token
-		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
-		auto anonymousIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
-		anonymousIdentityToken->policyId() = sessionConfig_->policyId();
+		// create user identity token
+		auto statusCode = authentication(activateSessionRequest);
+		if (statusCode != Success) {
+			Log(Error, "create user identity token error")
+				.parameter("SessId", id_);
+			return statusCode;
+		}
+
+		// encode activate session request
 		activateSessionRequest.requestHeader()->opcUaBinaryEncode(ios);
 		activateSessionRequest.opcUaBinaryEncode(ios);
 
@@ -387,6 +391,16 @@ namespace OpcUaStackClient
 		}
 
 		return true;
+	}
+
+	OpcUaStatusCode
+	SessionServiceContext::authentication(ActivateSessionRequest& activateSessionRequest)
+	{
+		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+		auto anonymousIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
+		anonymousIdentityToken->policyId() = sessionConfig_->policyId();
+
+		return Success;
 	}
 
 }
