@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_BrowseRequest_h__
@@ -21,18 +21,27 @@
 #include <stdint.h>
 #include "OpcUaStackCore/ServiceSet/ViewDescription.h"
 #include "OpcUaStackCore/ServiceSet/BrowseDescription.h"
+#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT BrowseRequest
 	: public  Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<BrowseRequest> SPtr;
 
 		BrowseRequest(void);
-		virtual ~BrowseRequest(void);
+
+    protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+
+    public:
+        virtual ~BrowseRequest(void);
 
 		void view(const ViewDescription& view);
 		ViewDescription& view(void);

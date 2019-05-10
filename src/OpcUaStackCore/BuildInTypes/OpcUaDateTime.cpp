@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
@@ -206,7 +206,7 @@ namespace OpcUaStackCore
 	}
 
 	std::string
-	OpcUaDateTime::toISO8601(void)
+	OpcUaDateTime::toISO8601(void) const
 	{
 		try {
 			boost::posix_time::ptime ptime = dateTime();
@@ -224,7 +224,7 @@ namespace OpcUaStackCore
 	}
 
 	std::string
-	OpcUaDateTime::toISOString(void)
+	OpcUaDateTime::toISOString(void) const
 	{
 		std::string str;
 		try 
@@ -319,56 +319,26 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	bool
-	OpcUaDateTime::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcUaDateTime json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
+    bool
+    OpcUaDateTime::jsonEncodeImpl(boost::property_tree::ptree &pt) const {
+        pt.put_value(toISO8601());
+        return true;
+    }
 
-	bool
-	OpcUaDateTime::jsonEncode(boost::property_tree::ptree& pt)
-	{
-		pt.put_value(toISO8601());
-		return true;
-	}
+    bool
+    OpcUaDateTime::jsonDecodeImpl(const boost::property_tree::ptree &pt) {
+        std::string sourceValue = pt.get_value<std::string>();
+        if (sourceValue.empty()) {
+            Log(Error, "OpcUaDateTime json decoder error - value not exist in json document");
+            return false;
+        }
 
-	bool
-	OpcUaDateTime::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
+        if (!fromISO8601(sourceValue)) {
+            Log(Error, "OpcUaDateTime json decoder error - value format error")
+                    .parameter("Value", sourceValue);
+            return false;
+        }
 
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcUaDateTime json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	OpcUaDateTime::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		std::string sourceValue = pt.get_value<std::string>();
-		if (sourceValue.empty()) {
-			Log(Error, "OpcUaDateTime json decoder error - value not exist in json document");
-			return false;
-		}
-
-		if (!fromISO8601(sourceValue)) {
-			Log(Error, "OpcUaDateTime json decoder error - value format error")
-				.parameter("Value", sourceValue);
-			return false;
-		}
-
-		return true;
-	}
-
+        return true;
+    }
 }

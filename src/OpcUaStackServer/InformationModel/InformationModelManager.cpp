@@ -126,7 +126,7 @@ namespace OpcUaStackServer
 			}
 			case OpcUaBuildInType_OpcUaGuid:
 			{
-				displayPath_ = *nodeId.nodeId<OpcUaGuid::SPtr>();
+				displayPath_ = nodeId.nodeId<OpcUaGuid::SPtr>()->value();
 				break;
 			}
 			case OpcUaBuildInType_OpcUaByteString:

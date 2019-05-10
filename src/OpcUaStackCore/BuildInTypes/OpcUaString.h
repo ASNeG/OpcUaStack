@@ -23,12 +23,14 @@
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include <boost/property_tree/ptree.hpp>
+#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT OpcUaString
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaString> SPtr;
@@ -64,10 +66,10 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(const boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(const boost::property_tree::ptree& pt);
+
+    protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
 
 	  private:
 		bool exist_;

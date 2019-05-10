@@ -12,22 +12,24 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_BrowseResult_h__
 #define __OpcUaStackCore_BrowseResult_h__
 
-#include <stdint.h>
+#include <cstdint>
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/ServiceSet/ReferenceDescription.h"
+#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
    
 	class DLLEXPORT BrowseResult
 	: public  Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<BrowseResult> SPtr;
@@ -43,7 +45,11 @@ namespace OpcUaStackCore
 		ReferenceDescriptionArray::SPtr references(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+        void opcUaBinaryDecode(std::istream& is);
+
+    protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		OpcUaStatusCode statusCode_;

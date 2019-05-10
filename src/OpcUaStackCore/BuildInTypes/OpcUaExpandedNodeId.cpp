@@ -581,6 +581,8 @@ namespace OpcUaStackCore
 				nodeIdStream << "h=" << value;
 				break;
 			}
+            default:
+                Log(Error, "Wrong type").parameter("NodeId", *this).parameter("NodeType", nodeIdType());
 		}
 		return nodeIdStream.str();
 	}

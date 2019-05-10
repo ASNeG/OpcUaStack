@@ -1,4 +1,3 @@
-/*
  /*
    Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 

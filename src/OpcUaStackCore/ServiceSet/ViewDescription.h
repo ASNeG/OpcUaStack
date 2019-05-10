@@ -12,27 +12,28 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_ViewDescription_h__
 #define __OpcUaStackCore_ViewDescription_h__
 
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ViewDescription
 	: public  Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<ViewDescription> SPtr;
 
 		ViewDescription(void);
 		virtual ~ViewDescription(void);
-
-		void viewId(const OpcUaNodeId::SPtr viewId);
+        void viewId(const OpcUaNodeId::SPtr viewId);
 		OpcUaNodeId::SPtr viewId(void);
 		void timestamp(const OpcUaUtcTime& timestamp);
 		void timestamp(const boost::posix_time::ptime& timestamp);
@@ -42,6 +43,10 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+
+      protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		OpcUaNodeId::SPtr viewIdSPtr_;

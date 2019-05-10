@@ -228,42 +228,18 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	bool
-	OpcUaString::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcString json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
 
 	bool
-	OpcUaString::jsonEncode(boost::property_tree::ptree& pt)
+	OpcUaString::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		pt.put_value(value());
 		return true;
 	}
 
-	bool
-	OpcUaString::jsonDecode(const boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<const boost::property_tree::ptree&> tmpTree;
 
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcString json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
 
 	bool
-	OpcUaString::jsonDecode(const boost::property_tree::ptree& pt)
+	OpcUaString::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		value(sourceValue);

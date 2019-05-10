@@ -61,7 +61,7 @@ namespace OpcUaStackServer
 		}
 
 		// insert namespace entry into map
-		numberStringMap_.insert(std::make_pair(namespaceEntryText.namespaceIndex(), namespaceEntryText.name()));
+		numberStringMap_.insert(std::make_pair(namespaceEntryText.namespaceIndex(), namespaceEntryText.name().value()));
 
 		return true;
 	}

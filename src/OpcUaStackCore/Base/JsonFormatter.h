@@ -35,9 +35,42 @@ namespace OpcUaStackCore
         JsonFormatter();
 		virtual ~JsonFormatter();
 
-        bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) const;
+        /**
+         * Function to encode the structure data to a json tree format.
+         *
+         * @param[out] pt					tree for json output
+         * @param[in] element				element name of the subtree
+         *
+         * @return true if successful
+         */
+        bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element); const
+
+        /**
+         * Function to encode the structure data to a json tree format.
+         *
+         * @param[out] pt					tree for json output
+         *
+         * @return true if successful
+         */
         bool jsonEncode(boost::property_tree::ptree& pt) const;
+
+        /**
+         * Function to decode the json tree format to the structure data.
+         *
+         * @param[in] pt					tree for json output
+         * @param[in] element				element name of the subtree
+         *
+         * @return true if successful
+         */
         bool jsonDecode(const boost::property_tree::ptree& pt, const std::string& element);
+
+        /**
+         * Function to decode the json tree format to the structure data.
+         *
+         * @param[in] pt					tree for json output
+         *
+         * @return true if successful
+         */
         bool jsonDecode(const boost::property_tree::ptree& pt);
 
 	protected:
@@ -92,6 +125,11 @@ namespace OpcUaStackCore
         bool jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element) const;
         bool jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional);
         bool jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element);
+
+        bool jsonObjectEncode(boost::property_tree::ptree &pt, const JsonFormatter& valuePtr, const std::string &element, bool optional) const;
+        bool jsonObjectEncode(boost::property_tree::ptree &pt, const JsonFormatter& valuePtr, const std::string &element) const;
+        bool jsonObjectDecode(const boost::property_tree::ptree &pt, JsonFormatter& valuePtr, const std::string &element, bool optional);
+        bool jsonObjectDecode(const boost::property_tree::ptree &pt, JsonFormatter& valuePtr, const std::string &element);
     };
 
 

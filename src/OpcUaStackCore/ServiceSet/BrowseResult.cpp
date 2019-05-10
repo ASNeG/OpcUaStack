@@ -93,4 +93,24 @@ namespace OpcUaStackCore
 		continuationPoint_.opcUaBinaryDecode(is);
 		referenceArraySPtr_->opcUaBinaryDecode(is);
 	}
+
+    bool
+    BrowseResult::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+    {
+	    bool rc =  jsonNumberEncode(pt, statusCode_, "StatusCode");
+	    rc &= jsonObjectEncode(pt, continuationPoint_, "ContinuationPoint");
+	    referenceArraySPtr_->jsonEncode(pt, "References");
+        return rc;
+    }
+
+    bool
+    BrowseResult::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+    {
+        OpcUaUInt32 tmp;
+        bool rc =  jsonNumberDecode(pt, tmp, "StatusCode");
+        statusCode_ = (OpcUaStatusCode)tmp;
+        rc &= jsonObjectDecode(pt, continuationPoint_, "ContinuationPoint");
+        referenceArraySPtr_->jsonDecode(pt, "References");
+        return rc;
+    }
 }

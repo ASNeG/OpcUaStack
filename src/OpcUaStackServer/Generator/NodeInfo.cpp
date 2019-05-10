@@ -261,7 +261,7 @@ namespace OpcUaStackServer
 			Log(Error, "display name not found")
 			    .parameter("DataTypeNode", dataTypeNodeId_);
 		}
-		className_ = displayName->text();
+		className_ = displayName->text().value();
 		className_ = boost::to_upper_copy(className_.substr(0,1)) + className_.substr(1);
 
 		//
@@ -272,7 +272,7 @@ namespace OpcUaStackServer
 			Log(Error, "display name not found")
 			    .parameter("ParentDataTypeNode", parentDataTypeNodeId_);
 		}
-		parentClassName_ = parentDisplayName->text();
+		parentClassName_ = parentDisplayName->text().value();
 		parentClassName_ = boost::to_upper_copy(parentClassName_.substr(0,1)) + parentClassName_.substr(1);
 
 		//
