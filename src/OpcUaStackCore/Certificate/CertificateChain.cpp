@@ -73,6 +73,16 @@ namespace OpcUaStackCore
 	}
 
 	uint32_t
+	CertificateChain::certificateSize(void)
+	{
+		uint32_t size = 0;
+		for (auto certificate : certificateVec_) {
+			size += certificate->getDERBufSize();
+		}
+		return size;
+	}
+
+	uint32_t
 	CertificateChain::lastCertificateSize(void)
 	{
 		if (certificateVec_.size() == 0) {
