@@ -115,6 +115,30 @@ namespace OpcUaStackClient
 	};
 
 
+	class DLLEXPORT IssuedAuthentication
+	: public UserAuthentication
+	{
+	  public:
+		typedef boost::shared_ptr<UserNameAuthentication> SPtr;
+
+		IssuedAuthentication(
+			const std::string& policyId,
+			const std::string& tokenData,
+			const std::string& encryptionAlgorithm
+		);
+		~IssuedAuthentication(void);
+
+		std::string& tokenData(void);
+		std::string& encryptionAlgorithm(void);
+
+	  private:
+		IssuedAuthentication(void);
+
+		std::string tokenData_;
+		std::string encryptionAlgorithm_;
+	};
+
+
 	class DLLEXPORT SessionConfig
 	{
 	  public:

@@ -141,6 +141,43 @@ namespace OpcUaStackClient
 		return certificate_;
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// IssuedAuthentication
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	IssuedAuthentication::IssuedAuthentication(
+		const std::string& policyId,
+		const std::string& tokenData,
+		const std::string& encryptionAlgorithm
+	)
+	: UserAuthentication(UserAuthenticationType::Issued)
+	{
+		policyId_ = policyId;
+		tokenData_ = tokenData;
+		encryptionAlgorithm_ = encryptionAlgorithm;
+	}
+
+	IssuedAuthentication::~IssuedAuthentication(void)
+	{
+	}
+
+	std::string&
+	IssuedAuthentication::tokenData(void)
+	{
+		return tokenData_;
+	}
+
+	std::string&
+	IssuedAuthentication::encryptionAlgorithm(void)
+	{
+		return encryptionAlgorithm_;
+	}
+
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
