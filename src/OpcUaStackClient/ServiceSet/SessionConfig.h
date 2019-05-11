@@ -18,11 +18,38 @@
 #define __OpcUaStackClient_SessionConfig_h__
 
 #include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
+#include "OpcUaStackCore/Certificate/Certificate.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
+
+	enum class UserAuthenticationType
+	{
+		Anonymous,
+		UserName,
+		X509,
+		Issued
+	};
+
+	class DLLEXPORT UserAuthentication
+	{
+	  public:
+		typedef boost::shared_ptr<UserAuthentication> SPtr;
+
+		UserAuthentication(UserAuthenticationType userAuthenticationType);
+		virtual ~UserAuthentication(void);
+
+		UserAuthenticationType userAuthenticationType(void);
+		void policyId(const std::string& policyId);
+		std::string& policyId(void);
+
+	  private:
+		UserAuthenticationType userAuthenticationType_;
+		std::string policyId_;
+	};
+
 
 	class DLLEXPORT SessionConfig
 	{
@@ -46,6 +73,25 @@ namespace OpcUaStackClient
 		uint32_t maxResponseMessageSize(void);
 		void policyId(const std::string& policyId);
 		std::string& policyId(void);
+
+		void authenticationAnonymous(
+			const std::string& policyId
+		);
+		void authenticationUserName(
+			const std::string& policyId,
+			const std::string& userName,
+			const std::string& password,
+			const std::string& encryptionAlgorithm
+		);
+		void authenticationX509(
+			const std::string& policyId,
+			Certificate& certificate
+		);
+		void authenticationIssued(
+			const std::string& policyId,
+			const std::string& tokenData,
+			const std::string& encryptionAlgorithm
+		);
 
 
 	  //private:

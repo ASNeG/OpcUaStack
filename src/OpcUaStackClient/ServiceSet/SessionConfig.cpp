@@ -22,6 +22,48 @@
 namespace OpcUaStackClient
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	//  UserAuthentication
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	UserAuthentication::UserAuthentication(UserAuthenticationType userAuthenticationType)
+	: userAuthenticationType_(userAuthenticationType)
+	, policyId_("anonymous")
+	{
+	}
+
+	UserAuthentication::~UserAuthentication(void)
+	{
+	}
+
+	UserAuthenticationType
+	UserAuthentication::userAuthenticationType(void)
+	{
+		return userAuthenticationType_;
+	}
+
+	void
+	UserAuthentication::policyId(const std::string& policyId)
+	{
+		policyId_ = policyId;
+	}
+
+	std::string&
+	UserAuthentication::policyId(void)
+	{
+		return policyId_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SessionConfig
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	SessionConfig::SessionConfig(void)
 	: applicationDescription_(constructSPtr<ApplicationDescription>())
 	, sessionName_("urn:127.0.0.1:ASNeG.de:ASNeG-Client")
@@ -120,6 +162,44 @@ namespace OpcUaStackClient
 	SessionConfig::policyId(void)
 	{
 		return policyId_;
+	}
+
+	void
+	SessionConfig::authenticationAnonymous(
+		const std::string& policyId
+	)
+	{
+		// FIXME: todo
+	}
+
+	void
+	SessionConfig::authenticationUserName(
+		const std::string& policyId,
+		const std::string& userName,
+		const std::string& password,
+		const std::string& encryptionAlgorithm
+	)
+	{
+		// FIXME: todo
+	}
+
+	void
+	SessionConfig::authenticationX509(
+		const std::string& policyId,
+		Certificate& certificate
+	)
+	{
+		// FIXME: todo
+	}
+
+	void
+	SessionConfig::authenticationIssued(
+		const std::string& policyId,
+		const std::string& tokenData,
+		const std::string& encryptionAlgorithm
+	)
+	{
+		// FIXME :todo
 	}
 
 }
