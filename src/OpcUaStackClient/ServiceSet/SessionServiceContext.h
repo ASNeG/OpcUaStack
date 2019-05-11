@@ -106,7 +106,7 @@ namespace OpcUaStackClient
 			ActivateSessionRequest& activateSessionRequest,
 			const std::string& securityPolicyUri,
 			const std::string& policyId,
-			const std::string& certificateData,
+			const std::string& tokenData,
 			const std::string& encryptionAlgorithm
 		);
 

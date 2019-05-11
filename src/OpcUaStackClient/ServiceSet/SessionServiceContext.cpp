@@ -25,6 +25,7 @@
 #include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
 #include "OpcUaStackCore/StandardDataTypes/UserNameIdentityToken.h"
 #include "OpcUaStackCore/StandardDataTypes/X509IdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/IssuedIdentityToken.h"
 #include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 
@@ -588,13 +589,95 @@ namespace OpcUaStackClient
 		ActivateSessionRequest& activateSessionRequest,
 		const std::string& securityPolicyUri,
 		const std::string& policyId,
-		const std::string& certificateData,
+		const std::string& tokenData,
 		const std::string& encryptionAlgorithm
 	)
 	{
 		Log(Debug, "authentication issued")
 		    .parameter("SecurityPolicyUri", securityPolicyUri)
 		    .parameter("PolicyId", policyId);
+
+		// create issued identity token
+		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
+		auto issuedIdentityToken = activateSessionRequest.userIdentityToken()->parameter<IssuedIdentityToken>();
+		issuedIdentityToken->policyId() = OpcUaString(policyId);
+		issuedIdentityToken->tokenData() = OpcUaString(tokenData);
+		issuedIdentityToken->encryptionAlgorithm() = OpcUaString(encryptionAlgorithm);
+
+		if (issuedIdentityToken->encryptionAlgorithm() == OpcUaString("")) {
+			// we use a plain password
+			return Success;
+		}
+
+		// get cryption base and check cryption alg
+		auto cryptoBase = secureChannelClientConfig_->cryptoManager()->get(securityPolicyUri);
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", securityPolicyUri);
+			return BadIdentityTokenRejected;
+		}
+		auto securityPolicy = secureChannelClientConfig_->cryptoManager()->securityPolicy(securityPolicyUri);
+		if (securityPolicy == SecurityPolicy::EnumNone) {
+			// we use plain token data
+			return Success;
+		}
+
+		uint32_t encryptionAlg = EnryptionAlgs::uriToEncryptionAlg(encryptionAlgorithm);
+		if (encryptionAlg == 0) {
+			Log(Debug, "encryption alg invalid")
+				.parameter("EncryptionAlgorithm", encryptionAlgorithm);
+			return BadIdentityTokenRejected;;
+		}
+
+		// get public key from communication partner
+		auto& securitySettings = secureChannel_->securitySettings_;
+		if (securitySettings.partnerCertificateChain().empty()) {
+			Log(Debug, "partner certificate empty");
+			return BadIdentityTokenRejected;
+		}
+		auto publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
+
+		// create plain password buffer
+		MemoryBuffer plainText(tokenData.size() + 36);
+		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(plainText.memBuf(), plainText.memLen());
+		memcpy(plainText.memBuf() + 4, tokenData.c_str(), tokenData.length());
+		memcpy(plainText.memBuf() + 4 + tokenData.length(), securitySettings.partnerNonce().memBuf(), 32);
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		cryptoBase->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		asymmetricKeyLen /= 8;
+
+		// get plain and encrypted block lengths
+		uint32_t plainTextBlockSize = 0;
+		uint32_t cryptTextBlockSize = 0;
+		cryptoBase->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+
+		// calculate encrypted text length
+		uint32_t plainTextLen = plainText.memLen();
+		uint32_t rest = plainText.memLen() % plainTextBlockSize;
+		if (rest > 0) {
+			plainTextLen += (plainTextBlockSize - rest);
+		}
+		uint32_t encryptedTextLen = plainTextLen / plainTextBlockSize * cryptTextBlockSize;
+
+		// encrypt password
+		MemoryBuffer encryptedText(encryptedTextLen);
+		auto statusCode = cryptoBase->asymmetricEncrypt(
+			plainText.memBuf(),
+			plainText.memLen(),
+			publicKey,
+			encryptedText.memBuf(),
+			&encryptedTextLen
+		);
+		if (statusCode != Success) {
+			Log(Debug, "encrypt password error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadIdentityTokenRejected;
+		}
+
+		// set password
+		issuedIdentityToken->tokenData().value(encryptedText.memBuf(), encryptedText.memLen());
 
 		return Success;
 	}
