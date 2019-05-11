@@ -400,11 +400,68 @@ namespace OpcUaStackClient
 	}
 
 	OpcUaStatusCode
-	SessionServiceContext::authentication(ActivateSessionRequest& activateSessionRequest)
+	SessionServiceContext::authentication(
+		ActivateSessionRequest& activateSessionRequest)
 	{
-		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
-		auto anonymousIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
-		anonymousIdentityToken->policyId() = sessionConfig_->userAuthentication()->policyId();
+		auto securityPolicyUri = SecurityPolicy::enum2Str(secureChannelClientConfig_->securityPolicy());
+
+		auto userAuthentication = sessionConfig_->userAuthentication();
+		if (userAuthentication.get() == nullptr) {
+			return authenticationAnonymous(
+				activateSessionRequest,
+				securityPolicyUri,
+				"Anonymous"
+			);
+		}
+
+		switch (userAuthentication->userAuthenticationType())
+		{
+			case UserAuthenticationType::Anonymous:
+			{
+				return authenticationAnonymous(
+					activateSessionRequest,
+					securityPolicyUri,
+					userAuthentication->policyId()
+				);
+				break;
+			}
+			case UserAuthenticationType::UserName:
+			{
+				auto userNameAuthentication = boost::static_pointer_cast<UserNameAuthentication>(userAuthentication);
+				return authenticationUserName(
+					activateSessionRequest,
+					securityPolicyUri,
+					userAuthentication->policyId(),
+					userNameAuthentication->userName(),
+					userNameAuthentication->password(),
+					userNameAuthentication->encryptionAlgorithm()
+				);
+				break;
+			}
+			case UserAuthenticationType::Issued:
+			{
+				auto issuedAuthentication = boost::static_pointer_cast<IssuedAuthentication>(userAuthentication);
+				return authenticationIssued(
+					activateSessionRequest,
+					securityPolicyUri,
+					userAuthentication->policyId(),
+					issuedAuthentication->tokenData(),
+					issuedAuthentication->encryptionAlgorithm()
+				);
+				break;
+			}
+			case UserAuthenticationType::X509:
+			{
+				auto x509Authentication = boost::static_pointer_cast<X509Authentication>(userAuthentication);
+				return authenticationX509(
+					activateSessionRequest,
+					securityPolicyUri,
+					userAuthentication->policyId(),
+					*x509Authentication->certificate().get()
+				);
+				break;
+			}
+		}
 
 		return Success;
 	}
