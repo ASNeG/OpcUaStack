@@ -69,6 +69,78 @@ namespace OpcUaStackClient
 	{
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// UserNameAuthentication
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	UserNameAuthentication::UserNameAuthentication(
+		const std::string& policyId,
+		const std::string& userName,
+		const std::string& password,
+		const std::string& encryptionAlgorithm
+	)
+	: UserAuthentication(UserAuthenticationType::UserName)
+	{
+		policyId_ = policyId;
+		userName_ = userName;
+		password_ = password;
+		encryptionAlgorithm_ = encryptionAlgorithm;
+	}
+
+	UserNameAuthentication::~UserNameAuthentication(void)
+	{
+	}
+
+	std::string&
+	UserNameAuthentication::userName(void)
+	{
+		return userName_;
+	}
+
+	std::string&
+	UserNameAuthentication::password(void)
+	{
+		return password_;
+	}
+
+	std::string&
+	UserNameAuthentication::encryptionAlgorithm(void)
+	{
+		return encryptionAlgorithm_;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// X509Authentication
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	X509Authentication::X509Authentication(
+		const std::string& policyId,
+		Certificate::SPtr& certificate
+	)
+	: UserAuthentication(UserAuthenticationType::X509)
+	{
+		policyId_ = policyId;
+		certificate_ = certificate;
+	}
+
+	X509Authentication::~X509Authentication(void)
+	{
+	}
+
+	Certificate::SPtr&
+	X509Authentication::certificate(void)
+	{
+		return certificate_;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//

@@ -61,6 +61,57 @@ namespace OpcUaStackClient
 
 		AnonymousAuthentication(const std::string& policyId);
 		virtual ~AnonymousAuthentication(void);
+
+	  private:
+		 AnonymousAuthentication(void);
+	};
+
+
+	class DLLEXPORT UserNameAuthentication
+	: public UserAuthentication
+	{
+	  public:
+		typedef boost::shared_ptr<UserNameAuthentication> SPtr;
+
+		UserNameAuthentication(
+			const std::string& policyId,
+			const std::string& userName,
+			const std::string& password,
+			const std::string& encryptionAlgorithm
+		);
+		~UserNameAuthentication(void);
+
+		std::string& userName(void);
+		std::string& password(void);
+		std::string& encryptionAlgorithm(void);
+
+	  private:
+		UserNameAuthentication(void);
+
+		std::string userName_;
+		std::string password_;
+		std::string encryptionAlgorithm_;
+	};
+
+
+	class DLLEXPORT X509Authentication
+	: public UserAuthentication
+	{
+	  public:
+		typedef boost::shared_ptr<UserNameAuthentication> SPtr;
+
+		X509Authentication(
+			const std::string& policyId,
+			Certificate::SPtr& certificate
+		);
+		~X509Authentication(void);
+
+		Certificate::SPtr& certificate(void);
+
+	  private:
+		X509Authentication(void);
+
+		Certificate::SPtr certificate_;
 	};
 
 
