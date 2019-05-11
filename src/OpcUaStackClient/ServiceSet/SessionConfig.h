@@ -42,12 +42,25 @@ namespace OpcUaStackClient
 		virtual ~UserAuthentication(void);
 
 		UserAuthenticationType userAuthenticationType(void);
-		void policyId(const std::string& policyId);
 		std::string& policyId(void);
 
 	  private:
+		UserAuthentication(void);
+
+	  protected:
 		UserAuthenticationType userAuthenticationType_;
 		std::string policyId_;
+	};
+
+
+	class DLLEXPORT AnonymousAuthentication
+	: public UserAuthentication
+	{
+	  public:
+		typedef boost::shared_ptr<AnonymousAuthentication> SPtr;
+
+		AnonymousAuthentication(const std::string& policyId);
+		virtual ~AnonymousAuthentication(void);
 	};
 
 

@@ -45,16 +45,28 @@ namespace OpcUaStackClient
 		return userAuthenticationType_;
 	}
 
-	void
-	UserAuthentication::policyId(const std::string& policyId)
-	{
-		policyId_ = policyId;
-	}
-
 	std::string&
 	UserAuthentication::policyId(void)
 	{
 		return policyId_;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// AnonymousAuthentication
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	AnonymousAuthentication::AnonymousAuthentication(const std::string& policyId)
+	: UserAuthentication(UserAuthenticationType::Anonymous)
+	{
+		policyId_ = policyId;
+	}
+
+	AnonymousAuthentication::~AnonymousAuthentication(void)
+	{
 	}
 
 	// ------------------------------------------------------------------------
