@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
 #include "OpcUaStackCore/StandardDataTypes/UserNameIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/X509IdentityToken.h"
 #include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
 
@@ -415,6 +416,7 @@ namespace OpcUaStackClient
 	)
 	{
 		Log(Debug, "authentication anonymous")
+			.parameter("SecurityPolicyUri", securityPolicyUri)
 		    .parameter("PolicyId", policyId);
 
 		// create anonymous identity token
@@ -436,6 +438,7 @@ namespace OpcUaStackClient
 	)
 	{
 		Log(Debug, "authentication user name")
+			.parameter("SecurityPolicyUri", securityPolicyUri)
 		    .parameter("PolicyId", policyId)
 			.parameter("UserName", userName)
 			.parameter("EncyptionAlgorithmus", encryptionAlgorithm);
@@ -531,10 +534,52 @@ namespace OpcUaStackClient
 		ActivateSessionRequest& activateSessionRequest,
 		const std::string& securityPolicyUri,
 		const std::string& policyId,
-		const std::string& certificateData
+		Certificate& certificate
 	)
 	{
-		// FIXME: todo
+		Log(Debug, "authentication X509")
+		    .parameter("SecurityPolicyUri", securityPolicyUri)
+		    .parameter("PolicyId", policyId);
+
+		// get cryption base and check cryption alg
+		auto cryptoBase = secureChannelClientConfig_->cryptoManager()->get(securityPolicyUri);
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", securityPolicyUri);
+			return BadIdentityTokenRejected;
+		}
+
+		// get private key
+		auto privateKey = secureChannelClientConfig_->cryptoManager()->applicationCertificate()->privateKey();
+
+		// added certificate to x509 identity token
+		OpcUaByteString certificateText;
+		if (!certificate.toDERBuf(certificateText)) {
+			Log(Debug, "create certificate data error" );
+			return BadIdentityTokenRejected;
+		}
+
+		// create x509 identity token
+		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
+		auto x509IdentityToken = activateSessionRequest.userIdentityToken()->parameter<X509IdentityToken>();
+		x509IdentityToken->policyId() = OpcUaString(policyId);
+		x509IdentityToken->certificateData() = certificateText;
+
+		// create signature
+		MemoryBuffer certificateBuf(certificateText);
+		auto signatureData = activateSessionRequest.clientSignature();
+		auto statusCode = signatureData->createSignature(
+			certificateBuf,
+			*privateKey,
+			*cryptoBase
+		);
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "create signature error")
+				.parameter("SecurityPolicyUri", securityPolicyUri)
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadIdentityTokenRejected;
+		}
+
 		return Success;
 	}
 
@@ -547,7 +592,10 @@ namespace OpcUaStackClient
 		const std::string& encryptionAlgorithm
 	)
 	{
-		// FIXME: todo
+		Log(Debug, "authentication issued")
+		    .parameter("SecurityPolicyUri", securityPolicyUri)
+		    .parameter("PolicyId", policyId);
+
 		return Success;
 	}
 

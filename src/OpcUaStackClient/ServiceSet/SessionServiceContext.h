@@ -100,7 +100,7 @@ namespace OpcUaStackClient
 			ActivateSessionRequest& activateSessionRequest,
 			const std::string& securityPolicyUri,
 			const std::string& policyId,
-			const std::string& certificateData
+			Certificate& certificate
 		);
 		OpcUaStatusCode authenticationIssued(
 			ActivateSessionRequest& activateSessionRequest,
