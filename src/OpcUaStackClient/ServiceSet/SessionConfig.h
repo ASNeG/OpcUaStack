@@ -98,7 +98,7 @@ namespace OpcUaStackClient
 	: public UserAuthentication
 	{
 	  public:
-		typedef boost::shared_ptr<UserNameAuthentication> SPtr;
+		typedef boost::shared_ptr<X509Authentication> SPtr;
 
 		X509Authentication(
 			const std::string& policyId,
@@ -119,7 +119,7 @@ namespace OpcUaStackClient
 	: public UserAuthentication
 	{
 	  public:
-		typedef boost::shared_ptr<UserNameAuthentication> SPtr;
+		typedef boost::shared_ptr<IssuedAuthentication> SPtr;
 
 		IssuedAuthentication(
 			const std::string& policyId,
@@ -159,8 +159,7 @@ namespace OpcUaStackClient
 		uint32_t reconnectTimeout(void);
 		void maxResponseMessageSize(uint32_t maxResponseMessageSize);
 		uint32_t maxResponseMessageSize(void);
-		void policyId(const std::string& policyId);
-		std::string& policyId(void);
+		UserAuthentication::SPtr& userAuthentication(void);
 
 		void authenticationAnonymous(
 			const std::string& policyId
@@ -173,7 +172,7 @@ namespace OpcUaStackClient
 		);
 		void authenticationX509(
 			const std::string& policyId,
-			Certificate& certificate
+			Certificate::SPtr& certificate
 		);
 		void authenticationIssued(
 			const std::string& policyId,
@@ -182,14 +181,15 @@ namespace OpcUaStackClient
 		);
 
 
-	  //private:
+	  private:
 		ApplicationDescription::SPtr applicationDescription_;
 		std::string sessionName_;
 		uint32_t requestTimeout_;
 		uint32_t sessionTimeout_;
 		uint32_t reconnectTimeout_;
 		uint32_t maxResponseMessageSize_;
-		std::string policyId_;
+		UserAuthentication::SPtr userAuthentication_;
+
 
 	};
 

@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-
+#include <boost/make_shared.hpp>
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 
 
@@ -192,7 +192,7 @@ namespace OpcUaStackClient
 	, reconnectTimeout_(5000)
 	, maxResponseMessageSize_(16777216)
 	, requestTimeout_(3000)
-	, policyId_("anonymous")
+	, userAuthentication_(boost::make_shared<AnonymousAuthentication>("anonymous"))
 	{
 		applicationDescription_->applicationType().enumeration(ApplicationType::EnumClient);
 	}
@@ -273,16 +273,10 @@ namespace OpcUaStackClient
 		return maxResponseMessageSize_;
 	}
 
-	void
-	SessionConfig::policyId(const std::string& policyId)
+	UserAuthentication::SPtr&
+	SessionConfig::userAuthentication(void)
 	{
-		policyId_ = policyId;
-	}
-
-	std::string&
-	SessionConfig::policyId(void)
-	{
-		return policyId_;
+		return userAuthentication_;
 	}
 
 	void
@@ -290,7 +284,7 @@ namespace OpcUaStackClient
 		const std::string& policyId
 	)
 	{
-		// FIXME: todo
+		userAuthentication_ = boost::make_shared<AnonymousAuthentication>(policyId);
 	}
 
 	void
@@ -301,16 +295,24 @@ namespace OpcUaStackClient
 		const std::string& encryptionAlgorithm
 	)
 	{
-		// FIXME: todo
+		userAuthentication_ = boost::make_shared<UserNameAuthentication>(
+			policyId,
+			userName,
+			password,
+			encryptionAlgorithm
+		);
 	}
 
 	void
 	SessionConfig::authenticationX509(
 		const std::string& policyId,
-		Certificate& certificate
+		Certificate::SPtr& certificate
 	)
 	{
-		// FIXME: todo
+		userAuthentication_ = boost::make_shared<X509Authentication>(
+			policyId,
+			certificate
+		);
 	}
 
 	void
@@ -320,7 +322,11 @@ namespace OpcUaStackClient
 		const std::string& encryptionAlgorithm
 	)
 	{
-		// FIXME :todo
+		userAuthentication_ = boost::make_shared<IssuedAuthentication>(
+			policyId,
+			tokenData,
+			encryptionAlgorithm
+		);
 	}
 
 }

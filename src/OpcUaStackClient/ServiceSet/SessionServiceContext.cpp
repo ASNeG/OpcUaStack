@@ -109,12 +109,12 @@ namespace OpcUaStackClient
 		// create session request
 		CreateSessionRequest createSessionRequest;
 		createSessionRequest.requestHeader()->requestHandle(++requestHandle_);
-		createSessionRequest.clientDescription(sessionConfig_->applicationDescription_);
+		createSessionRequest.clientDescription(sessionConfig_->applicationDescription());
 		createSessionRequest.endpointUrl(secureChannelClientConfig_->endpointUrl());
-		createSessionRequest.sessionName(sessionConfig_->sessionName_);
+		createSessionRequest.sessionName(sessionConfig_->sessionName());
 		createSessionRequest.clientNonce((OpcUaStackCore::OpcUaByte*)"\000", 1);
-		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout_);
-		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize_);
+		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout());
+		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize());
 
 		// added client certificate chain and client nonce to create session request
 		if (!securitySettings.ownCertificateChain().empty()) {
@@ -132,7 +132,7 @@ namespace OpcUaStackClient
 		Log(Debug, "session send CreateSessionRequest")
 		    .parameter("SessId", id_)
 		    .parameter("RequestId", trx->requestId_)
-		    .parameter("SessionName", sessionConfig_->sessionName_);
+		    .parameter("SessionName", sessionConfig_->sessionName());
 		secureChannelClient_.asyncWriteMessageRequest(
 			secureChannel_,
 			trx
@@ -202,7 +202,7 @@ namespace OpcUaStackClient
 		Log(Debug, "session send ActivateSessionRequest")
 		 	.parameter("SessId", id_)
 			.parameter("RequestId", trx->requestId_)
-		    .parameter("SessionName", sessionConfig_->sessionName_)
+		    .parameter("SessionName", sessionConfig_->sessionName())
 		    .parameter("AuthenticationToken", authenticationToken_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel, trx);
 		return Success;
@@ -251,7 +251,7 @@ namespace OpcUaStackClient
 		Log(Debug, "session send CloseSessionRequest")
 			.parameter("SessId", id_)
 			.parameter("RequestId", trx->requestId_)
-			.parameter("SessionName", sessionConfig_->sessionName_)
+			.parameter("SessionName", sessionConfig_->sessionName())
 			.parameter("AuthenticationToken", authenticationToken_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, trx);
 		return Success;
@@ -276,7 +276,7 @@ namespace OpcUaStackClient
 		Log(Debug, "session send CancelRequest")
 			.parameter("SessId", id_)
 		    .parameter("RequestId", trx->requestId_)
-		    .parameter("SessionName", sessionConfig_->sessionName_)
+		    .parameter("SessionName", sessionConfig_->sessionName())
 		    .parameter("AuthenticationToken", authenticationToken_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, trx);
 
@@ -404,7 +404,7 @@ namespace OpcUaStackClient
 	{
 		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 		auto anonymousIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
-		anonymousIdentityToken->policyId() = sessionConfig_->policyId();
+		anonymousIdentityToken->policyId() = sessionConfig_->userAuthentication()->policyId();
 
 		return Success;
 	}

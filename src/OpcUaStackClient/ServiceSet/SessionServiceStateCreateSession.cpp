@@ -194,7 +194,7 @@ namespace OpcUaStackClient
 		Log(Debug, "session recv CreateSessionResponse")
 		    .parameter("SessId", ctx_->id_)
 		    .parameter("RequestId", trx->requestId_)
-		    .parameter("SessionName", sessionConfig->sessionName_)
+		    .parameter("SessionName", sessionConfig->sessionName())
 		    .parameter("AuthenticationToken", ctx_->authenticationToken_);
 
 		// send activate session request
