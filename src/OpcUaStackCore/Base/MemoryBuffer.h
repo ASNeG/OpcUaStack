@@ -56,6 +56,7 @@ namespace OpcUaStackCore
 		void set(const std::string& value);
 		void set(const char* value);
 		void set(const char* memBuf, uint32_t memLen);
+		void set(const OpcUaByteString& byteString);
 		void set(MemoryBuffer& memoryBuffer);
 		void set(boost::asio::streambuf& sb);
 		void set(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2);

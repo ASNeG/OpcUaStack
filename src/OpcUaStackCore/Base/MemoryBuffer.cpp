@@ -250,6 +250,17 @@ namespace OpcUaStackCore
 	}
 
 	void
+	MemoryBuffer::set(const OpcUaByteString& byteString)
+	{
+		clear();
+
+		memLen_ = byteString.size();
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
+		memcpy(memBuf_, const_cast<OpcUaByteString*>(&byteString)->memBuf(), memLen_);
+	}
+
+	void
 	MemoryBuffer::set(MemoryBuffer& memoryBuffer)
 	{
 		set(memoryBuffer.memBuf(), memoryBuffer.memLen());
