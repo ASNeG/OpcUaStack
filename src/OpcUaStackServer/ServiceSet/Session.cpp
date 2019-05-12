@@ -332,7 +332,7 @@ namespace OpcUaStackServer
 		plainTextLen = plainText.memLen();
 
 		auto privateKey = cryptoManager_->applicationCertificate()->privateKey();
-
+		cryptoBase->isLogging(true);
 		statusCode = cryptoBase->asymmetricDecrypt(
 			encryptedTextBuf,
 			encryptedTextLen,
@@ -341,7 +341,8 @@ namespace OpcUaStackServer
 			&plainTextLen
 		);
 		if (statusCode != Success) {
-			Log(Debug, "decrypt password error");
+			Log(Debug, "decrypt password error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 			return BadIdentityTokenRejected;;
 		}
 
@@ -783,8 +784,8 @@ namespace OpcUaStackServer
 		}
 
 		// check username and password
-		createServerNonce();
 		statusCode = authentication(activateSessionRequest);
+		createServerNonce();
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
