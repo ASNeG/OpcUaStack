@@ -16,6 +16,7 @@
  */
 
 #include <boost/make_shared.hpp>
+#include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
@@ -567,7 +568,11 @@ namespace OpcUaStackClient
 		uint32_t encryptedTextLen = plainTextLen / plainTextBlockSize * cryptTextBlockSize;
 
 		// encrypt password
+		std::cout << "PlainLen=" << password.size() + 36 << std::endl;
+		std::cout << "PlainLen=" << plainText.memLen() << std::endl;
+		std::cout << "EncryptLen=" << encryptedTextLen << std::endl;
 		MemoryBuffer encryptedText(encryptedTextLen);
+		cryptoBase->isLogging(true);
 		auto statusCode = cryptoBase->asymmetricEncrypt(
 			plainText.memBuf(),
 			plainText.memLen(),
