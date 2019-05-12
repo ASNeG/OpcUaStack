@@ -77,13 +77,15 @@ namespace OpcUaStackClient
 			const std::string& policyId,
 			const std::string& userName,
 			const std::string& password,
-			const std::string& encryptionAlgorithm
+			const std::string& encryptionAlgorithm,
+			const std::string& securityPolicyUri
 		);
 		~UserNameAuthentication(void);
 
 		std::string& userName(void);
 		std::string& password(void);
 		std::string& encryptionAlgorithm(void);
+		std::string& securityPolicyUri(void);
 
 	  private:
 		UserNameAuthentication(void);
@@ -91,6 +93,7 @@ namespace OpcUaStackClient
 		std::string userName_;
 		std::string password_;
 		std::string encryptionAlgorithm_;
+		std::string securityPolicyUri_;
 	};
 
 
@@ -168,7 +171,8 @@ namespace OpcUaStackClient
 			const std::string& policyId,
 			const std::string& userName,
 			const std::string& password,
-			const std::string& encryptionAlgorithm
+			const std::string& encryptionAlgorithm,
+			const std::string& securityPolicyUri
 		);
 		void authenticationX509(
 			const std::string& policyId,

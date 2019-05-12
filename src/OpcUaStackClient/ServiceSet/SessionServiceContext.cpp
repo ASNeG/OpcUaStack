@@ -431,7 +431,7 @@ namespace OpcUaStackClient
 				auto userNameAuthentication = boost::static_pointer_cast<UserNameAuthentication>(userAuthentication);
 				return authenticationUserName(
 					activateSessionRequest,
-					securityPolicyUri,
+					userNameAuthentication->securityPolicyUri(),
 					userAuthentication->policyId(),
 					userNameAuthentication->userName(),
 					userNameAuthentication->password(),

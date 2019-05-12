@@ -81,7 +81,8 @@ namespace OpcUaStackClient
 		const std::string& policyId,
 		const std::string& userName,
 		const std::string& password,
-		const std::string& encryptionAlgorithm
+		const std::string& encryptionAlgorithm,
+		const std::string& securityPolicyUri
 	)
 	: UserAuthentication(UserAuthenticationType::UserName)
 	{
@@ -89,6 +90,7 @@ namespace OpcUaStackClient
 		userName_ = userName;
 		password_ = password;
 		encryptionAlgorithm_ = encryptionAlgorithm;
+		securityPolicyUri_ = securityPolicyUri;
 	}
 
 	UserNameAuthentication::~UserNameAuthentication(void)
@@ -111,6 +113,12 @@ namespace OpcUaStackClient
 	UserNameAuthentication::encryptionAlgorithm(void)
 	{
 		return encryptionAlgorithm_;
+	}
+
+	std::string&
+	UserNameAuthentication::securityPolicyUri(void)
+	{
+		return securityPolicyUri_;
 	}
 
 
@@ -292,14 +300,16 @@ namespace OpcUaStackClient
 		const std::string& policyId,
 		const std::string& userName,
 		const std::string& password,
-		const std::string& encryptionAlgorithm
+		const std::string& encryptionAlgorithm,
+		const std::string& securityPolicyUri
 	)
 	{
 		userAuthentication_ = boost::make_shared<UserNameAuthentication>(
 			policyId,
 			userName,
 			password,
-			encryptionAlgorithm
+			encryptionAlgorithm,
+			securityPolicyUri
 		);
 	}
 
