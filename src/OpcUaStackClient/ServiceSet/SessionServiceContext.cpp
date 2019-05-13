@@ -161,6 +161,14 @@ namespace OpcUaStackClient
 		activateSessionRequest.localeIds()->resize(1);
 		activateSessionRequest.localeIds()->push_back(localeIdSPtr);
 
+		// create user identity token
+		auto statusCode = authentication(activateSessionRequest);
+		if (statusCode != Success) {
+			Log(Error, "create user identity token error")
+				.parameter("SessId", id_);
+			return statusCode;
+		}
+
 		// create client signature
 		auto certificate = securitySettings.ownCertificateChain().getCertificate();
 		auto partnerCertificate = securitySettings.partnerCertificateChain().getCertificate();
@@ -186,14 +194,6 @@ namespace OpcUaStackClient
 					.parameter("SessId", id_);
 				return statusCode;
 			}
-		}
-
-		// create user identity token
-		auto statusCode = authentication(activateSessionRequest);
-		if (statusCode != Success) {
-			Log(Error, "create user identity token error")
-				.parameter("SessId", id_);
-			return statusCode;
 		}
 
 		// encode activate session request
@@ -439,6 +439,17 @@ namespace OpcUaStackClient
 				);
 				break;
 			}
+			case UserAuthenticationType::X509:
+			{
+				auto x509Authentication = boost::static_pointer_cast<X509Authentication>(userAuthentication);
+				return authenticationX509(
+					activateSessionRequest,
+					x509Authentication->securityPolicyUri(),
+					userAuthentication->policyId(),
+					*x509Authentication->certificate().get()
+				);
+				break;
+			}
 			case UserAuthenticationType::Issued:
 			{
 				auto issuedAuthentication = boost::static_pointer_cast<IssuedAuthentication>(userAuthentication);
@@ -448,17 +459,6 @@ namespace OpcUaStackClient
 					userAuthentication->policyId(),
 					issuedAuthentication->tokenData(),
 					issuedAuthentication->encryptionAlgorithm()
-				);
-				break;
-			}
-			case UserAuthenticationType::X509:
-			{
-				auto x509Authentication = boost::static_pointer_cast<X509Authentication>(userAuthentication);
-				return authenticationX509(
-					activateSessionRequest,
-					securityPolicyUri,
-					userAuthentication->policyId(),
-					*x509Authentication->certificate().get()
 				);
 				break;
 			}
@@ -630,13 +630,13 @@ namespace OpcUaStackClient
 
 		// create signature
 		MemoryBuffer certificateBuf(certificateText);
-		auto signatureData = activateSessionRequest.clientSignature();
+		auto signatureData = activateSessionRequest.userTokenSignature();
 		auto statusCode = signatureData->createSignature(
 			certificateBuf,
 			*privateKey,
 			*cryptoBase
 		);
-		if (cryptoBase.get() == nullptr) {
+		if (statusCode != Success) {
 			Log(Debug, "create signature error")
 				.parameter("SecurityPolicyUri", securityPolicyUri)
 				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));

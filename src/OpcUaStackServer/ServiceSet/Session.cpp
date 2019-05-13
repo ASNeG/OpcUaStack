@@ -166,37 +166,31 @@ namespace OpcUaStackServer
 			return BadIdentityTokenInvalid;
 		}
 
-		else {
-			OpcUaExtensibleParameter::SPtr parameter = activateSessionRequest.userIdentityToken();
-			if (!parameter->exist()) {
-				// user identity token is invalid
-				Log(Error, "authentication error, because user identity token not exist");
-				return BadIdentityTokenInvalid;
-			}
-			else {
-				OpcUaNodeId typeId = parameter->parameterTypeId();
-				if (typeId == OpcUaNodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary)) {
-					return authenticationAnonymous(activateSessionRequest, parameter);
-				}
-				else if (typeId == OpcUaNodeId(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary)) {
-					return authenticationUserName(activateSessionRequest, parameter);
-				}
-				else if (typeId == OpcUaId_X509IdentityToken_Encoding_DefaultBinary) {
-					return authenticationX509(activateSessionRequest, parameter);
-				}
-				else if (typeId == OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary) {
-					return authenticationIssued(activateSessionRequest, parameter);
-				}
-				else {
-					// user identity token is invalid
-					Log(Error, "authentication error, because unknown authentication type")
-					    .parameter("AuthenticationType", typeId);
-					return BadIdentityTokenInvalid;
-				}
-			}
+		OpcUaExtensibleParameter::SPtr parameter = activateSessionRequest.userIdentityToken();
+		if (!parameter->exist()) {
+			// user identity token is invalid
+			Log(Error, "authentication error, because user identity token not exist");
+			return BadIdentityTokenInvalid;
 		}
 
-		return Success;
+		OpcUaNodeId typeId = parameter->parameterTypeId();
+		if (typeId == OpcUaNodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary)) {
+			return authenticationAnonymous(activateSessionRequest, parameter);
+		}
+		else if (typeId == OpcUaNodeId(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary)) {
+			return authenticationUserName(activateSessionRequest, parameter);
+		}
+		else if (typeId == OpcUaNodeId(OpcUaId_X509IdentityToken_Encoding_DefaultBinary)) {
+			return authenticationX509(activateSessionRequest, parameter);
+		}
+		else if (typeId == OpcUaNodeId(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary)) {
+			return authenticationIssued(activateSessionRequest, parameter);
+		}
+
+		// user identity token is invalid
+		Log(Error, "authentication error, because unknown authentication type")
+			.parameter("AuthenticationType", typeId);
+		return BadIdentityTokenInvalid;
 	}
 
 	OpcUaStatusCode
@@ -409,7 +403,8 @@ namespace OpcUaStackServer
 		Log(Debug, "authentication x509")
 		    .parameter("PolicyId", token->policyId())
 			.parameter("CertificateData", token->certificateData())
-			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
+			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
+			.parameter("SignaturAlgorithm", userTokenSignature->algorithm());
 
 		// get cryption base and check cryption alg
 		CryptoBase::SPtr cryptoBase = cryptoManager_->get(userTokenPolicy->securityPolicyUri());
@@ -434,8 +429,6 @@ namespace OpcUaStackServer
 			return BadIdentityTokenRejected;;
 		}
 		PublicKey publicKey = certificate.publicKey();
-
-		// FIXME: certificate must be trusted ...
 
 		// validate signature
 		statusCode = userTokenSignature->verifySignature(

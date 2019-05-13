@@ -131,12 +131,14 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	X509Authentication::X509Authentication(
 		const std::string& policyId,
-		Certificate::SPtr& certificate
+		Certificate::SPtr& certificate,
+		const std::string& securityPolicyUri
 	)
 	: UserAuthentication(UserAuthenticationType::X509)
 	{
 		policyId_ = policyId;
 		certificate_ = certificate;
+		securityPolicyUri_ = securityPolicyUri;
 	}
 
 	X509Authentication::~X509Authentication(void)
@@ -147,6 +149,12 @@ namespace OpcUaStackClient
 	X509Authentication::certificate(void)
 	{
 		return certificate_;
+	}
+
+	std::string&
+	X509Authentication::securityPolicyUri(void)
+	{
+		return securityPolicyUri_;
 	}
 
 
@@ -316,12 +324,14 @@ namespace OpcUaStackClient
 	void
 	SessionConfig::authenticationX509(
 		const std::string& policyId,
-		Certificate::SPtr& certificate
+		Certificate::SPtr& certificate,
+		const std::string& securityPolicyUri
 	)
 	{
 		userAuthentication_ = boost::make_shared<X509Authentication>(
 			policyId,
-			certificate
+			certificate,
+			securityPolicyUri
 		);
 	}
 
