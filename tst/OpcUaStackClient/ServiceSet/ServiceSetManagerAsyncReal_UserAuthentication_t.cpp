@@ -155,8 +155,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_
 		"OpcUaStack2",
 		"user1",
 		"password1",
-		"http://opcfoundation.org/UA/SecurityPolicy#Basic256",
-		"http://www.w3.org/2001/04/xmlenc#rsa-oaep"
+		"http://opcfoundation.org/UA/SecurityPolicy#Basic256"
 	);
 	sessionServiceConfig.sessionServiceChangeHandler_ =
 		[this] (SessionBase& session, SessionServiceStateId sessionState) {
@@ -211,8 +210,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_
 		"OpcUaStack3",
 		"user1",
 		"password1",
-		"http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15",
-		"http://www.w3.org/2001/04/xmlenc#rsa-oaep"
+		"http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15"
 	);
 	sessionServiceConfig.sessionServiceChangeHandler_ =
 		[this] (SessionBase& session, SessionServiceStateId sessionState) {
@@ -382,8 +380,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_
 	sessionServiceConfig.session_->authenticationIssued(
 		"OpcUaStack4",
 		"Token Data",
-		"http://opcfoundation.org/UA/SecurityPolicy#Basic256",
-		"http://www.w3.org/2001/04/xmlenc#rsa-oaep"
+		"http://opcfoundation.org/UA/SecurityPolicy#Basic256"
 	);
 	sessionServiceConfig.sessionServiceChangeHandler_ =
 		[this] (SessionBase& session, SessionServiceStateId sessionState) {
@@ -437,8 +434,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_
 	sessionServiceConfig.session_->authenticationIssued(
 		"OpcUaStack5",
 		"Token Data",
-		"http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15",
-		"http://www.w3.org/2001/04/xmlenc#rsa-oaep"
+		"http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15"
 	);
 	sessionServiceConfig.sessionServiceChangeHandler_ =
 		[this] (SessionBase& session, SessionServiceStateId sessionState) {

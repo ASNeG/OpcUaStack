@@ -181,7 +181,7 @@ namespace OpcUaStackClient
 			const std::string& userName,
 			const std::string& password,
 			const std::string& securityPolicyUri,
-			const std::string& encryptionAlgorithm
+			const std::string& encryptionAlgorithm = "http://www.w3.org/2001/04/xmlenc#rsa-oaep"
 		);
 		void authenticationX509(
 			const std::string& policyId,
@@ -193,7 +193,7 @@ namespace OpcUaStackClient
 			const std::string& policyId,
 			const std::string& tokenData,
 			const std::string& securityPolicyUri,
-			const std::string& encryptionAlgorithm
+			const std::string& encryptionAlgorithm = "http://www.w3.org/2001/04/xmlenc#rsa-oaep"
 		);
 
 
