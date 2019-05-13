@@ -46,6 +46,7 @@ namespace OpcUaStackClient
 		assert(ctx_->sessionService_ != nullptr);
 
 		// set session service mode
+		ctx_->secureChannelClientConfigBackup_ = ctx_->secureChannelClientConfig_;
 		ctx_->setSessionServiceMode();
 
 		auto clientConfig = ctx_->secureChannelClientConfig_;

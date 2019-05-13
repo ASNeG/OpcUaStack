@@ -372,10 +372,75 @@ namespace OpcUaStackClient
 				continue;
 			}
 
+			// check user identity token
+			if (!selectUserIdentityTokenFromCache(endpointDescription)) {
+				continue;
+			}
+
+			Log(Debug, "use cache entry");
 			return endpointDescription;
 		}
 
 		return nullptr;
+	}
+
+	bool
+	SessionServiceContext::selectUserIdentityTokenFromCache(
+		EndpointDescription::SPtr& endpointDescription
+	)
+	{
+		for (uint32_t idx = 0; idx < endpointDescription->userIdentityTokens().size(); idx++) {
+			UserTokenPolicy::SPtr userTokenPolicy;
+			endpointDescription->userIdentityTokens().get(idx, userTokenPolicy);
+
+			switch (sessionConfig_->userAuthentication()->userAuthenticationType())
+			{
+				case UserAuthenticationType::Anonymous:
+				{
+					auto userToken = boost::static_pointer_cast<AnonymousAuthentication>(sessionConfig_->userAuthentication());
+					if (userTokenPolicy->tokenType() == UserTokenType::EnumAnonymous) {
+						userToken->policyId() = userTokenPolicy->policyId().toStdString();
+						return true;
+					}
+					break;
+				}
+				case UserAuthenticationType::UserName:
+				{
+					if (userTokenPolicy->tokenType() == UserTokenType::EnumUserName) {
+						auto userToken = boost::static_pointer_cast<UserNameAuthentication>(sessionConfig_->userAuthentication());
+						if (userTokenPolicy->securityPolicyUri() == userToken->securityPolicyUri()) {
+							userToken->policyId() = userTokenPolicy->policyId().toStdString();
+							return true;
+						}
+					}
+					break;
+				}
+				case UserAuthenticationType::X509:
+				{
+					if (userTokenPolicy->tokenType() == UserTokenType::EnumCertificate) {
+						auto userToken = boost::static_pointer_cast<X509Authentication>(sessionConfig_->userAuthentication());
+						if (userTokenPolicy->securityPolicyUri() == userToken->securityPolicyUri()) {
+							userToken->policyId() = userTokenPolicy->policyId().toStdString();
+							return true;
+						}
+					}
+					break;
+				}
+				case UserAuthenticationType::Issued:
+				{
+					if (userTokenPolicy->tokenType() == UserTokenType::EnumIssuedToken) {
+						auto userToken = boost::static_pointer_cast<IssuedAuthentication>(sessionConfig_->userAuthentication());
+						if (userTokenPolicy->securityPolicyUri() == userToken->securityPolicyUri()) {
+							userToken->policyId() = userTokenPolicy->policyId().toStdString();
+							return true;
+						}
+					}
+					break;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	bool
@@ -526,6 +591,8 @@ namespace OpcUaStackClient
 		auto securityPolicy = secureChannelClientConfig_->cryptoManager()->securityPolicy(securityPolicyUri);
 		if (securityPolicy == SecurityPolicy::EnumNone) {
 			// we use a plain password
+
+			userIdentityToken->encryptionAlgorithm() = "";
 			return Success;
 		}
 

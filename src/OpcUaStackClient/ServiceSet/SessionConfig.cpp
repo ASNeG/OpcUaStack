@@ -320,6 +320,12 @@ namespace OpcUaStackClient
 	}
 
 	void
+	SessionConfig::authenticationAnonymous(void)
+	{
+		authenticationAnonymous("");
+	}
+
+	void
 	SessionConfig::authenticationUserName(
 		const std::string& policyId,
 		const std::string& userName,
@@ -334,6 +340,22 @@ namespace OpcUaStackClient
 			password,
 			encryptionAlgorithm,
 			securityPolicyUri
+		);
+	}
+
+	void
+	SessionConfig::authenticationUserName(
+		const std::string& userName,
+		const std::string& password,
+		const std::string& securityPolicyUri
+	)
+	{
+		authenticationUserName(
+			"",
+			userName,
+			password,
+			securityPolicyUri,
+			"http://www.w3.org/2001/04/xmlenc#rsa-oaep"
 		);
 	}
 
@@ -354,6 +376,21 @@ namespace OpcUaStackClient
 	}
 
 	void
+	SessionConfig::authenticationX509(
+		Certificate::SPtr& certificate,
+		PrivateKey::SPtr& privateKey,
+		const std::string& securityPolicyUri
+	)
+	{
+		userAuthentication_ = boost::make_shared<X509Authentication>(
+			"",
+			certificate,
+			privateKey,
+			securityPolicyUri
+		);
+	}
+
+	void
 	SessionConfig::authenticationIssued(
 		const std::string& policyId,
 		const std::string& tokenData,
@@ -365,6 +402,20 @@ namespace OpcUaStackClient
 			policyId,
 			tokenData,
 			encryptionAlgorithm,
+			securityPolicyUri
+		);
+	}
+
+	void
+	SessionConfig::authenticationIssued(
+		const std::string& tokenData,
+		const std::string& securityPolicyUri
+	)
+	{
+		userAuthentication_ = boost::make_shared<IssuedAuthentication>(
+			"",
+			tokenData,
+			"http://www.w3.org/2001/04/xmlenc#rsa-oaep",
 			securityPolicyUri
 		);
 	}

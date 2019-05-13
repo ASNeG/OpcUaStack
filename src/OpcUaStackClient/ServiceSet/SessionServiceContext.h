@@ -76,6 +76,9 @@ namespace OpcUaStackClient
 		EndpointDescription::SPtr selectEndpointDescriptionFromCache(
 			EndpointDescriptionArray::SPtr& endpointDescriptions
 		);
+		bool selectUserIdentityTokenFromCache(
+			EndpointDescription::SPtr& endpointDescription
+		);
 		bool checkEndpoint(
 			EndpointDescription::SPtr& endpointDescription
 		);

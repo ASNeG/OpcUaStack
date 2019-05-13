@@ -176,6 +176,8 @@ namespace OpcUaStackClient
 		void authenticationAnonymous(
 			const std::string& policyId
 		);
+		void authenticationAnonymous(void);
+
 		void authenticationUserName(
 			const std::string& policyId,
 			const std::string& userName,
@@ -183,17 +185,33 @@ namespace OpcUaStackClient
 			const std::string& securityPolicyUri,
 			const std::string& encryptionAlgorithm = "http://www.w3.org/2001/04/xmlenc#rsa-oaep"
 		);
+		void authenticationUserName(
+			const std::string& userName,
+			const std::string& password,
+			const std::string& securityPolicyUri
+		);
+
 		void authenticationX509(
 			const std::string& policyId,
 			Certificate::SPtr& certificate,
 			PrivateKey::SPtr& privateKey,
 			const std::string& securityPolicyUri
 		);
+		void authenticationX509(
+			Certificate::SPtr& certificate,
+			PrivateKey::SPtr& privateKey,
+			const std::string& securityPolicyUri
+		);
+
 		void authenticationIssued(
 			const std::string& policyId,
 			const std::string& tokenData,
 			const std::string& securityPolicyUri,
 			const std::string& encryptionAlgorithm = "http://www.w3.org/2001/04/xmlenc#rsa-oaep"
+		);
+		void authenticationIssued(
+			const std::string& tokenData,
+			const std::string& securityPolicyUri
 		);
 
 
