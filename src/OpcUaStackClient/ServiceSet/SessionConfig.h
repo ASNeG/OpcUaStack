@@ -106,17 +106,20 @@ namespace OpcUaStackClient
 		X509Authentication(
 			const std::string& policyId,
 			Certificate::SPtr& certificate,
+			PrivateKey::SPtr& provateKey,
 			const std::string& securityPolicyUri
 		);
 		~X509Authentication(void);
 
 		Certificate::SPtr& certificate(void);
+		PrivateKey::SPtr& privateKey(void);
 		std::string& securityPolicyUri(void);
 
 	  private:
 		X509Authentication(void);
 
 		Certificate::SPtr certificate_;
+		PrivateKey::SPtr privateKey_;
 		std::string securityPolicyUri_;
 	};
 
@@ -183,6 +186,7 @@ namespace OpcUaStackClient
 		void authenticationX509(
 			const std::string& policyId,
 			Certificate::SPtr& certificate,
+			PrivateKey::SPtr& privateKey,
 			const std::string& securityPolicyUri
 		);
 		void authenticationIssued(

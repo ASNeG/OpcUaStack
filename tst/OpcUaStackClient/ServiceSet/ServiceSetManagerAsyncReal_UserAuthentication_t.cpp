@@ -256,6 +256,8 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_
 
 	// set secure channel configuration
 	auto certificate = cryptoManager->applicationCertificate()->certificateChain().getCertificate();
+	auto privateKey = cryptoManager->applicationCertificate()->privateKey();
+
 	std::string applicationUri = std::string("urn:") + CryptoManagerTest::getServerHostName() + std::string(":ASNeG:ASNeG-Demo");
 	SessionServiceConfig sessionServiceConfig;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
@@ -267,6 +269,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_
 	sessionServiceConfig.session_->authenticationX509(
 		"OpcUaStack6",
 		certificate,
+		privateKey,
 		"http://opcfoundation.org/UA/SecurityPolicy#Basic256"
 	);
 	sessionServiceConfig.sessionServiceChangeHandler_ =
@@ -311,6 +314,8 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_
 
 	// set secure channel configuration
 	auto certificate = cryptoManager->applicationCertificate()->certificateChain().getCertificate();
+	auto privateKey = cryptoManager->applicationCertificate()->privateKey();
+
 	std::string applicationUri = std::string("urn:") + CryptoManagerTest::getServerHostName() + std::string(":ASNeG:ASNeG-Demo");
 	SessionServiceConfig sessionServiceConfig;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
@@ -322,6 +327,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_
 	sessionServiceConfig.session_->authenticationX509(
 		"OpcUaStack7",
 		certificate,
+		privateKey,
 		"http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15"
 	);
 	sessionServiceConfig.sessionServiceChangeHandler_ =

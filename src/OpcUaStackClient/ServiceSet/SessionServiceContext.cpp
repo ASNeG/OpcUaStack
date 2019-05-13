@@ -446,7 +446,8 @@ namespace OpcUaStackClient
 					activateSessionRequest,
 					x509Authentication->securityPolicyUri(),
 					userAuthentication->policyId(),
-					*x509Authentication->certificate().get()
+					*x509Authentication->certificate().get(),
+					*x509Authentication->privateKey().get()
 				);
 				break;
 			}
@@ -594,7 +595,8 @@ namespace OpcUaStackClient
 		ActivateSessionRequest& activateSessionRequest,
 		const std::string& securityPolicyUri,
 		const std::string& policyId,
-		Certificate& certificate
+		Certificate& certificate,
+		PrivateKey& privateKey
 	)
 	{
 		Log(Debug, "authentication X509")
@@ -608,9 +610,6 @@ namespace OpcUaStackClient
 				.parameter("SecurityPolicyUri", securityPolicyUri);
 			return BadIdentityTokenRejected;
 		}
-
-		// get private key
-		auto privateKey = secureChannelClientConfig_->cryptoManager()->applicationCertificate()->privateKey();
 
 		// added certificate to x509 identity token
 		OpcUaByteString certificateText;
@@ -630,7 +629,7 @@ namespace OpcUaStackClient
 		auto signatureData = activateSessionRequest.userTokenSignature();
 		auto statusCode = signatureData->createSignature(
 			certificateBuf,
-			*privateKey,
+			privateKey,
 			*cryptoBase
 		);
 		if (statusCode != Success) {
