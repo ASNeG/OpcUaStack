@@ -168,13 +168,15 @@ namespace OpcUaStackClient
 	IssuedAuthentication::IssuedAuthentication(
 		const std::string& policyId,
 		const std::string& tokenData,
-		const std::string& encryptionAlgorithm
+		const std::string& encryptionAlgorithm,
+		const std::string& securityPolicyUri
 	)
 	: UserAuthentication(UserAuthenticationType::Issued)
 	{
 		policyId_ = policyId;
 		tokenData_ = tokenData;
 		encryptionAlgorithm_ = encryptionAlgorithm;
+		securityPolicyUri_ = securityPolicyUri;
 	}
 
 	IssuedAuthentication::~IssuedAuthentication(void)
@@ -191,6 +193,12 @@ namespace OpcUaStackClient
 	IssuedAuthentication::encryptionAlgorithm(void)
 	{
 		return encryptionAlgorithm_;
+	}
+
+	std::string&
+	IssuedAuthentication::securityPolicyUri(void)
+	{
+		return securityPolicyUri_;
 	}
 
 
@@ -339,13 +347,15 @@ namespace OpcUaStackClient
 	SessionConfig::authenticationIssued(
 		const std::string& policyId,
 		const std::string& tokenData,
-		const std::string& encryptionAlgorithm
+		const std::string& encryptionAlgorithm,
+		const std::string& securityPolicyUri
 	)
 	{
 		userAuthentication_ = boost::make_shared<IssuedAuthentication>(
 			policyId,
 			tokenData,
-			encryptionAlgorithm
+			encryptionAlgorithm,
+			securityPolicyUri
 		);
 	}
 

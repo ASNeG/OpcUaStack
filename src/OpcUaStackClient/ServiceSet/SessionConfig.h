@@ -130,18 +130,21 @@ namespace OpcUaStackClient
 		IssuedAuthentication(
 			const std::string& policyId,
 			const std::string& tokenData,
-			const std::string& encryptionAlgorithm
+			const std::string& encryptionAlgorithm,
+			const std::string& securityPolicyUri
 		);
 		~IssuedAuthentication(void);
 
 		std::string& tokenData(void);
 		std::string& encryptionAlgorithm(void);
+		std::string& securityPolicyUri(void);
 
 	  private:
 		IssuedAuthentication(void);
 
 		std::string tokenData_;
 		std::string encryptionAlgorithm_;
+		std::string securityPolicyUri_;
 	};
 
 
@@ -185,7 +188,8 @@ namespace OpcUaStackClient
 		void authenticationIssued(
 			const std::string& policyId,
 			const std::string& tokenData,
-			const std::string& encryptionAlgorithm
+			const std::string& encryptionAlgorithm,
+			const std::string& securityPolicyUri
 		);
 
 

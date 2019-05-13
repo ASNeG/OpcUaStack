@@ -4,6 +4,7 @@
 
 using namespace OpcUaStackClient;
 
+#if 1
 #ifdef REAL_SERVER
 
 BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_UserAuthentication_)
@@ -241,7 +242,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_
 }
 
 //
-// user name authentication with certificate (Basic256)
+// x509 authentication with certificate (Basic256)
 //
 BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_certificate_basic256, GValueFixture)
 {
@@ -295,7 +296,173 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
+//
+// x509 authentication with certificate (Basic128Rsa15)
+//
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_certificate_basic128rsa15, GValueFixture)
+{
+	ServiceSetManager serviceSetManager;
+
+	//
+	// init certificate and crypto manager
+	//
+	auto cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+
+	// set secure channel configuration
+	auto certificate = cryptoManager->applicationCertificate()->certificateChain().getCertificate();
+	std::string applicationUri = std::string("urn:") + CryptoManagerTest::getServerHostName() + std::string(":ASNeG:ASNeG-Demo");
+	SessionServiceConfig sessionServiceConfig;
+	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.secureChannelClient_->applicationUri(applicationUri);
+	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
+	sessionServiceConfig.secureChannelClient_->securityMode(MessageSecurityMode::EnumSignAndEncrypt);
+	sessionServiceConfig.secureChannelClient_->securityPolicy(SecurityPolicy::EnumBasic256);
+	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.session_->authenticationX509(
+		"OpcUaStack7",
+		certificate,
+		"http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15"
+	);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
+
+	// create session
+	SessionService::SPtr sessionService;
+	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	BOOST_REQUIRE(sessionService.get() != nullptr);
+
+	// connect session
+	cond_.condition(1,0);
+	sessionService->asyncConnect();
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+
+	// disconnect session
+	cond_.condition(1,0);
+	sessionService->asyncDisconnect();
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+}
+
+//
+// issued authentication with encrypted password (Basic256)
+//
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_issued_basic256, GValueFixture)
+{
+	ServiceSetManager serviceSetManager;
+
+	//
+	// init certificate and crypto manager
+	//
+	auto cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+
+	// set secure channel configuration
+	std::string applicationUri = std::string("urn:") + CryptoManagerTest::getServerHostName() + std::string(":ASNeG:ASNeG-Demo");
+	SessionServiceConfig sessionServiceConfig;
+	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.secureChannelClient_->applicationUri(applicationUri);
+	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
+	sessionServiceConfig.secureChannelClient_->securityMode(MessageSecurityMode::EnumSignAndEncrypt);
+	sessionServiceConfig.secureChannelClient_->securityPolicy(SecurityPolicy::EnumBasic256);
+	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.session_->authenticationIssued(
+		"OpcUaStack4",
+		"Token Data",
+		"http://www.w3.org/2001/04/xmlenc#rsa-oaep",
+		"http://opcfoundation.org/UA/SecurityPolicy#Basic256"
+	);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
+
+	// create session
+	SessionService::SPtr sessionService;
+	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	BOOST_REQUIRE(sessionService.get() != nullptr);
+
+	// connect session
+	cond_.condition(1,0);
+	sessionService->asyncConnect();
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+
+	// disconnect session
+	cond_.condition(1,0);
+	sessionService->asyncDisconnect();
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+}
+
+//
+// issued authentication with encrypted password (Basic128Rsa15)
+//
+BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_UserAuthentication_user_auth_issued_basic128rsa15, GValueFixture)
+{
+	ServiceSetManager serviceSetManager;
+
+	//
+	// init certificate and crypto manager
+	//
+	auto cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+
+	// set secure channel configuration
+	std::string applicationUri = std::string("urn:") + CryptoManagerTest::getServerHostName() + std::string(":ASNeG:ASNeG-Demo");
+	SessionServiceConfig sessionServiceConfig;
+	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.secureChannelClient_->applicationUri(applicationUri);
+	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
+	sessionServiceConfig.secureChannelClient_->securityMode(MessageSecurityMode::EnumSignAndEncrypt);
+	sessionServiceConfig.secureChannelClient_->securityPolicy(SecurityPolicy::EnumBasic256);
+	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.session_->authenticationIssued(
+		"OpcUaStack5",
+		"Token Data",
+		"http://www.w3.org/2001/04/xmlenc#rsa-oaep",
+		"http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15"
+	);
+	sessionServiceConfig.sessionServiceChangeHandler_ =
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		};
+
+	// create session
+	SessionService::SPtr sessionService;
+	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	BOOST_REQUIRE(sessionService.get() != nullptr);
+
+	// connect session
+	cond_.condition(1,0);
+	sessionService->asyncConnect();
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+
+	// disconnect session
+	cond_.condition(1,0);
+	sessionService->asyncDisconnect();
+	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 
+#endif
 #endif

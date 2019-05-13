@@ -455,7 +455,7 @@ namespace OpcUaStackClient
 				auto issuedAuthentication = boost::static_pointer_cast<IssuedAuthentication>(userAuthentication);
 				return authenticationIssued(
 					activateSessionRequest,
-					securityPolicyUri,
+					issuedAuthentication->securityPolicyUri(),
 					userAuthentication->policyId(),
 					issuedAuthentication->tokenData(),
 					issuedAuthentication->encryptionAlgorithm()
@@ -568,9 +568,6 @@ namespace OpcUaStackClient
 		uint32_t encryptedTextLen = plainTextLen / plainTextBlockSize * cryptTextBlockSize;
 
 		// encrypt password
-		std::cout << "PlainLen=" << password.size() + 36 << std::endl;
-		std::cout << "PlainLen=" << plainText.memLen() << std::endl;
-		std::cout << "EncryptLen=" << encryptedTextLen << std::endl;
 		MemoryBuffer encryptedText(encryptedTextLen);
 		cryptoBase->isLogging(true);
 		auto statusCode = cryptoBase->asymmetricEncrypt(
@@ -657,7 +654,8 @@ namespace OpcUaStackClient
 	{
 		Log(Debug, "authentication issued")
 		    .parameter("SecurityPolicyUri", securityPolicyUri)
-		    .parameter("PolicyId", policyId);
+		    .parameter("PolicyId", policyId)
+			.parameter("EncyptionAlgorithmus", encryptionAlgorithm);
 
 		// create issued identity token
 		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
