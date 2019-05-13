@@ -242,6 +242,10 @@ namespace OpcUaStackServer
 		if (context.statusCode_ == Success) {
 			userContext_ = context.userContext_;
 		}
+		else {
+			Log(Error, "authentication error in application")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(context.statusCode_));
+		}
 
 		return context.statusCode_;
 	}
@@ -290,6 +294,10 @@ namespace OpcUaStackServer
 
 			if (context.statusCode_ == Success) {
 				userContext_ = context.userContext_;
+			}
+			else {
+				Log(Error, "authentication error in application")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(context.statusCode_));
 			}
 
 			return context.statusCode_;
@@ -450,6 +458,10 @@ namespace OpcUaStackServer
 		if (context.statusCode_ == Success) {
 			userContext_ = context.userContext_;
 		}
+		else {
+			Log(Error, "authentication error in application")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(context.statusCode_));
+		}
 
 		return context.statusCode_;
 	}
@@ -543,6 +555,10 @@ namespace OpcUaStackServer
 
 		if (context.statusCode_ == Success) {
 			userContext_ = context.userContext_;
+		}
+		else {
+			Log(Error, "authentication error in application")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(context.statusCode_));
 		}
 
 		return context.statusCode_;
