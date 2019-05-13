@@ -177,8 +177,8 @@ namespace OpcUaStackClient
 			const std::string& policyId,
 			const std::string& userName,
 			const std::string& password,
-			const std::string& encryptionAlgorithm,
-			const std::string& securityPolicyUri
+			const std::string& securityPolicyUri,
+			const std::string& encryptionAlgorithm
 		);
 		void authenticationX509(
 			const std::string& policyId,
@@ -188,8 +188,8 @@ namespace OpcUaStackClient
 		void authenticationIssued(
 			const std::string& policyId,
 			const std::string& tokenData,
-			const std::string& encryptionAlgorithm,
-			const std::string& securityPolicyUri
+			const std::string& securityPolicyUri,
+			const std::string& encryptionAlgorithm
 		);
 
 
