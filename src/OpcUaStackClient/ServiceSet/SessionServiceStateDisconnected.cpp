@@ -45,17 +45,17 @@ namespace OpcUaStackClient
 		assert(ctx_->secureChannelClientConfig_.get() != nullptr);
 		assert(ctx_->sessionService_ != nullptr);
 
+		Log(Debug, "async connect event")
+			.parameter("SessId", ctx_->id_);
+
 		// set session service mode
-		ctx_->secureChannelClientConfigBackup_ = ctx_->secureChannelClientConfig_;
+		//ctx_->secureChannelClientConfigBackup_ = ctx_->secureChannelClientConfig_;
 		ctx_->setSessionServiceMode();
 
 		auto clientConfig = ctx_->secureChannelClientConfig_;
 		auto& secureChannelClient = ctx_->secureChannelClient_;
 		auto secureChannel = ctx_->secureChannel_;
 		auto sessionService = ctx_->sessionService_;
-
-		Log(Debug, "async connect event")
-			.parameter("SessId", ctx_->id_);
 
 		// FIXME: workaround - begin, if endpoint address is 0.0.0.0
 		Url url(clientConfig->endpointUrl());

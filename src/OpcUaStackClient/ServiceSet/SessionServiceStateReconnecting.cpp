@@ -85,12 +85,12 @@ namespace OpcUaStackClient
 		assert(ctx_->secureChannelClientConfig_.get() != nullptr);
 		assert(ctx_->sessionService_ != nullptr);
 
+		// set session service mode
+		ctx_->setSessionServiceMode();
+
 		auto& secureChannelClient = ctx_->secureChannelClient_;
 		auto clientConfig = ctx_->secureChannelClientConfig_;
 		auto sessionService = ctx_->sessionService_;
-
-		// set session service mode
-		ctx_->setSessionServiceMode();
 
 		Log(Debug, "reconnect secure channel")
 			.parameter("SessId", ctx_->id_);

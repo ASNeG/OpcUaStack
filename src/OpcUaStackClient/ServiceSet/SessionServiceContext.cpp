@@ -317,7 +317,8 @@ namespace OpcUaStackClient
 				Log(Debug, "set session service mode")
 					.parameter("SessId", id_)
 					.parameter("SessServiceMode", "UseCache")
-					.parameter("CacheSize", endpointDescriptionCache_.size());
+					.parameter("CacheSize", endpointDescriptionCache_.size())
+					.parameter("Certs", endpointDescription->serverCertificate().size());
 
 				sessionServiceMode_ = SessionServiceMode::UseCache;
 				secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());
@@ -325,6 +326,18 @@ namespace OpcUaStackClient
 				secureChannelClientConfig_->applicationUri(endpointDescription->server().applicationUri());
 				secureChannelClientConfig_->securityMode(endpointDescription->securityMode().enumeration());
 				secureChannelClientConfig_->securityPolicy(SecurityPolicy::str2Enum(endpointDescription->securityPolicyUri().toStdString()));
+
+				// get partner certificate form endpoint description if exists
+				if (endpointDescription->serverCertificate().size() > 0) {
+					CertificateChain certificateChain;
+					if (!certificateChain.fromByteString(endpointDescription->serverCertificate())) {
+						Log(Debug, "server certificate in endpoint description error");
+					}
+					else {
+						secureChannelClientConfig_->certificateChain(certificateChain);
+					}
+				}
+
 				return;
 			}
 		}
