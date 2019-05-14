@@ -134,6 +134,7 @@ namespace OpcUaStackClient
 		    .parameter("SessId", id_)
 		    .parameter("RequestId", trx->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName());
+
 		secureChannelClient_.asyncWriteMessageRequest(
 			secureChannel_,
 			trx
@@ -377,7 +378,14 @@ namespace OpcUaStackClient
 				continue;
 			}
 
-			Log(Debug, "use cache entry");
+			MessageSecurityMode messageSecurityMode(secureChannelClientConfigBackup_->securityMode());
+			SecurityPolicy securityPolicy(secureChannelClientConfigBackup_->securityPolicy());
+
+			Log(Debug, "use cache entry")
+			    .parameter("EndpointUrl", endpointDescription->endpointUrl())
+				.parameter("SecurityMode", messageSecurityMode.enum2Str())
+				.parameter("SecurityPolicy", securityPolicy.enum2Str())
+				.parameter("PolicyId", sessionConfig_->userAuthentication()->policyId());
 			return endpointDescription;
 		}
 
