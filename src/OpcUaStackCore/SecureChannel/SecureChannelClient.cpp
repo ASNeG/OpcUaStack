@@ -79,8 +79,10 @@ namespace OpcUaStackCore
 		auto secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelClientConfig;
 
-		// create security settings
+		// get security settings
 		auto& securitySettings = secureChannel->securitySettings_;
+
+		// get crypto base and store own security policy uri
 		auto cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
 		if (!cryptoBase) {
 			Log(Error, "security policy invalid")
@@ -92,6 +94,7 @@ namespace OpcUaStackCore
 		securitySettings.cryptoBase(cryptoBase);
 		securitySettings.ownSecurityPolicyUri() = cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy());
 
+		// get own certificate chain
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSign ||
 			secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();

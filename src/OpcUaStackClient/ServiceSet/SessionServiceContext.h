@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
@@ -75,8 +76,42 @@ namespace OpcUaStackClient
 		EndpointDescription::SPtr selectEndpointDescriptionFromCache(
 			EndpointDescriptionArray::SPtr& endpointDescriptions
 		);
+		bool selectUserIdentityTokenFromCache(
+			EndpointDescription::SPtr& endpointDescription
+		);
 		bool checkEndpoint(
 			EndpointDescription::SPtr& endpointDescription
+		);
+
+		OpcUaStatusCode authentication(
+			ActivateSessionRequest& activateSessionRequest
+		);
+		OpcUaStatusCode authenticationAnonymous(
+			ActivateSessionRequest& activateSessionRequest,
+			const std::string& securityPolicyUri,
+			const std::string& policyId
+		);
+		OpcUaStatusCode authenticationUserName(
+			ActivateSessionRequest& activateSessionRequest,
+			const std::string& securityPolicyUri,
+			const std::string& policyId,
+			const std::string& userName,
+			const std::string& password,
+			const std::string& encryptionAlgorithm
+		);
+		OpcUaStatusCode authenticationX509(
+			ActivateSessionRequest& activateSessionRequest,
+			const std::string& securityPolicyUri,
+			const std::string& policyId,
+			Certificate& certificate,
+			PrivateKey& privateKey
+		);
+		OpcUaStatusCode authenticationIssued(
+			ActivateSessionRequest& activateSessionRequest,
+			const std::string& securityPolicyUri,
+			const std::string& policyId,
+			const std::string& tokenData,
+			const std::string& encryptionAlgorithm
 		);
 
 		static uint32_t gId_;

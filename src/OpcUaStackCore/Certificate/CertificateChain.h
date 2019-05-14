@@ -40,6 +40,7 @@ namespace OpcUaStackCore
 
 		bool empty(void);
 		uint32_t size(void);
+		uint32_t certificateSize(void);
 		uint32_t lastCertificateSize(void);
 		bool fromByteString(OpcUaByteString& byteString);
 		bool toByteString(OpcUaByteString& byteString) const;

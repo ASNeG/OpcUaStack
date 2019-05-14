@@ -57,6 +57,7 @@ namespace OpcUaStackCore
 	, reconnectTimeout_(secureChannelClientConfig.reconnectTimeout_)
 
 	, cryptoManager_(secureChannelClientConfig.cryptoManager_)
+	, certificateChain_(secureChannelClientConfig.certificateChain_)
 
 	, secureChannelLog_(secureChannelClientConfig.secureChannelLog_)
 	{
