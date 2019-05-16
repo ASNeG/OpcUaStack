@@ -230,6 +230,7 @@ On Linux:
 
 ::
 
+    $ export PATH=$PATH:path/to/install/usr/bin
     $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:path/to/install/usr/lib/
     $ OpcUaServer3 ./etc/OpcUaStack/helloworld/OpcUaServer.xml
 
