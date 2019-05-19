@@ -430,7 +430,8 @@ namespace OpcUaStackCore
 
 		// start reconnect timer
 		if (reconnectTimeout_ == 0) {
-			Log(Info, "secure channel closed")
+			Log(Info, "secure channel delete")
+                                .parameter("ChannelId", *secureChannel)
 				.parameter("Address", secureChannel->partner_.address().to_string())
 				.parameter("Port", secureChannel->partner_.port());
 			delete secureChannel;

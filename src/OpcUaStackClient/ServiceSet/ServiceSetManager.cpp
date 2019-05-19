@@ -58,7 +58,7 @@ namespace OpcUaStackClient
 	void
 	ServiceSetManager::createIOThread(const std::string ioThreadName)
 	{
-		IOThread::SPtr ioThread = getIOThread(ioThreadName);
+		auto ioThread = getIOThread(ioThreadName);
 		if (ioThread.get() != nullptr) return;
 
 		Log(Debug, "service set manager starts io thread")
@@ -71,13 +71,12 @@ namespace OpcUaStackClient
 	void
 	ServiceSetManager::destroyIOThread(const std::string ioThreadName)
 	{
-		IOThread::Map::iterator it;
-		it = ioThreadMap_.find(ioThreadName);
+		auto it = ioThreadMap_.find(ioThreadName);
 		if (it == ioThreadMap_.end()) return;
 
 		Log(Debug, "service set manager stops io thread")
 		    .parameter("IOThreadName", ioThreadName);
-		IOThread::SPtr ioThread = it->second;
+		auto ioThread = it->second;
 		ioThread->shutdown();
 		ioThreadMap_.erase(it);
 	}
@@ -86,9 +85,10 @@ namespace OpcUaStackClient
 	ServiceSetManager::getIOThread(const std::string ioThreadName)
 	{
 		IOThread::SPtr ioThread;
-		IOThread::Map::iterator it;
-		it = ioThreadMap_.find(ioThreadName);
-		if (it != ioThreadMap_.end()) ioThread = it->second;
+		auto it = ioThreadMap_.find(ioThreadName);
+		if (it != ioThreadMap_.end()) {
+			ioThread = it->second;
+		}
 		return ioThread;
 	}
 
@@ -99,8 +99,8 @@ namespace OpcUaStackClient
 	{
 		// create new session
 		createIOThread(sessionServiceConfig.ioThreadName());
-		IOThread::SPtr ioThread = getIOThread(sessionServiceConfig.ioThreadName());
-		SessionService::SPtr sessionService = boost::make_shared<SessionService>(ioThread.get());
+		auto ioThread = getIOThread(sessionServiceConfig.ioThreadName());
+		auto sessionService = boost::make_shared<SessionService>(ioThread.get());
 
 		// set session configuration
 		sessionService->setConfiguration(
