@@ -30,6 +30,8 @@ namespace OpcUaStackCore
 
 		BaseClass(void) {}
 		virtual ~BaseClass(void) {}
+
+		void out(std::ostream& os) {}
 	};
 
 	class DLLEXPORT BaseClassArray
