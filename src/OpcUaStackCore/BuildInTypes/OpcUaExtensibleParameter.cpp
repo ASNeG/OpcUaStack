@@ -147,6 +147,7 @@ namespace OpcUaStackCore
 	OpcUaExtensibleParameter::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     	// FIXME: todo
+    	return false;
     }
 
     bool
@@ -161,6 +162,7 @@ namespace OpcUaStackCore
 	OpcUaExtensibleParameter::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     	// FIXME: todo
+    	return false;
     }
 
     bool
@@ -331,5 +333,7 @@ namespace OpcUaStackCore
     OpcUaExtensibleParameter&
 	OpcUaExtensibleParameter::operator=(const OpcUaExtensibleParameter& value)
     {
+    	const_cast<OpcUaExtensibleParameter*>(&value)->copyTo(*this);
+    	return *this;
     }
 }
