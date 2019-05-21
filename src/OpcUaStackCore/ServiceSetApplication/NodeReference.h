@@ -49,6 +49,24 @@ namespace OpcUaStackCore
 
 		bool xmlEncode(boost::property_tree::ptree& pt) const { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt) { return false; }
+		bool jsonEncode(
+			boost::property_tree::ptree& pt,
+			const std::string& element,
+			const std::string& listElement
+		) { return false; }
+		bool jsonEncode(
+			boost::property_tree::ptree& pt,
+			const std::string& listElement
+		) { return false; }
+		bool jsonDecode(
+			boost::property_tree::ptree& pt,
+			const std::string& element,
+			const std::string& listElement
+		) { return false; }
+		bool jsonDecode(
+			boost::property_tree::ptree& pt,
+			const std::string& listElement
+		) { return false; }
 		
 	  private:
 		OpcUaStatusCode statusCode_;
