@@ -31,6 +31,7 @@ namespace OpcUaStackCore
 		BaseClass(void) {}
 		virtual ~BaseClass(void) {}
 
+		void copyTo(BaseClass& baseClass) {}
 		void out(std::ostream& os) {}
 	};
 
