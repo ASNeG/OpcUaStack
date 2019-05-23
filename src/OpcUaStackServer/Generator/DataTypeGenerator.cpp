@@ -152,7 +152,7 @@ namespace OpcUaStackServer
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
-		ss << "#include \"OpcUaStackCore/BuildInTypes/JsonNumber.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/JsonFormatter.h\"" << std::endl;
 
 		//
 		// added parent includes

@@ -16,7 +16,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
+#include "OpcUaStackCore/Base/JsonFormatter.h"
 #include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
 #include "OpcUaStackCore/StandardDataTypes/MessageSecurityMode.h"
 #include "OpcUaStackCore/StandardDataTypes/UserTokenPolicy.h"
