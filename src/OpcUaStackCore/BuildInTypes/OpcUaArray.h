@@ -432,7 +432,7 @@ namespace OpcUaStackCore
 		clearArray();
 		initArray();
 
-		const_cast<OpcUaArray<T, CODER>*>(&other)->copy(*this);
+		const_cast<OpcUaArray<T, CODER>*>(&other)->copyTo(*this);
 	}
 
 	template<typename T, typename CODER>

@@ -42,13 +42,17 @@ namespace OpcUaStackCore
 			return os;
 		}
 
-		void opcUaBinaryEncode(std::ostream& os) {}
-		void opcUaBinaryDecode(std::istream& is) {}
-		bool encode(boost::property_tree::ptree& pt) const { return false; }
-		bool decode(boost::property_tree::ptree& pt) { return false; }
+		void opcUaBinaryEncode(std::ostream& os) const {};
+		void opcUaBinaryDecode(std::istream& is) {};
 
-		bool xmlEncode(boost::property_tree::ptree& pt) const { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return true; }
+		bool jsonEncode(boost::property_tree::ptree& pt) { return true; }
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return true; }
+		bool jsonDecode(boost::property_tree::ptree& pt) { return true; }
 		
 	  private:
 		OpcUaStatusCode statusCode_;

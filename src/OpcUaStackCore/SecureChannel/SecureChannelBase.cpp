@@ -1663,8 +1663,9 @@ namespace OpcUaStackCore
 
 		Log(Error, "opc ua secure channel close")
 			.parameter("Id", secureChannel->channelId_)
-			.parameter("AsyncSend", secureChannel->asyncSend_);
-		if (close) secureChannel->close();
+			.parameter("AsyncSend", secureChannel->asyncSend_)
+			.parameter("CloseFlag", close);
+		secureChannel->close();
 
 		// cleanup sender
 		if (secureChannel->asyncSend_) {

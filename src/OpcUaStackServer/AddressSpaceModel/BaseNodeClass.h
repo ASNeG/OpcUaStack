@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackServer_BaseNodeClass_h__
 #define __OpcUaStackServer_BaseNodeClass_h__
 
+#include <boost/weak_ptr.hpp>
 #include <vector>
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
