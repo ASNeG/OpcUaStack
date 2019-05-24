@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 
 	ReadRequest::ReadRequest(void)
 	: Object()
+	, JsonFormatter()
 	, maxAge_()
 	, timestampsToReturn_()
 	, readValueIdArraySPtr_(constructSPtr<ReadValueIdArray>())
@@ -95,36 +96,11 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ReadRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	ReadRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "ReadRequest json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	ReadRequest::jsonEncode(boost::property_tree::ptree& pt)
-	{
-		// encode max age
-		if (maxAge_ != 0) {
-			if (!JsonNumber::jsonEncode(pt, maxAge_, "MaxAge")) {
-				Log(Error, "ReadRequest json encode error")
-					.parameter("Element", "MaxAge");
-				return false;
-			}
-		}
-
-		// encode timestamps to return
-		if (!JsonNumber::jsonEncode(pt, timestampsToReturn_, "TimestampsToReturn")) {
-			Log(Error, "ReadRequest json encode error")
-				.parameter("Element", "TimestampsToReturn");
-			return false;
-		}
+		auto rc = true;
+		rc = rc & jsonNumberEncode(pt, maxAge_, "MaxAge", true, (OpcUaDouble)0);
+		rc = rc & jsonNumberEncode(pt, timestampsToReturn_, "TimestampsToReturn");
 
 		// encode value id array
 		if (!readValueIdArraySPtr_->jsonEncode(pt, "NodesToRead", "")) {
@@ -133,38 +109,18 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		return true;
+		return rc;
 	}
 
 	bool
-	ReadRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	ReadRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "ReadRequest json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	ReadRequest::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		// decode max age
-		if (!JsonNumber::jsonDecode(pt, maxAge_, "MaxAge")) {
-			maxAge_ = 0;
-		}
-
-		// decode timestamps to return
-		if (!JsonNumber::jsonDecode(pt, timestampsToReturn_, "TimestampsToReturn")) {
-			timestampsToReturn_ = 0;
-		}
+		auto rc = true;
+		rc = rc & jsonNumberDecode(pt, maxAge_, "MaxAge", true, (OpcUaDouble)0);
+		rc = rc & jsonNumberDecode(pt, timestampsToReturn_, "TimestampsToReturn");
 
 		// decode value id array
-		if (!readValueIdArraySPtr_->jsonDecode(pt, "NodesToRead", "")) {
+		if (!readValueIdArraySPtr_->jsonDecode(*const_cast<boost::property_tree::ptree*>(&pt), "NodesToRead", "")) {
 			Log(Error, "ReadRequest json decode error")
 			    .parameter("Element", "NodesToRead");
 			return false;

@@ -18,10 +18,10 @@
 #ifndef __OpcUaStackCore_JsonFormatter_h__
 #define __OpcUaStackCore_JsonFormatter_h__
 
-#include "os.h"
 #include <string>
 #include <boost/property_tree/ptree.hpp>
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
 
 namespace OpcUaStackCore

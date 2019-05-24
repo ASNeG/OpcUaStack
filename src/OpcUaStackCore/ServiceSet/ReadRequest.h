@@ -21,15 +21,17 @@
 #include <stdint.h>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/ServiceSet/ReadValueId.h"
+#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ReadRequest
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
-		typedef boost::shared_ptr<ReadRequest> SPtr;
+		using SPtr = boost::shared_ptr<ReadRequest>;
 
 		ReadRequest(void);
 		virtual ~ReadRequest(void);
@@ -43,10 +45,8 @@ namespace OpcUaStackCore
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
+		virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+		virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
 
 	  private:
 		OpcUaDouble maxAge_;
