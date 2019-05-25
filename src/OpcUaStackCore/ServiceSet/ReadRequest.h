@@ -19,9 +19,8 @@
 #define __OpcUaStackCore_ReadRequest_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 #include "OpcUaStackCore/ServiceSet/ReadValueId.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {

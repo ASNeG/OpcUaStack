@@ -16,7 +16,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 
 namespace OpcUaStackCore

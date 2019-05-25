@@ -17,7 +17,7 @@
 
 #include <typeinfo>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 
 namespace OpcUaStackCore
