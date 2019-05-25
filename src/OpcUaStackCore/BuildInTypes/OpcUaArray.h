@@ -393,12 +393,12 @@ namespace OpcUaStackCore
 			const std::string& listElement
 		);
 		bool jsonDecode(
-			boost::property_tree::ptree& pt,
+			const boost::property_tree::ptree& pt,
 			const std::string& element,
 			const std::string& listElement
 		);
 		bool jsonDecode(
-			boost::property_tree::ptree& pt,
+			const boost::property_tree::ptree& pt,
 			const std::string& listElement
 		);
 
@@ -892,12 +892,12 @@ namespace OpcUaStackCore
 	template<typename T, typename CODER>
 	bool
 	OpcUaArray<T, CODER>::jsonDecode(
-		boost::property_tree::ptree& pt,
+		const boost::property_tree::ptree& pt,
 		const std::string& element,
 		const std::string& listElement
 	)
 	{
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+        boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
         if (!tree) return false;
         return jsonDecode(*tree, listElement);
 	}
@@ -905,7 +905,7 @@ namespace OpcUaStackCore
 	template<typename T, typename CODER>
 	bool
 	OpcUaArray<T, CODER>::jsonDecode(
-		boost::property_tree::ptree& pt,
+		const boost::property_tree::ptree& pt,
 		const std::string& listElement
 	)
 	{
@@ -917,7 +917,7 @@ namespace OpcUaStackCore
 		}
 
 		resize(arrayLength);
-		boost::property_tree::ptree::iterator it;
+		boost::property_tree::ptree::const_iterator it;
 		for (it = pt.begin(); it != pt.end(); it++) {
 			boost::property_tree::ptree arrayElement = it->second;
 
