@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_OpcUaDateTime_h__
@@ -22,11 +22,13 @@
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT OpcUaDateTime
+	: public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDateTime> SPtr;
@@ -47,9 +49,9 @@ namespace OpcUaStackCore
 		bool operator==(const OpcUaDateTime& dateTime) const;
 		operator OpcUaUInt64 const (void); 
 		bool fromISOString(const std::string& dateTimeString);
-		std::string toISOString(void);
+		std::string toISOString(void) const;
 		bool fromISO8601(const std::string& dateTimeString);
-		std::string toISO8601(void);
+		std::string toISO8601(void) const;
 
 		void copyTo(OpcUaDateTime& opcUaDataTime);
 
@@ -59,16 +61,16 @@ namespace OpcUaStackCore
 			return os;
 		}
 
-		void opcUaBinaryEncode(std::ostream& os) const;
+        void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
+
+      protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		static boost::posix_time::ptime nullTime_;
