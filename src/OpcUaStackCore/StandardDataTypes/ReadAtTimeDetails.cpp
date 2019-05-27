@@ -225,20 +225,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    ReadAtTimeDetails::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ReadAtTimeDetails json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    ReadAtTimeDetails::jsonEncode(boost::property_tree::ptree& pt)
+    ReadAtTimeDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         boost::property_tree::ptree elementTree;
     
@@ -264,24 +251,10 @@ namespace OpcUaStackCore
     }
     
     bool
-    ReadAtTimeDetails::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ReadAtTimeDetails json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ReadAtTimeDetails::jsonDecode(boost::property_tree::ptree& pt)
+    ReadAtTimeDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
+        boost::optional<const boost::property_tree::ptree&> tree;
     
         elementName = "ReqTimes";
         tree = pt.get_child_optional(elementName);

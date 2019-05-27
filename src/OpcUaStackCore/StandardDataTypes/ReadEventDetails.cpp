@@ -289,20 +289,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    ReadEventDetails::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ReadEventDetails json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    ReadEventDetails::jsonEncode(boost::property_tree::ptree& pt)
+    ReadEventDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         boost::property_tree::ptree elementTree;
     
@@ -346,24 +333,10 @@ namespace OpcUaStackCore
     }
     
     bool
-    ReadEventDetails::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ReadEventDetails json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ReadEventDetails::jsonDecode(boost::property_tree::ptree& pt)
+    ReadEventDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
+        boost::optional<const boost::property_tree::ptree&> tree;
     
         elementName = "NumValuesPerNode";
         tree = pt.get_child_optional(elementName);

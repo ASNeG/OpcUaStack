@@ -256,20 +256,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    UpdateEventDetails::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "UpdateEventDetails json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    UpdateEventDetails::jsonEncode(boost::property_tree::ptree& pt)
+    UpdateEventDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         boost::property_tree::ptree elementTree;
     
@@ -304,24 +291,10 @@ namespace OpcUaStackCore
     }
     
     bool
-    UpdateEventDetails::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "UpdateEventDetails json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    UpdateEventDetails::jsonDecode(boost::property_tree::ptree& pt)
+    UpdateEventDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
+        boost::optional<const boost::property_tree::ptree&> tree;
     
         elementName = "PerformInsertReplace";
         tree = pt.get_child_optional(elementName);

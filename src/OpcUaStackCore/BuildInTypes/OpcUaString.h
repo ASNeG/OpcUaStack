@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 		OpcUaString& operator=(const std::string& string); 
 		operator std::string const (void); 
 
-		void copyTo(OpcUaString& opcUaString);
+		void copyTo(OpcUaString& opcUaString) const;
 		bool operator<(const OpcUaString& opcUaString) const;
 		bool operator!=(const OpcUaString& opcUaString) const;
 		bool operator==(const OpcUaString& opcUaString) const;

@@ -245,20 +245,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataSetOrderingType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "DataSetOrderingType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    DataSetOrderingType::jsonEncode(boost::property_tree::ptree& pt)
+    DataSetOrderingType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         if(!JsonNumber::jsonEncode(pt, value_))
         {
@@ -270,21 +257,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataSetOrderingType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "DataSetOrderingType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    DataSetOrderingType::jsonDecode(boost::property_tree::ptree& pt)
+    DataSetOrderingType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         if(!JsonNumber::jsonDecode(pt, value_)) {
             Log(Error, "DataSetOrderingType decode json error - decode failed");

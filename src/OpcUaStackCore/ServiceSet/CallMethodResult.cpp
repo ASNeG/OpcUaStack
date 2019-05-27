@@ -121,20 +121,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CallMethodResult::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "CallMethodResult json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	CallMethodResult::jsonEncode(boost::property_tree::ptree& pt)
+	CallMethodResult::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		// add status code
 		OpcUaStatus status(statusCode_);
@@ -176,23 +163,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CallMethodResult::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	CallMethodResult::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "CallMethodResult json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	CallMethodResult::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
+		boost::optional<const boost::property_tree::ptree&> tmpTree;
 
 		// get status code
 		OpcUaStatus status(Success);
@@ -220,9 +193,9 @@ namespace OpcUaStackCore
 			inputArgumentResultArraySPtr_->push_back(status->enumeration());
 		}
 
-		// encode output argument array
-		if (!outputArgumentArraySPtr_->jsonEncode(pt, "OutputArguments", "")) {
-			Log(Error, "CallMethodResult json encode error")
+		// decode output argument array
+		if (!outputArgumentArraySPtr_->jsonDecode(pt, "OutputArguments", "")) {
+			Log(Error, "CallMethodResult json decode error")
 			    .parameter("Element", "OutputArguments");
 			return false;
 		}

@@ -420,20 +420,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    WriterGroupDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "WriterGroupDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    WriterGroupDataType::jsonEncode(boost::property_tree::ptree& pt)
+    WriterGroupDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         boost::property_tree::ptree elementTree;
     
@@ -513,24 +500,10 @@ namespace OpcUaStackCore
     }
     
     bool
-    WriterGroupDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "WriterGroupDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    WriterGroupDataType::jsonDecode(boost::property_tree::ptree& pt)
+    WriterGroupDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
+        boost::optional<const boost::property_tree::ptree&> tree;
     
         elementName = "WriterGroupId";
         tree = pt.get_child_optional(elementName);

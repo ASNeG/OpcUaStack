@@ -257,20 +257,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    DeleteRawModifiedDetails::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "DeleteRawModifiedDetails json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    DeleteRawModifiedDetails::jsonEncode(boost::property_tree::ptree& pt)
+    DeleteRawModifiedDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         boost::property_tree::ptree elementTree;
     
@@ -305,24 +292,10 @@ namespace OpcUaStackCore
     }
     
     bool
-    DeleteRawModifiedDetails::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "DeleteRawModifiedDetails json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    DeleteRawModifiedDetails::jsonDecode(boost::property_tree::ptree& pt)
+    DeleteRawModifiedDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
+        boost::optional<const boost::property_tree::ptree&> tree;
     
         elementName = "IsDeleteModified";
         tree = pt.get_child_optional(elementName);

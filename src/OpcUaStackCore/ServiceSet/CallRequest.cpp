@@ -76,20 +76,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CallRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "CallRequest json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	CallRequest::jsonEncode(boost::property_tree::ptree& pt)
+	CallRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		// encode method requests
 		if (!callMethodRequestArraySPtr_->jsonEncode(pt, "MethodsToCall", "")) {
@@ -102,21 +89,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CallRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "CallRequest json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	CallRequest::jsonDecode(boost::property_tree::ptree& pt)
+	CallRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
 		// decode method requests
 		if (!callMethodRequestArraySPtr_->jsonDecode(pt, "MethodsToCall", "")) {

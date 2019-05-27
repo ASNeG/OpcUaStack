@@ -119,20 +119,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	WriteValue::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "WriteRequest json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	WriteValue::jsonEncode(boost::property_tree::ptree& pt)
+	WriteValue::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		// encode node id
 		if (!nodeIdSPtr_->jsonEncode(pt, "NodeId")) {
@@ -168,21 +155,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	WriteValue::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "WriteValue json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	WriteValue::jsonDecode(boost::property_tree::ptree& pt)
+	WriteValue::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
 		// decode node id
 		if (!nodeIdSPtr_->jsonDecode(pt, "NodeId")) {

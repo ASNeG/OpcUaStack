@@ -226,20 +226,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    ConfigurationVersionDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ConfigurationVersionDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    ConfigurationVersionDataType::jsonEncode(boost::property_tree::ptree& pt)
+    ConfigurationVersionDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         boost::property_tree::ptree elementTree;
     
@@ -265,24 +252,10 @@ namespace OpcUaStackCore
     }
     
     bool
-    ConfigurationVersionDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ConfigurationVersionDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ConfigurationVersionDataType::jsonDecode(boost::property_tree::ptree& pt)
+    ConfigurationVersionDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
+        boost::optional<const boost::property_tree::ptree&> tree;
     
         elementName = "MajorVersion";
         tree = pt.get_child_optional(elementName);

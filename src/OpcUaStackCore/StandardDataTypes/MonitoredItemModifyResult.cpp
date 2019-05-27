@@ -290,20 +290,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    MonitoredItemModifyResult::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "MonitoredItemModifyResult json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    MonitoredItemModifyResult::jsonEncode(boost::property_tree::ptree& pt)
+    MonitoredItemModifyResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         boost::property_tree::ptree elementTree;
     
@@ -347,24 +334,10 @@ namespace OpcUaStackCore
     }
     
     bool
-    MonitoredItemModifyResult::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "MonitoredItemModifyResult json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    MonitoredItemModifyResult::jsonDecode(boost::property_tree::ptree& pt)
+    MonitoredItemModifyResult::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
+        boost::optional<const boost::property_tree::ptree&> tree;
     
         elementName = "StatusCode";
         tree = pt.get_child_optional(elementName);

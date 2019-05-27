@@ -195,20 +195,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaExpandedNodeId::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcUaExpandedNodeId json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	OpcUaExpandedNodeId::jsonEncode(boost::property_tree::ptree& pt)
+	OpcUaExpandedNodeId::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		switch (nodeIdType())
 		{
@@ -293,21 +280,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaExpandedNodeId::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcUaExpandedNodeId json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	OpcUaExpandedNodeId::jsonDecode(boost::property_tree::ptree& pt)
+	OpcUaExpandedNodeId::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		OpcUaUInt32 idType = 0;
 		if (!JsonNumber::jsonDecode(pt, idType, "IdType")) {
@@ -581,6 +554,10 @@ namespace OpcUaStackCore
 				nodeIdStream << "h=" << value;
 				break;
 			}
+            default:
+                Log(Error, "Wrong type")
+               		.parameter("NodeId", *this)
+               		.parameter("NodeType", nodeIdType());
 		}
 		return nodeIdStream.str();
 	}

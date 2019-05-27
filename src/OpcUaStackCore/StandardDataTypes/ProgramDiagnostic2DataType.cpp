@@ -544,20 +544,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    ProgramDiagnostic2DataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ProgramDiagnostic2DataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    ProgramDiagnostic2DataType::jsonEncode(boost::property_tree::ptree& pt)
+    ProgramDiagnostic2DataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         boost::property_tree::ptree elementTree;
     
@@ -673,24 +660,10 @@ namespace OpcUaStackCore
     }
     
     bool
-    ProgramDiagnostic2DataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ProgramDiagnostic2DataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ProgramDiagnostic2DataType::jsonDecode(boost::property_tree::ptree& pt)
+    ProgramDiagnostic2DataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
+        boost::optional<const boost::property_tree::ptree&> tree;
     
         elementName = "CreateSessionId";
         tree = pt.get_child_optional(elementName);

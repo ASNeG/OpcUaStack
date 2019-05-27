@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaDiagnosticInfo.h"
@@ -486,20 +486,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaDiagnosticInfo::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcUaDiagnosticInfo json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	OpcUaDiagnosticInfo::jsonEncode(boost::property_tree::ptree& pt)
+	OpcUaDiagnosticInfo::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		if (symbolicId_ != -1) {
 			if (!JsonNumber::jsonEncode(pt, symbolicId_, "SymbolicId")) {
@@ -555,23 +542,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaDiagnosticInfo::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaDiagnosticInfo::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcUaDiagnosticInfo json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	OpcUaDiagnosticInfo::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		boost::optional<boost::property_tree::ptree&> tree;
+		boost::optional<const boost::property_tree::ptree&> tree;
 
 		//
 		// get SymboliId

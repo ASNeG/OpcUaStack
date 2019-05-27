@@ -123,21 +123,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	MonitoringParameters::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "MonitoringParameters json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-
-		return true;
-	}
-
-	bool
-	MonitoringParameters::jsonEncode(boost::property_tree::ptree& pt)
+	MonitoringParameters::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		// encode client handle
 		if (!JsonNumber::jsonEncode(pt, clientHandle_, "ClientHandle")) {
@@ -180,23 +166,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	MonitoringParameters::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	MonitoringParameters::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "MonitoringParameters json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	MonitoringParameters::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
+		boost::optional<const boost::property_tree::ptree&> tmpTree;
 
 		// decode client handle
 		if (!JsonNumber::jsonDecode(pt, clientHandle_, "ClientHandle")) {

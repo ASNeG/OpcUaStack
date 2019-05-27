@@ -359,20 +359,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    AddReferencesItem::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    AddReferencesItem::jsonEncode(boost::property_tree::ptree& pt)
+    AddReferencesItem::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         boost::property_tree::ptree elementTree;
     
@@ -434,24 +421,10 @@ namespace OpcUaStackCore
     }
     
     bool
-    AddReferencesItem::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "AddReferencesItem json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    AddReferencesItem::jsonDecode(boost::property_tree::ptree& pt)
+    AddReferencesItem::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
+        boost::optional<const boost::property_tree::ptree&> tree;
     
         elementName = "SourceNodeId";
         tree = pt.get_child_optional(elementName);

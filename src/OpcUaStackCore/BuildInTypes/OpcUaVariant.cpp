@@ -1866,7 +1866,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::isArray(void)
+	OpcUaVariant::isArray(void) const
 	{
 		return arrayLength_ > -1;
 	}
@@ -2910,20 +2910,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcUaVariant json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	OpcUaVariant::jsonEncode(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		pt.put("Type", variantType());
 
@@ -3079,21 +3066,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcUaVariant json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	OpcUaVariant::jsonDecode(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		// check if first element exist
 		if (pt.empty()) {
@@ -3113,7 +3086,7 @@ namespace OpcUaStackCore
 		}
 
 		// check if Body is an array
-		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional("Body");
+		boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional("Body");
 		if (!tree) {
 			Log(Error, "OpcUaVariant json encode error - variable not exist")
 				.parameter("Element", "Body");
@@ -4901,7 +4874,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeBooleanScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeBooleanScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaBoolean value = get<OpcUaBoolean>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -4913,7 +4886,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeBooleanArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeBooleanArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -4929,7 +4902,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeBooleanScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeBooleanScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaBoolean value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -4943,10 +4916,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeBooleanArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeBooleanArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -4974,7 +4946,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeSByteScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeSByteScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaSByte value = get<OpcUaSByte>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -4986,7 +4958,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeSByteArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeSByteArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5002,7 +4974,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeSByteScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeSByteScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaSByte value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -5016,10 +4988,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeSByteArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeSByteArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5046,7 +5017,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeByteScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeByteScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaByte value = get<OpcUaByte>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -5058,7 +5029,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeByteArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeByteArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5074,7 +5045,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeByteScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeByteScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaByte value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -5088,10 +5059,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeByteArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeByteArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5118,7 +5088,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeUInt16Scalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeUInt16Scalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaUInt16 value = get<OpcUaUInt16>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -5130,7 +5100,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeUInt16Array(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeUInt16Array(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5146,7 +5116,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeUInt16Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeUInt16Scalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaUInt16 value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -5160,10 +5130,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeUInt16Array(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeUInt16Array(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5190,7 +5159,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeInt16Scalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeInt16Scalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaInt16 value = get<OpcUaInt16>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -5202,7 +5171,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeInt16Array(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeInt16Array(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5218,7 +5187,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeInt16Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeInt16Scalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaInt16 value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -5232,10 +5201,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeInt16Array(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeInt16Array(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5262,7 +5230,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeUInt32Scalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeUInt32Scalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaUInt32 value = get<OpcUaUInt32>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -5274,7 +5242,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeUInt32Array(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeUInt32Array(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5290,7 +5258,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeUInt32Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeUInt32Scalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaUInt32 value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -5304,10 +5272,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeUInt32Array(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeUInt32Array(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5334,7 +5301,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeInt32Scalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeInt32Scalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaInt32 value = get<OpcUaInt32>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -5346,7 +5313,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeInt32Array(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeInt32Array(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5362,7 +5329,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeInt32Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeInt32Scalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaInt32 value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -5376,10 +5343,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeInt32Array(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeInt32Array(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5406,7 +5372,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeUInt64Scalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeUInt64Scalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaUInt64 value = get<OpcUaUInt64>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -5418,7 +5384,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeUInt64Array(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeUInt64Array(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5434,7 +5400,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeUInt64Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeUInt64Scalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaUInt64 value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -5448,10 +5414,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeUInt64Array(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeUInt64Array(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5478,7 +5443,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeInt64Scalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeInt64Scalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaInt64 value = get<OpcUaInt64>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -5490,7 +5455,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeInt64Array(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeInt64Array(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5506,7 +5471,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeInt64Scalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeInt64Scalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaInt64 value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -5520,10 +5485,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeInt64Array(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeInt64Array(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5550,7 +5514,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeFloatScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeFloatScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaFloat value = get<OpcUaFloat>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -5562,7 +5526,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeFloatArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeFloatArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5578,7 +5542,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeFloatScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeFloatScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaFloat value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -5592,10 +5556,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeFloatArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeFloatArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5622,7 +5585,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeDoubleScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeDoubleScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaDouble value = get<OpcUaDouble>();
 		if (!JsonNumber::jsonEncode(pt, value, "Body")) {
@@ -5634,7 +5597,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeDoubleArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeDoubleArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5650,7 +5613,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeDoubleScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeDoubleScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaDouble value;
 		if (!JsonNumber::jsonDecode(pt, value)) {
@@ -5664,10 +5627,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeDoubleArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeDoubleArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5694,7 +5656,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeDateTimeScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeDateTimeScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaDateTime value = get<OpcUaDateTime>();
 		if (!value.jsonEncode(pt, "Body")) {
@@ -5706,7 +5668,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeDateTimeArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeDateTimeArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5722,7 +5684,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeDateTimeScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeDateTimeScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaDateTime value;
 		if (!value.jsonDecode(pt)) {
@@ -5736,10 +5698,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeDateTimeArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeDateTimeArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5766,7 +5727,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeStringScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeStringScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaString::SPtr value = getSPtr<OpcUaString>();
 		if (!value->jsonEncode(pt, "Body")) {
@@ -5778,7 +5739,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeStringArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeStringArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5794,7 +5755,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeStringScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeStringScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaString::SPtr value = constructSPtr<OpcUaString>();
 		if (!value->jsonDecode(pt)) {
@@ -5808,10 +5769,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeStringArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeStringArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5838,7 +5798,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeByteStringScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeByteStringScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaByteString::SPtr value = getSPtr<OpcUaByteString>();
 		if (!value->jsonEncode(pt, "Body")) {
@@ -5850,7 +5810,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeByteStringArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeByteStringArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5866,7 +5826,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeByteStringScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeByteStringScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
 		if (!value->jsonDecode(pt)) {
@@ -5880,10 +5840,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeByteStringArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeByteStringArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5910,7 +5869,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeGuidScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeGuidScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaGuid::SPtr value = getSPtr<OpcUaGuid>();
 		if (!value->jsonEncode(pt, "Body")) {
@@ -5922,7 +5881,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeGuidArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeGuidArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -5938,7 +5897,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeGuidScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeGuidScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
 		if (!value->jsonDecode(pt)) {
@@ -5952,10 +5911,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeGuidArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeGuidArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5982,7 +5940,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeNodeIdScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeNodeIdScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaNodeId::SPtr value = getSPtr<OpcUaNodeId>();
 		if (!value->jsonEncode(pt, "Body")) {
@@ -5994,7 +5952,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeNodeIdArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeNodeIdArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -6010,7 +5968,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeNodeIdScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeNodeIdScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
 		if (!value->jsonDecode(pt)) {
@@ -6024,10 +5982,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeNodeIdArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeNodeIdArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6054,7 +6011,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeExpandedNodeIdScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeExpandedNodeIdScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaExpandedNodeId::SPtr value = getSPtr<OpcUaExpandedNodeId>();
 		if (!value->jsonEncode(pt, "Body")) {
@@ -6066,7 +6023,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeExpandedNodeIdArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeExpandedNodeIdArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -6082,7 +6039,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeExpandedNodeIdScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeExpandedNodeIdScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
 		if (!value->jsonDecode(pt)) {
@@ -6096,10 +6053,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeExpandedNodeIdArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeExpandedNodeIdArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6126,7 +6082,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeQualifiedNameScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeQualifiedNameScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaQualifiedName::SPtr value = getSPtr<OpcUaQualifiedName>();
 		if (!value->jsonEncode(pt, "Body")) {
@@ -6138,7 +6094,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeQualifiedNameArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeQualifiedNameArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -6154,7 +6110,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeQualifiedNameScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeQualifiedNameScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
 		if (!value->jsonDecode(pt)) {
@@ -6168,10 +6124,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeQualifiedNameArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeQualifiedNameArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6198,7 +6153,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeLocalizedTextScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeLocalizedTextScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaLocalizedText::SPtr value = getSPtr<OpcUaLocalizedText>();
 		if (!value->jsonEncode(pt, "Body")) {
@@ -6210,7 +6165,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeLocalizedTextArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeLocalizedTextArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -6226,7 +6181,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeLocalizedTextScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeLocalizedTextScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
 		if (!value->jsonDecode(pt)) {
@@ -6240,10 +6195,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeLocalizedTextArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeLocalizedTextArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6270,7 +6224,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeExtensionObjectScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeExtensionObjectScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaExtensionObject::SPtr value = getSPtr<OpcUaExtensionObject>();
 		if (!value->jsonEncode(pt, "Body")) {
@@ -6282,7 +6236,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeExtensionObjectArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeExtensionObjectArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -6298,7 +6252,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeExtensionObjectScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeExtensionObjectScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
 		if (!value->jsonDecode(pt)) {
@@ -6312,10 +6266,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeExtensionObjectArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeExtensionObjectArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6342,7 +6295,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeDataValueScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeDataValueScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaDataValue::SPtr value = getSPtr<OpcUaDataValue>();
 		if (!value->jsonEncode(pt, "Body")) {
@@ -6354,7 +6307,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeDataValueArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeDataValueArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -6370,7 +6323,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeDataValueScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeDataValueScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaDataValue::SPtr value = constructSPtr<OpcUaDataValue>();
 		if (!value->jsonDecode(pt)) {
@@ -6384,10 +6337,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeDataValueArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeDataValueArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6414,7 +6366,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	OpcUaVariant::jsonEncodeDiagnosticInfoScalar(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeDiagnosticInfoScalar(boost::property_tree::ptree& pt) const
 	{
 		OpcUaDiagnosticInfo::SPtr value = getSPtr<OpcUaDiagnosticInfo>();
 		if (!value->jsonEncode(pt, "Body")) {
@@ -6426,7 +6378,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonEncodeDiagnosticInfoArray(boost::property_tree::ptree& pt)
+	OpcUaVariant::jsonEncodeDiagnosticInfoArray(boost::property_tree::ptree& pt) const
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
@@ -6442,7 +6394,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeDiagnosticInfoScalar(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeDiagnosticInfoScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
 		OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
 		if (!value->jsonDecode(pt)) {
@@ -6456,10 +6408,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaVariant::jsonDecodeDiagnosticInfoArray(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaVariant::jsonDecodeDiagnosticInfoArray(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		boost::property_tree::ptree::iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
+		for (auto it = pt.begin(); it != pt.end(); it++) {
 			if (it->first != "") {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")

@@ -288,20 +288,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataTypeSchemaHeader::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "DataTypeSchemaHeader json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    DataTypeSchemaHeader::jsonEncode(boost::property_tree::ptree& pt)
+    DataTypeSchemaHeader::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         boost::property_tree::ptree elementTree;
     
@@ -345,24 +332,10 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataTypeSchemaHeader::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "DataTypeSchemaHeader json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    DataTypeSchemaHeader::jsonDecode(boost::property_tree::ptree& pt)
+    DataTypeSchemaHeader::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
+        boost::optional<const boost::property_tree::ptree&> tree;
     
         elementName = "Namespaces";
         tree = pt.get_child_optional(elementName);

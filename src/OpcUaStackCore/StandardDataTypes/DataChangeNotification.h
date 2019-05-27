@@ -16,7 +16,6 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 #include "OpcUaStackCore/StandardDataTypes/NotificationData.h"
 #include "OpcUaStackCore/StandardDataTypes/MonitoredItemNotification.h"
 
@@ -51,14 +50,13 @@ namespace OpcUaStackCore
         virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
         virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
         virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-        virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-        virtual bool jsonEncode(boost::property_tree::ptree& pt);
-        virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-        virtual bool jsonDecode(boost::property_tree::ptree& pt);
         virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
         virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
+        
+        virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const;
+        virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt);
         
         void copyTo(DataChangeNotification& value);
         bool operator==(const DataChangeNotification& value);

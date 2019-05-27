@@ -148,20 +148,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ReadValueId::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "ReadValueId json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	ReadValueId::jsonEncode(boost::property_tree::ptree& pt)
+	ReadValueId::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		// encode node id
 		if (!nodeIdSPtr_->jsonEncode(pt, "NodeId")) {
@@ -189,7 +176,7 @@ namespace OpcUaStackCore
 		}
 
 		// encode data encoding
-		if (dataEncoding_.namespaceIndex() != 0 || dataEncoding_.name().exist()) {
+		if (dataEncoding_.namespaceIndex() != 0 || const_cast<OpcUaQualifiedName*>(&dataEncoding_)->name().exist()) {
 			if (!dataEncoding_.jsonEncode(pt, "DataEncoding")) {
 				Log(Error, "ReadValueId json encode error")
 					.parameter("Element", "DataEncoding");
@@ -201,21 +188,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ReadValueId::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "ReadValueId json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	ReadValueId::jsonDecode(boost::property_tree::ptree& pt)
+	ReadValueId::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
 		// decode node id
 		if (!nodeIdSPtr_->jsonDecode(pt, "NodeId")) {

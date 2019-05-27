@@ -84,7 +84,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static bool jsonDecode(
-			  boost::property_tree::ptree& pt,
+			  const boost::property_tree::ptree& pt,
 			  T& value,
 			  const std::string& listElement
 		  )
@@ -147,7 +147,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static bool jsonDecode(
-			  boost::property_tree::ptree& pt,
+			  const boost::property_tree::ptree& pt,
 			  T& value,
 			  const std::string& listElement
 		  )
@@ -217,7 +217,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static bool jsonDecode(
-			  boost::property_tree::ptree& pt,
+			  const boost::property_tree::ptree& pt,
 			  T& value,
 			  const std::string& listElement
 		  )
@@ -284,7 +284,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static bool jsonDecode(
-			  boost::property_tree::ptree& pt,
+			  const boost::property_tree::ptree& pt,
 			  boost::shared_ptr<T>& value,
 			  const std::string& listElement
 		  )
@@ -387,11 +387,11 @@ namespace OpcUaStackCore
 			boost::property_tree::ptree& pt,
 			const std::string& element,
 			const std::string& listElement
-		);
+		) const;
 		bool jsonEncode(
 			boost::property_tree::ptree& pt,
 			const std::string& listElement
-		);
+		) const;
 		bool jsonDecode(
 			const boost::property_tree::ptree& pt,
 			const std::string& element,
@@ -850,7 +850,7 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree& pt,
 		const std::string& element,
 		const std::string& listElement
-	)
+	) const
 	{
 		if (isNull_) {
 			return true;
@@ -873,7 +873,7 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::jsonEncode(
 		boost::property_tree::ptree& pt,
 		const std::string& listElement
-	)
+	) const
 	{
 		if (isNull_) {
 			return true;

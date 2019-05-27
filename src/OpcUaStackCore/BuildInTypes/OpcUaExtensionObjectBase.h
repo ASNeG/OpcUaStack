@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_ExtensionObjectBase_h__
@@ -24,6 +24,7 @@
 
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -32,6 +33,7 @@ namespace OpcUaStackCore
 	 * This class is the base class for all structure classes
 	 */
     class DLLEXPORT ExtensionObjectBase
+    : public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<ExtensionObjectBase> SPtr;
@@ -110,43 +112,6 @@ namespace OpcUaStackCore
 		 */
 		virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
 
-		/**
-		 * Function to encode the structure data to a json tree format.
-		 *
-		 * @param[out] pt					tree for json output
-		 * @param[in] element				element name of the subtree
-		 *
-		 * @return true if successful
-		 */
-		virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return true; }
-
-		/**
-		 * Function to encode the structure data to a json tree format.
-		 *
-		 * @param[out] pt					tree for json output
-		 *
-		 * @return true if successful
-		 */
-		virtual bool jsonEncode(boost::property_tree::ptree& pt) { return true; }
-
-		/**
-		 * Function to decode the json tree format to the structure data.
-		 *
-		 * @param[in] pt					tree for json output
-		 * @param[in] element				element name of the subtree
-		 *
-		 * @return true if successful
-		 */
-		virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return true; }
-
-		/**
-		 * Function to decode the json tree format to the structure data.
-		 *
-		 * @param[in] pt					tree for json output
-		 *
-		 * @return true if successful
-		 */
-		virtual bool jsonDecode(boost::property_tree::ptree& pt) { return true; }
 
 		/**
 		 * Function to create a copy of the extension object

@@ -90,7 +90,7 @@ namespace OpcUaStackCore
 	}
 		
 	OpcUaUInt16 
-	OpcUaQualifiedName::namespaceIndex(void)
+	OpcUaQualifiedName::namespaceIndex(void) const
 	{
 		return namespaceIndex_;
 	}
@@ -176,7 +176,7 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	OpcUaQualifiedName::copyTo(OpcUaQualifiedName& qualifiedName)
+	OpcUaQualifiedName::copyTo(OpcUaQualifiedName& qualifiedName) const
 	{
 		qualifiedName.namespaceIndex(namespaceIndex_);
 		name_.copyTo(qualifiedName.name());

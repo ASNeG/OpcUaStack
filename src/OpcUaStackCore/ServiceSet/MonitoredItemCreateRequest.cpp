@@ -95,21 +95,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	MonitoredItemCreateRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "MonitoredItemCreateRequest json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-
-		return true;
-	}
-
-	bool
-	MonitoredItemCreateRequest::jsonEncode(boost::property_tree::ptree& pt)
+	MonitoredItemCreateRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		// encode item to monitor
 		if (!itemToMonitor_.jsonEncode(pt, "ItemToMonitor")) {
@@ -139,23 +125,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	MonitoredItemCreateRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	MonitoredItemCreateRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "MonitoredItemCreateRequest json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	MonitoredItemCreateRequest::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
+		boost::optional<const boost::property_tree::ptree&> tmpTree;
 
 		// decode item to monitor
 		if (!itemToMonitor_.jsonDecode(pt, "ItemToMonitor")) {

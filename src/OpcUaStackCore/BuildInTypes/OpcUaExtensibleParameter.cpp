@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaExtensibleParameter::exist(void)
+	OpcUaExtensibleParameter::exist(void) const
 	{
 		return eoSPtr_.get() != nullptr;
 	}
@@ -166,20 +166,7 @@ namespace OpcUaStackCore
     }
 
     bool
-	OpcUaExtensibleParameter::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcUaExtensibleParameter json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-    }
-
-    bool
-	OpcUaExtensibleParameter::jsonEncode(boost::property_tree::ptree& pt)
+	OpcUaExtensibleParameter::jsonEncodeImpl(boost::property_tree::ptree &pt) const
     {
     	// check pointer
     	if (!exist()) {
@@ -207,21 +194,7 @@ namespace OpcUaStackCore
     }
 
     bool
-	OpcUaExtensibleParameter::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcUaExtensibleParameter json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-    }
-
-    bool
-	OpcUaExtensibleParameter::jsonDecode(boost::property_tree::ptree& pt)
+	OpcUaExtensibleParameter::jsonDecodeImpl(const boost::property_tree::ptree &pt)
     {
        	// decode type id
         if (!parameterTypeId_.jsonDecode(pt, "TypeId")) {

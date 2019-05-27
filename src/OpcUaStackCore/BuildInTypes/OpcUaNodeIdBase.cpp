@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include <boost/lexical_cast.hpp>
@@ -189,7 +189,7 @@ namespace OpcUaStackCore
 		else if (nodeIdType() == OpcUaBuildInType_OpcUaGuid) {
 			OpcUaGuid::SPtr opcUaGuidSPtr;
 			opcUaGuidSPtr = boost::get<OpcUaGuid::SPtr>(nodeIdValue_); 
-			nodeId = *opcUaGuidSPtr;
+			nodeId = opcUaGuidSPtr->value();
 		}
 		else {
 			return false;
@@ -552,20 +552,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaNodeIdBase::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcUaNodeId json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	OpcUaNodeIdBase::jsonEncode(boost::property_tree::ptree& pt)
+	OpcUaNodeIdBase::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		switch (nodeIdType())
 		{
@@ -637,21 +624,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaNodeIdBase::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcUaNodeId json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	OpcUaNodeIdBase::jsonDecode(boost::property_tree::ptree& pt)
+	OpcUaNodeIdBase::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		OpcUaUInt32 idType = 0;
 		if (!JsonNumber::jsonDecode(pt, idType, "IdType")) {

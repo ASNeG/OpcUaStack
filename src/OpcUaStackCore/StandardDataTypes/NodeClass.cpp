@@ -269,20 +269,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    NodeClass::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "NodeClass json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    NodeClass::jsonEncode(boost::property_tree::ptree& pt)
+    NodeClass::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         if(!JsonNumber::jsonEncode(pt, value_))
         {
@@ -294,21 +281,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    NodeClass::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "NodeClass json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    NodeClass::jsonDecode(boost::property_tree::ptree& pt)
+    NodeClass::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         if(!JsonNumber::jsonDecode(pt, value_)) {
             Log(Error, "NodeClass decode json error - decode failed");

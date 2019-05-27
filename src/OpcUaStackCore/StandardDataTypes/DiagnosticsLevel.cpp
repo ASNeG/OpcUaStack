@@ -253,20 +253,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    DiagnosticsLevel::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "DiagnosticsLevel json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    DiagnosticsLevel::jsonEncode(boost::property_tree::ptree& pt)
+    DiagnosticsLevel::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         if(!JsonNumber::jsonEncode(pt, value_))
         {
@@ -278,21 +265,7 @@ namespace OpcUaStackCore
     }
     
     bool
-    DiagnosticsLevel::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "DiagnosticsLevel json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    DiagnosticsLevel::jsonDecode(boost::property_tree::ptree& pt)
+    DiagnosticsLevel::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
         if(!JsonNumber::jsonDecode(pt, value_)) {
             Log(Error, "DiagnosticsLevel decode json error - decode failed");

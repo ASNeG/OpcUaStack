@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -3571,20 +3571,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaDataValue::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcUaDataValue json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	OpcUaDataValue::jsonEncode(boost::property_tree::ptree& pt)
+	OpcUaDataValue::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		// add value
 		if (opcUaVariantSPtr_.get() != nullptr) {
@@ -3643,27 +3630,11 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaDataValue::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaDataValue::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcUaDateTime json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	OpcUaDataValue::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
 		// get value
 		//opcUaVariantSPtr_.reset();
-		tmpTree = pt.get_child_optional("Value");
+		auto tmpTree = pt.get_child_optional("Value");
 		if (tmpTree) {
 			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 			if (!opcUaVariantSPtr_->jsonDecode(*tmpTree)) {

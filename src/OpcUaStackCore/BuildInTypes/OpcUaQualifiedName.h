@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 		void get(std::string& name, OpcUaUInt16& namespaceIndex);
 		void get(OpcUaString& name, OpcUaUInt16& namespaceIndex);
 		void namespaceIndex(const OpcUaUInt16& namespaceIndex);
-		OpcUaUInt16 namespaceIndex(void);
+		OpcUaUInt16 namespaceIndex(void) const;
 		void name(const std::string& name);
 		void name(const OpcUaString& name);
 		OpcUaString& name(void);
@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 		operator std::string const (void); 
 		operator OpcUaUInt16 const (void); 
 
-		void copyTo(OpcUaQualifiedName& qualifiedName);
+		void copyTo(OpcUaQualifiedName& qualifiedName) const;
 		bool operator!=(const OpcUaQualifiedName& opcUaQualifiedName) const;
 		bool operator==(const OpcUaQualifiedName& opcUaQualifiedName) const;
 
