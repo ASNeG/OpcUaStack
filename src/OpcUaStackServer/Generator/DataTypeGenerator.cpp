@@ -1182,7 +1182,7 @@ namespace OpcUaStackServer
 		ss << prefix << "{" << std::endl;
 
 		ss << prefix << "    std::string elementName;" << std::endl;
-		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree;" << std::endl;
+		ss << prefix << "    boost::optional<const boost::property_tree::ptree&> tree;" << std::endl;
 		ss << prefix << std::endl;
 
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
