@@ -264,36 +264,14 @@ namespace OpcUaStackCore
     bool
     UserNameIdentityToken::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!userName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserNameIdentityToken json encoder error")
-    		     .parameter("Element", "userName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("UserName", elementTree));
+        rc = rc & jsonObjectEncode(pt, userName_, "UserName");
+        rc = rc & jsonObjectEncode(pt, password_, "Password");
+        rc = rc & jsonObjectEncode(pt, encryptionAlgorithm_, "EncryptionAlgorithm");
     
-        elementTree.clear();
-        if (!password_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserNameIdentityToken json encoder error")
-    		     .parameter("Element", "password_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Password", elementTree));
-    
-        elementTree.clear();
-        if (!encryptionAlgorithm_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserNameIdentityToken json encoder error")
-    		     .parameter("Element", "encryptionAlgorithm_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EncryptionAlgorithm", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

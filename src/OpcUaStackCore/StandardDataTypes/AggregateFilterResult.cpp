@@ -259,36 +259,14 @@ namespace OpcUaStackCore
     bool
     AggregateFilterResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!revisedStartTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AggregateFilterResult json encoder error")
-    		     .parameter("Element", "revisedStartTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RevisedStartTime", elementTree));
+        rc = rc & jsonObjectEncode(pt, revisedStartTime_, "RevisedStartTime");
+        rc = rc & jsonNumberEncode(pt, revisedProcessingInterval_, "RevisedProcessingInterval");
+        rc = rc & jsonObjectEncode(pt, revisedAggregateConfiguration_, "RevisedAggregateConfiguration");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, revisedProcessingInterval_))
-        {
-    	     Log(Error, "AggregateFilterResult json encoder error")
-    		     .parameter("Element", "revisedProcessingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RevisedProcessingInterval", elementTree));
-    
-        elementTree.clear();
-        if (!revisedAggregateConfiguration_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AggregateFilterResult json encoder error")
-    		     .parameter("Element", "revisedAggregateConfiguration_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RevisedAggregateConfiguration", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

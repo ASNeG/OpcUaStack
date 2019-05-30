@@ -422,44 +422,13 @@ namespace OpcUaStackCore
     bool
     WriterGroupDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, writerGroupId_))
-        {
-    	     Log(Error, "WriterGroupDataType json encoder error")
-    		     .parameter("Element", "writerGroupId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("WriterGroupId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, publishingInterval_))
-        {
-    	     Log(Error, "WriterGroupDataType json encoder error")
-    		     .parameter("Element", "publishingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("PublishingInterval", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, keepAliveTime_))
-        {
-    	     Log(Error, "WriterGroupDataType json encoder error")
-    		     .parameter("Element", "keepAliveTime_");
-           return false;
-        }
-        pt.push_back(std::make_pair("KeepAliveTime", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, priority_))
-        {
-    	     Log(Error, "WriterGroupDataType json encoder error")
-    		     .parameter("Element", "priority_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Priority", elementTree));
-    
+        rc = rc & jsonNumberEncode(pt, writerGroupId_, "WriterGroupId");
+        rc = rc & jsonNumberEncode(pt, publishingInterval_, "PublishingInterval");
+        rc = rc & jsonNumberEncode(pt, keepAliveTime_, "KeepAliveTime");
+        rc = rc & jsonNumberEncode(pt, priority_, "Priority");
         elementTree.clear();
         if (!localeIds_.jsonEncode(elementTree, ""))
         {
@@ -468,25 +437,8 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("LocaleIds", elementTree));
-    
-        elementTree.clear();
-        if (!transportSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "WriterGroupDataType json encoder error")
-    		     .parameter("Element", "transportSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransportSettings", elementTree));
-    
-        elementTree.clear();
-        if (!messageSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "WriterGroupDataType json encoder error")
-    		     .parameter("Element", "messageSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("MessageSettings", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
+        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
         elementTree.clear();
         if (!dataSetWriters_.jsonEncode(elementTree, ""))
         {
@@ -496,7 +448,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("DataSetWriters", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

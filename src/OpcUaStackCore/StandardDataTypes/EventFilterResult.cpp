@@ -258,6 +258,7 @@ namespace OpcUaStackCore
     bool
     EventFilterResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
@@ -268,7 +269,6 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("SelectClauseResults", elementTree));
-    
         elementTree.clear();
         if (!selectClauseDiagnosticInfos_.jsonEncode(elementTree, ""))
         {
@@ -277,17 +277,9 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("SelectClauseDiagnosticInfos", elementTree));
+        rc = rc & jsonObjectEncode(pt, whereClauseResult_, "WhereClauseResult");
     
-        elementTree.clear();
-        if (!whereClauseResult_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EventFilterResult json encoder error")
-    		     .parameter("Element", "whereClauseResult_");
-            return false;
-        }
-        pt.push_back(std::make_pair("WhereClauseResult", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

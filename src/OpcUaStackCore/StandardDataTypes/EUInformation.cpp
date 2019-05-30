@@ -291,45 +291,15 @@ namespace OpcUaStackCore
     bool
     EUInformation::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!namespaceUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EUInformation json encoder error")
-    		     .parameter("Element", "namespaceUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NamespaceUri", elementTree));
+        rc = rc & jsonObjectEncode(pt, namespaceUri_, "NamespaceUri");
+        rc = rc & jsonNumberEncode(pt, unitId_, "UnitId");
+        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName");
+        rc = rc & jsonObjectEncode(pt, description_, "Description");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, unitId_))
-        {
-    	     Log(Error, "EUInformation json encoder error")
-    		     .parameter("Element", "unitId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UnitId", elementTree));
-    
-        elementTree.clear();
-        if (!displayName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EUInformation json encoder error")
-    		     .parameter("Element", "displayName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DisplayName", elementTree));
-    
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EUInformation json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

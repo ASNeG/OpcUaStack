@@ -322,26 +322,11 @@ namespace OpcUaStackCore
     bool
     DataSetMetaDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonObjectEncode(pt, description_, "Description");
         elementTree.clear();
         if (!fields_.jsonEncode(elementTree, ""))
         {
@@ -350,26 +335,10 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("Fields", elementTree));
+        rc = rc & jsonObjectEncode(pt, dataSetClassId_, "DataSetClassId");
+        rc = rc & jsonObjectEncode(pt, configurationVersion_, "ConfigurationVersion");
     
-        elementTree.clear();
-        if (!dataSetClassId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", "dataSetClassId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetClassId", elementTree));
-    
-        elementTree.clear();
-        if (!configurationVersion_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", "configurationVersion_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ConfigurationVersion", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

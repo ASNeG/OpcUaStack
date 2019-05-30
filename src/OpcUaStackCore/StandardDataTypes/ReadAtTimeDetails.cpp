@@ -227,6 +227,7 @@ namespace OpcUaStackCore
     bool
     ReadAtTimeDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
@@ -237,17 +238,9 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("ReqTimes", elementTree));
+        rc = rc & jsonNumberEncode(pt, useSimpleBounds_, "UseSimpleBounds");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, useSimpleBounds_))
-        {
-    	     Log(Error, "ReadAtTimeDetails json encoder error")
-    		     .parameter("Element", "useSimpleBounds_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UseSimpleBounds", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

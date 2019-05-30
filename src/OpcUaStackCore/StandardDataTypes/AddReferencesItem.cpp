@@ -361,63 +361,17 @@ namespace OpcUaStackCore
     bool
     AddReferencesItem::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!sourceNodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "sourceNodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SourceNodeId", elementTree));
+        rc = rc & jsonObjectEncode(pt, sourceNodeId_, "SourceNodeId");
+        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonNumberEncode(pt, isForward_, "IsForward");
+        rc = rc & jsonObjectEncode(pt, targetServerUri_, "TargetServerUri");
+        rc = rc & jsonObjectEncode(pt, targetNodeId_, "TargetNodeId");
+        rc = rc & jsonObjectEncode(pt, targetNodeClass_, "TargetNodeClass");
     
-        elementTree.clear();
-        if (!referenceTypeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "referenceTypeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isForward_))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "isForward_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsForward", elementTree));
-    
-        elementTree.clear();
-        if (!targetServerUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "targetServerUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TargetServerUri", elementTree));
-    
-        elementTree.clear();
-        if (!targetNodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "targetNodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TargetNodeId", elementTree));
-    
-        elementTree.clear();
-        if (!targetNodeClass_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "targetNodeClass_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TargetNodeClass", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

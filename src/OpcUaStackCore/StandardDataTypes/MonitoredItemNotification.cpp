@@ -227,27 +227,13 @@ namespace OpcUaStackCore
     bool
     MonitoredItemNotification::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, clientHandle_))
-        {
-    	     Log(Error, "MonitoredItemNotification json encoder error")
-    		     .parameter("Element", "clientHandle_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ClientHandle", elementTree));
+        rc = rc & jsonNumberEncode(pt, clientHandle_, "ClientHandle");
+        rc = rc & jsonObjectEncode(pt, value_, "Value");
     
-        elementTree.clear();
-        if (!value_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "MonitoredItemNotification json encoder error")
-    		     .parameter("Element", "value_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

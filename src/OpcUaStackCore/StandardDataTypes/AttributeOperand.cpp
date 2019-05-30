@@ -323,54 +323,16 @@ namespace OpcUaStackCore
     bool
     AttributeOperand::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!nodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AttributeOperand json encoder error")
-    		     .parameter("Element", "nodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NodeId", elementTree));
+        rc = rc & jsonObjectEncode(pt, nodeId_, "NodeId");
+        rc = rc & jsonObjectEncode(pt, alias_, "Alias");
+        rc = rc & jsonObjectEncode(pt, browsePath_, "BrowsePath");
+        rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
+        rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange");
     
-        elementTree.clear();
-        if (!alias_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AttributeOperand json encoder error")
-    		     .parameter("Element", "alias_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Alias", elementTree));
-    
-        elementTree.clear();
-        if (!browsePath_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AttributeOperand json encoder error")
-    		     .parameter("Element", "browsePath_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BrowsePath", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, attributeId_))
-        {
-    	     Log(Error, "AttributeOperand json encoder error")
-    		     .parameter("Element", "attributeId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("AttributeId", elementTree));
-    
-        elementTree.clear();
-        if (!indexRange_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AttributeOperand json encoder error")
-    		     .parameter("Element", "indexRange_");
-            return false;
-        }
-        pt.push_back(std::make_pair("IndexRange", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

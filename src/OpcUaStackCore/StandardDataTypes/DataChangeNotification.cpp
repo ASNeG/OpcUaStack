@@ -226,6 +226,7 @@ namespace OpcUaStackCore
     bool
     DataChangeNotification::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
@@ -236,7 +237,6 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("MonitoredItems", elementTree));
-    
         elementTree.clear();
         if (!diagnosticInfos_.jsonEncode(elementTree, ""))
         {
@@ -246,7 +246,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("DiagnosticInfos", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

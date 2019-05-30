@@ -258,17 +258,10 @@ namespace OpcUaStackCore
     bool
     UABinaryFileDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!schemaLocation_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UABinaryFileDataType json encoder error")
-    		     .parameter("Element", "schemaLocation_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SchemaLocation", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, schemaLocation_, "SchemaLocation");
         elementTree.clear();
         if (!fileHeader_.jsonEncode(elementTree, ""))
         {
@@ -277,17 +270,9 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("FileHeader", elementTree));
+        rc = rc & jsonObjectEncode(pt, body_, "Body");
     
-        elementTree.clear();
-        if (!body_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UABinaryFileDataType json encoder error")
-    		     .parameter("Element", "body_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Body", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

@@ -228,27 +228,13 @@ namespace OpcUaStackCore
     bool
     Range::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, low_))
-        {
-    	     Log(Error, "Range json encoder error")
-    		     .parameter("Element", "low_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Low", elementTree));
+        rc = rc & jsonNumberEncode(pt, low_, "Low");
+        rc = rc & jsonNumberEncode(pt, high_, "High");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, high_))
-        {
-    	     Log(Error, "Range json encoder error")
-    		     .parameter("Element", "high_");
-           return false;
-        }
-        pt.push_back(std::make_pair("High", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

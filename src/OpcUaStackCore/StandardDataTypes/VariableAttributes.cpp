@@ -429,35 +429,12 @@ namespace OpcUaStackCore
     bool
     VariableAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!value_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "value_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
-    
-        elementTree.clear();
-        if (!dataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "dataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, valueRank_))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "valueRank_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ValueRank", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, value_, "Value");
+        rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
+        rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
         elementTree.clear();
         if (!arrayDimensions_.jsonEncode(elementTree, ""))
         {
@@ -466,44 +443,12 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("ArrayDimensions", elementTree));
+        rc = rc & jsonNumberEncode(pt, accessLevel_, "AccessLevel");
+        rc = rc & jsonNumberEncode(pt, userAccessLevel_, "UserAccessLevel");
+        rc = rc & jsonNumberEncode(pt, minimumSamplingInterval_, "MinimumSamplingInterval");
+        rc = rc & jsonNumberEncode(pt, historizing_, "Historizing");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, accessLevel_))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "accessLevel_");
-           return false;
-        }
-        pt.push_back(std::make_pair("AccessLevel", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, userAccessLevel_))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "userAccessLevel_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UserAccessLevel", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, minimumSamplingInterval_))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "minimumSamplingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MinimumSamplingInterval", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, historizing_))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "historizing_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Historizing", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

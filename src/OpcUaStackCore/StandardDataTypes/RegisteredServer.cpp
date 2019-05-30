@@ -425,26 +425,11 @@ namespace OpcUaStackCore
     bool
     RegisteredServer::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!serverUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RegisteredServer json encoder error")
-    		     .parameter("Element", "serverUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerUri", elementTree));
-    
-        elementTree.clear();
-        if (!productUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RegisteredServer json encoder error")
-    		     .parameter("Element", "productUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ProductUri", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
+        rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri");
         elementTree.clear();
         if (!serverNames_.jsonEncode(elementTree, ""))
         {
@@ -453,25 +438,8 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("ServerNames", elementTree));
-    
-        elementTree.clear();
-        if (!serverType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RegisteredServer json encoder error")
-    		     .parameter("Element", "serverType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerType", elementTree));
-    
-        elementTree.clear();
-        if (!gatewayServerUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RegisteredServer json encoder error")
-    		     .parameter("Element", "gatewayServerUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("GatewayServerUri", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, serverType_, "ServerType");
+        rc = rc & jsonObjectEncode(pt, gatewayServerUri_, "GatewayServerUri");
         elementTree.clear();
         if (!discoveryUrls_.jsonEncode(elementTree, ""))
         {
@@ -480,26 +448,10 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("DiscoveryUrls", elementTree));
+        rc = rc & jsonObjectEncode(pt, semaphoreFilePath_, "SemaphoreFilePath");
+        rc = rc & jsonNumberEncode(pt, isOnline_, "IsOnline");
     
-        elementTree.clear();
-        if (!semaphoreFilePath_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RegisteredServer json encoder error")
-    		     .parameter("Element", "semaphoreFilePath_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SemaphoreFilePath", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isOnline_))
-        {
-    	     Log(Error, "RegisteredServer json encoder error")
-    		     .parameter("Element", "isOnline_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsOnline", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

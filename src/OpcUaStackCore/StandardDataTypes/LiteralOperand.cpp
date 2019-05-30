@@ -194,18 +194,12 @@ namespace OpcUaStackCore
     bool
     LiteralOperand::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!value_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "LiteralOperand json encoder error")
-    		     .parameter("Element", "value_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
+        rc = rc & jsonObjectEncode(pt, value_, "Value");
     
-        return true;
+        return rc;
     }
     
     bool

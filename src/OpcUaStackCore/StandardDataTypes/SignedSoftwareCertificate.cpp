@@ -232,27 +232,13 @@ namespace OpcUaStackCore
     bool
     SignedSoftwareCertificate::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!certificateData_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SignedSoftwareCertificate json encoder error")
-    		     .parameter("Element", "certificateData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CertificateData", elementTree));
+        rc = rc & jsonObjectEncode(pt, certificateData_, "CertificateData");
+        rc = rc & jsonObjectEncode(pt, signature_, "Signature");
     
-        elementTree.clear();
-        if (!signature_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SignedSoftwareCertificate json encoder error")
-    		     .parameter("Element", "signature_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Signature", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

@@ -228,27 +228,13 @@ namespace OpcUaStackCore
     bool
     DoubleComplexNumberType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, real_))
-        {
-    	     Log(Error, "DoubleComplexNumberType json encoder error")
-    		     .parameter("Element", "real_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Real", elementTree));
+        rc = rc & jsonNumberEncode(pt, real_, "Real");
+        rc = rc & jsonNumberEncode(pt, imaginary_, "Imaginary");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, imaginary_))
-        {
-    	     Log(Error, "DoubleComplexNumberType json encoder error")
-    		     .parameter("Element", "imaginary_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Imaginary", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

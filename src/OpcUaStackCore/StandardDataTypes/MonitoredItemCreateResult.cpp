@@ -325,54 +325,16 @@ namespace OpcUaStackCore
     bool
     MonitoredItemCreateResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!statusCode_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", "statusCode_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StatusCode", elementTree));
+        rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode");
+        rc = rc & jsonNumberEncode(pt, monitoredItemId_, "MonitoredItemId");
+        rc = rc & jsonNumberEncode(pt, revisedSamplingInterval_, "RevisedSamplingInterval");
+        rc = rc & jsonNumberEncode(pt, revisedQueueSize_, "RevisedQueueSize");
+        rc = rc & jsonObjectEncode(pt, filterResult_, "FilterResult");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, monitoredItemId_))
-        {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", "monitoredItemId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MonitoredItemId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, revisedSamplingInterval_))
-        {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", "revisedSamplingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RevisedSamplingInterval", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, revisedQueueSize_))
-        {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", "revisedQueueSize_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RevisedQueueSize", elementTree));
-    
-        elementTree.clear();
-        if (!filterResult_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", "filterResult_");
-            return false;
-        }
-        pt.push_back(std::make_pair("FilterResult", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

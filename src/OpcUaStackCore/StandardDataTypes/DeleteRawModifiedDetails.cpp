@@ -259,36 +259,14 @@ namespace OpcUaStackCore
     bool
     DeleteRawModifiedDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isDeleteModified_))
-        {
-    	     Log(Error, "DeleteRawModifiedDetails json encoder error")
-    		     .parameter("Element", "isDeleteModified_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsDeleteModified", elementTree));
+        rc = rc & jsonNumberEncode(pt, isDeleteModified_, "IsDeleteModified");
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
+        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime");
     
-        elementTree.clear();
-        if (!startTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DeleteRawModifiedDetails json encoder error")
-    		     .parameter("Element", "startTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StartTime", elementTree));
-    
-        elementTree.clear();
-        if (!endTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DeleteRawModifiedDetails json encoder error")
-    		     .parameter("Element", "endTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EndTime", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

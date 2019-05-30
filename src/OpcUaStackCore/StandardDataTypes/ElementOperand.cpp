@@ -195,18 +195,12 @@ namespace OpcUaStackCore
     bool
     ElementOperand::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, index_))
-        {
-    	     Log(Error, "ElementOperand json encoder error")
-    		     .parameter("Element", "index_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Index", elementTree));
+        rc = rc & jsonNumberEncode(pt, index_, "Index");
     
-        return true;
+        return rc;
     }
     
     bool

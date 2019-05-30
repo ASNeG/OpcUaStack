@@ -389,44 +389,13 @@ namespace OpcUaStackCore
     bool
     StructureField::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "StructureField json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "StructureField json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
-        elementTree.clear();
-        if (!dataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "StructureField json encoder error")
-    		     .parameter("Element", "dataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, valueRank_))
-        {
-    	     Log(Error, "StructureField json encoder error")
-    		     .parameter("Element", "valueRank_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ValueRank", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonObjectEncode(pt, description_, "Description");
+        rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
+        rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
         elementTree.clear();
         if (!arrayDimensions_.jsonEncode(elementTree, ""))
         {
@@ -435,26 +404,10 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("ArrayDimensions", elementTree));
+        rc = rc & jsonNumberEncode(pt, maxStringLength_, "MaxStringLength");
+        rc = rc & jsonNumberEncode(pt, isOptional_, "IsOptional");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxStringLength_))
-        {
-    	     Log(Error, "StructureField json encoder error")
-    		     .parameter("Element", "maxStringLength_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxStringLength", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isOptional_))
-        {
-    	     Log(Error, "StructureField json encoder error")
-    		     .parameter("Element", "isOptional_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsOptional", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

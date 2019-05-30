@@ -298,45 +298,15 @@ namespace OpcUaStackCore
     bool
     RelativePathElement::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!referenceTypeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RelativePathElement json encoder error")
-    		     .parameter("Element", "referenceTypeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
+        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonNumberEncode(pt, isInverse_, "IsInverse");
+        rc = rc & jsonNumberEncode(pt, includeSubtypes_, "IncludeSubtypes");
+        rc = rc & jsonObjectEncode(pt, targetName_, "TargetName");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isInverse_))
-        {
-    	     Log(Error, "RelativePathElement json encoder error")
-    		     .parameter("Element", "isInverse_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsInverse", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, includeSubtypes_))
-        {
-    	     Log(Error, "RelativePathElement json encoder error")
-    		     .parameter("Element", "includeSubtypes_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IncludeSubtypes", elementTree));
-    
-        elementTree.clear();
-        if (!targetName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RelativePathElement json encoder error")
-    		     .parameter("Element", "targetName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TargetName", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

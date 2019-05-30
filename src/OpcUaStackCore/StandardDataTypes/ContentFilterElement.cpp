@@ -226,17 +226,10 @@ namespace OpcUaStackCore
     bool
     ContentFilterElement::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!filterOperator_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ContentFilterElement json encoder error")
-    		     .parameter("Element", "filterOperator_");
-            return false;
-        }
-        pt.push_back(std::make_pair("FilterOperator", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, filterOperator_, "FilterOperator");
         elementTree.clear();
         if (!filterOperands_.jsonEncode(elementTree, ""))
         {
@@ -246,7 +239,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("FilterOperands", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

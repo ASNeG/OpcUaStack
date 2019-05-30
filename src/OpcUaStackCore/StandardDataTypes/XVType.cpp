@@ -228,27 +228,13 @@ namespace OpcUaStackCore
     bool
     XVType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, x_))
-        {
-    	     Log(Error, "XVType json encoder error")
-    		     .parameter("Element", "x_");
-           return false;
-        }
-        pt.push_back(std::make_pair("X", elementTree));
+        rc = rc & jsonNumberEncode(pt, x_, "X");
+        rc = rc & jsonNumberEncode(pt, value_, "Value");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, value_))
-        {
-    	     Log(Error, "XVType json encoder error")
-    		     .parameter("Element", "value_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

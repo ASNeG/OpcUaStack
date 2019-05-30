@@ -226,17 +226,10 @@ namespace OpcUaStackCore
     bool
     UpdateDataDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!performInsertReplace_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UpdateDataDetails json encoder error")
-    		     .parameter("Element", "performInsertReplace_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PerformInsertReplace", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, performInsertReplace_, "PerformInsertReplace");
         elementTree.clear();
         if (!updateValues_.jsonEncode(elementTree, ""))
         {
@@ -246,7 +239,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("UpdateValues", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

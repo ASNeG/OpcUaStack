@@ -322,17 +322,10 @@ namespace OpcUaStackCore
     bool
     PublishedDataSetDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
         elementTree.clear();
         if (!dataSetFolder_.jsonEncode(elementTree, ""))
         {
@@ -341,16 +334,7 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("DataSetFolder", elementTree));
-    
-        elementTree.clear();
-        if (!dataSetMetaData_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", "dataSetMetaData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetMetaData", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, dataSetMetaData_, "DataSetMetaData");
         elementTree.clear();
         if (!extensionFields_.jsonEncode(elementTree, ""))
         {
@@ -359,17 +343,9 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("ExtensionFields", elementTree));
+        rc = rc & jsonObjectEncode(pt, dataSetSource_, "DataSetSource");
     
-        elementTree.clear();
-        if (!dataSetSource_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", "dataSetSource_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetSource", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

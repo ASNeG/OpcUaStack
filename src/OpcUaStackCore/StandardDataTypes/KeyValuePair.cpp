@@ -226,27 +226,13 @@ namespace OpcUaStackCore
     bool
     KeyValuePair::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!key_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "KeyValuePair json encoder error")
-    		     .parameter("Element", "key_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Key", elementTree));
+        rc = rc & jsonObjectEncode(pt, key_, "Key");
+        rc = rc & jsonObjectEncode(pt, value_, "Value");
     
-        elementTree.clear();
-        if (!value_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "KeyValuePair json encoder error")
-    		     .parameter("Element", "value_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

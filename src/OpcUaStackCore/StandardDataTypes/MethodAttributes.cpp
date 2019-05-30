@@ -234,27 +234,13 @@ namespace OpcUaStackCore
     bool
     MethodAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, executable_))
-        {
-    	     Log(Error, "MethodAttributes json encoder error")
-    		     .parameter("Element", "executable_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Executable", elementTree));
+        rc = rc & jsonNumberEncode(pt, executable_, "Executable");
+        rc = rc & jsonNumberEncode(pt, userExecutable_, "UserExecutable");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, userExecutable_))
-        {
-    	     Log(Error, "MethodAttributes json encoder error")
-    		     .parameter("Element", "userExecutable_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UserExecutable", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

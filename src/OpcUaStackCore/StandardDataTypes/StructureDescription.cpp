@@ -194,18 +194,12 @@ namespace OpcUaStackCore
     bool
     StructureDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!structureDefinition_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "StructureDescription json encoder error")
-    		     .parameter("Element", "structureDefinition_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StructureDefinition", elementTree));
+        rc = rc & jsonObjectEncode(pt, structureDefinition_, "StructureDefinition");
     
-        return true;
+        return rc;
     }
     
     bool

@@ -228,27 +228,13 @@ namespace OpcUaStackCore
     bool
     JsonDataSetReaderMessageDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, networkMessageContentMask_))
-        {
-    	     Log(Error, "JsonDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "networkMessageContentMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NetworkMessageContentMask", elementTree));
+        rc = rc & jsonNumberEncode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
+        rc = rc & jsonNumberEncode(pt, dataSetMessageContentMask_, "DataSetMessageContentMask");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, dataSetMessageContentMask_))
-        {
-    	     Log(Error, "JsonDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "dataSetMessageContentMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DataSetMessageContentMask", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

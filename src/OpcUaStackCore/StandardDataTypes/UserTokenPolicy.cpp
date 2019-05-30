@@ -328,54 +328,16 @@ namespace OpcUaStackCore
     bool
     UserTokenPolicy::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!policyId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", "policyId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PolicyId", elementTree));
+        rc = rc & jsonObjectEncode(pt, policyId_, "PolicyId");
+        rc = rc & jsonObjectEncode(pt, tokenType_, "TokenType");
+        rc = rc & jsonObjectEncode(pt, issuedTokenType_, "IssuedTokenType");
+        rc = rc & jsonObjectEncode(pt, issuerEndpointUrl_, "IssuerEndpointUrl");
+        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri");
     
-        elementTree.clear();
-        if (!tokenType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", "tokenType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TokenType", elementTree));
-    
-        elementTree.clear();
-        if (!issuedTokenType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", "issuedTokenType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("IssuedTokenType", elementTree));
-    
-        elementTree.clear();
-        if (!issuerEndpointUrl_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", "issuerEndpointUrl_");
-            return false;
-        }
-        pt.push_back(std::make_pair("IssuerEndpointUrl", elementTree));
-    
-        elementTree.clear();
-        if (!securityPolicyUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", "securityPolicyUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityPolicyUri", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

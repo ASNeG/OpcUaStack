@@ -392,72 +392,18 @@ namespace OpcUaStackCore
     bool
     AddNodesItem::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!parentNodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddNodesItem json encoder error")
-    		     .parameter("Element", "parentNodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ParentNodeId", elementTree));
+        rc = rc & jsonObjectEncode(pt, parentNodeId_, "ParentNodeId");
+        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonObjectEncode(pt, requestedNewNodeId_, "RequestedNewNodeId");
+        rc = rc & jsonObjectEncode(pt, browseName_, "BrowseName");
+        rc = rc & jsonObjectEncode(pt, nodeClass_, "NodeClass");
+        rc = rc & jsonObjectEncode(pt, nodeAttributes_, "NodeAttributes");
+        rc = rc & jsonObjectEncode(pt, typeDefinition_, "TypeDefinition");
     
-        elementTree.clear();
-        if (!referenceTypeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddNodesItem json encoder error")
-    		     .parameter("Element", "referenceTypeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
-    
-        elementTree.clear();
-        if (!requestedNewNodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddNodesItem json encoder error")
-    		     .parameter("Element", "requestedNewNodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RequestedNewNodeId", elementTree));
-    
-        elementTree.clear();
-        if (!browseName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddNodesItem json encoder error")
-    		     .parameter("Element", "browseName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BrowseName", elementTree));
-    
-        elementTree.clear();
-        if (!nodeClass_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddNodesItem json encoder error")
-    		     .parameter("Element", "nodeClass_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NodeClass", elementTree));
-    
-        elementTree.clear();
-        if (!nodeAttributes_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddNodesItem json encoder error")
-    		     .parameter("Element", "nodeAttributes_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NodeAttributes", elementTree));
-    
-        elementTree.clear();
-        if (!typeDefinition_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddNodesItem json encoder error")
-    		     .parameter("Element", "typeDefinition_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TypeDefinition", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

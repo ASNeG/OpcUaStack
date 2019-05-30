@@ -227,17 +227,10 @@ namespace OpcUaStackCore
     bool
     EventFieldList::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, clientHandle_))
-        {
-    	     Log(Error, "EventFieldList json encoder error")
-    		     .parameter("Element", "clientHandle_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ClientHandle", elementTree));
-    
+        rc = rc & jsonNumberEncode(pt, clientHandle_, "ClientHandle");
         elementTree.clear();
         if (!eventFields_.jsonEncode(elementTree, ""))
         {
@@ -247,7 +240,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("EventFields", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

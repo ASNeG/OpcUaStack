@@ -258,36 +258,14 @@ namespace OpcUaStackCore
     bool
     ModificationInfo::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!modificationTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ModificationInfo json encoder error")
-    		     .parameter("Element", "modificationTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ModificationTime", elementTree));
+        rc = rc & jsonObjectEncode(pt, modificationTime_, "ModificationTime");
+        rc = rc & jsonObjectEncode(pt, updateType_, "UpdateType");
+        rc = rc & jsonObjectEncode(pt, userName_, "UserName");
     
-        elementTree.clear();
-        if (!updateType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ModificationInfo json encoder error")
-    		     .parameter("Element", "updateType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("UpdateType", elementTree));
-    
-        elementTree.clear();
-        if (!userName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ModificationInfo json encoder error")
-    		     .parameter("Element", "userName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("UserName", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

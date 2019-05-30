@@ -226,27 +226,13 @@ namespace OpcUaStackCore
     bool
     DataTypeDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!dataTypeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataTypeDescription json encoder error")
-    		     .parameter("Element", "dataTypeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataTypeId", elementTree));
+        rc = rc & jsonObjectEncode(pt, dataTypeId_, "DataTypeId");
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataTypeDescription json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

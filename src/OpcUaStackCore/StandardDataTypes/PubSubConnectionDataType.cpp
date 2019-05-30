@@ -451,53 +451,14 @@ namespace OpcUaStackCore
     bool
     PubSubConnectionDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PubSubConnectionDataType json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, enabled_))
-        {
-    	     Log(Error, "PubSubConnectionDataType json encoder error")
-    		     .parameter("Element", "enabled_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Enabled", elementTree));
-    
-        elementTree.clear();
-        if (!publisherId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PubSubConnectionDataType json encoder error")
-    		     .parameter("Element", "publisherId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublisherId", elementTree));
-    
-        elementTree.clear();
-        if (!transportProfileUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PubSubConnectionDataType json encoder error")
-    		     .parameter("Element", "transportProfileUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransportProfileUri", elementTree));
-    
-        elementTree.clear();
-        if (!address_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PubSubConnectionDataType json encoder error")
-    		     .parameter("Element", "address_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Address", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
+        rc = rc & jsonObjectEncode(pt, publisherId_, "PublisherId");
+        rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri");
+        rc = rc & jsonObjectEncode(pt, address_, "Address");
         elementTree.clear();
         if (!connectionProperties_.jsonEncode(elementTree, ""))
         {
@@ -506,16 +467,7 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("ConnectionProperties", elementTree));
-    
-        elementTree.clear();
-        if (!transportSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PubSubConnectionDataType json encoder error")
-    		     .parameter("Element", "transportSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransportSettings", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
         elementTree.clear();
         if (!writerGroups_.jsonEncode(elementTree, ""))
         {
@@ -524,7 +476,6 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("WriterGroups", elementTree));
-    
         elementTree.clear();
         if (!readerGroups_.jsonEncode(elementTree, ""))
         {
@@ -534,7 +485,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("ReaderGroups", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

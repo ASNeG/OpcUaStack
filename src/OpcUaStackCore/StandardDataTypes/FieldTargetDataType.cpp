@@ -387,72 +387,18 @@ namespace OpcUaStackCore
     bool
     FieldTargetDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!dataSetFieldId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "FieldTargetDataType json encoder error")
-    		     .parameter("Element", "dataSetFieldId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetFieldId", elementTree));
+        rc = rc & jsonObjectEncode(pt, dataSetFieldId_, "DataSetFieldId");
+        rc = rc & jsonObjectEncode(pt, receiverIndexRange_, "ReceiverIndexRange");
+        rc = rc & jsonObjectEncode(pt, targetNodeId_, "TargetNodeId");
+        rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
+        rc = rc & jsonObjectEncode(pt, writeIndexRange_, "WriteIndexRange");
+        rc = rc & jsonObjectEncode(pt, overrideValueHandling_, "OverrideValueHandling");
+        rc = rc & jsonObjectEncode(pt, overrideValue_, "OverrideValue");
     
-        elementTree.clear();
-        if (!receiverIndexRange_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "FieldTargetDataType json encoder error")
-    		     .parameter("Element", "receiverIndexRange_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ReceiverIndexRange", elementTree));
-    
-        elementTree.clear();
-        if (!targetNodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "FieldTargetDataType json encoder error")
-    		     .parameter("Element", "targetNodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TargetNodeId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, attributeId_))
-        {
-    	     Log(Error, "FieldTargetDataType json encoder error")
-    		     .parameter("Element", "attributeId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("AttributeId", elementTree));
-    
-        elementTree.clear();
-        if (!writeIndexRange_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "FieldTargetDataType json encoder error")
-    		     .parameter("Element", "writeIndexRange_");
-            return false;
-        }
-        pt.push_back(std::make_pair("WriteIndexRange", elementTree));
-    
-        elementTree.clear();
-        if (!overrideValueHandling_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "FieldTargetDataType json encoder error")
-    		     .parameter("Element", "overrideValueHandling_");
-            return false;
-        }
-        pt.push_back(std::make_pair("OverrideValueHandling", elementTree));
-    
-        elementTree.clear();
-        if (!overrideValue_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "FieldTargetDataType json encoder error")
-    		     .parameter("Element", "overrideValue_");
-            return false;
-        }
-        pt.push_back(std::make_pair("OverrideValue", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

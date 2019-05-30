@@ -227,27 +227,13 @@ namespace OpcUaStackCore
     bool
     RolePermissionType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!roleId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RolePermissionType json encoder error")
-    		     .parameter("Element", "roleId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RoleId", elementTree));
+        rc = rc & jsonObjectEncode(pt, roleId_, "RoleId");
+        rc = rc & jsonNumberEncode(pt, permissions_, "Permissions");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, permissions_))
-        {
-    	     Log(Error, "RolePermissionType json encoder error")
-    		     .parameter("Element", "permissions_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Permissions", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

@@ -329,35 +329,12 @@ namespace OpcUaStackCore
     bool
     Argument::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
-        elementTree.clear();
-        if (!dataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", "dataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, valueRank_))
-        {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", "valueRank_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ValueRank", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
+        rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
         elementTree.clear();
         if (!arrayDimensions_.jsonEncode(elementTree, ""))
         {
@@ -366,17 +343,9 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("ArrayDimensions", elementTree));
+        rc = rc & jsonObjectEncode(pt, description_, "Description");
     
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

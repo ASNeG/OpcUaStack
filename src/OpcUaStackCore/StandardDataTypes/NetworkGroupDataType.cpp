@@ -226,17 +226,10 @@ namespace OpcUaStackCore
     bool
     NetworkGroupDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!serverUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "NetworkGroupDataType json encoder error")
-    		     .parameter("Element", "serverUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerUri", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
         elementTree.clear();
         if (!networkPaths_.jsonEncode(elementTree, ""))
         {
@@ -246,7 +239,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("NetworkPaths", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

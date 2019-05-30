@@ -1544,53 +1544,14 @@ namespace OpcUaStackCore
     bool
     SessionDiagnosticsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!sessionId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "sessionId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SessionId", elementTree));
-    
-        elementTree.clear();
-        if (!sessionName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "sessionName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SessionName", elementTree));
-    
-        elementTree.clear();
-        if (!clientDescription_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "clientDescription_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ClientDescription", elementTree));
-    
-        elementTree.clear();
-        if (!serverUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "serverUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerUri", elementTree));
-    
-        elementTree.clear();
-        if (!endpointUrl_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "endpointUrl_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EndpointUrl", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, sessionId_, "SessionId");
+        rc = rc & jsonObjectEncode(pt, sessionName_, "SessionName");
+        rc = rc & jsonObjectEncode(pt, clientDescription_, "ClientDescription");
+        rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
+        rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl");
         elementTree.clear();
         if (!localeIds_.jsonEncode(elementTree, ""))
         {
@@ -1599,341 +1560,45 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("LocaleIds", elementTree));
+        rc = rc & jsonNumberEncode(pt, actualSessionTimeout_, "ActualSessionTimeout");
+        rc = rc & jsonNumberEncode(pt, maxResponseMessageSize_, "MaxResponseMessageSize");
+        rc = rc & jsonObjectEncode(pt, clientConnectionTime_, "ClientConnectionTime");
+        rc = rc & jsonObjectEncode(pt, clientLastContactTime_, "ClientLastContactTime");
+        rc = rc & jsonNumberEncode(pt, currentSubscriptionsCount_, "CurrentSubscriptionsCount");
+        rc = rc & jsonNumberEncode(pt, currentMonitoredItemsCount_, "CurrentMonitoredItemsCount");
+        rc = rc & jsonNumberEncode(pt, currentPublishRequestsInQueue_, "CurrentPublishRequestsInQueue");
+        rc = rc & jsonObjectEncode(pt, totalRequestCount_, "TotalRequestCount");
+        rc = rc & jsonNumberEncode(pt, unauthorizedRequestCount_, "UnauthorizedRequestCount");
+        rc = rc & jsonObjectEncode(pt, readCount_, "ReadCount");
+        rc = rc & jsonObjectEncode(pt, historyReadCount_, "HistoryReadCount");
+        rc = rc & jsonObjectEncode(pt, writeCount_, "WriteCount");
+        rc = rc & jsonObjectEncode(pt, historyUpdateCount_, "HistoryUpdateCount");
+        rc = rc & jsonObjectEncode(pt, callCount_, "CallCount");
+        rc = rc & jsonObjectEncode(pt, createMonitoredItemsCount_, "CreateMonitoredItemsCount");
+        rc = rc & jsonObjectEncode(pt, modifyMonitoredItemsCount_, "ModifyMonitoredItemsCount");
+        rc = rc & jsonObjectEncode(pt, setMonitoringModeCount_, "SetMonitoringModeCount");
+        rc = rc & jsonObjectEncode(pt, setTriggeringCount_, "SetTriggeringCount");
+        rc = rc & jsonObjectEncode(pt, deleteMonitoredItemsCount_, "DeleteMonitoredItemsCount");
+        rc = rc & jsonObjectEncode(pt, createSubscriptionCount_, "CreateSubscriptionCount");
+        rc = rc & jsonObjectEncode(pt, modifySubscriptionCount_, "ModifySubscriptionCount");
+        rc = rc & jsonObjectEncode(pt, setPublishingModeCount_, "SetPublishingModeCount");
+        rc = rc & jsonObjectEncode(pt, publishCount_, "PublishCount");
+        rc = rc & jsonObjectEncode(pt, republishCount_, "RepublishCount");
+        rc = rc & jsonObjectEncode(pt, transferSubscriptionsCount_, "TransferSubscriptionsCount");
+        rc = rc & jsonObjectEncode(pt, deleteSubscriptionsCount_, "DeleteSubscriptionsCount");
+        rc = rc & jsonObjectEncode(pt, addNodesCount_, "AddNodesCount");
+        rc = rc & jsonObjectEncode(pt, addReferencesCount_, "AddReferencesCount");
+        rc = rc & jsonObjectEncode(pt, deleteNodesCount_, "DeleteNodesCount");
+        rc = rc & jsonObjectEncode(pt, deleteReferencesCount_, "DeleteReferencesCount");
+        rc = rc & jsonObjectEncode(pt, browseCount_, "BrowseCount");
+        rc = rc & jsonObjectEncode(pt, browseNextCount_, "BrowseNextCount");
+        rc = rc & jsonObjectEncode(pt, translateBrowsePathsToNodeIdsCount_, "TranslateBrowsePathsToNodeIdsCount");
+        rc = rc & jsonObjectEncode(pt, queryFirstCount_, "QueryFirstCount");
+        rc = rc & jsonObjectEncode(pt, queryNextCount_, "QueryNextCount");
+        rc = rc & jsonObjectEncode(pt, registerNodesCount_, "RegisterNodesCount");
+        rc = rc & jsonObjectEncode(pt, unregisterNodesCount_, "UnregisterNodesCount");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, actualSessionTimeout_))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "actualSessionTimeout_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ActualSessionTimeout", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxResponseMessageSize_))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "maxResponseMessageSize_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxResponseMessageSize", elementTree));
-    
-        elementTree.clear();
-        if (!clientConnectionTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "clientConnectionTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ClientConnectionTime", elementTree));
-    
-        elementTree.clear();
-        if (!clientLastContactTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "clientLastContactTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ClientLastContactTime", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, currentSubscriptionsCount_))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "currentSubscriptionsCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("CurrentSubscriptionsCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, currentMonitoredItemsCount_))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "currentMonitoredItemsCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("CurrentMonitoredItemsCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, currentPublishRequestsInQueue_))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "currentPublishRequestsInQueue_");
-           return false;
-        }
-        pt.push_back(std::make_pair("CurrentPublishRequestsInQueue", elementTree));
-    
-        elementTree.clear();
-        if (!totalRequestCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "totalRequestCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TotalRequestCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, unauthorizedRequestCount_))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "unauthorizedRequestCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UnauthorizedRequestCount", elementTree));
-    
-        elementTree.clear();
-        if (!readCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "readCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ReadCount", elementTree));
-    
-        elementTree.clear();
-        if (!historyReadCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "historyReadCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("HistoryReadCount", elementTree));
-    
-        elementTree.clear();
-        if (!writeCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "writeCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("WriteCount", elementTree));
-    
-        elementTree.clear();
-        if (!historyUpdateCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "historyUpdateCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("HistoryUpdateCount", elementTree));
-    
-        elementTree.clear();
-        if (!callCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "callCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CallCount", elementTree));
-    
-        elementTree.clear();
-        if (!createMonitoredItemsCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "createMonitoredItemsCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CreateMonitoredItemsCount", elementTree));
-    
-        elementTree.clear();
-        if (!modifyMonitoredItemsCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "modifyMonitoredItemsCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ModifyMonitoredItemsCount", elementTree));
-    
-        elementTree.clear();
-        if (!setMonitoringModeCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "setMonitoringModeCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SetMonitoringModeCount", elementTree));
-    
-        elementTree.clear();
-        if (!setTriggeringCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "setTriggeringCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SetTriggeringCount", elementTree));
-    
-        elementTree.clear();
-        if (!deleteMonitoredItemsCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "deleteMonitoredItemsCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DeleteMonitoredItemsCount", elementTree));
-    
-        elementTree.clear();
-        if (!createSubscriptionCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "createSubscriptionCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CreateSubscriptionCount", elementTree));
-    
-        elementTree.clear();
-        if (!modifySubscriptionCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "modifySubscriptionCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ModifySubscriptionCount", elementTree));
-    
-        elementTree.clear();
-        if (!setPublishingModeCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "setPublishingModeCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SetPublishingModeCount", elementTree));
-    
-        elementTree.clear();
-        if (!publishCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "publishCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublishCount", elementTree));
-    
-        elementTree.clear();
-        if (!republishCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "republishCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RepublishCount", elementTree));
-    
-        elementTree.clear();
-        if (!transferSubscriptionsCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "transferSubscriptionsCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransferSubscriptionsCount", elementTree));
-    
-        elementTree.clear();
-        if (!deleteSubscriptionsCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "deleteSubscriptionsCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DeleteSubscriptionsCount", elementTree));
-    
-        elementTree.clear();
-        if (!addNodesCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "addNodesCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AddNodesCount", elementTree));
-    
-        elementTree.clear();
-        if (!addReferencesCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "addReferencesCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AddReferencesCount", elementTree));
-    
-        elementTree.clear();
-        if (!deleteNodesCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "deleteNodesCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DeleteNodesCount", elementTree));
-    
-        elementTree.clear();
-        if (!deleteReferencesCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "deleteReferencesCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DeleteReferencesCount", elementTree));
-    
-        elementTree.clear();
-        if (!browseCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "browseCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BrowseCount", elementTree));
-    
-        elementTree.clear();
-        if (!browseNextCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "browseNextCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BrowseNextCount", elementTree));
-    
-        elementTree.clear();
-        if (!translateBrowsePathsToNodeIdsCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "translateBrowsePathsToNodeIdsCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TranslateBrowsePathsToNodeIdsCount", elementTree));
-    
-        elementTree.clear();
-        if (!queryFirstCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "queryFirstCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("QueryFirstCount", elementTree));
-    
-        elementTree.clear();
-        if (!queryNextCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "queryNextCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("QueryNextCount", elementTree));
-    
-        elementTree.clear();
-        if (!registerNodesCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "registerNodesCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RegisterNodesCount", elementTree));
-    
-        elementTree.clear();
-        if (!unregisterNodesCount_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "unregisterNodesCount_");
-            return false;
-        }
-        pt.push_back(std::make_pair("UnregisterNodesCount", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

@@ -226,17 +226,10 @@ namespace OpcUaStackCore
     bool
     SubscribedDataSetMirrorDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!parentNodeName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SubscribedDataSetMirrorDataType json encoder error")
-    		     .parameter("Element", "parentNodeName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ParentNodeName", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, parentNodeName_, "ParentNodeName");
         elementTree.clear();
         if (!rolePermissions_.jsonEncode(elementTree, ""))
         {
@@ -246,7 +239,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("RolePermissions", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

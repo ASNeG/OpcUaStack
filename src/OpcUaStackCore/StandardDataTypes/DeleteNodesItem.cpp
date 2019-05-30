@@ -233,27 +233,13 @@ namespace OpcUaStackCore
     bool
     DeleteNodesItem::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!nodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DeleteNodesItem json encoder error")
-    		     .parameter("Element", "nodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NodeId", elementTree));
+        rc = rc & jsonObjectEncode(pt, nodeId_, "NodeId");
+        rc = rc & jsonNumberEncode(pt, deleteTargetReferences_, "DeleteTargetReferences");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, deleteTargetReferences_))
-        {
-    	     Log(Error, "DeleteNodesItem json encoder error")
-    		     .parameter("Element", "deleteTargetReferences_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DeleteTargetReferences", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

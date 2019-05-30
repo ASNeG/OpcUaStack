@@ -330,35 +330,12 @@ namespace OpcUaStackCore
     bool
     VariableTypeAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!value_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "VariableTypeAttributes json encoder error")
-    		     .parameter("Element", "value_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
-    
-        elementTree.clear();
-        if (!dataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "VariableTypeAttributes json encoder error")
-    		     .parameter("Element", "dataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, valueRank_))
-        {
-    	     Log(Error, "VariableTypeAttributes json encoder error")
-    		     .parameter("Element", "valueRank_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ValueRank", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, value_, "Value");
+        rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
+        rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
         elementTree.clear();
         if (!arrayDimensions_.jsonEncode(elementTree, ""))
         {
@@ -367,17 +344,9 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("ArrayDimensions", elementTree));
+        rc = rc & jsonNumberEncode(pt, isAbstract_, "IsAbstract");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isAbstract_))
-        {
-    	     Log(Error, "VariableTypeAttributes json encoder error")
-    		     .parameter("Element", "isAbstract_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsAbstract", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

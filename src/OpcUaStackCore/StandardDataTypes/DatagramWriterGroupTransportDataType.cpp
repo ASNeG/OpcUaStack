@@ -228,27 +228,13 @@ namespace OpcUaStackCore
     bool
     DatagramWriterGroupTransportDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, messageRepeatCount_))
-        {
-    	     Log(Error, "DatagramWriterGroupTransportDataType json encoder error")
-    		     .parameter("Element", "messageRepeatCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MessageRepeatCount", elementTree));
+        rc = rc & jsonNumberEncode(pt, messageRepeatCount_, "MessageRepeatCount");
+        rc = rc & jsonNumberEncode(pt, messageRepeatDelay_, "MessageRepeatDelay");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, messageRepeatDelay_))
-        {
-    	     Log(Error, "DatagramWriterGroupTransportDataType json encoder error")
-    		     .parameter("Element", "messageRepeatDelay_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MessageRepeatDelay", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

@@ -194,18 +194,12 @@ namespace OpcUaStackCore
     bool
     DatagramConnectionTransportDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!discoveryAddress_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DatagramConnectionTransportDataType json encoder error")
-    		     .parameter("Element", "discoveryAddress_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DiscoveryAddress", elementTree));
+        rc = rc & jsonObjectEncode(pt, discoveryAddress_, "DiscoveryAddress");
     
-        return true;
+        return rc;
     }
     
     bool

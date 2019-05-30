@@ -226,27 +226,13 @@ namespace OpcUaStackCore
     bool
     SemanticChangeStructureDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!affected_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SemanticChangeStructureDataType json encoder error")
-    		     .parameter("Element", "affected_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Affected", elementTree));
+        rc = rc & jsonObjectEncode(pt, affected_, "Affected");
+        rc = rc & jsonObjectEncode(pt, affectedType_, "AffectedType");
     
-        elementTree.clear();
-        if (!affectedType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SemanticChangeStructureDataType json encoder error")
-    		     .parameter("Element", "affectedType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AffectedType", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

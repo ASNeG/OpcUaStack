@@ -258,17 +258,10 @@ namespace OpcUaStackCore
     bool
     PublishedEventsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!eventNotifier_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedEventsDataType json encoder error")
-    		     .parameter("Element", "eventNotifier_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EventNotifier", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, eventNotifier_, "EventNotifier");
         elementTree.clear();
         if (!selectedFields_.jsonEncode(elementTree, ""))
         {
@@ -277,17 +270,9 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("SelectedFields", elementTree));
+        rc = rc & jsonObjectEncode(pt, filter_, "Filter");
     
-        elementTree.clear();
-        if (!filter_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedEventsDataType json encoder error")
-    		     .parameter("Element", "filter_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Filter", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

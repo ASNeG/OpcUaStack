@@ -228,27 +228,13 @@ namespace OpcUaStackCore
     bool
     ConfigurationVersionDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, majorVersion_))
-        {
-    	     Log(Error, "ConfigurationVersionDataType json encoder error")
-    		     .parameter("Element", "majorVersion_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MajorVersion", elementTree));
+        rc = rc & jsonNumberEncode(pt, majorVersion_, "MajorVersion");
+        rc = rc & jsonNumberEncode(pt, minorVersion_, "MinorVersion");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, minorVersion_))
-        {
-    	     Log(Error, "ConfigurationVersionDataType json encoder error")
-    		     .parameter("Element", "minorVersion_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MinorVersion", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

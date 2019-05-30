@@ -388,44 +388,13 @@ namespace OpcUaStackCore
     bool
     PubSubGroupDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PubSubGroupDataType json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, enabled_))
-        {
-    	     Log(Error, "PubSubGroupDataType json encoder error")
-    		     .parameter("Element", "enabled_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Enabled", elementTree));
-    
-        elementTree.clear();
-        if (!securityMode_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PubSubGroupDataType json encoder error")
-    		     .parameter("Element", "securityMode_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityMode", elementTree));
-    
-        elementTree.clear();
-        if (!securityGroupId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PubSubGroupDataType json encoder error")
-    		     .parameter("Element", "securityGroupId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityGroupId", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
+        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
+        rc = rc & jsonObjectEncode(pt, securityGroupId_, "SecurityGroupId");
         elementTree.clear();
         if (!securityKeyServices_.jsonEncode(elementTree, ""))
         {
@@ -434,16 +403,7 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("SecurityKeyServices", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxNetworkMessageSize_))
-        {
-    	     Log(Error, "PubSubGroupDataType json encoder error")
-    		     .parameter("Element", "maxNetworkMessageSize_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxNetworkMessageSize", elementTree));
-    
+        rc = rc & jsonNumberEncode(pt, maxNetworkMessageSize_, "MaxNetworkMessageSize");
         elementTree.clear();
         if (!groupProperties_.jsonEncode(elementTree, ""))
         {
@@ -453,7 +413,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("GroupProperties", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

@@ -194,18 +194,12 @@ namespace OpcUaStackCore
     bool
     NetworkAddressDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!networkInterface_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "NetworkAddressDataType json encoder error")
-    		     .parameter("Element", "networkInterface_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NetworkInterface", elementTree));
+        rc = rc & jsonObjectEncode(pt, networkInterface_, "NetworkInterface");
     
-        return true;
+        return rc;
     }
     
     bool

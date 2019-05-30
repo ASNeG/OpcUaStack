@@ -330,54 +330,16 @@ namespace OpcUaStackCore
     bool
     DeleteReferencesItem::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!sourceNodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DeleteReferencesItem json encoder error")
-    		     .parameter("Element", "sourceNodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SourceNodeId", elementTree));
+        rc = rc & jsonObjectEncode(pt, sourceNodeId_, "SourceNodeId");
+        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonNumberEncode(pt, isForward_, "IsForward");
+        rc = rc & jsonObjectEncode(pt, targetNodeId_, "TargetNodeId");
+        rc = rc & jsonNumberEncode(pt, deleteBidirectional_, "DeleteBidirectional");
     
-        elementTree.clear();
-        if (!referenceTypeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DeleteReferencesItem json encoder error")
-    		     .parameter("Element", "referenceTypeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isForward_))
-        {
-    	     Log(Error, "DeleteReferencesItem json encoder error")
-    		     .parameter("Element", "isForward_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsForward", elementTree));
-    
-        elementTree.clear();
-        if (!targetNodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DeleteReferencesItem json encoder error")
-    		     .parameter("Element", "targetNodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TargetNodeId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, deleteBidirectional_))
-        {
-    	     Log(Error, "DeleteReferencesItem json encoder error")
-    		     .parameter("Element", "deleteBidirectional_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DeleteBidirectional", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

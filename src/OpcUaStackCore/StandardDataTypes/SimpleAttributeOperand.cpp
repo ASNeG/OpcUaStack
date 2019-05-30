@@ -291,17 +291,10 @@ namespace OpcUaStackCore
     bool
     SimpleAttributeOperand::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!typeDefinitionId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SimpleAttributeOperand json encoder error")
-    		     .parameter("Element", "typeDefinitionId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TypeDefinitionId", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, typeDefinitionId_, "TypeDefinitionId");
         elementTree.clear();
         if (!browsePath_.jsonEncode(elementTree, ""))
         {
@@ -310,26 +303,10 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("BrowsePath", elementTree));
+        rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
+        rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, attributeId_))
-        {
-    	     Log(Error, "SimpleAttributeOperand json encoder error")
-    		     .parameter("Element", "attributeId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("AttributeId", elementTree));
-    
-        elementTree.clear();
-        if (!indexRange_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SimpleAttributeOperand json encoder error")
-    		     .parameter("Element", "indexRange_");
-            return false;
-        }
-        pt.push_back(std::make_pair("IndexRange", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

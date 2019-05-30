@@ -290,45 +290,15 @@ namespace OpcUaStackCore
     bool
     BrokerWriterGroupTransportDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!queueName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerWriterGroupTransportDataType json encoder error")
-    		     .parameter("Element", "queueName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("QueueName", elementTree));
+        rc = rc & jsonObjectEncode(pt, queueName_, "QueueName");
+        rc = rc & jsonObjectEncode(pt, resourceUri_, "ResourceUri");
+        rc = rc & jsonObjectEncode(pt, authenticationProfileUri_, "AuthenticationProfileUri");
+        rc = rc & jsonObjectEncode(pt, requestedDeliveryGuarantee_, "RequestedDeliveryGuarantee");
     
-        elementTree.clear();
-        if (!resourceUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerWriterGroupTransportDataType json encoder error")
-    		     .parameter("Element", "resourceUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ResourceUri", elementTree));
-    
-        elementTree.clear();
-        if (!authenticationProfileUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerWriterGroupTransportDataType json encoder error")
-    		     .parameter("Element", "authenticationProfileUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AuthenticationProfileUri", elementTree));
-    
-        elementTree.clear();
-        if (!requestedDeliveryGuarantee_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerWriterGroupTransportDataType json encoder error")
-    		     .parameter("Element", "requestedDeliveryGuarantee_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RequestedDeliveryGuarantee", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

@@ -194,18 +194,12 @@ namespace OpcUaStackCore
     bool
     HistoryUpdateDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!nodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "HistoryUpdateDetails json encoder error")
-    		     .parameter("Element", "nodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NodeId", elementTree));
+        rc = rc & jsonObjectEncode(pt, nodeId_, "NodeId");
     
-        return true;
+        return rc;
     }
     
     bool

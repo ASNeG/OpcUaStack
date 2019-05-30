@@ -290,6 +290,7 @@ namespace OpcUaStackCore
     bool
     DataTypeSchemaHeader::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
@@ -300,7 +301,6 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("Namespaces", elementTree));
-    
         elementTree.clear();
         if (!structureDataTypes_.jsonEncode(elementTree, ""))
         {
@@ -309,7 +309,6 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("StructureDataTypes", elementTree));
-    
         elementTree.clear();
         if (!enumDataTypes_.jsonEncode(elementTree, ""))
         {
@@ -318,7 +317,6 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("EnumDataTypes", elementTree));
-    
         elementTree.clear();
         if (!simpleDataTypes_.jsonEncode(elementTree, ""))
         {
@@ -328,7 +326,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("SimpleDataTypes", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

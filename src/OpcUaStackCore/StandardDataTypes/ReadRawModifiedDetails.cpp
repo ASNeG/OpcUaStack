@@ -325,54 +325,16 @@ namespace OpcUaStackCore
     bool
     ReadRawModifiedDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isReadModified_))
-        {
-    	     Log(Error, "ReadRawModifiedDetails json encoder error")
-    		     .parameter("Element", "isReadModified_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsReadModified", elementTree));
+        rc = rc & jsonNumberEncode(pt, isReadModified_, "IsReadModified");
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
+        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime");
+        rc = rc & jsonNumberEncode(pt, numValuesPerNode_, "NumValuesPerNode");
+        rc = rc & jsonNumberEncode(pt, returnBounds_, "ReturnBounds");
     
-        elementTree.clear();
-        if (!startTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadRawModifiedDetails json encoder error")
-    		     .parameter("Element", "startTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StartTime", elementTree));
-    
-        elementTree.clear();
-        if (!endTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadRawModifiedDetails json encoder error")
-    		     .parameter("Element", "endTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EndTime", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, numValuesPerNode_))
-        {
-    	     Log(Error, "ReadRawModifiedDetails json encoder error")
-    		     .parameter("Element", "numValuesPerNode_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NumValuesPerNode", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, returnBounds_))
-        {
-    	     Log(Error, "ReadRawModifiedDetails json encoder error")
-    		     .parameter("Element", "returnBounds_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ReturnBounds", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

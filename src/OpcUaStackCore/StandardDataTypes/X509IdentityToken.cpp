@@ -200,18 +200,12 @@ namespace OpcUaStackCore
     bool
     X509IdentityToken::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!certificateData_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "X509IdentityToken json encoder error")
-    		     .parameter("Element", "certificateData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CertificateData", elementTree));
+        rc = rc & jsonObjectEncode(pt, certificateData_, "CertificateData");
     
-        return true;
+        return rc;
     }
     
     bool

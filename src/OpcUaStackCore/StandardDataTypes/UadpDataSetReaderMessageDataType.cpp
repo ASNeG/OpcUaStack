@@ -458,90 +458,20 @@ namespace OpcUaStackCore
     bool
     UadpDataSetReaderMessageDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, groupVersion_))
-        {
-    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "groupVersion_");
-           return false;
-        }
-        pt.push_back(std::make_pair("GroupVersion", elementTree));
+        rc = rc & jsonNumberEncode(pt, groupVersion_, "GroupVersion");
+        rc = rc & jsonNumberEncode(pt, networkMessageNumber_, "NetworkMessageNumber");
+        rc = rc & jsonNumberEncode(pt, dataSetOffset_, "DataSetOffset");
+        rc = rc & jsonObjectEncode(pt, dataSetClassId_, "DataSetClassId");
+        rc = rc & jsonNumberEncode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
+        rc = rc & jsonNumberEncode(pt, dataSetMessageContentMask_, "DataSetMessageContentMask");
+        rc = rc & jsonNumberEncode(pt, publishingInterval_, "PublishingInterval");
+        rc = rc & jsonNumberEncode(pt, receiveOffset_, "ReceiveOffset");
+        rc = rc & jsonNumberEncode(pt, processingOffset_, "ProcessingOffset");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, networkMessageNumber_))
-        {
-    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "networkMessageNumber_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NetworkMessageNumber", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, dataSetOffset_))
-        {
-    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "dataSetOffset_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DataSetOffset", elementTree));
-    
-        elementTree.clear();
-        if (!dataSetClassId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "dataSetClassId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetClassId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, networkMessageContentMask_))
-        {
-    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "networkMessageContentMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NetworkMessageContentMask", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, dataSetMessageContentMask_))
-        {
-    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "dataSetMessageContentMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DataSetMessageContentMask", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, publishingInterval_))
-        {
-    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "publishingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("PublishingInterval", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, receiveOffset_))
-        {
-    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "receiveOffset_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ReceiveOffset", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, processingOffset_))
-        {
-    	     Log(Error, "UadpDataSetReaderMessageDataType json encoder error")
-    		     .parameter("Element", "processingOffset_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ProcessingOffset", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

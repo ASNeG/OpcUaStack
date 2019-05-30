@@ -258,26 +258,11 @@ namespace OpcUaStackCore
     bool
     ReaderGroupDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!transportSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReaderGroupDataType json encoder error")
-    		     .parameter("Element", "transportSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransportSettings", elementTree));
-    
-        elementTree.clear();
-        if (!messageSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReaderGroupDataType json encoder error")
-    		     .parameter("Element", "messageSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("MessageSettings", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
+        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
         elementTree.clear();
         if (!dataSetReaders_.jsonEncode(elementTree, ""))
         {
@@ -287,7 +272,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("DataSetReaders", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

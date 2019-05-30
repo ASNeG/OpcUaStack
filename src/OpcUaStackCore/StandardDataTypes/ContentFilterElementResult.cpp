@@ -258,17 +258,10 @@ namespace OpcUaStackCore
     bool
     ContentFilterElementResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!statusCode_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ContentFilterElementResult json encoder error")
-    		     .parameter("Element", "statusCode_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StatusCode", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode");
         elementTree.clear();
         if (!operandStatusCodes_.jsonEncode(elementTree, ""))
         {
@@ -277,7 +270,6 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("OperandStatusCodes", elementTree));
-    
         elementTree.clear();
         if (!operandDiagnosticInfos_.jsonEncode(elementTree, ""))
         {
@@ -287,7 +279,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("OperandDiagnosticInfos", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

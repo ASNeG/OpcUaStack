@@ -226,27 +226,13 @@ namespace OpcUaStackCore
     bool
     BrokerConnectionTransportDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!resourceUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerConnectionTransportDataType json encoder error")
-    		     .parameter("Element", "resourceUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ResourceUri", elementTree));
+        rc = rc & jsonObjectEncode(pt, resourceUri_, "ResourceUri");
+        rc = rc & jsonObjectEncode(pt, authenticationProfileUri_, "AuthenticationProfileUri");
     
-        elementTree.clear();
-        if (!authenticationProfileUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerConnectionTransportDataType json encoder error")
-    		     .parameter("Element", "authenticationProfileUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AuthenticationProfileUri", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

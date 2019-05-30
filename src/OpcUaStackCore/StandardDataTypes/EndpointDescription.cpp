@@ -425,53 +425,14 @@ namespace OpcUaStackCore
     bool
     EndpointDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!endpointUrl_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EndpointDescription json encoder error")
-    		     .parameter("Element", "endpointUrl_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EndpointUrl", elementTree));
-    
-        elementTree.clear();
-        if (!server_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EndpointDescription json encoder error")
-    		     .parameter("Element", "server_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Server", elementTree));
-    
-        elementTree.clear();
-        if (!serverCertificate_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EndpointDescription json encoder error")
-    		     .parameter("Element", "serverCertificate_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerCertificate", elementTree));
-    
-        elementTree.clear();
-        if (!securityMode_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EndpointDescription json encoder error")
-    		     .parameter("Element", "securityMode_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityMode", elementTree));
-    
-        elementTree.clear();
-        if (!securityPolicyUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EndpointDescription json encoder error")
-    		     .parameter("Element", "securityPolicyUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityPolicyUri", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl");
+        rc = rc & jsonObjectEncode(pt, server_, "Server");
+        rc = rc & jsonObjectEncode(pt, serverCertificate_, "ServerCertificate");
+        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
+        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri");
         elementTree.clear();
         if (!userIdentityTokens_.jsonEncode(elementTree, ""))
         {
@@ -480,26 +441,10 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("UserIdentityTokens", elementTree));
+        rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri");
+        rc = rc & jsonNumberEncode(pt, securityLevel_, "SecurityLevel");
     
-        elementTree.clear();
-        if (!transportProfileUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EndpointDescription json encoder error")
-    		     .parameter("Element", "transportProfileUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransportProfileUri", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, securityLevel_))
-        {
-    	     Log(Error, "EndpointDescription json encoder error")
-    		     .parameter("Element", "securityLevel_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SecurityLevel", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

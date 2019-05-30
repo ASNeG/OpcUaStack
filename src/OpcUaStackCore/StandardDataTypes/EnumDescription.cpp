@@ -227,27 +227,13 @@ namespace OpcUaStackCore
     bool
     EnumDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!enumDefinition_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EnumDescription json encoder error")
-    		     .parameter("Element", "enumDefinition_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EnumDefinition", elementTree));
+        rc = rc & jsonObjectEncode(pt, enumDefinition_, "EnumDefinition");
+        rc = rc & jsonNumberEncode(pt, builtInType_, "BuiltInType");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, builtInType_))
-        {
-    	     Log(Error, "EnumDescription json encoder error")
-    		     .parameter("Element", "builtInType_");
-           return false;
-        }
-        pt.push_back(std::make_pair("BuiltInType", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

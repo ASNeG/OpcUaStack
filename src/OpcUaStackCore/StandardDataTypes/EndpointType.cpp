@@ -290,45 +290,15 @@ namespace OpcUaStackCore
     bool
     EndpointType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!endpointUrl_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EndpointType json encoder error")
-    		     .parameter("Element", "endpointUrl_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EndpointUrl", elementTree));
+        rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl");
+        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
+        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri");
+        rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri");
     
-        elementTree.clear();
-        if (!securityMode_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EndpointType json encoder error")
-    		     .parameter("Element", "securityMode_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityMode", elementTree));
-    
-        elementTree.clear();
-        if (!securityPolicyUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EndpointType json encoder error")
-    		     .parameter("Element", "securityPolicyUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityPolicyUri", elementTree));
-    
-        elementTree.clear();
-        if (!transportProfileUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EndpointType json encoder error")
-    		     .parameter("Element", "transportProfileUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransportProfileUri", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

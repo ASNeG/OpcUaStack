@@ -234,27 +234,13 @@ namespace OpcUaStackCore
     bool
     ViewAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, containsNoLoops_))
-        {
-    	     Log(Error, "ViewAttributes json encoder error")
-    		     .parameter("Element", "containsNoLoops_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ContainsNoLoops", elementTree));
+        rc = rc & jsonNumberEncode(pt, containsNoLoops_, "ContainsNoLoops");
+        rc = rc & jsonNumberEncode(pt, eventNotifier_, "EventNotifier");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, eventNotifier_))
-        {
-    	     Log(Error, "ViewAttributes json encoder error")
-    		     .parameter("Element", "eventNotifier_");
-           return false;
-        }
-        pt.push_back(std::make_pair("EventNotifier", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

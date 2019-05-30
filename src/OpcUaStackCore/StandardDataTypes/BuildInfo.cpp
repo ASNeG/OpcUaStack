@@ -354,63 +354,17 @@ namespace OpcUaStackCore
     bool
     BuildInfo::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!productUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "productUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ProductUri", elementTree));
+        rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri");
+        rc = rc & jsonObjectEncode(pt, manufacturerName_, "ManufacturerName");
+        rc = rc & jsonObjectEncode(pt, productName_, "ProductName");
+        rc = rc & jsonObjectEncode(pt, softwareVersion_, "SoftwareVersion");
+        rc = rc & jsonObjectEncode(pt, buildNumber_, "BuildNumber");
+        rc = rc & jsonObjectEncode(pt, buildDate_, "BuildDate");
     
-        elementTree.clear();
-        if (!manufacturerName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "manufacturerName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ManufacturerName", elementTree));
-    
-        elementTree.clear();
-        if (!productName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "productName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ProductName", elementTree));
-    
-        elementTree.clear();
-        if (!softwareVersion_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "softwareVersion_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SoftwareVersion", elementTree));
-    
-        elementTree.clear();
-        if (!buildNumber_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "buildNumber_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BuildNumber", elementTree));
-    
-        elementTree.clear();
-        if (!buildDate_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "buildDate_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BuildDate", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

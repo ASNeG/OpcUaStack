@@ -482,62 +482,15 @@ namespace OpcUaStackCore
     bool
     ProgramDiagnosticDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!createSessionId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ProgramDiagnosticDataType json encoder error")
-    		     .parameter("Element", "createSessionId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CreateSessionId", elementTree));
-    
-        elementTree.clear();
-        if (!createClientName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ProgramDiagnosticDataType json encoder error")
-    		     .parameter("Element", "createClientName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CreateClientName", elementTree));
-    
-        elementTree.clear();
-        if (!invocationCreationTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ProgramDiagnosticDataType json encoder error")
-    		     .parameter("Element", "invocationCreationTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("InvocationCreationTime", elementTree));
-    
-        elementTree.clear();
-        if (!lastTransitionTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ProgramDiagnosticDataType json encoder error")
-    		     .parameter("Element", "lastTransitionTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LastTransitionTime", elementTree));
-    
-        elementTree.clear();
-        if (!lastMethodCall_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ProgramDiagnosticDataType json encoder error")
-    		     .parameter("Element", "lastMethodCall_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LastMethodCall", elementTree));
-    
-        elementTree.clear();
-        if (!lastMethodSessionId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ProgramDiagnosticDataType json encoder error")
-    		     .parameter("Element", "lastMethodSessionId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LastMethodSessionId", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, createSessionId_, "CreateSessionId");
+        rc = rc & jsonObjectEncode(pt, createClientName_, "CreateClientName");
+        rc = rc & jsonObjectEncode(pt, invocationCreationTime_, "InvocationCreationTime");
+        rc = rc & jsonObjectEncode(pt, lastTransitionTime_, "LastTransitionTime");
+        rc = rc & jsonObjectEncode(pt, lastMethodCall_, "LastMethodCall");
+        rc = rc & jsonObjectEncode(pt, lastMethodSessionId_, "LastMethodSessionId");
         elementTree.clear();
         if (!lastMethodInputArguments_.jsonEncode(elementTree, ""))
         {
@@ -546,7 +499,6 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("LastMethodInputArguments", elementTree));
-    
         elementTree.clear();
         if (!lastMethodOutputArguments_.jsonEncode(elementTree, ""))
         {
@@ -555,26 +507,10 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("LastMethodOutputArguments", elementTree));
+        rc = rc & jsonObjectEncode(pt, lastMethodCallTime_, "LastMethodCallTime");
+        rc = rc & jsonObjectEncode(pt, lastMethodReturnStatus_, "LastMethodReturnStatus");
     
-        elementTree.clear();
-        if (!lastMethodCallTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ProgramDiagnosticDataType json encoder error")
-    		     .parameter("Element", "lastMethodCallTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LastMethodCallTime", elementTree));
-    
-        elementTree.clear();
-        if (!lastMethodReturnStatus_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ProgramDiagnosticDataType json encoder error")
-    		     .parameter("Element", "lastMethodReturnStatus_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LastMethodReturnStatus", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

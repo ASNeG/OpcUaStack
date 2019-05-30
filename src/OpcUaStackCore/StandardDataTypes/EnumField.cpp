@@ -194,18 +194,12 @@ namespace OpcUaStackCore
     bool
     EnumField::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EnumField json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
     
-        return true;
+        return rc;
     }
     
     bool

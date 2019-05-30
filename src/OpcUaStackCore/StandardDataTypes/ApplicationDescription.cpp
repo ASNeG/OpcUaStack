@@ -392,62 +392,15 @@ namespace OpcUaStackCore
     bool
     ApplicationDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!applicationUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ApplicationDescription json encoder error")
-    		     .parameter("Element", "applicationUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ApplicationUri", elementTree));
-    
-        elementTree.clear();
-        if (!productUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ApplicationDescription json encoder error")
-    		     .parameter("Element", "productUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ProductUri", elementTree));
-    
-        elementTree.clear();
-        if (!applicationName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ApplicationDescription json encoder error")
-    		     .parameter("Element", "applicationName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ApplicationName", elementTree));
-    
-        elementTree.clear();
-        if (!applicationType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ApplicationDescription json encoder error")
-    		     .parameter("Element", "applicationType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ApplicationType", elementTree));
-    
-        elementTree.clear();
-        if (!gatewayServerUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ApplicationDescription json encoder error")
-    		     .parameter("Element", "gatewayServerUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("GatewayServerUri", elementTree));
-    
-        elementTree.clear();
-        if (!discoveryProfileUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ApplicationDescription json encoder error")
-    		     .parameter("Element", "discoveryProfileUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DiscoveryProfileUri", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, applicationUri_, "ApplicationUri");
+        rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri");
+        rc = rc & jsonObjectEncode(pt, applicationName_, "ApplicationName");
+        rc = rc & jsonObjectEncode(pt, applicationType_, "ApplicationType");
+        rc = rc & jsonObjectEncode(pt, gatewayServerUri_, "GatewayServerUri");
+        rc = rc & jsonObjectEncode(pt, discoveryProfileUri_, "DiscoveryProfileUri");
         elementTree.clear();
         if (!discoveryUrls_.jsonEncode(elementTree, ""))
         {
@@ -457,7 +410,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("DiscoveryUrls", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

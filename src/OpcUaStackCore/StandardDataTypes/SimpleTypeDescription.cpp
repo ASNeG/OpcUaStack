@@ -227,27 +227,13 @@ namespace OpcUaStackCore
     bool
     SimpleTypeDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!baseDataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SimpleTypeDescription json encoder error")
-    		     .parameter("Element", "baseDataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BaseDataType", elementTree));
+        rc = rc & jsonObjectEncode(pt, baseDataType_, "BaseDataType");
+        rc = rc & jsonNumberEncode(pt, builtInType_, "BuiltInType");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, builtInType_))
-        {
-    	     Log(Error, "SimpleTypeDescription json encoder error")
-    		     .parameter("Element", "builtInType_");
-           return false;
-        }
-        pt.push_back(std::make_pair("BuiltInType", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

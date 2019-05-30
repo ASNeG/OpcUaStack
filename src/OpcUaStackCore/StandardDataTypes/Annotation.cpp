@@ -258,36 +258,14 @@ namespace OpcUaStackCore
     bool
     Annotation::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!message_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "Annotation json encoder error")
-    		     .parameter("Element", "message_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Message", elementTree));
+        rc = rc & jsonObjectEncode(pt, message_, "Message");
+        rc = rc & jsonObjectEncode(pt, userName_, "UserName");
+        rc = rc & jsonObjectEncode(pt, annotationTime_, "AnnotationTime");
     
-        elementTree.clear();
-        if (!userName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "Annotation json encoder error")
-    		     .parameter("Element", "userName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("UserName", elementTree));
-    
-        elementTree.clear();
-        if (!annotationTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "Annotation json encoder error")
-    		     .parameter("Element", "annotationTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AnnotationTime", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

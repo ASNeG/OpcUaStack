@@ -201,18 +201,12 @@ namespace OpcUaStackCore
     bool
     ObjectTypeAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isAbstract_))
-        {
-    	     Log(Error, "ObjectTypeAttributes json encoder error")
-    		     .parameter("Element", "isAbstract_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsAbstract", elementTree));
+        rc = rc & jsonNumberEncode(pt, isAbstract_, "IsAbstract");
     
-        return true;
+        return rc;
     }
     
     bool

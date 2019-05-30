@@ -294,45 +294,15 @@ namespace OpcUaStackCore
     bool
     UadpDataSetWriterMessageDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, dataSetMessageContentMask_))
-        {
-    	     Log(Error, "UadpDataSetWriterMessageDataType json encoder error")
-    		     .parameter("Element", "dataSetMessageContentMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DataSetMessageContentMask", elementTree));
+        rc = rc & jsonNumberEncode(pt, dataSetMessageContentMask_, "DataSetMessageContentMask");
+        rc = rc & jsonNumberEncode(pt, configuredSize_, "ConfiguredSize");
+        rc = rc & jsonNumberEncode(pt, networkMessageNumber_, "NetworkMessageNumber");
+        rc = rc & jsonNumberEncode(pt, dataSetOffset_, "DataSetOffset");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, configuredSize_))
-        {
-    	     Log(Error, "UadpDataSetWriterMessageDataType json encoder error")
-    		     .parameter("Element", "configuredSize_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ConfiguredSize", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, networkMessageNumber_))
-        {
-    	     Log(Error, "UadpDataSetWriterMessageDataType json encoder error")
-    		     .parameter("Element", "networkMessageNumber_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NetworkMessageNumber", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, dataSetOffset_))
-        {
-    	     Log(Error, "UadpDataSetWriterMessageDataType json encoder error")
-    		     .parameter("Element", "dataSetOffset_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DataSetOffset", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

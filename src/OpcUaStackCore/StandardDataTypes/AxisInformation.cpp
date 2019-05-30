@@ -322,44 +322,13 @@ namespace OpcUaStackCore
     bool
     AxisInformation::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!engineeringUnits_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", "engineeringUnits_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EngineeringUnits", elementTree));
-    
-        elementTree.clear();
-        if (!eURange_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", "eURange_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EURange", elementTree));
-    
-        elementTree.clear();
-        if (!title_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", "title_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Title", elementTree));
-    
-        elementTree.clear();
-        if (!axisScaleType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", "axisScaleType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AxisScaleType", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, engineeringUnits_, "EngineeringUnits");
+        rc = rc & jsonObjectEncode(pt, eURange_, "EURange");
+        rc = rc & jsonObjectEncode(pt, title_, "Title");
+        rc = rc & jsonObjectEncode(pt, axisScaleType_, "AxisScaleType");
         elementTree.clear();
         if (!axisSteps_.jsonEncode(elementTree, ""))
         {
@@ -369,7 +338,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("AxisSteps", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

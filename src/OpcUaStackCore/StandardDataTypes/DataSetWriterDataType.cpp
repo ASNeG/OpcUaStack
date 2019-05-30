@@ -454,62 +454,15 @@ namespace OpcUaStackCore
     bool
     DataSetWriterDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetWriterDataType json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, enabled_))
-        {
-    	     Log(Error, "DataSetWriterDataType json encoder error")
-    		     .parameter("Element", "enabled_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Enabled", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, dataSetWriterId_))
-        {
-    	     Log(Error, "DataSetWriterDataType json encoder error")
-    		     .parameter("Element", "dataSetWriterId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DataSetWriterId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, dataSetFieldContentMask_))
-        {
-    	     Log(Error, "DataSetWriterDataType json encoder error")
-    		     .parameter("Element", "dataSetFieldContentMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DataSetFieldContentMask", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, keyFrameCount_))
-        {
-    	     Log(Error, "DataSetWriterDataType json encoder error")
-    		     .parameter("Element", "keyFrameCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("KeyFrameCount", elementTree));
-    
-        elementTree.clear();
-        if (!dataSetName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetWriterDataType json encoder error")
-    		     .parameter("Element", "dataSetName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetName", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
+        rc = rc & jsonNumberEncode(pt, dataSetWriterId_, "DataSetWriterId");
+        rc = rc & jsonNumberEncode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
+        rc = rc & jsonNumberEncode(pt, keyFrameCount_, "KeyFrameCount");
+        rc = rc & jsonObjectEncode(pt, dataSetName_, "DataSetName");
         elementTree.clear();
         if (!dataSetWriterProperties_.jsonEncode(elementTree, ""))
         {
@@ -518,26 +471,10 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("DataSetWriterProperties", elementTree));
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
+        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
     
-        elementTree.clear();
-        if (!transportSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetWriterDataType json encoder error")
-    		     .parameter("Element", "transportSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransportSettings", elementTree));
-    
-        elementTree.clear();
-        if (!messageSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetWriterDataType json encoder error")
-    		     .parameter("Element", "messageSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("MessageSettings", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

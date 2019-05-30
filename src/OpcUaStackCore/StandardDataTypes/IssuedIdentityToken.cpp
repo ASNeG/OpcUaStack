@@ -232,27 +232,13 @@ namespace OpcUaStackCore
     bool
     IssuedIdentityToken::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!tokenData_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "IssuedIdentityToken json encoder error")
-    		     .parameter("Element", "tokenData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TokenData", elementTree));
+        rc = rc & jsonObjectEncode(pt, tokenData_, "TokenData");
+        rc = rc & jsonObjectEncode(pt, encryptionAlgorithm_, "EncryptionAlgorithm");
     
-        elementTree.clear();
-        if (!encryptionAlgorithm_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "IssuedIdentityToken json encoder error")
-    		     .parameter("Element", "encryptionAlgorithm_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EncryptionAlgorithm", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

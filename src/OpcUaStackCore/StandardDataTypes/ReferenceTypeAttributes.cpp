@@ -266,36 +266,14 @@ namespace OpcUaStackCore
     bool
     ReferenceTypeAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isAbstract_))
-        {
-    	     Log(Error, "ReferenceTypeAttributes json encoder error")
-    		     .parameter("Element", "isAbstract_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsAbstract", elementTree));
+        rc = rc & jsonNumberEncode(pt, isAbstract_, "IsAbstract");
+        rc = rc & jsonNumberEncode(pt, symmetric_, "Symmetric");
+        rc = rc & jsonObjectEncode(pt, inverseName_, "InverseName");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, symmetric_))
-        {
-    	     Log(Error, "ReferenceTypeAttributes json encoder error")
-    		     .parameter("Element", "symmetric_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Symmetric", elementTree));
-    
-        elementTree.clear();
-        if (!inverseName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReferenceTypeAttributes json encoder error")
-    		     .parameter("Element", "inverseName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("InverseName", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

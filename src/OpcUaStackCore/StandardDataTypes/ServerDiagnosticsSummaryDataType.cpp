@@ -558,117 +558,23 @@ namespace OpcUaStackCore
     bool
     ServerDiagnosticsSummaryDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, serverViewCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "serverViewCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ServerViewCount", elementTree));
+        rc = rc & jsonNumberEncode(pt, serverViewCount_, "ServerViewCount");
+        rc = rc & jsonNumberEncode(pt, currentSessionCount_, "CurrentSessionCount");
+        rc = rc & jsonNumberEncode(pt, cumulatedSessionCount_, "CumulatedSessionCount");
+        rc = rc & jsonNumberEncode(pt, securityRejectedSessionCount_, "SecurityRejectedSessionCount");
+        rc = rc & jsonNumberEncode(pt, rejectedSessionCount_, "RejectedSessionCount");
+        rc = rc & jsonNumberEncode(pt, sessionTimeoutCount_, "SessionTimeoutCount");
+        rc = rc & jsonNumberEncode(pt, sessionAbortCount_, "SessionAbortCount");
+        rc = rc & jsonNumberEncode(pt, currentSubscriptionCount_, "CurrentSubscriptionCount");
+        rc = rc & jsonNumberEncode(pt, cumulatedSubscriptionCount_, "CumulatedSubscriptionCount");
+        rc = rc & jsonNumberEncode(pt, publishingIntervalCount_, "PublishingIntervalCount");
+        rc = rc & jsonNumberEncode(pt, securityRejectedRequestsCount_, "SecurityRejectedRequestsCount");
+        rc = rc & jsonNumberEncode(pt, rejectedRequestsCount_, "RejectedRequestsCount");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, currentSessionCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "currentSessionCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("CurrentSessionCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, cumulatedSessionCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "cumulatedSessionCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("CumulatedSessionCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, securityRejectedSessionCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "securityRejectedSessionCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SecurityRejectedSessionCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, rejectedSessionCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "rejectedSessionCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RejectedSessionCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, sessionTimeoutCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "sessionTimeoutCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SessionTimeoutCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, sessionAbortCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "sessionAbortCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SessionAbortCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, currentSubscriptionCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "currentSubscriptionCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("CurrentSubscriptionCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, cumulatedSubscriptionCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "cumulatedSubscriptionCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("CumulatedSubscriptionCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, publishingIntervalCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "publishingIntervalCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("PublishingIntervalCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, securityRejectedRequestsCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "securityRejectedRequestsCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SecurityRejectedRequestsCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, rejectedRequestsCount_))
-        {
-    	     Log(Error, "ServerDiagnosticsSummaryDataType json encoder error")
-    		     .parameter("Element", "rejectedRequestsCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RejectedRequestsCount", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

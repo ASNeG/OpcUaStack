@@ -232,27 +232,13 @@ namespace OpcUaStackCore
     bool
     OptionSet::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!value_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "OptionSet json encoder error")
-    		     .parameter("Element", "value_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
+        rc = rc & jsonObjectEncode(pt, value_, "Value");
+        rc = rc & jsonObjectEncode(pt, validBits_, "ValidBits");
     
-        elementTree.clear();
-        if (!validBits_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "OptionSet json encoder error")
-    		     .parameter("Element", "validBits_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ValidBits", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

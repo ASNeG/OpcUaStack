@@ -486,62 +486,15 @@ namespace OpcUaStackCore
     bool
     FieldMetaData::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "FieldMetaData json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "FieldMetaData json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, fieldFlags_))
-        {
-    	     Log(Error, "FieldMetaData json encoder error")
-    		     .parameter("Element", "fieldFlags_");
-           return false;
-        }
-        pt.push_back(std::make_pair("FieldFlags", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, builtInType_))
-        {
-    	     Log(Error, "FieldMetaData json encoder error")
-    		     .parameter("Element", "builtInType_");
-           return false;
-        }
-        pt.push_back(std::make_pair("BuiltInType", elementTree));
-    
-        elementTree.clear();
-        if (!dataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "FieldMetaData json encoder error")
-    		     .parameter("Element", "dataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, valueRank_))
-        {
-    	     Log(Error, "FieldMetaData json encoder error")
-    		     .parameter("Element", "valueRank_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ValueRank", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonObjectEncode(pt, description_, "Description");
+        rc = rc & jsonNumberEncode(pt, fieldFlags_, "FieldFlags");
+        rc = rc & jsonNumberEncode(pt, builtInType_, "BuiltInType");
+        rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
+        rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
         elementTree.clear();
         if (!arrayDimensions_.jsonEncode(elementTree, ""))
         {
@@ -550,25 +503,8 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("ArrayDimensions", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxStringLength_))
-        {
-    	     Log(Error, "FieldMetaData json encoder error")
-    		     .parameter("Element", "maxStringLength_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxStringLength", elementTree));
-    
-        elementTree.clear();
-        if (!dataSetFieldId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "FieldMetaData json encoder error")
-    		     .parameter("Element", "dataSetFieldId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetFieldId", elementTree));
-    
+        rc = rc & jsonNumberEncode(pt, maxStringLength_, "MaxStringLength");
+        rc = rc & jsonObjectEncode(pt, dataSetFieldId_, "DataSetFieldId");
         elementTree.clear();
         if (!properties_.jsonEncode(elementTree, ""))
         {
@@ -578,7 +514,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("Properties", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

@@ -325,44 +325,13 @@ namespace OpcUaStackCore
     bool
     UadpWriterGroupMessageDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, groupVersion_))
-        {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "groupVersion_");
-           return false;
-        }
-        pt.push_back(std::make_pair("GroupVersion", elementTree));
-    
-        elementTree.clear();
-        if (!dataSetOrdering_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "dataSetOrdering_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetOrdering", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, networkMessageContentMask_))
-        {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "networkMessageContentMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NetworkMessageContentMask", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, samplingOffset_))
-        {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "samplingOffset_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SamplingOffset", elementTree));
-    
+        rc = rc & jsonNumberEncode(pt, groupVersion_, "GroupVersion");
+        rc = rc & jsonObjectEncode(pt, dataSetOrdering_, "DataSetOrdering");
+        rc = rc & jsonNumberEncode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
+        rc = rc & jsonNumberEncode(pt, samplingOffset_, "SamplingOffset");
         elementTree.clear();
         if (!publishingOffset_.jsonEncode(elementTree, ""))
         {
@@ -372,7 +341,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("PublishingOffset", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

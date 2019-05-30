@@ -194,6 +194,7 @@ namespace OpcUaStackCore
     bool
     EventNotificationList::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
         elementTree.clear();
@@ -205,7 +206,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("Events", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

@@ -226,27 +226,13 @@ namespace OpcUaStackCore
     bool
     IdentityMappingRuleType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!criteriaType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "IdentityMappingRuleType json encoder error")
-    		     .parameter("Element", "criteriaType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CriteriaType", elementTree));
+        rc = rc & jsonObjectEncode(pt, criteriaType_, "CriteriaType");
+        rc = rc & jsonObjectEncode(pt, criteria_, "Criteria");
     
-        elementTree.clear();
-        if (!criteria_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "IdentityMappingRuleType json encoder error")
-    		     .parameter("Element", "criteria_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Criteria", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

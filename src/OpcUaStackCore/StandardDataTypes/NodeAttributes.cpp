@@ -331,54 +331,16 @@ namespace OpcUaStackCore
     bool
     NodeAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, specifiedAttributes_))
-        {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", "specifiedAttributes_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SpecifiedAttributes", elementTree));
+        rc = rc & jsonNumberEncode(pt, specifiedAttributes_, "SpecifiedAttributes");
+        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName");
+        rc = rc & jsonObjectEncode(pt, description_, "Description");
+        rc = rc & jsonNumberEncode(pt, writeMask_, "WriteMask");
+        rc = rc & jsonNumberEncode(pt, userWriteMask_, "UserWriteMask");
     
-        elementTree.clear();
-        if (!displayName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", "displayName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DisplayName", elementTree));
-    
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, writeMask_))
-        {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", "writeMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("WriteMask", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, userWriteMask_))
-        {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", "userWriteMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UserWriteMask", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

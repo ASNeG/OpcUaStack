@@ -422,71 +422,16 @@ namespace OpcUaStackCore
     bool
     PublishedVariableDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!publishedVariable_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedVariableDataType json encoder error")
-    		     .parameter("Element", "publishedVariable_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublishedVariable", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, attributeId_))
-        {
-    	     Log(Error, "PublishedVariableDataType json encoder error")
-    		     .parameter("Element", "attributeId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("AttributeId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, samplingIntervalHint_))
-        {
-    	     Log(Error, "PublishedVariableDataType json encoder error")
-    		     .parameter("Element", "samplingIntervalHint_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SamplingIntervalHint", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, deadbandType_))
-        {
-    	     Log(Error, "PublishedVariableDataType json encoder error")
-    		     .parameter("Element", "deadbandType_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DeadbandType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, deadbandValue_))
-        {
-    	     Log(Error, "PublishedVariableDataType json encoder error")
-    		     .parameter("Element", "deadbandValue_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DeadbandValue", elementTree));
-    
-        elementTree.clear();
-        if (!indexRange_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedVariableDataType json encoder error")
-    		     .parameter("Element", "indexRange_");
-            return false;
-        }
-        pt.push_back(std::make_pair("IndexRange", elementTree));
-    
-        elementTree.clear();
-        if (!substituteValue_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedVariableDataType json encoder error")
-    		     .parameter("Element", "substituteValue_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SubstituteValue", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, publishedVariable_, "PublishedVariable");
+        rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
+        rc = rc & jsonNumberEncode(pt, samplingIntervalHint_, "SamplingIntervalHint");
+        rc = rc & jsonNumberEncode(pt, deadbandType_, "DeadbandType");
+        rc = rc & jsonNumberEncode(pt, deadbandValue_, "DeadbandValue");
+        rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange");
+        rc = rc & jsonObjectEncode(pt, substituteValue_, "SubstituteValue");
         elementTree.clear();
         if (!metaDataProperties_.jsonEncode(elementTree, ""))
         {
@@ -496,7 +441,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("MetaDataProperties", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

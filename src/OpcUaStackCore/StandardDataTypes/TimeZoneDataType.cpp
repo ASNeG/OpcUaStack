@@ -228,27 +228,13 @@ namespace OpcUaStackCore
     bool
     TimeZoneDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, offset_))
-        {
-    	     Log(Error, "TimeZoneDataType json encoder error")
-    		     .parameter("Element", "offset_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Offset", elementTree));
+        rc = rc & jsonNumberEncode(pt, offset_, "Offset");
+        rc = rc & jsonNumberEncode(pt, daylightSavingInOffset_, "DaylightSavingInOffset");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, daylightSavingInOffset_))
-        {
-    	     Log(Error, "TimeZoneDataType json encoder error")
-    		     .parameter("Element", "daylightSavingInOffset_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DaylightSavingInOffset", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

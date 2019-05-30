@@ -168,9 +168,11 @@ namespace OpcUaStackCore
     bool
     DiscoveryConfiguration::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        return true;
+    
+        return rc;
     }
     
     bool

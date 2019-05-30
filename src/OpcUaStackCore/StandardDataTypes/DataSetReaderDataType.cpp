@@ -647,98 +647,19 @@ namespace OpcUaStackCore
     bool
     DataSetReaderDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, enabled_))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "enabled_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Enabled", elementTree));
-    
-        elementTree.clear();
-        if (!publisherId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "publisherId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublisherId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, writerGroupId_))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "writerGroupId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("WriterGroupId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, dataSetWriterId_))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "dataSetWriterId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DataSetWriterId", elementTree));
-    
-        elementTree.clear();
-        if (!dataSetMetaData_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "dataSetMetaData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetMetaData", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, dataSetFieldContentMask_))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "dataSetFieldContentMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DataSetFieldContentMask", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, messageReceiveTimeout_))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "messageReceiveTimeout_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MessageReceiveTimeout", elementTree));
-    
-        elementTree.clear();
-        if (!securityMode_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "securityMode_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityMode", elementTree));
-    
-        elementTree.clear();
-        if (!securityGroupId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "securityGroupId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityGroupId", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
+        rc = rc & jsonObjectEncode(pt, publisherId_, "PublisherId");
+        rc = rc & jsonNumberEncode(pt, writerGroupId_, "WriterGroupId");
+        rc = rc & jsonNumberEncode(pt, dataSetWriterId_, "DataSetWriterId");
+        rc = rc & jsonObjectEncode(pt, dataSetMetaData_, "DataSetMetaData");
+        rc = rc & jsonNumberEncode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
+        rc = rc & jsonNumberEncode(pt, messageReceiveTimeout_, "MessageReceiveTimeout");
+        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
+        rc = rc & jsonObjectEncode(pt, securityGroupId_, "SecurityGroupId");
         elementTree.clear();
         if (!securityKeyServices_.jsonEncode(elementTree, ""))
         {
@@ -747,7 +668,6 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("SecurityKeyServices", elementTree));
-    
         elementTree.clear();
         if (!dataSetReaderProperties_.jsonEncode(elementTree, ""))
         {
@@ -756,35 +676,11 @@ namespace OpcUaStackCore
             return false;
         }
         pt.push_back(std::make_pair("DataSetReaderProperties", elementTree));
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
+        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
+        rc = rc & jsonObjectEncode(pt, subscribedDataSet_, "SubscribedDataSet");
     
-        elementTree.clear();
-        if (!transportSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "transportSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransportSettings", elementTree));
-    
-        elementTree.clear();
-        if (!messageSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "messageSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("MessageSettings", elementTree));
-    
-        elementTree.clear();
-        if (!subscribedDataSet_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "subscribedDataSet_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SubscribedDataSet", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

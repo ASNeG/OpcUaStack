@@ -226,27 +226,13 @@ namespace OpcUaStackCore
     bool
     StatusResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!statusCode_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "StatusResult json encoder error")
-    		     .parameter("Element", "statusCode_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StatusCode", elementTree));
+        rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode");
+        rc = rc & jsonObjectEncode(pt, diagnosticInfo_, "DiagnosticInfo");
     
-        elementTree.clear();
-        if (!diagnosticInfo_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "StatusResult json encoder error")
-    		     .parameter("Element", "diagnosticInfo_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DiagnosticInfo", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

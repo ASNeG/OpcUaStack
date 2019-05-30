@@ -259,26 +259,11 @@ namespace OpcUaStackCore
     bool
     NotificationMessage::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, sequenceNumber_))
-        {
-    	     Log(Error, "NotificationMessage json encoder error")
-    		     .parameter("Element", "sequenceNumber_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SequenceNumber", elementTree));
-    
-        elementTree.clear();
-        if (!publishTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "NotificationMessage json encoder error")
-    		     .parameter("Element", "publishTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublishTime", elementTree));
-    
+        rc = rc & jsonNumberEncode(pt, sequenceNumber_, "SequenceNumber");
+        rc = rc & jsonObjectEncode(pt, publishTime_, "PublishTime");
         elementTree.clear();
         if (!notificationData_.jsonEncode(elementTree, ""))
         {
@@ -288,7 +273,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("NotificationData", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

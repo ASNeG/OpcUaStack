@@ -355,63 +355,17 @@ namespace OpcUaStackCore
     bool
     ServerStatusDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!startTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ServerStatusDataType json encoder error")
-    		     .parameter("Element", "startTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StartTime", elementTree));
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
+        rc = rc & jsonObjectEncode(pt, currentTime_, "CurrentTime");
+        rc = rc & jsonObjectEncode(pt, state_, "State");
+        rc = rc & jsonObjectEncode(pt, buildInfo_, "BuildInfo");
+        rc = rc & jsonNumberEncode(pt, secondsTillShutdown_, "SecondsTillShutdown");
+        rc = rc & jsonObjectEncode(pt, shutdownReason_, "ShutdownReason");
     
-        elementTree.clear();
-        if (!currentTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ServerStatusDataType json encoder error")
-    		     .parameter("Element", "currentTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CurrentTime", elementTree));
-    
-        elementTree.clear();
-        if (!state_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ServerStatusDataType json encoder error")
-    		     .parameter("Element", "state_");
-            return false;
-        }
-        pt.push_back(std::make_pair("State", elementTree));
-    
-        elementTree.clear();
-        if (!buildInfo_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ServerStatusDataType json encoder error")
-    		     .parameter("Element", "buildInfo_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BuildInfo", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, secondsTillShutdown_))
-        {
-    	     Log(Error, "ServerStatusDataType json encoder error")
-    		     .parameter("Element", "secondsTillShutdown_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SecondsTillShutdown", elementTree));
-    
-        elementTree.clear();
-        if (!shutdownReason_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ServerStatusDataType json encoder error")
-    		     .parameter("Element", "shutdownReason_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ShutdownReason", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

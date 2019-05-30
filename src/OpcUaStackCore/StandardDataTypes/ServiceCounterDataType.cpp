@@ -228,27 +228,13 @@ namespace OpcUaStackCore
     bool
     ServiceCounterDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, totalCount_))
-        {
-    	     Log(Error, "ServiceCounterDataType json encoder error")
-    		     .parameter("Element", "totalCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("TotalCount", elementTree));
+        rc = rc & jsonNumberEncode(pt, totalCount_, "TotalCount");
+        rc = rc & jsonNumberEncode(pt, errorCount_, "ErrorCount");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, errorCount_))
-        {
-    	     Log(Error, "ServiceCounterDataType json encoder error")
-    		     .parameter("Element", "errorCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ErrorCount", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

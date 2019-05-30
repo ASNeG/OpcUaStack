@@ -291,35 +291,12 @@ namespace OpcUaStackCore
     bool
     ServerOnNetwork::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, recordId_))
-        {
-    	     Log(Error, "ServerOnNetwork json encoder error")
-    		     .parameter("Element", "recordId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RecordId", elementTree));
-    
-        elementTree.clear();
-        if (!serverName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ServerOnNetwork json encoder error")
-    		     .parameter("Element", "serverName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerName", elementTree));
-    
-        elementTree.clear();
-        if (!discoveryUrl_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ServerOnNetwork json encoder error")
-    		     .parameter("Element", "discoveryUrl_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DiscoveryUrl", elementTree));
-    
+        rc = rc & jsonNumberEncode(pt, recordId_, "RecordId");
+        rc = rc & jsonObjectEncode(pt, serverName_, "ServerName");
+        rc = rc & jsonObjectEncode(pt, discoveryUrl_, "DiscoveryUrl");
         elementTree.clear();
         if (!serverCapabilities_.jsonEncode(elementTree, ""))
         {
@@ -329,7 +306,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("ServerCapabilities", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

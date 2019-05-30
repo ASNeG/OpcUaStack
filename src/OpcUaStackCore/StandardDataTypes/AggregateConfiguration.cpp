@@ -327,54 +327,16 @@ namespace OpcUaStackCore
     bool
     AggregateConfiguration::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, useServerCapabilitiesDefaults_))
-        {
-    	     Log(Error, "AggregateConfiguration json encoder error")
-    		     .parameter("Element", "useServerCapabilitiesDefaults_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UseServerCapabilitiesDefaults", elementTree));
+        rc = rc & jsonNumberEncode(pt, useServerCapabilitiesDefaults_, "UseServerCapabilitiesDefaults");
+        rc = rc & jsonNumberEncode(pt, treatUncertainAsBad_, "TreatUncertainAsBad");
+        rc = rc & jsonNumberEncode(pt, percentDataBad_, "PercentDataBad");
+        rc = rc & jsonNumberEncode(pt, percentDataGood_, "PercentDataGood");
+        rc = rc & jsonNumberEncode(pt, useSlopedExtrapolation_, "UseSlopedExtrapolation");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, treatUncertainAsBad_))
-        {
-    	     Log(Error, "AggregateConfiguration json encoder error")
-    		     .parameter("Element", "treatUncertainAsBad_");
-           return false;
-        }
-        pt.push_back(std::make_pair("TreatUncertainAsBad", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, percentDataBad_))
-        {
-    	     Log(Error, "AggregateConfiguration json encoder error")
-    		     .parameter("Element", "percentDataBad_");
-           return false;
-        }
-        pt.push_back(std::make_pair("PercentDataBad", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, percentDataGood_))
-        {
-    	     Log(Error, "AggregateConfiguration json encoder error")
-    		     .parameter("Element", "percentDataGood_");
-           return false;
-        }
-        pt.push_back(std::make_pair("PercentDataGood", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, useSlopedExtrapolation_))
-        {
-    	     Log(Error, "AggregateConfiguration json encoder error")
-    		     .parameter("Element", "useSlopedExtrapolation_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UseSlopedExtrapolation", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

@@ -294,45 +294,15 @@ namespace OpcUaStackCore
     bool
     SamplingIntervalDiagnosticsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, samplingInterval_))
-        {
-    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "samplingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SamplingInterval", elementTree));
+        rc = rc & jsonNumberEncode(pt, samplingInterval_, "SamplingInterval");
+        rc = rc & jsonNumberEncode(pt, monitoredItemCount_, "MonitoredItemCount");
+        rc = rc & jsonNumberEncode(pt, maxMonitoredItemCount_, "MaxMonitoredItemCount");
+        rc = rc & jsonNumberEncode(pt, disabledMonitoredItemCount_, "DisabledMonitoredItemCount");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, monitoredItemCount_))
-        {
-    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "monitoredItemCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MonitoredItemCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxMonitoredItemCount_))
-        {
-    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "maxMonitoredItemCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxMonitoredItemCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, disabledMonitoredItemCount_))
-        {
-    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "disabledMonitoredItemCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DisabledMonitoredItemCount", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

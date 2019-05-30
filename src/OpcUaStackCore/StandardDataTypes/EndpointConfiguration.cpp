@@ -459,90 +459,20 @@ namespace OpcUaStackCore
     bool
     EndpointConfiguration::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, operationTimeout_))
-        {
-    	     Log(Error, "EndpointConfiguration json encoder error")
-    		     .parameter("Element", "operationTimeout_");
-           return false;
-        }
-        pt.push_back(std::make_pair("OperationTimeout", elementTree));
+        rc = rc & jsonNumberEncode(pt, operationTimeout_, "OperationTimeout");
+        rc = rc & jsonNumberEncode(pt, useBinaryEncoding_, "UseBinaryEncoding");
+        rc = rc & jsonNumberEncode(pt, maxStringLength_, "MaxStringLength");
+        rc = rc & jsonNumberEncode(pt, maxByteStringLength_, "MaxByteStringLength");
+        rc = rc & jsonNumberEncode(pt, maxArrayLength_, "MaxArrayLength");
+        rc = rc & jsonNumberEncode(pt, maxMessageSize_, "MaxMessageSize");
+        rc = rc & jsonNumberEncode(pt, maxBufferSize_, "MaxBufferSize");
+        rc = rc & jsonNumberEncode(pt, channelLifetime_, "ChannelLifetime");
+        rc = rc & jsonNumberEncode(pt, securityTokenLifetime_, "SecurityTokenLifetime");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, useBinaryEncoding_))
-        {
-    	     Log(Error, "EndpointConfiguration json encoder error")
-    		     .parameter("Element", "useBinaryEncoding_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UseBinaryEncoding", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxStringLength_))
-        {
-    	     Log(Error, "EndpointConfiguration json encoder error")
-    		     .parameter("Element", "maxStringLength_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxStringLength", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxByteStringLength_))
-        {
-    	     Log(Error, "EndpointConfiguration json encoder error")
-    		     .parameter("Element", "maxByteStringLength_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxByteStringLength", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxArrayLength_))
-        {
-    	     Log(Error, "EndpointConfiguration json encoder error")
-    		     .parameter("Element", "maxArrayLength_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxArrayLength", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxMessageSize_))
-        {
-    	     Log(Error, "EndpointConfiguration json encoder error")
-    		     .parameter("Element", "maxMessageSize_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxMessageSize", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxBufferSize_))
-        {
-    	     Log(Error, "EndpointConfiguration json encoder error")
-    		     .parameter("Element", "maxBufferSize_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxBufferSize", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, channelLifetime_))
-        {
-    	     Log(Error, "EndpointConfiguration json encoder error")
-    		     .parameter("Element", "channelLifetime_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ChannelLifetime", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, securityTokenLifetime_))
-        {
-    	     Log(Error, "EndpointConfiguration json encoder error")
-    		     .parameter("Element", "securityTokenLifetime_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SecurityTokenLifetime", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

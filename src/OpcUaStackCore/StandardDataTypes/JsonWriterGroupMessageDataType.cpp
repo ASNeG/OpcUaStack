@@ -195,18 +195,12 @@ namespace OpcUaStackCore
     bool
     JsonWriterGroupMessageDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, networkMessageContentMask_))
-        {
-    	     Log(Error, "JsonWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "networkMessageContentMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NetworkMessageContentMask", elementTree));
+        rc = rc & jsonNumberEncode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
     
-        return true;
+        return rc;
     }
     
     bool

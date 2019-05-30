@@ -291,45 +291,15 @@ namespace OpcUaStackCore
     bool
     ReadEventDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, numValuesPerNode_))
-        {
-    	     Log(Error, "ReadEventDetails json encoder error")
-    		     .parameter("Element", "numValuesPerNode_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NumValuesPerNode", elementTree));
+        rc = rc & jsonNumberEncode(pt, numValuesPerNode_, "NumValuesPerNode");
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
+        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime");
+        rc = rc & jsonObjectEncode(pt, filter_, "Filter");
     
-        elementTree.clear();
-        if (!startTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadEventDetails json encoder error")
-    		     .parameter("Element", "startTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StartTime", elementTree));
-    
-        elementTree.clear();
-        if (!endTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadEventDetails json encoder error")
-    		     .parameter("Element", "endTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EndTime", elementTree));
-    
-        elementTree.clear();
-        if (!filter_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadEventDetails json encoder error")
-    		     .parameter("Element", "filter_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Filter", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

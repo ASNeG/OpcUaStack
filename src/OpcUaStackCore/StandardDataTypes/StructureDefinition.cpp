@@ -290,35 +290,12 @@ namespace OpcUaStackCore
     bool
     StructureDefinition::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!defaultEncodingId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "StructureDefinition json encoder error")
-    		     .parameter("Element", "defaultEncodingId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DefaultEncodingId", elementTree));
-    
-        elementTree.clear();
-        if (!baseDataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "StructureDefinition json encoder error")
-    		     .parameter("Element", "baseDataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BaseDataType", elementTree));
-    
-        elementTree.clear();
-        if (!structureType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "StructureDefinition json encoder error")
-    		     .parameter("Element", "structureType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StructureType", elementTree));
-    
+        rc = rc & jsonObjectEncode(pt, defaultEncodingId_, "DefaultEncodingId");
+        rc = rc & jsonObjectEncode(pt, baseDataType_, "BaseDataType");
+        rc = rc & jsonObjectEncode(pt, structureType_, "StructureType");
         elementTree.clear();
         if (!fields_.jsonEncode(elementTree, ""))
         {
@@ -328,7 +305,7 @@ namespace OpcUaStackCore
         }
         pt.push_back(std::make_pair("Fields", elementTree));
     
-        return true;
+        return rc;
     }
     
     bool

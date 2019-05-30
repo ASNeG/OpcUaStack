@@ -1184,288 +1184,42 @@ namespace OpcUaStackCore
     bool
     SubscriptionDiagnosticsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!sessionId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "sessionId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SessionId", elementTree));
+        rc = rc & jsonObjectEncode(pt, sessionId_, "SessionId");
+        rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
+        rc = rc & jsonNumberEncode(pt, priority_, "Priority");
+        rc = rc & jsonNumberEncode(pt, publishingInterval_, "PublishingInterval");
+        rc = rc & jsonNumberEncode(pt, maxKeepAliveCount_, "MaxKeepAliveCount");
+        rc = rc & jsonNumberEncode(pt, maxLifetimeCount_, "MaxLifetimeCount");
+        rc = rc & jsonNumberEncode(pt, maxNotificationsPerPublish_, "MaxNotificationsPerPublish");
+        rc = rc & jsonNumberEncode(pt, publishingEnabled_, "PublishingEnabled");
+        rc = rc & jsonNumberEncode(pt, modifyCount_, "ModifyCount");
+        rc = rc & jsonNumberEncode(pt, enableCount_, "EnableCount");
+        rc = rc & jsonNumberEncode(pt, disableCount_, "DisableCount");
+        rc = rc & jsonNumberEncode(pt, republishRequestCount_, "RepublishRequestCount");
+        rc = rc & jsonNumberEncode(pt, republishMessageRequestCount_, "RepublishMessageRequestCount");
+        rc = rc & jsonNumberEncode(pt, republishMessageCount_, "RepublishMessageCount");
+        rc = rc & jsonNumberEncode(pt, transferRequestCount_, "TransferRequestCount");
+        rc = rc & jsonNumberEncode(pt, transferredToAltClientCount_, "TransferredToAltClientCount");
+        rc = rc & jsonNumberEncode(pt, transferredToSameClientCount_, "TransferredToSameClientCount");
+        rc = rc & jsonNumberEncode(pt, publishRequestCount_, "PublishRequestCount");
+        rc = rc & jsonNumberEncode(pt, dataChangeNotificationsCount_, "DataChangeNotificationsCount");
+        rc = rc & jsonNumberEncode(pt, eventNotificationsCount_, "EventNotificationsCount");
+        rc = rc & jsonNumberEncode(pt, notificationsCount_, "NotificationsCount");
+        rc = rc & jsonNumberEncode(pt, latePublishRequestCount_, "LatePublishRequestCount");
+        rc = rc & jsonNumberEncode(pt, currentKeepAliveCount_, "CurrentKeepAliveCount");
+        rc = rc & jsonNumberEncode(pt, currentLifetimeCount_, "CurrentLifetimeCount");
+        rc = rc & jsonNumberEncode(pt, unacknowledgedMessageCount_, "UnacknowledgedMessageCount");
+        rc = rc & jsonNumberEncode(pt, discardedMessageCount_, "DiscardedMessageCount");
+        rc = rc & jsonNumberEncode(pt, monitoredItemCount_, "MonitoredItemCount");
+        rc = rc & jsonNumberEncode(pt, disabledMonitoredItemCount_, "DisabledMonitoredItemCount");
+        rc = rc & jsonNumberEncode(pt, monitoringQueueOverflowCount_, "MonitoringQueueOverflowCount");
+        rc = rc & jsonNumberEncode(pt, nextSequenceNumber_, "NextSequenceNumber");
+        rc = rc & jsonNumberEncode(pt, eventQueueOverFlowCount_, "EventQueueOverFlowCount");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, subscriptionId_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "subscriptionId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SubscriptionId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, priority_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "priority_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Priority", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, publishingInterval_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "publishingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("PublishingInterval", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxKeepAliveCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "maxKeepAliveCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxKeepAliveCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxLifetimeCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "maxLifetimeCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxLifetimeCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxNotificationsPerPublish_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "maxNotificationsPerPublish_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxNotificationsPerPublish", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, publishingEnabled_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "publishingEnabled_");
-           return false;
-        }
-        pt.push_back(std::make_pair("PublishingEnabled", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, modifyCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "modifyCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ModifyCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, enableCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "enableCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("EnableCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, disableCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "disableCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DisableCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, republishRequestCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "republishRequestCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RepublishRequestCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, republishMessageRequestCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "republishMessageRequestCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RepublishMessageRequestCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, republishMessageCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "republishMessageCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RepublishMessageCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, transferRequestCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "transferRequestCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("TransferRequestCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, transferredToAltClientCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "transferredToAltClientCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("TransferredToAltClientCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, transferredToSameClientCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "transferredToSameClientCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("TransferredToSameClientCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, publishRequestCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "publishRequestCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("PublishRequestCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, dataChangeNotificationsCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "dataChangeNotificationsCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DataChangeNotificationsCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, eventNotificationsCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "eventNotificationsCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("EventNotificationsCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, notificationsCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "notificationsCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NotificationsCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, latePublishRequestCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "latePublishRequestCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("LatePublishRequestCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, currentKeepAliveCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "currentKeepAliveCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("CurrentKeepAliveCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, currentLifetimeCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "currentLifetimeCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("CurrentLifetimeCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, unacknowledgedMessageCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "unacknowledgedMessageCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UnacknowledgedMessageCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, discardedMessageCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "discardedMessageCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DiscardedMessageCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, monitoredItemCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "monitoredItemCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MonitoredItemCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, disabledMonitoredItemCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "disabledMonitoredItemCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DisabledMonitoredItemCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, monitoringQueueOverflowCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "monitoringQueueOverflowCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MonitoringQueueOverflowCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, nextSequenceNumber_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "nextSequenceNumber_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NextSequenceNumber", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, eventQueueOverFlowCount_))
-        {
-    	     Log(Error, "SubscriptionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "eventQueueOverFlowCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("EventQueueOverFlowCount", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

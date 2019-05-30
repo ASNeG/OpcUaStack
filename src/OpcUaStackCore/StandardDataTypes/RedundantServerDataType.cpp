@@ -259,36 +259,14 @@ namespace OpcUaStackCore
     bool
     RedundantServerDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!serverId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RedundantServerDataType json encoder error")
-    		     .parameter("Element", "serverId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerId", elementTree));
+        rc = rc & jsonObjectEncode(pt, serverId_, "ServerId");
+        rc = rc & jsonNumberEncode(pt, serviceLevel_, "ServiceLevel");
+        rc = rc & jsonObjectEncode(pt, serverState_, "ServerState");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, serviceLevel_))
-        {
-    	     Log(Error, "RedundantServerDataType json encoder error")
-    		     .parameter("Element", "serviceLevel_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ServiceLevel", elementTree));
-    
-        elementTree.clear();
-        if (!serverState_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RedundantServerDataType json encoder error")
-    		     .parameter("Element", "serverState_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerState", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool

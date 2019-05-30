@@ -200,18 +200,12 @@ namespace OpcUaStackCore
     bool
     UserIdentityToken::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!policyId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserIdentityToken json encoder error")
-    		     .parameter("Element", "policyId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PolicyId", elementTree));
+        rc = rc & jsonObjectEncode(pt, policyId_, "PolicyId");
     
-        return true;
+        return rc;
     }
     
     bool

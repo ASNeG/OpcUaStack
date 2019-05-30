@@ -260,36 +260,14 @@ namespace OpcUaStackCore
     bool
     DataChangeFilter::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
+        bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!trigger_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataChangeFilter json encoder error")
-    		     .parameter("Element", "trigger_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Trigger", elementTree));
+        rc = rc & jsonObjectEncode(pt, trigger_, "Trigger");
+        rc = rc & jsonNumberEncode(pt, deadbandType_, "DeadbandType");
+        rc = rc & jsonNumberEncode(pt, deadbandValue_, "DeadbandValue");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, deadbandType_))
-        {
-    	     Log(Error, "DataChangeFilter json encoder error")
-    		     .parameter("Element", "deadbandType_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DeadbandType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, deadbandValue_))
-        {
-    	     Log(Error, "DataChangeFilter json encoder error")
-    		     .parameter("Element", "deadbandValue_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DeadbandValue", elementTree));
-    
-        return true;
+        return rc;
     }
     
     bool
