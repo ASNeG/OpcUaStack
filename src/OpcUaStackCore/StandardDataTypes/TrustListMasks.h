@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class TrustListMasks
+    class DLLEXPORT TrustListMasks
     : public Object
     , public ExtensionObjectBase
     {

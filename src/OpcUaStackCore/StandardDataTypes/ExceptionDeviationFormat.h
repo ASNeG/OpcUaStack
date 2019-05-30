@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class ExceptionDeviationFormat
+    class DLLEXPORT ExceptionDeviationFormat
     : public Object
     , public ExtensionObjectBase
     {

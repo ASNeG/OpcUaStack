@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class BrokerTransportQualityOfService
+    class DLLEXPORT BrokerTransportQualityOfService
     : public Object
     , public ExtensionObjectBase
     {

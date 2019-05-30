@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * The types of applications.
      */
-    class ApplicationType
+    class DLLEXPORT ApplicationType
     : public Object
     , public ExtensionObjectBase
     {

@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class PerformUpdateType
+    class DLLEXPORT PerformUpdateType
     : public Object
     , public ExtensionObjectBase
     {

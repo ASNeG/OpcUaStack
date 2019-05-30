@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class StructureType
+    class DLLEXPORT StructureType
     : public Object
     , public ExtensionObjectBase
     {

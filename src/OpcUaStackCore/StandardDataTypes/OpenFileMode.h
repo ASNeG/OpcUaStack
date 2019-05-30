@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class OpenFileMode
+    class DLLEXPORT OpenFileMode
     : public Object
     , public ExtensionObjectBase
     {

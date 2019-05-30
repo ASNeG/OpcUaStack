@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class AxisScaleEnumeration
+    class DLLEXPORT AxisScaleEnumeration
     : public Object
     , public ExtensionObjectBase
     {

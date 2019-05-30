@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class ServerState
+    class DLLEXPORT ServerState
     : public Object
     , public ExtensionObjectBase
     {

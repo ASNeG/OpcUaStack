@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class DiagnosticsLevel
+    class DLLEXPORT DiagnosticsLevel
     : public Object
     , public ExtensionObjectBase
     {

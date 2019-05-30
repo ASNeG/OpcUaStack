@@ -205,7 +205,7 @@ namespace OpcUaStackServer
 			ss << prefix << " */" << std::endl;
 		}
 
-		ss << prefix << "class " << nodeInfo_.className() << std::endl;
+		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << std::endl;
 
 		//
 		// added base classes

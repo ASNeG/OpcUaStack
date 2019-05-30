@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class DataChangeTrigger
+    class DLLEXPORT DataChangeTrigger
     : public Object
     , public ExtensionObjectBase
     {

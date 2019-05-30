@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class OverrideValueHandling
+    class DLLEXPORT OverrideValueHandling
     : public Object
     , public ExtensionObjectBase
     {

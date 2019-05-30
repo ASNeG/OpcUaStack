@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class IdentityCriteriaType
+    class DLLEXPORT IdentityCriteriaType
     : public Object
     , public ExtensionObjectBase
     {

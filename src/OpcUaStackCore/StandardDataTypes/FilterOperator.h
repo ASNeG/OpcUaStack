@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class FilterOperator
+    class DLLEXPORT FilterOperator
     : public Object
     , public ExtensionObjectBase
     {

@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class PubSubDiagnosticsCounterClassification
+    class DLLEXPORT PubSubDiagnosticsCounterClassification
     : public Object
     , public ExtensionObjectBase
     {

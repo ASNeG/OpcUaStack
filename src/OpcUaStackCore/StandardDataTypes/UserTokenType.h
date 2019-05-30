@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * The possible user token types.
      */
-    class UserTokenType
+    class DLLEXPORT UserTokenType
     : public Object
     , public ExtensionObjectBase
     {

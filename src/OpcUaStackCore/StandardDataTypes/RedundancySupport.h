@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class RedundancySupport
+    class DLLEXPORT RedundancySupport
     : public Object
     , public ExtensionObjectBase
     {

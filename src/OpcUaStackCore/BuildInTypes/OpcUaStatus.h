@@ -26,7 +26,7 @@
 namespace OpcUaStackCore
 {
     
-    class OpcUaStatus
+    class DLLEXPORT OpcUaStatus
     : public Object
     , public ExtensionObjectBase
     {

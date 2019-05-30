@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class PubSubState
+    class DLLEXPORT PubSubState
     : public Object
     , public ExtensionObjectBase
     {

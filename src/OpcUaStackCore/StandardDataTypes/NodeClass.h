@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * A mask specifying the class of the node.
      */
-    class NodeClass
+    class DLLEXPORT NodeClass
     : public Object
     , public ExtensionObjectBase
     {

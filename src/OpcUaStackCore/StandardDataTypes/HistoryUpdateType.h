@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class HistoryUpdateType
+    class DLLEXPORT HistoryUpdateType
     : public Object
     , public ExtensionObjectBase
     {

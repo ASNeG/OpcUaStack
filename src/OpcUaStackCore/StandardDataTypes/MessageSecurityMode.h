@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * The type of security to use on a message.
      */
-    class MessageSecurityMode
+    class DLLEXPORT MessageSecurityMode
     : public Object
     , public ExtensionObjectBase
     {

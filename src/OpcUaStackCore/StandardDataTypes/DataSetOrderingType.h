@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class DataSetOrderingType
+    class DLLEXPORT DataSetOrderingType
     : public Object
     , public ExtensionObjectBase
     {
