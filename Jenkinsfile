@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('error') {
       steps {
-        sh 'build.sh -t local'
+        sh 'sh build.sh -t local'
         cleanWs(cleanWhenSuccess: true)
       }
     }
