@@ -35,6 +35,8 @@ namespace OpcUaStackCore
 
 		bool copyTo(OpcUaXmlElement& value);
 
+		void out(std::ostream& os) const { return; }
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
