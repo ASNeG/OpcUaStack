@@ -1,7 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage('error') {
+    stage('Build') {
       steps {
         sh 'sh build.sh -t local'
         cleanWs(cleanWhenSuccess: true)
