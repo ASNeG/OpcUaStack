@@ -69,7 +69,7 @@ namespace OpcUaStackCore
     
     };
     
-    class TargetVariablesDataTypeArray
+    class DLLEXPORT TargetVariablesDataTypeArray
     : public OpcUaArray<TargetVariablesDataType::SPtr, SPtrTypeCoder<TargetVariablesDataType> >
     , public Object
     {

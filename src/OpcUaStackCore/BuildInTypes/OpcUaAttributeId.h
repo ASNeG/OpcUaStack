@@ -56,7 +56,6 @@ namespace OpcUaStackCore
 		AttributeId_AccessLevelEx = 27
 	} AttributeId;
 
-
 	class DLLEXPORT AttributeIdMask
 	{
 	  public:

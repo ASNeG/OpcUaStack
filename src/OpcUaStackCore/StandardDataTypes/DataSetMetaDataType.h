@@ -78,7 +78,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DataSetMetaDataTypeArray
+    class DLLEXPORT DataSetMetaDataTypeArray
     : public OpcUaArray<DataSetMetaDataType::SPtr, SPtrTypeCoder<DataSetMetaDataType> >
     , public Object
     {

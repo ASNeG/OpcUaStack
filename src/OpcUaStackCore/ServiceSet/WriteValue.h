@@ -43,6 +43,9 @@ namespace OpcUaStackCore
 
 		void nodeId(const OpcUaInt16& namespaceId, const OpcUaInt32& identifier);
 		
+		void copyTo(WriteValue& writeValue) {}
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }

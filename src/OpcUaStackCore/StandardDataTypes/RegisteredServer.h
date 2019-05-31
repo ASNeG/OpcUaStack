@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     
     };
     
-    class RegisteredServerArray
+    class DLLEXPORT RegisteredServerArray
     : public OpcUaArray<RegisteredServer::SPtr, SPtrTypeCoder<RegisteredServer> >
     , public Object
     {

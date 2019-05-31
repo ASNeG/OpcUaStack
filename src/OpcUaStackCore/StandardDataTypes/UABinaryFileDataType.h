@@ -73,7 +73,7 @@ namespace OpcUaStackCore
     
     };
     
-    class UABinaryFileDataTypeArray
+    class DLLEXPORT UABinaryFileDataTypeArray
     : public OpcUaArray<UABinaryFileDataType::SPtr, SPtrTypeCoder<UABinaryFileDataType> >
     , public Object
     {

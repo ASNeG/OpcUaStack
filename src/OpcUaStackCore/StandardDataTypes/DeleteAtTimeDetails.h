@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DeleteAtTimeDetailsArray
+    class DLLEXPORT DeleteAtTimeDetailsArray
     : public OpcUaArray<DeleteAtTimeDetails::SPtr, SPtrTypeCoder<DeleteAtTimeDetails> >
     , public Object
     {

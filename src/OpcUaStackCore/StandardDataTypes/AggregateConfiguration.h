@@ -76,7 +76,7 @@ namespace OpcUaStackCore
     
     };
     
-    class AggregateConfigurationArray
+    class DLLEXPORT AggregateConfigurationArray
     : public OpcUaArray<AggregateConfiguration::SPtr, SPtrTypeCoder<AggregateConfiguration> >
     , public Object
     {

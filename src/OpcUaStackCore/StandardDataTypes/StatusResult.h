@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class StatusResultArray
+    class DLLEXPORT StatusResultArray
     : public OpcUaArray<StatusResult::SPtr, SPtrTypeCoder<StatusResult> >
     , public Object
     {

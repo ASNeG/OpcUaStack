@@ -66,6 +66,12 @@ namespace OpcUaStackPubSub
 		return dataSetMessageHeader_->dataMessageSequenceNumber();
 	}
 
+	void
+	DataSetMessage::copyTo(DataSetMessage& dataSetMessage)
+	{
+		dataSetMessageHeader_->copyTo(dataSetMessage.dataSetMessageHeader());
+	}
+
 	bool
 	DataSetMessage::operator==(const DataSetMessage& other) const
 	{
@@ -78,6 +84,12 @@ namespace OpcUaStackPubSub
 		return !(*this == other);
 	}
 
+	void
+	DataSetMessage::out(std::ostream& os) const
+	{
+		os << "DataSetMessageHeader=";
+		dataSetMessageHeader_->out(os);
+	}
 
 }
 

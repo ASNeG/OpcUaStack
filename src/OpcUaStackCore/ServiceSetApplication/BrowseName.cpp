@@ -282,6 +282,13 @@ namespace OpcUaStackCore
 	}
 
 	void
+	BrowseName::copyTo(BrowseName& browseName)
+	{
+		nodeId_.copyTo(browseName.nodeId());
+		pathNames_->copyTo(*browseName.pathNames().get());
+	}
+
+	void
 	BrowseName::out(std::ostream& os) const
 	{
 		os << "NodeId=" << nodeId_;

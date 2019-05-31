@@ -71,7 +71,7 @@ namespace OpcUaStackCore
     
     };
     
-    class IdentityMappingRuleTypeArray
+    class DLLEXPORT IdentityMappingRuleTypeArray
     : public OpcUaArray<IdentityMappingRuleType::SPtr, SPtrTypeCoder<IdentityMappingRuleType> >
     , public Object
     {

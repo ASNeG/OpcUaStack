@@ -91,6 +91,15 @@ namespace OpcUaStackCore
 		return outputArgumentArraySPtr_;
 	}
 
+	void
+	CallMethodResult::copyTo(CallMethodResult& callMethodResult)
+	{
+		callMethodResult.statusCode(statusCode_);
+		inputArgumentResultArraySPtr_->copyTo(*callMethodResult.inputArgumentResults().get());
+		inputArgumentDiagnosticInfoArraySPtr_->copyTo(*callMethodResult.inputArgumentDiagnosticInfos().get());
+		outputArgumentArraySPtr_->copyTo(*callMethodResult.outputArguments().get());
+	}
+
 	void 
 	CallMethodResult::opcUaBinaryEncode(std::ostream& os) const
 	{

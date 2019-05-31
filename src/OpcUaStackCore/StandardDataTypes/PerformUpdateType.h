@@ -84,7 +84,7 @@ namespace OpcUaStackCore
     
     };
     
-    class PerformUpdateTypeArray
+    class DLLEXPORT PerformUpdateTypeArray
     : public OpcUaArray<PerformUpdateType::SPtr, SPtrTypeCoder<PerformUpdateType> >
     , public Object
     {

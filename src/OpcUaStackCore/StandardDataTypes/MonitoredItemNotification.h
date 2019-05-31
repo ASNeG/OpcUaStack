@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class MonitoredItemNotificationArray
+    class DLLEXPORT MonitoredItemNotificationArray
     : public OpcUaArray<MonitoredItemNotification::SPtr, SPtrTypeCoder<MonitoredItemNotification> >
     , public Object
     {

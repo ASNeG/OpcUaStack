@@ -74,7 +74,7 @@ namespace OpcUaStackCore
     
     };
     
-    class PubSubConfigurationDataTypeArray
+    class DLLEXPORT PubSubConfigurationDataTypeArray
     : public OpcUaArray<PubSubConfigurationDataType::SPtr, SPtrTypeCoder<PubSubConfigurationDataType> >
     , public Object
     {

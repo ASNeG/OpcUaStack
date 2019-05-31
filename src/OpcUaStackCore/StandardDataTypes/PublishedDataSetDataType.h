@@ -79,7 +79,7 @@ namespace OpcUaStackCore
     
     };
     
-    class PublishedDataSetDataTypeArray
+    class DLLEXPORT PublishedDataSetDataTypeArray
     : public OpcUaArray<PublishedDataSetDataType::SPtr, SPtrTypeCoder<PublishedDataSetDataType> >
     , public Object
     {

@@ -73,7 +73,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ModificationInfoArray
+    class DLLEXPORT ModificationInfoArray
     : public OpcUaArray<ModificationInfo::SPtr, SPtrTypeCoder<ModificationInfo> >
     , public Object
     {

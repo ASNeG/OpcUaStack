@@ -76,7 +76,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DeleteReferencesItemArray
+    class DLLEXPORT DeleteReferencesItemArray
     : public OpcUaArray<DeleteReferencesItem::SPtr, SPtrTypeCoder<DeleteReferencesItem> >
     , public Object
     {

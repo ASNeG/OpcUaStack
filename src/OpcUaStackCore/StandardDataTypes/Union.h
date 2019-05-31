@@ -66,7 +66,7 @@ namespace OpcUaStackCore
     
     };
     
-    class UnionArray
+    class DLLEXPORT UnionArray
     : public OpcUaArray<Union::SPtr, SPtrTypeCoder<Union> >
     , public Object
     {

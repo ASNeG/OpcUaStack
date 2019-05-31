@@ -71,7 +71,7 @@ namespace OpcUaStackCore
     
     };
     
-    class EnumDescriptionArray
+    class DLLEXPORT EnumDescriptionArray
     : public OpcUaArray<EnumDescription::SPtr, SPtrTypeCoder<EnumDescription> >
     , public Object
     {

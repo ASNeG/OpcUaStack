@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class EventFieldListArray
+    class DLLEXPORT EventFieldListArray
     : public OpcUaArray<EventFieldList::SPtr, SPtrTypeCoder<EventFieldList> >
     , public Object
     {

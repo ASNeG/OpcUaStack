@@ -81,8 +81,9 @@ namespace OpcUaStackPubSub
 		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
 		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
 
-
+		void copyTo(DataSetMessageHeader& dataSetMessageHeader);
 		bool operator==(const DataSetMessageHeader& other) const;
+		void out(std::ostream& os) const;
 
 	  private:
 		FieldEncoding fieldEncoding_;

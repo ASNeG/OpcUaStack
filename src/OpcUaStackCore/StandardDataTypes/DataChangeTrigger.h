@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DataChangeTriggerArray
+    class DLLEXPORT DataChangeTriggerArray
     : public OpcUaArray<DataChangeTrigger::SPtr, SPtrTypeCoder<DataChangeTrigger> >
     , public Object
     {

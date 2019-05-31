@@ -19,6 +19,7 @@
 #define __OpcUaServer_WindowsService_h__
 #ifdef WIN32
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaServer/Interface/ServerApplicationIf.h"
 #include <Windows.h>
 #include <WinSvc.h>

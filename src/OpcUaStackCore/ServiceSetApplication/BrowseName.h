@@ -107,6 +107,7 @@ namespace OpcUaStackCore
 			const OpcUaQualifiedName& pathElement5
 		);
 
+		void copyTo(BrowseName& browseName);
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const BrowseName& value) {
 			value.out(os);

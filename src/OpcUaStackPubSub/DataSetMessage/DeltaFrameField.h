@@ -42,6 +42,8 @@ namespace OpcUaStackPubSub
 		void fieldIndex(uint16_t fieldIndex);
 		uint32_t fieldIndex(void);
 
+		void copyTo(DeltaFrameField& deltaFrameField);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

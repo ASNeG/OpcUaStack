@@ -35,6 +35,9 @@ namespace OpcUaStackCore
 
 		void statusCode(OpcUaStatusCode statusCode);
 		OpcUaStatusCode statusCode(void) const;
+
+		void copyTo(DeleteReferencesResult& deleteReferencesResult) {}
+		void out(std::ostream& os) const {};
 				
 		void opcUaBinaryEncode(std::ostream& os) const; 
 		void opcUaBinaryDecode(std::istream& is);

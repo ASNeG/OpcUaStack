@@ -82,7 +82,7 @@ namespace OpcUaStackCore
     
     };
     
-    class VariableAttributesArray
+    class DLLEXPORT VariableAttributesArray
     : public OpcUaArray<VariableAttributes::SPtr, SPtrTypeCoder<VariableAttributes> >
     , public Object
     {

@@ -118,7 +118,7 @@ namespace OpcUaStackCore
     
     };
     
-    class NodeAttributesMaskArray
+    class DLLEXPORT NodeAttributesMaskArray
     : public OpcUaArray<NodeAttributesMask::SPtr, SPtrTypeCoder<NodeAttributesMask> >
     , public Object
     {

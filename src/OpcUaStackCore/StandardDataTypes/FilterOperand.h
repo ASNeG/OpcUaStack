@@ -66,7 +66,7 @@ namespace OpcUaStackCore
     
     };
     
-    class FilterOperandArray
+    class DLLEXPORT FilterOperandArray
     : public OpcUaArray<FilterOperand::SPtr, SPtrTypeCoder<FilterOperand> >
     , public Object
     {

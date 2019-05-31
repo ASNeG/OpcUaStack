@@ -41,6 +41,9 @@ namespace OpcUaStackCore
 		void historyData(const OpcUaExtensibleParameter::SPtr historyData);
 		OpcUaExtensibleParameter::SPtr historyData(void) const;
 
+		void copyTo(HistoryReadResult& historyReadResult) {}
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }

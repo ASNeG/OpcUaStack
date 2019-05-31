@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     
     };
     
-    class StructureTypeArray
+    class DLLEXPORT StructureTypeArray
     : public OpcUaArray<StructureType::SPtr, SPtrTypeCoder<StructureType> >
     , public Object
     {

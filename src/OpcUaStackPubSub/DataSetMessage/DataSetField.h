@@ -50,8 +50,19 @@ namespace OpcUaStackPubSub
 		// FIXME: meta data ....
 		Object::SPtr& object(void);
 
+		void copyTo(DataSetField& dataSetField);
+		void out(std::ostream& os) const;
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
+		bool jsonEncode(boost::property_tree::ptree& pt) { return false; }
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
+		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
 
 	  private:
 		FieldEncoding dataType_;

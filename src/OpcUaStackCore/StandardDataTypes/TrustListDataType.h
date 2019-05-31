@@ -76,7 +76,7 @@ namespace OpcUaStackCore
     
     };
     
-    class TrustListDataTypeArray
+    class DLLEXPORT TrustListDataTypeArray
     : public OpcUaArray<TrustListDataType::SPtr, SPtrTypeCoder<TrustListDataType> >
     , public Object
     {

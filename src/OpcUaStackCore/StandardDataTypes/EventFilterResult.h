@@ -73,7 +73,7 @@ namespace OpcUaStackCore
     
     };
     
-    class EventFilterResultArray
+    class DLLEXPORT EventFilterResultArray
     : public OpcUaArray<EventFilterResult::SPtr, SPtrTypeCoder<EventFilterResult> >
     , public Object
     {

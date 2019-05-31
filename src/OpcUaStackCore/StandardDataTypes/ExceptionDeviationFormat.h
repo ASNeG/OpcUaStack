@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ExceptionDeviationFormatArray
+    class DLLEXPORT ExceptionDeviationFormatArray
     : public OpcUaArray<ExceptionDeviationFormat::SPtr, SPtrTypeCoder<ExceptionDeviationFormat> >
     , public Object
     {

@@ -42,6 +42,9 @@ namespace OpcUaStackCore
 		void requestedParameters(const MonitoringParameters& requestedParameters);
 		MonitoringParameters& requestedParameters(void);
 
+		void copyTo(MonitoredItemCreateRequest& monitoredItemCreateRequest) {}
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }

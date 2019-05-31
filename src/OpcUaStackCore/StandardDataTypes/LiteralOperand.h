@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class LiteralOperandArray
+    class DLLEXPORT LiteralOperandArray
     : public OpcUaArray<LiteralOperand::SPtr, SPtrTypeCoder<LiteralOperand> >
     , public Object
     {

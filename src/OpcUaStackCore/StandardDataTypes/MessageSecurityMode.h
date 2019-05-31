@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     
     };
     
-    class MessageSecurityModeArray
+    class DLLEXPORT MessageSecurityModeArray
     : public OpcUaArray<MessageSecurityMode::SPtr, SPtrTypeCoder<MessageSecurityMode> >
     , public Object
     {

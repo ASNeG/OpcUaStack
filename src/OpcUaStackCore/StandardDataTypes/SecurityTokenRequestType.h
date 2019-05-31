@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SecurityTokenRequestTypeArray
+    class DLLEXPORT SecurityTokenRequestTypeArray
     : public OpcUaArray<SecurityTokenRequestType::SPtr, SPtrTypeCoder<SecurityTokenRequestType> >
     , public Object
     {

@@ -79,7 +79,7 @@ namespace OpcUaStackCore
     
     };
     
-    class BrokerDataSetWriterTransportDataTypeArray
+    class DLLEXPORT BrokerDataSetWriterTransportDataTypeArray
     : public OpcUaArray<BrokerDataSetWriterTransportDataType::SPtr, SPtrTypeCoder<BrokerDataSetWriterTransportDataType> >
     , public Object
     {

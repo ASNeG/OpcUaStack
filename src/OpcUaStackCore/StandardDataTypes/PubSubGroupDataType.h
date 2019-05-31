@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     
     };
     
-    class PubSubGroupDataTypeArray
+    class DLLEXPORT PubSubGroupDataTypeArray
     : public OpcUaArray<PubSubGroupDataType::SPtr, SPtrTypeCoder<PubSubGroupDataType> >
     , public Object
     {

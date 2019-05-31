@@ -154,7 +154,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SessionDiagnosticsDataTypeArray
+    class DLLEXPORT SessionDiagnosticsDataTypeArray
     : public OpcUaArray<SessionDiagnosticsDataType::SPtr, SPtrTypeCoder<SessionDiagnosticsDataType> >
     , public Object
     {

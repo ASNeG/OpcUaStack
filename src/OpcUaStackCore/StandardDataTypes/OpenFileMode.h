@@ -84,7 +84,7 @@ namespace OpcUaStackCore
     
     };
     
-    class OpenFileModeArray
+    class DLLEXPORT OpenFileModeArray
     : public OpcUaArray<OpenFileMode::SPtr, SPtrTypeCoder<OpenFileMode> >
     , public Object
     {

@@ -82,7 +82,7 @@ namespace OpcUaStackCore
     
     };
     
-    class PubSubDiagnosticsCounterClassificationArray
+    class DLLEXPORT PubSubDiagnosticsCounterClassificationArray
     : public OpcUaArray<PubSubDiagnosticsCounterClassification::SPtr, SPtrTypeCoder<PubSubDiagnosticsCounterClassification> >
     , public Object
     {

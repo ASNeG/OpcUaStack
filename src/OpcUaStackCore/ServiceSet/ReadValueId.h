@@ -50,6 +50,9 @@ namespace OpcUaStackCore
 		void dataEncoding(const OpcUaInt16& namespaceIndex, const std::string& name);
 		void dataEncoding(const std::string& name);
 
+		void copyTo(ReadValueId& readValueId);
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }

@@ -74,7 +74,7 @@ namespace OpcUaStackCore
     
     };
     
-    class RelativePathElementArray
+    class DLLEXPORT RelativePathElementArray
     : public OpcUaArray<RelativePathElement::SPtr, SPtrTypeCoder<RelativePathElement> >
     , public Object
     {

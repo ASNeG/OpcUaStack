@@ -72,7 +72,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ReferenceTypeAttributesArray
+    class DLLEXPORT ReferenceTypeAttributesArray
     : public OpcUaArray<ReferenceTypeAttributes::SPtr, SPtrTypeCoder<ReferenceTypeAttributes> >
     , public Object
     {

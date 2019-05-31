@@ -74,7 +74,7 @@ namespace OpcUaStackCore
     
     };
     
-    class UadpDataSetWriterMessageDataTypeArray
+    class DLLEXPORT UadpDataSetWriterMessageDataTypeArray
     : public OpcUaArray<UadpDataSetWriterMessageDataType::SPtr, SPtrTypeCoder<UadpDataSetWriterMessageDataType> >
     , public Object
     {

@@ -54,6 +54,9 @@ namespace OpcUaStackCore
 		void resultMask(const OpcUaUInt32 resultMask);
 		OpcUaUInt32 resultMask(void);
 		
+		void copyTo(BrowseDescription& browseDescription);
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }

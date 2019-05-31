@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class KeyValuePairArray
+    class DLLEXPORT KeyValuePairArray
     : public OpcUaArray<KeyValuePair::SPtr, SPtrTypeCoder<KeyValuePair> >
     , public Object
     {

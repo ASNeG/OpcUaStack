@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ReadEventDetailsArray
+    class DLLEXPORT ReadEventDetailsArray
     : public OpcUaArray<ReadEventDetails::SPtr, SPtrTypeCoder<ReadEventDetails> >
     , public Object
     {

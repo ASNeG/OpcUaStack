@@ -80,7 +80,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ServerStatusDataTypeArray
+    class DLLEXPORT ServerStatusDataTypeArray
     : public OpcUaArray<ServerStatusDataType::SPtr, SPtrTypeCoder<ServerStatusDataType> >
     , public Object
     {

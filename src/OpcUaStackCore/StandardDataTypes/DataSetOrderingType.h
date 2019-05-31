@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DataSetOrderingTypeArray
+    class DLLEXPORT DataSetOrderingTypeArray
     : public OpcUaArray<DataSetOrderingType::SPtr, SPtrTypeCoder<DataSetOrderingType> >
     , public Object
     {

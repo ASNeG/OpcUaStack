@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ViewAttributesArray
+    class DLLEXPORT ViewAttributesArray
     : public OpcUaArray<ViewAttributes::SPtr, SPtrTypeCoder<ViewAttributes> >
     , public Object
     {

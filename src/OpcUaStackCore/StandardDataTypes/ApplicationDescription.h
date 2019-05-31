@@ -81,7 +81,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ApplicationDescriptionArray
+    class DLLEXPORT ApplicationDescriptionArray
     : public OpcUaArray<ApplicationDescription::SPtr, SPtrTypeCoder<ApplicationDescription> >
     , public Object
     {

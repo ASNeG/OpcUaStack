@@ -86,7 +86,7 @@ namespace OpcUaStackCore
     
     };
     
-    class TrustListMasksArray
+    class DLLEXPORT TrustListMasksArray
     : public OpcUaArray<TrustListMasks::SPtr, SPtrTypeCoder<TrustListMasks> >
     , public Object
     {

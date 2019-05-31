@@ -46,11 +46,21 @@ namespace OpcUaStackPubSub
 		uint16_t sequenceNumber(void);
 
 		virtual void setFieldEncoding(void) {};
-		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
-		virtual void opcUaBinaryDecode(std::istream& is) = 0;
+		virtual void opcUaBinaryEncode(std::ostream& os) const {}
+		virtual void opcUaBinaryDecode(std::istream& is) {}
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return  true; }
+		bool jsonEncode(boost::property_tree::ptree& pt) { return  true; }
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return  true; }
+		bool jsonDecode(boost::property_tree::ptree& pt) { return  true; }
 
+		void copyTo(DataSetMessage& dataSetMessage);
 		bool operator==(const DataSetMessage& other) const;
 		bool operator!=(const DataSetMessage& other) const;
+
+		void out(std::ostream& os) const;
 
 	  private:
 		DataSetMessageHeader::SPtr dataSetMessageHeader_;

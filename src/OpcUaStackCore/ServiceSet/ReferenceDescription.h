@@ -50,6 +50,9 @@ namespace OpcUaStackCore
 		void typeDefinition(const OpcUaExpandedNodeId::SPtr typeDefinition);
 		OpcUaExpandedNodeId::SPtr typeDefinition(void) const;
 		
+		void copyTo(ReferenceDescription& referenceDescription);
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }

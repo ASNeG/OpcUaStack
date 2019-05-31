@@ -74,7 +74,7 @@ namespace OpcUaStackCore
     
     };
     
-    class EUInformationArray
+    class DLLEXPORT EUInformationArray
     : public OpcUaArray<EUInformation::SPtr, SPtrTypeCoder<EUInformation> >
     , public Object
     {

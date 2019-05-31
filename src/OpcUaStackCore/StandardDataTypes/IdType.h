@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     
     };
     
-    class IdTypeArray
+    class DLLEXPORT IdTypeArray
     : public OpcUaArray<IdType::SPtr, SPtrTypeCoder<IdType> >
     , public Object
     {

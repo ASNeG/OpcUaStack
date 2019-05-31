@@ -77,7 +77,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ReadProcessedDetailsArray
+    class DLLEXPORT ReadProcessedDetailsArray
     : public OpcUaArray<ReadProcessedDetails::SPtr, SPtrTypeCoder<ReadProcessedDetails> >
     , public Object
     {

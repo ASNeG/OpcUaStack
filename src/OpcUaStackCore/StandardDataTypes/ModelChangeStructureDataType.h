@@ -72,7 +72,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ModelChangeStructureDataTypeArray
+    class DLLEXPORT ModelChangeStructureDataTypeArray
     : public OpcUaArray<ModelChangeStructureDataType::SPtr, SPtrTypeCoder<ModelChangeStructureDataType> >
     , public Object
     {

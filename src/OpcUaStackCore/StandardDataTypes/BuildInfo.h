@@ -78,7 +78,7 @@ namespace OpcUaStackCore
     
     };
     
-    class BuildInfoArray
+    class DLLEXPORT BuildInfoArray
     : public OpcUaArray<BuildInfo::SPtr, SPtrTypeCoder<BuildInfo> >
     , public Object
     {

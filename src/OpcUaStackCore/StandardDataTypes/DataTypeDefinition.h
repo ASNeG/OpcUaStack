@@ -66,7 +66,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DataTypeDefinitionArray
+    class DLLEXPORT DataTypeDefinitionArray
     : public OpcUaArray<DataTypeDefinition::SPtr, SPtrTypeCoder<DataTypeDefinition> >
     , public Object
     {

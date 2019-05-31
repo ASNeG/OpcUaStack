@@ -69,7 +69,7 @@ namespace OpcUaStackCore
     
     };
     
-    class EventNotificationListArray
+    class DLLEXPORT EventNotificationListArray
     : public OpcUaArray<EventNotificationList::SPtr, SPtrTypeCoder<EventNotificationList> >
     , public Object
     {

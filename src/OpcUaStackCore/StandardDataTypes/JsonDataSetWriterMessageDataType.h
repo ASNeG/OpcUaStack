@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class JsonDataSetWriterMessageDataTypeArray
+    class DLLEXPORT JsonDataSetWriterMessageDataTypeArray
     : public OpcUaArray<JsonDataSetWriterMessageDataType::SPtr, SPtrTypeCoder<JsonDataSetWriterMessageDataType> >
     , public Object
     {

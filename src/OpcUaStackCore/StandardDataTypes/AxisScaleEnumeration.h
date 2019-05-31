@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     
     };
     
-    class AxisScaleEnumerationArray
+    class DLLEXPORT AxisScaleEnumerationArray
     : public OpcUaArray<AxisScaleEnumeration::SPtr, SPtrTypeCoder<AxisScaleEnumeration> >
     , public Object
     {

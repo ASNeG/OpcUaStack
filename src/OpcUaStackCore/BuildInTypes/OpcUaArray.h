@@ -716,7 +716,9 @@ namespace OpcUaStackCore
 		os << "[";
 		for (size_t idx=0; idx<actArrayLen_; idx++) {
 			if (!first) os << ",";
+			os << "{";
 			CODER::out(os, valueArray_[idx]);
+			os << "}";
 			first = false;
 		}
 		os << "]";

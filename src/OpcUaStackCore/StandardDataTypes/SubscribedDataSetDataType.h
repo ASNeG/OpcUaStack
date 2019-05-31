@@ -66,7 +66,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SubscribedDataSetDataTypeArray
+    class DLLEXPORT SubscribedDataSetDataTypeArray
     : public OpcUaArray<SubscribedDataSetDataType::SPtr, SPtrTypeCoder<SubscribedDataSetDataType> >
     , public Object
     {

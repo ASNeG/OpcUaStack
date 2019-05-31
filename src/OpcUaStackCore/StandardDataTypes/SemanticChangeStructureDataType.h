@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SemanticChangeStructureDataTypeArray
+    class DLLEXPORT SemanticChangeStructureDataTypeArray
     : public OpcUaArray<SemanticChangeStructureDataType::SPtr, SPtrTypeCoder<SemanticChangeStructureDataType> >
     , public Object
     {

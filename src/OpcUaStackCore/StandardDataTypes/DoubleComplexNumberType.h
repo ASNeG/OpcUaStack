@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DoubleComplexNumberTypeArray
+    class DLLEXPORT DoubleComplexNumberTypeArray
     : public OpcUaArray<DoubleComplexNumberType::SPtr, SPtrTypeCoder<DoubleComplexNumberType> >
     , public Object
     {

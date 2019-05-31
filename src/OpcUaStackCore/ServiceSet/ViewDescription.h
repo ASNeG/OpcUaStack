@@ -40,6 +40,9 @@ namespace OpcUaStackCore
 		void viewVersion(const OpcUaUInt32& viewVersion);
 		OpcUaUInt32 viewVersion(void);
 
+		void copyTo(ViewDescription& viewDescription);
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }

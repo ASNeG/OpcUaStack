@@ -50,6 +50,8 @@ namespace OpcUaStackCore
 		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
 		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
 
+		void out(std::ostream& os) const {}
+
 	  private:
 		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaExtensibleParameterArray::SPtr historyUpdateDetailsSPtr_;

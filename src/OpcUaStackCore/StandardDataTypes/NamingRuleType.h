@@ -86,7 +86,7 @@ namespace OpcUaStackCore
     
     };
     
-    class NamingRuleTypeArray
+    class DLLEXPORT NamingRuleTypeArray
     : public OpcUaArray<NamingRuleType::SPtr, SPtrTypeCoder<NamingRuleType> >
     , public Object
     {

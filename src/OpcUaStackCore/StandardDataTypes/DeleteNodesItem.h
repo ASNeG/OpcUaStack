@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DeleteNodesItemArray
+    class DLLEXPORT DeleteNodesItemArray
     : public OpcUaArray<DeleteNodesItem::SPtr, SPtrTypeCoder<DeleteNodesItem> >
     , public Object
     {

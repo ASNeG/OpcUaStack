@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ConfigurationVersionDataTypeArray
+    class DLLEXPORT ConfigurationVersionDataTypeArray
     : public OpcUaArray<ConfigurationVersionDataType::SPtr, SPtrTypeCoder<ConfigurationVersionDataType> >
     , public Object
     {

@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     
     };
     
-    class MonitoredItemModifyResultArray
+    class DLLEXPORT MonitoredItemModifyResultArray
     : public OpcUaArray<MonitoredItemModifyResult::SPtr, SPtrTypeCoder<MonitoredItemModifyResult> >
     , public Object
     {

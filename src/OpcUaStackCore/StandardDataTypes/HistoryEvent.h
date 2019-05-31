@@ -69,7 +69,7 @@ namespace OpcUaStackCore
     
     };
     
-    class HistoryEventArray
+    class DLLEXPORT HistoryEventArray
     : public OpcUaArray<HistoryEvent::SPtr, SPtrTypeCoder<HistoryEvent> >
     , public Object
     {

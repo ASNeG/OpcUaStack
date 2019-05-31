@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DeleteEventDetailsArray
+    class DLLEXPORT DeleteEventDetailsArray
     : public OpcUaArray<DeleteEventDetails::SPtr, SPtrTypeCoder<DeleteEventDetails> >
     , public Object
     {

@@ -58,6 +58,18 @@ namespace OpcUaStackCore
 	}
 	
 	void 
+	AddReferencesResult::copyTo(AddReferencesResult& addReferencesResult)
+	{
+		addReferencesResult.statusCode(statusCode_);
+	}
+
+	void
+	AddReferencesResult::out(std::ostream& os) const
+	{
+		os << "StatusCode=" << statusCode_;
+	}
+
+	void
 	AddReferencesResult::opcUaBinaryDecode(
 		std::istream& is)
 	{

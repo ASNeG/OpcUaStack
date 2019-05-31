@@ -77,7 +77,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DataTypeSchemaHeaderArray
+    class DLLEXPORT DataTypeSchemaHeaderArray
     : public OpcUaArray<DataTypeSchemaHeader::SPtr, SPtrTypeCoder<DataTypeSchemaHeader> >
     , public Object
     {

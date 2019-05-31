@@ -74,7 +74,7 @@ namespace OpcUaStackCore
     
     };
     
-    class PublishedEventsDataTypeArray
+    class DLLEXPORT PublishedEventsDataTypeArray
     : public OpcUaArray<PublishedEventsDataType::SPtr, SPtrTypeCoder<PublishedEventsDataType> >
     , public Object
     {

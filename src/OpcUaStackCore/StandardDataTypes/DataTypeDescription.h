@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DataTypeDescriptionArray
+    class DLLEXPORT DataTypeDescriptionArray
     : public OpcUaArray<DataTypeDescription::SPtr, SPtrTypeCoder<DataTypeDescription> >
     , public Object
     {

@@ -48,6 +48,11 @@ namespace OpcUaStackCore
 		return addNodesItemArray_;
 	}
 
+	void
+	AddNodesRequest::copyTo(AddNodesRequest& addNodesRequest)
+	{
+		addNodesItemArray_->copyTo(*addNodesRequest.nodesToAdd().get());
+	}
 
 	void 
 	AddNodesRequest::opcUaBinaryEncode(std::ostream& os) const

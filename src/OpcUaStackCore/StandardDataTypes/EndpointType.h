@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     
     };
     
-    class EndpointTypeArray
+    class DLLEXPORT EndpointTypeArray
     : public OpcUaArray<EndpointType::SPtr, SPtrTypeCoder<EndpointType> >
     , public Object
     {

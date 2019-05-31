@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SessionSecurityDiagnosticsDataTypeArray
+    class DLLEXPORT SessionSecurityDiagnosticsDataTypeArray
     : public OpcUaArray<SessionSecurityDiagnosticsDataType::SPtr, SPtrTypeCoder<SessionSecurityDiagnosticsDataType> >
     , public Object
     {

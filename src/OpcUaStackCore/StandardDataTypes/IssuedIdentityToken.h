@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class IssuedIdentityTokenArray
+    class DLLEXPORT IssuedIdentityTokenArray
     : public OpcUaArray<IssuedIdentityToken::SPtr, SPtrTypeCoder<IssuedIdentityToken> >
     , public Object
     {

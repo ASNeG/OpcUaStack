@@ -66,7 +66,7 @@ namespace OpcUaStackCore
     
     };
     
-    class AnonymousIdentityTokenArray
+    class DLLEXPORT AnonymousIdentityTokenArray
     : public OpcUaArray<AnonymousIdentityToken::SPtr, SPtrTypeCoder<AnonymousIdentityToken> >
     , public Object
     {

@@ -86,7 +86,7 @@ namespace OpcUaStackCore
     
     };
     
-    class RedundancySupportArray
+    class DLLEXPORT RedundancySupportArray
     : public OpcUaArray<RedundancySupport::SPtr, SPtrTypeCoder<RedundancySupport> >
     , public Object
     {
