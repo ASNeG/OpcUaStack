@@ -19,6 +19,7 @@
 #define __OpcUaStackServer_MonitorItemId_h__
 
 #include <boost/thread/mutex.hpp>
+#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackServer
 {
