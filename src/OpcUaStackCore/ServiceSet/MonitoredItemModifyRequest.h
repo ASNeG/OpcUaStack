@@ -47,7 +47,7 @@ namespace OpcUaStackCore
 		MonitoringParameters requestedParameters_;
 	};
 
-	class MonitoredItemModifyRequestArray
+	class DLLEXPORT MonitoredItemModifyRequestArray
 	: public OpcUaArray<MonitoredItemModifyRequest::SPtr, SPtrTypeCoder<MonitoredItemModifyRequest> >
 	, public Object
 	{

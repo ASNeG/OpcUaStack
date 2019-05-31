@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode_;			
 	};
 
-	class AddReferencesResultArray
+	class DLLEXPORT AddReferencesResultArray
 	: public OpcUaArray<AddReferencesResult::SPtr, SPtrTypeCoder<AddReferencesResult> >
 	, public Object
 	{

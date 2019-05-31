@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr_;
 	};
 
-	class HistoryUpdateResultArray
+	class DLLEXPORT HistoryUpdateResultArray
 	: public OpcUaArray<HistoryUpdateResult::SPtr, SPtrTypeCoder<HistoryUpdateResult> >
 	, public Object
 	{

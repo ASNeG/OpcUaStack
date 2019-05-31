@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 		OpcUaDiagnosticInfoArray::SPtr dataDiagnosticInfoArraySPtr_;
 	};
 
-	class ParsingResultArray
+	class DLLEXPORT ParsingResultArray
 	: public OpcUaArray<ParsingResult::SPtr, SPtrTypeCoder<ParsingResult> >
 	, public Object
 	{

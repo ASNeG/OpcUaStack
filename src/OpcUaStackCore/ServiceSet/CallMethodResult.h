@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 		 OpcUaVariantArray::SPtr outputArgumentArraySPtr_;
 	};
 
-	class CallMethodResultArray
+	class DLLEXPORT CallMethodResultArray
 	: public OpcUaArray<CallMethodResult::SPtr, SPtrTypeCoder<CallMethodResult> >
 	, public Object
 	{

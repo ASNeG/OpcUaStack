@@ -82,7 +82,7 @@ namespace OpcUaStackCore
 		OpcUaByte data4_[8];
 	};
 
-	class OpcUaGuidArray
+	class DLLEXPORT OpcUaGuidArray
 	: public OpcUaArray<OpcUaGuid::SPtr, SPtrTypeCoder<OpcUaGuid> >
 	{
 	  public:

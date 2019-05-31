@@ -47,7 +47,7 @@ namespace OpcUaStackCore
 		  OpcUaUInt32Array::SPtr availableSequenceNumberArraySPtr_;
 	};
 
-	class TransferResultArray
+	class DLLEXPORT TransferResultArray
 	: public OpcUaArray<TransferResult::SPtr, SPtrTypeCoder<TransferResult> >
 	, public Object
 	{

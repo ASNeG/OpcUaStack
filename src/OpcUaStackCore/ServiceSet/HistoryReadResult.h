@@ -54,7 +54,7 @@ namespace OpcUaStackCore
 		OpcUaExtensibleParameter::SPtr historyData_;
 	};
 
-	class HistoryReadResultArray
+	class DLLEXPORT HistoryReadResultArray
     : public OpcUaArray<HistoryReadResult::SPtr, SPtrTypeCoder<HistoryReadResult> >
 	, public Object
 	{

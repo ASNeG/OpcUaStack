@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 		ReferenceDescriptionArray::SPtr referenceArraySPtr_;
 	};
 
-	class BrowseResultArray
+	class DLLEXPORT BrowseResultArray
 	: public OpcUaArray<BrowseResult::SPtr, SPtrTypeCoder<BrowseResult> >
 	, public Object
 	{

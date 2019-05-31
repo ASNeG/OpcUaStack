@@ -36,7 +36,7 @@ namespace OpcUaStackServer
 
 	typedef std::list<EventFieldList::SPtr> EventFieldListList;
 
-	class EventItem
+	class DLLEXPORT EventItem
 	: public Object
 	, public SimpleAttributeIf
 	{

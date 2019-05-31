@@ -20,7 +20,7 @@
 namespace OpcUaStackClient
 {
 
-	enum class SessionMode {
+	enum class DLLEXPORT SessionMode {
 		SecureChannel,				//! only a secure channel will be opened.
 		SecureChannelAndSession		//! a secure channel an a session will be opened.
 	};

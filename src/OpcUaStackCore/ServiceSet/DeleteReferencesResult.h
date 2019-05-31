@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode_;			
 	};
 
-	class DeleteReferencesResultArray
+	class DLLEXPORT DeleteReferencesResultArray
 	: public OpcUaArray<DeleteReferencesResult::SPtr, SPtrTypeCoder<DeleteReferencesResult> >
 	, public Object
 	{

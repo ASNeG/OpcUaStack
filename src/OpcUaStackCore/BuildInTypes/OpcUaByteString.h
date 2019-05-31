@@ -84,7 +84,7 @@ namespace OpcUaStackCore
 		OpcUaByte* value_; 
 	};
 
-	class OpcUaByteStringArray
+	class DLLEXPORT OpcUaByteStringArray
 	: public OpcUaArray<OpcUaByteString::SPtr, SPtrTypeCoder<OpcUaByteString> >
 	{
 	  public:

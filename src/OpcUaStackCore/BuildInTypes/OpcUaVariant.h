@@ -564,7 +564,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaVariantArray
+	class DLLEXPORT OpcUaVariantArray
 	: public OpcUaArray<OpcUaVariant::SPtr, SPtrTypeCoder<OpcUaVariant> >
 	, public Object
 	{

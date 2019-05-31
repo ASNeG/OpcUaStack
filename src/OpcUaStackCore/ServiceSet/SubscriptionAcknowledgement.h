@@ -47,7 +47,7 @@ namespace OpcUaStackCore
 
 	};
 
-	class SubscriptionAcknowledgementArray
+	class DLLEXPORT SubscriptionAcknowledgementArray
 	: public OpcUaArray<SubscriptionAcknowledgement::SPtr, SPtrTypeCoder<SubscriptionAcknowledgement> >
 	, public Object
 	{

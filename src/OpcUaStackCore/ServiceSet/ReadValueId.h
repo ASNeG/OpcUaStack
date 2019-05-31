@@ -64,7 +64,7 @@ namespace OpcUaStackCore
 		OpcUaQualifiedName dataEncoding_;
 	};
 
-	class ReadValueIdArray
+	class DLLEXPORT ReadValueIdArray
 	: public OpcUaArray<ReadValueId::SPtr, SPtrTypeCoder<ReadValueId> >
 	, public Object
 	{

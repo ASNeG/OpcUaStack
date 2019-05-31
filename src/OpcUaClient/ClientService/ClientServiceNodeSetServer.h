@@ -33,7 +33,7 @@ using namespace OpcUaStackServer;
 namespace OpcUaClient
 {
 
-	class ClientServiceNodeSetServer
+	class DLLEXPORT ClientServiceNodeSetServer
 	: public ClientServiceBase
 	, public ViewServiceBrowseIf
 	, public AttributeServiceNodeIf

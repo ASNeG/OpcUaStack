@@ -65,7 +65,7 @@ namespace OpcUaStackCore
 		OpcUaByteString continuationPoint_;
 	};
 
-	class HistoryReadValueIdArray
+	class DLLEXPORT HistoryReadValueIdArray
 	: public OpcUaArray<HistoryReadValueId::SPtr, SPtrTypeCoder<HistoryReadValueId> >
 	, public Object
 	{

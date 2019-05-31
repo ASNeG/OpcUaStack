@@ -53,7 +53,7 @@ namespace OpcUaStackCore
 		  OpcUaVariantArray::SPtr inputArgumentArraySPtr_;
 	};
 
-	class CallMethodRequestArray
+	class DLLEXPORT CallMethodRequestArray
 	: public OpcUaArray<CallMethodRequest::SPtr, SPtrTypeCoder<CallMethodRequest> >
 	, public Object
 	{

@@ -25,7 +25,7 @@
 namespace OpcUaStackCore
 {
 
-	class ContextPSHA256
+	class DLLEXPORT ContextPSHA256
 	{
 	  public:
 		ContextPSHA256(void);
@@ -45,7 +45,7 @@ namespace OpcUaStackCore
 		MemoryBuffer context_;	// a - seed - secret
 	};
 
-	class ContextPSHA1
+	class DLLEXPORT ContextPSHA1
 	{
 	  public:
 		ContextPSHA1(void);

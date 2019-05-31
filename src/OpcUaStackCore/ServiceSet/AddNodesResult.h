@@ -48,7 +48,7 @@ namespace OpcUaStackCore
 		OpcUaNodeId::SPtr addedNodeIdSPtr_;		
 	};
 
-	class AddNodesResultArray
+	class DLLEXPORT AddNodesResultArray
 	: public OpcUaArray<AddNodesResult::SPtr, SPtrTypeCoder<AddNodesResult> >
 	, public Object
 	{

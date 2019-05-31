@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 		QueryDataDescriptionArray::SPtr dataToReturnArraySPtr_;
 	};
 
-	class NodeTypeDescriptionArray
+	class DLLEXPORT NodeTypeDescriptionArray
 	: public OpcUaArray<NodeTypeDescription::SPtr, SPtrTypeCoder<NodeTypeDescription> >
 	, public Object
 	{

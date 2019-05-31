@@ -42,7 +42,7 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode_;			
 	};
 
-	class DeleteNodesResultArray
+	class DLLEXPORT DeleteNodesResultArray
 	: public OpcUaArray<DeleteNodesResult::SPtr, SPtrTypeCoder<DeleteNodesResult> >
 	, public Object
 	{

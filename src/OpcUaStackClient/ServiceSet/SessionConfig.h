@@ -25,7 +25,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	enum class UserAuthenticationType
+	enum class DLLEXPORT UserAuthenticationType
 	{
 		Anonymous,
 		UserName,

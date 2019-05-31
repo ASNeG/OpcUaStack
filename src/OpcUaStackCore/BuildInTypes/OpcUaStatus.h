@@ -86,7 +86,7 @@ namespace OpcUaStackCore
     
     };
     
-    class OpcUaStatusArray
+    class DLLEXPORT OpcUaStatusArray
     : public OpcUaArray<OpcUaStatus::SPtr, SPtrTypeCoder<OpcUaStatus> >
     , public Object
     {

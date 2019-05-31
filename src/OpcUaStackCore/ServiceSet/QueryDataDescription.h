@@ -52,7 +52,7 @@ namespace OpcUaStackCore
 		OpcUaString indexRange_;
 	};
 
-	class QueryDataDescriptionArray
+	class DLLEXPORT QueryDataDescriptionArray
 	: public OpcUaArray<QueryDataDescription::SPtr, SPtrTypeCoder<QueryDataDescription> >
 	, public Object
 	{

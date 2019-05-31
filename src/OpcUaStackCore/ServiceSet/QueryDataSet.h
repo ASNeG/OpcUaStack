@@ -49,7 +49,7 @@ namespace OpcUaStackCore
 		OpcUaVariantArray::SPtr valueArraySPtr_;
 	};
 
-	class QueryDataSetArray
+	class DLLEXPORT QueryDataSetArray
 	: public OpcUaArray<QueryDataSet::SPtr, SPtrTypeCoder<QueryDataSet> >
 	, public Object
 	{

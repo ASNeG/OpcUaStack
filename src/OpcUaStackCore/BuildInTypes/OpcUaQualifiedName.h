@@ -79,7 +79,7 @@ namespace OpcUaStackCore
 		OpcUaString name_;
 	};
 
-	class OpcUaQualifiedNameArray
+	class DLLEXPORT OpcUaQualifiedNameArray
 	: public OpcUaArray<OpcUaQualifiedName::SPtr, SPtrTypeCoder<OpcUaQualifiedName> >
 	, public Object
 	{

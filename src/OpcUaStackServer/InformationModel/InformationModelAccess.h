@@ -23,7 +23,7 @@
 namespace OpcUaStackServer
 {
 
-	class MergeIf
+	class DLLEXPORT MergeIf
 	{
 	  public:
 		MergeIf(void) {}

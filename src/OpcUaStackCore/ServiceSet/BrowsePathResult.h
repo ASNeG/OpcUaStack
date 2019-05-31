@@ -47,7 +47,7 @@ namespace OpcUaStackCore
 		BrowsePathTargetArray::SPtr targetArraySPtr_;
 	};
 
-	class BrowsePathResultArray
+	class DLLEXPORT BrowsePathResultArray
 	: public OpcUaArray<BrowsePathResult::SPtr, SPtrTypeCoder<BrowsePathResult> >
 	, public Object
 	{

@@ -63,7 +63,7 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId::SPtr typeDefinitionSPtr_;
 	};
 
-	class ReferenceDescriptionArray
+	class DLLEXPORT ReferenceDescriptionArray
 	: public OpcUaArray<ReferenceDescription::SPtr, SPtrTypeCoder<ReferenceDescription> >
 	, public Object
 	{

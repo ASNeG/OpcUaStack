@@ -49,7 +49,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 viewVersion_;
 	};
 
-	class ViewDescriptionArray
+	class DLLEXPORT ViewDescriptionArray
 	: public OpcUaArray<ViewDescription::SPtr, SPtrTypeCoder<ViewDescription> >
 	, public Object
 	{

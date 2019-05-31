@@ -84,7 +84,7 @@ namespace OpcUaStackCore
 		OpcUaDiagnosticInfo::SPtr diagnosticInfo_;
 	};
 
-	class OpcUaDiagnosticInfoArray
+	class DLLEXPORT OpcUaDiagnosticInfoArray
 	: public OpcUaArray<OpcUaDiagnosticInfo::SPtr, SPtrTypeCoder<OpcUaDiagnosticInfo> >
 	, public Object
 	{

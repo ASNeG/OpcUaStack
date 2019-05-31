@@ -66,7 +66,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 resultMask_;
 	};
 
-	class BrowseDescriptionArray
+	class DLLEXPORT BrowseDescriptionArray
 	: public OpcUaArray<BrowseDescription::SPtr, SPtrTypeCoder<BrowseDescription> >
 	, public Object
 	{

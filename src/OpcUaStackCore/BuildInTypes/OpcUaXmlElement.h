@@ -42,7 +42,7 @@ namespace OpcUaStackCore
 		
 	};
 
-	class OpcUaXmlElementArray
+	class DLLEXPORT OpcUaXmlElementArray
 	: public OpcUaArray<OpcUaXmlElement::SPtr, SPtrTypeCoder<OpcUaXmlElement> >
 	{
 	  public:

@@ -121,7 +121,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class BrowseNameArray
+	class DLLEXPORT BrowseNameArray
 	: public OpcUaArray<BrowseName::SPtr, SPtrTypeCoder<BrowseName> >
 	, public Object
 	{

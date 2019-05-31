@@ -58,7 +58,7 @@ namespace OpcUaStackCore
 
 	};
 
-	class WriteValueArray
+	class DLLEXPORT WriteValueArray
 	: public OpcUaArray<WriteValue::SPtr, SPtrTypeCoder<WriteValue> >
 	, public Object
 	{
