@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('') {
+    stage('error') {
       steps {
-        sh 'echo "hello world"'
+        sh 'build.sh -t local'
       }
     }
   }
