@@ -16,5 +16,11 @@ pipeline {
         }
       }
     }
+    stage('') {
+      steps {
+        sh 'sh build.sh -t local'
+        cleanWs(cleanWhenSuccess: true)
+      }
+    }
   }
 }
