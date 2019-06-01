@@ -11,7 +11,7 @@ pipeline {
         }
         stage('CPP check') {
           steps {
-            sh 'cppcheck --xml --xml-version=2 SOURCE_DIRECTORY 2> cppcheck.xml'
+            sh 'cppcheck --xml --xml-version=2 ./src 2> cppcheck.xml'
           }
         }
       }
