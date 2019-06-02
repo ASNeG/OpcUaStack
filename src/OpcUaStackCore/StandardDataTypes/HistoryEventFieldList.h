@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class HistoryEventFieldListArray
+    class DLLEXPORT HistoryEventFieldListArray
     : public OpcUaArray<HistoryEventFieldList::SPtr, SPtrTypeCoder<HistoryEventFieldList> >
     , public Object
     {

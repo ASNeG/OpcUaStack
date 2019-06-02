@@ -41,8 +41,19 @@ namespace OpcUaStackCore
 		void diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfos);
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfos(void) const;
 
+		void copyTo(HistoryUpdateResult& historyUpdateResult) {}
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
+		bool jsonEncode(boost::property_tree::ptree& pt) { return false; }
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
+		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
 
 	  private:
 		OpcUaStatusCode statusCode_;
@@ -50,7 +61,7 @@ namespace OpcUaStackCore
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr_;
 	};
 
-	class HistoryUpdateResultArray
+	class DLLEXPORT HistoryUpdateResultArray
 	: public OpcUaArray<HistoryUpdateResult::SPtr, SPtrTypeCoder<HistoryUpdateResult> >
 	, public Object
 	{

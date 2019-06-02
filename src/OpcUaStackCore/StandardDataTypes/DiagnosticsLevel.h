@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class DiagnosticsLevel
+    class DLLEXPORT DiagnosticsLevel
     : public Object
     , public ExtensionObjectBase
     {
@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DiagnosticsLevelArray
+    class DLLEXPORT DiagnosticsLevelArray
     : public OpcUaArray<DiagnosticsLevel::SPtr, SPtrTypeCoder<DiagnosticsLevel> >
     , public Object
     {

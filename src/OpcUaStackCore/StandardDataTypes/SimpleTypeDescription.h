@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SimpleTypeDescriptionArray
+    class DLLEXPORT SimpleTypeDescriptionArray
     : public OpcUaArray<SimpleTypeDescription::SPtr, SPtrTypeCoder<SimpleTypeDescription> >
     , public Object
     {

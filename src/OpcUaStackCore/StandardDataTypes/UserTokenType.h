@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * The possible user token types.
      */
-    class UserTokenType
+    class DLLEXPORT UserTokenType
     : public Object
     , public ExtensionObjectBase
     {
@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     
     };
     
-    class UserTokenTypeArray
+    class DLLEXPORT UserTokenTypeArray
     : public OpcUaArray<UserTokenType::SPtr, SPtrTypeCoder<UserTokenType> >
     , public Object
     {

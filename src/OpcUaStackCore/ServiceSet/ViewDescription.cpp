@@ -82,6 +82,14 @@ namespace OpcUaStackCore
 		return viewVersion_;
 	}
 
+	void
+	ViewDescription::copyTo(ViewDescription& viewDescription)
+	{
+		viewIdSPtr_->copyTo(*viewDescription.viewId().get());
+		timestamp_.copyTo(viewDescription.timestamp());
+		viewDescription.viewVersion(viewVersion_);
+	}
+
 	void 
 	ViewDescription::opcUaBinaryEncode(std::ostream& os) const
 	{

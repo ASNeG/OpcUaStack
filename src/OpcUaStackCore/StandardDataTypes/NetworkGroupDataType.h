@@ -71,7 +71,7 @@ namespace OpcUaStackCore
     
     };
     
-    class NetworkGroupDataTypeArray
+    class DLLEXPORT NetworkGroupDataTypeArray
     : public OpcUaArray<NetworkGroupDataType::SPtr, SPtrTypeCoder<NetworkGroupDataType> >
     , public Object
     {

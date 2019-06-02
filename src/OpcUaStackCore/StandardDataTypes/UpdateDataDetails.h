@@ -71,7 +71,7 @@ namespace OpcUaStackCore
     
     };
     
-    class UpdateDataDetailsArray
+    class DLLEXPORT UpdateDataDetailsArray
     : public OpcUaArray<UpdateDataDetails::SPtr, SPtrTypeCoder<UpdateDataDetails> >
     , public Object
     {

@@ -75,7 +75,7 @@ namespace OpcUaStackCore
 		OpcUaUInt64 dateTime_;
 	};
 
-	class OpcUaDateTimeArray
+	class DLLEXPORT OpcUaDateTimeArray
 	: public OpcUaArray<OpcUaDateTime>
 	{
 	  public:

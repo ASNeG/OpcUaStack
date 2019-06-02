@@ -73,7 +73,7 @@ namespace OpcUaStackCore
     
     };
     
-    class RedundantServerDataTypeArray
+    class DLLEXPORT RedundantServerDataTypeArray
     : public OpcUaArray<RedundantServerDataType::SPtr, SPtrTypeCoder<RedundantServerDataType> >
     , public Object
     {

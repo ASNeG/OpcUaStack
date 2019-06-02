@@ -76,7 +76,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ArgumentArray
+    class DLLEXPORT ArgumentArray
     : public OpcUaArray<Argument::SPtr, SPtrTypeCoder<Argument> >
     , public Object
     {

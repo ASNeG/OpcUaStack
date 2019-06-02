@@ -69,7 +69,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaDiagnosticInfo = 25
 	} OpcUaBuildInType;
 
-	class OpcUaBuildInTypeClass
+	class DLLEXPORT OpcUaBuildInTypeClass
 	{
 	  public:
 		static bool isBoolean(OpcUaBuildInType buildInType);

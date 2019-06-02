@@ -77,7 +77,7 @@ namespace OpcUaStackCore
     
     };
     
-    class UserTokenPolicyArray
+    class DLLEXPORT UserTokenPolicyArray
     : public OpcUaArray<UserTokenPolicy::SPtr, SPtrTypeCoder<UserTokenPolicy> >
     , public Object
     {

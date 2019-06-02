@@ -129,6 +129,18 @@ namespace OpcUaStackCore
 		return typeDefinitionSPtr_;
 	}
 
+	void
+	ReferenceDescription::copyTo(ReferenceDescription& referenceDescription)
+	{
+		referenceTypeIdSPtr_->copyTo(*referenceDescription.referenceTypeId().get());
+		referenceDescription.isForward(isForward_);
+		nodeIdSPtr_->copyTo(*referenceDescription.expandedNodeId().get());
+		browseName_.copyTo(referenceDescription.browseName());
+		displayName_.copyTo(referenceDescription.displayName());
+		referenceDescription.nodeClass(nodeClass_);
+		typeDefinitionSPtr_->copyTo(*referenceDescription.typeDefinition().get());
+	}
+
 	void 
 	ReferenceDescription::opcUaBinaryEncode(std::ostream& os) const
 	{

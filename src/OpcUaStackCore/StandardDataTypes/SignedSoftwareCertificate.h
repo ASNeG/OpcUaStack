@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SignedSoftwareCertificateArray
+    class DLLEXPORT SignedSoftwareCertificateArray
     : public OpcUaArray<SignedSoftwareCertificate::SPtr, SPtrTypeCoder<SignedSoftwareCertificate> >
     , public Object
     {

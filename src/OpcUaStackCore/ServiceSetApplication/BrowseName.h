@@ -107,6 +107,7 @@ namespace OpcUaStackCore
 			const OpcUaQualifiedName& pathElement5
 		);
 
+		void copyTo(BrowseName& browseName);
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const BrowseName& value) {
 			value.out(os);
@@ -115,13 +116,25 @@ namespace OpcUaStackCore
 
 		std::string stringId(const std::string& suffix);
 
+		void opcUaBinaryEncode(std::ostream& os) const {}
+		void opcUaBinaryDecode(std::istream& is) {}
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
+		bool jsonEncode(boost::property_tree::ptree& pt) { return false; }
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
+		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
+
+
 	  private:
 		OpcUaNodeId nodeId_;
 		OpcUaQualifiedNameArray::SPtr pathNames_;
 	};
 
 
-	class BrowseNameArray
+	class DLLEXPORT BrowseNameArray
 	: public OpcUaArray<BrowseName::SPtr, SPtrTypeCoder<BrowseName> >
 	, public Object
 	{

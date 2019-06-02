@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class MdnsDiscoveryConfigurationArray
+    class DLLEXPORT MdnsDiscoveryConfigurationArray
     : public OpcUaArray<MdnsDiscoveryConfiguration::SPtr, SPtrTypeCoder<MdnsDiscoveryConfiguration> >
     , public Object
     {

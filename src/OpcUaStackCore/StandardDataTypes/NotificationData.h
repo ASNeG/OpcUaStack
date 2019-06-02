@@ -66,7 +66,7 @@ namespace OpcUaStackCore
     
     };
     
-    class NotificationDataArray
+    class DLLEXPORT NotificationDataArray
     : public OpcUaArray<NotificationData::SPtr, SPtrTypeCoder<NotificationData> >
     , public Object
     {

@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class TimeZoneDataTypeArray
+    class DLLEXPORT TimeZoneDataTypeArray
     : public OpcUaArray<TimeZoneDataType::SPtr, SPtrTypeCoder<TimeZoneDataType> >
     , public Object
     {

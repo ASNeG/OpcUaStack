@@ -79,7 +79,7 @@ namespace OpcUaStackCore
     
     };
     
-    class AxisInformationArray
+    class DLLEXPORT AxisInformationArray
     : public OpcUaArray<AxisInformation::SPtr, SPtrTypeCoder<AxisInformation> >
     , public Object
     {

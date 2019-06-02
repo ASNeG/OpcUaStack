@@ -74,7 +74,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ServerOnNetworkArray
+    class DLLEXPORT ServerOnNetworkArray
     : public OpcUaArray<ServerOnNetwork::SPtr, SPtrTypeCoder<ServerOnNetwork> >
     , public Object
     {

@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class HistoryUpdateType
+    class DLLEXPORT HistoryUpdateType
     : public Object
     , public ExtensionObjectBase
     {
@@ -84,7 +84,7 @@ namespace OpcUaStackCore
     
     };
     
-    class HistoryUpdateTypeArray
+    class DLLEXPORT HistoryUpdateTypeArray
     : public OpcUaArray<HistoryUpdateType::SPtr, SPtrTypeCoder<HistoryUpdateType> >
     , public Object
     {

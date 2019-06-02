@@ -74,7 +74,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SamplingIntervalDiagnosticsDataTypeArray
+    class DLLEXPORT SamplingIntervalDiagnosticsDataTypeArray
     : public OpcUaArray<SamplingIntervalDiagnosticsDataType::SPtr, SPtrTypeCoder<SamplingIntervalDiagnosticsDataType> >
     , public Object
     {

@@ -30,7 +30,7 @@ namespace OpcUaStackCore
     /**
      * The type of security to use on a message.
      */
-    class SecurityPolicy
+    class DLLEXPORT SecurityPolicy
     : public Object
     , public ExtensionObjectBase
     {
@@ -93,7 +93,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SecurityPolicyArray
+    class DLLEXPORT SecurityPolicyArray
     : public OpcUaArray<SecurityPolicy::SPtr, SPtrTypeCoder<SecurityPolicy> >
     , public Object
     {

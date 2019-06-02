@@ -76,6 +76,14 @@ namespace OpcUaStackCore
 		return inputArgumentArraySPtr_;
 	}
 
+	void
+	CallMethodRequest::copyTo(CallMethodRequest& callMethodRequest)
+	{
+		objectIdSPtr_->copyTo(*callMethodRequest.objectId().get());
+		methodIdSPtr_->copyTo(*callMethodRequest.methodId().get());
+		inputArgumentArraySPtr_->copyTo(*callMethodRequest.inputArguments().get());
+	}
+
 	void 
 	CallMethodRequest::opcUaBinaryEncode(std::ostream& os) const
 	{

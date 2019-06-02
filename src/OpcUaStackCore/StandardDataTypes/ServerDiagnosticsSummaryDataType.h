@@ -90,7 +90,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ServerDiagnosticsSummaryDataTypeArray
+    class DLLEXPORT ServerDiagnosticsSummaryDataTypeArray
     : public OpcUaArray<ServerDiagnosticsSummaryDataType::SPtr, SPtrTypeCoder<ServerDiagnosticsSummaryDataType> >
     , public Object
     {

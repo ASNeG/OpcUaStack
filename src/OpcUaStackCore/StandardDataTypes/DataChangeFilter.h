@@ -73,7 +73,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DataChangeFilterArray
+    class DLLEXPORT DataChangeFilterArray
     : public OpcUaArray<DataChangeFilter::SPtr, SPtrTypeCoder<DataChangeFilter> >
     , public Object
     {

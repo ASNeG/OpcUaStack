@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,7 +20,7 @@
 
 #include "Common/Base/DataValue.h"
 
-class CDAEncoder
+class DLLEXPORT CDAEncoder
 {
   public:
 	static std::ostream& encode(std::ostream& os, bool value);
@@ -38,7 +38,7 @@ class CDAEncoder
 };
 
 
-class CDADecoder
+class DLLEXPORT CDADecoder
 {
   public:
 	static std::istream& decode(std::istream& is, bool& value);

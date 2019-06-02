@@ -66,7 +66,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ConnectionTransportDataTypeArray
+    class DLLEXPORT ConnectionTransportDataTypeArray
     : public OpcUaArray<ConnectionTransportDataType::SPtr, SPtrTypeCoder<ConnectionTransportDataType> >
     , public Object
     {

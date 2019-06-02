@@ -443,7 +443,7 @@ namespace OpcUaStackCore
 		OpcUaByteString::SPtr byteString_;
 	};
 
-	class OpcUaExtensionObjectArray
+	class DLLEXPORT OpcUaExtensionObjectArray
 	: public OpcUaArray<OpcUaExtensionObject::SPtr, SPtrTypeCoder<OpcUaExtensionObject> >
 	, public Object
 	{

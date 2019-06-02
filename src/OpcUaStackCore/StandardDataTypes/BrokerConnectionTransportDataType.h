@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class BrokerConnectionTransportDataTypeArray
+    class DLLEXPORT BrokerConnectionTransportDataTypeArray
     : public OpcUaArray<BrokerConnectionTransportDataType::SPtr, SPtrTypeCoder<BrokerConnectionTransportDataType> >
     , public Object
     {

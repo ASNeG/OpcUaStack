@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class DataSetOrderingType
+    class DLLEXPORT DataSetOrderingType
     : public Object
     , public ExtensionObjectBase
     {
@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DataSetOrderingTypeArray
+    class DLLEXPORT DataSetOrderingTypeArray
     : public OpcUaArray<DataSetOrderingType::SPtr, SPtrTypeCoder<DataSetOrderingType> >
     , public Object
     {

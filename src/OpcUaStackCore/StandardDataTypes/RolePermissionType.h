@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class RolePermissionTypeArray
+    class DLLEXPORT RolePermissionTypeArray
     : public OpcUaArray<RolePermissionType::SPtr, SPtrTypeCoder<RolePermissionType> >
     , public Object
     {

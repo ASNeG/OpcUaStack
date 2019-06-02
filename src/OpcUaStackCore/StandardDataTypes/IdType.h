@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * The type of identifier used in a node id.
      */
-    class IdType
+    class DLLEXPORT IdType
     : public Object
     , public ExtensionObjectBase
     {
@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     
     };
     
-    class IdTypeArray
+    class DLLEXPORT IdTypeArray
     : public OpcUaArray<IdType::SPtr, SPtrTypeCoder<IdType> >
     , public Object
     {

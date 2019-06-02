@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class PubSubState
+    class DLLEXPORT PubSubState
     : public Object
     , public ExtensionObjectBase
     {
@@ -84,7 +84,7 @@ namespace OpcUaStackCore
     
     };
     
-    class PubSubStateArray
+    class DLLEXPORT PubSubStateArray
     : public OpcUaArray<PubSubState::SPtr, SPtrTypeCoder<PubSubState> >
     , public Object
     {

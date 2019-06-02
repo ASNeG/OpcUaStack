@@ -51,8 +51,15 @@ namespace OpcUaStackCore
 		void dataEncoding(const OpcUaInt16& namespaceIndex, const std::string& name);
 		void dataEncoding(const std::string& name);
 
+		void out(std::ostream& os) const {};
+		void copyTo(HistoryReadValueId& historyReadValueId) {}
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
 		bool jsonEncode(boost::property_tree::ptree& pt);
 		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
@@ -65,7 +72,7 @@ namespace OpcUaStackCore
 		OpcUaByteString continuationPoint_;
 	};
 
-	class HistoryReadValueIdArray
+	class DLLEXPORT HistoryReadValueIdArray
 	: public OpcUaArray<HistoryReadValueId::SPtr, SPtrTypeCoder<HistoryReadValueId> >
 	, public Object
 	{

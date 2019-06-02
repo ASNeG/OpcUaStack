@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * The types of applications.
      */
-    class ApplicationType
+    class DLLEXPORT ApplicationType
     : public Object
     , public ExtensionObjectBase
     {
@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ApplicationTypeArray
+    class DLLEXPORT ApplicationTypeArray
     : public OpcUaArray<ApplicationType::SPtr, SPtrTypeCoder<ApplicationType> >
     , public Object
     {

@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     
     };
     
-    class WriterGroupDataTypeArray
+    class DLLEXPORT WriterGroupDataTypeArray
     : public OpcUaArray<WriterGroupDataType::SPtr, SPtrTypeCoder<WriterGroupDataType> >
     , public Object
     {

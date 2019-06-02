@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ReadAtTimeDetailsArray
+    class DLLEXPORT ReadAtTimeDetailsArray
     : public OpcUaArray<ReadAtTimeDetails::SPtr, SPtrTypeCoder<ReadAtTimeDetails> >
     , public Object
     {

@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class RedundancySupport
+    class DLLEXPORT RedundancySupport
     : public Object
     , public ExtensionObjectBase
     {
@@ -86,7 +86,7 @@ namespace OpcUaStackCore
     
     };
     
-    class RedundancySupportArray
+    class DLLEXPORT RedundancySupportArray
     : public OpcUaArray<RedundancySupport::SPtr, SPtrTypeCoder<RedundancySupport> >
     , public Object
     {

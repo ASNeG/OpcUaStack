@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class XVTypeArray
+    class DLLEXPORT XVTypeArray
     : public OpcUaArray<XVType::SPtr, SPtrTypeCoder<XVType> >
     , public Object
     {

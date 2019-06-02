@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class MethodAttributesArray
+    class DLLEXPORT MethodAttributesArray
     : public OpcUaArray<MethodAttributes::SPtr, SPtrTypeCoder<MethodAttributes> >
     , public Object
     {

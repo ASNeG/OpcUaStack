@@ -128,7 +128,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SubscriptionDiagnosticsDataTypeArray
+    class DLLEXPORT SubscriptionDiagnosticsDataTypeArray
     : public OpcUaArray<SubscriptionDiagnosticsDataType::SPtr, SPtrTypeCoder<SubscriptionDiagnosticsDataType> >
     , public Object
     {

@@ -77,7 +77,7 @@ namespace OpcUaStackCore
     
     };
     
-    class BrokerDataSetReaderTransportDataTypeArray
+    class DLLEXPORT BrokerDataSetReaderTransportDataTypeArray
     : public OpcUaArray<BrokerDataSetReaderTransportDataType::SPtr, SPtrTypeCoder<BrokerDataSetReaderTransportDataType> >
     , public Object
     {

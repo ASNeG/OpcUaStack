@@ -41,8 +41,19 @@ namespace OpcUaStackCore
 		void dataDiagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr dataDiagnosticInfos);
 		OpcUaDiagnosticInfoArray::SPtr dataDiagnosticInfos(void) const;
 
+		void copyTo(ParsingResult& parsingResult) {}
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
+		bool jsonEncode(boost::property_tree::ptree& pt) { return false; }
+		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
+		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
 
 	  private:
 		OpcUaStatusCode statusCode_;
@@ -50,7 +61,7 @@ namespace OpcUaStackCore
 		OpcUaDiagnosticInfoArray::SPtr dataDiagnosticInfoArraySPtr_;
 	};
 
-	class ParsingResultArray
+	class DLLEXPORT ParsingResultArray
 	: public OpcUaArray<ParsingResult::SPtr, SPtrTypeCoder<ParsingResult> >
 	, public Object
 	{

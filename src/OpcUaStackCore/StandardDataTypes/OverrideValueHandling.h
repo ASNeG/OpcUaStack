@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class OverrideValueHandling
+    class DLLEXPORT OverrideValueHandling
     : public Object
     , public ExtensionObjectBase
     {
@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     
     };
     
-    class OverrideValueHandlingArray
+    class DLLEXPORT OverrideValueHandlingArray
     : public OpcUaArray<OverrideValueHandling::SPtr, SPtrTypeCoder<OverrideValueHandling> >
     , public Object
     {

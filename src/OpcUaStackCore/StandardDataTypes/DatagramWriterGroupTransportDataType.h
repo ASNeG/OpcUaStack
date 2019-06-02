@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DatagramWriterGroupTransportDataTypeArray
+    class DLLEXPORT DatagramWriterGroupTransportDataTypeArray
     : public OpcUaArray<DatagramWriterGroupTransportDataType::SPtr, SPtrTypeCoder<DatagramWriterGroupTransportDataType> >
     , public Object
     {

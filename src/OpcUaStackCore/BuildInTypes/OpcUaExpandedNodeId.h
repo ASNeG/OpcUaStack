@@ -75,7 +75,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaExpandedNodeIdArray
+	class DLLEXPORT OpcUaExpandedNodeIdArray
 	: public OpcUaArray<OpcUaExpandedNodeId::SPtr, SPtrTypeCoder<OpcUaExpandedNodeId> >
 	{
   	  public:

@@ -36,7 +36,7 @@ namespace OpcUaStackClient
 
 	class SessionService;
 
-	enum class SessionServiceMode {
+	enum class DLLEXPORT SessionServiceMode {
 		Normal,			// direct access to opc ua server
 		GetEndpoint,	// get endpoint from opc ua server
 		UseCache		// use endpoint from cache

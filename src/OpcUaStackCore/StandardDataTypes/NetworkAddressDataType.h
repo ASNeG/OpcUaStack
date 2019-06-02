@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class NetworkAddressDataTypeArray
+    class DLLEXPORT NetworkAddressDataTypeArray
     : public OpcUaArray<NetworkAddressDataType::SPtr, SPtrTypeCoder<NetworkAddressDataType> >
     , public Object
     {

@@ -26,7 +26,7 @@
 namespace OpcUaStackCore
 {
     
-    class OpcUaStatus
+    class DLLEXPORT OpcUaStatus
     : public Object
     , public ExtensionObjectBase
     {
@@ -86,7 +86,7 @@ namespace OpcUaStackCore
     
     };
     
-    class OpcUaStatusArray
+    class DLLEXPORT OpcUaStatusArray
     : public OpcUaArray<OpcUaStatus::SPtr, SPtrTypeCoder<OpcUaStatus> >
     , public Object
     {

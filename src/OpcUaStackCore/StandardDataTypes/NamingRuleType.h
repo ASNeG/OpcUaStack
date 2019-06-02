@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * Describes a value that specifies the significance of the BrowseName for an instance declaration.
      */
-    class NamingRuleType
+    class DLLEXPORT NamingRuleType
     : public Object
     , public ExtensionObjectBase
     {
@@ -86,7 +86,7 @@ namespace OpcUaStackCore
     
     };
     
-    class NamingRuleTypeArray
+    class DLLEXPORT NamingRuleTypeArray
     : public OpcUaArray<NamingRuleType::SPtr, SPtrTypeCoder<NamingRuleType> >
     , public Object
     {

@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class BrokerTransportQualityOfService
+    class DLLEXPORT BrokerTransportQualityOfService
     : public Object
     , public ExtensionObjectBase
     {
@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     
     };
     
-    class BrokerTransportQualityOfServiceArray
+    class DLLEXPORT BrokerTransportQualityOfServiceArray
     : public OpcUaArray<BrokerTransportQualityOfService::SPtr, SPtrTypeCoder<BrokerTransportQualityOfService> >
     , public Object
     {

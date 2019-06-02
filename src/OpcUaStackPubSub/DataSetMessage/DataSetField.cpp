@@ -129,6 +129,18 @@ namespace OpcUaStackPubSub
 	}
 
 	void
+	DataSetField::copyTo(DataSetField& dataSetField)
+	{
+		// FIXME: todo
+	}
+
+	void
+	DataSetField::out(std::ostream& os) const
+	{
+		// FIXME: todo
+	}
+
+	void
 	DataSetField::opcUaBinaryEncode(std::ostream& os) const
 	{
 		switch (dataType_)

@@ -118,6 +118,17 @@ namespace OpcUaStackCore
 		dataEncoding_ = name;
 	}
 
+	void
+	ReadValueId::copyTo(ReadValueId& readValueId)
+	{
+		nodeIdSPtr_->copyTo(*readValueId.nodeId().get());
+		readValueId.attributeId(attributeId_);
+		OpcUaString indexRange;
+		indexRange_.copyTo(indexRange);
+		readValueId.indexRange(indexRange);
+		dataEncoding_.copyTo(readValueId.dataEncoding());
+	}
+
 	void 
 	ReadValueId::opcUaBinaryEncode(std::ostream& os) const
 	{

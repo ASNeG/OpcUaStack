@@ -82,7 +82,7 @@ namespace OpcUaStackCore
     
     };
     
-    class PublishedVariableDataTypeArray
+    class DLLEXPORT PublishedVariableDataTypeArray
     : public OpcUaArray<PublishedVariableDataType::SPtr, SPtrTypeCoder<PublishedVariableDataType> >
     , public Object
     {

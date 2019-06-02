@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class StatusChangeNotificationArray
+    class DLLEXPORT StatusChangeNotificationArray
     : public OpcUaArray<StatusChangeNotification::SPtr, SPtrTypeCoder<StatusChangeNotification> >
     , public Object
     {

@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -205,7 +205,7 @@ namespace OpcUaStackServer
 			ss << prefix << " */" << std::endl;
 		}
 
-		ss << prefix << "class " << nodeInfo_.className() << std::endl;
+		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << std::endl;
 
 		//
 		// added base classes
@@ -371,7 +371,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
-		ss << prefix << "class " << nodeInfo_.className() << "Array" << std::endl;
+		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << "Array" << std::endl;
 		ss << prefix << ": public OpcUaArray<" << nodeInfo_.className() << "::SPtr, SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
 		ss << prefix << ", public Object" << std::endl;
 		ss << prefix << "{" << std::endl;

@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class ServerState
+    class DLLEXPORT ServerState
     : public Object
     , public ExtensionObjectBase
     {
@@ -88,7 +88,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ServerStateArray
+    class DLLEXPORT ServerStateArray
     : public OpcUaArray<ServerState::SPtr, SPtrTypeCoder<ServerState> >
     , public Object
     {

@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * Indicates whether a token if being created or renewed.
      */
-    class SecurityTokenRequestType
+    class DLLEXPORT SecurityTokenRequestType
     : public Object
     , public ExtensionObjectBase
     {
@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SecurityTokenRequestTypeArray
+    class DLLEXPORT SecurityTokenRequestTypeArray
     : public OpcUaArray<SecurityTokenRequestType::SPtr, SPtrTypeCoder<SecurityTokenRequestType> >
     , public Object
     {

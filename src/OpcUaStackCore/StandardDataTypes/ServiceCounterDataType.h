@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ServiceCounterDataTypeArray
+    class DLLEXPORT ServiceCounterDataTypeArray
     : public OpcUaArray<ServiceCounterDataType::SPtr, SPtrTypeCoder<ServiceCounterDataType> >
     , public Object
     {

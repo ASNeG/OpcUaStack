@@ -72,7 +72,7 @@ namespace OpcUaStackCore
     
     };
     
-    class AnnotationArray
+    class DLLEXPORT AnnotationArray
     : public OpcUaArray<Annotation::SPtr, SPtrTypeCoder<Annotation> >
     , public Object
     {

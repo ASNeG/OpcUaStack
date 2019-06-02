@@ -89,7 +89,7 @@ namespace OpcUaStackCore
     
     };
     
-    class PubSubConnectionDataTypeArray
+    class DLLEXPORT PubSubConnectionDataTypeArray
     : public OpcUaArray<PubSubConnectionDataType::SPtr, SPtrTypeCoder<PubSubConnectionDataType> >
     , public Object
     {

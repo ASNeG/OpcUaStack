@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class HistoryUpdateDetailsArray
+    class DLLEXPORT HistoryUpdateDetailsArray
     : public OpcUaArray<HistoryUpdateDetails::SPtr, SPtrTypeCoder<HistoryUpdateDetails> >
     , public Object
     {

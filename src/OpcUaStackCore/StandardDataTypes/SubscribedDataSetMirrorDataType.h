@@ -71,7 +71,7 @@ namespace OpcUaStackCore
     
     };
     
-    class SubscribedDataSetMirrorDataTypeArray
+    class DLLEXPORT SubscribedDataSetMirrorDataTypeArray
     : public OpcUaArray<SubscribedDataSetMirrorDataType::SPtr, SPtrTypeCoder<SubscribedDataSetMirrorDataType> >
     , public Object
     {

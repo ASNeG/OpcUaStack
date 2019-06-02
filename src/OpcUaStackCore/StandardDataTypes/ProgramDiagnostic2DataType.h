@@ -92,7 +92,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ProgramDiagnostic2DataTypeArray
+    class DLLEXPORT ProgramDiagnostic2DataTypeArray
     : public OpcUaArray<ProgramDiagnostic2DataType::SPtr, SPtrTypeCoder<ProgramDiagnostic2DataType> >
     , public Object
     {

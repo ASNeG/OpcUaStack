@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class PerformUpdateType
+    class DLLEXPORT PerformUpdateType
     : public Object
     , public ExtensionObjectBase
     {
@@ -84,7 +84,7 @@ namespace OpcUaStackCore
     
     };
     
-    class PerformUpdateTypeArray
+    class DLLEXPORT PerformUpdateTypeArray
     : public OpcUaArray<PerformUpdateType::SPtr, SPtrTypeCoder<PerformUpdateType> >
     , public Object
     {

@@ -375,7 +375,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
-		ss << prefix << "class " << nodeInfo_.className() << "Array" << std::endl;
+		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << "Array" << std::endl;
 		ss << prefix << ": public OpcUaArray<" << nodeInfo_.className() << "::SPtr, SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
 		ss << prefix << ", public Object" << std::endl;
 		ss << prefix << "{" << std::endl;

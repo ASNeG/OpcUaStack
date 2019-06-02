@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class X509IdentityTokenArray
+    class DLLEXPORT X509IdentityTokenArray
     : public OpcUaArray<X509IdentityToken::SPtr, SPtrTypeCoder<X509IdentityToken> >
     , public Object
     {

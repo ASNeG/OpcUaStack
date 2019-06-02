@@ -29,7 +29,7 @@ using namespace OpcUaStackClient;
 namespace OpcUaClient
 {
 
-	class ClientServiceBrowse
+	class DLLEXPORT ClientServiceBrowse
 	: public ClientServiceBase
 	, public ViewServiceBrowseIf
 	{

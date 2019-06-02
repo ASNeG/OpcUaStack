@@ -69,7 +69,7 @@ namespace OpcUaStackCore
     
     };
     
-    class RelativePathArray
+    class DLLEXPORT RelativePathArray
     : public OpcUaArray<RelativePath::SPtr, SPtrTypeCoder<RelativePath> >
     , public Object
     {

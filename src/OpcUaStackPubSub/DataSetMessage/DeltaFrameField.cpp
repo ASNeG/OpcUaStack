@@ -49,6 +49,12 @@ namespace OpcUaStackPubSub
 	}
 
 	void
+	DeltaFrameField::copyTo(DeltaFrameField& deltaFrameField)
+	{
+		deltaFrameField.fieldIndex(fieldIndex_);
+	}
+
+	void
 	DeltaFrameField::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNumber::opcUaBinaryEncode(os, fieldIndex_);

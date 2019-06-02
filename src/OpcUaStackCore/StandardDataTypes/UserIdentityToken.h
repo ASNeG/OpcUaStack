@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class UserIdentityTokenArray
+    class DLLEXPORT UserIdentityTokenArray
     : public OpcUaArray<UserIdentityToken::SPtr, SPtrTypeCoder<UserIdentityToken> >
     , public Object
     {

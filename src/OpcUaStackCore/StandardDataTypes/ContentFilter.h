@@ -69,7 +69,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ContentFilterArray
+    class DLLEXPORT ContentFilterArray
     : public OpcUaArray<ContentFilter::SPtr, SPtrTypeCoder<ContentFilter> >
     , public Object
     {

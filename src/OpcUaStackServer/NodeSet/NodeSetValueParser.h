@@ -28,7 +28,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DataTypeElement
+	class DLLEXPORT DataTypeElement
 	{
 	  public:
 		DataTypeElement(void);

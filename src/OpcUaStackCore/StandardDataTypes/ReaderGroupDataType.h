@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ReaderGroupDataTypeArray
+    class DLLEXPORT ReaderGroupDataTypeArray
     : public OpcUaArray<ReaderGroupDataType::SPtr, SPtrTypeCoder<ReaderGroupDataType> >
     , public Object
     {

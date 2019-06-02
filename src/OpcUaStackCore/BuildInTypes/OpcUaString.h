@@ -74,7 +74,7 @@ namespace OpcUaStackCore
 		std::string value_; 
 	};
 
-	class OpcUaStringArray
+	class DLLEXPORT OpcUaStringArray
 	: public OpcUaArray<OpcUaString::SPtr, SPtrTypeCoder<OpcUaString> >
 	{
 	  public:

@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class RangeArray
+    class DLLEXPORT RangeArray
     : public OpcUaArray<Range::SPtr, SPtrTypeCoder<Range> >
     , public Object
     {

@@ -76,7 +76,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ReadRawModifiedDetailsArray
+    class DLLEXPORT ReadRawModifiedDetailsArray
     : public OpcUaArray<ReadRawModifiedDetails::SPtr, SPtrTypeCoder<ReadRawModifiedDetails> >
     , public Object
     {

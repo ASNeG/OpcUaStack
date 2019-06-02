@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class JsonWriterGroupMessageDataTypeArray
+    class DLLEXPORT JsonWriterGroupMessageDataTypeArray
     : public OpcUaArray<JsonWriterGroupMessageDataType::SPtr, SPtrTypeCoder<JsonWriterGroupMessageDataType> >
     , public Object
     {

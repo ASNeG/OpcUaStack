@@ -66,7 +66,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DiscoveryConfigurationArray
+    class DLLEXPORT DiscoveryConfigurationArray
     : public OpcUaArray<DiscoveryConfiguration::SPtr, SPtrTypeCoder<DiscoveryConfiguration> >
     , public Object
     {

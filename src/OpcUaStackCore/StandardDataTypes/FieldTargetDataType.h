@@ -81,7 +81,7 @@ namespace OpcUaStackCore
     
     };
     
-    class FieldTargetDataTypeArray
+    class DLLEXPORT FieldTargetDataTypeArray
     : public OpcUaArray<FieldTargetDataType::SPtr, SPtrTypeCoder<FieldTargetDataType> >
     , public Object
     {

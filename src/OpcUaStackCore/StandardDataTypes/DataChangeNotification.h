@@ -71,7 +71,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DataChangeNotificationArray
+    class DLLEXPORT DataChangeNotificationArray
     : public OpcUaArray<DataChangeNotification::SPtr, SPtrTypeCoder<DataChangeNotification> >
     , public Object
     {

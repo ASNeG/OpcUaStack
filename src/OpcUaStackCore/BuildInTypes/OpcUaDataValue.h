@@ -370,7 +370,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaDataValueArray
+	class DLLEXPORT OpcUaDataValueArray
 	: public OpcUaArray<OpcUaDataValue::SPtr, SPtrTypeCoder<OpcUaDataValue> >
 	, public Object
 	{

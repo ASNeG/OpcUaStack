@@ -276,7 +276,7 @@ namespace OpcUaStackCore
 		~OpcUaStatusCodeMap(void);
 	};
 
-	class OpcUaStatusCodeArray
+	class DLLEXPORT OpcUaStatusCodeArray
 	: public OpcUaArray<OpcUaStatusCode, EnumTypeCoder<OpcUaStatusCode> >
 	{
 	  public:

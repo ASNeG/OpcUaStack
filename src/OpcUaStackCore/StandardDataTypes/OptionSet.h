@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     
     };
     
-    class OptionSetArray
+    class DLLEXPORT OptionSetArray
     : public OpcUaArray<OptionSet::SPtr, SPtrTypeCoder<OptionSet> >
     , public Object
     {

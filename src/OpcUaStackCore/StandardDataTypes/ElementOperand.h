@@ -68,7 +68,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ElementOperandArray
+    class DLLEXPORT ElementOperandArray
     : public OpcUaArray<ElementOperand::SPtr, SPtrTypeCoder<ElementOperand> >
     , public Object
     {

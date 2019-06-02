@@ -76,7 +76,7 @@ namespace OpcUaStackCore
     
     };
     
-    class StructureDefinitionArray
+    class DLLEXPORT StructureDefinitionArray
     : public OpcUaArray<StructureDefinition::SPtr, SPtrTypeCoder<StructureDefinition> >
     , public Object
     {

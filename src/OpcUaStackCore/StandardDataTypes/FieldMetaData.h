@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     
     };
     
-    class FieldMetaDataArray
+    class DLLEXPORT FieldMetaDataArray
     : public OpcUaArray<FieldMetaData::SPtr, SPtrTypeCoder<FieldMetaData> >
     , public Object
     {

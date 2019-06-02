@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * The bits used to specify default attributes for a new node.
      */
-    class NodeAttributesMask
+    class DLLEXPORT NodeAttributesMask
     : public Object
     , public ExtensionObjectBase
     {
@@ -118,7 +118,7 @@ namespace OpcUaStackCore
     
     };
     
-    class NodeAttributesMaskArray
+    class DLLEXPORT NodeAttributesMaskArray
     : public OpcUaArray<NodeAttributesMask::SPtr, SPtrTypeCoder<NodeAttributesMask> >
     , public Object
     {

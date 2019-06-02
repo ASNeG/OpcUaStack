@@ -66,7 +66,7 @@ namespace OpcUaStackCore
     
     };
     
-    class MonitoringFilterResultArray
+    class DLLEXPORT MonitoringFilterResultArray
     : public OpcUaArray<MonitoringFilterResult::SPtr, SPtrTypeCoder<MonitoringFilterResult> >
     , public Object
     {

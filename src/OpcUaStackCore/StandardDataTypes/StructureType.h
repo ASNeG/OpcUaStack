@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class StructureType
+    class DLLEXPORT StructureType
     : public Object
     , public ExtensionObjectBase
     {
@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     
     };
     
-    class StructureTypeArray
+    class DLLEXPORT StructureTypeArray
     : public OpcUaArray<StructureType::SPtr, SPtrTypeCoder<StructureType> >
     , public Object
     {

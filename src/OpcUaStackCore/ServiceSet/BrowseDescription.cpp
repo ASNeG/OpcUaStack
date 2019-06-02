@@ -115,6 +115,17 @@ namespace OpcUaStackCore
 		return resultMask_;
 	}
 
+	void
+	BrowseDescription::copyTo(BrowseDescription& browseDescription)
+	{
+		nodeIdSPtr_->copyTo(*browseDescription.nodeId().get());
+		browseDescription.browseDirection(browseDirection_);
+		referenceTypeIdSPtr_->copyTo(*browseDescription.referenceTypeId().get());
+		browseDescription.includeSubtypes(includeSubtypes_);
+		browseDescription.nodeClassMask(nodeClassMask_);
+		browseDescription.resultMask(resultMask_);
+	}
+
 	void 
 	BrowseDescription::opcUaBinaryEncode(std::ostream& os) const
 	{

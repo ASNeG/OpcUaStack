@@ -73,7 +73,7 @@ namespace OpcUaStackCore
     
     };
     
-    class AggregateFilterResultArray
+    class DLLEXPORT AggregateFilterResultArray
     : public OpcUaArray<AggregateFilterResult::SPtr, SPtrTypeCoder<AggregateFilterResult> >
     , public Object
     {

@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class TrustListMasks
+    class DLLEXPORT TrustListMasks
     : public Object
     , public ExtensionObjectBase
     {
@@ -86,7 +86,7 @@ namespace OpcUaStackCore
     
     };
     
-    class TrustListMasksArray
+    class DLLEXPORT TrustListMasksArray
     : public OpcUaArray<TrustListMasks::SPtr, SPtrTypeCoder<TrustListMasks> >
     , public Object
     {

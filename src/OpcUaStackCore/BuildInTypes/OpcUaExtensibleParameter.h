@@ -100,7 +100,7 @@ namespace OpcUaStackCore
 		ExtensionObjectBase::SPtr eoSPtr_;
 	};
 
-	class OpcUaExtensibleParameterArray
+	class DLLEXPORT OpcUaExtensibleParameterArray
 	: public OpcUaArray<OpcUaExtensibleParameter::SPtr, SPtrTypeCoder<OpcUaExtensibleParameter> >
 	, public Object
 	{

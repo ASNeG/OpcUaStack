@@ -66,7 +66,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DataSetWriterTransportDataTypeArray
+    class DLLEXPORT DataSetWriterTransportDataTypeArray
     : public OpcUaArray<DataSetWriterTransportDataType::SPtr, SPtrTypeCoder<DataSetWriterTransportDataType> >
     , public Object
     {

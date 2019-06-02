@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class IdentityCriteriaType
+    class DLLEXPORT IdentityCriteriaType
     : public Object
     , public ExtensionObjectBase
     {
@@ -86,7 +86,7 @@ namespace OpcUaStackCore
     
     };
     
-    class IdentityCriteriaTypeArray
+    class DLLEXPORT IdentityCriteriaTypeArray
     : public OpcUaArray<IdentityCriteriaType::SPtr, SPtrTypeCoder<IdentityCriteriaType> >
     , public Object
     {

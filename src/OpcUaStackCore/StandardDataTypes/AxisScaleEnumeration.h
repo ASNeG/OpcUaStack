@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
     
-    class AxisScaleEnumeration
+    class DLLEXPORT AxisScaleEnumeration
     : public Object
     , public ExtensionObjectBase
     {
@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     
     };
     
-    class AxisScaleEnumerationArray
+    class DLLEXPORT AxisScaleEnumerationArray
     : public OpcUaArray<AxisScaleEnumeration::SPtr, SPtrTypeCoder<AxisScaleEnumeration> >
     , public Object
     {

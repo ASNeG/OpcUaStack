@@ -72,7 +72,7 @@ namespace OpcUaStackCore
     
     };
     
-    class DeleteRawModifiedDetailsArray
+    class DLLEXPORT DeleteRawModifiedDetailsArray
     : public OpcUaArray<DeleteRawModifiedDetails::SPtr, SPtrTypeCoder<DeleteRawModifiedDetails> >
     , public Object
     {

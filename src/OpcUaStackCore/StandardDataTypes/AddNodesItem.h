@@ -82,7 +82,7 @@ namespace OpcUaStackCore
     
     };
     
-    class AddNodesItemArray
+    class DLLEXPORT AddNodesItemArray
     : public OpcUaArray<AddNodesItem::SPtr, SPtrTypeCoder<AddNodesItem> >
     , public Object
     {
