@@ -96,7 +96,7 @@ namespace OpcUaStackCore
         template <typename  T>
         bool jsonNumberEncode(boost::property_tree::ptree &pt, T value, const std::string &element) const
         {
-            jsonNumberEncode(pt, value, element, false, T());
+            return jsonNumberEncode(pt, value, element, false, T());
         }
 
         template <typename  T>
