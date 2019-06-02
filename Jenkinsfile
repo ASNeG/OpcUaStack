@@ -8,8 +8,7 @@ pipeline {
     }
     stage('build') {
       steps {
-        sh 'sh build.sh -t local'
-  	sh 'docker-compose run  --name test_container stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889'
+  	    sh 'docker-compose run  --name test_container stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889'
         sh 'docker commit test_container opcuastack_stack'
       }
     }
