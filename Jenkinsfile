@@ -8,8 +8,8 @@ pipeline {
     }
     stage('build') {
       steps {
-  	    sh 'docker-compose run  --name test_container stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889'
-        sh 'docker commit test_container opcuastack_stack'
+        sh 'docker-compose build'
+  	    sh 'docker-compose run stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889'
       }
     }
 
@@ -24,7 +24,7 @@ pipeline {
 
   post {
     always {
-      sh 'docker rm test_container'
+      sh 'docker-compose down'
     }
   }
 }
