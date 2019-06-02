@@ -7,5 +7,10 @@ services:
   stack:
     depends_on:
       - demo_server
+    volumes:
+      - data-volume:/OpcUaStack
     build: .
 
+
+volumes:
+    data-volume:
