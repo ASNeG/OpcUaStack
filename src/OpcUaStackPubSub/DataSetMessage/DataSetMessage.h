@@ -31,6 +31,7 @@ namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT DataSetMessage
+	: public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetMessage> SPtr;
@@ -48,19 +49,20 @@ namespace OpcUaStackPubSub
 		virtual void setFieldEncoding(void) {};
 		virtual void opcUaBinaryEncode(std::ostream& os) const {}
 		virtual void opcUaBinaryDecode(std::istream& is) {}
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return  true; }
-		bool jsonEncode(boost::property_tree::ptree& pt) { return  true; }
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return  true; }
-		bool jsonDecode(boost::property_tree::ptree& pt) { return  true; }
 
 		void copyTo(DataSetMessage& dataSetMessage);
 		bool operator==(const DataSetMessage& other) const;
 		bool operator!=(const DataSetMessage& other) const;
 
 		void out(std::ostream& os) const;
+
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+
+      protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; };
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; };
 
 	  private:
 		DataSetMessageHeader::SPtr dataSetMessageHeader_;

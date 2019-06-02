@@ -31,6 +31,7 @@ namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT DataSetMessageHeader
+	: public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetMessageHeader> SPtr;
@@ -70,20 +71,20 @@ namespace OpcUaStackPubSub
 		void configurationVersionMinorVersion(OpcUaUInt32 configurationVersionMinorVersion);
 		OpcUaUInt32 configurationVersionMinorVersion(void);
 
+		void copyTo(DataSetMessageHeader& dataSetMessageHeader);
+		bool operator==(const DataSetMessageHeader& other) const;
+		void out(std::ostream& os) const;
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
-		bool jsonEncode(boost::property_tree::ptree& pt) { return false; }
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
-		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
 
-		void copyTo(DataSetMessageHeader& dataSetMessageHeader);
-		bool operator==(const DataSetMessageHeader& other) const;
-		void out(std::ostream& os) const;
+	  protected:
+	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; };
+	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; };
 
 	  private:
 		FieldEncoding fieldEncoding_;
