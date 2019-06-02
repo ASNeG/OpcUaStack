@@ -44,8 +44,10 @@ namespace OpcUaStackCore
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
-		virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
-		virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
 
 	  private:
 		OpcUaDouble maxAge_;

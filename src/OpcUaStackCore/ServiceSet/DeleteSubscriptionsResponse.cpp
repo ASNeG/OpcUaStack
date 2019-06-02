@@ -81,20 +81,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DeleteSubscriptionsResponse::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "DeleteSubscriptionsResponse json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	DeleteSubscriptionsResponse::jsonEncode(boost::property_tree::ptree& pt)
+	DeleteSubscriptionsResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		OpcUaStatusArray statusArray;
 		statusArray.resize(statusCodeArraySPtr_->size());
@@ -117,21 +104,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DeleteSubscriptionsResponse::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "DeleteSubscriptionsResponse json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	DeleteSubscriptionsResponse::jsonDecode(boost::property_tree::ptree& pt)
+	DeleteSubscriptionsResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		// decode status code array
 		OpcUaStatusArray statusArray;

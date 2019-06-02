@@ -112,20 +112,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	HistoryReadRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "HistoryReadRequest json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	HistoryReadRequest::jsonEncode(boost::property_tree::ptree& pt)
+	HistoryReadRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		// encode history read details
 		if (!historyReadDetailsSPtr_->jsonEncode(pt, "HistoryReadDetails")) {
@@ -160,23 +147,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	HistoryReadRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	HistoryReadRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "HistoryReadRequest json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	HistoryReadRequest::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
+		boost::optional<const boost::property_tree::ptree&> tmpTree;
 
 		// encode history read details
 		if (!historyReadDetailsSPtr_->jsonDecode(pt, "HistoryReadDetails")) {

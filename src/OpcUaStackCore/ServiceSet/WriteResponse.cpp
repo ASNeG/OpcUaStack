@@ -82,20 +82,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	WriteResponse::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "WriteResponse json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	WriteResponse::jsonEncode(boost::property_tree::ptree& pt)
+	WriteResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		OpcUaStatusArray statusArray;
 		statusArray.resize(statusCodeArraySPtr_->size());
@@ -118,21 +105,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	WriteResponse::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "WriteResponse json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	WriteResponse::jsonDecode(boost::property_tree::ptree& pt)
+	WriteResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		// decode status code array
 		OpcUaStatusArray statusArray;

@@ -91,20 +91,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CallResponse::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "CallResponse json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	CallResponse::jsonEncode(boost::property_tree::ptree& pt)
+	CallResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		// encode results
 		if (!callMethodResultArraySPtr_->jsonEncode(pt, "Results", "")) {
@@ -117,21 +104,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CallResponse::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "CallResponse json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	CallResponse::jsonDecode(boost::property_tree::ptree& pt)
+	CallResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		// decode results
 		if (!callMethodResultArraySPtr_->jsonDecode(pt, "Results", "")) {

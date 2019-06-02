@@ -138,20 +138,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CreateSubscriptionRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "CreateSubscriptionRequest json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	CreateSubscriptionRequest::jsonEncode(boost::property_tree::ptree& pt)
+	CreateSubscriptionRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		// encode requested publishing interval
 		if (!JsonNumber::jsonEncode(pt, requestedPublishingInterval_, "RequestedPublishingInterval")) {
@@ -199,23 +186,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CreateSubscriptionRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
+	CreateSubscriptionRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "CreateSubscriptionRequest json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	CreateSubscriptionRequest::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
+		boost::optional<const boost::property_tree::ptree&> tmpTree;
 
 		// decode requested publishing interval
 		tmpTree = pt.get_child_optional("RequestedPublishingInterval");

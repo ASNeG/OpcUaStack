@@ -108,20 +108,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CreateSubscriptionResponse::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "CreateSubscriptionResponse json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	CreateSubscriptionResponse::jsonEncode(boost::property_tree::ptree& pt)
+	CreateSubscriptionResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		// encode subscription id
 		if (!JsonNumber::jsonEncode(pt, subscriptionId_, "SubscriptionId")) {
@@ -155,21 +142,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CreateSubscriptionResponse::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "CreateSubscriptionResponse json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	CreateSubscriptionResponse::jsonDecode(boost::property_tree::ptree& pt)
+	CreateSubscriptionResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		// decode subscription id
 		if (!JsonNumber::jsonDecode(pt, subscriptionId_, "SubscriptionId")) {

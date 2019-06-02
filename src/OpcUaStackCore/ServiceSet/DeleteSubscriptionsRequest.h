@@ -26,7 +26,8 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT DeleteSubscriptionsRequest
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteSubscriptionsRequest> SPtr;
@@ -39,10 +40,10 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt);
 
 	  private:
 		OpcUaUInt32Array::SPtr subscriptionIdArraySPtr_;
