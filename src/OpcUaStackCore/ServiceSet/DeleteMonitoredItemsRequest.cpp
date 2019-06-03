@@ -88,7 +88,7 @@ namespace OpcUaStackCore
 		}
 
 		// encode monitored item id array
-		if (!monitoredItemIdArraySPtr_->jsonEncode(pt, "MonitoredItemIds", "")) {
+		if (!monitoredItemIdArraySPtr_->jsonEncode(pt, "MonitoredItemIds")) {
 			Log(Error, "DeleteMonitoredItemsRequest json encode error")
 				.parameter("Element", "MonitoredItemIds");
 			return false;
@@ -108,7 +108,7 @@ namespace OpcUaStackCore
 		}
 
 		// decode monitored item id array
-		if (!monitoredItemIdArraySPtr_->jsonDecode(pt, "MonitoredItemIds", "")) {
+		if (!monitoredItemIdArraySPtr_->jsonDecode(pt, "MonitoredItemIds")) {
 			Log(Error, "DeleteMonitoredItemsRequest json decode error")
 				.parameter("Element", "MonitoredItemIds");
 			return false;

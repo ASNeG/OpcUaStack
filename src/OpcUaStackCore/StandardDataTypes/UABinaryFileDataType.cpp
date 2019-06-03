@@ -262,14 +262,7 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, schemaLocation_, "SchemaLocation");
-        elementTree.clear();
-        if (!fileHeader_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "UABinaryFileDataType json encoder error")
-    		     .parameter("Element", "fileHeader_");
-            return false;
-        }
-        pt.push_back(std::make_pair("FileHeader", elementTree));
+        rc = rc & jsonObjectEncode(pt, fileHeader_, "FileHeader");
         rc = rc & jsonObjectEncode(pt, body_, "Body");
     
         return rc;

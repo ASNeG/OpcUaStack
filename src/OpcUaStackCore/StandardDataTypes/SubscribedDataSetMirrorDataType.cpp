@@ -230,14 +230,7 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, parentNodeName_, "ParentNodeName");
-        elementTree.clear();
-        if (!rolePermissions_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "SubscribedDataSetMirrorDataType json encoder error")
-    		     .parameter("Element", "rolePermissions_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RolePermissions", elementTree));
+        rc = rc & jsonObjectEncode(pt, rolePermissions_, "RolePermissions");
     
         return rc;
     }

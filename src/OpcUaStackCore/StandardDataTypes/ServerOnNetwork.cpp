@@ -297,14 +297,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, recordId_, "RecordId");
         rc = rc & jsonObjectEncode(pt, serverName_, "ServerName");
         rc = rc & jsonObjectEncode(pt, discoveryUrl_, "DiscoveryUrl");
-        elementTree.clear();
-        if (!serverCapabilities_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ServerOnNetwork json encoder error")
-    		     .parameter("Element", "serverCapabilities_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerCapabilities", elementTree));
+        rc = rc & jsonObjectEncode(pt, serverCapabilities_, "ServerCapabilities");
     
         return rc;
     }

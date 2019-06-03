@@ -229,14 +229,7 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!selectClauses_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "EventFilter json encoder error")
-    		     .parameter("Element", "selectClauses_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SelectClauses", elementTree));
+        rc = rc & jsonObjectEncode(pt, selectClauses_, "SelectClauses");
         rc = rc & jsonObjectEncode(pt, whereClause_, "WhereClause");
     
         return rc;

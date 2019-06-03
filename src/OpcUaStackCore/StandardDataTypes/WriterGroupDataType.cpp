@@ -429,24 +429,10 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, publishingInterval_, "PublishingInterval");
         rc = rc & jsonNumberEncode(pt, keepAliveTime_, "KeepAliveTime");
         rc = rc & jsonNumberEncode(pt, priority_, "Priority");
-        elementTree.clear();
-        if (!localeIds_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "WriterGroupDataType json encoder error")
-    		     .parameter("Element", "localeIds_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LocaleIds", elementTree));
+        rc = rc & jsonObjectEncode(pt, localeIds_, "LocaleIds");
         rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
-        elementTree.clear();
-        if (!dataSetWriters_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "WriterGroupDataType json encoder error")
-    		     .parameter("Element", "dataSetWriters_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetWriters", elementTree));
+        rc = rc & jsonObjectEncode(pt, dataSetWriters_, "DataSetWriters");
     
         return rc;
     }

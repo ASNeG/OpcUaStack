@@ -555,38 +555,10 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, lastTransitionTime_, "LastTransitionTime");
         rc = rc & jsonObjectEncode(pt, lastMethodCall_, "LastMethodCall");
         rc = rc & jsonObjectEncode(pt, lastMethodSessionId_, "LastMethodSessionId");
-        elementTree.clear();
-        if (!lastMethodInputArguments_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ProgramDiagnostic2DataType json encoder error")
-    		     .parameter("Element", "lastMethodInputArguments_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LastMethodInputArguments", elementTree));
-        elementTree.clear();
-        if (!lastMethodOutputArguments_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ProgramDiagnostic2DataType json encoder error")
-    		     .parameter("Element", "lastMethodOutputArguments_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LastMethodOutputArguments", elementTree));
-        elementTree.clear();
-        if (!lastMethodInputValues_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ProgramDiagnostic2DataType json encoder error")
-    		     .parameter("Element", "lastMethodInputValues_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LastMethodInputValues", elementTree));
-        elementTree.clear();
-        if (!lastMethodOutputValues_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ProgramDiagnostic2DataType json encoder error")
-    		     .parameter("Element", "lastMethodOutputValues_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LastMethodOutputValues", elementTree));
+        rc = rc & jsonObjectEncode(pt, lastMethodInputArguments_, "LastMethodInputArguments");
+        rc = rc & jsonObjectEncode(pt, lastMethodOutputArguments_, "LastMethodOutputArguments");
+        rc = rc & jsonObjectEncode(pt, lastMethodInputValues_, "LastMethodInputValues");
+        rc = rc & jsonObjectEncode(pt, lastMethodOutputValues_, "LastMethodOutputValues");
         rc = rc & jsonObjectEncode(pt, lastMethodCallTime_, "LastMethodCallTime");
         rc = rc & jsonObjectEncode(pt, lastMethodReturnStatus_, "LastMethodReturnStatus");
     

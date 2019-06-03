@@ -113,7 +113,7 @@ namespace OpcUaStackCore
 		}
 
 		// encode items to create array
-		if (!itemsToCreateArraySPtr_->jsonEncode(pt, "ItemsToCreate", "")) {
+		if (!itemsToCreateArraySPtr_->jsonEncode(pt, "ItemsToCreate")) {
 			Log(Error, "CreateMonitoredItemsRequest json encode error")
 				.parameter("Element", "ItemsToCreate");
 			return false;
@@ -146,7 +146,7 @@ namespace OpcUaStackCore
 		}
 
 		// decode items to create array
-		if (!itemsToCreateArraySPtr_->jsonDecode(pt, "ItemsToCreate", "")) {
+		if (!itemsToCreateArraySPtr_->jsonDecode(pt, "ItemsToCreate")) {
 			Log(Error, "CreateMonitoredItemsRequest json decode error")
 				.parameter("Element", "ItemsToCreate");
 			return false;

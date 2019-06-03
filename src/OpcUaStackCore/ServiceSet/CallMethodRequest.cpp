@@ -119,7 +119,7 @@ namespace OpcUaStackCore
 
 		// encode input argument array
 		if (inputArgumentArraySPtr_->size() != 0) {
-			if (!inputArgumentArraySPtr_->jsonEncode(pt, "InputArguments", "")) {
+			if (!inputArgumentArraySPtr_->jsonEncode(pt, "InputArguments")) {
 				Log(Error, "CallMethodRequest json encode error")
 					.parameter("Element", "InputArguments");
 				return false;
@@ -151,7 +151,7 @@ namespace OpcUaStackCore
 		// decode input argument array
 		tmpTree = pt.get_child_optional("InputArguments");
 		if (tmpTree) {
-			if (!inputArgumentArraySPtr_->jsonDecode(pt, "InputArguments", "")) {
+			if (!inputArgumentArraySPtr_->jsonDecode(pt, "InputArguments")) {
 				Log(Error, "CallMethodRequest json decode error")
 			    	.parameter("Element", "InputArguments");
 				return false;

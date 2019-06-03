@@ -432,14 +432,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, deadbandValue_, "DeadbandValue");
         rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange");
         rc = rc & jsonObjectEncode(pt, substituteValue_, "SubstituteValue");
-        elementTree.clear();
-        if (!metaDataProperties_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PublishedVariableDataType json encoder error")
-    		     .parameter("Element", "metaDataProperties_");
-            return false;
-        }
-        pt.push_back(std::make_pair("MetaDataProperties", elementTree));
+        rc = rc & jsonObjectEncode(pt, metaDataProperties_, "MetaDataProperties");
     
         return rc;
     }

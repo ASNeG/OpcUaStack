@@ -197,14 +197,7 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!modificationInfos_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "HistoryModifiedData json encoder error")
-    		     .parameter("Element", "modificationInfos_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ModificationInfos", elementTree));
+        rc = rc & jsonObjectEncode(pt, modificationInfos_, "ModificationInfos");
     
         return rc;
     }

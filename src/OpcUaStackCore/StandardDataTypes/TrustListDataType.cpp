@@ -327,38 +327,10 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, specifiedLists_, "SpecifiedLists");
-        elementTree.clear();
-        if (!trustedCertificates_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "TrustListDataType json encoder error")
-    		     .parameter("Element", "trustedCertificates_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TrustedCertificates", elementTree));
-        elementTree.clear();
-        if (!trustedCrls_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "TrustListDataType json encoder error")
-    		     .parameter("Element", "trustedCrls_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TrustedCrls", elementTree));
-        elementTree.clear();
-        if (!issuerCertificates_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "TrustListDataType json encoder error")
-    		     .parameter("Element", "issuerCertificates_");
-            return false;
-        }
-        pt.push_back(std::make_pair("IssuerCertificates", elementTree));
-        elementTree.clear();
-        if (!issuerCrls_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "TrustListDataType json encoder error")
-    		     .parameter("Element", "issuerCrls_");
-            return false;
-        }
-        pt.push_back(std::make_pair("IssuerCrls", elementTree));
+        rc = rc & jsonObjectEncode(pt, trustedCertificates_, "TrustedCertificates");
+        rc = rc & jsonObjectEncode(pt, trustedCrls_, "TrustedCrls");
+        rc = rc & jsonObjectEncode(pt, issuerCertificates_, "IssuerCertificates");
+        rc = rc & jsonObjectEncode(pt, issuerCrls_, "IssuerCrls");
     
         return rc;
     }

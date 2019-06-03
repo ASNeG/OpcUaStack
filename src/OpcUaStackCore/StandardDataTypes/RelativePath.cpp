@@ -203,14 +203,7 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!elements_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "RelativePath json encoder error")
-    		     .parameter("Element", "elements_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Elements", elementTree));
+        rc = rc & jsonObjectEncode(pt, elements_, "Elements");
     
         return rc;
     }

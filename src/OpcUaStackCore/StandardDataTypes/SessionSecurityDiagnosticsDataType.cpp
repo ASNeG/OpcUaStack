@@ -455,14 +455,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectEncode(pt, sessionId_, "SessionId");
         rc = rc & jsonObjectEncode(pt, clientUserIdOfSession_, "ClientUserIdOfSession");
-        elementTree.clear();
-        if (!clientUserIdHistory_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "clientUserIdHistory_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ClientUserIdHistory", elementTree));
+        rc = rc & jsonObjectEncode(pt, clientUserIdHistory_, "ClientUserIdHistory");
         rc = rc & jsonObjectEncode(pt, authenticationMechanism_, "AuthenticationMechanism");
         rc = rc & jsonObjectEncode(pt, encoding_, "Encoding");
         rc = rc & jsonObjectEncode(pt, transportProtocol_, "TransportProtocol");

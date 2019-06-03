@@ -295,14 +295,7 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, typeDefinitionId_, "TypeDefinitionId");
-        elementTree.clear();
-        if (!browsePath_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "SimpleAttributeOperand json encoder error")
-    		     .parameter("Element", "browsePath_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BrowsePath", elementTree));
+        rc = rc & jsonObjectEncode(pt, browsePath_, "BrowsePath");
         rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
         rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange");
     

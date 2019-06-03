@@ -143,7 +143,7 @@ namespace OpcUaStackCore
 
 		// encode input argument results
 		if (statusArray.size() > 0) {
-			if (!statusArray.jsonEncode(pt, "InputArgumentResults", "")) {
+			if (!statusArray.jsonEncode(pt, "InputArgumentResults")) {
 				Log(Error, "CallMethodResult json encode error")
 					.parameter("Element", "InputArgumentResults");
 				return false;
@@ -152,7 +152,7 @@ namespace OpcUaStackCore
 
 		// encode output argument array
 		if (outputArgumentArraySPtr_->size() > 0) {
-			if (!outputArgumentArraySPtr_->jsonEncode(pt, "OutputArguments", "")) {
+			if (!outputArgumentArraySPtr_->jsonEncode(pt, "OutputArguments")) {
 				Log(Error, "CallMethodResult json encode error")
 			    	.parameter("Element", "OutputArguments");
 				return false;
@@ -181,7 +181,7 @@ namespace OpcUaStackCore
 
 		// decode input arguments result
 		OpcUaStatusArray statusArray;
-		if (!statusArray.jsonDecode(pt, "InputArgumentResults", "")) {
+		if (!statusArray.jsonDecode(pt, "InputArgumentResults")) {
 			Log(Error, "CallMethodResult json decode error")
 			    .parameter("Element", "Results");
 			return false;
@@ -194,7 +194,7 @@ namespace OpcUaStackCore
 		}
 
 		// decode output argument array
-		if (!outputArgumentArraySPtr_->jsonDecode(pt, "OutputArguments", "")) {
+		if (!outputArgumentArraySPtr_->jsonDecode(pt, "OutputArguments")) {
 			Log(Error, "CallMethodResult json decode error")
 			    .parameter("Element", "OutputArguments");
 			return false;

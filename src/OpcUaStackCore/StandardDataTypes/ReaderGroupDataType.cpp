@@ -263,14 +263,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
-        elementTree.clear();
-        if (!dataSetReaders_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ReaderGroupDataType json encoder error")
-    		     .parameter("Element", "dataSetReaders_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetReaders", elementTree));
+        rc = rc & jsonObjectEncode(pt, dataSetReaders_, "DataSetReaders");
     
         return rc;
     }

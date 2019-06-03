@@ -197,14 +197,7 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!targetVariables_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "TargetVariablesDataType json encoder error")
-    		     .parameter("Element", "targetVariables_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TargetVariables", elementTree));
+        rc = rc & jsonObjectEncode(pt, targetVariables_, "TargetVariables");
     
         return rc;
     }

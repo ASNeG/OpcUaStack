@@ -94,7 +94,7 @@ namespace OpcUaStackCore
 	CallResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		// encode results
-		if (!callMethodResultArraySPtr_->jsonEncode(pt, "Results", "")) {
+		if (!callMethodResultArraySPtr_->jsonEncode(pt, "Results")) {
 			Log(Error, "CallResponse json encode error")
 				.parameter("Element", "Results");
 			return false;
@@ -107,7 +107,7 @@ namespace OpcUaStackCore
 	CallResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		// decode results
-		if (!callMethodResultArraySPtr_->jsonDecode(pt, "Results", "")) {
+		if (!callMethodResultArraySPtr_->jsonDecode(pt, "Results")) {
 			Log(Error, "CallResponse json decode error")
 			    .parameter("Element", "Results");
 			return false;

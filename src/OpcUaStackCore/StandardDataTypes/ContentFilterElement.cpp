@@ -230,14 +230,7 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, filterOperator_, "FilterOperator");
-        elementTree.clear();
-        if (!filterOperands_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ContentFilterElement json encoder error")
-    		     .parameter("Element", "filterOperands_");
-            return false;
-        }
-        pt.push_back(std::make_pair("FilterOperands", elementTree));
+        rc = rc & jsonObjectEncode(pt, filterOperands_, "FilterOperands");
     
         return rc;
     }

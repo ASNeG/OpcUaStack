@@ -69,7 +69,7 @@ namespace OpcUaStackCore
 	WriteRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		// encode write value array
-		if (!writeValueArraySPtr_->jsonEncode(pt, "NodesToWrite", "")) {
+		if (!writeValueArraySPtr_->jsonEncode(pt, "NodesToWrite")) {
 			Log(Error, "WriteRequest json encode error")
 				.parameter("Element", "NodesToWrite");
 			return false;
@@ -82,7 +82,7 @@ namespace OpcUaStackCore
 	WriteRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		// decode write value array
-		if (!writeValueArraySPtr_->jsonDecode(pt, "NodesToWrite", "")) {
+		if (!writeValueArraySPtr_->jsonDecode(pt, "NodesToWrite")) {
 			Log(Error, "writeRequest json decode error")
 			    .parameter("Element", "NodesToWrite");
 			return false;

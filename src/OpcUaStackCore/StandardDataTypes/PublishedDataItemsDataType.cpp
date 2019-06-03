@@ -197,14 +197,7 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!publishedData_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PublishedDataItemsDataType json encoder error")
-    		     .parameter("Element", "publishedData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublishedData", elementTree));
+        rc = rc & jsonObjectEncode(pt, publishedData_, "PublishedData");
     
         return rc;
     }

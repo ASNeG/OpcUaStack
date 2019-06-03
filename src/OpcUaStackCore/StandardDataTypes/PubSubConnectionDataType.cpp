@@ -459,31 +459,10 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, publisherId_, "PublisherId");
         rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri");
         rc = rc & jsonObjectEncode(pt, address_, "Address");
-        elementTree.clear();
-        if (!connectionProperties_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PubSubConnectionDataType json encoder error")
-    		     .parameter("Element", "connectionProperties_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ConnectionProperties", elementTree));
+        rc = rc & jsonObjectEncode(pt, connectionProperties_, "ConnectionProperties");
         rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
-        elementTree.clear();
-        if (!writerGroups_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PubSubConnectionDataType json encoder error")
-    		     .parameter("Element", "writerGroups_");
-            return false;
-        }
-        pt.push_back(std::make_pair("WriterGroups", elementTree));
-        elementTree.clear();
-        if (!readerGroups_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PubSubConnectionDataType json encoder error")
-    		     .parameter("Element", "readerGroups_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ReaderGroups", elementTree));
+        rc = rc & jsonObjectEncode(pt, writerGroups_, "WriterGroups");
+        rc = rc & jsonObjectEncode(pt, readerGroups_, "ReaderGroups");
     
         return rc;
     }

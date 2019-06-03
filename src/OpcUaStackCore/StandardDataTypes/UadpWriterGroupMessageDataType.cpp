@@ -332,14 +332,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, dataSetOrdering_, "DataSetOrdering");
         rc = rc & jsonNumberEncode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
         rc = rc & jsonNumberEncode(pt, samplingOffset_, "SamplingOffset");
-        elementTree.clear();
-        if (!publishingOffset_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "publishingOffset_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublishingOffset", elementTree));
+        rc = rc & jsonObjectEncode(pt, publishingOffset_, "PublishingOffset");
     
         return rc;
     }

@@ -401,14 +401,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, applicationType_, "ApplicationType");
         rc = rc & jsonObjectEncode(pt, gatewayServerUri_, "GatewayServerUri");
         rc = rc & jsonObjectEncode(pt, discoveryProfileUri_, "DiscoveryProfileUri");
-        elementTree.clear();
-        if (!discoveryUrls_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ApplicationDescription json encoder error")
-    		     .parameter("Element", "discoveryUrls_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DiscoveryUrls", elementTree));
+        rc = rc & jsonObjectEncode(pt, discoveryUrls_, "DiscoveryUrls");
     
         return rc;
     }

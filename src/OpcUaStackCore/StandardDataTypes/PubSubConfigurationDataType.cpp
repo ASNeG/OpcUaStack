@@ -262,22 +262,8 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!publishedDataSets_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PubSubConfigurationDataType json encoder error")
-    		     .parameter("Element", "publishedDataSets_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublishedDataSets", elementTree));
-        elementTree.clear();
-        if (!connections_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PubSubConfigurationDataType json encoder error")
-    		     .parameter("Element", "connections_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Connections", elementTree));
+        rc = rc & jsonObjectEncode(pt, publishedDataSets_, "PublishedDataSets");
+        rc = rc & jsonObjectEncode(pt, connections_, "Connections");
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
     
         return rc;

@@ -236,14 +236,7 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, mdnsServerName_, "MdnsServerName");
-        elementTree.clear();
-        if (!serverCapabilities_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "MdnsDiscoveryConfiguration json encoder error")
-    		     .parameter("Element", "serverCapabilities_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerCapabilities", elementTree));
+        rc = rc & jsonObjectEncode(pt, serverCapabilities_, "ServerCapabilities");
     
         return rc;
     }

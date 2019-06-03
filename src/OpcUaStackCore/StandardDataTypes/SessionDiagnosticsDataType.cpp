@@ -1552,14 +1552,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, clientDescription_, "ClientDescription");
         rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
         rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl");
-        elementTree.clear();
-        if (!localeIds_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "SessionDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "localeIds_");
-            return false;
-        }
-        pt.push_back(std::make_pair("LocaleIds", elementTree));
+        rc = rc & jsonObjectEncode(pt, localeIds_, "LocaleIds");
         rc = rc & jsonNumberEncode(pt, actualSessionTimeout_, "ActualSessionTimeout");
         rc = rc & jsonNumberEncode(pt, maxResponseMessageSize_, "MaxResponseMessageSize");
         rc = rc & jsonObjectEncode(pt, clientConnectionTime_, "ClientConnectionTime");

@@ -264,14 +264,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonNumberEncode(pt, sequenceNumber_, "SequenceNumber");
         rc = rc & jsonObjectEncode(pt, publishTime_, "PublishTime");
-        elementTree.clear();
-        if (!notificationData_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "NotificationMessage json encoder error")
-    		     .parameter("Element", "notificationData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NotificationData", elementTree));
+        rc = rc & jsonObjectEncode(pt, notificationData_, "NotificationData");
     
         return rc;
     }

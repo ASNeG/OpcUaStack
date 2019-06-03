@@ -83,7 +83,7 @@ namespace OpcUaStackCore
 	ReadResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		// encode data value array
-		if (!dataValueArraySPtr_->jsonEncode(pt, "Results", "")) {
+		if (!dataValueArraySPtr_->jsonEncode(pt, "Results")) {
 			Log(Error, "ReadResponse json encode error")
 				.parameter("Element", "Results");
 			return false;

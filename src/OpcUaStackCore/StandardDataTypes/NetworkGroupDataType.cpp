@@ -230,14 +230,7 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
-        elementTree.clear();
-        if (!networkPaths_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "NetworkGroupDataType json encoder error")
-    		     .parameter("Element", "networkPaths_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NetworkPaths", elementTree));
+        rc = rc & jsonObjectEncode(pt, networkPaths_, "NetworkPaths");
     
         return rc;
     }

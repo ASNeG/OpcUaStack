@@ -263,14 +263,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectEncode(pt, performInsertReplace_, "PerformInsertReplace");
         rc = rc & jsonObjectEncode(pt, filter_, "Filter");
-        elementTree.clear();
-        if (!eventData_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "UpdateEventDetails json encoder error")
-    		     .parameter("Element", "eventData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EventData", elementTree));
+        rc = rc & jsonObjectEncode(pt, eventData_, "EventData");
     
         return rc;
     }

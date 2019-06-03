@@ -197,14 +197,7 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!fields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "EnumDefinition json encoder error")
-    		     .parameter("Element", "fields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Fields", elementTree));
+        rc = rc & jsonObjectEncode(pt, fields_, "Fields");
     
         return rc;
     }

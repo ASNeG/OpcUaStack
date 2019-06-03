@@ -94,7 +94,7 @@ namespace OpcUaStackCore
 		}
 
 		// encode status code array
-		if (!statusArray.jsonEncode(pt, "Results", "")) {
+		if (!statusArray.jsonEncode(pt, "Results")) {
 			Log(Error, "DeleteSubscriptionsResponse json encode error")
 				.parameter("Element", "Results");
 			return false;
@@ -108,7 +108,7 @@ namespace OpcUaStackCore
 	{
 		// decode status code array
 		OpcUaStatusArray statusArray;
-		if (!statusArray.jsonDecode(pt, "Results", "")) {
+		if (!statusArray.jsonDecode(pt, "Results")) {
 			Log(Error, "DeleteSubscriptionsResponse json decode error")
 			    .parameter("Element", "Results");
 			return false;

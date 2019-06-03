@@ -296,14 +296,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, defaultEncodingId_, "DefaultEncodingId");
         rc = rc & jsonObjectEncode(pt, baseDataType_, "BaseDataType");
         rc = rc & jsonObjectEncode(pt, structureType_, "StructureType");
-        elementTree.clear();
-        if (!fields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "StructureDefinition json encoder error")
-    		     .parameter("Element", "fields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Fields", elementTree));
+        rc = rc & jsonObjectEncode(pt, fields_, "Fields");
     
         return rc;
     }

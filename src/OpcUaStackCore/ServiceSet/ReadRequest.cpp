@@ -103,7 +103,7 @@ namespace OpcUaStackCore
 		rc = rc & jsonNumberEncode(pt, timestampsToReturn_, "TimestampsToReturn");
 
 		// encode value id array
-		if (!readValueIdArraySPtr_->jsonEncode(pt, "NodesToRead", "")) {
+		if (!readValueIdArraySPtr_->jsonEncode(pt, "NodesToRead")) {
 			Log(Error, "ReadRequest json encode error")
 				.parameter("Element", "NodesToRead");
 			return false;
@@ -120,7 +120,7 @@ namespace OpcUaStackCore
 		rc = rc & jsonNumberDecode(pt, timestampsToReturn_, "TimestampsToReturn");
 
 		// decode value id array
-		if (!readValueIdArraySPtr_->jsonDecode(*const_cast<boost::property_tree::ptree*>(&pt), "NodesToRead", "")) {
+		if (!readValueIdArraySPtr_->jsonDecode(*const_cast<boost::property_tree::ptree*>(&pt), "NodesToRead")) {
 			Log(Error, "ReadRequest json decode error")
 			    .parameter("Element", "NodesToRead");
 			return false;

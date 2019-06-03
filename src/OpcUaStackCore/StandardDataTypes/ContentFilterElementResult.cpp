@@ -262,22 +262,8 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode");
-        elementTree.clear();
-        if (!operandStatusCodes_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ContentFilterElementResult json encoder error")
-    		     .parameter("Element", "operandStatusCodes_");
-            return false;
-        }
-        pt.push_back(std::make_pair("OperandStatusCodes", elementTree));
-        elementTree.clear();
-        if (!operandDiagnosticInfos_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ContentFilterElementResult json encoder error")
-    		     .parameter("Element", "operandDiagnosticInfos_");
-            return false;
-        }
-        pt.push_back(std::make_pair("OperandDiagnosticInfos", elementTree));
+        rc = rc & jsonObjectEncode(pt, operandStatusCodes_, "OperandStatusCodes");
+        rc = rc & jsonObjectEncode(pt, operandDiagnosticInfos_, "OperandDiagnosticInfos");
     
         return rc;
     }

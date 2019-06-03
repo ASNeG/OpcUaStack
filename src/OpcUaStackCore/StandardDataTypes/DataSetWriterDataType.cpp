@@ -463,14 +463,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
         rc = rc & jsonNumberEncode(pt, keyFrameCount_, "KeyFrameCount");
         rc = rc & jsonObjectEncode(pt, dataSetName_, "DataSetName");
-        elementTree.clear();
-        if (!dataSetWriterProperties_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataSetWriterDataType json encoder error")
-    		     .parameter("Element", "dataSetWriterProperties_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetWriterProperties", elementTree));
+        rc = rc & jsonObjectEncode(pt, dataSetWriterProperties_, "DataSetWriterProperties");
         rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
     

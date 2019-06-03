@@ -197,14 +197,7 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!events_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "EventNotificationList json encoder error")
-    		     .parameter("Element", "events_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Events", elementTree));
+        rc = rc & jsonObjectEncode(pt, events_, "Events");
     
         return rc;
     }

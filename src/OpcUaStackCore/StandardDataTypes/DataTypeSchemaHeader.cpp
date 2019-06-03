@@ -293,38 +293,10 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!namespaces_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataTypeSchemaHeader json encoder error")
-    		     .parameter("Element", "namespaces_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Namespaces", elementTree));
-        elementTree.clear();
-        if (!structureDataTypes_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataTypeSchemaHeader json encoder error")
-    		     .parameter("Element", "structureDataTypes_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StructureDataTypes", elementTree));
-        elementTree.clear();
-        if (!enumDataTypes_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataTypeSchemaHeader json encoder error")
-    		     .parameter("Element", "enumDataTypes_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EnumDataTypes", elementTree));
-        elementTree.clear();
-        if (!simpleDataTypes_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataTypeSchemaHeader json encoder error")
-    		     .parameter("Element", "simpleDataTypes_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SimpleDataTypes", elementTree));
+        rc = rc & jsonObjectEncode(pt, namespaces_, "Namespaces");
+        rc = rc & jsonObjectEncode(pt, structureDataTypes_, "StructureDataTypes");
+        rc = rc & jsonObjectEncode(pt, enumDataTypes_, "EnumDataTypes");
+        rc = rc & jsonObjectEncode(pt, simpleDataTypes_, "SimpleDataTypes");
     
         return rc;
     }

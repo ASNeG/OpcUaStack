@@ -197,14 +197,7 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!eventFields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "HistoryEventFieldList json encoder error")
-    		     .parameter("Element", "eventFields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EventFields", elementTree));
+        rc = rc & jsonObjectEncode(pt, eventFields_, "EventFields");
     
         return rc;
     }

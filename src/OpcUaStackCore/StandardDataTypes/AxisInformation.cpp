@@ -329,14 +329,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, eURange_, "EURange");
         rc = rc & jsonObjectEncode(pt, title_, "Title");
         rc = rc & jsonObjectEncode(pt, axisScaleType_, "AxisScaleType");
-        elementTree.clear();
-        if (!axisSteps_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", "axisSteps_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AxisSteps", elementTree));
+        rc = rc & jsonObjectEncode(pt, axisSteps_, "AxisSteps");
     
         return rc;
     }

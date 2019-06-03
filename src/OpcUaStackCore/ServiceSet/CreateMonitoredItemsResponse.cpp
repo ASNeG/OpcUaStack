@@ -81,7 +81,7 @@ namespace OpcUaStackCore
 	CreateMonitoredItemsResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		// encode data value array
-		if (!resultArraySPtr_->jsonEncode(pt, "Results", "")) {
+		if (!resultArraySPtr_->jsonEncode(pt, "Results")) {
 			Log(Error, "CreateMonitoredItemsResponse json encode error")
 				.parameter("Element", "Results");
 			return false;

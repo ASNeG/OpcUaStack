@@ -495,24 +495,10 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, builtInType_, "BuiltInType");
         rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
         rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
-        elementTree.clear();
-        if (!arrayDimensions_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "FieldMetaData json encoder error")
-    		     .parameter("Element", "arrayDimensions_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ArrayDimensions", elementTree));
+        rc = rc & jsonObjectEncode(pt, arrayDimensions_, "ArrayDimensions");
         rc = rc & jsonNumberEncode(pt, maxStringLength_, "MaxStringLength");
         rc = rc & jsonObjectEncode(pt, dataSetFieldId_, "DataSetFieldId");
-        elementTree.clear();
-        if (!properties_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "FieldMetaData json encoder error")
-    		     .parameter("Element", "properties_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Properties", elementTree));
+        rc = rc & jsonObjectEncode(pt, properties_, "Properties");
     
         return rc;
     }

@@ -433,14 +433,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, serverCertificate_, "ServerCertificate");
         rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
         rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri");
-        elementTree.clear();
-        if (!userIdentityTokens_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "EndpointDescription json encoder error")
-    		     .parameter("Element", "userIdentityTokens_");
-            return false;
-        }
-        pt.push_back(std::make_pair("UserIdentityTokens", elementTree));
+        rc = rc & jsonObjectEncode(pt, userIdentityTokens_, "UserIdentityTokens");
         rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri");
         rc = rc & jsonNumberEncode(pt, securityLevel_, "SecurityLevel");
     

@@ -229,22 +229,8 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!monitoredItems_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataChangeNotification json encoder error")
-    		     .parameter("Element", "monitoredItems_");
-            return false;
-        }
-        pt.push_back(std::make_pair("MonitoredItems", elementTree));
-        elementTree.clear();
-        if (!diagnosticInfos_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataChangeNotification json encoder error")
-    		     .parameter("Element", "diagnosticInfos_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DiagnosticInfos", elementTree));
+        rc = rc & jsonObjectEncode(pt, monitoredItems_, "MonitoredItems");
+        rc = rc & jsonObjectEncode(pt, diagnosticInfos_, "DiagnosticInfos");
     
         return rc;
     }

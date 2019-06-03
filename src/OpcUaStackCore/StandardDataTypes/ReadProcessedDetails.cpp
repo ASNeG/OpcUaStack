@@ -329,14 +329,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
         rc = rc & jsonObjectEncode(pt, endTime_, "EndTime");
         rc = rc & jsonNumberEncode(pt, processingInterval_, "ProcessingInterval");
-        elementTree.clear();
-        if (!aggregateType_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ReadProcessedDetails json encoder error")
-    		     .parameter("Element", "aggregateType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AggregateType", elementTree));
+        rc = rc & jsonObjectEncode(pt, aggregateType_, "AggregateType");
         rc = rc & jsonObjectEncode(pt, aggregateConfiguration_, "AggregateConfiguration");
     
         return rc;

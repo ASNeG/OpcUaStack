@@ -197,14 +197,7 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!reqTimes_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DeleteAtTimeDetails json encoder error")
-    		     .parameter("Element", "reqTimes_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ReqTimes", elementTree));
+        rc = rc & jsonObjectEncode(pt, reqTimes_, "ReqTimes");
     
         return rc;
     }

@@ -66,7 +66,7 @@ namespace OpcUaStackCore
 	DeleteSubscriptionsRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		// encode subscription ids
-		if (!subscriptionIdArraySPtr_->jsonEncode(pt, "SubscriptionIds", "")) {
+		if (!subscriptionIdArraySPtr_->jsonEncode(pt, "SubscriptionIds")) {
 			Log(Error, "DeleteSubscriptionsRequest json encode error")
 				.parameter("Element", "SubscriptionIds");
 			return false;
@@ -79,7 +79,7 @@ namespace OpcUaStackCore
 	DeleteSubscriptionsRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		// decode subscription ids
-		if (!subscriptionIdArraySPtr_->jsonDecode(pt, "SubscriptionIds", "")) {
+		if (!subscriptionIdArraySPtr_->jsonDecode(pt, "SubscriptionIds")) {
 			Log(Error, "DeleteSubscriptionsRequest json encode error")
 				.parameter("Element", "SubscriptionIds");
 			return false;

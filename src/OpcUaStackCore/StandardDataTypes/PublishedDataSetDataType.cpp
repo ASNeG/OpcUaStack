@@ -326,23 +326,9 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, name_, "Name");
-        elementTree.clear();
-        if (!dataSetFolder_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", "dataSetFolder_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetFolder", elementTree));
+        rc = rc & jsonObjectEncode(pt, dataSetFolder_, "DataSetFolder");
         rc = rc & jsonObjectEncode(pt, dataSetMetaData_, "DataSetMetaData");
-        elementTree.clear();
-        if (!extensionFields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", "extensionFields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ExtensionFields", elementTree));
+        rc = rc & jsonObjectEncode(pt, extensionFields_, "ExtensionFields");
         rc = rc & jsonObjectEncode(pt, dataSetSource_, "DataSetSource");
     
         return rc;

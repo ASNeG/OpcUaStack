@@ -395,23 +395,9 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
         rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
         rc = rc & jsonObjectEncode(pt, securityGroupId_, "SecurityGroupId");
-        elementTree.clear();
-        if (!securityKeyServices_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PubSubGroupDataType json encoder error")
-    		     .parameter("Element", "securityKeyServices_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityKeyServices", elementTree));
+        rc = rc & jsonObjectEncode(pt, securityKeyServices_, "SecurityKeyServices");
         rc = rc & jsonNumberEncode(pt, maxNetworkMessageSize_, "MaxNetworkMessageSize");
-        elementTree.clear();
-        if (!groupProperties_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PubSubGroupDataType json encoder error")
-    		     .parameter("Element", "groupProperties_");
-            return false;
-        }
-        pt.push_back(std::make_pair("GroupProperties", elementTree));
+        rc = rc & jsonObjectEncode(pt, groupProperties_, "GroupProperties");
     
         return rc;
     }

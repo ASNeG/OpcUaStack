@@ -327,14 +327,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectEncode(pt, name_, "Name");
         rc = rc & jsonObjectEncode(pt, description_, "Description");
-        elementTree.clear();
-        if (!fields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", "fields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Fields", elementTree));
+        rc = rc & jsonObjectEncode(pt, fields_, "Fields");
         rc = rc & jsonObjectEncode(pt, dataSetClassId_, "DataSetClassId");
         rc = rc & jsonObjectEncode(pt, configurationVersion_, "ConfigurationVersion");
     

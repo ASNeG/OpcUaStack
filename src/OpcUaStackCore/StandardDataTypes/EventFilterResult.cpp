@@ -261,22 +261,8 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!selectClauseResults_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "EventFilterResult json encoder error")
-    		     .parameter("Element", "selectClauseResults_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SelectClauseResults", elementTree));
-        elementTree.clear();
-        if (!selectClauseDiagnosticInfos_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "EventFilterResult json encoder error")
-    		     .parameter("Element", "selectClauseDiagnosticInfos_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SelectClauseDiagnosticInfos", elementTree));
+        rc = rc & jsonObjectEncode(pt, selectClauseResults_, "SelectClauseResults");
+        rc = rc & jsonObjectEncode(pt, selectClauseDiagnosticInfos_, "SelectClauseDiagnosticInfos");
         rc = rc & jsonObjectEncode(pt, whereClauseResult_, "WhereClauseResult");
     
         return rc;

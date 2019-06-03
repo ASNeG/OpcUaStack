@@ -197,14 +197,7 @@ namespace OpcUaStackCore
         bool rc = true;
         boost::property_tree::ptree elementTree;
     
-        elementTree.clear();
-        if (!endpointUrlList_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "EndpointUrlListDataType json encoder error")
-    		     .parameter("Element", "endpointUrlList_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EndpointUrlList", elementTree));
+        rc = rc & jsonObjectEncode(pt, endpointUrlList_, "EndpointUrlList");
     
         return rc;
     }

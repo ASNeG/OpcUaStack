@@ -660,22 +660,8 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, messageReceiveTimeout_, "MessageReceiveTimeout");
         rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
         rc = rc & jsonObjectEncode(pt, securityGroupId_, "SecurityGroupId");
-        elementTree.clear();
-        if (!securityKeyServices_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "securityKeyServices_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityKeyServices", elementTree));
-        elementTree.clear();
-        if (!dataSetReaderProperties_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataSetReaderDataType json encoder error")
-    		     .parameter("Element", "dataSetReaderProperties_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetReaderProperties", elementTree));
+        rc = rc & jsonObjectEncode(pt, securityKeyServices_, "SecurityKeyServices");
+        rc = rc & jsonObjectEncode(pt, dataSetReaderProperties_, "DataSetReaderProperties");
         rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
         rc = rc & jsonObjectEncode(pt, subscribedDataSet_, "SubscribedDataSet");

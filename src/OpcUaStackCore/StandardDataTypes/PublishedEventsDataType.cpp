@@ -262,14 +262,7 @@ namespace OpcUaStackCore
         boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, eventNotifier_, "EventNotifier");
-        elementTree.clear();
-        if (!selectedFields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PublishedEventsDataType json encoder error")
-    		     .parameter("Element", "selectedFields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SelectedFields", elementTree));
+        rc = rc & jsonObjectEncode(pt, selectedFields_, "SelectedFields");
         rc = rc & jsonObjectEncode(pt, filter_, "Filter");
     
         return rc;

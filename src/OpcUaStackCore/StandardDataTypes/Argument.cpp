@@ -335,14 +335,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, name_, "Name");
         rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
         rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
-        elementTree.clear();
-        if (!arrayDimensions_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", "arrayDimensions_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ArrayDimensions", elementTree));
+        rc = rc & jsonObjectEncode(pt, arrayDimensions_, "ArrayDimensions");
         rc = rc & jsonObjectEncode(pt, description_, "Description");
     
         return rc;
