@@ -1115,8 +1115,6 @@ namespace OpcUaStackServer
 		ss << prefix << nodeInfo_.className() << "::jsonEncodeImpl(boost::property_tree::ptree& pt) const" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    bool rc = true;" << std::endl;
-
-		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
 		ss << prefix << std::endl;
 
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
@@ -1127,23 +1125,9 @@ namespace OpcUaStackServer
 				case DataTypeField::NumberType:
 					ss << prefix << "    rc = rc & jsonNumberEncode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\");" << std::endl;
 					break;
-
-				case DataTypeField::BuildInArrayType:
-				case DataTypeField::StructureArrayType:
-					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree, \"\"))" << std::endl;
-					ss << prefix << "    {" << std::endl;
-					ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
-					ss << prefix << "		     .parameter(\"Element\", \"" << dataTypeField->variableName() << "\");" << std::endl;
-					ss << prefix << "        return false;" << std::endl;
-				    ss << prefix << "    }" << std::endl;
-				    ss << prefix << "    pt.push_back(std::make_pair(\"" << dataTypeField->name() << "\", elementTree));" << std::endl;
-					break;
-
 				default:
 					ss << prefix << "    rc = rc & jsonObjectEncode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\");" << std::endl;
 			}
-
 		}
 
 		ss << prefix << std::endl;
