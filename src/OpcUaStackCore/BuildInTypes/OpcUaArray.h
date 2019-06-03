@@ -31,6 +31,7 @@
 #include "OpcUaStackCore/BuildInTypes/Json.h"
 #include "OpcUaStackCore/BuildInTypes/XmlNumber.h"
 #include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -316,6 +317,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	template<typename T, typename CODER = ClassTypeCoder<T> >
 	class OpcUaArray 
+	: public JsonFormatter
 	{
 	  public:
 		OpcUaArray(size_t maxArrayLen = 1);
@@ -383,24 +385,10 @@ namespace OpcUaStackCore
 			const std::string& listElement,
 			Xmlns& xmlns
 		);
-		bool jsonEncode(
-			boost::property_tree::ptree& pt,
-			const std::string& element,
-			const std::string& listElement
-		) const;
-		bool jsonEncode(
-			boost::property_tree::ptree& pt,
-			const std::string& listElement
-		) const;
-		bool jsonDecode(
-			const boost::property_tree::ptree& pt,
-			const std::string& element,
-			const std::string& listElement
-		);
-		bool jsonDecode(
-			const boost::property_tree::ptree& pt,
-			const std::string& listElement
-		);
+
+	  protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		void initArray(void);
@@ -846,33 +834,8 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::jsonEncode(
-		boost::property_tree::ptree& pt,
-		const std::string& element,
-		const std::string& listElement
-	) const
-	{
-		if (isNull_) {
-			return true;
-		}
-
-		boost::property_tree::ptree tmpTree;
-		if (!jsonEncode(tmpTree, listElement)) {
-			Log(Error, "OpcUaArray json encoder error")
-				.parameter("Element", element)
-				.parameter("ListElement", listElement);
-			return false;
-		}
-
-		pt.add_child(element, tmpTree);
-		return true;
-	}
-
-	template<typename T, typename CODER>
-	bool
-	OpcUaArray<T, CODER>::jsonEncode(
-		boost::property_tree::ptree& pt,
-		const std::string& listElement
+	OpcUaArray<T, CODER>::jsonEncodeImpl(
+		boost::property_tree::ptree& pt
 	) const
 	{
 		if (isNull_) {
@@ -880,9 +843,8 @@ namespace OpcUaStackCore
 		}
 
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
-			if (!CODER::jsonEncode(pt, valueArray_[idx], listElement)) {
-				Log(Error, "OpcUaArray json encoder error")
-					.parameter("ListElement", listElement);
+			if (!CODER::jsonEncode(pt, valueArray_[idx], "")) {
+				Log(Error, "OpcUaArray json encoder error");
 				return false;
 			}
 		}
@@ -891,22 +853,8 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::jsonDecode(
-		const boost::property_tree::ptree& pt,
-		const std::string& element,
-		const std::string& listElement
-	)
-	{
-        boost::optional<const boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
-        return jsonDecode(*tree, listElement);
-	}
-
-	template<typename T, typename CODER>
-	bool
-	OpcUaArray<T, CODER>::jsonDecode(
-		const boost::property_tree::ptree& pt,
-		const std::string& listElement
+	OpcUaArray<T, CODER>::jsonDecodeImpl(
+		const boost::property_tree::ptree& pt
 	)
 	{
 		size_t arrayLength = 0;
@@ -919,12 +867,11 @@ namespace OpcUaStackCore
 		resize(arrayLength);
 		boost::property_tree::ptree::const_iterator it;
 		for (it = pt.begin(); it != pt.end(); it++) {
-			boost::property_tree::ptree arrayElement = it->second;
+			const boost::property_tree::ptree arrayElement = it->second;
 
 			T value;
-			if (!CODER::jsonDecode(arrayElement, value, listElement)) {
-				Log(Error, "OpcUaArray json decoder error")
-					.parameter("ListElement", listElement);
+			if (!CODER::jsonDecode(arrayElement, value, "")) {
+				Log(Error, "OpcUaArray json decoder error");
 				return false;
 			}
 			push_back(value);
