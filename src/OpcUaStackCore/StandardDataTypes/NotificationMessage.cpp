@@ -260,7 +260,6 @@ namespace OpcUaStackCore
     NotificationMessage::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, sequenceNumber_, "SequenceNumber");
         rc = rc & jsonObjectEncode(pt, publishTime_, "PublishTime");
@@ -272,49 +271,13 @@ namespace OpcUaStackCore
     bool
     NotificationMessage::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "SequenceNumber";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NotificationMessage decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, sequenceNumber_)) {
-            Log(Error, "NotificationMessage decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, sequenceNumber_, "SequenceNumber");
+        rc = rc & jsonObjectDecode(pt, publishTime_, "PublishTime");
+        rc = rc & jsonObjectDecode(pt, notificationData_, "NotificationData");
     
-        elementName = "PublishTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NotificationMessage decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!publishTime_.jsonDecode(*tree)) {
-            Log(Error, "NotificationMessage decode json error - decode failed")
-                .parameter("Element", "PublishTime");
-            return false;
-        }
-    
-        elementName = "NotificationData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NotificationMessage decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!notificationData_.jsonDecode(*tree, "")) {
-            Log(Error, "NotificationMessage decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

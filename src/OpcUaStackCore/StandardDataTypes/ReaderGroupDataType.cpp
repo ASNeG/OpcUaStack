@@ -259,7 +259,6 @@ namespace OpcUaStackCore
     ReaderGroupDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
@@ -271,49 +270,13 @@ namespace OpcUaStackCore
     bool
     ReaderGroupDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "TransportSettings";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReaderGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!transportSettings_.jsonDecode(*tree)) {
-            Log(Error, "ReaderGroupDataType decode json error - decode failed")
-                .parameter("Element", "TransportSettings");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
+        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings");
+        rc = rc & jsonObjectDecode(pt, dataSetReaders_, "DataSetReaders");
     
-        elementName = "MessageSettings";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReaderGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!messageSettings_.jsonDecode(*tree)) {
-            Log(Error, "ReaderGroupDataType decode json error - decode failed")
-                .parameter("Element", "MessageSettings");
-            return false;
-        }
-    
-        elementName = "DataSetReaders";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReaderGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetReaders_.jsonDecode(*tree, "")) {
-            Log(Error, "ReaderGroupDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

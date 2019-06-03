@@ -227,7 +227,6 @@ namespace OpcUaStackCore
     EventFilter::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, selectClauses_, "SelectClauses");
         rc = rc & jsonObjectEncode(pt, whereClause_, "WhereClause");
@@ -238,36 +237,12 @@ namespace OpcUaStackCore
     bool
     EventFilter::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "SelectClauses";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EventFilter decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!selectClauses_.jsonDecode(*tree, "")) {
-            Log(Error, "EventFilter decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, selectClauses_, "SelectClauses");
+        rc = rc & jsonObjectDecode(pt, whereClause_, "WhereClause");
     
-        elementName = "WhereClause";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EventFilter decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!whereClause_.jsonDecode(*tree)) {
-            Log(Error, "EventFilter decode json error - decode failed")
-                .parameter("Element", "WhereClause");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -293,7 +293,6 @@ namespace OpcUaStackCore
     MonitoredItemModifyResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode");
         rc = rc & jsonNumberEncode(pt, revisedSamplingInterval_, "RevisedSamplingInterval");
@@ -306,62 +305,14 @@ namespace OpcUaStackCore
     bool
     MonitoredItemModifyResult::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "StatusCode";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MonitoredItemModifyResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!statusCode_.jsonDecode(*tree)) {
-            Log(Error, "MonitoredItemModifyResult decode json error - decode failed")
-                .parameter("Element", "StatusCode");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, statusCode_, "StatusCode");
+        rc = rc & jsonNumberDecode(pt, revisedSamplingInterval_, "RevisedSamplingInterval");
+        rc = rc & jsonNumberDecode(pt, revisedQueueSize_, "RevisedQueueSize");
+        rc = rc & jsonObjectDecode(pt, filterResult_, "FilterResult");
     
-        elementName = "RevisedSamplingInterval";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MonitoredItemModifyResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, revisedSamplingInterval_)) {
-            Log(Error, "MonitoredItemModifyResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "RevisedQueueSize";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MonitoredItemModifyResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, revisedQueueSize_)) {
-            Log(Error, "MonitoredItemModifyResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "FilterResult";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MonitoredItemModifyResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!filterResult_.jsonDecode(*tree)) {
-            Log(Error, "MonitoredItemModifyResult decode json error - decode failed")
-                .parameter("Element", "FilterResult");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

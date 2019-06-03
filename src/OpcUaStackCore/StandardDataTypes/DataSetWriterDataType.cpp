@@ -455,7 +455,6 @@ namespace OpcUaStackCore
     DataSetWriterDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, name_, "Name");
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
@@ -473,127 +472,19 @@ namespace OpcUaStackCore
     bool
     DataSetWriterDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetWriterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "DataSetWriterDataType decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
+        rc = rc & jsonNumberDecode(pt, dataSetWriterId_, "DataSetWriterId");
+        rc = rc & jsonNumberDecode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
+        rc = rc & jsonNumberDecode(pt, keyFrameCount_, "KeyFrameCount");
+        rc = rc & jsonObjectDecode(pt, dataSetName_, "DataSetName");
+        rc = rc & jsonObjectDecode(pt, dataSetWriterProperties_, "DataSetWriterProperties");
+        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
+        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings");
     
-        elementName = "Enabled";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetWriterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, enabled_)) {
-            Log(Error, "DataSetWriterDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetWriterId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetWriterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, dataSetWriterId_)) {
-            Log(Error, "DataSetWriterDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetFieldContentMask";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetWriterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, dataSetFieldContentMask_)) {
-            Log(Error, "DataSetWriterDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "KeyFrameCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetWriterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, keyFrameCount_)) {
-            Log(Error, "DataSetWriterDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetWriterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetName_.jsonDecode(*tree)) {
-            Log(Error, "DataSetWriterDataType decode json error - decode failed")
-                .parameter("Element", "DataSetName");
-            return false;
-        }
-    
-        elementName = "DataSetWriterProperties";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetWriterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetWriterProperties_.jsonDecode(*tree, "")) {
-            Log(Error, "DataSetWriterDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TransportSettings";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetWriterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!transportSettings_.jsonDecode(*tree)) {
-            Log(Error, "DataSetWriterDataType decode json error - decode failed")
-                .parameter("Element", "TransportSettings");
-            return false;
-        }
-    
-        elementName = "MessageSettings";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetWriterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!messageSettings_.jsonDecode(*tree)) {
-            Log(Error, "DataSetWriterDataType decode json error - decode failed")
-                .parameter("Element", "MessageSettings");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

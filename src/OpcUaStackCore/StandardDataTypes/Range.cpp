@@ -229,7 +229,6 @@ namespace OpcUaStackCore
     Range::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, low_, "Low");
         rc = rc & jsonNumberEncode(pt, high_, "High");
@@ -240,36 +239,12 @@ namespace OpcUaStackCore
     bool
     Range::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Low";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Range decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, low_)) {
-            Log(Error, "Range decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, low_, "Low");
+        rc = rc & jsonNumberDecode(pt, high_, "High");
     
-        elementName = "High";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Range decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, high_)) {
-            Log(Error, "Range decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -332,7 +332,6 @@ namespace OpcUaStackCore
     NodeAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, specifiedAttributes_, "SpecifiedAttributes");
         rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName");
@@ -346,75 +345,15 @@ namespace OpcUaStackCore
     bool
     NodeAttributes::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "SpecifiedAttributes";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NodeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, specifiedAttributes_)) {
-            Log(Error, "NodeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, specifiedAttributes_, "SpecifiedAttributes");
+        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName");
+        rc = rc & jsonObjectDecode(pt, description_, "Description");
+        rc = rc & jsonNumberDecode(pt, writeMask_, "WriteMask");
+        rc = rc & jsonNumberDecode(pt, userWriteMask_, "UserWriteMask");
     
-        elementName = "DisplayName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NodeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!displayName_.jsonDecode(*tree)) {
-            Log(Error, "NodeAttributes decode json error - decode failed")
-                .parameter("Element", "DisplayName");
-            return false;
-        }
-    
-        elementName = "Description";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NodeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!description_.jsonDecode(*tree)) {
-            Log(Error, "NodeAttributes decode json error - decode failed")
-                .parameter("Element", "Description");
-            return false;
-        }
-    
-        elementName = "WriteMask";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NodeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, writeMask_)) {
-            Log(Error, "NodeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "UserWriteMask";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NodeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, userWriteMask_)) {
-            Log(Error, "NodeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

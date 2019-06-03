@@ -260,7 +260,6 @@ namespace OpcUaStackCore
     PubSubConfigurationDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, publishedDataSets_, "PublishedDataSets");
         rc = rc & jsonObjectEncode(pt, connections_, "Connections");
@@ -272,49 +271,13 @@ namespace OpcUaStackCore
     bool
     PubSubConfigurationDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "PublishedDataSets";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConfigurationDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!publishedDataSets_.jsonDecode(*tree, "")) {
-            Log(Error, "PubSubConfigurationDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, publishedDataSets_, "PublishedDataSets");
+        rc = rc & jsonObjectDecode(pt, connections_, "Connections");
+        rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
     
-        elementName = "Connections";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConfigurationDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!connections_.jsonDecode(*tree, "")) {
-            Log(Error, "PubSubConfigurationDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "Enabled";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConfigurationDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, enabled_)) {
-            Log(Error, "PubSubConfigurationDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

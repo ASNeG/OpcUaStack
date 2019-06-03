@@ -201,7 +201,6 @@ namespace OpcUaStackCore
     X509IdentityToken::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, certificateData_, "CertificateData");
     
@@ -211,23 +210,11 @@ namespace OpcUaStackCore
     bool
     X509IdentityToken::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "CertificateData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "X509IdentityToken decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!certificateData_.jsonDecode(*tree)) {
-            Log(Error, "X509IdentityToken decode json error - decode failed")
-                .parameter("Element", "CertificateData");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, certificateData_, "CertificateData");
     
-        return true;
+        return rc;
     }
     
     void

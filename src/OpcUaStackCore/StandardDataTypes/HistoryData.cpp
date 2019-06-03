@@ -195,7 +195,6 @@ namespace OpcUaStackCore
     HistoryData::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, dataValues_, "DataValues");
     
@@ -205,23 +204,11 @@ namespace OpcUaStackCore
     bool
     HistoryData::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "DataValues";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "HistoryData decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataValues_.jsonDecode(*tree, "")) {
-            Log(Error, "HistoryData decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, dataValues_, "DataValues");
     
-        return true;
+        return rc;
     }
     
     void

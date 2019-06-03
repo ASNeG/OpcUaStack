@@ -299,7 +299,6 @@ namespace OpcUaStackCore
     RelativePathElement::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId");
         rc = rc & jsonNumberEncode(pt, isInverse_, "IsInverse");
@@ -312,62 +311,14 @@ namespace OpcUaStackCore
     bool
     RelativePathElement::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "ReferenceTypeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RelativePathElement decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!referenceTypeId_.jsonDecode(*tree)) {
-            Log(Error, "RelativePathElement decode json error - decode failed")
-                .parameter("Element", "ReferenceTypeId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonNumberDecode(pt, isInverse_, "IsInverse");
+        rc = rc & jsonNumberDecode(pt, includeSubtypes_, "IncludeSubtypes");
+        rc = rc & jsonObjectDecode(pt, targetName_, "TargetName");
     
-        elementName = "IsInverse";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RelativePathElement decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, isInverse_)) {
-            Log(Error, "RelativePathElement decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "IncludeSubtypes";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RelativePathElement decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, includeSubtypes_)) {
-            Log(Error, "RelativePathElement decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TargetName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RelativePathElement decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!targetName_.jsonDecode(*tree)) {
-            Log(Error, "RelativePathElement decode json error - decode failed")
-                .parameter("Element", "TargetName");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -267,7 +267,6 @@ namespace OpcUaStackCore
     ReferenceTypeAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, isAbstract_, "IsAbstract");
         rc = rc & jsonNumberEncode(pt, symmetric_, "Symmetric");
@@ -279,49 +278,13 @@ namespace OpcUaStackCore
     bool
     ReferenceTypeAttributes::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "IsAbstract";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReferenceTypeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, isAbstract_)) {
-            Log(Error, "ReferenceTypeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, isAbstract_, "IsAbstract");
+        rc = rc & jsonNumberDecode(pt, symmetric_, "Symmetric");
+        rc = rc & jsonObjectDecode(pt, inverseName_, "InverseName");
     
-        elementName = "Symmetric";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReferenceTypeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, symmetric_)) {
-            Log(Error, "ReferenceTypeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "InverseName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReferenceTypeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!inverseName_.jsonDecode(*tree)) {
-            Log(Error, "ReferenceTypeAttributes decode json error - decode failed")
-                .parameter("Element", "InverseName");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

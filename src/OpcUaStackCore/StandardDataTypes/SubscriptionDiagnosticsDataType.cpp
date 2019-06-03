@@ -1185,7 +1185,6 @@ namespace OpcUaStackCore
     SubscriptionDiagnosticsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, sessionId_, "SessionId");
         rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
@@ -1225,413 +1224,41 @@ namespace OpcUaStackCore
     bool
     SubscriptionDiagnosticsDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "SessionId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!sessionId_.jsonDecode(*tree)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "SessionId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, sessionId_, "SessionId");
+        rc = rc & jsonNumberDecode(pt, subscriptionId_, "SubscriptionId");
+        rc = rc & jsonNumberDecode(pt, priority_, "Priority");
+        rc = rc & jsonNumberDecode(pt, publishingInterval_, "PublishingInterval");
+        rc = rc & jsonNumberDecode(pt, maxKeepAliveCount_, "MaxKeepAliveCount");
+        rc = rc & jsonNumberDecode(pt, maxLifetimeCount_, "MaxLifetimeCount");
+        rc = rc & jsonNumberDecode(pt, maxNotificationsPerPublish_, "MaxNotificationsPerPublish");
+        rc = rc & jsonNumberDecode(pt, publishingEnabled_, "PublishingEnabled");
+        rc = rc & jsonNumberDecode(pt, modifyCount_, "ModifyCount");
+        rc = rc & jsonNumberDecode(pt, enableCount_, "EnableCount");
+        rc = rc & jsonNumberDecode(pt, disableCount_, "DisableCount");
+        rc = rc & jsonNumberDecode(pt, republishRequestCount_, "RepublishRequestCount");
+        rc = rc & jsonNumberDecode(pt, republishMessageRequestCount_, "RepublishMessageRequestCount");
+        rc = rc & jsonNumberDecode(pt, republishMessageCount_, "RepublishMessageCount");
+        rc = rc & jsonNumberDecode(pt, transferRequestCount_, "TransferRequestCount");
+        rc = rc & jsonNumberDecode(pt, transferredToAltClientCount_, "TransferredToAltClientCount");
+        rc = rc & jsonNumberDecode(pt, transferredToSameClientCount_, "TransferredToSameClientCount");
+        rc = rc & jsonNumberDecode(pt, publishRequestCount_, "PublishRequestCount");
+        rc = rc & jsonNumberDecode(pt, dataChangeNotificationsCount_, "DataChangeNotificationsCount");
+        rc = rc & jsonNumberDecode(pt, eventNotificationsCount_, "EventNotificationsCount");
+        rc = rc & jsonNumberDecode(pt, notificationsCount_, "NotificationsCount");
+        rc = rc & jsonNumberDecode(pt, latePublishRequestCount_, "LatePublishRequestCount");
+        rc = rc & jsonNumberDecode(pt, currentKeepAliveCount_, "CurrentKeepAliveCount");
+        rc = rc & jsonNumberDecode(pt, currentLifetimeCount_, "CurrentLifetimeCount");
+        rc = rc & jsonNumberDecode(pt, unacknowledgedMessageCount_, "UnacknowledgedMessageCount");
+        rc = rc & jsonNumberDecode(pt, discardedMessageCount_, "DiscardedMessageCount");
+        rc = rc & jsonNumberDecode(pt, monitoredItemCount_, "MonitoredItemCount");
+        rc = rc & jsonNumberDecode(pt, disabledMonitoredItemCount_, "DisabledMonitoredItemCount");
+        rc = rc & jsonNumberDecode(pt, monitoringQueueOverflowCount_, "MonitoringQueueOverflowCount");
+        rc = rc & jsonNumberDecode(pt, nextSequenceNumber_, "NextSequenceNumber");
+        rc = rc & jsonNumberDecode(pt, eventQueueOverFlowCount_, "EventQueueOverFlowCount");
     
-        elementName = "SubscriptionId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, subscriptionId_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "Priority";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, priority_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "PublishingInterval";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, publishingInterval_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxKeepAliveCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxKeepAliveCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxLifetimeCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxLifetimeCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxNotificationsPerPublish";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxNotificationsPerPublish_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "PublishingEnabled";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, publishingEnabled_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ModifyCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, modifyCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "EnableCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, enableCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DisableCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, disableCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "RepublishRequestCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, republishRequestCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "RepublishMessageRequestCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, republishMessageRequestCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "RepublishMessageCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, republishMessageCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TransferRequestCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, transferRequestCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TransferredToAltClientCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, transferredToAltClientCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TransferredToSameClientCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, transferredToSameClientCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "PublishRequestCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, publishRequestCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataChangeNotificationsCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, dataChangeNotificationsCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "EventNotificationsCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, eventNotificationsCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "NotificationsCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, notificationsCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "LatePublishRequestCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, latePublishRequestCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "CurrentKeepAliveCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, currentKeepAliveCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "CurrentLifetimeCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, currentLifetimeCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "UnacknowledgedMessageCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, unacknowledgedMessageCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DiscardedMessageCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, discardedMessageCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MonitoredItemCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, monitoredItemCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DisabledMonitoredItemCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, disabledMonitoredItemCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MonitoringQueueOverflowCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, monitoringQueueOverflowCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "NextSequenceNumber";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, nextSequenceNumber_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "EventQueueOverFlowCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, eventQueueOverFlowCount_)) {
-            Log(Error, "SubscriptionDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

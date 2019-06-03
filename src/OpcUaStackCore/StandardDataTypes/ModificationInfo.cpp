@@ -259,7 +259,6 @@ namespace OpcUaStackCore
     ModificationInfo::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, modificationTime_, "ModificationTime");
         rc = rc & jsonObjectEncode(pt, updateType_, "UpdateType");
@@ -271,49 +270,13 @@ namespace OpcUaStackCore
     bool
     ModificationInfo::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "ModificationTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ModificationInfo decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!modificationTime_.jsonDecode(*tree)) {
-            Log(Error, "ModificationInfo decode json error - decode failed")
-                .parameter("Element", "ModificationTime");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, modificationTime_, "ModificationTime");
+        rc = rc & jsonObjectDecode(pt, updateType_, "UpdateType");
+        rc = rc & jsonObjectDecode(pt, userName_, "UserName");
     
-        elementName = "UpdateType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ModificationInfo decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!updateType_.jsonDecode(*tree)) {
-            Log(Error, "ModificationInfo decode json error - decode failed")
-                .parameter("Element", "UpdateType");
-            return false;
-        }
-    
-        elementName = "UserName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ModificationInfo decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!userName_.jsonDecode(*tree)) {
-            Log(Error, "ModificationInfo decode json error - decode failed")
-                .parameter("Element", "UserName");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

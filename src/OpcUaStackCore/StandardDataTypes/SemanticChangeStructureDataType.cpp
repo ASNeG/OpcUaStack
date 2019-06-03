@@ -227,7 +227,6 @@ namespace OpcUaStackCore
     SemanticChangeStructureDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, affected_, "Affected");
         rc = rc & jsonObjectEncode(pt, affectedType_, "AffectedType");
@@ -238,36 +237,12 @@ namespace OpcUaStackCore
     bool
     SemanticChangeStructureDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Affected";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SemanticChangeStructureDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!affected_.jsonDecode(*tree)) {
-            Log(Error, "SemanticChangeStructureDataType decode json error - decode failed")
-                .parameter("Element", "Affected");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, affected_, "Affected");
+        rc = rc & jsonObjectDecode(pt, affectedType_, "AffectedType");
     
-        elementName = "AffectedType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SemanticChangeStructureDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!affectedType_.jsonDecode(*tree)) {
-            Log(Error, "SemanticChangeStructureDataType decode json error - decode failed")
-                .parameter("Element", "AffectedType");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

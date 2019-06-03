@@ -195,7 +195,6 @@ namespace OpcUaStackCore
     StructureDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, structureDefinition_, "StructureDefinition");
     
@@ -205,23 +204,11 @@ namespace OpcUaStackCore
     bool
     StructureDescription::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "StructureDefinition";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!structureDefinition_.jsonDecode(*tree)) {
-            Log(Error, "StructureDescription decode json error - decode failed")
-                .parameter("Element", "StructureDefinition");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, structureDefinition_, "StructureDefinition");
     
-        return true;
+        return rc;
     }
     
     void

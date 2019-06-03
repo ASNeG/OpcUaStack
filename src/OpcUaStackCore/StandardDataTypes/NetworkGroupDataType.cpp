@@ -227,7 +227,6 @@ namespace OpcUaStackCore
     NetworkGroupDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
         rc = rc & jsonObjectEncode(pt, networkPaths_, "NetworkPaths");
@@ -238,36 +237,12 @@ namespace OpcUaStackCore
     bool
     NetworkGroupDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "ServerUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NetworkGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!serverUri_.jsonDecode(*tree)) {
-            Log(Error, "NetworkGroupDataType decode json error - decode failed")
-                .parameter("Element", "ServerUri");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, serverUri_, "ServerUri");
+        rc = rc & jsonObjectDecode(pt, networkPaths_, "NetworkPaths");
     
-        elementName = "NetworkPaths";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NetworkGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!networkPaths_.jsonDecode(*tree, "")) {
-            Log(Error, "NetworkGroupDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

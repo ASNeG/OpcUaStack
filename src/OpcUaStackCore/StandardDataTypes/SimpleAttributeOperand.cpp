@@ -292,7 +292,6 @@ namespace OpcUaStackCore
     SimpleAttributeOperand::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, typeDefinitionId_, "TypeDefinitionId");
         rc = rc & jsonObjectEncode(pt, browsePath_, "BrowsePath");
@@ -305,62 +304,14 @@ namespace OpcUaStackCore
     bool
     SimpleAttributeOperand::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "TypeDefinitionId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SimpleAttributeOperand decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!typeDefinitionId_.jsonDecode(*tree)) {
-            Log(Error, "SimpleAttributeOperand decode json error - decode failed")
-                .parameter("Element", "TypeDefinitionId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, typeDefinitionId_, "TypeDefinitionId");
+        rc = rc & jsonObjectDecode(pt, browsePath_, "BrowsePath");
+        rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId");
+        rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange");
     
-        elementName = "BrowsePath";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SimpleAttributeOperand decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!browsePath_.jsonDecode(*tree, "")) {
-            Log(Error, "SimpleAttributeOperand decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "AttributeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SimpleAttributeOperand decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, attributeId_)) {
-            Log(Error, "SimpleAttributeOperand decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "IndexRange";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SimpleAttributeOperand decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!indexRange_.jsonDecode(*tree)) {
-            Log(Error, "SimpleAttributeOperand decode json error - decode failed")
-                .parameter("Element", "IndexRange");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

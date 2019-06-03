@@ -292,7 +292,6 @@ namespace OpcUaStackCore
     AggregateFilter::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
         rc = rc & jsonObjectEncode(pt, aggregateType_, "AggregateType");
@@ -305,62 +304,14 @@ namespace OpcUaStackCore
     bool
     AggregateFilter::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "StartTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AggregateFilter decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!startTime_.jsonDecode(*tree)) {
-            Log(Error, "AggregateFilter decode json error - decode failed")
-                .parameter("Element", "StartTime");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime");
+        rc = rc & jsonObjectDecode(pt, aggregateType_, "AggregateType");
+        rc = rc & jsonNumberDecode(pt, processingInterval_, "ProcessingInterval");
+        rc = rc & jsonObjectDecode(pt, aggregateConfiguration_, "AggregateConfiguration");
     
-        elementName = "AggregateType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AggregateFilter decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!aggregateType_.jsonDecode(*tree)) {
-            Log(Error, "AggregateFilter decode json error - decode failed")
-                .parameter("Element", "AggregateType");
-            return false;
-        }
-    
-        elementName = "ProcessingInterval";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AggregateFilter decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, processingInterval_)) {
-            Log(Error, "AggregateFilter decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "AggregateConfiguration";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AggregateFilter decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!aggregateConfiguration_.jsonDecode(*tree)) {
-            Log(Error, "AggregateFilter decode json error - decode failed")
-                .parameter("Element", "AggregateConfiguration");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

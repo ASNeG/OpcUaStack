@@ -295,7 +295,6 @@ namespace OpcUaStackCore
     UadpDataSetWriterMessageDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, dataSetMessageContentMask_, "DataSetMessageContentMask");
         rc = rc & jsonNumberEncode(pt, configuredSize_, "ConfiguredSize");
@@ -308,62 +307,14 @@ namespace OpcUaStackCore
     bool
     UadpDataSetWriterMessageDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "DataSetMessageContentMask";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UadpDataSetWriterMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, dataSetMessageContentMask_)) {
-            Log(Error, "UadpDataSetWriterMessageDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, dataSetMessageContentMask_, "DataSetMessageContentMask");
+        rc = rc & jsonNumberDecode(pt, configuredSize_, "ConfiguredSize");
+        rc = rc & jsonNumberDecode(pt, networkMessageNumber_, "NetworkMessageNumber");
+        rc = rc & jsonNumberDecode(pt, dataSetOffset_, "DataSetOffset");
     
-        elementName = "ConfiguredSize";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UadpDataSetWriterMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, configuredSize_)) {
-            Log(Error, "UadpDataSetWriterMessageDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "NetworkMessageNumber";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UadpDataSetWriterMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, networkMessageNumber_)) {
-            Log(Error, "UadpDataSetWriterMessageDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetOffset";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UadpDataSetWriterMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, dataSetOffset_)) {
-            Log(Error, "UadpDataSetWriterMessageDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

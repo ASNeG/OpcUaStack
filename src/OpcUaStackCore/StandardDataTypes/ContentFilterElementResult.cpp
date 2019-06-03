@@ -259,7 +259,6 @@ namespace OpcUaStackCore
     ContentFilterElementResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode");
         rc = rc & jsonObjectEncode(pt, operandStatusCodes_, "OperandStatusCodes");
@@ -271,49 +270,13 @@ namespace OpcUaStackCore
     bool
     ContentFilterElementResult::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "StatusCode";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ContentFilterElementResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!statusCode_.jsonDecode(*tree)) {
-            Log(Error, "ContentFilterElementResult decode json error - decode failed")
-                .parameter("Element", "StatusCode");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, statusCode_, "StatusCode");
+        rc = rc & jsonObjectDecode(pt, operandStatusCodes_, "OperandStatusCodes");
+        rc = rc & jsonObjectDecode(pt, operandDiagnosticInfos_, "OperandDiagnosticInfos");
     
-        elementName = "OperandStatusCodes";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ContentFilterElementResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!operandStatusCodes_.jsonDecode(*tree, "")) {
-            Log(Error, "ContentFilterElementResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "OperandDiagnosticInfos";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ContentFilterElementResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!operandDiagnosticInfos_.jsonDecode(*tree, "")) {
-            Log(Error, "ContentFilterElementResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

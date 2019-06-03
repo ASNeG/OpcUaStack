@@ -393,7 +393,6 @@ namespace OpcUaStackCore
     AddNodesItem::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, parentNodeId_, "ParentNodeId");
         rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId");
@@ -409,101 +408,17 @@ namespace OpcUaStackCore
     bool
     AddNodesItem::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "ParentNodeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddNodesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!parentNodeId_.jsonDecode(*tree)) {
-            Log(Error, "AddNodesItem decode json error - decode failed")
-                .parameter("Element", "ParentNodeId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, parentNodeId_, "ParentNodeId");
+        rc = rc & jsonObjectDecode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonObjectDecode(pt, requestedNewNodeId_, "RequestedNewNodeId");
+        rc = rc & jsonObjectDecode(pt, browseName_, "BrowseName");
+        rc = rc & jsonObjectDecode(pt, nodeClass_, "NodeClass");
+        rc = rc & jsonObjectDecode(pt, nodeAttributes_, "NodeAttributes");
+        rc = rc & jsonObjectDecode(pt, typeDefinition_, "TypeDefinition");
     
-        elementName = "ReferenceTypeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddNodesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!referenceTypeId_.jsonDecode(*tree)) {
-            Log(Error, "AddNodesItem decode json error - decode failed")
-                .parameter("Element", "ReferenceTypeId");
-            return false;
-        }
-    
-        elementName = "RequestedNewNodeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddNodesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!requestedNewNodeId_.jsonDecode(*tree)) {
-            Log(Error, "AddNodesItem decode json error - decode failed")
-                .parameter("Element", "RequestedNewNodeId");
-            return false;
-        }
-    
-        elementName = "BrowseName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddNodesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!browseName_.jsonDecode(*tree)) {
-            Log(Error, "AddNodesItem decode json error - decode failed")
-                .parameter("Element", "BrowseName");
-            return false;
-        }
-    
-        elementName = "NodeClass";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddNodesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!nodeClass_.jsonDecode(*tree)) {
-            Log(Error, "AddNodesItem decode json error - decode failed")
-                .parameter("Element", "NodeClass");
-            return false;
-        }
-    
-        elementName = "NodeAttributes";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddNodesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!nodeAttributes_.jsonDecode(*tree)) {
-            Log(Error, "AddNodesItem decode json error - decode failed")
-                .parameter("Element", "NodeAttributes");
-            return false;
-        }
-    
-        elementName = "TypeDefinition";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddNodesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!typeDefinition_.jsonDecode(*tree)) {
-            Log(Error, "AddNodesItem decode json error - decode failed")
-                .parameter("Element", "TypeDefinition");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

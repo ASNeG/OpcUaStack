@@ -426,7 +426,6 @@ namespace OpcUaStackCore
     RegisteredServer::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
         rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri");
@@ -443,114 +442,18 @@ namespace OpcUaStackCore
     bool
     RegisteredServer::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "ServerUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RegisteredServer decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!serverUri_.jsonDecode(*tree)) {
-            Log(Error, "RegisteredServer decode json error - decode failed")
-                .parameter("Element", "ServerUri");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, serverUri_, "ServerUri");
+        rc = rc & jsonObjectDecode(pt, productUri_, "ProductUri");
+        rc = rc & jsonObjectDecode(pt, serverNames_, "ServerNames");
+        rc = rc & jsonObjectDecode(pt, serverType_, "ServerType");
+        rc = rc & jsonObjectDecode(pt, gatewayServerUri_, "GatewayServerUri");
+        rc = rc & jsonObjectDecode(pt, discoveryUrls_, "DiscoveryUrls");
+        rc = rc & jsonObjectDecode(pt, semaphoreFilePath_, "SemaphoreFilePath");
+        rc = rc & jsonNumberDecode(pt, isOnline_, "IsOnline");
     
-        elementName = "ProductUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RegisteredServer decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!productUri_.jsonDecode(*tree)) {
-            Log(Error, "RegisteredServer decode json error - decode failed")
-                .parameter("Element", "ProductUri");
-            return false;
-        }
-    
-        elementName = "ServerNames";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RegisteredServer decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!serverNames_.jsonDecode(*tree, "")) {
-            Log(Error, "RegisteredServer decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ServerType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RegisteredServer decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!serverType_.jsonDecode(*tree)) {
-            Log(Error, "RegisteredServer decode json error - decode failed")
-                .parameter("Element", "ServerType");
-            return false;
-        }
-    
-        elementName = "GatewayServerUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RegisteredServer decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!gatewayServerUri_.jsonDecode(*tree)) {
-            Log(Error, "RegisteredServer decode json error - decode failed")
-                .parameter("Element", "GatewayServerUri");
-            return false;
-        }
-    
-        elementName = "DiscoveryUrls";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RegisteredServer decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!discoveryUrls_.jsonDecode(*tree, "")) {
-            Log(Error, "RegisteredServer decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SemaphoreFilePath";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RegisteredServer decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!semaphoreFilePath_.jsonDecode(*tree)) {
-            Log(Error, "RegisteredServer decode json error - decode failed")
-                .parameter("Element", "SemaphoreFilePath");
-            return false;
-        }
-    
-        elementName = "IsOnline";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RegisteredServer decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, isOnline_)) {
-            Log(Error, "RegisteredServer decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

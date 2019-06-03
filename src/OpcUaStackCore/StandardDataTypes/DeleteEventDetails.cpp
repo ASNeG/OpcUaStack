@@ -195,7 +195,6 @@ namespace OpcUaStackCore
     DeleteEventDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, eventIds_, "EventIds");
     
@@ -205,23 +204,11 @@ namespace OpcUaStackCore
     bool
     DeleteEventDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "EventIds";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteEventDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!eventIds_.jsonDecode(*tree, "")) {
-            Log(Error, "DeleteEventDetails decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, eventIds_, "EventIds");
     
-        return true;
+        return rc;
     }
     
     void

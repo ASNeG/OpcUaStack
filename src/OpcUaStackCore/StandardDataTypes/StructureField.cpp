@@ -390,7 +390,6 @@ namespace OpcUaStackCore
     StructureField::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, name_, "Name");
         rc = rc & jsonObjectEncode(pt, description_, "Description");
@@ -406,101 +405,17 @@ namespace OpcUaStackCore
     bool
     StructureField::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureField decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "StructureField decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonObjectDecode(pt, description_, "Description");
+        rc = rc & jsonObjectDecode(pt, dataType_, "DataType");
+        rc = rc & jsonNumberDecode(pt, valueRank_, "ValueRank");
+        rc = rc & jsonObjectDecode(pt, arrayDimensions_, "ArrayDimensions");
+        rc = rc & jsonNumberDecode(pt, maxStringLength_, "MaxStringLength");
+        rc = rc & jsonNumberDecode(pt, isOptional_, "IsOptional");
     
-        elementName = "Description";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureField decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!description_.jsonDecode(*tree)) {
-            Log(Error, "StructureField decode json error - decode failed")
-                .parameter("Element", "Description");
-            return false;
-        }
-    
-        elementName = "DataType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureField decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataType_.jsonDecode(*tree)) {
-            Log(Error, "StructureField decode json error - decode failed")
-                .parameter("Element", "DataType");
-            return false;
-        }
-    
-        elementName = "ValueRank";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureField decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, valueRank_)) {
-            Log(Error, "StructureField decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ArrayDimensions";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureField decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!arrayDimensions_.jsonDecode(*tree, "")) {
-            Log(Error, "StructureField decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxStringLength";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureField decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxStringLength_)) {
-            Log(Error, "StructureField decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "IsOptional";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureField decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, isOptional_)) {
-            Log(Error, "StructureField decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

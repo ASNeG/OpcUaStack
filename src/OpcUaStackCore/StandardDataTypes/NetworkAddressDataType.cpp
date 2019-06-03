@@ -195,7 +195,6 @@ namespace OpcUaStackCore
     NetworkAddressDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, networkInterface_, "NetworkInterface");
     
@@ -205,23 +204,11 @@ namespace OpcUaStackCore
     bool
     NetworkAddressDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "NetworkInterface";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NetworkAddressDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!networkInterface_.jsonDecode(*tree)) {
-            Log(Error, "NetworkAddressDataType decode json error - decode failed")
-                .parameter("Element", "NetworkInterface");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, networkInterface_, "NetworkInterface");
     
-        return true;
+        return rc;
     }
     
     void

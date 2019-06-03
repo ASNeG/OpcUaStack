@@ -291,7 +291,6 @@ namespace OpcUaStackCore
     BrokerWriterGroupTransportDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, queueName_, "QueueName");
         rc = rc & jsonObjectEncode(pt, resourceUri_, "ResourceUri");
@@ -304,62 +303,14 @@ namespace OpcUaStackCore
     bool
     BrokerWriterGroupTransportDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "QueueName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerWriterGroupTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!queueName_.jsonDecode(*tree)) {
-            Log(Error, "BrokerWriterGroupTransportDataType decode json error - decode failed")
-                .parameter("Element", "QueueName");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, queueName_, "QueueName");
+        rc = rc & jsonObjectDecode(pt, resourceUri_, "ResourceUri");
+        rc = rc & jsonObjectDecode(pt, authenticationProfileUri_, "AuthenticationProfileUri");
+        rc = rc & jsonObjectDecode(pt, requestedDeliveryGuarantee_, "RequestedDeliveryGuarantee");
     
-        elementName = "ResourceUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerWriterGroupTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!resourceUri_.jsonDecode(*tree)) {
-            Log(Error, "BrokerWriterGroupTransportDataType decode json error - decode failed")
-                .parameter("Element", "ResourceUri");
-            return false;
-        }
-    
-        elementName = "AuthenticationProfileUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerWriterGroupTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!authenticationProfileUri_.jsonDecode(*tree)) {
-            Log(Error, "BrokerWriterGroupTransportDataType decode json error - decode failed")
-                .parameter("Element", "AuthenticationProfileUri");
-            return false;
-        }
-    
-        elementName = "RequestedDeliveryGuarantee";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerWriterGroupTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!requestedDeliveryGuarantee_.jsonDecode(*tree)) {
-            Log(Error, "BrokerWriterGroupTransportDataType decode json error - decode failed")
-                .parameter("Element", "RequestedDeliveryGuarantee");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

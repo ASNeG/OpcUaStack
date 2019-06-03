@@ -227,7 +227,6 @@ namespace OpcUaStackCore
     IdentityMappingRuleType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, criteriaType_, "CriteriaType");
         rc = rc & jsonObjectEncode(pt, criteria_, "Criteria");
@@ -238,36 +237,12 @@ namespace OpcUaStackCore
     bool
     IdentityMappingRuleType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "CriteriaType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "IdentityMappingRuleType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!criteriaType_.jsonDecode(*tree)) {
-            Log(Error, "IdentityMappingRuleType decode json error - decode failed")
-                .parameter("Element", "CriteriaType");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, criteriaType_, "CriteriaType");
+        rc = rc & jsonObjectDecode(pt, criteria_, "Criteria");
     
-        elementName = "Criteria";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "IdentityMappingRuleType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!criteria_.jsonDecode(*tree)) {
-            Log(Error, "IdentityMappingRuleType decode json error - decode failed")
-                .parameter("Element", "Criteria");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

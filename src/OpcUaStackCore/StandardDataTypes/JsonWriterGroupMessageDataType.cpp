@@ -196,7 +196,6 @@ namespace OpcUaStackCore
     JsonWriterGroupMessageDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
     
@@ -206,23 +205,11 @@ namespace OpcUaStackCore
     bool
     JsonWriterGroupMessageDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "NetworkMessageContentMask";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "JsonWriterGroupMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, networkMessageContentMask_)) {
-            Log(Error, "JsonWriterGroupMessageDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
     
-        return true;
+        return rc;
     }
     
     void

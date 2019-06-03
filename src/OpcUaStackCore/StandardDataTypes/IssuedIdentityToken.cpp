@@ -233,7 +233,6 @@ namespace OpcUaStackCore
     IssuedIdentityToken::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, tokenData_, "TokenData");
         rc = rc & jsonObjectEncode(pt, encryptionAlgorithm_, "EncryptionAlgorithm");
@@ -244,36 +243,12 @@ namespace OpcUaStackCore
     bool
     IssuedIdentityToken::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "TokenData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "IssuedIdentityToken decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!tokenData_.jsonDecode(*tree)) {
-            Log(Error, "IssuedIdentityToken decode json error - decode failed")
-                .parameter("Element", "TokenData");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, tokenData_, "TokenData");
+        rc = rc & jsonObjectDecode(pt, encryptionAlgorithm_, "EncryptionAlgorithm");
     
-        elementName = "EncryptionAlgorithm";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "IssuedIdentityToken decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!encryptionAlgorithm_.jsonDecode(*tree)) {
-            Log(Error, "IssuedIdentityToken decode json error - decode failed")
-                .parameter("Element", "EncryptionAlgorithm");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

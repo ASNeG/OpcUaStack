@@ -228,7 +228,6 @@ namespace OpcUaStackCore
     ReadAtTimeDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, reqTimes_, "ReqTimes");
         rc = rc & jsonNumberEncode(pt, useSimpleBounds_, "UseSimpleBounds");
@@ -239,36 +238,12 @@ namespace OpcUaStackCore
     bool
     ReadAtTimeDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "ReqTimes";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadAtTimeDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!reqTimes_.jsonDecode(*tree, "")) {
-            Log(Error, "ReadAtTimeDetails decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, reqTimes_, "ReqTimes");
+        rc = rc & jsonNumberDecode(pt, useSimpleBounds_, "UseSimpleBounds");
     
-        elementName = "UseSimpleBounds";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadAtTimeDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, useSimpleBounds_)) {
-            Log(Error, "ReadAtTimeDetails decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

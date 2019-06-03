@@ -559,7 +559,6 @@ namespace OpcUaStackCore
     ServerDiagnosticsSummaryDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, serverViewCount_, "ServerViewCount");
         rc = rc & jsonNumberEncode(pt, currentSessionCount_, "CurrentSessionCount");
@@ -580,166 +579,22 @@ namespace OpcUaStackCore
     bool
     ServerDiagnosticsSummaryDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "ServerViewCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, serverViewCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, serverViewCount_, "ServerViewCount");
+        rc = rc & jsonNumberDecode(pt, currentSessionCount_, "CurrentSessionCount");
+        rc = rc & jsonNumberDecode(pt, cumulatedSessionCount_, "CumulatedSessionCount");
+        rc = rc & jsonNumberDecode(pt, securityRejectedSessionCount_, "SecurityRejectedSessionCount");
+        rc = rc & jsonNumberDecode(pt, rejectedSessionCount_, "RejectedSessionCount");
+        rc = rc & jsonNumberDecode(pt, sessionTimeoutCount_, "SessionTimeoutCount");
+        rc = rc & jsonNumberDecode(pt, sessionAbortCount_, "SessionAbortCount");
+        rc = rc & jsonNumberDecode(pt, currentSubscriptionCount_, "CurrentSubscriptionCount");
+        rc = rc & jsonNumberDecode(pt, cumulatedSubscriptionCount_, "CumulatedSubscriptionCount");
+        rc = rc & jsonNumberDecode(pt, publishingIntervalCount_, "PublishingIntervalCount");
+        rc = rc & jsonNumberDecode(pt, securityRejectedRequestsCount_, "SecurityRejectedRequestsCount");
+        rc = rc & jsonNumberDecode(pt, rejectedRequestsCount_, "RejectedRequestsCount");
     
-        elementName = "CurrentSessionCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, currentSessionCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "CumulatedSessionCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, cumulatedSessionCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SecurityRejectedSessionCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, securityRejectedSessionCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "RejectedSessionCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, rejectedSessionCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SessionTimeoutCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, sessionTimeoutCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SessionAbortCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, sessionAbortCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "CurrentSubscriptionCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, currentSubscriptionCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "CumulatedSubscriptionCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, cumulatedSubscriptionCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "PublishingIntervalCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, publishingIntervalCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SecurityRejectedRequestsCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, securityRejectedRequestsCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "RejectedRequestsCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, rejectedRequestsCount_)) {
-            Log(Error, "ServerDiagnosticsSummaryDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

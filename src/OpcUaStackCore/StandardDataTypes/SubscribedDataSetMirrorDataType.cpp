@@ -227,7 +227,6 @@ namespace OpcUaStackCore
     SubscribedDataSetMirrorDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, parentNodeName_, "ParentNodeName");
         rc = rc & jsonObjectEncode(pt, rolePermissions_, "RolePermissions");
@@ -238,36 +237,12 @@ namespace OpcUaStackCore
     bool
     SubscribedDataSetMirrorDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "ParentNodeName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscribedDataSetMirrorDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!parentNodeName_.jsonDecode(*tree)) {
-            Log(Error, "SubscribedDataSetMirrorDataType decode json error - decode failed")
-                .parameter("Element", "ParentNodeName");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, parentNodeName_, "ParentNodeName");
+        rc = rc & jsonObjectDecode(pt, rolePermissions_, "RolePermissions");
     
-        elementName = "RolePermissions";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SubscribedDataSetMirrorDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!rolePermissions_.jsonDecode(*tree, "")) {
-            Log(Error, "SubscribedDataSetMirrorDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

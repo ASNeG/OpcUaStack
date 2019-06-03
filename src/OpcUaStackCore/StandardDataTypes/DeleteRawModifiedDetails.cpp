@@ -260,7 +260,6 @@ namespace OpcUaStackCore
     DeleteRawModifiedDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, isDeleteModified_, "IsDeleteModified");
         rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
@@ -272,49 +271,13 @@ namespace OpcUaStackCore
     bool
     DeleteRawModifiedDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "IsDeleteModified";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteRawModifiedDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, isDeleteModified_)) {
-            Log(Error, "DeleteRawModifiedDetails decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, isDeleteModified_, "IsDeleteModified");
+        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime");
+        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime");
     
-        elementName = "StartTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteRawModifiedDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!startTime_.jsonDecode(*tree)) {
-            Log(Error, "DeleteRawModifiedDetails decode json error - decode failed")
-                .parameter("Element", "StartTime");
-            return false;
-        }
-    
-        elementName = "EndTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteRawModifiedDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!endTime_.jsonDecode(*tree)) {
-            Log(Error, "DeleteRawModifiedDetails decode json error - decode failed")
-                .parameter("Element", "EndTime");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

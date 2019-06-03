@@ -423,7 +423,6 @@ namespace OpcUaStackCore
     PublishedVariableDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, publishedVariable_, "PublishedVariable");
         rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
@@ -440,114 +439,18 @@ namespace OpcUaStackCore
     bool
     PublishedVariableDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "PublishedVariable";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedVariableDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!publishedVariable_.jsonDecode(*tree)) {
-            Log(Error, "PublishedVariableDataType decode json error - decode failed")
-                .parameter("Element", "PublishedVariable");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, publishedVariable_, "PublishedVariable");
+        rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId");
+        rc = rc & jsonNumberDecode(pt, samplingIntervalHint_, "SamplingIntervalHint");
+        rc = rc & jsonNumberDecode(pt, deadbandType_, "DeadbandType");
+        rc = rc & jsonNumberDecode(pt, deadbandValue_, "DeadbandValue");
+        rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange");
+        rc = rc & jsonObjectDecode(pt, substituteValue_, "SubstituteValue");
+        rc = rc & jsonObjectDecode(pt, metaDataProperties_, "MetaDataProperties");
     
-        elementName = "AttributeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedVariableDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, attributeId_)) {
-            Log(Error, "PublishedVariableDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SamplingIntervalHint";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedVariableDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, samplingIntervalHint_)) {
-            Log(Error, "PublishedVariableDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DeadbandType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedVariableDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, deadbandType_)) {
-            Log(Error, "PublishedVariableDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DeadbandValue";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedVariableDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, deadbandValue_)) {
-            Log(Error, "PublishedVariableDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "IndexRange";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedVariableDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!indexRange_.jsonDecode(*tree)) {
-            Log(Error, "PublishedVariableDataType decode json error - decode failed")
-                .parameter("Element", "IndexRange");
-            return false;
-        }
-    
-        elementName = "SubstituteValue";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedVariableDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!substituteValue_.jsonDecode(*tree)) {
-            Log(Error, "PublishedVariableDataType decode json error - decode failed")
-                .parameter("Element", "SubstituteValue");
-            return false;
-        }
-    
-        elementName = "MetaDataProperties";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedVariableDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!metaDataProperties_.jsonDecode(*tree, "")) {
-            Log(Error, "PublishedVariableDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

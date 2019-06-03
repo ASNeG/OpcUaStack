@@ -389,7 +389,6 @@ namespace OpcUaStackCore
     PubSubGroupDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, name_, "Name");
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
@@ -405,101 +404,17 @@ namespace OpcUaStackCore
     bool
     PubSubGroupDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "PubSubGroupDataType decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
+        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
+        rc = rc & jsonObjectDecode(pt, securityGroupId_, "SecurityGroupId");
+        rc = rc & jsonObjectDecode(pt, securityKeyServices_, "SecurityKeyServices");
+        rc = rc & jsonNumberDecode(pt, maxNetworkMessageSize_, "MaxNetworkMessageSize");
+        rc = rc & jsonObjectDecode(pt, groupProperties_, "GroupProperties");
     
-        elementName = "Enabled";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, enabled_)) {
-            Log(Error, "PubSubGroupDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SecurityMode";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityMode_.jsonDecode(*tree)) {
-            Log(Error, "PubSubGroupDataType decode json error - decode failed")
-                .parameter("Element", "SecurityMode");
-            return false;
-        }
-    
-        elementName = "SecurityGroupId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityGroupId_.jsonDecode(*tree)) {
-            Log(Error, "PubSubGroupDataType decode json error - decode failed")
-                .parameter("Element", "SecurityGroupId");
-            return false;
-        }
-    
-        elementName = "SecurityKeyServices";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityKeyServices_.jsonDecode(*tree, "")) {
-            Log(Error, "PubSubGroupDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxNetworkMessageSize";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxNetworkMessageSize_)) {
-            Log(Error, "PubSubGroupDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "GroupProperties";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!groupProperties_.jsonDecode(*tree, "")) {
-            Log(Error, "PubSubGroupDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

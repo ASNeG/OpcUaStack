@@ -451,7 +451,6 @@ namespace OpcUaStackCore
     SessionSecurityDiagnosticsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, sessionId_, "SessionId");
         rc = rc & jsonObjectEncode(pt, clientUserIdOfSession_, "ClientUserIdOfSession");
@@ -469,127 +468,19 @@ namespace OpcUaStackCore
     bool
     SessionSecurityDiagnosticsDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "SessionId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!sessionId_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "SessionId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, sessionId_, "SessionId");
+        rc = rc & jsonObjectDecode(pt, clientUserIdOfSession_, "ClientUserIdOfSession");
+        rc = rc & jsonObjectDecode(pt, clientUserIdHistory_, "ClientUserIdHistory");
+        rc = rc & jsonObjectDecode(pt, authenticationMechanism_, "AuthenticationMechanism");
+        rc = rc & jsonObjectDecode(pt, encoding_, "Encoding");
+        rc = rc & jsonObjectDecode(pt, transportProtocol_, "TransportProtocol");
+        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
+        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri");
+        rc = rc & jsonObjectDecode(pt, clientCertificate_, "ClientCertificate");
     
-        elementName = "ClientUserIdOfSession";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!clientUserIdOfSession_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "ClientUserIdOfSession");
-            return false;
-        }
-    
-        elementName = "ClientUserIdHistory";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!clientUserIdHistory_.jsonDecode(*tree, "")) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "AuthenticationMechanism";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!authenticationMechanism_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "AuthenticationMechanism");
-            return false;
-        }
-    
-        elementName = "Encoding";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!encoding_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "Encoding");
-            return false;
-        }
-    
-        elementName = "TransportProtocol";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!transportProtocol_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "TransportProtocol");
-            return false;
-        }
-    
-        elementName = "SecurityMode";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityMode_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "SecurityMode");
-            return false;
-        }
-    
-        elementName = "SecurityPolicyUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityPolicyUri_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "SecurityPolicyUri");
-            return false;
-        }
-    
-        elementName = "ClientCertificate";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!clientCertificate_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "ClientCertificate");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

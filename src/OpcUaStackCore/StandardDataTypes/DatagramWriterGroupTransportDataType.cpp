@@ -229,7 +229,6 @@ namespace OpcUaStackCore
     DatagramWriterGroupTransportDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, messageRepeatCount_, "MessageRepeatCount");
         rc = rc & jsonNumberEncode(pt, messageRepeatDelay_, "MessageRepeatDelay");
@@ -240,36 +239,12 @@ namespace OpcUaStackCore
     bool
     DatagramWriterGroupTransportDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "MessageRepeatCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DatagramWriterGroupTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, messageRepeatCount_)) {
-            Log(Error, "DatagramWriterGroupTransportDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, messageRepeatCount_, "MessageRepeatCount");
+        rc = rc & jsonNumberDecode(pt, messageRepeatDelay_, "MessageRepeatDelay");
     
-        elementName = "MessageRepeatDelay";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DatagramWriterGroupTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, messageRepeatDelay_)) {
-            Log(Error, "DatagramWriterGroupTransportDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

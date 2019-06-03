@@ -259,7 +259,6 @@ namespace OpcUaStackCore
     UpdateEventDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, performInsertReplace_, "PerformInsertReplace");
         rc = rc & jsonObjectEncode(pt, filter_, "Filter");
@@ -271,49 +270,13 @@ namespace OpcUaStackCore
     bool
     UpdateEventDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "PerformInsertReplace";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UpdateEventDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!performInsertReplace_.jsonDecode(*tree)) {
-            Log(Error, "UpdateEventDetails decode json error - decode failed")
-                .parameter("Element", "PerformInsertReplace");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, performInsertReplace_, "PerformInsertReplace");
+        rc = rc & jsonObjectDecode(pt, filter_, "Filter");
+        rc = rc & jsonObjectDecode(pt, eventData_, "EventData");
     
-        elementName = "Filter";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UpdateEventDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!filter_.jsonDecode(*tree)) {
-            Log(Error, "UpdateEventDetails decode json error - decode failed")
-                .parameter("Element", "Filter");
-            return false;
-        }
-    
-        elementName = "EventData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UpdateEventDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!eventData_.jsonDecode(*tree, "")) {
-            Log(Error, "UpdateEventDetails decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

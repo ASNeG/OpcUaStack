@@ -324,7 +324,6 @@ namespace OpcUaStackCore
     TrustListDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, specifiedLists_, "SpecifiedLists");
         rc = rc & jsonObjectEncode(pt, trustedCertificates_, "TrustedCertificates");
@@ -338,75 +337,15 @@ namespace OpcUaStackCore
     bool
     TrustListDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "SpecifiedLists";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "TrustListDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, specifiedLists_)) {
-            Log(Error, "TrustListDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, specifiedLists_, "SpecifiedLists");
+        rc = rc & jsonObjectDecode(pt, trustedCertificates_, "TrustedCertificates");
+        rc = rc & jsonObjectDecode(pt, trustedCrls_, "TrustedCrls");
+        rc = rc & jsonObjectDecode(pt, issuerCertificates_, "IssuerCertificates");
+        rc = rc & jsonObjectDecode(pt, issuerCrls_, "IssuerCrls");
     
-        elementName = "TrustedCertificates";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "TrustListDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!trustedCertificates_.jsonDecode(*tree, "")) {
-            Log(Error, "TrustListDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TrustedCrls";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "TrustListDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!trustedCrls_.jsonDecode(*tree, "")) {
-            Log(Error, "TrustListDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "IssuerCertificates";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "TrustListDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!issuerCertificates_.jsonDecode(*tree, "")) {
-            Log(Error, "TrustListDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "IssuerCrls";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "TrustListDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!issuerCrls_.jsonDecode(*tree, "")) {
-            Log(Error, "TrustListDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

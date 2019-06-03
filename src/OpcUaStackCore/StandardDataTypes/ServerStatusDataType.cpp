@@ -356,7 +356,6 @@ namespace OpcUaStackCore
     ServerStatusDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
         rc = rc & jsonObjectEncode(pt, currentTime_, "CurrentTime");
@@ -371,88 +370,16 @@ namespace OpcUaStackCore
     bool
     ServerStatusDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "StartTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerStatusDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!startTime_.jsonDecode(*tree)) {
-            Log(Error, "ServerStatusDataType decode json error - decode failed")
-                .parameter("Element", "StartTime");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime");
+        rc = rc & jsonObjectDecode(pt, currentTime_, "CurrentTime");
+        rc = rc & jsonObjectDecode(pt, state_, "State");
+        rc = rc & jsonObjectDecode(pt, buildInfo_, "BuildInfo");
+        rc = rc & jsonNumberDecode(pt, secondsTillShutdown_, "SecondsTillShutdown");
+        rc = rc & jsonObjectDecode(pt, shutdownReason_, "ShutdownReason");
     
-        elementName = "CurrentTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerStatusDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!currentTime_.jsonDecode(*tree)) {
-            Log(Error, "ServerStatusDataType decode json error - decode failed")
-                .parameter("Element", "CurrentTime");
-            return false;
-        }
-    
-        elementName = "State";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerStatusDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!state_.jsonDecode(*tree)) {
-            Log(Error, "ServerStatusDataType decode json error - decode failed")
-                .parameter("Element", "State");
-            return false;
-        }
-    
-        elementName = "BuildInfo";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerStatusDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!buildInfo_.jsonDecode(*tree)) {
-            Log(Error, "ServerStatusDataType decode json error - decode failed")
-                .parameter("Element", "BuildInfo");
-            return false;
-        }
-    
-        elementName = "SecondsTillShutdown";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerStatusDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, secondsTillShutdown_)) {
-            Log(Error, "ServerStatusDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ShutdownReason";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerStatusDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!shutdownReason_.jsonDecode(*tree)) {
-            Log(Error, "ServerStatusDataType decode json error - decode failed")
-                .parameter("Element", "ShutdownReason");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

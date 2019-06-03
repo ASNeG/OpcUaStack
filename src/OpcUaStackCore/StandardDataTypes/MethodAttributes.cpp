@@ -235,7 +235,6 @@ namespace OpcUaStackCore
     MethodAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, executable_, "Executable");
         rc = rc & jsonNumberEncode(pt, userExecutable_, "UserExecutable");
@@ -246,36 +245,12 @@ namespace OpcUaStackCore
     bool
     MethodAttributes::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Executable";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MethodAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, executable_)) {
-            Log(Error, "MethodAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, executable_, "Executable");
+        rc = rc & jsonNumberDecode(pt, userExecutable_, "UserExecutable");
     
-        elementName = "UserExecutable";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MethodAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, userExecutable_)) {
-            Log(Error, "MethodAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

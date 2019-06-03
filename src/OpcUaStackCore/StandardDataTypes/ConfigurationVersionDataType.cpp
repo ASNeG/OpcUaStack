@@ -229,7 +229,6 @@ namespace OpcUaStackCore
     ConfigurationVersionDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, majorVersion_, "MajorVersion");
         rc = rc & jsonNumberEncode(pt, minorVersion_, "MinorVersion");
@@ -240,36 +239,12 @@ namespace OpcUaStackCore
     bool
     ConfigurationVersionDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "MajorVersion";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ConfigurationVersionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, majorVersion_)) {
-            Log(Error, "ConfigurationVersionDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, majorVersion_, "MajorVersion");
+        rc = rc & jsonNumberDecode(pt, minorVersion_, "MinorVersion");
     
-        elementName = "MinorVersion";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ConfigurationVersionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, minorVersion_)) {
-            Log(Error, "ConfigurationVersionDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

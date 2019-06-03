@@ -324,7 +324,6 @@ namespace OpcUaStackCore
     AttributeOperand::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, nodeId_, "NodeId");
         rc = rc & jsonObjectEncode(pt, alias_, "Alias");
@@ -338,75 +337,15 @@ namespace OpcUaStackCore
     bool
     AttributeOperand::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "NodeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AttributeOperand decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!nodeId_.jsonDecode(*tree)) {
-            Log(Error, "AttributeOperand decode json error - decode failed")
-                .parameter("Element", "NodeId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, nodeId_, "NodeId");
+        rc = rc & jsonObjectDecode(pt, alias_, "Alias");
+        rc = rc & jsonObjectDecode(pt, browsePath_, "BrowsePath");
+        rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId");
+        rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange");
     
-        elementName = "Alias";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AttributeOperand decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!alias_.jsonDecode(*tree)) {
-            Log(Error, "AttributeOperand decode json error - decode failed")
-                .parameter("Element", "Alias");
-            return false;
-        }
-    
-        elementName = "BrowsePath";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AttributeOperand decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!browsePath_.jsonDecode(*tree)) {
-            Log(Error, "AttributeOperand decode json error - decode failed")
-                .parameter("Element", "BrowsePath");
-            return false;
-        }
-    
-        elementName = "AttributeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AttributeOperand decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, attributeId_)) {
-            Log(Error, "AttributeOperand decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "IndexRange";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AttributeOperand decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!indexRange_.jsonDecode(*tree)) {
-            Log(Error, "AttributeOperand decode json error - decode failed")
-                .parameter("Element", "IndexRange");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

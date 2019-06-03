@@ -229,7 +229,6 @@ namespace OpcUaStackCore
     DoubleComplexNumberType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, real_, "Real");
         rc = rc & jsonNumberEncode(pt, imaginary_, "Imaginary");
@@ -240,36 +239,12 @@ namespace OpcUaStackCore
     bool
     DoubleComplexNumberType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Real";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DoubleComplexNumberType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, real_)) {
-            Log(Error, "DoubleComplexNumberType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, real_, "Real");
+        rc = rc & jsonNumberDecode(pt, imaginary_, "Imaginary");
     
-        elementName = "Imaginary";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DoubleComplexNumberType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, imaginary_)) {
-            Log(Error, "DoubleComplexNumberType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

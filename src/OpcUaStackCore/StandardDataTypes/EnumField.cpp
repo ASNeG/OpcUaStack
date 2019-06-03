@@ -195,7 +195,6 @@ namespace OpcUaStackCore
     EnumField::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, name_, "Name");
     
@@ -205,23 +204,11 @@ namespace OpcUaStackCore
     bool
     EnumField::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EnumField decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "EnumField decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, name_, "Name");
     
-        return true;
+        return rc;
     }
     
     void

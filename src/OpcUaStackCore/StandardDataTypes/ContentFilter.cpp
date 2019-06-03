@@ -195,7 +195,6 @@ namespace OpcUaStackCore
     ContentFilter::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, elements_, "Elements");
     
@@ -205,23 +204,11 @@ namespace OpcUaStackCore
     bool
     ContentFilter::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Elements";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ContentFilter decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!elements_.jsonDecode(*tree, "")) {
-            Log(Error, "ContentFilter decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, elements_, "Elements");
     
-        return true;
+        return rc;
     }
     
     void

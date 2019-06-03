@@ -547,7 +547,6 @@ namespace OpcUaStackCore
     ProgramDiagnostic2DataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, createSessionId_, "CreateSessionId");
         rc = rc & jsonObjectEncode(pt, createClientName_, "CreateClientName");
@@ -568,166 +567,22 @@ namespace OpcUaStackCore
     bool
     ProgramDiagnostic2DataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "CreateSessionId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!createSessionId_.jsonDecode(*tree)) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", "CreateSessionId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, createSessionId_, "CreateSessionId");
+        rc = rc & jsonObjectDecode(pt, createClientName_, "CreateClientName");
+        rc = rc & jsonObjectDecode(pt, invocationCreationTime_, "InvocationCreationTime");
+        rc = rc & jsonObjectDecode(pt, lastTransitionTime_, "LastTransitionTime");
+        rc = rc & jsonObjectDecode(pt, lastMethodCall_, "LastMethodCall");
+        rc = rc & jsonObjectDecode(pt, lastMethodSessionId_, "LastMethodSessionId");
+        rc = rc & jsonObjectDecode(pt, lastMethodInputArguments_, "LastMethodInputArguments");
+        rc = rc & jsonObjectDecode(pt, lastMethodOutputArguments_, "LastMethodOutputArguments");
+        rc = rc & jsonObjectDecode(pt, lastMethodInputValues_, "LastMethodInputValues");
+        rc = rc & jsonObjectDecode(pt, lastMethodOutputValues_, "LastMethodOutputValues");
+        rc = rc & jsonObjectDecode(pt, lastMethodCallTime_, "LastMethodCallTime");
+        rc = rc & jsonObjectDecode(pt, lastMethodReturnStatus_, "LastMethodReturnStatus");
     
-        elementName = "CreateClientName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!createClientName_.jsonDecode(*tree)) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", "CreateClientName");
-            return false;
-        }
-    
-        elementName = "InvocationCreationTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!invocationCreationTime_.jsonDecode(*tree)) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", "InvocationCreationTime");
-            return false;
-        }
-    
-        elementName = "LastTransitionTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!lastTransitionTime_.jsonDecode(*tree)) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", "LastTransitionTime");
-            return false;
-        }
-    
-        elementName = "LastMethodCall";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!lastMethodCall_.jsonDecode(*tree)) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", "LastMethodCall");
-            return false;
-        }
-    
-        elementName = "LastMethodSessionId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!lastMethodSessionId_.jsonDecode(*tree)) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", "LastMethodSessionId");
-            return false;
-        }
-    
-        elementName = "LastMethodInputArguments";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!lastMethodInputArguments_.jsonDecode(*tree, "")) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "LastMethodOutputArguments";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!lastMethodOutputArguments_.jsonDecode(*tree, "")) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "LastMethodInputValues";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!lastMethodInputValues_.jsonDecode(*tree, "")) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "LastMethodOutputValues";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!lastMethodOutputValues_.jsonDecode(*tree, "")) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "LastMethodCallTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!lastMethodCallTime_.jsonDecode(*tree)) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", "LastMethodCallTime");
-            return false;
-        }
-    
-        elementName = "LastMethodReturnStatus";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!lastMethodReturnStatus_.jsonDecode(*tree)) {
-            Log(Error, "ProgramDiagnostic2DataType decode json error - decode failed")
-                .parameter("Element", "LastMethodReturnStatus");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

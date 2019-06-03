@@ -195,7 +195,6 @@ namespace OpcUaStackCore
     DatagramConnectionTransportDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, discoveryAddress_, "DiscoveryAddress");
     
@@ -205,23 +204,11 @@ namespace OpcUaStackCore
     bool
     DatagramConnectionTransportDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "DiscoveryAddress";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DatagramConnectionTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!discoveryAddress_.jsonDecode(*tree)) {
-            Log(Error, "DatagramConnectionTransportDataType decode json error - decode failed")
-                .parameter("Element", "DiscoveryAddress");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, discoveryAddress_, "DiscoveryAddress");
     
-        return true;
+        return rc;
     }
     
     void

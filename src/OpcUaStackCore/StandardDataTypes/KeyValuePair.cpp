@@ -227,7 +227,6 @@ namespace OpcUaStackCore
     KeyValuePair::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, key_, "Key");
         rc = rc & jsonObjectEncode(pt, value_, "Value");
@@ -238,36 +237,12 @@ namespace OpcUaStackCore
     bool
     KeyValuePair::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Key";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "KeyValuePair decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!key_.jsonDecode(*tree)) {
-            Log(Error, "KeyValuePair decode json error - decode failed")
-                .parameter("Element", "Key");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, key_, "Key");
+        rc = rc & jsonObjectDecode(pt, value_, "Value");
     
-        elementName = "Value";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "KeyValuePair decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!value_.jsonDecode(*tree)) {
-            Log(Error, "KeyValuePair decode json error - decode failed")
-                .parameter("Element", "Value");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

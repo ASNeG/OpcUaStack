@@ -195,7 +195,6 @@ namespace OpcUaStackCore
     PublishedDataItemsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, publishedData_, "PublishedData");
     
@@ -205,23 +204,11 @@ namespace OpcUaStackCore
     bool
     PublishedDataItemsDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "PublishedData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataItemsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!publishedData_.jsonDecode(*tree, "")) {
-            Log(Error, "PublishedDataItemsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, publishedData_, "PublishedData");
     
-        return true;
+        return rc;
     }
     
     void

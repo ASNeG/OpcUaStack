@@ -323,7 +323,6 @@ namespace OpcUaStackCore
     PublishedDataSetDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, name_, "Name");
         rc = rc & jsonObjectEncode(pt, dataSetFolder_, "DataSetFolder");
@@ -337,75 +336,15 @@ namespace OpcUaStackCore
     bool
     PublishedDataSetDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataSetDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "PublishedDataSetDataType decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonObjectDecode(pt, dataSetFolder_, "DataSetFolder");
+        rc = rc & jsonObjectDecode(pt, dataSetMetaData_, "DataSetMetaData");
+        rc = rc & jsonObjectDecode(pt, extensionFields_, "ExtensionFields");
+        rc = rc & jsonObjectDecode(pt, dataSetSource_, "DataSetSource");
     
-        elementName = "DataSetFolder";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataSetDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetFolder_.jsonDecode(*tree, "")) {
-            Log(Error, "PublishedDataSetDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetMetaData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataSetDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetMetaData_.jsonDecode(*tree)) {
-            Log(Error, "PublishedDataSetDataType decode json error - decode failed")
-                .parameter("Element", "DataSetMetaData");
-            return false;
-        }
-    
-        elementName = "ExtensionFields";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataSetDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!extensionFields_.jsonDecode(*tree, "")) {
-            Log(Error, "PublishedDataSetDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetSource";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataSetDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetSource_.jsonDecode(*tree)) {
-            Log(Error, "PublishedDataSetDataType decode json error - decode failed")
-                .parameter("Element", "DataSetSource");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

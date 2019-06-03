@@ -452,7 +452,6 @@ namespace OpcUaStackCore
     PubSubConnectionDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, name_, "Name");
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
@@ -470,127 +469,19 @@ namespace OpcUaStackCore
     bool
     PubSubConnectionDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConnectionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
+        rc = rc & jsonObjectDecode(pt, publisherId_, "PublisherId");
+        rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri");
+        rc = rc & jsonObjectDecode(pt, address_, "Address");
+        rc = rc & jsonObjectDecode(pt, connectionProperties_, "ConnectionProperties");
+        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
+        rc = rc & jsonObjectDecode(pt, writerGroups_, "WriterGroups");
+        rc = rc & jsonObjectDecode(pt, readerGroups_, "ReaderGroups");
     
-        elementName = "Enabled";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConnectionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, enabled_)) {
-            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "PublisherId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConnectionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!publisherId_.jsonDecode(*tree)) {
-            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
-                .parameter("Element", "PublisherId");
-            return false;
-        }
-    
-        elementName = "TransportProfileUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConnectionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!transportProfileUri_.jsonDecode(*tree)) {
-            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
-                .parameter("Element", "TransportProfileUri");
-            return false;
-        }
-    
-        elementName = "Address";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConnectionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!address_.jsonDecode(*tree)) {
-            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
-                .parameter("Element", "Address");
-            return false;
-        }
-    
-        elementName = "ConnectionProperties";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConnectionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!connectionProperties_.jsonDecode(*tree, "")) {
-            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TransportSettings";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConnectionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!transportSettings_.jsonDecode(*tree)) {
-            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
-                .parameter("Element", "TransportSettings");
-            return false;
-        }
-    
-        elementName = "WriterGroups";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConnectionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!writerGroups_.jsonDecode(*tree, "")) {
-            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ReaderGroups";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PubSubConnectionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!readerGroups_.jsonDecode(*tree, "")) {
-            Log(Error, "PubSubConnectionDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

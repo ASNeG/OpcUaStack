@@ -331,7 +331,6 @@ namespace OpcUaStackCore
     DeleteReferencesItem::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, sourceNodeId_, "SourceNodeId");
         rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId");
@@ -345,75 +344,15 @@ namespace OpcUaStackCore
     bool
     DeleteReferencesItem::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "SourceNodeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!sourceNodeId_.jsonDecode(*tree)) {
-            Log(Error, "DeleteReferencesItem decode json error - decode failed")
-                .parameter("Element", "SourceNodeId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, sourceNodeId_, "SourceNodeId");
+        rc = rc & jsonObjectDecode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonNumberDecode(pt, isForward_, "IsForward");
+        rc = rc & jsonObjectDecode(pt, targetNodeId_, "TargetNodeId");
+        rc = rc & jsonNumberDecode(pt, deleteBidirectional_, "DeleteBidirectional");
     
-        elementName = "ReferenceTypeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!referenceTypeId_.jsonDecode(*tree)) {
-            Log(Error, "DeleteReferencesItem decode json error - decode failed")
-                .parameter("Element", "ReferenceTypeId");
-            return false;
-        }
-    
-        elementName = "IsForward";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, isForward_)) {
-            Log(Error, "DeleteReferencesItem decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TargetNodeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!targetNodeId_.jsonDecode(*tree)) {
-            Log(Error, "DeleteReferencesItem decode json error - decode failed")
-                .parameter("Element", "TargetNodeId");
-            return false;
-        }
-    
-        elementName = "DeleteBidirectional";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, deleteBidirectional_)) {
-            Log(Error, "DeleteReferencesItem decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -260,7 +260,6 @@ namespace OpcUaStackCore
     AggregateFilterResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, revisedStartTime_, "RevisedStartTime");
         rc = rc & jsonNumberEncode(pt, revisedProcessingInterval_, "RevisedProcessingInterval");
@@ -272,49 +271,13 @@ namespace OpcUaStackCore
     bool
     AggregateFilterResult::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "RevisedStartTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AggregateFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!revisedStartTime_.jsonDecode(*tree)) {
-            Log(Error, "AggregateFilterResult decode json error - decode failed")
-                .parameter("Element", "RevisedStartTime");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, revisedStartTime_, "RevisedStartTime");
+        rc = rc & jsonNumberDecode(pt, revisedProcessingInterval_, "RevisedProcessingInterval");
+        rc = rc & jsonObjectDecode(pt, revisedAggregateConfiguration_, "RevisedAggregateConfiguration");
     
-        elementName = "RevisedProcessingInterval";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AggregateFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, revisedProcessingInterval_)) {
-            Log(Error, "AggregateFilterResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "RevisedAggregateConfiguration";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AggregateFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!revisedAggregateConfiguration_.jsonDecode(*tree)) {
-            Log(Error, "AggregateFilterResult decode json error - decode failed")
-                .parameter("Element", "RevisedAggregateConfiguration");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -234,7 +234,6 @@ namespace OpcUaStackCore
     DeleteNodesItem::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, nodeId_, "NodeId");
         rc = rc & jsonNumberEncode(pt, deleteTargetReferences_, "DeleteTargetReferences");
@@ -245,36 +244,12 @@ namespace OpcUaStackCore
     bool
     DeleteNodesItem::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "NodeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteNodesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!nodeId_.jsonDecode(*tree)) {
-            Log(Error, "DeleteNodesItem decode json error - decode failed")
-                .parameter("Element", "NodeId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, nodeId_, "NodeId");
+        rc = rc & jsonNumberDecode(pt, deleteTargetReferences_, "DeleteTargetReferences");
     
-        elementName = "DeleteTargetReferences";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DeleteNodesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, deleteTargetReferences_)) {
-            Log(Error, "DeleteNodesItem decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

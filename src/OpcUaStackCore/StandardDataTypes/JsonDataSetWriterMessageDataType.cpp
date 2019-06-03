@@ -196,7 +196,6 @@ namespace OpcUaStackCore
     JsonDataSetWriterMessageDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, dataSetMessageContentMask_, "DataSetMessageContentMask");
     
@@ -206,23 +205,11 @@ namespace OpcUaStackCore
     bool
     JsonDataSetWriterMessageDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "DataSetMessageContentMask";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "JsonDataSetWriterMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, dataSetMessageContentMask_)) {
-            Log(Error, "JsonDataSetWriterMessageDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, dataSetMessageContentMask_, "DataSetMessageContentMask");
     
-        return true;
+        return rc;
     }
     
     void

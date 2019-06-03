@@ -233,7 +233,6 @@ namespace OpcUaStackCore
     SignedSoftwareCertificate::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, certificateData_, "CertificateData");
         rc = rc & jsonObjectEncode(pt, signature_, "Signature");
@@ -244,36 +243,12 @@ namespace OpcUaStackCore
     bool
     SignedSoftwareCertificate::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "CertificateData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SignedSoftwareCertificate decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!certificateData_.jsonDecode(*tree)) {
-            Log(Error, "SignedSoftwareCertificate decode json error - decode failed")
-                .parameter("Element", "CertificateData");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, certificateData_, "CertificateData");
+        rc = rc & jsonObjectDecode(pt, signature_, "Signature");
     
-        elementName = "Signature";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SignedSoftwareCertificate decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!signature_.jsonDecode(*tree)) {
-            Log(Error, "SignedSoftwareCertificate decode json error - decode failed")
-                .parameter("Element", "Signature");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

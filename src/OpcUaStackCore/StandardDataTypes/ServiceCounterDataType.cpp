@@ -229,7 +229,6 @@ namespace OpcUaStackCore
     ServiceCounterDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, totalCount_, "TotalCount");
         rc = rc & jsonNumberEncode(pt, errorCount_, "ErrorCount");
@@ -240,36 +239,12 @@ namespace OpcUaStackCore
     bool
     ServiceCounterDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "TotalCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServiceCounterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, totalCount_)) {
-            Log(Error, "ServiceCounterDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, totalCount_, "TotalCount");
+        rc = rc & jsonNumberDecode(pt, errorCount_, "ErrorCount");
     
-        elementName = "ErrorCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServiceCounterDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, errorCount_)) {
-            Log(Error, "ServiceCounterDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

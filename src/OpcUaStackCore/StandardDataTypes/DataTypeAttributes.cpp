@@ -202,7 +202,6 @@ namespace OpcUaStackCore
     DataTypeAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, isAbstract_, "IsAbstract");
     
@@ -212,23 +211,11 @@ namespace OpcUaStackCore
     bool
     DataTypeAttributes::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "IsAbstract";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataTypeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, isAbstract_)) {
-            Log(Error, "DataTypeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, isAbstract_, "IsAbstract");
     
-        return true;
+        return rc;
     }
     
     void

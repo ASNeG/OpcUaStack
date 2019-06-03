@@ -426,7 +426,6 @@ namespace OpcUaStackCore
     EndpointDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl");
         rc = rc & jsonObjectEncode(pt, server_, "Server");
@@ -443,114 +442,18 @@ namespace OpcUaStackCore
     bool
     EndpointDescription::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "EndpointUrl";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!endpointUrl_.jsonDecode(*tree)) {
-            Log(Error, "EndpointDescription decode json error - decode failed")
-                .parameter("Element", "EndpointUrl");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, endpointUrl_, "EndpointUrl");
+        rc = rc & jsonObjectDecode(pt, server_, "Server");
+        rc = rc & jsonObjectDecode(pt, serverCertificate_, "ServerCertificate");
+        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
+        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri");
+        rc = rc & jsonObjectDecode(pt, userIdentityTokens_, "UserIdentityTokens");
+        rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri");
+        rc = rc & jsonNumberDecode(pt, securityLevel_, "SecurityLevel");
     
-        elementName = "Server";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!server_.jsonDecode(*tree)) {
-            Log(Error, "EndpointDescription decode json error - decode failed")
-                .parameter("Element", "Server");
-            return false;
-        }
-    
-        elementName = "ServerCertificate";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!serverCertificate_.jsonDecode(*tree)) {
-            Log(Error, "EndpointDescription decode json error - decode failed")
-                .parameter("Element", "ServerCertificate");
-            return false;
-        }
-    
-        elementName = "SecurityMode";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityMode_.jsonDecode(*tree)) {
-            Log(Error, "EndpointDescription decode json error - decode failed")
-                .parameter("Element", "SecurityMode");
-            return false;
-        }
-    
-        elementName = "SecurityPolicyUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityPolicyUri_.jsonDecode(*tree)) {
-            Log(Error, "EndpointDescription decode json error - decode failed")
-                .parameter("Element", "SecurityPolicyUri");
-            return false;
-        }
-    
-        elementName = "UserIdentityTokens";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!userIdentityTokens_.jsonDecode(*tree, "")) {
-            Log(Error, "EndpointDescription decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TransportProfileUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!transportProfileUri_.jsonDecode(*tree)) {
-            Log(Error, "EndpointDescription decode json error - decode failed")
-                .parameter("Element", "TransportProfileUri");
-            return false;
-        }
-    
-        elementName = "SecurityLevel";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, securityLevel_)) {
-            Log(Error, "EndpointDescription decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

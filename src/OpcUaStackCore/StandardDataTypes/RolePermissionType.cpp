@@ -228,7 +228,6 @@ namespace OpcUaStackCore
     RolePermissionType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, roleId_, "RoleId");
         rc = rc & jsonNumberEncode(pt, permissions_, "Permissions");
@@ -239,36 +238,12 @@ namespace OpcUaStackCore
     bool
     RolePermissionType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "RoleId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RolePermissionType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!roleId_.jsonDecode(*tree)) {
-            Log(Error, "RolePermissionType decode json error - decode failed")
-                .parameter("Element", "RoleId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, roleId_, "RoleId");
+        rc = rc & jsonNumberDecode(pt, permissions_, "Permissions");
     
-        elementName = "Permissions";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RolePermissionType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, permissions_)) {
-            Log(Error, "RolePermissionType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

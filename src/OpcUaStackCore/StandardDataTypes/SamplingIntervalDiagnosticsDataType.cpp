@@ -295,7 +295,6 @@ namespace OpcUaStackCore
     SamplingIntervalDiagnosticsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, samplingInterval_, "SamplingInterval");
         rc = rc & jsonNumberEncode(pt, monitoredItemCount_, "MonitoredItemCount");
@@ -308,62 +307,14 @@ namespace OpcUaStackCore
     bool
     SamplingIntervalDiagnosticsDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "SamplingInterval";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, samplingInterval_)) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, samplingInterval_, "SamplingInterval");
+        rc = rc & jsonNumberDecode(pt, monitoredItemCount_, "MonitoredItemCount");
+        rc = rc & jsonNumberDecode(pt, maxMonitoredItemCount_, "MaxMonitoredItemCount");
+        rc = rc & jsonNumberDecode(pt, disabledMonitoredItemCount_, "DisabledMonitoredItemCount");
     
-        elementName = "MonitoredItemCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, monitoredItemCount_)) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxMonitoredItemCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxMonitoredItemCount_)) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DisabledMonitoredItemCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, disabledMonitoredItemCount_)) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

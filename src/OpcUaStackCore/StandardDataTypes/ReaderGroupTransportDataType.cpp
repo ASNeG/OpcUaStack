@@ -163,7 +163,6 @@ namespace OpcUaStackCore
     ReaderGroupTransportDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
     
         return rc;
@@ -172,10 +171,10 @@ namespace OpcUaStackCore
     bool
     ReaderGroupTransportDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        return true;
+    
+        return rc;
     }
     
     void

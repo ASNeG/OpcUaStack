@@ -323,7 +323,6 @@ namespace OpcUaStackCore
     BrokerDataSetReaderTransportDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, queueName_, "QueueName");
         rc = rc & jsonObjectEncode(pt, resourceUri_, "ResourceUri");
@@ -337,75 +336,15 @@ namespace OpcUaStackCore
     bool
     BrokerDataSetReaderTransportDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "QueueName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetReaderTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!queueName_.jsonDecode(*tree)) {
-            Log(Error, "BrokerDataSetReaderTransportDataType decode json error - decode failed")
-                .parameter("Element", "QueueName");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, queueName_, "QueueName");
+        rc = rc & jsonObjectDecode(pt, resourceUri_, "ResourceUri");
+        rc = rc & jsonObjectDecode(pt, authenticationProfileUri_, "AuthenticationProfileUri");
+        rc = rc & jsonObjectDecode(pt, requestedDeliveryGuarantee_, "RequestedDeliveryGuarantee");
+        rc = rc & jsonObjectDecode(pt, metaDataQueueName_, "MetaDataQueueName");
     
-        elementName = "ResourceUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetReaderTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!resourceUri_.jsonDecode(*tree)) {
-            Log(Error, "BrokerDataSetReaderTransportDataType decode json error - decode failed")
-                .parameter("Element", "ResourceUri");
-            return false;
-        }
-    
-        elementName = "AuthenticationProfileUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetReaderTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!authenticationProfileUri_.jsonDecode(*tree)) {
-            Log(Error, "BrokerDataSetReaderTransportDataType decode json error - decode failed")
-                .parameter("Element", "AuthenticationProfileUri");
-            return false;
-        }
-    
-        elementName = "RequestedDeliveryGuarantee";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetReaderTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!requestedDeliveryGuarantee_.jsonDecode(*tree)) {
-            Log(Error, "BrokerDataSetReaderTransportDataType decode json error - decode failed")
-                .parameter("Element", "RequestedDeliveryGuarantee");
-            return false;
-        }
-    
-        elementName = "MetaDataQueueName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetReaderTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!metaDataQueueName_.jsonDecode(*tree)) {
-            Log(Error, "BrokerDataSetReaderTransportDataType decode json error - decode failed")
-                .parameter("Element", "MetaDataQueueName");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

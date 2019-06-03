@@ -648,7 +648,6 @@ namespace OpcUaStackCore
     DataSetReaderDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, name_, "Name");
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
@@ -672,205 +671,25 @@ namespace OpcUaStackCore
     bool
     DataSetReaderDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
+        rc = rc & jsonObjectDecode(pt, publisherId_, "PublisherId");
+        rc = rc & jsonNumberDecode(pt, writerGroupId_, "WriterGroupId");
+        rc = rc & jsonNumberDecode(pt, dataSetWriterId_, "DataSetWriterId");
+        rc = rc & jsonObjectDecode(pt, dataSetMetaData_, "DataSetMetaData");
+        rc = rc & jsonNumberDecode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
+        rc = rc & jsonNumberDecode(pt, messageReceiveTimeout_, "MessageReceiveTimeout");
+        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
+        rc = rc & jsonObjectDecode(pt, securityGroupId_, "SecurityGroupId");
+        rc = rc & jsonObjectDecode(pt, securityKeyServices_, "SecurityKeyServices");
+        rc = rc & jsonObjectDecode(pt, dataSetReaderProperties_, "DataSetReaderProperties");
+        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
+        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings");
+        rc = rc & jsonObjectDecode(pt, subscribedDataSet_, "SubscribedDataSet");
     
-        elementName = "Enabled";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, enabled_)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "PublisherId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!publisherId_.jsonDecode(*tree)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", "PublisherId");
-            return false;
-        }
-    
-        elementName = "WriterGroupId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, writerGroupId_)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetWriterId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, dataSetWriterId_)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetMetaData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetMetaData_.jsonDecode(*tree)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", "DataSetMetaData");
-            return false;
-        }
-    
-        elementName = "DataSetFieldContentMask";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, dataSetFieldContentMask_)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MessageReceiveTimeout";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, messageReceiveTimeout_)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SecurityMode";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityMode_.jsonDecode(*tree)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", "SecurityMode");
-            return false;
-        }
-    
-        elementName = "SecurityGroupId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityGroupId_.jsonDecode(*tree)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", "SecurityGroupId");
-            return false;
-        }
-    
-        elementName = "SecurityKeyServices";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityKeyServices_.jsonDecode(*tree, "")) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetReaderProperties";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetReaderProperties_.jsonDecode(*tree, "")) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TransportSettings";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!transportSettings_.jsonDecode(*tree)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", "TransportSettings");
-            return false;
-        }
-    
-        elementName = "MessageSettings";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!messageSettings_.jsonDecode(*tree)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", "MessageSettings");
-            return false;
-        }
-    
-        elementName = "SubscribedDataSet";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetReaderDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!subscribedDataSet_.jsonDecode(*tree)) {
-            Log(Error, "DataSetReaderDataType decode json error - decode failed")
-                .parameter("Element", "SubscribedDataSet");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

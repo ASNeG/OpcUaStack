@@ -460,7 +460,6 @@ namespace OpcUaStackCore
     EndpointConfiguration::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, operationTimeout_, "OperationTimeout");
         rc = rc & jsonNumberEncode(pt, useBinaryEncoding_, "UseBinaryEncoding");
@@ -478,127 +477,19 @@ namespace OpcUaStackCore
     bool
     EndpointConfiguration::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "OperationTimeout";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointConfiguration decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, operationTimeout_)) {
-            Log(Error, "EndpointConfiguration decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, operationTimeout_, "OperationTimeout");
+        rc = rc & jsonNumberDecode(pt, useBinaryEncoding_, "UseBinaryEncoding");
+        rc = rc & jsonNumberDecode(pt, maxStringLength_, "MaxStringLength");
+        rc = rc & jsonNumberDecode(pt, maxByteStringLength_, "MaxByteStringLength");
+        rc = rc & jsonNumberDecode(pt, maxArrayLength_, "MaxArrayLength");
+        rc = rc & jsonNumberDecode(pt, maxMessageSize_, "MaxMessageSize");
+        rc = rc & jsonNumberDecode(pt, maxBufferSize_, "MaxBufferSize");
+        rc = rc & jsonNumberDecode(pt, channelLifetime_, "ChannelLifetime");
+        rc = rc & jsonNumberDecode(pt, securityTokenLifetime_, "SecurityTokenLifetime");
     
-        elementName = "UseBinaryEncoding";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointConfiguration decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, useBinaryEncoding_)) {
-            Log(Error, "EndpointConfiguration decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxStringLength";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointConfiguration decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxStringLength_)) {
-            Log(Error, "EndpointConfiguration decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxByteStringLength";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointConfiguration decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxByteStringLength_)) {
-            Log(Error, "EndpointConfiguration decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxArrayLength";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointConfiguration decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxArrayLength_)) {
-            Log(Error, "EndpointConfiguration decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxMessageSize";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointConfiguration decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxMessageSize_)) {
-            Log(Error, "EndpointConfiguration decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxBufferSize";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointConfiguration decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxBufferSize_)) {
-            Log(Error, "EndpointConfiguration decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ChannelLifetime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointConfiguration decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, channelLifetime_)) {
-            Log(Error, "EndpointConfiguration decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SecurityTokenLifetime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointConfiguration decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, securityTokenLifetime_)) {
-            Log(Error, "EndpointConfiguration decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -291,7 +291,6 @@ namespace OpcUaStackCore
     EndpointType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl");
         rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
@@ -304,62 +303,14 @@ namespace OpcUaStackCore
     bool
     EndpointType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "EndpointUrl";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!endpointUrl_.jsonDecode(*tree)) {
-            Log(Error, "EndpointType decode json error - decode failed")
-                .parameter("Element", "EndpointUrl");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, endpointUrl_, "EndpointUrl");
+        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
+        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri");
+        rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri");
     
-        elementName = "SecurityMode";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityMode_.jsonDecode(*tree)) {
-            Log(Error, "EndpointType decode json error - decode failed")
-                .parameter("Element", "SecurityMode");
-            return false;
-        }
-    
-        elementName = "SecurityPolicyUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityPolicyUri_.jsonDecode(*tree)) {
-            Log(Error, "EndpointType decode json error - decode failed")
-                .parameter("Element", "SecurityPolicyUri");
-            return false;
-        }
-    
-        elementName = "TransportProfileUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EndpointType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!transportProfileUri_.jsonDecode(*tree)) {
-            Log(Error, "EndpointType decode json error - decode failed")
-                .parameter("Element", "TransportProfileUri");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

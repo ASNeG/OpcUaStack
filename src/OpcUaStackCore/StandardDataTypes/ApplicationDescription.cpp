@@ -393,7 +393,6 @@ namespace OpcUaStackCore
     ApplicationDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, applicationUri_, "ApplicationUri");
         rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri");
@@ -409,101 +408,17 @@ namespace OpcUaStackCore
     bool
     ApplicationDescription::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "ApplicationUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ApplicationDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!applicationUri_.jsonDecode(*tree)) {
-            Log(Error, "ApplicationDescription decode json error - decode failed")
-                .parameter("Element", "ApplicationUri");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, applicationUri_, "ApplicationUri");
+        rc = rc & jsonObjectDecode(pt, productUri_, "ProductUri");
+        rc = rc & jsonObjectDecode(pt, applicationName_, "ApplicationName");
+        rc = rc & jsonObjectDecode(pt, applicationType_, "ApplicationType");
+        rc = rc & jsonObjectDecode(pt, gatewayServerUri_, "GatewayServerUri");
+        rc = rc & jsonObjectDecode(pt, discoveryProfileUri_, "DiscoveryProfileUri");
+        rc = rc & jsonObjectDecode(pt, discoveryUrls_, "DiscoveryUrls");
     
-        elementName = "ProductUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ApplicationDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!productUri_.jsonDecode(*tree)) {
-            Log(Error, "ApplicationDescription decode json error - decode failed")
-                .parameter("Element", "ProductUri");
-            return false;
-        }
-    
-        elementName = "ApplicationName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ApplicationDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!applicationName_.jsonDecode(*tree)) {
-            Log(Error, "ApplicationDescription decode json error - decode failed")
-                .parameter("Element", "ApplicationName");
-            return false;
-        }
-    
-        elementName = "ApplicationType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ApplicationDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!applicationType_.jsonDecode(*tree)) {
-            Log(Error, "ApplicationDescription decode json error - decode failed")
-                .parameter("Element", "ApplicationType");
-            return false;
-        }
-    
-        elementName = "GatewayServerUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ApplicationDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!gatewayServerUri_.jsonDecode(*tree)) {
-            Log(Error, "ApplicationDescription decode json error - decode failed")
-                .parameter("Element", "GatewayServerUri");
-            return false;
-        }
-    
-        elementName = "DiscoveryProfileUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ApplicationDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!discoveryProfileUri_.jsonDecode(*tree)) {
-            Log(Error, "ApplicationDescription decode json error - decode failed")
-                .parameter("Element", "DiscoveryProfileUri");
-            return false;
-        }
-    
-        elementName = "DiscoveryUrls";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ApplicationDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!discoveryUrls_.jsonDecode(*tree, "")) {
-            Log(Error, "ApplicationDescription decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

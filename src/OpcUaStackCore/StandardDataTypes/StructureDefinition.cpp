@@ -291,7 +291,6 @@ namespace OpcUaStackCore
     StructureDefinition::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, defaultEncodingId_, "DefaultEncodingId");
         rc = rc & jsonObjectEncode(pt, baseDataType_, "BaseDataType");
@@ -304,62 +303,14 @@ namespace OpcUaStackCore
     bool
     StructureDefinition::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "DefaultEncodingId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureDefinition decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!defaultEncodingId_.jsonDecode(*tree)) {
-            Log(Error, "StructureDefinition decode json error - decode failed")
-                .parameter("Element", "DefaultEncodingId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, defaultEncodingId_, "DefaultEncodingId");
+        rc = rc & jsonObjectDecode(pt, baseDataType_, "BaseDataType");
+        rc = rc & jsonObjectDecode(pt, structureType_, "StructureType");
+        rc = rc & jsonObjectDecode(pt, fields_, "Fields");
     
-        elementName = "BaseDataType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureDefinition decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!baseDataType_.jsonDecode(*tree)) {
-            Log(Error, "StructureDefinition decode json error - decode failed")
-                .parameter("Element", "BaseDataType");
-            return false;
-        }
-    
-        elementName = "StructureType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureDefinition decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!structureType_.jsonDecode(*tree)) {
-            Log(Error, "StructureDefinition decode json error - decode failed")
-                .parameter("Element", "StructureType");
-            return false;
-        }
-    
-        elementName = "Fields";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureDefinition decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!fields_.jsonDecode(*tree, "")) {
-            Log(Error, "StructureDefinition decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

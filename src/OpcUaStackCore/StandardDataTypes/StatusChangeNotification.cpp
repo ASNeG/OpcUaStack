@@ -227,7 +227,6 @@ namespace OpcUaStackCore
     StatusChangeNotification::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, status_, "Status");
         rc = rc & jsonObjectEncode(pt, diagnosticInfo_, "DiagnosticInfo");
@@ -238,36 +237,12 @@ namespace OpcUaStackCore
     bool
     StatusChangeNotification::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Status";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StatusChangeNotification decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!status_.jsonDecode(*tree)) {
-            Log(Error, "StatusChangeNotification decode json error - decode failed")
-                .parameter("Element", "Status");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, status_, "Status");
+        rc = rc & jsonObjectDecode(pt, diagnosticInfo_, "DiagnosticInfo");
     
-        elementName = "DiagnosticInfo";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StatusChangeNotification decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!diagnosticInfo_.jsonDecode(*tree)) {
-            Log(Error, "StatusChangeNotification decode json error - decode failed")
-                .parameter("Element", "DiagnosticInfo");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -265,7 +265,6 @@ namespace OpcUaStackCore
     UserNameIdentityToken::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, userName_, "UserName");
         rc = rc & jsonObjectEncode(pt, password_, "Password");
@@ -277,49 +276,13 @@ namespace OpcUaStackCore
     bool
     UserNameIdentityToken::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "UserName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UserNameIdentityToken decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!userName_.jsonDecode(*tree)) {
-            Log(Error, "UserNameIdentityToken decode json error - decode failed")
-                .parameter("Element", "UserName");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, userName_, "UserName");
+        rc = rc & jsonObjectDecode(pt, password_, "Password");
+        rc = rc & jsonObjectDecode(pt, encryptionAlgorithm_, "EncryptionAlgorithm");
     
-        elementName = "Password";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UserNameIdentityToken decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!password_.jsonDecode(*tree)) {
-            Log(Error, "UserNameIdentityToken decode json error - decode failed")
-                .parameter("Element", "Password");
-            return false;
-        }
-    
-        elementName = "EncryptionAlgorithm";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UserNameIdentityToken decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!encryptionAlgorithm_.jsonDecode(*tree)) {
-            Log(Error, "UserNameIdentityToken decode json error - decode failed")
-                .parameter("Element", "EncryptionAlgorithm");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -201,7 +201,6 @@ namespace OpcUaStackCore
     UserIdentityToken::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, policyId_, "PolicyId");
     
@@ -211,23 +210,11 @@ namespace OpcUaStackCore
     bool
     UserIdentityToken::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "PolicyId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UserIdentityToken decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!policyId_.jsonDecode(*tree)) {
-            Log(Error, "UserIdentityToken decode json error - decode failed")
-                .parameter("Element", "PolicyId");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, policyId_, "PolicyId");
     
-        return true;
+        return rc;
     }
     
     void

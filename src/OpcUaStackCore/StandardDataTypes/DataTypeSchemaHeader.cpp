@@ -291,7 +291,6 @@ namespace OpcUaStackCore
     DataTypeSchemaHeader::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, namespaces_, "Namespaces");
         rc = rc & jsonObjectEncode(pt, structureDataTypes_, "StructureDataTypes");
@@ -304,62 +303,14 @@ namespace OpcUaStackCore
     bool
     DataTypeSchemaHeader::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Namespaces";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataTypeSchemaHeader decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!namespaces_.jsonDecode(*tree, "")) {
-            Log(Error, "DataTypeSchemaHeader decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, namespaces_, "Namespaces");
+        rc = rc & jsonObjectDecode(pt, structureDataTypes_, "StructureDataTypes");
+        rc = rc & jsonObjectDecode(pt, enumDataTypes_, "EnumDataTypes");
+        rc = rc & jsonObjectDecode(pt, simpleDataTypes_, "SimpleDataTypes");
     
-        elementName = "StructureDataTypes";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataTypeSchemaHeader decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!structureDataTypes_.jsonDecode(*tree, "")) {
-            Log(Error, "DataTypeSchemaHeader decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "EnumDataTypes";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataTypeSchemaHeader decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!enumDataTypes_.jsonDecode(*tree, "")) {
-            Log(Error, "DataTypeSchemaHeader decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SimpleDataTypes";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataTypeSchemaHeader decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!simpleDataTypes_.jsonDecode(*tree, "")) {
-            Log(Error, "DataTypeSchemaHeader decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

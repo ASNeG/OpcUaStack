@@ -292,7 +292,6 @@ namespace OpcUaStackCore
     EUInformation::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, namespaceUri_, "NamespaceUri");
         rc = rc & jsonNumberEncode(pt, unitId_, "UnitId");
@@ -305,62 +304,14 @@ namespace OpcUaStackCore
     bool
     EUInformation::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "NamespaceUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EUInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!namespaceUri_.jsonDecode(*tree)) {
-            Log(Error, "EUInformation decode json error - decode failed")
-                .parameter("Element", "NamespaceUri");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, namespaceUri_, "NamespaceUri");
+        rc = rc & jsonNumberDecode(pt, unitId_, "UnitId");
+        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName");
+        rc = rc & jsonObjectDecode(pt, description_, "Description");
     
-        elementName = "UnitId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EUInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, unitId_)) {
-            Log(Error, "EUInformation decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DisplayName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EUInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!displayName_.jsonDecode(*tree)) {
-            Log(Error, "EUInformation decode json error - decode failed")
-                .parameter("Element", "DisplayName");
-            return false;
-        }
-    
-        elementName = "Description";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EUInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!description_.jsonDecode(*tree)) {
-            Log(Error, "EUInformation decode json error - decode failed")
-                .parameter("Element", "Description");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

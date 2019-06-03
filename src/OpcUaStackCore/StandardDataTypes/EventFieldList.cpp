@@ -228,7 +228,6 @@ namespace OpcUaStackCore
     EventFieldList::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonNumberEncode(pt, clientHandle_, "ClientHandle");
         rc = rc & jsonObjectEncode(pt, eventFields_, "EventFields");
@@ -239,36 +238,12 @@ namespace OpcUaStackCore
     bool
     EventFieldList::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "ClientHandle";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EventFieldList decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, clientHandle_)) {
-            Log(Error, "EventFieldList decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonNumberDecode(pt, clientHandle_, "ClientHandle");
+        rc = rc & jsonObjectDecode(pt, eventFields_, "EventFields");
     
-        elementName = "EventFields";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EventFieldList decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!eventFields_.jsonDecode(*tree, "")) {
-            Log(Error, "EventFieldList decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

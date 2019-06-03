@@ -259,7 +259,6 @@ namespace OpcUaStackCore
     Annotation::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, message_, "Message");
         rc = rc & jsonObjectEncode(pt, userName_, "UserName");
@@ -271,49 +270,13 @@ namespace OpcUaStackCore
     bool
     Annotation::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "Message";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Annotation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!message_.jsonDecode(*tree)) {
-            Log(Error, "Annotation decode json error - decode failed")
-                .parameter("Element", "Message");
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, message_, "Message");
+        rc = rc & jsonObjectDecode(pt, userName_, "UserName");
+        rc = rc & jsonObjectDecode(pt, annotationTime_, "AnnotationTime");
     
-        elementName = "UserName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Annotation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!userName_.jsonDecode(*tree)) {
-            Log(Error, "Annotation decode json error - decode failed")
-                .parameter("Element", "UserName");
-            return false;
-        }
-    
-        elementName = "AnnotationTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Annotation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!annotationTime_.jsonDecode(*tree)) {
-            Log(Error, "Annotation decode json error - decode failed")
-                .parameter("Element", "AnnotationTime");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

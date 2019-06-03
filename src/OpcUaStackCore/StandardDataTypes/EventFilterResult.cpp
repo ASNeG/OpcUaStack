@@ -259,7 +259,6 @@ namespace OpcUaStackCore
     EventFilterResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
         bool rc = true;
-        boost::property_tree::ptree elementTree;
     
         rc = rc & jsonObjectEncode(pt, selectClauseResults_, "SelectClauseResults");
         rc = rc & jsonObjectEncode(pt, selectClauseDiagnosticInfos_, "SelectClauseDiagnosticInfos");
@@ -271,49 +270,13 @@ namespace OpcUaStackCore
     bool
     EventFilterResult::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        std::string elementName;
-        boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = true;
     
-        elementName = "SelectClauseResults";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EventFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!selectClauseResults_.jsonDecode(*tree, "")) {
-            Log(Error, "EventFilterResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
+        rc = rc & jsonObjectDecode(pt, selectClauseResults_, "SelectClauseResults");
+        rc = rc & jsonObjectDecode(pt, selectClauseDiagnosticInfos_, "SelectClauseDiagnosticInfos");
+        rc = rc & jsonObjectDecode(pt, whereClauseResult_, "WhereClauseResult");
     
-        elementName = "SelectClauseDiagnosticInfos";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EventFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!selectClauseDiagnosticInfos_.jsonDecode(*tree, "")) {
-            Log(Error, "EventFilterResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "WhereClauseResult";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EventFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!whereClauseResult_.jsonDecode(*tree)) {
-            Log(Error, "EventFilterResult decode json error - decode failed")
-                .parameter("Element", "WhereClauseResult");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void
