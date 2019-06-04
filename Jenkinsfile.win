@@ -6,11 +6,6 @@ pipeline {
         sh 'vagrant up --provision'
       }
     }
-
-    stage('test') {
-      steps {
-      }
-    }
   }
 
   post {
