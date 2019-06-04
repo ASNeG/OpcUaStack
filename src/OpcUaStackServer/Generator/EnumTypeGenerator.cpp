@@ -984,13 +984,7 @@ namespace OpcUaStackServer
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::jsonEncodeImpl(boost::property_tree::ptree& pt) const" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    if(!JsonNumber::jsonEncode(pt, value_))" << std::endl;
-		ss << prefix << "    {" << std::endl;
-		ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
-		ss << prefix << "		     .parameter(\"Element\", \"Value\");" << std::endl;
-		ss << prefix << "       return false;" << std::endl;
-	    ss << prefix << "    }" << std::endl;
-	    ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "    return jsonNumberEncode(pt, value_);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -1006,11 +1000,7 @@ namespace OpcUaStackServer
 		ss << prefix <<  "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::jsonDecodeImpl(const boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    if(!JsonNumber::jsonDecode(pt, value_)) {" << std::endl;
-		ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\");" << std::endl;
-		ss << prefix << "        return false;" << std::endl;
-		ss << prefix << "    }" << std::endl;
-		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "    return jsonNumberDecode(pt, value_);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

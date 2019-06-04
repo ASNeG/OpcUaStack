@@ -271,23 +271,13 @@ namespace OpcUaStackCore
     bool
     NodeClass::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        if(!JsonNumber::jsonEncode(pt, value_))
-        {
-    	     Log(Error, "NodeClass json encoder error")
-    		     .parameter("Element", "Value");
-           return false;
-        }
-        return true;
+        return jsonNumberEncode(pt, value_);
     }
     
     bool
     NodeClass::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        if(!JsonNumber::jsonDecode(pt, value_)) {
-            Log(Error, "NodeClass decode json error - decode failed");
-            return false;
-        }
-        return true;
+        return jsonNumberDecode(pt, value_);
     }
     
     void

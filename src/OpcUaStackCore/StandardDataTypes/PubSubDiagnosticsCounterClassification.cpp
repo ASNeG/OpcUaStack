@@ -243,23 +243,13 @@ namespace OpcUaStackCore
     bool
     PubSubDiagnosticsCounterClassification::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        if(!JsonNumber::jsonEncode(pt, value_))
-        {
-    	     Log(Error, "PubSubDiagnosticsCounterClassification json encoder error")
-    		     .parameter("Element", "Value");
-           return false;
-        }
-        return true;
+        return jsonNumberEncode(pt, value_);
     }
     
     bool
     PubSubDiagnosticsCounterClassification::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        if(!JsonNumber::jsonDecode(pt, value_)) {
-            Log(Error, "PubSubDiagnosticsCounterClassification decode json error - decode failed");
-            return false;
-        }
-        return true;
+        return jsonNumberDecode(pt, value_);
     }
     
     void

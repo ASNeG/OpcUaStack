@@ -74,7 +74,7 @@ namespace OpcUaStackCore
          */
         bool jsonDecode(const boost::property_tree::ptree& pt);
 
-	protected:
+      protected:
         virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const = 0;
         virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt) = 0;
 
@@ -100,6 +100,12 @@ namespace OpcUaStackCore
         }
 
         template <typename  T>
+        bool jsonNumberEncode(boost::property_tree::ptree &pt, T value) const
+        {
+            return jsonNumberEncode(pt, value);
+        }
+
+        template <typename  T>
         bool jsonNumberDecode(const boost::property_tree::ptree &pt, T& value, const std::string &element, bool optional, T defaultValue)
         {
             if (!JsonNumber::jsonDecode(pt, value, element)) {
@@ -119,6 +125,12 @@ namespace OpcUaStackCore
         bool jsonNumberDecode(const boost::property_tree::ptree &pt, T& value, const std::string &element)
         {
             return jsonNumberDecode(pt, value, element, false, T());
+        }
+
+        template <typename  T>
+        bool jsonNumberDecode(const boost::property_tree::ptree &pt, T& value)
+        {
+            return jsonNumberDecode(pt, value);
         }
 
 

@@ -243,23 +243,13 @@ namespace OpcUaStackCore
     bool
     SecurityTokenRequestType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        if(!JsonNumber::jsonEncode(pt, value_))
-        {
-    	     Log(Error, "SecurityTokenRequestType json encoder error")
-    		     .parameter("Element", "Value");
-           return false;
-        }
-        return true;
+        return jsonNumberEncode(pt, value_);
     }
     
     bool
     SecurityTokenRequestType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        if(!JsonNumber::jsonDecode(pt, value_)) {
-            Log(Error, "SecurityTokenRequestType decode json error - decode failed");
-            return false;
-        }
-        return true;
+        return jsonNumberDecode(pt, value_);
     }
     
     void

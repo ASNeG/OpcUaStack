@@ -259,23 +259,13 @@ namespace OpcUaStackCore
     bool
     RedundancySupport::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        if(!JsonNumber::jsonEncode(pt, value_))
-        {
-    	     Log(Error, "RedundancySupport json encoder error")
-    		     .parameter("Element", "Value");
-           return false;
-        }
-        return true;
+        return jsonNumberEncode(pt, value_);
     }
     
     bool
     RedundancySupport::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        if(!JsonNumber::jsonDecode(pt, value_)) {
-            Log(Error, "RedundancySupport decode json error - decode failed");
-            return false;
-        }
-        return true;
+        return jsonNumberDecode(pt, value_);
     }
     
     void
