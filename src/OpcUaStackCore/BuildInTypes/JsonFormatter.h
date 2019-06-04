@@ -134,10 +134,10 @@ namespace OpcUaStackCore
         }
 
 
-        bool jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr& valuePtr, const std::string &element, bool optional) const;
-        bool jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr& valuePtr, const std::string &element) const;
-        bool jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr& valuePtr, const std::string &element, bool optional);
-        bool jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr& valuePtr, const std::string &element);
+        bool jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional) const;
+        bool jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element) const;
+        bool jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional);
+        bool jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element);
 
         bool jsonObjectEncode(boost::property_tree::ptree &pt, const JsonFormatter& valuePtr, const std::string &element, bool optional) const;
         bool jsonObjectEncode(boost::property_tree::ptree &pt, const JsonFormatter& valuePtr, const std::string &element) const;

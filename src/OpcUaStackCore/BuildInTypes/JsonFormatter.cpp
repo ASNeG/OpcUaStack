@@ -75,26 +75,26 @@ namespace OpcUaStackCore
     }
 
     bool
-    JsonFormatter::jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr& valuePtr, const std::string &element, bool optional) const
+    JsonFormatter::jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional) const
     {
         return (valuePtr && jsonObjectEncode(pt, *valuePtr, element)) || optional;
     }
 
 
     bool
-    JsonFormatter::jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr& valuePtr, const std::string &element) const
+    JsonFormatter::jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element) const
     {
         return jsonObjectSPtrEncode(pt, valuePtr, element, false);
     }
 
     bool
-    JsonFormatter::jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr& valuePtr, const std::string &element, bool optional)
+    JsonFormatter::jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional)
     {
         return (valuePtr && jsonObjectDecode(pt, *valuePtr, element)) || optional;
     }
 
     bool
-    JsonFormatter::jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr& valuePtr, const std::string &element)
+    JsonFormatter::jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element)
     {
         return jsonObjectSPtrDecode(pt, valuePtr, element, false);
     }
