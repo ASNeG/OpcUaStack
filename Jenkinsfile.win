@@ -1,0 +1,21 @@
+pipeline {
+  agent any
+  stages {
+    stage('build') {
+      steps {
+        sh 'vagrant up --provision'
+      }
+    }
+
+    stage('test') {
+      steps {
+      }
+    }
+  }
+
+  post {
+    always {
+      sh 'vagrant halt'
+    }
+  }
+}
