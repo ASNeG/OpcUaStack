@@ -3,7 +3,9 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sh 'vagrant up --provision'
+        sh 'vagrant up'
+        sh 'vagrant powershell -c ".\\build.bat -t local -B Release -i C:\\ASNeG -vs \"Visual Studio 15 2017 Win64\"'
+        sh 'vagnrat powershell -c ".\\build.bat -t tst -B Release -s C:\\ASNeG -vs \"Visual Studio 15 2017 Win64\"'
       }
     }
   }

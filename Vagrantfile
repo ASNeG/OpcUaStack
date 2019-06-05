@@ -27,9 +27,6 @@ function Invoke-BatchFile
 Invoke-BatchFile "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat" amd64
 cd C:\\vagrant
 
-set CMAKE_VS_PLATFORM_NAME=Win64
-.\\build.bat -t local -B Release -i C:\\ASNeG -vs "Visual Studio 15 2017 Win64"
-.\\build.bat -t tst -B Release -s C:\\ASNeG -vs "Visual Studio 15 2017 Win64"
 
 SCRIPT
 
