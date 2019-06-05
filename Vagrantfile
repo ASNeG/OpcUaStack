@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
   config.vm.guest = :windows
   config.vm.communicator = :winrm
   config.vm.box = "flipback/asneg-dev-tool"
-  config.vm.box_version = "1.1.0"
+  config.vm.box_version = "1.1.1"
   config.vm.provision "shell",  inline: $script
 
   config.ssh.insert_key = false
