@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 2.8.9)
 project	(ProjectName)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 11)
+cmake_policy(SET CMP0053 OLD)
 
 
 # ----------------------------------------------------------------------------

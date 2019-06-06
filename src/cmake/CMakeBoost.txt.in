@@ -28,9 +28,9 @@ find_package(
 )
 
 message(STATUS "Boost library")
-message(STATUS "  version major: ${Boost_MAJOR_VERSION}")
-message(STATUS "  version minor: ${Boost_MINOR_VERSION}")
-message(STATUS "  version subminor: ${Boost_SUBMINOR_VERSION}")
+message(STATUS "  version major: @Boost_MAJOR_VERSION@")
+message(STATUS "  version minor: @Boost_MINOR_VERSION@")
+message(STATUS "  version subminor: @Boost_SUBMINOR_VERSION@")
 message(STATUS "  include directory: ${Boost_INCLUDE_DIR}")
 message(STATUS "  library directory: ${Boost_LIBRARY_DIR}")
 message(STATUS "  system debug library: ${Boost_SYSTEM_LIBRARY_DEBUG}")

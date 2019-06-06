@@ -10,14 +10,14 @@
 # -----------------------------------------------------------------------------
 find_package(
     OpenSSL 
-    "${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}" 
+    "@OPENSSL_VERSION_MAJOR@.@OPENSSL_VERSION_MINOR@" 
     REQUIRED
 )
 
 message(STATUS "OpenSSL library")
-message(STATUS "  version major: ${OPENSSL_VERSION_MAJOR}")
-message(STATUS "  version minor: ${OPENSSL_VERSION_MINOR}")
-message(STATUS "  version patch: ${OPENSSL_VERSION_PATCH}")
+message(STATUS "  version major: @OPENSSL_VERSION_MAJOR@")
+message(STATUS "  version minor: @OPENSSL_VERSION_MINOR@")
+message(STATUS "  version patch: @OPENSSL_VERSION_PATCH@")
 message(STATUS "  version: ${OPENSSL_VERSION}")
 message(STATUS "  include library: ${OPENSSL_INCLUDE_DIR}")
 message(STATUS "  openssl library: ${OPENSSL_CRYPTO_LIBRARY}")
