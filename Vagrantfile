@@ -13,7 +13,7 @@ function Invoke-BatchFile
     ## For each of them, set the variable in our local environment.
     Get-Content $tempFile | Foreach-Object {
         if ($_ -match "^(.*?)=(.*)$") {
-            Set-Content "env:\$($matches[1])" $matches[2]
+            setx $matches[1] $matches[2]
         }
         else {
             $_
@@ -21,7 +21,7 @@ function Invoke-BatchFile
     }
 
     Remove-Item $tempFile
-    set PreferredToolArchitecture=x64
+    setx PreferredToolArchitecture x64
 }
 
 
