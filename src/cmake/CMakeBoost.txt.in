@@ -22,7 +22,7 @@
 add_definitions(-DBOOST_ALL_DYN_LINK)
 find_package(
     Boost 
-    "@BOOST_VERSION_MAJOR@.@BOOST_VERSION_MINOR@" 
+    "${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}" 
     COMPONENTS system unit_test_framework filesystem thread date_time chrono regex 
     REQUIRED
 )

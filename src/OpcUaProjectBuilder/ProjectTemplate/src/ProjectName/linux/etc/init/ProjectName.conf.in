@@ -54,7 +54,7 @@ end script
 # 
 #  
 #
-exec /usr/bin/OpcUaServer@OPCUASTACK_VERSION_MAJOR@ /etc/OpcUaStack/ProjectName/OpcUaServer.xml 
+exec /usr/bin/OpcUaServer${OPCUASTACK_VERSION_MAJOR} /etc/OpcUaStack/ProjectName/OpcUaServer.xml 
 
 #
 # define the kill signal to shutdown the application
