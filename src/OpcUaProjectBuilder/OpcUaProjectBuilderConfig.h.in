@@ -18,10 +18,10 @@
 #ifndef __OpcUaProjectBuilder_BuildConfig__
 #define __OpcUaProjectBuilder_BuildConfig__
 
-#define VERSION_MAJOR "@VERSION_MAJOR@"
-#define VERSION_MINOR "@VERSION_MINOR@"
-#define VERSION_PATCH "@VERSION_PATCH@"
+#define VERSION_MAJOR "${VERSION_MAJOR}"
+#define VERSION_MINOR "${VERSION_MINOR}"
+#define VERSION_PATCH "${VERSION_PATCH}"
 
-#define DOCKER_TAG "release-@VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@"
+#define DOCKER_TAG "release-${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
 
 #endif

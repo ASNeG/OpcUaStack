@@ -41,9 +41,9 @@ if (WIN32)
     	PROPERTIES OUTPUT_NAME 
     	"OpcUaStackServer${VERSION_MAJOR}"
 	)
-	set(OPCUASTACK_SERVER_LIB_NAME OpcUaStackServer@VERSION_MAJOR@.lib)
+	set(OPCUASTACK_SERVER_LIB_NAME OpcUaStackServer${VERSION_MAJOR}.lib)
 else()
-    set(OPCUASTACK_SERVER_LIB_NAME libOpcUaStackServer.so.@VERSION_MAJOR@)
+    set(OPCUASTACK_SERVER_LIB_NAME libOpcUaStackServer.so.${VERSION_MAJOR})
 endif()
 
 message(STATUS "OpcUaStackServer")
