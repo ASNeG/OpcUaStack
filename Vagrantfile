@@ -21,6 +21,7 @@ function Invoke-BatchFile
     }
 
     Remove-Item $tempFile
+    set PreferredToolArchitecture=x64
 }
 
 
