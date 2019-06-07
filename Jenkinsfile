@@ -6,25 +6,36 @@ pipeline {
         sh 'cppcheck --xml --xml-version=2 ./src 2> cppcheck.xml'
       }
     }
-    stage('build') {
+    stage('build_linux') {
       steps {
         sh 'docker-compose build'
   	    sh 'docker-compose run stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889'
       }
     }
 
-    stage('test') {
+    stage('test_linux') {
       steps {
         sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackCoreTest'
         sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackServerTest'
         sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackClientTest'
       }
     }
+    
+    stage('build_windows') {
+      steps {
+        sleep $[ ( $RANDOM % 10 )]s
+        sh 'vagrant up'
+        sh 'vagrant powershell -c "cd C:\\vagrant; .\\build.bat -t local -B Release -i C:\\ASNeG -vs \\"Visual Studio 15 2017 Win64\\""'
+        sh 'vagrant powershell -c "cd C:\\vagrant; .\\build.bat -t tst -B Release -s C:\\ASNeG -vs \\"Visual Studio 15 2017 Win64\\""'
+      }
+    }
+
   }
 
   post {
     always {
-      sh 'docker-compose down'
+      sh 'docker-compose down --volumes'
+      sh 'vagrant halt'
     }
   }
 }
