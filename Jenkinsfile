@@ -6,10 +6,11 @@ pipeline {
         sh 'cppcheck --xml --xml-version=2 ./src 2> cppcheck.xml'
       }
     }
+
     stage('build_linux') {
       steps {
         sh 'docker-compose build'
-  	    sh 'docker-compose run stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889'
+        sh 'docker-compose run stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889'
       }
     }
 
@@ -23,13 +24,11 @@ pipeline {
     
     stage('build_windows') {
       steps {
-        sh 'sleep $[ ( $RANDOM % 10 )]s'
         sh 'vagrant up'
         sh 'vagrant powershell -c "cd C:\\vagrant; .\\build.bat -t local -B Release -i C:\\ASNeG -vs \\"Visual Studio 15 2017 Win64\\""'
         sh 'vagrant powershell -c "cd C:\\vagrant; .\\build.bat -t tst -B Release -s C:\\ASNeG -vs \\"Visual Studio 15 2017 Win64\\""'
       }
     }
-
   }
 
   post {
