@@ -331,8 +331,6 @@ namespace OpcUaStackCore
 		size_t maxSize(void);
 		size_t freeSize();
 		void clear(void);
-		bool isNull(void);
-		void setNull(void);
 
 		bool set(size_t pos, const T& value);
 		bool set(const T& value);
@@ -350,7 +348,7 @@ namespace OpcUaStackCore
 		template<typename V>
 		    OpcUaArray<T, CODER>& operator=(const V& other);
 
-		void copyTo(OpcUaArray<T, CODER>& array);
+		void copyTo(OpcUaArray<T, CODER>& array) const;
 		bool operator!=(OpcUaArray<T, CODER>& array);
 		bool operator==(OpcUaArray<T, CODER>& array);
 
@@ -385,6 +383,10 @@ namespace OpcUaStackCore
 			const std::string& listElement,
 			Xmlns& xmlns
 		);
+
+	  bool isArray(void) const override;
+	  bool isNull(void) const override;
+      void setNull(void) override;
 
 	  protected:
         bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
@@ -520,7 +522,7 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::isNull(void)
+	OpcUaArray<T, CODER>::isNull(void) const
 	{
 		return isNull_;
 	}
@@ -658,7 +660,7 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	void 
-	OpcUaArray<T, CODER>::copyTo(OpcUaArray<T, CODER>& array)
+	OpcUaArray<T, CODER>::copyTo(OpcUaArray<T, CODER>& array) const
 	{
 		if (isNull_) {
 			array.setNull();
@@ -876,6 +878,13 @@ namespace OpcUaStackCore
 			}
 			push_back(value);
 		}
+		return true;
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::isArray(void) const
+	{
 		return true;
 	}
 

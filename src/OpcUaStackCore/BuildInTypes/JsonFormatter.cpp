@@ -75,33 +75,55 @@ namespace OpcUaStackCore
     }
 
     bool
-    JsonFormatter::jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional) const
+    JsonFormatter::jsonObjectSPtrEncode(
+    	boost::property_tree::ptree &pt,
+		JsonFormatter::SPtr valuePtr,
+		const std::string &element,
+		bool optional
+	) const
     {
         return (valuePtr && jsonObjectEncode(pt, *valuePtr, element)) || optional;
     }
 
 
     bool
-    JsonFormatter::jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element) const
+    JsonFormatter::jsonObjectSPtrEncode(
+    	boost::property_tree::ptree &pt,
+		JsonFormatter::SPtr valuePtr,
+		const std::string &element
+	) const
     {
         return jsonObjectSPtrEncode(pt, valuePtr, element, false);
     }
 
     bool
-    JsonFormatter::jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional)
+    JsonFormatter::jsonObjectSPtrDecode(
+		const boost::property_tree::ptree &pt,
+		JsonFormatter::SPtr valuePtr,
+		const std::string &element,
+		bool optional
+	)
     {
         return (valuePtr && jsonObjectDecode(pt, *valuePtr, element)) || optional;
     }
 
     bool
-    JsonFormatter::jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element)
+    JsonFormatter::jsonObjectSPtrDecode(
+    	const boost::property_tree::ptree &pt,
+		JsonFormatter::SPtr valuePtr,
+		const std::string &element
+	)
     {
         return jsonObjectSPtrDecode(pt, valuePtr, element, false);
     }
 
     bool
-    JsonFormatter::jsonObjectEncode(boost::property_tree::ptree &pt, const JsonFormatter &valuePtr,
-                                         const std::string &element, bool optional) const
+    JsonFormatter::jsonObjectEncode(
+    	boost::property_tree::ptree &pt,
+		const JsonFormatter &valuePtr,
+        const std::string &element,
+		bool optional
+	) const
     {
         bool result = valuePtr.jsonEncode(pt, element) || optional;
         if (!result) {
@@ -114,15 +136,22 @@ namespace OpcUaStackCore
     }
 
     bool
-    JsonFormatter::jsonObjectEncode(boost::property_tree::ptree &pt, const JsonFormatter &valuePtr,
-                                         const std::string &element) const
+    JsonFormatter::jsonObjectEncode(
+    	boost::property_tree::ptree &pt,
+		const JsonFormatter &valuePtr,
+        const std::string &element
+	) const
     {
         return jsonObjectEncode(pt, valuePtr, element, false);
     }
 
     bool
-    JsonFormatter::jsonObjectDecode(const boost::property_tree::ptree &pt, JsonFormatter &valuePtr,
-                                         const std::string &element, bool optional)
+    JsonFormatter::jsonObjectDecode(
+    	const boost::property_tree::ptree &pt,
+		JsonFormatter &valuePtr,
+        const std::string &element,
+		bool optional
+	)
     {
         bool result = valuePtr.jsonDecode(pt, element) || optional;
         if (!result) {
@@ -135,10 +164,137 @@ namespace OpcUaStackCore
     }
 
     bool
-    JsonFormatter::jsonObjectDecode(const boost::property_tree::ptree &pt, JsonFormatter &valuePtr,
-                                         const std::string &element)
+    JsonFormatter::jsonObjectDecode(
+    	const boost::property_tree::ptree &pt,
+		JsonFormatter &valuePtr,
+        const std::string &element
+	)
     {
         return jsonObjectDecode(pt, valuePtr, element, false);
+    }
+
+    bool
+	JsonFormatter::jsonArraySPtrEncode(
+		boost::property_tree::ptree &pt,
+		JsonFormatter::SPtr valuePtr,
+		const std::string &element,
+		bool optional
+	) const
+    {
+    	// check if array element is null
+    	if (valuePtr.get() == nullptr) {
+    		if (optional) {
+    			return true; // the element can be ommitted
+    		}
+    		else {
+    			 Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory array is null")
+    			    .parameter("Element", element);
+    			return false;
+    		}
+    	}
+
+    	// encode array element
+    	return jsonArrayEncode(pt, *valuePtr.get(), element, optional);
+    }
+
+    bool
+	JsonFormatter::jsonArraySPtrEncode(
+		boost::property_tree::ptree &pt,
+		JsonFormatter::SPtr valuePtr,
+		const std::string &element
+	) const
+    {
+    	return jsonArraySPtrEncode(pt, valuePtr, element, false);
+    }
+
+    bool
+	JsonFormatter::jsonArraySPtrDecode(
+		const boost::property_tree::ptree &pt,
+		JsonFormatter::SPtr valuePtr,
+		const std::string &element,
+		bool optional
+	)
+    {
+    	return jsonArrayDecode(pt, *valuePtr.get(), element, optional);
+    }
+
+    bool
+	JsonFormatter::jsonArraySPtrDecode(
+		const boost::property_tree::ptree &pt,
+		JsonFormatter::SPtr valuePtr,
+		const std::string &element
+	)
+    {
+    	return jsonArraySPtrDecode(pt, valuePtr, element, false);
+    }
+
+    bool
+	JsonFormatter::jsonArrayEncode(
+		boost::property_tree::ptree &pt,
+		const JsonFormatter& valuePtr,
+		const std::string &element,
+		bool optional
+	) const
+    {
+    	// check if array element is null
+    	if (valuePtr.isNull()) {
+    		if (optional) {
+    			return true; // the element can be ommitted
+    		}
+    		else {
+    			 Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory array is null")
+    			    .parameter("Element", element);
+    			return false;
+    		}
+    	}
+
+    	// encode array element
+    	return jsonArrayEncode(pt, valuePtr, element);
+    }
+
+    bool
+	JsonFormatter::jsonArrayEncode(
+		boost::property_tree::ptree &pt,
+		const JsonFormatter& valuePtr,
+		const std::string &element
+	) const
+    {
+    	return valuePtr.jsonEncode(pt, element);
+    }
+
+    bool
+	JsonFormatter::jsonArrayDecode(
+		const boost::property_tree::ptree &pt,
+		JsonFormatter& valuePtr,
+		const std::string &element,
+		bool optional
+	)
+    {
+    	auto ptElement = pt.get_child_optional(element);
+    	if (!ptElement) {
+    		if (!optional) {
+    			Log(Error, std::string(typeid(this).name()) + " json decoder error, because mandatory array is missing")
+			    	.parameter("Element", element);
+    			return false;
+    		}
+    		else {
+    			valuePtr.setNull();
+    			return true;
+    		}
+    	}
+
+    	// decode array element
+    	return jsonArrayDecode(pt, valuePtr, element);
+    }
+
+    bool
+	JsonFormatter::jsonArrayDecode(
+		const boost::property_tree::ptree &pt,
+		JsonFormatter& valuePtr,
+		const std::string &element
+	)
+    {
+    	return valuePtr.jsonDecode(pt, element);
     }
 
 }

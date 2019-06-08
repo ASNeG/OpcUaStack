@@ -77,9 +77,18 @@ namespace OpcUaStackCore
       protected:
         virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const = 0;
         virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt) = 0;
+        virtual bool isArray(void) const { return false; }
+        virtual bool isNull(void) const { return false; }
+        virtual void setNull(void) { return; }
 
         template <typename  T>
-        bool jsonNumberEncode(boost::property_tree::ptree &pt, T value, const std::string &element, bool optional, T defaultValue) const
+        bool jsonNumberEncode(
+        	boost::property_tree::ptree &pt,
+			T value,
+			const std::string &element,
+			bool optional,
+			T defaultValue
+		) const
         {
             if (!optional || value != defaultValue) {
                 if (!JsonNumber::jsonEncode(pt, value, element)) {
@@ -133,7 +142,6 @@ namespace OpcUaStackCore
             return jsonNumberDecode(pt, value);
         }
 
-
         bool jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional) const;
         bool jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element) const;
         bool jsonObjectSPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional);
@@ -144,8 +152,17 @@ namespace OpcUaStackCore
         bool jsonObjectDecode(const boost::property_tree::ptree &pt, JsonFormatter& valuePtr, const std::string &element, bool optional);
         bool jsonObjectDecode(const boost::property_tree::ptree &pt, JsonFormatter& valuePtr, const std::string &element);
 
-    };
 
+        bool jsonArraySPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional) const;
+        bool jsonArraySPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element) const;
+        bool jsonArraySPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional);
+        bool jsonArraySPtrDecode(const boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element);
+
+        bool jsonArrayEncode(boost::property_tree::ptree &pt, const JsonFormatter& valuePtr, const std::string &element, bool optional) const;
+        bool jsonArrayEncode(boost::property_tree::ptree &pt, const JsonFormatter& valuePtr, const std::string &element) const;
+        bool jsonArrayDecode(const boost::property_tree::ptree &pt, JsonFormatter& valuePtr, const std::string &element, bool optional);
+        bool jsonArrayDecode(const boost::property_tree::ptree &pt, JsonFormatter& valuePtr, const std::string &element);
+    };
 
 }
 
