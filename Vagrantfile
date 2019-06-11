@@ -1,6 +1,7 @@
 $script = <<-SCRIPT
-Build "-t local -B Release -i C:\\ASNeG -vs Ninja"
-Build "-t tst -B Release -s C:\\ASNeG -vs Ninja"
+'call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat"
+cd C:\\vagrant
+.\\build.bat %~1' | Out-File 'C:\\build_vs.bat' -Encoding UTF8
 SCRIPT
 
 Vagrant.configure("2") do |config|
@@ -8,6 +9,7 @@ Vagrant.configure("2") do |config|
     v.memory = 2048
     v.cpus = 4
   end
+
 
   config.vm.guest = :windows
   config.vm.communicator = :winrm
