@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,8 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/BuildInTypes/Json.h"
 #include <boost/property_tree/json_parser.hpp>
+#include <boost/algorithm/string/replace.hpp>
+#include "OpcUaStackCore/BuildInTypes/Json.h"
 
 namespace OpcUaStackCore
 {
@@ -30,6 +31,10 @@ namespace OpcUaStackCore
 		document.add_child("Document", pt);
 		boost::property_tree::json_parser::write_json(ss, document);
 		string = ss.str();
+
+		// replace dummy string
+		boost::replace_all(string, "\"__EmptyArray__\"", "[]");
+
 		return true;
 	}
 
@@ -38,10 +43,12 @@ namespace OpcUaStackCore
 	{
 		std::stringstream ss;
 
-		//boost::property_tree::ptree document;
-		//document.add_child("Document", pt);
 		boost::property_tree::json_parser::write_json(ss, pt);
 		string = ss.str();
+
+		// replace dummy string
+		boost::replace_all(string, "\"__EmptyArray__\"", "[]");
+
 		return true;
 	}
 

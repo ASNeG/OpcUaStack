@@ -387,6 +387,7 @@ namespace OpcUaStackCore
 	  bool isArray(void) const override;
 	  bool isNull(void) const override;
       void setNull(void) override;
+      size_t arrayLength(void) const override;
 
 	  protected:
         bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
@@ -536,6 +537,12 @@ namespace OpcUaStackCore
 		isNull_ = true;
 	}
 
+	template<typename T, typename CODER>
+	size_t
+	OpcUaArray<T, CODER>::arrayLength(void) const
+	{
+		return actArrayLen_;
+	}
 
 	template<typename T, typename CODER>
 	bool
@@ -843,6 +850,11 @@ namespace OpcUaStackCore
 		if (isNull_) {
 			return true;
 		}
+
+    	if (actArrayLen_ == 0) {
+    		pt.put_value("__EmptyArray__");
+    		return true;
+    	}
 
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
 			if (!CODER::jsonEncode(pt, valueArray_[idx], "")) {

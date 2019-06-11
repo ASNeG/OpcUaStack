@@ -239,7 +239,7 @@ namespace OpcUaStackCore
     	// check if array element is null
     	if (valuePtr.isNull()) {
     		if (optional) {
-    			return true; // the element can be ommitted
+    			return true; // the element can be omitted
     		}
     		else {
     			 Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory array is null")

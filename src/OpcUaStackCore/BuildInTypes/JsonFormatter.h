@@ -80,6 +80,7 @@ namespace OpcUaStackCore
         virtual bool isArray(void) const { return false; }
         virtual bool isNull(void) const { return false; }
         virtual void setNull(void) { return; }
+        virtual size_t arrayLength(void) const { return 0; }
 
         template <typename  T>
         bool jsonNumberEncode(

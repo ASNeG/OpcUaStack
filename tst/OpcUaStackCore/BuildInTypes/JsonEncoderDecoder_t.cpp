@@ -1504,5 +1504,21 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_Array_DiagnosticInfo)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Array_Empty)
+{
+	boost::property_tree::ptree pt;
+	OpcUaStringArray value1, value2;
+
+	BOOST_REQUIRE(value1.jsonEncode(pt, "Value") == true);
+
+	std::string str;
+	Json::toString(pt, str);
+	std::cout << str << std::endl;
+
+	BOOST_REQUIRE(value2.jsonDecode(pt, "Value") == true);
+	BOOST_REQUIRE(value2.size() == 0);
+	BOOST_REQUIRE(value2.isNull() == false);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
