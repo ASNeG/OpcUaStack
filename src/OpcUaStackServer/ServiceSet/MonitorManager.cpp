@@ -140,7 +140,7 @@ namespace OpcUaStackServer
 		CreateMonitoredItemsRequest::SPtr createMonitorItemRequest = trx->request();
 		CreateMonitoredItemsResponse::SPtr createMonitorItemResponse = trx->response();
 
-		uint32_t size = createMonitorItemRequest->itemsToCreate()->size();
+		auto size = createMonitorItemRequest->itemsToCreate()->size();
 		createMonitorItemResponse->results()->resize(size);
 
 		for (uint32_t idx=0; idx<size; idx++) {
@@ -334,7 +334,7 @@ namespace OpcUaStackServer
 		DeleteMonitoredItemsRequest::SPtr deleteMonitorItemRequest = trx->request();
 		DeleteMonitoredItemsResponse::SPtr deleteMonitorItemResponse = trx->response();
 
-		uint32_t size = deleteMonitorItemRequest->monitoredItemIds()->size();
+		auto size = deleteMonitorItemRequest->monitoredItemIds()->size();
 		deleteMonitorItemResponse->results()->resize(size);
 		
 		for (uint32_t idx=0; idx<size; idx++) {
