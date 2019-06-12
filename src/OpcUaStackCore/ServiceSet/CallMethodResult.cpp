@@ -123,14 +123,11 @@ namespace OpcUaStackCore
 	bool
 	CallMethodResult::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
-		// add status code
-		OpcUaStatus status(statusCode_);
-		if (!status.jsonEncode(pt, "Status")) {
-			Log(Error, "CallMethodResult json encode error")
-		        .parameter("Element", "Status");
-			return false;
-		}
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, (uint32_t)statusCode_, "StatusCode", false, (uint32_t)0);
+		rc = rc & jsonArraySPtrEncode(pt, inputArgumentResultArraySPtr_, "InputArgumentResults", true);
 
+#if 0
 		OpcUaStatusArray statusArray;
 		statusArray.resize(inputArgumentResultArraySPtr_->size());
 		for (uint32_t idx = 0; idx < inputArgumentResultArraySPtr_->size(); idx++) {
@@ -149,6 +146,7 @@ namespace OpcUaStackCore
 				return false;
 			}
 		}
+#endif
 
 		// encode output argument array
 		if (outputArgumentArraySPtr_->size() > 0) {
@@ -159,7 +157,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		return true;
+		return rc;
 	}
 
 	bool
@@ -169,9 +167,9 @@ namespace OpcUaStackCore
 
 		// get status code
 		OpcUaStatus status(Success);
-		tmpTree = pt.get_child_optional("Status");
+		tmpTree = pt.get_child_optional("StatusCode");
 		if (tmpTree) {
-			if (!status.jsonDecode(pt, "Status")) {
+			if (!status.jsonDecode(pt, "StatusCode")) {
 				Log(Error, "CallMethodResult json decode error")
 		        	.parameter("Element", "Status");
 				return false;

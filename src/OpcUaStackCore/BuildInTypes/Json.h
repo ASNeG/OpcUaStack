@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		static bool toDocumentString(boost::property_tree::ptree& pt, std::string& string);
-		static bool toString(boost::property_tree::ptree& pt, std::string& string);
+		static bool toString(boost::property_tree::ptree& pt, std::string& string, bool logEnable = false);
 		static bool fromString(const std::string& string, boost::property_tree::ptree& pt);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaBoolean& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaBoolean& value);

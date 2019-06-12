@@ -1512,8 +1512,10 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Array_Empty)
 	BOOST_REQUIRE(value1.jsonEncode(pt, "Value") == true);
 
 	std::string str;
-	Json::toString(pt, str);
+	BOOST_REQUIRE(Json::toString(pt, str) == true);
 	std::cout << str << std::endl;
+	pt.clear();
+	BOOST_REQUIRE(Json::fromString(str, pt) == true);
 
 	BOOST_REQUIRE(value2.jsonDecode(pt, "Value") == true);
 	BOOST_REQUIRE(value2.size() == 0);

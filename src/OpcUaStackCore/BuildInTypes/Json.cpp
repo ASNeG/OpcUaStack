@@ -17,6 +17,7 @@
 
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/algorithm/string/replace.hpp>
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/Json.h"
 
 namespace OpcUaStackCore
@@ -39,11 +40,22 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	Json::toString(boost::property_tree::ptree& pt, std::string& string)
+	Json::toString(boost::property_tree::ptree& pt, std::string& string, bool logEnable)
 	{
 		std::stringstream ss;
 
-		boost::property_tree::json_parser::write_json(ss, pt);
+		try {
+		    boost::property_tree::json_parser::write_json(ss, pt);
+		}
+		catch (const boost::property_tree::json_parser_error& e)
+		{
+			if (logEnable) {
+				auto errorMessage = std::string(e.what());
+				Log(Error, "json encode error")
+			    	.parameter("ErrorMessage", errorMessage);
+			}
+			return false;
+		}
 		string = ss.str();
 
 		// replace dummy string
