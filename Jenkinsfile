@@ -25,8 +25,8 @@ pipeline {
     stage('build_windows') {
       steps {
         sh 'vagrant up'
-        sh 'vagrant winrm -s cmd -c "C:\\build_vs.bat \\"-t local -B Release -vs Ninja\\""'
-        sh 'vagrant winrm -s cmd -c "C:\\build_vs.bat \\"-t tst -B Release -vs Ninja\\""'
+        sh 'vagrant powershell -c "C:\\build_vs.bat \\"-t local -B Release -vs Ninja\\""'
+        sh 'vagrant powershell -c "C:\\build_vs.bat \\"-t tst -B Release -vs Ninja\\""'
       }
     }
   }

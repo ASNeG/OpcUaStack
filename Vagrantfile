@@ -1,7 +1,7 @@
 $script = <<-SCRIPT
 'call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat"
 cd C:\\vagrant
-.\\build.bat %~1' | Out-File 'C:\\build_vs.bat' -Encoding UTF8
+.\\build.bat %~1' | Out-File 'C:\\build_vs.bat' -Encoding Ascii
 SCRIPT
 
 Vagrant.configure("2") do |config|
