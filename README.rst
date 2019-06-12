@@ -1,8 +1,8 @@
 OpcUaStack
 ==============================
 
-.. image:: https://travis-ci.org/ASNeG/OpcUaStack.svg?branch=master
-    :target: https://travis-ci.org/ASNeG/OpcUaStack
+.. image:: http://jenkins.asneg.de:8080/job/OpcUaStack/job/master/badge/icon
+    :target: http://jenkins.asneg.de:8080/job/OpcUaStack/job/master/
 .. image:: https://img.shields.io/github/downloads/ASNeG/OpcUaStack/total.svg?style=social   :alt: Github All Releases   :target: https://github.com/ASNeG/OpcUaStack
 
 About
