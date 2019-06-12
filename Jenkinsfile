@@ -25,8 +25,8 @@ pipeline {
     stage('build_windows') {
       steps {
         sh 'vagrant up'
-        sh 'vagrant powershell -c "C:\\build_vs.bat \\"-t local -B Release -vs Ninja\\""'
-        sh 'vagrant powershell -c "C:\\build_vs.bat \\"-t tst -B Release -vs Ninja\\""'
+        sh 'vagrant powershell -c "C:\\build_vs.bat -t local -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
+        sh 'vagrant powershell -c "C:\\build_vs.bat -t tst -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
       }
     }
   }
@@ -34,7 +34,7 @@ pipeline {
   post {
     always {
       sh 'docker-compose down --volumes'
-      sh 'vagrant destroy -f'
+      sh 'vagrant halt'
     }
   }
 }
