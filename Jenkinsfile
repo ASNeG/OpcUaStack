@@ -34,7 +34,7 @@ pipeline {
   post {
     always {
       sh 'docker-compose down --volumes'
-      sh 'vagrant destroy'
+      sh 'vagrant destroy -f'
     }
   }
 }
