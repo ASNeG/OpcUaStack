@@ -65,7 +65,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	Json::fromString(const std::string& string, boost::property_tree::ptree& pt)
+	Json::fromString(const std::string& string, boost::property_tree::ptree& pt, bool logEnable)
 	{
 		std::stringstream ss;
 		ss.str(string);
@@ -73,8 +73,13 @@ namespace OpcUaStackCore
 		try {
 			boost::property_tree::json_parser::read_json(ss, pt);
 		}
-		catch (...)
+		catch (const boost::property_tree::json_parser_error& e)
 		{
+			if (logEnable) {
+				auto errorMessage = std::string(e.what());
+				Log(Error, "json swcode error")
+			    	.parameter("ErrorMessage", errorMessage);
+			}
 			return false;
 		}
 
