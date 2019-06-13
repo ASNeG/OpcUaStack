@@ -1,14 +1,15 @@
 ASNeG OPC UA Stack
 ==============================
 
-.. image:: https://travis-ci.org/ASNeG/OpcUaStack.svg?branch=master
-    :target: https://travis-ci.org/ASNeG/OpcUaStack
+.. image:: http://jenkins.asneg.de:8080/job/OpcUaStack/job/Release4/badge/icon
+    :target: http://jenkins.asneg.de:8080/job/OpcUaStack/job/Release4/
 .. image:: https://img.shields.io/github/downloads/ASNeG/OpcUaStack/total.svg
     :alt: Github All Releases
     :target: https://github.com/ASNeG/OpcUaStack
 .. image:: https://asneg-invate-form.herokuapp.com/badge.svg
     :alt: Slack Community
     :target: https://asneg-invate-form.herokuapp.com
+
 
 About
 ------------------------------
@@ -40,16 +41,21 @@ In the development stage:
 
 * Code generator to create C++ classes representing OPC UA types, objects and events from XML (Nodesets)
 * Multi-thread model (currently all application modules run in only one thread)
+* PubSub (Part 14) implementation
+
+The information about the coverage of OPC UA specification you can find
+`here <https://opcuastack.readthedocs.io/en/latest/1_getting_started/overview.html#opc-ua-specification-coverage>`_
 
 Installing
 ------------------------------
 
 See `here <https://opcuastack.rtfd.io/en/latest/1_getting_started/installation.html>`_.
 
+
 Usage
 ------------------------------
 
-In order to create a user application OpcUa Stack provides a project builder:
+In order to create a user application OPC UA Stack provides a project builder:
 
 ::
 
@@ -83,8 +89,9 @@ References
 * Documentation_
 * ASNeG-Demo_
 * `OPC UA Specifications`_
+* ASNeG-Demo_
 
-.. _example: https://opcuastack.rtfd.io/en/latest/getting_started/hello_world.html
+.. _example: https://opcuastack.readthedocs.io/en/latest/1_getting_started/hello_world.html
 .. _Documentation: http://opcuastack.rtfd.io/
 .. _Home Page: https://asneg.github.io/projects/opcuastack
 .. _OPC UA Specifications: https://opcfoundation.org/developer-tools/specifications-unified-architecture
