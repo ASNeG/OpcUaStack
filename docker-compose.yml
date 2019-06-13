@@ -3,6 +3,7 @@ services:
   demo_server:
     image: asneg/asneg-demo:latest
   stack:
+    container_name: stack-${BUILD_TAG}
     depends_on:
       - demo_server
     volumes:
