@@ -35,7 +35,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class MonitorManager
+	class DLLEXPORT MonitorManager
 	{
 	  public:
 		using MonitoredItemIdVector = std::map<OpcUaNodeId,std::vector<uint32_t> >;

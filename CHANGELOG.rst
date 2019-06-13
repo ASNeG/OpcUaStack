@@ -9,8 +9,9 @@ Release 3.7.1
 
 * fix dependence of start\\stop item monitoring on callbacks #133, by @flipback
 
-**Documentation**:
+**Other**:
 
+* integrate CI under Jenkins #234, by @flipback
 
 Release 3.7.0 (2019-04-01)
 ------------------------------------------------------------
