@@ -1522,5 +1522,28 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Array_Empty)
 	BOOST_REQUIRE(value2.isNull() == false);
 }
 
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Array_StatusCode)
+{
+	boost::property_tree::ptree pt;
+	OpcUaStatusCodeArray value1, value2;
+
+	value1.resize(5);
+	for (auto idx = 0; idx < 5; idx++) {
+		OpcUaStatusCode statusCode = Success;
+		value1.set(idx, statusCode);
+	}
+	BOOST_REQUIRE(value1.jsonEncode(pt, "Value") == true);
+
+	std::string str;
+	BOOST_REQUIRE(Json::toString(pt, str) == true);
+	std::cout << str << std::endl;
+	pt.clear();
+	BOOST_REQUIRE(Json::fromString(str, pt) == true);
+
+	BOOST_REQUIRE(value2.jsonDecode(pt, "Value") == true);
+	BOOST_REQUIRE(value2.size() == 0);
+	BOOST_REQUIRE(value2.isNull() == false);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
