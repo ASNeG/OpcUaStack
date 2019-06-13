@@ -3,8 +3,6 @@ services:
   asneg-demo:
     image: asneg/asneg-demo:release-4
     hostname: asneg-demo
-    ports:
-      - 127.0.0.1:8889:8889
     volumes:
       - server_pki:/etc/OpcUaStack/ASNeG-Demo/pki
   stack:
@@ -20,3 +18,4 @@ services:
 volumes:
   server_pki:
     driver: "local"
+  data-volume:

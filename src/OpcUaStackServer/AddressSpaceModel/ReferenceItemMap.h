@@ -35,7 +35,7 @@ namespace OpcUaStackServer
 	  public:
 		typedef boost::shared_ptr<ReferenceItemMap> SPtr;
 
-		class const_iterator {
+		class DLLEXPORT const_iterator {
 		    friend class ReferenceItemMap;
 		  public:
 			const_iterator();
