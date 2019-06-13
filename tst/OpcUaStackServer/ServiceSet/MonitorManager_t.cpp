@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(MonitorManager_StartMonitoredItemWithoutCallback)
     MonitoredItemCreateResult::SPtr result;
     createMonitoredItemTransaction->response()->results()->get(0, result);
 
-    BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, result->statusCode());
+    BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, result->statusCode().enumeration());
     BOOST_REQUIRE_EQUAL(1, mm.monitoredItemIds().size());
 }
 
