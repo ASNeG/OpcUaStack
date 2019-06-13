@@ -213,8 +213,7 @@ namespace OpcUaStackCore
 			  const std::string& listElement
 		  )
 		  {
-			  // FIXME: todo
-			  return true;
+			  return JsonNumber::jsonEncode(pt, value, listElement);
 		  }
 
 		  static bool jsonDecode(
@@ -223,7 +222,11 @@ namespace OpcUaStackCore
 			  const std::string& listElement
 		  )
 		  {
-			  // FIXME: todo
+			  uint32_t val;
+			  if (!JsonNumber::jsonDecode(pt, val)) {
+				  return false;
+			  }
+			  value = (T)val;
 			  return true;
 		  }
 

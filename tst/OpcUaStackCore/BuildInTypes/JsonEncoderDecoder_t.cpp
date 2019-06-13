@@ -1522,13 +1522,41 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Array_Empty)
 	BOOST_REQUIRE(value2.isNull() == false);
 }
 
+BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Array_UInt32)
+{
+	boost::property_tree::ptree pt;
+	OpcUaUInt32Array value1, value2;
+
+	value1.resize(5);
+	for (uint32_t idx = 0; idx < 5; idx++) {
+		value1.set(idx, idx);
+	}
+	BOOST_REQUIRE(value1.jsonEncode(pt, "Value") == true);
+
+	std::string str;
+	BOOST_REQUIRE(Json::toString(pt, str) == true);
+	std::cout << str << std::endl;
+	pt.clear();
+	BOOST_REQUIRE(Json::fromString(str, pt) == true);
+
+	BOOST_REQUIRE(value2.jsonDecode(pt, "Value") == true);
+	BOOST_REQUIRE(value2.size() == 5);
+	BOOST_REQUIRE(value2.isNull() == false);
+	for (uint32_t idx = 0; idx < 5; idx++) {
+		OpcUaUInt32 val;
+		value2.get(idx, val);
+		BOOST_REQUIRE(val == idx);
+	}
+}
+
+
 BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Array_StatusCode)
 {
 	boost::property_tree::ptree pt;
 	OpcUaStatusCodeArray value1, value2;
 
 	value1.resize(5);
-	for (auto idx = 0; idx < 5; idx++) {
+	for (uint32_t idx = 0; idx < 5; idx++) {
 		OpcUaStatusCode statusCode = Success;
 		value1.set(idx, statusCode);
 	}
@@ -1541,7 +1569,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Array_StatusCode)
 	BOOST_REQUIRE(Json::fromString(str, pt) == true);
 
 	BOOST_REQUIRE(value2.jsonDecode(pt, "Value") == true);
-	BOOST_REQUIRE(value2.size() == 0);
+	BOOST_REQUIRE(value2.size() == 5);
 	BOOST_REQUIRE(value2.isNull() == false);
 }
 
