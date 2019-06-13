@@ -224,6 +224,7 @@ namespace OpcUaStackClient
 		uint32_t maxResponseMessageSize_;
 		UserAuthentication::SPtr userAuthentication_;
 
+
 	};
 
 }

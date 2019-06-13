@@ -192,7 +192,6 @@ namespace OpcUaStackClient
 			boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions)
 		);
 
-		
 		future.wait();
 		return future.get();
 	}

@@ -67,30 +67,30 @@ set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
 if "%COMMAND%" == "" (
     call:build_local
 	
-	goto:error_handle
+	goto:eof
 )
 
 if "%COMMAND%" == "local" (
     call:build_local
 	
-	goto:error_handle
+	goto:eof
 )
 
 if "%COMMAND%" == "msi" (
     call:build_msi
 	
-	goto:error_handle
+	goto:eof
 )
 
 if "%COMMAND%" == "tst" (
     call:build_tst
 	
-	goto:error_handle
+	goto:eof
 )
 
 call:usage
 
-goto:error_handle
+goto:eof
 
 
 REM ---------------------------------------------------------------------------
@@ -112,7 +112,7 @@ REM ---------------------------------------------------------------------------
     
 	set DESTDIR=%INSTALL_PREFIX%
 	%CMAKE% --build build_local_%BUILD_DIR_SUFFIX% --target install --config %BUILD_TYPE%
-goto:error_handle
+goto:eof
 
 REM ---------------------------------------------------------------------------
 REM
@@ -131,7 +131,7 @@ REM ---------------------------------------------------------------------------
 	REM package OpcUaStack to MSI
 	REM    		
     %CMAKE% --build build_msi_%BUILD_DIR_SUFFIX% --target package --config %BUILD_TYPE%
-goto:error_handle
+goto:eof
 
 REM ---------------------------------------------------------------------------
 REM
@@ -150,7 +150,7 @@ REM ---------------------------------------------------------------------------
 	REM install OpcUaStack
 	REM    
 	%CMAKE% --build build_tst_%BUILD_DIR_SUFFIX% --config %BUILD_TYPE%
-goto:error_handle
+goto:eof
 
 
 REM ---------------------------------------------------------------------------
@@ -180,11 +180,4 @@ REM ---------------------------------------------------------------------------
    echo "--package-type, -P, /P PACKAGE_TYPE:  set the MSI package type (Bin | Dev). By default, it is Bin type."
    echo.
 
-goto:error_handle
-
-:error_handle
-
-if errorlevel 1 (
-   echo finished with errocode %errorlevel%
-   exit /b %errorlevel%
-)
+goto:eof

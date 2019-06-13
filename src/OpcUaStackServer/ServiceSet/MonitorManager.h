@@ -38,7 +38,7 @@ namespace OpcUaStackServer
 	class DLLEXPORT MonitorManager
 	{
 	  public:
-		using MonitoredItemIdVector = std::map<OpcUaNodeId,std::vector<uint32_t> >;
+		typedef std::map<OpcUaNodeId,std::vector<uint32_t> > MonitoredItemIds;
 
 		MonitorManager(void);
 		~MonitorManager(void);
@@ -50,8 +50,6 @@ namespace OpcUaStackServer
 		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 		uint32_t noticicationNumber(void);
 		bool notificationAvailable(void);
-
-        MonitoredItemIdVector monitoredItemIds();
 
 
 		OpcUaStatusCode receive(ServiceTransactionCreateMonitoredItems::SPtr trx);
@@ -97,7 +95,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel_;
 		ForwardGlobalSync::SPtr forwardGlobalSync_;
 
-        MonitoredItemIdVector monitoredItemIds_;
+		MonitoredItemIds monitoredItemIds_;
 	};
 
 }

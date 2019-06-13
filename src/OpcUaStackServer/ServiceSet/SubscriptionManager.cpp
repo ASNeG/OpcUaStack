@@ -60,7 +60,7 @@ namespace OpcUaStackServer
 		sessionId_ = sessionId;
 	}
 
-	size_t
+	uint32_t 
 	SubscriptionManager::size(void)
 	{
 		return subscriptionMap_.size();

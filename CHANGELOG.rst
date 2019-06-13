@@ -1,4 +1,4 @@
-Release 4.0.0
+Release 4.1.0
 ------------------------------------------------------------
 
 **Features**:
@@ -32,22 +32,8 @@ Release 4.0.0
 
 * add *Overview* document #184, by @flipback
 
-Release 3.7.1
+Release 3.7.0
 ------------------------------------------------------------
-
-* added policy id to session config #168, by @huebl
-
-**Bugs**:
-
-* fix dependence of start\\stop item monitoring on callbacks #133, by @flipback
-
-**Other**:
-
-* integrate CI under Jenkins #234, by @flipback
-
-Release 3.7.0 (2019-04-01)
-------------------------------------------------------------
-
 
 **Features**:
 

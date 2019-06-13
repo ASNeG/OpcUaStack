@@ -61,7 +61,7 @@ namespace OpcUaStackServer
 		OpcUaStatusCode receive(ServiceTransactionSetMonitoringMode::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionSetTriggering::SPtr trx);
 
-		size_t size(void);
+		uint32_t size(void);
 
 	  private:
 		void subscriptionPublishTimeout(Subscription::SPtr subscription);
