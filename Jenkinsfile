@@ -19,6 +19,7 @@ pipeline {
         sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackCoreTest --log_format=XML --log_sink=core_results.xml --log_level=all --report_level=no'
         sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackServerTest --log_format=XML --log_sink=server_results.xml --log_level=all --report_level=no'
         sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackClientTest --log_format=XML --log_sink=client_results.xml --log_level=all --report_level=no'
+        sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackPubSubTest --log_format=XML --log_sink=pubsub_results.xml --log_level=all --report_level=no'
       }
     }
 
@@ -36,6 +37,7 @@ pipeline {
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat core_results.xml > core_results.xml'
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat server_results.xml > server_results.xml'
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat client_results.xml > client_results.xml'
+      sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat pubsub_results.xml > pubsub_results.xml'
       xunit (
         thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
         tools: [ BoostTest(pattern: '*_results.xml') ])
