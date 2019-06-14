@@ -33,9 +33,9 @@ pipeline {
 
   post {
     always {
-      sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat core_results.xml > core_results.xml'
-      sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat server_results.xml > server_results.xml'
-      sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat client_results.xml > client_results.xml'
+      sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat core_results.xml > core_results.xml || true'
+      sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat server_results.xml > server_results.xml || true'
+      sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat client_results.xml > client_results.xml || true'
       xunit (
         thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
         tools: [ BoostTest(pattern: '*_results.xml') ])
