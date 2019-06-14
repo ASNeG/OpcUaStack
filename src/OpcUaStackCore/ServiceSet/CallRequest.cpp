@@ -78,27 +78,13 @@ namespace OpcUaStackCore
 	bool
 	CallRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
-		// encode method requests
-		if (!callMethodRequestArraySPtr_->jsonEncode(pt, "MethodsToCall")) {
-			Log(Error, "CallRequest json encode error")
-				.parameter("Element", "MethodsToCall");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrEncode(pt, callMethodRequestArraySPtr_, "MethodsToCall");
 	}
 
 	bool
 	CallRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		// decode method requests
-		if (!callMethodRequestArraySPtr_->jsonDecode(pt, "MethodsToCall")) {
-			Log(Error, "CallRequest json decode error")
-			    .parameter("Element", "MethodsToCall");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrDecode(pt, callMethodRequestArraySPtr_, "MethodsToCall");
 	}
 
 }

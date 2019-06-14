@@ -80,41 +80,19 @@ namespace OpcUaStackCore
 	bool
 	DeleteMonitoredItemsRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		// encode subscription id
-		if (!JsonNumber::jsonEncode(pt, subscriptionId_, "SubscriptionId")) {
-			Log(Error, "DeleteMonitoredItemsRequest json encode error")
-				.parameter("Element", "SubscriptionId");
-			return false;
-		}
-
-		// encode monitored item id array
-		if (!monitoredItemIdArraySPtr_->jsonEncode(pt, "MonitoredItemIds")) {
-			Log(Error, "DeleteMonitoredItemsRequest json encode error")
-				.parameter("Element", "MonitoredItemIds");
-			return false;
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonArraySPtrEncode(pt, monitoredItemIdArraySPtr_, "MonitoredItemIds");
+		return rc;
 	}
 
 	bool
 	DeleteMonitoredItemsRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// decode subscription id
-		if (!JsonNumber::jsonDecode(pt, subscriptionId_, "SubscriptionId")) {
-			Log(Error, "DeleteMonitoredItemsRequest json decode error")
-				.parameter("Element", "SubscriptionId");
-			return false;
-		}
-
-		// decode monitored item id array
-		if (!monitoredItemIdArraySPtr_->jsonDecode(pt, "MonitoredItemIds")) {
-			Log(Error, "DeleteMonitoredItemsRequest json decode error")
-				.parameter("Element", "MonitoredItemIds");
-			return false;
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonArraySPtrDecode(pt, monitoredItemIdArraySPtr_, "MonitoredItemIds");
+		return rc;
 	}
 
 }

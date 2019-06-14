@@ -110,68 +110,22 @@ namespace OpcUaStackCore
 	bool
 	CreateSubscriptionResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		// encode subscription id
-		if (!JsonNumber::jsonEncode(pt, subscriptionId_, "SubscriptionId")) {
-			Log(Error, "CreateSubscriptionResponse json encode error")
-				.parameter("Element", "SubscriptionId");
-			return false;
-		}
-
-		// encode revised publishing interval
-		if (!JsonNumber::jsonEncode(pt, revisedPublishingInterval_, "RevisedPublishingInterval")) {
-			Log(Error, "CreateSubscriptionResponse json encode error")
-				.parameter("Element", "RevisedPublishingInterval");
-			return false;
-		}
-
-		// encode revised life time count
-		if (!JsonNumber::jsonEncode(pt, revisedLifetimeCount_, "RevisedLifetimeCount")) {
-			Log(Error, "CreateSubscriptionResponse json encode error")
-				.parameter("Element", "RevisedLifetimeCount");
-			return false;
-		}
-
-		// encode revised max keepalive count
-		if (!JsonNumber::jsonEncode(pt, revisedMaxKeepAliveCount_, "RevisedMaxKeepAliveCount")) {
-			Log(Error, "CreateSubscriptionResponse json encode error")
-				.parameter("Element", "RevisedMaxKeepAliveCount");
-			return false;
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonNumberEncode(pt, revisedPublishingInterval_, "RevisedPublishingInterval");
+		rc = rc & jsonNumberEncode(pt, revisedLifetimeCount_, "RevisedLifetimeCount");
+		rc = rc & jsonNumberEncode(pt, revisedMaxKeepAliveCount_, "RevisedMaxKeepAliveCount");
+		return rc;
 	}
 
 	bool
 	CreateSubscriptionResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// decode subscription id
-		if (!JsonNumber::jsonDecode(pt, subscriptionId_, "SubscriptionId")) {
-			Log(Error, "CreateSubscriptionResponse json decode error")
-				.parameter("Element", "SubscriptionId");
-			return false;
-		}
-
-		// decode revised publishing interval
-		if (!JsonNumber::jsonDecode(pt, revisedPublishingInterval_, "RevisedPublishingInterval")) {
-			Log(Error, "CreateSubscriptionResponse json decode error")
-				.parameter("Element", "RevisedPublishingInterval");
-			return false;
-		}
-
-		// decode revised life time count
-		if (!JsonNumber::jsonDecode(pt, revisedLifetimeCount_, "RevisedLifetimeCount")) {
-			Log(Error, "CreateSubscriptionResponse json decode error")
-				.parameter("Element", "RevisedLifetimeCount");
-			return false;
-		}
-
-		// decode revised max keepalive count
-		if (!JsonNumber::jsonDecode(pt, revisedMaxKeepAliveCount_, "RevisedMaxKeepAliveCount")) {
-			Log(Error, "CreateSubscriptionResponse json decode error")
-				.parameter("Element", "RevisedMaxKeepAliveCount");
-			return false;
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonNumberDecode(pt, revisedPublishingInterval_, "RevisedPublishingInterval");
+		rc = rc & jsonNumberDecode(pt, revisedLifetimeCount_, "RevisedLifetimeCount");
+		rc = rc & jsonNumberDecode(pt, revisedMaxKeepAliveCount_, "RevisedMaxKeepAliveCount");
+		return rc;
 	}
 }

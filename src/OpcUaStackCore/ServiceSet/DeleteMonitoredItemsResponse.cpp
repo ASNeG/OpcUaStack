@@ -81,43 +81,12 @@ namespace OpcUaStackCore
 	bool
 	DeleteMonitoredItemsResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		OpcUaStatusArray statusArray;
-		statusArray.resize(resultArraySPtr_->size());
-		for (uint32_t idx = 0; idx < resultArraySPtr_->size(); idx++) {
-			OpcUaStatusCode statusCode;
-			resultArraySPtr_->get(idx, statusCode);
-
-			auto status = boost::make_shared<OpcUaStatus>(statusCode);
-			statusArray.push_back(status);
-		}
-
-		// encode status code array
-		if (!statusArray.jsonEncode(pt, "Results")) {
-			Log(Error, "DeleteMonitoredItemsResponse json encode error")
-				.parameter("Element", "Results");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrEncode(pt, resultArraySPtr_, "Results");
 	}
 
 	bool
 	DeleteMonitoredItemsResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// decode status code array
-		OpcUaStatusArray statusArray;
-		if (!statusArray.jsonDecode(pt, "Results")) {
-			Log(Error, "DeleteMonitoredItemsResponse json decode error")
-			    .parameter("Element", "Results");
-			return false;
-		}
-		resultArraySPtr_->resize(statusArray.size());
-		for (uint32_t idx = 0; idx < statusArray.size(); idx++) {
-			OpcUaStatus::SPtr status;
-			statusArray.get(idx, status);
-			resultArraySPtr_->push_back(status->enumeration());
-		}
-
-		return true;
+		return jsonArraySPtrDecode(pt, resultArraySPtr_, "Results");
 	}
 }

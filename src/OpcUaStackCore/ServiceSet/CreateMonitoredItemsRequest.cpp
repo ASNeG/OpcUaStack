@@ -97,61 +97,20 @@ namespace OpcUaStackCore
 	bool
 	CreateMonitoredItemsRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		// encode subscription id
-		if (!JsonNumber::jsonEncode(pt, subscriptionId_, "SubscriptionId")) {
-			Log(Error, "CreateMonitoredItemsRequest json encode error")
-				.parameter("Element", "SubscriptionId");
-			return false;
-		}
-
-		// encode timestamps to return
-		uint32_t timestampsToReturn = timestampsToReturn_;
-		if (!JsonNumber::jsonEncode(pt, timestampsToReturn, "TimestampsToReturn")) {
-			Log(Error, "CreateMonitoredItemsRequest json encode error")
-				.parameter("Element", "TimestampsToReturn");
-			return false;
-		}
-
-		// encode items to create array
-		if (!itemsToCreateArraySPtr_->jsonEncode(pt, "ItemsToCreate")) {
-			Log(Error, "CreateMonitoredItemsRequest json encode error")
-				.parameter("Element", "ItemsToCreate");
-			return false;
-		}
-
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonNumberEncode(pt, (uint32_t)timestampsToReturn_, "TimestampsToReturn");
+		rc = rc & jsonArraySPtrEncode(pt, itemsToCreateArraySPtr_, "ItemsToCreate");
 		return true;
 	}
 
 	bool
 	CreateMonitoredItemsRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// decode subscription id
-		if (!JsonNumber::jsonDecode(pt, subscriptionId_, "SubscriptionId")) {
-			Log(Error, "CreateMonitoredItemsRequest json decode error")
-				.parameter("Element", "SubscriptionId");
-			return false;
-		}
-
-		// decode timestamps to return
-		timestampsToReturn_ = TimestampsToReturn_Source;
-		auto timestampsToReturn = pt.get_child_optional("TimestampsToReturn");
-		if (timestampsToReturn) {
-			uint32_t ttr;
-			if (!JsonNumber::jsonDecode(pt, ttr, "TimestampsToReturn")) {
-				Log(Error, "CreateMonitoredItemsRequest json decode error")
-					.parameter("Element", "TimestampsToReturn");
-				return false;
-			}
-			timestampsToReturn_ = (TimestampsToReturn)ttr;
-		}
-
-		// decode items to create array
-		if (!itemsToCreateArraySPtr_->jsonDecode(pt, "ItemsToCreate")) {
-			Log(Error, "CreateMonitoredItemsRequest json decode error")
-				.parameter("Element", "ItemsToCreate");
-			return false;
-		}
-
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&timestampsToReturn_, "TimestampsToReturn");
+		rc = rc & jsonArraySPtrDecode(pt, itemsToCreateArraySPtr_, "ItemsToCreate");
 		return true;
 	}
 }

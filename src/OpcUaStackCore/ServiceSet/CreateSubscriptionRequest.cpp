@@ -140,117 +140,27 @@ namespace OpcUaStackCore
 	bool
 	CreateSubscriptionRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		// encode requested publishing interval
-		if (!JsonNumber::jsonEncode(pt, requestedPublishingInterval_, "RequestedPublishingInterval")) {
-			Log(Error, "CreateSubscriptionRequest json encode error")
-				.parameter("Element", "RequestedPublishingInterval");
-			return false;
-		}
-
-		// encode requested lifetime count
-		if (!JsonNumber::jsonEncode(pt, requestedPublishingInterval_, "RequestedPublishingInterval")) {
-			Log(Error, "CreateSubscriptionRequest json encode error")
-				.parameter("Element", "RequestedPublishingInterval");
-			return false;
-		}
-
-		// encode requested max keepalive count
-		if (!JsonNumber::jsonEncode(pt, requestedMaxKeepAliveCount_, "RequestedMaxKeepAliveCount")) {
-			Log(Error, "CreateSubscriptionRequest json encode error")
-				.parameter("Element", "RequestedMaxKeepAliveCount");
-			return false;
-		}
-
-		// encode max notifications per publish
-		if (!JsonNumber::jsonEncode(pt, maxNotificationsPerPublish_, "MaxNotificationsPerPublish")) {
-			Log(Error, "CreateSubscriptionRequest json encode error")
-				.parameter("Element", "MaxNotificationsPerPublish");
-			return false;
-		}
-
-		// encode publishing enabled
-		if (!JsonNumber::jsonEncode(pt, publishingEnabled_, "PublishingEnabled")) {
-			Log(Error, "CreateSubscriptionRequest json encode error")
-				.parameter("Element", "PublishingEnabled");
-			return false;
-		}
-
-		// encode priority
-		if (!JsonNumber::jsonEncode(pt, priority_, "Priority")) {
-			Log(Error, "CreateSubscriptionRequest json encode error")
-				.parameter("Element", "Priority");
-			return false;
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, requestedPublishingInterval_, "RequestedPublishingInterval");
+		rc = rc & jsonNumberEncode(pt, requestedLifetimeCount_, "RequestedLifetimeCount");
+		rc = rc & jsonNumberEncode(pt, requestedMaxKeepAliveCount_, "RequestedMaxKeepAliveCount");
+		rc = rc & jsonNumberEncode(pt, maxNotificationsPerPublish_, "MaxNotificationsPerPublish");
+		rc = rc & jsonNumberEncode(pt, publishingEnabled_, "PublishingEnabled");
+		rc = rc & jsonNumberEncode(pt, priority_, "Priority");
+		return rc;
 	}
 
 	bool
 	CreateSubscriptionRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		boost::optional<const boost::property_tree::ptree&> tmpTree;
-
-		// decode requested publishing interval
-		tmpTree = pt.get_child_optional("RequestedPublishingInterval");
-		if (tmpTree) {
-			if (!JsonNumber::jsonDecode(pt, requestedPublishingInterval_, "RequestedPublishingInterval")) {
-				Log(Error, "CreateSubscriptionRequest json decode error")
-					.parameter("Element", "RequestedPublishingInterval");
-				return false;
-			}
-		}
-
-		// decode requested lifetime count
-		tmpTree = pt.get_child_optional("RequestedPublishingInterval");
-		if (tmpTree) {
-			if (!JsonNumber::jsonDecode(pt, requestedPublishingInterval_, "RequestedPublishingInterval")) {
-				Log(Error, "CreateSubscriptionRequest json decode error")
-					.parameter("Element", "RequestedPublishingInterval");
-				return false;
-			}
-		}
-
-		// decode requested max keepalive count
-		tmpTree = pt.get_child_optional("RequestedMaxKeepAliveCount");
-		if (tmpTree) {
-			if (!JsonNumber::jsonDecode(pt, requestedMaxKeepAliveCount_, "RequestedMaxKeepAliveCount")) {
-				Log(Error, "CreateSubscriptionRequest json decode error")
-					.parameter("Element", "RequestedMaxKeepAliveCount");
-				return false;
-			}
-		}
-
-		// decode max notifications per publish
-		tmpTree = pt.get_child_optional("MaxNotificationsPerPublish");
-		if (tmpTree) {
-			if (!JsonNumber::jsonDecode(pt, maxNotificationsPerPublish_, "MaxNotificationsPerPublish")) {
-				Log(Error, "CreateSubscriptionRequest json decode error")
-					.parameter("Element", "MaxNotificationsPerPublish");
-				return false;
-			}
-		}
-
-		// decode publishing enabled
-		tmpTree = pt.get_child_optional("PublishingEnabled");
-		if (tmpTree) {
-			if (!JsonNumber::jsonDecode(pt, publishingEnabled_, "PublishingEnabled")) {
-				Log(Error, "CreateSubscriptionRequest json decode error")
-					.parameter("Element", "PublishingEnabled");
-				return false;
-			}
-		}
-
-		// decode priority
-		tmpTree = pt.get_child_optional("Priority");
-		if (tmpTree) {
-			if (!JsonNumber::jsonDecode(pt, priority_, "Priority")) {
-				Log(Error, "CreateSubscriptionRequest json decode error")
-					.parameter("Element", "Priority");
-				return false;
-			}
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, requestedPublishingInterval_, "RequestedPublishingInterval", true, (OpcUaDouble)100);
+		rc = rc & jsonNumberDecode(pt, requestedLifetimeCount_, "RequestedLifetimeCount", true, (OpcUaUInt32)2400);
+		rc = rc & jsonNumberDecode(pt, requestedMaxKeepAliveCount_, "RequestedMaxKeepAliveCount", true, (OpcUaUInt32)10);
+		rc = rc & jsonNumberDecode(pt, maxNotificationsPerPublish_, "MaxNotificationsPerPublish", true, (OpcUaUInt32)65536);
+		rc = rc & jsonNumberDecode(pt, publishingEnabled_, "PublishingEnabled", true, (OpcUaBoolean)true);
+		rc = rc & jsonNumberDecode(pt, priority_, "Priority", true, (OpcUaByte)0);
+		return rc;
 	}
 
 }

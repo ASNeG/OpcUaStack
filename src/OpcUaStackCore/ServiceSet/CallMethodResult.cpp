@@ -124,81 +124,20 @@ namespace OpcUaStackCore
 	CallMethodResult::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		bool rc = true;
-		rc = rc & jsonNumberEncode(pt, (uint32_t)statusCode_, "StatusCode", false, (uint32_t)0);
+		rc = rc & jsonNumberEncode(pt, (uint32_t)statusCode_, "StatusCode");
 		rc = rc & jsonArraySPtrEncode(pt, inputArgumentResultArraySPtr_, "InputArgumentResults", true);
-
-#if 0
-		OpcUaStatusArray statusArray;
-		statusArray.resize(inputArgumentResultArraySPtr_->size());
-		for (uint32_t idx = 0; idx < inputArgumentResultArraySPtr_->size(); idx++) {
-			OpcUaStatusCode statusCode;
-			inputArgumentResultArraySPtr_->get(idx, statusCode);
-
-			auto status = boost::make_shared<OpcUaStatus>(statusCode);
-			statusArray.push_back(status);
-		}
-
-		// encode input argument results
-		if (statusArray.size() > 0) {
-			if (!statusArray.jsonEncode(pt, "InputArgumentResults")) {
-				Log(Error, "CallMethodResult json encode error")
-					.parameter("Element", "InputArgumentResults");
-				return false;
-			}
-		}
-#endif
-
-		// encode output argument array
-		if (outputArgumentArraySPtr_->size() > 0) {
-			if (!outputArgumentArraySPtr_->jsonEncode(pt, "OutputArguments")) {
-				Log(Error, "CallMethodResult json encode error")
-			    	.parameter("Element", "OutputArguments");
-				return false;
-			}
-		}
-
+		rc = rc & jsonArraySPtrEncode(pt, outputArgumentArraySPtr_, "OutputArguments", true);
 		return rc;
 	}
 
 	bool
 	CallMethodResult::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		boost::optional<const boost::property_tree::ptree&> tmpTree;
-
-		// get status code
-		OpcUaStatus status(Success);
-		tmpTree = pt.get_child_optional("StatusCode");
-		if (tmpTree) {
-			if (!status.jsonDecode(pt, "StatusCode")) {
-				Log(Error, "CallMethodResult json decode error")
-		        	.parameter("Element", "Status");
-				return false;
-			}
-		}
-		statusCode_ = status.enumeration();
-
-		// decode input arguments result
-		OpcUaStatusArray statusArray;
-		if (!statusArray.jsonDecode(pt, "InputArgumentResults")) {
-			Log(Error, "CallMethodResult json decode error")
-			    .parameter("Element", "Results");
-			return false;
-		}
-		inputArgumentResultArraySPtr_->resize(statusArray.size());
-		for (uint32_t idx = 0; idx < statusArray.size(); idx++) {
-			OpcUaStatus::SPtr status;
-			statusArray.get(idx, status);
-			inputArgumentResultArraySPtr_->push_back(status->enumeration());
-		}
-
-		// decode output argument array
-		if (!outputArgumentArraySPtr_->jsonDecode(pt, "OutputArguments")) {
-			Log(Error, "CallMethodResult json decode error")
-			    .parameter("Element", "OutputArguments");
-			return false;
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&statusCode_, "StatusCode");
+		rc = rc & jsonArraySPtrDecode(pt, inputArgumentResultArraySPtr_, "InputArgumentResults", true);
+		rc = rc & jsonArraySPtrDecode(pt, outputArgumentArraySPtr_, "OutputArguments", true);
+		return rc;
 	}
 
 }

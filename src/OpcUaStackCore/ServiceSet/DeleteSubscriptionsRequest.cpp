@@ -65,27 +65,13 @@ namespace OpcUaStackCore
 	bool
 	DeleteSubscriptionsRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		// encode subscription ids
-		if (!subscriptionIdArraySPtr_->jsonEncode(pt, "SubscriptionIds")) {
-			Log(Error, "DeleteSubscriptionsRequest json encode error")
-				.parameter("Element", "SubscriptionIds");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrEncode(pt, subscriptionIdArraySPtr_, "SubscriptionIds");
 	}
 
 	bool
 	DeleteSubscriptionsRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// decode subscription ids
-		if (!subscriptionIdArraySPtr_->jsonDecode(pt, "SubscriptionIds")) {
-			Log(Error, "DeleteSubscriptionsRequest json encode error")
-				.parameter("Element", "SubscriptionIds");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrDecode(pt, subscriptionIdArraySPtr_, "SubscriptionIds");
 	}
 
 }

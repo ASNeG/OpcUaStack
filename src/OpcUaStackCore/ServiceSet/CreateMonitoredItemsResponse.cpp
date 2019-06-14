@@ -80,27 +80,13 @@ namespace OpcUaStackCore
 	bool
 	CreateMonitoredItemsResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		// encode data value array
-		if (!resultArraySPtr_->jsonEncode(pt, "Results")) {
-			Log(Error, "CreateMonitoredItemsResponse json encode error")
-				.parameter("Element", "Results");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrEncode(pt, resultArraySPtr_, "Results");
 	}
 
 	bool
 	CreateMonitoredItemsResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// decode value id array
-		if (!resultArraySPtr_->jsonDecode(pt, "Results")) {
-			Log(Error, "CreateMonitoredItemsResponse json decode error")
-			    .parameter("Element", "Results");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrDecode(pt, resultArraySPtr_, "Results");
 	}
 
 }
