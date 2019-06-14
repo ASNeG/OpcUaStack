@@ -6,6 +6,7 @@ services:
     volumes:
       - server_pki:/etc/OpcUaStack/ASNeG-Demo/pki
   stack:
+    container_name: stack-${BUILD_TAG}
     depends_on:
       - asneg-demo
     hostname: asneg-test
