@@ -24,9 +24,10 @@ pipeline {
 
     stage('build_windows') {
       steps {
+        sh 'cd /WinBuildServer'
         sh 'vagrant up'
-        sh 'vagrant powershell -c "C:\\build_vs.bat -t local -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
-        sh 'vagrant powershell -c "C:\\build_vs.bat -t tst -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
+        sh 'vagrant powershell -c "cd C:\\build\\${NODE_NAME}_${JOB_NAME}; C:\\build_vs.bat -t local -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
+        sh 'vagrant powershell -c "cd C:\\build\\${NODE_NAME}_${JOB_NAME}; C:\\build_vs.bat -t tst -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
       }
     }
   }
