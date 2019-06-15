@@ -7,10 +7,23 @@ pipeline {
       }
     }
 
-    stage('build_linux') {
-      steps {
-        sh 'docker-compose build'
-        sh 'docker-compose run stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889'
+    stage('build') {
+      parallel {
+        stage('build_linux') {
+          steps {
+            sh 'docker-compose build'
+            sh 'docker-compose run stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889'
+          }
+        }
+
+        stage('build_windows') {
+          steps {
+            sh 'cd /WinBuildServer'
+            sh 'vagrant up'
+            sh 'vagrant powershell -c "cd C:\\build\\${NODE_NAME}_${JOB_NAME}; C:\\build_vs.bat -t local -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
+            sh 'vagrant powershell -c "cd C:\\build\\${NODE_NAME}_${JOB_NAME}; C:\\build_vs.bat -t tst -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
+          }
+        }
       }
     }
 
@@ -19,15 +32,6 @@ pipeline {
         sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackCoreTest --log_format=XML --log_sink=core_results.xml --log_level=all --report_level=no'
         sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackServerTest --log_format=XML --log_sink=server_results.xml --log_level=all --report_level=no'
         sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack ./OpcUaStackClientTest --log_format=XML --log_sink=client_results.xml --log_level=all --report_level=no'
-      }
-    }
-
-    stage('build_windows') {
-      steps {
-        sh 'cd /WinBuildServer'
-        sh 'vagrant up'
-        sh 'vagrant powershell -c "cd C:\\build\\${NODE_NAME}_${JOB_NAME}; C:\\build_vs.bat -t local -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
-        sh 'vagrant powershell -c "cd C:\\build\\${NODE_NAME}_${JOB_NAME}; C:\\build_vs.bat -t tst -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
       }
     }
   }
