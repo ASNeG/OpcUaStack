@@ -18,10 +18,16 @@ pipeline {
 
         stage('build_windows') {
           steps {
-            sh 'cd /WinBuildServer'
-            sh 'vagrant up'
-            sh 'vagrant powershell -c "cd C:\\build\\${NODE_NAME}_${JOB_NAME}; C:\\build_vs.bat -t local -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
-            sh 'vagrant powershell -c "cd C:\\build\\${NODE_NAME}_${JOB_NAME}; C:\\build_vs.bat -t tst -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
+            script {
+              sh('basename $PWD > DIRNAME.txt')
+              env.BUILDDIRNAME = 'C:\\build\\' + readFile('DIRNAME.txt').trim()
+            }
+
+            dir('/root/WinBuildServer') {
+              sh 'vagrant powershell -c "cd $BUILDDIRNAME; C:\\build_vs.bat -t local -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
+              sh 'vagrant powershell -c "cd $BUILDDIRNAME; C:\\build_vs.bat -t tst -B Release -vs \\"Visual Studio 15 2017 Win64\\""'
+            }
+
           }
         }
       }
