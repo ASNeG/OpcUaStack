@@ -84,43 +84,12 @@ namespace OpcUaStackCore
 	bool
 	WriteResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		OpcUaStatusArray statusArray;
-		statusArray.resize(statusCodeArraySPtr_->size());
-		for (uint32_t idx = 0; idx < statusCodeArraySPtr_->size(); idx++) {
-			OpcUaStatusCode statusCode;
-			statusCodeArraySPtr_->get(idx, statusCode);
-
-			auto status = boost::make_shared<OpcUaStatus>(statusCode);
-			statusArray.push_back(status);
-		}
-
-		// encode status code array
-		if (!statusArray.jsonEncode(pt, "Results")) {
-			Log(Error, "WriteResponse json encode error")
-				.parameter("Element", "Results");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrEncode(pt, statusCodeArraySPtr_, "Results");
 	}
 
 	bool
 	WriteResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// decode status code array
-		OpcUaStatusArray statusArray;
-		if (!statusArray.jsonDecode(pt, "Results")) {
-			Log(Error, "WriteResponse json decode error")
-			    .parameter("Element", "Results");
-			return false;
-		}
-		statusCodeArraySPtr_->resize(statusArray.size());
-		for (uint32_t idx = 0; idx < statusArray.size(); idx++) {
-			OpcUaStatus::SPtr status;
-			statusArray.get(idx, status);
-			statusCodeArraySPtr_->push_back(status->enumeration());
-		}
-
-		return true;
+		return jsonArraySPtrDecode(pt, statusCodeArraySPtr_, "Results");
 	}
 }

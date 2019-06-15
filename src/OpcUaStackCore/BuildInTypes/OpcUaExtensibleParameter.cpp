@@ -56,6 +56,12 @@ namespace OpcUaStackCore
 		return eoSPtr_.get() != nullptr;
 	}
 
+	bool
+	OpcUaExtensibleParameter::isNull(void) const
+	{
+		return eoSPtr_.get() == nullptr;
+	}
+
     ExtensionObjectBase::SPtr
 	OpcUaExtensibleParameter::factory(void)
     {

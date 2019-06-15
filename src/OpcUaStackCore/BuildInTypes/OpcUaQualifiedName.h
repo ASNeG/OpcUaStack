@@ -72,7 +72,9 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
-    protected:
+		bool isNull(void) const override;
+
+	  protected:
         bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
         bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 

@@ -82,27 +82,13 @@ namespace OpcUaStackCore
 	bool
 	ReadResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		// encode data value array
-		if (!dataValueArraySPtr_->jsonEncode(pt, "Results")) {
-			Log(Error, "ReadResponse json encode error")
-				.parameter("Element", "Results");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrEncode(pt, dataValueArraySPtr_, "Results");
 	}
 
 	bool
 	ReadResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// decode value id array
-		if (!dataValueArraySPtr_->jsonDecode(pt, "Results")) {
-			Log(Error, "ReadResponse json decode error")
-			    .parameter("Element", "Results");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrDecode(pt, dataValueArraySPtr_, "Results");
 	}
 
 }

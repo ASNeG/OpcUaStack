@@ -202,6 +202,12 @@ namespace OpcUaStackCore
 		os << "ns=" << namespaceIndex_ << ",name=" << name_; 
 	}
 
+	bool
+	OpcUaQualifiedName::isNull(void) const
+	{
+		return namespaceIndex_ == 0 && name_.isNull();
+	}
+
 	void 
 	OpcUaQualifiedName::opcUaBinaryEncode(std::ostream& os) const
 	{

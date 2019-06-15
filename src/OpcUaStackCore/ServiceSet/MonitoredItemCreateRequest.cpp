@@ -97,65 +97,20 @@ namespace OpcUaStackCore
 	bool
 	MonitoredItemCreateRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
-		// encode item to monitor
-		if (!itemToMonitor_.jsonEncode(pt, "ItemToMonitor")) {
-			Log(Error, "MonitoredItemCreateRequest json encode error")
-				.parameter("Element", "ItemToMonitor");
-			return false;
-		}
-
-		// encode  monitoring mode
-		if (monitoringMode_ != MonitoringMode::MonitoringMode_Sampling) {
-			auto monitoringMode = (uint32_t) monitoringMode_;
-			if (!JsonNumber::jsonEncode(pt, monitoringMode, "MonitoringMode")) {
-				Log(Error, "MonitoredItemCreateRequest json encode error")
-					.parameter("Element", "MonitoringMode");
-				return false;
-			}
-		}
-
-		// encode requested parameters
-		if (!requestedParameters_.jsonEncode(pt, "RequestedParameters")) {
-			Log(Error, "MonitoredItemCreateRequest json encode error")
-				.parameter("Element", "RequestedParameters");
-			return false;
-		}
-
+		bool rc = true;
+		rc = rc & jsonObjectEncode(pt, itemToMonitor_, "ItemToMonitor");
+		rc = rc & jsonNumberEncode(pt, (uint32_t)monitoringMode_, "ItemToMonitor", true, (uint32_t)MonitoringMode::MonitoringMode_Sampling);
+		rc = rc & jsonObjectEncode(pt, requestedParameters_, "RequestedParameters");
 		return true;
 	}
 
 	bool
 	MonitoredItemCreateRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		boost::optional<const boost::property_tree::ptree&> tmpTree;
-
-		// decode item to monitor
-		if (!itemToMonitor_.jsonDecode(pt, "ItemToMonitor")) {
-			Log(Error, "MonitoredItemCreateRequest json decode error")
-				.parameter("MonitoredItemCreateRequest", "ItemToMonitor");
-			return false;
-		}
-
-		// decode  monitoring mode
-		monitoringMode_ = MonitoringMode::MonitoringMode_Sampling;
-		tmpTree = pt.get_child_optional("MonitoringMode");
-		if (tmpTree) {
-			uint32_t monitoringMode;
-			if (!JsonNumber::jsonDecode(pt, monitoringMode, "MonitoringMode")) {
-				Log(Error, "MonitoredItemCreateRequest json decode error")
-					.parameter("Element", "MonitoringMode");
-				return false;
-			}
-			monitoringMode_ = (MonitoringMode)monitoringMode;
-		}
-
-		// decode requested parameters
-		if (!requestedParameters_.jsonDecode(pt, "RequestedParameters")) {
-			Log(Error, "MonitoredItemCreateRequest json decode error")
-				.parameter("Element", "RequestedParameters");
-			return false;
-		}
-
+		bool rc = true;
+		rc = rc & jsonObjectDecode(pt, itemToMonitor_, "ItemToMonitor");
+		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&monitoringMode_, "ItemToMonitor", true, (uint32_t)MonitoringMode::MonitoringMode_Sampling);
+		rc = rc & jsonObjectDecode(pt, requestedParameters_, "RequestedParameters");
 		return true;
 	}
 }

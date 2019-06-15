@@ -331,7 +331,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, monitoredItemId_, "MonitoredItemId");
         rc = rc & jsonNumberEncode(pt, revisedSamplingInterval_, "RevisedSamplingInterval");
         rc = rc & jsonNumberEncode(pt, revisedQueueSize_, "RevisedQueueSize");
-        rc = rc & jsonObjectEncode(pt, filterResult_, "FilterResult");
+        rc = rc & jsonObjectEncode(pt, filterResult_, "FilterResult", true);
     
         return rc;
     }
@@ -345,7 +345,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberDecode(pt, monitoredItemId_, "MonitoredItemId");
         rc = rc & jsonNumberDecode(pt, revisedSamplingInterval_, "RevisedSamplingInterval");
         rc = rc & jsonNumberDecode(pt, revisedQueueSize_, "RevisedQueueSize");
-        rc = rc & jsonObjectDecode(pt, filterResult_, "FilterResult");
+        rc = rc & jsonObjectDecode(pt, filterResult_, "FilterResult", true);
     
         return rc;
     }

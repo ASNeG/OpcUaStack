@@ -150,85 +150,23 @@ namespace OpcUaStackCore
 	bool
 	ReadValueId::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
-		// encode node id
-		if (!nodeIdSPtr_->jsonEncode(pt, "NodeId")) {
-			Log(Error, "ReadValueId json encode error")
-				.parameter("Element", "NodeId");
-			return false;
-		}
-
-		// encode attribute id
-		if (attributeId_ != AttributeId_Value) {
-			if (!JsonNumber::jsonEncode(pt, attributeId_, "AttributeId")) {
-				Log(Error, "ReadValueId json encode error")
-					.parameter("Element", "AttributeId");
-				return false;
-			}
-		}
-
-		// encode index range
-		if (indexRange_.exist()) {
-			if (!indexRange_.jsonEncode(pt, "IndexRange")) {
-				Log(Error, "ReadValueId json encode error")
-					.parameter("Element", "IndexRange");
-				return false;
-			}
-		}
-
-		// encode data encoding
-		if (dataEncoding_.namespaceIndex() != 0 || const_cast<OpcUaQualifiedName*>(&dataEncoding_)->name().exist()) {
-			if (!dataEncoding_.jsonEncode(pt, "DataEncoding")) {
-				Log(Error, "ReadValueId json encode error")
-					.parameter("Element", "DataEncoding");
-				return false;
-			}
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonObjectSPtrEncode(pt, nodeIdSPtr_, "NodeId");
+		rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId", true, (OpcUaInt32)13);
+		rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange", true);
+		rc = rc & jsonObjectEncode(pt, dataEncoding_, "DataEncoding", true);
+		return rc;
 	}
 
 	bool
 	ReadValueId::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		// decode node id
-		if (!nodeIdSPtr_->jsonDecode(pt, "NodeId")) {
-			Log(Error, "ReadValueId json decode error")
-			    .parameter("Element", "NodeId");
-			return false;
-		}
-
-		// decode attribute id
-		attributeId_ = AttributeId_Value;
-		auto attributeId = pt.get_child_optional("AttributeId");
-		if (attributeId) {
-			if (!JsonNumber::jsonDecode(pt, attributeId_, "AttributeId")) {
-				attributeId_ = AttributeId_Value;
-			}
-		}
-
-		// decode index range
-		indexRange_ = "";
-		auto indexRange = pt.get_child_optional("IndexRange");
-		if (indexRange) {
-			if (!indexRange_.jsonDecode(*indexRange)) {
-				Log(Error, "ReadValueId json decode error")
-					.parameter("Element", "IndexRange");
-				return false;
-			}
-		}
-
-		// decode data encoding
-		dataEncoding_ = "";
-		auto dataEncoding = pt.get_child_optional("DataEncoding");
-		if (dataEncoding) {
-			if (!dataEncoding_.jsonDecode(pt, "DataEncoding")) {
-				Log(Error, "ReadValueId json decode error")
-				    .parameter("Element", "DataEncoding");
-				return false;
-			}
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonObjectSPtrDecode(pt, nodeIdSPtr_, "NodeId");
+		rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId", true, (OpcUaInt32)13);
+		rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange", true);
+		rc = rc & jsonObjectDecode(pt, dataEncoding_, "DataEncoding", true);
+		return rc;
 	}
 
 }

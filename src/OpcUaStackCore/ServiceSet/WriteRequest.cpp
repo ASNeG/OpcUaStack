@@ -68,26 +68,12 @@ namespace OpcUaStackCore
 	bool
 	WriteRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		// encode write value array
-		if (!writeValueArraySPtr_->jsonEncode(pt, "NodesToWrite")) {
-			Log(Error, "WriteRequest json encode error")
-				.parameter("Element", "NodesToWrite");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrEncode(pt, writeValueArraySPtr_, "NodesToWrite");
 	}
 
 	bool
 	WriteRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// decode write value array
-		if (!writeValueArraySPtr_->jsonDecode(pt, "NodesToWrite")) {
-			Log(Error, "writeRequest json decode error")
-			    .parameter("Element", "NodesToWrite");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrDecode(pt, writeValueArraySPtr_, "NodesToWrite");
 	}
 }

@@ -99,7 +99,7 @@ namespace OpcUaStackCore
 	{
 		bool rc = true;
 		rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
-		rc = rc & jsonNumberEncode(pt, (uint32_t)timestampsToReturn_, "TimestampsToReturn");
+		rc = rc & jsonNumberEncode(pt, (uint32_t)timestampsToReturn_, "TimestampsToReturn", true, (uint32_t)TimestampsToReturn_Both);
 		rc = rc & jsonArraySPtrEncode(pt, itemsToCreateArraySPtr_, "ItemsToCreate");
 		return true;
 	}
@@ -109,7 +109,7 @@ namespace OpcUaStackCore
 	{
 		bool rc = true;
 		rc = rc & jsonNumberDecode(pt, subscriptionId_, "SubscriptionId");
-		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&timestampsToReturn_, "TimestampsToReturn");
+		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&timestampsToReturn_, "TimestampsToReturn", true, (uint32_t)TimestampsToReturn_Both);
 		rc = rc & jsonArraySPtrDecode(pt, itemsToCreateArraySPtr_, "ItemsToCreate");
 		return true;
 	}

@@ -74,13 +74,14 @@ namespace OpcUaStackCore
          */
         bool jsonDecode(const boost::property_tree::ptree& pt);
 
-      protected:
-        virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const = 0;
-        virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt) = 0;
         virtual bool isArray(void) const { return false; }
         virtual bool isNull(void) const { return false; }
         virtual void setNull(void) { return; }
         virtual size_t arrayLength(void) const { return 0; }
+
+      protected:
+        virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const = 0;
+        virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt) = 0;
 
         template <typename  T>
         bool jsonNumberEncode(
@@ -118,17 +119,20 @@ namespace OpcUaStackCore
         template <typename  T>
         bool jsonNumberDecode(const boost::property_tree::ptree &pt, T& value, const std::string &element, bool optional, T defaultValue)
         {
-            if (!JsonNumber::jsonDecode(pt, value, element)) {
-                if (optional) {
-                    value = defaultValue;
-                } else {
-                    Log(Error, std::string(typeid(this).name()) + " json decoder error")
-                            .parameter("Element", element);
-                    return false;
-                }
-            }
+        	auto ptElement = pt.get_child_optional(element);
+        	if (!ptElement) {
+         		if (!optional) {
+            			Log(Error, std::string(typeid(this).name()) + " json decoder error, because mandatory number is missing")
+        			    	.parameter("Element", element);
+            			return false;
+            		}
+            		else {
+            			value = defaultValue;
+            			return true;
+            		}
+        	}
 
-            return true;
+            return JsonNumber::jsonDecode(pt, value, element);
         }
 
         template <typename  T>

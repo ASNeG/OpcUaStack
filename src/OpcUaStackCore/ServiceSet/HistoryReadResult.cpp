@@ -98,65 +98,21 @@ namespace OpcUaStackCore
 	bool
 	HistoryReadResult::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
-		// encode status code
-		OpcUaStatus status(statusCode_);
-		if (!status.jsonEncode(pt, "StatusCode")) {
-			Log(Error, "HistoryReadResult json encode error")
-				.parameter("Element", "StatusCode");
-			return false;
-		}
-
-		// encode continuation point
-		if (continuationPoint_.exist()) {
-			if (!continuationPoint_.jsonEncode(pt, "ContinuationPoint")) {
-				Log(Error, "HistoryReadResult json encode error")
-					.parameter("Element", "ContinuationPoint");
-				return false;
-			}
-		}
-
-		// encode history data
-		if (!historyData_->jsonEncode(pt, "HistoryData")) {
-			Log(Error, "HistoryReadResult json encode error")
-				.parameter("Element", "HistoryData");
-			return false;
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, statusCode_, "StatusCode");
+		rc = rc & jsonObjectEncode(pt, continuationPoint_, "ContinuationPoint", true);
+		rc = rc & jsonObjectSPtrEncode(pt, historyData_, "HistoryData", true);
+		return rc;
 	}
 
 	bool
 	HistoryReadResult::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		boost::optional<const boost::property_tree::ptree&> tmpTree;
-
-		// decode status code
-		OpcUaStatus status;
-		if (!status.jsonDecode(pt, "StatusCode")) {
-			Log(Error, "HistoryReadResult json decode error")
-				.parameter("Element", "StatusCode");
-			return false;
-		}
-		statusCode_ = status.enumeration();
-
-		// decode continuation point
-		tmpTree = pt.get_child_optional("ContinuationPoint");
-		if (tmpTree) {
-			if (!continuationPoint_.jsonDecode(pt, "ContinuationPoint")) {
-				Log(Error, "HistoryReadResult json decode error")
-					.parameter("Element", "ContinuationPoint");
-				return false;
-			}
-		}
-
-		// decode history data
-		if (!historyData_->jsonDecode(pt, "HistoryData")) {
-			Log(Error, "HistoryReadResult json decode error")
-				.parameter("Element", "HistoryData");
-			return false;
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&statusCode_, "StatusCode");
+		rc = rc & jsonObjectDecode(pt, continuationPoint_, "ContinuationPoint", true);
+		rc = rc & jsonObjectSPtrDecode(pt, historyData_, "HistoryData", true);
+		return rc;
 	}
 
 }

@@ -54,6 +54,7 @@ namespace OpcUaStackCore
         virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
         virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
         virtual void out(std::ostream& os);
+        bool isNull(void) const override;
         //- ExtensionObjectBase -----------------------------------------------
 
         void reset(void);
