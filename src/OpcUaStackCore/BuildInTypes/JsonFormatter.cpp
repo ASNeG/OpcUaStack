@@ -82,7 +82,19 @@ namespace OpcUaStackCore
 		bool optional
 	) const
     {
-        return (valuePtr && jsonObjectEncode(pt, *valuePtr, element)) || optional;
+    	// check if array element is null
+    	if (valuePtr.get() == nullptr) {
+    		if (optional) {
+    			return true; // the element can be omitted
+    		}
+    		else {
+    			 Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory object is null")
+    			    .parameter("Element", element);
+    			return false;
+    		}
+    	}
+
+        return jsonObjectEncode(pt, *valuePtr.get(), element, optional);
     }
 
 
@@ -104,7 +116,13 @@ namespace OpcUaStackCore
 		bool optional
 	)
     {
-        return (valuePtr && jsonObjectDecode(pt, *valuePtr, element)) || optional;
+    	if (valuePtr.get() == nullptr) {
+    		Log(Error, std::string(typeid(this).name()) + " json decoder error, because variable is null")
+    		    .parameter("Element", element);
+    		return false;
+    	}
+
+        return jsonObjectDecode(pt, *valuePtr.get(), element);
     }
 
     bool
@@ -125,14 +143,19 @@ namespace OpcUaStackCore
 		bool optional
 	) const
     {
-        bool result = valuePtr.jsonEncode(pt, element) || optional;
-        if (!result) {
-            Log(Error, std::string(typeid(this).name()) + " json encoder error")
-                    .parameter("Element", element);
-            return false;
-        }
+    	// check if array element is null
+    	if (valuePtr.isNull()) {
+    		if (optional) {
+    			return true; // the element can be omitted
+    		}
+    		else {
+    			 Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory object is null")
+    			    .parameter("Element", element);
+    			return false;
+    		}
+    	}
 
-        return true;
+        return valuePtr.jsonEncode(pt, element);
     }
 
     bool
@@ -153,14 +176,20 @@ namespace OpcUaStackCore
 		bool optional
 	)
     {
-        bool result = valuePtr.jsonDecode(pt, element) || optional;
-        if (!result) {
-            Log(Error, std::string(typeid(this).name()) + " json decoder error")
-                    .parameter("Element", element);
-            return false;
-        }
+    	auto ptElement = pt.get_child_optional(element);
+    	if (!ptElement) {
+    		if (!optional) {
+    			Log(Error, std::string(typeid(this).name()) + " json decoder error, because mandatory object is missing")
+			    	.parameter("Element", element);
+    			return false;
+    		}
+    		else {
+    			valuePtr.setNull();
+    			return true;
+    		}
+    	}
 
-        return true;
+        return valuePtr.jsonDecode(pt, element);
     }
 
     bool
