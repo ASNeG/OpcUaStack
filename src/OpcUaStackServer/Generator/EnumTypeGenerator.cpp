@@ -331,12 +331,12 @@ namespace OpcUaStackServer
 		ss << prefix << "int32_t& value(void);" << std::endl;
 		ss << prefix << "void enumeration(Enum enumeration);" << std::endl;
 		ss << prefix << "Enum enumeration(void);" << std::endl;
-		ss << prefix << "Enum str2Enum(const std::string& enumerationString);" << std::endl;
-		ss << prefix << "std::string enum2Str(Enum enumeration);" << std::endl;
+		ss << prefix << "static Enum str2Enum(const std::string& enumerationString);" << std::endl;
+		ss << prefix << "static std::string enum2Str(Enum enumeration);" << std::endl;
 		ss << prefix << "std::string enum2Str(void);" << std::endl;
 		ss << prefix << "std::string toString(void);" << std::endl;
-		ss << prefix << "bool exist(const std::string& enumerationString);" << std::endl;
-		ss << prefix << "bool exist(Enum enumeration);" << std::endl;
+		ss << prefix << "static bool exist(const std::string& enumerationString);" << std::endl;
+		ss << prefix << "static bool exist(Enum enumeration);" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
