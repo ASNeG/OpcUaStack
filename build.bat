@@ -22,6 +22,7 @@ set STACK_PREFIX=C:\ASNeG
 set BUILD_TYPE="Debug"
 set PACKAGE_TYPE="Bin"
 set VS_GENERATOR=""
+set JOBS=1
 
 :parse
     if "%~1"=="" goto :execute
@@ -49,6 +50,10 @@ set VS_GENERATOR=""
     if "%~1"=="/P"               set PACKAGE_TYPE=%~2
     if "%~1"=="-P"               set PACKAGE_TYPE=%~2
     if "%~1"=="--package-type"   set PACKAGE_TYPE=%~2
+	
+    if "%~1"=="/j"               set JOBS=%~2
+    if "%~1"=="-j"               set JOBS=%~2
+    if "%~1"=="--jobs"           set JOBS=%~2
 
     shift
     shift
@@ -104,7 +109,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
@@ -125,7 +130,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DCPACK_PACKAGE_TYPE=%PACKAGE_TYPE%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DCPACK_PACKAGE_TYPE=%PACKAGE_TYPE%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM package OpcUaStack to MSI
@@ -144,7 +149,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build unittest
 	REM
-	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
@@ -179,6 +184,7 @@ REM ---------------------------------------------------------------------------
    echo.
    echo "--package-type, -P, /P PACKAGE_TYPE:  set the MSI package type (Bin | Dev). By default, it is Bin type."
    echo.
+   echo "--jobs, -j, /j JOB_COUNT: sets the number of the jobs of make"
 
 goto:error_handle
 
