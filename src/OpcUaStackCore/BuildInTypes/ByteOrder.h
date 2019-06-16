@@ -21,7 +21,7 @@
 #include <stdint.h>
 #include <iostream>
 
-#ifdef WIN32
+#ifdef _WIN32
 
 	#define BIG_ENDIAN false
 	#define LITTLE_ENDIAN true

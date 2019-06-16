@@ -11,7 +11,7 @@ pipeline {
         stage('build_linux') {
           steps {
             sh 'docker-compose build'
-            sh 'docker-compose run stack sh build.sh -t tst -j 4 -B Release --test-with-server opc.tcp://demo_server:8889 --server-pki-path /tmp/'
+            sh 'docker-compose run stack sh build.sh -t tst -j 2 -B Release --test-with-server opc.tcp://demo_server:8889 --server-pki-path /tmp/'
           }
         }
 
@@ -23,8 +23,8 @@ pipeline {
             }
 
             dir('/root/WinBuildServer') {
-              sh 'vagrant powershell -c "cd $BUILDDIRNAME; C:\\build_vs.bat -t local -B Release -i $BUILDDIRNAME\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\""'
-              sh 'vagrant powershell -c "cd $BUILDDIRNAME; C:\\build_vs.bat -t tst -B Release -s $BUILDDIRNAME\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\""'
+              sh 'vagrant powershell -c "cd $BUILDDIRNAME; C:\\build_vs.bat -t local -B Release -i $BUILDDIRNAME\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
+              sh 'vagrant powershell -c "cd $BUILDDIRNAME; C:\\build_vs.bat -t tst -B Release -s $BUILDDIRNAME\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
             }
 
           }

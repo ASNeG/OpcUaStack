@@ -228,9 +228,12 @@ endif()
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-
 set (INSTALL_PREFIX "/usr")        
-if (WIN32)    
+if (WIN32)
+    if (MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+    endif()
+
     if (CPACK_BINARY_MSI)
         set (INSTALL_PREFIX "./usr")   
     endif()
