@@ -104,7 +104,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
@@ -125,7 +125,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DCPACK_PACKAGE_TYPE=%PACKAGE_TYPE%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DCPACK_PACKAGE_TYPE=%PACKAGE_TYPE%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM package OpcUaStack to MSI
@@ -144,7 +144,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build unittest
 	REM
-	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
