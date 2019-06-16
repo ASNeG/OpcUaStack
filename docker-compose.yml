@@ -4,7 +4,7 @@ services:
     image: asneg/asneg-demo:release-4
     hostname: asneg-demo
     volumes:
-      - server_pki:/etc/OpcUaStack/ASNeG-Demo/pki
+      - data-volume:/etc/OpcUaStack/ASNeG-Demo/pki
   stack:
     container_name: stack-${BUILD_TAG}
     depends_on:
@@ -16,8 +16,6 @@ services:
     build: .
     volumes:
       - data-volume:/OpcUaStack
-      - server_pki:/tmp/etc/OpcUaStack/ASNeG-Demo/pki
+      - data-volume:/tmp/etc/OpcUaStack/ASNeG-Demo/pki
 volumes:
-  server_pki:
-    driver: "local"
   data-volume:
