@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 	BOOST_REQUIRE(tcpTestHandler.handleReadClientCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
     BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == CONNECTION_CLOSE_LOCAL);
-#if WIN32
+#if _WIN32
 	if (tcpTestHandler.bytes_transfered_server_ == 0) {
 		BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ == CONNECTION_CLOSE_REMOTE ||
 			          tcpTestHandler.handleReadServerError_ == CONNECTION_CLOSE_EOF);
@@ -200,7 +200,7 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(10000) == true);
 
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 2);
-#if WIN32
+#if _WIN32
 	if (tcpTestHandler.bytes_transfered_server_ == 0) {
 		BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ == CONNECTION_CLOSE_REMOTE ||
 			          tcpTestHandler.handleReadServerError_ == CONNECTION_CLOSE_EOF);

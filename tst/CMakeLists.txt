@@ -58,10 +58,11 @@ endif()
 
 #add_definitions(-DBOOST_ALL_DYN_LINK)
 
-#if (WIN32)
-#	set(CMAKE_PREFIX_PATH C:\\local\\boost_1_54_0)
-#	set(BOOST_LIBRARYDIR C:\\local\\boost_1_54_0\\lib32-msvc-11.0)
-#endif ()
+if (WIN32)
+    if (MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+    endif()
+endif ()
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
