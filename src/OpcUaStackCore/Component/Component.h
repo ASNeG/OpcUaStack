@@ -19,6 +19,8 @@
 #define __OpcUaStackCore_Component_h__
 
 #include <boost/thread/mutex.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"

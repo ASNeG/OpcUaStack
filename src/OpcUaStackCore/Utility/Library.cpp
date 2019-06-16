@@ -3,7 +3,7 @@
 namespace OpcUaStackCore
 {
 
-#if WIN32
+#if _WIN32
 
 #include <Windows.h>
 
