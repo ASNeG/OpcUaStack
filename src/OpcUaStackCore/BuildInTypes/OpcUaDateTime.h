@@ -60,6 +60,7 @@ namespace OpcUaStackCore
 			value.out(os);
 			return os;
 		}
+		bool isNull(void) const override;
 
         void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

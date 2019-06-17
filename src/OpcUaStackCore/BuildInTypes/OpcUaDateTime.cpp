@@ -249,6 +249,12 @@ namespace OpcUaStackCore
 		os << str;
 	}
 
+	bool
+	OpcUaDateTime::isNull(void) const
+	{
+		return !exist();
+	}
+
 	void 
 	OpcUaDateTime::opcUaBinaryEncode(std::ostream& os) const
 	{
