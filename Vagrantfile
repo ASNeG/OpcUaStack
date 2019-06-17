@@ -1,13 +1,15 @@
 $script = <<-SCRIPT
-'call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat"
+'
+call "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat"
 cd C:\\vagrant
+
 set PreferredToolArchitecture=x64
 .\\build.bat %*' | Out-File 'C:\\build_vs.bat' -Encoding Ascii
 SCRIPT
 
 Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |v|
-    v.memory = 3072
+    v.memory = 2048
     v.cpus = 4
   end
 
