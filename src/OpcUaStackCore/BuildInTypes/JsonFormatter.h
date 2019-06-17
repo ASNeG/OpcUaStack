@@ -113,7 +113,7 @@ namespace OpcUaStackCore
         template <typename  T>
         bool jsonNumberEncode(boost::property_tree::ptree &pt, T value) const
         {
-            return jsonNumberEncode(pt, value);
+            return JsonNumber::jsonEncode(pt, value);
         }
 
         template <typename  T>
@@ -132,7 +132,13 @@ namespace OpcUaStackCore
             		}
         	}
 
-            return JsonNumber::jsonDecode(pt, value, element);
+            if (!JsonNumber::jsonDecode(pt, value, element)) {
+       			Log(Error, std::string(typeid(this).name()) + " json decoder error, because variable format error")
+    			    	.parameter("Element", element);
+        			return false;
+            	return false;
+            }
+            return true;
         }
 
         template <typename  T>

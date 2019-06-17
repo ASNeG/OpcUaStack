@@ -56,8 +56,8 @@ namespace OpcUaStackCore
         static std::string enum2Str(Enum enumeration);
         std::string enum2Str(void);
         std::string toString(void);
-        bool exist(const std::string& enumerationString);
-        bool exist(Enum enumeration);
+        static bool exist(const std::string& enumerationString);
+        static bool exist(Enum enumeration);
         
         //- ExtensionObjectBase -----------------------------------------------
         virtual ExtensionObjectBase::SPtr factory(void);

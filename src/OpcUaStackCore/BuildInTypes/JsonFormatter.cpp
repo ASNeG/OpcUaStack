@@ -54,12 +54,18 @@ namespace OpcUaStackCore
 
         tmpTree = pt.get_child_optional(element);
         if (!tmpTree) {
+            Log(Error, std::string(typeid(this).name()) + " json decoder error, because element does not exist")
+                    .parameter("Element", element);
+            return false;
+        }
+
+        if (!jsonDecodeImpl(*tmpTree)) {
             Log(Error, std::string(typeid(this).name()) + " json decoder error")
                     .parameter("Element", element);
             return false;
         }
 
-        return jsonDecodeImpl(*tmpTree);
+        return true;
     }
 
     bool
@@ -82,7 +88,7 @@ namespace OpcUaStackCore
 		bool optional
 	) const
     {
-    	// check if array element is null
+    	// check if object element is null
     	if (valuePtr.get() == nullptr) {
     		if (optional) {
     			return true; // the element can be omitted
@@ -94,7 +100,13 @@ namespace OpcUaStackCore
     		}
     	}
 
-        return jsonObjectEncode(pt, *valuePtr.get(), element, optional);
+        if (!jsonObjectEncode(pt, *valuePtr.get(), element, optional)) {
+  			 Log(Error, std::string(typeid(this).name()) + " json encode error")
+   			    .parameter("Element", element);
+   			return false;
+        }
+
+        return true;
     }
 
 
@@ -122,7 +134,13 @@ namespace OpcUaStackCore
     		return false;
     	}
 
-        return jsonObjectDecode(pt, *valuePtr.get(), element);
+        if (!jsonObjectDecode(pt, *valuePtr.get(), element)) {
+    		Log(Error, std::string(typeid(this).name()) + " json decoder error")
+    		    .parameter("Element", element);
+    		return false;
+        }
+
+        return true;
     }
 
     bool
@@ -155,7 +173,13 @@ namespace OpcUaStackCore
     		}
     	}
 
-        return valuePtr.jsonEncode(pt, element);
+        if (!valuePtr.jsonEncode(pt, element)) {
+			 Log(Error, std::string(typeid(this).name()) + " json encode error")
+			    .parameter("Element", element);
+			return false;
+        }
+
+        return true;
     }
 
     bool
@@ -165,7 +189,13 @@ namespace OpcUaStackCore
         const std::string &element
 	) const
     {
-        return jsonObjectEncode(pt, valuePtr, element, false);
+        if (!jsonObjectEncode(pt, valuePtr, element, false)) {
+			Log(Error, std::string(typeid(this).name()) + " json encode error")
+		    	.parameter("Element", element);
+			return false;
+        }
+
+        return true;
     }
 
     bool
@@ -179,7 +209,7 @@ namespace OpcUaStackCore
     	auto ptElement = pt.get_child_optional(element);
     	if (!ptElement) {
     		if (!optional) {
-    			Log(Error, std::string(typeid(this).name()) + " json decoder error, because mandatory object is missing")
+    			Log(Error, std::string(typeid(this).name()) + " json decode error, because mandatory object is missing")
 			    	.parameter("Element", element);
     			return false;
     		}
@@ -189,7 +219,13 @@ namespace OpcUaStackCore
     		}
     	}
 
-        return valuePtr.jsonDecode(pt, element);
+        if (!valuePtr.jsonDecode(pt, element)) {
+   			Log(Error, std::string(typeid(this).name()) + " json decode errorg")
+			    	.parameter("Element", element);
+    			return false;
+        }
+
+        return true;
     }
 
     bool
@@ -199,7 +235,13 @@ namespace OpcUaStackCore
         const std::string &element
 	)
     {
-        return jsonObjectDecode(pt, valuePtr, element, false);
+        if (!jsonObjectDecode(pt, valuePtr, element, false)) {
+   			Log(Error, std::string(typeid(this).name()) + " json decode errorg")
+			    .parameter("Element", element);
+    		return false;
+        }
+
+        return true;
     }
 
     bool
@@ -216,14 +258,20 @@ namespace OpcUaStackCore
     			return true; // the element can be ommitted
     		}
     		else {
-    			 Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory array is null")
+    			Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory array is null")
     			    .parameter("Element", element);
     			return false;
     		}
     	}
 
     	// encode array element
-    	return jsonArrayEncode(pt, *valuePtr.get(), element, optional);
+    	if (!jsonArrayEncode(pt, *valuePtr.get(), element, optional)) {
+   			Log(Error, std::string(typeid(this).name()) + " json encode error")
+    			.parameter("Element", element);
+    		return false;
+    	}
+
+    	return true;
     }
 
     bool
@@ -233,7 +281,13 @@ namespace OpcUaStackCore
 		const std::string &element
 	) const
     {
-    	return jsonArraySPtrEncode(pt, valuePtr, element, false);
+    	if (!jsonArraySPtrEncode(pt, valuePtr, element, false)) {
+   			Log(Error, std::string(typeid(this).name()) + " json encode error")
+    			.parameter("Element", element);
+    		return false;
+    	}
+
+    	return true;
     }
 
     bool
@@ -244,7 +298,13 @@ namespace OpcUaStackCore
 		bool optional
 	)
     {
-    	return jsonArrayDecode(pt, *valuePtr.get(), element, optional);
+    	if (!jsonArrayDecode(pt, *valuePtr.get(), element, optional)) {
+  			Log(Error, std::string(typeid(this).name()) + " json decode error")
+    			.parameter("Element", element);
+    		return false;
+    	}
+
+    	return true;
     }
 
     bool
@@ -254,7 +314,13 @@ namespace OpcUaStackCore
 		const std::string &element
 	)
     {
-    	return jsonArraySPtrDecode(pt, valuePtr, element, false);
+    	if (!jsonArraySPtrDecode(pt, valuePtr, element, false)) {
+  			Log(Error, std::string(typeid(this).name()) + " json decode error")
+    			.parameter("Element", element);
+    		return false;
+    	}
+
+    	return true;
     }
 
     bool
@@ -271,14 +337,20 @@ namespace OpcUaStackCore
     			return true; // the element can be omitted
     		}
     		else {
-    			 Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory array is null")
+    			Log(Error, std::string(typeid(this).name()) + " json encode error, because mandatory array is null")
     			    .parameter("Element", element);
     			return false;
     		}
     	}
 
     	// encode array element
-    	return jsonArrayEncode(pt, valuePtr, element);
+    	if (!jsonArrayEncode(pt, valuePtr, element)) {
+			Log(Error, std::string(typeid(this).name()) + " json encode error")
+			    .parameter("Element", element);
+			return false;
+    	}
+
+    	return true;
     }
 
     bool
@@ -288,7 +360,13 @@ namespace OpcUaStackCore
 		const std::string &element
 	) const
     {
-    	return valuePtr.jsonEncode(pt, element);
+    	if (!valuePtr.jsonEncode(pt, element)) {
+   			Log(Error, std::string(typeid(this).name()) + " json encode error")
+    			.parameter("Element", element);
+    		return false;
+    	}
+
+    	return true;
     }
 
     bool
@@ -313,7 +391,13 @@ namespace OpcUaStackCore
     	}
 
     	// decode array element
-    	return jsonArrayDecode(pt, valuePtr, element);
+    	if (!jsonArrayDecode(pt, valuePtr, element)) {
+  			Log(Error, std::string(typeid(this).name()) + " json decoder error")
+			    .parameter("Element", element);
+    		return false;
+    	}
+
+    	return true;
     }
 
     bool
@@ -323,7 +407,13 @@ namespace OpcUaStackCore
 		const std::string &element
 	)
     {
-    	return valuePtr.jsonDecode(pt, element);
+    	if (!valuePtr.jsonDecode(pt, element)) {
+  			Log(Error, std::string(typeid(this).name()) + " json decoder error")
+			    .parameter("Element", element);
+    		return false;
+    	}
+
+    	return true;
     }
 
 }

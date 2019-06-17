@@ -99,7 +99,7 @@ namespace OpcUaStackCore
 	{
 		bool rc = true;
 		rc = rc & jsonObjectEncode(pt, itemToMonitor_, "ItemToMonitor");
-		rc = rc & jsonNumberEncode(pt, (uint32_t)monitoringMode_, "ItemToMonitor", true, (uint32_t)MonitoringMode::MonitoringMode_Sampling);
+		rc = rc & jsonNumberEncode(pt, (uint32_t)monitoringMode_, "MonitoringMode", true, (uint32_t)MonitoringMode::MonitoringMode_Sampling);
 		rc = rc & jsonObjectEncode(pt, requestedParameters_, "RequestedParameters");
 		return true;
 	}
@@ -109,7 +109,7 @@ namespace OpcUaStackCore
 	{
 		bool rc = true;
 		rc = rc & jsonObjectDecode(pt, itemToMonitor_, "ItemToMonitor");
-		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&monitoringMode_, "ItemToMonitor", true, (uint32_t)MonitoringMode::MonitoringMode_Sampling);
+		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&monitoringMode_, "MonitoringMode", true, (uint32_t)MonitoringMode::MonitoringMode_Sampling);
 		rc = rc & jsonObjectDecode(pt, requestedParameters_, "RequestedParameters");
 		return true;
 	}

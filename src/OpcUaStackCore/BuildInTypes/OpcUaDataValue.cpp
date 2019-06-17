@@ -3573,130 +3573,29 @@ namespace OpcUaStackCore
 	bool
 	OpcUaDataValue::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
-		// add value
-		if (opcUaVariantSPtr_.get() != nullptr) {
-			if (!opcUaVariantSPtr_->jsonEncode(pt, "Value")) {
-				Log(Error, "OpcUaDataValue json encode error")
-		        	.parameter("Element", "Value");
-				return false;
-			}
-		}
-
-		// add status code
-		OpcUaStatus status(opcUaStatusCode_);
-		if (!status.jsonEncode(pt, "Status")) {
-			Log(Error, "OpcUaDataValue json encode error")
-		        .parameter("Element", "Status");
-			return false;
-		}
-
-		// add source timestamp
-		if (sourceTimestamp_.exist()) {
-			if (!sourceTimestamp_.jsonEncode(pt, "SourceTimestamp")) {
-				Log(Error, "OpcUaDataValue json encode error")
-		        	.parameter("Element", "SourceTimestamp");
-				return false;
-			}
-		}
-
-		// add server timestamp
-		if (serverTimestamp_.exist()) {
-			if (!serverTimestamp_.jsonEncode(pt, "ServerTimestamp")) {
-				Log(Error, "OpcUaDataValue json encode error")
-		        	.parameter("Element", "ServerTimestamp");
-				return false;
-			}
-		}
-
-		// added source picoseconds
-		if (sourcePicoseconds_ != 0) {
-			if (!JsonNumber::jsonEncode(pt, sourcePicoseconds_, "SourcePicoSeconds")) {
-				Log(Error, "OpcUaDataValue json encode error")
-		        	.parameter("Element", "SourcePicoSeconds");
-				return false;
-			}
-		}
-
-		// added server picoseconds
-		if (serverPicoseconds_ != 0) {
-			if (!JsonNumber::jsonEncode(pt, serverPicoseconds_, "ServerPicoSeconds")) {
-				Log(Error, "OpcUaDataValue json encode error")
-		    		.parameter("Element", "ServerPicoSeconds");
-				return false;
-			}
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonObjectSPtrEncode(pt, opcUaVariantSPtr_, "Value");
+		rc = rc & jsonNumberEncode(pt, (uint32_t)opcUaStatusCode_, "Status", true, (uint32_t)0);
+		rc = rc & jsonObjectEncode(pt, sourceTimestamp_, "SourceTimestamp", true);
+		rc = rc & jsonObjectEncode(pt, serverTimestamp_, "ServerTimestamp", true);
+		rc = rc & jsonNumberEncode(pt, (int16_t)sourcePicoseconds_, "SourcePicoSeconds", true, (int16_t)0);
+		rc = rc & jsonNumberEncode(pt, (int16_t)serverPicoseconds_, "ServerPicoSeconds", true, (int16_t)0);
+		return rc;
 	}
 
 	bool
 	OpcUaDataValue::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		// get value
-		//opcUaVariantSPtr_.reset();
-		auto tmpTree = pt.get_child_optional("Value");
-		if (tmpTree) {
-			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
-			if (!opcUaVariantSPtr_->jsonDecode(*tmpTree)) {
-				Log(Error, "OpcUaDataValue json decode error")
-			        .parameter("Element", "Value");
-				return false;
-			}
-		}
+		opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 
-		// get status code
-		OpcUaStatus status(Success);
-		tmpTree = pt.get_child_optional("Status");
-		if (tmpTree) {
-			if (!status.jsonDecode(pt, "Status")) {
-				Log(Error, "OpcUaDataValue json decode error")
-		        	.parameter("Element", "Status");
-				return false;
-			}
-		}
-		opcUaStatusCode_ = status.enumeration();
-
-		// get source timestamp
-		tmpTree = pt.get_child_optional("SourceTimestamp");
-		if (tmpTree) {
-			if (!sourceTimestamp_.jsonDecode(pt, "SourceTimestamp")) {
-				Log(Error, "OpcUaDataValue json decode error")
-		        	.parameter("Element", "SourceTimestamp");
-				return false;
-			}
-		}
-
-		// get server timestamp
-		tmpTree = pt.get_child_optional("ServerTimestamp");
-		if (tmpTree) {
-			if (!serverTimestamp_.jsonDecode(pt, "ServerTimestamp")) {
-				Log(Error, "OpcUaDataValue json decode error")
-		        	.parameter("Element", "ServerTimestamp");
-				return false;
-			}
-		}
-
-		// get source pico seconds
-		tmpTree = pt.get_child_optional("SourcePicoSeconds");
-		if (tmpTree) {
-			if (!JsonNumber::jsonDecode(pt, sourcePicoseconds_, "SourcePicoSeconds")) {
-				Log(Error, "OpcUaDataValue json decode error")
-		        	.parameter("Element", "SourcePicoSeconds");
-				return false;
-			}
-		}
-
-		// get server pico seconds
-		tmpTree = pt.get_child_optional("ServerPicoSeconds");
-		if (tmpTree) {
-			if (!JsonNumber::jsonDecode(pt, serverPicoseconds_, "ServerPicoSeconds")) {
-				Log(Error, "OpcUaDataValue json decode error")
-		        	.parameter("Element", "ServerPicoSeconds");
-				return false;
-			}
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonObjectSPtrDecode(pt, opcUaVariantSPtr_, "Value");
+		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&opcUaStatusCode_, "Status", true, (uint32_t)0);
+		rc = rc & jsonObjectDecode(pt, sourceTimestamp_, "SourceTimestamp", true);
+		rc = rc & jsonObjectDecode(pt, serverTimestamp_, "ServerTimestamp", true);
+		rc = rc & jsonNumberDecode(pt, *(int16_t*)&sourcePicoseconds_, "SourcePicoSeconds", true, (int16_t)0);
+		rc = rc & jsonNumberDecode(pt, *(int16_t*)&serverPicoseconds_, "ServerPicoSeconds", true, (int16_t)0);
+		return rc;
 	}
 
 }
