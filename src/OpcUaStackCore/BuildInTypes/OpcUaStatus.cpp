@@ -257,18 +257,13 @@ namespace OpcUaStackCore
     bool
     OpcUaStatus::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-		// added status
-    	pt.put_value(toString());
-		return true;
+    	return jsonNumberEncode(pt, (uint32_t)value_);
     }
     
     bool
     OpcUaStatus::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-		// get source pico seconds
-    	auto sourceValue = pt.get_value<std::string>();
-    	enumeration(str2Enum(sourceValue));
-		return true;
+		return jsonNumberDecode(pt, *(uint32_t*)&value_);
     }
     
     void
