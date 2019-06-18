@@ -294,7 +294,7 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonObjectEncode(pt, typeDefinitionId_, "TypeDefinitionId");
-        rc = rc & jsonObjectEncode(pt, browsePath_, "BrowsePath");
+        rc = rc & jsonArrayEncode(pt, browsePath_, "BrowsePath");
         rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
         rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange");
     
@@ -307,7 +307,7 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonObjectDecode(pt, typeDefinitionId_, "TypeDefinitionId");
-        rc = rc & jsonObjectDecode(pt, browsePath_, "BrowsePath");
+        rc = rc & jsonArrayDecode(pt, browsePath_, "BrowsePath");
         rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId");
         rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange");
     

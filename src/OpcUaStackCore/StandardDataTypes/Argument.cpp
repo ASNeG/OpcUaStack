@@ -334,7 +334,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, name_, "Name");
         rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
         rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
-        rc = rc & jsonObjectEncode(pt, arrayDimensions_, "ArrayDimensions");
+        rc = rc & jsonArrayEncode(pt, arrayDimensions_, "ArrayDimensions");
         rc = rc & jsonObjectEncode(pt, description_, "Description");
     
         return rc;
@@ -348,7 +348,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectDecode(pt, name_, "Name");
         rc = rc & jsonObjectDecode(pt, dataType_, "DataType");
         rc = rc & jsonNumberDecode(pt, valueRank_, "ValueRank");
-        rc = rc & jsonObjectDecode(pt, arrayDimensions_, "ArrayDimensions");
+        rc = rc & jsonArrayDecode(pt, arrayDimensions_, "ArrayDimensions");
         rc = rc & jsonObjectDecode(pt, description_, "Description");
     
         return rc;

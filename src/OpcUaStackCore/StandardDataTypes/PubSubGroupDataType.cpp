@@ -394,9 +394,9 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
         rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
         rc = rc & jsonObjectEncode(pt, securityGroupId_, "SecurityGroupId");
-        rc = rc & jsonObjectEncode(pt, securityKeyServices_, "SecurityKeyServices");
+        rc = rc & jsonArrayEncode(pt, securityKeyServices_, "SecurityKeyServices");
         rc = rc & jsonNumberEncode(pt, maxNetworkMessageSize_, "MaxNetworkMessageSize");
-        rc = rc & jsonObjectEncode(pt, groupProperties_, "GroupProperties");
+        rc = rc & jsonArrayEncode(pt, groupProperties_, "GroupProperties");
     
         return rc;
     }
@@ -410,9 +410,9 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
         rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
         rc = rc & jsonObjectDecode(pt, securityGroupId_, "SecurityGroupId");
-        rc = rc & jsonObjectDecode(pt, securityKeyServices_, "SecurityKeyServices");
+        rc = rc & jsonArrayDecode(pt, securityKeyServices_, "SecurityKeyServices");
         rc = rc & jsonNumberDecode(pt, maxNetworkMessageSize_, "MaxNetworkMessageSize");
-        rc = rc & jsonObjectDecode(pt, groupProperties_, "GroupProperties");
+        rc = rc & jsonArrayDecode(pt, groupProperties_, "GroupProperties");
     
         return rc;
     }

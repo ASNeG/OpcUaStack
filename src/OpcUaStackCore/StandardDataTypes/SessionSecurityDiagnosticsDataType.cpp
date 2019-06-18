@@ -454,7 +454,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectEncode(pt, sessionId_, "SessionId");
         rc = rc & jsonObjectEncode(pt, clientUserIdOfSession_, "ClientUserIdOfSession");
-        rc = rc & jsonObjectEncode(pt, clientUserIdHistory_, "ClientUserIdHistory");
+        rc = rc & jsonArrayEncode(pt, clientUserIdHistory_, "ClientUserIdHistory");
         rc = rc & jsonObjectEncode(pt, authenticationMechanism_, "AuthenticationMechanism");
         rc = rc & jsonObjectEncode(pt, encoding_, "Encoding");
         rc = rc & jsonObjectEncode(pt, transportProtocol_, "TransportProtocol");
@@ -472,7 +472,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectDecode(pt, sessionId_, "SessionId");
         rc = rc & jsonObjectDecode(pt, clientUserIdOfSession_, "ClientUserIdOfSession");
-        rc = rc & jsonObjectDecode(pt, clientUserIdHistory_, "ClientUserIdHistory");
+        rc = rc & jsonArrayDecode(pt, clientUserIdHistory_, "ClientUserIdHistory");
         rc = rc & jsonObjectDecode(pt, authenticationMechanism_, "AuthenticationMechanism");
         rc = rc & jsonObjectDecode(pt, encoding_, "Encoding");
         rc = rc & jsonObjectDecode(pt, transportProtocol_, "TransportProtocol");

@@ -462,7 +462,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
         rc = rc & jsonNumberEncode(pt, keyFrameCount_, "KeyFrameCount");
         rc = rc & jsonObjectEncode(pt, dataSetName_, "DataSetName");
-        rc = rc & jsonObjectEncode(pt, dataSetWriterProperties_, "DataSetWriterProperties");
+        rc = rc & jsonArrayEncode(pt, dataSetWriterProperties_, "DataSetWriterProperties");
         rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
     
@@ -480,7 +480,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberDecode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
         rc = rc & jsonNumberDecode(pt, keyFrameCount_, "KeyFrameCount");
         rc = rc & jsonObjectDecode(pt, dataSetName_, "DataSetName");
-        rc = rc & jsonObjectDecode(pt, dataSetWriterProperties_, "DataSetWriterProperties");
+        rc = rc & jsonArrayDecode(pt, dataSetWriterProperties_, "DataSetWriterProperties");
         rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings");
     

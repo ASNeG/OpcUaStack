@@ -328,7 +328,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
         rc = rc & jsonObjectEncode(pt, endTime_, "EndTime");
         rc = rc & jsonNumberEncode(pt, processingInterval_, "ProcessingInterval");
-        rc = rc & jsonObjectEncode(pt, aggregateType_, "AggregateType");
+        rc = rc & jsonArrayEncode(pt, aggregateType_, "AggregateType");
         rc = rc & jsonObjectEncode(pt, aggregateConfiguration_, "AggregateConfiguration");
     
         return rc;
@@ -342,7 +342,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectDecode(pt, startTime_, "StartTime");
         rc = rc & jsonObjectDecode(pt, endTime_, "EndTime");
         rc = rc & jsonNumberDecode(pt, processingInterval_, "ProcessingInterval");
-        rc = rc & jsonObjectDecode(pt, aggregateType_, "AggregateType");
+        rc = rc & jsonArrayDecode(pt, aggregateType_, "AggregateType");
         rc = rc & jsonObjectDecode(pt, aggregateConfiguration_, "AggregateConfiguration");
     
         return rc;

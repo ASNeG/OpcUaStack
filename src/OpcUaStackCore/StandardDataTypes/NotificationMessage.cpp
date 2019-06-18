@@ -263,7 +263,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonNumberEncode(pt, sequenceNumber_, "SequenceNumber");
         rc = rc & jsonObjectEncode(pt, publishTime_, "PublishTime");
-        rc = rc & jsonObjectEncode(pt, notificationData_, "NotificationData");
+        rc = rc & jsonArrayEncode(pt, notificationData_, "NotificationData");
     
         return rc;
     }
@@ -275,7 +275,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonNumberDecode(pt, sequenceNumber_, "SequenceNumber");
         rc = rc & jsonObjectDecode(pt, publishTime_, "PublishTime");
-        rc = rc & jsonObjectDecode(pt, notificationData_, "NotificationData");
+        rc = rc & jsonArrayDecode(pt, notificationData_, "NotificationData");
     
         return rc;
     }

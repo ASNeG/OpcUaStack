@@ -228,7 +228,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, selectClauses_, "SelectClauses");
+        rc = rc & jsonArrayEncode(pt, selectClauses_, "SelectClauses");
         rc = rc & jsonObjectEncode(pt, whereClause_, "WhereClause");
     
         return rc;
@@ -239,7 +239,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, selectClauses_, "SelectClauses");
+        rc = rc & jsonArrayDecode(pt, selectClauses_, "SelectClauses");
         rc = rc & jsonObjectDecode(pt, whereClause_, "WhereClause");
     
         return rc;

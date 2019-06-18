@@ -431,7 +431,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, deadbandValue_, "DeadbandValue");
         rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange");
         rc = rc & jsonObjectEncode(pt, substituteValue_, "SubstituteValue");
-        rc = rc & jsonObjectEncode(pt, metaDataProperties_, "MetaDataProperties");
+        rc = rc & jsonArrayEncode(pt, metaDataProperties_, "MetaDataProperties");
     
         return rc;
     }
@@ -448,7 +448,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberDecode(pt, deadbandValue_, "DeadbandValue");
         rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange");
         rc = rc & jsonObjectDecode(pt, substituteValue_, "SubstituteValue");
-        rc = rc & jsonObjectDecode(pt, metaDataProperties_, "MetaDataProperties");
+        rc = rc & jsonArrayDecode(pt, metaDataProperties_, "MetaDataProperties");
     
         return rc;
     }

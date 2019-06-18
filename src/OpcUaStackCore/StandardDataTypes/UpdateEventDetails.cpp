@@ -262,7 +262,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectEncode(pt, performInsertReplace_, "PerformInsertReplace");
         rc = rc & jsonObjectEncode(pt, filter_, "Filter");
-        rc = rc & jsonObjectEncode(pt, eventData_, "EventData");
+        rc = rc & jsonArrayEncode(pt, eventData_, "EventData");
     
         return rc;
     }
@@ -274,7 +274,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectDecode(pt, performInsertReplace_, "PerformInsertReplace");
         rc = rc & jsonObjectDecode(pt, filter_, "Filter");
-        rc = rc & jsonObjectDecode(pt, eventData_, "EventData");
+        rc = rc & jsonArrayDecode(pt, eventData_, "EventData");
     
         return rc;
     }

@@ -229,7 +229,7 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonObjectEncode(pt, parentNodeName_, "ParentNodeName");
-        rc = rc & jsonObjectEncode(pt, rolePermissions_, "RolePermissions");
+        rc = rc & jsonArrayEncode(pt, rolePermissions_, "RolePermissions");
     
         return rc;
     }
@@ -240,7 +240,7 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonObjectDecode(pt, parentNodeName_, "ParentNodeName");
-        rc = rc & jsonObjectDecode(pt, rolePermissions_, "RolePermissions");
+        rc = rc & jsonArrayDecode(pt, rolePermissions_, "RolePermissions");
     
         return rc;
     }

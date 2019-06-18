@@ -429,10 +429,10 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
         rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri");
-        rc = rc & jsonObjectEncode(pt, serverNames_, "ServerNames");
+        rc = rc & jsonArrayEncode(pt, serverNames_, "ServerNames");
         rc = rc & jsonObjectEncode(pt, serverType_, "ServerType");
         rc = rc & jsonObjectEncode(pt, gatewayServerUri_, "GatewayServerUri");
-        rc = rc & jsonObjectEncode(pt, discoveryUrls_, "DiscoveryUrls");
+        rc = rc & jsonArrayEncode(pt, discoveryUrls_, "DiscoveryUrls");
         rc = rc & jsonObjectEncode(pt, semaphoreFilePath_, "SemaphoreFilePath");
         rc = rc & jsonNumberEncode(pt, isOnline_, "IsOnline");
     
@@ -446,10 +446,10 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectDecode(pt, serverUri_, "ServerUri");
         rc = rc & jsonObjectDecode(pt, productUri_, "ProductUri");
-        rc = rc & jsonObjectDecode(pt, serverNames_, "ServerNames");
+        rc = rc & jsonArrayDecode(pt, serverNames_, "ServerNames");
         rc = rc & jsonObjectDecode(pt, serverType_, "ServerType");
         rc = rc & jsonObjectDecode(pt, gatewayServerUri_, "GatewayServerUri");
-        rc = rc & jsonObjectDecode(pt, discoveryUrls_, "DiscoveryUrls");
+        rc = rc & jsonArrayDecode(pt, discoveryUrls_, "DiscoveryUrls");
         rc = rc & jsonObjectDecode(pt, semaphoreFilePath_, "SemaphoreFilePath");
         rc = rc & jsonNumberDecode(pt, isOnline_, "IsOnline");
     

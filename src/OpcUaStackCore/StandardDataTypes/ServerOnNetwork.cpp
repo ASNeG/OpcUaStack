@@ -296,7 +296,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, recordId_, "RecordId");
         rc = rc & jsonObjectEncode(pt, serverName_, "ServerName");
         rc = rc & jsonObjectEncode(pt, discoveryUrl_, "DiscoveryUrl");
-        rc = rc & jsonObjectEncode(pt, serverCapabilities_, "ServerCapabilities");
+        rc = rc & jsonArrayEncode(pt, serverCapabilities_, "ServerCapabilities");
     
         return rc;
     }
@@ -309,7 +309,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberDecode(pt, recordId_, "RecordId");
         rc = rc & jsonObjectDecode(pt, serverName_, "ServerName");
         rc = rc & jsonObjectDecode(pt, discoveryUrl_, "DiscoveryUrl");
-        rc = rc & jsonObjectDecode(pt, serverCapabilities_, "ServerCapabilities");
+        rc = rc & jsonArrayDecode(pt, serverCapabilities_, "ServerCapabilities");
     
         return rc;
     }

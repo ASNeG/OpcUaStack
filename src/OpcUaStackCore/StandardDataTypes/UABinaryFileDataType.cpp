@@ -261,7 +261,7 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonObjectEncode(pt, schemaLocation_, "SchemaLocation");
-        rc = rc & jsonObjectEncode(pt, fileHeader_, "FileHeader");
+        rc = rc & jsonArrayEncode(pt, fileHeader_, "FileHeader");
         rc = rc & jsonObjectEncode(pt, body_, "Body");
     
         return rc;
@@ -273,7 +273,7 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonObjectDecode(pt, schemaLocation_, "SchemaLocation");
-        rc = rc & jsonObjectDecode(pt, fileHeader_, "FileHeader");
+        rc = rc & jsonArrayDecode(pt, fileHeader_, "FileHeader");
         rc = rc & jsonObjectDecode(pt, body_, "Body");
     
         return rc;

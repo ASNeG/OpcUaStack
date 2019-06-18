@@ -196,7 +196,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, endpointUrlList_, "EndpointUrlList");
+        rc = rc & jsonArrayEncode(pt, endpointUrlList_, "EndpointUrlList");
     
         return rc;
     }
@@ -206,7 +206,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, endpointUrlList_, "EndpointUrlList");
+        rc = rc & jsonArrayDecode(pt, endpointUrlList_, "EndpointUrlList");
     
         return rc;
     }

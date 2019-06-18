@@ -326,7 +326,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectEncode(pt, name_, "Name");
         rc = rc & jsonObjectEncode(pt, description_, "Description");
-        rc = rc & jsonObjectEncode(pt, fields_, "Fields");
+        rc = rc & jsonArrayEncode(pt, fields_, "Fields");
         rc = rc & jsonObjectEncode(pt, dataSetClassId_, "DataSetClassId");
         rc = rc & jsonObjectEncode(pt, configurationVersion_, "ConfigurationVersion");
     
@@ -340,7 +340,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectDecode(pt, name_, "Name");
         rc = rc & jsonObjectDecode(pt, description_, "Description");
-        rc = rc & jsonObjectDecode(pt, fields_, "Fields");
+        rc = rc & jsonArrayDecode(pt, fields_, "Fields");
         rc = rc & jsonObjectDecode(pt, dataSetClassId_, "DataSetClassId");
         rc = rc & jsonObjectDecode(pt, configurationVersion_, "ConfigurationVersion");
     

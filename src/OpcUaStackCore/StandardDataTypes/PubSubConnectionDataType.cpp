@@ -458,10 +458,10 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, publisherId_, "PublisherId");
         rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri");
         rc = rc & jsonObjectEncode(pt, address_, "Address");
-        rc = rc & jsonObjectEncode(pt, connectionProperties_, "ConnectionProperties");
+        rc = rc & jsonArrayEncode(pt, connectionProperties_, "ConnectionProperties");
         rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonObjectEncode(pt, writerGroups_, "WriterGroups");
-        rc = rc & jsonObjectEncode(pt, readerGroups_, "ReaderGroups");
+        rc = rc & jsonArrayEncode(pt, writerGroups_, "WriterGroups");
+        rc = rc & jsonArrayEncode(pt, readerGroups_, "ReaderGroups");
     
         return rc;
     }
@@ -476,10 +476,10 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectDecode(pt, publisherId_, "PublisherId");
         rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri");
         rc = rc & jsonObjectDecode(pt, address_, "Address");
-        rc = rc & jsonObjectDecode(pt, connectionProperties_, "ConnectionProperties");
+        rc = rc & jsonArrayDecode(pt, connectionProperties_, "ConnectionProperties");
         rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonObjectDecode(pt, writerGroups_, "WriterGroups");
-        rc = rc & jsonObjectDecode(pt, readerGroups_, "ReaderGroups");
+        rc = rc & jsonArrayDecode(pt, writerGroups_, "WriterGroups");
+        rc = rc & jsonArrayDecode(pt, readerGroups_, "ReaderGroups");
     
         return rc;
     }

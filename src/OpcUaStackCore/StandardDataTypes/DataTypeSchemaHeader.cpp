@@ -292,10 +292,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, namespaces_, "Namespaces");
-        rc = rc & jsonObjectEncode(pt, structureDataTypes_, "StructureDataTypes");
-        rc = rc & jsonObjectEncode(pt, enumDataTypes_, "EnumDataTypes");
-        rc = rc & jsonObjectEncode(pt, simpleDataTypes_, "SimpleDataTypes");
+        rc = rc & jsonArrayEncode(pt, namespaces_, "Namespaces");
+        rc = rc & jsonArrayEncode(pt, structureDataTypes_, "StructureDataTypes");
+        rc = rc & jsonArrayEncode(pt, enumDataTypes_, "EnumDataTypes");
+        rc = rc & jsonArrayEncode(pt, simpleDataTypes_, "SimpleDataTypes");
     
         return rc;
     }
@@ -305,10 +305,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, namespaces_, "Namespaces");
-        rc = rc & jsonObjectDecode(pt, structureDataTypes_, "StructureDataTypes");
-        rc = rc & jsonObjectDecode(pt, enumDataTypes_, "EnumDataTypes");
-        rc = rc & jsonObjectDecode(pt, simpleDataTypes_, "SimpleDataTypes");
+        rc = rc & jsonArrayDecode(pt, namespaces_, "Namespaces");
+        rc = rc & jsonArrayDecode(pt, structureDataTypes_, "StructureDataTypes");
+        rc = rc & jsonArrayDecode(pt, enumDataTypes_, "EnumDataTypes");
+        rc = rc & jsonArrayDecode(pt, simpleDataTypes_, "SimpleDataTypes");
     
         return rc;
     }

@@ -196,7 +196,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, eventFields_, "EventFields");
+        rc = rc & jsonArrayEncode(pt, eventFields_, "EventFields");
     
         return rc;
     }
@@ -206,7 +206,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, eventFields_, "EventFields");
+        rc = rc & jsonArrayDecode(pt, eventFields_, "EventFields");
     
         return rc;
     }

@@ -1551,7 +1551,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, clientDescription_, "ClientDescription");
         rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
         rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl");
-        rc = rc & jsonObjectEncode(pt, localeIds_, "LocaleIds");
+        rc = rc & jsonArrayEncode(pt, localeIds_, "LocaleIds");
         rc = rc & jsonNumberEncode(pt, actualSessionTimeout_, "ActualSessionTimeout");
         rc = rc & jsonNumberEncode(pt, maxResponseMessageSize_, "MaxResponseMessageSize");
         rc = rc & jsonObjectEncode(pt, clientConnectionTime_, "ClientConnectionTime");
@@ -1603,7 +1603,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectDecode(pt, clientDescription_, "ClientDescription");
         rc = rc & jsonObjectDecode(pt, serverUri_, "ServerUri");
         rc = rc & jsonObjectDecode(pt, endpointUrl_, "EndpointUrl");
-        rc = rc & jsonObjectDecode(pt, localeIds_, "LocaleIds");
+        rc = rc & jsonArrayDecode(pt, localeIds_, "LocaleIds");
         rc = rc & jsonNumberDecode(pt, actualSessionTimeout_, "ActualSessionTimeout");
         rc = rc & jsonNumberDecode(pt, maxResponseMessageSize_, "MaxResponseMessageSize");
         rc = rc & jsonObjectDecode(pt, clientConnectionTime_, "ClientConnectionTime");

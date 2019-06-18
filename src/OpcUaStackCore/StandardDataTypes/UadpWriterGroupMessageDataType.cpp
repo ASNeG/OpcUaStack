@@ -331,7 +331,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, dataSetOrdering_, "DataSetOrdering");
         rc = rc & jsonNumberEncode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
         rc = rc & jsonNumberEncode(pt, samplingOffset_, "SamplingOffset");
-        rc = rc & jsonObjectEncode(pt, publishingOffset_, "PublishingOffset");
+        rc = rc & jsonArrayEncode(pt, publishingOffset_, "PublishingOffset");
     
         return rc;
     }
@@ -345,7 +345,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectDecode(pt, dataSetOrdering_, "DataSetOrdering");
         rc = rc & jsonNumberDecode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
         rc = rc & jsonNumberDecode(pt, samplingOffset_, "SamplingOffset");
-        rc = rc & jsonObjectDecode(pt, publishingOffset_, "PublishingOffset");
+        rc = rc & jsonArrayDecode(pt, publishingOffset_, "PublishingOffset");
     
         return rc;
     }

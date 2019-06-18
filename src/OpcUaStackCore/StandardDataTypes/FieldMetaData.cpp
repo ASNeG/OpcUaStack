@@ -494,10 +494,10 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, builtInType_, "BuiltInType");
         rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
         rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
-        rc = rc & jsonObjectEncode(pt, arrayDimensions_, "ArrayDimensions");
+        rc = rc & jsonArrayEncode(pt, arrayDimensions_, "ArrayDimensions");
         rc = rc & jsonNumberEncode(pt, maxStringLength_, "MaxStringLength");
         rc = rc & jsonObjectEncode(pt, dataSetFieldId_, "DataSetFieldId");
-        rc = rc & jsonObjectEncode(pt, properties_, "Properties");
+        rc = rc & jsonArrayEncode(pt, properties_, "Properties");
     
         return rc;
     }
@@ -513,10 +513,10 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberDecode(pt, builtInType_, "BuiltInType");
         rc = rc & jsonObjectDecode(pt, dataType_, "DataType");
         rc = rc & jsonNumberDecode(pt, valueRank_, "ValueRank");
-        rc = rc & jsonObjectDecode(pt, arrayDimensions_, "ArrayDimensions");
+        rc = rc & jsonArrayDecode(pt, arrayDimensions_, "ArrayDimensions");
         rc = rc & jsonNumberDecode(pt, maxStringLength_, "MaxStringLength");
         rc = rc & jsonObjectDecode(pt, dataSetFieldId_, "DataSetFieldId");
-        rc = rc & jsonObjectDecode(pt, properties_, "Properties");
+        rc = rc & jsonArrayDecode(pt, properties_, "Properties");
     
         return rc;
     }

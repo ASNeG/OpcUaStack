@@ -328,7 +328,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, eURange_, "EURange");
         rc = rc & jsonObjectEncode(pt, title_, "Title");
         rc = rc & jsonObjectEncode(pt, axisScaleType_, "AxisScaleType");
-        rc = rc & jsonObjectEncode(pt, axisSteps_, "AxisSteps");
+        rc = rc & jsonArrayEncode(pt, axisSteps_, "AxisSteps");
     
         return rc;
     }
@@ -342,7 +342,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectDecode(pt, eURange_, "EURange");
         rc = rc & jsonObjectDecode(pt, title_, "Title");
         rc = rc & jsonObjectDecode(pt, axisScaleType_, "AxisScaleType");
-        rc = rc & jsonObjectDecode(pt, axisSteps_, "AxisSteps");
+        rc = rc & jsonArrayDecode(pt, axisSteps_, "AxisSteps");
     
         return rc;
     }

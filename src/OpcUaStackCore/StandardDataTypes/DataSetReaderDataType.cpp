@@ -659,8 +659,8 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, messageReceiveTimeout_, "MessageReceiveTimeout");
         rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
         rc = rc & jsonObjectEncode(pt, securityGroupId_, "SecurityGroupId");
-        rc = rc & jsonObjectEncode(pt, securityKeyServices_, "SecurityKeyServices");
-        rc = rc & jsonObjectEncode(pt, dataSetReaderProperties_, "DataSetReaderProperties");
+        rc = rc & jsonArrayEncode(pt, securityKeyServices_, "SecurityKeyServices");
+        rc = rc & jsonArrayEncode(pt, dataSetReaderProperties_, "DataSetReaderProperties");
         rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
         rc = rc & jsonObjectEncode(pt, subscribedDataSet_, "SubscribedDataSet");
@@ -683,8 +683,8 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberDecode(pt, messageReceiveTimeout_, "MessageReceiveTimeout");
         rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
         rc = rc & jsonObjectDecode(pt, securityGroupId_, "SecurityGroupId");
-        rc = rc & jsonObjectDecode(pt, securityKeyServices_, "SecurityKeyServices");
-        rc = rc & jsonObjectDecode(pt, dataSetReaderProperties_, "DataSetReaderProperties");
+        rc = rc & jsonArrayDecode(pt, securityKeyServices_, "SecurityKeyServices");
+        rc = rc & jsonArrayDecode(pt, dataSetReaderProperties_, "DataSetReaderProperties");
         rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings");
         rc = rc & jsonObjectDecode(pt, subscribedDataSet_, "SubscribedDataSet");

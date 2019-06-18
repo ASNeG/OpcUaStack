@@ -554,10 +554,10 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, lastTransitionTime_, "LastTransitionTime");
         rc = rc & jsonObjectEncode(pt, lastMethodCall_, "LastMethodCall");
         rc = rc & jsonObjectEncode(pt, lastMethodSessionId_, "LastMethodSessionId");
-        rc = rc & jsonObjectEncode(pt, lastMethodInputArguments_, "LastMethodInputArguments");
-        rc = rc & jsonObjectEncode(pt, lastMethodOutputArguments_, "LastMethodOutputArguments");
-        rc = rc & jsonObjectEncode(pt, lastMethodInputValues_, "LastMethodInputValues");
-        rc = rc & jsonObjectEncode(pt, lastMethodOutputValues_, "LastMethodOutputValues");
+        rc = rc & jsonArrayEncode(pt, lastMethodInputArguments_, "LastMethodInputArguments");
+        rc = rc & jsonArrayEncode(pt, lastMethodOutputArguments_, "LastMethodOutputArguments");
+        rc = rc & jsonArrayEncode(pt, lastMethodInputValues_, "LastMethodInputValues");
+        rc = rc & jsonArrayEncode(pt, lastMethodOutputValues_, "LastMethodOutputValues");
         rc = rc & jsonObjectEncode(pt, lastMethodCallTime_, "LastMethodCallTime");
         rc = rc & jsonObjectEncode(pt, lastMethodReturnStatus_, "LastMethodReturnStatus");
     
@@ -575,10 +575,10 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectDecode(pt, lastTransitionTime_, "LastTransitionTime");
         rc = rc & jsonObjectDecode(pt, lastMethodCall_, "LastMethodCall");
         rc = rc & jsonObjectDecode(pt, lastMethodSessionId_, "LastMethodSessionId");
-        rc = rc & jsonObjectDecode(pt, lastMethodInputArguments_, "LastMethodInputArguments");
-        rc = rc & jsonObjectDecode(pt, lastMethodOutputArguments_, "LastMethodOutputArguments");
-        rc = rc & jsonObjectDecode(pt, lastMethodInputValues_, "LastMethodInputValues");
-        rc = rc & jsonObjectDecode(pt, lastMethodOutputValues_, "LastMethodOutputValues");
+        rc = rc & jsonArrayDecode(pt, lastMethodInputArguments_, "LastMethodInputArguments");
+        rc = rc & jsonArrayDecode(pt, lastMethodOutputArguments_, "LastMethodOutputArguments");
+        rc = rc & jsonArrayDecode(pt, lastMethodInputValues_, "LastMethodInputValues");
+        rc = rc & jsonArrayDecode(pt, lastMethodOutputValues_, "LastMethodOutputValues");
         rc = rc & jsonObjectDecode(pt, lastMethodCallTime_, "LastMethodCallTime");
         rc = rc & jsonObjectDecode(pt, lastMethodReturnStatus_, "LastMethodReturnStatus");
     

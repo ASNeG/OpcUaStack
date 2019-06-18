@@ -295,7 +295,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, defaultEncodingId_, "DefaultEncodingId");
         rc = rc & jsonObjectEncode(pt, baseDataType_, "BaseDataType");
         rc = rc & jsonObjectEncode(pt, structureType_, "StructureType");
-        rc = rc & jsonObjectEncode(pt, fields_, "Fields");
+        rc = rc & jsonArrayEncode(pt, fields_, "Fields");
     
         return rc;
     }
@@ -308,7 +308,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectDecode(pt, defaultEncodingId_, "DefaultEncodingId");
         rc = rc & jsonObjectDecode(pt, baseDataType_, "BaseDataType");
         rc = rc & jsonObjectDecode(pt, structureType_, "StructureType");
-        rc = rc & jsonObjectDecode(pt, fields_, "Fields");
+        rc = rc & jsonArrayDecode(pt, fields_, "Fields");
     
         return rc;
     }

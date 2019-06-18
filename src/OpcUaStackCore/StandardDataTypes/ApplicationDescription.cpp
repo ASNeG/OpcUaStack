@@ -400,7 +400,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, applicationType_, "ApplicationType");
         rc = rc & jsonObjectEncode(pt, gatewayServerUri_, "GatewayServerUri");
         rc = rc & jsonObjectEncode(pt, discoveryProfileUri_, "DiscoveryProfileUri");
-        rc = rc & jsonObjectEncode(pt, discoveryUrls_, "DiscoveryUrls");
+        rc = rc & jsonArrayEncode(pt, discoveryUrls_, "DiscoveryUrls");
     
         return rc;
     }
@@ -416,7 +416,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectDecode(pt, applicationType_, "ApplicationType");
         rc = rc & jsonObjectDecode(pt, gatewayServerUri_, "GatewayServerUri");
         rc = rc & jsonObjectDecode(pt, discoveryProfileUri_, "DiscoveryProfileUri");
-        rc = rc & jsonObjectDecode(pt, discoveryUrls_, "DiscoveryUrls");
+        rc = rc & jsonArrayDecode(pt, discoveryUrls_, "DiscoveryUrls");
     
         return rc;
     }

@@ -262,7 +262,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
-        rc = rc & jsonObjectEncode(pt, dataSetReaders_, "DataSetReaders");
+        rc = rc & jsonArrayEncode(pt, dataSetReaders_, "DataSetReaders");
     
         return rc;
     }
@@ -274,7 +274,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
         rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings");
-        rc = rc & jsonObjectDecode(pt, dataSetReaders_, "DataSetReaders");
+        rc = rc & jsonArrayDecode(pt, dataSetReaders_, "DataSetReaders");
     
         return rc;
     }

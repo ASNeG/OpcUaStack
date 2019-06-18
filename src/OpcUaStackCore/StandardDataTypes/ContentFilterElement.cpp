@@ -229,7 +229,7 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonObjectEncode(pt, filterOperator_, "FilterOperator");
-        rc = rc & jsonObjectEncode(pt, filterOperands_, "FilterOperands");
+        rc = rc & jsonArrayEncode(pt, filterOperands_, "FilterOperands");
     
         return rc;
     }
@@ -240,7 +240,7 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonObjectDecode(pt, filterOperator_, "FilterOperator");
-        rc = rc & jsonObjectDecode(pt, filterOperands_, "FilterOperands");
+        rc = rc & jsonArrayDecode(pt, filterOperands_, "FilterOperands");
     
         return rc;
     }

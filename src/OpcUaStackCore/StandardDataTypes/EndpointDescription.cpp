@@ -432,7 +432,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectEncode(pt, serverCertificate_, "ServerCertificate");
         rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
         rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri");
-        rc = rc & jsonObjectEncode(pt, userIdentityTokens_, "UserIdentityTokens");
+        rc = rc & jsonArrayEncode(pt, userIdentityTokens_, "UserIdentityTokens");
         rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri");
         rc = rc & jsonNumberEncode(pt, securityLevel_, "SecurityLevel");
     
@@ -449,7 +449,7 @@ namespace OpcUaStackCore
         rc = rc & jsonObjectDecode(pt, serverCertificate_, "ServerCertificate");
         rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
         rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri");
-        rc = rc & jsonObjectDecode(pt, userIdentityTokens_, "UserIdentityTokens");
+        rc = rc & jsonArrayDecode(pt, userIdentityTokens_, "UserIdentityTokens");
         rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri");
         rc = rc & jsonNumberDecode(pt, securityLevel_, "SecurityLevel");
     
