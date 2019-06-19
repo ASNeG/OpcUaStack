@@ -1160,8 +1160,14 @@ namespace OpcUaStackServer
 		ss << prefix << "    bool rc = true;" << std::endl;
 		ss << prefix << std::endl;
 
+		// FIXME: todo
+		std::cout << "ClassName=" << nodeInfo_.className() << std::endl;
+
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
+
+			// FIXME: todo
+			std::cout << "FieldName=" << dataTypeField->variableName() << ", opt=" << dataTypeField->optional() << std::endl;
 
 			switch (dataTypeField->type())
 			{
