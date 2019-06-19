@@ -427,13 +427,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl");
-        rc = rc & jsonObjectEncode(pt, server_, "Server");
-        rc = rc & jsonObjectEncode(pt, serverCertificate_, "ServerCertificate");
-        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
-        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri");
-        rc = rc & jsonArrayEncode(pt, userIdentityTokens_, "UserIdentityTokens");
-        rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri");
+        rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl", true);
+        rc = rc & jsonObjectEncode(pt, server_, "Server", true);
+        rc = rc & jsonObjectEncode(pt, serverCertificate_, "ServerCertificate", true);
+        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode", true);
+        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri", true);
+        rc = rc & jsonArrayEncode(pt, userIdentityTokens_, "UserIdentityTokens", true);
+        rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri", true);
         rc = rc & jsonNumberEncode(pt, securityLevel_, "SecurityLevel");
     
         return rc;
@@ -444,13 +444,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, endpointUrl_, "EndpointUrl");
-        rc = rc & jsonObjectDecode(pt, server_, "Server");
-        rc = rc & jsonObjectDecode(pt, serverCertificate_, "ServerCertificate");
-        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
-        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri");
-        rc = rc & jsonArrayDecode(pt, userIdentityTokens_, "UserIdentityTokens");
-        rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri");
+        rc = rc & jsonObjectDecode(pt, endpointUrl_, "EndpointUrl", true);
+        rc = rc & jsonObjectDecode(pt, server_, "Server", true);
+        rc = rc & jsonObjectDecode(pt, serverCertificate_, "ServerCertificate", true);
+        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode", true);
+        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri", true);
+        rc = rc & jsonArrayDecode(pt, userIdentityTokens_, "UserIdentityTokens", true);
+        rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri", true);
         rc = rc & jsonNumberDecode(pt, securityLevel_, "SecurityLevel");
     
         return rc;

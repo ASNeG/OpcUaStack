@@ -394,13 +394,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, applicationUri_, "ApplicationUri");
-        rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri");
-        rc = rc & jsonObjectEncode(pt, applicationName_, "ApplicationName");
-        rc = rc & jsonObjectEncode(pt, applicationType_, "ApplicationType");
-        rc = rc & jsonObjectEncode(pt, gatewayServerUri_, "GatewayServerUri");
-        rc = rc & jsonObjectEncode(pt, discoveryProfileUri_, "DiscoveryProfileUri");
-        rc = rc & jsonArrayEncode(pt, discoveryUrls_, "DiscoveryUrls");
+        rc = rc & jsonObjectEncode(pt, applicationUri_, "ApplicationUri", true);
+        rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri", true);
+        rc = rc & jsonObjectEncode(pt, applicationName_, "ApplicationName", true);
+        rc = rc & jsonObjectEncode(pt, applicationType_, "ApplicationType", true);
+        rc = rc & jsonObjectEncode(pt, gatewayServerUri_, "GatewayServerUri", true);
+        rc = rc & jsonObjectEncode(pt, discoveryProfileUri_, "DiscoveryProfileUri", true);
+        rc = rc & jsonArrayEncode(pt, discoveryUrls_, "DiscoveryUrls", true);
     
         return rc;
     }
@@ -410,13 +410,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, applicationUri_, "ApplicationUri");
-        rc = rc & jsonObjectDecode(pt, productUri_, "ProductUri");
-        rc = rc & jsonObjectDecode(pt, applicationName_, "ApplicationName");
-        rc = rc & jsonObjectDecode(pt, applicationType_, "ApplicationType");
-        rc = rc & jsonObjectDecode(pt, gatewayServerUri_, "GatewayServerUri");
-        rc = rc & jsonObjectDecode(pt, discoveryProfileUri_, "DiscoveryProfileUri");
-        rc = rc & jsonArrayDecode(pt, discoveryUrls_, "DiscoveryUrls");
+        rc = rc & jsonObjectDecode(pt, applicationUri_, "ApplicationUri", true);
+        rc = rc & jsonObjectDecode(pt, productUri_, "ProductUri", true);
+        rc = rc & jsonObjectDecode(pt, applicationName_, "ApplicationName", true);
+        rc = rc & jsonObjectDecode(pt, applicationType_, "ApplicationType", true);
+        rc = rc & jsonObjectDecode(pt, gatewayServerUri_, "GatewayServerUri", true);
+        rc = rc & jsonObjectDecode(pt, discoveryProfileUri_, "DiscoveryProfileUri", true);
+        rc = rc & jsonArrayDecode(pt, discoveryUrls_, "DiscoveryUrls", true);
     
         return rc;
     }

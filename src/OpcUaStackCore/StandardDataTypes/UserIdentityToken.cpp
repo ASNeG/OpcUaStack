@@ -202,7 +202,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, policyId_, "PolicyId");
+        rc = rc & jsonObjectEncode(pt, policyId_, "PolicyId", true);
     
         return rc;
     }
@@ -212,7 +212,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, policyId_, "PolicyId");
+        rc = rc & jsonObjectDecode(pt, policyId_, "PolicyId", true);
     
         return rc;
     }

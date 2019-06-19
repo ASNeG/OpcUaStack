@@ -328,8 +328,8 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberEncode(pt, isReadModified_, "IsReadModified");
-        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
-        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime");
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime", true);
         rc = rc & jsonNumberEncode(pt, numValuesPerNode_, "NumValuesPerNode");
         rc = rc & jsonNumberEncode(pt, returnBounds_, "ReturnBounds");
     
@@ -342,8 +342,8 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberDecode(pt, isReadModified_, "IsReadModified");
-        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime");
-        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime");
+        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime", true);
         rc = rc & jsonNumberDecode(pt, numValuesPerNode_, "NumValuesPerNode");
         rc = rc & jsonNumberDecode(pt, returnBounds_, "ReturnBounds");
     

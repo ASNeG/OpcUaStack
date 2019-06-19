@@ -390,13 +390,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
-        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
-        rc = rc & jsonObjectEncode(pt, securityGroupId_, "SecurityGroupId");
-        rc = rc & jsonArrayEncode(pt, securityKeyServices_, "SecurityKeyServices");
+        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode", true);
+        rc = rc & jsonObjectEncode(pt, securityGroupId_, "SecurityGroupId", true);
+        rc = rc & jsonArrayEncode(pt, securityKeyServices_, "SecurityKeyServices", true);
         rc = rc & jsonNumberEncode(pt, maxNetworkMessageSize_, "MaxNetworkMessageSize");
-        rc = rc & jsonArrayEncode(pt, groupProperties_, "GroupProperties");
+        rc = rc & jsonArrayEncode(pt, groupProperties_, "GroupProperties", true);
     
         return rc;
     }
@@ -406,13 +406,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
         rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
-        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
-        rc = rc & jsonObjectDecode(pt, securityGroupId_, "SecurityGroupId");
-        rc = rc & jsonArrayDecode(pt, securityKeyServices_, "SecurityKeyServices");
+        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode", true);
+        rc = rc & jsonObjectDecode(pt, securityGroupId_, "SecurityGroupId", true);
+        rc = rc & jsonArrayDecode(pt, securityKeyServices_, "SecurityKeyServices", true);
         rc = rc & jsonNumberDecode(pt, maxNetworkMessageSize_, "MaxNetworkMessageSize");
-        rc = rc & jsonArrayDecode(pt, groupProperties_, "GroupProperties");
+        rc = rc & jsonArrayDecode(pt, groupProperties_, "GroupProperties", true);
     
         return rc;
     }

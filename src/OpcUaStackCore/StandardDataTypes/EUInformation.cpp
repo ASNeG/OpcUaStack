@@ -293,10 +293,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, namespaceUri_, "NamespaceUri");
+        rc = rc & jsonObjectEncode(pt, namespaceUri_, "NamespaceUri", true);
         rc = rc & jsonNumberEncode(pt, unitId_, "UnitId");
-        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName");
-        rc = rc & jsonObjectEncode(pt, description_, "Description");
+        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectEncode(pt, description_, "Description", true);
     
         return rc;
     }
@@ -306,10 +306,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, namespaceUri_, "NamespaceUri");
+        rc = rc & jsonObjectDecode(pt, namespaceUri_, "NamespaceUri", true);
         rc = rc & jsonNumberDecode(pt, unitId_, "UnitId");
-        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName");
-        rc = rc & jsonObjectDecode(pt, description_, "Description");
+        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectDecode(pt, description_, "Description", true);
     
         return rc;
     }

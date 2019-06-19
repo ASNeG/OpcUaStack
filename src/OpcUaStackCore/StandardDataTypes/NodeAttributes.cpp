@@ -334,8 +334,8 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberEncode(pt, specifiedAttributes_, "SpecifiedAttributes");
-        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName");
-        rc = rc & jsonObjectEncode(pt, description_, "Description");
+        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectEncode(pt, description_, "Description", true);
         rc = rc & jsonNumberEncode(pt, writeMask_, "WriteMask");
         rc = rc & jsonNumberEncode(pt, userWriteMask_, "UserWriteMask");
     
@@ -348,8 +348,8 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberDecode(pt, specifiedAttributes_, "SpecifiedAttributes");
-        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName");
-        rc = rc & jsonObjectDecode(pt, description_, "Description");
+        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectDecode(pt, description_, "Description", true);
         rc = rc & jsonNumberDecode(pt, writeMask_, "WriteMask");
         rc = rc & jsonNumberDecode(pt, userWriteMask_, "UserWriteMask");
     

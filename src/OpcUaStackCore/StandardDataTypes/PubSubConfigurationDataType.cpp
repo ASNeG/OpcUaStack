@@ -261,8 +261,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonArrayEncode(pt, publishedDataSets_, "PublishedDataSets");
-        rc = rc & jsonArrayEncode(pt, connections_, "Connections");
+        rc = rc & jsonArrayEncode(pt, publishedDataSets_, "PublishedDataSets", true);
+        rc = rc & jsonArrayEncode(pt, connections_, "Connections", true);
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
     
         return rc;
@@ -273,8 +273,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonArrayDecode(pt, publishedDataSets_, "PublishedDataSets");
-        rc = rc & jsonArrayDecode(pt, connections_, "Connections");
+        rc = rc & jsonArrayDecode(pt, publishedDataSets_, "PublishedDataSets", true);
+        rc = rc & jsonArrayDecode(pt, connections_, "Connections", true);
         rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
     
         return rc;

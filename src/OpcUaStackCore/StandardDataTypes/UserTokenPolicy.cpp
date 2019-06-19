@@ -330,11 +330,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, policyId_, "PolicyId");
-        rc = rc & jsonObjectEncode(pt, tokenType_, "TokenType");
-        rc = rc & jsonObjectEncode(pt, issuedTokenType_, "IssuedTokenType");
-        rc = rc & jsonObjectEncode(pt, issuerEndpointUrl_, "IssuerEndpointUrl");
-        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri");
+        rc = rc & jsonObjectEncode(pt, policyId_, "PolicyId", true);
+        rc = rc & jsonObjectEncode(pt, tokenType_, "TokenType", true);
+        rc = rc & jsonObjectEncode(pt, issuedTokenType_, "IssuedTokenType", true);
+        rc = rc & jsonObjectEncode(pt, issuerEndpointUrl_, "IssuerEndpointUrl", true);
+        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri", true);
     
         return rc;
     }
@@ -344,11 +344,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, policyId_, "PolicyId");
-        rc = rc & jsonObjectDecode(pt, tokenType_, "TokenType");
-        rc = rc & jsonObjectDecode(pt, issuedTokenType_, "IssuedTokenType");
-        rc = rc & jsonObjectDecode(pt, issuerEndpointUrl_, "IssuerEndpointUrl");
-        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri");
+        rc = rc & jsonObjectDecode(pt, policyId_, "PolicyId", true);
+        rc = rc & jsonObjectDecode(pt, tokenType_, "TokenType", true);
+        rc = rc & jsonObjectDecode(pt, issuedTokenType_, "IssuedTokenType", true);
+        rc = rc & jsonObjectDecode(pt, issuerEndpointUrl_, "IssuerEndpointUrl", true);
+        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri", true);
     
         return rc;
     }

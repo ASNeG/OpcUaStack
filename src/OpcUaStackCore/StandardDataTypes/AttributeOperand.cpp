@@ -325,11 +325,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, nodeId_, "NodeId");
-        rc = rc & jsonObjectEncode(pt, alias_, "Alias");
-        rc = rc & jsonObjectEncode(pt, browsePath_, "BrowsePath");
+        rc = rc & jsonObjectEncode(pt, nodeId_, "NodeId", true);
+        rc = rc & jsonObjectEncode(pt, alias_, "Alias", true);
+        rc = rc & jsonObjectEncode(pt, browsePath_, "BrowsePath", true);
         rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
-        rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange");
+        rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange", true);
     
         return rc;
     }
@@ -339,11 +339,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, nodeId_, "NodeId");
-        rc = rc & jsonObjectDecode(pt, alias_, "Alias");
-        rc = rc & jsonObjectDecode(pt, browsePath_, "BrowsePath");
+        rc = rc & jsonObjectDecode(pt, nodeId_, "NodeId", true);
+        rc = rc & jsonObjectDecode(pt, alias_, "Alias", true);
+        rc = rc & jsonObjectDecode(pt, browsePath_, "BrowsePath", true);
         rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId");
-        rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange");
+        rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange", true);
     
         return rc;
     }

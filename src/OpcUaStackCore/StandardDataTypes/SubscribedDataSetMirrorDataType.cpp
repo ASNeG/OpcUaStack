@@ -228,8 +228,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, parentNodeName_, "ParentNodeName");
-        rc = rc & jsonArrayEncode(pt, rolePermissions_, "RolePermissions");
+        rc = rc & jsonObjectEncode(pt, parentNodeName_, "ParentNodeName", true);
+        rc = rc & jsonArrayEncode(pt, rolePermissions_, "RolePermissions", true);
     
         return rc;
     }
@@ -239,8 +239,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, parentNodeName_, "ParentNodeName");
-        rc = rc & jsonArrayDecode(pt, rolePermissions_, "RolePermissions");
+        rc = rc & jsonObjectDecode(pt, parentNodeName_, "ParentNodeName", true);
+        rc = rc & jsonArrayDecode(pt, rolePermissions_, "RolePermissions", true);
     
         return rc;
     }

@@ -453,15 +453,15 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
-        rc = rc & jsonObjectEncode(pt, publisherId_, "PublisherId");
-        rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri");
-        rc = rc & jsonObjectEncode(pt, address_, "Address");
-        rc = rc & jsonArrayEncode(pt, connectionProperties_, "ConnectionProperties");
-        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonArrayEncode(pt, writerGroups_, "WriterGroups");
-        rc = rc & jsonArrayEncode(pt, readerGroups_, "ReaderGroups");
+        rc = rc & jsonObjectEncode(pt, publisherId_, "PublisherId", true);
+        rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri", true);
+        rc = rc & jsonObjectEncode(pt, address_, "Address", true);
+        rc = rc & jsonArrayEncode(pt, connectionProperties_, "ConnectionProperties", true);
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonArrayEncode(pt, writerGroups_, "WriterGroups", true);
+        rc = rc & jsonArrayEncode(pt, readerGroups_, "ReaderGroups", true);
     
         return rc;
     }
@@ -471,15 +471,15 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
         rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
-        rc = rc & jsonObjectDecode(pt, publisherId_, "PublisherId");
-        rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri");
-        rc = rc & jsonObjectDecode(pt, address_, "Address");
-        rc = rc & jsonArrayDecode(pt, connectionProperties_, "ConnectionProperties");
-        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonArrayDecode(pt, writerGroups_, "WriterGroups");
-        rc = rc & jsonArrayDecode(pt, readerGroups_, "ReaderGroups");
+        rc = rc & jsonObjectDecode(pt, publisherId_, "PublisherId", true);
+        rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri", true);
+        rc = rc & jsonObjectDecode(pt, address_, "Address", true);
+        rc = rc & jsonArrayDecode(pt, connectionProperties_, "ConnectionProperties", true);
+        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonArrayDecode(pt, writerGroups_, "WriterGroups", true);
+        rc = rc & jsonArrayDecode(pt, readerGroups_, "ReaderGroups", true);
     
         return rc;
     }

@@ -196,7 +196,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, discoveryAddress_, "DiscoveryAddress");
+        rc = rc & jsonObjectEncode(pt, discoveryAddress_, "DiscoveryAddress", true);
     
         return rc;
     }
@@ -206,7 +206,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, discoveryAddress_, "DiscoveryAddress");
+        rc = rc & jsonObjectDecode(pt, discoveryAddress_, "DiscoveryAddress", true);
     
         return rc;
     }

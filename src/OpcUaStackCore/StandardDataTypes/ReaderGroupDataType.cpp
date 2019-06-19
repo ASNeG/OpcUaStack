@@ -260,9 +260,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
-        rc = rc & jsonArrayEncode(pt, dataSetReaders_, "DataSetReaders");
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings", true);
+        rc = rc & jsonArrayEncode(pt, dataSetReaders_, "DataSetReaders", true);
     
         return rc;
     }
@@ -272,9 +272,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings");
-        rc = rc & jsonArrayDecode(pt, dataSetReaders_, "DataSetReaders");
+        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings", true);
+        rc = rc & jsonArrayDecode(pt, dataSetReaders_, "DataSetReaders", true);
     
         return rc;
     }

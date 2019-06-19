@@ -260,9 +260,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode");
-        rc = rc & jsonArrayEncode(pt, operandStatusCodes_, "OperandStatusCodes");
-        rc = rc & jsonArrayEncode(pt, operandDiagnosticInfos_, "OperandDiagnosticInfos");
+        rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode", true);
+        rc = rc & jsonArrayEncode(pt, operandStatusCodes_, "OperandStatusCodes", true);
+        rc = rc & jsonArrayEncode(pt, operandDiagnosticInfos_, "OperandDiagnosticInfos", true);
     
         return rc;
     }
@@ -272,9 +272,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, statusCode_, "StatusCode");
-        rc = rc & jsonArrayDecode(pt, operandStatusCodes_, "OperandStatusCodes");
-        rc = rc & jsonArrayDecode(pt, operandDiagnosticInfos_, "OperandDiagnosticInfos");
+        rc = rc & jsonObjectDecode(pt, statusCode_, "StatusCode", true);
+        rc = rc & jsonArrayDecode(pt, operandStatusCodes_, "OperandStatusCodes", true);
+        rc = rc & jsonArrayDecode(pt, operandDiagnosticInfos_, "OperandDiagnosticInfos", true);
     
         return rc;
     }

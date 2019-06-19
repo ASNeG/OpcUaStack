@@ -228,8 +228,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, resourceUri_, "ResourceUri");
-        rc = rc & jsonObjectEncode(pt, authenticationProfileUri_, "AuthenticationProfileUri");
+        rc = rc & jsonObjectEncode(pt, resourceUri_, "ResourceUri", true);
+        rc = rc & jsonObjectEncode(pt, authenticationProfileUri_, "AuthenticationProfileUri", true);
     
         return rc;
     }
@@ -239,8 +239,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, resourceUri_, "ResourceUri");
-        rc = rc & jsonObjectDecode(pt, authenticationProfileUri_, "AuthenticationProfileUri");
+        rc = rc & jsonObjectDecode(pt, resourceUri_, "ResourceUri", true);
+        rc = rc & jsonObjectDecode(pt, authenticationProfileUri_, "AuthenticationProfileUri", true);
     
         return rc;
     }

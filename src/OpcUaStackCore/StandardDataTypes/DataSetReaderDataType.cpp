@@ -649,21 +649,21 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
-        rc = rc & jsonObjectEncode(pt, publisherId_, "PublisherId");
+        rc = rc & jsonObjectEncode(pt, publisherId_, "PublisherId", true);
         rc = rc & jsonNumberEncode(pt, writerGroupId_, "WriterGroupId");
         rc = rc & jsonNumberEncode(pt, dataSetWriterId_, "DataSetWriterId");
-        rc = rc & jsonObjectEncode(pt, dataSetMetaData_, "DataSetMetaData");
+        rc = rc & jsonObjectEncode(pt, dataSetMetaData_, "DataSetMetaData", true);
         rc = rc & jsonNumberEncode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
         rc = rc & jsonNumberEncode(pt, messageReceiveTimeout_, "MessageReceiveTimeout");
-        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
-        rc = rc & jsonObjectEncode(pt, securityGroupId_, "SecurityGroupId");
-        rc = rc & jsonArrayEncode(pt, securityKeyServices_, "SecurityKeyServices");
-        rc = rc & jsonArrayEncode(pt, dataSetReaderProperties_, "DataSetReaderProperties");
-        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
-        rc = rc & jsonObjectEncode(pt, subscribedDataSet_, "SubscribedDataSet");
+        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode", true);
+        rc = rc & jsonObjectEncode(pt, securityGroupId_, "SecurityGroupId", true);
+        rc = rc & jsonArrayEncode(pt, securityKeyServices_, "SecurityKeyServices", true);
+        rc = rc & jsonArrayEncode(pt, dataSetReaderProperties_, "DataSetReaderProperties", true);
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings", true);
+        rc = rc & jsonObjectEncode(pt, subscribedDataSet_, "SubscribedDataSet", true);
     
         return rc;
     }
@@ -673,21 +673,21 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
         rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
-        rc = rc & jsonObjectDecode(pt, publisherId_, "PublisherId");
+        rc = rc & jsonObjectDecode(pt, publisherId_, "PublisherId", true);
         rc = rc & jsonNumberDecode(pt, writerGroupId_, "WriterGroupId");
         rc = rc & jsonNumberDecode(pt, dataSetWriterId_, "DataSetWriterId");
-        rc = rc & jsonObjectDecode(pt, dataSetMetaData_, "DataSetMetaData");
+        rc = rc & jsonObjectDecode(pt, dataSetMetaData_, "DataSetMetaData", true);
         rc = rc & jsonNumberDecode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
         rc = rc & jsonNumberDecode(pt, messageReceiveTimeout_, "MessageReceiveTimeout");
-        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
-        rc = rc & jsonObjectDecode(pt, securityGroupId_, "SecurityGroupId");
-        rc = rc & jsonArrayDecode(pt, securityKeyServices_, "SecurityKeyServices");
-        rc = rc & jsonArrayDecode(pt, dataSetReaderProperties_, "DataSetReaderProperties");
-        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings");
-        rc = rc & jsonObjectDecode(pt, subscribedDataSet_, "SubscribedDataSet");
+        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode", true);
+        rc = rc & jsonObjectDecode(pt, securityGroupId_, "SecurityGroupId", true);
+        rc = rc & jsonArrayDecode(pt, securityKeyServices_, "SecurityKeyServices", true);
+        rc = rc & jsonArrayDecode(pt, dataSetReaderProperties_, "DataSetReaderProperties", true);
+        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings", true);
+        rc = rc & jsonObjectDecode(pt, subscribedDataSet_, "SubscribedDataSet", true);
     
         return rc;
     }

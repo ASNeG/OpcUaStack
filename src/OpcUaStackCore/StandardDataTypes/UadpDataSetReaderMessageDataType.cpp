@@ -463,7 +463,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, groupVersion_, "GroupVersion");
         rc = rc & jsonNumberEncode(pt, networkMessageNumber_, "NetworkMessageNumber");
         rc = rc & jsonNumberEncode(pt, dataSetOffset_, "DataSetOffset");
-        rc = rc & jsonObjectEncode(pt, dataSetClassId_, "DataSetClassId");
+        rc = rc & jsonObjectEncode(pt, dataSetClassId_, "DataSetClassId", true);
         rc = rc & jsonNumberEncode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
         rc = rc & jsonNumberEncode(pt, dataSetMessageContentMask_, "DataSetMessageContentMask");
         rc = rc & jsonNumberEncode(pt, publishingInterval_, "PublishingInterval");
@@ -481,7 +481,7 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberDecode(pt, groupVersion_, "GroupVersion");
         rc = rc & jsonNumberDecode(pt, networkMessageNumber_, "NetworkMessageNumber");
         rc = rc & jsonNumberDecode(pt, dataSetOffset_, "DataSetOffset");
-        rc = rc & jsonObjectDecode(pt, dataSetClassId_, "DataSetClassId");
+        rc = rc & jsonObjectDecode(pt, dataSetClassId_, "DataSetClassId", true);
         rc = rc & jsonNumberDecode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
         rc = rc & jsonNumberDecode(pt, dataSetMessageContentMask_, "DataSetMessageContentMask");
         rc = rc & jsonNumberDecode(pt, publishingInterval_, "PublishingInterval");

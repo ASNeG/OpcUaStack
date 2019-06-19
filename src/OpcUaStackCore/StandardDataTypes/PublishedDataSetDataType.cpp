@@ -324,11 +324,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, name_, "Name");
-        rc = rc & jsonArrayEncode(pt, dataSetFolder_, "DataSetFolder");
-        rc = rc & jsonObjectEncode(pt, dataSetMetaData_, "DataSetMetaData");
-        rc = rc & jsonArrayEncode(pt, extensionFields_, "ExtensionFields");
-        rc = rc & jsonObjectEncode(pt, dataSetSource_, "DataSetSource");
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
+        rc = rc & jsonArrayEncode(pt, dataSetFolder_, "DataSetFolder", true);
+        rc = rc & jsonObjectEncode(pt, dataSetMetaData_, "DataSetMetaData", true);
+        rc = rc & jsonArrayEncode(pt, extensionFields_, "ExtensionFields", true);
+        rc = rc & jsonObjectEncode(pt, dataSetSource_, "DataSetSource", true);
     
         return rc;
     }
@@ -338,11 +338,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, name_, "Name");
-        rc = rc & jsonArrayDecode(pt, dataSetFolder_, "DataSetFolder");
-        rc = rc & jsonObjectDecode(pt, dataSetMetaData_, "DataSetMetaData");
-        rc = rc & jsonArrayDecode(pt, extensionFields_, "ExtensionFields");
-        rc = rc & jsonObjectDecode(pt, dataSetSource_, "DataSetSource");
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
+        rc = rc & jsonArrayDecode(pt, dataSetFolder_, "DataSetFolder", true);
+        rc = rc & jsonObjectDecode(pt, dataSetMetaData_, "DataSetMetaData", true);
+        rc = rc & jsonArrayDecode(pt, extensionFields_, "ExtensionFields", true);
+        rc = rc & jsonObjectDecode(pt, dataSetSource_, "DataSetSource", true);
     
         return rc;
     }

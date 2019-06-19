@@ -331,11 +331,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, name_, "Name");
-        rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
+        rc = rc & jsonObjectEncode(pt, dataType_, "DataType", true);
         rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
-        rc = rc & jsonArrayEncode(pt, arrayDimensions_, "ArrayDimensions");
-        rc = rc & jsonObjectEncode(pt, description_, "Description");
+        rc = rc & jsonArrayEncode(pt, arrayDimensions_, "ArrayDimensions", true);
+        rc = rc & jsonObjectEncode(pt, description_, "Description", true);
     
         return rc;
     }
@@ -345,11 +345,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, name_, "Name");
-        rc = rc & jsonObjectDecode(pt, dataType_, "DataType");
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
+        rc = rc & jsonObjectDecode(pt, dataType_, "DataType", true);
         rc = rc & jsonNumberDecode(pt, valueRank_, "ValueRank");
-        rc = rc & jsonArrayDecode(pt, arrayDimensions_, "ArrayDimensions");
-        rc = rc & jsonObjectDecode(pt, description_, "Description");
+        rc = rc & jsonArrayDecode(pt, arrayDimensions_, "ArrayDimensions", true);
+        rc = rc & jsonObjectDecode(pt, description_, "Description", true);
     
         return rc;
     }

@@ -428,10 +428,10 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberEncode(pt, publishingInterval_, "PublishingInterval");
         rc = rc & jsonNumberEncode(pt, keepAliveTime_, "KeepAliveTime");
         rc = rc & jsonNumberEncode(pt, priority_, "Priority");
-        rc = rc & jsonArrayEncode(pt, localeIds_, "LocaleIds");
-        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
-        rc = rc & jsonArrayEncode(pt, dataSetWriters_, "DataSetWriters");
+        rc = rc & jsonArrayEncode(pt, localeIds_, "LocaleIds", true);
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings", true);
+        rc = rc & jsonArrayEncode(pt, dataSetWriters_, "DataSetWriters", true);
     
         return rc;
     }
@@ -445,10 +445,10 @@ namespace OpcUaStackCore
         rc = rc & jsonNumberDecode(pt, publishingInterval_, "PublishingInterval");
         rc = rc & jsonNumberDecode(pt, keepAliveTime_, "KeepAliveTime");
         rc = rc & jsonNumberDecode(pt, priority_, "Priority");
-        rc = rc & jsonArrayDecode(pt, localeIds_, "LocaleIds");
-        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings");
-        rc = rc & jsonArrayDecode(pt, dataSetWriters_, "DataSetWriters");
+        rc = rc & jsonArrayDecode(pt, localeIds_, "LocaleIds", true);
+        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings", true);
+        rc = rc & jsonArrayDecode(pt, dataSetWriters_, "DataSetWriters", true);
     
         return rc;
     }

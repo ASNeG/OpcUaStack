@@ -260,9 +260,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, eventNotifier_, "EventNotifier");
-        rc = rc & jsonArrayEncode(pt, selectedFields_, "SelectedFields");
-        rc = rc & jsonObjectEncode(pt, filter_, "Filter");
+        rc = rc & jsonObjectEncode(pt, eventNotifier_, "EventNotifier", true);
+        rc = rc & jsonArrayEncode(pt, selectedFields_, "SelectedFields", true);
+        rc = rc & jsonObjectEncode(pt, filter_, "Filter", true);
     
         return rc;
     }
@@ -272,9 +272,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, eventNotifier_, "EventNotifier");
-        rc = rc & jsonArrayDecode(pt, selectedFields_, "SelectedFields");
-        rc = rc & jsonObjectDecode(pt, filter_, "Filter");
+        rc = rc & jsonObjectDecode(pt, eventNotifier_, "EventNotifier", true);
+        rc = rc & jsonArrayDecode(pt, selectedFields_, "SelectedFields", true);
+        rc = rc & jsonObjectDecode(pt, filter_, "Filter", true);
     
         return rc;
     }

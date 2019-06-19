@@ -261,9 +261,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, serverId_, "ServerId");
+        rc = rc & jsonObjectEncode(pt, serverId_, "ServerId", true);
         rc = rc & jsonNumberEncode(pt, serviceLevel_, "ServiceLevel");
-        rc = rc & jsonObjectEncode(pt, serverState_, "ServerState");
+        rc = rc & jsonObjectEncode(pt, serverState_, "ServerState", true);
     
         return rc;
     }
@@ -273,9 +273,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, serverId_, "ServerId");
+        rc = rc & jsonObjectDecode(pt, serverId_, "ServerId", true);
         rc = rc & jsonNumberDecode(pt, serviceLevel_, "ServiceLevel");
-        rc = rc & jsonObjectDecode(pt, serverState_, "ServerState");
+        rc = rc & jsonObjectDecode(pt, serverState_, "ServerState", true);
     
         return rc;
     }

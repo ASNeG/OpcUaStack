@@ -196,7 +196,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, networkInterface_, "NetworkInterface");
+        rc = rc & jsonObjectEncode(pt, networkInterface_, "NetworkInterface", true);
     
         return rc;
     }
@@ -206,7 +206,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, networkInterface_, "NetworkInterface");
+        rc = rc & jsonObjectDecode(pt, networkInterface_, "NetworkInterface", true);
     
         return rc;
     }

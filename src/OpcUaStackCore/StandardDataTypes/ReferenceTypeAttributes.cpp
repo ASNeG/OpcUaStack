@@ -270,7 +270,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonNumberEncode(pt, isAbstract_, "IsAbstract");
         rc = rc & jsonNumberEncode(pt, symmetric_, "Symmetric");
-        rc = rc & jsonObjectEncode(pt, inverseName_, "InverseName");
+        rc = rc & jsonObjectEncode(pt, inverseName_, "InverseName", true);
     
         return rc;
     }
@@ -282,7 +282,7 @@ namespace OpcUaStackCore
     
         rc = rc & jsonNumberDecode(pt, isAbstract_, "IsAbstract");
         rc = rc & jsonNumberDecode(pt, symmetric_, "Symmetric");
-        rc = rc & jsonObjectDecode(pt, inverseName_, "InverseName");
+        rc = rc & jsonObjectDecode(pt, inverseName_, "InverseName", true);
     
         return rc;
     }

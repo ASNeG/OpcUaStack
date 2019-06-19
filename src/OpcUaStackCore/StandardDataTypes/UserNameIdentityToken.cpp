@@ -266,9 +266,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, userName_, "UserName");
-        rc = rc & jsonObjectEncode(pt, password_, "Password");
-        rc = rc & jsonObjectEncode(pt, encryptionAlgorithm_, "EncryptionAlgorithm");
+        rc = rc & jsonObjectEncode(pt, userName_, "UserName", true);
+        rc = rc & jsonObjectEncode(pt, password_, "Password", true);
+        rc = rc & jsonObjectEncode(pt, encryptionAlgorithm_, "EncryptionAlgorithm", true);
     
         return rc;
     }
@@ -278,9 +278,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, userName_, "UserName");
-        rc = rc & jsonObjectDecode(pt, password_, "Password");
-        rc = rc & jsonObjectDecode(pt, encryptionAlgorithm_, "EncryptionAlgorithm");
+        rc = rc & jsonObjectDecode(pt, userName_, "UserName", true);
+        rc = rc & jsonObjectDecode(pt, password_, "Password", true);
+        rc = rc & jsonObjectDecode(pt, encryptionAlgorithm_, "EncryptionAlgorithm", true);
     
         return rc;
     }

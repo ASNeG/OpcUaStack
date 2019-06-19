@@ -260,9 +260,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, schemaLocation_, "SchemaLocation");
-        rc = rc & jsonArrayEncode(pt, fileHeader_, "FileHeader");
-        rc = rc & jsonObjectEncode(pt, body_, "Body");
+        rc = rc & jsonObjectEncode(pt, schemaLocation_, "SchemaLocation", true);
+        rc = rc & jsonArrayEncode(pt, fileHeader_, "FileHeader", true);
+        rc = rc & jsonObjectEncode(pt, body_, "Body", true);
     
         return rc;
     }
@@ -272,9 +272,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, schemaLocation_, "SchemaLocation");
-        rc = rc & jsonArrayDecode(pt, fileHeader_, "FileHeader");
-        rc = rc & jsonObjectDecode(pt, body_, "Body");
+        rc = rc & jsonObjectDecode(pt, schemaLocation_, "SchemaLocation", true);
+        rc = rc & jsonArrayDecode(pt, fileHeader_, "FileHeader", true);
+        rc = rc & jsonObjectDecode(pt, body_, "Body", true);
     
         return rc;
     }

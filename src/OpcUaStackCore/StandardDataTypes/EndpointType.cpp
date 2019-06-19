@@ -292,10 +292,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl");
-        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode");
-        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri");
-        rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri");
+        rc = rc & jsonObjectEncode(pt, endpointUrl_, "EndpointUrl", true);
+        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode", true);
+        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri", true);
+        rc = rc & jsonObjectEncode(pt, transportProfileUri_, "TransportProfileUri", true);
     
         return rc;
     }
@@ -305,10 +305,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, endpointUrl_, "EndpointUrl");
-        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode");
-        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri");
-        rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri");
+        rc = rc & jsonObjectDecode(pt, endpointUrl_, "EndpointUrl", true);
+        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode", true);
+        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri", true);
+        rc = rc & jsonObjectDecode(pt, transportProfileUri_, "TransportProfileUri", true);
     
         return rc;
     }

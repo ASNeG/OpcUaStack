@@ -294,10 +294,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode");
+        rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode", true);
         rc = rc & jsonNumberEncode(pt, revisedSamplingInterval_, "RevisedSamplingInterval");
         rc = rc & jsonNumberEncode(pt, revisedQueueSize_, "RevisedQueueSize");
-        rc = rc & jsonObjectEncode(pt, filterResult_, "FilterResult");
+        rc = rc & jsonObjectEncode(pt, filterResult_, "FilterResult", true);
     
         return rc;
     }
@@ -307,10 +307,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, statusCode_, "StatusCode");
+        rc = rc & jsonObjectDecode(pt, statusCode_, "StatusCode", true);
         rc = rc & jsonNumberDecode(pt, revisedSamplingInterval_, "RevisedSamplingInterval");
         rc = rc & jsonNumberDecode(pt, revisedQueueSize_, "RevisedQueueSize");
-        rc = rc & jsonObjectDecode(pt, filterResult_, "FilterResult");
+        rc = rc & jsonObjectDecode(pt, filterResult_, "FilterResult", true);
     
         return rc;
     }

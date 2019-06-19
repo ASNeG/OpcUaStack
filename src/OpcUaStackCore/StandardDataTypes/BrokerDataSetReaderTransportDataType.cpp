@@ -324,11 +324,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, queueName_, "QueueName");
-        rc = rc & jsonObjectEncode(pt, resourceUri_, "ResourceUri");
-        rc = rc & jsonObjectEncode(pt, authenticationProfileUri_, "AuthenticationProfileUri");
-        rc = rc & jsonObjectEncode(pt, requestedDeliveryGuarantee_, "RequestedDeliveryGuarantee");
-        rc = rc & jsonObjectEncode(pt, metaDataQueueName_, "MetaDataQueueName");
+        rc = rc & jsonObjectEncode(pt, queueName_, "QueueName", true);
+        rc = rc & jsonObjectEncode(pt, resourceUri_, "ResourceUri", true);
+        rc = rc & jsonObjectEncode(pt, authenticationProfileUri_, "AuthenticationProfileUri", true);
+        rc = rc & jsonObjectEncode(pt, requestedDeliveryGuarantee_, "RequestedDeliveryGuarantee", true);
+        rc = rc & jsonObjectEncode(pt, metaDataQueueName_, "MetaDataQueueName", true);
     
         return rc;
     }
@@ -338,11 +338,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, queueName_, "QueueName");
-        rc = rc & jsonObjectDecode(pt, resourceUri_, "ResourceUri");
-        rc = rc & jsonObjectDecode(pt, authenticationProfileUri_, "AuthenticationProfileUri");
-        rc = rc & jsonObjectDecode(pt, requestedDeliveryGuarantee_, "RequestedDeliveryGuarantee");
-        rc = rc & jsonObjectDecode(pt, metaDataQueueName_, "MetaDataQueueName");
+        rc = rc & jsonObjectDecode(pt, queueName_, "QueueName", true);
+        rc = rc & jsonObjectDecode(pt, resourceUri_, "ResourceUri", true);
+        rc = rc & jsonObjectDecode(pt, authenticationProfileUri_, "AuthenticationProfileUri", true);
+        rc = rc & jsonObjectDecode(pt, requestedDeliveryGuarantee_, "RequestedDeliveryGuarantee", true);
+        rc = rc & jsonObjectDecode(pt, metaDataQueueName_, "MetaDataQueueName", true);
     
         return rc;
     }

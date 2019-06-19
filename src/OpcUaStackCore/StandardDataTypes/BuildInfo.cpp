@@ -356,12 +356,12 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri");
-        rc = rc & jsonObjectEncode(pt, manufacturerName_, "ManufacturerName");
-        rc = rc & jsonObjectEncode(pt, productName_, "ProductName");
-        rc = rc & jsonObjectEncode(pt, softwareVersion_, "SoftwareVersion");
-        rc = rc & jsonObjectEncode(pt, buildNumber_, "BuildNumber");
-        rc = rc & jsonObjectEncode(pt, buildDate_, "BuildDate");
+        rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri", true);
+        rc = rc & jsonObjectEncode(pt, manufacturerName_, "ManufacturerName", true);
+        rc = rc & jsonObjectEncode(pt, productName_, "ProductName", true);
+        rc = rc & jsonObjectEncode(pt, softwareVersion_, "SoftwareVersion", true);
+        rc = rc & jsonObjectEncode(pt, buildNumber_, "BuildNumber", true);
+        rc = rc & jsonObjectEncode(pt, buildDate_, "BuildDate", true);
     
         return rc;
     }
@@ -371,12 +371,12 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, productUri_, "ProductUri");
-        rc = rc & jsonObjectDecode(pt, manufacturerName_, "ManufacturerName");
-        rc = rc & jsonObjectDecode(pt, productName_, "ProductName");
-        rc = rc & jsonObjectDecode(pt, softwareVersion_, "SoftwareVersion");
-        rc = rc & jsonObjectDecode(pt, buildNumber_, "BuildNumber");
-        rc = rc & jsonObjectDecode(pt, buildDate_, "BuildDate");
+        rc = rc & jsonObjectDecode(pt, productUri_, "ProductUri", true);
+        rc = rc & jsonObjectDecode(pt, manufacturerName_, "ManufacturerName", true);
+        rc = rc & jsonObjectDecode(pt, productName_, "ProductName", true);
+        rc = rc & jsonObjectDecode(pt, softwareVersion_, "SoftwareVersion", true);
+        rc = rc & jsonObjectDecode(pt, buildNumber_, "BuildNumber", true);
+        rc = rc & jsonObjectDecode(pt, buildDate_, "BuildDate", true);
     
         return rc;
     }

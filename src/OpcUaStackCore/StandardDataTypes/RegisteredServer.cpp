@@ -427,13 +427,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
-        rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri");
-        rc = rc & jsonArrayEncode(pt, serverNames_, "ServerNames");
-        rc = rc & jsonObjectEncode(pt, serverType_, "ServerType");
-        rc = rc & jsonObjectEncode(pt, gatewayServerUri_, "GatewayServerUri");
-        rc = rc & jsonArrayEncode(pt, discoveryUrls_, "DiscoveryUrls");
-        rc = rc & jsonObjectEncode(pt, semaphoreFilePath_, "SemaphoreFilePath");
+        rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri", true);
+        rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri", true);
+        rc = rc & jsonArrayEncode(pt, serverNames_, "ServerNames", true);
+        rc = rc & jsonObjectEncode(pt, serverType_, "ServerType", true);
+        rc = rc & jsonObjectEncode(pt, gatewayServerUri_, "GatewayServerUri", true);
+        rc = rc & jsonArrayEncode(pt, discoveryUrls_, "DiscoveryUrls", true);
+        rc = rc & jsonObjectEncode(pt, semaphoreFilePath_, "SemaphoreFilePath", true);
         rc = rc & jsonNumberEncode(pt, isOnline_, "IsOnline");
     
         return rc;
@@ -444,13 +444,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, serverUri_, "ServerUri");
-        rc = rc & jsonObjectDecode(pt, productUri_, "ProductUri");
-        rc = rc & jsonArrayDecode(pt, serverNames_, "ServerNames");
-        rc = rc & jsonObjectDecode(pt, serverType_, "ServerType");
-        rc = rc & jsonObjectDecode(pt, gatewayServerUri_, "GatewayServerUri");
-        rc = rc & jsonArrayDecode(pt, discoveryUrls_, "DiscoveryUrls");
-        rc = rc & jsonObjectDecode(pt, semaphoreFilePath_, "SemaphoreFilePath");
+        rc = rc & jsonObjectDecode(pt, serverUri_, "ServerUri", true);
+        rc = rc & jsonObjectDecode(pt, productUri_, "ProductUri", true);
+        rc = rc & jsonArrayDecode(pt, serverNames_, "ServerNames", true);
+        rc = rc & jsonObjectDecode(pt, serverType_, "ServerType", true);
+        rc = rc & jsonObjectDecode(pt, gatewayServerUri_, "GatewayServerUri", true);
+        rc = rc & jsonArrayDecode(pt, discoveryUrls_, "DiscoveryUrls", true);
+        rc = rc & jsonObjectDecode(pt, semaphoreFilePath_, "SemaphoreFilePath", true);
         rc = rc & jsonNumberDecode(pt, isOnline_, "IsOnline");
     
         return rc;

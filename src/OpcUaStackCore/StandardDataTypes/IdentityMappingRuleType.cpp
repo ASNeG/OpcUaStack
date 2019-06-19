@@ -228,8 +228,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, criteriaType_, "CriteriaType");
-        rc = rc & jsonObjectEncode(pt, criteria_, "Criteria");
+        rc = rc & jsonObjectEncode(pt, criteriaType_, "CriteriaType", true);
+        rc = rc & jsonObjectEncode(pt, criteria_, "Criteria", true);
     
         return rc;
     }
@@ -239,8 +239,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, criteriaType_, "CriteriaType");
-        rc = rc & jsonObjectDecode(pt, criteria_, "Criteria");
+        rc = rc & jsonObjectDecode(pt, criteriaType_, "CriteriaType", true);
+        rc = rc & jsonObjectDecode(pt, criteria_, "Criteria", true);
     
         return rc;
     }

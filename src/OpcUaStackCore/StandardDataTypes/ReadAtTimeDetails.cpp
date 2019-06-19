@@ -229,7 +229,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonArrayEncode(pt, reqTimes_, "ReqTimes");
+        rc = rc & jsonArrayEncode(pt, reqTimes_, "ReqTimes", true);
         rc = rc & jsonNumberEncode(pt, useSimpleBounds_, "UseSimpleBounds");
     
         return rc;
@@ -240,7 +240,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonArrayDecode(pt, reqTimes_, "ReqTimes");
+        rc = rc & jsonArrayDecode(pt, reqTimes_, "ReqTimes", true);
         rc = rc & jsonNumberDecode(pt, useSimpleBounds_, "UseSimpleBounds");
     
         return rc;

@@ -1186,7 +1186,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, sessionId_, "SessionId");
+        rc = rc & jsonObjectEncode(pt, sessionId_, "SessionId", true);
         rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
         rc = rc & jsonNumberEncode(pt, priority_, "Priority");
         rc = rc & jsonNumberEncode(pt, publishingInterval_, "PublishingInterval");
@@ -1226,7 +1226,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, sessionId_, "SessionId");
+        rc = rc & jsonObjectDecode(pt, sessionId_, "SessionId", true);
         rc = rc & jsonNumberDecode(pt, subscriptionId_, "SubscriptionId");
         rc = rc & jsonNumberDecode(pt, priority_, "Priority");
         rc = rc & jsonNumberDecode(pt, publishingInterval_, "PublishingInterval");

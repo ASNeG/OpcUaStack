@@ -325,11 +325,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
-        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime");
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime", true);
         rc = rc & jsonNumberEncode(pt, processingInterval_, "ProcessingInterval");
-        rc = rc & jsonArrayEncode(pt, aggregateType_, "AggregateType");
-        rc = rc & jsonObjectEncode(pt, aggregateConfiguration_, "AggregateConfiguration");
+        rc = rc & jsonArrayEncode(pt, aggregateType_, "AggregateType", true);
+        rc = rc & jsonObjectEncode(pt, aggregateConfiguration_, "AggregateConfiguration", true);
     
         return rc;
     }
@@ -339,11 +339,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime");
-        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime");
+        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime", true);
         rc = rc & jsonNumberDecode(pt, processingInterval_, "ProcessingInterval");
-        rc = rc & jsonArrayDecode(pt, aggregateType_, "AggregateType");
-        rc = rc & jsonObjectDecode(pt, aggregateConfiguration_, "AggregateConfiguration");
+        rc = rc & jsonArrayDecode(pt, aggregateType_, "AggregateType", true);
+        rc = rc & jsonObjectDecode(pt, aggregateConfiguration_, "AggregateConfiguration", true);
     
         return rc;
     }

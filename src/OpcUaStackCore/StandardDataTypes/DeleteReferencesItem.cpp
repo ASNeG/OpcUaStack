@@ -332,10 +332,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, sourceNodeId_, "SourceNodeId");
-        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonObjectEncode(pt, sourceNodeId_, "SourceNodeId", true);
+        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId", true);
         rc = rc & jsonNumberEncode(pt, isForward_, "IsForward");
-        rc = rc & jsonObjectEncode(pt, targetNodeId_, "TargetNodeId");
+        rc = rc & jsonObjectEncode(pt, targetNodeId_, "TargetNodeId", true);
         rc = rc & jsonNumberEncode(pt, deleteBidirectional_, "DeleteBidirectional");
     
         return rc;
@@ -346,10 +346,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, sourceNodeId_, "SourceNodeId");
-        rc = rc & jsonObjectDecode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonObjectDecode(pt, sourceNodeId_, "SourceNodeId", true);
+        rc = rc & jsonObjectDecode(pt, referenceTypeId_, "ReferenceTypeId", true);
         rc = rc & jsonNumberDecode(pt, isForward_, "IsForward");
-        rc = rc & jsonObjectDecode(pt, targetNodeId_, "TargetNodeId");
+        rc = rc & jsonObjectDecode(pt, targetNodeId_, "TargetNodeId", true);
         rc = rc & jsonNumberDecode(pt, deleteBidirectional_, "DeleteBidirectional");
     
         return rc;

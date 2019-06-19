@@ -262,8 +262,8 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberEncode(pt, isDeleteModified_, "IsDeleteModified");
-        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
-        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime");
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime", true);
     
         return rc;
     }
@@ -274,8 +274,8 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberDecode(pt, isDeleteModified_, "IsDeleteModified");
-        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime");
-        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime");
+        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime", true);
     
         return rc;
     }

@@ -300,10 +300,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId", true);
         rc = rc & jsonNumberEncode(pt, isInverse_, "IsInverse");
         rc = rc & jsonNumberEncode(pt, includeSubtypes_, "IncludeSubtypes");
-        rc = rc & jsonObjectEncode(pt, targetName_, "TargetName");
+        rc = rc & jsonObjectEncode(pt, targetName_, "TargetName", true);
     
         return rc;
     }
@@ -313,10 +313,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, referenceTypeId_, "ReferenceTypeId");
+        rc = rc & jsonObjectDecode(pt, referenceTypeId_, "ReferenceTypeId", true);
         rc = rc & jsonNumberDecode(pt, isInverse_, "IsInverse");
         rc = rc & jsonNumberDecode(pt, includeSubtypes_, "IncludeSubtypes");
-        rc = rc & jsonObjectDecode(pt, targetName_, "TargetName");
+        rc = rc & jsonObjectDecode(pt, targetName_, "TargetName", true);
     
         return rc;
     }

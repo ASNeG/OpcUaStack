@@ -292,10 +292,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, defaultEncodingId_, "DefaultEncodingId");
-        rc = rc & jsonObjectEncode(pt, baseDataType_, "BaseDataType");
-        rc = rc & jsonObjectEncode(pt, structureType_, "StructureType");
-        rc = rc & jsonArrayEncode(pt, fields_, "Fields");
+        rc = rc & jsonObjectEncode(pt, defaultEncodingId_, "DefaultEncodingId", true);
+        rc = rc & jsonObjectEncode(pt, baseDataType_, "BaseDataType", true);
+        rc = rc & jsonObjectEncode(pt, structureType_, "StructureType", true);
+        rc = rc & jsonArrayEncode(pt, fields_, "Fields", true);
     
         return rc;
     }
@@ -305,10 +305,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, defaultEncodingId_, "DefaultEncodingId");
-        rc = rc & jsonObjectDecode(pt, baseDataType_, "BaseDataType");
-        rc = rc & jsonObjectDecode(pt, structureType_, "StructureType");
-        rc = rc & jsonArrayDecode(pt, fields_, "Fields");
+        rc = rc & jsonObjectDecode(pt, defaultEncodingId_, "DefaultEncodingId", true);
+        rc = rc & jsonObjectDecode(pt, baseDataType_, "BaseDataType", true);
+        rc = rc & jsonObjectDecode(pt, structureType_, "StructureType", true);
+        rc = rc & jsonArrayDecode(pt, fields_, "Fields", true);
     
         return rc;
     }

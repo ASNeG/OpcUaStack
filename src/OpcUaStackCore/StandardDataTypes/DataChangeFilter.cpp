@@ -262,7 +262,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, trigger_, "Trigger");
+        rc = rc & jsonObjectEncode(pt, trigger_, "Trigger", true);
         rc = rc & jsonNumberEncode(pt, deadbandType_, "DeadbandType");
         rc = rc & jsonNumberEncode(pt, deadbandValue_, "DeadbandValue");
     
@@ -274,7 +274,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, trigger_, "Trigger");
+        rc = rc & jsonObjectDecode(pt, trigger_, "Trigger", true);
         rc = rc & jsonNumberDecode(pt, deadbandType_, "DeadbandType");
         rc = rc & jsonNumberDecode(pt, deadbandValue_, "DeadbandValue");
     

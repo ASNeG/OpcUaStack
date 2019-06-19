@@ -196,7 +196,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
     
         return rc;
     }
@@ -206,7 +206,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
     
         return rc;
     }

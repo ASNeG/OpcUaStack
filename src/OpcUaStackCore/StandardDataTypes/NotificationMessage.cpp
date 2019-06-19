@@ -262,8 +262,8 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberEncode(pt, sequenceNumber_, "SequenceNumber");
-        rc = rc & jsonObjectEncode(pt, publishTime_, "PublishTime");
-        rc = rc & jsonArrayEncode(pt, notificationData_, "NotificationData");
+        rc = rc & jsonObjectEncode(pt, publishTime_, "PublishTime", true);
+        rc = rc & jsonArrayEncode(pt, notificationData_, "NotificationData", true);
     
         return rc;
     }
@@ -274,8 +274,8 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberDecode(pt, sequenceNumber_, "SequenceNumber");
-        rc = rc & jsonObjectDecode(pt, publishTime_, "PublishTime");
-        rc = rc & jsonArrayDecode(pt, notificationData_, "NotificationData");
+        rc = rc & jsonObjectDecode(pt, publishTime_, "PublishTime", true);
+        rc = rc & jsonArrayDecode(pt, notificationData_, "NotificationData", true);
     
         return rc;
     }

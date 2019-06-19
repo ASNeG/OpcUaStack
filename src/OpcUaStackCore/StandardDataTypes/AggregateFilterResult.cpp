@@ -261,9 +261,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, revisedStartTime_, "RevisedStartTime");
+        rc = rc & jsonObjectEncode(pt, revisedStartTime_, "RevisedStartTime", true);
         rc = rc & jsonNumberEncode(pt, revisedProcessingInterval_, "RevisedProcessingInterval");
-        rc = rc & jsonObjectEncode(pt, revisedAggregateConfiguration_, "RevisedAggregateConfiguration");
+        rc = rc & jsonObjectEncode(pt, revisedAggregateConfiguration_, "RevisedAggregateConfiguration", true);
     
         return rc;
     }
@@ -273,9 +273,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, revisedStartTime_, "RevisedStartTime");
+        rc = rc & jsonObjectDecode(pt, revisedStartTime_, "RevisedStartTime", true);
         rc = rc & jsonNumberDecode(pt, revisedProcessingInterval_, "RevisedProcessingInterval");
-        rc = rc & jsonObjectDecode(pt, revisedAggregateConfiguration_, "RevisedAggregateConfiguration");
+        rc = rc & jsonObjectDecode(pt, revisedAggregateConfiguration_, "RevisedAggregateConfiguration", true);
     
         return rc;
     }

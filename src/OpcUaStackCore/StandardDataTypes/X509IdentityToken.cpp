@@ -202,7 +202,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, certificateData_, "CertificateData");
+        rc = rc & jsonObjectEncode(pt, certificateData_, "CertificateData", true);
     
         return rc;
     }
@@ -212,7 +212,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, certificateData_, "CertificateData");
+        rc = rc & jsonObjectDecode(pt, certificateData_, "CertificateData", true);
     
         return rc;
     }

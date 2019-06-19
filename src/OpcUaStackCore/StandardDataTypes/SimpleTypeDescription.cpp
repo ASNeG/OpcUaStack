@@ -229,7 +229,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, baseDataType_, "BaseDataType");
+        rc = rc & jsonObjectEncode(pt, baseDataType_, "BaseDataType", true);
         rc = rc & jsonNumberEncode(pt, builtInType_, "BuiltInType");
     
         return rc;
@@ -240,7 +240,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, baseDataType_, "BaseDataType");
+        rc = rc & jsonObjectDecode(pt, baseDataType_, "BaseDataType", true);
         rc = rc & jsonNumberDecode(pt, builtInType_, "BuiltInType");
     
         return rc;

@@ -294,9 +294,9 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberEncode(pt, numValuesPerNode_, "NumValuesPerNode");
-        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
-        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime");
-        rc = rc & jsonObjectEncode(pt, filter_, "Filter");
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime", true);
+        rc = rc & jsonObjectEncode(pt, filter_, "Filter", true);
     
         return rc;
     }
@@ -307,9 +307,9 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberDecode(pt, numValuesPerNode_, "NumValuesPerNode");
-        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime");
-        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime");
-        rc = rc & jsonObjectDecode(pt, filter_, "Filter");
+        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime", true);
+        rc = rc & jsonObjectDecode(pt, filter_, "Filter", true);
     
         return rc;
     }

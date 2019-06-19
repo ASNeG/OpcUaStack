@@ -293,10 +293,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, typeDefinitionId_, "TypeDefinitionId");
-        rc = rc & jsonArrayEncode(pt, browsePath_, "BrowsePath");
+        rc = rc & jsonObjectEncode(pt, typeDefinitionId_, "TypeDefinitionId", true);
+        rc = rc & jsonArrayEncode(pt, browsePath_, "BrowsePath", true);
         rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
-        rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange");
+        rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange", true);
     
         return rc;
     }
@@ -306,10 +306,10 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, typeDefinitionId_, "TypeDefinitionId");
-        rc = rc & jsonArrayDecode(pt, browsePath_, "BrowsePath");
+        rc = rc & jsonObjectDecode(pt, typeDefinitionId_, "TypeDefinitionId", true);
+        rc = rc & jsonArrayDecode(pt, browsePath_, "BrowsePath", true);
         rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId");
-        rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange");
+        rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange", true);
     
         return rc;
     }

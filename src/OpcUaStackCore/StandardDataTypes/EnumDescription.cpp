@@ -229,7 +229,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, enumDefinition_, "EnumDefinition");
+        rc = rc & jsonObjectEncode(pt, enumDefinition_, "EnumDefinition", true);
         rc = rc & jsonNumberEncode(pt, builtInType_, "BuiltInType");
     
         return rc;
@@ -240,7 +240,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, enumDefinition_, "EnumDefinition");
+        rc = rc & jsonObjectDecode(pt, enumDefinition_, "EnumDefinition", true);
         rc = rc & jsonNumberDecode(pt, builtInType_, "BuiltInType");
     
         return rc;

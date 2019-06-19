@@ -424,14 +424,14 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, publishedVariable_, "PublishedVariable");
+        rc = rc & jsonObjectEncode(pt, publishedVariable_, "PublishedVariable", true);
         rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
         rc = rc & jsonNumberEncode(pt, samplingIntervalHint_, "SamplingIntervalHint");
         rc = rc & jsonNumberEncode(pt, deadbandType_, "DeadbandType");
         rc = rc & jsonNumberEncode(pt, deadbandValue_, "DeadbandValue");
-        rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange");
-        rc = rc & jsonObjectEncode(pt, substituteValue_, "SubstituteValue");
-        rc = rc & jsonArrayEncode(pt, metaDataProperties_, "MetaDataProperties");
+        rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange", true);
+        rc = rc & jsonObjectEncode(pt, substituteValue_, "SubstituteValue", true);
+        rc = rc & jsonArrayEncode(pt, metaDataProperties_, "MetaDataProperties", true);
     
         return rc;
     }
@@ -441,14 +441,14 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, publishedVariable_, "PublishedVariable");
+        rc = rc & jsonObjectDecode(pt, publishedVariable_, "PublishedVariable", true);
         rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId");
         rc = rc & jsonNumberDecode(pt, samplingIntervalHint_, "SamplingIntervalHint");
         rc = rc & jsonNumberDecode(pt, deadbandType_, "DeadbandType");
         rc = rc & jsonNumberDecode(pt, deadbandValue_, "DeadbandValue");
-        rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange");
-        rc = rc & jsonObjectDecode(pt, substituteValue_, "SubstituteValue");
-        rc = rc & jsonArrayDecode(pt, metaDataProperties_, "MetaDataProperties");
+        rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange", true);
+        rc = rc & jsonObjectDecode(pt, substituteValue_, "SubstituteValue", true);
+        rc = rc & jsonArrayDecode(pt, metaDataProperties_, "MetaDataProperties", true);
     
         return rc;
     }

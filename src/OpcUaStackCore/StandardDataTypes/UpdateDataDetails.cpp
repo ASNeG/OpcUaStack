@@ -228,8 +228,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, performInsertReplace_, "PerformInsertReplace");
-        rc = rc & jsonArrayEncode(pt, updateValues_, "UpdateValues");
+        rc = rc & jsonObjectEncode(pt, performInsertReplace_, "PerformInsertReplace", true);
+        rc = rc & jsonArrayEncode(pt, updateValues_, "UpdateValues", true);
     
         return rc;
     }
@@ -239,8 +239,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, performInsertReplace_, "PerformInsertReplace");
-        rc = rc & jsonArrayDecode(pt, updateValues_, "UpdateValues");
+        rc = rc & jsonObjectDecode(pt, performInsertReplace_, "PerformInsertReplace", true);
+        rc = rc & jsonArrayDecode(pt, updateValues_, "UpdateValues", true);
     
         return rc;
     }

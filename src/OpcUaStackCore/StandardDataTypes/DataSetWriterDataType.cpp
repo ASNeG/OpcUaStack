@@ -456,15 +456,15 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, name_, "Name");
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
         rc = rc & jsonNumberEncode(pt, enabled_, "Enabled");
         rc = rc & jsonNumberEncode(pt, dataSetWriterId_, "DataSetWriterId");
         rc = rc & jsonNumberEncode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
         rc = rc & jsonNumberEncode(pt, keyFrameCount_, "KeyFrameCount");
-        rc = rc & jsonObjectEncode(pt, dataSetName_, "DataSetName");
-        rc = rc & jsonArrayEncode(pt, dataSetWriterProperties_, "DataSetWriterProperties");
-        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings");
+        rc = rc & jsonObjectEncode(pt, dataSetName_, "DataSetName", true);
+        rc = rc & jsonArrayEncode(pt, dataSetWriterProperties_, "DataSetWriterProperties", true);
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings", true);
     
         return rc;
     }
@@ -474,15 +474,15 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, name_, "Name");
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
         rc = rc & jsonNumberDecode(pt, enabled_, "Enabled");
         rc = rc & jsonNumberDecode(pt, dataSetWriterId_, "DataSetWriterId");
         rc = rc & jsonNumberDecode(pt, dataSetFieldContentMask_, "DataSetFieldContentMask");
         rc = rc & jsonNumberDecode(pt, keyFrameCount_, "KeyFrameCount");
-        rc = rc & jsonObjectDecode(pt, dataSetName_, "DataSetName");
-        rc = rc & jsonArrayDecode(pt, dataSetWriterProperties_, "DataSetWriterProperties");
-        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings");
-        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings");
+        rc = rc & jsonObjectDecode(pt, dataSetName_, "DataSetName", true);
+        rc = rc & jsonArrayDecode(pt, dataSetWriterProperties_, "DataSetWriterProperties", true);
+        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings", true);
     
         return rc;
     }

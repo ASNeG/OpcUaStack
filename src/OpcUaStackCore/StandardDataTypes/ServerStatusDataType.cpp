@@ -357,12 +357,12 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime");
-        rc = rc & jsonObjectEncode(pt, currentTime_, "CurrentTime");
-        rc = rc & jsonObjectEncode(pt, state_, "State");
-        rc = rc & jsonObjectEncode(pt, buildInfo_, "BuildInfo");
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectEncode(pt, currentTime_, "CurrentTime", true);
+        rc = rc & jsonObjectEncode(pt, state_, "State", true);
+        rc = rc & jsonObjectEncode(pt, buildInfo_, "BuildInfo", true);
         rc = rc & jsonNumberEncode(pt, secondsTillShutdown_, "SecondsTillShutdown");
-        rc = rc & jsonObjectEncode(pt, shutdownReason_, "ShutdownReason");
+        rc = rc & jsonObjectEncode(pt, shutdownReason_, "ShutdownReason", true);
     
         return rc;
     }
@@ -372,12 +372,12 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime");
-        rc = rc & jsonObjectDecode(pt, currentTime_, "CurrentTime");
-        rc = rc & jsonObjectDecode(pt, state_, "State");
-        rc = rc & jsonObjectDecode(pt, buildInfo_, "BuildInfo");
+        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectDecode(pt, currentTime_, "CurrentTime", true);
+        rc = rc & jsonObjectDecode(pt, state_, "State", true);
+        rc = rc & jsonObjectDecode(pt, buildInfo_, "BuildInfo", true);
         rc = rc & jsonNumberDecode(pt, secondsTillShutdown_, "SecondsTillShutdown");
-        rc = rc & jsonObjectDecode(pt, shutdownReason_, "ShutdownReason");
+        rc = rc & jsonObjectDecode(pt, shutdownReason_, "ShutdownReason", true);
     
         return rc;
     }

@@ -260,9 +260,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, message_, "Message");
-        rc = rc & jsonObjectEncode(pt, userName_, "UserName");
-        rc = rc & jsonObjectEncode(pt, annotationTime_, "AnnotationTime");
+        rc = rc & jsonObjectEncode(pt, message_, "Message", true);
+        rc = rc & jsonObjectEncode(pt, userName_, "UserName", true);
+        rc = rc & jsonObjectEncode(pt, annotationTime_, "AnnotationTime", true);
     
         return rc;
     }
@@ -272,9 +272,9 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, message_, "Message");
-        rc = rc & jsonObjectDecode(pt, userName_, "UserName");
-        rc = rc & jsonObjectDecode(pt, annotationTime_, "AnnotationTime");
+        rc = rc & jsonObjectDecode(pt, message_, "Message", true);
+        rc = rc & jsonObjectDecode(pt, userName_, "UserName", true);
+        rc = rc & jsonObjectDecode(pt, annotationTime_, "AnnotationTime", true);
     
         return rc;
     }

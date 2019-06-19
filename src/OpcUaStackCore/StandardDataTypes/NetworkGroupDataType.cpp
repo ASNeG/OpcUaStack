@@ -228,8 +228,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri");
-        rc = rc & jsonArrayEncode(pt, networkPaths_, "NetworkPaths");
+        rc = rc & jsonObjectEncode(pt, serverUri_, "ServerUri", true);
+        rc = rc & jsonArrayEncode(pt, networkPaths_, "NetworkPaths", true);
     
         return rc;
     }
@@ -239,8 +239,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, serverUri_, "ServerUri");
-        rc = rc & jsonArrayDecode(pt, networkPaths_, "NetworkPaths");
+        rc = rc & jsonObjectDecode(pt, serverUri_, "ServerUri", true);
+        rc = rc & jsonArrayDecode(pt, networkPaths_, "NetworkPaths", true);
     
         return rc;
     }

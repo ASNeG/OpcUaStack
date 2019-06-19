@@ -234,8 +234,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, mdnsServerName_, "MdnsServerName");
-        rc = rc & jsonArrayEncode(pt, serverCapabilities_, "ServerCapabilities");
+        rc = rc & jsonObjectEncode(pt, mdnsServerName_, "MdnsServerName", true);
+        rc = rc & jsonArrayEncode(pt, serverCapabilities_, "ServerCapabilities", true);
     
         return rc;
     }
@@ -245,8 +245,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, mdnsServerName_, "MdnsServerName");
-        rc = rc & jsonArrayDecode(pt, serverCapabilities_, "ServerCapabilities");
+        rc = rc & jsonObjectDecode(pt, mdnsServerName_, "MdnsServerName", true);
+        rc = rc & jsonArrayDecode(pt, serverCapabilities_, "ServerCapabilities", true);
     
         return rc;
     }

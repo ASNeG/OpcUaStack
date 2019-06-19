@@ -389,13 +389,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, dataSetFieldId_, "DataSetFieldId");
-        rc = rc & jsonObjectEncode(pt, receiverIndexRange_, "ReceiverIndexRange");
-        rc = rc & jsonObjectEncode(pt, targetNodeId_, "TargetNodeId");
+        rc = rc & jsonObjectEncode(pt, dataSetFieldId_, "DataSetFieldId", true);
+        rc = rc & jsonObjectEncode(pt, receiverIndexRange_, "ReceiverIndexRange", true);
+        rc = rc & jsonObjectEncode(pt, targetNodeId_, "TargetNodeId", true);
         rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId");
-        rc = rc & jsonObjectEncode(pt, writeIndexRange_, "WriteIndexRange");
-        rc = rc & jsonObjectEncode(pt, overrideValueHandling_, "OverrideValueHandling");
-        rc = rc & jsonObjectEncode(pt, overrideValue_, "OverrideValue");
+        rc = rc & jsonObjectEncode(pt, writeIndexRange_, "WriteIndexRange", true);
+        rc = rc & jsonObjectEncode(pt, overrideValueHandling_, "OverrideValueHandling", true);
+        rc = rc & jsonObjectEncode(pt, overrideValue_, "OverrideValue", true);
     
         return rc;
     }
@@ -405,13 +405,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, dataSetFieldId_, "DataSetFieldId");
-        rc = rc & jsonObjectDecode(pt, receiverIndexRange_, "ReceiverIndexRange");
-        rc = rc & jsonObjectDecode(pt, targetNodeId_, "TargetNodeId");
+        rc = rc & jsonObjectDecode(pt, dataSetFieldId_, "DataSetFieldId", true);
+        rc = rc & jsonObjectDecode(pt, receiverIndexRange_, "ReceiverIndexRange", true);
+        rc = rc & jsonObjectDecode(pt, targetNodeId_, "TargetNodeId", true);
         rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId");
-        rc = rc & jsonObjectDecode(pt, writeIndexRange_, "WriteIndexRange");
-        rc = rc & jsonObjectDecode(pt, overrideValueHandling_, "OverrideValueHandling");
-        rc = rc & jsonObjectDecode(pt, overrideValue_, "OverrideValue");
+        rc = rc & jsonObjectDecode(pt, writeIndexRange_, "WriteIndexRange", true);
+        rc = rc & jsonObjectDecode(pt, overrideValueHandling_, "OverrideValueHandling", true);
+        rc = rc & jsonObjectDecode(pt, overrideValue_, "OverrideValue", true);
     
         return rc;
     }

@@ -326,10 +326,10 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberEncode(pt, specifiedLists_, "SpecifiedLists");
-        rc = rc & jsonArrayEncode(pt, trustedCertificates_, "TrustedCertificates");
-        rc = rc & jsonArrayEncode(pt, trustedCrls_, "TrustedCrls");
-        rc = rc & jsonArrayEncode(pt, issuerCertificates_, "IssuerCertificates");
-        rc = rc & jsonArrayEncode(pt, issuerCrls_, "IssuerCrls");
+        rc = rc & jsonArrayEncode(pt, trustedCertificates_, "TrustedCertificates", true);
+        rc = rc & jsonArrayEncode(pt, trustedCrls_, "TrustedCrls", true);
+        rc = rc & jsonArrayEncode(pt, issuerCertificates_, "IssuerCertificates", true);
+        rc = rc & jsonArrayEncode(pt, issuerCrls_, "IssuerCrls", true);
     
         return rc;
     }
@@ -340,10 +340,10 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberDecode(pt, specifiedLists_, "SpecifiedLists");
-        rc = rc & jsonArrayDecode(pt, trustedCertificates_, "TrustedCertificates");
-        rc = rc & jsonArrayDecode(pt, trustedCrls_, "TrustedCrls");
-        rc = rc & jsonArrayDecode(pt, issuerCertificates_, "IssuerCertificates");
-        rc = rc & jsonArrayDecode(pt, issuerCrls_, "IssuerCrls");
+        rc = rc & jsonArrayDecode(pt, trustedCertificates_, "TrustedCertificates", true);
+        rc = rc & jsonArrayDecode(pt, trustedCrls_, "TrustedCrls", true);
+        rc = rc & jsonArrayDecode(pt, issuerCertificates_, "IssuerCertificates", true);
+        rc = rc & jsonArrayDecode(pt, issuerCrls_, "IssuerCrls", true);
     
         return rc;
     }

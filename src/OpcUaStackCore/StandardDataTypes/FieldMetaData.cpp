@@ -488,16 +488,16 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, name_, "Name");
-        rc = rc & jsonObjectEncode(pt, description_, "Description");
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
+        rc = rc & jsonObjectEncode(pt, description_, "Description", true);
         rc = rc & jsonNumberEncode(pt, fieldFlags_, "FieldFlags");
         rc = rc & jsonNumberEncode(pt, builtInType_, "BuiltInType");
-        rc = rc & jsonObjectEncode(pt, dataType_, "DataType");
+        rc = rc & jsonObjectEncode(pt, dataType_, "DataType", true);
         rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
-        rc = rc & jsonArrayEncode(pt, arrayDimensions_, "ArrayDimensions");
+        rc = rc & jsonArrayEncode(pt, arrayDimensions_, "ArrayDimensions", true);
         rc = rc & jsonNumberEncode(pt, maxStringLength_, "MaxStringLength");
-        rc = rc & jsonObjectEncode(pt, dataSetFieldId_, "DataSetFieldId");
-        rc = rc & jsonArrayEncode(pt, properties_, "Properties");
+        rc = rc & jsonObjectEncode(pt, dataSetFieldId_, "DataSetFieldId", true);
+        rc = rc & jsonArrayEncode(pt, properties_, "Properties", true);
     
         return rc;
     }
@@ -507,16 +507,16 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, name_, "Name");
-        rc = rc & jsonObjectDecode(pt, description_, "Description");
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
+        rc = rc & jsonObjectDecode(pt, description_, "Description", true);
         rc = rc & jsonNumberDecode(pt, fieldFlags_, "FieldFlags");
         rc = rc & jsonNumberDecode(pt, builtInType_, "BuiltInType");
-        rc = rc & jsonObjectDecode(pt, dataType_, "DataType");
+        rc = rc & jsonObjectDecode(pt, dataType_, "DataType", true);
         rc = rc & jsonNumberDecode(pt, valueRank_, "ValueRank");
-        rc = rc & jsonArrayDecode(pt, arrayDimensions_, "ArrayDimensions");
+        rc = rc & jsonArrayDecode(pt, arrayDimensions_, "ArrayDimensions", true);
         rc = rc & jsonNumberDecode(pt, maxStringLength_, "MaxStringLength");
-        rc = rc & jsonObjectDecode(pt, dataSetFieldId_, "DataSetFieldId");
-        rc = rc & jsonArrayDecode(pt, properties_, "Properties");
+        rc = rc & jsonObjectDecode(pt, dataSetFieldId_, "DataSetFieldId", true);
+        rc = rc & jsonArrayDecode(pt, properties_, "Properties", true);
     
         return rc;
     }

@@ -1128,10 +1128,10 @@ namespace OpcUaStackServer
 				case DataTypeField::BuildInArrayType:
 				case DataTypeField::StructureArrayType:
 				case DataTypeField::EnumerationArrayType:
-					ss << prefix << "    rc = rc & jsonArrayEncode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\");" << std::endl;
+					ss << prefix << "    rc = rc & jsonArrayEncode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\", true);" << std::endl;
 					break;
 				default:
-					ss << prefix << "    rc = rc & jsonObjectEncode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\");" << std::endl;
+					ss << prefix << "    rc = rc & jsonObjectEncode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\", true);" << std::endl;
 			}
 		}
 
@@ -1177,10 +1177,10 @@ namespace OpcUaStackServer
 				case DataTypeField::BuildInArrayType:
 				case DataTypeField::StructureArrayType:
 				case DataTypeField::EnumerationArrayType:
-					ss << prefix << "    rc = rc & jsonArrayDecode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\");" << std::endl;
+					ss << prefix << "    rc = rc & jsonArrayDecode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\", true);" << std::endl;
 					break;
 				default:
-					ss << prefix << "    rc = rc & jsonObjectDecode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\");" << std::endl;
+					ss << prefix << "    rc = rc & jsonObjectDecode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\", true);" << std::endl;
 			}
 		}
 

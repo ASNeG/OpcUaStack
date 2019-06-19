@@ -234,8 +234,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, certificateData_, "CertificateData");
-        rc = rc & jsonObjectEncode(pt, signature_, "Signature");
+        rc = rc & jsonObjectEncode(pt, certificateData_, "CertificateData", true);
+        rc = rc & jsonObjectEncode(pt, signature_, "Signature", true);
     
         return rc;
     }
@@ -245,8 +245,8 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, certificateData_, "CertificateData");
-        rc = rc & jsonObjectDecode(pt, signature_, "Signature");
+        rc = rc & jsonObjectDecode(pt, certificateData_, "CertificateData", true);
+        rc = rc & jsonObjectDecode(pt, signature_, "Signature", true);
     
         return rc;
     }

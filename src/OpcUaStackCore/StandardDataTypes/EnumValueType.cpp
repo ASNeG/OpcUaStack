@@ -268,8 +268,8 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberEncode(pt, value_, "Value");
-        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName");
-        rc = rc & jsonObjectEncode(pt, description_, "Description");
+        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectEncode(pt, description_, "Description", true);
     
         return rc;
     }
@@ -280,8 +280,8 @@ namespace OpcUaStackCore
         bool rc = true;
     
         rc = rc & jsonNumberDecode(pt, value_, "Value");
-        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName");
-        rc = rc & jsonObjectDecode(pt, description_, "Description");
+        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectDecode(pt, description_, "Description", true);
     
         return rc;
     }

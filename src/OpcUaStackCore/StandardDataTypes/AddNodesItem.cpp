@@ -394,13 +394,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, parentNodeId_, "ParentNodeId");
-        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId");
-        rc = rc & jsonObjectEncode(pt, requestedNewNodeId_, "RequestedNewNodeId");
-        rc = rc & jsonObjectEncode(pt, browseName_, "BrowseName");
-        rc = rc & jsonObjectEncode(pt, nodeClass_, "NodeClass");
-        rc = rc & jsonObjectEncode(pt, nodeAttributes_, "NodeAttributes");
-        rc = rc & jsonObjectEncode(pt, typeDefinition_, "TypeDefinition");
+        rc = rc & jsonObjectEncode(pt, parentNodeId_, "ParentNodeId", true);
+        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId", true);
+        rc = rc & jsonObjectEncode(pt, requestedNewNodeId_, "RequestedNewNodeId", true);
+        rc = rc & jsonObjectEncode(pt, browseName_, "BrowseName", true);
+        rc = rc & jsonObjectEncode(pt, nodeClass_, "NodeClass", true);
+        rc = rc & jsonObjectEncode(pt, nodeAttributes_, "NodeAttributes", true);
+        rc = rc & jsonObjectEncode(pt, typeDefinition_, "TypeDefinition", true);
     
         return rc;
     }
@@ -410,13 +410,13 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, parentNodeId_, "ParentNodeId");
-        rc = rc & jsonObjectDecode(pt, referenceTypeId_, "ReferenceTypeId");
-        rc = rc & jsonObjectDecode(pt, requestedNewNodeId_, "RequestedNewNodeId");
-        rc = rc & jsonObjectDecode(pt, browseName_, "BrowseName");
-        rc = rc & jsonObjectDecode(pt, nodeClass_, "NodeClass");
-        rc = rc & jsonObjectDecode(pt, nodeAttributes_, "NodeAttributes");
-        rc = rc & jsonObjectDecode(pt, typeDefinition_, "TypeDefinition");
+        rc = rc & jsonObjectDecode(pt, parentNodeId_, "ParentNodeId", true);
+        rc = rc & jsonObjectDecode(pt, referenceTypeId_, "ReferenceTypeId", true);
+        rc = rc & jsonObjectDecode(pt, requestedNewNodeId_, "RequestedNewNodeId", true);
+        rc = rc & jsonObjectDecode(pt, browseName_, "BrowseName", true);
+        rc = rc & jsonObjectDecode(pt, nodeClass_, "NodeClass", true);
+        rc = rc & jsonObjectDecode(pt, nodeAttributes_, "NodeAttributes", true);
+        rc = rc & jsonObjectDecode(pt, typeDefinition_, "TypeDefinition", true);
     
         return rc;
     }

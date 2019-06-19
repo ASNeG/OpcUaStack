@@ -324,11 +324,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectEncode(pt, engineeringUnits_, "EngineeringUnits");
-        rc = rc & jsonObjectEncode(pt, eURange_, "EURange");
-        rc = rc & jsonObjectEncode(pt, title_, "Title");
-        rc = rc & jsonObjectEncode(pt, axisScaleType_, "AxisScaleType");
-        rc = rc & jsonArrayEncode(pt, axisSteps_, "AxisSteps");
+        rc = rc & jsonObjectEncode(pt, engineeringUnits_, "EngineeringUnits", true);
+        rc = rc & jsonObjectEncode(pt, eURange_, "EURange", true);
+        rc = rc & jsonObjectEncode(pt, title_, "Title", true);
+        rc = rc & jsonObjectEncode(pt, axisScaleType_, "AxisScaleType", true);
+        rc = rc & jsonArrayEncode(pt, axisSteps_, "AxisSteps", true);
     
         return rc;
     }
@@ -338,11 +338,11 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonObjectDecode(pt, engineeringUnits_, "EngineeringUnits");
-        rc = rc & jsonObjectDecode(pt, eURange_, "EURange");
-        rc = rc & jsonObjectDecode(pt, title_, "Title");
-        rc = rc & jsonObjectDecode(pt, axisScaleType_, "AxisScaleType");
-        rc = rc & jsonArrayDecode(pt, axisSteps_, "AxisSteps");
+        rc = rc & jsonObjectDecode(pt, engineeringUnits_, "EngineeringUnits", true);
+        rc = rc & jsonObjectDecode(pt, eURange_, "EURange", true);
+        rc = rc & jsonObjectDecode(pt, title_, "Title", true);
+        rc = rc & jsonObjectDecode(pt, axisScaleType_, "AxisScaleType", true);
+        rc = rc & jsonArrayDecode(pt, axisSteps_, "AxisSteps", true);
     
         return rc;
     }

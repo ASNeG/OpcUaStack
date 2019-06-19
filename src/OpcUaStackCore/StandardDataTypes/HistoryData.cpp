@@ -196,7 +196,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonArrayEncode(pt, dataValues_, "DataValues");
+        rc = rc & jsonArrayEncode(pt, dataValues_, "DataValues", true);
     
         return rc;
     }
@@ -206,7 +206,7 @@ namespace OpcUaStackCore
     {
         bool rc = true;
     
-        rc = rc & jsonArrayDecode(pt, dataValues_, "DataValues");
+        rc = rc & jsonArrayDecode(pt, dataValues_, "DataValues", true);
     
         return rc;
     }
