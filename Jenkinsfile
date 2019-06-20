@@ -22,10 +22,8 @@ pipeline {
               env.BUILDDIRNAME = 'C:\\build\\' + readFile('DIRNAME.txt').trim()
             }
 
-            dir('/root/WinBuildServer') {
-              sh 'ssh 127.0.0.1 -l vagrant -p 2222 -i /root/.vagrant.d/insecure_private_key  "cd $BUILDDIRNAME && C:\\build_vs.bat -t local -B Release -i $BUILDDIRNAME\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
-              sh 'ssh 127.0.0.1 -l vagrant -p 2222 -i /root/.vagrant.d/insecure_private_key "cd $BUILDDIRNAME && C:\\build_vs.bat -t tst -B Release -s $BUILDDIRNAME\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
-            }
+            sh 'ssh 127.0.0.1 -l vagrant -p 2222 "cd $BUILDDIRNAME && C:\\build_vs.bat -t local -B Release -i $BUILDDIRNAME\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
+            sh 'ssh 127.0.0.1 -l vagrant -p 2222 "cd $BUILDDIRNAME && C:\\build_vs.bat -t tst -B Release -s $BUILDDIRNAME\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
 
           }
         }
