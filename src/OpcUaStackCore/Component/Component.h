@@ -19,6 +19,9 @@
 #define __OpcUaStackCore_Component_h__
 
 #include <boost/thread/mutex.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
@@ -26,7 +29,7 @@
 
 namespace OpcUaStackCore
 {
-	class DLLEXPORT Component 
+	class DLLEXPORT Component
 	{
 	  public:
 		typedef boost::shared_ptr<Component> SPtr;
@@ -34,7 +37,7 @@ namespace OpcUaStackCore
 
 		Component(void);
 		virtual ~Component(void);
-		
+
 		static void getComponentNames(std::vector<std::string>& componentNameVec);
 		static Component* getComponent(const std::string& componentName);
 

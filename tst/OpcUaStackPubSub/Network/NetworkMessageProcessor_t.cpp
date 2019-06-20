@@ -9,6 +9,11 @@
 using namespace OpcUaStackCore;
 using namespace OpcUaStackPubSub;
 
+#ifdef _WIN32
+    DLLEXPORT const uint32_t NetworkMessageProcessor::TimeoutHandleInterval = 10;
+#endif
+
+
 class MockDataSetReader : public DataSetReaderIf
 {
 public:

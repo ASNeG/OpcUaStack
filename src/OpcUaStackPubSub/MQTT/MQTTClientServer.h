@@ -97,7 +97,7 @@ namespace OpcUaStackPubSub
 
 #endif
 
-	MQTTClientServerBase::SPtr constructMQTT(void);
+	DLLEXPORT MQTTClientServerBase::SPtr constructMQTT(void);
 
 }
 

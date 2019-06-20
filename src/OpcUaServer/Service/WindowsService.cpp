@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
-#ifdef WIN32
+#ifdef _WIN32
 #include "OpcUaServer/Service/WindowsService.h"
 #include <iostream>
 #include <stdint.h>

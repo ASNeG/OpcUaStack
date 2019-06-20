@@ -30,7 +30,7 @@ using namespace OpcUaStackCore;
 int main(int argc, char** argv)
 {
 	OpcUaServer::ServerApplication serverApplication;
-#if WIN32
+#if _WIN32
 	OpcUaServer::WindowsService* service = OpcUaServer::WindowsService::instance();
 #else
 	OpcUaServer::LinuxService* service = OpcUaServer::LinuxService::instance();
