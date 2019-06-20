@@ -20,7 +20,7 @@
 #include <boost/algorithm/string.hpp>
 #include "OpcUaStackCore/Utility/Environment.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <Windows.h>
 #endif
 
@@ -65,7 +65,7 @@ namespace OpcUaStackCore
 	Environment::getApplicationPathAbsolute(void)
 	{
  		std::string application = "";
-#ifdef WIN32
+#ifdef _WIN32
 		  char result[2048];
 		  application = std::string( result, GetModuleFileName(NULL, result, 2048));
 #else
@@ -83,7 +83,7 @@ namespace OpcUaStackCore
 	)
 	{
 		std::string application = "";
-#ifdef WIN32
+#ifdef _WIN32
 		  char result[2048];
 		  application = std::string( result, GetModuleFileName(NULL, result, 2048));
 #else

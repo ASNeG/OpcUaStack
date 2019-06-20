@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <Ws2tcpip.h>
 #include "Winsock2.h"
 #else
@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 	void
 	Address::getAllIPv4sFromHost(std::vector<std::string>& ipVec)
 	{
-#ifdef WIN32
+#ifdef _WIN32
 		WSADATA WSAData;
 
 		// Initialize winsock dll

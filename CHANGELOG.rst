@@ -1,9 +1,10 @@
-Release 3.7.1
+Release 3.8.0
 ------------------------------------------------------------
 
 **Features**:
 
-* added policy id to session config #168, by @huebl
+* add policy id to session config #168, by @huebl
+* add option -j to build.bat to build on several CPUs on Windows #243, by @flipback
 
 **Bugs**:
 

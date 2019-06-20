@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifdef WIN32
+#ifdef _WIN32
 	// FIXME: todo
 #else
 	#include <ifaddrs.h>
@@ -47,7 +47,7 @@ namespace OpcUaStackPubSub
 	void
 	Address::getAllIPv4sFromHost(std::vector<std::string>& ipVec)
 	{
-#ifdef WIN32
+#ifdef _WIN32
 		// FIXME: todo
 #else
 		struct ifaddrs *ifaddr, *ifa;
