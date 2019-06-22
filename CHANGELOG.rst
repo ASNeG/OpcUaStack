@@ -1,4 +1,4 @@
-Release 4.0.0
+  Release 4.0.0
 ------------------------------------------------------------
 
 **Features**:
@@ -31,6 +31,7 @@ Release 4.0.0
 **Documentation**:
 
 * add *Overview* document #184, by @flipback
+* add *Project Roadmap* section #246, by @flipback
 
 Release 3.8.0
 ------------------------------------------------------------
