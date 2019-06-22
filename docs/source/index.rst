@@ -21,11 +21,11 @@ Contents
 
 ..   2_user_app/_index
 
-Roadmap
+Project Roadmap
 -------
 
 The ASNeG team is actively developing the stack to make it more robust and
-to support OPC UA features that our users or other ASNeG's projects need.
+to support OPC UA features that our users and other ASNeG's projects need.
 In the following table you can find information about the future releases:
 
 +-----------+----------+--------------------------+-------------+--------------------------------------------------------------------------+
