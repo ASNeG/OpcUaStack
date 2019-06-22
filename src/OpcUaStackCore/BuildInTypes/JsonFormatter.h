@@ -150,7 +150,7 @@ namespace OpcUaStackCore
         template <typename  T>
         bool jsonNumberDecode(const boost::property_tree::ptree &pt, T& value)
         {
-            return jsonNumberDecode(pt, value);
+            return JsonNumber::jsonDecode(pt, value);
         }
 
         bool jsonObjectSPtrEncode(boost::property_tree::ptree &pt, JsonFormatter::SPtr valuePtr, const std::string &element, bool optional) const;
