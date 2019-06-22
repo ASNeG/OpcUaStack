@@ -19,13 +19,14 @@
 #define __OpcUaStackCore_DeleteReferencesResult_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
-
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT DeleteReferencesResult
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteReferencesResult> SPtr;
@@ -45,10 +46,10 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
-		bool jsonEncode(boost::property_tree::ptree& pt) { return false; }
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
-		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		OpcUaStatusCode statusCode_;			

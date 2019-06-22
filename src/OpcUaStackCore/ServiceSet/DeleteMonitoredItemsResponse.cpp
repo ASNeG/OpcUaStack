@@ -79,72 +79,14 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DeleteMonitoredItemsResponse::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	DeleteMonitoredItemsResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "DeleteMonitoredItemsResponse json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
+		return jsonArraySPtrEncode(pt, resultArraySPtr_, "Results");
 	}
 
 	bool
-	DeleteMonitoredItemsResponse::jsonEncode(boost::property_tree::ptree& pt)
+	DeleteMonitoredItemsResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		OpcUaStatusArray statusArray;
-		statusArray.resize(resultArraySPtr_->size());
-		for (uint32_t idx = 0; idx < resultArraySPtr_->size(); idx++) {
-			OpcUaStatusCode statusCode;
-			resultArraySPtr_->get(idx, statusCode);
-
-			auto status = boost::make_shared<OpcUaStatus>(statusCode);
-			statusArray.push_back(status);
-		}
-
-		// encode status code array
-		if (!statusArray.jsonEncode(pt, "Results", "")) {
-			Log(Error, "DeleteMonitoredItemsResponse json encode error")
-				.parameter("Element", "Results");
-			return false;
-		}
-
-		return true;
-	}
-
-	bool
-	DeleteMonitoredItemsResponse::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "DeleteMonitoredItemsResponse json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	DeleteMonitoredItemsResponse::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		// decode status code array
-		OpcUaStatusArray statusArray;
-		if (!statusArray.jsonDecode(pt, "Results", "")) {
-			Log(Error, "DeleteMonitoredItemsResponse json decode error")
-			    .parameter("Element", "Results");
-			return false;
-		}
-		resultArraySPtr_->resize(statusArray.size());
-		for (uint32_t idx = 0; idx < statusArray.size(); idx++) {
-			OpcUaStatus::SPtr status;
-			statusArray.get(idx, status);
-			resultArraySPtr_->push_back(status->enumeration());
-		}
-
-		return true;
+		return jsonArraySPtrDecode(pt, resultArraySPtr_, "Results");
 	}
 }

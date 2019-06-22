@@ -63,56 +63,15 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DeleteSubscriptionsRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	DeleteSubscriptionsRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "DeleteSubscriptionsRequest json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
+		return jsonArraySPtrEncode(pt, subscriptionIdArraySPtr_, "SubscriptionIds");
 	}
 
 	bool
-	DeleteSubscriptionsRequest::jsonEncode(boost::property_tree::ptree& pt)
+	DeleteSubscriptionsRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// encode subscription ids
-		if (!subscriptionIdArraySPtr_->jsonEncode(pt, "SubscriptionIds", "")) {
-			Log(Error, "DeleteSubscriptionsRequest json encode error")
-				.parameter("Element", "SubscriptionIds");
-			return false;
-		}
-
-		return true;
-	}
-
-	bool
-	DeleteSubscriptionsRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "DeleteSubscriptionsRequest json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	DeleteSubscriptionsRequest::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		// decode subscription ids
-		if (!subscriptionIdArraySPtr_->jsonDecode(pt, "SubscriptionIds", "")) {
-			Log(Error, "DeleteSubscriptionsRequest json encode error")
-				.parameter("Element", "SubscriptionIds");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrDecode(pt, subscriptionIdArraySPtr_, "SubscriptionIds");
 	}
 
 }

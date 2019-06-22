@@ -448,245 +448,39 @@ namespace OpcUaStackCore
     }
     
     bool
-    SessionSecurityDiagnosticsDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    SessionSecurityDiagnosticsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, sessionId_, "SessionId", true);
+        rc = rc & jsonObjectEncode(pt, clientUserIdOfSession_, "ClientUserIdOfSession", true);
+        rc = rc & jsonArrayEncode(pt, clientUserIdHistory_, "ClientUserIdHistory", true);
+        rc = rc & jsonObjectEncode(pt, authenticationMechanism_, "AuthenticationMechanism", true);
+        rc = rc & jsonObjectEncode(pt, encoding_, "Encoding", true);
+        rc = rc & jsonObjectEncode(pt, transportProtocol_, "TransportProtocol", true);
+        rc = rc & jsonObjectEncode(pt, securityMode_, "SecurityMode", true);
+        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri", true);
+        rc = rc & jsonObjectEncode(pt, clientCertificate_, "ClientCertificate", true);
+    
+        return rc;
     }
     
     bool
-    SessionSecurityDiagnosticsDataType::jsonEncode(boost::property_tree::ptree& pt)
+    SessionSecurityDiagnosticsDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!sessionId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "sessionId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SessionId", elementTree));
+        rc = rc & jsonObjectDecode(pt, sessionId_, "SessionId", true);
+        rc = rc & jsonObjectDecode(pt, clientUserIdOfSession_, "ClientUserIdOfSession", true);
+        rc = rc & jsonArrayDecode(pt, clientUserIdHistory_, "ClientUserIdHistory", true);
+        rc = rc & jsonObjectDecode(pt, authenticationMechanism_, "AuthenticationMechanism", true);
+        rc = rc & jsonObjectDecode(pt, encoding_, "Encoding", true);
+        rc = rc & jsonObjectDecode(pt, transportProtocol_, "TransportProtocol", true);
+        rc = rc & jsonObjectDecode(pt, securityMode_, "SecurityMode", true);
+        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri", true);
+        rc = rc & jsonObjectDecode(pt, clientCertificate_, "ClientCertificate", true);
     
-        elementTree.clear();
-        if (!clientUserIdOfSession_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "clientUserIdOfSession_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ClientUserIdOfSession", elementTree));
-    
-        elementTree.clear();
-        if (!clientUserIdHistory_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "clientUserIdHistory_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ClientUserIdHistory", elementTree));
-    
-        elementTree.clear();
-        if (!authenticationMechanism_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "authenticationMechanism_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AuthenticationMechanism", elementTree));
-    
-        elementTree.clear();
-        if (!encoding_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "encoding_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Encoding", elementTree));
-    
-        elementTree.clear();
-        if (!transportProtocol_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "transportProtocol_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransportProtocol", elementTree));
-    
-        elementTree.clear();
-        if (!securityMode_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "securityMode_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityMode", elementTree));
-    
-        elementTree.clear();
-        if (!securityPolicyUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "securityPolicyUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityPolicyUri", elementTree));
-    
-        elementTree.clear();
-        if (!clientCertificate_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SessionSecurityDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "clientCertificate_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ClientCertificate", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    SessionSecurityDiagnosticsDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "SessionSecurityDiagnosticsDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    SessionSecurityDiagnosticsDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "SessionId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!sessionId_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "SessionId");
-            return false;
-        }
-    
-        elementName = "ClientUserIdOfSession";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!clientUserIdOfSession_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "ClientUserIdOfSession");
-            return false;
-        }
-    
-        elementName = "ClientUserIdHistory";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!clientUserIdHistory_.jsonDecode(*tree, "")) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "AuthenticationMechanism";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!authenticationMechanism_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "AuthenticationMechanism");
-            return false;
-        }
-    
-        elementName = "Encoding";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!encoding_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "Encoding");
-            return false;
-        }
-    
-        elementName = "TransportProtocol";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!transportProtocol_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "TransportProtocol");
-            return false;
-        }
-    
-        elementName = "SecurityMode";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityMode_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "SecurityMode");
-            return false;
-        }
-    
-        elementName = "SecurityPolicyUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityPolicyUri_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "SecurityPolicyUri");
-            return false;
-        }
-    
-        elementName = "ClientCertificate";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!clientCertificate_.jsonDecode(*tree)) {
-            Log(Error, "SessionSecurityDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", "ClientCertificate");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

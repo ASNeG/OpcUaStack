@@ -78,70 +78,21 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DeleteMonitoredItemsRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	DeleteMonitoredItemsRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "DeleteMonitoredItemsRequest json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonArraySPtrEncode(pt, monitoredItemIdArraySPtr_, "MonitoredItemIds");
+		return rc;
 	}
 
 	bool
-	DeleteMonitoredItemsRequest::jsonEncode(boost::property_tree::ptree& pt)
+	DeleteMonitoredItemsRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// encode subscription id
-		if (!JsonNumber::jsonEncode(pt, subscriptionId_, "SubscriptionId")) {
-			Log(Error, "DeleteMonitoredItemsRequest json encode error")
-				.parameter("Element", "SubscriptionId");
-			return false;
-		}
-
-		// encode monitored item id array
-		if (!monitoredItemIdArraySPtr_->jsonEncode(pt, "MonitoredItemIds", "")) {
-			Log(Error, "DeleteMonitoredItemsRequest json encode error")
-				.parameter("Element", "MonitoredItemIds");
-			return false;
-		}
-
-		return true;
-	}
-
-	bool
-	DeleteMonitoredItemsRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "DeleteMonitoredItemsRequest json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	DeleteMonitoredItemsRequest::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		// decode subscription id
-		if (!JsonNumber::jsonDecode(pt, subscriptionId_, "SubscriptionId")) {
-			Log(Error, "DeleteMonitoredItemsRequest json decode error")
-				.parameter("Element", "SubscriptionId");
-			return false;
-		}
-
-		// decode monitored item id array
-		if (!monitoredItemIdArraySPtr_->jsonDecode(pt, "MonitoredItemIds", "")) {
-			Log(Error, "DeleteMonitoredItemsRequest json decode error")
-				.parameter("Element", "MonitoredItemIds");
-			return false;
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonArraySPtrDecode(pt, monitoredItemIdArraySPtr_, "MonitoredItemIds");
+		return rc;
 	}
 
 }

@@ -34,6 +34,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDiagnosticInfo.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaType.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -146,6 +147,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT OpcUaVariant
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaVariant> SPtr;
@@ -181,7 +183,7 @@ namespace OpcUaStackCore
 
 		void arrayLength(const OpcUaInt32& arrayLength);
 		OpcUaInt32 arrayLength(void);
-		bool isArray(void);
+		bool isArray(void) const;
 		void arrayDimension(const OpcUaArrayDimensionsVec& arrayDimensionsVec);
 		OpcUaArrayDimensionsVec& arrayDimension(void);
 		void variant(const OpcUaVariantValue::Vec& variantValueVec);
@@ -329,10 +331,10 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
+
+	protected:
+	    virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const;
+	    virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt);
 
 	  private:
 
@@ -448,115 +450,115 @@ namespace OpcUaStackCore
 
 
 
-		bool jsonEncodeBooleanScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeBooleanArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeBooleanScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeBooleanArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeBooleanScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeBooleanArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeBooleanScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeBooleanArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeSByteScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeSByteArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeSByteScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeSByteArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeSByteScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeSByteArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeSByteScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeSByteArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeByteScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeByteArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeByteScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeByteArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeByteScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeByteArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeByteScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeByteArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeUInt16Scalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeUInt16Array(boost::property_tree::ptree& pt);
-		bool jsonDecodeUInt16Scalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeUInt16Array(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeUInt16Scalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeUInt16Array(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeUInt16Scalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeUInt16Array(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeInt16Scalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeInt16Array(boost::property_tree::ptree& pt);
-		bool jsonDecodeInt16Scalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeInt16Array(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeInt16Scalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeInt16Array(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeInt16Scalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeInt16Array(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeUInt32Scalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeUInt32Array(boost::property_tree::ptree& pt);
-		bool jsonDecodeUInt32Scalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeUInt32Array(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeUInt32Scalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeUInt32Array(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeUInt32Scalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeUInt32Array(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeInt32Scalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeInt32Array(boost::property_tree::ptree& pt);
-		bool jsonDecodeInt32Scalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeInt32Array(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeInt32Scalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeInt32Array(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeInt32Scalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeInt32Array(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeUInt64Scalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeUInt64Array(boost::property_tree::ptree& pt);
-		bool jsonDecodeUInt64Scalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeUInt64Array(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeUInt64Scalar(boost::property_tree::ptree& pt)const;
+		bool jsonEncodeUInt64Array(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeUInt64Scalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeUInt64Array(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeInt64Scalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeInt64Array(boost::property_tree::ptree& pt);
-		bool jsonDecodeInt64Scalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeInt64Array(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeInt64Scalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeInt64Array(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeInt64Scalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeInt64Array(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeFloatScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeFloatArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeFloatScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeFloatArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeFloatScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeFloatArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeFloatScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeFloatArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeDoubleScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeDoubleArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeDoubleScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeDoubleArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeDoubleScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeDoubleArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeDoubleScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeDoubleArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeDateTimeScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeDateTimeArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeDateTimeScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeDateTimeArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeDateTimeScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeDateTimeArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeDateTimeScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeDateTimeArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeStringScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeStringArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeStringScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeStringArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeStringScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeStringArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeStringScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeStringArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeByteStringScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeByteStringArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeByteStringScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeByteStringArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeByteStringScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeByteStringArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeByteStringScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeByteStringArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeGuidScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeGuidArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeGuidScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeGuidArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeGuidScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeGuidArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeGuidScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeGuidArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeNodeIdScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeNodeIdArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeNodeIdScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeNodeIdArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeNodeIdScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeNodeIdArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeNodeIdScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeNodeIdArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeExpandedNodeIdScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeExpandedNodeIdArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeExpandedNodeIdScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeExpandedNodeIdArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeExpandedNodeIdScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeExpandedNodeIdArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeExpandedNodeIdScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeExpandedNodeIdArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeQualifiedNameScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeQualifiedNameArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeQualifiedNameScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeQualifiedNameArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeQualifiedNameScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeQualifiedNameArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeQualifiedNameScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeQualifiedNameArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeLocalizedTextScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeLocalizedTextArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeLocalizedTextScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeLocalizedTextArray(boost::property_tree::ptree& pts, const std::string& element);
+		bool jsonEncodeLocalizedTextScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeLocalizedTextArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeLocalizedTextScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeLocalizedTextArray(const boost::property_tree::ptree& pts, const std::string& element);
 
-		bool jsonEncodeExtensionObjectScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeExtensionObjectArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeExtensionObjectScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeExtensionObjectArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeExtensionObjectScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeExtensionObjectArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeExtensionObjectScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeExtensionObjectArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeDataValueScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeDataValueArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeDataValueScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeDataValueArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeDataValueScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeDataValueArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeDataValueScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeDataValueArray(const boost::property_tree::ptree& pt, const std::string& element);
 
-		bool jsonEncodeDiagnosticInfoScalar(boost::property_tree::ptree& pt);
-		bool jsonEncodeDiagnosticInfoArray(boost::property_tree::ptree& pt);
-		bool jsonDecodeDiagnosticInfoScalar(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecodeDiagnosticInfoArray(boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonEncodeDiagnosticInfoScalar(boost::property_tree::ptree& pt) const;
+		bool jsonEncodeDiagnosticInfoArray(boost::property_tree::ptree& pt) const;
+		bool jsonDecodeDiagnosticInfoScalar(const boost::property_tree::ptree& pt, const std::string& element);
+		bool jsonDecodeDiagnosticInfoArray(const boost::property_tree::ptree& pt, const std::string& element);
 
 		OpcUaInt32 arrayLength_;
 		OpcUaArrayDimensionsVec arrayDimensionsVec_;

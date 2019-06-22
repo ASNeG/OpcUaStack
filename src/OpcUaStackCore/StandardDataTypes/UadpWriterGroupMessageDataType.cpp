@@ -323,157 +323,31 @@ namespace OpcUaStackCore
     }
     
     bool
-    UadpWriterGroupMessageDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    UadpWriterGroupMessageDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, groupVersion_, "GroupVersion");
+        rc = rc & jsonObjectEncode(pt, dataSetOrdering_, "DataSetOrdering", true);
+        rc = rc & jsonNumberEncode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
+        rc = rc & jsonNumberEncode(pt, samplingOffset_, "SamplingOffset");
+        rc = rc & jsonArrayEncode(pt, publishingOffset_, "PublishingOffset", true);
+    
+        return rc;
     }
     
     bool
-    UadpWriterGroupMessageDataType::jsonEncode(boost::property_tree::ptree& pt)
+    UadpWriterGroupMessageDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, groupVersion_))
-        {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "groupVersion_");
-           return false;
-        }
-        pt.push_back(std::make_pair("GroupVersion", elementTree));
+        rc = rc & jsonNumberDecode(pt, groupVersion_, "GroupVersion");
+        rc = rc & jsonObjectDecode(pt, dataSetOrdering_, "DataSetOrdering", true);
+        rc = rc & jsonNumberDecode(pt, networkMessageContentMask_, "NetworkMessageContentMask");
+        rc = rc & jsonNumberDecode(pt, samplingOffset_, "SamplingOffset");
+        rc = rc & jsonArrayDecode(pt, publishingOffset_, "PublishingOffset", true);
     
-        elementTree.clear();
-        if (!dataSetOrdering_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "dataSetOrdering_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetOrdering", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, networkMessageContentMask_))
-        {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "networkMessageContentMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NetworkMessageContentMask", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, samplingOffset_))
-        {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "samplingOffset_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SamplingOffset", elementTree));
-    
-        elementTree.clear();
-        if (!publishingOffset_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "UadpWriterGroupMessageDataType json encoder error")
-    		     .parameter("Element", "publishingOffset_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublishingOffset", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    UadpWriterGroupMessageDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "UadpWriterGroupMessageDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    UadpWriterGroupMessageDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "GroupVersion";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UadpWriterGroupMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, groupVersion_)) {
-            Log(Error, "UadpWriterGroupMessageDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetOrdering";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UadpWriterGroupMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetOrdering_.jsonDecode(*tree)) {
-            Log(Error, "UadpWriterGroupMessageDataType decode json error - decode failed")
-                .parameter("Element", "DataSetOrdering");
-            return false;
-        }
-    
-        elementName = "NetworkMessageContentMask";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UadpWriterGroupMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, networkMessageContentMask_)) {
-            Log(Error, "UadpWriterGroupMessageDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SamplingOffset";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UadpWriterGroupMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, samplingOffset_)) {
-            Log(Error, "UadpWriterGroupMessageDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "PublishingOffset";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UadpWriterGroupMessageDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!publishingOffset_.jsonDecode(*tree, "")) {
-            Log(Error, "UadpWriterGroupMessageDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

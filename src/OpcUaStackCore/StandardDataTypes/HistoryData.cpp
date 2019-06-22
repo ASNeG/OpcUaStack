@@ -192,69 +192,23 @@ namespace OpcUaStackCore
     }
     
     bool
-    HistoryData::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    HistoryData::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "HistoryData json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonArrayEncode(pt, dataValues_, "DataValues", true);
+    
+        return rc;
     }
     
     bool
-    HistoryData::jsonEncode(boost::property_tree::ptree& pt)
+    HistoryData::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!dataValues_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "HistoryData json encoder error")
-    		     .parameter("Element", "dataValues_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataValues", elementTree));
+        rc = rc & jsonArrayDecode(pt, dataValues_, "DataValues", true);
     
-        return true;
-    }
-    
-    bool
-    HistoryData::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "HistoryData json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    HistoryData::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "DataValues";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "HistoryData decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataValues_.jsonDecode(*tree, "")) {
-            Log(Error, "HistoryData decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

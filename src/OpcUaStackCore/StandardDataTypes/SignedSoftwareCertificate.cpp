@@ -230,91 +230,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    SignedSoftwareCertificate::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    SignedSoftwareCertificate::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "SignedSoftwareCertificate json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, certificateData_, "CertificateData", true);
+        rc = rc & jsonObjectEncode(pt, signature_, "Signature", true);
+    
+        return rc;
     }
     
     bool
-    SignedSoftwareCertificate::jsonEncode(boost::property_tree::ptree& pt)
+    SignedSoftwareCertificate::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!certificateData_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SignedSoftwareCertificate json encoder error")
-    		     .parameter("Element", "certificateData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CertificateData", elementTree));
+        rc = rc & jsonObjectDecode(pt, certificateData_, "CertificateData", true);
+        rc = rc & jsonObjectDecode(pt, signature_, "Signature", true);
     
-        elementTree.clear();
-        if (!signature_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SignedSoftwareCertificate json encoder error")
-    		     .parameter("Element", "signature_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Signature", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    SignedSoftwareCertificate::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "SignedSoftwareCertificate json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    SignedSoftwareCertificate::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "CertificateData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SignedSoftwareCertificate decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!certificateData_.jsonDecode(*tree)) {
-            Log(Error, "SignedSoftwareCertificate decode json error - decode failed")
-                .parameter("Element", "CertificateData");
-            return false;
-        }
-    
-        elementName = "Signature";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SignedSoftwareCertificate decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!signature_.jsonDecode(*tree)) {
-            Log(Error, "SignedSoftwareCertificate decode json error - decode failed")
-                .parameter("Element", "Signature");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

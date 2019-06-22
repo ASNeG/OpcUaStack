@@ -321,157 +321,31 @@ namespace OpcUaStackCore
     }
     
     bool
-    ReadProcessedDetails::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    ReadProcessedDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ReadProcessedDetails json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime", true);
+        rc = rc & jsonNumberEncode(pt, processingInterval_, "ProcessingInterval");
+        rc = rc & jsonArrayEncode(pt, aggregateType_, "AggregateType", true);
+        rc = rc & jsonObjectEncode(pt, aggregateConfiguration_, "AggregateConfiguration", true);
+    
+        return rc;
     }
     
     bool
-    ReadProcessedDetails::jsonEncode(boost::property_tree::ptree& pt)
+    ReadProcessedDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!startTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadProcessedDetails json encoder error")
-    		     .parameter("Element", "startTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StartTime", elementTree));
+        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime", true);
+        rc = rc & jsonNumberDecode(pt, processingInterval_, "ProcessingInterval");
+        rc = rc & jsonArrayDecode(pt, aggregateType_, "AggregateType", true);
+        rc = rc & jsonObjectDecode(pt, aggregateConfiguration_, "AggregateConfiguration", true);
     
-        elementTree.clear();
-        if (!endTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadProcessedDetails json encoder error")
-    		     .parameter("Element", "endTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EndTime", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, processingInterval_))
-        {
-    	     Log(Error, "ReadProcessedDetails json encoder error")
-    		     .parameter("Element", "processingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ProcessingInterval", elementTree));
-    
-        elementTree.clear();
-        if (!aggregateType_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ReadProcessedDetails json encoder error")
-    		     .parameter("Element", "aggregateType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AggregateType", elementTree));
-    
-        elementTree.clear();
-        if (!aggregateConfiguration_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadProcessedDetails json encoder error")
-    		     .parameter("Element", "aggregateConfiguration_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AggregateConfiguration", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    ReadProcessedDetails::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ReadProcessedDetails json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ReadProcessedDetails::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "StartTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadProcessedDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!startTime_.jsonDecode(*tree)) {
-            Log(Error, "ReadProcessedDetails decode json error - decode failed")
-                .parameter("Element", "StartTime");
-            return false;
-        }
-    
-        elementName = "EndTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadProcessedDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!endTime_.jsonDecode(*tree)) {
-            Log(Error, "ReadProcessedDetails decode json error - decode failed")
-                .parameter("Element", "EndTime");
-            return false;
-        }
-    
-        elementName = "ProcessingInterval";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadProcessedDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, processingInterval_)) {
-            Log(Error, "ReadProcessedDetails decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "AggregateType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadProcessedDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!aggregateType_.jsonDecode(*tree, "")) {
-            Log(Error, "ReadProcessedDetails decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "AggregateConfiguration";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadProcessedDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!aggregateConfiguration_.jsonDecode(*tree)) {
-            Log(Error, "ReadProcessedDetails decode json error - decode failed")
-                .parameter("Element", "AggregateConfiguration");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

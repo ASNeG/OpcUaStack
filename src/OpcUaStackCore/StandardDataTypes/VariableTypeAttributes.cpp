@@ -328,157 +328,31 @@ namespace OpcUaStackCore
     }
     
     bool
-    VariableTypeAttributes::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    VariableTypeAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "VariableTypeAttributes json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, value_, "Value", true);
+        rc = rc & jsonObjectEncode(pt, dataType_, "DataType", true);
+        rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
+        rc = rc & jsonArrayEncode(pt, arrayDimensions_, "ArrayDimensions", true);
+        rc = rc & jsonNumberEncode(pt, isAbstract_, "IsAbstract");
+    
+        return rc;
     }
     
     bool
-    VariableTypeAttributes::jsonEncode(boost::property_tree::ptree& pt)
+    VariableTypeAttributes::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!value_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "VariableTypeAttributes json encoder error")
-    		     .parameter("Element", "value_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
+        rc = rc & jsonObjectDecode(pt, value_, "Value", true);
+        rc = rc & jsonObjectDecode(pt, dataType_, "DataType", true);
+        rc = rc & jsonNumberDecode(pt, valueRank_, "ValueRank");
+        rc = rc & jsonArrayDecode(pt, arrayDimensions_, "ArrayDimensions", true);
+        rc = rc & jsonNumberDecode(pt, isAbstract_, "IsAbstract");
     
-        elementTree.clear();
-        if (!dataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "VariableTypeAttributes json encoder error")
-    		     .parameter("Element", "dataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, valueRank_))
-        {
-    	     Log(Error, "VariableTypeAttributes json encoder error")
-    		     .parameter("Element", "valueRank_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ValueRank", elementTree));
-    
-        elementTree.clear();
-        if (!arrayDimensions_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "VariableTypeAttributes json encoder error")
-    		     .parameter("Element", "arrayDimensions_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ArrayDimensions", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isAbstract_))
-        {
-    	     Log(Error, "VariableTypeAttributes json encoder error")
-    		     .parameter("Element", "isAbstract_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsAbstract", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    VariableTypeAttributes::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "VariableTypeAttributes json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    VariableTypeAttributes::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Value";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableTypeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!value_.jsonDecode(*tree)) {
-            Log(Error, "VariableTypeAttributes decode json error - decode failed")
-                .parameter("Element", "Value");
-            return false;
-        }
-    
-        elementName = "DataType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableTypeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataType_.jsonDecode(*tree)) {
-            Log(Error, "VariableTypeAttributes decode json error - decode failed")
-                .parameter("Element", "DataType");
-            return false;
-        }
-    
-        elementName = "ValueRank";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableTypeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, valueRank_)) {
-            Log(Error, "VariableTypeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ArrayDimensions";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableTypeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!arrayDimensions_.jsonDecode(*tree, "")) {
-            Log(Error, "VariableTypeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "IsAbstract";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableTypeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, isAbstract_)) {
-            Log(Error, "VariableTypeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

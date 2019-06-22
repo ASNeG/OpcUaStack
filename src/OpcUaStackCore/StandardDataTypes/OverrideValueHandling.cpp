@@ -245,52 +245,15 @@ namespace OpcUaStackCore
     }
     
     bool
-    OverrideValueHandling::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    OverrideValueHandling::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "OverrideValueHandling json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        return jsonNumberEncode(pt, value_);
     }
     
     bool
-    OverrideValueHandling::jsonEncode(boost::property_tree::ptree& pt)
+    OverrideValueHandling::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        if(!JsonNumber::jsonEncode(pt, value_))
-        {
-    	     Log(Error, "OverrideValueHandling json encoder error")
-    		     .parameter("Element", "Value");
-           return false;
-        }
-        return true;
-    }
-    
-    bool
-    OverrideValueHandling::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "OverrideValueHandling json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    OverrideValueHandling::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        if(!JsonNumber::jsonDecode(pt, value_)) {
-            Log(Error, "OverrideValueHandling decode json error - decode failed");
-            return false;
-        }
-        return true;
+        return jsonNumberDecode(pt, value_);
     }
     
     void

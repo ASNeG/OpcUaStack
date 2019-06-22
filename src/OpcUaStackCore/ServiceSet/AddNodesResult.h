@@ -21,12 +21,14 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT AddNodesResult
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<AddNodesResult> SPtr;
@@ -49,10 +51,10 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
-		bool jsonEncode(boost::property_tree::ptree& pt) { return false; }
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
-		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
+
+	 protected:
+	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		OpcUaStatusCode statusCode_;

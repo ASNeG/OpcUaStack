@@ -192,69 +192,23 @@ namespace OpcUaStackCore
     }
     
     bool
-    StructureDescription::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    StructureDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "StructureDescription json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, structureDefinition_, "StructureDefinition", true);
+    
+        return rc;
     }
     
     bool
-    StructureDescription::jsonEncode(boost::property_tree::ptree& pt)
+    StructureDescription::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!structureDefinition_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "StructureDescription json encoder error")
-    		     .parameter("Element", "structureDefinition_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StructureDefinition", elementTree));
+        rc = rc & jsonObjectDecode(pt, structureDefinition_, "StructureDefinition", true);
     
-        return true;
-    }
-    
-    bool
-    StructureDescription::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "StructureDescription json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    StructureDescription::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "StructureDefinition";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "StructureDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!structureDefinition_.jsonDecode(*tree)) {
-            Log(Error, "StructureDescription decode json error - decode failed")
-                .parameter("Element", "StructureDefinition");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

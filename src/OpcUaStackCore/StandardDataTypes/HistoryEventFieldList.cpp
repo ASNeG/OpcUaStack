@@ -192,69 +192,23 @@ namespace OpcUaStackCore
     }
     
     bool
-    HistoryEventFieldList::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    HistoryEventFieldList::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "HistoryEventFieldList json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonArrayEncode(pt, eventFields_, "EventFields", true);
+    
+        return rc;
     }
     
     bool
-    HistoryEventFieldList::jsonEncode(boost::property_tree::ptree& pt)
+    HistoryEventFieldList::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!eventFields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "HistoryEventFieldList json encoder error")
-    		     .parameter("Element", "eventFields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EventFields", elementTree));
+        rc = rc & jsonArrayDecode(pt, eventFields_, "EventFields", true);
     
-        return true;
-    }
-    
-    bool
-    HistoryEventFieldList::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "HistoryEventFieldList json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    HistoryEventFieldList::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "EventFields";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "HistoryEventFieldList decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!eventFields_.jsonDecode(*tree, "")) {
-            Log(Error, "HistoryEventFieldList decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -257,113 +257,27 @@ namespace OpcUaStackCore
     }
     
     bool
-    AggregateFilterResult::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    AggregateFilterResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "AggregateFilterResult json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, revisedStartTime_, "RevisedStartTime", true);
+        rc = rc & jsonNumberEncode(pt, revisedProcessingInterval_, "RevisedProcessingInterval");
+        rc = rc & jsonObjectEncode(pt, revisedAggregateConfiguration_, "RevisedAggregateConfiguration", true);
+    
+        return rc;
     }
     
     bool
-    AggregateFilterResult::jsonEncode(boost::property_tree::ptree& pt)
+    AggregateFilterResult::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!revisedStartTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AggregateFilterResult json encoder error")
-    		     .parameter("Element", "revisedStartTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RevisedStartTime", elementTree));
+        rc = rc & jsonObjectDecode(pt, revisedStartTime_, "RevisedStartTime", true);
+        rc = rc & jsonNumberDecode(pt, revisedProcessingInterval_, "RevisedProcessingInterval");
+        rc = rc & jsonObjectDecode(pt, revisedAggregateConfiguration_, "RevisedAggregateConfiguration", true);
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, revisedProcessingInterval_))
-        {
-    	     Log(Error, "AggregateFilterResult json encoder error")
-    		     .parameter("Element", "revisedProcessingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RevisedProcessingInterval", elementTree));
-    
-        elementTree.clear();
-        if (!revisedAggregateConfiguration_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AggregateFilterResult json encoder error")
-    		     .parameter("Element", "revisedAggregateConfiguration_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RevisedAggregateConfiguration", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    AggregateFilterResult::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "AggregateFilterResult json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    AggregateFilterResult::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "RevisedStartTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AggregateFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!revisedStartTime_.jsonDecode(*tree)) {
-            Log(Error, "AggregateFilterResult decode json error - decode failed")
-                .parameter("Element", "RevisedStartTime");
-            return false;
-        }
-    
-        elementName = "RevisedProcessingInterval";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AggregateFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, revisedProcessingInterval_)) {
-            Log(Error, "AggregateFilterResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "RevisedAggregateConfiguration";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AggregateFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!revisedAggregateConfiguration_.jsonDecode(*tree)) {
-            Log(Error, "AggregateFilterResult decode json error - decode failed")
-                .parameter("Element", "RevisedAggregateConfiguration");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

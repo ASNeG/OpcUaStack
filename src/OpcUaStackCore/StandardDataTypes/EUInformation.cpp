@@ -289,135 +289,29 @@ namespace OpcUaStackCore
     }
     
     bool
-    EUInformation::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    EUInformation::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "EUInformation json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, namespaceUri_, "NamespaceUri", true);
+        rc = rc & jsonNumberEncode(pt, unitId_, "UnitId");
+        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectEncode(pt, description_, "Description", true);
+    
+        return rc;
     }
     
     bool
-    EUInformation::jsonEncode(boost::property_tree::ptree& pt)
+    EUInformation::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!namespaceUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EUInformation json encoder error")
-    		     .parameter("Element", "namespaceUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NamespaceUri", elementTree));
+        rc = rc & jsonObjectDecode(pt, namespaceUri_, "NamespaceUri", true);
+        rc = rc & jsonNumberDecode(pt, unitId_, "UnitId");
+        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectDecode(pt, description_, "Description", true);
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, unitId_))
-        {
-    	     Log(Error, "EUInformation json encoder error")
-    		     .parameter("Element", "unitId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UnitId", elementTree));
-    
-        elementTree.clear();
-        if (!displayName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EUInformation json encoder error")
-    		     .parameter("Element", "displayName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DisplayName", elementTree));
-    
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EUInformation json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    EUInformation::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "EUInformation json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    EUInformation::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "NamespaceUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EUInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!namespaceUri_.jsonDecode(*tree)) {
-            Log(Error, "EUInformation decode json error - decode failed")
-                .parameter("Element", "NamespaceUri");
-            return false;
-        }
-    
-        elementName = "UnitId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EUInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, unitId_)) {
-            Log(Error, "EUInformation decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DisplayName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EUInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!displayName_.jsonDecode(*tree)) {
-            Log(Error, "EUInformation decode json error - decode failed")
-                .parameter("Element", "DisplayName");
-            return false;
-        }
-    
-        elementName = "Description";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EUInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!description_.jsonDecode(*tree)) {
-            Log(Error, "EUInformation decode json error - decode failed")
-                .parameter("Element", "Description");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

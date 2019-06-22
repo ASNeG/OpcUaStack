@@ -263,113 +263,27 @@ namespace OpcUaStackCore
     }
     
     bool
-    EnumValueType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    EnumValueType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "EnumValueType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, value_, "Value");
+        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectEncode(pt, description_, "Description", true);
+    
+        return rc;
     }
     
     bool
-    EnumValueType::jsonEncode(boost::property_tree::ptree& pt)
+    EnumValueType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, value_))
-        {
-    	     Log(Error, "EnumValueType json encoder error")
-    		     .parameter("Element", "value_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
+        rc = rc & jsonNumberDecode(pt, value_, "Value");
+        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectDecode(pt, description_, "Description", true);
     
-        elementTree.clear();
-        if (!displayName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EnumValueType json encoder error")
-    		     .parameter("Element", "displayName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DisplayName", elementTree));
-    
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EnumValueType json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    EnumValueType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "EnumValueType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    EnumValueType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Value";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EnumValueType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, value_)) {
-            Log(Error, "EnumValueType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DisplayName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EnumValueType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!displayName_.jsonDecode(*tree)) {
-            Log(Error, "EnumValueType decode json error - decode failed")
-                .parameter("Element", "DisplayName");
-            return false;
-        }
-    
-        elementName = "Description";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EnumValueType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!description_.jsonDecode(*tree)) {
-            Log(Error, "EnumValueType decode json error - decode failed")
-                .parameter("Element", "Description");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -253,52 +253,15 @@ namespace OpcUaStackCore
     }
     
     bool
-    BrokerTransportQualityOfService::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    BrokerTransportQualityOfService::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "BrokerTransportQualityOfService json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        return jsonNumberEncode(pt, value_);
     }
     
     bool
-    BrokerTransportQualityOfService::jsonEncode(boost::property_tree::ptree& pt)
+    BrokerTransportQualityOfService::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        if(!JsonNumber::jsonEncode(pt, value_))
-        {
-    	     Log(Error, "BrokerTransportQualityOfService json encoder error")
-    		     .parameter("Element", "Value");
-           return false;
-        }
-        return true;
-    }
-    
-    bool
-    BrokerTransportQualityOfService::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "BrokerTransportQualityOfService json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    BrokerTransportQualityOfService::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        if(!JsonNumber::jsonDecode(pt, value_)) {
-            Log(Error, "BrokerTransportQualityOfService decode json error - decode failed");
-            return false;
-        }
-        return true;
+        return jsonNumberDecode(pt, value_);
     }
     
     void

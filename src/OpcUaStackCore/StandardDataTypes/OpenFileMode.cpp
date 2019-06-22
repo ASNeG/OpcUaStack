@@ -249,52 +249,15 @@ namespace OpcUaStackCore
     }
     
     bool
-    OpenFileMode::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    OpenFileMode::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "OpenFileMode json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        return jsonNumberEncode(pt, value_);
     }
     
     bool
-    OpenFileMode::jsonEncode(boost::property_tree::ptree& pt)
+    OpenFileMode::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        if(!JsonNumber::jsonEncode(pt, value_))
-        {
-    	     Log(Error, "OpenFileMode json encoder error")
-    		     .parameter("Element", "Value");
-           return false;
-        }
-        return true;
-    }
-    
-    bool
-    OpenFileMode::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "OpenFileMode json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    OpenFileMode::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        if(!JsonNumber::jsonDecode(pt, value_)) {
-            Log(Error, "OpenFileMode decode json error - decode failed");
-            return false;
-        }
-        return true;
+        return jsonNumberDecode(pt, value_);
     }
     
     void

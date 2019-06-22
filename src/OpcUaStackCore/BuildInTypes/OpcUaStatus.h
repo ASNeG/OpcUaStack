@@ -42,9 +42,9 @@ namespace OpcUaStackCore
         void enumeration(OpcUaStatusCode enumeration);
         OpcUaStatusCode enumeration(void);
         OpcUaStatusCode str2Enum(const std::string& enumerationString);
-        std::string enum2Str(OpcUaStatusCode enumeration);
-        std::string enum2Str(void);
-        std::string toString(void);
+        std::string enum2Str(OpcUaStatusCode enumeration) const;
+        std::string enum2Str(void) const;
+        std::string toString(void) const;
         bool exist(const std::string& enumerationString);
         bool exist(OpcUaStatusCode enumeration);
         
@@ -62,10 +62,6 @@ namespace OpcUaStackCore
         virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
         virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
         virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-        virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-        virtual bool jsonEncode(boost::property_tree::ptree& pt);
-        virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-        virtual bool jsonDecode(boost::property_tree::ptree& pt);
         virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
         virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
         virtual void out(std::ostream& os);
@@ -81,6 +77,10 @@ namespace OpcUaStackCore
 			return os;
 		}
     
+      protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
+
       private:
         int32_t value_;
     

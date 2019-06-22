@@ -40,8 +40,8 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
 		bool jsonEncode(boost::property_tree::ptree& pt) { return false; }
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
-		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
+		bool jsonDecode(const boost::property_tree::ptree& pt, const std::string& element) { return false; }
+		bool jsonDecode(const boost::property_tree::ptree& pt) { return false; }
 	};
 
 	class DLLEXPORT BaseClassArray

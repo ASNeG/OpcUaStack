@@ -64,6 +64,10 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
+      protected:
+         bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override { return false; }
+         bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override { return false; }
+
         void copyTo(Enumeration& value);
         bool operator==(const Enumeration& value) const;
         bool operator!=(const Enumeration& value) const;

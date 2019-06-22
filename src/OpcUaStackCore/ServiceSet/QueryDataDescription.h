@@ -27,7 +27,8 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT QueryDataDescription
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<QueryDataDescription> SPtr;
@@ -52,10 +53,10 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
-		bool jsonEncode(boost::property_tree::ptree& pt) { return false; }
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element) { return false; }
-		bool jsonDecode(boost::property_tree::ptree& pt) { return false; }
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		RelativePath relativePath_;

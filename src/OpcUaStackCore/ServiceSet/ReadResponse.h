@@ -26,6 +26,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT ReadResponse
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<ReadResponse> SPtr;
@@ -40,10 +41,10 @@ namespace OpcUaStackCore
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt);
 
 	  private:
 		OpcUaDataValueArray::SPtr dataValueArraySPtr_;

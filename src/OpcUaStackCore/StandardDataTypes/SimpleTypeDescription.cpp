@@ -225,91 +225,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    SimpleTypeDescription::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    SimpleTypeDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "SimpleTypeDescription json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, baseDataType_, "BaseDataType", true);
+        rc = rc & jsonNumberEncode(pt, builtInType_, "BuiltInType");
+    
+        return rc;
     }
     
     bool
-    SimpleTypeDescription::jsonEncode(boost::property_tree::ptree& pt)
+    SimpleTypeDescription::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!baseDataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "SimpleTypeDescription json encoder error")
-    		     .parameter("Element", "baseDataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BaseDataType", elementTree));
+        rc = rc & jsonObjectDecode(pt, baseDataType_, "BaseDataType", true);
+        rc = rc & jsonNumberDecode(pt, builtInType_, "BuiltInType");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, builtInType_))
-        {
-    	     Log(Error, "SimpleTypeDescription json encoder error")
-    		     .parameter("Element", "builtInType_");
-           return false;
-        }
-        pt.push_back(std::make_pair("BuiltInType", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    SimpleTypeDescription::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "SimpleTypeDescription json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    SimpleTypeDescription::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "BaseDataType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SimpleTypeDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!baseDataType_.jsonDecode(*tree)) {
-            Log(Error, "SimpleTypeDescription decode json error - decode failed")
-                .parameter("Element", "BaseDataType");
-            return false;
-        }
-    
-        elementName = "BuiltInType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SimpleTypeDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, builtInType_)) {
-            Log(Error, "SimpleTypeDescription decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

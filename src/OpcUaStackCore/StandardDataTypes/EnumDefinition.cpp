@@ -192,69 +192,23 @@ namespace OpcUaStackCore
     }
     
     bool
-    EnumDefinition::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    EnumDefinition::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "EnumDefinition json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonArrayEncode(pt, fields_, "Fields", true);
+    
+        return rc;
     }
     
     bool
-    EnumDefinition::jsonEncode(boost::property_tree::ptree& pt)
+    EnumDefinition::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!fields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "EnumDefinition json encoder error")
-    		     .parameter("Element", "fields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Fields", elementTree));
+        rc = rc & jsonArrayDecode(pt, fields_, "Fields", true);
     
-        return true;
-    }
-    
-    bool
-    EnumDefinition::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "EnumDefinition json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    EnumDefinition::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Fields";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EnumDefinition decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!fields_.jsonDecode(*tree, "")) {
-            Log(Error, "EnumDefinition decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

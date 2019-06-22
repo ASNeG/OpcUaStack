@@ -78,7 +78,7 @@ namespace OpcUaStackServer
 
 		if (decodeDefinition) {
 			// find Definition element
-			boost::optional<boost::property_tree::ptree&> tree = ptreeValue.get_child_optional("Definition");
+			auto tree = ptreeValue.get_child_optional("Definition");
 			if (!tree) {
 				Log(Error, "missing element in data type definition")
 					.parameter("Element", "Definition");

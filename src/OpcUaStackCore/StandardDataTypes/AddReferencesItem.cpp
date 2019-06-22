@@ -359,179 +359,33 @@ namespace OpcUaStackCore
     }
     
     bool
-    AddReferencesItem::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    AddReferencesItem::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, sourceNodeId_, "SourceNodeId", true);
+        rc = rc & jsonObjectEncode(pt, referenceTypeId_, "ReferenceTypeId", true);
+        rc = rc & jsonNumberEncode(pt, isForward_, "IsForward");
+        rc = rc & jsonObjectEncode(pt, targetServerUri_, "TargetServerUri", true);
+        rc = rc & jsonObjectEncode(pt, targetNodeId_, "TargetNodeId", true);
+        rc = rc & jsonObjectEncode(pt, targetNodeClass_, "TargetNodeClass", true);
+    
+        return rc;
     }
     
     bool
-    AddReferencesItem::jsonEncode(boost::property_tree::ptree& pt)
+    AddReferencesItem::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!sourceNodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "sourceNodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SourceNodeId", elementTree));
+        rc = rc & jsonObjectDecode(pt, sourceNodeId_, "SourceNodeId", true);
+        rc = rc & jsonObjectDecode(pt, referenceTypeId_, "ReferenceTypeId", true);
+        rc = rc & jsonNumberDecode(pt, isForward_, "IsForward");
+        rc = rc & jsonObjectDecode(pt, targetServerUri_, "TargetServerUri", true);
+        rc = rc & jsonObjectDecode(pt, targetNodeId_, "TargetNodeId", true);
+        rc = rc & jsonObjectDecode(pt, targetNodeClass_, "TargetNodeClass", true);
     
-        elementTree.clear();
-        if (!referenceTypeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "referenceTypeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ReferenceTypeId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isForward_))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "isForward_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsForward", elementTree));
-    
-        elementTree.clear();
-        if (!targetServerUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "targetServerUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TargetServerUri", elementTree));
-    
-        elementTree.clear();
-        if (!targetNodeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "targetNodeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TargetNodeId", elementTree));
-    
-        elementTree.clear();
-        if (!targetNodeClass_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AddReferencesItem json encoder error")
-    		     .parameter("Element", "targetNodeClass_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TargetNodeClass", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    AddReferencesItem::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "AddReferencesItem json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    AddReferencesItem::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "SourceNodeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!sourceNodeId_.jsonDecode(*tree)) {
-            Log(Error, "AddReferencesItem decode json error - decode failed")
-                .parameter("Element", "SourceNodeId");
-            return false;
-        }
-    
-        elementName = "ReferenceTypeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!referenceTypeId_.jsonDecode(*tree)) {
-            Log(Error, "AddReferencesItem decode json error - decode failed")
-                .parameter("Element", "ReferenceTypeId");
-            return false;
-        }
-    
-        elementName = "IsForward";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, isForward_)) {
-            Log(Error, "AddReferencesItem decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "TargetServerUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!targetServerUri_.jsonDecode(*tree)) {
-            Log(Error, "AddReferencesItem decode json error - decode failed")
-                .parameter("Element", "TargetServerUri");
-            return false;
-        }
-    
-        elementName = "TargetNodeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!targetNodeId_.jsonDecode(*tree)) {
-            Log(Error, "AddReferencesItem decode json error - decode failed")
-                .parameter("Element", "TargetNodeId");
-            return false;
-        }
-    
-        elementName = "TargetNodeClass";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AddReferencesItem decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!targetNodeClass_.jsonDecode(*tree)) {
-            Log(Error, "AddReferencesItem decode json error - decode failed")
-                .parameter("Element", "TargetNodeClass");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

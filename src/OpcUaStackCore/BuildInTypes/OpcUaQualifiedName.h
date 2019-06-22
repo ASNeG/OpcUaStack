@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_OpcUaQulifiedName_h__
@@ -22,12 +22,14 @@
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT OpcUaQualifiedName
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaQualifiedName> SPtr;
@@ -41,7 +43,7 @@ namespace OpcUaStackCore
 		void get(std::string& name, OpcUaUInt16& namespaceIndex);
 		void get(OpcUaString& name, OpcUaUInt16& namespaceIndex);
 		void namespaceIndex(const OpcUaUInt16& namespaceIndex);
-		OpcUaUInt16 namespaceIndex(void);
+		OpcUaUInt16 namespaceIndex(void) const;
 		void name(const std::string& name);
 		void name(const OpcUaString& name);
 		OpcUaString& name(void);
@@ -54,7 +56,7 @@ namespace OpcUaStackCore
 		operator std::string const (void); 
 		operator OpcUaUInt16 const (void); 
 
-		void copyTo(OpcUaQualifiedName& qualifiedName);
+		void copyTo(OpcUaQualifiedName& qualifiedName) const;
 		bool operator!=(const OpcUaQualifiedName& opcUaQualifiedName) const;
 		bool operator==(const OpcUaQualifiedName& opcUaQualifiedName) const;
 
@@ -69,12 +71,14 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
 
-	  private:
+		bool isNull(void) const override;
+
+	  protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+
+    private:
 		OpcUaUInt16 namespaceIndex_;
 		OpcUaString name_;
 	};

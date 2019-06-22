@@ -256,113 +256,27 @@ namespace OpcUaStackCore
     }
     
     bool
-    PublishedEventsDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    PublishedEventsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "PublishedEventsDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, eventNotifier_, "EventNotifier", true);
+        rc = rc & jsonArrayEncode(pt, selectedFields_, "SelectedFields", true);
+        rc = rc & jsonObjectEncode(pt, filter_, "Filter", true);
+    
+        return rc;
     }
     
     bool
-    PublishedEventsDataType::jsonEncode(boost::property_tree::ptree& pt)
+    PublishedEventsDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!eventNotifier_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedEventsDataType json encoder error")
-    		     .parameter("Element", "eventNotifier_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EventNotifier", elementTree));
+        rc = rc & jsonObjectDecode(pt, eventNotifier_, "EventNotifier", true);
+        rc = rc & jsonArrayDecode(pt, selectedFields_, "SelectedFields", true);
+        rc = rc & jsonObjectDecode(pt, filter_, "Filter", true);
     
-        elementTree.clear();
-        if (!selectedFields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PublishedEventsDataType json encoder error")
-    		     .parameter("Element", "selectedFields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SelectedFields", elementTree));
-    
-        elementTree.clear();
-        if (!filter_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedEventsDataType json encoder error")
-    		     .parameter("Element", "filter_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Filter", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    PublishedEventsDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "PublishedEventsDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    PublishedEventsDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "EventNotifier";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedEventsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!eventNotifier_.jsonDecode(*tree)) {
-            Log(Error, "PublishedEventsDataType decode json error - decode failed")
-                .parameter("Element", "EventNotifier");
-            return false;
-        }
-    
-        elementName = "SelectedFields";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedEventsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!selectedFields_.jsonDecode(*tree, "")) {
-            Log(Error, "PublishedEventsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "Filter";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedEventsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!filter_.jsonDecode(*tree)) {
-            Log(Error, "PublishedEventsDataType decode json error - decode failed")
-                .parameter("Element", "Filter");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

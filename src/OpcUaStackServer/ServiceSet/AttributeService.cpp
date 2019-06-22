@@ -102,7 +102,7 @@ namespace OpcUaStackServer
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
-		if (readRequest->readValueIdArray()->size() > 1500) { // FIXME: todo
+		if (readRequest->readValueIdArray()->size() > 3000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->send(serviceTransaction);
 			return;
@@ -274,7 +274,7 @@ namespace OpcUaStackServer
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
-		if (writeRequest->writeValueArray()->size() > 1000) {  // FIXME: todo
+		if (writeRequest->writeValueArray()->size() > 3000) {  // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->receive(serviceTransaction);
 			return;

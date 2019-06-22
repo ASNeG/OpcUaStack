@@ -289,135 +289,29 @@ namespace OpcUaStackCore
     }
     
     bool
-    ReadEventDetails::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    ReadEventDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ReadEventDetails json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, numValuesPerNode_, "NumValuesPerNode");
+        rc = rc & jsonObjectEncode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectEncode(pt, endTime_, "EndTime", true);
+        rc = rc & jsonObjectEncode(pt, filter_, "Filter", true);
+    
+        return rc;
     }
     
     bool
-    ReadEventDetails::jsonEncode(boost::property_tree::ptree& pt)
+    ReadEventDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, numValuesPerNode_))
-        {
-    	     Log(Error, "ReadEventDetails json encoder error")
-    		     .parameter("Element", "numValuesPerNode_");
-           return false;
-        }
-        pt.push_back(std::make_pair("NumValuesPerNode", elementTree));
+        rc = rc & jsonNumberDecode(pt, numValuesPerNode_, "NumValuesPerNode");
+        rc = rc & jsonObjectDecode(pt, startTime_, "StartTime", true);
+        rc = rc & jsonObjectDecode(pt, endTime_, "EndTime", true);
+        rc = rc & jsonObjectDecode(pt, filter_, "Filter", true);
     
-        elementTree.clear();
-        if (!startTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadEventDetails json encoder error")
-    		     .parameter("Element", "startTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StartTime", elementTree));
-    
-        elementTree.clear();
-        if (!endTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadEventDetails json encoder error")
-    		     .parameter("Element", "endTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EndTime", elementTree));
-    
-        elementTree.clear();
-        if (!filter_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReadEventDetails json encoder error")
-    		     .parameter("Element", "filter_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Filter", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    ReadEventDetails::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ReadEventDetails json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ReadEventDetails::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "NumValuesPerNode";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadEventDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, numValuesPerNode_)) {
-            Log(Error, "ReadEventDetails decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "StartTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadEventDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!startTime_.jsonDecode(*tree)) {
-            Log(Error, "ReadEventDetails decode json error - decode failed")
-                .parameter("Element", "StartTime");
-            return false;
-        }
-    
-        elementName = "EndTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadEventDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!endTime_.jsonDecode(*tree)) {
-            Log(Error, "ReadEventDetails decode json error - decode failed")
-                .parameter("Element", "EndTime");
-            return false;
-        }
-    
-        elementName = "Filter";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadEventDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!filter_.jsonDecode(*tree)) {
-            Log(Error, "ReadEventDetails decode json error - decode failed")
-                .parameter("Element", "Filter");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

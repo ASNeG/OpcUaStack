@@ -320,157 +320,31 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataSetMetaDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    DataSetMetaDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
+        rc = rc & jsonObjectEncode(pt, description_, "Description", true);
+        rc = rc & jsonArrayEncode(pt, fields_, "Fields", true);
+        rc = rc & jsonObjectEncode(pt, dataSetClassId_, "DataSetClassId", true);
+        rc = rc & jsonObjectEncode(pt, configurationVersion_, "ConfigurationVersion", true);
+    
+        return rc;
     }
     
     bool
-    DataSetMetaDataType::jsonEncode(boost::property_tree::ptree& pt)
+    DataSetMetaDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
+        rc = rc & jsonObjectDecode(pt, description_, "Description", true);
+        rc = rc & jsonArrayDecode(pt, fields_, "Fields", true);
+        rc = rc & jsonObjectDecode(pt, dataSetClassId_, "DataSetClassId", true);
+        rc = rc & jsonObjectDecode(pt, configurationVersion_, "ConfigurationVersion", true);
     
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
-        elementTree.clear();
-        if (!fields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", "fields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Fields", elementTree));
-    
-        elementTree.clear();
-        if (!dataSetClassId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", "dataSetClassId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetClassId", elementTree));
-    
-        elementTree.clear();
-        if (!configurationVersion_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataSetMetaDataType json encoder error")
-    		     .parameter("Element", "configurationVersion_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ConfigurationVersion", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    DataSetMetaDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "DataSetMetaDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    DataSetMetaDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetMetaDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "DataSetMetaDataType decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
-    
-        elementName = "Description";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetMetaDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!description_.jsonDecode(*tree)) {
-            Log(Error, "DataSetMetaDataType decode json error - decode failed")
-                .parameter("Element", "Description");
-            return false;
-        }
-    
-        elementName = "Fields";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetMetaDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!fields_.jsonDecode(*tree, "")) {
-            Log(Error, "DataSetMetaDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetClassId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetMetaDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetClassId_.jsonDecode(*tree)) {
-            Log(Error, "DataSetMetaDataType decode json error - decode failed")
-                .parameter("Element", "DataSetClassId");
-            return false;
-        }
-    
-        elementName = "ConfigurationVersion";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataSetMetaDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!configurationVersion_.jsonDecode(*tree)) {
-            Log(Error, "DataSetMetaDataType decode json error - decode failed")
-                .parameter("Element", "ConfigurationVersion");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

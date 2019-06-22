@@ -289,135 +289,29 @@ namespace OpcUaStackCore
     }
     
     bool
-    ServerOnNetwork::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    ServerOnNetwork::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ServerOnNetwork json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, recordId_, "RecordId");
+        rc = rc & jsonObjectEncode(pt, serverName_, "ServerName", true);
+        rc = rc & jsonObjectEncode(pt, discoveryUrl_, "DiscoveryUrl", true);
+        rc = rc & jsonArrayEncode(pt, serverCapabilities_, "ServerCapabilities", true);
+    
+        return rc;
     }
     
     bool
-    ServerOnNetwork::jsonEncode(boost::property_tree::ptree& pt)
+    ServerOnNetwork::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, recordId_))
-        {
-    	     Log(Error, "ServerOnNetwork json encoder error")
-    		     .parameter("Element", "recordId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RecordId", elementTree));
+        rc = rc & jsonNumberDecode(pt, recordId_, "RecordId");
+        rc = rc & jsonObjectDecode(pt, serverName_, "ServerName", true);
+        rc = rc & jsonObjectDecode(pt, discoveryUrl_, "DiscoveryUrl", true);
+        rc = rc & jsonArrayDecode(pt, serverCapabilities_, "ServerCapabilities", true);
     
-        elementTree.clear();
-        if (!serverName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ServerOnNetwork json encoder error")
-    		     .parameter("Element", "serverName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerName", elementTree));
-    
-        elementTree.clear();
-        if (!discoveryUrl_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ServerOnNetwork json encoder error")
-    		     .parameter("Element", "discoveryUrl_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DiscoveryUrl", elementTree));
-    
-        elementTree.clear();
-        if (!serverCapabilities_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ServerOnNetwork json encoder error")
-    		     .parameter("Element", "serverCapabilities_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerCapabilities", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    ServerOnNetwork::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ServerOnNetwork json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ServerOnNetwork::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "RecordId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerOnNetwork decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, recordId_)) {
-            Log(Error, "ServerOnNetwork decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ServerName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerOnNetwork decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!serverName_.jsonDecode(*tree)) {
-            Log(Error, "ServerOnNetwork decode json error - decode failed")
-                .parameter("Element", "ServerName");
-            return false;
-        }
-    
-        elementName = "DiscoveryUrl";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerOnNetwork decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!discoveryUrl_.jsonDecode(*tree)) {
-            Log(Error, "ServerOnNetwork decode json error - decode failed")
-                .parameter("Element", "DiscoveryUrl");
-            return false;
-        }
-    
-        elementName = "ServerCapabilities";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServerOnNetwork decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!serverCapabilities_.jsonDecode(*tree, "")) {
-            Log(Error, "ServerOnNetwork decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

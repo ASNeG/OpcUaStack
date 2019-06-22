@@ -198,69 +198,23 @@ namespace OpcUaStackCore
     }
     
     bool
-    RelativePath::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    RelativePath::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "RelativePath json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonArrayEncode(pt, elements_, "Elements", true);
+    
+        return rc;
     }
     
     bool
-    RelativePath::jsonEncode(boost::property_tree::ptree& pt)
+    RelativePath::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!elements_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "RelativePath json encoder error")
-    		     .parameter("Element", "elements_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Elements", elementTree));
+        rc = rc & jsonArrayDecode(pt, elements_, "Elements", true);
     
-        return true;
-    }
-    
-    bool
-    RelativePath::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "RelativePath json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    RelativePath::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Elements";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RelativePath decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!elements_.jsonDecode(*tree, "")) {
-            Log(Error, "RelativePath decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

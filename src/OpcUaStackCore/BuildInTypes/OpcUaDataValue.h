@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -38,6 +39,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT OpcUaDataValue
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDataValue> SPtr;
@@ -355,10 +357,10 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
+
+      protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		OpcUaVariant::SPtr opcUaVariantSPtr_;

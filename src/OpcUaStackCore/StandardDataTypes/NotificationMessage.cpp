@@ -257,113 +257,27 @@ namespace OpcUaStackCore
     }
     
     bool
-    NotificationMessage::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    NotificationMessage::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "NotificationMessage json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, sequenceNumber_, "SequenceNumber");
+        rc = rc & jsonObjectEncode(pt, publishTime_, "PublishTime", true);
+        rc = rc & jsonArrayEncode(pt, notificationData_, "NotificationData", true);
+    
+        return rc;
     }
     
     bool
-    NotificationMessage::jsonEncode(boost::property_tree::ptree& pt)
+    NotificationMessage::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, sequenceNumber_))
-        {
-    	     Log(Error, "NotificationMessage json encoder error")
-    		     .parameter("Element", "sequenceNumber_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SequenceNumber", elementTree));
+        rc = rc & jsonNumberDecode(pt, sequenceNumber_, "SequenceNumber");
+        rc = rc & jsonObjectDecode(pt, publishTime_, "PublishTime", true);
+        rc = rc & jsonArrayDecode(pt, notificationData_, "NotificationData", true);
     
-        elementTree.clear();
-        if (!publishTime_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "NotificationMessage json encoder error")
-    		     .parameter("Element", "publishTime_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublishTime", elementTree));
-    
-        elementTree.clear();
-        if (!notificationData_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "NotificationMessage json encoder error")
-    		     .parameter("Element", "notificationData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NotificationData", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    NotificationMessage::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "NotificationMessage json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    NotificationMessage::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "SequenceNumber";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NotificationMessage decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, sequenceNumber_)) {
-            Log(Error, "NotificationMessage decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "PublishTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NotificationMessage decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!publishTime_.jsonDecode(*tree)) {
-            Log(Error, "NotificationMessage decode json error - decode failed")
-                .parameter("Element", "PublishTime");
-            return false;
-        }
-    
-        elementName = "NotificationData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NotificationMessage decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!notificationData_.jsonDecode(*tree, "")) {
-            Log(Error, "NotificationMessage decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

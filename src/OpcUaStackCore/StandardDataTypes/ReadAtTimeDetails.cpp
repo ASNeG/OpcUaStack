@@ -225,91 +225,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    ReadAtTimeDetails::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    ReadAtTimeDetails::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ReadAtTimeDetails json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonArrayEncode(pt, reqTimes_, "ReqTimes", true);
+        rc = rc & jsonNumberEncode(pt, useSimpleBounds_, "UseSimpleBounds");
+    
+        return rc;
     }
     
     bool
-    ReadAtTimeDetails::jsonEncode(boost::property_tree::ptree& pt)
+    ReadAtTimeDetails::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!reqTimes_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ReadAtTimeDetails json encoder error")
-    		     .parameter("Element", "reqTimes_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ReqTimes", elementTree));
+        rc = rc & jsonArrayDecode(pt, reqTimes_, "ReqTimes", true);
+        rc = rc & jsonNumberDecode(pt, useSimpleBounds_, "UseSimpleBounds");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, useSimpleBounds_))
-        {
-    	     Log(Error, "ReadAtTimeDetails json encoder error")
-    		     .parameter("Element", "useSimpleBounds_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UseSimpleBounds", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    ReadAtTimeDetails::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ReadAtTimeDetails json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ReadAtTimeDetails::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "ReqTimes";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadAtTimeDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!reqTimes_.jsonDecode(*tree, "")) {
-            Log(Error, "ReadAtTimeDetails decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "UseSimpleBounds";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReadAtTimeDetails decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, useSimpleBounds_)) {
-            Log(Error, "ReadAtTimeDetails decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

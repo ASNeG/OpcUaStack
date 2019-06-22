@@ -226,91 +226,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    ComplexNumberType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    ComplexNumberType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ComplexNumberType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, real_, "Real");
+        rc = rc & jsonNumberEncode(pt, imaginary_, "Imaginary");
+    
+        return rc;
     }
     
     bool
-    ComplexNumberType::jsonEncode(boost::property_tree::ptree& pt)
+    ComplexNumberType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, real_))
-        {
-    	     Log(Error, "ComplexNumberType json encoder error")
-    		     .parameter("Element", "real_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Real", elementTree));
+        rc = rc & jsonNumberDecode(pt, real_, "Real");
+        rc = rc & jsonNumberDecode(pt, imaginary_, "Imaginary");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, imaginary_))
-        {
-    	     Log(Error, "ComplexNumberType json encoder error")
-    		     .parameter("Element", "imaginary_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Imaginary", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    ComplexNumberType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ComplexNumberType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ComplexNumberType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Real";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ComplexNumberType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, real_)) {
-            Log(Error, "ComplexNumberType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "Imaginary";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ComplexNumberType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, imaginary_)) {
-            Log(Error, "ComplexNumberType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

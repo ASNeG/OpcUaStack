@@ -245,52 +245,15 @@ namespace OpcUaStackCore
     }
     
     bool
-    AxisScaleEnumeration::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    AxisScaleEnumeration::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "AxisScaleEnumeration json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        return jsonNumberEncode(pt, value_);
     }
     
     bool
-    AxisScaleEnumeration::jsonEncode(boost::property_tree::ptree& pt)
+    AxisScaleEnumeration::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        if(!JsonNumber::jsonEncode(pt, value_))
-        {
-    	     Log(Error, "AxisScaleEnumeration json encoder error")
-    		     .parameter("Element", "Value");
-           return false;
-        }
-        return true;
-    }
-    
-    bool
-    AxisScaleEnumeration::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "AxisScaleEnumeration json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    AxisScaleEnumeration::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        if(!JsonNumber::jsonDecode(pt, value_)) {
-            Log(Error, "AxisScaleEnumeration decode json error - decode failed");
-            return false;
-        }
-        return true;
+        return jsonNumberDecode(pt, value_);
     }
     
     void

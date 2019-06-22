@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
@@ -64,8 +64,8 @@ namespace OpcUaStackCore
 	void 
 	OpcUaLocalizedText::get(std::string& locale, std::string& text)
 	{
-		locale = locale_;
-		text = text_;
+		locale = locale_.toStdString();
+		text = text_.toStdString();
 	}
 
 	void 
@@ -246,22 +246,8 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-
 	bool
-	OpcUaLocalizedText::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcUaLocalizedText json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	OpcUaLocalizedText::jsonEncode(boost::property_tree::ptree& pt)
+	OpcUaLocalizedText::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 		// add locale
 		if (!locale_.jsonEncode(pt, "Locale")) {
@@ -281,21 +267,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaLocalizedText::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcUaLocalizedText json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	OpcUaLocalizedText::jsonDecode(boost::property_tree::ptree& pt)
+	OpcUaLocalizedText::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
 		// get locale
 		if (!locale_.jsonDecode(pt, "Locale")) {

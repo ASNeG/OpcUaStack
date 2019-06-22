@@ -95,90 +95,22 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CreateMonitoredItemsRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	CreateMonitoredItemsRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "CreateMonitoredItemsRequest json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonNumberEncode(pt, (uint32_t)timestampsToReturn_, "TimestampsToReturn", true, (uint32_t)TimestampsToReturn_Both);
+		rc = rc & jsonArraySPtrEncode(pt, itemsToCreateArraySPtr_, "ItemsToCreate");
 		return true;
 	}
 
 	bool
-	CreateMonitoredItemsRequest::jsonEncode(boost::property_tree::ptree& pt)
+	CreateMonitoredItemsRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// encode subscription id
-		if (!JsonNumber::jsonEncode(pt, subscriptionId_, "SubscriptionId")) {
-			Log(Error, "CreateMonitoredItemsRequest json encode error")
-				.parameter("Element", "SubscriptionId");
-			return false;
-		}
-
-		// encode timestamps to return
-		uint32_t timestampsToReturn = timestampsToReturn_;
-		if (!JsonNumber::jsonEncode(pt, timestampsToReturn, "TimestampsToReturn")) {
-			Log(Error, "CreateMonitoredItemsRequest json encode error")
-				.parameter("Element", "TimestampsToReturn");
-			return false;
-		}
-
-		// encode items to create array
-		if (!itemsToCreateArraySPtr_->jsonEncode(pt, "ItemsToCreate", "")) {
-			Log(Error, "CreateMonitoredItemsRequest json encode error")
-				.parameter("Element", "ItemsToCreate");
-			return false;
-		}
-
-		return true;
-	}
-
-	bool
-	CreateMonitoredItemsRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "CreateMonitoredItemsRequest json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	CreateMonitoredItemsRequest::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		// decode subscription id
-		if (!JsonNumber::jsonDecode(pt, subscriptionId_, "SubscriptionId")) {
-			Log(Error, "CreateMonitoredItemsRequest json decode error")
-				.parameter("Element", "SubscriptionId");
-			return false;
-		}
-
-		// decode timestamps to return
-		timestampsToReturn_ = TimestampsToReturn_Source;
-		auto timestampsToReturn = pt.get_child_optional("TimestampsToReturn");
-		if (timestampsToReturn) {
-			uint32_t ttr;
-			if (!JsonNumber::jsonDecode(pt, ttr, "TimestampsToReturn")) {
-				Log(Error, "CreateMonitoredItemsRequest json decode error")
-					.parameter("Element", "TimestampsToReturn");
-				return false;
-			}
-			timestampsToReturn_ = (TimestampsToReturn)ttr;
-		}
-
-		// decode items to create array
-		if (!itemsToCreateArraySPtr_->jsonDecode(pt, "ItemsToCreate", "")) {
-			Log(Error, "CreateMonitoredItemsRequest json decode error")
-				.parameter("Element", "ItemsToCreate");
-			return false;
-		}
-
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&timestampsToReturn_, "TimestampsToReturn", true, (uint32_t)TimestampsToReturn_Both);
+		rc = rc & jsonArraySPtrDecode(pt, itemsToCreateArraySPtr_, "ItemsToCreate");
 		return true;
 	}
 }
