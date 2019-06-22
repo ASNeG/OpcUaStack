@@ -21,6 +21,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <string>
 #include <set>
+#include <vector>
 #include "OpcUaStackCore/Base/ConfigIf.h"
 
 namespace OpcUaStackCore
