@@ -24,6 +24,7 @@ add_library(
 
 target_link_libraries(
     OpcUaStackPubSub
+    OpcUaStackCore
     ${CMAKE_DL_LIBS}
     ${Boost_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
@@ -50,9 +51,9 @@ if (WIN32)
     	PROPERTIES OUTPUT_NAME 
     	"OpcUaStackPubSub${VERSION_MAJOR}"
     )
-	set(OPCUASTACK_PUBSUB_LIB_NAME OpcUaStackPubSub@VERSION_MAJOR@.lib)
+	set(OPCUASTACK_PUBSUB_LIB_NAME OpcUaStackPubSub${VERSION_MAJOR}.lib)
 else()
-    set(OPCUASTACK_PUBSUB_LIB_NAME libOpcUaStackPubSub.so.@VERSION_MAJOR@)
+    set(OPCUASTACK_PUBSUB_LIB_NAME libOpcUaStackPubSub.so.${VERSION_MAJOR})
 endif()
 
 message(STATUS "OpcUaStackPubSub")

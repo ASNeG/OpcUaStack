@@ -427,223 +427,37 @@ namespace OpcUaStackCore
     }
     
     bool
-    VariableAttributes::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    VariableAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, value_, "Value", true);
+        rc = rc & jsonObjectEncode(pt, dataType_, "DataType", true);
+        rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
+        rc = rc & jsonArrayEncode(pt, arrayDimensions_, "ArrayDimensions", true);
+        rc = rc & jsonNumberEncode(pt, accessLevel_, "AccessLevel");
+        rc = rc & jsonNumberEncode(pt, userAccessLevel_, "UserAccessLevel");
+        rc = rc & jsonNumberEncode(pt, minimumSamplingInterval_, "MinimumSamplingInterval");
+        rc = rc & jsonNumberEncode(pt, historizing_, "Historizing");
+    
+        return rc;
     }
     
     bool
-    VariableAttributes::jsonEncode(boost::property_tree::ptree& pt)
+    VariableAttributes::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!value_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "value_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
+        rc = rc & jsonObjectDecode(pt, value_, "Value", true);
+        rc = rc & jsonObjectDecode(pt, dataType_, "DataType", true);
+        rc = rc & jsonNumberDecode(pt, valueRank_, "ValueRank");
+        rc = rc & jsonArrayDecode(pt, arrayDimensions_, "ArrayDimensions", true);
+        rc = rc & jsonNumberDecode(pt, accessLevel_, "AccessLevel");
+        rc = rc & jsonNumberDecode(pt, userAccessLevel_, "UserAccessLevel");
+        rc = rc & jsonNumberDecode(pt, minimumSamplingInterval_, "MinimumSamplingInterval");
+        rc = rc & jsonNumberDecode(pt, historizing_, "Historizing");
     
-        elementTree.clear();
-        if (!dataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "dataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, valueRank_))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "valueRank_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ValueRank", elementTree));
-    
-        elementTree.clear();
-        if (!arrayDimensions_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "arrayDimensions_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ArrayDimensions", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, accessLevel_))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "accessLevel_");
-           return false;
-        }
-        pt.push_back(std::make_pair("AccessLevel", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, userAccessLevel_))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "userAccessLevel_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UserAccessLevel", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, minimumSamplingInterval_))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "minimumSamplingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MinimumSamplingInterval", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, historizing_))
-        {
-    	     Log(Error, "VariableAttributes json encoder error")
-    		     .parameter("Element", "historizing_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Historizing", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    VariableAttributes::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "VariableAttributes json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    VariableAttributes::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Value";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!value_.jsonDecode(*tree)) {
-            Log(Error, "VariableAttributes decode json error - decode failed")
-                .parameter("Element", "Value");
-            return false;
-        }
-    
-        elementName = "DataType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataType_.jsonDecode(*tree)) {
-            Log(Error, "VariableAttributes decode json error - decode failed")
-                .parameter("Element", "DataType");
-            return false;
-        }
-    
-        elementName = "ValueRank";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, valueRank_)) {
-            Log(Error, "VariableAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ArrayDimensions";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!arrayDimensions_.jsonDecode(*tree, "")) {
-            Log(Error, "VariableAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "AccessLevel";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, accessLevel_)) {
-            Log(Error, "VariableAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "UserAccessLevel";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, userAccessLevel_)) {
-            Log(Error, "VariableAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MinimumSamplingInterval";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, minimumSamplingInterval_)) {
-            Log(Error, "VariableAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "Historizing";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "VariableAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, historizing_)) {
-            Log(Error, "VariableAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

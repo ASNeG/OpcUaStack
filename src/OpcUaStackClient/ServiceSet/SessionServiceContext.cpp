@@ -16,15 +16,21 @@
  */
 
 #include <boost/make_shared.hpp>
+#include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
-#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/UserNameIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/X509IdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/IssuedIdentityToken.h"
 #include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceContext.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
@@ -104,12 +110,12 @@ namespace OpcUaStackClient
 		// create session request
 		CreateSessionRequest createSessionRequest;
 		createSessionRequest.requestHeader()->requestHandle(++requestHandle_);
-		createSessionRequest.clientDescription(sessionConfig_->applicationDescription_);
+		createSessionRequest.clientDescription(sessionConfig_->applicationDescription());
 		createSessionRequest.endpointUrl(secureChannelClientConfig_->endpointUrl());
-		createSessionRequest.sessionName(sessionConfig_->sessionName_);
+		createSessionRequest.sessionName(sessionConfig_->sessionName());
 		createSessionRequest.clientNonce((OpcUaStackCore::OpcUaByte*)"\000", 1);
-		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout_);
-		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize_);
+		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout());
+		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize());
 
 		// added client certificate chain and client nonce to create session request
 		if (!securitySettings.ownCertificateChain().empty()) {
@@ -127,7 +133,8 @@ namespace OpcUaStackClient
 		Log(Debug, "session send CreateSessionRequest")
 		    .parameter("SessId", id_)
 		    .parameter("RequestId", trx->requestId_)
-		    .parameter("SessionName", sessionConfig_->sessionName_);
+		    .parameter("SessionName", sessionConfig_->sessionName());
+
 		secureChannelClient_.asyncWriteMessageRequest(
 			secureChannel_,
 			trx
@@ -154,6 +161,14 @@ namespace OpcUaStackClient
 		activateSessionRequest.requestHeader()->sessionAuthenticationToken() = authenticationToken_;
 		activateSessionRequest.localeIds()->resize(1);
 		activateSessionRequest.localeIds()->push_back(localeIdSPtr);
+
+		// create user identity token
+		auto statusCode = authentication(activateSessionRequest);
+		if (statusCode != Success) {
+			Log(Error, "create user identity token error")
+				.parameter("SessId", id_);
+			return statusCode;
+		}
 
 		// create client signature
 		auto certificate = securitySettings.ownCertificateChain().getCertificate();
@@ -182,17 +197,14 @@ namespace OpcUaStackClient
 			}
 		}
 
-		// user identity token
-		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
-		AnonymousIdentityToken::SPtr anonymousIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
-		anonymousIdentityToken->policyId() = "anonymous";
+		// encode activate session request
 		activateSessionRequest.requestHeader()->opcUaBinaryEncode(ios);
 		activateSessionRequest.opcUaBinaryEncode(ios);
 
 		Log(Debug, "session send ActivateSessionRequest")
 		 	.parameter("SessId", id_)
 			.parameter("RequestId", trx->requestId_)
-		    .parameter("SessionName", sessionConfig_->sessionName_)
+		    .parameter("SessionName", sessionConfig_->sessionName())
 		    .parameter("AuthenticationToken", authenticationToken_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel, trx);
 		return Success;
@@ -241,7 +253,7 @@ namespace OpcUaStackClient
 		Log(Debug, "session send CloseSessionRequest")
 			.parameter("SessId", id_)
 			.parameter("RequestId", trx->requestId_)
-			.parameter("SessionName", sessionConfig_->sessionName_)
+			.parameter("SessionName", sessionConfig_->sessionName())
 			.parameter("AuthenticationToken", authenticationToken_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, trx);
 		return Success;
@@ -266,7 +278,7 @@ namespace OpcUaStackClient
 		Log(Debug, "session send CancelRequest")
 			.parameter("SessId", id_)
 		    .parameter("RequestId", trx->requestId_)
-		    .parameter("SessionName", sessionConfig_->sessionName_)
+		    .parameter("SessionName", sessionConfig_->sessionName())
 		    .parameter("AuthenticationToken", authenticationToken_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, trx);
 
@@ -305,7 +317,8 @@ namespace OpcUaStackClient
 				Log(Debug, "set session service mode")
 					.parameter("SessId", id_)
 					.parameter("SessServiceMode", "UseCache")
-					.parameter("CacheSize", endpointDescriptionCache_.size());
+					.parameter("CacheSize", endpointDescriptionCache_.size())
+					.parameter("Certs", endpointDescription->serverCertificate().size());
 
 				sessionServiceMode_ = SessionServiceMode::UseCache;
 				secureChannelClientConfig_ = boost::make_shared<SecureChannelClientConfig>(*secureChannelClientConfigBackup_.get());
@@ -313,6 +326,18 @@ namespace OpcUaStackClient
 				secureChannelClientConfig_->applicationUri(endpointDescription->server().applicationUri());
 				secureChannelClientConfig_->securityMode(endpointDescription->securityMode().enumeration());
 				secureChannelClientConfig_->securityPolicy(SecurityPolicy::str2Enum(endpointDescription->securityPolicyUri().toStdString()));
+
+				// get partner certificate form endpoint description if exists
+				if (endpointDescription->serverCertificate().size() > 0) {
+					CertificateChain certificateChain;
+					if (!certificateChain.fromByteString(endpointDescription->serverCertificate())) {
+						Log(Debug, "server certificate in endpoint description error");
+					}
+					else {
+						secureChannelClientConfig_->certificateChain(certificateChain);
+					}
+				}
+
 				return;
 			}
 		}
@@ -361,10 +386,82 @@ namespace OpcUaStackClient
 				continue;
 			}
 
+			// check user identity token
+			if (!selectUserIdentityTokenFromCache(endpointDescription)) {
+				continue;
+			}
+
+			MessageSecurityMode messageSecurityMode(secureChannelClientConfigBackup_->securityMode());
+			SecurityPolicy securityPolicy(secureChannelClientConfigBackup_->securityPolicy());
+
+			Log(Debug, "use cache entry")
+			    .parameter("EndpointUrl", endpointDescription->endpointUrl())
+				.parameter("SecurityMode", messageSecurityMode.enum2Str())
+				.parameter("SecurityPolicy", securityPolicy.enum2Str())
+				.parameter("PolicyId", sessionConfig_->userAuthentication()->policyId());
 			return endpointDescription;
 		}
 
 		return nullptr;
+	}
+
+	bool
+	SessionServiceContext::selectUserIdentityTokenFromCache(
+		EndpointDescription::SPtr& endpointDescription
+	)
+	{
+		for (uint32_t idx = 0; idx < endpointDescription->userIdentityTokens().size(); idx++) {
+			UserTokenPolicy::SPtr userTokenPolicy;
+			endpointDescription->userIdentityTokens().get(idx, userTokenPolicy);
+
+			switch (sessionConfig_->userAuthentication()->userAuthenticationType())
+			{
+				case UserAuthenticationType::Anonymous:
+				{
+					auto userToken = boost::static_pointer_cast<AnonymousAuthentication>(sessionConfig_->userAuthentication());
+					if (userTokenPolicy->tokenType() == UserTokenType::EnumAnonymous) {
+						userToken->policyId() = userTokenPolicy->policyId().toStdString();
+						return true;
+					}
+					break;
+				}
+				case UserAuthenticationType::UserName:
+				{
+					if (userTokenPolicy->tokenType() == UserTokenType::EnumUserName) {
+						auto userToken = boost::static_pointer_cast<UserNameAuthentication>(sessionConfig_->userAuthentication());
+						if (userTokenPolicy->securityPolicyUri() == userToken->securityPolicyUri()) {
+							userToken->policyId() = userTokenPolicy->policyId().toStdString();
+							return true;
+						}
+					}
+					break;
+				}
+				case UserAuthenticationType::X509:
+				{
+					if (userTokenPolicy->tokenType() == UserTokenType::EnumCertificate) {
+						auto userToken = boost::static_pointer_cast<X509Authentication>(sessionConfig_->userAuthentication());
+						if (userTokenPolicy->securityPolicyUri() == userToken->securityPolicyUri()) {
+							userToken->policyId() = userTokenPolicy->policyId().toStdString();
+							return true;
+						}
+					}
+					break;
+				}
+				case UserAuthenticationType::Issued:
+				{
+					if (userTokenPolicy->tokenType() == UserTokenType::EnumIssuedToken) {
+						auto userToken = boost::static_pointer_cast<IssuedAuthentication>(sessionConfig_->userAuthentication());
+						if (userTokenPolicy->securityPolicyUri() == userToken->securityPolicyUri()) {
+							userToken->policyId() = userTokenPolicy->policyId().toStdString();
+							return true;
+						}
+					}
+					break;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	bool
@@ -387,6 +484,349 @@ namespace OpcUaStackClient
 		}
 
 		return true;
+	}
+
+	OpcUaStatusCode
+	SessionServiceContext::authentication(
+		ActivateSessionRequest& activateSessionRequest)
+	{
+		auto securityPolicyUri = SecurityPolicy::enum2Str(secureChannelClientConfig_->securityPolicy());
+
+		auto userAuthentication = sessionConfig_->userAuthentication();
+		if (userAuthentication.get() == nullptr) {
+			return authenticationAnonymous(
+				activateSessionRequest,
+				securityPolicyUri,
+				"Anonymous"
+			);
+		}
+
+		switch (userAuthentication->userAuthenticationType())
+		{
+			case UserAuthenticationType::Anonymous:
+			{
+				return authenticationAnonymous(
+					activateSessionRequest,
+					securityPolicyUri,
+					userAuthentication->policyId()
+				);
+				break;
+			}
+			case UserAuthenticationType::UserName:
+			{
+				auto userNameAuthentication = boost::static_pointer_cast<UserNameAuthentication>(userAuthentication);
+				return authenticationUserName(
+					activateSessionRequest,
+					userNameAuthentication->securityPolicyUri(),
+					userAuthentication->policyId(),
+					userNameAuthentication->userName(),
+					userNameAuthentication->password(),
+					userNameAuthentication->encryptionAlgorithm()
+				);
+				break;
+			}
+			case UserAuthenticationType::X509:
+			{
+				auto x509Authentication = boost::static_pointer_cast<X509Authentication>(userAuthentication);
+				return authenticationX509(
+					activateSessionRequest,
+					x509Authentication->securityPolicyUri(),
+					userAuthentication->policyId(),
+					*x509Authentication->certificate().get(),
+					*x509Authentication->privateKey().get()
+				);
+				break;
+			}
+			case UserAuthenticationType::Issued:
+			{
+				auto issuedAuthentication = boost::static_pointer_cast<IssuedAuthentication>(userAuthentication);
+				return authenticationIssued(
+					activateSessionRequest,
+					issuedAuthentication->securityPolicyUri(),
+					userAuthentication->policyId(),
+					issuedAuthentication->tokenData(),
+					issuedAuthentication->encryptionAlgorithm()
+				);
+				break;
+			}
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SessionServiceContext::authenticationAnonymous(
+		ActivateSessionRequest& activateSessionRequest,
+		const std::string& securityPolicyUri,
+		const std::string& policyId
+	)
+	{
+		Log(Debug, "authentication anonymous")
+			.parameter("SecurityPolicyUri", securityPolicyUri)
+		    .parameter("PolicyId", policyId);
+
+		// create anonymous identity token
+		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+		auto userIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
+		userIdentityToken->policyId() = OpcUaString(policyId);
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SessionServiceContext::authenticationUserName(
+		ActivateSessionRequest& activateSessionRequest,
+		const std::string& securityPolicyUri,
+		const std::string& policyId,
+		const std::string& userName,
+		const std::string& password,
+		const std::string& encryptionAlgorithm
+	)
+	{
+		Log(Debug, "authentication user name")
+			.parameter("SecurityPolicyUri", securityPolicyUri)
+		    .parameter("PolicyId", policyId)
+			.parameter("UserName", userName)
+			.parameter("EncyptionAlgorithmus", encryptionAlgorithm);
+
+		// create user name identity token
+		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
+		auto userIdentityToken = activateSessionRequest.userIdentityToken()->parameter<UserNameIdentityToken>();
+		userIdentityToken->policyId() = OpcUaString(policyId);
+		userIdentityToken->userName() = OpcUaString(userName);
+		userIdentityToken->password() = OpcUaByteString(password);
+		userIdentityToken->encryptionAlgorithm() = OpcUaString(encryptionAlgorithm);
+
+		if (userIdentityToken->encryptionAlgorithm() == OpcUaString("")) {
+			// we use a plain password
+			return Success;
+		}
+
+		// get cryption base and check cryption alg
+		auto cryptoBase = secureChannelClientConfig_->cryptoManager()->get(securityPolicyUri);
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", securityPolicyUri);
+			return BadIdentityTokenRejected;
+		}
+		auto securityPolicy = secureChannelClientConfig_->cryptoManager()->securityPolicy(securityPolicyUri);
+		if (securityPolicy == SecurityPolicy::EnumNone) {
+			// we use a plain password
+
+			userIdentityToken->encryptionAlgorithm() = "";
+			return Success;
+		}
+
+		uint32_t encryptionAlg = EnryptionAlgs::uriToEncryptionAlg(encryptionAlgorithm);
+		if (encryptionAlg == 0) {
+			Log(Debug, "encryption alg invalid")
+				.parameter("EncryptionAlgorithm", encryptionAlgorithm);
+			return BadIdentityTokenRejected;;
+		}
+
+		// get public key from communication partner
+		auto& securitySettings = secureChannel_->securitySettings_;
+		if (securitySettings.partnerCertificateChain().empty()) {
+			Log(Debug, "partner certificate empty");
+			return BadIdentityTokenRejected;
+		}
+		auto publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
+
+		// create plain password buffer
+		MemoryBuffer plainText(password.size() + 36);
+		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(plainText.memBuf(), plainText.memLen());
+		memcpy(plainText.memBuf() + 4, password.c_str(), password.length());
+		memcpy(plainText.memBuf() + 4 + password.length(), securitySettings.partnerNonce().memBuf(), 32);
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		cryptoBase->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		asymmetricKeyLen /= 8;
+
+		// get plain and encrypted block lengths
+		uint32_t plainTextBlockSize = 0;
+		uint32_t cryptTextBlockSize = 0;
+		cryptoBase->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+
+		// calculate encrypted text length
+		uint32_t plainTextLen = plainText.memLen();
+		uint32_t rest = plainText.memLen() % plainTextBlockSize;
+		if (rest > 0) {
+			plainTextLen += (plainTextBlockSize - rest);
+		}
+		uint32_t encryptedTextLen = plainTextLen / plainTextBlockSize * cryptTextBlockSize;
+
+		// encrypt password
+		MemoryBuffer encryptedText(encryptedTextLen);
+		cryptoBase->isLogging(true);
+		auto statusCode = cryptoBase->asymmetricEncrypt(
+			plainText.memBuf(),
+			plainText.memLen(),
+			publicKey,
+			encryptedText.memBuf(),
+			&encryptedTextLen
+		);
+		if (statusCode != Success) {
+			Log(Debug, "encrypt password error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadIdentityTokenRejected;
+		}
+
+		// set password
+		userIdentityToken->password().value(encryptedText.memBuf(), encryptedText.memLen());
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SessionServiceContext::authenticationX509(
+		ActivateSessionRequest& activateSessionRequest,
+		const std::string& securityPolicyUri,
+		const std::string& policyId,
+		Certificate& certificate,
+		PrivateKey& privateKey
+	)
+	{
+		Log(Debug, "authentication X509")
+		    .parameter("SecurityPolicyUri", securityPolicyUri)
+		    .parameter("PolicyId", policyId);
+
+		// get cryption base and check cryption alg
+		auto cryptoBase = secureChannelClientConfig_->cryptoManager()->get(securityPolicyUri);
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", securityPolicyUri);
+			return BadIdentityTokenRejected;
+		}
+
+		// added certificate to x509 identity token
+		OpcUaByteString certificateText;
+		if (!certificate.toDERBuf(certificateText)) {
+			Log(Debug, "create certificate data error" );
+			return BadIdentityTokenRejected;
+		}
+
+		// create x509 identity token
+		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
+		auto x509IdentityToken = activateSessionRequest.userIdentityToken()->parameter<X509IdentityToken>();
+		x509IdentityToken->policyId() = OpcUaString(policyId);
+		x509IdentityToken->certificateData() = certificateText;
+
+		// create signature
+		MemoryBuffer certificateBuf(certificateText);
+		auto signatureData = activateSessionRequest.userTokenSignature();
+		auto statusCode = signatureData->createSignature(
+			certificateBuf,
+			privateKey,
+			*cryptoBase
+		);
+		if (statusCode != Success) {
+			Log(Debug, "create signature error")
+				.parameter("SecurityPolicyUri", securityPolicyUri)
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadIdentityTokenRejected;
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SessionServiceContext::authenticationIssued(
+		ActivateSessionRequest& activateSessionRequest,
+		const std::string& securityPolicyUri,
+		const std::string& policyId,
+		const std::string& tokenData,
+		const std::string& encryptionAlgorithm
+	)
+	{
+		Log(Debug, "authentication issued")
+		    .parameter("SecurityPolicyUri", securityPolicyUri)
+		    .parameter("PolicyId", policyId)
+			.parameter("EncyptionAlgorithmus", encryptionAlgorithm);
+
+		// create issued identity token
+		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
+		auto issuedIdentityToken = activateSessionRequest.userIdentityToken()->parameter<IssuedIdentityToken>();
+		issuedIdentityToken->policyId() = OpcUaString(policyId);
+		issuedIdentityToken->tokenData() = OpcUaString(tokenData);
+		issuedIdentityToken->encryptionAlgorithm() = OpcUaString(encryptionAlgorithm);
+
+		if (issuedIdentityToken->encryptionAlgorithm() == OpcUaString("")) {
+			// we use a plain password
+			return Success;
+		}
+
+		// get cryption base and check cryption alg
+		auto cryptoBase = secureChannelClientConfig_->cryptoManager()->get(securityPolicyUri);
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", securityPolicyUri);
+			return BadIdentityTokenRejected;
+		}
+		auto securityPolicy = secureChannelClientConfig_->cryptoManager()->securityPolicy(securityPolicyUri);
+		if (securityPolicy == SecurityPolicy::EnumNone) {
+			// we use plain token data
+			return Success;
+		}
+
+		uint32_t encryptionAlg = EnryptionAlgs::uriToEncryptionAlg(encryptionAlgorithm);
+		if (encryptionAlg == 0) {
+			Log(Debug, "encryption alg invalid")
+				.parameter("EncryptionAlgorithm", encryptionAlgorithm);
+			return BadIdentityTokenRejected;;
+		}
+
+		// get public key from communication partner
+		auto& securitySettings = secureChannel_->securitySettings_;
+		if (securitySettings.partnerCertificateChain().empty()) {
+			Log(Debug, "partner certificate empty");
+			return BadIdentityTokenRejected;
+		}
+		auto publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
+
+		// create plain password buffer
+		MemoryBuffer plainText(tokenData.size() + 36);
+		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(plainText.memBuf(), plainText.memLen());
+		memcpy(plainText.memBuf() + 4, tokenData.c_str(), tokenData.length());
+		memcpy(plainText.memBuf() + 4 + tokenData.length(), securitySettings.partnerNonce().memBuf(), 32);
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		cryptoBase->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		asymmetricKeyLen /= 8;
+
+		// get plain and encrypted block lengths
+		uint32_t plainTextBlockSize = 0;
+		uint32_t cryptTextBlockSize = 0;
+		cryptoBase->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+
+		// calculate encrypted text length
+		uint32_t plainTextLen = plainText.memLen();
+		uint32_t rest = plainText.memLen() % plainTextBlockSize;
+		if (rest > 0) {
+			plainTextLen += (plainTextBlockSize - rest);
+		}
+		uint32_t encryptedTextLen = plainTextLen / plainTextBlockSize * cryptTextBlockSize;
+
+		// encrypt password
+		MemoryBuffer encryptedText(encryptedTextLen);
+		auto statusCode = cryptoBase->asymmetricEncrypt(
+			plainText.memBuf(),
+			plainText.memLen(),
+			publicKey,
+			encryptedText.memBuf(),
+			&encryptedTextLen
+		);
+		if (statusCode != Success) {
+			Log(Debug, "encrypt password error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadIdentityTokenRejected;
+		}
+
+		// set password
+		issuedIdentityToken->tokenData().value(encryptedText.memBuf(), encryptedText.memLen());
+
+		return Success;
 	}
 
 }

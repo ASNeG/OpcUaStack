@@ -199,69 +199,23 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataTypeAttributes::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    DataTypeAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "DataTypeAttributes json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, isAbstract_, "IsAbstract");
+    
+        return rc;
     }
     
     bool
-    DataTypeAttributes::jsonEncode(boost::property_tree::ptree& pt)
+    DataTypeAttributes::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, isAbstract_))
-        {
-    	     Log(Error, "DataTypeAttributes json encoder error")
-    		     .parameter("Element", "isAbstract_");
-           return false;
-        }
-        pt.push_back(std::make_pair("IsAbstract", elementTree));
+        rc = rc & jsonNumberDecode(pt, isAbstract_, "IsAbstract");
     
-        return true;
-    }
-    
-    bool
-    DataTypeAttributes::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "DataTypeAttributes json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    DataTypeAttributes::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "IsAbstract";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataTypeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, isAbstract_)) {
-            Log(Error, "DataTypeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

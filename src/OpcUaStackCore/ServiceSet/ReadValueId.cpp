@@ -118,6 +118,17 @@ namespace OpcUaStackCore
 		dataEncoding_ = name;
 	}
 
+	void
+	ReadValueId::copyTo(ReadValueId& readValueId)
+	{
+		nodeIdSPtr_->copyTo(*readValueId.nodeId().get());
+		readValueId.attributeId(attributeId_);
+		OpcUaString indexRange;
+		indexRange_.copyTo(indexRange);
+		readValueId.indexRange(indexRange);
+		dataEncoding_.copyTo(readValueId.dataEncoding());
+	}
+
 	void 
 	ReadValueId::opcUaBinaryEncode(std::ostream& os) const
 	{
@@ -137,110 +148,25 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ReadValueId::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	ReadValueId::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "ReadValueId json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
+		bool rc = true;
+		rc = rc & jsonObjectSPtrEncode(pt, nodeIdSPtr_, "NodeId");
+		rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId", true, (OpcUaInt32)13);
+		rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange", true);
+		rc = rc & jsonObjectEncode(pt, dataEncoding_, "DataEncoding", true);
+		return rc;
 	}
 
 	bool
-	ReadValueId::jsonEncode(boost::property_tree::ptree& pt)
+	ReadValueId::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		// encode node id
-		if (!nodeIdSPtr_->jsonEncode(pt, "NodeId")) {
-			Log(Error, "ReadValueId json encode error")
-				.parameter("Element", "NodeId");
-			return false;
-		}
-
-		// encode attribute id
-		if (attributeId_ != AttributeId_Value) {
-			if (!JsonNumber::jsonEncode(pt, attributeId_, "AttributeId")) {
-				Log(Error, "ReadValueId json encode error")
-					.parameter("Element", "AttributeId");
-				return false;
-			}
-		}
-
-		// encode index range
-		if (indexRange_.exist()) {
-			if (!indexRange_.jsonEncode(pt, "IndexRange")) {
-				Log(Error, "ReadValueId json encode error")
-					.parameter("Element", "IndexRange");
-				return false;
-			}
-		}
-
-		// encode data encoding
-		if (dataEncoding_.namespaceIndex() != 0 || dataEncoding_.name().exist()) {
-			if (!dataEncoding_.jsonEncode(pt, "DataEncoding")) {
-				Log(Error, "ReadValueId json encode error")
-					.parameter("Element", "DataEncoding");
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	bool
-	ReadValueId::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "ReadValueId json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	ReadValueId::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		// decode node id
-		if (!nodeIdSPtr_->jsonDecode(pt, "NodeId")) {
-			Log(Error, "ReadValueId json decode error")
-			    .parameter("Element", "NodeId");
-			return false;
-		}
-
-		// decode attribute id
-		if (!JsonNumber::jsonDecode(pt, attributeId_, "AttributeId")) {
-			attributeId_ = AttributeId_Value;
-		}
-
-		// decode index range
-		indexRange_ = "";
-		auto indexRange = pt.get_child_optional("IndexRange");
-		if (indexRange) {
-			if (!indexRange_.jsonDecode(*indexRange)) {
-				Log(Error, "ReadValueId json decode error")
-					.parameter("Element", "IndexRange");
-				return false;
-			}
-		}
-
-		// decode data encoding
-		dataEncoding_ = "";
-		auto dataEncoding = pt.get_child_optional("DataEncoding");
-		if (dataEncoding) {
-			if (!dataEncoding_.jsonDecode(pt, "DataEncoding")) {
-				Log(Error, "ReadValueId json decode error")
-				    .parameter("Element", "DataEncoding");
-				return false;
-			}
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonObjectSPtrDecode(pt, nodeIdSPtr_, "NodeId");
+		rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId", true, (OpcUaInt32)13);
+		rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange", true);
+		rc = rc & jsonObjectDecode(pt, dataEncoding_, "DataEncoding", true);
+		return rc;
 	}
 
 }

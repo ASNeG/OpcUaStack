@@ -257,52 +257,15 @@ namespace OpcUaStackCore
     }
     
     bool
-    TrustListMasks::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    TrustListMasks::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "TrustListMasks json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        return jsonNumberEncode(pt, value_);
     }
     
     bool
-    TrustListMasks::jsonEncode(boost::property_tree::ptree& pt)
+    TrustListMasks::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        if(!JsonNumber::jsonEncode(pt, value_))
-        {
-    	     Log(Error, "TrustListMasks json encoder error")
-    		     .parameter("Element", "Value");
-           return false;
-        }
-        return true;
-    }
-    
-    bool
-    TrustListMasks::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "TrustListMasks json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    TrustListMasks::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        if(!JsonNumber::jsonDecode(pt, value_)) {
-            Log(Error, "TrustListMasks decode json error - decode failed");
-            return false;
-        }
-        return true;
+        return jsonNumberDecode(pt, value_);
     }
     
     void

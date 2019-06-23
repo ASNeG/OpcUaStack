@@ -486,26 +486,36 @@ namespace OpcUaStackCore
 	void 
 	SlotTimer::startSlotTimerLoop(IOService* ioService)
 	{
+		Log(Debug, "slot timer starting");
+
 		running_ = true;
 		ioService_ = ioService;
 		startTime_ = boost::posix_time::microsec_clock::local_time();
 
 		timer_ = new boost::asio::deadline_timer(ioService->io_service(), boost::posix_time::milliseconds(0));
 		timer_->async_wait(boost::bind(&SlotTimer::loop, this, boost::asio::placeholders::error));
+
+		Log(Debug, "slot timer started");
 	}
 		
 	void 
 	SlotTimer::stopSlotTimerLoop(void)
 	{
+		Log(Debug, "slot timer stopping");
+
 		running_ = false;
 		IOService::msecSleep(100);
 		delete timer_;
 		timer_ = nullptr;
+
+		Log(Debug, "slot timer stopped");
 	}
 
 	void
 	SlotTimer::stopSlotTimerLoopSync(void)
 	{
+		Log(Debug, "slot timer stopping");
+
 		mutex_.lock();
 		stopCondition_.initEvent();
 		running_ = false;
@@ -515,6 +525,8 @@ namespace OpcUaStackCore
 		stopCondition_.waitForEvent();
 		delete timer_;
 		timer_ = nullptr;
+
+		Log(Debug, "slot timer stopped");
 	}
 
 	void

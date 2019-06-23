@@ -327,157 +327,31 @@ namespace OpcUaStackCore
     }
     
     bool
-    Argument::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    Argument::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
+        rc = rc & jsonObjectEncode(pt, dataType_, "DataType", true);
+        rc = rc & jsonNumberEncode(pt, valueRank_, "ValueRank");
+        rc = rc & jsonArrayEncode(pt, arrayDimensions_, "ArrayDimensions", true);
+        rc = rc & jsonObjectEncode(pt, description_, "Description", true);
+    
+        return rc;
     }
     
     bool
-    Argument::jsonEncode(boost::property_tree::ptree& pt)
+    Argument::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
+        rc = rc & jsonObjectDecode(pt, dataType_, "DataType", true);
+        rc = rc & jsonNumberDecode(pt, valueRank_, "ValueRank");
+        rc = rc & jsonArrayDecode(pt, arrayDimensions_, "ArrayDimensions", true);
+        rc = rc & jsonObjectDecode(pt, description_, "Description", true);
     
-        elementTree.clear();
-        if (!dataType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", "dataType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, valueRank_))
-        {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", "valueRank_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ValueRank", elementTree));
-    
-        elementTree.clear();
-        if (!arrayDimensions_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", "arrayDimensions_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ArrayDimensions", elementTree));
-    
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "Argument json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    Argument::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "Argument json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    Argument::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Argument decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "Argument decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
-    
-        elementName = "DataType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Argument decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataType_.jsonDecode(*tree)) {
-            Log(Error, "Argument decode json error - decode failed")
-                .parameter("Element", "DataType");
-            return false;
-        }
-    
-        elementName = "ValueRank";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Argument decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, valueRank_)) {
-            Log(Error, "Argument decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ArrayDimensions";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Argument decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!arrayDimensions_.jsonDecode(*tree, "")) {
-            Log(Error, "Argument decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "Description";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Argument decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!description_.jsonDecode(*tree)) {
-            Log(Error, "Argument decode json error - decode failed")
-                .parameter("Element", "Description");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -1,4 +1,4 @@
-Release 4.1.0
+  Release 4.0.0
 ------------------------------------------------------------
 
 **Features**:
@@ -31,9 +31,27 @@ Release 4.1.0
 **Documentation**:
 
 * add *Overview* document #184, by @flipback
+* add *Project Roadmap* section #246, by @flipback
 
-Release 3.7.0
+Release 3.8.0
 ------------------------------------------------------------
+
+**Features**:
+
+* add policy id to session config #168, by @huebl
+* add option -j to build.bat to build on several CPUs on Windows #243, by @flipback
+
+**Bugs**:
+
+* fix dependence of start\\stop item monitoring on callbacks #133, by @flipback
+
+**Other**:
+
+* integrate CI under Jenkins #234, by @flipback
+
+Release 3.7.0 (2019-04-01)
+------------------------------------------------------------
+
 
 **Features**:
 

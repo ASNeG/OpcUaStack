@@ -134,115 +134,27 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	HistoryReadValueId::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	HistoryReadValueId::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "HistoryReadValueId json encoder error")
-				.parameter("Element", element);
-			return false;
+		bool rc = true;
+		rc = rc & jsonObjectSPtrEncode(pt, nodeIdSPtr_, "NodeId");
+		rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange", true);
+		if (dataEncoding_.namespaceIndex() != 0 || const_cast<OpcUaQualifiedName*>(&dataEncoding_)->name().exist()) {
+			rc = rc & jsonObjectEncode(pt, dataEncoding_, "DataEncoding", true);
 		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
+		rc = rc & jsonObjectEncode(pt, continuationPoint_, "ContinuationPoint", true);
+		return rc;
 	}
 
 	bool
-	HistoryReadValueId::jsonEncode(boost::property_tree::ptree& pt)
+	HistoryReadValueId::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
-		// encode node id
-		if (!nodeIdSPtr_->jsonEncode(pt, "NodeId")) {
-			Log(Error, "HistoryReadValueId json encode error")
-				.parameter("Element", "NodeId");
-			return false;
-		}
-
-		// encode index range
-		if (indexRange_.exist()) {
-			if (!indexRange_.jsonEncode(pt, "IndexRange")) {
-				Log(Error, "HistoryReadValueId json encode error")
-					.parameter("Element", "IndexRange");
-				return false;
-			}
-		}
-
-		// encode data encoding
-		if (dataEncoding_.namespaceIndex() != 0 || dataEncoding_.name().exist()) {
-			if (!dataEncoding_.jsonEncode(pt, "DataEncoding")) {
-				Log(Error, "HistoryReadValueId json encode error")
-					.parameter("Element", "DataEncoding");
-				return false;
-			}
-		}
-
-		// encode continuation point
-		if (continuationPoint_.exist()) {
-			if (!continuationPoint_.jsonEncode(pt, "ContinuationPoint")) {
-				Log(Error, "HistoryReadValueId json encode error")
-					.parameter("Element", "ContinuationPoint");
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	bool
-	HistoryReadValueId::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "HistoryReadValueId json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	HistoryReadValueId::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		// decode node id
-		if (!nodeIdSPtr_->jsonDecode(pt, "NodeId")) {
-			Log(Error, "HistoryReadValueId json decode error")
-			    .parameter("Element", "NodeId");
-			return false;
-		}
-
-		// decode index range
-		indexRange_ = "";
-		auto indexRange = pt.get_child_optional("IndexRange");
-		if (indexRange) {
-			if (!indexRange_.jsonDecode(*indexRange)) {
-				Log(Error, "HistoryReadValueId json decode error")
-				    .parameter("Element", "IndexRange");
-				return false;
-			}
-		}
-
-		// decode data encoding
-		dataEncoding_ = "";
-		auto dataEncoding = pt.get_child_optional("DataEncoding");
-		if (dataEncoding) {
-			if (!dataEncoding_.jsonDecode(pt, "DataEncoding")) {
-				Log(Error, "HistoryReadValueId json decode error")
-				    .parameter("Element", "DataEncoding");
-				return false;
-			}
-		}
-
-		// decode continuation point
-		auto continuationPoint = pt.get_child_optional("ContinuationPoint");
-		if (continuationPoint) {
-			if (!continuationPoint_.jsonDecode(pt, "ContinuationPoint")) {
-				Log(Error, "HistoryReadValueId json decode error")
-				    .parameter("Element", "ContinuationPoint");
-				return false;
-			}
-		}
-
-		return true;
+		bool rc = true;
+		rc = rc & jsonObjectSPtrDecode(pt, nodeIdSPtr_, "NodeId");
+		rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange", true);
+		rc = rc & jsonObjectDecode(pt, dataEncoding_, "DataEncoding", true);
+		rc = rc & jsonObjectDecode(pt, continuationPoint_, "ContinuationPoint", true);
+		return rc;
 	}
 
 }

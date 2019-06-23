@@ -338,7 +338,7 @@ namespace OpcUaStackCore
 		// The current time shall be after the start of the validity period and before
 		// the end. This error may be suppressed.
 		//
-		auto now = boost::posix_time::microsec_clock::universal_time();
+		auto now = boost::posix_time::microsec_clock::local_time();
 		for (auto certificate : certificateChain_.certificateVec()) {
 			CertificateInfo info;
 			if (!certificate->getInfo(info)) {
@@ -348,8 +348,13 @@ namespace OpcUaStackCore
 
 			Identity subject;
 			certificate->getSubject(subject);
-			if (info.validFrom() > now) return BadCertificateTimeInvalid;
-			if (info.validTime() < now) return BadCertificateTimeInvalid;
+			if ((info.validFrom() > now) || (info.validTime() < now)) {
+				Log(Debug, "certificate period info")
+					.parameter("FromTime", info.validFrom())
+					.parameter("Time", now)
+					.parameter("ToTime", info.validTime());
+				return BadCertificateTimeInvalid;
+			}
 		}
 
 		return Success;

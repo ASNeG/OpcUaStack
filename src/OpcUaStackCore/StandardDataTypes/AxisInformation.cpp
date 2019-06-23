@@ -320,157 +320,31 @@ namespace OpcUaStackCore
     }
     
     bool
-    AxisInformation::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    AxisInformation::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, engineeringUnits_, "EngineeringUnits", true);
+        rc = rc & jsonObjectEncode(pt, eURange_, "EURange", true);
+        rc = rc & jsonObjectEncode(pt, title_, "Title", true);
+        rc = rc & jsonObjectEncode(pt, axisScaleType_, "AxisScaleType", true);
+        rc = rc & jsonArrayEncode(pt, axisSteps_, "AxisSteps", true);
+    
+        return rc;
     }
     
     bool
-    AxisInformation::jsonEncode(boost::property_tree::ptree& pt)
+    AxisInformation::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!engineeringUnits_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", "engineeringUnits_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EngineeringUnits", elementTree));
+        rc = rc & jsonObjectDecode(pt, engineeringUnits_, "EngineeringUnits", true);
+        rc = rc & jsonObjectDecode(pt, eURange_, "EURange", true);
+        rc = rc & jsonObjectDecode(pt, title_, "Title", true);
+        rc = rc & jsonObjectDecode(pt, axisScaleType_, "AxisScaleType", true);
+        rc = rc & jsonArrayDecode(pt, axisSteps_, "AxisSteps", true);
     
-        elementTree.clear();
-        if (!eURange_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", "eURange_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EURange", elementTree));
-    
-        elementTree.clear();
-        if (!title_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", "title_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Title", elementTree));
-    
-        elementTree.clear();
-        if (!axisScaleType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", "axisScaleType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AxisScaleType", elementTree));
-    
-        elementTree.clear();
-        if (!axisSteps_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "AxisInformation json encoder error")
-    		     .parameter("Element", "axisSteps_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AxisSteps", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    AxisInformation::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "AxisInformation json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    AxisInformation::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "EngineeringUnits";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AxisInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!engineeringUnits_.jsonDecode(*tree)) {
-            Log(Error, "AxisInformation decode json error - decode failed")
-                .parameter("Element", "EngineeringUnits");
-            return false;
-        }
-    
-        elementName = "EURange";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AxisInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!eURange_.jsonDecode(*tree)) {
-            Log(Error, "AxisInformation decode json error - decode failed")
-                .parameter("Element", "EURange");
-            return false;
-        }
-    
-        elementName = "Title";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AxisInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!title_.jsonDecode(*tree)) {
-            Log(Error, "AxisInformation decode json error - decode failed")
-                .parameter("Element", "Title");
-            return false;
-        }
-    
-        elementName = "AxisScaleType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AxisInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!axisScaleType_.jsonDecode(*tree)) {
-            Log(Error, "AxisInformation decode json error - decode failed")
-                .parameter("Element", "AxisScaleType");
-            return false;
-        }
-    
-        elementName = "AxisSteps";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "AxisInformation decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!axisSteps_.jsonDecode(*tree, "")) {
-            Log(Error, "AxisInformation decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

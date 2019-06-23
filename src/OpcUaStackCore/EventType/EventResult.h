@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,11 +18,12 @@
 #ifndef __OpcUaStackCore_EventResultCode_h__
 #define __OpcUaStackCore_EventResultCode_h__
 
+#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
 
-	class EventResult
+	class DLLEXPORT EventResult
 	{
 	  public:
 

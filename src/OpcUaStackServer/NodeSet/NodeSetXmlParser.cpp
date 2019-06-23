@@ -722,7 +722,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUADataType(boost::property_tree::ptree& ptree)
 	{
-		DataTypeNodeClass::SPtr dataTypeNodeClassSPtr = constructSPtr<DataTypeNodeClass>();
+		auto dataTypeNodeClassSPtr = constructSPtr<DataTypeNodeClass>();
 
 		//
 		// decode NodeBase
@@ -907,23 +907,26 @@ namespace OpcUaStackServer
 
 
 	bool
-	NodeSetXmlParser::decodeDataTypeDefinition(DataTypeNodeClass::SPtr& dataTypeNodeClass, boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeDataTypeDefinition(
+		DataTypeNodeClass::SPtr& dataTypeNodeClass,
+		boost::property_tree::ptree& ptree
+	)
 	{
 		NodeSetDefinitionParser parser;
 
 		// get optional Definition element
-		boost::optional<boost::property_tree::ptree&> definitionTree = ptree.get_child_optional("Definition");
+		auto definitionTree = ptree.get_child_optional("Definition");
 		if (!definitionTree) {
 			return true;
 		}
 
 		// find out whether a enum or data strucure exists
-		boost::optional<std::string> value = ptree.get_optional<std::string>("Definition.Field.<xmlattr>.Value");
+		auto value = ptree.get_optional<std::string>("Definition.Field.<xmlattr>.Value");
 		if (value) {
 
 			// decode enum definition
 
-			EnumDefinitionExpand::SPtr enumDefinition = constructSPtr<EnumDefinitionExpand>();
+			auto enumDefinition = constructSPtr<EnumDefinitionExpand>();
 
 			if (!parser.decode(*definitionTree, enumDefinition, false)) {
 				Log(Error, "invalid enum definiton - ignore enum definiton section")
@@ -937,7 +940,7 @@ namespace OpcUaStackServer
 
 			// decode structure definition
 
-			StructureDefinitionExpand::SPtr structureDefinition = constructSPtr<StructureDefinitionExpand>();
+			auto structureDefinition = constructSPtr<StructureDefinitionExpand>();
 
 			if (!parser.decode(*definitionTree, structureDefinition, false)) {
 				Log(Error, "invalid structure definiton - ignore structure definiton section")
@@ -1583,7 +1586,7 @@ namespace OpcUaStackServer
 
 			// encode structure definition
 
-			StructureDefinitionExpand::SPtr structureDefinition = boost::static_pointer_cast<StructureDefinitionExpand>(definitionObject);
+			auto structureDefinition = boost::static_pointer_cast<StructureDefinitionExpand>(definitionObject);
 			if (!parser.encode(structureDefinition, ptree)) {
 				Log(Error, "invalid structure definiton - ignore structure definiton section")
 					.parameter("NodeId", dataTypeNodeClass->nodeId().data());
@@ -1595,7 +1598,7 @@ namespace OpcUaStackServer
 
 			// encode enum definition
 
-			EnumDefinitionExpand::SPtr enumDefinition = boost::static_pointer_cast<EnumDefinitionExpand>(definitionObject);
+			auto enumDefinition = boost::static_pointer_cast<EnumDefinitionExpand>(definitionObject);
 			if (!parser.encode(enumDefinition, ptree)) {
 				Log(Error, "invalid enum definiton - ignore structure enum section")
 					.parameter("NodeId", dataTypeNodeClass->nodeId().data());

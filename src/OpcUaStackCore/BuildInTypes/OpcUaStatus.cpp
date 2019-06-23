@@ -72,19 +72,19 @@ namespace OpcUaStackCore
     }
     
     std::string
-    OpcUaStatus::enum2Str(OpcUaStatusCode enumeration)
+    OpcUaStatus::enum2Str(OpcUaStatusCode enumeration) const
     {
     	return OpcUaStatusCodeMap::shortString((OpcUaStatusCode)enumeration);
     }
     
     std::string
-    OpcUaStatus::enum2Str(void)
+    OpcUaStatus::enum2Str(void) const
     {
         return enum2Str((OpcUaStatusCode)value_);
     }
     
     std::string
-    OpcUaStatus::toString(void)
+    OpcUaStatus::toString(void) const
     {
         return enum2Str((OpcUaStatusCode)value_);
     }
@@ -252,24 +252,18 @@ namespace OpcUaStackCore
 
         return true;
     }
-    
 
     
     bool
     OpcUaStatus::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-		// added status
-    	pt.put_value(toString());
-		return true;
+    	return jsonNumberEncode(pt, (uint32_t)value_);
     }
     
     bool
     OpcUaStatus::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-		// get source pico seconds
-    	auto sourceValue = pt.get_value<std::string>();
-    	enumeration(str2Enum(sourceValue));
-		return true;
+		return jsonNumberDecode(pt, *(uint32_t*)&value_);
     }
     
     void

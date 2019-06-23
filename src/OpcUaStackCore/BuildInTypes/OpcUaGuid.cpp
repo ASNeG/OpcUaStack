@@ -118,7 +118,7 @@ namespace OpcUaStackCore
 	}
 
 	std::string
-	OpcUaGuid::value(void)
+	OpcUaGuid::value(void) const
 	{
 		std::string str1, str2, str3, str4, str5;
 
@@ -252,41 +252,14 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaGuid::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcUaGuid json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-	}
-
-	bool
-	OpcUaGuid::jsonEncode(boost::property_tree::ptree& pt)
+	OpcUaGuid::jsonEncodeImpl(boost::property_tree::ptree &pt) const
 	{
 		pt.put_value(value());
 		return true;
 	}
 
 	bool
-	OpcUaGuid::jsonDecode(const boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<const boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcUaGuid json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	OpcUaGuid::jsonDecode(const boost::property_tree::ptree& pt)
+	OpcUaGuid::jsonDecodeImpl(const boost::property_tree::ptree &pt)
 	{
 		std::string sourceValue = pt.get_value<std::string>();
 		if (sourceValue.empty()) {

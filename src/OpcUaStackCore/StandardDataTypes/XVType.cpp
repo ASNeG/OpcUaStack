@@ -226,91 +226,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    XVType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    XVType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "XVType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, x_, "X");
+        rc = rc & jsonNumberEncode(pt, value_, "Value");
+    
+        return rc;
     }
     
     bool
-    XVType::jsonEncode(boost::property_tree::ptree& pt)
+    XVType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, x_))
-        {
-    	     Log(Error, "XVType json encoder error")
-    		     .parameter("Element", "x_");
-           return false;
-        }
-        pt.push_back(std::make_pair("X", elementTree));
+        rc = rc & jsonNumberDecode(pt, x_, "X");
+        rc = rc & jsonNumberDecode(pt, value_, "Value");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, value_))
-        {
-    	     Log(Error, "XVType json encoder error")
-    		     .parameter("Element", "value_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Value", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    XVType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "XVType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    XVType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "X";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "XVType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, x_)) {
-            Log(Error, "XVType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "Value";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "XVType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, value_)) {
-            Log(Error, "XVType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

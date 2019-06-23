@@ -75,7 +75,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaLocalizedTextArray
+	class DLLEXPORT OpcUaLocalizedTextArray
 	: public OpcUaArray<OpcUaLocalizedText::SPtr, SPtrTypeCoder<OpcUaLocalizedText> >
 	, public Object
 	{

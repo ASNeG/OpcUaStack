@@ -25,7 +25,8 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT BrowsePathTarget
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<BrowsePathTarget> SPtr;
@@ -38,15 +39,26 @@ namespace OpcUaStackCore
 		void remainingPathIndex(const OpcUaUInt32& remainingPathIndex);
 		OpcUaUInt32 remainingPathIndex(void);
 
+		void copyTo(BrowsePathTarget& browsePathTarget);
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+      protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		OpcUaExpandedNodeId::SPtr targetIdSPtr_;
 		OpcUaUInt32 remainingPathIndex_;
 	};
 
-	class BrowsePathTargetArray
+	class DLLEXPORT BrowsePathTargetArray
 	: public OpcUaArray<BrowsePathTarget::SPtr, SPtrTypeCoder<BrowsePathTarget> >
 	, public Object
 	{

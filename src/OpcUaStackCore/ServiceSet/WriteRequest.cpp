@@ -66,55 +66,14 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	WriteRequest::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	WriteRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "WriteRequest json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
+		return jsonArraySPtrEncode(pt, writeValueArraySPtr_, "NodesToWrite");
 	}
 
 	bool
-	WriteRequest::jsonEncode(boost::property_tree::ptree& pt)
+	WriteRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		// encode write value array
-		if (!writeValueArraySPtr_->jsonEncode(pt, "NodesToWrite", "")) {
-			Log(Error, "WriteRequest json encode error")
-				.parameter("Element", "NodesToWrite");
-			return false;
-		}
-
-		return true;
-	}
-
-	bool
-	WriteRequest::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "WriteRequest json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-	}
-
-	bool
-	WriteRequest::jsonDecode(boost::property_tree::ptree& pt)
-	{
-		// decode write value array
-		if (!writeValueArraySPtr_->jsonDecode(pt, "NodesToWrite", "")) {
-			Log(Error, "writeRequest json decode error")
-			    .parameter("Element", "NodesToWrite");
-			return false;
-		}
-
-		return true;
+		return jsonArraySPtrDecode(pt, writeValueArraySPtr_, "NodesToWrite");
 	}
 }

@@ -320,157 +320,31 @@ namespace OpcUaStackCore
     }
     
     bool
-    PublishedDataSetDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    PublishedDataSetDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
+        rc = rc & jsonArrayEncode(pt, dataSetFolder_, "DataSetFolder", true);
+        rc = rc & jsonObjectEncode(pt, dataSetMetaData_, "DataSetMetaData", true);
+        rc = rc & jsonArrayEncode(pt, extensionFields_, "ExtensionFields", true);
+        rc = rc & jsonObjectEncode(pt, dataSetSource_, "DataSetSource", true);
+    
+        return rc;
     }
     
     bool
-    PublishedDataSetDataType::jsonEncode(boost::property_tree::ptree& pt)
+    PublishedDataSetDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
+        rc = rc & jsonArrayDecode(pt, dataSetFolder_, "DataSetFolder", true);
+        rc = rc & jsonObjectDecode(pt, dataSetMetaData_, "DataSetMetaData", true);
+        rc = rc & jsonArrayDecode(pt, extensionFields_, "ExtensionFields", true);
+        rc = rc & jsonObjectDecode(pt, dataSetSource_, "DataSetSource", true);
     
-        elementTree.clear();
-        if (!dataSetFolder_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", "dataSetFolder_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetFolder", elementTree));
-    
-        elementTree.clear();
-        if (!dataSetMetaData_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", "dataSetMetaData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetMetaData", elementTree));
-    
-        elementTree.clear();
-        if (!extensionFields_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", "extensionFields_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ExtensionFields", elementTree));
-    
-        elementTree.clear();
-        if (!dataSetSource_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "PublishedDataSetDataType json encoder error")
-    		     .parameter("Element", "dataSetSource_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetSource", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    PublishedDataSetDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "PublishedDataSetDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    PublishedDataSetDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataSetDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "PublishedDataSetDataType decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
-    
-        elementName = "DataSetFolder";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataSetDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetFolder_.jsonDecode(*tree, "")) {
-            Log(Error, "PublishedDataSetDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetMetaData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataSetDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetMetaData_.jsonDecode(*tree)) {
-            Log(Error, "PublishedDataSetDataType decode json error - decode failed")
-                .parameter("Element", "DataSetMetaData");
-            return false;
-        }
-    
-        elementName = "ExtensionFields";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataSetDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!extensionFields_.jsonDecode(*tree, "")) {
-            Log(Error, "PublishedDataSetDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DataSetSource";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataSetDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetSource_.jsonDecode(*tree)) {
-            Log(Error, "PublishedDataSetDataType decode json error - decode failed")
-                .parameter("Element", "DataSetSource");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

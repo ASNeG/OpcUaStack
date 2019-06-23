@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -86,7 +86,7 @@ namespace OpcUaStackCore
 		OpcUaByte* value_; 
 	};
 
-	class OpcUaByteStringArray
+	class DLLEXPORT OpcUaByteStringArray
 	: public OpcUaArray<OpcUaByteString::SPtr, SPtrTypeCoder<OpcUaByteString> >
 	{
 	  public:

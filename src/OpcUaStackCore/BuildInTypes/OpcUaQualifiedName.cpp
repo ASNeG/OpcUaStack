@@ -90,7 +90,7 @@ namespace OpcUaStackCore
 	}
 		
 	OpcUaUInt16 
-	OpcUaQualifiedName::namespaceIndex(void)
+	OpcUaQualifiedName::namespaceIndex(void) const
 	{
 		return namespaceIndex_;
 	}
@@ -176,7 +176,7 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	OpcUaQualifiedName::copyTo(OpcUaQualifiedName& qualifiedName)
+	OpcUaQualifiedName::copyTo(OpcUaQualifiedName& qualifiedName) const
 	{
 		qualifiedName.namespaceIndex(namespaceIndex_);
 		name_.copyTo(qualifiedName.name());
@@ -200,6 +200,12 @@ namespace OpcUaStackCore
 	OpcUaQualifiedName::out(std::ostream& os) const
 	{
 		os << "ns=" << namespaceIndex_ << ",name=" << name_; 
+	}
+
+	bool
+	OpcUaQualifiedName::isNull(void) const
+	{
+		return namespaceIndex_ == 0 && name_.isNull();
 	}
 
 	void 

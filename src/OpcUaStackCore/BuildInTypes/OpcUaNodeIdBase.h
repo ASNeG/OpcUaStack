@@ -26,7 +26,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaGuid.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -105,7 +105,6 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-
 
 	  protected:
         bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;

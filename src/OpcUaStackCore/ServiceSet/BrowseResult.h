@@ -22,13 +22,12 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/ServiceSet/ReferenceDescription.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
    
 	class DLLEXPORT BrowseResult
-	: public  Object
+	: public Object
 	, public JsonFormatter
 	{
 	  public:
@@ -44,10 +43,17 @@ namespace OpcUaStackCore
 		void references(const ReferenceDescriptionArray::SPtr references);
 		ReferenceDescriptionArray::SPtr references(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-        void opcUaBinaryDecode(std::istream& is);
+		void copyTo(BrowseResult& browseResult) {}
+		void out(std::ostream& os) const {};
 
-    protected:
+		void opcUaBinaryEncode(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+	  protected:
         bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
         bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
@@ -57,7 +63,7 @@ namespace OpcUaStackCore
 		ReferenceDescriptionArray::SPtr referenceArraySPtr_;
 	};
 
-	class BrowseResultArray
+	class DLLEXPORT BrowseResultArray
 	: public OpcUaArray<BrowseResult::SPtr, SPtrTypeCoder<BrowseResult> >
 	, public Object
 	{

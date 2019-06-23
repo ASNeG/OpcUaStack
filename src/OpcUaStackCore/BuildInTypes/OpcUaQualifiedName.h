@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 		void get(std::string& name, OpcUaUInt16& namespaceIndex);
 		void get(OpcUaString& name, OpcUaUInt16& namespaceIndex);
 		void namespaceIndex(const OpcUaUInt16& namespaceIndex);
-		OpcUaUInt16 namespaceIndex(void);
+		OpcUaUInt16 namespaceIndex(void) const;
 		void name(const std::string& name);
 		void name(const OpcUaString& name);
 		OpcUaString& name(void);
@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 		operator std::string const (void); 
 		operator OpcUaUInt16 const (void); 
 
-		void copyTo(OpcUaQualifiedName& qualifiedName);
+		void copyTo(OpcUaQualifiedName& qualifiedName) const;
 		bool operator!=(const OpcUaQualifiedName& opcUaQualifiedName) const;
 		bool operator==(const OpcUaQualifiedName& opcUaQualifiedName) const;
 
@@ -71,8 +71,9 @@ namespace OpcUaStackCore
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool isNull(void) const override;
 
-    protected:
+	  protected:
         bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
         bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
@@ -81,7 +82,7 @@ namespace OpcUaStackCore
 		OpcUaString name_;
 	};
 
-	class OpcUaQualifiedNameArray
+	class DLLEXPORT OpcUaQualifiedNameArray
 	: public OpcUaArray<OpcUaQualifiedName::SPtr, SPtrTypeCoder<OpcUaQualifiedName> >
 	, public Object
 	{

@@ -79,8 +79,10 @@ namespace OpcUaStackCore
 		auto secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelClientConfig;
 
-		// create security settings
+		// get security settings
 		auto& securitySettings = secureChannel->securitySettings_;
+
+		// get crypto base and store own security policy uri
 		auto cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
 		if (!cryptoBase) {
 			Log(Error, "security policy invalid")
@@ -92,6 +94,7 @@ namespace OpcUaStackCore
 		securitySettings.cryptoBase(cryptoBase);
 		securitySettings.ownSecurityPolicyUri() = cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy());
 
+		// get own certificate chain
 		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSign ||
 			secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
 			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
@@ -427,7 +430,8 @@ namespace OpcUaStackCore
 
 		// start reconnect timer
 		if (reconnectTimeout_ == 0) {
-			Log(Info, "secure channel closed")
+			Log(Info, "secure channel delete")
+                                .parameter("ChannelId", *secureChannel)
 				.parameter("Address", secureChannel->partner_.address().to_string())
 				.parameter("Port", secureChannel->partner_.port());
 			delete secureChannel;

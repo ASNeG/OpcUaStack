@@ -55,8 +55,6 @@ namespace OpcUaStackCore
         virtual OpcUaNodeId xmlTypeId(void);
         virtual void opcUaBinaryEncode(std::ostream& os) const;
         virtual void opcUaBinaryDecode(std::istream& is);
-        virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
-        virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
         virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
         virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
         virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
@@ -66,6 +64,10 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
+      protected:
+         bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override { return false; }
+         bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override { return false; }
+
         void copyTo(Enumeration& value);
         bool operator==(const Enumeration& value) const;
         bool operator!=(const Enumeration& value) const;

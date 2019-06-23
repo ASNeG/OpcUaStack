@@ -75,7 +75,7 @@ namespace OpcUaStackClient
 		ctx_->secureChannelClientConfigBackup_ = secureChannelClientConfig;
 		ctx_->sessionConfig_ = sessionConfig;
 
-		sm_.setSessionServiceName(sessionConfig->sessionName_);
+		sm_.setSessionServiceName(sessionConfig->sessionName());
 		sm_.setUpdateCallback(
 			[this](SessionServiceStateId state) {
 				if (ctx_->sessionServiceChangeHandler_) {
@@ -192,6 +192,7 @@ namespace OpcUaStackClient
 			boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions)
 		);
 
+		
 		future.wait();
 		return future.get();
 	}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -104,6 +104,7 @@ namespace OpcUaStackServer
 				generateHeaderClassBegin("    ") &&
 					generateHeaderClassValueGetter("        ") &&
 				    generateHeaderClassExtensionInterface("        ") &&
+					generateHeaderClassEncoderDecoder("        ") &&
 				    generateHeaderClassPublic("        ") &&
 				    generateHeaderClassPrivate("    ") &&
 				    generateHeaderClassValueDefinition("        ") &&
@@ -205,7 +206,7 @@ namespace OpcUaStackServer
 			ss << prefix << " */" << std::endl;
 		}
 
-		ss << prefix << "class " << nodeInfo_.className() << std::endl;
+		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << std::endl;
 
 		//
 		// added base classes
@@ -281,14 +282,22 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
-		ss << prefix << "virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);" << std::endl;
-		ss << prefix << "virtual bool jsonEncode(boost::property_tree::ptree& pt);" << std::endl;
-		ss << prefix << "virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);" << std::endl;
-		ss << prefix << "virtual bool jsonDecode(boost::property_tree::ptree& pt);" << std::endl;
 		ss << prefix << "virtual void copyTo(ExtensionObjectBase& extensionObjectBase);" << std::endl;
 		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;" << std::endl;
 		ss << prefix << "virtual void out(std::ostream& os);" << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool EnumTypeGenerator::generateHeaderClassEncoderDecoder(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+	    ss << prefix << "virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const;" << std::endl;
+	    ss << prefix << "virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt);" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -322,12 +331,12 @@ namespace OpcUaStackServer
 		ss << prefix << "int32_t& value(void);" << std::endl;
 		ss << prefix << "void enumeration(Enum enumeration);" << std::endl;
 		ss << prefix << "Enum enumeration(void);" << std::endl;
-		ss << prefix << "Enum str2Enum(const std::string& enumerationString);" << std::endl;
-		ss << prefix << "std::string enum2Str(Enum enumeration);" << std::endl;
+		ss << prefix << "static Enum str2Enum(const std::string& enumerationString);" << std::endl;
+		ss << prefix << "static std::string enum2Str(Enum enumeration);" << std::endl;
 		ss << prefix << "std::string enum2Str(void);" << std::endl;
 		ss << prefix << "std::string toString(void);" << std::endl;
-		ss << prefix << "bool exist(const std::string& enumerationString);" << std::endl;
-		ss << prefix << "bool exist(Enum enumeration);" << std::endl;
+		ss << prefix << "static bool exist(const std::string& enumerationString);" << std::endl;
+		ss << prefix << "static bool exist(Enum enumeration);" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -371,7 +380,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
-		ss << prefix << "class " << nodeInfo_.className() << "Array" << std::endl;
+		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << "Array" << std::endl;
 		ss << prefix << ": public OpcUaArray<" << nodeInfo_.className() << "::SPtr, SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
 		ss << prefix << ", public Object" << std::endl;
 		ss << prefix << "{" << std::endl;
@@ -972,30 +981,10 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
-		ss << prefix <<  "bool" << std::endl;
-		ss << prefix <<  nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
-		ss << prefix << "{" << std::endl;
-		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
-		ss << prefix << "    if (!jsonEncode(elementTree)) {" << std::endl;
-		ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
-		ss << prefix << "		     .parameter(\"Element\", element);" << std::endl;
-		ss << prefix << " 	     return false;" << std::endl;
-		ss << prefix << "    }" << std::endl;
-		ss << prefix << "    pt.push_back(std::make_pair(element, elementTree));" << std::endl;
-		ss << prefix << "    return true;" << std::endl;
-		ss << prefix << "}" << std::endl;
-
-		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt)" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonEncodeImpl(boost::property_tree::ptree& pt) const" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    if(!JsonNumber::jsonEncode(pt, value_))" << std::endl;
-		ss << prefix << "    {" << std::endl;
-		ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
-		ss << prefix << "		     .parameter(\"Element\", \"Value\");" << std::endl;
-		ss << prefix << "       return false;" << std::endl;
-	    ss << prefix << "    }" << std::endl;
-	    ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "    return jsonNumberEncode(pt, value_);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -1009,28 +998,9 @@ namespace OpcUaStackServer
 
 		ss << prefix << std::endl;
 		ss << prefix <<  "bool" << std::endl;
-		ss << prefix <<  nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonDecodeImpl(const boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tmpTree;" << std::endl;
-        ss << prefix << std::endl;
-		ss << prefix << "    tmpTree = pt.get_child_optional(element);" << std::endl;
-		ss << prefix << "    if (!tmpTree) {" << std::endl;
-		ss << prefix << " 	     Log(Error, \"" << nodeInfo_.className() << " json decoder error\")" << std::endl;
-		ss << prefix << "		    .parameter(\"Element\", element);" << std::endl;
-		ss << prefix << "		 return false;" << std::endl;
-		ss << prefix << "    }" << std::endl;
-		ss << prefix << "    return jsonDecode(*tmpTree);" << std::endl;
-		ss << prefix << "}" << std::endl;
-
-		ss << prefix << std::endl;
-		ss << prefix <<  "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt)" << std::endl;
-		ss << prefix << "{" << std::endl;
-		ss << prefix << "    if(!JsonNumber::jsonDecode(pt, value_)) {" << std::endl;
-		ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\");" << std::endl;
-		ss << prefix << "        return false;" << std::endl;
-		ss << prefix << "    }" << std::endl;
-		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "    return jsonNumberDecode(pt, value_);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

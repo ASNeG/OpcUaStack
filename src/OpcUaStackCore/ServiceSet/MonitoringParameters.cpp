@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -120,5 +120,29 @@ namespace OpcUaStackCore
 		filter_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, queueSize_);
 		OpcUaNumber::opcUaBinaryDecode(is, discardOldest_);
+	}
+
+	bool
+	MonitoringParameters::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, clientHandle_, "ClientHandle");
+		rc = rc & jsonNumberEncode(pt, samplingInterval_, "SamplingInterval");
+		rc = rc & jsonObjectEncode(pt, filter_, "Filter", true);
+		rc = rc & jsonNumberEncode(pt, queueSize_, "QueueSize", true, (OpcUaUInt32)0);
+		rc = rc & jsonNumberEncode(pt, discardOldest_, "DiscardOldest", true, (OpcUaBoolean)true);
+		return rc;
+	}
+
+	bool
+	MonitoringParameters::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, clientHandle_, "ClientHandle");
+		rc = rc & jsonNumberDecode(pt, samplingInterval_, "SamplingInterval");
+		rc = rc & jsonObjectDecode(pt, filter_, "Filter", true);
+		rc = rc & jsonNumberDecode(pt, queueSize_, "QueueSize", true, (OpcUaUInt32)0);
+		rc = rc & jsonNumberDecode(pt, discardOldest_, "DiscardOldest", true, (OpcUaBoolean)true);
+		return rc;
 	}
 }

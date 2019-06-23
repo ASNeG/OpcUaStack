@@ -34,6 +34,7 @@ namespace OpcUaStackClient
 	SubscriptionServiceConfig::SubscriptionServiceConfig(void)
 	: ServiceConfigBase("Subscription")
 	, dataChangeNotificationHandler_()
+	, eventNotificationHandler_()
 	, subscriptionStateUpdateHandler_()
 	, publishCount_(5)
 	, requestTimeout_(60000)

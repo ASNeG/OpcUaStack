@@ -549,12 +549,12 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaExtensionObject::jsonDecode(boost::property_tree::ptree& pt)
+	OpcUaExtensionObject::jsonDecode(const boost::property_tree::ptree& pt)
 	{
 		//
 		// get typeIdTree tree
 		//
-		boost::optional<boost::property_tree::ptree&> typeIdTree = pt.get_child_optional("TypeId");
+		boost::optional<const boost::property_tree::ptree&> typeIdTree = pt.get_child_optional("TypeId");
 		if (!typeIdTree) {
 			Log(Error, "OpcUaExtensionObject json decoder error - element not exist in json document")
 				.parameter("Element", "TypeId");
@@ -574,7 +574,7 @@ namespace OpcUaStackCore
 		//
 		// get body tree
 		//
-		boost::optional<boost::property_tree::ptree&> bodyTree = pt.get_child_optional("Body");
+		boost::optional<const boost::property_tree::ptree&> bodyTree = pt.get_child_optional("Body");
 		if (!bodyTree) {
 			Log(Error, "OpcUaExtensionObject json decoder error - element not exist in json document")
 				.parameter("Element", "Body")

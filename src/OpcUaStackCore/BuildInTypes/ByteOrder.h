@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,7 @@
 #include <stdint.h>
 #include <iostream>
 
-#ifdef WIN32
+#ifdef _WIN32
 
 	#define BIG_ENDIAN false
 	#define LITTLE_ENDIAN true
@@ -31,7 +31,7 @@
 namespace OpcUaStackCore
 {
 
-	template<typename T>
+      template<typename T>
       class ByteOrder 
       {
 	    public:

@@ -18,11 +18,138 @@
 #define __OpcUaStackClient_SessionConfig_h__
 
 #include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
+#include "OpcUaStackCore/Certificate/Certificate.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
+
+	enum class DLLEXPORT UserAuthenticationType
+	{
+		Anonymous,
+		UserName,
+		X509,
+		Issued
+	};
+
+	class DLLEXPORT UserAuthentication
+	{
+	  public:
+		typedef boost::shared_ptr<UserAuthentication> SPtr;
+
+		UserAuthentication(UserAuthenticationType userAuthenticationType);
+		virtual ~UserAuthentication(void);
+
+		UserAuthenticationType userAuthenticationType(void);
+		std::string& policyId(void);
+
+	  private:
+		UserAuthentication(void);
+
+	  protected:
+		UserAuthenticationType userAuthenticationType_;
+		std::string policyId_;
+	};
+
+
+	class DLLEXPORT AnonymousAuthentication
+	: public UserAuthentication
+	{
+	  public:
+		typedef boost::shared_ptr<AnonymousAuthentication> SPtr;
+
+		AnonymousAuthentication(const std::string& policyId);
+		virtual ~AnonymousAuthentication(void);
+
+	  private:
+		 AnonymousAuthentication(void);
+	};
+
+
+	class DLLEXPORT UserNameAuthentication
+	: public UserAuthentication
+	{
+	  public:
+		typedef boost::shared_ptr<UserNameAuthentication> SPtr;
+
+		UserNameAuthentication(
+			const std::string& policyId,
+			const std::string& userName,
+			const std::string& password,
+			const std::string& encryptionAlgorithm,
+			const std::string& securityPolicyUri
+		);
+		~UserNameAuthentication(void);
+
+		std::string& userName(void);
+		std::string& password(void);
+		std::string& encryptionAlgorithm(void);
+		std::string& securityPolicyUri(void);
+
+	  private:
+		UserNameAuthentication(void);
+
+		std::string userName_;
+		std::string password_;
+		std::string encryptionAlgorithm_;
+		std::string securityPolicyUri_;
+	};
+
+
+	class DLLEXPORT X509Authentication
+	: public UserAuthentication
+	{
+	  public:
+		typedef boost::shared_ptr<X509Authentication> SPtr;
+
+		X509Authentication(
+			const std::string& policyId,
+			Certificate::SPtr& certificate,
+			PrivateKey::SPtr& provateKey,
+			const std::string& securityPolicyUri
+		);
+		~X509Authentication(void);
+
+		Certificate::SPtr& certificate(void);
+		PrivateKey::SPtr& privateKey(void);
+		std::string& securityPolicyUri(void);
+
+	  private:
+		X509Authentication(void);
+
+		Certificate::SPtr certificate_;
+		PrivateKey::SPtr privateKey_;
+		std::string securityPolicyUri_;
+	};
+
+
+	class DLLEXPORT IssuedAuthentication
+	: public UserAuthentication
+	{
+	  public:
+		typedef boost::shared_ptr<IssuedAuthentication> SPtr;
+
+		IssuedAuthentication(
+			const std::string& policyId,
+			const std::string& tokenData,
+			const std::string& encryptionAlgorithm,
+			const std::string& securityPolicyUri
+		);
+		~IssuedAuthentication(void);
+
+		std::string& tokenData(void);
+		std::string& encryptionAlgorithm(void);
+		std::string& securityPolicyUri(void);
+
+	  private:
+		IssuedAuthentication(void);
+
+		std::string tokenData_;
+		std::string encryptionAlgorithm_;
+		std::string securityPolicyUri_;
+	};
+
 
 	class DLLEXPORT SessionConfig
 	{
@@ -44,14 +171,58 @@ namespace OpcUaStackClient
 		uint32_t reconnectTimeout(void);
 		void maxResponseMessageSize(uint32_t maxResponseMessageSize);
 		uint32_t maxResponseMessageSize(void);
+		UserAuthentication::SPtr& userAuthentication(void);
 
-	  //private:
+		void authenticationAnonymous(
+			const std::string& policyId
+		);
+		void authenticationAnonymous(void);
+
+		void authenticationUserName(
+			const std::string& policyId,
+			const std::string& userName,
+			const std::string& password,
+			const std::string& securityPolicyUri,
+			const std::string& encryptionAlgorithm = "http://www.w3.org/2001/04/xmlenc#rsa-oaep"
+		);
+		void authenticationUserName(
+			const std::string& userName,
+			const std::string& password,
+			const std::string& securityPolicyUri
+		);
+
+		void authenticationX509(
+			const std::string& policyId,
+			Certificate::SPtr& certificate,
+			PrivateKey::SPtr& privateKey,
+			const std::string& securityPolicyUri
+		);
+		void authenticationX509(
+			Certificate::SPtr& certificate,
+			PrivateKey::SPtr& privateKey,
+			const std::string& securityPolicyUri
+		);
+
+		void authenticationIssued(
+			const std::string& policyId,
+			const std::string& tokenData,
+			const std::string& securityPolicyUri,
+			const std::string& encryptionAlgorithm = "http://www.w3.org/2001/04/xmlenc#rsa-oaep"
+		);
+		void authenticationIssued(
+			const std::string& tokenData,
+			const std::string& securityPolicyUri
+		);
+
+
+	  private:
 		ApplicationDescription::SPtr applicationDescription_;
 		std::string sessionName_;
 		uint32_t requestTimeout_;
 		uint32_t sessionTimeout_;
 		uint32_t reconnectTimeout_;
 		uint32_t maxResponseMessageSize_;
+		UserAuthentication::SPtr userAuthentication_;
 
 	};
 

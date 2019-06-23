@@ -365,6 +365,25 @@ namespace OpcUaStackPubSub
 		}
 	}
 
+	void DataSetMessageHeader::copyTo(DataSetMessageHeader& dataSetMessageHeader)
+	{
+		dataSetMessageHeader.fieldEncoding(fieldEncoding_);
+		dataSetMessageHeader.dataSetMessageSequenceNumberEnabled(dataSetMessageSequenceNumberEnabled_);
+		dataSetMessageHeader.timestampEnabled(timestampEnabled_);
+		dataSetMessageHeader.statusEnabled(statusEnabled_);
+		dataSetMessageHeader.configurationVersionMajorVersionEnabled(configurationVersionMajorVersionEnabled_);
+		dataSetMessageHeader.configurationVersionMinorVersionEnabled(configurationVersionMinorVersionEnabled_);
+		dataSetMessageHeader.dataSetFlag2Enabled(dataSetFlag2Enabled_);
+		dataSetMessageHeader.messageType(messageType_);
+		dataSetMessageHeader.picoSecondsEnabled(picoSecondsEnabled_);
+		dataSetMessageHeader.dataMessageSequenceNumber(dataMessageSequenceNumber_);
+		dataSetMessageHeader.timestamp(timestamp_);
+		dataSetMessageHeader.picoSeconds(picoSeconds_);
+		dataSetMessageHeader.statusCode(statusCode_);
+		dataSetMessageHeader.configurationVersionMajorVersion(configurationVersionMajorVersion_);
+		dataSetMessageHeader.configurationVersionMinorVersion(configurationVersionMinorVersion_);
+	}
+
 	bool
 	DataSetMessageHeader::operator ==(const DataSetMessageHeader& other) const
 	{
@@ -383,6 +402,26 @@ namespace OpcUaStackPubSub
 				&& statusCode_ == other.statusCode_
 				&& configurationVersionMajorVersion_ == other.configurationVersionMajorVersion_
 				&& configurationVersionMinorVersion_ == other.configurationVersionMinorVersion_;
+	}
+
+	void
+	DataSetMessageHeader::out(std::ostream& os) const
+	{
+		os << "FieldEncoding=" << fieldEncoding_;
+		os << ", DataSetMessageSequenceNumberEnabled=" << dataSetMessageSequenceNumberEnabled_;
+		os << ", TimestampEnabled=" << timestampEnabled_;
+		os << ", StatusEnabled=" << statusEnabled_;
+		os << ", ConfigurationVersionMajorVersionEnabled=" << configurationVersionMajorVersionEnabled_;
+		os << ", ConfigurationVersionMinorVersionEnabled=" << configurationVersionMinorVersionEnabled_;
+		os << ", DataSetFlag2Enabled=" << dataSetFlag2Enabled_;
+		os << ", MessageType=" << messageType_;
+		os << ", PicoSecondsEnabled=" << picoSecondsEnabled_;
+		os << ", DataMessageSequenceNumber=" << dataMessageSequenceNumber_;
+		os << ", Timestamp=" << timestamp_;
+		os << ", PicoSeconds=" << picoSeconds_;
+		os << ", StatusCode=" << statusCode_;
+		os << ", ConfigurationVersionMajorVersion=" << configurationVersionMajorVersion_;
+		os << ", ConfigurationVersionMinorVersion=" << configurationVersionMinorVersion_;
 	}
 
 }

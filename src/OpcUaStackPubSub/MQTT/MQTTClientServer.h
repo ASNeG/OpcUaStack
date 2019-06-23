@@ -34,7 +34,7 @@ namespace OpcUaStackPubSub
 
 #ifdef USE_MOSQUITTO_CLIENT
 
-	class MQTTSubscription
+	class DLLEXPORT MQTTSubscription
 	{
 	  public:
 		typedef boost::shared_ptr<MQTTSubscription> SPtr;
@@ -97,7 +97,7 @@ namespace OpcUaStackPubSub
 
 #endif
 
-	MQTTClientServerBase::SPtr constructMQTT(void);
+	DLLEXPORT MQTTClientServerBase::SPtr constructMQTT(void);
 
 }
 

@@ -44,7 +44,7 @@ namespace OpcUaStackCore
 		virtual ~OpcUaNodeId(void);
 	};
 
-	class OpcUaNodeSPtrLess
+	class DLLEXPORT OpcUaNodeSPtrLess
 	{
 	  public:
 		bool operator()(const OpcUaNodeId::SPtr a, const OpcUaNodeId::SPtr b) const {
@@ -55,7 +55,7 @@ namespace OpcUaStackCore
 		}
 	};
 
-	class OpcUaNodeIdArray
+	class DLLEXPORT OpcUaNodeIdArray
 	: public OpcUaArray<OpcUaNodeId::SPtr, SPtrTypeCoder<OpcUaNodeId> >
 	, public Object
 	{

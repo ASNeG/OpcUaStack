@@ -226,91 +226,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    ConfigurationVersionDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    ConfigurationVersionDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ConfigurationVersionDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, majorVersion_, "MajorVersion");
+        rc = rc & jsonNumberEncode(pt, minorVersion_, "MinorVersion");
+    
+        return rc;
     }
     
     bool
-    ConfigurationVersionDataType::jsonEncode(boost::property_tree::ptree& pt)
+    ConfigurationVersionDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, majorVersion_))
-        {
-    	     Log(Error, "ConfigurationVersionDataType json encoder error")
-    		     .parameter("Element", "majorVersion_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MajorVersion", elementTree));
+        rc = rc & jsonNumberDecode(pt, majorVersion_, "MajorVersion");
+        rc = rc & jsonNumberDecode(pt, minorVersion_, "MinorVersion");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, minorVersion_))
-        {
-    	     Log(Error, "ConfigurationVersionDataType json encoder error")
-    		     .parameter("Element", "minorVersion_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MinorVersion", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    ConfigurationVersionDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ConfigurationVersionDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ConfigurationVersionDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "MajorVersion";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ConfigurationVersionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, majorVersion_)) {
-            Log(Error, "ConfigurationVersionDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MinorVersion";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ConfigurationVersionDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, minorVersion_)) {
-            Log(Error, "ConfigurationVersionDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -26,7 +26,8 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT DeleteMonitoredItemsRequest
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteMonitoredItemsRequest> SPtr;
@@ -41,6 +42,10 @@ namespace OpcUaStackCore
 		
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt);
 
 	  private:
 		OpcUaUInt32 subscriptionId_;

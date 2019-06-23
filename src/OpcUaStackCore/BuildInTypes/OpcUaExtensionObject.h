@@ -427,7 +427,7 @@ namespace OpcUaStackCore
 		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
 		bool jsonEncode(boost::property_tree::ptree& pt);
 		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
+		bool jsonDecode(const boost::property_tree::ptree& pt);
 
 		void logExtensionObjectMap(void);
 
@@ -443,7 +443,7 @@ namespace OpcUaStackCore
 		OpcUaByteString::SPtr byteString_;
 	};
 
-	class OpcUaExtensionObjectArray
+	class DLLEXPORT OpcUaExtensionObjectArray
 	: public OpcUaArray<OpcUaExtensionObject::SPtr, SPtrTypeCoder<OpcUaExtensionObject> >
 	, public Object
 	{

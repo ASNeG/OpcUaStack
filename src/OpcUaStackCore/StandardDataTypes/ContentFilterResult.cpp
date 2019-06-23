@@ -224,91 +224,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    ContentFilterResult::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    ContentFilterResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ContentFilterResult json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonArrayEncode(pt, elementResults_, "ElementResults", true);
+        rc = rc & jsonArrayEncode(pt, elementDiagnosticInfos_, "ElementDiagnosticInfos", true);
+    
+        return rc;
     }
     
     bool
-    ContentFilterResult::jsonEncode(boost::property_tree::ptree& pt)
+    ContentFilterResult::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!elementResults_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ContentFilterResult json encoder error")
-    		     .parameter("Element", "elementResults_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ElementResults", elementTree));
+        rc = rc & jsonArrayDecode(pt, elementResults_, "ElementResults", true);
+        rc = rc & jsonArrayDecode(pt, elementDiagnosticInfos_, "ElementDiagnosticInfos", true);
     
-        elementTree.clear();
-        if (!elementDiagnosticInfos_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ContentFilterResult json encoder error")
-    		     .parameter("Element", "elementDiagnosticInfos_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ElementDiagnosticInfos", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    ContentFilterResult::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ContentFilterResult json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ContentFilterResult::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "ElementResults";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ContentFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!elementResults_.jsonDecode(*tree, "")) {
-            Log(Error, "ContentFilterResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ElementDiagnosticInfos";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ContentFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!elementDiagnosticInfos_.jsonDecode(*tree, "")) {
-            Log(Error, "ContentFilterResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

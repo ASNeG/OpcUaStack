@@ -122,7 +122,6 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Session_session_connect_disco
 	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-
 BOOST_AUTO_TEST_SUITE_END()
 
 #endif

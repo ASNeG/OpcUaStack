@@ -323,157 +323,31 @@ namespace OpcUaStackCore
     }
     
     bool
-    MonitoredItemCreateResult::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    MonitoredItemCreateResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, statusCode_, "StatusCode", true);
+        rc = rc & jsonNumberEncode(pt, monitoredItemId_, "MonitoredItemId");
+        rc = rc & jsonNumberEncode(pt, revisedSamplingInterval_, "RevisedSamplingInterval");
+        rc = rc & jsonNumberEncode(pt, revisedQueueSize_, "RevisedQueueSize");
+        rc = rc & jsonObjectEncode(pt, filterResult_, "FilterResult", true);
+    
+        return rc;
     }
     
     bool
-    MonitoredItemCreateResult::jsonEncode(boost::property_tree::ptree& pt)
+    MonitoredItemCreateResult::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!statusCode_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", "statusCode_");
-            return false;
-        }
-        pt.push_back(std::make_pair("StatusCode", elementTree));
+        rc = rc & jsonObjectDecode(pt, statusCode_, "StatusCode", true);
+        rc = rc & jsonNumberDecode(pt, monitoredItemId_, "MonitoredItemId");
+        rc = rc & jsonNumberDecode(pt, revisedSamplingInterval_, "RevisedSamplingInterval");
+        rc = rc & jsonNumberDecode(pt, revisedQueueSize_, "RevisedQueueSize");
+        rc = rc & jsonObjectDecode(pt, filterResult_, "FilterResult", true);
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, monitoredItemId_))
-        {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", "monitoredItemId_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MonitoredItemId", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, revisedSamplingInterval_))
-        {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", "revisedSamplingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RevisedSamplingInterval", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, revisedQueueSize_))
-        {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", "revisedQueueSize_");
-           return false;
-        }
-        pt.push_back(std::make_pair("RevisedQueueSize", elementTree));
-    
-        elementTree.clear();
-        if (!filterResult_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "MonitoredItemCreateResult json encoder error")
-    		     .parameter("Element", "filterResult_");
-            return false;
-        }
-        pt.push_back(std::make_pair("FilterResult", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    MonitoredItemCreateResult::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "MonitoredItemCreateResult json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    MonitoredItemCreateResult::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "StatusCode";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MonitoredItemCreateResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!statusCode_.jsonDecode(*tree)) {
-            Log(Error, "MonitoredItemCreateResult decode json error - decode failed")
-                .parameter("Element", "StatusCode");
-            return false;
-        }
-    
-        elementName = "MonitoredItemId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MonitoredItemCreateResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, monitoredItemId_)) {
-            Log(Error, "MonitoredItemCreateResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "RevisedSamplingInterval";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MonitoredItemCreateResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, revisedSamplingInterval_)) {
-            Log(Error, "MonitoredItemCreateResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "RevisedQueueSize";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MonitoredItemCreateResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, revisedQueueSize_)) {
-            Log(Error, "MonitoredItemCreateResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "FilterResult";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "MonitoredItemCreateResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!filterResult_.jsonDecode(*tree)) {
-            Log(Error, "MonitoredItemCreateResult decode json error - decode failed")
-                .parameter("Element", "FilterResult");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

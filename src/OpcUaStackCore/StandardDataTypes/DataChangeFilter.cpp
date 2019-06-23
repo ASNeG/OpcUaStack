@@ -258,113 +258,27 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataChangeFilter::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    DataChangeFilter::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "DataChangeFilter json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, trigger_, "Trigger", true);
+        rc = rc & jsonNumberEncode(pt, deadbandType_, "DeadbandType");
+        rc = rc & jsonNumberEncode(pt, deadbandValue_, "DeadbandValue");
+    
+        return rc;
     }
     
     bool
-    DataChangeFilter::jsonEncode(boost::property_tree::ptree& pt)
+    DataChangeFilter::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!trigger_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataChangeFilter json encoder error")
-    		     .parameter("Element", "trigger_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Trigger", elementTree));
+        rc = rc & jsonObjectDecode(pt, trigger_, "Trigger", true);
+        rc = rc & jsonNumberDecode(pt, deadbandType_, "DeadbandType");
+        rc = rc & jsonNumberDecode(pt, deadbandValue_, "DeadbandValue");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, deadbandType_))
-        {
-    	     Log(Error, "DataChangeFilter json encoder error")
-    		     .parameter("Element", "deadbandType_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DeadbandType", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, deadbandValue_))
-        {
-    	     Log(Error, "DataChangeFilter json encoder error")
-    		     .parameter("Element", "deadbandValue_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DeadbandValue", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    DataChangeFilter::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "DataChangeFilter json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    DataChangeFilter::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Trigger";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataChangeFilter decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!trigger_.jsonDecode(*tree)) {
-            Log(Error, "DataChangeFilter decode json error - decode failed")
-                .parameter("Element", "Trigger");
-            return false;
-        }
-    
-        elementName = "DeadbandType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataChangeFilter decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, deadbandType_)) {
-            Log(Error, "DataChangeFilter decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DeadbandValue";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataChangeFilter decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, deadbandValue_)) {
-            Log(Error, "DataChangeFilter decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

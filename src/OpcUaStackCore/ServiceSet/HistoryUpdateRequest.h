@@ -27,7 +27,8 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT HistoryUpdateRequest
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryUpdateRequest> SPtr;
@@ -41,6 +42,16 @@ namespace OpcUaStackCore
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
+
+		void out(std::ostream& os) const {}
 
 	  private:
 		RequestHeader::SPtr requestHeaderSPtr_;

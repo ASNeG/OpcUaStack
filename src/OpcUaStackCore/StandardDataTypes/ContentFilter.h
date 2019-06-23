@@ -16,7 +16,6 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
 #include "OpcUaStackCore/StandardDataTypes/ContentFilterElement.h"
 
 namespace OpcUaStackCore
@@ -55,6 +54,7 @@ namespace OpcUaStackCore
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
         
+
         void copyTo(ContentFilter& value);
         bool operator==(const ContentFilter& value);
         bool operator!=(const ContentFilter& value);
@@ -69,7 +69,7 @@ namespace OpcUaStackCore
     
     };
     
-    class ContentFilterArray
+    class DLLEXPORT ContentFilterArray
     : public OpcUaArray<ContentFilter::SPtr, SPtrTypeCoder<ContentFilter> >
     , public Object
     {

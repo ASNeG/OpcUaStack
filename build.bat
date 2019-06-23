@@ -6,7 +6,7 @@ REM
 set CMAKE=cmake.exe
 
 REM ---------------------------------------------------------------------------
-REM 
+REM
 REM main
 REM
 REM ---------------------------------------------------------------------------
@@ -22,6 +22,7 @@ set STACK_PREFIX=C:\ASNeG
 set BUILD_TYPE="Debug"
 set PACKAGE_TYPE="Bin"
 set VS_GENERATOR=""
+set JOBS=1
 
 :parse
     if "%~1"=="" goto :execute
@@ -50,6 +51,10 @@ set VS_GENERATOR=""
     if "%~1"=="-P"               set PACKAGE_TYPE=%~2
     if "%~1"=="--package-type"   set PACKAGE_TYPE=%~2
 
+    if "%~1"=="/j"               set JOBS=%~2
+    if "%~1"=="-j"               set JOBS=%~2
+    if "%~1"=="--jobs"           set JOBS=%~2
+
     shift
     shift
     goto :parse
@@ -59,38 +64,38 @@ set ARCH="x86"
 if %VS_GENERATOR%=="" goto :set_build_suffix
 
 if /i "%VS_GENERATOR:~-6,-1%"=="Win64" set ARCH="x64"
-if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"	
+if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"
 
 :set_build_suffix
 set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
 
 if "%COMMAND%" == "" (
     call:build_local
-	
-	goto:eof
+
+	goto:error_handle
 )
 
 if "%COMMAND%" == "local" (
     call:build_local
-	
-	goto:eof
+
+	goto:error_handle
 )
 
 if "%COMMAND%" == "msi" (
     call:build_msi
-	
-	goto:eof
+
+	goto:error_handle
 )
 
 if "%COMMAND%" == "tst" (
     call:build_tst
-	
-	goto:eof
+
+	goto:error_handle
 )
 
 call:usage
 
-goto:eof
+goto:error_handle
 
 
 REM ---------------------------------------------------------------------------
@@ -104,15 +109,15 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
 	REM
-    
+
 	set DESTDIR=%INSTALL_PREFIX%
 	%CMAKE% --build build_local_%BUILD_DIR_SUFFIX% --target install --config %BUILD_TYPE%
-goto:eof
+goto:error_handle
 
 REM ---------------------------------------------------------------------------
 REM
@@ -125,13 +130,13 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DCPACK_PACKAGE_TYPE=%PACKAGE_TYPE%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DCPACK_PACKAGE_TYPE=%PACKAGE_TYPE%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM package OpcUaStack to MSI
-	REM    		
+	REM
     %CMAKE% --build build_msi_%BUILD_DIR_SUFFIX% --target package --config %BUILD_TYPE%
-goto:eof
+goto:error_handle
 
 REM ---------------------------------------------------------------------------
 REM
@@ -144,13 +149,13 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build unittest
 	REM
-	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
-	REM    
+	REM
 	%CMAKE% --build build_tst_%BUILD_DIR_SUFFIX% --config %BUILD_TYPE%
-goto:eof
+goto:error_handle
 
 
 REM ---------------------------------------------------------------------------
@@ -179,5 +184,13 @@ REM ---------------------------------------------------------------------------
    echo.
    echo "--package-type, -P, /P PACKAGE_TYPE:  set the MSI package type (Bin | Dev). By default, it is Bin type."
    echo.
+   echo "--jobs, -j, /j JOB_COUNT: sets the number of the jobs of make"
 
-goto:eof
+goto:error_handle
+
+:error_handle
+
+if errorlevel 1 (
+   echo finished with errocode %errorlevel%
+   exit /b %errorlevel%
+)

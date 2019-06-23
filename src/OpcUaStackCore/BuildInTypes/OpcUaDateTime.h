@@ -22,7 +22,7 @@
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -60,6 +60,7 @@ namespace OpcUaStackCore
 			value.out(os);
 			return os;
 		}
+		bool isNull(void) const override;
 
         void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -77,7 +78,7 @@ namespace OpcUaStackCore
 		OpcUaUInt64 dateTime_;
 	};
 
-	class OpcUaDateTimeArray
+	class DLLEXPORT OpcUaDateTimeArray
 	: public OpcUaArray<OpcUaDateTime>
 	{
 	  public:

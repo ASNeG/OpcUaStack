@@ -352,179 +352,33 @@ namespace OpcUaStackCore
     }
     
     bool
-    BuildInfo::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    BuildInfo::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, productUri_, "ProductUri", true);
+        rc = rc & jsonObjectEncode(pt, manufacturerName_, "ManufacturerName", true);
+        rc = rc & jsonObjectEncode(pt, productName_, "ProductName", true);
+        rc = rc & jsonObjectEncode(pt, softwareVersion_, "SoftwareVersion", true);
+        rc = rc & jsonObjectEncode(pt, buildNumber_, "BuildNumber", true);
+        rc = rc & jsonObjectEncode(pt, buildDate_, "BuildDate", true);
+    
+        return rc;
     }
     
     bool
-    BuildInfo::jsonEncode(boost::property_tree::ptree& pt)
+    BuildInfo::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!productUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "productUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ProductUri", elementTree));
+        rc = rc & jsonObjectDecode(pt, productUri_, "ProductUri", true);
+        rc = rc & jsonObjectDecode(pt, manufacturerName_, "ManufacturerName", true);
+        rc = rc & jsonObjectDecode(pt, productName_, "ProductName", true);
+        rc = rc & jsonObjectDecode(pt, softwareVersion_, "SoftwareVersion", true);
+        rc = rc & jsonObjectDecode(pt, buildNumber_, "BuildNumber", true);
+        rc = rc & jsonObjectDecode(pt, buildDate_, "BuildDate", true);
     
-        elementTree.clear();
-        if (!manufacturerName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "manufacturerName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ManufacturerName", elementTree));
-    
-        elementTree.clear();
-        if (!productName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "productName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ProductName", elementTree));
-    
-        elementTree.clear();
-        if (!softwareVersion_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "softwareVersion_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SoftwareVersion", elementTree));
-    
-        elementTree.clear();
-        if (!buildNumber_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "buildNumber_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BuildNumber", elementTree));
-    
-        elementTree.clear();
-        if (!buildDate_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BuildInfo json encoder error")
-    		     .parameter("Element", "buildDate_");
-            return false;
-        }
-        pt.push_back(std::make_pair("BuildDate", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    BuildInfo::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "BuildInfo json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    BuildInfo::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "ProductUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BuildInfo decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!productUri_.jsonDecode(*tree)) {
-            Log(Error, "BuildInfo decode json error - decode failed")
-                .parameter("Element", "ProductUri");
-            return false;
-        }
-    
-        elementName = "ManufacturerName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BuildInfo decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!manufacturerName_.jsonDecode(*tree)) {
-            Log(Error, "BuildInfo decode json error - decode failed")
-                .parameter("Element", "ManufacturerName");
-            return false;
-        }
-    
-        elementName = "ProductName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BuildInfo decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!productName_.jsonDecode(*tree)) {
-            Log(Error, "BuildInfo decode json error - decode failed")
-                .parameter("Element", "ProductName");
-            return false;
-        }
-    
-        elementName = "SoftwareVersion";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BuildInfo decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!softwareVersion_.jsonDecode(*tree)) {
-            Log(Error, "BuildInfo decode json error - decode failed")
-                .parameter("Element", "SoftwareVersion");
-            return false;
-        }
-    
-        elementName = "BuildNumber";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BuildInfo decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!buildNumber_.jsonDecode(*tree)) {
-            Log(Error, "BuildInfo decode json error - decode failed")
-                .parameter("Element", "BuildNumber");
-            return false;
-        }
-    
-        elementName = "BuildDate";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BuildInfo decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!buildDate_.jsonDecode(*tree)) {
-            Log(Error, "BuildInfo decode json error - decode failed")
-                .parameter("Element", "BuildDate");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

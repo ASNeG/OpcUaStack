@@ -329,157 +329,31 @@ namespace OpcUaStackCore
     }
     
     bool
-    NodeAttributes::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    NodeAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, specifiedAttributes_, "SpecifiedAttributes");
+        rc = rc & jsonObjectEncode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectEncode(pt, description_, "Description", true);
+        rc = rc & jsonNumberEncode(pt, writeMask_, "WriteMask");
+        rc = rc & jsonNumberEncode(pt, userWriteMask_, "UserWriteMask");
+    
+        return rc;
     }
     
     bool
-    NodeAttributes::jsonEncode(boost::property_tree::ptree& pt)
+    NodeAttributes::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, specifiedAttributes_))
-        {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", "specifiedAttributes_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SpecifiedAttributes", elementTree));
+        rc = rc & jsonNumberDecode(pt, specifiedAttributes_, "SpecifiedAttributes");
+        rc = rc & jsonObjectDecode(pt, displayName_, "DisplayName", true);
+        rc = rc & jsonObjectDecode(pt, description_, "Description", true);
+        rc = rc & jsonNumberDecode(pt, writeMask_, "WriteMask");
+        rc = rc & jsonNumberDecode(pt, userWriteMask_, "UserWriteMask");
     
-        elementTree.clear();
-        if (!displayName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", "displayName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DisplayName", elementTree));
-    
-        elementTree.clear();
-        if (!description_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", "description_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Description", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, writeMask_))
-        {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", "writeMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("WriteMask", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, userWriteMask_))
-        {
-    	     Log(Error, "NodeAttributes json encoder error")
-    		     .parameter("Element", "userWriteMask_");
-           return false;
-        }
-        pt.push_back(std::make_pair("UserWriteMask", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    NodeAttributes::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "NodeAttributes json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    NodeAttributes::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "SpecifiedAttributes";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NodeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, specifiedAttributes_)) {
-            Log(Error, "NodeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DisplayName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NodeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!displayName_.jsonDecode(*tree)) {
-            Log(Error, "NodeAttributes decode json error - decode failed")
-                .parameter("Element", "DisplayName");
-            return false;
-        }
-    
-        elementName = "Description";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NodeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!description_.jsonDecode(*tree)) {
-            Log(Error, "NodeAttributes decode json error - decode failed")
-                .parameter("Element", "Description");
-            return false;
-        }
-    
-        elementName = "WriteMask";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NodeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, writeMask_)) {
-            Log(Error, "NodeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "UserWriteMask";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NodeAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, userWriteMask_)) {
-            Log(Error, "NodeAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

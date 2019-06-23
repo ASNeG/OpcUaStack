@@ -224,91 +224,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    IdentityMappingRuleType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    IdentityMappingRuleType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "IdentityMappingRuleType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, criteriaType_, "CriteriaType", true);
+        rc = rc & jsonObjectEncode(pt, criteria_, "Criteria", true);
+    
+        return rc;
     }
     
     bool
-    IdentityMappingRuleType::jsonEncode(boost::property_tree::ptree& pt)
+    IdentityMappingRuleType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!criteriaType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "IdentityMappingRuleType json encoder error")
-    		     .parameter("Element", "criteriaType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("CriteriaType", elementTree));
+        rc = rc & jsonObjectDecode(pt, criteriaType_, "CriteriaType", true);
+        rc = rc & jsonObjectDecode(pt, criteria_, "Criteria", true);
     
-        elementTree.clear();
-        if (!criteria_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "IdentityMappingRuleType json encoder error")
-    		     .parameter("Element", "criteria_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Criteria", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    IdentityMappingRuleType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "IdentityMappingRuleType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    IdentityMappingRuleType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "CriteriaType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "IdentityMappingRuleType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!criteriaType_.jsonDecode(*tree)) {
-            Log(Error, "IdentityMappingRuleType decode json error - decode failed")
-                .parameter("Element", "CriteriaType");
-            return false;
-        }
-    
-        elementName = "Criteria";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "IdentityMappingRuleType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!criteria_.jsonDecode(*tree)) {
-            Log(Error, "IdentityMappingRuleType decode json error - decode failed")
-                .parameter("Element", "Criteria");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

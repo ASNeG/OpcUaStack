@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -92,5 +92,25 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		timestampsToReturn_ = (TimestampsToReturn)tmp;
 		itemsToCreateArraySPtr_->opcUaBinaryDecode(is);
+	}
+
+	bool
+	CreateMonitoredItemsRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
+	{
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonNumberEncode(pt, (uint32_t)timestampsToReturn_, "TimestampsToReturn", true, (uint32_t)TimestampsToReturn_Both);
+		rc = rc & jsonArraySPtrEncode(pt, itemsToCreateArraySPtr_, "ItemsToCreate");
+		return true;
+	}
+
+	bool
+	CreateMonitoredItemsRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
+	{
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, subscriptionId_, "SubscriptionId");
+		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&timestampsToReturn_, "TimestampsToReturn", true, (uint32_t)TimestampsToReturn_Both);
+		rc = rc & jsonArraySPtrDecode(pt, itemsToCreateArraySPtr_, "ItemsToCreate");
+		return true;
 	}
 }

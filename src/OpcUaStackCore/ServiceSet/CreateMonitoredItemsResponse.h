@@ -27,6 +27,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT CreateMonitoredItemsResponse
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<CreateMonitoredItemsResponse> SPtr;
@@ -41,6 +42,10 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt);
 
 	  private:
 		MonitoredItemCreateResultArray::SPtr resultArraySPtr_;

@@ -26,7 +26,8 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT HistoryReadResult
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryReadResult> SPtr;
@@ -41,12 +42,19 @@ namespace OpcUaStackCore
 		void historyData(const OpcUaExtensibleParameter::SPtr historyData);
 		OpcUaExtensibleParameter::SPtr historyData(void) const;
 
+		void copyTo(HistoryReadResult& historyReadResult) {}
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+	  protected:
+	     bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+	     bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		OpcUaStatusCode statusCode_;
@@ -54,7 +62,7 @@ namespace OpcUaStackCore
 		OpcUaExtensibleParameter::SPtr historyData_;
 	};
 
-	class HistoryReadResultArray
+	class DLLEXPORT HistoryReadResultArray
     : public OpcUaArray<HistoryReadResult::SPtr, SPtrTypeCoder<HistoryReadResult> >
 	, public Object
 	{

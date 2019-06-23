@@ -160,47 +160,21 @@ namespace OpcUaStackCore
     }
     
     bool
-    PublishedDataSetSourceDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    PublishedDataSetSourceDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "PublishedDataSetSourceDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+    
+        return rc;
     }
     
     bool
-    PublishedDataSetSourceDataType::jsonEncode(boost::property_tree::ptree& pt)
+    PublishedDataSetSourceDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        return true;
-    }
     
-    bool
-    PublishedDataSetSourceDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "PublishedDataSetSourceDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    PublishedDataSetSourceDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        return true;
+        return rc;
     }
     
     void

@@ -27,7 +27,8 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT NodeTypeDescription
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<NodeTypeDescription> SPtr;
@@ -42,8 +43,19 @@ namespace OpcUaStackCore
 		void dataToReturn(const QueryDataDescriptionArray::SPtr dataToReturn);
 		QueryDataDescriptionArray::SPtr dataToReturn(void) const;
 
+		void copyTo(NodeTypeDescription& nodeTypeDescription) {}
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		OpcUaExpandedNodeId::SPtr typeDefinitionNodeSPtr_;
@@ -51,7 +63,7 @@ namespace OpcUaStackCore
 		QueryDataDescriptionArray::SPtr dataToReturnArraySPtr_;
 	};
 
-	class NodeTypeDescriptionArray
+	class DLLEXPORT NodeTypeDescriptionArray
 	: public OpcUaArray<NodeTypeDescription::SPtr, SPtrTypeCoder<NodeTypeDescription> >
 	, public Object
 	{

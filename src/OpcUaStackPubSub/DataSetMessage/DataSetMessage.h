@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,6 +31,7 @@ namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT DataSetMessage
+	: public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetMessage> SPtr;
@@ -46,17 +47,28 @@ namespace OpcUaStackPubSub
 		uint16_t sequenceNumber(void);
 
 		virtual void setFieldEncoding(void) {};
-		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
-		virtual void opcUaBinaryDecode(std::istream& is) = 0;
+		virtual void opcUaBinaryEncode(std::ostream& os) const {}
+		virtual void opcUaBinaryDecode(std::istream& is) {}
 
+		void copyTo(DataSetMessage& dataSetMessage);
 		bool operator==(const DataSetMessage& other) const;
 		bool operator!=(const DataSetMessage& other) const;
+
+		void out(std::ostream& os) const;
+
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+
+      protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; };
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; };
 
 	  private:
 		DataSetMessageHeader::SPtr dataSetMessageHeader_;
 	};
 
-	class DataSetMessageArray
+	class DLLEXPORT DataSetMessageArray
 	: public OpcUaArray<DataSetMessage::SPtr, SPtrTypeCoder<DataSetMessage> >
 	, public Object
 	{

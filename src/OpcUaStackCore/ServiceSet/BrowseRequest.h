@@ -21,7 +21,6 @@
 #include <stdint.h>
 #include "OpcUaStackCore/ServiceSet/ViewDescription.h"
 #include "OpcUaStackCore/ServiceSet/BrowseDescription.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -34,13 +33,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<BrowseRequest> SPtr;
 
 		BrowseRequest(void);
-
-    protected:
-        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
-
-        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
-
-    public:
         virtual ~BrowseRequest(void);
 
 		void view(const ViewDescription& view);
@@ -53,7 +45,12 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
-	  private:
+      protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+
+
+      private:
 		ViewDescription view_;
 		OpcUaUInt32 requestMaxReferencesPerNode_;
 		BrowseDescriptionArray::SPtr nodesToBrowseArraySPtr_;

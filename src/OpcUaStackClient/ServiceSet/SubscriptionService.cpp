@@ -17,6 +17,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/StandardDataTypes/DataChangeNotification.h"
+#include "OpcUaStackCore/StandardDataTypes/EventNotificationList.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
 
 using namespace OpcUaStackCore;
@@ -31,6 +32,7 @@ namespace OpcUaStackClient
 	, publishCount_(5)
 	, actPublishCount_(0)
 	, dataChangeNotificationHandler_()
+	, eventNotificationHandler_()
 	, subscriptionStateUpdateHandler_()
 	{
 		Component::ioThread(ioThread);
@@ -45,6 +47,7 @@ namespace OpcUaStackClient
 	SubscriptionService::setConfiguration(
 		Component* componentSession,
 		const DataChangeNotificationHandler& dataChangeNotificationHandler,
+		const EventNotificationHandler& eventNotificationHandler,
 		const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
 		uint32_t publishCount,
 		uint32_t requestTimeout
@@ -52,6 +55,7 @@ namespace OpcUaStackClient
 	{
 		this->componentSession(componentSession);
 		dataChangeNotificationHandler_ = dataChangeNotificationHandler;
+		eventNotificationHandler_ = eventNotificationHandler;
 		subscriptionStateUpdateHandler_ = subscriptionStateUpdateHandler;
 		publishCount_ = publishCount;
 		requestTimeout_ = requestTimeout;
@@ -362,6 +366,9 @@ namespace OpcUaStackClient
     			case OpcUaId_DataChangeNotification_Encoding_DefaultBinary:
     				dataChangeNotification(notify);
     				break;
+    			case OpcUaId_EventNotificationList_Encoding_DefaultBinary:
+    				eventNotification(notify);
+    				break;
     			default:
     				Log(Error, "subscription publish response error, because notification type in publish response unknown")
     				    .parameter("NotificationTypeId", notify->parameterTypeId().toString());
@@ -375,16 +382,31 @@ namespace OpcUaStackClient
     void
     SubscriptionService::dataChangeNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter)
     {
-    	DataChangeNotification::SPtr dataChange;
-    	dataChange = extensibleParameter->parameter<DataChangeNotification>();
+    	auto dataChange = extensibleParameter->parameter<DataChangeNotification>();
 
-    	uint32_t count = dataChange->monitoredItems().size();
+    	auto count = dataChange->monitoredItems().size();
     	for (uint32_t idx=0; idx<count; idx++) {
     		MonitoredItemNotification::SPtr monitoredItem;
     		dataChange->monitoredItems().get(idx, monitoredItem);
 
     		if (dataChangeNotificationHandler_) {
     			dataChangeNotificationHandler_(monitoredItem);
+    		}
+    	}
+    }
+
+    void
+	SubscriptionService::eventNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter)
+    {
+    	auto eventNotificationList = extensibleParameter->parameter<EventNotificationList>();
+
+    	auto count = eventNotificationList->events().size();
+    	for (uint32_t idx=0; idx<count; idx++) {
+    		EventFieldList::SPtr eventFieldList;
+    		eventNotificationList->events().get(idx, eventFieldList);
+
+    		if (eventNotificationHandler_) {
+    			eventNotificationHandler_(eventFieldList);
     		}
     	}
     }

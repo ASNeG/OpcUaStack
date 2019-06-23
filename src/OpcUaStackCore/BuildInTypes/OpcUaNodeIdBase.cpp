@@ -188,7 +188,7 @@ namespace OpcUaStackCore
 		}
 		else if (nodeIdType() == OpcUaBuildInType_OpcUaGuid) {
 			OpcUaGuid::SPtr opcUaGuidSPtr;
-			opcUaGuidSPtr = boost::get<OpcUaGuid::SPtr>(nodeIdValue_);
+			opcUaGuidSPtr = boost::get<OpcUaGuid::SPtr>(nodeIdValue_); 
 			nodeId = opcUaGuidSPtr->value();
 		}
 		else {

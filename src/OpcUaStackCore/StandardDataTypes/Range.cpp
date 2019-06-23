@@ -226,91 +226,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    Range::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    Range::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "Range json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, low_, "Low");
+        rc = rc & jsonNumberEncode(pt, high_, "High");
+    
+        return rc;
     }
     
     bool
-    Range::jsonEncode(boost::property_tree::ptree& pt)
+    Range::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, low_))
-        {
-    	     Log(Error, "Range json encoder error")
-    		     .parameter("Element", "low_");
-           return false;
-        }
-        pt.push_back(std::make_pair("Low", elementTree));
+        rc = rc & jsonNumberDecode(pt, low_, "Low");
+        rc = rc & jsonNumberDecode(pt, high_, "High");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, high_))
-        {
-    	     Log(Error, "Range json encoder error")
-    		     .parameter("Element", "high_");
-           return false;
-        }
-        pt.push_back(std::make_pair("High", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    Range::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "Range json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    Range::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "Low";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Range decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, low_)) {
-            Log(Error, "Range decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "High";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "Range decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, high_)) {
-            Log(Error, "Range decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

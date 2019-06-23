@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     /**
      * Describes a value that specifies the significance of the BrowseName for an instance declaration.
      */
-    class NamingRuleType
+    class DLLEXPORT NamingRuleType
     : public Object
     , public ExtensionObjectBase
     {
@@ -45,12 +45,12 @@ namespace OpcUaStackCore
         int32_t& value(void);
         void enumeration(Enum enumeration);
         Enum enumeration(void);
-        Enum str2Enum(const std::string& enumerationString);
-        std::string enum2Str(Enum enumeration);
+        static Enum str2Enum(const std::string& enumerationString);
+        static std::string enum2Str(Enum enumeration);
         std::string enum2Str(void);
         std::string toString(void);
-        bool exist(const std::string& enumerationString);
-        bool exist(Enum enumeration);
+        static bool exist(const std::string& enumerationString);
+        static bool exist(Enum enumeration);
         
         //- ExtensionObjectBase -----------------------------------------------
         virtual ExtensionObjectBase::SPtr factory(void);
@@ -66,14 +66,13 @@ namespace OpcUaStackCore
         virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
         virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
         virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-        virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-        virtual bool jsonEncode(boost::property_tree::ptree& pt);
-        virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-        virtual bool jsonDecode(boost::property_tree::ptree& pt);
         virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
         virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
         virtual void out(std::ostream& os);
         //- ExtensionObjectBase -----------------------------------------------
+        
+        virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const;
+        virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt);
         
         void copyTo(NamingRuleType& value);
         bool operator==(const NamingRuleType& value) const;
@@ -86,7 +85,7 @@ namespace OpcUaStackCore
     
     };
     
-    class NamingRuleTypeArray
+    class DLLEXPORT NamingRuleTypeArray
     : public OpcUaArray<NamingRuleType::SPtr, SPtrTypeCoder<NamingRuleType> >
     , public Object
     {

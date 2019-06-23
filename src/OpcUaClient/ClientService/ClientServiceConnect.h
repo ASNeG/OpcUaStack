@@ -25,7 +25,7 @@
 namespace OpcUaClient
 {
 
-	class ClientServiceConnect
+	class DLLEXPORT ClientServiceConnect
 	: public ClientServiceBase
 	{
 	  public:

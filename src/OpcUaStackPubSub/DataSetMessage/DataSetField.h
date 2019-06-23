@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,6 +30,7 @@ namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT DataSetField
+	: public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetField> SPtr;
@@ -50,15 +51,26 @@ namespace OpcUaStackPubSub
 		// FIXME: meta data ....
 		Object::SPtr& object(void);
 
+		void copyTo(DataSetField& dataSetField);
+		void out(std::ostream& os) const;
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 
-	  private:
+      protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; };
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; };
+
+      private:
 		FieldEncoding dataType_;
 		Object::SPtr object_;
 	};
 
-	class DataSetFieldArray
+	class DLLEXPORT DataSetFieldArray
 	: public OpcUaArray<DataSetField::SPtr, SPtrTypeCoder<DataSetField> >
 	, public Object
 	{

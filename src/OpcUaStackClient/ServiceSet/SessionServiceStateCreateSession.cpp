@@ -17,6 +17,7 @@
 
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateCreateSession.h"
@@ -132,6 +133,7 @@ namespace OpcUaStackClient
 		ctx_->sessionTimeout_ = createSessionResponse.receivedSessionTimeout();
 		ctx_->maxResponseMessageSize_ = createSessionResponse.maxRequestMessageSize();
 		ctx_->authenticationToken_ = createSessionResponse.authenticationToken();
+		securitySettings.partnerNonce().set(createSessionResponse.serverNonce());
 
 		// check server signature
 		auto certificate = securitySettings.ownCertificateChain().getCertificate();
@@ -194,7 +196,7 @@ namespace OpcUaStackClient
 		Log(Debug, "session recv CreateSessionResponse")
 		    .parameter("SessId", ctx_->id_)
 		    .parameter("RequestId", trx->requestId_)
-		    .parameter("SessionName", sessionConfig->sessionName_)
+		    .parameter("SessionName", sessionConfig->sessionName())
 		    .parameter("AuthenticationToken", ctx_->authenticationToken_);
 
 		// send activate session request

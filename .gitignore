@@ -20,3 +20,5 @@ test.xml
 tst/data/opc.ua.roby_save.xml
 .idea
 cmake-build-*
+.vagrant
+cmake-build*

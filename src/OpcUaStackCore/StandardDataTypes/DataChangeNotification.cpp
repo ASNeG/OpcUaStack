@@ -224,91 +224,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataChangeNotification::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    DataChangeNotification::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "DataChangeNotification json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonArrayEncode(pt, monitoredItems_, "MonitoredItems", true);
+        rc = rc & jsonArrayEncode(pt, diagnosticInfos_, "DiagnosticInfos", true);
+    
+        return rc;
     }
     
     bool
-    DataChangeNotification::jsonEncode(boost::property_tree::ptree& pt)
+    DataChangeNotification::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!monitoredItems_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataChangeNotification json encoder error")
-    		     .parameter("Element", "monitoredItems_");
-            return false;
-        }
-        pt.push_back(std::make_pair("MonitoredItems", elementTree));
+        rc = rc & jsonArrayDecode(pt, monitoredItems_, "MonitoredItems", true);
+        rc = rc & jsonArrayDecode(pt, diagnosticInfos_, "DiagnosticInfos", true);
     
-        elementTree.clear();
-        if (!diagnosticInfos_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "DataChangeNotification json encoder error")
-    		     .parameter("Element", "diagnosticInfos_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DiagnosticInfos", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    DataChangeNotification::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "DataChangeNotification json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    DataChangeNotification::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "MonitoredItems";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataChangeNotification decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!monitoredItems_.jsonDecode(*tree, "")) {
-            Log(Error, "DataChangeNotification decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DiagnosticInfos";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataChangeNotification decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!diagnosticInfos_.jsonDecode(*tree, "")) {
-            Log(Error, "DataChangeNotification decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

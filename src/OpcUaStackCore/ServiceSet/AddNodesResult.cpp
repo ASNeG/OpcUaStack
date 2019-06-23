@@ -64,6 +64,20 @@ namespace OpcUaStackCore
 	}
 	
 	void 
+	AddNodesResult::copyTo(AddNodesResult& addNodesResult)
+	{
+		addNodesResult.statusCode(statusCode_);
+		addedNodeIdSPtr_->copyTo(*addNodesResult.addedNodeId().get());
+	}
+
+	void
+	AddNodesResult::out(std::ostream& os) const
+	{
+		os << "StatusCode=" << statusCode_;
+		os << ", AddedNodeId="; addedNodeIdSPtr_->out(os);
+	}
+
+	void
 	AddNodesResult::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)statusCode_);

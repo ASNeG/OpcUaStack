@@ -88,12 +88,12 @@ namespace OpcUaStackClient
 
 		// create service set manager
 		SessionServiceConfig sessionServiceConfig;
-		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
+		sessionServiceConfig.ioThreadName("DiscoveryClientRegisteredServers");
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager_);
 		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
 		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
-		sessionServiceConfig.session_->reconnectTimeout_ = 0;
+		sessionServiceConfig.session_->reconnectTimeout(0);
 
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);

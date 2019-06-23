@@ -22,7 +22,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -34,7 +33,7 @@ namespace OpcUaStackCore
 	} BrowseDirectionEnum;
 	                
 	class DLLEXPORT BrowseDescription
-	: public  Object
+	: public Object
 	, public JsonFormatter
 	{
 	  public:
@@ -56,8 +55,15 @@ namespace OpcUaStackCore
 		void resultMask(const OpcUaUInt32 resultMask);
 		OpcUaUInt32 resultMask(void);
 		
+		void copyTo(BrowseDescription& browseDescription);
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 
     protected:
         bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
@@ -72,7 +78,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 resultMask_;
 	};
 
-	class BrowseDescriptionArray
+	class DLLEXPORT BrowseDescriptionArray
 	: public OpcUaArray<BrowseDescription::SPtr, SPtrTypeCoder<BrowseDescription> >
 	, public Object
 	{

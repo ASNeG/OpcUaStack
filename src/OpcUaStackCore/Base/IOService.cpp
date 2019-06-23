@@ -53,6 +53,9 @@ namespace OpcUaStackCore
 	void 
 	IOService::start(uint32_t numberThreads)
 	{
+		Log(Debug, "ioservice threads starting")
+			.parameter("NumberThreads", numberThreads);
+
 		numberThreads_ = numberThreads;
 		work_ = new boost::asio::io_service::work(io_service_);
 
@@ -73,11 +76,17 @@ namespace OpcUaStackCore
 		}
 
 		startMutex_.unlock();
+
+		Log(Debug, "io ervice threads started")
+			.parameter("NumberThreads", numberThreads);
 	}
 
 	void 
 	IOService::stop(void)
 	{
+		Log(Debug, "ioservice threads stopping")
+			.parameter("NumberThreads", runningThreads_);
+
 		if (work_) {
 			delete work_;
 			work_ = NULL;
@@ -102,6 +111,8 @@ namespace OpcUaStackCore
 		threadIdVec_.clear();
 
 		io_service_.reset();
+
+		Log(Debug, "ioservice threads stoped");
 	}
 
 	void

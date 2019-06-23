@@ -19,7 +19,6 @@
 #define __OpcUaStackCore_BrowseResponse_h__
 
 #include "OpcUaStackCore/ServiceSet/BrowseResult.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {

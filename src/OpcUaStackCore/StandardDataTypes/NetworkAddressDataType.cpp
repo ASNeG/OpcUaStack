@@ -192,69 +192,23 @@ namespace OpcUaStackCore
     }
     
     bool
-    NetworkAddressDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    NetworkAddressDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "NetworkAddressDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, networkInterface_, "NetworkInterface", true);
+    
+        return rc;
     }
     
     bool
-    NetworkAddressDataType::jsonEncode(boost::property_tree::ptree& pt)
+    NetworkAddressDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!networkInterface_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "NetworkAddressDataType json encoder error")
-    		     .parameter("Element", "networkInterface_");
-            return false;
-        }
-        pt.push_back(std::make_pair("NetworkInterface", elementTree));
+        rc = rc & jsonObjectDecode(pt, networkInterface_, "NetworkInterface", true);
     
-        return true;
-    }
-    
-    bool
-    NetworkAddressDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "NetworkAddressDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    NetworkAddressDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "NetworkInterface";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "NetworkAddressDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!networkInterface_.jsonDecode(*tree)) {
-            Log(Error, "NetworkAddressDataType decode json error - decode failed")
-                .parameter("Element", "NetworkInterface");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

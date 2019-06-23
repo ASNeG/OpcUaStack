@@ -22,8 +22,9 @@
 #include <stdint.h>
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 #include <boost/property_tree/ptree.hpp>
-#include "OpcUaStackCore/Base/JsonFormatter.h"
+
 
 namespace OpcUaStackCore
 {
@@ -50,7 +51,7 @@ namespace OpcUaStackCore
 		OpcUaString& operator=(const std::string& string); 
 		operator std::string const (void); 
 
-		void copyTo(OpcUaString& opcUaString);
+		void copyTo(OpcUaString& opcUaString) const;
 		bool operator<(const OpcUaString& opcUaString) const;
 		bool operator!=(const OpcUaString& opcUaString) const;
 		bool operator==(const OpcUaString& opcUaString) const;
@@ -76,7 +77,7 @@ namespace OpcUaStackCore
 		std::string value_; 
 	};
 
-	class OpcUaStringArray
+	class DLLEXPORT OpcUaStringArray
 	: public OpcUaArray<OpcUaString::SPtr, SPtrTypeCoder<OpcUaString> >
 	{
 	  public:

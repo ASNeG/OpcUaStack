@@ -109,7 +109,6 @@ namespace OpcUaStackCore
 	void 
 	ActivateSessionRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		//requestHeaderSPtr_->opcUaBinaryEncode(os);
 		clientSignature_->opcUaBinaryEncode(os);
 		signedSoftwareCertificate_->opcUaBinaryEncode(os);
 		localeIds_->opcUaBinaryEncode(os);
@@ -120,7 +119,6 @@ namespace OpcUaStackCore
 	void 
 	ActivateSessionRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		//requestHeaderSPtr_->opcUaBinaryDecode(is);
 		clientSignature_->opcUaBinaryDecode(is);
 		signedSoftwareCertificate_->opcUaBinaryDecode(is);
 		localeIds_->opcUaBinaryDecode(is);

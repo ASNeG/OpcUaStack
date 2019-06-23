@@ -112,7 +112,7 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	OpcUaString::copyTo(OpcUaString& opcUaString)
+	OpcUaString::copyTo(OpcUaString& opcUaString) const
 	{
 		opcUaString.value(value());
 	}

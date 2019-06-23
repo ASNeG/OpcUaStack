@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -42,6 +42,8 @@ namespace OpcUaStackPubSub
 		void fieldIndex(uint16_t fieldIndex);
 		uint32_t fieldIndex(void);
 
+		void copyTo(DeltaFrameField& deltaFrameField);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
@@ -49,7 +51,7 @@ namespace OpcUaStackPubSub
 		uint32_t fieldIndex_;
 	};
 
-	class DeltaFrameFieldArray
+	class DLLEXPORT DeltaFrameFieldArray
 	: public OpcUaArray<DeltaFrameField::SPtr, SPtrTypeCoder<DeltaFrameField> >
 	, public Object
 	{

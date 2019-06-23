@@ -192,69 +192,23 @@ namespace OpcUaStackCore
     }
     
     bool
-    PublishedDataItemsDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    PublishedDataItemsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "PublishedDataItemsDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonArrayEncode(pt, publishedData_, "PublishedData", true);
+    
+        return rc;
     }
     
     bool
-    PublishedDataItemsDataType::jsonEncode(boost::property_tree::ptree& pt)
+    PublishedDataItemsDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!publishedData_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "PublishedDataItemsDataType json encoder error")
-    		     .parameter("Element", "publishedData_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PublishedData", elementTree));
+        rc = rc & jsonArrayDecode(pt, publishedData_, "PublishedData", true);
     
-        return true;
-    }
-    
-    bool
-    PublishedDataItemsDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "PublishedDataItemsDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    PublishedDataItemsDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "PublishedData";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "PublishedDataItemsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!publishedData_.jsonDecode(*tree, "")) {
-            Log(Error, "PublishedDataItemsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

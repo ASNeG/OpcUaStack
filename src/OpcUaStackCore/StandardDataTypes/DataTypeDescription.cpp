@@ -224,91 +224,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    DataTypeDescription::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    DataTypeDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "DataTypeDescription json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, dataTypeId_, "DataTypeId", true);
+        rc = rc & jsonObjectEncode(pt, name_, "Name", true);
+    
+        return rc;
     }
     
     bool
-    DataTypeDescription::jsonEncode(boost::property_tree::ptree& pt)
+    DataTypeDescription::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!dataTypeId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataTypeDescription json encoder error")
-    		     .parameter("Element", "dataTypeId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataTypeId", elementTree));
+        rc = rc & jsonObjectDecode(pt, dataTypeId_, "DataTypeId", true);
+        rc = rc & jsonObjectDecode(pt, name_, "Name", true);
     
-        elementTree.clear();
-        if (!name_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "DataTypeDescription json encoder error")
-    		     .parameter("Element", "name_");
-            return false;
-        }
-        pt.push_back(std::make_pair("Name", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    DataTypeDescription::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "DataTypeDescription json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    DataTypeDescription::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "DataTypeId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataTypeDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataTypeId_.jsonDecode(*tree)) {
-            Log(Error, "DataTypeDescription decode json error - decode failed")
-                .parameter("Element", "DataTypeId");
-            return false;
-        }
-    
-        elementName = "Name";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "DataTypeDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!name_.jsonDecode(*tree)) {
-            Log(Error, "DataTypeDescription decode json error - decode failed")
-                .parameter("Element", "Name");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

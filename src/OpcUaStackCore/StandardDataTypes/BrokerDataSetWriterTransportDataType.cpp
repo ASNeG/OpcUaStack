@@ -353,179 +353,33 @@ namespace OpcUaStackCore
     }
     
     bool
-    BrokerDataSetWriterTransportDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    BrokerDataSetWriterTransportDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, queueName_, "QueueName", true);
+        rc = rc & jsonObjectEncode(pt, resourceUri_, "ResourceUri", true);
+        rc = rc & jsonObjectEncode(pt, authenticationProfileUri_, "AuthenticationProfileUri", true);
+        rc = rc & jsonObjectEncode(pt, requestedDeliveryGuarantee_, "RequestedDeliveryGuarantee", true);
+        rc = rc & jsonObjectEncode(pt, metaDataQueueName_, "MetaDataQueueName", true);
+        rc = rc & jsonNumberEncode(pt, metaDataUpdateTime_, "MetaDataUpdateTime");
+    
+        return rc;
     }
     
     bool
-    BrokerDataSetWriterTransportDataType::jsonEncode(boost::property_tree::ptree& pt)
+    BrokerDataSetWriterTransportDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!queueName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
-    		     .parameter("Element", "queueName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("QueueName", elementTree));
+        rc = rc & jsonObjectDecode(pt, queueName_, "QueueName", true);
+        rc = rc & jsonObjectDecode(pt, resourceUri_, "ResourceUri", true);
+        rc = rc & jsonObjectDecode(pt, authenticationProfileUri_, "AuthenticationProfileUri", true);
+        rc = rc & jsonObjectDecode(pt, requestedDeliveryGuarantee_, "RequestedDeliveryGuarantee", true);
+        rc = rc & jsonObjectDecode(pt, metaDataQueueName_, "MetaDataQueueName", true);
+        rc = rc & jsonNumberDecode(pt, metaDataUpdateTime_, "MetaDataUpdateTime");
     
-        elementTree.clear();
-        if (!resourceUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
-    		     .parameter("Element", "resourceUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ResourceUri", elementTree));
-    
-        elementTree.clear();
-        if (!authenticationProfileUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
-    		     .parameter("Element", "authenticationProfileUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("AuthenticationProfileUri", elementTree));
-    
-        elementTree.clear();
-        if (!requestedDeliveryGuarantee_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
-    		     .parameter("Element", "requestedDeliveryGuarantee_");
-            return false;
-        }
-        pt.push_back(std::make_pair("RequestedDeliveryGuarantee", elementTree));
-    
-        elementTree.clear();
-        if (!metaDataQueueName_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
-    		     .parameter("Element", "metaDataQueueName_");
-            return false;
-        }
-        pt.push_back(std::make_pair("MetaDataQueueName", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, metaDataUpdateTime_))
-        {
-    	     Log(Error, "BrokerDataSetWriterTransportDataType json encoder error")
-    		     .parameter("Element", "metaDataUpdateTime_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MetaDataUpdateTime", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    BrokerDataSetWriterTransportDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "BrokerDataSetWriterTransportDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    BrokerDataSetWriterTransportDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "QueueName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!queueName_.jsonDecode(*tree)) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
-                .parameter("Element", "QueueName");
-            return false;
-        }
-    
-        elementName = "ResourceUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!resourceUri_.jsonDecode(*tree)) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
-                .parameter("Element", "ResourceUri");
-            return false;
-        }
-    
-        elementName = "AuthenticationProfileUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!authenticationProfileUri_.jsonDecode(*tree)) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
-                .parameter("Element", "AuthenticationProfileUri");
-            return false;
-        }
-    
-        elementName = "RequestedDeliveryGuarantee";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!requestedDeliveryGuarantee_.jsonDecode(*tree)) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
-                .parameter("Element", "RequestedDeliveryGuarantee");
-            return false;
-        }
-    
-        elementName = "MetaDataQueueName";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!metaDataQueueName_.jsonDecode(*tree)) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
-                .parameter("Element", "MetaDataQueueName");
-            return false;
-        }
-    
-        elementName = "MetaDataUpdateTime";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, metaDataUpdateTime_)) {
-            Log(Error, "BrokerDataSetWriterTransportDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

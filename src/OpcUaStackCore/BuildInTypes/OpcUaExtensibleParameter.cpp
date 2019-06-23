@@ -51,9 +51,15 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaExtensibleParameter::exist(void)
+	OpcUaExtensibleParameter::exist(void) const
 	{
 		return eoSPtr_.get() != nullptr;
+	}
+
+	bool
+	OpcUaExtensibleParameter::isNull(void) const
+	{
+		return eoSPtr_.get() == nullptr;
 	}
 
     ExtensionObjectBase::SPtr
@@ -147,6 +153,7 @@ namespace OpcUaStackCore
 	OpcUaExtensibleParameter::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     	// FIXME: todo
+    	return false;
     }
 
     bool
@@ -161,24 +168,17 @@ namespace OpcUaStackCore
 	OpcUaExtensibleParameter::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
     {
     	// FIXME: todo
+    	return false;
     }
 
     bool
-	OpcUaExtensibleParameter::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+	OpcUaExtensibleParameter::jsonEncodeImpl(boost::property_tree::ptree &pt) const
     {
-		boost::property_tree::ptree elementTree;
-		if (!jsonEncode(elementTree)) {
-			Log(Error, "OpcUaExtensibleParameter json encoder error")
-				.parameter("Element", element);
-			return false;
-		}
-		pt.push_back(std::make_pair(element, elementTree));
-		return true;
-    }
+    	// check pointer
+    	if (!exist()) {
+    		return true;
+    	}
 
-    bool
-	OpcUaExtensibleParameter::jsonEncode(boost::property_tree::ptree& pt)
-    {
     	// map binary type id to json type id
     	auto jsonTypeId = eoSPtr_->jsonTypeId();
 
@@ -200,21 +200,7 @@ namespace OpcUaStackCore
     }
 
     bool
-	OpcUaExtensibleParameter::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(element);
-		if (!tmpTree) {
-			Log(Error, "OpcUaExtensibleParameter json decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return jsonDecode(*tmpTree);
-    }
-
-    bool
-	OpcUaExtensibleParameter::jsonDecode(boost::property_tree::ptree& pt)
+	OpcUaExtensibleParameter::jsonDecodeImpl(const boost::property_tree::ptree &pt)
     {
        	// decode type id
         if (!parameterTypeId_.jsonDecode(pt, "TypeId")) {
@@ -326,5 +312,7 @@ namespace OpcUaStackCore
     OpcUaExtensibleParameter&
 	OpcUaExtensibleParameter::operator=(const OpcUaExtensibleParameter& value)
     {
+    	const_cast<OpcUaExtensibleParameter*>(&value)->copyTo(*this);
+    	return *this;
     }
 }

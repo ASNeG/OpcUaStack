@@ -225,91 +225,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    EnumDescription::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    EnumDescription::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "EnumDescription json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, enumDefinition_, "EnumDefinition", true);
+        rc = rc & jsonNumberEncode(pt, builtInType_, "BuiltInType");
+    
+        return rc;
     }
     
     bool
-    EnumDescription::jsonEncode(boost::property_tree::ptree& pt)
+    EnumDescription::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!enumDefinition_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EnumDescription json encoder error")
-    		     .parameter("Element", "enumDefinition_");
-            return false;
-        }
-        pt.push_back(std::make_pair("EnumDefinition", elementTree));
+        rc = rc & jsonObjectDecode(pt, enumDefinition_, "EnumDefinition", true);
+        rc = rc & jsonNumberDecode(pt, builtInType_, "BuiltInType");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, builtInType_))
-        {
-    	     Log(Error, "EnumDescription json encoder error")
-    		     .parameter("Element", "builtInType_");
-           return false;
-        }
-        pt.push_back(std::make_pair("BuiltInType", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    EnumDescription::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "EnumDescription json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    EnumDescription::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "EnumDefinition";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EnumDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!enumDefinition_.jsonDecode(*tree)) {
-            Log(Error, "EnumDescription decode json error - decode failed")
-                .parameter("Element", "EnumDefinition");
-            return false;
-        }
-    
-        elementName = "BuiltInType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EnumDescription decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, builtInType_)) {
-            Log(Error, "EnumDescription decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

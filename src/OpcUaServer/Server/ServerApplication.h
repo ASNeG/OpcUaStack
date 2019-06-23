@@ -26,7 +26,7 @@ using namespace OpcUaStackServer;
 
 namespace OpcUaServer
 {
-	class ServerApplication
+	class DLLEXPORT ServerApplication
 	: public ServerApplicationIf
 	, public ReloadIf
 	{

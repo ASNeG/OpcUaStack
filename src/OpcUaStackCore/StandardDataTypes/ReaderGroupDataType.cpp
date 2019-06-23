@@ -256,113 +256,27 @@ namespace OpcUaStackCore
     }
     
     bool
-    ReaderGroupDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    ReaderGroupDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ReaderGroupDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonObjectEncode(pt, messageSettings_, "MessageSettings", true);
+        rc = rc & jsonArrayEncode(pt, dataSetReaders_, "DataSetReaders", true);
+    
+        return rc;
     }
     
     bool
-    ReaderGroupDataType::jsonEncode(boost::property_tree::ptree& pt)
+    ReaderGroupDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!transportSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReaderGroupDataType json encoder error")
-    		     .parameter("Element", "transportSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TransportSettings", elementTree));
+        rc = rc & jsonObjectDecode(pt, transportSettings_, "TransportSettings", true);
+        rc = rc & jsonObjectDecode(pt, messageSettings_, "MessageSettings", true);
+        rc = rc & jsonArrayDecode(pt, dataSetReaders_, "DataSetReaders", true);
     
-        elementTree.clear();
-        if (!messageSettings_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "ReaderGroupDataType json encoder error")
-    		     .parameter("Element", "messageSettings_");
-            return false;
-        }
-        pt.push_back(std::make_pair("MessageSettings", elementTree));
-    
-        elementTree.clear();
-        if (!dataSetReaders_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "ReaderGroupDataType json encoder error")
-    		     .parameter("Element", "dataSetReaders_");
-            return false;
-        }
-        pt.push_back(std::make_pair("DataSetReaders", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    ReaderGroupDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ReaderGroupDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ReaderGroupDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "TransportSettings";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReaderGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!transportSettings_.jsonDecode(*tree)) {
-            Log(Error, "ReaderGroupDataType decode json error - decode failed")
-                .parameter("Element", "TransportSettings");
-            return false;
-        }
-    
-        elementName = "MessageSettings";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReaderGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!messageSettings_.jsonDecode(*tree)) {
-            Log(Error, "ReaderGroupDataType decode json error - decode failed")
-                .parameter("Element", "MessageSettings");
-            return false;
-        }
-    
-        elementName = "DataSetReaders";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ReaderGroupDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!dataSetReaders_.jsonDecode(*tree, "")) {
-            Log(Error, "ReaderGroupDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

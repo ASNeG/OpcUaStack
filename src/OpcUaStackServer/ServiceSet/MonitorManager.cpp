@@ -140,7 +140,7 @@ namespace OpcUaStackServer
 		CreateMonitoredItemsRequest::SPtr createMonitorItemRequest = trx->request();
 		CreateMonitoredItemsResponse::SPtr createMonitorItemResponse = trx->response();
 
-		uint32_t size = createMonitorItemRequest->itemsToCreate()->size();
+		auto size = createMonitorItemRequest->itemsToCreate()->size();
 		createMonitorItemResponse->results()->resize(size);
 
 		for (uint32_t idx=0; idx<size; idx++) {
@@ -331,10 +331,10 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	MonitorManager::receive(ServiceTransactionDeleteMonitoredItems::SPtr trx)
 	{
-		DeleteMonitoredItemsRequest::SPtr deleteMonitorItemRequest = trx->request();
-		DeleteMonitoredItemsResponse::SPtr deleteMonitorItemResponse = trx->response();
+		auto deleteMonitorItemRequest = trx->request();
+		auto deleteMonitorItemResponse = trx->response();
 
-		uint32_t size = deleteMonitorItemRequest->monitoredItemIds()->size();
+		auto size = deleteMonitorItemRequest->monitoredItemIds()->size();
 		deleteMonitorItemResponse->results()->resize(size);
 		
 		for (uint32_t idx=0; idx<size; idx++) {
@@ -349,14 +349,13 @@ namespace OpcUaStackServer
 			bool monitoredItem;
 
 			// find monitor item in monitor map
-			MonitorItemMap::iterator it1;
 			EventItem::Map::iterator it2;
-			it1 = monitorItemMap_.find(monitorItemId);
+			auto it1 = monitorItemMap_.find(monitorItemId);
 			if (it1 == monitorItemMap_.end()) {
 
 				it2 = eventItemMap_.find(monitorItemId);
 				if (it2 == eventItemMap_.end()) {
-					deleteMonitorItemResponse->results()->set(idx, Success);
+					deleteMonitorItemResponse->results()->set(idx, BadNothingToDo);
 					continue;
 				}
 				monitoredItem = false;
@@ -408,6 +407,7 @@ namespace OpcUaStackServer
 
 				it2->second->erase();
 				eventItemMap_.erase(it2);
+				deleteMonitorItemResponse->results()->set(idx, Success);
 			}
 		}
 
@@ -513,13 +513,8 @@ namespace OpcUaStackServer
 		uint32_t monitoredItemId
 	)
 	{
-		ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
-		if (forwardNodeSync.get() == nullptr) return;
-		if (!forwardNodeSync->monitoredItemStartService().isCallback()) return;
-
 		// find node id in item id map
-		MonitoredItemIds::iterator it;
-		it = monitoredItemIds_.find(baseNodeClass->nodeId().data());
+		auto it = monitoredItemIds_.find(baseNodeClass->nodeId().data());
 		if (it != monitoredItemIds_.end()) {
 			// not the first monitored item
 
@@ -541,15 +536,19 @@ namespace OpcUaStackServer
 		nodeReference->statusCode(Success);
 		nodeReference->baseNodeClass(baseNodeClass);
 
-		// forward monitored item start
-		ApplicationMonitoredItemStartContext context;
-		context.nodeId_ = baseNodeClass->nodeId().data();
-		context.applicationContext_ = forwardNodeSync->monitoredItemStartService().applicationContext();
-		context.firstMonitoredItem_ = true;
-		context.nodeReference_ = nodeReference;
-		context.userContext_ = userContext;
 
-		forwardNodeSync->monitoredItemStartService().callback()(&context);
+        ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
+        if (forwardNodeSync && forwardNodeSync->monitoredItemStartService().isCallback()) {
+            // forward monitored item start
+            ApplicationMonitoredItemStartContext context;
+            context.nodeId_ = baseNodeClass->nodeId().data();
+            context.applicationContext_ = forwardNodeSync->monitoredItemStartService().applicationContext();
+            context.firstMonitoredItem_ = true;
+            context.nodeReference_ = nodeReference;
+            context.userContext_ = userContext;
+
+            forwardNodeSync->monitoredItemStartService().callback()(&context);
+        }
 	}
 
 	void
@@ -559,13 +558,8 @@ namespace OpcUaStackServer
 		uint32_t monitoredItemId
 	)
 	{
-		ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
-		if (forwardNodeSync.get() == nullptr) return;
-		if (!forwardNodeSync->monitoredItemStopService().isCallback()) return;
-
 		// find node id in item id map
-		MonitoredItemIds::iterator it1;
-		it1 = monitoredItemIds_.find(baseNodeClass->nodeId().data());
+		auto it1 = monitoredItemIds_.find(baseNodeClass->nodeId().data());
 		if (it1 == monitoredItemIds_.end()) {
 			// no monitored item exist
 			return;
@@ -593,15 +587,18 @@ namespace OpcUaStackServer
 		nodeReference->statusCode(Success);
 		nodeReference->baseNodeClass(baseNodeClass);
 
-		// forward monitored item stop
-		ApplicationMonitoredItemStopContext context;
-		context.nodeId_ = baseNodeClass->nodeId().data();
-		context.applicationContext_ = forwardNodeSync->monitoredItemStopService().applicationContext();
-		context.lastMonitoredItem_ = true;
-		context.nodeReference_ = nodeReference;
-		context.userContext_ = userContext;
+        ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
+        if (forwardNodeSync && forwardNodeSync->monitoredItemStopService().isCallback()) {
+            // forward monitored item stop
+            ApplicationMonitoredItemStopContext context;
+            context.nodeId_ = baseNodeClass->nodeId().data();
+            context.applicationContext_ = forwardNodeSync->monitoredItemStopService().applicationContext();
+            context.lastMonitoredItem_ = true;
+            context.nodeReference_ = nodeReference;
+            context.userContext_ = userContext;
 
-		forwardNodeSync->monitoredItemStopService().callback()(&context);
+            forwardNodeSync->monitoredItemStopService().callback()(&context);
+        }
 	}
 
 	// ------------------------------------------------------------------------
@@ -643,6 +640,12 @@ namespace OpcUaStackServer
 		forwardGlobalSync_->autorizationService().callback()(&context);
 
 		return context.statusCode_;
+	}
+
+    MonitorManager::MonitoredItemIdVector
+	MonitorManager::monitoredItemIds()
+	{
+        return monitoredItemIds_;
 	}
 
 }

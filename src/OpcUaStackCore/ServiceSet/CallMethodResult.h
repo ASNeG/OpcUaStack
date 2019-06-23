@@ -25,7 +25,8 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT CallMethodResult
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<CallMethodResult> SPtr;
@@ -42,12 +43,19 @@ namespace OpcUaStackCore
 		void outputArguments(const OpcUaVariantArray::SPtr outputArguments);
 		OpcUaVariantArray::SPtr outputArguments(void) const;
 
+		void copyTo(CallMethodResult& callMethodResult);
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonEncode(boost::property_tree::ptree& pt);
-		bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);
-		bool jsonDecode(boost::property_tree::ptree& pt);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+	  protected:
+	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		 OpcUaStatusCode statusCode_;
@@ -56,7 +64,7 @@ namespace OpcUaStackCore
 		 OpcUaVariantArray::SPtr outputArgumentArraySPtr_;
 	};
 
-	class CallMethodResultArray
+	class DLLEXPORT CallMethodResultArray
 	: public OpcUaArray<CallMethodResult::SPtr, SPtrTypeCoder<CallMethodResult> >
 	, public Object
 	{

@@ -257,113 +257,27 @@ namespace OpcUaStackCore
     }
     
     bool
-    RedundantServerDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    RedundantServerDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "RedundantServerDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, serverId_, "ServerId", true);
+        rc = rc & jsonNumberEncode(pt, serviceLevel_, "ServiceLevel");
+        rc = rc & jsonObjectEncode(pt, serverState_, "ServerState", true);
+    
+        return rc;
     }
     
     bool
-    RedundantServerDataType::jsonEncode(boost::property_tree::ptree& pt)
+    RedundantServerDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!serverId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RedundantServerDataType json encoder error")
-    		     .parameter("Element", "serverId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerId", elementTree));
+        rc = rc & jsonObjectDecode(pt, serverId_, "ServerId", true);
+        rc = rc & jsonNumberDecode(pt, serviceLevel_, "ServiceLevel");
+        rc = rc & jsonObjectDecode(pt, serverState_, "ServerState", true);
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, serviceLevel_))
-        {
-    	     Log(Error, "RedundantServerDataType json encoder error")
-    		     .parameter("Element", "serviceLevel_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ServiceLevel", elementTree));
-    
-        elementTree.clear();
-        if (!serverState_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "RedundantServerDataType json encoder error")
-    		     .parameter("Element", "serverState_");
-            return false;
-        }
-        pt.push_back(std::make_pair("ServerState", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    RedundantServerDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "RedundantServerDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    RedundantServerDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "ServerId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RedundantServerDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!serverId_.jsonDecode(*tree)) {
-            Log(Error, "RedundantServerDataType decode json error - decode failed")
-                .parameter("Element", "ServerId");
-            return false;
-        }
-    
-        elementName = "ServiceLevel";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RedundantServerDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, serviceLevel_)) {
-            Log(Error, "RedundantServerDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "ServerState";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "RedundantServerDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!serverState_.jsonDecode(*tree)) {
-            Log(Error, "RedundantServerDataType decode json error - decode failed")
-                .parameter("Element", "ServerState");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

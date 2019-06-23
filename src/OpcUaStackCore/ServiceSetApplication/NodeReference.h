@@ -19,12 +19,14 @@
 #define __OpcUaStackCore_NodeReference_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT NodeReference
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<NodeReference> SPtr;
@@ -42,14 +44,18 @@ namespace OpcUaStackCore
 			return os;
 		}
 
-		void opcUaBinaryEncode(std::ostream& os) {}
-		void opcUaBinaryDecode(std::istream& is) {}
-		bool encode(boost::property_tree::ptree& pt) const { return false; }
-		bool decode(boost::property_tree::ptree& pt) { return false; }
+		void opcUaBinaryEncode(std::ostream& os) const {};
+		void opcUaBinaryDecode(std::istream& is) {};
 
-		bool xmlEncode(boost::property_tree::ptree& pt) const { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
 		
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
+
 	  private:
 		OpcUaStatusCode statusCode_;
 	};

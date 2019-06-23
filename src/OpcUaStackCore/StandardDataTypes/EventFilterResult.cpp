@@ -256,113 +256,27 @@ namespace OpcUaStackCore
     }
     
     bool
-    EventFilterResult::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    EventFilterResult::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "EventFilterResult json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonArrayEncode(pt, selectClauseResults_, "SelectClauseResults", true);
+        rc = rc & jsonArrayEncode(pt, selectClauseDiagnosticInfos_, "SelectClauseDiagnosticInfos", true);
+        rc = rc & jsonObjectEncode(pt, whereClauseResult_, "WhereClauseResult", true);
+    
+        return rc;
     }
     
     bool
-    EventFilterResult::jsonEncode(boost::property_tree::ptree& pt)
+    EventFilterResult::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!selectClauseResults_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "EventFilterResult json encoder error")
-    		     .parameter("Element", "selectClauseResults_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SelectClauseResults", elementTree));
+        rc = rc & jsonArrayDecode(pt, selectClauseResults_, "SelectClauseResults", true);
+        rc = rc & jsonArrayDecode(pt, selectClauseDiagnosticInfos_, "SelectClauseDiagnosticInfos", true);
+        rc = rc & jsonObjectDecode(pt, whereClauseResult_, "WhereClauseResult", true);
     
-        elementTree.clear();
-        if (!selectClauseDiagnosticInfos_.jsonEncode(elementTree, ""))
-        {
-    	     Log(Error, "EventFilterResult json encoder error")
-    		     .parameter("Element", "selectClauseDiagnosticInfos_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SelectClauseDiagnosticInfos", elementTree));
-    
-        elementTree.clear();
-        if (!whereClauseResult_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "EventFilterResult json encoder error")
-    		     .parameter("Element", "whereClauseResult_");
-            return false;
-        }
-        pt.push_back(std::make_pair("WhereClauseResult", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    EventFilterResult::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "EventFilterResult json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    EventFilterResult::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "SelectClauseResults";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EventFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!selectClauseResults_.jsonDecode(*tree, "")) {
-            Log(Error, "EventFilterResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "SelectClauseDiagnosticInfos";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EventFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!selectClauseDiagnosticInfos_.jsonDecode(*tree, "")) {
-            Log(Error, "EventFilterResult decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "WhereClauseResult";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "EventFilterResult decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!whereClauseResult_.jsonDecode(*tree)) {
-            Log(Error, "EventFilterResult decode json error - decode failed")
-                .parameter("Element", "WhereClauseResult");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

@@ -292,135 +292,29 @@ namespace OpcUaStackCore
     }
     
     bool
-    SamplingIntervalDiagnosticsDataType::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    SamplingIntervalDiagnosticsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, samplingInterval_, "SamplingInterval");
+        rc = rc & jsonNumberEncode(pt, monitoredItemCount_, "MonitoredItemCount");
+        rc = rc & jsonNumberEncode(pt, maxMonitoredItemCount_, "MaxMonitoredItemCount");
+        rc = rc & jsonNumberEncode(pt, disabledMonitoredItemCount_, "DisabledMonitoredItemCount");
+    
+        return rc;
     }
     
     bool
-    SamplingIntervalDiagnosticsDataType::jsonEncode(boost::property_tree::ptree& pt)
+    SamplingIntervalDiagnosticsDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, samplingInterval_))
-        {
-    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "samplingInterval_");
-           return false;
-        }
-        pt.push_back(std::make_pair("SamplingInterval", elementTree));
+        rc = rc & jsonNumberDecode(pt, samplingInterval_, "SamplingInterval");
+        rc = rc & jsonNumberDecode(pt, monitoredItemCount_, "MonitoredItemCount");
+        rc = rc & jsonNumberDecode(pt, maxMonitoredItemCount_, "MaxMonitoredItemCount");
+        rc = rc & jsonNumberDecode(pt, disabledMonitoredItemCount_, "DisabledMonitoredItemCount");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, monitoredItemCount_))
-        {
-    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "monitoredItemCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MonitoredItemCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, maxMonitoredItemCount_))
-        {
-    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "maxMonitoredItemCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("MaxMonitoredItemCount", elementTree));
-    
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, disabledMonitoredItemCount_))
-        {
-    	     Log(Error, "SamplingIntervalDiagnosticsDataType json encoder error")
-    		     .parameter("Element", "disabledMonitoredItemCount_");
-           return false;
-        }
-        pt.push_back(std::make_pair("DisabledMonitoredItemCount", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    SamplingIntervalDiagnosticsDataType::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "SamplingIntervalDiagnosticsDataType json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    SamplingIntervalDiagnosticsDataType::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "SamplingInterval";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, samplingInterval_)) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MonitoredItemCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, monitoredItemCount_)) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "MaxMonitoredItemCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, maxMonitoredItemCount_)) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "DisabledMonitoredItemCount";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, disabledMonitoredItemCount_)) {
-            Log(Error, "SamplingIntervalDiagnosticsDataType decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

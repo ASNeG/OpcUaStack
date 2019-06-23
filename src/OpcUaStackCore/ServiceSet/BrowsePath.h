@@ -26,7 +26,8 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT BrowsePath
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<BrowsePath> SPtr;
@@ -39,15 +40,26 @@ namespace OpcUaStackCore
 		void relativePath(const RelativePath& relativePath);
 		RelativePath& relativePath(void);
 
+		void copyTo(BrowsePath& browsePath);
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+      protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		OpcUaNodeId::SPtr startingNodeSPtr_;
 		RelativePath relativePath_;
 	};
 
-	class BrowsePathArray
+	class DLLEXPORT BrowsePathArray
 	: public OpcUaArray<BrowsePath::SPtr, SPtrTypeCoder<BrowsePath> >
 	, public Object
 	{

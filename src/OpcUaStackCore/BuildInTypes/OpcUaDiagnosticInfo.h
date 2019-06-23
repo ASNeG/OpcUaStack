@@ -22,7 +22,8 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
+
 
 namespace OpcUaStackCore
 {
@@ -86,7 +87,7 @@ namespace OpcUaStackCore
 		OpcUaDiagnosticInfo::SPtr diagnosticInfo_;
 	};
 
-	class OpcUaDiagnosticInfoArray
+	class DLLEXPORT OpcUaDiagnosticInfoArray
 	: public OpcUaArray<OpcUaDiagnosticInfo::SPtr, SPtrTypeCoder<OpcUaDiagnosticInfo> >
 	, public Object
 	{

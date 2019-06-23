@@ -232,91 +232,25 @@ namespace OpcUaStackCore
     }
     
     bool
-    ViewAttributes::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    ViewAttributes::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "ViewAttributes json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, containsNoLoops_, "ContainsNoLoops");
+        rc = rc & jsonNumberEncode(pt, eventNotifier_, "EventNotifier");
+    
+        return rc;
     }
     
     bool
-    ViewAttributes::jsonEncode(boost::property_tree::ptree& pt)
+    ViewAttributes::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, containsNoLoops_))
-        {
-    	     Log(Error, "ViewAttributes json encoder error")
-    		     .parameter("Element", "containsNoLoops_");
-           return false;
-        }
-        pt.push_back(std::make_pair("ContainsNoLoops", elementTree));
+        rc = rc & jsonNumberDecode(pt, containsNoLoops_, "ContainsNoLoops");
+        rc = rc & jsonNumberDecode(pt, eventNotifier_, "EventNotifier");
     
-        elementTree.clear();
-        if(!JsonNumber::jsonEncode(elementTree, eventNotifier_))
-        {
-    	     Log(Error, "ViewAttributes json encoder error")
-    		     .parameter("Element", "eventNotifier_");
-           return false;
-        }
-        pt.push_back(std::make_pair("EventNotifier", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    ViewAttributes::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "ViewAttributes json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    ViewAttributes::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "ContainsNoLoops";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ViewAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, containsNoLoops_)) {
-            Log(Error, "ViewAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = "EventNotifier";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ViewAttributes decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!JsonNumber::jsonDecode(*tree, eventNotifier_)) {
-            Log(Error, "ViewAttributes decode json error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

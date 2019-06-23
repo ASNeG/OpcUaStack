@@ -326,157 +326,31 @@ namespace OpcUaStackCore
     }
     
     bool
-    UserTokenPolicy::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)
+    UserTokenPolicy::jsonEncodeImpl(boost::property_tree::ptree& pt) const
     {
-        boost::property_tree::ptree elementTree;
-        if (!jsonEncode(elementTree)) {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", element);
-     	     return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
+        bool rc = true;
+    
+        rc = rc & jsonObjectEncode(pt, policyId_, "PolicyId", true);
+        rc = rc & jsonObjectEncode(pt, tokenType_, "TokenType", true);
+        rc = rc & jsonObjectEncode(pt, issuedTokenType_, "IssuedTokenType", true);
+        rc = rc & jsonObjectEncode(pt, issuerEndpointUrl_, "IssuerEndpointUrl", true);
+        rc = rc & jsonObjectEncode(pt, securityPolicyUri_, "SecurityPolicyUri", true);
+    
+        return rc;
     }
     
     bool
-    UserTokenPolicy::jsonEncode(boost::property_tree::ptree& pt)
+    UserTokenPolicy::jsonDecodeImpl(const boost::property_tree::ptree& pt)
     {
-        boost::property_tree::ptree elementTree;
+        bool rc = true;
     
-        elementTree.clear();
-        if (!policyId_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", "policyId_");
-            return false;
-        }
-        pt.push_back(std::make_pair("PolicyId", elementTree));
+        rc = rc & jsonObjectDecode(pt, policyId_, "PolicyId", true);
+        rc = rc & jsonObjectDecode(pt, tokenType_, "TokenType", true);
+        rc = rc & jsonObjectDecode(pt, issuedTokenType_, "IssuedTokenType", true);
+        rc = rc & jsonObjectDecode(pt, issuerEndpointUrl_, "IssuerEndpointUrl", true);
+        rc = rc & jsonObjectDecode(pt, securityPolicyUri_, "SecurityPolicyUri", true);
     
-        elementTree.clear();
-        if (!tokenType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", "tokenType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("TokenType", elementTree));
-    
-        elementTree.clear();
-        if (!issuedTokenType_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", "issuedTokenType_");
-            return false;
-        }
-        pt.push_back(std::make_pair("IssuedTokenType", elementTree));
-    
-        elementTree.clear();
-        if (!issuerEndpointUrl_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", "issuerEndpointUrl_");
-            return false;
-        }
-        pt.push_back(std::make_pair("IssuerEndpointUrl", elementTree));
-    
-        elementTree.clear();
-        if (!securityPolicyUri_.jsonEncode(elementTree))
-        {
-    	     Log(Error, "UserTokenPolicy json encoder error")
-    		     .parameter("Element", "securityPolicyUri_");
-            return false;
-        }
-        pt.push_back(std::make_pair("SecurityPolicyUri", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    UserTokenPolicy::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)
-    {
-        boost::optional<boost::property_tree::ptree&> tmpTree;
-    
-        tmpTree = pt.get_child_optional(element);
-        if (!tmpTree) {
-     	     Log(Error, "UserTokenPolicy json decoder error")
-    		    .parameter("Element", element);
-    		 return false;
-        }
-        return jsonDecode(*tmpTree);
-    }
-    
-    bool
-    UserTokenPolicy::jsonDecode(boost::property_tree::ptree& pt)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = "PolicyId";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UserTokenPolicy decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!policyId_.jsonDecode(*tree)) {
-            Log(Error, "UserTokenPolicy decode json error - decode failed")
-                .parameter("Element", "PolicyId");
-            return false;
-        }
-    
-        elementName = "TokenType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UserTokenPolicy decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!tokenType_.jsonDecode(*tree)) {
-            Log(Error, "UserTokenPolicy decode json error - decode failed")
-                .parameter("Element", "TokenType");
-            return false;
-        }
-    
-        elementName = "IssuedTokenType";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UserTokenPolicy decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!issuedTokenType_.jsonDecode(*tree)) {
-            Log(Error, "UserTokenPolicy decode json error - decode failed")
-                .parameter("Element", "IssuedTokenType");
-            return false;
-        }
-    
-        elementName = "IssuerEndpointUrl";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UserTokenPolicy decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!issuerEndpointUrl_.jsonDecode(*tree)) {
-            Log(Error, "UserTokenPolicy decode json error - decode failed")
-                .parameter("Element", "IssuerEndpointUrl");
-            return false;
-        }
-    
-        elementName = "SecurityPolicyUri";
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "UserTokenPolicy decode json error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!securityPolicyUri_.jsonDecode(*tree)) {
-            Log(Error, "UserTokenPolicy decode json error - decode failed")
-                .parameter("Element", "SecurityPolicyUri");
-            return false;
-        }
-    
-        return true;
+        return rc;
     }
     
     void

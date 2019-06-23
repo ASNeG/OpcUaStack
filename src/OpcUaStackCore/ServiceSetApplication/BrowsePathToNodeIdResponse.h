@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT NodeIdResult
+	: public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<NodeIdResult> SPtr;
@@ -37,13 +38,27 @@ namespace OpcUaStackCore
 		void nodeId(OpcUaNodeId& nodeId);
 		OpcUaNodeId& nodeId(void);
 
+		void copyTo(NodeIdResult& nodeIdResult)  {}
+		void out(std::ostream& os) const {}
+
+		void opcUaBinaryEncode(std::ostream& os) const {}
+		void opcUaBinaryDecode(std::istream& is) {}
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
+
 	  private:
 		OpcUaStatusCode statusCode_;
 		OpcUaNodeId nodeId_;
 	};
 
 
-	class NodeIdResultArray
+	class DLLEXPORT NodeIdResultArray
 	: public OpcUaArray<NodeIdResult::SPtr, SPtrTypeCoder<NodeIdResult> >
 	, public Object
 	{

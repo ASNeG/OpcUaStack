@@ -104,6 +104,7 @@ namespace OpcUaStackServer
 				generateHeaderClassBegin("    ") &&
 					generateHeaderClassValueGetter("        ") &&
 				    generateHeaderClassExtensionInterface("        ") &&
+					generateHeaderClassEncoderDecoder("        ") &&
 				    generateHeaderClassPublic("        ") &&
 				    generateHeaderClassPrivate("    ") &&
 				    generateHeaderClassValueDefinition("        ") &&
@@ -152,7 +153,6 @@ namespace OpcUaStackServer
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
-		ss << "#include \"OpcUaStackCore/BuildInTypes/JsonNumber.h\"" << std::endl;
 
 		//
 		// added parent includes
@@ -278,14 +278,22 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
-		ss << prefix << "virtual bool jsonEncode(boost::property_tree::ptree& pt, const std::string& element);" << std::endl;
-		ss << prefix << "virtual bool jsonEncode(boost::property_tree::ptree& pt);" << std::endl;
-		ss << prefix << "virtual bool jsonDecode(boost::property_tree::ptree& pt, const std::string& element);" << std::endl;
-		ss << prefix << "virtual bool jsonDecode(boost::property_tree::ptree& pt);" << std::endl;
 		ss << prefix << "virtual void copyTo(ExtensionObjectBase& extensionObjectBase);" << std::endl;
 		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;" << std::endl;
 		ss << prefix << "virtual void out(std::ostream& os);" << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool DataTypeGenerator::generateHeaderClassEncoderDecoder(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+	    ss << prefix << "virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const;" << std::endl;
+	    ss << prefix << "virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt);" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
@@ -375,7 +383,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
-		ss << prefix << "class " << nodeInfo_.className() << "Array" << std::endl;
+		ss << prefix << "class DLLEXPORT " << nodeInfo_.className() << "Array" << std::endl;
 		ss << prefix << ": public OpcUaArray<" << nodeInfo_.className() << "::SPtr, SPtrTypeCoder<" << nodeInfo_.className() << "> >" << std::endl;
 		ss << prefix << ", public Object" << std::endl;
 		ss << prefix << "{" << std::endl;
@@ -1100,34 +1108,13 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		//
-		// first xml encoder function
-		//
-		ss << prefix << std::endl;
-		ss << prefix <<  "bool" << std::endl;
-		ss << prefix <<  nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
-		ss << prefix << "{" << std::endl;
-		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
-		ss << prefix << "    if (!jsonEncode(elementTree)) {" << std::endl;
-		ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
-		ss << prefix << "		     .parameter(\"Element\", element);" << std::endl;
-		ss << prefix << " 	     return false;" << std::endl;
-		ss << prefix << "    }" << std::endl;
-		ss << prefix << "    pt.push_back(std::make_pair(element, elementTree));" << std::endl;
-		ss << prefix << "    return true;" << std::endl;
-		ss << prefix << "}" << std::endl;
-
-
-		//
-		// second xml encoder function
+		// json encoder function
 		//
 		ss << prefix << std::endl;
 		ss << prefix << "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::jsonEncode(boost::property_tree::ptree& pt)" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonEncodeImpl(boost::property_tree::ptree& pt) const" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
-
-
-		ss << prefix << "    boost::property_tree::ptree elementTree;" << std::endl;
+		ss << prefix << "    bool rc = true;" << std::endl;
 		ss << prefix << std::endl;
 
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
@@ -1136,42 +1123,20 @@ namespace OpcUaStackServer
 			switch (dataTypeField->type())
 			{
 				case DataTypeField::NumberType:
-					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if(!JsonNumber::jsonEncode(elementTree, " << dataTypeField->variableName() << "))" << std::endl;
-					ss << prefix << "    {" << std::endl;
-					ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
-					ss << prefix << "		     .parameter(\"Element\", \"" << dataTypeField->variableName() << "\");" << std::endl;
-					ss << prefix << "       return false;" << std::endl;
-				    ss << prefix << "    }" << std::endl;
+					ss << prefix << "    rc = rc & jsonNumberEncode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\");" << std::endl;
 					break;
-
 				case DataTypeField::BuildInArrayType:
 				case DataTypeField::StructureArrayType:
-					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree, \"\"))" << std::endl;
-					ss << prefix << "    {" << std::endl;
-					ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
-					ss << prefix << "		     .parameter(\"Element\", \"" << dataTypeField->variableName() << "\");" << std::endl;
-					ss << prefix << "        return false;" << std::endl;
-				    ss << prefix << "    }" << std::endl;
+				case DataTypeField::EnumerationArrayType:
+					ss << prefix << "    rc = rc & jsonArrayEncode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\", true);" << std::endl;
 					break;
-
 				default:
-					ss << prefix << "    elementTree.clear();" << std::endl;
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonEncode(elementTree))" << std::endl;
-					ss << prefix << "    {" << std::endl;
-					ss << prefix << "	     Log(Error, \""<< nodeInfo_.className() << " json encoder error\")" << std::endl;
-					ss << prefix << "		     .parameter(\"Element\", \"" << dataTypeField->variableName() << "\");" << std::endl;
-					ss << prefix << "        return false;" << std::endl;
-			        ss << prefix << "    }" << std::endl;
+					ss << prefix << "    rc = rc & jsonObjectEncode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\", true);" << std::endl;
 			}
-			ss << prefix << "    pt.push_back(std::make_pair(\"" << dataTypeField->name() << "\", elementTree));" << std::endl;
-			ss << prefix << std::endl;
 		}
 
-
-
-    	ss << prefix << "    return true;" << std::endl;
+		ss << prefix << std::endl;
+    	ss << prefix << "    return rc;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -1186,78 +1151,41 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		//
-		// first xml decoder function
+		// json decoder function
 		//
 		ss << prefix << std::endl;
 		ss << prefix <<  "bool" << std::endl;
-		ss << prefix <<  nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt, const std::string& element)" << std::endl;
+		ss << prefix << nodeInfo_.className() << "::jsonDecodeImpl(const boost::property_tree::ptree& pt)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tmpTree;" << std::endl;
-        ss << prefix << std::endl;
-		ss << prefix << "    tmpTree = pt.get_child_optional(element);" << std::endl;
-		ss << prefix << "    if (!tmpTree) {" << std::endl;
-		ss << prefix << " 	     Log(Error, \"" << nodeInfo_.className() << " json decoder error\")" << std::endl;
-		ss << prefix << "		    .parameter(\"Element\", element);" << std::endl;
-		ss << prefix << "		 return false;" << std::endl;
-		ss << prefix << "    }" << std::endl;
-		ss << prefix << "    return jsonDecode(*tmpTree);" << std::endl;
-		ss << prefix << "}" << std::endl;
-
-
-		//
-		// second xml decoder function
-		//
+		ss << prefix << "    bool rc = true;" << std::endl;
 		ss << prefix << std::endl;
-		ss << prefix <<  "bool" << std::endl;
-		ss << prefix << nodeInfo_.className() << "::jsonDecode(boost::property_tree::ptree& pt)" << std::endl;
-		ss << prefix << "{" << std::endl;
 
-		ss << prefix << "    std::string elementName;" << std::endl;
-		ss << prefix << "    boost::optional<boost::property_tree::ptree&> tree;" << std::endl;
-		ss << prefix << std::endl;
+		// FIXME: todo
+		std::cout << "ClassName=" << nodeInfo_.className() << std::endl;
 
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			ss << prefix << "    elementName = \"" << dataTypeField->name() << "\";" << std::endl;
-			ss << prefix << "    tree = pt.get_child_optional(elementName);" << std::endl;
-			ss << prefix << "    if (!tree) {" << std::endl;
-			ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - element not found\")" << std::endl;
-			ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
-			ss << prefix << "        return false;" << std::endl;
-			ss << prefix << "    }" << std::endl;
+			// FIXME: todo
+			std::cout << "FieldName=" << dataTypeField->variableName() << ", opt=" << dataTypeField->optional() << std::endl;
 
 			switch (dataTypeField->type())
 			{
 				case DataTypeField::NumberType:
-					ss << prefix << "    if(!JsonNumber::jsonDecode(*tree, " << dataTypeField->variableName() << ")) {" << std::endl;
-					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\")" << std::endl;
-					ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
-					ss << prefix << "        return false;" << std::endl;
-					ss << prefix << "    }" << std::endl;
+					ss << prefix << "    rc = rc & jsonNumberDecode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\");" << std::endl;
 					break;
-
 				case DataTypeField::BuildInArrayType:
 				case DataTypeField::StructureArrayType:
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonDecode(*tree, \"\")) {" << std::endl;
-					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\")" << std::endl;
-					ss << prefix << "            .parameter(\"Element\", elementName);" << std::endl;
-					ss << prefix << "        return false;" << std::endl;
-					ss << prefix << "    }" << std::endl;
+				case DataTypeField::EnumerationArrayType:
+					ss << prefix << "    rc = rc & jsonArrayDecode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\", true);" << std::endl;
 					break;
-
 				default:
-					ss << prefix << "    if (!" << dataTypeField->variableName() << ".jsonDecode(*tree)) {" << std::endl;
-					ss << prefix << "        Log(Error, \"" << nodeInfo_.className() << " decode json error - decode failed\")" << std::endl;
-					ss << prefix << "            .parameter(\"Element\", \"" << dataTypeField->name() << "\");" << std::endl;
-					ss << prefix << "        return false;" << std::endl;
-					ss << prefix << "    }" << std::endl;
+					ss << prefix << "    rc = rc & jsonObjectDecode(pt, " << dataTypeField->variableName() << ", \"" << dataTypeField->name() << "\", true);" << std::endl;
 			}
-
-			ss << prefix << std::endl;
 		}
 
-		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    return rc;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

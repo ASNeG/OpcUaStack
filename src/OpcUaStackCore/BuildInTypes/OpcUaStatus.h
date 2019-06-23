@@ -26,7 +26,7 @@
 namespace OpcUaStackCore
 {
     
-    class OpcUaStatus
+    class DLLEXPORT OpcUaStatus
     : public Object
     , public ExtensionObjectBase
     {
@@ -42,9 +42,9 @@ namespace OpcUaStackCore
         void enumeration(OpcUaStatusCode enumeration);
         OpcUaStatusCode enumeration(void);
         OpcUaStatusCode str2Enum(const std::string& enumerationString);
-        std::string enum2Str(OpcUaStatusCode enumeration);
-        std::string enum2Str(void);
-        std::string toString(void);
+        std::string enum2Str(OpcUaStatusCode enumeration) const;
+        std::string enum2Str(void) const;
+        std::string toString(void) const;
         bool exist(const std::string& enumerationString);
         bool exist(OpcUaStatusCode enumeration);
         
@@ -86,7 +86,7 @@ namespace OpcUaStackCore
     
     };
     
-    class OpcUaStatusArray
+    class DLLEXPORT OpcUaStatusArray
     : public OpcUaArray<OpcUaStatus::SPtr, SPtrTypeCoder<OpcUaStatus> >
     , public Object
     {

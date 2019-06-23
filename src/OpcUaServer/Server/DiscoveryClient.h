@@ -27,7 +27,7 @@ using namespace OpcUaStackClient;
 namespace OpcUaServer
 {
 
-	class DiscoveryClient
+	class DLLEXPORT DiscoveryClient
 	{
 	  public:
 		DiscoveryClient(void);
