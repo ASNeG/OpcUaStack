@@ -2,7 +2,7 @@
 #include <iostream>
 #include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Base/JsonFormatter.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 using namespace OpcUaStackCore;
 
