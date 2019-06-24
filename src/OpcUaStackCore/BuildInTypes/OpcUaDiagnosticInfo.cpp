@@ -488,153 +488,36 @@ namespace OpcUaStackCore
 	bool
 	OpcUaDiagnosticInfo::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
-		if (symbolicId_ != -1) {
-			if (!JsonNumber::jsonEncode(pt, symbolicId_, "SymbolicId")) {
-				Log(Error, "OpcUaDiagnosticInfo json encoder error")
-					.parameter("Element", "SymbolicId");
-				return false;
-			}
-		}
-		if (namespaceUri_ != -1) {
-			if (!JsonNumber::jsonEncode(pt, namespaceUri_, "NamespaceUri")) {
-				Log(Error, "OpcUaDiagnosticInfo json encoder error")
-					.parameter("Element", "NamespaceUri");
-				return false;
-			}
-		}
-		if (localizedText_ != -1) {
-			if (!JsonNumber::jsonEncode(pt, localizedText_, "LocalizedText")) {
-				Log(Error, "OpcUaDiagnosticInfo json encoder error")
-					.parameter("Element", "LocalizedText");
-				return false;
-			}
-		}
-		if (locale_ != -1) {
-			if (!JsonNumber::jsonEncode(pt, locale_, "Locale")) {
-				Log(Error, "OpcUaDiagnosticInfo json encoder error")
-					.parameter("Element", "Locale");
-				return false;
-			}
-		}
-		if (additionalInfo_.exist()) {
-			if (!additionalInfo_.jsonEncode(pt, "AdditionalInfo")) {
-				Log(Error, "OpcUaDiagnosticInfo json encoder error")
-					.parameter("Element", "AdditionalInfo");
-				return false;
-			}
-		}
-		if (innerStatusCode_ != 0) {
-			OpcUaStatus status(innerStatusCode_);
-			if (!status.jsonEncode(pt, "InnerStatusCode")) {
-				Log(Error, "OpcUaDiagnosticInfo json encoder error")
-					.parameter("Element", "InnerStatusCode");
-				return false;
-			}
-		}
-		if (diagnosticInfo_.get() != nullptr) {
-			if (!diagnosticInfo_->jsonEncode(pt, "InnerDiagnosticInfo")) {
-				Log(Error, "OpcUaDiagnosticInfo json encoder error")
-					.parameter("Element", "InnerDiagnosticInfo");
-				return false;
-			}
-		}
-		return true;
+
+		bool rc = JsonFormatter::jsonNumberEncode(pt, symbolicId_, "SymbolicId", true, -1);
+        rc &= JsonFormatter::jsonNumberEncode(pt, namespaceUri_, "NamespaceUri", true, -1);
+        rc &= JsonFormatter::jsonNumberEncode(pt, localizedText_, "LocalizedText", true, -1);
+        rc &= JsonFormatter::jsonNumberEncode(pt, locale_, "Locale", true, -1);
+        rc &= JsonFormatter::jsonObjectEncode(pt, additionalInfo_, "AdditionalInfo", true);
+        rc &= JsonFormatter::jsonNumberEncode(pt, static_cast<OpcUaUInt32>(innerStatusCode_), "InnerStatusCode", true, OpcUaUInt32(0));
+        rc &= JsonFormatter::jsonObjectSPtrEncode(pt, diagnosticInfo_, "InnerDiagnosticInfo", true);
+
+		return rc;
 	}
 
 	bool
 	OpcUaDiagnosticInfo::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-		boost::optional<const boost::property_tree::ptree&> tree;
+        bool rc = JsonFormatter::jsonNumberDecode(pt, symbolicId_, "SymbolicId", true, -1);
+        rc &= JsonFormatter::jsonNumberDecode(pt, namespaceUri_, "NamespaceUri", true, -1);
+        rc &= JsonFormatter::jsonNumberDecode(pt, localizedText_, "LocalizedText", true, -1);
+        rc &= JsonFormatter::jsonNumberDecode(pt, locale_, "Locale", true, -1);
+        rc &= JsonFormatter::jsonObjectDecode(pt, additionalInfo_, "AdditionalInfo", true);
 
-		//
-		// get SymboliId
-		//
-		tree = pt.get_child_optional("SymbolicId");
-		if (tree) {
-			if (!JsonNumber::jsonDecode(*tree, symbolicId_)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode json error - element not found")
-	                .parameter("Element", "SymbolicId");
-	            return false;
-			}
-		}
+        OpcUaUInt32 status;
+        rc &= JsonFormatter::jsonNumberDecode(pt, status, "InnerStatusCode", true, OpcUaUInt32(0));
+        innerStatusCode_ = static_cast<OpcUaStatusCode>(status);
 
-		//
-		// get NamesapceUri
-		//
-		tree = pt.get_child_optional("NamespaceUri");
-		if (tree) {
-			if (!JsonNumber::jsonDecode(*tree, namespaceUri_)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode json error - element not found")
-	                .parameter("Element", "NamespaceUri");
-	            return false;
-			}
-		}
+        rc &= JsonFormatter::jsonObjectSPtrDecode(pt, diagnosticInfo_, "InnerDiagnosticInfo", true);
 
-		//
-		// get Locale
-		//
-		tree = pt.get_child_optional("Locale");
-		if (tree) {
-			if (!JsonNumber::jsonDecode(*tree, locale_)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode json error - element not found")
-	                .parameter("Element", "Locale");
-	            return false;
-			}
-		}
-
-		//
-		// get LocalizedText
-		//
-		tree = pt.get_child_optional("LocalizedText");
-		if (tree) {
-			if (!JsonNumber::jsonDecode(*tree, localizedText_)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode json error - element not found")
-	                .parameter("Element", "LocalizedText");
-	            return false;
-			}
-		}
-
-		//
-		// get AdditionalInfo
-		//
-		tree = pt.get_child_optional("AdditionalInfo");
-		if (tree) {
-			if (!additionalInfo_.jsonDecode(*tree)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode json error - element not found")
-	                .parameter("Element", "AdditionalInfo");
-	            return false;
-			}
-		}
-
-		//
-		// get InnerStatusCode
-		//
-		tree = pt.get_child_optional("InnerStatusCode");
-		if (tree) {
-			OpcUaStatus status;
-			if (!status.jsonDecode(*tree)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode json error - element not found")
-	                .parameter("Element", "InnerStatusCode");
-	            return false;
-			}
-			innerStatusCode_ = status.enumeration();
-		}
-
-		//
-		// get InnerDiagnosticInfo
-		//
-		tree = pt.get_child_optional("InnerDiagnosticInfo");
-		if (tree) {
-			diagnosticInfo_ = constructSPtr<OpcUaDiagnosticInfo>();
-			if (!diagnosticInfo_->jsonDecode(*tree)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode json error - element not found")
-	                .parameter("Element", "InnerDiagnosticInfo");
-	            return false;
-			}
-		}
-
-		return true;
+        return rc;
 	}
+
 
 
 };

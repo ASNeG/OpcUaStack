@@ -78,14 +78,14 @@ namespace OpcUaStackCore
 	}
 
     bool BrowseResponse::jsonEncodeImpl(boost::property_tree::ptree &pt) const {
-	    bool rc = resultArraySPtr_->jsonEncode(pt, "Results");
-	    rc &= diagnosticInfoArraySPtr_->jsonEncode(pt, "DiagnosticInfos");
+	    bool rc = jsonObjectSPtrEncode(pt,  resultArraySPtr_, "Results");
+	    rc &= jsonObjectSPtrEncode(pt, diagnosticInfoArraySPtr_, "DiagnosticInfos");
         return rc;
     }
 
     bool BrowseResponse::jsonDecodeImpl(const boost::property_tree::ptree &pt) {
-        bool rc = resultArraySPtr_->jsonDecode(pt, "Results");
-        rc &= diagnosticInfoArraySPtr_->jsonDecode(pt, "DiagnosticInfos");
+        bool rc = jsonObjectSPtrDecode(pt, resultArraySPtr_, "Results");
+        rc &=  jsonObjectSPtrDecode(pt, diagnosticInfoArraySPtr_, "DiagnosticInfos");
         return rc;
     }
 }
