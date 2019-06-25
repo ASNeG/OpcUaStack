@@ -106,7 +106,7 @@ namespace OpcUaStackCore
 		return *this;
 	}
 
-	OpcUaString::operator std::string const (void)
+	OpcUaString::operator std::string (void) const
 	{
 		return value();
 	}

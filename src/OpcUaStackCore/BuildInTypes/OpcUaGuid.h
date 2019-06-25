@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 		bool value(const std::string& string);
 		std::string value(void) const;
 		OpcUaGuid& operator=(const std::string& string); 
-		operator std::string const (void); 
+		operator std::string (void) const;
 
 		void copyTo(OpcUaGuid& opcUaGuid);
 		bool operator<(const OpcUaGuid& opcUaGuid) const;

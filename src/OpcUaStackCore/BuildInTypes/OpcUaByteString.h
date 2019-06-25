@@ -58,7 +58,7 @@ namespace OpcUaStackCore
 		void fromString(const std::string& string);
 		OpcUaByteString& operator=(const std::string& string); 
 		OpcUaByteString& operator=(const OpcUaByteString& value);
-		operator std::string const (void); 
+		operator std::string (void) const;
 
 		void copyTo(OpcUaByteString& opcUaByteString);
 		bool operator<(const OpcUaByteString& opcUaByteString) const;
