@@ -54,8 +54,8 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 
 	  protected:
-        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
-        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		OpcUaStatusCode statusCode_;

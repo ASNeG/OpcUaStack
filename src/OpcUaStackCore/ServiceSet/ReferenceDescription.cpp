@@ -167,36 +167,36 @@ namespace OpcUaStackCore
 		typeDefinitionSPtr_->opcUaBinaryDecode(is);
 	}
 
-    bool
-    ReferenceDescription::jsonEncodeImpl(boost::property_tree::ptree &pt) const
-    {
-	    bool rc = jsonObjectSPtrEncode(pt, referenceTypeIdSPtr_, "ReferenceTypeId");
-	    rc &= jsonNumberEncode(pt, isForward_, "IsForward");
-	    rc &= jsonObjectSPtrEncode(pt, nodeIdSPtr_, "NodeId");
-        rc &= jsonObjectEncode(pt, browseName_, "BrowseName", true);
-        rc &= jsonObjectEncode(pt, displayName_, "DisplayName");
-        rc &= jsonNumberEncode(pt, (OpcUaUInt32)nodeClass_, "NodeClass", true, OpcUaUInt32(0));
-        rc &= jsonObjectSPtrEncode(pt, typeDefinitionSPtr_, "TypeDefinition", true);
+	bool
+	ReferenceDescription::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		bool rc = jsonObjectSPtrEncode(pt, referenceTypeIdSPtr_, "ReferenceTypeId");
+		rc &= jsonNumberEncode(pt, isForward_, "IsForward");
+		rc &= jsonObjectSPtrEncode(pt, nodeIdSPtr_, "NodeId");
+		rc &= jsonObjectEncode(pt, browseName_, "BrowseName", true);
+		rc &= jsonObjectEncode(pt, displayName_, "DisplayName");
+		rc &= jsonNumberEncode(pt, (OpcUaUInt32)nodeClass_, "NodeClass", true, OpcUaUInt32(0));
+		rc &= jsonObjectSPtrEncode(pt, typeDefinitionSPtr_, "TypeDefinition", true);
 
-        return rc;
-    }
+		return rc;
+	}
 
-    bool
-    ReferenceDescription::jsonDecodeImpl(const boost::property_tree::ptree &pt)
-    {
-        bool rc = jsonObjectSPtrDecode(pt, referenceTypeIdSPtr_, "ReferenceTypeId");
-        rc &= jsonNumberDecode(pt, isForward_, "IsForward");
-        rc &= jsonObjectSPtrDecode(pt, nodeIdSPtr_, "NodeId");
-        rc &= jsonObjectDecode(pt, browseName_, "BrowseName", true);
-        rc &= jsonObjectDecode(pt, displayName_, "DisplayName");
+	bool
+	ReferenceDescription::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		bool rc = jsonObjectSPtrDecode(pt, referenceTypeIdSPtr_, "ReferenceTypeId");
+		rc &= jsonNumberDecode(pt, isForward_, "IsForward");
+		rc &= jsonObjectSPtrDecode(pt, nodeIdSPtr_, "NodeId");
+		rc &= jsonObjectDecode(pt, browseName_, "BrowseName", true);
+		rc &= jsonObjectDecode(pt, displayName_, "DisplayName");
 
-        OpcUaUInt32  tmp;
-        rc &= jsonNumberDecode(pt, tmp, "NodeClass", true, OpcUaUInt32(0));
-        nodeClass_ = (NodeClass::Enum)tmp;
+		OpcUaUInt32  tmp;
+		rc &= jsonNumberDecode(pt, tmp, "NodeClass", true, OpcUaUInt32(0));
+		nodeClass_ = (NodeClass::Enum)tmp;
 
-        rc &= jsonObjectSPtrDecode(pt, typeDefinitionSPtr_, "TypeDefinition", true);
+		rc &= jsonObjectSPtrDecode(pt, typeDefinitionSPtr_, "TypeDefinition", true);
 
-        return rc;
-    }
+		return rc;
+	}
 
 }

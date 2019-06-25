@@ -34,14 +34,14 @@ namespace OpcUaStackCore
 	: Object()
 	, symbolicId_(-1)
 	, namespaceUri_(-1)
-	, localizedText_(-1)		
+	, localizedText_(-1)
 	, locale_(-1)
 	, additionalInfo_()
 	, innerStatusCode_((OpcUaStatusCode)0)
 	, diagnosticInfo_()
 	{
 	}
-	
+
 	OpcUaDiagnosticInfo::~OpcUaDiagnosticInfo(void)
 	{
 	}
@@ -136,7 +136,7 @@ namespace OpcUaStackCore
 		return diagnosticInfo_;
 	}
 
-	void 
+	void
 	OpcUaDiagnosticInfo::out(std::ostream& os) const
 	{
 		bool outputExist = false;
@@ -171,7 +171,7 @@ namespace OpcUaStackCore
 		}
 	}
 
-	void 
+	void
 	OpcUaDiagnosticInfo::copyTo(OpcUaDiagnosticInfo& opcUaDiagnosticInfo)
 	{
 		if (symbolicId_ != -1) {
@@ -203,29 +203,29 @@ namespace OpcUaStackCore
 	OpcUaDiagnosticInfo::operator==(const OpcUaDiagnosticInfo& value)
 	{
 		OpcUaDiagnosticInfo* dst = const_cast<OpcUaDiagnosticInfo*>(&value);
-	    if (symbolicId_ != dst->symbolicId_) return false;
-	    if (namespaceUri_ != dst->namespaceUri_) return false;
-	    if (localizedText_ != dst->localizedText_) return false;
-	    if (locale_ != dst->locale_) return false;
-	    if (additionalInfo_ != dst->additionalInfo_) return false;
-	    if (innerStatusCode_ != dst->innerStatusCode_) return false;
-	    return true;
+		if (symbolicId_ != dst->symbolicId_) return false;
+		if (namespaceUri_ != dst->namespaceUri_) return false;
+		if (localizedText_ != dst->localizedText_) return false;
+		if (locale_ != dst->locale_) return false;
+		if (additionalInfo_ != dst->additionalInfo_) return false;
+		if (innerStatusCode_ != dst->innerStatusCode_) return false;
+		return true;
 	}
 
 	bool
 	OpcUaDiagnosticInfo::operator!=(const OpcUaDiagnosticInfo& value)
 	{
-	    return !this->operator==(value);
+		return !this->operator==(value);
 	}
 
 	OpcUaDiagnosticInfo&
 	OpcUaDiagnosticInfo::operator=(const OpcUaDiagnosticInfo& value)
 	{
-	    const_cast<OpcUaDiagnosticInfo*>(&value)->copyTo(*this);
-	    return *this;
+		const_cast<OpcUaDiagnosticInfo*>(&value)->copyTo(*this);
+		return *this;
 	}
 
-	void 
+	void
 	OpcUaDiagnosticInfo::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaByte encodingMask = 0x00;
@@ -275,8 +275,8 @@ namespace OpcUaStackCore
 			diagnosticInfo_->opcUaBinaryEncode(os);
 		}
 	}
-		
-	void 
+
+	void
 	OpcUaDiagnosticInfo::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaByte encodingMask;
@@ -380,14 +380,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaDiagnosticInfo::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
-        std::string elementName = xmlns.addPrefix(element);
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        return xmlDecode(*tree, xmlns);
+		std::string elementName = xmlns.addPrefix(element);
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+		if (!tree) {
+			Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
+				.parameter("Element", elementName);
+			return false;
+		}
+		return xmlDecode(*tree, xmlns);
 	}
 
 	bool
@@ -401,9 +401,9 @@ namespace OpcUaStackCore
 		tree = pt.get_child_optional(xmlns.addPrefix("SymbolicId"));
 		if (tree) {
 			if (!XmlNumber::xmlDecode(*tree, symbolicId_)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
-	                .parameter("Element", "SymbolicId");
-	            return false;
+				Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
+					.parameter("Element", "SymbolicId");
+				return false;
 			}
 		}
 
@@ -413,9 +413,9 @@ namespace OpcUaStackCore
 		tree = pt.get_child_optional(xmlns.addPrefix("NamespaceUri"));
 		if (tree) {
 			if (!XmlNumber::xmlDecode(*tree, namespaceUri_)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
-	                .parameter("Element", "NamespaceUri");
-	            return false;
+				Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
+					.parameter("Element", "NamespaceUri");
+				return false;
 			}
 		}
 
@@ -425,9 +425,9 @@ namespace OpcUaStackCore
 		tree = pt.get_child_optional(xmlns.addPrefix("Locale"));
 		if (tree) {
 			if (!XmlNumber::xmlDecode(*tree, locale_)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
-	                .parameter("Element", "Locale");
-	            return false;
+				Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
+					.parameter("Element", "Locale");
+				return false;
 			}
 		}
 
@@ -437,9 +437,9 @@ namespace OpcUaStackCore
 		tree = pt.get_child_optional(xmlns.addPrefix("LocalizedText"));
 		if (tree) {
 			if (!XmlNumber::xmlDecode(*tree, localizedText_)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
-	                .parameter("Element", "LocalizedText");
-	            return false;
+				Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
+					.parameter("Element", "LocalizedText");
+				return false;
 			}
 		}
 
@@ -449,9 +449,9 @@ namespace OpcUaStackCore
 		tree = pt.get_child_optional(xmlns.addPrefix("AdditionalInfo"));
 		if (tree) {
 			if (!additionalInfo_.xmlDecode(*tree, xmlns)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
-	                .parameter("Element", "AdditionalInfo");
-	            return false;
+				Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
+					.parameter("Element", "AdditionalInfo");
+				return false;
 			}
 		}
 
@@ -462,9 +462,9 @@ namespace OpcUaStackCore
 		if (tree) {
 			OpcUaStatus status;
 			if (!status.xmlDecode(*tree, xmlns)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
-	                .parameter("Element", "InnerStatusCode");
-	            return false;
+				Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
+					.parameter("Element", "InnerStatusCode");
+				return false;
 			}
 			innerStatusCode_ = status.enumeration();
 		}
@@ -476,9 +476,9 @@ namespace OpcUaStackCore
 		if (tree) {
 			diagnosticInfo_ = constructSPtr<OpcUaDiagnosticInfo>();
 			if (!diagnosticInfo_->xmlDecode(*tree, xmlns)) {
-	            Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
-	                .parameter("Element", "InnerDiagnosticInfo");
-	            return false;
+				Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
+					.parameter("Element", "InnerDiagnosticInfo");
+				return false;
 			}
 		}
 
@@ -489,13 +489,13 @@ namespace OpcUaStackCore
 	OpcUaDiagnosticInfo::jsonEncodeImpl(boost::property_tree::ptree& pt) const
 	{
 
-		bool rc = JsonFormatter::jsonNumberEncode(pt, symbolicId_, "SymbolicId", true, -1);
-        rc &= JsonFormatter::jsonNumberEncode(pt, namespaceUri_, "NamespaceUri", true, -1);
-        rc &= JsonFormatter::jsonNumberEncode(pt, localizedText_, "LocalizedText", true, -1);
-        rc &= JsonFormatter::jsonNumberEncode(pt, locale_, "Locale", true, -1);
-        rc &= JsonFormatter::jsonObjectEncode(pt, additionalInfo_, "AdditionalInfo", true);
-        rc &= JsonFormatter::jsonNumberEncode(pt, static_cast<OpcUaUInt32>(innerStatusCode_), "InnerStatusCode", true, OpcUaUInt32(0));
-        rc &= JsonFormatter::jsonObjectSPtrEncode(pt, diagnosticInfo_, "InnerDiagnosticInfo", true);
+		bool rc = jsonNumberEncode(pt, symbolicId_, "SymbolicId", true, -1);
+		rc &= jsonNumberEncode(pt, namespaceUri_, "NamespaceUri", true, -1);
+		rc &= jsonNumberEncode(pt, localizedText_, "LocalizedText", true, -1);
+		rc &= jsonNumberEncode(pt, locale_, "Locale", true, -1);
+		rc &= jsonObjectEncode(pt, additionalInfo_, "AdditionalInfo", true);
+		rc &= jsonNumberEncode(pt, static_cast<OpcUaUInt32>(innerStatusCode_), "InnerStatusCode", true, OpcUaUInt32(0));
+		rc &= jsonObjectSPtrEncode(pt, diagnosticInfo_, "InnerDiagnosticInfo", true);
 
 		return rc;
 	}
@@ -503,19 +503,19 @@ namespace OpcUaStackCore
 	bool
 	OpcUaDiagnosticInfo::jsonDecodeImpl(const boost::property_tree::ptree& pt)
 	{
-        bool rc = JsonFormatter::jsonNumberDecode(pt, symbolicId_, "SymbolicId", true, -1);
-        rc &= JsonFormatter::jsonNumberDecode(pt, namespaceUri_, "NamespaceUri", true, -1);
-        rc &= JsonFormatter::jsonNumberDecode(pt, localizedText_, "LocalizedText", true, -1);
-        rc &= JsonFormatter::jsonNumberDecode(pt, locale_, "Locale", true, -1);
-        rc &= JsonFormatter::jsonObjectDecode(pt, additionalInfo_, "AdditionalInfo", true);
+		bool rc = jsonNumberDecode(pt, symbolicId_, "SymbolicId", true, -1);
+		rc &= jsonNumberDecode(pt, namespaceUri_, "NamespaceUri", true, -1);
+		rc &= jsonNumberDecode(pt, localizedText_, "LocalizedText", true, -1);
+		rc &= jsonNumberDecode(pt, locale_, "Locale", true, -1);
+		rc &= jsonObjectDecode(pt, additionalInfo_, "AdditionalInfo", true);
 
-        OpcUaUInt32 status;
-        rc &= JsonFormatter::jsonNumberDecode(pt, status, "InnerStatusCode", true, OpcUaUInt32(0));
-        innerStatusCode_ = static_cast<OpcUaStatusCode>(status);
+		OpcUaUInt32 status;
+		rc &= jsonNumberDecode(pt, status, "InnerStatusCode", true, OpcUaUInt32(0));
+		innerStatusCode_ = static_cast<OpcUaStatusCode>(status);
 
-        rc &= JsonFormatter::jsonObjectSPtrDecode(pt, diagnosticInfo_, "InnerDiagnosticInfo", true);
+		rc &= jsonObjectSPtrDecode(pt, diagnosticInfo_, "InnerDiagnosticInfo", true);
 
-        return rc;
+		return rc;
 	}
 
 

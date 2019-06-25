@@ -61,11 +61,11 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 
-    protected:
-        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
-        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+	protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
-    private:
+	private:
 		OpcUaNodeId::SPtr referenceTypeIdSPtr_;
 		OpcUaBoolean isForward_;
 		OpcUaExpandedNodeId::SPtr nodeIdSPtr_;

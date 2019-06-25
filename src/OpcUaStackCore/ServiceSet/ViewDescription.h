@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 
 		ViewDescription(void);
 		virtual ~ViewDescription(void);
-        void viewId(const OpcUaNodeId::SPtr viewId);
+		void viewId(const OpcUaNodeId::SPtr viewId);
 		OpcUaNodeId::SPtr viewId(void);
 		void timestamp(const OpcUaUtcTime& timestamp);
 		void timestamp(const boost::posix_time::ptime& timestamp);
@@ -50,9 +50,9 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 
-      protected:
-        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
-        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		OpcUaNodeId::SPtr viewIdSPtr_;

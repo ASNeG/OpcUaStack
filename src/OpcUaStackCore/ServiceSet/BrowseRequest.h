@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<BrowseRequest> SPtr;
 
 		BrowseRequest(void);
-        virtual ~BrowseRequest(void);
+		virtual ~BrowseRequest(void);
 
 		void view(const ViewDescription& view);
 		ViewDescription& view(void);
@@ -45,12 +45,12 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
-      protected:
-        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
-        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 
-      private:
+	  private:
 		ViewDescription view_;
 		OpcUaUInt32 requestMaxReferencesPerNode_;
 		BrowseDescriptionArray::SPtr nodesToBrowseArraySPtr_;

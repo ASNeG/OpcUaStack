@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<BrowseResponse> SPtr;
 
-	    BrowseResponse(void);
+		BrowseResponse(void);
 		~BrowseResponse(void);
 
 		void results(const BrowseResultArray::SPtr results);
@@ -41,11 +41,11 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
-    protected:
-        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
-        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+	protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
-    private:
+	private:
 		BrowseResultArray::SPtr resultArraySPtr_;
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr_;
 	};

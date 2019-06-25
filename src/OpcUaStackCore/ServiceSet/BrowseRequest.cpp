@@ -92,21 +92,21 @@ namespace OpcUaStackCore
 		nodesToBrowseArraySPtr_->opcUaBinaryDecode(is);
 	}
 
-    bool
-    BrowseRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const
-    {
-	    bool rc = jsonObjectEncode(pt, view_, "View", true);
-	    rc &= jsonNumberEncode(pt, requestMaxReferencesPerNode_, "RequestMaxReferencesPerNode");
-        rc &= nodesToBrowseArraySPtr_->jsonEncode(pt, "NodesToBrowseArray");
-        return rc;
-    }
+	bool
+	BrowseRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		bool rc = jsonObjectEncode(pt, view_, "View", true);
+		rc &= jsonNumberEncode(pt, requestMaxReferencesPerNode_, "RequestMaxReferencesPerNode");
+		rc &= jsonObjectSPtrEncode(pt, nodesToBrowseArraySPtr_, "NodesToBrowseArray");
+		return rc;
+	}
 
-    bool
-    BrowseRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt)
-    {
-        bool rc = jsonObjectDecode(pt, view_, "View", true);
-        rc &= jsonNumberDecode(pt, requestMaxReferencesPerNode_, "RequestMaxReferencesPerNode");
-        rc &= nodesToBrowseArraySPtr_->jsonDecode(pt, "NodesToBrowseArray");
-        return rc;
-    }
+	bool
+	BrowseRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		bool rc = jsonObjectDecode(pt, view_, "View", true);
+		rc &= jsonNumberDecode(pt, requestMaxReferencesPerNode_, "RequestMaxReferencesPerNode");
+		rc &= jsonObjectSPtrDecode(pt, nodesToBrowseArraySPtr_,  "NodesToBrowseArray");
+		return rc;
+	}
 }
