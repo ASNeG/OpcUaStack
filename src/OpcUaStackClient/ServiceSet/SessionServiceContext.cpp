@@ -634,7 +634,7 @@ namespace OpcUaStackClient
 
 		// create plain password buffer
 		MemoryBuffer plainText(password.size() + 36);
-		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(plainText.memBuf(), plainText.memLen());
+		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(plainText.memBuf(), plainText.memLen()-sizeof(uint32_t));
 		memcpy(plainText.memBuf() + 4, password.c_str(), password.length());
 		memcpy(plainText.memBuf() + 4 + password.length(), securitySettings.partnerNonce().memBuf(), 32);
 
@@ -786,7 +786,7 @@ namespace OpcUaStackClient
 
 		// create plain password buffer
 		MemoryBuffer plainText(tokenData.size() + 36);
-		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(plainText.memBuf(), plainText.memLen());
+		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(plainText.memBuf(), plainText.memLen()-sizeof(uint32_t));
 		memcpy(plainText.memBuf() + 4, tokenData.c_str(), tokenData.length());
 		memcpy(plainText.memBuf() + 4 + tokenData.length(), securitySettings.partnerNonce().memBuf(), 32);
 
