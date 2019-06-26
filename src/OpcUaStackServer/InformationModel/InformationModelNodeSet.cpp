@@ -149,7 +149,8 @@ namespace OpcUaStackServer
 			it0 = namespaceIndexSet.find(nodeId.namespaceIndex());
 			if (it0 == namespaceIndexSet.end()) continue;
 
-			switch (baseNodeClassSPtr->nodeClass().data())
+			NodeClass::Enum nodeClass = baseNodeClassSPtr->nodeClass().data();
+			switch (nodeClass)
 			{
 				case NodeClass::EnumDataType:
 				{
@@ -207,6 +208,8 @@ namespace OpcUaStackServer
 					nodeSetBaseParser.viewNodeClassVec().push_back(viewNodeClass);
 					break;
 				}
+				default:
+					Log(Error, "Unknown class").parameter("Class", nodeClass);
 			}
 		}
 

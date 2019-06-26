@@ -129,7 +129,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 
-		std::string messageType = "Unknown";
+		std::string messageType;
 		switch(messageHeader.messageType())
 		{
 			case MessageType_Hello: messageType = "Hello"; break;
@@ -138,6 +138,7 @@ namespace OpcUaStackCore
 			case MessageType_CloseSecureChannel: messageType = "CloseSecureChannel"; break;
 			case MessageType_Error: messageType = "Error"; break;
 			case MessageType_Message: messageType = "Message"; break;
+			default: messageType = "Unknown";
 		}
 
 		Log(Debug, "opc ua secure channel recv Header")
@@ -243,7 +244,7 @@ namespace OpcUaStackCore
 	{
 		if (!isLogging_) return;
 
-		std::string messageType = "Unknown";
+		std::string messageType;
 		switch(messageHeader.messageType())
 		{
 			case MessageType_Hello: messageType = "Hello"; break;
@@ -252,6 +253,7 @@ namespace OpcUaStackCore
 			case MessageType_CloseSecureChannel: messageType = "CloseSecureChannel"; break;
 			case MessageType_Error: messageType = "Error"; break;
 			case MessageType_Message: messageType = "Message"; break;
+			default: messageType = "Unknown";
 		}
 
 		Log(Debug, "opc ua secure channel send Header")

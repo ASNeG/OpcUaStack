@@ -316,6 +316,8 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
+			default:
+				Log(Error, "Node class type isn't supported").parameter("NodeClassType", nodeClassType);
 		}
 
 		return false;

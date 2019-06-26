@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 		bool resize(uint32_t size);
 		void reset(void);
 		bool exist(void) const;
-		bool isNull(void) const;
+		bool isNull(void) const override;
 
 		bool fromHexString(const std::string& hexString);
 		std::string toHexString(void) const;
