@@ -16,7 +16,7 @@
  */
 
 #ifndef __OpcUaStackCore_FileLogger_h__
-#define __OpcUaStackCore_Filelogger_h__
+#define __OpcUaStackCore_FileLogger_h__
 
 #include <boost/filesystem/fstream.hpp>
 #include <boost/thread/mutex.hpp>
