@@ -12,7 +12,7 @@
    Certificatermationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include <iostream>
@@ -455,65 +455,67 @@ namespace OpcUaStackCore
 		info.serialNumber(ASN1_INTEGER_get(X509_get_serialNumber(cert_)));
 
 		// get valid time
-		size_t i = 0;
-		struct tm notBeforTime;
-		const char* notBefor = (const char*)X509_get_notBefore(cert_)->data;
-		if (X509_get_notBefore(cert_)->type == V_ASN1_UTCTIME) {
+		auto getTime = [this] (asn1_string_st* str) ->  boost::optional<boost::posix_time::ptime> {
+			size_t i = 0;
+			struct tm reulstTime;
+			auto data = (const char*)str->data;
 
-			notBeforTime.tm_year = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
-			if (notBeforTime.tm_year < 70) {
-				notBeforTime.tm_year += 100;
+			auto y1 = data[i++];
+			auto y2 = data[i++];
+
+			if (str->type == V_ASN1_UTCTIME) {
+				reulstTime.tm_year = (y1 - '0') * 10 + (y2 - '0');
+				if (reulstTime.tm_year < 70) {
+					reulstTime.tm_year += 100;
+				}
 			}
-		}
-		else if (X509_get_notBefore(cert_)->type == V_ASN1_GENERALIZEDTIME) {
-			notBeforTime.tm_year = (notBefor[i++] - '0') * 1000 +
-					               (notBefor[i++] - '0') * 100 +
-								   (notBefor[i++] - '0') * 10 +
-								   (notBefor[i++] - '0');
-			notBeforTime.tm_year -= 1900;
-		}
-		else {
+			else if (str->type == V_ASN1_GENERALIZEDTIME) {
+				auto y3 = data[i++];
+				auto y4 = data[i++];
+				reulstTime.tm_year = (y1 - '0') * 1000 +
+									   (y2 - '0') * 100 +
+									   (y3 - '0') * 10 +
+									   (y4 - '0');
+				reulstTime.tm_year -= 1900;
+			}
+			else {
+				return boost::none;
+			}
+
+			auto t1 = data[i++]; auto t2 = data[i++];
+			reulstTime.tm_mon = ((t1 - '0') * 10 + (t2 - '0')) - 1; // -1 since January is 0 not 1.
+
+			t1 = data[i++]; t2 = data[i++];
+			reulstTime.tm_mday = (t1 - '0') * 10 + (t2 - '0');
+
+			t1 = data[i++];	t2 = data[i++];
+			reulstTime.tm_hour = (t1 - '0') * 10 + (t2 - '0');
+
+			t1 = data[i++];	t2 = data[i++];
+			reulstTime.tm_min  = (t1 - '0') * 10 + (t2 - '0');
+
+			t1 = data[i++]; t2 = data[i++];
+			reulstTime.tm_sec  = (t1 - '0') * 10 + (t2 - '0');
+
+			return boost::make_optional<boost::posix_time::ptime>(boost::posix_time::from_time_t(mktime(&reulstTime)));
+
+		};
+
+		if (auto beforeTimeLocal = getTime(X509_get_notBefore(cert_))) {
+			info.validFrom(beforeTimeLocal.get() + boost::posix_time::seconds(timeDiff));
+		} else {
 			addError("not before time format invalid");
 			return false;
 		}
-		notBeforTime.tm_mon = ((notBefor[i++] - '0') * 10 + (notBefor[i++] - '0')) - 1; // -1 since January is 0 not 1.
-		notBeforTime.tm_mday = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
-		notBeforTime.tm_hour = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
-		notBeforTime.tm_min  = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
-		notBeforTime.tm_sec  = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
 
-		auto beforeTimeLocal = boost::posix_time::from_time_t(mktime(&notBeforTime));
-		info.validFrom(beforeTimeLocal + boost::posix_time::seconds(timeDiff));
 
-		// get valid from
-	    i = 0;
-		struct tm notAfterTime;
-		const char* notAfter = (const char*)X509_get_notAfter(cert_)->data;
-		if (X509_get_notAfter(cert_)->type == V_ASN1_UTCTIME) {
-
-			notAfterTime.tm_year = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
-			if (notAfterTime.tm_year < 70)
-				notAfterTime.tm_year += 100;
-		}
-		else if (X509_get_notAfter(cert_)->type == V_ASN1_GENERALIZEDTIME) {
-			notAfterTime.tm_year = (notAfter[i++] - '0') * 1000 +
-					               (notAfter[i++] - '0') * 100 +
-								   (notAfter[i++] - '0') * 10 +
-								   (notAfter[i++] - '0');
-			notAfterTime.tm_year -= 1900;
-		}
-		else {
+		if (auto afterTimeLocal = getTime(X509_get_notAfter(cert_))) {
+			info.validTime(afterTimeLocal.get() + boost::posix_time::seconds(timeDiff));
+		} else {
 			addError("not after time format invalid");
 			return false;
 		}
-		notAfterTime.tm_mon = ((notAfter[i++] - '0') * 10 + (notAfter[i++] - '0')) - 1; // -1 since January is 0 not 1.
-		notAfterTime.tm_mday = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
-		notAfterTime.tm_hour = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
-		notAfterTime.tm_min  = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
-		notAfterTime.tm_sec  = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
 
-		auto afterTimeLocal = boost::posix_time::from_time_t(mktime(&notAfterTime));
-		info.validTime(afterTimeLocal + boost::posix_time::seconds(timeDiff));
 
 		return true;
 	}
