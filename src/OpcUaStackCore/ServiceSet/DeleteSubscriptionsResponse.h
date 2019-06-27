@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,16 +19,16 @@
 #define __OpcUaStackCore_DeleteSubscriptionsResponse_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaDiagnosticInfo.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT DeleteSubscriptionsResponse
-	: public Object
-	, public JsonFormatter
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteSubscriptionsResponse> SPtr;
@@ -43,10 +43,6 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-
-	  protected:
-		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const;
-		bool jsonDecodeImpl(const boost::property_tree::ptree &pt);
 
 	  private:
 		OpcUaStatusCodeArray::SPtr statusCodeArraySPtr_;

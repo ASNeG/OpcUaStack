@@ -23,9 +23,9 @@ BOOST_AUTO_TEST_CASE(ModelChangeStructureDataType_encode_decode)
 	nodeId1.nodeId((OpcUaInt32)11);
 	nodeId2.nodeId((OpcUaInt32)12);
 
-	value1.affected() = nodeId1;
-	value1.affectedType() = nodeId2;
-	value1.verb() = (OpcUaByte)1;
+	value1.affected(nodeId1);
+	value1.affectedType(nodeId2);
+	value1.verb((OpcUaByte)1);
 
 	std::stringstream ss;
 	value1.opcUaBinaryEncode(ss);
@@ -51,9 +51,9 @@ BOOST_AUTO_TEST_CASE(ModelChangeStructureDataType_ExtensionObject)
 	OpcUaNodeId typeId;
 	typeId.set(OpcUaId_ModelChangeStructureDataType_Encoding_DefaultBinary);
 	value1.typeId(typeId);
-	value1.parameter<ModelChangeStructureDataType>()->affected() = nodeId1;
-	value1.parameter<ModelChangeStructureDataType>()->affectedType() = nodeId2;
-	value1.parameter<ModelChangeStructureDataType>()->verb() =  (OpcUaByte)1;
+	value1.parameter<ModelChangeStructureDataType>()->affected(nodeId1);
+	value1.parameter<ModelChangeStructureDataType>()->affectedType(nodeId2);
+	value1.parameter<ModelChangeStructureDataType>()->verb((OpcUaByte)1);
 
 	std::stringstream ss;
 	value1.opcUaBinaryEncode(ss);
@@ -79,9 +79,9 @@ BOOST_AUTO_TEST_CASE(ModelChangeStructureDataType_ExtensionObject_copyTo)
 	OpcUaNodeId typeId;
 	typeId.set(OpcUaId_ModelChangeStructureDataType_Encoding_DefaultBinary);
 	value1.typeId(typeId);
-	value1.parameter<ModelChangeStructureDataType>()->affected() = nodeId1;
-	value1.parameter<ModelChangeStructureDataType>()->affectedType() = nodeId2;
-	value1.parameter<ModelChangeStructureDataType>()->verb() = (OpcUaByte)1;
+	value1.parameter<ModelChangeStructureDataType>()->affected(nodeId1);
+	value1.parameter<ModelChangeStructureDataType>()->affectedType(nodeId2);
+	value1.parameter<ModelChangeStructureDataType>()->verb((OpcUaByte)1);
 
 	value1.copyTo(value2);
 

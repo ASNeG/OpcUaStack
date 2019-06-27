@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,6 +25,7 @@ namespace OpcUaStackClient
 
 	SubscriptionServiceBase::SubscriptionServiceBase(void)
 	: componentSession_(nullptr)
+	, subscriptionServiceIf_(nullptr)
 	, subscriptionServicePublishIf_(nullptr)
 	{
 	}
@@ -38,6 +39,13 @@ namespace OpcUaStackClient
 	{
 		componentSession_ = componentSession;
 	}
+
+	void
+	SubscriptionServiceBase::subscriptionServiceIf(SubscriptionServiceIf* subscriptionServiceIf)
+	{
+		subscriptionServiceIf_ = subscriptionServiceIf;
+	}
+
 	void
 	SubscriptionServiceBase::subscriptionServicePublishIf(SubscriptionServicePublishIf* subscriptionServicePublishIf)
 	{
@@ -48,9 +56,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
 		serviceTransactionCreateSubscription->sync(true);
-		auto future = serviceTransactionCreateSubscription->promise().get_future();
+		serviceTransactionCreateSubscription->conditionBool().conditionInit();
 		asyncSend(serviceTransactionCreateSubscription);
-		future.wait();
+		serviceTransactionCreateSubscription->conditionBool().waitForCondition();
 	}
 
 	void
@@ -64,9 +72,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
 		serviceTransactionModifySubscription->sync(true);
-		auto future = serviceTransactionModifySubscription->promise().get_future();
+		serviceTransactionModifySubscription->conditionBool().conditionInit();
 		asyncSend(serviceTransactionModifySubscription);
-		future.wait();
+		serviceTransactionModifySubscription->conditionBool().waitForCondition();
 	}
 
 	void
@@ -80,9 +88,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
 		serviceTransactionTransferSubscriptions->sync(true);
-		auto future = serviceTransactionTransferSubscriptions->promise().get_future();
+		serviceTransactionTransferSubscriptions->conditionBool().conditionInit();
 		asyncSend(serviceTransactionTransferSubscriptions);
-		future.wait();
+		serviceTransactionTransferSubscriptions->conditionBool().waitForCondition();
 	}
 
 	void
@@ -96,9 +104,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		serviceTransactionDeleteSubscriptions->sync(true);
-		auto future = serviceTransactionDeleteSubscriptions->promise().get_future();
+		serviceTransactionDeleteSubscriptions->conditionBool().conditionInit();
 		asyncSend(serviceTransactionDeleteSubscriptions);
-		future.wait();
+		serviceTransactionDeleteSubscriptions->conditionBool().waitForCondition();
 	}
 
 	void
@@ -112,9 +120,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
 		serviceTransactionSetPublishingMode->sync(true);
-		auto future = serviceTransactionSetPublishingMode->promise().get_future();
+		serviceTransactionSetPublishingMode->conditionBool().conditionInit();
 		asyncSend(serviceTransactionSetPublishingMode);
-		future.wait();
+		serviceTransactionSetPublishingMode->conditionBool().waitForCondition();
 	}
 
 	void
@@ -128,9 +136,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
 		serviceTransactionPublish->sync(true);
-		auto future = serviceTransactionPublish->promise().get_future();
+		serviceTransactionPublish->conditionBool().conditionInit();
 		asyncSend(serviceTransactionPublish);
-		future.wait();
+		serviceTransactionPublish->conditionBool().waitForCondition();
 	}
 
 	void
@@ -144,9 +152,9 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::syncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
 		serviceTransactionRepublish->sync(true);
-		auto future = serviceTransactionRepublish->promise().get_future();
+		serviceTransactionRepublish->conditionBool().conditionInit();
 		asyncSend(serviceTransactionRepublish);
-		future.wait();
+		serviceTransactionRepublish->conditionBool().waitForCondition();
 	}
 
 	void
@@ -159,11 +167,11 @@ namespace OpcUaStackClient
 	void
 	SubscriptionServiceBase::receive(Message::SPtr message)
 	{
-		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->promise().set_value(true);
+			serviceTransaction->conditionBool().conditionTrue();
 			return;
 		}
 
@@ -171,40 +179,40 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_CreateSubscriptionResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (subscriptionServiceIf_ != nullptr) {
+ 					subscriptionServiceIf_->subscriptionServiceCreateSubscriptionResponse(
+						boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction)
+					);
 				}
 				break;
 			}
 
 			case OpcUaId_ModifySubscriptionResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionModifySubscription>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (subscriptionServiceIf_ != nullptr) {
+					subscriptionServiceIf_->subscriptionServiceModifySubscriptionResponse(
+						boost::static_pointer_cast<ServiceTransactionModifySubscription>(serviceTransaction)
+					);
 				}
 				break;
 			}
 
 			case OpcUaId_TransferSubscriptionsResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionTransferSubscriptions>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (subscriptionServiceIf_ != nullptr) {
+					subscriptionServiceIf_->subscriptionServiceTransferSubscriptionsResponse(
+						boost::static_pointer_cast<ServiceTransactionTransferSubscriptions>(serviceTransaction)
+					);
 				}
 				break;
 			}
 
 			case OpcUaId_DeleteSubscriptionsResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionDeleteSubscriptions>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (subscriptionServiceIf_ != nullptr) {
+					subscriptionServiceIf_->subscriptionServiceDeleteSubscriptionsResponse(
+						boost::static_pointer_cast<ServiceTransactionDeleteSubscriptions>(serviceTransaction)
+					);
 				}
 				break;
 			}

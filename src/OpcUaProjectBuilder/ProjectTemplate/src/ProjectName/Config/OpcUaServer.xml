@@ -33,17 +33,17 @@
   </Logging>
   
   <DiscoveryServer>
-    <DiscoveryUrl>opc.tcp://localhost:4840</DiscoveryUrl>
+    <DiscoveryUrl>opc.tcp://0.0.0.0:4840</DiscoveryUrl>
     <RegisterInterval>40000</RegisterInterval>
   </DiscoveryServer>
    
   <Endpoints>
     <EndpointDescription>
-	  <EndpointUrl>opc.tcp://@HOSTNAME@:ProjectPort</EndpointUrl>
-	  <ApplicationUri>urn:@HOSTNAME@:ASNeG:ProjectName</ApplicationUri>
+	  <EndpointUrl>opc.tcp://0.0.0.0:ProjectPort</EndpointUrl>
+	  <ApplicationUri>urn:0.0.0.0:ASNeG:ProjectName</ApplicationUri>
 	  <ProductUri>urn:ASNeG:ProjectName</ProductUri>
 	  <ApplicationName>ProjectName</ApplicationName>
-	  <DiscoveryUrl>opc.tcp://@HOSTNAME@:ProjectPort</DiscoveryUrl>	
+	  <DiscoveryUrl>opc.tcp://0.0.0.0:ProjectPort</DiscoveryUrl>	
 	  <GatewayServerUri></GatewayServerUri>
 	  <!-- <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri> -->
 	  
@@ -123,7 +123,7 @@
         <KeyLength>2048</KeyLength>
         <CertificateType>RsaSha256</CertificateType>
         <IPAddress>0.0.0.0</IPAddress>
-        <DNSName>@HOSTNAME@</DNSName>
+        <DNSName>ASNeG.de</DNSName>
         <EMail>info@ASNeG.de</EMail>
       </CertificateSettings>
       
@@ -139,8 +139,7 @@
  
   
   <InformationModel>
-    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet2.xml</NodeSetFile>
-    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.ASNeGServer.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>

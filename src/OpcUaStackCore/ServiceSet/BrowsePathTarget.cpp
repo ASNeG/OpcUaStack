@@ -63,13 +63,6 @@ namespace OpcUaStackCore
 		return remainingPathIndex_;
 	}
 
-	void
-	BrowsePathTarget::copyTo(BrowsePathTarget& browsePathTarget)
-	{
-		targetIdSPtr_->copyTo(*browsePathTarget.targetId().get());
-		browsePathTarget.remainingPathIndex(remainingPathIndex_);
-	}
-
 	void 
 	BrowsePathTarget::opcUaBinaryEncode(std::ostream& os) const
 	{

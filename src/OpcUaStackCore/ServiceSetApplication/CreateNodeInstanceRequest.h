@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,9 +18,11 @@
 #ifndef __OpcUaStackCore_CreateNodeInstanceRequest_h__
 #define __OpcUaStackCore_CreateNodeInstanceRequest_h__
 
-#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
+#include <stdint.h>
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ServiceSet/NodeClass.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
@@ -35,7 +37,7 @@ namespace OpcUaStackCore
 		virtual ~CreateNodeInstanceRequest(void);
 
 		std::string& name(void);
-		NodeClass::Enum& nodeClassType(void);
+		NodeClassType& nodeClassType(void);
 		OpcUaNodeId& parentNodeId(void);
 		OpcUaNodeId& nodeId(void);
 		OpcUaLocalizedText& displayName(void);
@@ -48,7 +50,7 @@ namespace OpcUaStackCore
 
 	  private:
 		std::string name_;
-		NodeClass::Enum nodeClassType_;
+		NodeClassType nodeClassType_;
 		OpcUaNodeId parentNodeId_;
 		OpcUaNodeId nodeId_;
 		OpcUaLocalizedText displayName_;

@@ -1,5 +1,4 @@
 #include "unittest.h"
-#include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
 using namespace OpcUaStackClient;
@@ -8,159 +7,194 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_Attribute_)
 
-struct GValueFixture {
-	GValueFixture(void)
-    : cond_()
-	, sessionState_(SessionServiceStateId::None)
-    {}
-    ~GValueFixture(void)
-    {}
-
-    Condition cond_;
-    SessionServiceStateId sessionState_;
-};
-
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_)
 {
 	std::cout << "ServiceSetManagerAsyncReal_Attribute_t" << std::endl;
 }
 
-BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read, GValueFixture)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read)
 {
+	SessionServiceIfTestHandler sessionIfTestHandler;
+	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 
 	//
 	// init certificate and crypto manager
 	//
-	auto cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+	applicationCertificate->enable(true);
+
+	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
+	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
+	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
+	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
+	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
+
+	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
+	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
+
+	applicationCertificate->generateCertificate(true);
+	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
+	applicationCertificate->commonName("ASNeG-Demo");
+	applicationCertificate->domainComponent("127.0.0.1");
+	applicationCertificate->organization("ASNeG");
+	applicationCertificate->organizationUnit("OPC UA Service Department");
+	applicationCertificate->locality("Neukirchen");
+	applicationCertificate->state("Hessen");
+	applicationCertificate->country("DE");
+	applicationCertificate->yearsValidFor(5);
+	applicationCertificate->keyLength(2048);
+	applicationCertificate->certificateType("RsaSha256");
+	applicationCertificate->ipAddress().push_back("127.0.0.1");
+	applicationCertificate->dnsName().push_back("ASNeG.de");
+	applicationCertificate->email("info@ASNeG.de");
+
+	BOOST_REQUIRE(applicationCertificate->init() == true);
+	CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
+	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.secureChannelClient_->applicationCertificate(applicationCertificate);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
-	sessionServiceConfig.sessionServiceChangeHandler_ =
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState == SessionServiceStateId::Established ||
-				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
-			}
-		};
 
 
 	// create session
-	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	SessionService::SPtr sessionService;
+	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	cond_.condition(1,0);
+	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Connect);
 
-	// create attribute servic
+	// create attribute service
+	AttributeService::SPtr attributeService;
 	AttributeServiceConfig attributeServiceConfig;
-	auto attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
+	attributeServiceConfig.attributeServiceIf_ = &attributeServiceIfTestHandler;
+	attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
 	BOOST_REQUIRE(attributeService.get() != nullptr);
 
 	// create and send WriteRequest
-	auto trx = constructSPtr<ServiceTransactionWrite>();
-	auto req = trx->request();
-	auto writeValue = constructSPtr<WriteValue>();
+	ServiceTransactionWrite::SPtr trx;
+	trx = constructSPtr<ServiceTransactionWrite>();
+	WriteRequest::SPtr req = trx->request();
+
 	OpcUaBoolean value = 1;
+	WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
 	writeValue->nodeId()->set("Demo.Static.Scalar.Boolean", 2);
 	writeValue->attributeId((OpcUaInt32) 13);
 	writeValue->dataValue().variant()->set(value);
 	req->writeValueArray()->resize(1);
 	req->writeValueArray()->set(writeValue);
 
-	cond_.condition(1,0);
-	trx->resultHandler(
-		[this](ServiceTransactionWrite::SPtr& trx) {
-			cond_.conditionValueDec();
-		}
-	);
+	attributeServiceIfTestHandler.attributeServiceWriteResponse_.condition(1,0);
 	attributeService->asyncSend(trx);
-	cond_.waitForCondition(1000);
-	auto res = trx->response();
+	attributeServiceIfTestHandler.attributeServiceWriteResponse_.waitForCondition(1000);
+	WriteResponse::SPtr res = trx->response();
 	BOOST_REQUIRE(trx->statusCode() == Success);
 	BOOST_REQUIRE(res->results()->size() == 1);
 
 	// disconnect secure channel
-	cond_.condition(1,0);
+	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Disconnect);
 }
 
 
-BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write, GValueFixture)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write)
 {
+	SessionServiceIfTestHandler sessionIfTestHandler;
+	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 
 	//
 	// init certificate and crypto manager
 	//
-	auto cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+	applicationCertificate->enable(true);
+
+	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
+	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
+	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
+	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
+	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
+
+	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
+	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
+
+	applicationCertificate->generateCertificate(true);
+	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
+	applicationCertificate->commonName("ASNeG-Demo");
+	applicationCertificate->domainComponent("127.0.0.1");
+	applicationCertificate->organization("ASNeG");
+	applicationCertificate->organizationUnit("OPC UA Service Department");
+	applicationCertificate->locality("Neukirchen");
+	applicationCertificate->state("Hessen");
+	applicationCertificate->country("DE");
+	applicationCertificate->yearsValidFor(5);
+	applicationCertificate->keyLength(2048);
+	applicationCertificate->certificateType("RsaSha256");
+	applicationCertificate->ipAddress().push_back("127.0.0.1");
+	applicationCertificate->dnsName().push_back("ASNeG.de");
+	applicationCertificate->email("info@ASNeG.de");
+
+	BOOST_REQUIRE(applicationCertificate->init() == true);
+	CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
+	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.secureChannelClient_->applicationCertificate(applicationCertificate);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
-	sessionServiceConfig.sessionServiceChangeHandler_ =
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState == SessionServiceStateId::Established ||
-				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
-			}
-		};
 
 	// create session
-	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	SessionService::SPtr sessionService;
+	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	cond_.condition(1,0);
+	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Connect);
 
 	// create attribute service
+	AttributeService::SPtr attributeService;
 	AttributeServiceConfig attributeServiceConfig;
-	auto attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
+	attributeServiceConfig.attributeServiceIf_ = &attributeServiceIfTestHandler;
+	attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
 	BOOST_REQUIRE(attributeService.get() != nullptr);
 
 	// create and send ReadRequest
-	auto trx = constructSPtr<ServiceTransactionRead>();
-	auto req = trx->request();
-	auto readValueIdSPtr = constructSPtr<ReadValueId>();
+	ServiceTransactionRead::SPtr trx;
+	trx = constructSPtr<ServiceTransactionRead>();
+	ReadRequest::SPtr req = trx->request();
+	ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
 	readValueIdSPtr->nodeId((OpcUaInt16)0, (OpcUaInt32)2259);
 	readValueIdSPtr->attributeId((OpcUaInt32) 13);
 	readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 	req->readValueIdArray()->set(readValueIdSPtr);
 
-	cond_.condition(1,0);
-	trx->resultHandler(
-		[this](ServiceTransactionRead::SPtr& trx) {
-			cond_.conditionValueDec();
-		}
-	);
+	attributeServiceIfTestHandler.attributeServiceReadResponse_.condition(1,0);
 	attributeService->asyncSend(trx);
-	cond_.waitForCondition(1000);
+	attributeServiceIfTestHandler.attributeServiceReadResponse_.waitForCondition(1000);
 	ReadResponse::SPtr res = trx->response();
 	BOOST_REQUIRE(trx->statusCode() == Success);
 	BOOST_REQUIRE(res->dataValueArray()->size() == 1);
 
 	// disconnect secure channel
-	cond_.condition(1,0);
+	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Disconnect);
 }
 
 

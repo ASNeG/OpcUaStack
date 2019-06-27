@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,15 +19,17 @@
 #define __OpcUaStackCore_ReferenceDescription_h__
 
 #include <stdint.h>
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/ServiceSet/NodeClass.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ReferenceDescription
-	: public Object
-	, public JsonFormatter
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<ReferenceDescription> SPtr;
@@ -46,24 +48,13 @@ namespace OpcUaStackCore
 		OpcUaQualifiedName& browseName(void);
 		void displayName(const OpcUaLocalizedText& displayName);
 		OpcUaLocalizedText& displayName(void);
-		void nodeClass(const NodeClass::Enum nodeClass);
-		NodeClass::Enum nodeClass(void);
+		void nodeClass(const NodeClassType nodeClass);
+		NodeClassType nodeClass(void);
 		void typeDefinition(const OpcUaExpandedNodeId::SPtr typeDefinition);
 		OpcUaExpandedNodeId::SPtr typeDefinition(void) const;
 		
-		void copyTo(ReferenceDescription& referenceDescription);
-		void out(std::ostream& os) const {};
-
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-
-	  protected:
-		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
-		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		OpcUaNodeId::SPtr referenceTypeIdSPtr_;
@@ -71,11 +62,11 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId::SPtr nodeIdSPtr_;
 		OpcUaQualifiedName browseName_;
 		OpcUaLocalizedText displayName_;
-		NodeClass::Enum nodeClass_;
+		NodeClassType nodeClass_;
 		OpcUaExpandedNodeId::SPtr typeDefinitionSPtr_;
 	};
 
-	class DLLEXPORT ReferenceDescriptionArray
+	class ReferenceDescriptionArray
 	: public OpcUaArray<ReferenceDescription::SPtr, SPtrTypeCoder<ReferenceDescription> >
 	, public Object
 	{

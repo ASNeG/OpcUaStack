@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,9 @@
 #ifndef __OpcUaStackServer_ObjectNodeClass_h__
 #define __OpcUaStackServer_ObjectNodeClass_h__
 
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
-#include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
 
 namespace OpcUaStackServer
 {
@@ -31,8 +32,6 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<ObjectNodeClass> SPtr;
 
 		ObjectNodeClass(void);
-		ObjectNodeClass(OpcUaNodeId& nodeId, ObjectNodeClass& objectNodeClass);
-		ObjectNodeClass(OpcUaNodeId& nodeId, ObjectTypeNodeClass& objectTypeNodeClass);
 		~ObjectNodeClass(void);
 
 		EventNotifierAttribute& eventNotifier(void);
@@ -46,6 +45,11 @@ namespace OpcUaStackServer
 	  private:
 		// attributes mandatory
 		EventNotifierAttribute eventNotifier_;
+
+		// standard properties
+		OpcUaString::SPtr nodeVersion_;  // optional
+		// FIXME: Image icon_;	// optional
+		// FIXME: NamingRuleType nameingRule_;	// optional 
 	};
 
 }

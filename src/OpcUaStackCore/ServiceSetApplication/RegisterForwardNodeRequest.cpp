@@ -32,7 +32,6 @@ namespace OpcUaStackCore
 	: Object()
 	, nodesToRegisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
 	, forwardNodeSync_(constructSPtr<ForwardNodeSync>())
-	, applicationContextArray_(constructSPtr<BaseClassArray>())
 	{
 	}
 
@@ -74,18 +73,6 @@ namespace OpcUaStackCore
 	RegisterForwardNodeRequest::forwardNodeSync(void)
 	{
 		return forwardNodeSync_;
-	}
-
-	void
-	RegisterForwardNodeRequest::applicationContextArray(BaseClassArray::SPtr& applicationContextArray)
-	{
-		applicationContextArray_ = applicationContextArray;
-	}
-
-	BaseClassArray::SPtr&
-	RegisterForwardNodeRequest::applicationContextArray(void)
-	{
-		return applicationContextArray_;
 	}
 
 }

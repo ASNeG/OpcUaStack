@@ -1,22 +1,15 @@
 version: '2'
 services:
-  asneg-demo:
-    image: asneg/asneg-demo:release-4
-    hostname: asneg-demo
-    volumes:
-      - server_pki:/etc/OpcUaStack/ASNeG-Demo/pki
+  demo_server:
+    image: asneg/asneg-demo:latest
   stack:
     container_name: stack-${BUILD_TAG}
     depends_on:
-      - asneg-demo
-    hostname: asneg-test
-    environment:
-      - SERVER_PKI_ROOT_DIR=/tmp/
-      - SERVER_HOST_NAME=asneg-demo
-    build: .
+      - demo_server
     volumes:
       - data-volume:/OpcUaStack
-      - server_pki:/tmp/etc/OpcUaStack/ASNeG-Demo/pki
+    build: .
+
+
 volumes:
-  data-volume:
-  server_pki:
+    data-volume:

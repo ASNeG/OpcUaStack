@@ -16,13 +16,12 @@ usage()
 {
   echo "build.sh --target(-t) TARGET [OPTIONS] ..."
    echo "--target, -t: sets one of the folowing target:"
-   echo " info   - create version and dependency files"
-   echo " local  - create local build and install in local directory defined in --install-prefix" 
-   echo " deb    - create deb package"
-   echo " rpm    - create rpm package"
-   echo " tst    - build unit application"
-   echo " docker - build docker container"
-   echo " clean  - delete all build directories"
+   echo " info  - create version and dependency files"
+   echo " local - create local build and install in local directory defined in --install-prefix" 
+   echo " deb   - create deb package"
+   echo " rpm   - create rpm package"
+   echo " tst   - build unit application"
+   echo " clean - delete all build directories"
    echo ""
    echo "--stack-prefix, -s STACK_PREFIX:  set the path to directory"
    echo "\twhere the OpcUaStack is installed (default: /)"
@@ -345,23 +344,6 @@ build_tst()
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
-# build docker
-#
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-build_docker()
-{    
-    echo "build docker start"
-
-    sudo docker build -t asneg/unknown:latest .
-    sudo docker push asneg/unknown:latest
-}
-
-
-
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-#
 # cleanup
 #
 # -----------------------------------------------------------------------------
@@ -460,10 +442,6 @@ then
 elif [ "${TARGET}" = "tst" ] ;
 then 
     build_tst
-    exit $?
-elif [ "${TARGET}" = "docker" ] ;
-then
-    build_docker
     exit $?
 else
     usage

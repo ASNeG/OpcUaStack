@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #ifndef __OpcUaStackCore_SecureChannelCrypto_h__
 #define __OpcUaStackCore_SecureChannelCrypto_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
@@ -34,6 +35,8 @@ namespace OpcUaStackCore
 
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		CryptoManager::SPtr& cryptoManager(void);
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		ApplicationCertificate::SPtr& applicationCertificate(void);
 
 		//
 		// receive open secure channel request
@@ -176,6 +179,8 @@ namespace OpcUaStackCore
 
 	  private:
 		CryptoManager::SPtr cryptoManager_;
+		ApplicationCertificate::SPtr applicationCertificate_;
+
 	};
 
 }

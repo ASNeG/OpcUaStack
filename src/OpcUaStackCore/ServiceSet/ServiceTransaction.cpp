@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -39,7 +39,7 @@ namespace OpcUaStackCore
 	, requestHeader_()
 	, responseHeader_()
 	, sync_(false)
-	, promise_()
+	, conditionBool_()
 	, handle_()
 	, userContext_()
 	{
@@ -106,10 +106,10 @@ namespace OpcUaStackCore
 		return sync_;
 	}
 
-	std::promise<bool>&
-	ServiceTransaction::promise(void)
+	ConditionBool&
+	ServiceTransaction::conditionBool(void)
 	{
-		return promise_;
+		return conditionBool_;
 	}
 
 	void 

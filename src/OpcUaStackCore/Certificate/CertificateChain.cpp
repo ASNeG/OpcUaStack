@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/Certificate/CertificateChain.h"
 
@@ -60,37 +59,10 @@ namespace OpcUaStackCore
 		return certificateVec_[idx];
 	}
 
-	bool
-	CertificateChain::empty(void)
-	{
-		return certificateVec_.size() == 0;
-	}
-
 	uint32_t
 	CertificateChain::size(void)
 	{
 		return certificateVec_.size();
-	}
-
-	uint32_t
-	CertificateChain::certificateSize(void)
-	{
-		uint32_t size = 0;
-		for (auto certificate : certificateVec_) {
-			size += certificate->getDERBufSize();
-		}
-		return size;
-	}
-
-	uint32_t
-	CertificateChain::lastCertificateSize(void)
-	{
-		if (certificateVec_.size() == 0) {
-			return 0;
-		}
-
-		auto certificate = certificateVec_[certificateVec_.size()-1];
-		return certificate->getDERBufSize();
 	}
 
 	bool
@@ -103,14 +75,13 @@ namespace OpcUaStackCore
 		int32_t certLen = 0;
 		byteString.value(&certBuf, &certLen);
 		if (certLen <= 0) {
-			Log(Error, "input parameter error");
 			return false;
 		}
 
 		char* mem = certBuf;
 		while (certLen > 0) {
-			auto certificate = boost::make_shared<Certificate>();
-			if (!certificate->fromDERBuf(mem, (uint32_t)certLen)) {
+			Certificate::SPtr certificate = constructSPtr<Certificate>();
+			if (!certificate->fromDERBuf(certBuf, (uint32_t)certLen)) {
 				certificate->log(Error, "decode certificate chain error - Certificate::fromDERBuf");
 				return false;
 			}
@@ -129,66 +100,30 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	CertificateChain&
-	CertificateChain::operator = (const CertificateChain& other)
-	{
-		for (auto certificate : other.certificateVec_) {
-			certificateVec_.push_back(certificate);
-		}
-		return *this;
-	}
-
 	bool
-	CertificateChain::operator!=(const CertificateChain& rhs) const
+	CertificateChain::toByteString(OpcUaByteString& byteString)
 	{
-		return !operator==(rhs);
-	}
+		Certificate::Vec::iterator it;
 
-	bool
-	CertificateChain::operator==(const CertificateChain& rhs) const
-	{
-		if (certificateVec_.size() != rhs.certificateVec_.size()) {
-			return false;
-		}
-		for (uint32_t idx=0; idx < certificateVec_.size(); idx++) {
-			auto cert1 = certificateVec_[idx];
-			auto cert2 = rhs.certificateVec_[idx];
-			if (*cert1.get() != *cert2.get()) return false;
-		}
-		return true;
-	}
-
-	bool
-	CertificateChain::opcUaBinaryDecode(std::istream& is)
-	{
-		OpcUaByteString byteString;
-		byteString.opcUaBinaryDecode(is);
-		return fromByteString(byteString);
-	}
-
-	bool
-	CertificateChain::toByteString(OpcUaByteString& byteString) const
-	{
 		if (certificateVec_.empty()) {
-			Log(Error, "certificate vector empty");
-			return false;
+			return true;
 		}
 
 		// calculate buffer size
 		uint32_t usedBufferSize = 0;
-		for (auto certificate : certificateVec_) {
-			usedBufferSize += certificate->getDERBufSize();
+		for (it = certificateVec_.begin(); it != certificateVec_.end(); it++) {
+			usedBufferSize += (*it)->getDERBufSize();
 		}
 
 		if (usedBufferSize == 0) {
-			Log(Error, "certificate length is 0");
-			return false;
+			return true;
 		}
 
 		// create buffer
 		MemoryBuffer buffer(usedBufferSize);
 		char* mem = buffer.memBuf();
-		for (auto certificate : certificateVec_) {
+		for (it = certificateVec_.begin(); it != certificateVec_.end(); it++) {
+			Certificate::SPtr certificate = *it;
 			uint32_t length = certificate->getDERBufSize();
 			certificate->toDERBuf(mem, &length);
 
@@ -196,15 +131,6 @@ namespace OpcUaStackCore
 		}
 
 		byteString.value(buffer.memBuf(), buffer.memLen());
-		return true;
-	}
-
-	bool
-	CertificateChain::opcUaBinaryEncode(std::ostream& os) const
-	{
-		OpcUaByteString byteString;
-		toByteString(byteString);
-		byteString.opcUaBinaryEncode(os);
 		return true;
 	}
 

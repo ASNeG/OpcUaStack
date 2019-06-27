@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/ServiceSet/DeleteMonitoredItemsResponse.h"
 
 namespace OpcUaStackCore
@@ -76,17 +75,5 @@ namespace OpcUaStackCore
 	{
 		resultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
-	}
-
-	bool
-	DeleteMonitoredItemsResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
-	{
-		return jsonArraySPtrEncode(pt, resultArraySPtr_, "Results");
-	}
-
-	bool
-	DeleteMonitoredItemsResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
-	{
-		return jsonArraySPtrDecode(pt, resultArraySPtr_, "Results");
 	}
 }

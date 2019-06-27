@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -28,7 +28,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VBITransactionRead::VBITransactionRead(void)
-	: VBIResultHandler_()
+	: callback_()
 	{
 	}
 
@@ -38,7 +38,7 @@ namespace OpcUaStackClient
 
 
 	VBITransactionWrite::VBITransactionWrite(void)
-	: VBIResultHandler_()
+	: callback_()
 	{
 	}
 
@@ -46,14 +46,6 @@ namespace OpcUaStackClient
 	{
 	}
 
-	VBITransactionHistoryRead::VBITransactionHistoryRead(void)
-	: VBIResultHandler_()
-	{
-	}
-
-	VBITransactionHistoryRead::~VBITransactionHistoryRead(void)
-	{
-	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -63,7 +55,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VBITransactionCreateSubscription::VBITransactionCreateSubscription(void)
-	: VBIResultHandler_()
+	: callback_()
 	{
 	}
 
@@ -72,7 +64,7 @@ namespace OpcUaStackClient
 	}
 
 	VBITransactionDeleteSubscription::VBITransactionDeleteSubscription(void)
-	: VBIResultHandler_()
+	: callback_()
 	{
 	}
 
@@ -89,7 +81,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VBITransactionCreateMonitoredItem::VBITransactionCreateMonitoredItem(void)
-	: VBIResultHandler_()
+	: callback_()
 	{
 	}
 
@@ -98,7 +90,7 @@ namespace OpcUaStackClient
 	}
 
 	VBITransactionDeleteMonitoredItem::VBITransactionDeleteMonitoredItem(void)
-	: VBIResultHandler_()
+	: callback_()
 	{
 	}
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,23 +18,22 @@
 #ifndef __OpcUaStackClient_DiscoveryClientFindServers_h__
 #define __OpcUaStackClient_DiscoveryClientFindServers_h__
 
-#include <future>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Core/Core.h"
+#include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
-#include "OpcUaStackCore/StandardDataTypes/RegisteredServer.h"
-#include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
+#include "OpcUaStackClient/ApplicationUtility/DiscoveryClientFindServersIf.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	typedef std::function<
-		void (OpcUaStatusCode statusCode, ApplicationDescription::Vec& applicationDescriptionVec)
-	> FindServerHandler;
-
 	class DLLEXPORT DiscoveryClientFindServers
+	: public SessionServiceIf
+	, public DiscoveryServiceIf
+	, public DiscoveryClientFindServersIf
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryClientFindServers> SPtr;
@@ -48,17 +47,26 @@ namespace OpcUaStackClient
 		bool startup(void);
 		void shutdown(void);
 
-		void asyncFind(
-			const std::string& serverUri,
-			const FindServerHandler& resultHandler
-		);
+		//- DiscoveryClientFindServerIf ---------------------------------------
+		//
+		// asyncFind
+		//   server uri of the discovery server
+		//   findResultCallback(OpcUaStatusCode, ApplicationDescription::Vec&)
+		//
+		virtual void asyncFind(const std::string serverUri, Callback& findResultCallback);
+		//- DiscoveryClientFindServerIf ---------------------------------------
+
+		//- SessionServiceIf --------------------------------------------------
+		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);
+		//- SessionServiceIf --------------------------------------------------
+
+        //- DiscoveryServiceIf ------------------------------------------------
+        virtual void discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
+        //- DiscoveryServiceIf ------------------------------------------------
 
 	  public:
-		void discoveryServiceFindServersResponse(
-			ServiceTransactionFindServers::SPtr& serviceTransactionFindServers
-		);
-
         void sendFindServersRequest(void);
+        void shutdownTask(void);
 
 		IOThread::SPtr ioThread_;
 		std::string discoveryUri_;
@@ -68,14 +76,13 @@ namespace OpcUaStackClient
 		DiscoveryService::SPtr discoveryService_;
 
 		std::string serverUri_;
-		FindServerHandler resultHandler_;
+		Callback findResultCallback_;
 
 		ApplicationDescription::Vec findResults_;
 		OpcUaStatusCode findStatusCode_;
 
 		bool shutdown_;
-		std::promise<void> shutdownProm_;
-		SessionServiceStateId sessionStateId_;
+		Condition shutdownCond_;
 	};
 
 }

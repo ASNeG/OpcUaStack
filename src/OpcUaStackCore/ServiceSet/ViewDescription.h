@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,14 +18,17 @@
 #ifndef __OpcUaStackCore_ViewDescription_h__
 #define __OpcUaStackCore_ViewDescription_h__
 
+#include <stdint.h>
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ViewDescription
-	: public Object
-	, public JsonFormatter
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<ViewDescription> SPtr;
@@ -35,33 +38,22 @@ namespace OpcUaStackCore
 
 		void viewId(const OpcUaNodeId::SPtr viewId);
 		OpcUaNodeId::SPtr viewId(void);
-		void timestamp(const OpcUaUtcTime& timestamp);
+		void timestamp(const UtcTime& timestamp);
 		void timestamp(const boost::posix_time::ptime& timestamp);
-		OpcUaUtcTime& timestamp(void);
+		UtcTime& timestamp(void);
 		void viewVersion(const OpcUaUInt32& viewVersion);
 		OpcUaUInt32 viewVersion(void);
 
-		void copyTo(ViewDescription& viewDescription);
-		void out(std::ostream& os) const {};
-
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-
-	  protected:
-		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
-		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		OpcUaNodeId::SPtr viewIdSPtr_;
-		OpcUaUtcTime timestamp_;
+		UtcTime timestamp_;
 		OpcUaUInt32 viewVersion_;
 	};
 
-	class DLLEXPORT ViewDescriptionArray
+	class ViewDescriptionArray
 	: public OpcUaArray<ViewDescription::SPtr, SPtrTypeCoder<ViewDescription> >
 	, public Object
 	{

@@ -1,11 +1,10 @@
 #include "unittest.h"
 #include "boost/asio.hpp"
-#include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
-#include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
+#include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/Base/Utility.h"
@@ -22,14 +21,11 @@ BOOST_AUTO_TEST_CASE(ActivateSession_)
 	std::cout << "ActivateSession_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ActivateSession_init)
-{
-	Core core;
-	core.init();
-}
-
 BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 {
+	ExtensibleParameter ep;
+	ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+
 	uint32_t pos;
 	OpcUaString::SPtr localeIdSPtr;
 	MessageHeader::SPtr messageHeaderSPtr;
@@ -79,7 +75,7 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 
 	activateSessionRequestSPtr->userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 	AnonymousIdentityToken::SPtr anonymousIdentityToken = activateSessionRequestSPtr->userIdentityToken()->parameter<AnonymousIdentityToken>();
-	anonymousIdentityToken->policyId() = "OpcUaStack";
+	anonymousIdentityToken->policyId("OpcUaStack");
 
 	activateSessionRequestSPtr->opcUaBinaryEncode(ios1);
 
@@ -135,7 +131,7 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	BOOST_REQUIRE(str == "en");
 	BOOST_REQUIRE(activateSessionRequestSPtr->userIdentityToken()->parameterTypeId().nodeId<OpcUaUInt32>() == OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 	anonymousIdentityToken = activateSessionRequestSPtr->userIdentityToken()->parameter<AnonymousIdentityToken>();
-	BOOST_REQUIRE(anonymousIdentityToken->policyId().value() == "OpcUaStack");
+	BOOST_REQUIRE(anonymousIdentityToken->policyId() == "OpcUaStack");
 }
 
 

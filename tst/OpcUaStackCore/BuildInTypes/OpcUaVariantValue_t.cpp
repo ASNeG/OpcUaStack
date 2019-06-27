@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariantValue_fromString_DateTime)
 BOOST_AUTO_TEST_CASE(OpcUaVariantValue_fromString_StatusCode)
 {
 	OpcUaVariantValue variantValue;
-	BOOST_REQUIRE(variantValue.fromString("Status:Success") == true);
+	BOOST_REQUIRE(variantValue.fromString("StatusCode:Success") == true);
 
 	BOOST_REQUIRE(variantValue.variantType() == OpcUaBuildInType_OpcUaStatusCode);
 

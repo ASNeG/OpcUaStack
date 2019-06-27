@@ -48,15 +48,9 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
 
 	// encode security header
-	OpcUaByteString securityPolicyUri("http://opcfoundation.org/UA/SecurityPolicy#None");
-	CertificateChain certificateChain;
-	OpcUaByteString receiverCertificateThumbprint;
-	SecurityHeader::opcUaBinaryEncode(
-		ios1,
-		securityPolicyUri,
-		certificateChain,
-		receiverCertificateThumbprint
-	);
+	securityHeaderSPtr = constructSPtr<SecurityHeader>();
+	securityHeaderSPtr->securityPolicyUri((OpcUaByte*)"http://opcfoundation.org/UA/SecurityPolicy#None", (OpcUaInt32)strlen("http://opcfoundation.org/UA/SecurityPolicy#None"));
+	securityHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// encode sequence header
 	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
@@ -73,7 +67,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	clientNonce[0] = 0x00;
 	openSecureChannelRequestSPtr = constructSPtr<OpenSecureChannelRequest>();
 	openSecureChannelRequestSPtr->requestHeader()->time(ptime);
-	openSecureChannelRequestSPtr->securityMode(MessageSecurityMode::EnumNone);
+	openSecureChannelRequestSPtr->securityMode(SM_None);
 	openSecureChannelRequestSPtr->clientNonce( clientNonce, 1);
 	openSecureChannelRequestSPtr->requestedLifetime(300000);
 	openSecureChannelRequestSPtr->opcUaBinaryEncode(ios1);
@@ -110,17 +104,11 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	BOOST_REQUIRE(channelId == 0);
 
 	// decode security header
-	OpcUaByteString securityPolicyUri1;
-	CertificateChain certificateChain1;
-	OpcUaByteString receiverCertificateThumbprint1;
-	SecurityHeader::opcUaBinaryDecode(
-		ios,
-		securityPolicyUri1,
-		certificateChain1,
-		receiverCertificateThumbprint1
-	);
-	BOOST_REQUIRE(securityPolicyUri1 == OpcUaByteString("http://opcfoundation.org/UA/SecurityPolicy#None"));
-
+	securityHeaderSPtr = constructSPtr<SecurityHeader>();
+	securityHeaderSPtr->opcUaBinaryDecode(ios);
+	securityHeaderSPtr->securityPolicyUri(&opcUaByte, &opcUaByteLen);
+	BOOST_REQUIRE(strncmp((char*)opcUaByte, "http://opcfoundation.org/UA/SecurityPolicy#None",opcUaByteLen ) == 0);
+	
 	// decode sequence header
 	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
@@ -138,7 +126,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	openSecureChannelRequestSPtr->clientNonce(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(openSecureChannelRequestSPtr->requestHeader()->time().dateTime() == ptime);
 	BOOST_REQUIRE(openSecureChannelRequestSPtr->requestType() == RT_ISSUE);
-	BOOST_REQUIRE(openSecureChannelRequestSPtr->securityMode() == MessageSecurityMode::EnumNone);
+	BOOST_REQUIRE(openSecureChannelRequestSPtr->securityMode() == SM_None);
 	BOOST_REQUIRE(openSecureChannelRequestSPtr->requestedLifetime() == 300000);
 	BOOST_REQUIRE(opcUaByteLen == 1);
 	BOOST_REQUIRE(opcUaByte[0] == 0x00);
@@ -172,15 +160,9 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
 
 	// encode security header
-	OpcUaByteString securityPolicyUri("http://opcfoundation.org/UA/SecurityPolicy#None");
-		CertificateChain certificateChain;
-		OpcUaByteString receiverCertificateThumbprint;
-		SecurityHeader::opcUaBinaryEncode(
-			ios1,
-			securityPolicyUri,
-			certificateChain,
-			receiverCertificateThumbprint
-		);
+	securityHeaderSPtr = constructSPtr<SecurityHeader>();
+	securityHeaderSPtr->securityPolicyUri((OpcUaByte*)"http://opcfoundation.org/UA/SecurityPolicy#None", (OpcUaInt32)strlen("http://opcfoundation.org/UA/SecurityPolicy#None"));
+	securityHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// encode sequence header
 	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
@@ -241,17 +223,11 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	BOOST_REQUIRE(channelId == 153451225);
 
 	// decode security header
-	OpcUaByteString securityPolicyUri1;
-	CertificateChain certificateChain1;
-	OpcUaByteString receiverCertificateThumbprint1;
-	SecurityHeader::opcUaBinaryDecode(
-		ios,
-		securityPolicyUri1,
-		certificateChain1,
-		receiverCertificateThumbprint1
-	);
-	BOOST_REQUIRE(securityPolicyUri1 == OpcUaByteString("http://opcfoundation.org/UA/SecurityPolicy#None"));
-
+	securityHeaderSPtr = constructSPtr<SecurityHeader>();
+	securityHeaderSPtr->opcUaBinaryDecode(ios);
+	securityHeaderSPtr->securityPolicyUri(&opcUaByte, &opcUaByteLen);
+	BOOST_REQUIRE(strncmp((char*)opcUaByte, "http://opcfoundation.org/UA/SecurityPolicy#None",opcUaByteLen ) == 0);
+	
 	// decode sequence header
 	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);

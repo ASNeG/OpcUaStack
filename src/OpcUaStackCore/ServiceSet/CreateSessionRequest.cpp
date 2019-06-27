@@ -134,12 +134,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	CreateSessionRequest::requestSessionTimeout(const OpcUaDuration requestSessionTimeout)
+	CreateSessionRequest::requestSessionTimeout(const Duration requestSessionTimeout)
 	{
 		requestSessionTimeout_ = requestSessionTimeout;
 	}
 
-	OpcUaDuration
+	Duration 
 	CreateSessionRequest::requestSessionTimeout(void) const
 	{
 		return requestSessionTimeout_;

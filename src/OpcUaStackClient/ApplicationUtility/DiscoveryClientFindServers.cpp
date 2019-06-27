@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientFindServers.h"
 
@@ -31,12 +30,11 @@ namespace OpcUaStackClient
 	, sessionService_()
 	, discoveryService_()
 	, serverUri_("")
-	, resultHandler_()
+	, findResultCallback_()
 	, findResults_()
 	, findStatusCode_(BadCommunicationError)
 	, shutdown_()
-	, shutdownProm_()
-	, sessionStateId_(SessionServiceStateId::Disconnected)
+	, shutdownCond_()
 	{
 	}
 
@@ -56,44 +54,16 @@ namespace OpcUaStackClient
     	discoveryUri_ = discoveryUri;
     }
 
+
 	bool 
 	DiscoveryClientFindServers::startup(void)
 	{
-		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
-
-			sessionStateId_ = sessionState;
-
-			// ignore some states
-			if (sessionState != SessionServiceStateId::Established &&
-				sessionState != SessionServiceStateId::Disconnected) {
-				return;
-			}
-
-			// the connection could not be opened
-			if (sessionState == SessionServiceStateId::Disconnected) {
-
-				if (shutdown_) {
-					shutdownProm_.set_value();
-					return;
-				}
-
-				if (resultHandler_) {
-					resultHandler_(findStatusCode_, findResults_);
-				}
-				return;
-			}
-
-			// the connection has been opened
-			sendFindServersRequest();
-		};
-
 		// create service set manager
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
+		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
-		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
-		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
-
+		sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 
@@ -103,6 +73,7 @@ namespace OpcUaStackClient
 		// create discovery service
 		DiscoveryServiceConfig discoveryServiceConfig;
 		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
+		discoveryServiceConfig.discoveryServiceIf_ = this;
 		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
 
 		return true;
@@ -117,64 +88,76 @@ namespace OpcUaStackClient
 		//
 
 		// start shutdown task and wait for shutdown signal
-		auto shutdownFuture = shutdownProm_.get_future();
+	   	shutdownCond_.condition(1,0);
 	    ioThread_->run(
-	    	[this](void) {
-	    		shutdown_ = true;
-
-	    		if (sessionStateId_ != SessionServiceStateId::Disconnected) {
-	    			sessionService_->asyncDisconnect();
-	    			return;
-	    		}
-
-	    		shutdownProm_.set_value();
-	    	}
+	    	boost::bind(&DiscoveryClientFindServers::shutdownTask, this)
 	    );
-	    shutdownFuture.wait_for(std::chrono::milliseconds(3000));
+	    shutdownCond_.waitForCondition(3000);
 
     	// deregister io thread from service set manager
     	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
 	}
 
 	void
-	DiscoveryClientFindServers::asyncFind(
-		const std::string& serverUri,
-		const FindServerHandler& resultHandler
-	)
+	DiscoveryClientFindServers::shutdownTask(void)
+	{
+		shutdown_ = true;
+
+		if (sessionService_->secureChannelState() != SessionService::SCS_Disconnected) {
+			sessionService_->asyncDisconnect();
+			return;
+		}
+
+		shutdownCond_.conditionValueDec();
+	}
+
+	void
+	DiscoveryClientFindServers::asyncFind(const std::string serverUri, Callback& findResultCallback)
 	{
 		findResults_.clear();
 		findStatusCode_ = BadCommunicationError;
 
 		serverUri_ = serverUri;
-		resultHandler_ = resultHandler;
+		findResultCallback_ = findResultCallback;
 		sessionService_->asyncConnect();
+	}
+
+	void
+	DiscoveryClientFindServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	{
+		if (sessionState != SS_Connect) {
+
+			if (shutdown_) {
+				shutdownCond_.conditionValueDec();
+				return;
+			}
+
+			findResultCallback_(findStatusCode_, findResults_);
+			return;
+		}
+
+		sendFindServersRequest();
 	}
 
 	void
 	DiscoveryClientFindServers::sendFindServersRequest(void)
 	{
-		auto trx = constructSPtr<ServiceTransactionFindServers>();
-		auto req = trx->request();
+		ServiceTransactionFindServers::SPtr trx;
+		trx = constructSPtr<ServiceTransactionFindServers>();
+		FindServersRequest::SPtr req = trx->request();
 
-		auto serverUris = boost::make_shared<OpcUaStringArray>();
+		OpcUaStringArray::SPtr serverUris = constructSPtr<OpcUaStringArray>();
 		serverUris->resize(1);
-		auto serverUri = boost::make_shared<OpcUaString>();
+		OpcUaString::SPtr serverUri = constructSPtr<OpcUaString>();
 		serverUri->value(serverUri_);
 		serverUris->push_back(serverUri);
 		req->serverUris(serverUris);
 
-		trx->resultHandler(
-			[this](ServiceTransactionFindServers::SPtr& trx) {
-				discoveryServiceFindServersResponse(trx);
-			}
-		);
 		discoveryService_->asyncSend(trx);
 	}
 
     void
-    DiscoveryClientFindServers::discoveryServiceFindServersResponse(
-    	ServiceTransactionFindServers::SPtr& serviceTransactionFindServers
-	)
+    DiscoveryClientFindServers::discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers)
     {
 		if (serviceTransactionFindServers->statusCode() != Success) {
 			Log(Error, "receive find servers response error")
@@ -182,7 +165,7 @@ namespace OpcUaStackClient
 		}
 
 		else {
-			auto res = serviceTransactionFindServers->response();
+			FindServersResponse::SPtr res = serviceTransactionFindServers->response();
 
 			findStatusCode_ = Success;
 			findResults_.clear();

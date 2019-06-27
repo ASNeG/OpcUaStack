@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,7 +19,6 @@
 #define __OpcUaServer_WindowsService_h__
 #ifdef _WIN32
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaServer/Interface/ServerApplicationIf.h"
 #include <Windows.h>
 #include <WinSvc.h>
@@ -28,7 +27,7 @@
 namespace OpcUaServer
 {
 
-	class DLLEXPORT WindowsService
+	class WindowsService
 	{
 	  public:
 		static WindowsService* instance_;

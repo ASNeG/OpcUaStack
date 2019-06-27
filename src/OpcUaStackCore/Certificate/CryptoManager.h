@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,11 +19,9 @@
 #define __OpcUaStackCore_CryptoManager_h__
 
 #include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackCore/BuildInTypes/SecurityPolicy.h"
+
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
-#include "OpcUaStackCore/Certificate/CertificateManager.h"
-#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -36,34 +34,12 @@ namespace OpcUaStackCore
 		CryptoManager(void);
 		~CryptoManager(void);
 
-		bool insert(
-			SecurityPolicy::Enum securityPolicy,
-			const std::string& securityPolicyString,
-			const CryptoBase::SPtr& cryptoBase
-		);
-		bool remove(SecurityPolicy::Enum securityPolicy);
-		std::string securityPolicy(SecurityPolicy::Enum securityPolicy);
-		SecurityPolicy::Enum securityPolicy(const std::string securityPolicy);
+		bool insert(const std::string& name, CryptoBase::SPtr& cryptoBase);
+		bool remove(const std::string& name);
 		CryptoBase::SPtr get(const std::string& name);
-		CryptoBase::SPtr get(SecurityPolicy::Enum securityPolicy);
-
-		void certificateManager(CertificateManager::SPtr& certificateManager);
-		bool createCertificateManager(
-			const std::string& configPrefix,
-			Config* config,
-			const std::string& configurationFileName
-		);
-		CertificateManager::SPtr& certificateManager(void);
-
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
-		bool createApplicationCertificate(void);
-		ApplicationCertificate::SPtr& applicationCertificate(void);
 
 	  private:
-		std::map<SecurityPolicy::Enum,CryptoBase::SPtr> cryptoBaseMap_;
-		std::map<std::string, SecurityPolicy::Enum> securityPolicyMap_;
-		CertificateManager::SPtr certificateManager_;
-		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoBase::Map cryptoBaseMap_;
 	};
 
 }

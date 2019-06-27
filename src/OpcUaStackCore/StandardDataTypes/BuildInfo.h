@@ -1,13 +1,19 @@
 /*
-    DataTypeClass: BuildInfo
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
-    Generated Source Code - please do not change this source code
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
 
-    DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-    Autor:     Kai Huebl (kai@huebl-sgh.de)
-*/
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+ */
 
 #ifndef __OpcUaStackCore_BuildInfo_h__
 #define __OpcUaStackCore_BuildInfo_h__
@@ -15,74 +21,52 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
-    
-    class DLLEXPORT BuildInfo
-    : public Object
-    , public ExtensionObjectBase
-    {
-      public:
-        typedef boost::shared_ptr<BuildInfo> SPtr;
-        typedef std::vector<BuildInfo::SPtr> Vec;
-    
-        BuildInfo(void);
-        BuildInfo(const BuildInfo& value);
-        virtual ~BuildInfo(void);
-        
-        OpcUaString& productUri(void);
-        OpcUaString& manufacturerName(void);
-        OpcUaString& productName(void);
-        OpcUaString& softwareVersion(void);
-        OpcUaString& buildNumber(void);
-        OpcUaUtcTime& buildDate(void);
-        
-        //- ExtensionObjectBase -----------------------------------------------
-        virtual ExtensionObjectBase::SPtr factory(void);
-        virtual std::string namespaceName(void);
-        virtual std::string typeName(void);
-        virtual OpcUaNodeId typeId(void);
-        virtual OpcUaNodeId binaryTypeId(void);
-        virtual OpcUaNodeId xmlTypeId(void);
-        virtual OpcUaNodeId jsonTypeId(void);
-        virtual void opcUaBinaryEncode(std::ostream& os) const;
-        virtual void opcUaBinaryDecode(std::istream& is);
-        virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
-        virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
-        virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-        virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
-        virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
-        virtual void out(std::ostream& os);
-        //- ExtensionObjectBase -----------------------------------------------
-        
-        virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const;
-        virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt);
-        
-        void copyTo(BuildInfo& value);
-        bool operator==(const BuildInfo& value);
-        bool operator!=(const BuildInfo& value);
-        BuildInfo& operator=(const BuildInfo& value);
-    
-      private:
-        OpcUaString productUri_;
-        OpcUaString manufacturerName_;
-        OpcUaString productName_;
-        OpcUaString softwareVersion_;
-        OpcUaString buildNumber_;
-        OpcUaUtcTime buildDate_;
-    
-    };
-    
-    class DLLEXPORT BuildInfoArray
-    : public OpcUaArray<BuildInfo::SPtr, SPtrTypeCoder<BuildInfo> >
-    , public Object
-    {
-      public:
-    	   typedef boost::shared_ptr<BuildInfoArray> SPtr;
-    };
+
+	class DLLEXPORT BuildInfo
+	: public Object
+	, public ExtensionObjectBase
+	{
+	  public:
+		typedef boost::shared_ptr<BuildInfo> SPtr;
+
+		BuildInfo(void);
+		virtual ~BuildInfo(void);
+
+		OpcUaString& productUri(void);
+		OpcUaString& manufacturerName(void);
+		OpcUaString& productName(void);
+		OpcUaString& softwareVersion(void);
+		OpcUaString& buildNumber(void);
+		OpcUaDateTime& buildDate(void);
+
+		void copyTo(BuildInfo& buildInfo);
+		bool operator==(const BuildInfo& buildInfo) const;
+
+		//- ExtensionObjectBase -----------------------------------------------
+		ExtensionObjectBase::SPtr factory(void);
+		void opcUaBinaryEncode(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		void copyTo(ExtensionObjectBase& extensionObjectBase);
+		bool equal(ExtensionObjectBase& extensionObjectBase) const;
+		void out(std::ostream& os);
+		//- ExtensionObjectBase -----------------------------------------------
+
+	  private:
+		OpcUaString productUri_;
+		OpcUaString manufacturerName_;
+		OpcUaString productName_;
+		OpcUaString softwareVersion_;
+		OpcUaString buildNumber_;
+		OpcUaDateTime buildDate_;
+	};
 
 }
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,11 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
-#include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -53,6 +51,7 @@ namespace OpcUaStackCore
 	bool
 	SecureChannelServer::accept(SecureChannelServerConfig::SPtr secureChannelServerConfig)
 	{
+		applicationCertificate(secureChannelServerConfig->applicationCertificate());
 		cryptoManager(secureChannelServerConfig->cryptoManager());
 
 		// check interface
@@ -63,7 +62,7 @@ namespace OpcUaStackCore
 		}
 
 		// create new secure channel
-		auto secureChannel = new SecureChannel(ioThread_);
+		SecureChannel* secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelServerConfig;
 		accept(secureChannel);
 		return true;
@@ -101,7 +100,8 @@ namespace OpcUaStackCore
 	void
 	SecureChannelServer::accept(SecureChannel* secureChannel)
 	{
-		auto config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		SecureChannelServerConfig::SPtr config;
+		config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 
 		endpointUrl_ = config->endpointUrl();
 
@@ -112,13 +112,8 @@ namespace OpcUaStackCore
 		secureChannel->maxChunkCount_ = config->maxChunkCount();
 		secureChannel->endpointUrl_ = config->endpointUrl();
 
-		// check if host part of the url is a domain name. If so use as any address.
-		Url url(config->endpointUrl());
-		if (url.isHostAddress()) {
-			url.host("0.0.0.0");
-		}
-
 		// get ip address from endpoint hostname
+		Url url(config->endpointUrl());
 		secureChannel->partner_.port(url.port());
 		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
 		resolver_.async_resolve(
@@ -146,7 +141,7 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 
 			// we do not need the secure channel anymore.
-			auto endpointUrl = secureChannel->endpointUrl_;
+			std::string endpointUrl = secureChannel->endpointUrl_;
 			delete secureChannel;
 
 			// handle acceptor socket error
@@ -193,13 +188,12 @@ namespace OpcUaStackCore
 	{
 		if (error) {
 			Log(Info, "cannot accept secure channel from client")
-				.parameter("ChannelId", *secureChannel)
 				.parameter("Address", secureChannel->partner_.address().to_string())
 				.parameter("Port", secureChannel->partner_.port())
 				.parameter("Message", error.message());
 
 			// we do not need the secure channel anymore.
-			auto endpointUrl = secureChannel->endpointUrl_;
+			std::string endpointUrl = secureChannel->endpointUrl_;
 			delete secureChannel;
 
 			// handle acceptor socket error
@@ -216,16 +210,14 @@ namespace OpcUaStackCore
 		secureChannel->partner_ = secureChannel->socket().remote_endpoint();
 
 		Log(Info, "accepted new secure channel from client")
-		    .parameter("ChannelId", *secureChannel)
-			.parameter("Local-Address", secureChannel->local_.address().to_string())
-			.parameter("Local-Port", secureChannel->local_.port())
-			.parameter("Partner-Address", secureChannel->partner_.address().to_string())
-			.parameter("Partner-Port", secureChannel->partner_.port());
+			.parameter("Address", secureChannel->partner_.address().to_string())
+			.parameter("Port", secureChannel->partner_.port());
 
 		secureChannel->state_ = SecureChannel::S_Connected;
 		asyncRead(secureChannel);
 
-		auto config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		SecureChannelServerConfig::SPtr config;
+		config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 		accept(config);
 	}
 
@@ -233,7 +225,6 @@ namespace OpcUaStackCore
 	SecureChannelServer::handleDisconnect(SecureChannel* secureChannel)
 	{
 		Log(Info, "secure channel closed")
-			.parameter("ChannelId", *secureChannel)
 			.parameter("Local-Address", secureChannel->local_.address().to_string())
 			.parameter("Local-Port", secureChannel->local_.port())
 			.parameter("Partner-Address", secureChannel->partner_.address().to_string())
@@ -250,8 +241,7 @@ namespace OpcUaStackCore
 
 		// check protocol version
 		if (hello.protocolVersion() != 0) {
-			Log(Error, "receive invalid protocol version in hello request")
-				.parameter("ChannelId", *secureChannel);
+			Log(Error, "receive invalid protocol version in hello request");
 			secureChannel->socket().cancel();
 			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
 			return;
@@ -304,93 +294,14 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
-		auto openSecureChannelResponse = constructSPtr<OpenSecureChannelResponse>();
-		openSecureChannelResponse->responseHeader()->requestHandle(openSecureChannelRequest.requestHeader()->requestHandle());
-		openSecureChannelResponse->responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
+		// check security parameter
+		// FIXME: todo - we must find the right endpoint
+		SecureChannelServerConfig::SPtr secureChannelServerConfig;
+		secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 
-
-		// get server configuration and security settings
-		auto secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
-		auto& securitySettings = secureChannel->securitySettings();
-
-		// find endpoint description in server configuration
-		securitySettings.endpointDescription().reset();
 		EndpointDescription::SPtr endpointDescription;
-		for (uint32_t idx = 0; idx < secureChannelServerConfig->endpointDescriptionArray()->size(); idx++) {
-			secureChannelServerConfig->endpointDescriptionArray()->get(idx, endpointDescription);
-
-			if (securitySettings.partnerSecurityPolicyUri().toString() == endpointDescription->securityPolicyUri().toStdString()) {
-				securitySettings.endpointDescription() = endpointDescription;
-				break;
-			}
-		}
-		if (securitySettings.endpointDescription().get() == nullptr) {
-			Log(Error, "server does not accept policy uri from client")
-				.parameter("ChannelId", *secureChannel)
-			    .parameter("LocalEndpoint", secureChannel->local_)
-				.parameter("PartnerEndpont", secureChannel->partner_)
-				.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
-			secureChannel->socket().cancel();
-			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
-			return;
-		}
-
-		// set security policy uri
-		securitySettings.ownSecurityPolicyUri() = endpointDescription->securityPolicyUri();
-
-		// set certificate
-		if (securitySettings.isPartnerSignatureEnabled()) {
-			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
-		}
-
-		// set partner certificate thumbprint and check partner certificate chain
-		if (securitySettings.isPartnerEncryptionEnabled()) {
-			assert(securitySettings.partnerCertificateChain().getCertificate().get() != nullptr);
-
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
-			securitySettings.partnerCertificateThumbprint() = thumbPrint;
-		}
-
-		// handle partner nonce
-		if (securitySettings.isPartnerEncryptionEnabled()) {
-			char* buf;
-			int32_t len;
-			openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
-			if (len > 0) {
-				securitySettings.partnerNonce().set(buf, len);
-			}
-		}
-
-		// create own nonce
-		if (securitySettings.isOwnEncryptionEnabled()) {
-			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
-			securitySettings.ownNonce().resize(keyLen);
-
-			char* memBuf = securitySettings.ownNonce().memBuf();
-			for (uint32_t idx=0; idx<keyLen; idx++) {
-				memBuf[idx] = rand();
-			}
-
-			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
-		}
-
-		// create symmetric key set
-		if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
-			OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
-				securitySettings.partnerNonce(),
-				securitySettings.ownNonce(),
-				securitySettings.partnerSecurityKeySet(),
-				securitySettings.ownSecurityKeySet()
-			);
-			if (statusCode != Success) {
-				Log(Error, "create derived channel keyset error")
-					.parameter("ChannelId", *secureChannel)
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
-					.parameter("LocalEndpoint", secureChannel->local_)
-					.parameter("PartnerEndpont", secureChannel->partner_);
-					return;
-			}
-		}
+		secureChannelServerConfig->endpointDescriptionArray()->get(0, endpointDescription);
+		secureChannelServerConfig->endpointDescription(endpointDescription);
 
 		// check parameter
 		bool success = true;
@@ -401,7 +312,6 @@ namespace OpcUaStackCore
 			if (secureChannel->channelId_ != 0) {
 				success = false;
 				Log(Error, "receive invalid request type in OpenSecureChannelRequest")
-					.parameter("ChannelId", *secureChannel)
 					.parameter("Local-Address", secureChannel->local_.address().to_string())
 					.parameter("Local-Port", secureChannel->local_.port())
 					.parameter("Partner-Address", secureChannel->partner_.address().to_string())
@@ -418,7 +328,6 @@ namespace OpcUaStackCore
 			if (secureChannel->channelId_ != channelId) {
 				success = false;
 				Log(Error, "receive invalid channel id in OpenSecureChannelRequest")
-					.parameter("ChannelId", *secureChannel)
 					.parameter("Local-Address", secureChannel->local_.address().to_string())
 					.parameter("Local-Port", secureChannel->local_.port())
 					.parameter("Partner-Address", secureChannel->partner_.address().to_string())
@@ -429,7 +338,6 @@ namespace OpcUaStackCore
 		else {
 			success = false;
 			Log(Error, "receive invalid OpenSecureChannelRequest")
-				.parameter("ChannelId", *secureChannel)
 				.parameter("Local-Address", secureChannel->local_.address().to_string())
 				.parameter("Local-Port", secureChannel->local_.port())
 				.parameter("Partner-Address", secureChannel->partner_.address().to_string())
@@ -445,58 +353,17 @@ namespace OpcUaStackCore
 		// create new security token
 		secureChannel->secureTokenVec_.push_back(std::rand());
 
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		//
-		// start security checks
-		//
-
-		// validate client certificate chain
-		if (securitySettings.isPartnerEncryptionEnabled()) {
-
-			ValidateCertificate validateCertificate;
-			validateCertificate.certificateManager(cryptoManager()->certificateManager());
-			//validateCertificate.hostname(endpointUrl.host());
-			//validateCertificate.uri(secureChannelClientConfig->applicationUri());
-
-			auto statusCode = validateCertificate.validateCertificate(
-				securitySettings.partnerCertificateChain()
-			);
-
-			if (statusCode != Success) {
-
-				// on error we save the certificate in the reject folder.
-
-				auto certificate = securitySettings.partnerCertificateChain().getCertificate();
-				std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
-				boost::filesystem::path rejectFilePath(cryptoManager()->certificateManager()->certificateRejectListLocation() + "/" + certFileName);
-				cryptoManager()->certificateManager()->writeCertificate(
-					rejectFilePath.string(),
-					*certificate.get()
-				);
-
-				Log(Error, "client certificate not trusted")
-					.parameter("ChannelId", *secureChannel)
-				    .parameter("LocalEndpoint", secureChannel->local_)
-					.parameter("PartnerEndpont", secureChannel->partner_)
-					.parameter("PolicyUri", securitySettings.partnerSecurityPolicyUri().toString());
-
-				// send error message and close secure channel
-				asyncWriteMessageError(
-					secureChannel,
-					BadCertificateUntrusted,
-					OpcUaStatusCodeMap::shortString(BadCertificateUntrusted)
-				);
-				return;
-			}
-		}
-
 		// create open secure channel response
+		OpenSecureChannelResponse::SPtr openSecureChannelResponse = constructSPtr<OpenSecureChannelResponse>();
+		OpcUaByte serverNonce[1];
+		serverNonce[0] = 0x01;
 		openSecureChannelResponse->securityToken()->channelId(secureChannel->channelId_);
 		openSecureChannelResponse->securityToken()->tokenId(secureChannel->secureTokenVec_[secureChannel->secureTokenVec_.size()-1]);
 		openSecureChannelResponse->securityToken()->createAt().dateTime(boost::posix_time::microsec_clock::local_time());
 		openSecureChannelResponse->securityToken()->revisedLifetime(openSecureChannelRequest.requestedLifetime());
-		openSecureChannelResponse->responseHeader()->serviceResult(Success);
+		openSecureChannelResponse->responseHeader()->requestHandle(openSecureChannelRequest.requestHeader()->requestHandle());
+		openSecureChannelResponse->responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
+		openSecureChannelResponse->serverNonce(serverNonce, 1);
 
 		// send open secure channel response
 		asyncWriteOpenSecureChannelResponse(secureChannel, openSecureChannelResponse);
@@ -510,7 +377,6 @@ namespace OpcUaStackCore
 	SecureChannelServer::handleRecvCloseSecureChannelRequest(SecureChannel* secureChannel, uint32_t channelId)
 	{
 		Log(Debug, "close secure channel, because receive close secure channel from partner")
-			.parameter("ChannelId", *secureChannel)
 			.parameter("Local-Address", secureChannel->local_.address().to_string())
 			.parameter("Local-Port", secureChannel->local_.port())
 			.parameter("Partner-Address", secureChannel->partner_.address().to_string())

@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -120,19 +120,6 @@ namespace OpcUaStackCore
 		return domainComponent_;
 	}
 
-	Identity&
-	Identity::operator=(const Identity& value)
-	{
-   		organization_ = value.organization_;
-		organizationUnit_ = value.organizationUnit_;
-		locality_ = value.locality_;
-		state_ = value.state_;
-		country_ = value.country_;
-		commonName_ = value.commonName_;
-		domainComponent_ = value.domainComponent_;
-		return *this;
-	}
-
     bool
 	Identity::operator==(const Identity &identity) const
 	{
@@ -164,19 +151,6 @@ namespace OpcUaStackCore
 			commonName_.size() == 0							&&
 			domainComponent_.size() == 0
 		);
-    }
-
-    void
-	Identity::log(const std::string& message)
-    {
-    	Log(Debug, message)
-    	    .parameter("CommonName", commonName_)
-			.parameter("Organization", organization_)
-			.parameter("OrganizationUnit", organizationUnit_)
-			.parameter("Locality", locality_)
-			.parameter("State", state_)
-			.parameter("Countery", country_)
-			.parameter("DomainComponent", domainComponent_);
     }
 
     X509_NAME*

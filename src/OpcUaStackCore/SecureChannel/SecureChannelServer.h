@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,10 +22,11 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <map>
-#include <OpcUaStackCore/Network/TCPAcceptor.h>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServerConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServerIf.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
+#include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
 
 namespace OpcUaStackCore
 {
@@ -57,8 +58,6 @@ namespace OpcUaStackCore
 		//- SecureChannelBase -------------------------------------------------
 
 	  private:
-		void sendOpenSecureChannelResponseError(OpenSecureChannelResponse::SPtr& openSecureChannelResponse);
-
 		void accept(SecureChannel* secureChannel);
 		void resolveComplete(
 			const boost::system::error_code& error,

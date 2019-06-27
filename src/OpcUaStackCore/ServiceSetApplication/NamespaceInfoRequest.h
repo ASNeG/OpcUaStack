@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,10 @@
 #ifndef __OpcUaStackCore_NamespaceInfoRequest_h__
 #define __OpcUaStackCore_NamespaceInfoRequest_h__
 
-#include "OpcUaStackCore/Base/Object.h"
+#include <stdint.h>
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 
 namespace OpcUaStackCore
 {
@@ -32,14 +35,10 @@ namespace OpcUaStackCore
 		NamespaceInfoRequest(void);
 		virtual ~NamespaceInfoRequest(void);
 
-		void newNamespaceUri(const std::string& newNamespaceUri);
-		std::string& newNamespaceUri(void);
-
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		std::string newNamespaceUri_;
 	};
 
 }

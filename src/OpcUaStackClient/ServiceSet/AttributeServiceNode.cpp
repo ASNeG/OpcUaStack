@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,7 +24,8 @@ namespace OpcUaStackClient
 {
 
 	AttributeServiceNode::AttributeServiceNode(void)
-	: attributeServiceNodeIf_(nullptr)
+	: AttributeServiceIf()
+	, attributeServiceNodeIf_(nullptr)
 	, attributeService_()
 	, nodeId_()
 	, attributeIdVec_()
@@ -39,6 +40,7 @@ namespace OpcUaStackClient
 	AttributeServiceNode::attributeService(AttributeService::SPtr& attributeService)
 	{
 		attributeService_ = attributeService;
+		attributeService_->attributeServiceIf(this);
 	}
 
 	void
@@ -119,7 +121,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	AttributeServiceNode::attributeIds(NodeClass::Enum nodeClassType)
+	AttributeServiceNode::attributeIds(NodeClassType nodeClassType)
 	{
 		attributeIdVec_.clear();
 
@@ -133,12 +135,12 @@ namespace OpcUaStackClient
 		// set node class specific attributes
 		switch (nodeClassType)
 		{
-			case NodeClass::EnumObject:
+			case NodeClassType_Object:
 			{
 				attributeIdVec_.push_back(AttributeId_EventNotifier);
 				break;
 			}
-			case NodeClass::EnumVariable:
+			case NodeClassType_Variable:
 			{
 				attributeIdVec_.push_back(AttributeId_AccessLevel);
 				attributeIdVec_.push_back(AttributeId_ArrayDimensions);
@@ -150,18 +152,18 @@ namespace OpcUaStackClient
 				attributeIdVec_.push_back(AttributeId_ValueRank);
 				break;
 			}
-			case NodeClass::EnumMethod:
+			case NodeClassType_Method:
 			{
 				attributeIdVec_.push_back(AttributeId_Executable);
 				attributeIdVec_.push_back(AttributeId_UserExecutable);
 				break;
 			}
-			case NodeClass::EnumObjectType:
+			case NodeClassType_ObjectType:
 			{
 				attributeIdVec_.push_back(AttributeId_IsAbstract);
 				break;
 			}
-			case NodeClass::EnumVariableType:
+			case NodeClassType_VariableType:
 			{
 				attributeIdVec_.push_back(AttributeId_ArrayDimensions);
 				attributeIdVec_.push_back(AttributeId_DataType);
@@ -170,19 +172,19 @@ namespace OpcUaStackClient
 				attributeIdVec_.push_back(AttributeId_ValueRank);
 				break;
 			}
-			case NodeClass::EnumReferenceType:
+			case NodeClassType_ReferenceType:
 			{
 				attributeIdVec_.push_back(AttributeId_InverseName);
 				attributeIdVec_.push_back(AttributeId_IsAbstract);
 				attributeIdVec_.push_back(AttributeId_Symmetric);
 				break;
 			}
-			case NodeClass::EnumDataType:
+			case NodeClassType_DataType:
 			{
 				attributeIdVec_.push_back(AttributeId_IsAbstract);
 				break;
 			}
-			case NodeClass::EnumView:
+			case NodeClassType_View:
 			{
 				attributeIdVec_.push_back(AttributeId_ContainsNoLoops);
 				attributeIdVec_.push_back(AttributeId_EventNotifier);
@@ -203,13 +205,16 @@ namespace OpcUaStackClient
 	void
 	AttributeServiceNode::asyncReadNode(void)
 	{
+		AttributeServiceIfTestHandler attributeServiceIfTestHandler;
+
 		// create read transaction
-		auto trx = constructSPtr<ServiceTransactionRead>();
-		auto req = trx->request();
+		ServiceTransactionRead::SPtr trx = constructSPtr<ServiceTransactionRead>();
+		ReadRequest::SPtr req = trx->request();
 
 		// create read request
 		req->readValueIdArray()->resize(attributeIdVec_.size());
-		for (auto it = attributeIdVec_.begin(); it != attributeIdVec_.end(); it++) {
+		std::vector<AttributeId>::iterator it;
+		for (it = attributeIdVec_.begin(); it != attributeIdVec_.end(); it++) {
 			ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
 			readValueIdSPtr->nodeId()->copyFrom(nodeId_);
 			readValueIdSPtr->attributeId((OpcUaInt32)*it);
@@ -218,11 +223,6 @@ namespace OpcUaStackClient
 		}
 
 		// send read request
-		trx->resultHandler(
-			[this](ServiceTransactionRead::SPtr serviceTransactionRead) {
-				attributeServiceReadResponse(serviceTransactionRead);
-			}
-		);
 		attributeService_->asyncSend(trx);
 	}
 
@@ -230,7 +230,7 @@ namespace OpcUaStackClient
 	AttributeServiceNode::attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead)
 	{
 	   	OpcUaStatusCode statusCode;
-	    auto res = serviceTransactionRead->response();
+	    ReadResponse::SPtr res = serviceTransactionRead->response();
 
 	    // check response
 	    statusCode = serviceTransactionRead->responseHeader()->serviceResult();

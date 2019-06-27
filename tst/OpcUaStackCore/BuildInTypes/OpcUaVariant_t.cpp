@@ -2,7 +2,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Utility.h"
-#include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/StandardDataTypes/StatusResult.h"
 #include <boost/iostreams/stream.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -63,12 +62,11 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaBoolean_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaVariant value1, value2;
-	Xmlns xmlns;
 
 	value1.variant((OpcUaBoolean)true);
 
-	value1.xmlEncode(pt, xmlns);
-	value2.xmlDecode(pt, xmlns);
+	value1.encode(pt);
+	value2.decode(pt, OpcUaBuildInType_OpcUaBoolean, false);
 
 	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaBoolean);
@@ -122,12 +120,11 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaSByte_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaVariant value1, value2;
-	Xmlns xmlns;
 
 	value1.variant((OpcUaSByte)0x12);
 
-	value1.xmlEncode(pt, xmlns);
-	value2.xmlDecode(pt, xmlns);
+	value1.encode(pt);
+	value2.decode(pt, OpcUaBuildInType_OpcUaSByte, false);
 
 	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaSByte);
@@ -494,29 +491,6 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaByteString)
 	BOOST_REQUIRE(strncmp((char*)buf, "text", 4) == 0);
 }
 
-BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaDataValue)
-{
-	std::stringstream ss;
-	OpcUaVariant value1, value2;
-	OpcUaDataValue::SPtr dataValueSPtr1 = constructSPtr<OpcUaDataValue>();
-
-	dataValueSPtr1->statusCode(Success);
-	dataValueSPtr1->variant()->setValue(OpcUaString("Dies ist ein String"));
-	dataValueSPtr1->serverTimestamp(OpcUaDateTime("2018-10-22T10:11:13Z"));
-	dataValueSPtr1->sourceTimestamp(OpcUaDateTime("2018-10-22T10:11:13Z"));
-	value1.variant(dataValueSPtr1);
-
-	value1.opcUaBinaryEncode(ss);
-	value2.opcUaBinaryDecode(ss);
-
-	OpcUaString value;
-	BOOST_REQUIRE(value2.variantSPtr<OpcUaDataValue>()->statusCode() == Success);
-	BOOST_REQUIRE(value2.variantSPtr<OpcUaDataValue>()->variant()->getValue(value) == true);
-	BOOST_REQUIRE(value == OpcUaString("Dies ist ein String"));
-	BOOST_REQUIRE(value2.variantSPtr<OpcUaDataValue>()->serverTimestamp() == OpcUaDateTime("2018-10-22T10:11:13Z"));
-	BOOST_REQUIRE(value2.variantSPtr<OpcUaDataValue>()->sourceTimestamp() == OpcUaDateTime("2018-10-22T10:11:13Z"));
-}
-
 BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaExtensionObject)
 {
 	std::stringstream ss;
@@ -548,6 +522,22 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_array_0)
     BOOST_REQUIRE(variantVec2.size() == 0);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaVariant_array_0_ptree)
+{
+	boost::property_tree::ptree pt;
+	OpcUaVariant value1, value2;
+
+	OpcUaVariantValue::Vec variantVec1, variantVec2;
+
+	value1.variant(variantVec1);
+	value1.encode(pt);
+	value2.decode(pt, OpcUaBuildInType_OpcUaExtensionObject, true);
+	variantVec2 = value2.variant();
+
+	BOOST_REQUIRE(value2.arrayLength() == 0);
+    BOOST_REQUIRE(variantVec2.size() == 0);
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaVariant_array_1)
 {
 	std::stringstream ss;
@@ -573,7 +563,6 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_array_1_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaVariant value1, value2;
-	Xmlns xmlns;
 
 	OpcUaVariantValue::Vec variantVec1, variantVec2;
 
@@ -582,8 +571,8 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_array_1_ptree)
 	variantVec1.push_back(variantValue);
 
 	value1.variant(variantVec1);
-	value1.xmlEncode(pt, xmlns);
-	value2.xmlDecode(pt, xmlns);
+	value1.encode(pt);
+	value2.decode(pt, OpcUaBuildInType_OpcUaUInt32, true);
 	variantVec2 = value2.variant();
 
 	BOOST_REQUIRE(value2.arrayLength() == 1);
@@ -620,7 +609,6 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_array_2_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaVariant value1, value2;
-	Xmlns xmlns;
 
 	OpcUaVariantValue::Vec variantVec1, variantVec2;
 
@@ -631,8 +619,8 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_array_2_ptree)
 	variantVec1.push_back(variantValue);
 
 	value1.variant(variantVec1);
-	value1.xmlEncode(pt, xmlns);
-	value2.xmlDecode(pt, xmlns);
+	value1.encode(pt);
+	value2.decode(pt, OpcUaBuildInType_OpcUaUInt32, true);
 	variantVec2 = value2.variant();
 
 	BOOST_REQUIRE(value2.arrayLength() == 2);
@@ -1095,7 +1083,8 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_extensionObject)
 
 	StatusResult::SPtr statusResult;
 	statusResult = v1.parameter<StatusResult>(OpcUaId_StatusResult_Encoding_DefaultBinary);
-	statusResult->statusCode().enumeration((OpcUaStatusCode)3494);
+	statusResult->statusCode(3494);
+
 	value1.setValue(v1);
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);

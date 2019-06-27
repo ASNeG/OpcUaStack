@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,9 @@
 #ifndef __OpcUaStackCore_ObjectPool_h__
 #define __OpcUaStackCore_ObjectPool_h__
 
+#include "boost/shared_ptr.hpp"
 #include "OpcUaStackCore/Base/Object.h"
+#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
@@ -96,16 +98,6 @@ namespace OpcUaStackCore
 
 	template<typename OBJ, typename P1, typename P2>
 	  typename OBJ::SPtr constructSPtr(const P1& p1, const P2& p2) {
-		return typename OBJ::SPtr(new OBJ(p1, p2));
-	  }
-
-	template<typename OBJ, typename P1, typename P2>
-	  typename OBJ::SPtr constructSPtr(P1& p1, P2& p2) {
-		return typename OBJ::SPtr(new OBJ(p1, p2));
-	  }
-
-	template<typename OBJ, typename P1, typename P2>
-	  typename OBJ::SPtr constructSPtr(P1* p1, P2* p2) {
 		return typename OBJ::SPtr(new OBJ(p1, p2));
 	  }
 

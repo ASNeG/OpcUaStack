@@ -4,8 +4,6 @@
 #include "OpcUaStackCore/ServiceSet/PublishResponse.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
-#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
-#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
@@ -203,8 +201,8 @@ BOOST_AUTO_TEST_CASE(Publish_Response)
 
 	// build NotificationMessage (empty NotificationData)
 	notificationMessageSPtr = publishResponseSPtr->notificationMessage();
-	notificationMessageSPtr->sequenceNumber() = 1;
-	notificationMessageSPtr->publishTime() = ptime;
+	notificationMessageSPtr->sequenceNumber(1);
+	notificationMessageSPtr->publishTime(ptime);
 
 	// encode PublishResponse
 	responseHeader->opcUaBinaryEncode(ios1);

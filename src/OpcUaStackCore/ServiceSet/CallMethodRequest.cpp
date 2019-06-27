@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -76,14 +76,6 @@ namespace OpcUaStackCore
 		return inputArgumentArraySPtr_;
 	}
 
-	void
-	CallMethodRequest::copyTo(CallMethodRequest& callMethodRequest)
-	{
-		objectIdSPtr_->copyTo(*callMethodRequest.objectId().get());
-		methodIdSPtr_->copyTo(*callMethodRequest.methodId().get());
-		inputArgumentArraySPtr_->copyTo(*callMethodRequest.inputArguments().get());
-	}
-
 	void 
 	CallMethodRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
@@ -98,25 +90,5 @@ namespace OpcUaStackCore
 		objectIdSPtr_->opcUaBinaryDecode(is);
 		methodIdSPtr_->opcUaBinaryDecode(is);
 		inputArgumentArraySPtr_->opcUaBinaryDecode(is);
-	}
-
-	bool
-	CallMethodRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const
-	{
-		bool rc = true;
-		rc = rc & jsonObjectSPtrEncode(pt, objectIdSPtr_, "ObjectId");
-        rc = rc & jsonObjectSPtrEncode(pt, methodIdSPtr_, "MethodId");
-        rc = rc & jsonArraySPtrEncode(pt, inputArgumentArraySPtr_, "InputArguments", true);
-		return rc;
-	}
-
-	bool
-	CallMethodRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt)
-	{
-		bool rc = true;
-		rc = rc & jsonObjectSPtrDecode(pt, objectIdSPtr_, "ObjectId");
-		rc = rc & jsonObjectSPtrDecode(pt, methodIdSPtr_, "MethodId");
-		rc = rc & jsonArraySPtrDecode(pt, inputArgumentArraySPtr_, "InputArguments", true);
-		return rc;
 	}
 }

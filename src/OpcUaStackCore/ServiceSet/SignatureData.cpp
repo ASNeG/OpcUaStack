@@ -97,6 +97,7 @@ namespace OpcUaStackCore
 		algorithm(
 			SignatureAlgs::signatureAlgToUri(cryptoBase.asymmetricSignatureAlgorithmId())
 		);
+
 		return statusCode;
 	}
 

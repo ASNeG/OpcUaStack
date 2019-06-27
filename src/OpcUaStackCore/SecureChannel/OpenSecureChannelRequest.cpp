@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	: requestHeaderSPtr_(constructSPtr<RequestHeader>())
 	, clientProtocolVersion_(0)
 	, requestType_()
-	, securityMode_(MessageSecurityMode::EnumInvalid)
+	, securityMode_()
 	, clientNonce_()
 	, requestedLifetime_()
 	{
@@ -78,12 +78,12 @@ namespace OpcUaStackCore
 	}
 
 	void  
-	OpenSecureChannelRequest::securityMode(MessageSecurityMode::Enum securityMode)
+	OpenSecureChannelRequest::securityMode(const SecurityMode& securityMode)
 	{
 		securityMode_ = securityMode;
 	}
 
-	MessageSecurityMode::Enum
+	SecurityMode  
 	OpenSecureChannelRequest::securityMode(void) const
 	{
 		return securityMode_;
@@ -131,7 +131,7 @@ namespace OpcUaStackCore
 		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, clientProtocolVersion_);
 		OpcUaNumber::opcUaBinaryDecode(is, tmp); requestType_ = (RequestType)tmp;
-		OpcUaNumber::opcUaBinaryDecode(is, tmp); securityMode_ = (MessageSecurityMode::Enum)tmp;
+		OpcUaNumber::opcUaBinaryDecode(is, tmp); securityMode_ = (SecurityMode)tmp;
 		clientNonce_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, requestedLifetime_);
 	}

@@ -32,13 +32,12 @@ BOOST_AUTO_TEST_CASE(OpcUaQualifiedName_encode_decode_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaQualifiedName value1, value2;
-	Xmlns xmlns;
 
 	value1 = "ABC";			// name
 	value1 = 12;			// namespaceIndex
 
-	value1.xmlEncode(pt, xmlns);
-	value2.xmlDecode(pt, xmlns);
+	value1.encode(pt);
+	value2.decode(pt);
 
 	BOOST_REQUIRE(value2.name().value() == "ABC");
 	BOOST_REQUIRE(value2.namespaceIndex() == 12);

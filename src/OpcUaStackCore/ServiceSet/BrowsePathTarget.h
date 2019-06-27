@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,14 +19,16 @@
 #define __OpcUaStackCore_BrowsePathTarget_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/BuildInTypes/OpcUaExpandedNodeId.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT BrowsePathTarget
-	: public Object
-	, public JsonFormatter
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<BrowsePathTarget> SPtr;
@@ -39,26 +41,15 @@ namespace OpcUaStackCore
 		void remainingPathIndex(const OpcUaUInt32& remainingPathIndex);
 		OpcUaUInt32 remainingPathIndex(void);
 
-		void copyTo(BrowsePathTarget& browsePathTarget);
-		void out(std::ostream& os) const {};
-
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-
-      protected:
-		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
-		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		OpcUaExpandedNodeId::SPtr targetIdSPtr_;
 		OpcUaUInt32 remainingPathIndex_;
 	};
 
-	class DLLEXPORT BrowsePathTargetArray
+	class BrowsePathTargetArray
 	: public OpcUaArray<BrowsePathTarget::SPtr, SPtrTypeCoder<BrowsePathTarget> >
 	, public Object
 	{

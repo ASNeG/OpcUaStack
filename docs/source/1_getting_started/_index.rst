@@ -2,7 +2,6 @@ Getting Started
 ====================
 
 .. toctree::
-
-  overview
-  installation
-  hello_world
+   overview
+   installation
+   hello_world

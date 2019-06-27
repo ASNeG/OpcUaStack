@@ -18,7 +18,12 @@
 #ifndef __OpcUaStackCore_UnregisterNodesResponse_h__
 #define __OpcUaStackCore_UnregisterNodesResponse_h__
 
-#include "OpcUaStackCore/Base/Object.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ServiceSet/BrowseResult.h"
+#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
 namespace OpcUaStackCore
 {

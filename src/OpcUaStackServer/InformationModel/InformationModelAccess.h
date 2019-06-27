@@ -18,12 +18,13 @@
 #ifndef __OpcUaStackServer_InformationModelAccess_h__
 #define __OpcUaStackServer_InformationModelAccess_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT MergeIf
+	class MergeIf
 	{
 	  public:
 		MergeIf(void) {}
@@ -126,17 +127,6 @@ namespace OpcUaStackServer
 		bool getType(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& typeNodeId);
 		bool getSubType(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& subTypeBaseNodeClass);
 		bool getSubType(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& subTypeNodeId);
-
-		// --------------------------------------------------------------------
-		// encoding functions
-		// --------------------------------------------------------------------
-		bool getBinaryEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass);
-		bool getBinaryEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId);
-		bool getXMLEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass);
-		bool getXMLEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId);
-		bool getJSONEncodingNode(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& encodingNodeClass);
-		bool getJSONEncodingNode(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& encodingNodeId);
-
 
 		// --------------------------------------------------------------------
 		// data type functions

@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,8 +17,8 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
-#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
+#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/ServiceSet/HistoryData.h"
 #include "OpcUaClient/ClientCommand/CommandReadH.h"
 #include "OpcUaClient/ClientService/ClientServiceReadH.h"
 
@@ -102,9 +102,9 @@ namespace OpcUaClient
 		req->historyReadDetails()->parameterTypeId().set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		req->timestampsToReturn(commandReadH->timestampsToReturn());
 		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
-		readDetails->startTime() = commandReadH->startTime();
-		readDetails->endTime() = commandReadH->endTime();
-		readDetails->numValuesPerNode() = commandReadH->maxNumResultValuesPerNode();
+		readDetails->startTime(commandReadH->startTime());
+		readDetails->endTime(commandReadH->endTime());
+		readDetails->numValuesPerNode(commandReadH->maxNumResultValuesPerNode());
 
 		req->nodesToRead()->resize(commandReadH->nodeIdVec().size());
 		for (uint32_t idx=0; idx<commandReadH->nodeIdVec().size(); idx++) {
@@ -159,14 +159,14 @@ namespace OpcUaClient
 			}
 
 			HistoryData::SPtr historyData = readResult->historyData()->parameter<HistoryData>();
-			for (uint32_t idxv=0; idxv<historyData->dataValues().size(); idxv++) {
+			for (uint32_t idxv=0; idxv<historyData->dataValues()->size(); idxv++) {
 				OpcUaDataValue::SPtr dataValue;
-				historyData->dataValues().get(idxv, dataValue);
+				historyData->dataValues()->get(idxv, dataValue);
 				output(*dataValue, commandReadH);
 			}
 
 
-			if (readResult->continuationPoint().exist()  && historyData->dataValues().size() > 0) {
+			if (readResult->continuationPoint().exist()  && historyData->dataValues()->size() > 0) {
 				HistoryReadValueId::SPtr readValueId;
 				req->nodesToRead()->get(idx, readValueId);
 
@@ -210,9 +210,9 @@ namespace OpcUaClient
 		req->historyReadDetails()->parameterTypeId().set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		req->timestampsToReturn(commandReadH->timestampsToReturn());
 		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
-		readDetails->startTime() = commandReadH->startTime();
-		readDetails->endTime() = commandReadH->endTime();
-		readDetails->numValuesPerNode() = commandReadH->maxNumResultValuesPerNode();
+		readDetails->startTime(commandReadH->startTime());
+		readDetails->endTime(commandReadH->endTime());
+		readDetails->numValuesPerNode(commandReadH->maxNumResultValuesPerNode());
 
 		req->nodesToRead()->resize(readNextNodeVec.size());
 		for (uint32_t idx=0; idx<readNextNodeVec.size(); idx++) {
@@ -272,14 +272,14 @@ namespace OpcUaClient
 			}
 
 			HistoryData::SPtr historyData = readResult->historyData()->parameter<HistoryData>();
-			for (uint32_t idxv=0; idxv<historyData->dataValues().size(); idxv++) {
+			for (uint32_t idxv=0; idxv<historyData->dataValues()->size(); idxv++) {
 				OpcUaDataValue::SPtr dataValue;
-				historyData->dataValues().get(idxv, dataValue);
+				historyData->dataValues()->get(idxv, dataValue);
 				output(*dataValue, commandReadH);
 			}
 
 
-			if (readResult->continuationPoint().exist() && historyData->dataValues().size() > 0) {
+			if (readResult->continuationPoint().exist() && historyData->dataValues()->size() > 0) {
 				HistoryReadValueId::SPtr readValueId;
 				req->nodesToRead()->get(idx, readValueId);
 
@@ -318,9 +318,9 @@ namespace OpcUaClient
 		req->timestampsToReturn(commandReadH->timestampsToReturn());
 		req->releaseContinuationPoints(true);
 		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
-		readDetails->startTime() = commandReadH->startTime();
-		readDetails->endTime() = commandReadH->endTime();
-		readDetails->numValuesPerNode() = commandReadH->maxNumResultValuesPerNode();
+		readDetails->startTime(commandReadH->startTime());
+		readDetails->endTime(commandReadH->endTime());
+		readDetails->numValuesPerNode(commandReadH->maxNumResultValuesPerNode());
 
 		req->nodesToRead()->resize(readNextNodeVec.size());
 		for (uint32_t idx=0; idx<readNextNodeVec.size(); idx++) {

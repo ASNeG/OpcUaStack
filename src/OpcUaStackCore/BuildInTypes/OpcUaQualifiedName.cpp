@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,13 +12,12 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
+   Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
 #include <boost/lexical_cast.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
 #include "OpcUaStackCore/BuildInTypes/Json.h"
-#include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
 
 namespace OpcUaStackCore
 {
@@ -35,14 +34,6 @@ namespace OpcUaStackCore
 	, namespaceIndex_(0)
 	, name_()
 	{
-	}
-
-	OpcUaQualifiedName::OpcUaQualifiedName(const OpcUaQualifiedName& value)
-	: Object()
-	, namespaceIndex_(0)
-	, name_()
-	{
-		const_cast<OpcUaQualifiedName*>(&value)->copyTo(*this);
 	}
 
 	OpcUaQualifiedName::OpcUaQualifiedName(const std::string& name, OpcUaInt16 namespaceIndex)
@@ -66,13 +57,6 @@ namespace OpcUaStackCore
 	void 
 	OpcUaQualifiedName::get(std::string& name, OpcUaUInt16& namespaceIndex)
 	{
-		name = name_.toStdString();
-		namespaceIndex = namespaceIndex_;
-	}
-
-	void
-	OpcUaQualifiedName::get(OpcUaString& name, OpcUaUInt16& namespaceIndex)
-	{
 		name = name_;
 		namespaceIndex = namespaceIndex_;
 	}
@@ -90,7 +74,7 @@ namespace OpcUaStackCore
 	}
 		
 	OpcUaUInt16 
-	OpcUaQualifiedName::namespaceIndex(void) const
+	OpcUaQualifiedName::namespaceIndex(void)
 	{
 		return namespaceIndex_;
 	}
@@ -101,7 +85,7 @@ namespace OpcUaStackCore
 		name_ = name;
 	}
 		
-	OpcUaString&
+	OpcUaString& 
 	OpcUaQualifiedName::name(void)
 	{
 		return name_;
@@ -157,13 +141,6 @@ namespace OpcUaStackCore
 		namespaceIndex_ = namespaceIndex;
 		return *this;
 	}
-
-	OpcUaQualifiedName&
-	OpcUaQualifiedName::operator=(const OpcUaQualifiedName& value)
-	{
-		const_cast<OpcUaQualifiedName&>(value).get(name_, namespaceIndex_);
-		return *this;
-	}
 		
 	OpcUaQualifiedName::operator std::string const (void)
 	{
@@ -176,7 +153,7 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	OpcUaQualifiedName::copyTo(OpcUaQualifiedName& qualifiedName) const
+	OpcUaQualifiedName::copyTo(OpcUaQualifiedName& qualifiedName)
 	{
 		qualifiedName.namespaceIndex(namespaceIndex_);
 		name_.copyTo(qualifiedName.name());
@@ -185,7 +162,7 @@ namespace OpcUaStackCore
 	bool 
 	OpcUaQualifiedName::operator!=(const OpcUaQualifiedName& opcUaQualifiedName) const
 	{
-		return !operator==(opcUaQualifiedName);
+		return operator==(opcUaQualifiedName);
 	}
 
 	bool 
@@ -200,12 +177,6 @@ namespace OpcUaStackCore
 	OpcUaQualifiedName::out(std::ostream& os) const
 	{
 		os << "ns=" << namespaceIndex_ << ",name=" << name_; 
-	}
-
-	bool
-	OpcUaQualifiedName::isNull(void) const
-	{
-		return namespaceIndex_ == 0 && name_.isNull();
 	}
 
 	void 
@@ -223,6 +194,40 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	OpcUaQualifiedName::encode(boost::property_tree::ptree& pt) const
+	{
+		boost::property_tree::ptree namespaceIndex;
+		if (!Json::encode(namespaceIndex, namespaceIndex_)) return false;
+		pt.put_child("NamespaceIndex", namespaceIndex);
+
+		boost::property_tree::ptree name;
+		if (!name_.encode(name)) return false;
+		pt.put_child("Name", name);
+
+		return true;
+	}
+
+	bool
+	OpcUaQualifiedName::decode(boost::property_tree::ptree& pt)
+	{
+		boost::optional<boost::property_tree::ptree&> namespaceIndex;
+		namespaceIndex = pt.get_child_optional("NamespaceIndex");
+		if (!namespaceIndex) {
+			namespaceIndex_ = 0;
+		}
+		else {
+			if (!Json::decode(*namespaceIndex, namespaceIndex_)) return false;
+		}
+
+		boost::optional<boost::property_tree::ptree&> name;
+		name = pt.get_child_optional("Name");
+		if (!name) return false;
+		if (!name_.decode(*name)) return false;
+
+		return true;
+	}
+
+	bool
 	OpcUaQualifiedName::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;
@@ -231,7 +236,7 @@ namespace OpcUaStackCore
 				.parameter("Element", element);
 			return false;
 		}
-		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
 		return true;
 	}
 
@@ -240,9 +245,9 @@ namespace OpcUaStackCore
 	{
 		std::stringstream ss;
 		ss << namespaceIndex();
-		pt.put(xmlns.addPrefix("NamespaceIndex"), ss.str());
+		pt.put(xmlns.addxmlns("NamespaceIndex"), ss.str());
 
-		pt.put(xmlns.addPrefix("Name"), name().value());
+		pt.put(xmlns.addxmlns("Name"), name().value());
 
 		return true;
 	}
@@ -253,7 +258,7 @@ namespace OpcUaStackCore
 		//
 		// namespace index
 		//
-		boost::optional<std::string> namespaceIndexString = pt.get_optional<std::string>(xmlns.addPrefix("NamespaceIndex"));
+		boost::optional<std::string> namespaceIndexString = pt.get_optional<std::string>(xmlns.addxmlns("NamespaceIndex"));
 		if (!namespaceIndexString) {
 			namespaceIndex(0);
 		}
@@ -275,55 +280,12 @@ namespace OpcUaStackCore
 		//
 		// name
 		//
-		boost::optional<std::string> nameString = pt.get_optional<std::string>(xmlns.addPrefix("Name"));
+		boost::optional<std::string> nameString = pt.get_optional<std::string>(xmlns.addxmlns("Name"));
 		if (!nameString) {
 			name("");
 		}
 		else {
 			name(*nameString);
-		}
-
-		return true;
-	}
-
-
-
-
-	bool
-	OpcUaQualifiedName::jsonEncodeImpl(boost::property_tree::ptree& pt) const
-	{
-		// add name
-		if (!name_.jsonEncode(pt, "Name")) {
-			Log(Error, "OpcUaQualifiedName json encode error")
-		        .parameter("Element", "Name");
-			return false;
-		}
-
-		// ad uri
-		if (namespaceIndex_ != 0) {
-			if (!JsonNumber::jsonEncode(pt, namespaceIndex_, "Uri")) {
-				Log(Error, "OpcUaQualifiedName json encode error")
-			        .parameter("Element", "Uri");
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	bool
-	OpcUaQualifiedName::jsonDecodeImpl(const boost::property_tree::ptree& pt)
-	{
-		// get name
-		if (!name_.jsonDecode(pt, "Name")) {
-			Log(Error, "OpcUaQualifiedName json decode error")
-		        .parameter("Element", "Name");
-			return false;
-		}
-
-		// get uri
-		if (!JsonNumber::jsonDecode(pt, namespaceIndex_, "Uri")) {
-			namespaceIndex_ = 0;
 		}
 
 		return true;

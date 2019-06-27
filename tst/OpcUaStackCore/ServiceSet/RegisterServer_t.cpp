@@ -67,22 +67,23 @@ BOOST_AUTO_TEST_CASE(RegisterServer_Request)
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	// build RegisteredServer
+	OpcUaLocalizedTextArray::SPtr serverNames = constructSPtr<OpcUaLocalizedTextArray>();
+	serverNames->resize(1);
 	localizedTextSPtr = constructSPtr<OpcUaLocalizedText>();
 	localizedTextSPtr->set("en", "TestString");
 
 	stringSPtr = constructSPtr<OpcUaString>();
 	stringSPtr->value("TestString");
 
-	registerServerRequestSPtr->server().serverUri() = "Uri1";
-	registerServerRequestSPtr->server().productUri() = "Uri2";
-	registerServerRequestSPtr->server().serverNames().resize(1);
-	registerServerRequestSPtr->server().serverNames().push_back(localizedTextSPtr);
-	registerServerRequestSPtr->server().serverType().enumeration(ApplicationType::EnumServer);
-	registerServerRequestSPtr->server().gatewayServerUri() = "Uri3";
-	registerServerRequestSPtr->server().discoveryUrls().resize(1);
-	registerServerRequestSPtr->server().discoveryUrls().push_back(stringSPtr);
-	registerServerRequestSPtr->server().semaphoreFilePath() = "Path123";
-	registerServerRequestSPtr->server().isOnline() = true;
+	registerServerRequestSPtr->server().serverUri("Uri1");
+	registerServerRequestSPtr->server().productUri("Uri2");
+	registerServerRequestSPtr->server().serverNames(serverNames);
+	registerServerRequestSPtr->server().serverNames()->set(localizedTextSPtr);
+	registerServerRequestSPtr->server().serverType(AT_Server);
+	registerServerRequestSPtr->server().gatewayServerUri("Uri3");
+	registerServerRequestSPtr->server().discoveryUrls()->set(stringSPtr);
+	registerServerRequestSPtr->server().semaphoreFilePath("Path123");
+	registerServerRequestSPtr->server().isOnline(true);
 
 	// encode
 	registerServerRequestSPtr->opcUaBinaryEncode(ios1);
@@ -137,15 +138,15 @@ BOOST_AUTO_TEST_CASE(RegisterServer_Request)
 	BOOST_REQUIRE(registerServerRequestSPtr->server().serverUri().value() == "Uri1");
 	BOOST_REQUIRE(registerServerRequestSPtr->server().productUri().value() == "Uri2");
 
-	BOOST_REQUIRE(registerServerRequestSPtr->server().serverNames().size() == 1);
-	registerServerRequestSPtr->server().serverNames().get(localizedTextSPtr);
+	BOOST_REQUIRE(registerServerRequestSPtr->server().serverNames()->size() == 1);
+	registerServerRequestSPtr->server().serverNames()->get(localizedTextSPtr);
 	BOOST_REQUIRE(localizedTextSPtr->text().value() == "TestString");
 
-	BOOST_REQUIRE(registerServerRequestSPtr->server().serverType().enumeration() == ApplicationType::EnumServer);
+	BOOST_REQUIRE(registerServerRequestSPtr->server().serverType() == AT_Server);
 	BOOST_REQUIRE(registerServerRequestSPtr->server().gatewayServerUri().value() == "Uri3");
 
-	BOOST_REQUIRE(registerServerRequestSPtr->server().discoveryUrls().size() == 1);
-	registerServerRequestSPtr->server().discoveryUrls().get(stringSPtr);
+	BOOST_REQUIRE(registerServerRequestSPtr->server().discoveryUrls()->size() == 1);
+	registerServerRequestSPtr->server().discoveryUrls()->get(stringSPtr);
 	BOOST_REQUIRE(stringSPtr->value() == "TestString");
 
 	BOOST_REQUIRE(registerServerRequestSPtr->server().semaphoreFilePath().value() == "Path123");

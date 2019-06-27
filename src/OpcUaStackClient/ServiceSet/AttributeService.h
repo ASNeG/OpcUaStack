@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,10 @@
 #ifndef __OpcUaStackClient_AttributeService_h__
 #define __OpcUaStackClient_AttributeService_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
+#include "OpcUaStackClient/ServiceSet/AttributeServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -36,9 +38,11 @@ namespace OpcUaStackClient
 		~AttributeService(void);
 
 		void setConfiguration(
-			Component* componentSession
+			Component* componentSession,
+			AttributeServiceIf* attributeServiceIf
 		);
 		void componentSession(Component* componentSession);
+		void attributeServiceIf(AttributeServiceIf* attributeServiceIf);
 
 		void syncSend(ServiceTransactionRead::SPtr serviceTransactionRead);
 		void asyncSend(ServiceTransactionRead::SPtr serviceTransactionRead);
@@ -55,6 +59,8 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
+
+		AttributeServiceIf* attributeServiceIf_;
 	};
 
 }

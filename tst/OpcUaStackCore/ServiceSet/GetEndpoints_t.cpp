@@ -217,27 +217,27 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	// build EndpointDescription
 	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
 	
-	endpointDescriptionSPtr->endpointUrl().value("opt.tcp://localhost:481/0.0.0.0");
-	endpointDescriptionSPtr->server().applicationUri().value("urn:localhost:compyny:Unittest");
-	endpointDescriptionSPtr->server().productUri().value("urn:company:Unittest");
-	endpointDescriptionSPtr->server().applicationName().text("company Unittest");
-	endpointDescriptionSPtr->server().applicationType().enumeration(ApplicationType::EnumServer);
-	endpointDescriptionSPtr->server().discoveryUrls().resize(1);
+	endpointDescriptionSPtr->endpointUrl("opt.tcp://localhost:481/0.0.0.0");
+	endpointDescriptionSPtr->applicationDescription()->applicationUri("urn:localhost:compyny:Unittest");
+	endpointDescriptionSPtr->applicationDescription()->productUri("urn:company:Unittest");
+	endpointDescriptionSPtr->applicationDescription()->applicationName().text("company Unittest");
+	endpointDescriptionSPtr->applicationDescription()->applicationType(AT_Server);
+	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->resize(1);
 	opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
-	endpointDescriptionSPtr->server().discoveryUrls().set(0, opcUaStringSPtr);
-	endpointDescriptionSPtr->serverCertificate().value((OpcUaByte*)"0123456789", 10);
-	endpointDescriptionSPtr->securityMode().enumeration(MessageSecurityMode::EnumNone);
-	endpointDescriptionSPtr->securityPolicyUri().value("http://opcfoundation.org/UA/SecurityPolicy#None");
+	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->set(0, opcUaStringSPtr);
+	endpointDescriptionSPtr->serverCertificate((OpcUaByte*)"0123456789", 10);
+	endpointDescriptionSPtr->messageSecurityMode(SM_None);
+	endpointDescriptionSPtr->securityPolicyUri("http://opcfoundation.org/UA/SecurityPolicy#None");
 
-	endpointDescriptionSPtr->userIdentityTokens().resize(1);
+	endpointDescriptionSPtr->userIdentityTokens()->resize(1);
 	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
-	userTokenPolicySPtr->policyId().value("OpcUaStack");
-	userTokenPolicySPtr->tokenType().enumeration(UserTokenType::EnumAnonymous);
-	endpointDescriptionSPtr->userIdentityTokens().push_back(userTokenPolicySPtr);
+	userTokenPolicySPtr->policyId("OpcUaStack");
+	userTokenPolicySPtr->tokenType(UserIdentityTokenType_Anonymous);
+	endpointDescriptionSPtr->userIdentityTokens()->push_back(userTokenPolicySPtr);
 
-	endpointDescriptionSPtr->transportProfileUri().value("http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
-	endpointDescriptionSPtr->securityLevel() = 0;
+	endpointDescriptionSPtr->transportProfileUri("http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
+	endpointDescriptionSPtr->securityLevel(0);
 
 	getEndpointsResponseSPtr->endpoints()->set(endpointDescriptionSPtr);
 
@@ -319,27 +319,27 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
 	getEndpointsResponseSPtr->endpoints()->get(endpointDescriptionSPtr);
 
-	BOOST_REQUIRE(endpointDescriptionSPtr->endpointUrl().value() == "opt.tcp://localhost:481/0.0.0.0");
-	BOOST_REQUIRE(endpointDescriptionSPtr->server().applicationUri().value() == "urn:localhost:compyny:Unittest");
-	BOOST_REQUIRE(endpointDescriptionSPtr->server().productUri().value() == "urn:company:Unittest");
-	BOOST_REQUIRE(endpointDescriptionSPtr->server().applicationName().text().value() == "company Unittest");
-	BOOST_REQUIRE(endpointDescriptionSPtr->server().applicationType().enumeration() == ApplicationType::EnumServer);
-	BOOST_REQUIRE(endpointDescriptionSPtr->server().discoveryUrls().size() == 1);
-	endpointDescriptionSPtr->server().discoveryUrls().get(0, opcUaStringSPtr);
+	BOOST_REQUIRE(endpointDescriptionSPtr->endpointUrl() == "opt.tcp://localhost:481/0.0.0.0");
+	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->applicationUri() == "urn:localhost:compyny:Unittest");
+	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->productUri() == "urn:company:Unittest");
+	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->applicationName().text().value() == "company Unittest");
+	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->applicationType() == AT_Server);
+	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->size() == 1);
+	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->get(0, opcUaStringSPtr);
 	BOOST_REQUIRE(opcUaStringSPtr->value() == "opt.tcp://localhost:4841/0.0.0.0");
 
-	endpointDescriptionSPtr->serverCertificate().value(&opcUaByte, &opcUaByteLen);
+	endpointDescriptionSPtr->serverCertificate(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(opcUaByteLen == 10);
 	BOOST_REQUIRE(strncmp((char*)opcUaByte, "0123456789", 10) == 0);
-	BOOST_REQUIRE(endpointDescriptionSPtr->securityMode().enumeration() == MessageSecurityMode::EnumNone);
-	BOOST_REQUIRE(endpointDescriptionSPtr->securityPolicyUri().value() == "http://opcfoundation.org/UA/SecurityPolicy#None");
+	BOOST_REQUIRE(endpointDescriptionSPtr->messageSecurityMode() == SM_None);
+	BOOST_REQUIRE(endpointDescriptionSPtr->securityPolicyUri() == "http://opcfoundation.org/UA/SecurityPolicy#None");
 
-	BOOST_REQUIRE(endpointDescriptionSPtr->userIdentityTokens().size() == 1);
-	endpointDescriptionSPtr->userIdentityTokens().get(0, userTokenPolicySPtr);
-	BOOST_REQUIRE(userTokenPolicySPtr->policyId().value() == "OpcUaStack");
-	BOOST_REQUIRE(userTokenPolicySPtr->tokenType().enumeration() == UserTokenType::EnumAnonymous);
+	BOOST_REQUIRE(endpointDescriptionSPtr->userIdentityTokens()->size() == 1);
+	endpointDescriptionSPtr->userIdentityTokens()->get(0, userTokenPolicySPtr);
+	BOOST_REQUIRE(userTokenPolicySPtr->policyId() == "OpcUaStack");
+	BOOST_REQUIRE(userTokenPolicySPtr->tokenType() == UserIdentityTokenType_Anonymous);
 	
-	BOOST_REQUIRE(endpointDescriptionSPtr->transportProfileUri().value() == "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
+	BOOST_REQUIRE(endpointDescriptionSPtr->transportProfileUri() == "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
 	BOOST_REQUIRE(endpointDescriptionSPtr->securityLevel() == 0);
 }
 

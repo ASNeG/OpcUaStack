@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
+   Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
@@ -35,22 +35,10 @@ namespace OpcUaStackCore
 	{
 	}
 
-	OpcUaDateTime::OpcUaDateTime(const OpcUaDateTime& value)
-	: dateTime_(0)
-	{
-		dateTime_ = value.dateTime_;
-	}
-
 	OpcUaDateTime::OpcUaDateTime(const boost::posix_time::ptime& ptime)
 	: dateTime_(0)
 	{
 		dateTime(ptime);
-	}
-
-	OpcUaDateTime::OpcUaDateTime(const std::string& dateTimeString)
-	: dateTime_(0)
-	{
-		fromISO8601(dateTimeString);
 	}
 
 	OpcUaDateTime::~OpcUaDateTime(void)
@@ -67,12 +55,6 @@ namespace OpcUaStackCore
 		else {
 			dateTime_ = td.total_microseconds() * 10;
 		}
-	}
-
-	OpcUaUInt64
-	OpcUaDateTime::rawDateTime(void) const
-	{
-		return dateTime_;
 	}
 
 	boost::posix_time::ptime
@@ -100,15 +82,9 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaDateTime::operator!=(const OpcUaDateTime& dateTime) const
-	{
-		return !this->operator==(dateTime);
-	}
-
-	bool
 	OpcUaDateTime::operator==(const OpcUaDateTime& dateTime) const
 	{
-		return this->rawDateTime() == dateTime.rawDateTime();
+		return this->dateTime() == dateTime.dateTime();
 	}
 		
 	OpcUaDateTime::operator OpcUaUInt64 const (void)
@@ -139,92 +115,8 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	bool
-	OpcUaDateTime::fromISO8601(const std::string& dateTimeString)
-	{
-		// All DateTime values shall be encoded as UTC times or with the time zone explicitly specified.
-		// 2002-10-10T00:00:00+05:00
-		// 2002-10-10T00:00:00+0500
-		// 2002-10-10T00:00:00+05
-		// 2002-10-09T19:00:00Z
-
-		// ISO 8601
-		// <time>Z
-		// <time>±hh:mm
-		// <time>±hhmm
-		// <time>±hh
-		std::string dateString = dateTimeString;
-		std::string zoneString = "";
-		uint32_t offset = 0;
-		bool negOffset = false;
-		std::size_t found = dateTimeString.find_last_of("Z+-");
-		if (found < 10) found = std::string::npos;
-		if (found != std::string::npos) {
-			dateString = dateTimeString.substr(0, found);
-			zoneString = dateTimeString.substr(found, dateTimeString.size()-found);
-
-			switch (zoneString.size())
-			{
-			    case 1:
-			    	break;
-			    case 3:
-			    	offset = ((uint32_t)(zoneString[1]-'0')*10 + (uint32_t)(zoneString[2]-'0')) * 3600;
-			    	break;
-			    case 5:
-			    	offset = ((uint32_t)(zoneString[1]-'0')*10 + (uint32_t)(zoneString[2]-'0')) * 3600 +
-					         ((uint32_t)(zoneString[3]-'0')*10 + (uint32_t)(zoneString[4]-'0')) * 60;
-			    	break;
-			    case 6:
-			    	offset = ((uint32_t)(zoneString[1]-'0')*10 + (uint32_t)(zoneString[2]-'0')) * 3600 +
-					         ((uint32_t)(zoneString[4]-'0')*10 + (uint32_t)(zoneString[5]-'0')) * 60;
-			    	break;
-				default:
-					return false;
-			}
-
-			if (zoneString[0] == '+') {
-				offset *= -1;
-			}
-
-		}
-
-		try {
-			boost::posix_time::ptime ptime;
-			std::stringstream ss;
-			ss << dateString;
-			boost::posix_time::time_input_facet* facet = new boost::posix_time::time_input_facet("%Y-%m-%dT%H:%M:%S");
-			ss.imbue(std::locale(ss.getloc(), facet));
-			ss >> ptime;
-			ptime += boost::posix_time::seconds(offset);
-			dateTime(ptime);
-		} catch(...)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
 	std::string
-	OpcUaDateTime::toISO8601(void) const
-	{
-		try {
-			boost::posix_time::ptime ptime = dateTime();
-			std::stringstream ss;
-			boost::posix_time::time_facet* facet = new boost::posix_time::time_facet("%Y-%m-%dT%H:%M:%S");
-			ss.imbue(std::locale(ss.getloc(), facet));
-			ss << ptime;
-			return ss.str() + "Z";
-		} catch(...)
-		{
-			return "ERROR";
-		}
-
-		return "ERROR";
-	}
-
-	std::string
-	OpcUaDateTime::toISOString(void) const
+	OpcUaDateTime::toISOString(void)
 	{
 		std::string str;
 		try 
@@ -249,12 +141,6 @@ namespace OpcUaStackCore
 		os << str;
 	}
 
-	bool
-	OpcUaDateTime::isNull(void) const
-	{
-		return !exist();
-	}
-
 	void 
 	OpcUaDateTime::opcUaBinaryEncode(std::ostream& os) const
 	{
@@ -274,6 +160,36 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	OpcUaDateTime::encode(boost::property_tree::ptree& pt) const
+	{
+		std::string dateTimeString;
+		try
+		{
+			dateTimeString = boost::posix_time::to_iso_extended_string(dateTime());
+		} catch(std::exception&) {
+			return false;
+		}
+		pt.put_value<std::string>(dateTimeString);
+		return true;
+	}
+
+	bool
+	OpcUaDateTime::decode(boost::property_tree::ptree& pt)
+	{
+		std::stringstream ss;
+		std::string dateTimeString = pt.get_value<std::string>();
+
+		boost::posix_time::time_input_facet* facet = new boost::posix_time::time_input_facet();
+		facet->set_iso_extended_format();
+		ss.imbue(std::locale(ss.getloc(), facet));
+		ss.str(dateTimeString);
+		boost::posix_time::ptime timeFromString;
+		ss >> timeFromString;
+		dateTime(timeFromString);
+		return true;
+	}
+
+	bool
 	OpcUaDateTime::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;
@@ -282,29 +198,15 @@ namespace OpcUaStackCore
 				.parameter("Element", element);
 			return false;
 		}
-		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
 		return true;
 	}
 
 	bool
 	OpcUaDateTime::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		pt.put_value(toISO8601());
+		pt.put_value(toISOString());
 		return true;
-	}
-
-	bool
-	OpcUaDateTime::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
-	{
-		boost::optional<boost::property_tree::ptree&> tmpTree;
-
-		tmpTree = pt.get_child_optional(xmlns.addPrefix(element));
-		if (!tmpTree) {
-			Log(Error, "OpcDateTime xml decoder error")
-				.parameter("Element", element);
-				return false;
-		}
-		return xmlDecode(*tmpTree, xmlns);
 	}
 
 	bool
@@ -316,7 +218,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		if (!fromISO8601(sourceValue)) {
+		if (!fromISOString(sourceValue)) {
 			Log(Error, "OpcUaDateTime xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
@@ -325,26 +227,4 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-    bool
-    OpcUaDateTime::jsonEncodeImpl(boost::property_tree::ptree &pt) const {
-        pt.put_value(toISO8601());
-        return true;
-    }
-
-    bool
-    OpcUaDateTime::jsonDecodeImpl(const boost::property_tree::ptree &pt) {
-        std::string sourceValue = pt.get_value<std::string>();
-        if (sourceValue.empty()) {
-            Log(Error, "OpcUaDateTime json decoder error - value not exist in json document");
-            return false;
-        }
-
-        if (!fromISO8601(sourceValue)) {
-            Log(Error, "OpcUaDateTime json decoder error - value format error")
-                    .parameter("Value", sourceValue);
-            return false;
-        }
-
-        return true;
-    }
 }

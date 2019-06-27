@@ -27,13 +27,13 @@ BOOST_AUTO_TEST_CASE(SessionSecurityDiagnosticsDataType_encode_decode)
 	OpcUaString transportProtocol("string4");
 	OpcUaString securityPolicyUri("string5");
 
-	value1.sessionId() = sessionId;
-	value1.clientUserIdOfSession() = clientUserIdOfSession;
-	value1.authenticationMechanism()  = authenticationMechanism;
-	value1.encoding() = encoding;
-	value1.transportProtocol() = transportProtocol;
-	value1.securityMode().enumeration(MessageSecurityMode::EnumSignAndEncrypt);
-	value1.securityPolicyUri() = securityPolicyUri;
+	value1.sessionId(sessionId);
+	value1.clientUserIdOfSession(clientUserIdOfSession);
+	value1.authenticationMechanism(authenticationMechanism);
+	value1.encoding(encoding);
+	value1.transportProtocol(transportProtocol);
+	value1.securityMode(1);
+	value1.securityPolicyUri(securityPolicyUri);
 	value1.clientCertificate().value("abc", 3);
 
 	std::stringstream ss;
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(SessionSecurityDiagnosticsDataType_encode_decode)
 	BOOST_REQUIRE(value2.authenticationMechanism() == authenticationMechanism);
 	BOOST_REQUIRE(value2.encoding() == encoding);
 	BOOST_REQUIRE(value2.transportProtocol() == transportProtocol);
-	BOOST_REQUIRE(value2.securityMode().enumeration() == MessageSecurityMode::EnumSignAndEncrypt);
+	BOOST_REQUIRE(value2.securityMode() == 1);
 	BOOST_REQUIRE(value2.securityPolicyUri() == securityPolicyUri);
 	BOOST_REQUIRE(value2.clientCertificate().exist() == true);
 }
@@ -69,13 +69,13 @@ BOOST_AUTO_TEST_CASE(SessionSecurityDiagnosticsDataType_ExtensionObject)
 	OpcUaNodeId typeId;
 	typeId.set(OpcUaId_SessionSecurityDiagnosticsDataType_Encoding_DefaultBinary);
 	value1.typeId(typeId);
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->sessionId() = sessionId;
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->clientUserIdOfSession()  = clientUserIdOfSession;
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->authenticationMechanism() = authenticationMechanism;
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->encoding()  = encoding;
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->transportProtocol() = transportProtocol;
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->securityMode().enumeration(MessageSecurityMode::EnumSignAndEncrypt);
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->securityPolicyUri() = securityPolicyUri;
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->sessionId(sessionId);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->clientUserIdOfSession(clientUserIdOfSession);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->authenticationMechanism(authenticationMechanism);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->encoding(encoding);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->transportProtocol(transportProtocol);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->securityMode(1);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->securityPolicyUri(securityPolicyUri);
 	value1.parameter<SessionSecurityDiagnosticsDataType>()->clientCertificate().value("abc", 3);
 
 	std::stringstream ss;
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(SessionSecurityDiagnosticsDataType_ExtensionObject)
 	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->authenticationMechanism() == authenticationMechanism);
 	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->encoding() == encoding);
 	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->transportProtocol() == transportProtocol);
-	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->securityMode().enumeration() == MessageSecurityMode::EnumSignAndEncrypt);
+	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->securityMode() == 1);
 	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->securityPolicyUri() == securityPolicyUri);
 	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->clientCertificate().exist() == true);
 }
@@ -111,13 +111,13 @@ BOOST_AUTO_TEST_CASE(SessionSecurityDiagnosticsDataType_ExtensionObject_copyTo)
 	OpcUaNodeId typeId;
 	typeId.set(OpcUaId_SessionSecurityDiagnosticsDataType_Encoding_DefaultBinary);
 	value1.typeId(typeId);
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->sessionId() = sessionId;
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->clientUserIdOfSession() = clientUserIdOfSession;
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->authenticationMechanism() = authenticationMechanism;
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->encoding() = encoding;
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->transportProtocol() = transportProtocol;
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->securityMode().enumeration(MessageSecurityMode::EnumSignAndEncrypt);
-	value1.parameter<SessionSecurityDiagnosticsDataType>()->securityPolicyUri() = securityPolicyUri;
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->sessionId(sessionId);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->clientUserIdOfSession(clientUserIdOfSession);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->authenticationMechanism(authenticationMechanism);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->encoding(encoding);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->transportProtocol(transportProtocol);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->securityMode(1);
+	value1.parameter<SessionSecurityDiagnosticsDataType>()->securityPolicyUri(securityPolicyUri);
 	value1.parameter<SessionSecurityDiagnosticsDataType>()->clientCertificate().value("abc", 3);
 
 	value1.copyTo(value2);
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(SessionSecurityDiagnosticsDataType_ExtensionObject_copyTo)
 	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->authenticationMechanism() == authenticationMechanism);
 	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->encoding() == encoding);
 	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->transportProtocol() == transportProtocol);
-	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->securityMode().enumeration() == MessageSecurityMode::EnumSignAndEncrypt);
+	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->securityMode() == 1);
 	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->securityPolicyUri() == securityPolicyUri);
 	BOOST_REQUIRE(value2.parameter<SessionSecurityDiagnosticsDataType>()->clientCertificate().exist() == true);
 }

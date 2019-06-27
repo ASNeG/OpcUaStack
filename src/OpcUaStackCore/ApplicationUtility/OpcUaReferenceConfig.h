@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,7 +24,7 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT OpcUaCallReferenceConfig
+	class OpcUaCallReferenceConfig
 	: public Object
 	{
 	  public:
@@ -46,7 +46,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class DLLEXPORT OpcUaMonReferenceConfig
+	class OpcUaMonReferenceConfig
 	: public Object
 	{
 	  public:
@@ -68,7 +68,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class DLLEXPORT OpcUaReferenceConfig
+	class OpcUaReferenceConfig
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaReferenceConfig> SPtr;

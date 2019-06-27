@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,16 +19,19 @@
 #define __OpcUaStackCore_MonitoredItemCreateRequest_h__
 
 #include <stdint.h>
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/ReadValueId.h"
 #include "OpcUaStackCore/ServiceSet/MonitoringParameters.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/ServiceSet/MonitoringMode.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT MonitoredItemCreateRequest
-	: public Object
-	, public JsonFormatter
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoredItemCreateRequest> SPtr;
@@ -43,19 +46,8 @@ namespace OpcUaStackCore
 		void requestedParameters(const MonitoringParameters& requestedParameters);
 		MonitoringParameters& requestedParameters(void);
 
-		void copyTo(MonitoredItemCreateRequest& monitoredItemCreateRequest) {}
-		void out(std::ostream& os) const {};
-
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-
-	  protected:
-	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
-	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		ReadValueId itemToMonitor_;
@@ -63,7 +55,7 @@ namespace OpcUaStackCore
 		MonitoringParameters requestedParameters_;
 	};
 
-	class DLLEXPORT MonitoredItemCreateRequestArray
+	class MonitoredItemCreateRequestArray
 	: public OpcUaArray<MonitoredItemCreateRequest::SPtr, SPtrTypeCoder<MonitoredItemCreateRequest> >
 	, public Object
 	{

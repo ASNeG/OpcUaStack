@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,8 +19,9 @@
 #define __OpcUaStackServer_CreateNodeInstance_h__
 
 #include <vector>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
+#include "OpcUaStackCore/ServiceSet/NodeClass.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
 using namespace OpcUaStackCore;
@@ -36,7 +37,7 @@ namespace OpcUaStackServer
 		CreateNodeInstance(void);
 		CreateNodeInstance(
 			const std::string& name,
-			const NodeClass::Enum nodeClassType,
+			const NodeClassType nodeClassType,
 			const OpcUaNodeId& parentNodeId,
 			const OpcUaNodeId& nodeId,
 			const OpcUaLocalizedText& displayName,
@@ -47,7 +48,7 @@ namespace OpcUaStackServer
 		virtual ~CreateNodeInstance(void);
 
 		void name(const std::string& name);
-		void nodeClassType(NodeClass::Enum nodeClassType);
+		void nodeClassType(NodeClassType nodeClassType);
 		void parentNodeId(const OpcUaNodeId& parentNodeId);
 		void nodeId(const OpcUaNodeId& nodeId);
 		void displayName(const OpcUaLocalizedText& displayName);
@@ -60,7 +61,7 @@ namespace OpcUaStackServer
 
 	  private:
 		std::string name_;
-		NodeClass::Enum nodeClass_;
+		NodeClassType nodeClassType_;
 		OpcUaNodeId parentNodeId_;
 		OpcUaNodeId nodeId_;
 		OpcUaLocalizedText displayName_;

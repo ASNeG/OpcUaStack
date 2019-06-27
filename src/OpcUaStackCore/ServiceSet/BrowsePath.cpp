@@ -64,13 +64,6 @@ namespace OpcUaStackCore
 		return relativePath_;
 	}
 
-	void
-	BrowsePath::copyTo(BrowsePath& browsePath)
-	{
-		startingNodeSPtr_->copyTo(*browsePath.startingNode().get());
-		relativePath_.copyTo(browsePath.relativePath());
-	}
-
 	void 
 	BrowsePath::opcUaBinaryEncode(std::ostream& os) const
 	{

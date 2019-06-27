@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,7 @@ namespace OpcUaStackServer
 {
 
 	VariableNodeClass::VariableNodeClass(void)
-	: BaseNodeClass(NodeClass::EnumVariable)
+	: BaseNodeClass(NodeClassType_Variable)
 	, value_()
 	, dataType_()
 	, valueRank_()
@@ -30,82 +30,6 @@ namespace OpcUaStackServer
 	, arrayDimensions_()
 	, minimumSamplingInterval_()
 	{
-	}
-
-	VariableNodeClass::VariableNodeClass(
-		OpcUaNodeId& nodeId,
-		VariableNodeClass& variableNodeClass
-	)
-	: BaseNodeClass(NodeClass::EnumVariable, nodeId, &variableNodeClass)
-	, value_()
-	, dataType_()
-	, valueRank_()
-	, accessLevel_()
-	, historizing_()
-	, arrayDimensions_()
-	, minimumSamplingInterval_()
-	{
-		OpcUaDataValue dataValue;
-		if (variableNodeClass.getValue(dataValue)) setValue(dataValue);
-
-		OpcUaNodeId dataType;
-		if (variableNodeClass.getDataType(dataType)) setDataType(dataType);
-
-		int32_t valueRank;
-		if (variableNodeClass.getValueRank(valueRank)) setValueRank(valueRank);
-
-		OpcUaByte accessLevel;
-		if (variableNodeClass.getAccessLevel(accessLevel)) setAccessLevel(accessLevel);
-
-		OpcUaByte userAccessLevel;
-		if (variableNodeClass.getUserAccessLevel(userAccessLevel)) setUserAccessLevel(userAccessLevel);
-
-		OpcUaBoolean historizing;
-		if (variableNodeClass.getHistorizing(historizing)) setHistorizing(historizing);
-
-		OpcUaUInt32Array arrayDimensions;
-		if (variableNodeClass.getArrayDimensions(arrayDimensions)) setArrayDimensions(arrayDimensions);
-
-		OpcUaDouble minimumSamplingInterval;
-		if (variableNodeClass.getMinimumSamplingInterval(minimumSamplingInterval)) setMinimumSamplingInterval(minimumSamplingInterval);
-	}
-
-	VariableNodeClass::VariableNodeClass(
-		OpcUaNodeId& nodeId,
-		VariableTypeNodeClass& variableTypeNodeClass
-	)
-	: BaseNodeClass(NodeClass::EnumVariable, nodeId, &variableTypeNodeClass)
-	, value_()
-	, dataType_()
-	, valueRank_()
-	, accessLevel_()
-	, historizing_()
-	, arrayDimensions_()
-	, minimumSamplingInterval_()
-	{
-		OpcUaDataValue dataValue;
-		if (variableTypeNodeClass.getValue(dataValue)) setValue(dataValue);
-
-		OpcUaNodeId dataType;
-		if (variableTypeNodeClass.getDataType(dataType)) setDataType(dataType);
-
-		int32_t valueRank;
-		if (variableTypeNodeClass.getValueRank(valueRank)) setValueRank(valueRank);
-
-		OpcUaByte accessLevel = 3;
-		setAccessLevel(accessLevel);
-
-		OpcUaByte userAccessLevel = 3;
-		setUserAccessLevel(userAccessLevel);
-
-		OpcUaBoolean historizing = false;
-		setHistorizing(historizing);
-
-		OpcUaUInt32Array arrayDimensions;
-		if (variableTypeNodeClass.getArrayDimensions(arrayDimensions)) setArrayDimensions(arrayDimensions);
-
-		OpcUaDouble minimumSamplingInterval = 0;
-		setMinimumSamplingInterval(minimumSamplingInterval);
 	}
 
 	VariableNodeClass::~VariableNodeClass(void)

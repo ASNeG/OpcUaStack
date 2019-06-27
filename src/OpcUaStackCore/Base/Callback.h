@@ -18,9 +18,9 @@
 #ifndef __OpcUaStackCore_Callback_h__
 #define __OpcUaStackCore_Callback_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
-#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
@@ -370,7 +370,6 @@ namespace OpcUaStackCore
 	class DLLEXPORT Callback
 	{
       public:
-		typedef boost::shared_ptr<Callback> SPtr;
 
 		Callback();
 		template<typename R, typename F>

@@ -72,7 +72,6 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 
 	closeSessionRequestSPtr->deleteSubscriptions(true);
 
-	closeSessionRequestSPtr->requestHeader()->opcUaBinaryEncode(ios1);
 	closeSessionRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -119,7 +118,6 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 
 	// decode CloseSessionRequest
 	closeSessionRequestSPtr = constructSPtr<CloseSessionRequest>();
-	closeSessionRequestSPtr->requestHeader()->opcUaBinaryDecode(ios);
 	closeSessionRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;

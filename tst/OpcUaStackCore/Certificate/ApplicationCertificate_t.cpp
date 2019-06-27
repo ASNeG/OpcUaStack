@@ -23,38 +23,37 @@ BOOST_AUTO_TEST_CASE(ApplicationCertificate_init)
 
 	for (uint32_t idx=0; idx<2; idx++) {
 
-		// create certificate manager
-		CertificateManager::SPtr certificateManager = constructSPtr<CertificateManager>();
-		certificateManager->certificateTrustListLocation("./pki/trusted/certs/");
-		certificateManager->certificateRejectListLocation("./pki/reject/certs/.");
-		certificateManager->certificateRevocationListLocation("./pki/trusted/crl/");
-		certificateManager->issuersCertificatesLocation("./pki/issuers/certs/");
-		certificateManager->issuersRevocationListLocation("./pki/issuers/crl/");
-		certificateManager->ownCertificateFile("./pki/own/certs/ASNeG-Test.der");
-		certificateManager->ownPrivateKeyFile("./pki/own/private/ASNeG-Test.pem");
-		BOOST_REQUIRE(certificateManager->init() == true);
+		ApplicationCertificate applicationCertificate;
+		applicationCertificate.enable(true);
 
-		CertificateSettings& certificateSettings = certificateManager->certificateSettings();
-		certificateSettings.enable(true);
-		certificateSettings.serverUri("urn:asneg.de:ASNeG:ASNeG-Test");
-		certificateSettings.commonName("ASNeG-Test");
-		certificateSettings.domainComponent("127.0.0.1");
-		certificateSettings.organization("ASNeG");
-		certificateSettings.organizationUnit("OPC UA Service Department");
-		certificateSettings.locality("Neukirchen");
-		certificateSettings.state("Hessen");
-		certificateSettings.country("DE");
-		certificateSettings.yearsValidFor(5);
-		certificateSettings.keyLength(2048);
-		certificateSettings.certificateType("RsaSha256");
-		certificateSettings.ipAddress().push_back("127.0.0.1");
-		certificateSettings.dnsName().push_back("ASNeG.de");
-		certificateSettings.email("info@ASNeG.de");
+		applicationCertificate.certificateTrustListLocation("./pki/trusted/certs/");
+		applicationCertificate.certificateRejectListLocation("./pki/reject/certs/.");
+		applicationCertificate.certificateRevocationListLocation("./pki/trusted/crl/");
+		applicationCertificate.issuersCertificatesLocation("./pki/issuers/certs/");
+		applicationCertificate.issuersRevocationListLocation("./pki/issuers/crl/");
+
+		applicationCertificate.serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
+		applicationCertificate.privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
+
+		applicationCertificate.generateCertificate(true);
+		applicationCertificate.uri("urn:asneg.de:ASNeG:ASNeG-Demo");
+		applicationCertificate.commonName("ASNeG-Demo");
+		applicationCertificate.domainComponent("127.0.0.1");
+		applicationCertificate.organization("ASNeG");
+		applicationCertificate.organizationUnit("OPC UA Service Department");
+		applicationCertificate.locality("Neukirchen");
+		applicationCertificate.state("Hessen");
+		applicationCertificate.country("DE");
+		applicationCertificate.yearsValidFor(5);
+		applicationCertificate.keyLength(2048);
+		applicationCertificate.certificateType("RsaSha256");
+		applicationCertificate.ipAddress().push_back("127.0.0.1");
+		applicationCertificate.dnsName().push_back("ASNeG.de");
+		applicationCertificate.email("info@ASNeG.de");
 
 		// init and cleanup
-		ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
-		BOOST_REQUIRE(applicationCertificate->init(certificateManager) == true);
-		BOOST_REQUIRE(applicationCertificate->cleanup() == true);
+		BOOST_REQUIRE(applicationCertificate.init() == true);
+		BOOST_REQUIRE(applicationCertificate.cleanup() == true);
 
 	}
 }

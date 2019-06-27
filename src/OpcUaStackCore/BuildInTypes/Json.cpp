@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,10 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/algorithm/string/replace.hpp>
-#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/Json.h"
+#include <boost/property_tree/json_parser.hpp>
 
 namespace OpcUaStackCore
 {
@@ -32,40 +30,23 @@ namespace OpcUaStackCore
 		document.add_child("Document", pt);
 		boost::property_tree::json_parser::write_json(ss, document);
 		string = ss.str();
-
-		// replace dummy string
-		boost::replace_all(string, "\"__EmptyArray__\"", "[]");
-
 		return true;
 	}
 
 	bool
-	Json::toString(boost::property_tree::ptree& pt, std::string& string, bool logEnable)
+	Json::toString(boost::property_tree::ptree& pt, std::string& string)
 	{
 		std::stringstream ss;
 
-		try {
-		    boost::property_tree::json_parser::write_json(ss, pt);
-		}
-		catch (const boost::property_tree::json_parser_error& e)
-		{
-			if (logEnable) {
-				auto errorMessage = std::string(e.what());
-				Log(Error, "json encode error")
-			    	.parameter("ErrorMessage", errorMessage);
-			}
-			return false;
-		}
+		//boost::property_tree::ptree document;
+		//document.add_child("Document", pt);
+		boost::property_tree::json_parser::write_json(ss, pt);
 		string = ss.str();
-
-		// replace dummy string
-		boost::replace_all(string, "\"__EmptyArray__\"", "[]");
-
 		return true;
 	}
 
 	bool
-	Json::fromString(const std::string& string, boost::property_tree::ptree& pt, bool logEnable)
+	Json::fromString(const std::string& string, boost::property_tree::ptree& pt)
 	{
 		std::stringstream ss;
 		ss.str(string);
@@ -73,13 +54,8 @@ namespace OpcUaStackCore
 		try {
 			boost::property_tree::json_parser::read_json(ss, pt);
 		}
-		catch (const boost::property_tree::json_parser_error& e)
+		catch (...)
 		{
-			if (logEnable) {
-				auto errorMessage = std::string(e.what());
-				Log(Error, "json swcode error")
-			    	.parameter("ErrorMessage", errorMessage);
-			}
 			return false;
 		}
 

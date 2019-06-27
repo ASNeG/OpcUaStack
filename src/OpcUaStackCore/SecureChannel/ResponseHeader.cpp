@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -38,7 +38,7 @@ namespace OpcUaStackCore
 	}
 
 	void  
-	ResponseHeader::time(const OpcUaUtcTime& time)
+	ResponseHeader::time(const UtcTime& time)
 	{
 		time_ = time;
 	}
@@ -49,7 +49,7 @@ namespace OpcUaStackCore
 		time_.dateTime(time);
 	}
 
-	OpcUaUtcTime
+	UtcTime 
 	ResponseHeader::time(void) const
 	{
 		return time_;
@@ -57,12 +57,12 @@ namespace OpcUaStackCore
 
 
 	void 
-	ResponseHeader::requestHandle(const OpcUaIntegerId& requestHandle)
+	ResponseHeader::requestHandle(const IntegerId& requestHandle)
 	{
 		requestHandle_ = requestHandle;
 	}
 		
-	OpcUaIntegerId
+	IntegerId 
 	ResponseHeader::requestHandle(void) const
 	{
 		return requestHandle_;

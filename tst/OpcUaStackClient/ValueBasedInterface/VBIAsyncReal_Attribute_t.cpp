@@ -1,26 +1,10 @@
 #include "unittest.h"
-#include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
+#include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
 using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(VBIAsyncReal_Attribute_)
-
-struct GValueFixture {
-	GValueFixture(void)
-    : cond_()
-	, sessionState_(SessionServiceStateId::None)
-	, statusCode_(Success)
-	, dataValue_()
-    {}
-    ~GValueFixture(void)
-    {}
-
-    Condition cond_;
-    SessionServiceStateId sessionState_;
-    OpcUaStatusCode statusCode_;
-    OpcUaDataValue::Vec dataValue_;
-};
 
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_)
 {
@@ -28,232 +12,165 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_)
 }
 
 #ifdef REAL_SERVER
-BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_read, GValueFixture)
+BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_read)
 {
+	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
+
 
 	//
 	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+	applicationCertificate->enable(true);
+
+	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
+	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
+	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
+	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
+	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
+
+	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
+	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
+
+	applicationCertificate->generateCertificate(true);
+	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
+	applicationCertificate->commonName("ASNeG-Demo");
+	applicationCertificate->domainComponent("127.0.0.1");
+	applicationCertificate->organization("ASNeG");
+	applicationCertificate->organizationUnit("OPC UA Service Department");
+	applicationCertificate->locality("Neukirchen");
+	applicationCertificate->state("Hessen");
+	applicationCertificate->country("DE");
+	applicationCertificate->yearsValidFor(5);
+	applicationCertificate->keyLength(2048);
+	applicationCertificate->certificateType("RsaSha256");
+	applicationCertificate->ipAddress().push_back("127.0.0.1");
+	applicationCertificate->dnsName().push_back("ASNeG.de");
+	applicationCertificate->email("info@ASNeG.de");
+
+	BOOST_REQUIRE(applicationCertificate->init() == true);
+	CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
+
 
 	// set session change callback
-	client.setSessionChangeHandler(
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState == SessionServiceStateId::Established ||
-				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
-			}
-		}
+	client.setSessionChangeCallback(
+		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
 	);
 
 	// connect session
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
+	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	cond_.initEvent();
+	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// read
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaInt32)2259);
-	cond_.initEvent();
+	vbiClientHandlerTest.readComplete_.initEvent();
 	client.asyncRead(
 		nodeId,
-		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue) {
-			statusCode_ = statusCode;
-			cond_.sendEvent();
-		}
+		boost::bind(&VBIClientHandlerTest::readComplete, &vbiClientHandlerTest, _1, _2, _3)
 	);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(vbiClientHandlerTest.readComplete_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
+	vbiClientHandlerTest.dataValue_.out(std::cout);
 
 	// disconnect session
-	cond_.initEvent();
+	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
 
-BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_write, GValueFixture)
+BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_write)
 {
+	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 
 	//
-	// get crypto manager
+	// init certificate and crypto manager
 	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+	applicationCertificate->enable(true);
+
+	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
+	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
+	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
+	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
+	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
+
+	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
+	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
+
+	applicationCertificate->generateCertificate(true);
+	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
+	applicationCertificate->commonName("ASNeG-Demo");
+	applicationCertificate->domainComponent("127.0.0.1");
+	applicationCertificate->organization("ASNeG");
+	applicationCertificate->organizationUnit("OPC UA Service Department");
+	applicationCertificate->locality("Neukirchen");
+	applicationCertificate->state("Hessen");
+	applicationCertificate->country("DE");
+	applicationCertificate->yearsValidFor(5);
+	applicationCertificate->keyLength(2048);
+	applicationCertificate->certificateType("RsaSha256");
+	applicationCertificate->ipAddress().push_back("127.0.0.1");
+	applicationCertificate->dnsName().push_back("ASNeG.de");
+	applicationCertificate->email("info@ASNeG.de");
+
+	BOOST_REQUIRE(applicationCertificate->init() == true);
+	CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
+
 
 	// set session change callback
-	client.setSessionChangeHandler(
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState == SessionServiceStateId::Established ||
-				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
-			}
-		}
+	client.setSessionChangeCallback(
+		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
 	);
 
 	// connect session
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
+	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	cond_.initEvent();
+	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 
 	// write
 	OpcUaNodeId nodeId;
 	OpcUaDataValue dataValue;
 	dataValue.variant()->set((OpcUaBoolean)1);
 	nodeId.set(220, 2);
-	cond_.initEvent();
+	vbiClientHandlerTest.writeComplete_.initEvent();
 	client.asyncWrite(
 		nodeId,
 		dataValue,
-		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId) {
-			statusCode_ = statusCode;
-			cond_.sendEvent();
-		}
+		boost::bind(&VBIClientHandlerTest::writeComplete, &vbiClientHandlerTest, _1, _2)
 	);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(vbiClientHandlerTest.writeComplete_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
 
 	// disconnect session
-	cond_.initEvent();
+	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
 }
-
-BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_historyRead_10, GValueFixture)
-{
-	VBIClient client;
-
-	//
-	// init certificate and crypto manager
-	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
-
-	// set session change callback
-	client.setSessionChangeHandler(
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState == SessionServiceStateId::Established ||
-				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
-			}
-		}
-	);
-
-	// connect session
-	ConnectContext connectContext;
-	connectContext.endpointUrl_ = REAL_SERVER_URI;
-	connectContext.sessionName_ = REAL_SESSION_NAME;
-	connectContext.cryptoManager_ = cryptoManager;
-	connectContext.secureChannelLog_ = true;
-	cond_.initEvent();
-	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
-
-	client.defaultHistoryReadContext().maxNumResultValuesPerNode_ = 10;
-	client.defaultHistoryReadContext().maxNumResultValuesPerRequest_ = 5;
-
-	// history read
-	cond_.initEvent();
-	client.asyncHistoryRead(
-		OpcUaNodeId("DoubleValue", 12),
-		boost::posix_time::microsec_clock::local_time(),
-		boost::posix_time::microsec_clock::local_time(),
-		[this](OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValue) {
-			statusCode_ = statusCode;
-			dataValue_ = dataValue;
-			cond_.sendEvent();
-		}
-	);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(statusCode_ == Success);
-	BOOST_REQUIRE(dataValue_.size() == 10);
-
-	// disconnect session
-	cond_.initEvent();
-	client.asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
-}
-
-BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_Attribute_historyRead_8, GValueFixture)
-{
-	VBIClient client;
-
-	//
-	// init certificate and crypto manager
-	//
-	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
-
-	// set session change callback
-	client.setSessionChangeHandler(
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState == SessionServiceStateId::Established ||
-				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
-			}
-		}
-	);
-
-	// connect session
-	ConnectContext connectContext;
-	connectContext.endpointUrl_ = REAL_SERVER_URI;
-	connectContext.sessionName_ = REAL_SESSION_NAME;
-	connectContext.cryptoManager_ = cryptoManager;
-	connectContext.secureChannelLog_ = true;
-	cond_.initEvent();
-	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
-
-	client.defaultHistoryReadContext().maxNumResultValuesPerNode_ = 8;
-	client.defaultHistoryReadContext().maxNumResultValuesPerRequest_ = 5;
-
-	// history read
-	cond_.initEvent();
-	client.asyncHistoryRead(
-		OpcUaNodeId("DoubleValue", 12),
-		boost::posix_time::microsec_clock::local_time(),
-		boost::posix_time::microsec_clock::local_time(),
-		[this](OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValue) {
-			statusCode_ = statusCode;
-			dataValue_ = dataValue;
-			cond_.sendEvent();
-		}
-	);
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(statusCode_ == Success);
-	BOOST_REQUIRE(dataValue_.size() == 8);
-
-	// disconnect session
-	cond_.initEvent();
-	client.asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
-}
-
 #endif
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -68,8 +68,9 @@ namespace OpcUaStackCore
 	void
 	OpenSSLError::addError(const std::list<std::string>& errorList)
 	{
-		for (auto message : errorList) {
-			errorList_.push_back(message);
+		std::list<std::string>::const_iterator it;
+		for (it = errorList.begin(); it != errorList.end(); it++) {
+			errorList_.push_back(*it);
 		}
 	}
 
@@ -84,9 +85,12 @@ namespace OpcUaStackCore
 	void
 	OpenSSLError::log(LogLevel logLevel, const std::string& message)
 	{
+		std::list<std::string>::iterator it;
+
 		Log log(logLevel, message);
-		for (auto message : errorList_) {
-			log.parameter("SSLError", message);
+		for (it = errorList_.begin(); it != errorList_.end(); ++it) {
+			std::cout << *it << std::endl;
+			log.parameter("SSLError", *it);
 		}
 		errorList_.clear();
 	}

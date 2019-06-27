@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -328,37 +328,10 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// private functions
+	// header functions
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	std::string
-	EventTypeGenerator::getTypeNameFromNodeId(OpcUaNodeId& typeNodeId)
-	{
-		// build in type possible
-		if (typeNodeId.namespaceIndex() == 0 && typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
-			uint32_t type;
-			uint16_t namespaceIndex;
-			typeNodeId.get(type, namespaceIndex);
-			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
-			if (buildInType != "Unknown") return buildInType;
-		}
-
-		// get property node class
-		BaseNodeClass::SPtr nodeClass = informationModel_->find(typeNodeId);
-		if (!nodeClass) {
-			return "Unknown";
-		}
-
-		// get property class name
-		OpcUaQualifiedName browseName;
-		if (!nodeClass->getBrowseName(browseName)) {
-			return "Unknown";
-		}
-
-		return browseName.name().toStdString();
-	}
-
 	bool
 	EventTypeGenerator::createVariableElementVec(
 		const std::string& prefix,
@@ -403,9 +376,9 @@ namespace OpcUaStackServer
 			}
 
 			// use only variable class
-			NodeClass::Enum nodeClassType;
+			NodeClassType nodeClassType;
 			childNodeClass->getNodeClass(nodeClassType);
-			if (nodeClassType != NodeClass::EnumVariable) {
+			if (nodeClassType != NodeClassType_Variable) {
 				continue;
 			}
 
@@ -464,7 +437,7 @@ namespace OpcUaStackServer
 			variableElement->localVariableName(localVariableName);
 			variableElement->functionName(functionName);
 			variableElement->dataTypeName(dataTypeName);
-			//variableElement->log();
+			variableElement->log();
 			variableElementVec_.push_back(variableElement);
 
 			if (!createVariableElementVec(fullName, *it)) {
@@ -475,13 +448,6 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// header functions
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
 	bool
 	EventTypeGenerator::generateHeader(void)
 	{
@@ -916,6 +882,33 @@ namespace OpcUaStackServer
 
 		sourceContent_ += ss.str();
 		return true;
+	}
+
+	std::string
+	EventTypeGenerator::getTypeNameFromNodeId(OpcUaNodeId& typeNodeId)
+	{
+		// build in type possible
+		if (typeNodeId.namespaceIndex() == 0 && typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+			uint32_t type;
+			uint16_t namespaceIndex;
+			typeNodeId.get(type, namespaceIndex);
+			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
+			if (buildInType != "Unknown") return buildInType;
+		}
+
+		// get property node class
+		BaseNodeClass::SPtr nodeClass = informationModel_->find(typeNodeId);
+		if (!nodeClass) {
+			return "Unknown";
+		}
+
+		// get property class name
+		OpcUaQualifiedName browseName;
+		if (!nodeClass->getBrowseName(browseName)) {
+			return "Unknown";
+		}
+
+		return browseName.name().toStdString();
 	}
 
 }

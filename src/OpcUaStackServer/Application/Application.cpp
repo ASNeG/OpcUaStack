@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -119,7 +119,7 @@ namespace OpcUaStackServer
 
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->promise().set_value(true);
+			serviceTransaction->conditionBool().conditionTrue();
 			return;
 		}
 
@@ -148,9 +148,9 @@ namespace OpcUaStackServer
 		updateServiceTransactionRequest(serviceTransaction);
 		serviceTransaction->sync(true);
 
-		auto future = serviceTransaction->promise().get_future();
+		serviceTransaction->conditionBool().conditionInit();
 		serviceComponent_->send(serviceTransaction);
-		future.wait();
+		serviceTransaction->conditionBool().waitForCondition();
 	}
 
 	void
@@ -182,8 +182,6 @@ namespace OpcUaStackServer
 			case OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary:
 			case OpcUaId_CreateNodeInstanceRequest_Encoding_DefaultBinary:
 			case OpcUaId_DelNodeInstanceRequest_Encoding_DefaultBinary:
-			case OpcUaId_CreateVariableRequest_Encoding_DefaultBinary:
-			case OpcUaId_CreateObjectRequest_Encoding_DefaultBinary:
 			{
 				serviceTransaction->componentSession(this);
 				break;
@@ -191,7 +189,7 @@ namespace OpcUaStackServer
 			default:
 			{
 				// nothing to do
-				Log(Warning, "application interface receive invalid messsage type")
+				Log(Warning, "receive invalid messsage type")
 				    .parameter("MessageType", serviceTransaction->nodeTypeRequest().nodeId<uint32_t>());
 			}
 		}

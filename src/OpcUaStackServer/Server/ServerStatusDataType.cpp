@@ -142,7 +142,7 @@ namespace OpcUaStackServer
 	{
 		startTime() = boost::posix_time::microsec_clock::local_time();
 		currentTime() = boost::posix_time::microsec_clock::local_time();
-		state().enumeration(ServerState::EnumRunning);
+		serverState() = 0;
 		secondsTillShutdown() = 0;
 		shutdownReason().set("", "");
 

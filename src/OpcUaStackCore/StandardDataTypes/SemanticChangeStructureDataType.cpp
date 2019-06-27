@@ -1,269 +1,144 @@
 /*
-    DataTypeClass: SemanticChangeStructureDataType
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
-    Generated Source Code - please do not change this source code
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
 
-    DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
-*/
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Samuel Huebl (samuel.huebl@asneg.de)
+ */
 
 #include "OpcUaStackCore/StandardDataTypes/SemanticChangeStructureDataType.h"
 
 namespace OpcUaStackCore
 {
-    
-    SemanticChangeStructureDataType::SemanticChangeStructureDataType(void)
-    : Object()
-    , ExtensionObjectBase()
-    , affected_()
-    , affectedType_()
-    {
-    }
-    
-    SemanticChangeStructureDataType::SemanticChangeStructureDataType(const SemanticChangeStructureDataType& value)
-    : Object()
-    , ExtensionObjectBase()
-    , affected_()
-    , affectedType_()
-    {
-        const_cast<SemanticChangeStructureDataType*>(&value)->copyTo(*this);
-    }
-    
-    SemanticChangeStructureDataType::~SemanticChangeStructureDataType(void)
-    {
-    }
-    
-    OpcUaNodeId&
-    SemanticChangeStructureDataType::affected(void)
-    {
-        return affected_;
-    }
-    
-    OpcUaNodeId&
-    SemanticChangeStructureDataType::affectedType(void)
-    {
-        return affectedType_;
-    }
-    
-    bool
-    SemanticChangeStructureDataType::operator==(const SemanticChangeStructureDataType& value)
-    {
-        SemanticChangeStructureDataType* dst = const_cast<SemanticChangeStructureDataType*>(&value);
-        if (affected_ != dst->affected()) return false;
-        if (affectedType_ != dst->affectedType()) return false;
-        return true;
-    }
-    
-    bool
-    SemanticChangeStructureDataType::operator!=(const SemanticChangeStructureDataType& value)
-    {
-        return !this->operator==(value);
-    }
-    
-    void
-    SemanticChangeStructureDataType::copyTo(SemanticChangeStructureDataType& value)
-    {
-        affected_.copyTo(value.affected());
-        affectedType_.copyTo(value.affectedType());
-    }
-    
-    SemanticChangeStructureDataType&
-    SemanticChangeStructureDataType::operator=(const SemanticChangeStructureDataType& value)
-    {
-        const_cast<SemanticChangeStructureDataType*>(&value)->copyTo(*this);
-        return *this;
-    }
-    
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    //
-    // ExtensionObjectBase
-    //
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    
-    ExtensionObjectBase::SPtr
-    SemanticChangeStructureDataType::factory(void)
-    {
-    	return constructSPtr<SemanticChangeStructureDataType>();
-    }
-    
-    std::string
-    SemanticChangeStructureDataType::namespaceName(void)
-    {
-    	return "http://opcfoundation.org/UA/";
-    }
-    
-    std::string
-    SemanticChangeStructureDataType::typeName(void)
-    {
-    	return "SemanticChangeStructureDataType";
-    }
-    
-    OpcUaNodeId
-    SemanticChangeStructureDataType::typeId(void)
-    {
-    	return OpcUaNodeId((OpcUaUInt32)897,0);
-    }
-    
-    OpcUaNodeId
-    SemanticChangeStructureDataType::binaryTypeId(void)
-    {
-    	return OpcUaNodeId((OpcUaUInt32)899, 0);
-    }
-    
-    OpcUaNodeId
-    SemanticChangeStructureDataType::xmlTypeId(void)
-    {
-    	return OpcUaNodeId((OpcUaUInt32)898, 0);
-    }
-    
-    OpcUaNodeId
-    SemanticChangeStructureDataType::jsonTypeId(void)
-    {
-    	return OpcUaNodeId((OpcUaUInt32)15374, 0);
-    }
-    
-    void
-    SemanticChangeStructureDataType::opcUaBinaryEncode(std::ostream& os) const
-    {
-        affected_.opcUaBinaryEncode(os);
-        affectedType_.opcUaBinaryEncode(os);
-    }
-    
-    void
-    SemanticChangeStructureDataType::opcUaBinaryDecode(std::istream& is)
-    {
-        affected_.opcUaBinaryDecode(is);
-        affectedType_.opcUaBinaryDecode(is);
-    }
-    
-    bool
-    SemanticChangeStructureDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) {
-            Log(Error, "SemanticChangeStructureDataType encode xml error")
-                .parameter("Element", element);
-            return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    SemanticChangeStructureDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-        boost::property_tree::ptree elementTree;
-    
-        elementTree.clear();
-        if (!affected_.xmlEncode(elementTree, xmlns)) {
-            Log(Error, "SemanticChangeStructureDataType encode xml error");
-            return false;
-        }
-        pt.push_back(std::make_pair("Affected", elementTree));
-    
-        elementTree.clear();
-        if (!affectedType_.xmlEncode(elementTree, xmlns)) {
-            Log(Error, "SemanticChangeStructureDataType encode xml error");
-            return false;
-        }
-        pt.push_back(std::make_pair("AffectedType", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    SemanticChangeStructureDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
-    {
-        std::string elementName = xmlns.addPrefix(element);
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SemanticChangeStructureDataType decode xml error - element not found")
-                .parameter("Element", elementName);
-            return false; 
-        }
-        return xmlDecode(*tree, xmlns);
-    }
-    
-    bool
-    SemanticChangeStructureDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = xmlns.addPrefix("Affected");
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SemanticChangeStructureDataType decode xml error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!affected_.xmlDecode(*tree, xmlns)) {
-            Log(Error, "SemanticChangeStructureDataType decode xml error - decode failed")
-                .parameter("Element", "Affected");
-            return false;
-        }
-    
-        elementName = xmlns.addPrefix("AffectedType");
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "SemanticChangeStructureDataType decode xml error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if (!affectedType_.xmlDecode(*tree, xmlns)) {
-            Log(Error, "SemanticChangeStructureDataType decode xml error - decode failed")
-                .parameter("Element", "AffectedType");
-            return false;
-        }
-    
-        return true;
-    }
-    
-    bool
-    SemanticChangeStructureDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
-    {
-        bool rc = true;
-    
-        rc = rc & jsonObjectEncode(pt, affected_, "Affected", true);
-        rc = rc & jsonObjectEncode(pt, affectedType_, "AffectedType", true);
-    
-        return rc;
-    }
-    
-    bool
-    SemanticChangeStructureDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
-    {
-        bool rc = true;
-    
-        rc = rc & jsonObjectDecode(pt, affected_, "Affected", true);
-        rc = rc & jsonObjectDecode(pt, affectedType_, "AffectedType", true);
-    
-        return rc;
-    }
-    
-    void
-    SemanticChangeStructureDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
-    {
-    	SemanticChangeStructureDataType* dst = dynamic_cast<SemanticChangeStructureDataType*>(&extensionObjectBase);
-    	copyTo(*dst);
-    }
-    
-    bool
-    SemanticChangeStructureDataType::equal(ExtensionObjectBase& extensionObjectBase) const
-    {
-    	SemanticChangeStructureDataType* dst = dynamic_cast<SemanticChangeStructureDataType*>(&extensionObjectBase);
-    	return *const_cast<SemanticChangeStructureDataType*>(this) == *dst;
-    }
-    
-    void
-    SemanticChangeStructureDataType::out(std::ostream& os)
-    {
-        os << "Affected="; affected_.out(os);
-        os << ", AffectedType="; affectedType_.out(os);
-    }
+
+	SemanticChangeStructureDataType::SemanticChangeStructureDataType(void)
+	: Object()
+	, affected_()
+	, affectedType_()
+	{
+	}
+
+	SemanticChangeStructureDataType::~SemanticChangeStructureDataType(void)
+	{
+	}
+
+	OpcUaNodeId&
+	SemanticChangeStructureDataType::affected(void)
+	{
+		return affected_;
+	}
+
+	void
+	SemanticChangeStructureDataType::affected(OpcUaNodeId affected)
+	{
+		affected_ = affected;
+	}
+
+	OpcUaNodeId&
+	SemanticChangeStructureDataType::affectedType(void)
+	{
+		return affectedType_;
+	}
+
+	void
+	SemanticChangeStructureDataType::affectedType(OpcUaNodeId affectedType)
+	{
+		affectedType_ = affectedType;
+	}
+
+	void
+	SemanticChangeStructureDataType::copyTo(SemanticChangeStructureDataType& semanticChangeStructureDataType)
+	{
+		affected_.copyTo(semanticChangeStructureDataType.affected());
+		affectedType_.copyTo(semanticChangeStructureDataType.affectedType());
+	}
+
+	bool
+	SemanticChangeStructureDataType::operator==(const SemanticChangeStructureDataType& semanticChangeStructureDataType) const
+	{
+		SemanticChangeStructureDataType* dst = const_cast<SemanticChangeStructureDataType*>(&semanticChangeStructureDataType);
+		return
+			affected_ == dst->affected() &&
+			affectedType_ == dst->affectedType();
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ExtensionObjectBase
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ExtensionObjectBase::SPtr
+	SemanticChangeStructureDataType::factory(void)
+	{
+		return constructSPtr<SemanticChangeStructureDataType>();
+	}
+
+	void
+	SemanticChangeStructureDataType::opcUaBinaryEncode(std::ostream& os) const
+	{
+		affected_.opcUaBinaryEncode(os);
+		affectedType_.opcUaBinaryEncode(os);
+	}
+
+	void
+	SemanticChangeStructureDataType::opcUaBinaryDecode(std::istream& is)
+	{
+		affected_.opcUaBinaryDecode(is);
+		affectedType_.opcUaBinaryDecode(is);
+	}
+
+	bool
+	SemanticChangeStructureDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	SemanticChangeStructureDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	SemanticChangeStructureDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	void
+	SemanticChangeStructureDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		SemanticChangeStructureDataType* dst = dynamic_cast<SemanticChangeStructureDataType*>(&extensionObjectBase);
+		copyTo(*dst);
+	}
+
+	bool
+	SemanticChangeStructureDataType::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		SemanticChangeStructureDataType* dst = dynamic_cast<SemanticChangeStructureDataType*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	SemanticChangeStructureDataType::out(std::ostream& os)
+	{
+		os << "Affected=" << affected_;
+		os << ", AffectedType=" << affectedType_;
+	}
 
 }
+

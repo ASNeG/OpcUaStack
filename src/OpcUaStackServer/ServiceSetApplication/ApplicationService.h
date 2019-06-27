@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,6 +18,8 @@
 #ifndef __OpcUaStackServer_ApplicationService_h__
 #define __OpcUaStackServer_ApplicationService_h__
 
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
@@ -51,8 +53,6 @@ namespace OpcUaStackServer
 		void receiveDelNodeInstanceRequest(ServiceTransaction::SPtr serviceTransaction);
 		void receiveFireEventRequest(ServiceTransaction::SPtr serviceTransaction);
 		void receiveBrowsePathToNodeIdRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveCreateVariableRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveCreateObjectRequest(ServiceTransaction::SPtr serviceTransaction);
 		void getNodeIdFromBrowsePath(BrowseName::SPtr& browseName, NodeIdResult::SPtr& nodeIdResult);
 	};
 

@@ -1,271 +1,144 @@
 /*
-    DataTypeClass: ServiceCounterDataType
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
-    Generated Source Code - please do not change this source code
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
 
-    DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-    Autor: Kai Huebl (kai@huebl-sgh.de)
-*/
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Samuel Huebl (samuel.huebl@asneg.de)
+ */
 
 #include "OpcUaStackCore/StandardDataTypes/ServiceCounterDataType.h"
 
 namespace OpcUaStackCore
 {
-    
-    ServiceCounterDataType::ServiceCounterDataType(void)
-    : Object()
-    , ExtensionObjectBase()
-    , totalCount_()
-    , errorCount_()
-    {
-    }
-    
-    ServiceCounterDataType::ServiceCounterDataType(const ServiceCounterDataType& value)
-    : Object()
-    , ExtensionObjectBase()
-    , totalCount_()
-    , errorCount_()
-    {
-        const_cast<ServiceCounterDataType*>(&value)->copyTo(*this);
-    }
-    
-    ServiceCounterDataType::~ServiceCounterDataType(void)
-    {
-    }
-    
-    OpcUaUInt32&
-    ServiceCounterDataType::totalCount(void)
-    {
-        return totalCount_;
-    }
-    
-    OpcUaUInt32&
-    ServiceCounterDataType::errorCount(void)
-    {
-        return errorCount_;
-    }
-    
-    bool
-    ServiceCounterDataType::operator==(const ServiceCounterDataType& value)
-    {
-        ServiceCounterDataType* dst = const_cast<ServiceCounterDataType*>(&value);
-        if (totalCount_ != dst->totalCount()) return false;
-        if (errorCount_ != dst->errorCount()) return false;
-        return true;
-    }
-    
-    bool
-    ServiceCounterDataType::operator!=(const ServiceCounterDataType& value)
-    {
-        return !this->operator==(value);
-    }
-    
-    void
-    ServiceCounterDataType::copyTo(ServiceCounterDataType& value)
-    {
-        value.totalCount_ = totalCount_;
-        value.errorCount_ = errorCount_;
-    }
-    
-    ServiceCounterDataType&
-    ServiceCounterDataType::operator=(const ServiceCounterDataType& value)
-    {
-        const_cast<ServiceCounterDataType*>(&value)->copyTo(*this);
-        return *this;
-    }
-    
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    //
-    // ExtensionObjectBase
-    //
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    
-    ExtensionObjectBase::SPtr
-    ServiceCounterDataType::factory(void)
-    {
-    	return constructSPtr<ServiceCounterDataType>();
-    }
-    
-    std::string
-    ServiceCounterDataType::namespaceName(void)
-    {
-    	return "http://opcfoundation.org/UA/";
-    }
-    
-    std::string
-    ServiceCounterDataType::typeName(void)
-    {
-    	return "ServiceCounterDataType";
-    }
-    
-    OpcUaNodeId
-    ServiceCounterDataType::typeId(void)
-    {
-    	return OpcUaNodeId((OpcUaUInt32)871,0);
-    }
-    
-    OpcUaNodeId
-    ServiceCounterDataType::binaryTypeId(void)
-    {
-    	return OpcUaNodeId((OpcUaUInt32)873, 0);
-    }
-    
-    OpcUaNodeId
-    ServiceCounterDataType::xmlTypeId(void)
-    {
-    	return OpcUaNodeId((OpcUaUInt32)872, 0);
-    }
-    
-    OpcUaNodeId
-    ServiceCounterDataType::jsonTypeId(void)
-    {
-    	return OpcUaNodeId((OpcUaUInt32)15370, 0);
-    }
-    
-    void
-    ServiceCounterDataType::opcUaBinaryEncode(std::ostream& os) const
-    {
-        OpcUaNumber::opcUaBinaryEncode(os,totalCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,errorCount_);
-    }
-    
-    void
-    ServiceCounterDataType::opcUaBinaryDecode(std::istream& is)
-    {
-        OpcUaNumber::opcUaBinaryDecode(is,totalCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,errorCount_);
-    }
-    
-    bool
-    ServiceCounterDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
-    {
-        boost::property_tree::ptree elementTree;
-        if (!xmlEncode(elementTree, xmlns)) {
-            Log(Error, "ServiceCounterDataType encode xml error")
-                .parameter("Element", element);
-            return false;
-        }
-        pt.push_back(std::make_pair(element, elementTree));
-        return true;
-    }
-    
-    bool
-    ServiceCounterDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-        boost::property_tree::ptree elementTree;
-    
-        elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, totalCount_))
-        {
-            Log(Error, "ServiceCounterDataType encode xml error");
-            return false;
-        }
-        pt.push_back(std::make_pair("TotalCount", elementTree));
-    
-        elementTree.clear();
-        if(!XmlNumber::xmlEncode(elementTree, errorCount_))
-        {
-            Log(Error, "ServiceCounterDataType encode xml error");
-            return false;
-        }
-        pt.push_back(std::make_pair("ErrorCount", elementTree));
-    
-        return true;
-    }
-    
-    bool
-    ServiceCounterDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
-    {
-        std::string elementName = xmlns.addPrefix(element);
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServiceCounterDataType decode xml error - element not found")
-                .parameter("Element", elementName);
-            return false; 
-        }
-        return xmlDecode(*tree, xmlns);
-    }
-    
-    bool
-    ServiceCounterDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-    {
-        std::string elementName;
-        boost::optional<boost::property_tree::ptree&> tree;
-    
-        elementName = xmlns.addPrefix("TotalCount");
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServiceCounterDataType decode xml error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!XmlNumber::xmlDecode(*tree, totalCount_)) {
-            Log(Error, "ServiceCounterDataType decode xml error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        elementName = xmlns.addPrefix("ErrorCount");
-        tree = pt.get_child_optional(elementName);
-        if (!tree) {
-            Log(Error, "ServiceCounterDataType decode xml error - element not found")
-                .parameter("Element", elementName);
-            return false;
-        }
-        if(!XmlNumber::xmlDecode(*tree, errorCount_)) {
-            Log(Error, "ServiceCounterDataType decode xml error - decode failed")
-                .parameter("Element", elementName);
-            return false;
-        }
-    
-        return true;
-    }
-    
-    bool
-    ServiceCounterDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
-    {
-        bool rc = true;
-    
-        rc = rc & jsonNumberEncode(pt, totalCount_, "TotalCount");
-        rc = rc & jsonNumberEncode(pt, errorCount_, "ErrorCount");
-    
-        return rc;
-    }
-    
-    bool
-    ServiceCounterDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
-    {
-        bool rc = true;
-    
-        rc = rc & jsonNumberDecode(pt, totalCount_, "TotalCount");
-        rc = rc & jsonNumberDecode(pt, errorCount_, "ErrorCount");
-    
-        return rc;
-    }
-    
-    void
-    ServiceCounterDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
-    {
-    	ServiceCounterDataType* dst = dynamic_cast<ServiceCounterDataType*>(&extensionObjectBase);
-    	copyTo(*dst);
-    }
-    
-    bool
-    ServiceCounterDataType::equal(ExtensionObjectBase& extensionObjectBase) const
-    {
-    	ServiceCounterDataType* dst = dynamic_cast<ServiceCounterDataType*>(&extensionObjectBase);
-    	return *const_cast<ServiceCounterDataType*>(this) == *dst;
-    }
-    
-    void
-    ServiceCounterDataType::out(std::ostream& os)
-    {
-        os << "TotalCount=" << totalCount_;
-        os << ", ErrorCount=" << errorCount_;
-    }
+
+	ServiceCounterDataType::ServiceCounterDataType(void)
+	: Object()
+	, totalCount_()
+	, errorCount_()
+	{
+	}
+
+	ServiceCounterDataType::~ServiceCounterDataType(void)
+	{
+	}
+
+	OpcUaUInt32&
+	ServiceCounterDataType::totalCount(void)
+	{
+		return totalCount_;
+	}
+
+	void
+	ServiceCounterDataType::totalCount(OpcUaUInt32 totalCount)
+	{
+		totalCount_ = totalCount;
+	}
+
+	OpcUaUInt32&
+	ServiceCounterDataType::errorCount(void)
+	{
+		return errorCount_;
+	}
+
+	void
+	ServiceCounterDataType::errorCount(OpcUaUInt32 errorCount)
+	{
+		errorCount_ = errorCount;
+	}
+
+	void
+	ServiceCounterDataType::copyTo(ServiceCounterDataType& serviceCounterDataType)
+	{
+		serviceCounterDataType.totalCount(totalCount_);
+		serviceCounterDataType.errorCount(errorCount_);
+	}
+
+	bool
+	ServiceCounterDataType::operator==(const ServiceCounterDataType& serviceCounterDataType) const
+	{
+		ServiceCounterDataType* dst = const_cast<ServiceCounterDataType*>(&serviceCounterDataType);
+		return
+			totalCount_ == dst->totalCount() &&
+			errorCount_ == dst->errorCount();
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ExtensionObjectBase
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ExtensionObjectBase::SPtr
+	ServiceCounterDataType::factory(void)
+	{
+		return constructSPtr<ServiceCounterDataType>();
+	}
+
+	void
+	ServiceCounterDataType::opcUaBinaryEncode(std::ostream& os) const
+	{
+		OpcUaNumber::opcUaBinaryEncode(os, totalCount_);
+		OpcUaNumber::opcUaBinaryEncode(os, errorCount_);
+	}
+
+	void
+	ServiceCounterDataType::opcUaBinaryDecode(std::istream& is)
+	{
+		OpcUaNumber::opcUaBinaryDecode(is, totalCount_);
+		OpcUaNumber::opcUaBinaryDecode(is, errorCount_);
+	}
+
+	bool
+	ServiceCounterDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	ServiceCounterDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	ServiceCounterDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	void
+	ServiceCounterDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		ServiceCounterDataType* dst = dynamic_cast<ServiceCounterDataType*>(&extensionObjectBase);
+		copyTo(*dst);
+	}
+
+	bool
+	ServiceCounterDataType::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		ServiceCounterDataType* dst = dynamic_cast<ServiceCounterDataType*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	ServiceCounterDataType::out(std::ostream& os)
+	{
+		os << "TotalCount=" << totalCount_;
+		os << ", ErrorCount=" << errorCount_;
+	}
 
 }
+

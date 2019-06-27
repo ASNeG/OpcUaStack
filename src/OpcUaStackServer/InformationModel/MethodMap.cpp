@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	MethodMap::existMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId)
+	MethodMap::existMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
 	{
 		MethodId methodId;
 		ForwardMethodSyncMap::iterator it;
@@ -50,8 +50,8 @@ namespace OpcUaStackServer
 
 	bool
 	MethodMap::registerMethod(
-		const OpcUaNodeId& objectNodeId,
-		const OpcUaNodeId& methodNodeId,
+		OpcUaNodeId& objectNodeId,
+		OpcUaNodeId& methodNodeId,
 		ForwardMethodSync::SPtr& forwardMethodSync
 	)
 	{
@@ -69,7 +69,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	MethodMap::deregisterMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId)
+	MethodMap::deregisterMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
 	{
 		MethodId methodId;
 		methodId.objectNodeId().copyFrom(objectNodeId);
@@ -84,7 +84,7 @@ namespace OpcUaStackServer
 	}
 
 	ForwardMethodSync::SPtr
-	MethodMap::getMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId)
+	MethodMap::getMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
 	{
 		MethodId methodId;
 		methodId.objectNodeId().copyFrom(objectNodeId);

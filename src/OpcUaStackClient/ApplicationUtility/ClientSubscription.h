@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,6 +18,8 @@
 #ifndef __OpcUaStackClient_ClientSubscription_h__
 #define __OpcUaStackClient_ClientSubscription_h__
 
+#include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
@@ -44,6 +46,8 @@ namespace OpcUaStackClient
 
 
 	class DLLEXPORT ClientSubscription
+	: public SubscriptionServiceIf
+	, public MonitoredItemServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<ClientSubscription> SPtr;
@@ -76,6 +80,7 @@ namespace OpcUaStackClient
 		void maxNotificationsPerPublish(uint32_t maxNotificationsPerPublish);
 		void serviceSetManager(ServiceSetManager* serviceSetManager);
 		void sessionService(SessionService::SPtr& sessionService);
+		void clientSubscriptionIf(ClientSubscriptionIf* clientSubscriptionIf);
 
 		void addMonitoredItem(ClientMonitoredItem::SPtr& clientMonitoredItem);
 
@@ -86,19 +91,23 @@ namespace OpcUaStackClient
 		void close(void);
 		void error(void);
 
-	    void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
-	    void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
-	    void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
-	    void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+		//- SubscriptionServiceIf ---------------------------------------------
+	    virtual void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
+	    virtual void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
+	    virtual void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
+	    virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
-		void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
-		void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
+		virtual void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
+		virtual void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
+		//- SubscriptionServiceIf ---------------------------------------------
 
-	    void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
-	    void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
-	    void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
-	    void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
-	    void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+		//- MonitoredItemServiceIf --------------------------------------------
+	    virtual void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
+	    virtual void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
+	    virtual void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
+	    virtual void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
+	    virtual void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+		//- MonitoredItemServiceIf --------------------------------------------
 
 	  private:
 		void init(void);

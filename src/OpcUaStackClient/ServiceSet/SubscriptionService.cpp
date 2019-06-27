@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,8 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/StandardDataTypes/DataChangeNotification.h"
-#include "OpcUaStackCore/StandardDataTypes/EventNotificationList.h"
+#include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
 
 using namespace OpcUaStackCore;
@@ -31,9 +30,6 @@ namespace OpcUaStackClient
 	, subscriptionSetPendingDelete_()
 	, publishCount_(5)
 	, actPublishCount_(0)
-	, dataChangeNotificationHandler_()
-	, eventNotificationHandler_()
-	, subscriptionStateUpdateHandler_()
 	{
 		Component::ioThread(ioThread);
 		subscriptionServicePublishIf(this);
@@ -46,19 +42,15 @@ namespace OpcUaStackClient
 	void
 	SubscriptionService::setConfiguration(
 		Component* componentSession,
-		const DataChangeNotificationHandler& dataChangeNotificationHandler,
-		const EventNotificationHandler& eventNotificationHandler,
-		const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
 		uint32_t publishCount,
-		uint32_t requestTimeout
+		uint32_t requestTimeout,
+		SubscriptionServiceIf* subscriptionServiceIf
 	)
 	{
 		this->componentSession(componentSession);
-		dataChangeNotificationHandler_ = dataChangeNotificationHandler;
-		eventNotificationHandler_ = eventNotificationHandler;
-		subscriptionStateUpdateHandler_ = subscriptionStateUpdateHandler;
 		publishCount_ = publishCount;
 		requestTimeout_ = requestTimeout;
+		this->subscriptionServiceIf(subscriptionServiceIf);
 	}
 
 	void
@@ -176,7 +168,7 @@ namespace OpcUaStackClient
 	void
 	SubscriptionService::receive(Message::SPtr message)
 	{
-		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
 		{
 			case OpcUaId_CreateSubscriptionResponse_Encoding_DefaultBinary:
@@ -310,8 +302,8 @@ namespace OpcUaStackClient
     	}
 
     	subscriptionSet_.insert(subscriptionId);
-   		if (subscriptionStateUpdateHandler_) {
-   			subscriptionStateUpdateHandler_(SS_Open, subscriptionId);
+   		if (subscriptionServiceIf_ != NULL) {
+    		subscriptionServiceIf_->subscriptionStateUpdate(SS_Open, subscriptionId);
     	}
 
     	if (subscriptionSet_.size() != 1) return;
@@ -335,8 +327,8 @@ namespace OpcUaStackClient
     void
     SubscriptionService::deleteSubscriptionResponse(uint32_t subscriptionId)
     {
-   		if (subscriptionStateUpdateHandler_) {
-   			subscriptionStateUpdateHandler_(SS_Close, subscriptionId);
+   		if (subscriptionServiceIf_ != NULL) {
+    		subscriptionServiceIf_->subscriptionStateUpdate(SS_Close, subscriptionId);
     	}
     }
 
@@ -356,18 +348,15 @@ namespace OpcUaStackClient
     void
     SubscriptionService::receivePublishResponse(const PublishResponse::SPtr& publishResponse)
     {
-    	uint32_t count = publishResponse->notificationMessage()->notificationData().size();
+    	uint32_t count = publishResponse->notificationMessage()->notificationData()->size();
     	for (uint32_t idx=0; idx<count; idx++) {
-    		OpcUaExtensibleParameter::SPtr notify;
-    		publishResponse->notificationMessage()->notificationData().get(idx, notify);
+    		ExtensibleParameter::SPtr notify;
+    		publishResponse->notificationMessage()->notificationData()->get(idx, notify);
 
     		switch (notify->parameterTypeId().nodeId<uint32_t>())
     		{
     			case OpcUaId_DataChangeNotification_Encoding_DefaultBinary:
     				dataChangeNotification(notify);
-    				break;
-    			case OpcUaId_EventNotificationList_Encoding_DefaultBinary:
-    				eventNotification(notify);
     				break;
     			default:
     				Log(Error, "subscription publish response error, because notification type in publish response unknown")
@@ -380,33 +369,18 @@ namespace OpcUaStackClient
     }
 
     void
-    SubscriptionService::dataChangeNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter)
+    SubscriptionService::dataChangeNotification(const ExtensibleParameter::SPtr& extensibleParameter)
     {
-    	auto dataChange = extensibleParameter->parameter<DataChangeNotification>();
+    	DataChangeNotification::SPtr dataChange;
+    	dataChange = extensibleParameter->parameter<DataChangeNotification>();
 
-    	auto count = dataChange->monitoredItems().size();
+    	uint32_t count = dataChange->monitoredItems()->size();
     	for (uint32_t idx=0; idx<count; idx++) {
     		MonitoredItemNotification::SPtr monitoredItem;
-    		dataChange->monitoredItems().get(idx, monitoredItem);
+    		dataChange->monitoredItems()->get(idx, monitoredItem);
 
-    		if (dataChangeNotificationHandler_) {
-    			dataChangeNotificationHandler_(monitoredItem);
-    		}
-    	}
-    }
-
-    void
-	SubscriptionService::eventNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter)
-    {
-    	auto eventNotificationList = extensibleParameter->parameter<EventNotificationList>();
-
-    	auto count = eventNotificationList->events().size();
-    	for (uint32_t idx=0; idx<count; idx++) {
-    		EventFieldList::SPtr eventFieldList;
-    		eventNotificationList->events().get(idx, eventFieldList);
-
-    		if (eventNotificationHandler_) {
-    			eventNotificationHandler_(eventFieldList);
+    		if (subscriptionServiceIf_ != NULL) {
+    			subscriptionServiceIf_->dataChangeNotification(monitoredItem);
     		}
     	}
     }

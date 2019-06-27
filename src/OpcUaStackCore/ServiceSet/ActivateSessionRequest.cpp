@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,8 +24,8 @@ namespace OpcUaStackCore
 	: requestHeaderSPtr_(constructSPtr<RequestHeader>())
 	, clientSignature_(constructSPtr<SignatureData>())
 	, signedSoftwareCertificate_(constructSPtr<SignedSoftwareCertificateArray>())
-	, localeIds_(constructSPtr<OpcUaLocaleIdArray>())
-	, userIdentityToken_(constructSPtr<OpcUaExtensibleParameter>())
+	, localeIds_(constructSPtr<LocaleIdArray>())
+	, userIdentityToken_(constructSPtr<ExtensibleParameter>())
 	, userTokenSignature_(constructSPtr<SignatureData>())
 	{
 	}
@@ -71,24 +71,24 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	ActivateSessionRequest::localeIds(const OpcUaLocaleIdArray::SPtr localeIds)
+	ActivateSessionRequest::localeIds(const LocaleIdArray::SPtr localeIds)
 	{
 		localeIds_ = localeIds;
 	}
 
-	OpcUaLocaleIdArray::SPtr
+	LocaleIdArray::SPtr 
 	ActivateSessionRequest::localeIds(void) const
 	{
 		return localeIds_;
 	}
 
 	void 
-	ActivateSessionRequest::userIdentityToken(const OpcUaExtensibleParameter::SPtr userIdentityToken)
+	ActivateSessionRequest::userIdentityToken(const ExtensibleParameter::SPtr userIdentityToken)
 	{
 		userIdentityToken_ = userIdentityToken;
 	}
 
-	OpcUaExtensibleParameter::SPtr
+	ExtensibleParameter::SPtr 
 	ActivateSessionRequest::userIdentityToken(void) const
 	{
 		return userIdentityToken_;
@@ -109,6 +109,7 @@ namespace OpcUaStackCore
 	void 
 	ActivateSessionRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
+		//requestHeaderSPtr_->opcUaBinaryEncode(os);
 		clientSignature_->opcUaBinaryEncode(os);
 		signedSoftwareCertificate_->opcUaBinaryEncode(os);
 		localeIds_->opcUaBinaryEncode(os);
@@ -119,6 +120,7 @@ namespace OpcUaStackCore
 	void 
 	ActivateSessionRequest::opcUaBinaryDecode(std::istream& is)
 	{
+		//requestHeaderSPtr_->opcUaBinaryDecode(is);
 		clientSignature_->opcUaBinaryDecode(is);
 		signedSoftwareCertificate_->opcUaBinaryDecode(is);
 		localeIds_->opcUaBinaryDecode(is);

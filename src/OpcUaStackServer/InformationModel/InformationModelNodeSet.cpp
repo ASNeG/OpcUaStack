@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -151,56 +151,56 @@ namespace OpcUaStackServer
 
 			switch (baseNodeClassSPtr->nodeClass().data())
 			{
-				case NodeClass::EnumDataType:
+				case NodeClassType_DataType:
 				{
 					DataTypeNodeClass::SPtr dataTypeNodeClass;
 					dataTypeNodeClass = boost::static_pointer_cast<DataTypeNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.dataTypeNodeClassVec().push_back(dataTypeNodeClass);
 					break;
 				}
-				case NodeClass::EnumMethod:
+				case NodeClassType_Method:
 				{
 					MethodNodeClass::SPtr methodNodeClass;
 					methodNodeClass = boost::static_pointer_cast<MethodNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.methodNodeClassVec().push_back(methodNodeClass);
 					break;
 				}
-				case NodeClass::EnumObject:
+				case NodeClassType_Object:
 				{
 					ObjectNodeClass::SPtr objectNodeClass;
 					objectNodeClass = boost::static_pointer_cast<ObjectNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.objectNodeClassVec().push_back(objectNodeClass);
 					break;
 				}
-				case NodeClass::EnumObjectType:
+				case NodeClassType_ObjectType:
 				{
 					ObjectTypeNodeClass::SPtr objectTypeNodeClass;
 					objectTypeNodeClass = boost::static_pointer_cast<ObjectTypeNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.objectTypeNodeClassVec().push_back(objectTypeNodeClass);
 					break;
 				}
-				case NodeClass::EnumReferenceType:
+				case NodeClassType_ReferenceType:
 				{
 					ReferenceTypeNodeClass::SPtr referenceTypeNodeClass;
 					referenceTypeNodeClass = boost::static_pointer_cast<ReferenceTypeNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.referenceTypeNodeClassVec().push_back(referenceTypeNodeClass);
 					break;
 				}
-				case NodeClass::EnumVariable:
+				case NodeClassType_Variable:
 				{
 					VariableNodeClass::SPtr variableNodeClass;
 					variableNodeClass = boost::static_pointer_cast<VariableNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.variableNodeClassVec().push_back(variableNodeClass);
 					break;
 				}
-				case NodeClass::EnumVariableType:
+				case NodeClassType_VariableType:
 				{
 					VariableTypeNodeClass::SPtr variableTypeNodeClass;
 					variableTypeNodeClass = boost::static_pointer_cast<VariableTypeNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.variableTypeNodeClassVec().push_back(variableTypeNodeClass);
 					break;
 				}
-				case NodeClass::EnumView:
+				case NodeClassType_View:
 				{
 					ViewNodeClass::SPtr viewNodeClass;
 					viewNodeClass = boost::static_pointer_cast<ViewNodeClass>(baseNodeClassSPtr);

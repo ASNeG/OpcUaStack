@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,15 +23,12 @@
 #include <boost/property_tree/ptree.hpp>
 #include <stdint.h>
 #include <iostream>
-#include <vector>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
 #include "OpcUaStackCore/BuildInTypes/Json.h"
 #include "OpcUaStackCore/BuildInTypes/XmlNumber.h"
-#include "OpcUaStackCore/BuildInTypes/JsonNumber.h"
-#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -55,42 +52,24 @@ namespace OpcUaStackCore
 			  ByteOrder<T>::opcUaBinaryDecodeNumberLE(is, value);
 		  }
 
-		  static bool xmlEncode(
-		      boost::property_tree::ptree& pt,
-			  T& value,
-			  const std::string& element,
-			  Xmlns& xmlns
-		  )
+		  static bool encode(boost::property_tree::ptree& pt, T& value)
+		  {
+			  return Json::encode(pt, value);
+		  }
+
+		  static bool decode(boost::property_tree::ptree& pt, T& value)
+		  {
+			  return Json::decode(pt, value);
+		  }
+
+		  static bool xmlEncode(boost::property_tree::ptree& pt, T& value, const std::string& element)
 		  {
 			  return XmlNumber::xmlEncode(pt, value, element);
 		  }
 
-		  static bool xmlDecode(
-			  boost::property_tree::ptree& pt,
-			  T& value, const
-			  std::string& element,
-			  Xmlns& xmlns
-		  )
+		  static bool xmlDecode(boost::property_tree::ptree& pt, T& value, const std::string& element)
 		  {
 			  return XmlNumber::xmlDecode(pt, value);
-		  }
-
-		  static bool jsonEncode(
-			  boost::property_tree::ptree& pt,
-			  T& value,
-			  const std::string& listElement
-		  )
-		  {
-			  return JsonNumber::jsonEncode(pt, value, listElement);
-		  }
-
-		  static bool jsonDecode(
-			  const boost::property_tree::ptree& pt,
-			  T& value,
-			  const std::string& listElement
-		  )
-		  {
-			  return JsonNumber::jsonDecode(pt, value);
 		  }
 
 		  static T copy(T& sourceValue, T& destValue)
@@ -119,41 +98,24 @@ namespace OpcUaStackCore
 			  value.opcUaBinaryDecode(is);
 		  }
 
-		  static bool xmlEncode(
-			  boost::property_tree::ptree& pt,
-			  T& value,
-			  const std::string& element,
-			  Xmlns& xmlns
-		  )
+		  static bool encode(boost::property_tree::ptree& pt, T& value)
 		  {
-			  return value.xmlEncode(pt, element, xmlns);
+			  return value.encode(pt);
 		  }
 
-		  static bool xmlDecode(
-			  boost::property_tree::ptree& pt, T& value,
-			  const std::string& element,
-			  Xmlns& xmlns
-		  )
+		  static bool decode(boost::property_tree::ptree& pt, T& value)
 		  {
-			  return value.xmlDecode(pt, element, xmlns);
+			  return value.decode(pt);
 		  }
 
-		  static bool jsonEncode(
-			  boost::property_tree::ptree& pt,
-			  T& value,
-			  const std::string& listElement
-		  )
+		  static bool xmlEncode(boost::property_tree::ptree& pt, T& value, const std::string& element)
 		  {
-			  return value.jsonEncode(pt, listElement);
+			  return value.xmlEncode(pt, element);
 		  }
 
-		  static bool jsonDecode(
-			  const boost::property_tree::ptree& pt,
-			  T& value,
-			  const std::string& listElement
-		  )
+		  static bool xmlDecode(boost::property_tree::ptree& pt, T& value, const std::string& element)
 		  {
-			  return value.jsonDecode(pt);
+			  return value.xmlDecode(pt, element);
 		  }
 
 		  static T& copy(T& sourceValue, T& destValue)
@@ -185,48 +147,30 @@ namespace OpcUaStackCore
 			  value = (T)v;
 		  }
 
-		  static bool xmlEncode(
-		      boost::property_tree::ptree& pt,
-			  T& value,
-			  const std::string& element,
-			  Xmlns& xmlns
-		  )
+		  static bool encode(boost::property_tree::ptree& pt, T& value)
+		  {
+			  int32_t v = value;
+			  pt.put_value(value);
+			  return true;
+		  }
+
+		  static bool decode(boost::property_tree::ptree& pt, T& value)
+		  {
+			  int32_t v = 0;
+			  try { v = pt.get_value<int32_t>(); } catch(...) { return false; }
+			  value = (T)v;
+			  return true;
+		  }
+
+		  static bool xmlEncode(boost::property_tree::ptree& pt, T& value, const std::string& element)
 		  {
 			  // FIXME: todo
 			  return true;
 		  }
 
-		  static bool xmlDecode(
-			  boost::property_tree::ptree& pt,
-			  T& value,
-			  const std::string& element,
-			  Xmlns& xmlns
-		  )
+		  static bool xmlDecode(boost::property_tree::ptree& pt, T& value, const std::string& element)
 		  {
 			  // FIXME: todo
-			  return true;
-		  }
-
-		  static bool jsonEncode(
-			  boost::property_tree::ptree& pt,
-			  T& value,
-			  const std::string& listElement
-		  )
-		  {
-			  return JsonNumber::jsonEncode(pt, value, listElement);
-		  }
-
-		  static bool jsonDecode(
-			  const boost::property_tree::ptree& pt,
-			  T& value,
-			  const std::string& listElement
-		  )
-		  {
-			  uint32_t val;
-			  if (!JsonNumber::jsonDecode(pt, val)) {
-				  return false;
-			  }
-			  value = (T)val;
 			  return true;
 		  }
 
@@ -257,44 +201,25 @@ namespace OpcUaStackCore
 			  value->opcUaBinaryDecode(is);
 		  }
 
-		  static bool xmlEncode(
-		      boost::property_tree::ptree& pt,
-			  boost::shared_ptr<T>& value,
-			  const std::string& element,
-			  Xmlns& xmlns
-		  )
+		  static bool encode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value)
 		  {
-			  return value->xmlEncode(pt, xmlns);
+			  return value->encode(pt);
 		  }
 
-		  static bool xmlDecode(
-		      boost::property_tree::ptree& pt,
-			  boost::shared_ptr<T>& value,
-			  const std::string& element,
-			  Xmlns& xmlns
-		  )
+		  static bool decode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value)
 		  {
 			  value = constructSPtr<T>();
-			  return value->xmlDecode(pt, xmlns);
+			  return value->decode(pt);
 		  }
-
-		  static bool jsonEncode(
-			  boost::property_tree::ptree& pt,
-			  boost::shared_ptr<T>& value,
-			  const std::string& listElement
-		  )
+		  static bool xmlEncode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value, const std::string& element)
 		  {
-			  return value->jsonEncode(pt, listElement);
+			  return value->xmlEncode(pt);
 		  }
 
-		  static bool jsonDecode(
-			  const boost::property_tree::ptree& pt,
-			  boost::shared_ptr<T>& value,
-			  const std::string& listElement
-		  )
+		  static bool xmlDecode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value, const std::string& element)
 		  {
 			  value = constructSPtr<T>();
-			  return value->jsonDecode(pt);
+			  return value->xmlDecode(pt);
 		  }
 
 		  static boost::shared_ptr<T> copy( boost::shared_ptr<T>& sourceValue, boost::shared_ptr<T>& destValue)
@@ -306,7 +231,7 @@ namespace OpcUaStackCore
 
 		  static void out(std::ostream& os,  const boost::shared_ptr<T>& value) 
 		  {
-			  value->out(os);
+			  os << *value;
 		  }
 	};
 
@@ -320,7 +245,6 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	template<typename T, typename CODER = ClassTypeCoder<T> >
 	class OpcUaArray 
-	: public JsonFormatter
 	{
 	  public:
 		OpcUaArray(size_t maxArrayLen = 1);
@@ -334,14 +258,14 @@ namespace OpcUaStackCore
 		size_t maxSize(void);
 		size_t freeSize();
 		void clear(void);
+		bool isNull(void);
+		void setNull(void);
 
 		bool set(size_t pos, const T& value);
 		bool set(const T& value);
 		bool push_back(const T& value);
-		bool push_back_vec(const std::vector<T>& valueVec);
 		bool get(size_t pos, T& value);
 		bool get(T& value);
-		bool pop_back(void);
 
 		OpcUaArray<T, CODER>& operator=(const OpcUaArray<T, CODER>& other);
 		OpcUaArray<T, CODER>& operator=(const std::vector<T>& other);
@@ -351,7 +275,7 @@ namespace OpcUaStackCore
 		template<typename V>
 		    OpcUaArray<T, CODER>& operator=(const V& other);
 
-		void copyTo(OpcUaArray<T, CODER>& array) const;
+		void copyTo(OpcUaArray<T, CODER>& array);
 		bool operator!=(OpcUaArray<T, CODER>& array);
 		bool operator==(OpcUaArray<T, CODER>& array);
 
@@ -364,37 +288,12 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
-		bool xmlEncode(
-			boost::property_tree::ptree& pt,
-			const std::string& element,
-			const std::string& listElement,
-			Xmlns& xmlns
-		) const;
-		bool xmlEncode(
-			boost::property_tree::ptree& pt,
-			const std::string& element,
-			Xmlns& xmlns
-		) const;
-		bool xmlDecode(
-			boost::property_tree::ptree& pt,
-			const std::string& element,
-			const std::string& listElement,
-			Xmlns& xmlns
-		);
-		bool xmlDecode(
-			boost::property_tree::ptree& pt,
-			const std::string& listElement,
-			Xmlns& xmlns
-		);
+		bool encode(boost::property_tree::ptree& pt) const;
+		bool decode(boost::property_tree::ptree& pt);
 
-	  bool isArray(void) const override;
-	  bool isNull(void) const override;
-      void setNull(void) override;
-      size_t arrayLength(void) const override;
-
-	  protected:
-        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
-        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, const std::string& extElement) const;
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element) const;
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element);
 
 	  private:
 		void initArray(void);
@@ -423,10 +322,12 @@ namespace OpcUaStackCore
 	, maxArrayLen_(other.size())
 	, actArrayLen_(0)
 	{
-		clearArray();
 		initArray();
-
-		const_cast<OpcUaArray<T, CODER>*>(&other)->copyTo(*this);
+		for (size_t idx = 0; idx < other.size(); idx++) {
+			T value;
+			get(0, value);
+			push_back(value);
+		}
 	}
 
 	template<typename T, typename CODER>
@@ -526,7 +427,7 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::isNull(void) const
+	OpcUaArray<T, CODER>::isNull(void)
 	{
 		return isNull_;
 	}
@@ -540,12 +441,6 @@ namespace OpcUaStackCore
 		isNull_ = true;
 	}
 
-	template<typename T, typename CODER>
-	size_t
-	OpcUaArray<T, CODER>::arrayLength(void) const
-	{
-		return actArrayLen_;
-	}
 
 	template<typename T, typename CODER>
 	bool
@@ -577,18 +472,6 @@ namespace OpcUaStackCore
 	}
 
 	template<typename T, typename CODER>
-	bool
-	OpcUaArray<T, CODER>::push_back_vec(const std::vector<T>& valueVec)
-	{
-		for (uint32_t idx = 0; idx<valueVec.size(); idx++) {
-			if (!push_back(valueVec[idx])) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	template<typename T, typename CODER>
 	bool 
 	OpcUaArray<T, CODER>::get(size_t pos, T& value)
 	{
@@ -605,15 +488,6 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::get(T& value)
 	{
 		return get(0, value);
-	}
-
-	template<typename T, typename CODER>
-	bool
-	OpcUaArray<T, CODER>::pop_back(void)
-	{
-		if (actArrayLen_ <= 0) return false;
-		actArrayLen_--;
-		return true;
 	}
 
 	template<typename T, typename CODER>
@@ -670,7 +544,7 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	void 
-	OpcUaArray<T, CODER>::copyTo(OpcUaArray<T, CODER>& array) const
+	OpcUaArray<T, CODER>::copyTo(OpcUaArray<T, CODER>& array)
 	{
 		if (isNull_) {
 			array.setNull();
@@ -716,9 +590,7 @@ namespace OpcUaStackCore
 		os << "[";
 		for (size_t idx=0; idx<actArrayLen_; idx++) {
 			if (!first) os << ",";
-			os << "{";
 			CODER::out(os, valueArray_[idx]);
-			os << "}";
 			first = false;
 		}
 		os << "]";
@@ -754,19 +626,45 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::xmlEncode(
-		boost::property_tree::ptree& pt,
-		const std::string& element,
-		const std::string& listElement,
-		Xmlns& xmlns
-	) const
+	OpcUaArray<T, CODER>::encode(boost::property_tree::ptree& pt) const
+	{
+		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
+			boost::property_tree::ptree arrayElement;
+			if (!CODER::encode(arrayElement, valueArray_[idx])) return false;
+			pt.push_back(std::make_pair("", arrayElement));
+		}
+		return true;
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::decode(boost::property_tree::ptree& pt)
+	{
+		size_t arrayLength = 0;
+		arrayLength = pt.size();
+
+		resize(arrayLength);
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			boost::property_tree::ptree arrayElement = it->second;
+
+			T value;
+			if (!CODER::decode(arrayElement, value)) return false;
+			push_back(value);
+		}
+		return true;
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, const std::string& listElement) const
 	{
 		if (isNull_) {
 			return true;
 		}
 
 		boost::property_tree::ptree tmpTree;
-		if (!xmlEncode(tmpTree, listElement, xmlns)) {
+		if (!xmlEncode(tmpTree, listElement)) {
 			Log(Error, "OpcUaArray xml encoder error")
 				.parameter("Element", element)
 				.parameter("ListElement", listElement);
@@ -779,20 +677,16 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::xmlEncode(
-		boost::property_tree::ptree& pt,
-		const std::string& listElement,
-		Xmlns& xmlns
-	) const
+	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& element) const
 	{
 		if (isNull_) {
 			return true;
 		}
 
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
-			if (!CODER::xmlEncode(pt, valueArray_[idx], listElement, xmlns)) {
+			if (!CODER::xmlEncode(pt, valueArray_[idx], element)) {
 				Log(Error, "OpcUaArray xml encoder error")
-					.parameter("ListElement", listElement);
+					.parameter("ListElement", element);
 				return false;
 			}
 		}
@@ -801,25 +695,7 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T, CODER>::xmlDecode(
-		boost::property_tree::ptree& pt,
-		const std::string& element,
-		const std::string& listElement,
-		Xmlns& xmlns
-	)
-	{
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
-        return xmlDecode(*tree, listElement, xmlns);
-	}
-
-	template<typename T, typename CODER>
-	bool
-	OpcUaArray<T, CODER>::xmlDecode(
-		boost::property_tree::ptree& pt,
-		const std::string& listElement,
-		Xmlns& xmlns
-	)
+	OpcUaArray<T, CODER>::xmlDecode(boost::property_tree::ptree& pt, const std::string& element)
 	{
 		size_t arrayLength = 0;
 		arrayLength = pt.size();
@@ -834,72 +710,13 @@ namespace OpcUaStackCore
 			boost::property_tree::ptree arrayElement = it->second;
 
 			T value;
-			if (!CODER::xmlDecode(arrayElement, value, listElement, xmlns)) {
+			if (!CODER::xmlDecode(arrayElement, value, element)) {
 				Log(Error, "OpcUaArray xml decoder error")
-					.parameter("ListElement", listElement);
+					.parameter("ListElement", element);
 				return false;
 			}
 			push_back(value);
 		}
-		return true;
-	}
-
-	template<typename T, typename CODER>
-	bool
-	OpcUaArray<T, CODER>::jsonEncodeImpl(
-		boost::property_tree::ptree& pt
-	) const
-	{
-		if (isNull_) {
-			return true;
-		}
-
-    	if (actArrayLen_ == 0) {
-    		pt.put_value("__EmptyArray__");
-    		return true;
-    	}
-
-		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
-			if (!CODER::jsonEncode(pt, valueArray_[idx], "")) {
-				Log(Error, "OpcUaArray json encoder error");
-				return false;
-			}
-		}
-		return true;
-	}
-
-	template<typename T, typename CODER>
-	bool
-	OpcUaArray<T, CODER>::jsonDecodeImpl(
-		const boost::property_tree::ptree& pt
-	)
-	{
-		size_t arrayLength = 0;
-		arrayLength = pt.size();
-
-		if (arrayLength == 0) {
-			return true;
-		}
-
-		resize(arrayLength);
-		boost::property_tree::ptree::const_iterator it;
-		for (it = pt.begin(); it != pt.end(); it++) {
-			const boost::property_tree::ptree arrayElement = it->second;
-
-			T value;
-			if (!CODER::jsonDecode(arrayElement, value, "")) {
-				Log(Error, "OpcUaArray json decoder error");
-				return false;
-			}
-			push_back(value);
-		}
-		return true;
-	}
-
-	template<typename T, typename CODER>
-	bool
-	OpcUaArray<T, CODER>::isArray(void) const
-	{
 		return true;
 	}
 

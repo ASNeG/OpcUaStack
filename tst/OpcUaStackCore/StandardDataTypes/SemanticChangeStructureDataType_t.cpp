@@ -23,8 +23,8 @@ BOOST_AUTO_TEST_CASE(SemanticChangeStructureDataType_encode_decode)
 	nodeId1.nodeId((OpcUaInt32)11);
 	nodeId2.nodeId((OpcUaInt32)12);
 
-	value1.affected() = nodeId1;
-	value1.affectedType() =  nodeId2;
+	value1.affected(nodeId1);
+	value1.affectedType(nodeId2);
 
 	std::stringstream ss;
 	value1.opcUaBinaryEncode(ss);
@@ -49,8 +49,8 @@ BOOST_AUTO_TEST_CASE(SemanticChangeStructureDataType_ExtensionObject)
 	OpcUaNodeId typeId;
 	typeId.set(OpcUaId_SemanticChangeStructureDataType_Encoding_DefaultBinary);
 	value1.typeId(typeId);
-	value1.parameter<SemanticChangeStructureDataType>()->affected() = nodeId1;
-	value1.parameter<SemanticChangeStructureDataType>()->affectedType() = nodeId2;
+	value1.parameter<SemanticChangeStructureDataType>()->affected(nodeId1);
+	value1.parameter<SemanticChangeStructureDataType>()->affectedType(nodeId2);
 
 	std::stringstream ss;
 	value1.opcUaBinaryEncode(ss);
@@ -75,8 +75,8 @@ BOOST_AUTO_TEST_CASE(SemanticChangeStructureDataType_ExtensionObject_copyTo)
 	OpcUaNodeId typeId;
 	typeId.set(OpcUaId_SemanticChangeStructureDataType_Encoding_DefaultBinary);
 	value1.typeId(typeId);
-	value1.parameter<SemanticChangeStructureDataType>()->affected() = nodeId1;
-	value1.parameter<SemanticChangeStructureDataType>()->affectedType() = nodeId2;
+	value1.parameter<SemanticChangeStructureDataType>()->affected(nodeId1);
+	value1.parameter<SemanticChangeStructureDataType>()->affectedType(nodeId2);
 
 	value1.copyTo(value2);
 

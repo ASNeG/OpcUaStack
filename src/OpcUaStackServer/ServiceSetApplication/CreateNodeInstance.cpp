@@ -25,7 +25,7 @@ namespace OpcUaStackServer
 	CreateNodeInstance::CreateNodeInstance(void)
 	: resultCode_(Success)
 	, name_("")
-	, nodeClass_()
+	, nodeClassType_()
 	, parentNodeId_()
 	, nodeId_()
 	, displayName_()
@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 
 	CreateNodeInstance::CreateNodeInstance(
 		const std::string& name,
-		const NodeClass::Enum nodeClass,
+		const NodeClassType nodeClassType,
 		const OpcUaNodeId& parentNodeId,
 		const OpcUaNodeId& nodeId,
 		const OpcUaLocalizedText& displayName,
@@ -47,7 +47,7 @@ namespace OpcUaStackServer
 	)
 	: resultCode_(Success)
 	, name_(name)
-	, nodeClass_(nodeClass)
+	, nodeClassType_(nodeClassType)
 	, parentNodeId_(parentNodeId)
 	, nodeId_(nodeId)
 	, displayName_(displayName)
@@ -68,9 +68,9 @@ namespace OpcUaStackServer
 	}
 
 	void
-	CreateNodeInstance::nodeClassType(NodeClass::Enum nodeClass)
+	CreateNodeInstance::nodeClassType(NodeClassType nodeClassType)
 	{
-		nodeClass_ = nodeClass;
+		nodeClassType_ = nodeClassType;
 	}
 
 	void
@@ -117,7 +117,7 @@ namespace OpcUaStackServer
 		// create response
 		auto trx = constructSPtr<ServiceTransactionCreateNodeInstance>();
 		trx->request()->name() = name_;
-		trx->request()->nodeClassType() = nodeClass_;
+		trx->request()->nodeClassType() = nodeClassType_;
 		trx->request()->parentNodeId() = parentNodeId_;
 	  	trx->request()->nodeId() = nodeId_;
 	  	trx->request()->displayName() = displayName_;

@@ -1,81 +1,70 @@
 /*
-    DataTypeClass: ServiceCounterDataType
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
-    Generated Source Code - please do not change this source code
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
 
-    DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-    Autor:     Kai Huebl (kai@huebl-sgh.de)
-*/
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Samuel Huebl (samuel.huebl@asneg.de)
+ */
 
 #ifndef __OpcUaStackCore_ServiceCounterDataType_h__
 #define __OpcUaStackCore_ServiceCounterDataType_h__
 
-#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 
 namespace OpcUaStackCore
 {
-    
-    class DLLEXPORT ServiceCounterDataType
-    : public Object
-    , public ExtensionObjectBase
-    {
-      public:
-        typedef boost::shared_ptr<ServiceCounterDataType> SPtr;
-        typedef std::vector<ServiceCounterDataType::SPtr> Vec;
-    
-        ServiceCounterDataType(void);
-        ServiceCounterDataType(const ServiceCounterDataType& value);
-        virtual ~ServiceCounterDataType(void);
-        
-        OpcUaUInt32& totalCount(void);
-        OpcUaUInt32& errorCount(void);
-        
-        //- ExtensionObjectBase -----------------------------------------------
-        virtual ExtensionObjectBase::SPtr factory(void);
-        virtual std::string namespaceName(void);
-        virtual std::string typeName(void);
-        virtual OpcUaNodeId typeId(void);
-        virtual OpcUaNodeId binaryTypeId(void);
-        virtual OpcUaNodeId xmlTypeId(void);
-        virtual OpcUaNodeId jsonTypeId(void);
-        virtual void opcUaBinaryEncode(std::ostream& os) const;
-        virtual void opcUaBinaryDecode(std::istream& is);
-        virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
-        virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
-        virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-        virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
-        virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
-        virtual void out(std::ostream& os);
-        //- ExtensionObjectBase -----------------------------------------------
-        
-        virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const;
-        virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt);
-        
-        void copyTo(ServiceCounterDataType& value);
-        bool operator==(const ServiceCounterDataType& value);
-        bool operator!=(const ServiceCounterDataType& value);
-        ServiceCounterDataType& operator=(const ServiceCounterDataType& value);
-    
-      private:
-        OpcUaUInt32 totalCount_;
-        OpcUaUInt32 errorCount_;
-    
-    };
-    
-    class DLLEXPORT ServiceCounterDataTypeArray
-    : public OpcUaArray<ServiceCounterDataType::SPtr, SPtrTypeCoder<ServiceCounterDataType> >
-    , public Object
-    {
-      public:
-    	   typedef boost::shared_ptr<ServiceCounterDataTypeArray> SPtr;
-    };
+
+	class DLLEXPORT ServiceCounterDataType
+	: public Object
+	, public ExtensionObjectBase
+	{
+	  public:
+		typedef boost::shared_ptr<ServiceCounterDataType> SPtr;
+
+		ServiceCounterDataType(void);
+		virtual ~ServiceCounterDataType(void);
+
+		OpcUaUInt32& totalCount(void);
+		void totalCount(OpcUaUInt32 totalCount);
+		OpcUaUInt32& errorCount(void);
+		void errorCount(OpcUaUInt32 errorCount);
+
+		void copyTo(ServiceCounterDataType& serviceCounterDataType);
+		bool operator==(const ServiceCounterDataType& serviceCounterDataType) const;
+
+		//- ExtensionObjectBase -----------------------------------------------
+		ExtensionObjectBase::SPtr factory(void);
+		void opcUaBinaryEncode(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		void copyTo(ExtensionObjectBase& extensionObjectBase);
+		bool equal(ExtensionObjectBase& extensionObjectBase) const;
+		void out(std::ostream& os);
+		//- ExtensionObjectBase -----------------------------------------------
+
+	  private:
+		OpcUaUInt32 totalCount_;
+		OpcUaUInt32 errorCount_;
+	};
 
 }
 
 #endif
+
+
+

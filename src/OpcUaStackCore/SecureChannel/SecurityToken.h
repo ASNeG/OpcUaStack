@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,8 +35,8 @@ namespace OpcUaStackCore
 		OpcUaUInt32 channelId(void) const;
 		void tokenId(const OpcUaUInt32& tokenId);
 		OpcUaUInt32 tokenId(void) const;
-		void createAt(const OpcUaUtcTime& createAt);
-		OpcUaUtcTime createAt(void) const;
+		void createAt(const UtcTime& createAt);
+		UtcTime createAt(void) const;
 		void revisedLifetime(const OpcUaInt32& revisedLifetime);
 		OpcUaInt32 revisedLifetime(void) const;
 
@@ -46,7 +46,7 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaUInt32 channelId_;
 		OpcUaUInt32 tokenId_;
-		OpcUaUtcTime createAt_;
+		UtcTime createAt_;
 		OpcUaInt32 revisedLifetime_;
 	};
 

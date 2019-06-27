@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,13 +18,12 @@
 #ifndef __OpcUaStackServer_EventItem_h__
 #define __OpcUaStackServer_EventItem_h__
 
-#include <list>
 #include "OpcUaStackCore/Base/UserContext.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/EventType/EventHandler.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
-#include "OpcUaStackCore/StandardDataTypes/EventNotificationList.h"
-#include "OpcUaStackCore/StandardDataTypes/EventFieldList.h"
+#include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
 #include "OpcUaStackCore/Filter/FilterStack.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
@@ -36,7 +35,7 @@ namespace OpcUaStackServer
 
 	typedef std::list<EventFieldList::SPtr> EventFieldListList;
 
-	class DLLEXPORT EventItem
+	class EventItem
 	: public Object
 	, public SimpleAttributeIf
 	{
@@ -56,7 +55,7 @@ namespace OpcUaStackServer
 			MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
 		);
 		OpcUaStatusCode receive(
-			EventFieldListArray& eventFieldListArray
+			EventFieldListArray::SPtr eventFieldListArray
 		);
 
 		void userContext(UserContext::SPtr& userContext);
@@ -78,7 +77,7 @@ namespace OpcUaStackServer
 	  private:
 		void clear(void);
 		void fireEvent(EventBase::SPtr eventBase);
-		OpcUaStatusCode receive(SimpleAttributeOperandArray& selectClauses, OpcUaStatusArray& statusArray);
+		OpcUaStatusCode receive(SimpleAttributeOperandArray::SPtr& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray);
 
 		OpcUaNodeId nodeId_;
 		OpcUaQualifiedName browseName_;
@@ -87,7 +86,7 @@ namespace OpcUaStackServer
 		uint32_t clientHandle_;
 		InformationModel::SPtr informationModel_;
 		FilterStack::SPtr whereFilter_;
-		SimpleAttributeOperandArray selectClauses_;
+		SimpleAttributeOperandArray::SPtr selectClauses_;
 
 		EventHandler::SPtr eventHandler_;
 		EventFieldListList eventFieldListList_;

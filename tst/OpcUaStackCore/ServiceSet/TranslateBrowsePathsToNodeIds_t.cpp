@@ -4,8 +4,6 @@
 #include "OpcUaStackCore/ServiceSet/TranslateBrowsePathsToNodeIdsResponse.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
-#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
-#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
@@ -149,7 +147,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	requestSPtr->browsePaths()->get(browsePathSPtr);
 	BOOST_REQUIRE(browsePathSPtr->startingNode()->namespaceIndex() == 2);
 	BOOST_REQUIRE(browsePathSPtr->startingNode()->nodeId<OpcUaUInt32>() == 123);
-	BOOST_REQUIRE(browsePathSPtr->relativePath().elements().size() == 0);
+	BOOST_REQUIRE(browsePathSPtr->relativePath().elements()->size() == 0);
 }
 
 

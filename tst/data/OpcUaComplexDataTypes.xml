@@ -56,7 +56,7 @@
 		<Variable Name="BaseByteString" 		Type="ByteString"		ModellingRule="M"></Variable>
 		<Variable Name="BaseNodeId" 			Type="NodeId"			ModellingRule="M"></Variable>
 		<Variable Name="BaseExpandedNodeId" 	Type="ExpandedNodeId"	ModellingRule="M"></Variable>
-		<Variable Name="BaseStatus" 		Type="Status"		ModellingRule="M"></Variable>
+		<Variable Name="BaseStatusCode" 		Type="StatusCode"		ModellingRule="M"></Variable>
 		<Variable Name="BaseQualifiedName" 		Type="QualifiedName"	ModellingRule="M"></Variable>
 		<Variable Name="BaseLocalizedText" 		Type="LocalizedText"	ModellingRule="M"></Variable>
 		<Variable Name="BaseDataValue" 			Type="DataValue"		ModellingRule="M"></Variable>
@@ -81,7 +81,7 @@
 		<Variable Name="ByteString" 		Type="ByteString"		ModellingRule="M"></Variable>
 		<Variable Name="NodeId" 			Type="NodeId"			ModellingRule="M"></Variable>
 		<Variable Name="ExpandedNodeId" 	Type="ExpandedNodeId"	ModellingRule="M"></Variable>
-		<Variable Name="Status" 		Type="Status"		ModellingRule="M"></Variable>
+		<Variable Name="StatusCode" 		Type="StatusCode"		ModellingRule="M"></Variable>
 		<Variable Name="QualifiedName" 		Type="QualifiedName"	ModellingRule="M"></Variable>
 		<Variable Name="LocalizedText" 		Type="LocalizedText"	ModellingRule="M"></Variable>
 		<Variable Name="DataValue" 			Type="DataValue"		ModellingRule="M"></Variable>

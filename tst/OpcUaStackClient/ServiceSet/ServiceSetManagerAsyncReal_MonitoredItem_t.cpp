@@ -1,5 +1,4 @@
 #include "unittest.h"
-#include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
 using namespace OpcUaStackClient;
@@ -8,110 +7,110 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_MonitoredItem)
 
-struct GValueFixture {
-	GValueFixture(void)
-    : cond_()
-	, sessionState_(SessionServiceStateId::None)
-    {}
-    ~GValueFixture(void)
-    {}
-
-    Condition cond_;
-    Condition cond1_;
-    SessionServiceStateId sessionState_;
-};
-
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem)
 {
 	std::cout << "ServiceSetManagerAsyncReal_MonitoredItem_t" << std::endl;
 }
 
-BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, GValueFixture)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
+	SessionServiceIfTestHandler sessionServiceIfTestHandler;
+	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
+	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
 	//
-	auto cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+	applicationCertificate->enable(true);
+
+	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
+	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
+	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
+	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
+	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
+
+	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
+	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
+
+	applicationCertificate->generateCertificate(true);
+	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
+	applicationCertificate->commonName("ASNeG-Demo");
+	applicationCertificate->domainComponent("127.0.0.1");
+	applicationCertificate->organization("ASNeG");
+	applicationCertificate->organizationUnit("OPC UA Service Department");
+	applicationCertificate->locality("Neukirchen");
+	applicationCertificate->state("Hessen");
+	applicationCertificate->country("DE");
+	applicationCertificate->yearsValidFor(5);
+	applicationCertificate->keyLength(2048);
+	applicationCertificate->certificateType("RsaSha256");
+	applicationCertificate->ipAddress().push_back("127.0.0.1");
+	applicationCertificate->dnsName().push_back("ASNeG.de");
+	applicationCertificate->email("info@ASNeG.de");
+
+	BOOST_REQUIRE(applicationCertificate->init() == true);
+	CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
+	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.secureChannelClient_->applicationCertificate(applicationCertificate);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
-	sessionServiceConfig.sessionServiceChangeHandler_ =
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState == SessionServiceStateId::Established ||
-				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
-			}
-		};
 
 	// create session
-	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	SessionService::SPtr sessionService;
+	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	cond_.condition(1,0);
+	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SS_Connect);
 
 	// create subscription service
 	SubscriptionServiceConfig subscriptionServiceConfig;
-	subscriptionServiceConfig.subscriptionStateUpdateHandler_ =
-		[this](SubscriptionState subscriptionState, uint32_t subscriptionId) {
-		};
-	subscriptionServiceConfig.dataChangeNotificationHandler_ =
-		[this](const MonitoredItemNotification::SPtr& monitoredItem) {
-			cond1_.sendEvent();
-		};
-	auto subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
+	subscriptionServiceConfig.subscriptionServiceIf_ = &subscriptionServiceIfTestHandler;
+	SubscriptionService::SPtr subscriptionService;
+	subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	auto subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
-	auto subCreateReq = subCreateTrx->request();
-	auto subCreateRes = subCreateTrx->response();
-	subCreateTrx->resultHandler(
-		[this](ServiceTransactionCreateSubscription::SPtr& trx) {
-			cond_.sendEvent();
-		}
-	);
-	cond_.initEvent();
+	ServiceTransactionCreateSubscription::SPtr subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
+	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
+	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
+	subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
 	subscriptionService->asyncSend(subCreateTrx);
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
 	uint32_t subscriptionId = subCreateRes->subscriptionId();
 
 	// create monitored item service
 	MonitoredItemServiceConfig monitoredItemServiceConfig;
-	auto monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
+	monitoredItemServiceConfig.monitoredItemServiceIf_ = &monitoredItemServiceIfTestHandler;
+	MonitoredItemService::SPtr monitoredItemService;
+	monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
-	auto monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
-	auto monCreateReq = monCreateTrx->request();
-	auto monCreateRes = monCreateTrx->response();
+	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
+	CreateMonitoredItemsRequest::SPtr monCreateReq = monCreateTrx->request();
+	CreateMonitoredItemsResponse::SPtr monCreateRes = monCreateTrx->response();
 	monCreateReq->subscriptionId(subscriptionId);
 
-	auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
 	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(2258,0);
 	monitoredItemCreateRequest->requestedParameters().clientHandle(2258);
 
 	monCreateReq->itemsToCreate()->resize(1);
 	monCreateReq->itemsToCreate()->set(0, monitoredItemCreateRequest);
-	cond1_.initEvent();
-	cond_.initEvent();
-	monCreateTrx->resultHandler(
-		[this](ServiceTransactionCreateMonitoredItems::SPtr& trx) {
-			cond_.sendEvent();
-		}
-	);
+	subscriptionServiceIfTestHandler.dataChangeNotification_.condition(1, 0);
+	monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.condition(1,0);
 	monitoredItemService->asyncSend(monCreateTrx);
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(monCreateTrx->statusCode() == Success);
 	BOOST_REQUIRE(monCreateRes->results()->size() == 1);
 
@@ -120,24 +119,19 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 	BOOST_REQUIRE(createMonResult->statusCode() == Success);
 	uint32_t monitoredItemId = createMonResult->monitoredItemId();
 
-	BOOST_REQUIRE(cond1_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(subscriptionServiceIfTestHandler.dataChangeNotification_.waitForCondition(1000) == true);
 
 
 	// delete monitored item
-	auto monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
-	auto monDeleteReq = monDeleteTrx->request();
+	ServiceTransactionDeleteMonitoredItems::SPtr monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
+	DeleteMonitoredItemsRequest::SPtr monDeleteReq = monDeleteTrx->request();
 	monDeleteReq->subscriptionId(subscriptionId);
 
 	monDeleteReq->monitoredItemIds()->resize(1);
 	monDeleteReq->monitoredItemIds()->set(0, createMonResult->monitoredItemId());
-	cond_.initEvent();
-	monDeleteTrx->resultHandler(
-		[this](ServiceTransactionDeleteMonitoredItems::SPtr& trx) {
-			cond_.sendEvent();
-		}
-	);
+	monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.condition(1,0);
 	monitoredItemService->asyncSend(monDeleteTrx);
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(monDeleteTrx->statusCode() == Success);
 
 	DeleteMonitoredItemsResponse::SPtr monDeleteRes = monDeleteTrx->response();
@@ -147,112 +141,126 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete, 
 	BOOST_REQUIRE(statusCode == Success);
 
 	// delete subscription
-	auto subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
-	auto subDeleteReq = subDeleteTrx->request();
-	auto subDeleteRes = subDeleteTrx->response();
+	ServiceTransactionDeleteSubscriptions::SPtr subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+	DeleteSubscriptionsRequest::SPtr subDeleteReq = subDeleteTrx->request();
+	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subscriptionId);
-	subDeleteTrx->resultHandler(
-		[this](ServiceTransactionDeleteSubscriptions::SPtr& trx) {
-			cond_.sendEvent();
-		}
-	);
-	cond_.initEvent();
+	subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.condition(1,0);
 	subscriptionService->asyncSend(subDeleteTrx);
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
 	subDeleteRes->results()->get(0, statusCode);
 	BOOST_REQUIRE(statusCode == Success);
 
 	// disconnect secure channel
-	cond_.condition(1,0);
+	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SS_Disconnect);
 }
 
 
-BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GValueFixture)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change)
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
+	SessionServiceIfTestHandler sessionServiceIfTestHandler;
+	SubscriptionServiceIfTestHandler subscriptionServiceIfTestHandler;
+	MonitoredItemServiceIfTestHandler monitoredItemServiceIfTestHandler;
 
 	//
 	// init certificate and crypto manager
 	//
-	auto cryptoManager = CryptoManagerTest::getInstance();
-	BOOST_REQUIRE(cryptoManager.get() != nullptr);
+	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+	applicationCertificate->enable(true);
+
+	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
+	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
+	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
+	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
+	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
+
+	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
+	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
+
+	applicationCertificate->generateCertificate(true);
+	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
+	applicationCertificate->commonName("ASNeG-Demo");
+	applicationCertificate->domainComponent("127.0.0.1");
+	applicationCertificate->organization("ASNeG");
+	applicationCertificate->organizationUnit("OPC UA Service Department");
+	applicationCertificate->locality("Neukirchen");
+	applicationCertificate->state("Hessen");
+	applicationCertificate->country("DE");
+	applicationCertificate->yearsValidFor(5);
+	applicationCertificate->keyLength(2048);
+	applicationCertificate->certificateType("RsaSha256");
+	applicationCertificate->ipAddress().push_back("127.0.0.1");
+	applicationCertificate->dnsName().push_back("ASNeG.de");
+	applicationCertificate->email("info@ASNeG.de");
+
+	BOOST_REQUIRE(applicationCertificate->init() == true);
+	CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
 
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
+	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.secureChannelClient_->applicationCertificate(applicationCertificate);
 	sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
-	sessionServiceConfig.sessionServiceChangeHandler_ =
-		[this] (SessionBase& session, SessionServiceStateId sessionState) {
-			if (sessionState == SessionServiceStateId::Established ||
-				sessionState == SessionServiceStateId::Disconnected) {
-				sessionState_ = sessionState;
-				cond_.sendEvent();
-			}
-		};
 
 	// create session
-	auto sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	SessionService::SPtr sessionService;
+	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	cond_.condition(1,0);
+	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncConnect();
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SS_Connect);
 
 	// create subscription service
 	SubscriptionServiceConfig subscriptionServiceConfig;
-	subscriptionServiceConfig.subscriptionStateUpdateHandler_ =
-		[this](SubscriptionState subscriptionState, uint32_t subscriptionId) {
-		};
-	subscriptionServiceConfig.dataChangeNotificationHandler_ =
-		[this](const MonitoredItemNotification::SPtr& monitoredItem) {
-			cond1_.sendEvent();
-		};
+	subscriptionServiceConfig.subscriptionServiceIf_ = &subscriptionServiceIfTestHandler;
 	SubscriptionService::SPtr subscriptionService;
 	subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	auto subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
-	auto subCreateReq = subCreateTrx->request();
-	auto subCreateRes = subCreateTrx->response();
-	subCreateTrx->resultHandler(
-		[this](ServiceTransactionCreateSubscription::SPtr& trx) {
-			cond_.sendEvent();
-		}
-	);
-	cond_.initEvent();
+	ServiceTransactionCreateSubscription::SPtr subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
+	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
+	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
+	subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
 	subscriptionService->asyncSend(subCreateTrx);
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
 	uint32_t subscriptionId = subCreateRes->subscriptionId();
 
 	// create monitored item service
 	MonitoredItemServiceConfig monitoredItemServiceConfig;
-	auto monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
+	monitoredItemServiceConfig.monitoredItemServiceIf_ = &monitoredItemServiceIfTestHandler;
+	MonitoredItemService::SPtr monitoredItemService;
+	monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
-	auto monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
-	auto monCreateReq = monCreateTrx->request();
-	auto monCreateRes = monCreateTrx->response();
+	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
+	CreateMonitoredItemsRequest::SPtr monCreateReq = monCreateTrx->request();
+	CreateMonitoredItemsResponse::SPtr monCreateRes = monCreateTrx->response();
 	monCreateReq->subscriptionId(subscriptionId);
 
-	auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
 	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(218,3);
 	monitoredItemCreateRequest->requestedParameters().clientHandle(2258);
 
 	monCreateReq->itemsToCreate()->resize(1);
 	monCreateReq->itemsToCreate()->set(0, monitoredItemCreateRequest);
-	cond1_.initEvent();
-	monitoredItemService->syncSend(monCreateTrx);
+	subscriptionServiceIfTestHandler.dataChangeNotification_.condition(1, 0);
+	monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.condition(1,0);
+	monitoredItemService->asyncSend(monCreateTrx);
+	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(monCreateTrx->statusCode() == Success);
 	BOOST_REQUIRE(monCreateRes->results()->size() == 1);
 
@@ -261,56 +269,53 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_data_change, GV
 	BOOST_REQUIRE(createMonResult->statusCode() == Success);
 	uint32_t monitoredItemId = createMonResult->monitoredItemId();
 
-	BOOST_REQUIRE(cond1_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(subscriptionServiceIfTestHandler.dataChangeNotification_.waitForCondition(1000) == true);
 
 
 	// data change
 	for (uint32_t idx=0; idx<2; idx++) {
-		cond1_.initEvent();
-		BOOST_REQUIRE(cond1_.waitForEvent(3000) == true);
+		subscriptionServiceIfTestHandler.dataChangeNotification_.initEvent();
+		BOOST_REQUIRE(subscriptionServiceIfTestHandler.dataChangeNotification_.waitForEvent(3000) == true);
 	}
 
 
 	// delete monitored item
-	auto monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
-	auto monDeleteReq = monDeleteTrx->request();
-	auto monDeleteRes = monDeleteTrx->response();
+	ServiceTransactionDeleteMonitoredItems::SPtr monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
+	DeleteMonitoredItemsRequest::SPtr monDeleteReq = monDeleteTrx->request();
 	monDeleteReq->subscriptionId(subscriptionId);
 
 	monDeleteReq->monitoredItemIds()->resize(1);
 	monDeleteReq->monitoredItemIds()->set(0, createMonResult->monitoredItemId());
-	monitoredItemService->syncSend(monDeleteTrx);
+	monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.condition(1,0);
+	monitoredItemService->asyncSend(monDeleteTrx);
+	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(monDeleteTrx->statusCode() == Success);
 
-
+	DeleteMonitoredItemsResponse::SPtr monDeleteRes = monDeleteTrx->response();
 	BOOST_REQUIRE(monDeleteRes->results()->size() == 1);
+
 	monDeleteRes->results()->get(0, statusCode);
 	BOOST_REQUIRE(statusCode == Success);
 
 	// delete subscription
-	auto subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
-	auto subDeleteReq = subDeleteTrx->request();
-	auto subDeleteRes = subDeleteTrx->response();
+	ServiceTransactionDeleteSubscriptions::SPtr subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+	DeleteSubscriptionsRequest::SPtr subDeleteReq = subDeleteTrx->request();
+	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subscriptionId);
-	subDeleteTrx->resultHandler(
-		[this](ServiceTransactionDeleteSubscriptions::SPtr& trx) {
-			cond_.sendEvent();
-		}
-	);
-	cond_.initEvent();
+	subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.condition(1,0);
 	subscriptionService->asyncSend(subDeleteTrx);
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
 	subDeleteRes->results()->get(0, statusCode);
 	BOOST_REQUIRE(statusCode == Success);
 
 	// disconnect secure channel
-	cond_.condition(1,0);
+	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
 	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(cond_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SS_Disconnect);
 }
 
 

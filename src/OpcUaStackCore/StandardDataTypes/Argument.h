@@ -1,13 +1,19 @@
 /*
-    DataTypeClass: Argument
+   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
 
-    Generated Source Code - please do not change this source code
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
 
-    DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-    Autor:     Kai Huebl (kai@huebl-sgh.de)
-*/
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+ */
 
 #ifndef __OpcUaStackCore_Argument_h__
 #define __OpcUaStackCore_Argument_h__
@@ -15,72 +21,54 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
-    
-    class DLLEXPORT Argument
-    : public Object
-    , public ExtensionObjectBase
-    {
-      public:
-        typedef boost::shared_ptr<Argument> SPtr;
-        typedef std::vector<Argument::SPtr> Vec;
-    
-        Argument(void);
-        Argument(const Argument& value);
-        virtual ~Argument(void);
-        
-        OpcUaString& name(void);
-        OpcUaNodeId& dataType(void);
-        OpcUaInt32& valueRank(void);
-        OpcUaUInt32Array& arrayDimensions(void);
-        OpcUaLocalizedText& description(void);
-        
-        //- ExtensionObjectBase -----------------------------------------------
-        virtual ExtensionObjectBase::SPtr factory(void);
-        virtual std::string namespaceName(void);
-        virtual std::string typeName(void);
-        virtual OpcUaNodeId typeId(void);
-        virtual OpcUaNodeId binaryTypeId(void);
-        virtual OpcUaNodeId xmlTypeId(void);
-        virtual OpcUaNodeId jsonTypeId(void);
-        virtual void opcUaBinaryEncode(std::ostream& os) const;
-        virtual void opcUaBinaryDecode(std::istream& is);
-        virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
-        virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
-        virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-        virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
-        virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
-        virtual void out(std::ostream& os);
-        //- ExtensionObjectBase -----------------------------------------------
-        
-        virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const;
-        virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt);
-        
-        void copyTo(Argument& value);
-        bool operator==(const Argument& value);
-        bool operator!=(const Argument& value);
-        Argument& operator=(const Argument& value);
-    
-      private:
-        OpcUaString name_; //!< The name of the argument.
-        OpcUaNodeId dataType_; //!< The data type of the argument.
-        OpcUaInt32 valueRank_; //!< Whether the argument is an array type and the rank of the array if it is.
-        OpcUaUInt32Array arrayDimensions_; //!< The number of dimensions if the argument is an array type and one or more dimensions have a fixed length.
-        OpcUaLocalizedText description_; //!< The description for the argument.
-    
-    };
-    
-    class DLLEXPORT ArgumentArray
-    : public OpcUaArray<Argument::SPtr, SPtrTypeCoder<Argument> >
-    , public Object
-    {
-      public:
-    	   typedef boost::shared_ptr<ArgumentArray> SPtr;
-    };
+
+	class DLLEXPORT Argument
+	: public Object
+	, public ExtensionObjectBase
+	{
+	  public:
+		typedef boost::shared_ptr<Argument> SPtr;
+
+		Argument(void);
+		virtual ~Argument(void);
+
+		OpcUaString& name(void);
+		OpcUaNodeId& dataType(void);
+		OpcUaInt32& valueRank(void);
+		OpcUaUInt32Array::SPtr& arrayDimensions(void);
+		OpcUaLocalizedText& description(void);
+
+		void copyTo(Argument& argument);
+		bool operator==(const Argument& argument) const;
+
+		//- ExtensionObjectBase -----------------------------------------------
+		virtual ExtensionObjectBase::SPtr factory(void);
+		virtual OpcUaNodeId binaryTypeId(void);
+		virtual OpcUaNodeId xmlTypeId(void);
+		virtual void opcUaBinaryEncode(std::ostream& os) const;
+		virtual void opcUaBinaryDecode(std::istream& is);
+		virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
+		virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+		virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+		virtual void out(std::ostream& os);
+		//- ExtensionObjectBase -----------------------------------------------
+
+	  private:
+		OpcUaString name_;
+		OpcUaNodeId dataType_;
+		OpcUaInt32 valueRank_;
+		OpcUaUInt32Array::SPtr arrayDimensions_;
+		OpcUaLocalizedText description_;
+	};
 
 }
 

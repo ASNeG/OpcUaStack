@@ -1,18 +1,5 @@
 #!/bin/bash
 
-#
-# Local test:
-#
-# Normal test:
-#   sh build.sh -t tst -s ~/.ASNeG/
-#
-# Enable real server test: 
-#   sh build.sh -t tst -s ~/.ASNeG/ --test-with-server opc.tcp://127.0.0.1:8889   
-#
-# Enable MQTT:
-#   export USE_MOSQUITTO_CLIENT=1
-#
-
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
@@ -45,7 +32,6 @@ usage()
    echo ""
    echo "--build-type, -B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type"
    echo "--test-with-server URI:  build client test for real OPC UA server. By default, empty "
-
 }
 
 
@@ -435,7 +421,6 @@ case $key in
     shift # past flag
     shift # past value
     ;;
-
     *)    # unknown option
     shift # past argument
     ;;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -53,7 +53,7 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	ViewDescription::timestamp(const OpcUaUtcTime& timestamp)
+	ViewDescription::timestamp(const UtcTime& timestamp)
 	{
 		timestamp_ = timestamp;
 	}
@@ -64,7 +64,7 @@ namespace OpcUaStackCore
 		timestamp_.dateTime(timestamp);
 	}
 	
-	OpcUaUtcTime&
+	UtcTime& 
 	ViewDescription::timestamp(void)
 	{
 		return timestamp_;
@@ -80,14 +80,6 @@ namespace OpcUaStackCore
 	ViewDescription::viewVersion(void)
 	{
 		return viewVersion_;
-	}
-
-	void
-	ViewDescription::copyTo(ViewDescription& viewDescription)
-	{
-		viewIdSPtr_->copyTo(*viewDescription.viewId().get());
-		timestamp_.copyTo(viewDescription.timestamp());
-		viewDescription.viewVersion(viewVersion_);
 	}
 
 	void 

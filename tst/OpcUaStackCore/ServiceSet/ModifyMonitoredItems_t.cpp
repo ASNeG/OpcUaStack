@@ -4,8 +4,6 @@
 #include "OpcUaStackCore/ServiceSet/ModifyMonitoredItemsResponse.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
-#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
-#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
@@ -228,9 +226,9 @@ BOOST_AUTO_TEST_CASE(ModifyMonitoredItems_Response)
 	
 	// build MonitoredItemModifyResult
 	monitoredItemModifyResultSPtr = constructSPtr<MonitoredItemModifyResult>();
-	monitoredItemModifyResultSPtr->statusCode().enumeration(Success);
-	monitoredItemModifyResultSPtr->revisedSamplingInterval() = 500;
-	monitoredItemModifyResultSPtr->revisedQueueSize() = 1;
+	monitoredItemModifyResultSPtr->statusCode((OpcUaStatusCode)Success);
+	monitoredItemModifyResultSPtr->revisedSamplingInterval(500);
+	monitoredItemModifyResultSPtr->revisedQueueSize(1);
 	modifyMonitoredItemsResponseSPtr->results()->set(monitoredItemModifyResultSPtr);
 
 	// encode ModifyMonitoredItemsResponse

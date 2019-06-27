@@ -1,5 +1,5 @@
 /*
-   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,6 +30,7 @@ namespace OpcUaStackServer
 	: applicationServiceIf_(nullptr)
 	, config_(nullptr)
 	, applicationInfo_(nullptr)
+	, applicationCertificate_()
 	, cryptoManager_()
 	{
 	}
@@ -72,6 +73,18 @@ namespace OpcUaStackServer
 	ApplicationData::applicationInfo(void)
 	{
 		return applicationInfo_;
+	}
+
+	void
+	ApplicationData::applicationCertificate(const ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
+	}
+
+	ApplicationCertificate::SPtr&
+	ApplicationData::applicationCertificate(void)
+	{
+		return applicationCertificate_;
 	}
 
 	void
@@ -147,6 +160,18 @@ namespace OpcUaStackServer
 	ApplicationIf::applicationInfo(void)
 	{
 		return applicationData_->applicationInfo();
+	}
+
+	void
+	ApplicationIf::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationData_->applicationCertificate(applicationCertificate);
+	}
+
+	ApplicationCertificate::SPtr&
+	ApplicationIf::applicationCertificate(void)
+	{
+		return applicationData_->applicationCertificate();
 	}
 
 	void

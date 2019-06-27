@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,8 @@
 #ifndef __OpcUaStackServer_BaseNodeClass_h__
 #define __OpcUaStackServer_BaseNodeClass_h__
 
-#include <boost/weak_ptr.hpp>
 #include <vector>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
@@ -42,8 +42,7 @@ namespace OpcUaStackServer
 		typedef std::vector<BaseNodeClass::SPtr> Vec;
 
 		BaseNodeClass(void);
-		BaseNodeClass(NodeClass::Enum nodeClass);
-		BaseNodeClass(NodeClass::Enum nodeClass, OpcUaNodeId& nodeId, BaseNodeClass* baseNodeClass);
+		BaseNodeClass(NodeClassType nodeClass);
 		virtual ~BaseNodeClass(void);
 
 		NodeIdAttribute& nodeId(void);

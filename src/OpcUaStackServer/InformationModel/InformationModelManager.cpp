@@ -228,7 +228,7 @@ namespace OpcUaStackServer
 
 	bool
 	InformationModelManager::addNode(
-		NodeClass::Enum nodeClassType,
+		NodeClassType nodeClassType,
 		AddNodeRule& addNodeRule,
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& nodeId,
@@ -240,7 +240,7 @@ namespace OpcUaStackServer
 	{
 		switch (nodeClassType)
 		{
-			case NodeClass::EnumObject:
+			case NodeClassType_Object:
 			{
 				return addObjectNode(
 					addNodeRule,
@@ -253,7 +253,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClass::EnumVariable:
+			case NodeClassType_Variable:
 			{
 				return addVariableNode(
 					addNodeRule,
@@ -266,7 +266,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClass::EnumMethod:
+			case NodeClassType_Method:
 			{
 				return addMethodNode(
 					parentNodeId,
@@ -276,7 +276,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClass::EnumObjectType:
+			case NodeClassType_ObjectType:
 			{
 				return addObjectTypeNode(
 					parentNodeId,
@@ -286,7 +286,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClass::EnumVariableType:
+			case NodeClassType_VariableType:
 			{
 				return addVariableTypeNode(
 					parentNodeId,
@@ -296,7 +296,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClass::EnumDataType:
+			case NodeClassType_DataType:
 			{
 				return addDataTypeNode(
 					parentNodeId,
@@ -306,7 +306,7 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
-			case NodeClass::EnumReferenceType:
+			case NodeClassType_ReferenceType:
 			{
 				return addReferenceTypeNode(
 					parentNodeId,
@@ -998,12 +998,12 @@ namespace OpcUaStackServer
 		for (uint32_t idx=0; idx<childBaseNodeClassVec.size(); idx++) {
 			BaseNodeClass::SPtr childBaseNodeClass = childBaseNodeClassVec[idx];
 
-			NodeClass::Enum nodeClassType;
+			NodeClassType nodeClassType;
 			childBaseNodeClass->getNodeClass(nodeClassType);
 
-			if (nodeClassType != NodeClass::EnumObject &&
-				nodeClassType != NodeClass::EnumVariable &&
-				nodeClassType != NodeClass::EnumMethod) {
+			if (nodeClassType != NodeClassType_Object &&
+				nodeClassType != NodeClassType_Variable &&
+				nodeClassType != NodeClassType_Method) {
 				continue;
 			}
 
@@ -1032,7 +1032,7 @@ namespace OpcUaStackServer
 
 			switch (nodeClassType)
 			{
-				case NodeClass::EnumObject:
+				case NodeClassType_Object:
 				{
 					bool success = addObjectNode(
 						addNodeRule,
@@ -1043,7 +1043,7 @@ namespace OpcUaStackServer
 					if (!success) return false;
 					break;
 				}
-				case NodeClass::EnumVariable:
+				case NodeClassType_Variable:
 				{
 					bool success = addVariableNode(
 						addNodeRule,
@@ -1054,7 +1054,7 @@ namespace OpcUaStackServer
 					if (!success) return false;
 					break;
 				}
-				case NodeClass::EnumMethod:
+				case NodeClassType_Method:
 				{
 					bool success = addMethodNode(
 						addNodeRule,

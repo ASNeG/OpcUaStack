@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,10 @@
 #ifndef __OpcUaStackClient_QueryService_h__
 #define __OpcUaStackClient_QueryService_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/QueryServiceTransaction.h"
+#include "OpcUaStackClient/ServiceSet/QueryServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -35,9 +37,11 @@ namespace OpcUaStackClient
 		~QueryService(void);
 
 		void setConfiguration(
-			Component* componentSession
+			Component* componentSession,
+			QueryServiceIf* queryServiceIf
 		);
 		void componentSession(Component* componentSession);
+		void queryServiceIf(QueryServiceIf* queryServiceIf);
 
 		void syncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
 		void asyncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
@@ -50,6 +54,8 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
+
+		QueryServiceIf* queryServiceIf_;
 	};
 
 }

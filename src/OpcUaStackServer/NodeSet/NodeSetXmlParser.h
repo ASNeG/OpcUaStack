@@ -22,7 +22,7 @@
 #include <sstream>
 #include <boost/lexical_cast.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/NodeSet/NodeSetBaseParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
@@ -91,7 +91,7 @@ namespace OpcUaStackServer
 		bool enableDefinition_;
 		NodeSetAlias nodeSetAlias_;
 		NodeSetValueParser nodeSetValueParser_;
-		Xmlns xmlns_;
+		std::string xmlnsTypes_;
 		NodeSetNamespace nodeSetNamespace_;
 	};
 

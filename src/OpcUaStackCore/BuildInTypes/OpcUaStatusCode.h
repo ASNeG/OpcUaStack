@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,8 +19,9 @@
 #define __OpcUaStackCore_OpcUaStatusCode_h__
 
 #include <iostream>
-#include <map>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include <map>
 
 namespace OpcUaStackCore
 {
@@ -48,7 +49,6 @@ namespace OpcUaStackCore
 		BadTooManyMonitoredItems =				0x80DB0000,
 		BadDataTypeIdUnknown =					0x80110000,
 		BadCertificateInvalid =					0x80120000,
-		BadCertificateChainIncomplete =			0x810D0000,
 		BadSecurityChecksFailed =				0x80130000,
 		BadCertificateTimeInvalid =				0x80140000,
 		BadCertificateIssuerTimeInvalid =		0x80150000,
@@ -260,8 +260,6 @@ namespace OpcUaStackCore
 		static std::string longString(OpcUaStatusCode statusCode);
 		static OpcUaStatusCode statusCode(const std::string& statusCodeString);
 		static void getStatusCodeVec(std::vector<std::string>& statusCodeVec);
-		static bool exist(OpcUaStatusCode statusCode);
-		static bool exist(const std::string& statusCodeString);
 
 	  private:
 		static void initial(void);
@@ -276,7 +274,7 @@ namespace OpcUaStackCore
 		~OpcUaStatusCodeMap(void);
 	};
 
-	class DLLEXPORT OpcUaStatusCodeArray
+	class OpcUaStatusCodeArray
 	: public OpcUaArray<OpcUaStatusCode, EnumTypeCoder<OpcUaStatusCode> >
 	{
 	  public:

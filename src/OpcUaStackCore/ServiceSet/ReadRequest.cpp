@@ -30,7 +30,6 @@ namespace OpcUaStackCore
 
 	ReadRequest::ReadRequest(void)
 	: Object()
-	, JsonFormatter()
 	, maxAge_()
 	, timestampsToReturn_()
 	, readValueIdArraySPtr_(constructSPtr<ReadValueIdArray>())
@@ -93,26 +92,6 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, timestampsToReturn_);
 		readValueIdArraySPtr_->opcUaBinaryDecode(is);
 		return true;
-	}
-
-	bool
-	ReadRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
-	{
-		auto rc = true;
-		rc = rc & jsonNumberEncode(pt, maxAge_, "MaxAge", true, (OpcUaDouble)0);
-		rc = rc & jsonNumberEncode(pt, timestampsToReturn_, "TimestampsToReturn", true, (OpcUaInt32)2);
-		rc = rc & jsonArraySPtrEncode(pt, readValueIdArraySPtr_, "NodesToRead");
-		return rc;
-	}
-
-	bool
-	ReadRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
-	{
-		auto rc = true;
-		rc = rc & jsonNumberDecode(pt, maxAge_, "MaxAge", true, (OpcUaDouble)0);
-		rc = rc & jsonNumberDecode(pt, timestampsToReturn_, "TimestampsToReturn", true, (OpcUaInt32)2);
-		rc = rc & jsonArraySPtrDecode(pt, readValueIdArraySPtr_, "NodesToRead");
-		return rc;
 	}
 
 }

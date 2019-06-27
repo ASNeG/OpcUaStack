@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -114,7 +114,7 @@ namespace OpcUaStackServer
 			case AttributeId_NodeClass:
 			{
 				if (!isPartNodeClass()) return false;
-			    NodeClass::Enum nodeClassType = variant->variantSPtr<NodeClass>()->enumeration();
+			    NodeClassType nodeClassType = variant->variantSPtr<NodeClass>()->nodeClassType();
 				return setNodeClass(nodeClassType);
 			}
 			case AttributeId_BrowseName:
@@ -493,14 +493,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setNodeClassSync(NodeClass::Enum& nodeClass)
+	AttributeBase::setNodeClassSync(NodeClassType& nodeClass)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setNodeClass(nodeClass);
 	}
 
 	bool
-	AttributeBase::setNodeClass(NodeClass::Enum& nodeClass)
+	AttributeBase::setNodeClass(NodeClassType& nodeClass)
 	{
 		if (!isPartNodeClass()) return false;
 		NodeClassAttribute* attr = reinterpret_cast<NodeClassAttribute*>(nodeClassAttribute());
@@ -510,14 +510,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::getNodeClassSync(NodeClass::Enum& nodeClass)
+	AttributeBase::getNodeClassSync(NodeClassType& nodeClass)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return getNodeClass(nodeClass);
 	}
 
 	bool
-	AttributeBase::getNodeClass(NodeClass::Enum& nodeClass)
+	AttributeBase::getNodeClass(NodeClassType& nodeClass)
 	{
 		if (!isPartNodeClass()) return false;
 
@@ -541,7 +541,7 @@ namespace OpcUaStackServer
 		return (nodeClassAttribute() != nullptr);
 	}
 
-	boost::optional<NodeClass::Enum&>
+	boost::optional<NodeClassType&>
 	AttributeBase::getNodeClass(void)
 	{
 		if (isNullNodeClass()) return boost::none;
@@ -643,18 +643,18 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setDisplayNameSync(const OpcUaLocalizedText& displayName)
+	AttributeBase::setDisplayNameSync(OpcUaLocalizedText& displayName)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
 		return setDisplayName(displayName);
 	}
 
 	bool
-	AttributeBase::setDisplayName(const OpcUaLocalizedText& displayName)
+	AttributeBase::setDisplayName(OpcUaLocalizedText& displayName)
 	{
 		if (!isPartDisplayName()) return false;
 		DisplayNameAttribute* attr = reinterpret_cast<DisplayNameAttribute*>(displayNameAttribute());
-		const_cast<OpcUaLocalizedText*>(&displayName)->copyTo(attr->data());
+		displayName.copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}

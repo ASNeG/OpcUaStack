@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaDataTime)
 	std::cout << std::endl;
 
 	value2.xmlDecode(pt, xmlns);
-	BOOST_REQUIRE(value1.toISO8601() == value2.toISO8601());
+	BOOST_REQUIRE(value2.dateTime() == now);
 }
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaGuid)
@@ -371,10 +371,10 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_ExtensionObject)
 	argument1 = value1.parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
 	argument1->name().value("ArgumentName");
 	argument1->dataType().set("NodeName", 23);
-	argument1->arrayDimensions().resize(3);
-	argument1->arrayDimensions().set(0, 123);
-	argument1->arrayDimensions().set(1, 456);
-	argument1->arrayDimensions().set(2, 789);
+	argument1->arrayDimensions()->resize(3);
+	argument1->arrayDimensions()->set(0, 123);
+	argument1->arrayDimensions()->set(1, 456);
+	argument1->arrayDimensions()->set(2, 789);
 	argument1->description().set("de", "Description");
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
@@ -388,86 +388,6 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_ExtensionObject)
 	BOOST_REQUIRE(argument2->name().toStdString() == "ArgumentName");
 	BOOST_REQUIRE(argument2->dataType() == OpcUaNodeId("NodeName", 23));
 	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
-}
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_DataValue)
-{
-	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
-
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaDataValue value1, value2;
-
-	value1.variant()->set((OpcUaInt32)12345);
-	value1.statusCode(BadNoData);
-	value1.sourceTimestamp(OpcUaDateTime(now));
-	value1.serverTimestamp(OpcUaDateTime(now));
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	BOOST_REQUIRE(value2.variant()->get<OpcUaInt32>() == 12345);
-	BOOST_REQUIRE(value2.serverTimestamp().toISO8601() == value1.serverTimestamp().toISO8601());
-	BOOST_REQUIRE(value2.sourceTimestamp().toISO8601() == value2.sourceTimestamp().toISO8601());
-}
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_DiagnosticInfo)
-{
-	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
-
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaDiagnosticInfo value1, value2;
-
-	value1.setSymbolicId(123);
-	value1.setNamespaceUri(456);
-	value1.setAdditionalInfo(OpcUaString("AdditionalInfo"));
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	BOOST_REQUIRE(value2.getSymbolicId() == 123);
-	BOOST_REQUIRE(value2.getNamespaceUri() == 456);
-	BOOST_REQUIRE(value2.getAdditionalInfo() == OpcUaString("AdditionalInfo"));
-}
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_DiagnosticInfo_nested)
-{
-	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
-
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaDiagnosticInfo value1, value2;
-	OpcUaDiagnosticInfo::SPtr nested1, nested2;
-
-	nested1 = constructSPtr<OpcUaDiagnosticInfo>();
-	nested1->setSymbolicId(111);
-	nested1->setNamespaceUri(111);
-	nested1->setAdditionalInfo(OpcUaString("AdditionalInfo111"));
-
-	value1.setSymbolicId(123);
-	value1.setNamespaceUri(456);
-	value1.setAdditionalInfo(OpcUaString("AdditionalInfo"));
-	value1.diagnosticInfo(nested1);
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	BOOST_REQUIRE(value2.getSymbolicId() == 123);
-	BOOST_REQUIRE(value2.getNamespaceUri() == 456);
-	BOOST_REQUIRE(value2.getAdditionalInfo() == OpcUaString("AdditionalInfo"));
-	BOOST_REQUIRE(value2.diagnosticInfo()->getSymbolicId() == 111);
-	BOOST_REQUIRE(value2.diagnosticInfo()->getNamespaceUri() == 111);
-	BOOST_REQUIRE(value2.diagnosticInfo()->getAdditionalInfo() == OpcUaString("AdditionalInfo111"));
 }
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_OpcUaBoolean)
@@ -687,7 +607,7 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_DateTime)
 	std::cout << std::endl;
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	BOOST_REQUIRE(value2.get<OpcUaDateTime>().toISO8601() == value1.get<OpcUaDateTime>().toISO8601());
+	BOOST_REQUIRE(value2.get<OpcUaDateTime>().dateTime() == now);
 }
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ByteString)
@@ -835,10 +755,10 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExtensionObject)
 	argument1 = extentionObject1->parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
 	argument1->name().value("ArgumentName");
 	argument1->dataType().set("NodeName", 23);
-	argument1->arrayDimensions().resize(3);
-	argument1->arrayDimensions().set(0, 123);
-	argument1->arrayDimensions().set(1, 456);
-	argument1->arrayDimensions().set(2, 789);
+	argument1->arrayDimensions()->resize(3);
+	argument1->arrayDimensions()->set(0, 123);
+	argument1->arrayDimensions()->set(1, 456);
+	argument1->arrayDimensions()->set(2, 789);
 	argument1->description().set("de", "Description");
 	value1.variant(extentionObject1);
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
@@ -856,71 +776,28 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExtensionObject)
 	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
 }
 
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Variant_DataValue)
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_DataValue)
 {
 	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
 
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
-	OpcUaDataValue::SPtr dataValue1, dataValue2;
-	OpcUaVariant value1, value2;
+	OpcUaDataValue value1, value2;
 
-	dataValue1 = constructSPtr<OpcUaDataValue>();
-	dataValue1->variant()->set((OpcUaInt32)12345);
-	dataValue1->statusCode(BadNoData);
-	dataValue1->sourceTimestamp(OpcUaDateTime(now));
-	dataValue1->serverTimestamp(OpcUaDateTime(now));
-	value1.setValue(*dataValue1);
+	value1.variant()->set((OpcUaInt32)12345);
+	value1.statusCode(BadNoData);
+	value1.sourceTimestamp(OpcUaDateTime(now));
+	value1.serverTimestamp(OpcUaDateTime(now));
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
 	xml.ptree(pt);
 	xml.write(std::cout);
 	std::cout << std::endl;
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	dataValue2 = value2.variantSPtr<OpcUaDataValue>();
-	BOOST_REQUIRE(dataValue2->variant()->get<OpcUaInt32>() == 12345);
-	BOOST_REQUIRE(dataValue2->statusCode() == BadNoData);
-	BOOST_REQUIRE(dataValue2->serverTimestamp().toISO8601() == dataValue1->serverTimestamp().toISO8601());
-	BOOST_REQUIRE(dataValue2->sourceTimestamp().toISO8601() == dataValue2->sourceTimestamp().toISO8601());
-}
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Variant_DiagnosticInfo)
-{
-	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
-
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaDiagnosticInfo::SPtr diagnosticInfo1, diagnosticInfo2;
-	OpcUaDiagnosticInfo::SPtr nested1, nested2;
-	OpcUaVariant value1, value2;
-
-	nested1 = constructSPtr<OpcUaDiagnosticInfo>();
-	nested1->setSymbolicId(111);
-	nested1->setNamespaceUri(111);
-	nested1->setAdditionalInfo(OpcUaString("AdditionalInfo111"));
-
-	diagnosticInfo1 = constructSPtr<OpcUaDiagnosticInfo>();
-	diagnosticInfo1->setSymbolicId(123);
-	diagnosticInfo1->setNamespaceUri(456);
-	diagnosticInfo1->setAdditionalInfo(OpcUaString("AdditionalInfo"));
-	diagnosticInfo1->diagnosticInfo(nested1);
-
-	value1.setValue(*diagnosticInfo1);
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	diagnosticInfo2 = value2.variantSPtr<OpcUaDiagnosticInfo>();
-	BOOST_REQUIRE(diagnosticInfo2->getSymbolicId() == 123);
-	BOOST_REQUIRE(diagnosticInfo2->getNamespaceUri() == 456);
-	BOOST_REQUIRE(diagnosticInfo2->getAdditionalInfo() == OpcUaString("AdditionalInfo"));
-	BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getSymbolicId() == 111);
-	BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getNamespaceUri() == 111);
-	BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getAdditionalInfo() == OpcUaString("AdditionalInfo111"));
+	BOOST_REQUIRE(value2.variant()->get<OpcUaInt32>() == 12345);
+	BOOST_REQUIRE(value2.serverTimestamp().dateTime() == now);
+	BOOST_REQUIRE(value2.sourceTimestamp().dateTime() == now);
 }
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_OpcUaBoolean)
@@ -1185,7 +1062,7 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_DateTime)
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
 	for (uint32_t idx=0; idx<10; idx++) {
-		BOOST_REQUIRE(value2.get<OpcUaDateTime>(idx).toISO8601() == value1.get<OpcUaDateTime>(idx).toISO8601());
+		BOOST_REQUIRE(value2.get<OpcUaDateTime>(idx) == now);
 	}
 }
 
@@ -1375,10 +1252,10 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_ExtensionObject)
 		argument = extentionObject->parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
 		argument->name().value("ArgumentName");
 		argument->dataType().set("NodeName", 23);
-		argument->arrayDimensions().resize(3);
-		argument->arrayDimensions().set(0, 123);
-		argument->arrayDimensions().set(1, 456);
-		argument->arrayDimensions().set(2, 789);
+		argument->arrayDimensions()->resize(3);
+		argument->arrayDimensions()->set(0, 123);
+		argument->arrayDimensions()->set(1, 456);
+		argument->arrayDimensions()->set(2, 789);
 		argument->description().set("de", "Description");
 		value1.pushBack(extentionObject);
 	}
@@ -1397,82 +1274,6 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_ExtensionObject)
 		BOOST_REQUIRE(argument->name().toStdString() == "ArgumentName");
 		BOOST_REQUIRE(argument->dataType() == OpcUaNodeId("NodeName", 23));
 		BOOST_REQUIRE(argument->description() == OpcUaLocalizedText("de", "Description"));
-	}
-}
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Variant_Array_DataValue)
-{
-	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
-
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaDataValue::SPtr dataValue1, dataValue2;
-	OpcUaVariant value1, value2;
-
-	for (uint32_t idx=0; idx<10; idx++) {
-		dataValue1 = constructSPtr<OpcUaDataValue>();
-		dataValue1->variant()->set((OpcUaInt32)12345);
-		dataValue1->statusCode(BadNoData);
-		dataValue1->sourceTimestamp(OpcUaDateTime(now));
-		dataValue1->serverTimestamp(OpcUaDateTime(now));
-		value1.pushBack(dataValue1);
-	}
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	for (uint32_t idx=0; idx<10; idx++) {
-		dataValue2 = value2.variantSPtr<OpcUaDataValue>(idx);
-		BOOST_REQUIRE(dataValue2->variant()->get<OpcUaInt32>() == 12345);
-		BOOST_REQUIRE(dataValue2->statusCode() == BadNoData);
-		BOOST_REQUIRE(dataValue2->serverTimestamp().toISO8601() == dataValue1->serverTimestamp().toISO8601());
-		BOOST_REQUIRE(dataValue2->sourceTimestamp().toISO8601() == dataValue2->sourceTimestamp().toISO8601());
-	}
-}
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Variant_Array_DiagnosticInfo)
-{
-	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
-
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaDiagnosticInfo::SPtr diagnosticInfo1, diagnosticInfo2;
-	OpcUaDiagnosticInfo::SPtr nested1, nested2;
-	OpcUaVariant value1, value2;
-
-	for (uint32_t idx=0; idx<10; idx++) {
-		nested1 = constructSPtr<OpcUaDiagnosticInfo>();
-		nested1->setSymbolicId(111);
-		nested1->setNamespaceUri(111);
-		nested1->setAdditionalInfo(OpcUaString("AdditionalInfo111"));
-
-		diagnosticInfo1 = constructSPtr<OpcUaDiagnosticInfo>();
-		diagnosticInfo1->setSymbolicId(123);
-		diagnosticInfo1->setNamespaceUri(456);
-		diagnosticInfo1->setAdditionalInfo(OpcUaString("AdditionalInfo"));
-		diagnosticInfo1->diagnosticInfo(nested1);
-
-		value1.pushBack(diagnosticInfo1);
-	}
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	for (uint32_t idx=0; idx<10; idx++) {
-		diagnosticInfo2 = value2.variantSPtr<OpcUaDiagnosticInfo>(idx);
-		BOOST_REQUIRE(diagnosticInfo2->getSymbolicId() == 123);
-		BOOST_REQUIRE(diagnosticInfo2->getNamespaceUri() == 456);
-		BOOST_REQUIRE(diagnosticInfo2->getAdditionalInfo() == OpcUaString("AdditionalInfo"));
-		BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getSymbolicId() == 111);
-		BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getNamespaceUri() == 111);
-		BOOST_REQUIRE(diagnosticInfo2->diagnosticInfo()->getAdditionalInfo() == OpcUaString("AdditionalInfo111"));
 	}
 }
 

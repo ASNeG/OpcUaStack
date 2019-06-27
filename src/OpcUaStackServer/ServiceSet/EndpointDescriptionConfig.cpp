@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,8 +17,6 @@
 
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Base/Url.h"
-#include "OpcUaStackCore/Utility/Environment.h"
 
 using namespace OpcUaStackCore;
 
@@ -44,6 +42,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		std::vector<Config>::iterator it;
 		std::vector<Config> endpointDescriptionVec;
 		config->getChilds("EndpointDescription", endpointDescriptionVec);
 		if (endpointDescriptionVec.size() == 0) {
@@ -54,12 +53,11 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		for (auto it = endpointDescriptionVec.begin(); it != endpointDescriptionVec.end(); it++) {
+		for (it = endpointDescriptionVec.begin(); it != endpointDescriptionVec.end(); it++) {
 		    Config* config = &*it; 
 
 			EndpointDescription::SPtr endpointDescription = constructSPtr<EndpointDescription>();
 
-			// read endpoint url
 			if (config->getConfigParameter("EndpointUrl", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -67,22 +65,8 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "EndpointUrl");
 				return false;
 			}
-			Url endpointUrl(stringValue);
-			if (!endpointUrl.good()) {
-				Log(Error, "endpoint url invalid in configuration")
-					.parameter("ConfigurationFileName", configurationFileName)
-					.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
-					.parameter("ParameterName", "EndpointUrl")
-					.parameter("EndpointUrl", stringValue);
-				return false;
-			}
-			if (endpointUrl.isAnyAddress()) {
-				// replany address by hostname
-				endpointUrl.host(Environment::hostname());
-			}
-			endpointDescription->endpointUrl().value(endpointUrl.url());
+			endpointDescription->endpointUrl(stringValue);
 
-			// read application uri
 			if (config->getConfigParameter("ApplicationUri", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -90,9 +74,8 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "ApplicationUri");
 				return false;
 			}
-			endpointDescription->server().applicationUri().value(stringValue);
+			endpointDescription->applicationDescription()->applicationUri(stringValue);
 
-			// read product uri
 			if (config->getConfigParameter("ProductUri", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -100,9 +83,8 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "ProductUri");
 				return false;
 			}
-			endpointDescription->server().productUri().value(stringValue);
+			endpointDescription->applicationDescription()->productUri(stringValue);
 
-			// read application name
 			if (config->getConfigParameter("ApplicationName", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -110,16 +92,16 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "ApplicationName");
 				return false;
 			}
-			endpointDescription->server().applicationName().text(stringValue);
+			endpointDescription->applicationDescription()->applicationName().text(stringValue);
 
-			endpointDescription->server().applicationType().enumeration(ApplicationType::EnumServer);
+			endpointDescription->applicationDescription()->applicationType(AT_Server);
 
 			if (config->getConfigParameter("GatewayServerUri", stringValue) == true) {
-				endpointDescription->server().gatewayServerUri().value(stringValue);
+				endpointDescription->applicationDescription()->gatewayServerUri(stringValue);
 			}
 
 			if (config->getConfigParameter("DiscoveryProfileUri", stringValue) == true) {
-				endpointDescription->server().discoveryProfileUri().value(stringValue);
+				endpointDescription->applicationDescription()->discoveryProfileUri(stringValue);
 			}
 
 			std::vector<std::string> discoveryUrls;
@@ -131,11 +113,11 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "DiscoveryUrl");
 				return false;
 			}
-			endpointDescription->server().discoveryUrls().resize(discoveryUrls.size());
+			endpointDescription->applicationDescription()->discoveryUrls()->resize(discoveryUrls.size());
 			for (std::vector<std::string>::iterator it = discoveryUrls.begin(); it != discoveryUrls.end(); it++) {
 				OpcUaString::SPtr url = constructSPtr<OpcUaString>();
 				*url = *it;
-				endpointDescription->server().discoveryUrls().push_back(url);
+				endpointDescription->applicationDescription()->discoveryUrls()->push_back(url);
 			}
 
 			if (config->getConfigParameter("TransportProfileUri", stringValue) == false) {
@@ -145,7 +127,7 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "TransportProfileUri");
 				return false;
 			}
-			endpointDescription->transportProfileUri().value(stringValue);
+			endpointDescription->transportProfileUri(stringValue);
 
 			if (config->getConfigParameter("SecurityLevel", uint32Value) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
@@ -154,7 +136,7 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "SecurityLevel");
 				return false;
 			}
-			endpointDescription->securityLevel() = uint32Value;
+			endpointDescription->securityLevel(uint32Value);
 			
 			// parse user token policy
 			rc = userTokenPolicy(
@@ -176,7 +158,8 @@ namespace OpcUaStackServer
 			);
 			if (!rc) return false;
 
-			for (auto it = endpointDescriptionVec0.begin(); it != endpointDescriptionVec0.end(); it++) {
+			EndpointDescription::Vec::iterator it;
+			for (it = endpointDescriptionVec0.begin(); it != endpointDescriptionVec0.end(); it++) {
 				EndpointDescription::SPtr endpointDescriptionTmp = *it;
 				endpointDescriptionSet->addEndpoint(
 					endpointDescriptionTmp->endpointUrl(),
@@ -212,8 +195,8 @@ namespace OpcUaStackServer
 				return false;
 			}
 			if (stringValue == "http://opcfoundation.org/UA/SecurityPolicy#None") {
-				endpointDescription->securityMode().enumeration(MessageSecurityMode::EnumNone);
-				endpointDescription->securityPolicyUri().value(stringValue);
+				endpointDescription->messageSecurityMode(SM_None);
+				endpointDescription->securityPolicyUri(stringValue);
 			}
 			else {
 				Log(Error, "invalid parameter in configuration")
@@ -244,8 +227,7 @@ namespace OpcUaStackServer
 
 		std::vector<Config>::iterator it;
 		for (it = configVec.begin(); it != configVec.end(); it++) {
-			EndpointDescription::SPtr endpointDescriptionTmp = constructSPtr<EndpointDescription>();
-			endpointDescription->copyTo(*endpointDescriptionTmp);
+			EndpointDescription::SPtr endpointDescriptionTmp = constructSPtr<EndpointDescription>(*endpointDescription.get());
 			std::string stringValue;
 
 			// get security policy mode
@@ -256,7 +238,7 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "SecurityPolicyUri");
 				return false;
 			}
-			endpointDescriptionTmp->securityPolicyUri().value(stringValue);
+			endpointDescriptionTmp->securityPolicyUri(stringValue);
 			if (stringValue != "http://opcfoundation.org/UA/SecurityPolicy#None" &&
 				stringValue != "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15" &&
 				stringValue != "http://opcfoundation.org/UA/SecurityPolicy#Basic256" &&
@@ -279,9 +261,9 @@ namespace OpcUaStackServer
 				return false;
 			}
 			if (stringValue == "None") {
-				endpointDescriptionTmp->securityMode().enumeration(MessageSecurityMode::EnumNone);
+				endpointDescriptionTmp->messageSecurityMode(SM_None);
 
-				if (endpointDescriptionTmp->securityPolicyUri().value() != "http://opcfoundation.org/UA/SecurityPolicy#None") {
+				if (endpointDescriptionTmp->securityPolicyUri() != "http://opcfoundation.org/UA/SecurityPolicy#None") {
 					Log(Error, "invalid parameter in configuration")
 						.parameter("ConfigurationFileName", configurationFileName)
 						.parameter("ParameterPath", configPrefix + std::string(".SecuritySetting"))
@@ -291,10 +273,10 @@ namespace OpcUaStackServer
 				}
 			}
 			else if (stringValue == "Sign") {
-				endpointDescriptionTmp->securityMode().enumeration(MessageSecurityMode::EnumSign);
+				endpointDescriptionTmp->messageSecurityMode(SM_Sign);
 			}
 			else if (stringValue == "SignAndEncrypt") {
-				endpointDescriptionTmp->securityMode().enumeration(MessageSecurityMode::EnumSignAndEncrypt);
+				endpointDescriptionTmp->messageSecurityMode(SM_SignAndEncrypt);
 			}
 			else {
 				Log(Error, "invalid parameter in configuration")
@@ -340,16 +322,16 @@ namespace OpcUaStackServer
 		}
 
 		uint32_t idx = 0;
-		UserTokenPolicyArray& userTokenPolicyArray = endpointDescription->userIdentityTokens();
-		userTokenPolicyArray.resize(userTokenPolicyVec.size());
+		UserTokenPolicyArray::SPtr userTokenPolicyArray = constructSPtr<UserTokenPolicyArray>();
+		userTokenPolicyArray->resize(userTokenPolicyVec.size());
 		for (it = userTokenPolicyVec.begin(); it != userTokenPolicyVec.end(); it++) {
 			UserTokenPolicy::SPtr userTokenPolicy = constructSPtr<UserTokenPolicy>();
-			userTokenPolicyArray.set(idx, userTokenPolicy);
+			userTokenPolicyArray->set(idx, userTokenPolicy);
 			idx++;
 
 			// get security policy uri
 			it->getConfigParameter("SecurityPolicyUri", stringValue);
-			userTokenPolicy->securityPolicyUri().value(stringValue);
+			userTokenPolicy->securityPolicyUri(stringValue);
 
 			// get policy id
 			if (it->getConfigParameter("PolicyId", stringValue) == false) {
@@ -359,7 +341,7 @@ namespace OpcUaStackServer
 					.parameter("ParameterName", "PolicyId");
 				return false;
 			}
-			userTokenPolicy->policyId().value(stringValue);
+			userTokenPolicy->policyId(stringValue);
 
 			// get token type
 			if (it->getConfigParameter("TokenType", stringValue) == false) {
@@ -370,16 +352,16 @@ namespace OpcUaStackServer
 				return false;
 			}
 			if (stringValue == "Anonymous") {
-				userTokenPolicy->tokenType().enumeration(UserTokenType::EnumAnonymous);
+				userTokenPolicy->tokenType(UserIdentityTokenType_Anonymous);
 			}
 			else if (stringValue == "Username") {
-				userTokenPolicy->tokenType().enumeration(UserTokenType::EnumUserName);
+				userTokenPolicy->tokenType(UserIdentityTokenType_Username);
 			}
 			else if (stringValue == "Certificate") {
-				userTokenPolicy->tokenType().enumeration(UserTokenType::EnumCertificate);
+				userTokenPolicy->tokenType(UserIdentityTokenType_Certificate);
 			}
 			else if (stringValue == "IssuedToken") {
-				userTokenPolicy->tokenType().enumeration(UserTokenType::EnumIssuedToken);
+				userTokenPolicy->tokenType(UserIdentityTokenType_IssuedToken);
 			}
 			else {
 				Log(Error, "invalid parameter in configuration")
@@ -392,6 +374,7 @@ namespace OpcUaStackServer
 			
 		}
 
+		endpointDescription->userIdentityTokens(userTokenPolicyArray);
 		return true;
 	}
 

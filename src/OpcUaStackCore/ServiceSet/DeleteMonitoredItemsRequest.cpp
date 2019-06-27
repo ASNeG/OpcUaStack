@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -76,23 +76,4 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		monitoredItemIdArraySPtr_->opcUaBinaryDecode(is);
 	}
-
-	bool
-	DeleteMonitoredItemsRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
-	{
-		bool rc = true;
-		rc = rc & jsonNumberEncode(pt, subscriptionId_, "SubscriptionId");
-		rc = rc & jsonArraySPtrEncode(pt, monitoredItemIdArraySPtr_, "MonitoredItemIds");
-		return rc;
-	}
-
-	bool
-	DeleteMonitoredItemsRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
-	{
-		bool rc = true;
-		rc = rc & jsonNumberDecode(pt, subscriptionId_, "SubscriptionId");
-		rc = rc & jsonArraySPtrDecode(pt, monitoredItemIdArraySPtr_, "MonitoredItemIds");
-		return rc;
-	}
-
 }

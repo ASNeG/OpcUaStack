@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaStackServer_Server_h__
 
 #include <OpcUaStackCore/Certificate/ApplicationCertificate.h>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
@@ -47,7 +48,6 @@ namespace OpcUaStackServer
 		IOThread* ioThread(void);
 		ApplicationManager& applicationManager(void);
 		ServiceManager& serviceManager(void);
-		CryptoManager::SPtr& cryptoManager(void);
 
 	  private:
 		bool readInformationModel(void);
@@ -62,6 +62,7 @@ namespace OpcUaStackServer
 		bool initApplication(void);
 
 		EndpointDescriptionSet::SPtr endpointDescriptionSet_;
+		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 
 		IOThread::SPtr ioThread_;

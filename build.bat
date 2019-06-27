@@ -6,7 +6,7 @@ REM
 set CMAKE=cmake.exe
 
 REM ---------------------------------------------------------------------------
-REM
+REM 
 REM main
 REM
 REM ---------------------------------------------------------------------------
@@ -50,7 +50,7 @@ set JOBS=1
     if "%~1"=="/P"               set PACKAGE_TYPE=%~2
     if "%~1"=="-P"               set PACKAGE_TYPE=%~2
     if "%~1"=="--package-type"   set PACKAGE_TYPE=%~2
-
+	
     if "%~1"=="/j"               set JOBS=%~2
     if "%~1"=="-j"               set JOBS=%~2
     if "%~1"=="--jobs"           set JOBS=%~2
@@ -64,32 +64,32 @@ set ARCH="x86"
 if %VS_GENERATOR%=="" goto :set_build_suffix
 
 if /i "%VS_GENERATOR:~-6,-1%"=="Win64" set ARCH="x64"
-if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"
+if /i "%VS_GENERATOR:~-4,-1%%"=="ARM" set ARCH="arm"	
 
 :set_build_suffix
 set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
 
 if "%COMMAND%" == "" (
     call:build_local
-
+	
 	goto:error_handle
 )
 
 if "%COMMAND%" == "local" (
     call:build_local
-
+	
 	goto:error_handle
 )
 
 if "%COMMAND%" == "msi" (
     call:build_msi
-
+	
 	goto:error_handle
 )
 
 if "%COMMAND%" == "tst" (
     call:build_tst
-
+	
 	goto:error_handle
 )
 
@@ -114,7 +114,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM install OpcUaStack
 	REM
-
+    
 	set DESTDIR=%INSTALL_PREFIX%
 	%CMAKE% --build build_local_%BUILD_DIR_SUFFIX% --target install --config %BUILD_TYPE%
 goto:error_handle
@@ -134,7 +134,7 @@ REM ---------------------------------------------------------------------------
 
 	REM
 	REM package OpcUaStack to MSI
-	REM
+	REM    		
     %CMAKE% --build build_msi_%BUILD_DIR_SUFFIX% --target package --config %BUILD_TYPE%
 goto:error_handle
 
@@ -153,7 +153,7 @@ REM ---------------------------------------------------------------------------
 
 	REM
 	REM install OpcUaStack
-	REM
+	REM    
 	%CMAKE% --build build_tst_%BUILD_DIR_SUFFIX% --config %BUILD_TYPE%
 goto:error_handle
 

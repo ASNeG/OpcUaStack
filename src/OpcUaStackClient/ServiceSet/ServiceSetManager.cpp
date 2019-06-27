@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <boost/make_shared.hpp>
+
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
@@ -58,12 +58,12 @@ namespace OpcUaStackClient
 	void
 	ServiceSetManager::createIOThread(const std::string ioThreadName)
 	{
-		auto ioThread = getIOThread(ioThreadName);
+		IOThread::SPtr ioThread = getIOThread(ioThreadName);
 		if (ioThread.get() != nullptr) return;
 
 		Log(Debug, "service set manager starts io thread")
 		    .parameter("IOThreadName", ioThreadName);
-		ioThread = boost::make_shared<IOThread>();
+		ioThread = constructSPtr<IOThread>();
 		ioThreadMap_.insert(std::make_pair(ioThreadName, ioThread));
 		ioThread->startup();
 	}
@@ -71,12 +71,13 @@ namespace OpcUaStackClient
 	void
 	ServiceSetManager::destroyIOThread(const std::string ioThreadName)
 	{
-		auto it = ioThreadMap_.find(ioThreadName);
+		IOThread::Map::iterator it;
+		it = ioThreadMap_.find(ioThreadName);
 		if (it == ioThreadMap_.end()) return;
 
 		Log(Debug, "service set manager stops io thread")
 		    .parameter("IOThreadName", ioThreadName);
-		auto ioThread = it->second;
+		IOThread::SPtr ioThread = it->second;
 		ioThread->shutdown();
 		ioThreadMap_.erase(it);
 	}
@@ -85,10 +86,9 @@ namespace OpcUaStackClient
 	ServiceSetManager::getIOThread(const std::string ioThreadName)
 	{
 		IOThread::SPtr ioThread;
-		auto it = ioThreadMap_.find(ioThreadName);
-		if (it != ioThreadMap_.end()) {
-			ioThread = it->second;
-		}
+		IOThread::Map::iterator it;
+		it = ioThreadMap_.find(ioThreadName);
+		if (it != ioThreadMap_.end()) ioThread = it->second;
 		return ioThread;
 	}
 
@@ -99,13 +99,13 @@ namespace OpcUaStackClient
 	{
 		// create new session
 		createIOThread(sessionServiceConfig.ioThreadName());
-		auto ioThread = getIOThread(sessionServiceConfig.ioThreadName());
-		auto sessionService = boost::make_shared<SessionService>(ioThread.get());
+		IOThread::SPtr ioThread = getIOThread(sessionServiceConfig.ioThreadName());
+		SessionService::SPtr sessionService = constructSPtr<SessionService>(ioThread.get());
 
 		// set session configuration
 		sessionService->setConfiguration(
-			sessionServiceConfig.sessionMode_,
-			sessionServiceConfig.sessionServiceChangeHandler_,
+			sessionServiceConfig.mode_,
+			sessionServiceConfig.sessionServiceIf_,
 			sessionServiceConfig.secureChannelClient_,
 			sessionServiceConfig.session_
 		);
@@ -137,11 +137,12 @@ namespace OpcUaStackClient
 		// create discovery service
 		createIOThread(discoveryServiceConfig.ioThreadName());
 		IOThread::SPtr ioThread = getIOThread(discoveryServiceConfig.ioThreadName());
-		DiscoveryService::SPtr discoveryService = boost::make_shared<DiscoveryService>(ioThread.get());
+		DiscoveryService::SPtr discoveryService = constructSPtr<DiscoveryService>(ioThread.get());
 
 		// set discovery configuration
 		discoveryService->setConfiguration(
-			sessionService->component()
+			sessionService->component(),
+			discoveryServiceConfig.discoveryServiceIf_
 		);
 
 		return discoveryService;
@@ -161,12 +162,13 @@ namespace OpcUaStackClient
 	{
 		// create attribute service
 		createIOThread(attributeServiceConfig.ioThreadName());
-		auto ioThread = getIOThread(attributeServiceConfig.ioThreadName());
-		auto attributeService = boost::make_shared<AttributeService>(ioThread.get());
+		IOThread::SPtr ioThread = getIOThread(attributeServiceConfig.ioThreadName());
+		AttributeService::SPtr attributeService = constructSPtr<AttributeService>(ioThread.get());
 
 		// set attribute configuration
 		attributeService->setConfiguration(
-			sessionService->component()
+			sessionService->component(),
+			attributeServiceConfig.attributeServiceIf_
 		);
 
 		return attributeService;
@@ -186,17 +188,15 @@ namespace OpcUaStackClient
 	{
 		// create subscription service
 		createIOThread(subscriptionServiceConfig.ioThreadName());
-		auto ioThread = getIOThread(subscriptionServiceConfig.ioThreadName());
-		auto subscriptionService = boost::make_shared<SubscriptionService>(ioThread.get());
+		IOThread::SPtr ioThread = getIOThread(subscriptionServiceConfig.ioThreadName());
+		SubscriptionService::SPtr subscriptionService = constructSPtr<SubscriptionService>(ioThread.get());
 
 		// set subscription configuration
 		subscriptionService->setConfiguration(
 			sessionService->component(),
-			subscriptionServiceConfig.dataChangeNotificationHandler_,
-			subscriptionServiceConfig.eventNotificationHandler_,
-			subscriptionServiceConfig.subscriptionStateUpdateHandler_,
 			subscriptionServiceConfig.publishCount_,
-			subscriptionServiceConfig.requestTimeout_
+			subscriptionServiceConfig.requestTimeout_,
+			subscriptionServiceConfig.subscriptionServiceIf_
 		);
 
 		return subscriptionService;
@@ -217,11 +217,12 @@ namespace OpcUaStackClient
 		// create monitored item service
 		createIOThread(monitoredItemServiceConfig.ioThreadName());
 		IOThread::SPtr ioThread = getIOThread(monitoredItemServiceConfig.ioThreadName());
-		MonitoredItemService::SPtr monitoredItemService = boost::make_shared<MonitoredItemService>(ioThread.get());
+		MonitoredItemService::SPtr monitoredItemService = constructSPtr<MonitoredItemService>(ioThread.get());
 
 		// set monitored item configuration
 		monitoredItemService->setConfiguration(
-			sessionService->component()
+			sessionService->component(),
+			monitoredItemServiceConfig.monitoredItemServiceIf_
 		);
 
 		return monitoredItemService;
@@ -241,12 +242,13 @@ namespace OpcUaStackClient
 	{
 		// create monitored item service
 		createIOThread(methodServiceConfig.ioThreadName());
-		auto ioThread = getIOThread(methodServiceConfig.ioThreadName());
-		auto methodService = boost::make_shared<MethodService>(ioThread.get());
+		IOThread::SPtr ioThread = getIOThread(methodServiceConfig.ioThreadName());
+		MethodService::SPtr methodService = constructSPtr<MethodService>(ioThread.get());
 
 		// set method configuration
 		methodService->setConfiguration(
-			sessionService->component()
+			sessionService->component(),
+			methodServiceConfig.methodServiceIf_
 		);
 
 		return methodService;
@@ -267,11 +269,12 @@ namespace OpcUaStackClient
 		// create view service
 		createIOThread(viewServiceConfig.ioThreadName());
 		IOThread::SPtr ioThread = getIOThread(viewServiceConfig.ioThreadName());
-		ViewService::SPtr viewService = boost::make_shared<ViewService>(ioThread.get());
+		ViewService::SPtr viewService = constructSPtr<ViewService>(ioThread.get());
 
 		// set view configuration
 		viewService->setConfiguration(
-			sessionService->component()
+			sessionService->component(),
+			viewServiceConfig.viewServiceIf_
 		);
 
 		return viewService;
@@ -292,11 +295,12 @@ namespace OpcUaStackClient
 		// create query service
 		createIOThread(queryServiceConfig.ioThreadName());
 		IOThread::SPtr ioThread = getIOThread(queryServiceConfig.ioThreadName());
-		QueryService::SPtr queryService = boost::make_shared<QueryService>(ioThread.get());
+		QueryService::SPtr queryService = constructSPtr<QueryService>(ioThread.get());
 
 		// set query configuration
 		queryService->setConfiguration(
-			sessionService->component()
+			sessionService->component(),
+			queryServiceConfig.queryServiceIf_
 		);
 
 		return queryService;
@@ -316,12 +320,13 @@ namespace OpcUaStackClient
 	{
 		// create node mangement service
 		createIOThread(nodeManagementServiceConfig.ioThreadName());
-		auto ioThread = getIOThread(nodeManagementServiceConfig.ioThreadName());
-		auto nodeManagementService = boost::make_shared<NodeManagementService>(ioThread.get());
+		IOThread::SPtr ioThread = getIOThread(nodeManagementServiceConfig.ioThreadName());
+		NodeManagementService::SPtr nodeManagementService = constructSPtr<NodeManagementService>(ioThread.get());
 
 		// set node management configuration
 		nodeManagementService->setConfiguration(
-			sessionService->component()
+			sessionService->component(),
+			nodeManagementServiceConfig.nodeManagementServiceIf_
 		);
 
 		return nodeManagementService;

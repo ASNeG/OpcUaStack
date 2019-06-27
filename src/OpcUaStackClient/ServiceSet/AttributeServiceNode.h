@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,9 @@
 #ifndef __OpcUaStackClient_AttributeServiceNode_h__
 #define __OpcUaStackClient_AttributeServiceNode_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
-#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
+#include "OpcUaStackCore/ServiceSet/NodeClass.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
 
 using namespace OpcUaStackCore;
@@ -39,6 +40,7 @@ namespace OpcUaStackClient
 
 
 	class DLLEXPORT AttributeServiceNode
+	: public AttributeServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<AttributeServiceNode> SPtr;
@@ -74,13 +76,15 @@ namespace OpcUaStackClient
 			const AttributeId& attributeId4,
 			const AttributeId& attributeId5
 		);
-		void attributeIds(NodeClass::Enum nodeClassType);
+		void attributeIds(NodeClassType nodeClassType);
 
 		void asyncReadNode(void);
 
-	  private:
-		void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
+		//- AttributeServiceIf -----------------------------------------------------
+	    virtual void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
+	    //- AttributeServiceIf -----------------------------------------------------
 
+	  private:
 		AttributeService::SPtr attributeService_;
 		AttributeServiceNodeIf* attributeServiceNodeIf_;
 

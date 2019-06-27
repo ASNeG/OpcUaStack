@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 		return name_;
 	}
 
-	NodeClass::Enum&
+	NodeClassType&
 	CreateNodeInstanceRequest::nodeClassType(void)
 	{
 		return nodeClassType_;
@@ -110,7 +110,7 @@ namespace OpcUaStackCore
 	{
 		uint32_t tmp;
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);
-		nodeClassType_ = (NodeClass::Enum)tmp;
+		nodeClassType_ = (NodeClassType)tmp;
 		parentNodeId_.opcUaBinaryDecode(is);
 		nodeId_.opcUaBinaryDecode(is);
 		displayName_.opcUaBinaryDecode(is);

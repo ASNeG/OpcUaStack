@@ -50,12 +50,12 @@ namespace OpcUaStackServer
 	}
 
 	void
-	AcknowledgementElement::notification(OpcUaExtensibleParameter::SPtr& notification)
+	AcknowledgementElement::notification(ExtensibleParameter::SPtr& notification)
 	{
 		notification_ = notification;
 	}
 
-	OpcUaExtensibleParameter::SPtr
+	ExtensibleParameter::SPtr
 	AcknowledgementElement::notification(void)
 	{
 		return notification_;
@@ -127,7 +127,7 @@ namespace OpcUaStackServer
 	void
 	AcknowledgementManager::addNotification(
 		uint32_t sequenceNumber,
-		OpcUaExtensibleParameter::SPtr& notification
+		ExtensibleParameter::SPtr& notification
 	)
 	{
 		AcknowledgementElement::SPtr acknowledgementElement = constructSPtr<AcknowledgementElement>();
@@ -158,7 +158,7 @@ namespace OpcUaStackServer
 	bool
 	AcknowledgementManager::firstNotification(
 		uint32_t& sequenceNumber,
-		OpcUaExtensibleParameter::SPtr& notification
+		ExtensibleParameter::SPtr& notification
 	)
 	{
 		if (acknowledgementList_.size() == 0) {
@@ -173,7 +173,7 @@ namespace OpcUaStackServer
 	bool
 	AcknowledgementManager::getNotification(
 		uint32_t sequenceNumber,
-		OpcUaExtensibleParameter::SPtr& notification
+		ExtensibleParameter::SPtr& notification
 	)
 	{
 		AcknowledgementList::iterator it;

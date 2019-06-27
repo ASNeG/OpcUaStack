@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -132,6 +132,12 @@ namespace OpcUaStackClient
 	}
 
 	void
+	ClientSubscription::clientSubscriptionIf(ClientSubscriptionIf* clientSubscriptionIf)
+	{
+		clientSubscriptionIf_ = clientSubscriptionIf;
+	}
+
+	void
 	ClientSubscription::state(State state)
 	{
 		state_ = state;
@@ -153,19 +159,13 @@ namespace OpcUaStackClient
 		// create subscriptions service
 		SubscriptionServiceConfig subscriptionServiceConfig;
 		subscriptionServiceConfig.ioThreadName("GlobalIOThread");
-		subscriptionServiceConfig.subscriptionStateUpdateHandler_ =
-			[this](SubscriptionState subscriptionState, uint32_t subscriptionId) {
-				subscriptionStateUpdate(subscriptionState, subscriptionId);
-			};
-		subscriptionServiceConfig.dataChangeNotificationHandler_ =
-			[this](const MonitoredItemNotification::SPtr& monitoredItem) {
-				dataChangeNotification(monitoredItem);
-			};
+		subscriptionServiceConfig.subscriptionServiceIf_ = this;
 		subscriptionService_ = serviceSetManager_->subscriptionService(sessionService_, subscriptionServiceConfig);
 
 		// create monitored item service
 		MonitoredItemServiceConfig monitoredItemServiceConfig;
 		monitoredItemServiceConfig.ioThreadName("GlobalIOThread");
+		monitoredItemServiceConfig.monitoredItemServiceIf_ = this;
 		monitoredItemService_ = serviceSetManager_->monitoredItemService(sessionService_, monitoredItemServiceConfig);
 	}
 
@@ -174,10 +174,7 @@ namespace OpcUaStackClient
 	{
 		namespaceMap_ = &namespaceMap;
 		state_ = S_Opening;
-		auto trx = constructSPtr<ServiceTransactionCreateSubscription>();
-		trx->resultHandler([this](ServiceTransactionCreateSubscription::SPtr& trx) {
-			subscriptionServiceCreateSubscriptionResponse(trx);
-		});
+		ServiceTransactionCreateSubscription::SPtr trx = constructSPtr<ServiceTransactionCreateSubscription>();
 		subscriptionService_->asyncSend(trx);
 	}
 
@@ -189,14 +186,11 @@ namespace OpcUaStackClient
 
 		// delete subscription
 		state_ = S_Closing;
-		auto trx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
-		auto req = trx->request();
+		ServiceTransactionDeleteSubscriptions::SPtr trx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+		DeleteSubscriptionsRequest::SPtr req = trx->request();
 		req->subscriptionIds()->resize(1);
 		req->subscriptionIds()->set(0, subscriptionId_);
 
-		trx->resultHandler([this](ServiceTransactionDeleteSubscriptions::SPtr& trx) {
-			subscriptionServiceDeleteSubscriptionsResponse(trx);
-		});
 		subscriptionService_->asyncSend(trx);
 	}
 
@@ -238,7 +232,8 @@ namespace OpcUaStackClient
 
 
 		// find all monitored items to be opened
-		for (auto it1 = clientMonitoredItemMap_.begin(); it1 != clientMonitoredItemMap_.end(); it1++) {
+		ClientMonitoredItem::IdMap::iterator it1;
+		for (it1 = clientMonitoredItemMap_.begin(); it1 != clientMonitoredItemMap_.end(); it1++) {
 			ClientMonitoredItem::SPtr cmi = it1->second;
 
 			if (cmi->state() != ClientMonitoredItem::S_Close) {
@@ -256,20 +251,22 @@ namespace OpcUaStackClient
 		if (cmiv.empty()) return;
 
 		// create monitored item transaction
-		auto trx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
-		auto req = trx->request();
+		ServiceTransactionCreateMonitoredItems::SPtr trx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
+		CreateMonitoredItemsRequest::SPtr req = trx->request();
 		req->subscriptionId(subscriptionId_);
 		req->itemsToCreate()->resize(cmiv.size());
 
 
 		// open the found monitored items
-		for (auto it2 = cmiv.begin(); it2 != cmiv.end(); it2++) {
+		ClientMonitoredItem::Vec::iterator it2;
+		for (it2 = cmiv.begin(); it2 != cmiv.end(); it2++) {
 			ClientMonitoredItem::SPtr cmi = *it2;
 
 			OpcUaNodeId nodeId = cmi->nodeId();
 
 			// determine namespace index
-			auto it3 = namespaceMap_->find(cmi->nodeId().namespaceIndex());
+			NamespaceMap::iterator it3;
+			it3 = namespaceMap_->find(cmi->nodeId().namespaceIndex());
 			if (it3 == namespaceMap_->end()) {
 				Log(Error, "cannot create monitored items, because namespace index not exist in namespace map")
 					.parameter("Id", id_)
@@ -286,15 +283,12 @@ namespace OpcUaStackClient
 			    .parameter("NodeId", nodeId.toString())
 			    .parameter("ClientHandle", cmi->clientHandle());
 
-			auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+			MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
 			monitoredItemCreateRequest->itemToMonitor().nodeId()->copyFrom(nodeId);
 			monitoredItemCreateRequest->requestedParameters().clientHandle(cmi->clientHandle());
 			req->itemsToCreate()->push_back(monitoredItemCreateRequest);
 		}
 
-		trx->resultHandler([this](ServiceTransactionCreateMonitoredItems::SPtr& trx) {
-			monitoredItemServiceCreateMonitoredItemsResponse(trx);
-		});
 		monitoredItemService_->asyncSend(trx);
 	}
 
@@ -304,8 +298,9 @@ namespace OpcUaStackClient
 		boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
 
 		// clean up all monitored items
-		for (auto it = clientMonitoredItemMap_.begin(); it != clientMonitoredItemMap_.end(); it++) {
-			auto cmi = it->second;
+		ClientMonitoredItem::IdMap::iterator it;
+		for (it = clientMonitoredItemMap_.begin(); it != clientMonitoredItemMap_.end(); it++) {
+			ClientMonitoredItem::SPtr cmi = it->second;
 			cmi->reconnectTime(now);
 			cmi->state(ClientMonitoredItem::S_Close);
 		}
@@ -319,8 +314,9 @@ namespace OpcUaStackClient
 		ClientMonitoredItem::Vec cmiv;
 
 		// find all monitored items to be opened
-		for (auto it1 = clientMonitoredItemMap_.begin(); it1 != clientMonitoredItemMap_.end(); it1++) {
-			auto cmi = it1->second;
+		ClientMonitoredItem::IdMap::iterator it1;
+		for (it1 = clientMonitoredItemMap_.begin(); it1 != clientMonitoredItemMap_.end(); it1++) {
+			ClientMonitoredItem::SPtr cmi = it1->second;
 
 			if (cmi->state() == ClientMonitoredItem::S_Close) {
 				// the monitored item is already opened
@@ -337,13 +333,14 @@ namespace OpcUaStackClient
 		if (cmiv.empty()) return;
 
 		// create monitored item transaction
-		auto trx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
-		auto req = trx->request();
+		ServiceTransactionDeleteMonitoredItems::SPtr trx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
+		DeleteMonitoredItemsRequest::SPtr req = trx->request();
 		req->subscriptionId(subscriptionId_);
 		req->monitoredItemIds()->resize(cmiv.size());
 
 		// close the found monitored items
-		for (auto it2 = cmiv.begin(); it2 != cmiv.end(); it2++) {
+		ClientMonitoredItem::Vec::iterator it2;
+		for (it2 = cmiv.begin(); it2 != cmiv.end(); it2++) {
 			ClientMonitoredItem::SPtr cmi = *it2;
 
 			Log(Debug, "Try to delete monitored item")
@@ -356,9 +353,6 @@ namespace OpcUaStackClient
 			cmi->monitoredItemId(0);
 		}
 
-		trx->resultHandler([this](ServiceTransactionDeleteMonitoredItems::SPtr& trx) {
-			monitoredItemServiceDeleteMonitoredItemsResponse(trx);
-		});
 		monitoredItemService_->asyncSend(trx);
 	}
 
@@ -372,7 +366,7 @@ namespace OpcUaStackClient
     void
     ClientSubscription::subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr trx)
     {
-		auto res = trx->response();
+		CreateSubscriptionResponse::SPtr res = trx->response();
 		if (trx->responseHeader()->serviceResult() != Success) {
 			Log(Error, "create subscription response error")
 				.parameter("Id", id_)
@@ -418,7 +412,8 @@ namespace OpcUaStackClient
     {
 		// locate the associated entry
 		ClientMonitoredItem::SPtr cmi;
-		auto it = clientMonitoredItemMap_.find(monitoredItem->clientHandle());
+		ClientMonitoredItem::IdMap::iterator it;
+		it = clientMonitoredItemMap_.find(monitoredItem->clientHandle());
 		if (it == clientMonitoredItemMap_.end()) {
 			Log(Warning, "monitor item no found in data change notification")
 				.parameter("Id", id_)
@@ -430,7 +425,7 @@ namespace OpcUaStackClient
 
 		clientSubscriptionIf_->dataChangeNotification(
 			cmi,
-			monitoredItem->value()
+			monitoredItem->dataValue()
 		);
     }
 
@@ -464,8 +459,8 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		auto req = serviceTransactionCreateMonitoredItems->request();
-		auto res = serviceTransactionCreateMonitoredItems->response();
+		CreateMonitoredItemsRequest::SPtr req = serviceTransactionCreateMonitoredItems->request();
+		CreateMonitoredItemsResponse::SPtr res = serviceTransactionCreateMonitoredItems->response();
 
 		if (req->itemsToCreate()->size() != res->results()->size()) {
 			Log(Error, "create monitored item response error (size)")
@@ -488,7 +483,8 @@ namespace OpcUaStackClient
 			}
 
 			uint32_t clientHandle = monitoredItemCreateRequest->requestedParameters().clientHandle();
-			auto it = clientMonitoredItemMap_.find(clientHandle);
+			ClientMonitoredItem::IdMap::iterator it;
+			it = clientMonitoredItemMap_.find(clientHandle);
 			if (it == clientMonitoredItemMap_.end()) {
 				Log(Error, "create monitored item response error, because monitor item not found")
 					.parameter("Id", id_)
@@ -497,7 +493,7 @@ namespace OpcUaStackClient
 					.parameter("ClientHandle", clientHandle);
 				continue;
 			}
-			auto cmi = it->second;
+			ClientMonitoredItem::SPtr cmi = it->second;
 
 			MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
 			res->results()->get(idx, monitoredItemCreateResult);
@@ -517,7 +513,7 @@ namespace OpcUaStackClient
 					.parameter("Idx", idx)
 				    .parameter("NodeId", cmi->nodeId().toString())
 				    .parameter("ClientHandle", clientHandle)
-				    .parameter("StatusCode", monitoredItemCreateResult->statusCode().toString());
+				    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(monitoredItemCreateResult->statusCode()));
 				continue;
 			}
 
@@ -545,8 +541,8 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		auto req = serviceTransactionDeleteMonitoredItems->request();
-		auto res = serviceTransactionDeleteMonitoredItems->response();
+		DeleteMonitoredItemsRequest::SPtr req = serviceTransactionDeleteMonitoredItems->request();
+		DeleteMonitoredItemsResponse::SPtr res = serviceTransactionDeleteMonitoredItems->response();
 
 		if (req->monitoredItemIds()->size() != res->results()->size()) {
 			Log(Error, "delete monitored item response error (size)")

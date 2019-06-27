@@ -108,13 +108,12 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaUInt32_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaNodeId value1, value2;
-	Xmlns xmlns;
 
 	value1.namespaceIndex(123);
 	value1.nodeId((OpcUaInt32)0x10000);
 
-	value1.xmlEncode(pt, xmlns);
-	value2.xmlDecode(pt, xmlns);
+	value1.encode(pt);
+	value2.decode(pt);
 
 	BOOST_REQUIRE(value2.nodeIdType() == OpcUaBuildInType_OpcUaUInt32);
 	BOOST_REQUIRE(value2.namespaceIndex() == 123);
@@ -146,7 +145,6 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaString_SPtr_ptree)
 	std::string str;
 	boost::property_tree::ptree pt;
 	OpcUaNodeId value1, value2;
-	Xmlns xmlns;
 
 	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("Dies ist ein String");
@@ -154,8 +152,8 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaString_SPtr_ptree)
 	value1.namespaceIndex(123);
 	value1.nodeId(opcUaStringSPtr);
 
-	value1.xmlEncode(pt, xmlns);
-	value2.xmlDecode(pt, xmlns);
+	value1.encode(pt);
+	value2.decode(pt);
 
 	BOOST_REQUIRE(value2.nodeIdType() == OpcUaBuildInType_OpcUaString);
 	BOOST_REQUIRE(value2.namespaceIndex() == 123);
@@ -188,7 +186,6 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaGuid_SPtr_ptree)
 	std::string str;
 	boost::property_tree::ptree pt;
 	OpcUaNodeId value1, value2;
-	Xmlns xmlns;
 
 	OpcUaGuid::SPtr opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
@@ -196,8 +193,8 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaGuid_SPtr_ptree)
 	value1.namespaceIndex(123);
 	value1.nodeId(opcUaGuidSPtr);
 
-	value1.xmlEncode(pt, xmlns);
-	value2.xmlDecode(pt, xmlns);
+	value1.encode(pt);
+	value2.decode(pt);
 
 	str = *value2.nodeId<OpcUaGuid::SPtr>();
 	BOOST_REQUIRE(value2.nodeIdType() == OpcUaBuildInType_OpcUaGuid);

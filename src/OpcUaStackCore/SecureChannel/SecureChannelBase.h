@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #ifndef __OpUaStackCore_SecureChannelBase_h__
 #define __OpUaStackCore_SecureChannelBase_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelCrypto.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
@@ -68,11 +69,6 @@ namespace OpcUaStackCore
 		);
 		void asyncWriteCloseSecureChannelRequest(
 			SecureChannel* secureChannel
-		);
-		void asyncWriteMessageError(
-			SecureChannel* secureChannel,
-			OpcUaUInt32 error,
-			const std::string& reason
 		);
 		void asyncWriteMessageRequest(
 			SecureChannel* secureChannel,

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,9 +19,10 @@
 #define __OpcUaStackServer_Attribute_h__
 
 #include <boost/optional.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/ServiceSet/NodeClass.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
-#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 
 using namespace OpcUaStackCore;
 
@@ -168,11 +169,6 @@ namespace OpcUaStackServer
 					case AttributeId_Value: return "Value";
 					case AttributeId_ValueRank: return "ValueRank";
 					case AttributeId_WriteMask: return "WriteMask";
-					case AttributeId_DataTypeDefinition: return "DataTypeDefinition";
-					case AttributeId_RolePermissions: return "RolePermissions";
-					case AttributeId_UserRolePermissions: return "UserRolePermissions";
-					case AttributeId_AccessRestrictions: return "AccessRestrictions";
-					case AttributeId_AccessLevelEx: return "AccessLevelEx";
 					default: return "Unknown";
 				}
 			}
@@ -201,7 +197,7 @@ namespace OpcUaStackServer
 
 	  typedef AttributeMeta<OpcUaByte, AttributeId_AccessLevel, OpcUaBuildInType_OpcUaUInt32> AccessLevelAttribute;
 	  typedef AttributeMeta<OpcUaNodeId, AttributeId_NodeId, OpcUaBuildInType_OpcUaNodeId> NodeIdAttribute;
-	  typedef AttributeMeta<NodeClass::Enum, AttributeId_NodeClass, OpcUaBuildInType_OpcUaUInt32> NodeClassAttribute;
+	  typedef AttributeMeta<NodeClassType, AttributeId_NodeClass, OpcUaBuildInType_OpcUaUInt32> NodeClassAttribute;
 	  typedef AttributeMeta<OpcUaQualifiedName, AttributeId_BrowseName, OpcUaBuildInType_OpcUaQualifiedName> BrowseNameAttribute;
 	  typedef AttributeMeta<OpcUaLocalizedText, AttributeId_DisplayName, OpcUaBuildInType_OpcUaLocalizedText> DisplayNameAttribute;
 	  typedef AttributeMeta<OpcUaLocalizedText, AttributeId_Description, OpcUaBuildInType_OpcUaLocalizedText> DescriptionAttribute;
@@ -221,13 +217,6 @@ namespace OpcUaStackServer
 	  typedef AttributeMeta<OpcUaBoolean, AttributeId_Executable, OpcUaBuildInType_OpcUaBoolean> ExecutableAttribute;
 	  typedef AttributeMeta<OpcUaBoolean, AttributeId_UserExecutable, OpcUaBuildInType_OpcUaBoolean> UserExecutableAttribute;
 	  typedef AttributeMeta<OpcUaByte, AttributeId_UserAccessLevel, OpcUaBuildInType_OpcUaByte> UserAccessLevelAttribute;
-
-	  // FIXME: todo
-	  typedef AttributeMeta<OpcUaByte, AttributeId_DataTypeDefinition, OpcUaBuildInType_OpcUaExtensionObject> DataTypeDefinitionAttribute;
-	  typedef AttributeMeta<OpcUaByte, AttributeId_RolePermissions, OpcUaBuildInType_OpcUaExtensionObject> RolePermissionsAttribute;
-	  typedef AttributeMeta<OpcUaByte, AttributeId_UserRolePermissions, OpcUaBuildInType_OpcUaExtensionObject> UserRolePermissionsAttribute;
-	  typedef AttributeMeta<OpcUaByte, AttributeId_AccessRestrictions, OpcUaBuildInType_OpcUaExtensionObject> AccessRestrictionsAttribute;
-	  typedef AttributeMeta<OpcUaByte, AttributeId_AccessLevelEx, OpcUaBuildInType_OpcUaExtensionObject> AccessLevelExAttribute;
 
 }
 

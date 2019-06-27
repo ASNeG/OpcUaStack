@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
+   Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
 #ifndef __OpcUaStackCore_OpcUaQulifiedName_h__
@@ -22,28 +22,26 @@
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
-#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT OpcUaQualifiedName
 	: public Object
-	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaQualifiedName> SPtr;
 
 		OpcUaQualifiedName(void);
-		OpcUaQualifiedName(const OpcUaQualifiedName& value);
 		OpcUaQualifiedName(const std::string& name, OpcUaInt16 namespaceIndex = 0);
 		~OpcUaQualifiedName(void);
 
 		void set(const std::string& name, OpcUaInt16 namespaceIndex = 0);
 		void get(std::string& name, OpcUaUInt16& namespaceIndex);
-		void get(OpcUaString& name, OpcUaUInt16& namespaceIndex);
 		void namespaceIndex(const OpcUaUInt16& namespaceIndex);
-		OpcUaUInt16 namespaceIndex(void) const;
+		OpcUaUInt16 namespaceIndex(void);
 		void name(const std::string& name);
 		void name(const OpcUaString& name);
 		OpcUaString& name(void);
@@ -52,11 +50,10 @@ namespace OpcUaStackCore
 
 		OpcUaQualifiedName& operator=(const std::string& name);
 		OpcUaQualifiedName& operator=(const OpcUaUInt16& namespaceIndex);
-		OpcUaQualifiedName& operator=(const OpcUaQualifiedName& value);
 		operator std::string const (void); 
 		operator OpcUaUInt16 const (void); 
 
-		void copyTo(OpcUaQualifiedName& qualifiedName) const;
+		void copyTo(OpcUaQualifiedName& qualifiedName);
 		bool operator!=(const OpcUaQualifiedName& opcUaQualifiedName) const;
 		bool operator==(const OpcUaQualifiedName& opcUaQualifiedName) const;
 
@@ -68,22 +65,18 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool encode(boost::property_tree::ptree& pt) const;
+		bool decode(boost::property_tree::ptree& pt);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
-		bool isNull(void) const override;
-
-	  protected:
-        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
-        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
-
-    private:
+	  private:
 		OpcUaUInt16 namespaceIndex_;
 		OpcUaString name_;
 	};
 
-	class DLLEXPORT OpcUaQualifiedNameArray
+	class OpcUaQualifiedNameArray
 	: public OpcUaArray<OpcUaQualifiedName::SPtr, SPtrTypeCoder<OpcUaQualifiedName> >
 	, public Object
 	{

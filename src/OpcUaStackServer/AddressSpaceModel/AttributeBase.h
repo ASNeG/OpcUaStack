@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,8 @@
 #define __OpcUaStackServer_AttributeBase_h__
 
 #include <boost/thread/shared_mutex.hpp>
+#include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 
 namespace OpcUaStackServer
@@ -60,13 +62,13 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* nodeClassAttribute(void);
 		bool unsetNodeClass(void);
-		bool setNodeClassSync(NodeClass::Enum& nodeClass);
-		bool setNodeClass(NodeClass::Enum& nodeClass);
-		bool getNodeClassSync(NodeClass::Enum& nodeClass);
-		bool getNodeClass(NodeClass::Enum& nodeClass);
+		bool setNodeClassSync(NodeClassType& nodeClass);
+		bool setNodeClass(NodeClassType& nodeClass);
+		bool getNodeClassSync(NodeClassType& nodeClass);
+		bool getNodeClass(NodeClassType& nodeClass);
 		bool isPartNodeClass(void);
 		bool isNullNodeClass(void);
-		boost::optional<NodeClass::Enum&> getNodeClass(void);
+		boost::optional<NodeClassType&> getNodeClass(void);
 
 		//
 		// attribute browse name
@@ -86,8 +88,8 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* displayNameAttribute(void);
 		bool unsetDisplayName(void);
-		bool setDisplayNameSync(const OpcUaLocalizedText& displayName);
-		bool setDisplayName(const OpcUaLocalizedText& displayName);
+		bool setDisplayNameSync(OpcUaLocalizedText& displayName);
+		bool setDisplayName(OpcUaLocalizedText& displayName);
 		bool getDisplayNameSync(OpcUaLocalizedText& displayName);
 		bool getDisplayName(OpcUaLocalizedText& displayName);
 		bool isPartDisplayName(void);
@@ -327,31 +329,6 @@ namespace OpcUaStackServer
 		bool isPartMinimumSamplingInterval(void);
 		bool isNullMinimumSamplingInterval(void);
 		boost::optional<OpcUaDouble&> getMinimumSamplingInterval(void);
-
-		//
-		// data type definition
-		//
-		// FIXME: todo
-
-		//
-		// role permissions
-		//
-		// FIXME: todo
-
-		//
-		// user role permissions
-		//
-		// FIXME: todo
-
-		//
-		// access restrictions
-		//
-		// FIXME: todo
-
-		//
-		// access level ex
-		//
-		// FIXME: todo
 
 	  private:
 		boost::shared_mutex mutex_;

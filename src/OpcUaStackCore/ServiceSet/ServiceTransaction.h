@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,9 @@
 #ifndef __OpcUaStackCore_ServiceTransaction_h__
 #define __OpcUaStackCore_ServiceTransaction_h__
 
-#include <future>
 #include <boost/thread/mutex.hpp>
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ConditionBool.h"
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
@@ -54,7 +55,7 @@ namespace OpcUaStackCore
 
 		void sync(bool sync);
 		bool sync(void);
-		std::promise<bool>& promise(void);
+		ConditionBool& conditionBool(void);
 
 		void requestHeader(RequestHeader::SPtr requestHeader);
 		RequestHeader::SPtr requestHeader(void);
@@ -94,7 +95,7 @@ namespace OpcUaStackCore
 		uint32_t requestTimeout_;
 
 		bool sync_;
-		std::promise<bool> promise_;
+		ConditionBool conditionBool_;
 
 		OpcUaUInt32 channelId_;
 		OpcUaUInt32 sessionId_;

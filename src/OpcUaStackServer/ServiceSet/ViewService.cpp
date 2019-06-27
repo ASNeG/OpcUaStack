@@ -160,14 +160,14 @@ namespace OpcUaStackServer
 			result->statusCode(Success);
 			response->results()->push_back(result);
 
-			if (relativePath->elements().size() == 0) {
+			if (relativePath->elements()->size() == 0) {
 				result->statusCode(BadInvalidArgument);
 				continue;
 			}
 
-			for (uint32_t idx=0; idx<relativePath->elements().size(); idx++) {
+			for (uint32_t idx=0; idx<relativePath->elements()->size(); idx++) {
 				RelativePathElement::SPtr relativePathElement;
-				if (!relativePath->elements().get(idx, relativePathElement)) {
+				if (!relativePath->elements()->get(idx, relativePathElement)) {
 					result->statusCode(BadInvalidArgument);
 					continue;
 				}

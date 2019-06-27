@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,9 @@
 #ifndef __OpcUaStackClient_DiscoveryService_h__
 #define __OpcUaStackClient_DiscoveryService_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
-#include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
+#include "OpcUaStackClient/ServiceSet/DiscoveryServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -36,9 +37,11 @@ namespace OpcUaStackClient
 		~DiscoveryService(void);
 
 		void setConfiguration(
-			Component* componentSession
+			Component* componentSession,
+			DiscoveryServiceIf* discoveryServiceIf
 		);
 		void componentSession(Component* componentSession);
+		void discoveryServiceIf(DiscoveryServiceIf* discoveryServiceIf);
 
 		void syncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
 		void asyncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
@@ -53,6 +56,8 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
+
+		DiscoveryServiceIf* discoveryServiceIf_;
 	};
 
 }

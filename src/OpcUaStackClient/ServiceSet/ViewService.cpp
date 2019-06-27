@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,6 +25,7 @@ namespace OpcUaStackClient
 
 	ViewService::ViewService(IOThread* ioThread)
 	: componentSession_(nullptr)
+	, viewServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -35,10 +36,12 @@ namespace OpcUaStackClient
 
 	void
 	ViewService::setConfiguration(
-		Component* componentSession
+		Component* componentSession,
+		ViewServiceIf* viewServiceIf
 	)
 	{
 		this->componentSession(componentSession);
+		viewServiceIf_ = viewServiceIf;
 	}
 
 	void 
@@ -48,12 +51,18 @@ namespace OpcUaStackClient
 	}
 
 	void 
+	ViewService::viewServiceIf(ViewServiceIf* viewServiceIf)
+	{
+		viewServiceIf_ = viewServiceIf;
+	}
+
+	void 
 	ViewService::syncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
 	{
 		serviceTransactionBrowse->sync(true);
-		auto future = serviceTransactionBrowse->promise().get_future();
+		serviceTransactionBrowse->conditionBool().conditionInit();
 		asyncSend(serviceTransactionBrowse);
-		future.wait();
+		serviceTransactionBrowse->conditionBool().waitForCondition();
 	}
 
 	void 
@@ -68,9 +77,9 @@ namespace OpcUaStackClient
 	ViewService::syncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
 	{
 		serviceTransactionBrowseNext->sync(true);
-		auto future = serviceTransactionBrowseNext->promise().get_future();
+		serviceTransactionBrowseNext->conditionBool().conditionInit();
 		asyncSend(serviceTransactionBrowseNext);
-		future.wait();
+		serviceTransactionBrowseNext->conditionBool().waitForCondition();
 	}
 
 	void
@@ -84,9 +93,9 @@ namespace OpcUaStackClient
 	ViewService::syncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds)
 	{
 		serviceTransactionTranslateBrowsePathsToNodeIds->sync(true);
-		auto future = serviceTransactionTranslateBrowsePathsToNodeIds->promise().get_future();
+		serviceTransactionTranslateBrowsePathsToNodeIds->conditionBool().conditionInit();
 		asyncSend(serviceTransactionTranslateBrowsePathsToNodeIds);
-		future.wait();
+		serviceTransactionTranslateBrowsePathsToNodeIds->conditionBool().waitForCondition();
 	}
 
 	void
@@ -103,7 +112,7 @@ namespace OpcUaStackClient
 
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->promise().set_value(true);
+			serviceTransaction->conditionBool().conditionTrue();
 			return;
 		}
 
@@ -111,28 +120,28 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_BrowseResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionBrowse>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (viewServiceIf_ != nullptr) {
+					viewServiceIf_->viewServiceBrowseResponse(
+						boost::static_pointer_cast<ServiceTransactionBrowse>(serviceTransaction)
+					);
 				}
 				break;
 			}
 			case OpcUaId_BrowseNextResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionBrowseNext>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (viewServiceIf_ != nullptr) {
+					viewServiceIf_->viewServiceBrowseNextResponse(
+						boost::static_pointer_cast<ServiceTransactionBrowseNext>(serviceTransaction)
+					);
 				}
 				break;
 			}
 			case OpcUaId_TranslateBrowsePathsToNodeIdsResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionTranslateBrowsePathsToNodeIds>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (viewServiceIf_ != nullptr) {
+					viewServiceIf_->viewServiceTranslateBrowsePathsToNodeIdsResponse(
+						boost::static_pointer_cast<ServiceTransactionTranslateBrowsePathsToNodeIds>(serviceTransaction)
+					);
 				}
 				break;
 			}

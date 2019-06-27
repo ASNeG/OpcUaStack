@@ -1,15 +1,9 @@
-ASNeG OPC UA Stack
+OpcUaStack
 ==============================
 
-.. image:: http://jenkins.asneg.de:8080/job/OpcUaStack/job/Release4/badge/icon
-    :target: http://jenkins.asneg.de:8080/job/OpcUaStack/job/Release4/
-.. image:: https://img.shields.io/github/downloads/ASNeG/OpcUaStack/total.svg
-    :alt: Github All Releases
-    :target: https://github.com/ASNeG/OpcUaStack
-.. image:: https://asneg-invate-form.herokuapp.com/badge.svg
-    :alt: Slack Community
-    :target: https://asneg-invate-form.herokuapp.com
-
+.. image:: http://jenkins.asneg.de:8080/job/OpcUaStack/job/master/badge/icon
+    :target: http://jenkins.asneg.de:8080/job/OpcUaStack/job/master/
+.. image:: https://img.shields.io/github/downloads/ASNeG/OpcUaStack/total.svg?style=social   :alt: Github All Releases   :target: https://github.com/ASNeG/OpcUaStack
 
 About
 ------------------------------
@@ -49,8 +43,7 @@ The information about the coverage of OPC UA specification you can find
 Installing
 ------------------------------
 
-See `here <https://opcuastack.rtfd.io/en/latest/1_getting_started/installation.html>`_.
-
+See `here <https://opcuastack.readthedocs.io/en/latest/1_getting_started/installation.html>`_.
 
 Usage
 ------------------------------
@@ -84,16 +77,13 @@ For more information about how to write your own OPC UA client server applicatio
 References
 ------------------------------
 
-* `Home Page`_
-* `Slack Community`_
 * Documentation_
-* ASNeG-Demo_
+* `ASNeG Home Page`_ (in German)
 * `OPC UA Specifications`_
 * ASNeG-Demo_
 
 .. _example: https://opcuastack.readthedocs.io/en/latest/1_getting_started/hello_world.html
 .. _Documentation: http://opcuastack.rtfd.io/
-.. _Home Page: https://asneg.github.io/projects/opcuastack
+.. _ASNeG Home Page: http://asneg.de/
 .. _OPC UA Specifications: https://opcfoundation.org/developer-tools/specifications-unified-architecture
 .. _ASNeG-Demo: https://github.com/ASNeG/ASNeG-Demo
-.. _Slack Community: https://asneg-invate-form.herokuapp.com

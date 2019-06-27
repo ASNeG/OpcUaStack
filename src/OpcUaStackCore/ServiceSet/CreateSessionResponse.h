@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,13 +19,15 @@
 #define __OpcUaStackCore_CreateSessionResponse_h__
 
 #include <stdint.h>
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.h"
 #include "OpcUaStackCore/SecureChannel/SessionAuthenticationToken.h"
+#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackCore/ServiceSet/SignatureData.h"
-#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
-#include "OpcUaStackCore/StandardDataTypes/SignedSoftwareCertificate.h"
+#include "OpcUaStackCore/ServiceSet/SignedSoftwareCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -43,9 +45,8 @@ namespace OpcUaStackCore
 		ResponseHeader::SPtr responseHeader(void) const;
 		OpcUaNodeId& sessionId(void);
 		OpcUaNodeId& authenticationToken(void);
-		void receivedSessionTimeout(const OpcUaDuration receivedSessionTimeout);
-		OpcUaDuration receivedSessionTimeout(void) const;
-		OpcUaByteString& serverNonce(void);
+		void receivedSessionTimeout(const Duration receivedSessionTimeout);
+		Duration receivedSessionTimeout(void) const;
 		void serverNonce(OpcUaByte** buf, OpcUaInt32* bufLen) const;
 		void serverNonce(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void serverCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const;
@@ -68,7 +69,7 @@ namespace OpcUaStackCore
 		ResponseHeader::SPtr responseHeader_;
 		OpcUaNodeId sessionId_;
 		OpcUaNodeId authenticationToken_;
-		OpcUaDuration receivedSessionTimeout_;
+		Duration receivedSessionTimeout_;
 		OpcUaByteString serverNonce_;
 		OpcUaByteString serverCertificate_;
 		EndpointDescriptionArray::SPtr serverEndpoints_;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,6 @@
 #ifndef __OpcUaClient_ClientServiceNodeSetServer_h__
 #define __OpcUaClient_ClientServiceNodeSetServer_h__
 
-#include <future>
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 #include "OpcUaStackClient/ServiceSet/AttributeServiceNode.h"
@@ -33,7 +32,7 @@ using namespace OpcUaStackServer;
 namespace OpcUaClient
 {
 
-	class DLLEXPORT ClientServiceNodeSetServer
+	class ClientServiceNodeSetServer
 	: public ClientServiceBase
 	, public ViewServiceBrowseIf
 	, public AttributeServiceNodeIf
@@ -77,7 +76,7 @@ namespace OpcUaClient
       private:
 		OpcUaStatusCode readNodeAttributes(
 			OpcUaNodeId::SPtr& nodeId,
-			NodeClass::Enum nodeClassType
+			NodeClassType nodeClassType
 		);
 		OpcUaStatusCode readNamespaceArray(void);
 		void handleNamespaceArray(OpcUaDataValue::SPtr& dataValue);
@@ -85,8 +84,8 @@ namespace OpcUaClient
 
 		State state_;
 		OpcUaNodeId readNodeId_;
-		std::promise<bool> browseCompleted_;
-		std::promise<bool> readCompleted_;
+		ConditionBool browseCompleted_;
+		ConditionBool readCompleted_;
 		AttributeService::SPtr attributeService_;
 		BaseNodeClass::SPtr baseNodeClass_;
 		InformationModel::SPtr informationModel_;

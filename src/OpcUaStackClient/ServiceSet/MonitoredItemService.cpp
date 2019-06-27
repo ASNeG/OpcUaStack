@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,6 +25,7 @@ namespace OpcUaStackClient
 
 	MonitoredItemService::MonitoredItemService(IOThread* ioThread)
 	: componentSession_(nullptr)
+	, monitoredItemServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -35,10 +36,12 @@ namespace OpcUaStackClient
 
 	void
 	MonitoredItemService::setConfiguration(
-		Component* componentSession
+		Component* componentSession,
+		MonitoredItemServiceIf* monitoredItemServiceIf
 	)
 	{
 		this->componentSession(componentSession);
+		monitoredItemServiceIf_ = monitoredItemServiceIf;
 	}
 
 	void
@@ -48,12 +51,18 @@ namespace OpcUaStackClient
 	}
 
 	void
+	MonitoredItemService::monitoredItemServiceIf(MonitoredItemServiceIf* monitoredItemServiceIf)
+	{
+		monitoredItemServiceIf_ = monitoredItemServiceIf;
+	}
+
+	void
 	MonitoredItemService::syncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
 	{
 		serviceTransactionCreateMonitoredItems->sync(true);
-		auto future = serviceTransactionCreateMonitoredItems->promise().get_future();
+		serviceTransactionCreateMonitoredItems->conditionBool().conditionInit();
 		asyncSend(serviceTransactionCreateMonitoredItems);
-		future.wait();
+		serviceTransactionCreateMonitoredItems->conditionBool().waitForCondition();
 	}
 
 	void
@@ -67,9 +76,9 @@ namespace OpcUaStackClient
 	MonitoredItemService::syncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
 	{
 		serviceTransactionDeleteMonitoredItems->sync(true);
-		auto future = serviceTransactionDeleteMonitoredItems->promise().get_future();
+		serviceTransactionDeleteMonitoredItems->conditionBool().conditionInit();
 		asyncSend(serviceTransactionDeleteMonitoredItems);
-		future.wait();
+		serviceTransactionDeleteMonitoredItems->conditionBool().waitForCondition();
 	}
 
 	void
@@ -83,9 +92,9 @@ namespace OpcUaStackClient
 	MonitoredItemService::syncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
 	{
 		serviceTransactionModifyMonitoredItems->sync(true);
-		auto future = serviceTransactionModifyMonitoredItems->promise().get_future();
+		serviceTransactionModifyMonitoredItems->conditionBool().conditionInit();
 		asyncSend(serviceTransactionModifyMonitoredItems);
-		future.wait();
+		serviceTransactionModifyMonitoredItems->conditionBool().waitForCondition();
 	}
 
 	void
@@ -99,9 +108,9 @@ namespace OpcUaStackClient
 	MonitoredItemService::syncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
 	{
 		serviceTransactionSetMonitoringMode->sync(true);
-		auto future = serviceTransactionSetMonitoringMode->promise().get_future();
+		serviceTransactionSetMonitoringMode->conditionBool().conditionInit();
 		asyncSend(serviceTransactionSetMonitoringMode);
-		future.wait();
+		serviceTransactionSetMonitoringMode->conditionBool().waitForCondition();
 	}
 
 	void
@@ -115,9 +124,9 @@ namespace OpcUaStackClient
 	MonitoredItemService::syncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
 	{
 		serviceTransactionSetTriggering->sync(true);
-		auto future = serviceTransactionSetTriggering->promise().get_future();
+		serviceTransactionSetTriggering->conditionBool().conditionInit();
 		asyncSend(serviceTransactionSetTriggering);
-		future.wait();
+		serviceTransactionSetTriggering->conditionBool().waitForCondition();
 	}
 
 	void
@@ -134,7 +143,7 @@ namespace OpcUaStackClient
 
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->promise().set_value(true);
+			serviceTransaction->conditionBool().conditionTrue();
 			return;
 		}
 
@@ -142,50 +151,50 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_CreateMonitoredItemsResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (monitoredItemServiceIf_ != nullptr) {
+					monitoredItemServiceIf_->monitoredItemServiceCreateMonitoredItemsResponse(
+						boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction)
+					);
 				}
 				break;
 			}
 
 			case OpcUaId_DeleteMonitoredItemsResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionDeleteMonitoredItems>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (monitoredItemServiceIf_ != nullptr) {
+					monitoredItemServiceIf_->monitoredItemServiceDeleteMonitoredItemsResponse(
+						boost::static_pointer_cast<ServiceTransactionDeleteMonitoredItems>(serviceTransaction)
+					);
 				}
 				break;
 			}
 
 			case OpcUaId_ModifyMonitoredItemsResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionModifyMonitoredItems>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (monitoredItemServiceIf_ != nullptr) {
+					monitoredItemServiceIf_->monitoredItemServiceModifyMonitoredItemsResponse(
+						boost::static_pointer_cast<ServiceTransactionModifyMonitoredItems>(serviceTransaction)
+					);
 				}
 				break;
 			}
 
 			case OpcUaId_SetMonitoringModeResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionSetMonitoringMode>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (monitoredItemServiceIf_ != nullptr) {
+					monitoredItemServiceIf_->monitoredItemServiceSetMonitoringModeResponse(
+						boost::static_pointer_cast<ServiceTransactionSetMonitoringMode>(serviceTransaction)
+					);
 				}
 				break;
 			}
 
 			case OpcUaId_SetTriggeringResponse_Encoding_DefaultBinary:
 			{
-				auto trx = boost::static_pointer_cast<ServiceTransactionSetTriggering>(serviceTransaction);
-				auto handler = trx->resultHandler();
-				if (handler) {
-					handler(trx);
+				if (monitoredItemServiceIf_ != nullptr) {
+					monitoredItemServiceIf_->monitoredItemServiceSetTriggeringResponse(
+						boost::static_pointer_cast<ServiceTransactionSetTriggering>(serviceTransaction)
+					);
 				}
 				break;
 			}

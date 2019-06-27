@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,15 +18,16 @@
 #ifndef __OpcUaStackCore_DeleteReferencesResult_h__
 #define __OpcUaStackCore_DeleteReferencesResult_h__
 
-#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
-#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT DeleteReferencesResult
 	: public Object
-	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteReferencesResult> SPtr;
@@ -36,26 +37,15 @@ namespace OpcUaStackCore
 
 		void statusCode(OpcUaStatusCode statusCode);
 		OpcUaStatusCode statusCode(void) const;
-
-		void copyTo(DeleteReferencesResult& deleteReferencesResult) {}
-		void out(std::ostream& os) const {};
 				
 		void opcUaBinaryEncode(std::ostream& os) const; 
 		void opcUaBinaryDecode(std::istream& is);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-
-	  protected:
-		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
-		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		OpcUaStatusCode statusCode_;			
 	};
 
-	class DLLEXPORT DeleteReferencesResultArray
+	class DeleteReferencesResultArray
 	: public OpcUaArray<DeleteReferencesResult::SPtr, SPtrTypeCoder<DeleteReferencesResult> >
 	, public Object
 	{

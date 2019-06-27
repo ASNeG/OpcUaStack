@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackClient_ViewServiceBrowse_h__
 #define __OpcUaStackClient_ViewServiceBrowse_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/ViewService.h"
 #include <set>
 
@@ -42,6 +43,7 @@ namespace OpcUaStackClient
 
 
 	class DLLEXPORT ViewServiceBrowse
+	: public ViewServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<ViewServiceBrowse> SPtr;
@@ -58,10 +60,12 @@ namespace OpcUaStackClient
 
 		void asyncBrowse(void);
 
-	  private:
-	    void viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
-	    void viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+		//- ViewServiceIf -----------------------------------------------------
+	    virtual void viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
+	    virtual void viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+	    //- ViewServiceIf -----------------------------------------------------
 
+	  private:
 	    void asyncBrowseNext(void);
 		void done(OpcUaStatusCode statusCode);
 		void browseResult(

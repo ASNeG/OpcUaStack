@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -140,7 +140,7 @@ namespace OpcUaClient
 		    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 
 		browseStatusCode_ = statusCode;
-		browseCompleted_.set_value(true);
+		browseCompleted_.conditionTrue();
 
 	}
 
@@ -202,7 +202,7 @@ namespace OpcUaClient
 	OpcUaStatusCode
 	ClientServiceNodeSetFilter::readNodeAttributes(
 		OpcUaNodeId::SPtr& parentNodeId,
-		NodeClass::Enum nodeClassType
+		NodeClassType nodeClassType
 	)
 	{
 		// check if node already exist
@@ -211,42 +211,42 @@ namespace OpcUaClient
 
 		switch (nodeClassType)
 		{
-			case NodeClass::EnumObject:
+			case NodeClassType_Object:
 			{
 				baseNodeClass_ = constructSPtr<ObjectNodeClass>();
 				break;
 			}
-			case NodeClass::EnumVariable:
+			case NodeClassType_Variable:
 			{
 				baseNodeClass_ = constructSPtr<VariableNodeClass>();
 				break;
 			}
-			case NodeClass::EnumMethod:
+			case NodeClassType_Method:
 			{
 				baseNodeClass_ = constructSPtr<MethodNodeClass>();
 				break;
 			}
-			case NodeClass::EnumObjectType:
+			case NodeClassType_ObjectType:
 			{
 				baseNodeClass_ = constructSPtr<ObjectTypeNodeClass>();
 				break;
 			}
-			case NodeClass::EnumVariableType:
+			case NodeClassType_VariableType:
 			{
 				baseNodeClass_ = constructSPtr<VariableTypeNodeClass>();
 				break;
 			}
-			case NodeClass::EnumReferenceType:
+			case NodeClassType_ReferenceType:
 			{
 				baseNodeClass_ = constructSPtr<ReferenceTypeNodeClass>();
 				break;
 			}
-			case NodeClass::EnumDataType:
+			case NodeClassType_DataType:
 			{
 				baseNodeClass_ = constructSPtr<DataTypeNodeClass>();
 				break;
 			}
-			case NodeClass::EnumView:
+			case NodeClassType_View:
 			{
 				baseNodeClass_ = constructSPtr<ViewNodeClass>();
 				break;
@@ -269,11 +269,11 @@ namespace OpcUaClient
 		attributeServiceNode.attributeServiceNodeIf(this);
 
 		// send read node request
-		auto future = readCompleted_.get_future();
+		readCompleted_.conditionInit();
 		attributeServiceNode.asyncReadNode();
 
 		// wait for the end of the read node request
-		future.wait();
+		readCompleted_.waitForCondition();
 
 		// insert new node
 		if (readStatusCode_ == Success) {
@@ -313,11 +313,11 @@ namespace OpcUaClient
 		attributeServiceNode.attributeServiceNodeIf(this);
 
 		// send read node request
-		auto future = readCompleted_.get_future();
+		readCompleted_.conditionInit();
 		attributeServiceNode.asyncReadNode();
 
 		// wait for the end of the read node request
-		future.wait();
+		readCompleted_.waitForCondition();
 		if (readStatusCode_ != Success) return readStatusCode_;
 		return readNamespaceArrayStatusCode_;
 	}
@@ -331,7 +331,7 @@ namespace OpcUaClient
 				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 		}
 		readStatusCode_ = statusCode;
-		readCompleted_.set_value(true);
+		readCompleted_.conditionTrue();
 	}
 
 	void

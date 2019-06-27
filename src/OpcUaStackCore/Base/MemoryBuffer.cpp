@@ -49,16 +49,6 @@ namespace OpcUaStackCore
 		memcpy(memBuf_, memBuf, memLen_);
 	}
 
-	MemoryBuffer::MemoryBuffer(const OpcUaByteString& byteString)
-	: memBuf_(nullptr)
-	, memLen_(-1)
-	{
-		memLen_ = byteString.size();
-		if (memLen_ <= 0) return;
-		memBuf_ = new char[memLen_];
-		memcpy(memBuf_, const_cast<OpcUaByteString*>(&byteString)->memBuf(), memLen_);
-	}
-
 	MemoryBuffer::MemoryBuffer(uint32_t memLen)
 	: memBuf_(nullptr)
 	, memLen_(-1)
@@ -247,17 +237,6 @@ namespace OpcUaStackCore
 		if (memLen_ <= 0) return;
 		memBuf_ = new char[memLen_];
 		memcpy(memBuf_, memBuf, memLen_);
-	}
-
-	void
-	MemoryBuffer::set(const OpcUaByteString& byteString)
-	{
-		clear();
-
-		memLen_ = byteString.size();
-		if (memLen_ <= 0) return;
-		memBuf_ = new char[memLen_];
-		memcpy(memBuf_, const_cast<OpcUaByteString*>(&byteString)->memBuf(), memLen_);
 	}
 
 	void

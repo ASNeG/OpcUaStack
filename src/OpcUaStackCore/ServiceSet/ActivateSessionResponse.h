@@ -19,6 +19,9 @@
 #define __OpcUaStackCore_ActivateSessionResponse_h__
 
 #include <stdint.h>
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
 namespace OpcUaStackCore

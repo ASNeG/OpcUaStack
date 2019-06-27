@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,17 +12,16 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru), Kai Huebl (kai@huebl-sgh.de)
+   Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaTypeConversion.h"
 
-#include "OpcUaStackCore/StandardDataTypes/LiteralOperand.h"
-#include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
-#include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"
-#include "OpcUaStackCore/StandardDataTypes/ContentFilterElement.h"
+#include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
+#include "OpcUaStackCore/ServiceSet/ElementOperand.h"
+#include "OpcUaStackCore/ServiceSet/AttributeOperand.h"
 
 #include "OpcUaStackCore/Filter/FilterStack.h"
 #include "OpcUaStackCore/Filter/AttributeFilterNode.h"
@@ -70,27 +69,24 @@ namespace OpcUaStackCore
     }
 
     bool
-	FilterStack::receive(ContentFilter& contentFilter, ContentFilterResult& contentFilterResult)
+	FilterStack::receive(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult)
     {
-    	contentFilterResult.elementResults().resize(contentFilter.elements().size());
-    	for (uint32_t idx=0; idx<contentFilter.elements().size(); idx++) {
-    		buildOperatorNode(contentFilter, contentFilterResult, idx, root_);
-    	}
+    	contentFilterResult.elementResults()->resize(contentFilter.elements()->size());
+        buildOperatorNode(contentFilter, contentFilterResult, 0, root_);
 
         // check if all statuses are success
-        for (int i = 0; i < contentFilterResult.elementResults().size(); ++i) {
+        for (int i = 0; i < contentFilterResult.elementResults()->size(); ++i) {
         	ContentFilterElementResult::SPtr elementResult;
-        	contentFilterResult.elementResults().get(i, elementResult);
-        	assert(elementResult.get() != nullptr);
+        	contentFilterResult.elementResults()->get(i, elementResult);
 
-        	if (elementResult->statusCode().enumeration() != OpcUaStatusCode::Success)
+        	if (elementResult->statusCode() != OpcUaStatusCode::Success)
         		return false;
 
-        	for (int j = 0; j < elementResult->operandStatusCodes().size(); ++j) {
-        		OpcUaStatus::SPtr operandStatus;
-        		elementResult->operandStatusCodes().get(j, operandStatus);
+        	for (int j = 0; j < elementResult->operandStatusCodes()->size(); ++j) {
+        		OpcUaStatusCode operandStatus;
+        		elementResult->operandStatusCodes()->get(j, operandStatus);
 
-        		if (operandStatus->enumeration() != OpcUaStatusCode::Success)
+        		if (operandStatus != OpcUaStatusCode::Success)
         			return false;
         	}
         }
@@ -99,7 +95,7 @@ namespace OpcUaStackCore
     }
 
     bool
-	FilterStack::buildOperatorNode(ContentFilter& contentFilter, ContentFilterResult& contentFilterResult,  int idx, FilterNode::SPtr& node)
+	FilterStack::buildOperatorNode(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult,  int idx, FilterNode::SPtr& node)
     {
 
     	OpcUaStatusCode operatorStatus = OpcUaStatusCode::Success;
@@ -107,16 +103,16 @@ namespace OpcUaStackCore
     	bool hasOperandError = false;
 
         ContentFilterElement::SPtr el;
-        contentFilter.elements().get(idx, el);
+        contentFilter.elements()->get(idx, el);
 
     	OpcUaStatusCodeArray::SPtr operandStatuses = constructSPtr<OpcUaStatusCodeArray>();
-    	operandStatuses->resize(el->filterOperands().size());
+    	operandStatuses->resize(el->filterOperands()->size());
 
         std::vector<FilterNode::SPtr> args;
-        for (int idxArg = 0; idxArg < el->filterOperands().size(); ++idxArg) {
-            OpcUaExtensibleParameter::SPtr operand;
+        for (int idxArg = 0; idxArg < el->filterOperands()->size(); ++idxArg) {
+            ExtensibleParameter::SPtr operand;
 
-            el->filterOperands().get(idxArg, operand);
+            el->filterOperands()->get(idxArg, operand);
 
             uint32_t typeId;
             uint16_t nsIdx;
@@ -156,7 +152,7 @@ namespace OpcUaStackCore
             	{
             	    AttributeOperand::SPtr attributeOperand = operand->parameter<AttributeOperand>();
             	    AttributeFilterNode::SPtr attributeNode(new AttributeFilterNode(
-            	            attributeOperand->nodeId(),
+            	            *attributeOperand->nodeId(),
             	            attributeOperand->alias(),
             	            attributeOperand->browsePath(),
             	            attributeOperand->attributeId(),
@@ -173,7 +169,7 @@ namespace OpcUaStackCore
             	    SimpleAttributeOperand::SPtr simpleAttributeOperand = operand->parameter<SimpleAttributeOperand>();
             	    SimpleAttributeFilterNode::SPtr simpleAttributeNode(new SimpleAttributeFilterNode(
             	            simpleAttributeOperand->typeId(),
-            	            simpleAttributeOperand->browsePath(),
+            	            *simpleAttributeOperand->browsePath(),
             	            simpleAttributeOperand->attributeId(),
             	            simpleAttributeOperand->indexRange()));
 
@@ -198,72 +194,72 @@ namespace OpcUaStackCore
         ContentFilterElementResult::SPtr elementResult = constructSPtr<ContentFilterElementResult>();
 
         if (!hasOperandError) {
-			switch (el->filterOperator().enumeration()) {
-				case FilterOperator::EnumIsNull:
+			switch (el->filterOperator()) {
+				case BasicFilterOperator_IsNull:
 				{
 					node = IsNullFilterNode::SPtr(new IsNullFilterNode(args));
 					operatorStatus = node->status();
 					break;
 				}
-				case FilterOperator::EnumEquals:
-				case FilterOperator::EnumGreaterThan:
-				case FilterOperator::EnumLessThan:
-				case FilterOperator::EnumGreaterThanOrEqual:
-				case FilterOperator::EnumLessThanOrEqual:
+				case BasicFilterOperator_Equals:
+				case BasicFilterOperator_GreaterThan:
+				case BasicFilterOperator_LessThan:
+				case BasicFilterOperator_GreaterThanOrEqual:
+				case BasicFilterOperator_LessThanOrEqual:
 				{
-					node = ComparisonFilterNode::SPtr(new ComparisonFilterNode(el->filterOperator().enumeration(), args));
+					node = ComparisonFilterNode::SPtr(new ComparisonFilterNode((OpcUaOperator)el->filterOperator(), args));
 					operatorStatus = node->status();
 					break;
 				}
-				case FilterOperator::EnumLike:
+				case BasicFilterOperator_Like:
 				{
 					node = LikeFilterNode::SPtr(new LikeFilterNode(args));
 					operatorStatus = node->status();
 					break;
 				}
-				case FilterOperator::EnumNot:
+				case BasicFilterOperator_Not:
 				{
 					node = NotFilterNode::SPtr(new NotFilterNode(args));
 					operatorStatus = node->status();
 					break;
 				}
-				case FilterOperator::EnumBetween:
+				case BasicFilterOperator_Between:
 				{
 					node = BetweenFilterNode::SPtr(new BetweenFilterNode(args));
 					operatorStatus = node->status();
 					break;
 				}
-				case FilterOperator::EnumInList:
+				case BasicFilterOperator_InList:
 				{
 					node = InListFilterNode::SPtr(new InListFilterNode(args));
 					operatorStatus = node->status();
 					break;
 				}
-				case FilterOperator::EnumAnd:
+				case BasicFilterOperator_And:
 				{
 					node = LogicalOpFilterNode::SPtr(new LogicalOpFilterNode(OpcUaOperator::And, args));
 					operatorStatus = node->status();
 					break;
 				}
-				case FilterOperator::EnumOr:
+				case BasicFilterOperator_Or:
 				{
 					node = LogicalOpFilterNode::SPtr(new LogicalOpFilterNode(OpcUaOperator::Or, args));
 					operatorStatus = node->status();
 					break;
 				}
-				case FilterOperator::EnumCast:
+				case BasicFilterOperator_Cast:
 				{
 					node = CastFilterNode::SPtr(new CastFilterNode(args));
 					operatorStatus = node->status();
 					break;
 				}
-				case FilterOperator::EnumBitwiseAnd:
+				case BasicFilterOperator_BitwiseAnd:
 				{
 					node = BitwiseOpFilterNode::SPtr(new BitwiseOpFilterNode(OpcUaOperator::BitwiseAnd, args));
 					operatorStatus = node->status();
 					break;
 				}
-				case FilterOperator::EnumBitwiseOr:
+				case BasicFilterOperator_BitwiseOr:
 				{
 					node = BitwiseOpFilterNode::SPtr(new BitwiseOpFilterNode(OpcUaOperator::BitwiseOr, args));
 					operatorStatus = node->status();
@@ -272,26 +268,19 @@ namespace OpcUaStackCore
 				default:
 				{
 					Log(Error, "filter operator is not supported")
-						.parameter("FilterOperator", (uint32_t)el->filterOperator().enumeration());
+											.parameter("FilterOperator", (uint32_t)el->filterOperator());
 					operatorStatus = OpcUaStatusCode::BadFilterOperatorUnsupported;
 					break;
 				}
 			}
         } else { // hasOperandError == true
-        	elementResult->operandStatusCodes().resize(operandStatuses->size());
-        	for (uint32_t j = 0; j < operandStatuses->size(); j++) {
-        		OpcUaStatusCode statusCode;
-        		operandStatuses->get(j, statusCode);
-        		OpcUaStatus::SPtr status = constructSPtr<OpcUaStatus>();
-        		status->enumeration(statusCode);
-        		elementResult->operandStatusCodes().push_back(status);
-        	}
+        	elementResult->operandStatusCodes(operandStatuses);
         	operatorStatus = OpcUaStatusCode::BadFilterOperandInvalid;
         }
 
 
-        elementResult->statusCode().enumeration(operatorStatus);
-        contentFilterResult.elementResults().set(idx, elementResult);
+        elementResult->statusCode(operatorStatus);
+        contentFilterResult.elementResults()->set(idx, elementResult);
 
         return operatorStatus == OpcUaStatusCode::Success;
     }

@@ -133,28 +133,4 @@ namespace OpcUaStackCore
 		continuationPoint_.opcUaBinaryDecode(is);
 	}
 
-	bool
-	HistoryReadValueId::jsonEncodeImpl(boost::property_tree::ptree &pt) const
-	{
-		bool rc = true;
-		rc = rc & jsonObjectSPtrEncode(pt, nodeIdSPtr_, "NodeId");
-		rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange", true);
-		if (dataEncoding_.namespaceIndex() != 0 || const_cast<OpcUaQualifiedName*>(&dataEncoding_)->name().exist()) {
-			rc = rc & jsonObjectEncode(pt, dataEncoding_, "DataEncoding", true);
-		}
-		rc = rc & jsonObjectEncode(pt, continuationPoint_, "ContinuationPoint", true);
-		return rc;
-	}
-
-	bool
-	HistoryReadValueId::jsonDecodeImpl(const boost::property_tree::ptree &pt)
-	{
-		bool rc = true;
-		rc = rc & jsonObjectSPtrDecode(pt, nodeIdSPtr_, "NodeId");
-		rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange", true);
-		rc = rc & jsonObjectDecode(pt, dataEncoding_, "DataEncoding", true);
-		rc = rc & jsonObjectDecode(pt, continuationPoint_, "ContinuationPoint", true);
-		return rc;
-	}
-
 }

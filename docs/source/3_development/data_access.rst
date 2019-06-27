@@ -236,7 +236,7 @@ The stack can notify a user application if some :term:`Attribute` of a :term:`No
 has been read or written by the OPC UA client. For that we have to create
 handler-methods and register them in the stack as callbacks.
 
-Let's do it in a new application (see :ref:`hello_world` if don't know how to
+Let's do it in a new application (see :link:`hello_world` if don't know how to
 create an application):
 
 .. code-block:: cpp
