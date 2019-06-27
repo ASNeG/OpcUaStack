@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,10 +18,8 @@
 #ifndef __OpcUaStackCore_ApplicationAuthenticationContext_h__
 #define __OpcUaStackCore_ApplicationAuthenticationContext_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/UserContext.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 
 namespace OpcUaStackCore
 {
@@ -32,11 +30,11 @@ namespace OpcUaStackCore
 		ApplicationAuthenticationContext(void);
 		~ApplicationAuthenticationContext(void);
 
-		uint32_t authenticationType_;			// IN - authentication type
-		ExtensibleParameter::SPtr parameter_;	// IN - authentication parameter
-		uint32_t sessionId_;					// IN - session id
-		OpcUaStatusCode statusCode_;			// OUT - result state of the write operation
-		UserContext::SPtr userContext_;		    // OUT - user context
+		uint32_t authenticationType_;				// IN - authentication type
+		OpcUaExtensibleParameter::SPtr parameter_;	// IN - authentication parameter
+		uint32_t sessionId_;						// IN - session id
+		OpcUaStatusCode statusCode_;				// OUT - result state of the write operation
+		UserContext::SPtr userContext_;		    	// OUT - user context
 	};
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,8 +21,9 @@
 #include <boost/shared_ptr.hpp>
 #include <map>
 #include <string>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaBaseEnums.h"
+#include "OpcUaStackCore/BuildInTypes/SecurityPolicy.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
 #include "OpcUaStackCore/Certificate/PublicKey.h"
 #include "OpcUaStackCore/Certificate/CryptoAES.h"
@@ -75,7 +76,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<CryptoBase> SPtr;
-		typedef std::map<std::string, CryptoBase::SPtr> Map;
+		typedef std::map<SecurityPolicy::Enum, CryptoBase::SPtr> Map;
 
 		CryptoBase(void);
 		virtual ~CryptoBase(void);

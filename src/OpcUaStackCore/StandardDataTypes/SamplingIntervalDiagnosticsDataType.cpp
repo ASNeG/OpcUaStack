@@ -1,180 +1,343 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: SamplingIntervalDiagnosticsDataType
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
-
-   Autor: Samuel Huebl (samuel.huebl@asneg.de)
- */
+    Autor: Kai Huebl (kai@huebl-sgh.de)
+*/
 
 #include "OpcUaStackCore/StandardDataTypes/SamplingIntervalDiagnosticsDataType.h"
 
 namespace OpcUaStackCore
 {
-
-	SamplingIntervalDiagnosticsDataType::SamplingIntervalDiagnosticsDataType(void)
-	: Object()
-	, samplingRate_()
-	, sampledMonitoredItemsCount_()
-	, maxSampledMonitoredItemsCount_()
-	, disabledMonitoredItemsSamplingCount_()
-	{
-	}
-
-	SamplingIntervalDiagnosticsDataType::~SamplingIntervalDiagnosticsDataType(void)
-	{
-	}
-
-	OpcUaDouble&
-	SamplingIntervalDiagnosticsDataType::samplingRate(void)
-	{
-		return samplingRate_;
-	}
-
-	void
-	SamplingIntervalDiagnosticsDataType::samplingRate(OpcUaDouble samplingRate)
-	{
-		samplingRate_ = samplingRate;
-	}
-
-	OpcUaUInt32&
-	SamplingIntervalDiagnosticsDataType::sampledMonitoredItemsCount(void)
-	{
-		return sampledMonitoredItemsCount_;
-	}
-
-	void
-	SamplingIntervalDiagnosticsDataType::sampledMonitoredItemsCount(OpcUaUInt32 sampledMonitoredItemsCount)
-	{
-		sampledMonitoredItemsCount_ = sampledMonitoredItemsCount;
-	}
-
-	OpcUaUInt32&
-	SamplingIntervalDiagnosticsDataType::maxSampledMonitoredItemsCount(void)
-	{
-		return maxSampledMonitoredItemsCount_;
-	}
-
-	void
-	SamplingIntervalDiagnosticsDataType::maxSampledMonitoredItemsCount(OpcUaUInt32 maxSampledMonitoredItemsCount)
-	{
-		maxSampledMonitoredItemsCount_ = maxSampledMonitoredItemsCount;
-	}
-
-	OpcUaUInt32&
-	SamplingIntervalDiagnosticsDataType::disabledMonitoredItemsSamplingCount(void)
-	{
-		return disabledMonitoredItemsSamplingCount_;
-	}
-
-	void
-	SamplingIntervalDiagnosticsDataType::disabledMonitoredItemsSamplingCount(OpcUaUInt32 disabledMonitoredItemsSamplingCount)
-	{
-		disabledMonitoredItemsSamplingCount_ = disabledMonitoredItemsSamplingCount;
-	}
-
-	void
-	SamplingIntervalDiagnosticsDataType::copyTo(SamplingIntervalDiagnosticsDataType& samplingIntervalDiagnosticsDataType)
-	{
-		samplingIntervalDiagnosticsDataType.samplingRate(samplingRate_);
-		samplingIntervalDiagnosticsDataType.sampledMonitoredItemsCount(sampledMonitoredItemsCount_);
-		samplingIntervalDiagnosticsDataType.maxSampledMonitoredItemsCount(maxSampledMonitoredItemsCount_);
-		samplingIntervalDiagnosticsDataType.disabledMonitoredItemsSamplingCount(disabledMonitoredItemsSamplingCount_);
-	}
-
-	bool
-	SamplingIntervalDiagnosticsDataType::operator==(const SamplingIntervalDiagnosticsDataType& samplingIntervalDiagnosticsDataType) const
-	{
-		SamplingIntervalDiagnosticsDataType* dst = const_cast<SamplingIntervalDiagnosticsDataType*>(&samplingIntervalDiagnosticsDataType);
-		return
-			samplingRate_ == dst->samplingRate() &&
-			sampledMonitoredItemsCount_ == dst->sampledMonitoredItemsCount() &&
-			maxSampledMonitoredItemsCount_ == dst->maxSampledMonitoredItemsCount() &&
-			disabledMonitoredItemsSamplingCount_ == dst->disabledMonitoredItemsSamplingCount();
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// ExtensionObjectBase
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	ExtensionObjectBase::SPtr
-	SamplingIntervalDiagnosticsDataType::factory(void)
-	{
-		return constructSPtr<SamplingIntervalDiagnosticsDataType>();
-	}
-
-	void
-	SamplingIntervalDiagnosticsDataType::opcUaBinaryEncode(std::ostream& os) const
-	{
-		OpcUaNumber::opcUaBinaryEncode(os, samplingRate_);
-		OpcUaNumber::opcUaBinaryEncode(os, sampledMonitoredItemsCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, maxSampledMonitoredItemsCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, disabledMonitoredItemsSamplingCount_);
-	}
-
-	void
-	SamplingIntervalDiagnosticsDataType::opcUaBinaryDecode(std::istream& is)
-	{
-		OpcUaNumber::opcUaBinaryDecode(is, samplingRate_);
-		OpcUaNumber::opcUaBinaryDecode(is, sampledMonitoredItemsCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, maxSampledMonitoredItemsCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, disabledMonitoredItemsSamplingCount_);
-	}
-
-	bool
-	SamplingIntervalDiagnosticsDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	bool
-	SamplingIntervalDiagnosticsDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	bool
-	SamplingIntervalDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	void
-	SamplingIntervalDiagnosticsDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
-	{
-		SamplingIntervalDiagnosticsDataType* dst = dynamic_cast<SamplingIntervalDiagnosticsDataType*>(&extensionObjectBase);
-		copyTo(*dst);
-	}
-
-	bool
-	SamplingIntervalDiagnosticsDataType::equal(ExtensionObjectBase& extensionObjectBase) const
-	{
-		SamplingIntervalDiagnosticsDataType* dst = dynamic_cast<SamplingIntervalDiagnosticsDataType*>(&extensionObjectBase);
-		return *this == *dst;
-	}
-
-	void
-	SamplingIntervalDiagnosticsDataType::out(std::ostream& os)
-	{
-		os << "SimplingRate=" << samplingRate_;
-		os << ", SampledMonitoredItemsCount=" << sampledMonitoredItemsCount_;
-		os << ", MaxSampledMonitoredItemsCount=" << maxSampledMonitoredItemsCount_;
-		os << ", DisableMonitoredItemsSamplingCount=" << disabledMonitoredItemsSamplingCount_;
-	}
+    
+    SamplingIntervalDiagnosticsDataType::SamplingIntervalDiagnosticsDataType(void)
+    : Object()
+    , ExtensionObjectBase()
+    , samplingInterval_()
+    , monitoredItemCount_()
+    , maxMonitoredItemCount_()
+    , disabledMonitoredItemCount_()
+    {
+    }
+    
+    SamplingIntervalDiagnosticsDataType::SamplingIntervalDiagnosticsDataType(const SamplingIntervalDiagnosticsDataType& value)
+    : Object()
+    , ExtensionObjectBase()
+    , samplingInterval_()
+    , monitoredItemCount_()
+    , maxMonitoredItemCount_()
+    , disabledMonitoredItemCount_()
+    {
+        const_cast<SamplingIntervalDiagnosticsDataType*>(&value)->copyTo(*this);
+    }
+    
+    SamplingIntervalDiagnosticsDataType::~SamplingIntervalDiagnosticsDataType(void)
+    {
+    }
+    
+    OpcUaDuration&
+    SamplingIntervalDiagnosticsDataType::samplingInterval(void)
+    {
+        return samplingInterval_;
+    }
+    
+    OpcUaUInt32&
+    SamplingIntervalDiagnosticsDataType::monitoredItemCount(void)
+    {
+        return monitoredItemCount_;
+    }
+    
+    OpcUaUInt32&
+    SamplingIntervalDiagnosticsDataType::maxMonitoredItemCount(void)
+    {
+        return maxMonitoredItemCount_;
+    }
+    
+    OpcUaUInt32&
+    SamplingIntervalDiagnosticsDataType::disabledMonitoredItemCount(void)
+    {
+        return disabledMonitoredItemCount_;
+    }
+    
+    bool
+    SamplingIntervalDiagnosticsDataType::operator==(const SamplingIntervalDiagnosticsDataType& value)
+    {
+        SamplingIntervalDiagnosticsDataType* dst = const_cast<SamplingIntervalDiagnosticsDataType*>(&value);
+        if (samplingInterval_ != dst->samplingInterval()) return false;
+        if (monitoredItemCount_ != dst->monitoredItemCount()) return false;
+        if (maxMonitoredItemCount_ != dst->maxMonitoredItemCount()) return false;
+        if (disabledMonitoredItemCount_ != dst->disabledMonitoredItemCount()) return false;
+        return true;
+    }
+    
+    bool
+    SamplingIntervalDiagnosticsDataType::operator!=(const SamplingIntervalDiagnosticsDataType& value)
+    {
+        return !this->operator==(value);
+    }
+    
+    void
+    SamplingIntervalDiagnosticsDataType::copyTo(SamplingIntervalDiagnosticsDataType& value)
+    {
+        value.samplingInterval_ = samplingInterval_;
+        value.monitoredItemCount_ = monitoredItemCount_;
+        value.maxMonitoredItemCount_ = maxMonitoredItemCount_;
+        value.disabledMonitoredItemCount_ = disabledMonitoredItemCount_;
+    }
+    
+    SamplingIntervalDiagnosticsDataType&
+    SamplingIntervalDiagnosticsDataType::operator=(const SamplingIntervalDiagnosticsDataType& value)
+    {
+        const_cast<SamplingIntervalDiagnosticsDataType*>(&value)->copyTo(*this);
+        return *this;
+    }
+    
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // ExtensionObjectBase
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    ExtensionObjectBase::SPtr
+    SamplingIntervalDiagnosticsDataType::factory(void)
+    {
+    	return constructSPtr<SamplingIntervalDiagnosticsDataType>();
+    }
+    
+    std::string
+    SamplingIntervalDiagnosticsDataType::namespaceName(void)
+    {
+    	return "http://opcfoundation.org/UA/";
+    }
+    
+    std::string
+    SamplingIntervalDiagnosticsDataType::typeName(void)
+    {
+    	return "SamplingIntervalDiagnosticsDataType";
+    }
+    
+    OpcUaNodeId
+    SamplingIntervalDiagnosticsDataType::typeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)856,0);
+    }
+    
+    OpcUaNodeId
+    SamplingIntervalDiagnosticsDataType::binaryTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)858, 0);
+    }
+    
+    OpcUaNodeId
+    SamplingIntervalDiagnosticsDataType::xmlTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)857, 0);
+    }
+    
+    OpcUaNodeId
+    SamplingIntervalDiagnosticsDataType::jsonTypeId(void)
+    {
+    	return OpcUaNodeId((OpcUaUInt32)15365, 0);
+    }
+    
+    void
+    SamplingIntervalDiagnosticsDataType::opcUaBinaryEncode(std::ostream& os) const
+    {
+        OpcUaNumber::opcUaBinaryEncode(os,samplingInterval_);
+        OpcUaNumber::opcUaBinaryEncode(os,monitoredItemCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,maxMonitoredItemCount_);
+        OpcUaNumber::opcUaBinaryEncode(os,disabledMonitoredItemCount_);
+    }
+    
+    void
+    SamplingIntervalDiagnosticsDataType::opcUaBinaryDecode(std::istream& is)
+    {
+        OpcUaNumber::opcUaBinaryDecode(is,samplingInterval_);
+        OpcUaNumber::opcUaBinaryDecode(is,monitoredItemCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,maxMonitoredItemCount_);
+        OpcUaNumber::opcUaBinaryDecode(is,disabledMonitoredItemCount_);
+    }
+    
+    bool
+    SamplingIntervalDiagnosticsDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+        if (!xmlEncode(elementTree, xmlns)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType encode xml error")
+                .parameter("Element", element);
+            return false;
+        }
+        pt.push_back(std::make_pair(element, elementTree));
+        return true;
+    }
+    
+    bool
+    SamplingIntervalDiagnosticsDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        boost::property_tree::ptree elementTree;
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, samplingInterval_))
+        {
+            Log(Error, "SamplingIntervalDiagnosticsDataType encode xml error");
+            return false;
+        }
+        pt.push_back(std::make_pair("SamplingInterval", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, monitoredItemCount_))
+        {
+            Log(Error, "SamplingIntervalDiagnosticsDataType encode xml error");
+            return false;
+        }
+        pt.push_back(std::make_pair("MonitoredItemCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, maxMonitoredItemCount_))
+        {
+            Log(Error, "SamplingIntervalDiagnosticsDataType encode xml error");
+            return false;
+        }
+        pt.push_back(std::make_pair("MaxMonitoredItemCount", elementTree));
+    
+        elementTree.clear();
+        if(!XmlNumber::xmlEncode(elementTree, disabledMonitoredItemCount_))
+        {
+            Log(Error, "SamplingIntervalDiagnosticsDataType encode xml error");
+            return false;
+        }
+        pt.push_back(std::make_pair("DisabledMonitoredItemCount", elementTree));
+    
+        return true;
+    }
+    
+    bool
+    SamplingIntervalDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+    {
+        std::string elementName = xmlns.addPrefix(element);
+        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false; 
+        }
+        return xmlDecode(*tree, xmlns);
+    }
+    
+    bool
+    SamplingIntervalDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+    {
+        std::string elementName;
+        boost::optional<boost::property_tree::ptree&> tree;
+    
+        elementName = xmlns.addPrefix("SamplingInterval");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, samplingInterval_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = xmlns.addPrefix("MonitoredItemCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, monitoredItemCount_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = xmlns.addPrefix("MaxMonitoredItemCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, maxMonitoredItemCount_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        elementName = xmlns.addPrefix("DisabledMonitoredItemCount");
+        tree = pt.get_child_optional(elementName);
+        if (!tree) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - element not found")
+                .parameter("Element", elementName);
+            return false;
+        }
+        if(!XmlNumber::xmlDecode(*tree, disabledMonitoredItemCount_)) {
+            Log(Error, "SamplingIntervalDiagnosticsDataType decode xml error - decode failed")
+                .parameter("Element", elementName);
+            return false;
+        }
+    
+        return true;
+    }
+    
+    bool
+    SamplingIntervalDiagnosticsDataType::jsonEncodeImpl(boost::property_tree::ptree& pt) const
+    {
+        bool rc = true;
+    
+        rc = rc & jsonNumberEncode(pt, samplingInterval_, "SamplingInterval");
+        rc = rc & jsonNumberEncode(pt, monitoredItemCount_, "MonitoredItemCount");
+        rc = rc & jsonNumberEncode(pt, maxMonitoredItemCount_, "MaxMonitoredItemCount");
+        rc = rc & jsonNumberEncode(pt, disabledMonitoredItemCount_, "DisabledMonitoredItemCount");
+    
+        return rc;
+    }
+    
+    bool
+    SamplingIntervalDiagnosticsDataType::jsonDecodeImpl(const boost::property_tree::ptree& pt)
+    {
+        bool rc = true;
+    
+        rc = rc & jsonNumberDecode(pt, samplingInterval_, "SamplingInterval");
+        rc = rc & jsonNumberDecode(pt, monitoredItemCount_, "MonitoredItemCount");
+        rc = rc & jsonNumberDecode(pt, maxMonitoredItemCount_, "MaxMonitoredItemCount");
+        rc = rc & jsonNumberDecode(pt, disabledMonitoredItemCount_, "DisabledMonitoredItemCount");
+    
+        return rc;
+    }
+    
+    void
+    SamplingIntervalDiagnosticsDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
+    {
+    	SamplingIntervalDiagnosticsDataType* dst = dynamic_cast<SamplingIntervalDiagnosticsDataType*>(&extensionObjectBase);
+    	copyTo(*dst);
+    }
+    
+    bool
+    SamplingIntervalDiagnosticsDataType::equal(ExtensionObjectBase& extensionObjectBase) const
+    {
+    	SamplingIntervalDiagnosticsDataType* dst = dynamic_cast<SamplingIntervalDiagnosticsDataType*>(&extensionObjectBase);
+    	return *const_cast<SamplingIntervalDiagnosticsDataType*>(this) == *dst;
+    }
+    
+    void
+    SamplingIntervalDiagnosticsDataType::out(std::ostream& os)
+    {
+        os << "SamplingInterval=" << samplingInterval_;
+        os << ", MonitoredItemCount=" << monitoredItemCount_;
+        os << ", MaxMonitoredItemCount=" << maxMonitoredItemCount_;
+        os << ", DisabledMonitoredItemCount=" << disabledMonitoredItemCount_;
+    }
 
 }
-

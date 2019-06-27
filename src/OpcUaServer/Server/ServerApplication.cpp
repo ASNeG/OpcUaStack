@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,6 +35,8 @@ namespace OpcUaServer
 	, serviceName_("")
 	, server_()
 	, configFileName_("")
+	, stopSignal_(false)
+	, mutex_()
 	{
 	}
 
@@ -70,11 +72,26 @@ namespace OpcUaServer
 	bool 
 	ServerApplication::run(void)
 	{
+		// startup application
 		server_.reloadIf(this);
 		if (!server_.startup(configFileName_)) return false;
 		if (!server_.start()) return false;
 		
-		running_ = true;
+		// application loop
+		bool stopFlag = false;
+		{
+			boost::mutex::scoped_lock g(mutex_);
+			running_ = true;
+			if (stopSignal_) {
+				stopSignal_ = false;
+				stopFlag = true;
+			}
+		}
+
+		Log(Debug, "service application loop");
+		if (stopFlag) {
+			stop();
+		}
 		while (running_) {
 			if (reload_) {
 				processReload();
@@ -82,6 +99,8 @@ namespace OpcUaServer
 			}
 			boost::this_thread::sleep(boost::posix_time::seconds(1));
 		}
+
+		// shutdown application
 		server_.shutdown();
 		Log(Debug, "shutdown application server complete");
 
@@ -91,6 +110,22 @@ namespace OpcUaServer
 	void 
 	ServerApplication::stop(void)
 	{
+		// check if application is starting
+		{
+			boost::mutex::scoped_lock g(mutex_);
+			if (stopSignal_) {
+				Log(Debug, "service application stop - ignore");
+				return;
+			}
+			stopSignal_ = true;
+			if (!running_) {
+				Log(Debug, "service application stop - ignore");
+				return;
+			}
+		}
+
+		// handle stop signal from user
+		Log(Debug, "service application stop");
 		server_.stop();
 		running_ = false;
 	}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -50,10 +50,14 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	ConnectContext::ConnectContext(void)
 	: secureChannelLog_(false)
-	, endpointUrl_("Unknown")
+	, endpointUrl_("")
+	, discoveryUrl_("")
+	, applicationUri_("Unknown")
+	, securityMode_(MessageSecurityMode::EnumNone)
+	, securityPolicy_(SecurityPolicy::EnumNone)
 	, sessionName_("Unknown")
-	, applicationCertificate_()
 	, cryptoManager_()
+	, deleteEndpointDescriptionCache_(false)
 	{
 	}
 
@@ -66,7 +70,6 @@ namespace OpcUaStackClient
 	{
 		endpointUrl_ = "";
 		sessionName_ = "";
-		applicationCertificate_.reset();
 		cryptoManager_.reset();
 	}
 
@@ -134,7 +137,6 @@ namespace OpcUaStackClient
 		return true;
 	}
 
-
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -173,6 +175,78 @@ namespace OpcUaStackClient
 						.parameter("Value", it->value_);
 					return false;
 				}
+			}
+			else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// HistoryReadContext
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	HistoryReadContext::HistoryReadContext(void)
+	: timestampToReturn_(TimestampsToReturn_Both)
+	, maxNumResultValuesPerNode_(0)
+	, maxNumResultValuesPerRequest_(0)
+	{
+	}
+
+	HistoryReadContext::~HistoryReadContext(void)
+	{
+	}
+
+	void
+	HistoryReadContext::reset(void)
+	{
+	}
+
+	bool
+	HistoryReadContext::setContextParameter(ContextParameter::Vec& contextParameterVec)
+	{
+		for (auto para : contextParameterVec) {
+			if (para.parameter_ == "TIMESTAMPSTORETURN") {
+				if (para.value_ == "Source") {
+					timestampToReturn_ = TimestampsToReturn_Source;
+				}
+				else if (para.value_ == "Server") {
+					timestampToReturn_ = TimestampsToReturn_Server;
+				}
+				else if (para.value_ == "Both") {
+					timestampToReturn_ = TimestampsToReturn_Both;
+				}
+				else if (para.value_ == "Neither") {
+					timestampToReturn_ = TimestampsToReturn_Neither;
+				}
+				else {
+					return false;
+				}
+			}
+			else if (para.parameter_ == "MAXNUMRESULTVALUESPERNODE") {
+				try {
+					maxNumResultValuesPerNode_ = boost::lexical_cast<uint32_t>(para.value_);
+				}
+				catch (...)
+				{
+					return false;
+			    }
+
+			}
+			else if (para.parameter_ == "MAXNUMRESULTVALUESPERREQUEST") {
+				try {
+					maxNumResultValuesPerRequest_ = boost::lexical_cast<uint32_t>(para.value_);
+				}
+				catch (...)
+				{
+					return false;
+			    }
+
 			}
 			else {
 				return false;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -118,6 +118,17 @@ namespace OpcUaStackCore
 		dataEncoding_ = name;
 	}
 
+	void
+	ReadValueId::copyTo(ReadValueId& readValueId)
+	{
+		nodeIdSPtr_->copyTo(*readValueId.nodeId().get());
+		readValueId.attributeId(attributeId_);
+		OpcUaString indexRange;
+		indexRange_.copyTo(indexRange);
+		readValueId.indexRange(indexRange);
+		dataEncoding_.copyTo(readValueId.dataEncoding());
+	}
+
 	void 
 	ReadValueId::opcUaBinaryEncode(std::ostream& os) const
 	{
@@ -134,6 +145,28 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, attributeId_);
 		indexRange_.opcUaBinaryDecode(is);
 		dataEncoding_.opcUaBinaryDecode(is);
+	}
+
+	bool
+	ReadValueId::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		bool rc = true;
+		rc = rc & jsonObjectSPtrEncode(pt, nodeIdSPtr_, "NodeId");
+		rc = rc & jsonNumberEncode(pt, attributeId_, "AttributeId", true, (OpcUaInt32)13);
+		rc = rc & jsonObjectEncode(pt, indexRange_, "IndexRange", true);
+		rc = rc & jsonObjectEncode(pt, dataEncoding_, "DataEncoding", true);
+		return rc;
+	}
+
+	bool
+	ReadValueId::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		bool rc = true;
+		rc = rc & jsonObjectSPtrDecode(pt, nodeIdSPtr_, "NodeId");
+		rc = rc & jsonNumberDecode(pt, attributeId_, "AttributeId", true, (OpcUaInt32)13);
+		rc = rc & jsonObjectDecode(pt, indexRange_, "IndexRange", true);
+		rc = rc & jsonObjectDecode(pt, dataEncoding_, "DataEncoding", true);
+		return rc;
 	}
 
 }

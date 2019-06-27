@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_OpcUaDiagnosticInfo_h__
@@ -22,14 +22,14 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT OpcUaDiagnosticInfo
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDiagnosticInfo> SPtr;
@@ -49,8 +49,13 @@ namespace OpcUaStackCore
 		const OpcUaString& getAdditionalInfo() const;
 		void setInnerStatusCode(const OpcUaStatusCode innerStatusCode);
 		OpcUaStatusCode getInnerStatusCode() const;
+		void diagnosticInfo(const OpcUaDiagnosticInfo::SPtr diagnosticInfo);
+		OpcUaDiagnosticInfo::SPtr diagnosticInfo(void) const;
 
 		void copyTo(OpcUaDiagnosticInfo& opcUaDiagnosticInfo);
+        bool operator==(const OpcUaDiagnosticInfo& value);
+        bool operator!=(const OpcUaDiagnosticInfo& value);
+        OpcUaDiagnosticInfo& operator=(const OpcUaDiagnosticInfo& value);
 
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaDiagnosticInfo& value) {
@@ -62,19 +67,26 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
+      protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
+
 	  private:
+		OpcUaDiagnosticInfo(const OpcUaDiagnosticInfo& value);
+
 		OpcUaInt32 symbolicId_;
 		OpcUaInt32 namespaceUri_;
 		OpcUaInt32 localizedText_;
 		OpcUaInt32 locale_;
 		OpcUaString additionalInfo_;
 		OpcUaStatusCode innerStatusCode_;
-		// FIXME: DiagnosticInfo
+		OpcUaDiagnosticInfo::SPtr diagnosticInfo_;
 	};
 
-	class OpcUaDiagnosticInfoArray
+	class DLLEXPORT OpcUaDiagnosticInfoArray
 	: public OpcUaArray<OpcUaDiagnosticInfo::SPtr, SPtrTypeCoder<OpcUaDiagnosticInfo> >
 	, public Object
 	{

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -38,7 +38,7 @@ namespace OpcUaStackCore
 		void secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf);
 		SecureChannelClientIf* secureChannelClientIf(void);
 
-		SecureChannel* connect(SecureChannelClientConfig::SPtr secureChannelClientConfig);
+		SecureChannel* connect(SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void disconnect(SecureChannel* secureChannel);
 
 		//- SecureChannelBase -------------------------------------------------
@@ -49,13 +49,13 @@ namespace OpcUaStackCore
 		//- SecureChannelBase -------------------------------------------------
 
 	  private:
+		OpcUaStatusCode validateCertificateChain(
+			SecureChannel* secureChannel,
+			SecureChannelClientConfig::SPtr& secureChannelClientConfig
+		);
 		void renewSecurityToken(SecureChannel* secureChannel);
 		void connect(SecureChannel* secureChannel);
-		void resolveComplete(
-			const boost::system::error_code& error,
-			boost::asio::ip::tcp::resolver::iterator endpointIterator,
-			SecureChannel* secureChannel
-		);
+		void connectToServer(SecureChannel* secureChannel);
 		void connectComplete(
 			const boost::system::error_code& error,
 			SecureChannel* secureChannel
@@ -64,7 +64,6 @@ namespace OpcUaStackCore
 		void handleReconnect(SecureChannel* secureChannel);
 
 		IOThread* ioThread_;
-		boost::asio::ip::tcp::resolver resolver_;
 		SecureChannelClientIf* secureChannelClientIf_;
 		SlotTimerElement::SPtr slotTimerElementRenew_;
 		SlotTimerElement::SPtr slotTimerElementReconnect_;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,9 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/filesystem.hpp>
+
+#include <iostream>
+
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/Log.h"
@@ -29,11 +32,20 @@ namespace OpcUaStackCore
 	ConfigXml::ConfigXml(void)
 	: configFileName_("")
 	, errorMessage_("")
+	, ptree_()
 	{
 	}
 
 	ConfigXml::~ConfigXml(void)
 	{
+	}
+
+	void
+	ConfigXml::clear(void)
+	{
+		configFileName_ = "";
+		errorMessage_ = "";
+		ptree_.clear();
 	}
 
 	bool 
@@ -211,6 +223,59 @@ namespace OpcUaStackCore
 		// write property tree into configuration
 		configIf->child(ptree_);
 		configIf->addValue("Global.ConfigurationFileName", configFileName_);
+	}
+
+	void
+	ConfigXml::find(const std::string& elementName, std::vector<boost::property_tree::ptree>& ptrees)
+	{
+		find(elementName, ptree_, ptrees);
+	}
+
+	void
+	ConfigXml::find(
+		const std::string& elementName,
+		boost::property_tree::ptree& ptree,
+		std::vector<boost::property_tree::ptree>& ptrees
+	)
+	{
+		boost::property_tree::ptree::iterator it;
+		for (it = ptree.begin(); it != ptree.end(); it++) {
+			if (it->first == elementName) {
+				ptrees.push_back(it->second);
+			}
+			else {
+				find(elementName, it->second, ptrees);
+			}
+		}
+	}
+
+	void
+	ConfigXml::createElementNameSet(boost::property_tree::ptree& ptree, std::set<std::string>& elementNameSet)
+	{
+		boost::property_tree::ptree::iterator it;
+		for (it = ptree.begin(); it != ptree.end(); it++) {
+			if (it->first != "<xmlattr>") {
+				elementNameSet.insert(it->first);
+				createElementNameSet(it->second, elementNameSet);
+			}
+		}
+	}
+
+	void
+	ConfigXml::createAttributeNameSet(boost::property_tree::ptree& ptree, std::set<std::string>& attributeNameSet)
+	{
+		boost::property_tree::ptree::iterator it1, it2;
+		for (it1 = ptree.begin(); it1 != ptree.end(); it1++) {
+			if (it1->first != "<xmlattr>") {
+				createAttributeNameSet(it1->second, attributeNameSet);
+			}
+			else {
+				for (it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
+					attributeNameSet.insert(it2->first);
+				}
+			}
+
+		}
 	}
 
 }

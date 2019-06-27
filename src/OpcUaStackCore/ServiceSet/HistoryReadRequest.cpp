@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	HistoryReadRequest::HistoryReadRequest(void)
 	: Object()
-	, historyReadDetailsSPtr_(constructSPtr<ExtensibleParameter>())
+	, historyReadDetailsSPtr_(constructSPtr<OpcUaExtensibleParameter>())
 	, timestampsToReturn_()
 	, releaseContinuationPoints_()
 	, nodesToReadArraySPtr_(constructSPtr<HistoryReadValueIdArray>())
@@ -42,12 +42,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	HistoryReadRequest::historyReadDetails(const ExtensibleParameter::SPtr historyReadDetails)
+	HistoryReadRequest::historyReadDetails(const OpcUaExtensibleParameter::SPtr historyReadDetails)
 	{
 		historyReadDetailsSPtr_ = historyReadDetails;
 	}
 	
-	ExtensibleParameter::SPtr 
+	OpcUaExtensibleParameter::SPtr
 	HistoryReadRequest::historyReadDetails(void) const
 	{
 		return historyReadDetailsSPtr_;
@@ -109,6 +109,28 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, releaseContinuationPoints_);
 		nodesToReadArraySPtr_->opcUaBinaryDecode(is);
 		return true;
+	}
+
+	bool
+	HistoryReadRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
+	{
+		bool rc = true;
+		rc = rc & jsonObjectSPtrEncode(pt, historyReadDetailsSPtr_, "HistoryReadDetails");
+		rc = rc & jsonNumberEncode(pt, (uint32_t)timestampsToReturn_, "TimestampsToReturn");
+		rc = rc & jsonNumberEncode(pt, releaseContinuationPoints_, "ReleaseContinuationPoints");
+		rc = rc & jsonArraySPtrEncode(pt, nodesToReadArraySPtr_, "NodesToRead");
+		return rc;
+	}
+
+	bool
+	HistoryReadRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
+	{
+		bool rc = true;
+		rc = rc & jsonObjectSPtrDecode(pt, historyReadDetailsSPtr_, "HistoryReadDetails");
+		rc = rc & jsonNumberDecode(pt, *(uint32_t*)&timestampsToReturn_, "TimestampsToReturn", true, (uint32_t)TimestampsToReturn_Source);
+		rc = rc & jsonNumberDecode(pt, releaseContinuationPoints_, "ReleaseContinuationPoints", true, (OpcUaBoolean)false);
+		rc = rc & jsonArraySPtrDecode(pt, nodesToReadArraySPtr_, "NodesToRead");
+		return rc;
 	}
 
 }

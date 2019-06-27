@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,11 +18,10 @@
 #ifndef __OpcUaStackServer_SessionManager_h__
 #define __OpcUaStackServer_SessionManager_h__
 
+#include <future>
 #include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/Url.h"
-#include "OpcUaStackCore/Base/ConditionProcess.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
@@ -51,7 +50,6 @@ namespace OpcUaStackServer
 		virtual ~SessionManager(void);
 
 		void discoveryService(DiscoveryService::SPtr& discoveryService);
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void ioThread(IOThread* ioThread);
@@ -152,10 +150,10 @@ namespace OpcUaStackServer
 		IOThread* ioThread_;
 		Config* config_;
 		EndpointDescriptionSet::SPtr endpointDescriptionSet_;
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 
-		ConditionProcess secureChannelServerShutdown_;
+		bool shutdownFlag_;
+		std::promise<bool> shutdownComplete_;
 		SecureChannelServer::Map secureChannelServerMap_;
 		ForwardGlobalSync::SPtr forwardGlobalSync_;
 

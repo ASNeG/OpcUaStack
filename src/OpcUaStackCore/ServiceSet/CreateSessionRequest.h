@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,12 +19,10 @@
 #define __OpcUaStackCore_CreateSessionRequest_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.h"
-#include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
 
 
 namespace OpcUaStackCore
@@ -55,8 +53,8 @@ namespace OpcUaStackCore
 		void clientCertificate(OpcUaByte **buf, OpcUaInt32* bufLen) const;
 		void clientCertificate(const OpcUaByte *buf, OpcUaInt32 bufLen);
 		OpcUaByteString& clientCertificate(void);
-		void requestSessionTimeout(const Duration requestSessionTimeout);
-		Duration requestSessionTimeout(void) const;
+		void requestSessionTimeout(const OpcUaDuration requestSessionTimeout);
+		OpcUaDuration requestSessionTimeout(void) const;
 		void maxResponseMessageSize(const OpcUaUInt32& maxResponseMessageSize);
 		OpcUaUInt32 maxResponseMessageSize(void) const;
 
@@ -71,7 +69,7 @@ namespace OpcUaStackCore
 		OpcUaString sessionName_;
 		OpcUaByteString clientNonce_;
 		OpcUaByteString clientCertificate_;
-		Duration requestSessionTimeout_;
+		OpcUaDuration requestSessionTimeout_;
 		OpcUaUInt32 maxResponseMessageSize_;
 	};
 

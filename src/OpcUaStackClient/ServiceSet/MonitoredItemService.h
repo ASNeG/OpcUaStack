@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,10 +18,8 @@
 #ifndef __OpcUaStackClient_MonitoredItemService_h__
 #define __OpcUaStackClient_MonitoredItemService_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/MonitoredItemServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -37,11 +35,9 @@ namespace OpcUaStackClient
 		~MonitoredItemService(void);
 
 		void setConfiguration(
-			Component* componentSession,
-			MonitoredItemServiceIf* monitoredItemServiceIf
+			Component* componentSession
 		);
 		void componentSession(Component* componentSession);
-		void monitoredItemServiceIf(MonitoredItemServiceIf* monitoredItemServiceIf);
 
 		void syncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
 		void asyncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
@@ -60,8 +56,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
-		MonitoredItemServiceIf* monitoredItemServiceIf_;
 	};
 
 }

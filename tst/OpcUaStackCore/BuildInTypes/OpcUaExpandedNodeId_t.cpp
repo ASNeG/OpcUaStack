@@ -75,13 +75,14 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_yes_ServerIndex_no_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaExpandedNodeId value1, value2;
+	Xmlns xmlns;
 
 	value1.namespaceIndex(345);
 	value1.nodeId((OpcUaInt32)11);
 	value1.namespaceUri("URI");
 
-	value1.encode(pt);
-	value2.decode(pt);
+	value1.xmlEncode(pt, xmlns);
+	value2.xmlDecode(pt, xmlns);
 
 	BOOST_REQUIRE(value2.namespaceIndex() == 0);
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);
@@ -112,14 +113,15 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_no_ServerIndex_yes_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaExpandedNodeId value1, value2;
+	Xmlns xmlns;
 
 	value1.namespaceIndex(345);
 	value1.nodeId((OpcUaInt32)11);
 	value1.serverIndex(4711);
 
-	value1.encode(pt);
+	value1.xmlEncode(pt, xmlns);
 	writeDocument3(pt);
-	value2.decode(pt);
+	value2.xmlDecode(pt, xmlns);
 
 	BOOST_REQUIRE(value2.namespaceIndex() == 345);
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);
@@ -151,14 +153,15 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_yes_ServerIndex_yes_ptree)
 {
 	boost::property_tree::ptree pt;
 	OpcUaExpandedNodeId value1, value2;
+	Xmlns xmlns;
 
 	value1.namespaceIndex(345);
 	value1.nodeId((OpcUaInt32)11);
 	value1.namespaceUri("URI");
 	value1.serverIndex(4711);
 
- 	BOOST_REQUIRE(value1.encode(pt) == true);
-	BOOST_REQUIRE(value2.decode(pt) == true);
+ 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
 
 	BOOST_REQUIRE(value2.namespaceIndex() == 0);
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,14 +19,11 @@
 #define __OpcUaStackCore_ActivateSessionRequest_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 #include "OpcUaStackCore/ServiceSet/SignatureData.h"
-#include "OpcUaStackCore/ServiceSet/SignedSoftwareCertificate.h"
-#include "OpcUaStackCore/ServiceSet/UserIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
+#include "OpcUaStackCore/StandardDataTypes/UserIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/SignedSoftwareCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -46,10 +43,10 @@ namespace OpcUaStackCore
 		SignatureData::SPtr clientSignature(void) const;
 		void signedSoftwareCertificate(const SignedSoftwareCertificateArray::SPtr signedSoftwareCertificate);
 		SignedSoftwareCertificateArray::SPtr signedSoftwareCertificate(void) const;
-		void localeIds(const LocaleIdArray::SPtr localeIds);
-		LocaleIdArray::SPtr localeIds(void) const;
-		void userIdentityToken(const ExtensibleParameter::SPtr userIdentityToken);
-		ExtensibleParameter::SPtr userIdentityToken(void) const;
+		void localeIds(const OpcUaLocaleIdArray::SPtr localeIds);
+		OpcUaLocaleIdArray::SPtr localeIds(void) const;
+		void userIdentityToken(const OpcUaExtensibleParameter::SPtr userIdentityToken);
+		OpcUaExtensibleParameter::SPtr userIdentityToken(void) const;
 		void userTokenSignature(SignatureData::SPtr userTokenSignature);
 		SignatureData::SPtr userTokenSignature(void) const;
 
@@ -60,8 +57,8 @@ namespace OpcUaStackCore
 		RequestHeader::SPtr requestHeaderSPtr_;
 		SignatureData::SPtr clientSignature_;
 		SignedSoftwareCertificateArray::SPtr signedSoftwareCertificate_;
-		LocaleIdArray::SPtr localeIds_;
-		ExtensibleParameter::SPtr userIdentityToken_;
+		OpcUaLocaleIdArray::SPtr localeIds_;
+		OpcUaExtensibleParameter::SPtr userIdentityToken_;
 		SignatureData::SPtr userTokenSignature_;
 	};
 

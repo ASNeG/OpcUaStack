@@ -1,16 +1,15 @@
 #ifndef OPCUASTACKCORE_FILTER_FILTEROPERATORHELPERS_H_
 #define OPCUASTACKCORE_FILTER_FILTEROPERATORHELPERS_H_
 
-
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-
-#include "OpcUaStackCore/ServiceSet/AttributeOperand.h"
-#include "OpcUaStackCore/ServiceSet/SimpleAttributeOperand.h"
-#include "OpcUaStackCore/ServiceSet/ContentFilterElement.h"
-#include "OpcUaStackCore/ServiceSet/ElementOperand.h"
-#include "OpcUaStackCore/ServiceSet/EventFilter.h"
-#include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
-#include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilterResult.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
+#include "OpcUaStackCore/StandardDataTypes/SimpleAttributeOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/ElementOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/LiteralOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/AttributeOperand.h"
+#include "OpcUaStackCore/StandardDataTypes/FilterOperator.h"
+#include "OpcUaStackCore/StandardDataTypes/ContentFilterElement.h"
 
 #include "OpcUaStackCore/Filter/LiteralFilterNode.h"
 
@@ -44,7 +43,7 @@ public:
     OpcUaString calledAlias_;
     RelativePath::SPtr calledBrowsePath_;
     OpcUaUInt32 calledAttributeId_;
-    OpcUaString calledNumericRange_;
+    OpcUaNumericRange calledNumericRange_;
 
     OpcUaVariant expectedValue_;
     OpcUaBoolean expectedResult_;
@@ -81,119 +80,111 @@ public:
 };
 
 template<typename T1, typename T2>
-static ContentFilterElement::SPtr makeOperatorWith2LitteralOperands(BasicFilterOperator op, T1 arg1, T2 arg2)
+static ContentFilterElement::SPtr makeOperatorWith2LitteralOperands(FilterOperator::Enum op, T1 arg1, T2 arg2)
 {
     ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
 
-    ExtensibleParameter::SPtr arg1_ = constructSPtr<ExtensibleParameter>();
-    arg1_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
+    OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
+    BOOST_REQUIRE(arg1_->parameter<LiteralOperand>().get() != nullptr);
     arg1_->parameter<LiteralOperand>()->value().setValue(arg1);
 
-    ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
-    arg2_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
+    OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
+    BOOST_REQUIRE(arg2_->parameter<LiteralOperand>().get() != nullptr);
     arg2_->parameter<LiteralOperand>()->value().setValue(arg2);
 
-    eqElement->filterOperator(op);
-    eqElement->filterOperands()->resize(2);
-    eqElement->filterOperands()->push_back(arg1_);
-    eqElement->filterOperands()->push_back(arg2_);
+    eqElement->filterOperator().enumeration(op);
+    eqElement->filterOperands().resize(2);
+    eqElement->filterOperands().push_back(arg1_);
+    eqElement->filterOperands().push_back(arg2_);
 
     return eqElement;
 }
 
 
-static ContentFilterElement::SPtr makeOperatorWith2ElementOperands(BasicFilterOperator op, int idx1, int idx2)
+static ContentFilterElement::SPtr makeOperatorWith2ElementOperands(FilterOperator::Enum op, int idx1, int idx2)
 {
     ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
 
-    ExtensibleParameter::SPtr arg1_ = constructSPtr<ExtensibleParameter>();
-    arg1_->registerFactoryElement<ElementOperand>((OpcUaUInt32)OpcUaId_ElementOperand);
+    OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
-    arg1_->parameter<ElementOperand>()->index(idx1);
+    arg1_->parameter<ElementOperand>()->index() = idx1;
 
-    ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
-    arg2_->registerFactoryElement<ElementOperand>((OpcUaUInt32)OpcUaId_ElementOperand);
+    OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
-    arg2_->parameter<ElementOperand>()->index(idx2);
+    arg2_->parameter<ElementOperand>()->index() = idx2;
 
-    eqElement->filterOperator(op);
-    eqElement->filterOperands()->resize(2);
-    eqElement->filterOperands()->push_back(arg1_);
-    eqElement->filterOperands()->push_back(arg2_);
+    eqElement->filterOperator().enumeration(op);
+    eqElement->filterOperands().resize(2);
+    eqElement->filterOperands().push_back(arg1_);
+    eqElement->filterOperands().push_back(arg2_);
 
     return eqElement;
 }
 
 template<typename T>
-static ContentFilterElement::SPtr makeOperatorWithElementAndLiteralOperands(BasicFilterOperator op, int idx1, T arg2)
+static ContentFilterElement::SPtr makeOperatorWithElementAndLiteralOperands(FilterOperator::Enum op, int idx1, T arg2)
 {
     ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
 
-    ExtensibleParameter::SPtr arg1_ = constructSPtr<ExtensibleParameter>();
-    arg1_->registerFactoryElement<ElementOperand>((OpcUaUInt32)OpcUaId_ElementOperand);
+    OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
-    arg1_->parameter<ElementOperand>()->index(idx1);
+    arg1_->parameter<ElementOperand>()->index() = idx1;
 
-    ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
-    arg2_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
+    OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
     arg2_->parameter<LiteralOperand>()->value().set<T>(arg2);
 
-    eqElement->filterOperator(op);
-    eqElement->filterOperands()->resize(2);
-    eqElement->filterOperands()->push_back(arg1_);
-    eqElement->filterOperands()->push_back(arg2_);
+    eqElement->filterOperator().enumeration(op);
+    eqElement->filterOperands().resize(2);
+    eqElement->filterOperands().push_back(arg1_);
+    eqElement->filterOperands().push_back(arg2_);
 
     return eqElement;
 }
 
 template<typename T>
-static ContentFilterElement::SPtr makeOperatorWithAttributeAndLiteralOperands(BasicFilterOperator op, AttributeOperand arg1, T arg2)
+static ContentFilterElement::SPtr makeOperatorWithAttributeAndLiteralOperands(FilterOperator::Enum op, AttributeOperand& arg1, T arg2)
 {
     ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
 
-    ExtensibleParameter::SPtr arg1_ = constructSPtr<ExtensibleParameter>();
-    arg1_->registerFactoryElement<AttributeOperand>((OpcUaUInt32)OpcUaId_AttributeOperand);
+    OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_AttributeOperand);
     AttributeOperand::SPtr attr = arg1_->parameter<AttributeOperand>();
     *attr = arg1;
 
-    ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
-    arg2_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
+    OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
     arg2_->parameter<LiteralOperand>()->value().set<T>(arg2);
 
-    eqElement->filterOperator(op);
-    eqElement->filterOperands()->resize(2);
-    eqElement->filterOperands()->push_back(arg1_);
-    eqElement->filterOperands()->push_back(arg2_);
+    eqElement->filterOperator().enumeration(op);
+    eqElement->filterOperands().resize(2);
+    eqElement->filterOperands().push_back(arg1_);
+    eqElement->filterOperands().push_back(arg2_);
 
     return eqElement;
 }
 
 
 template<typename T>
-static ContentFilterElement::SPtr makeOperatorWithSimpleAttributeAndLiteralOperands(BasicFilterOperator op, SimpleAttributeOperand arg1, T arg2)
+static ContentFilterElement::SPtr makeOperatorWithSimpleAttributeAndLiteralOperands(FilterOperator::Enum op, SimpleAttributeOperand& arg1, T arg2)
 {
     ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
 
-    ExtensibleParameter::SPtr arg1_ = constructSPtr<ExtensibleParameter>();
-    arg1_->registerFactoryElement<SimpleAttributeOperand>((OpcUaUInt32)OpcUaId_SimpleAttributeOperand);
+    OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_SimpleAttributeOperand);
     SimpleAttributeOperand::SPtr attr = arg1_->parameter<SimpleAttributeOperand>();
     *attr = arg1;
 
-    ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
-    arg2_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
+    OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
     arg2_->parameter<LiteralOperand>()->value().set<T>(arg2);
 
-    eqElement->filterOperator(op);
-    eqElement->filterOperands()->resize(2);
-    eqElement->filterOperands()->push_back(arg1_);
-    eqElement->filterOperands()->push_back(arg2_);
+    eqElement->filterOperator().enumeration(op);
+    eqElement->filterOperands().resize(2);
+    eqElement->filterOperands().push_back(arg1_);
+    eqElement->filterOperands().push_back(arg2_);
 
     return eqElement;
 }

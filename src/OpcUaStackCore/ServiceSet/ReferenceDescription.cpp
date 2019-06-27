@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -106,12 +106,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	ReferenceDescription::nodeClass(const NodeClassType nodeClass)
+	ReferenceDescription::nodeClass(const NodeClass::Enum nodeClass)
 	{
 		nodeClass_ = nodeClass;
 	}
 	
-	NodeClassType 
+	NodeClass::Enum
 	ReferenceDescription::nodeClass(void)
 	{
 		return nodeClass_;
@@ -127,6 +127,18 @@ namespace OpcUaStackCore
 	ReferenceDescription::typeDefinition(void) const
 	{
 		return typeDefinitionSPtr_;
+	}
+
+	void
+	ReferenceDescription::copyTo(ReferenceDescription& referenceDescription)
+	{
+		referenceTypeIdSPtr_->copyTo(*referenceDescription.referenceTypeId().get());
+		referenceDescription.isForward(isForward_);
+		nodeIdSPtr_->copyTo(*referenceDescription.expandedNodeId().get());
+		browseName_.copyTo(referenceDescription.browseName());
+		displayName_.copyTo(referenceDescription.displayName());
+		referenceDescription.nodeClass(nodeClass_);
+		typeDefinitionSPtr_->copyTo(*referenceDescription.typeDefinition().get());
 	}
 
 	void 
@@ -151,7 +163,7 @@ namespace OpcUaStackCore
 		browseName_.opcUaBinaryDecode(is);
 		displayName_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);
-		nodeClass_ = (NodeClassType)tmp;
+		nodeClass_ = (NodeClass::Enum)tmp;
 		typeDefinitionSPtr_->opcUaBinaryDecode(is);
 	}
 

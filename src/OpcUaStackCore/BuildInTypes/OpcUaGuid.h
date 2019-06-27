@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_OpcUaGuid_h__
@@ -21,8 +21,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 #include <stdint.h>
 
@@ -31,6 +30,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT OpcUaGuid
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaGuid> SPtr;
@@ -49,7 +49,7 @@ namespace OpcUaStackCore
 		OpcUaByte* data4(void) const;
 
 		bool value(const std::string& string);
-		std::string value(void);
+		std::string value(void) const;
 		OpcUaGuid& operator=(const std::string& string); 
 		operator std::string const (void); 
 
@@ -67,20 +67,24 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool encode(boost::property_tree::ptree& pt) const;
-		bool decode(boost::property_tree::ptree& pt);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
+	  protected:
+	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+
 	  private:
+		OpcUaGuid(const OpcUaGuid& value);
+
 		OpcUaUInt32 data1_;
 		OpcUaUInt16 data2_;
 		OpcUaUInt16 data3_;
 		OpcUaByte data4_[8];
 	};
 
-	class OpcUaGuidArray
+	class DLLEXPORT OpcUaGuidArray
 	: public OpcUaArray<OpcUaGuid::SPtr, SPtrTypeCoder<OpcUaGuid> >
 	{
 	  public:

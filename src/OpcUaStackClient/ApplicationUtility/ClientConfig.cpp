@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,7 +35,7 @@ namespace OpcUaStackClient
 	: id_("")
 	, samplingInterval_(0)
 	, queueSize_(0)
-	, dataChangeFilter_(DCT_StatusValue)
+	, dataChangeFilter_(DataChangeTrigger::EnumStatusValue)
 	{
 	}
 
@@ -132,13 +132,13 @@ namespace OpcUaStackClient
 			return false;
 		}
 		if (dataChangeFilter == "status") {
-			dataChangeFilter_ = DCT_Status;
+			dataChangeFilter_.enumeration(DataChangeTrigger::EnumStatus);
 		}
 		else if (dataChangeFilter == "status-value") {
-			dataChangeFilter_ = DCT_StatusValue;
+			dataChangeFilter_.enumeration(DataChangeTrigger::EnumStatusValue);
 		}
 		else if (dataChangeFilter == "status-value-timestamp") {
-			dataChangeFilter_ = DCT_StatusValueTimestamp;
+			dataChangeFilter_.enumeration(DataChangeTrigger::EnumStatusValueTimestamp);
 		}
 		else {
 			Log(Error, "element invalid in config file")

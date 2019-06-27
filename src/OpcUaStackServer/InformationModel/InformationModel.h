@@ -19,14 +19,12 @@
 #define __OpcUaStackServer_InformationModel_h__
 
 #include <boost/thread/mutex.hpp>
-#include <OpcUaStackServer/InformationModel/EventHandlerMap.h>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
+#include <map>
+#include "OpcUaStackServer/InformationModel/EventHandlerMap.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
 #include "OpcUaStackCore/EventType/EventBase.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/MethodMap.h"
-#include <map>
 
 using namespace OpcUaStackCore;
 

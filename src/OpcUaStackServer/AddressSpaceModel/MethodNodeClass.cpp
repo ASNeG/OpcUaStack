@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,10 +21,23 @@ namespace OpcUaStackServer
 {
 
 	MethodNodeClass::MethodNodeClass(void)
-	: BaseNodeClass(NodeClassType_Method)
+	: BaseNodeClass(NodeClass::EnumMethod)
 	, executable_()
 	, userExecutable_()
 	{
+	}
+
+	MethodNodeClass::MethodNodeClass(OpcUaNodeId& nodeId, MethodNodeClass& methodNodeClass)
+	: BaseNodeClass(NodeClass::EnumMethod, nodeId, &methodNodeClass)
+	, executable_()
+	, userExecutable_()
+	{
+
+		OpcUaBoolean executable;
+		if (methodNodeClass.getExecutable(executable)) setExecutable(executable);
+
+		OpcUaBoolean userExecutable;
+		if (methodNodeClass.getUserExecutable(userExecutable)) setUserExecutable(userExecutable);
 	}
 
 	MethodNodeClass::~MethodNodeClass(void)

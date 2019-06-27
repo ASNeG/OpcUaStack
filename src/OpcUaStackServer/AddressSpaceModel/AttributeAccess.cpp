@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/ServiceSet/DataValueTrigger.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
 namespace OpcUaStackServer
@@ -199,7 +200,7 @@ namespace OpcUaStackServer
 			{
 				if (variant.variantType() != OpcUaBuildInType_OpcUaUInt32) return false;
 				NodeClassAttribute* nodeClassAttribute = reinterpret_cast<NodeClassAttribute*>(&attribute);
-				nodeClassAttribute->data((NodeClassType)variant.variant<OpcUaUInt32>());
+				nodeClassAttribute->data((NodeClass::Enum)variant.variant<OpcUaUInt32>());
 				break;
 			}
 			case AttributeId_BrowseName:
@@ -393,11 +394,15 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	AttributeAccess::trigger(OpcUaDataValue& dataValue, Attribute& attribute, DataChangeTrigger dataChangeTrigger)
+	AttributeAccess::trigger(
+		OpcUaDataValue& dataValue,
+		Attribute& attribute,
+		DataChangeTrigger::Enum dataChangeTrigger
+	)
 	{
 		if (attribute.id() == AttributeId_Value) {
 			ValueAttribute* valueAttribute = reinterpret_cast<ValueAttribute*>(&attribute);
-			return valueAttribute->data().trigger(dataValue, dataChangeTrigger);
+			return DataValueTrigger::run(valueAttribute->data(), dataValue, dataChangeTrigger);
 		}
 		
 		OpcUaVariant::SPtr variant = dataValue.variant();

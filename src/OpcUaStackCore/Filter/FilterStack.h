@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,17 +12,15 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
+   Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru), Kai Huebl (kai@huebl-sgh.de)
  */
 
 #ifndef __OpcUaStackCore_FilterStack_h__
 #define __OpcUaStackCore_FilterStack_h__
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/EventFilter.h"
-#include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilterResult.h"
 #include "OpcUaStackCore/Filter/FilterNode.h"
 #include "OpcUaStackCore/Filter/AttributeIf.h"
 #include "OpcUaStackCore/Filter/SimpleAttributeIf.h"
@@ -40,7 +38,7 @@ namespace OpcUaStackCore
 
         void attributeIf(AttributeIf* attributeIf);
         void simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf);
-        bool receive(const ContentFilter& contentFilter, ContentFilterResult& contentilterResult);
+        bool receive(ContentFilter& contentFilter, ContentFilterResult& contentilterResult);
         bool process(bool& filterResult) const;
 
       private:
@@ -48,7 +46,7 @@ namespace OpcUaStackCore
         AttributeIf* attributeIf_;
         SimpleAttributeIf* simpleAttributeIf_;
 
-        bool buildOperatorNode(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult, int idx, FilterNode::SPtr& node);
+        bool buildOperatorNode(ContentFilter& contentFilter, ContentFilterResult& contentFilterResult, int idx, FilterNode::SPtr& node);
     };
 
 }

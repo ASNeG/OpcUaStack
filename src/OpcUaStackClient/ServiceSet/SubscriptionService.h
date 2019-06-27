@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,8 +19,8 @@
 #define __OpcUaStackClient_SubscriptionManager_h__
 
 #include <set>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceBase.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionServiceHandler.h"
 
 namespace OpcUaStackClient
 {
@@ -37,9 +37,11 @@ namespace OpcUaStackClient
 
 		void setConfiguration(
 			Component* componentSession,
+			const DataChangeNotificationHandler& dataChangeNotificationHandler,
+			const EventNotificationHandler& eventNotificationHandler,
+			const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
 			uint32_t publishCount,
-			uint32_t requestTimeout,
-			SubscriptionServiceIf* subscriptionServiceIf
+			uint32_t requestTimeout
 		);
 		void publishCount(uint32_t publishCount);
 		uint32_t publishCount(void);
@@ -80,8 +82,12 @@ namespace OpcUaStackClient
 	    void sendPublishRequests(void);
 
 	    void receivePublishResponse(const PublishResponse::SPtr& publishResponse);
-	    void dataChangeNotification(const ExtensibleParameter::SPtr& extensibleParameter);
+	    void dataChangeNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter);
+	    void eventNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter);
 
+		DataChangeNotificationHandler dataChangeNotificationHandler_;
+		EventNotificationHandler eventNotificationHandler_;
+		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;
 	    uint32_t publishCount_;
 	    uint32_t actPublishCount_;
 	    uint32_t requestTimeout_;

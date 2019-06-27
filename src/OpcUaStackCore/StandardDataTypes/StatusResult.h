@@ -1,69 +1,81 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: StatusResult
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.1.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
-
-   Autor: Samuel Huebl (samuel.huebl@asneg.de)
- */
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
+*/
 
 #ifndef __OpcUaStackCore_StatusResult_h__
 #define __OpcUaStackCore_StatusResult_h__
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
-
-	class DLLEXPORT StatusResult
-	: public Object
-	, public ExtensionObjectBase
-	{
-	  public:
-		typedef boost::shared_ptr<StatusResult> SPtr;
-
-		StatusResult(void);
-		virtual ~StatusResult(void);
-
-		OpcUaUInt32& statusCode(void);
-		void statusCode(OpcUaUInt32 statusCode);
-		OpcUaDiagnosticInfo& diagnosticInfo(void);
-		void diagnosticInfo(OpcUaDiagnosticInfo diagnosticInfo);
-
-		void copyTo(StatusResult& statusResult);
-		bool operator==(const StatusResult& statusResult) const;
-
-		//- ExtensionObjectBase -----------------------------------------------
-		ExtensionObjectBase::SPtr factory(void);
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		void copyTo(ExtensionObjectBase& extensionObjectBase);
-		bool equal(ExtensionObjectBase& extensionObjectBase) const;
-		void out(std::ostream& os);
-		//- ExtensionObjectBase -----------------------------------------------
-
-	  private:
-		OpcUaUInt32 statusCode_;
-		OpcUaDiagnosticInfo diagnosticInfo_;
-	};
+    
+    class DLLEXPORT StatusResult
+    : public Object
+    , public ExtensionObjectBase
+    {
+      public:
+        typedef boost::shared_ptr<StatusResult> SPtr;
+        typedef std::vector<StatusResult::SPtr> Vec;
+    
+        StatusResult(void);
+        StatusResult(const StatusResult& value);
+        virtual ~StatusResult(void);
+        
+        OpcUaStatus& statusCode(void);
+        OpcUaDiagnosticInfo& diagnosticInfo(void);
+        
+        //- ExtensionObjectBase -----------------------------------------------
+        virtual ExtensionObjectBase::SPtr factory(void);
+        virtual std::string namespaceName(void);
+        virtual std::string typeName(void);
+        virtual OpcUaNodeId typeId(void);
+        virtual OpcUaNodeId binaryTypeId(void);
+        virtual OpcUaNodeId xmlTypeId(void);
+        virtual OpcUaNodeId jsonTypeId(void);
+        virtual void opcUaBinaryEncode(std::ostream& os) const;
+        virtual void opcUaBinaryDecode(std::istream& is);
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+        virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+        virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+        virtual void out(std::ostream& os);
+        //- ExtensionObjectBase -----------------------------------------------
+        
+        virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const;
+        virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt);
+        
+        void copyTo(StatusResult& value);
+        bool operator==(const StatusResult& value);
+        bool operator!=(const StatusResult& value);
+        StatusResult& operator=(const StatusResult& value);
+    
+      private:
+        OpcUaStatus statusCode_;
+        OpcUaDiagnosticInfo diagnosticInfo_;
+    
+    };
+    
+    class DLLEXPORT StatusResultArray
+    : public OpcUaArray<StatusResult::SPtr, SPtrTypeCoder<StatusResult> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<StatusResultArray> SPtr;
+    };
 
 }
 
 #endif
-
-
-

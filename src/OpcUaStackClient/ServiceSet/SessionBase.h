@@ -28,8 +28,10 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<SessionBase> SPtr;
 
-		SessionBase(void) {}
-		virtual ~SessionBase(void) {}
+		SessionBase(void);
+		virtual ~SessionBase(void);
+
+	  private:
 	};
 
 }

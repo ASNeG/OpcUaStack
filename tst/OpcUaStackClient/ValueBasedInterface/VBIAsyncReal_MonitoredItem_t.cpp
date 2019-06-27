@@ -1,220 +1,221 @@
 #include "unittest.h"
+#include "OpcUaStackCore/Base/Condition.h"
+#include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
-#include "OpcUaStackClient/ValueBasedInterface/VBIClientHandlerTest.h"
 
+using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
 #ifdef REAL_SERVER
 
 BOOST_AUTO_TEST_SUITE(VBIAsyncReal_MonitoredItem_)
 
+struct GValueFixture {
+	GValueFixture(void)
+    : cond_()
+	, cond1_()
+	, sessionState_(SessionServiceStateId::None)
+	, statusCode_(Success)
+	, subscriptionId_(0)
+	, clientHandle_(0)
+	, dataValue_()
+	, monitoredItemId_(0)
+    {}
+    ~GValueFixture(void)
+    {}
+
+    Condition cond_;
+    Condition cond1_;
+    SessionServiceStateId sessionState_;
+    OpcUaStatusCode statusCode_;
+    uint32_t subscriptionId_;
+    OpcUaUInt32 clientHandle_;
+    OpcUaDataValue dataValue_;
+    uint32_t monitoredItemId_;
+};
+
 BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_)
 {
 	std::cout << "VBIAsyncReal_MonitoredItem_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 
 	//
 	// init certificate and crypto manager
 	//
-	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
-	applicationCertificate->enable(true);
+	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
-	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
-	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
-	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
-	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
-	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
-
-	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
-	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
-
-	applicationCertificate->generateCertificate(true);
-	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
-	applicationCertificate->commonName("ASNeG-Demo");
-	applicationCertificate->domainComponent("127.0.0.1");
-	applicationCertificate->organization("ASNeG");
-	applicationCertificate->organizationUnit("OPC UA Service Department");
-	applicationCertificate->locality("Neukirchen");
-	applicationCertificate->state("Hessen");
-	applicationCertificate->country("DE");
-	applicationCertificate->yearsValidFor(5);
-	applicationCertificate->keyLength(2048);
-	applicationCertificate->certificateType("RsaSha256");
-	applicationCertificate->ipAddress().push_back("127.0.0.1");
-	applicationCertificate->dnsName().push_back("ASNeG.de");
-	applicationCertificate->email("info@ASNeG.de");
-
-	BOOST_REQUIRE(applicationCertificate->init() == true);
-	CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
-
-
-	// set session change callback
-	client.setSessionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	// set session change handler
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
 	);
 
 	// connect session
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
-	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// create subscription
-	vbiClientHandlerTest.createSubscriptionComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateSubscription(
-		boost::bind(&VBIClientHandlerTest::createSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.createSubscriptionComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	uint32_t subscriptionId = vbiClientHandlerTest.subscriptionId_;
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	uint32_t subscriptionId = subscriptionId_;
 
 	// create monitored item
 	uint32_t clientHandle = 334455;
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaUInt32)2258);
-	vbiClientHandlerTest.createMonitoredItemComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateMonitoredItem(
 		nodeId,
 		subscriptionId,
 		clientHandle,
-		boost::bind(&VBIClientHandlerTest::createMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.createMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	uint32_t monitoredItemId = vbiClientHandlerTest.monitoredItemId_;
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	uint32_t monitoredItemId = monitoredItemId_;
 
 	// delete monitored item
-	vbiClientHandlerTest.deleteMonitoredItemComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteMonitoredItem(
 		subscriptionId,
 		monitoredItemId,
-		boost::bind(&VBIClientHandlerTest::deleteMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(monitoredItemId == vbiClientHandlerTest.monitoredItemId_);
-	BOOST_REQUIRE(subscriptionId == vbiClientHandlerTest.subscriptionId_);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(monitoredItemId == monitoredItemId_);
+	BOOST_REQUIRE(subscriptionId == subscriptionId_);
 
 	// delete subscription
-	vbiClientHandlerTest.deleteSubscriptionComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteSubscription(
 		subscriptionId,
-		boost::bind(&VBIClientHandlerTest::deleteSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteSubscriptionComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionId_ == subscriptionId);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(subscriptionId_ == subscriptionId);
 
 	// disconnect session
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
-
 
 	//
 	// init certificate and crypto manager
 	//
-	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
-	applicationCertificate->enable(true);
-
-	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
-	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
-	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
-	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
-	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
-
-	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
-	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
-
-	applicationCertificate->generateCertificate(true);
-	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
-	applicationCertificate->commonName("ASNeG-Demo");
-	applicationCertificate->domainComponent("127.0.0.1");
-	applicationCertificate->organization("ASNeG");
-	applicationCertificate->organizationUnit("OPC UA Service Department");
-	applicationCertificate->locality("Neukirchen");
-	applicationCertificate->state("Hessen");
-	applicationCertificate->country("DE");
-	applicationCertificate->yearsValidFor(5);
-	applicationCertificate->keyLength(2048);
-	applicationCertificate->certificateType("RsaSha256");
-	applicationCertificate->ipAddress().push_back("127.0.0.1");
-	applicationCertificate->dnsName().push_back("ASNeG.de");
-	applicationCertificate->email("info@ASNeG.de");
-
-	BOOST_REQUIRE(applicationCertificate->init() == true);
-	CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
+	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set session change callback
-	client.setSessionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
 	);
 
 	// connect session
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
-	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
-	// set data change callback
-	client.setDataChangeCallback(
-		boost::bind(&VBIClientHandlerTest::dataChangeCallback, &vbiClientHandlerTest, _1, _2)
+	// set data change handler
+	client.setDataChangeHandler(
+		[this](OpcUaUInt32 clientHandle, OpcUaDataValue& dataValue) {
+			clientHandle_ = clientHandle;
+			dataValue_ = dataValue;
+			cond1_.sendEvent();
+		}
 	);
 
 	// create subscription
-	vbiClientHandlerTest.createSubscriptionComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateSubscription(
-		boost::bind(&VBIClientHandlerTest::createSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.createSubscriptionComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	uint32_t subscriptionId = vbiClientHandlerTest.subscriptionId_;
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	uint32_t subscriptionId = subscriptionId_;
 
 	// create monitored item
 	uint32_t clientHandle = 332201;
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaUInt32)2258);
-	vbiClientHandlerTest.dataChangeCallback_.initEvent();
-	vbiClientHandlerTest.createMonitoredItemComplete_.initEvent();
+	cond1_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateMonitoredItem(
 		nodeId,
 		subscriptionId,
 		clientHandle,
-		boost::bind(&VBIClientHandlerTest::createMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.createMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	uint32_t monitoredItemId = vbiClientHandlerTest.monitoredItemId_;
-	BOOST_REQUIRE(vbiClientHandlerTest.dataChangeCallback_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == clientHandle);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	uint32_t monitoredItemId = monitoredItemId_;
+	BOOST_REQUIRE(cond1_.waitForEvent(1000) == true);
 
 #if 0
 	while (true) {
@@ -224,157 +225,159 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
 #endif
 
 	// delete monitored item
-	vbiClientHandlerTest.deleteMonitoredItemComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteMonitoredItem(
 		subscriptionId,
 		monitoredItemId,
-		boost::bind(&VBIClientHandlerTest::deleteMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(monitoredItemId == vbiClientHandlerTest.monitoredItemId_);
-	BOOST_REQUIRE(subscriptionId == vbiClientHandlerTest.subscriptionId_);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(monitoredItemId == monitoredItemId_);
+	BOOST_REQUIRE(subscriptionId == subscriptionId_);
 
 	// delete subscription
-	vbiClientHandlerTest.deleteSubscriptionComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteSubscription(
 		subscriptionId,
-		boost::bind(&VBIClientHandlerTest::deleteSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteSubscriptionComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionId_ == subscriptionId);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(subscriptionId_ == subscriptionId);
 
 	// disconnect session
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
-BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change)
+BOOST_FIXTURE_TEST_CASE(VBIAsyncReal_MonitoredItem_data_change, GValueFixture)
 {
-	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
 	//
 	// init certificate and crypto manager
 	//
-	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
-	applicationCertificate->enable(true);
-
-	applicationCertificate->certificateTrustListLocation("./pki/trusted/certs/");
-	applicationCertificate->certificateRejectListLocation("./pki/reject/certs/.");
-	applicationCertificate->certificateRevocationListLocation("./pki/trusted/crl/");
-	applicationCertificate->issuersCertificatesLocation("./pki/issuers/certs/");
-	applicationCertificate->issuersRevocationListLocation("./pki/issuers/crl/");
-
-	applicationCertificate->serverCertificateFile("./pki/own/certs/ASNeG-Demo.der");
-	applicationCertificate->privateKeyFile("./pki/own/private/ASNeG-Demo.pem");
-
-	applicationCertificate->generateCertificate(true);
-	applicationCertificate->uri("urn:asneg.de:ASNeG:ASNeG-Demo");
-	applicationCertificate->commonName("ASNeG-Demo");
-	applicationCertificate->domainComponent("127.0.0.1");
-	applicationCertificate->organization("ASNeG");
-	applicationCertificate->organizationUnit("OPC UA Service Department");
-	applicationCertificate->locality("Neukirchen");
-	applicationCertificate->state("Hessen");
-	applicationCertificate->country("DE");
-	applicationCertificate->yearsValidFor(5);
-	applicationCertificate->keyLength(2048);
-	applicationCertificate->certificateType("RsaSha256");
-	applicationCertificate->ipAddress().push_back("127.0.0.1");
-	applicationCertificate->dnsName().push_back("ASNeG.de");
-	applicationCertificate->email("info@ASNeG.de");
-
-	BOOST_REQUIRE(applicationCertificate->init() == true);
-	CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
+	CryptoManager::SPtr cryptoManager = CryptoManagerTest::getInstance();
+	BOOST_REQUIRE(cryptoManager.get() != nullptr);
 
 	// set session change callback
-	client.setSessionChangeCallback(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	client.setSessionChangeHandler(
+		[this] (SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState == SessionServiceStateId::Established ||
+				sessionState == SessionServiceStateId::Disconnected) {
+				sessionState_ = sessionState;
+				cond_.sendEvent();
+			}
+		}
 	);
 
 	// connect session
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
-	connectContext.applicationCertificate_ = applicationCertificate;
 	connectContext.cryptoManager_ = cryptoManager;
 	connectContext.secureChannelLog_ = true;
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncConnect(connectContext);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Established);
 
 	// set data change callback
-	client.setDataChangeCallback(
-		boost::bind(&VBIClientHandlerTest::dataChangeCallback, &vbiClientHandlerTest, _1, _2)
+	client.setDataChangeHandler(
+		[this](OpcUaUInt32 clientHandle, OpcUaDataValue& dataValue) {
+			clientHandle_ = clientHandle;
+			dataValue_ = dataValue;
+			cond1_.sendEvent();
+		}
 	);
 
 	// create subscription
-	vbiClientHandlerTest.createSubscriptionComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateSubscription(
-		boost::bind(&VBIClientHandlerTest::createSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.createSubscriptionComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	uint32_t subscriptionId = vbiClientHandlerTest.subscriptionId_;
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	uint32_t subscriptionId = subscriptionId_;
 
 	// create monitored item
 	uint32_t clientHandle = 332201;
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaUInt32)2258);
-	vbiClientHandlerTest.dataChangeCallback_.initEvent();
-	vbiClientHandlerTest.createMonitoredItemComplete_.initEvent();
+	cond1_.initEvent();
+	cond_.initEvent();
 	client.asyncCreateMonitoredItem(
 		nodeId,
 		subscriptionId,
 		clientHandle,
-		boost::bind(&VBIClientHandlerTest::createMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.createMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	uint32_t monitoredItemId = vbiClientHandlerTest.monitoredItemId_;
-	BOOST_REQUIRE(vbiClientHandlerTest.dataChangeCallback_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == clientHandle);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	uint32_t monitoredItemId = monitoredItemId_;
+	BOOST_REQUIRE(cond1_.waitForEvent(1000) == true);
 
 	for (uint32_t idx=0; idx<2; idx++) {
-		vbiClientHandlerTest.dataChangeCallback_.initEvent();
-		vbiClientHandlerTest.dataChangeCallback_.waitForEvent(3000);
+		cond1_.initEvent();
+		cond1_.waitForEvent(3000);
 	}
 
 	// delete monitored item
-	vbiClientHandlerTest.deleteMonitoredItemComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteMonitoredItem(
 		subscriptionId,
 		monitoredItemId,
-		boost::bind(&VBIClientHandlerTest::deleteMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			monitoredItemId_ = monitoredItemId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteMonitoredItemComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(monitoredItemId == vbiClientHandlerTest.monitoredItemId_);
-	BOOST_REQUIRE(subscriptionId == vbiClientHandlerTest.subscriptionId_);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(monitoredItemId == monitoredItemId_);
+	BOOST_REQUIRE(subscriptionId == subscriptionId_);
 
 	// delete subscription
-	vbiClientHandlerTest.deleteSubscriptionComplete_.initEvent();
+	cond_.initEvent();
 	client.asyncDeleteSubscription(
 		subscriptionId,
-		boost::bind(&VBIClientHandlerTest::deleteSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+		[this](OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			cond_.sendEvent();
+		}
 	);
-	BOOST_REQUIRE(vbiClientHandlerTest.deleteSubscriptionComplete_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
-	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionId_ == subscriptionId);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(statusCode_ == Success);
+	BOOST_REQUIRE(subscriptionId_ == subscriptionId);
 
 	// disconnect session
-	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
+	cond_.initEvent();
 	client.asyncDisconnect();
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
-	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Disconnect);
-	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
+	BOOST_REQUIRE(cond_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(sessionState_ == SessionServiceStateId::Disconnected);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

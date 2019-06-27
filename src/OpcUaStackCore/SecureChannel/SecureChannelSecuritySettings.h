@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,8 @@
 
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/Certificate/SecurityKeySet.h"
-#include "OpcUaStackCore/Certificate/Certificate.h"
+#include "OpcUaStackCore/Certificate/CertificateChain.h"
+#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 
 namespace OpcUaStackCore
 {
@@ -34,22 +35,39 @@ namespace OpcUaStackCore
 
 		void cryptoBase(CryptoBase::SPtr& cryptoBase);
 		CryptoBase::SPtr& cryptoBase(void);
-		void partnerCertificate(Certificate::SPtr& partnerCertificate);
-		Certificate::SPtr& partnerCertificate(void);
-		MemoryBuffer& clientNonce(void);
-		MemoryBuffer& serverNonce(void);
+		EndpointDescription::SPtr& endpointDescription(void);
 
-		SecurityKeySet& securityKeySetClient(void);
-		SecurityKeySet& securityKeySetServer(void);
+		bool isOwnEncryptionEnabled(void);
+		bool isOwnSignatureEnabled(void);
+		OpcUaByteString& ownCertificateThumbprint(void);
+		OpcUaByteString& ownSecurityPolicyUri(void);
+		CertificateChain& ownCertificateChain(void);
+		MemoryBuffer& ownNonce(void);
+		SecurityKeySet& ownSecurityKeySet(void);
+
+		bool isPartnerEncryptionEnabled(void);
+		bool isPartnerSignatureEnabled(void);
+		OpcUaByteString& partnerCertificateThumbprint(void);
+		OpcUaByteString& partnerSecurityPolicyUri(void);
+		CertificateChain& partnerCertificateChain(void);
+		MemoryBuffer& partnerNonce(void);
+		SecurityKeySet& partnerSecurityKeySet(void);
 
 	  private:
 		CryptoBase::SPtr cryptoBase_;
-		Certificate::SPtr partnerCertificate_;
-		MemoryBuffer clientNonce_;
-		MemoryBuffer serverNonce_;
+		EndpointDescription::SPtr endpointDescription_;
 
-		SecurityKeySet securityKeySetClient_;
-		SecurityKeySet securityKeySetServer_;
+		OpcUaByteString ownCertificateThumbprint_;
+		OpcUaByteString ownSecurityPolicyUri_;
+		CertificateChain ownCertificateChain_;
+		MemoryBuffer ownNonce_;
+		SecurityKeySet ownSecurityKeySet_;
+
+		OpcUaByteString partnerCertificateThumbprint_;
+		OpcUaByteString partnerSecurityPolicyUri_;
+		CertificateChain partnerCertificateChain_;
+		MemoryBuffer partnerNonce_;
+		SecurityKeySet partnerSecurityKeySet_;
 	};
 
 }

@@ -16,7 +16,7 @@
  */
 
 #include "OpcUaStackServer/ServiceSet/Subscription.h"
-#include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
+#include "OpcUaStackCore/StandardDataTypes/DataChangeNotification.h"
 
 namespace OpcUaStackServer
 {
@@ -134,26 +134,26 @@ namespace OpcUaStackServer
 		// check lifetime counter
 		actLifetimeCount_ = lifetimeCount_;
 
-		ExtensibleParameter::SPtr extensibleParameter;
+		OpcUaExtensibleParameter::SPtr extensibleParameter;
 		OpcUaStatusCode statusCode;
 
 		//
 		// handle event notification
 		//
-		extensibleParameter = constructSPtr<ExtensibleParameter>();
+		extensibleParameter = constructSPtr<OpcUaExtensibleParameter>();
 		extensibleParameter->parameterTypeId().nodeId(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 		EventNotificationList::SPtr eventNotificationList = extensibleParameter->parameter<EventNotificationList>();
 		statusCode = monitorManager_.receive(eventNotificationList->events());
-		if (eventNotificationList->events()->size() > 0) {
+		if (eventNotificationList->events().size() > 0) {
 			actMaxKeepAliveCount_ = maxKeepAliveCount_;
 
 			uint32_t sequencenumber = acknowledgementManager_.nextSequenceNumber();
 			acknowledgementManager_.addNotification(sequencenumber, extensibleParameter);
 
 			PublishResponse::SPtr publishResponse = trx->response();
-			publishResponse->notificationMessage()->notificationData()->set(0, extensibleParameter);
+			publishResponse->notificationMessage()->notificationData().set(0, extensibleParameter);
 			publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
-			publishResponse->notificationMessage()->sequenceNumber(sequencenumber);
+			publishResponse->notificationMessage()->sequenceNumber() = sequencenumber;
 			publishResponse->subscriptionId(subscriptionId_);
 			publishResponse->moreNotifications(false);
 			acknowledgementManager_.availableSequenceNumbers(publishResponse->availableSequenceNumbers());
@@ -165,21 +165,21 @@ namespace OpcUaStackServer
 		//
 		// handle data change notification
 		//
-		extensibleParameter = constructSPtr<ExtensibleParameter>();
+		extensibleParameter = constructSPtr<OpcUaExtensibleParameter>();
 		extensibleParameter->parameterTypeId().nodeId(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		DataChangeNotification::SPtr dataChangeNotification = extensibleParameter->parameter<DataChangeNotification>();
 		
 		statusCode = monitorManager_.receive(dataChangeNotification->monitoredItems());
-		if (dataChangeNotification->monitoredItems()->size() > 0) {
+		if (dataChangeNotification->monitoredItems().size() > 0) {
 			actMaxKeepAliveCount_ = maxKeepAliveCount_;
 
 			uint32_t sequencenumber = acknowledgementManager_.nextSequenceNumber();
 			acknowledgementManager_.addNotification(sequencenumber, extensibleParameter);
 
 			PublishResponse::SPtr publishResponse = trx->response();
-			publishResponse->notificationMessage()->notificationData()->set(0, extensibleParameter);
+			publishResponse->notificationMessage()->notificationData().set(0, extensibleParameter);
 			publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
-			publishResponse->notificationMessage()->sequenceNumber(sequencenumber);
+			publishResponse->notificationMessage()->sequenceNumber() = sequencenumber;
 			publishResponse->subscriptionId(subscriptionId_);
 			publishResponse->moreNotifications(false);
 			acknowledgementManager_.availableSequenceNumbers(publishResponse->availableSequenceNumbers());
@@ -212,7 +212,7 @@ namespace OpcUaStackServer
 		uint32_t sequencenumber = acknowledgementManager_.nextSequenceNumber(true);
 
 		publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
-		publishResponse->notificationMessage()->sequenceNumber(sequencenumber);
+		publishResponse->notificationMessage()->sequenceNumber() = sequencenumber;
 		publishResponse->subscriptionId(subscriptionId_);
 		publishResponse->moreNotifications(false);
 		acknowledgementManager_.availableSequenceNumbers(publishResponse->availableSequenceNumbers());

@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,8 +24,7 @@ namespace OpcUaStackClient
 {
 
 	ViewServiceBrowse::ViewServiceBrowse(void)
-	: ViewServiceIf()
-	, viewServiceBrowseIf_(nullptr)
+	: viewServiceBrowseIf_(nullptr)
 	, viewService_()
 	, maxNodesInBrowse_(20)
 	, nodeIdVec_()
@@ -52,7 +51,6 @@ namespace OpcUaStackClient
 	ViewServiceBrowse::viewService(ViewService::SPtr& viewService)
 	{
 		viewService_ = viewService;
-		viewService_->viewServiceIf(this);
 	}
 
 	void
@@ -82,8 +80,8 @@ namespace OpcUaStackClient
 	void
 	ViewServiceBrowse::asyncBrowse(void)
 	{
-		ServiceTransactionBrowse::SPtr trx = constructSPtr<ServiceTransactionBrowse>();
-		BrowseRequest::SPtr req = trx->request();
+		auto trx = constructSPtr<ServiceTransactionBrowse>();
+		auto req = trx->request();
 
 		req->nodesToBrowse()->resize(nodeIdVec_.size());
 
@@ -96,11 +94,18 @@ namespace OpcUaStackClient
 			req->nodesToBrowse()->push_back(browseDescription);
 		}
 
+		trx->resultHandler(
+			[this](ServiceTransactionBrowse::SPtr& trx) {
+				viewServiceBrowseResponse(trx);
+			}
+		);
 		viewService_->asyncSend(trx);
 	}
 
     void
-    ViewServiceBrowse::viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
+    ViewServiceBrowse::viewServiceBrowseResponse(
+    	ServiceTransactionBrowse::SPtr serviceTransactionBrowse
+	)
     {
     	OpcUaStatusCode statusCode;
     	BrowseResponse::SPtr res = serviceTransactionBrowse->response();
@@ -193,6 +198,11 @@ namespace OpcUaStackClient
 			req->continuationPoints()->set(pos, continuationPoint);
 		}
 
+		trx->resultHandler(
+			[this](ServiceTransactionBrowseNext::SPtr& trx) {
+				viewServiceBrowseNextResponse(trx);
+			}
+		);
 		viewService_->asyncSend(trx);
     }
 

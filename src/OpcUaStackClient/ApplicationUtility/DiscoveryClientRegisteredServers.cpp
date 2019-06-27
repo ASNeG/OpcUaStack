@@ -14,7 +14,7 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientRegisteredServers.h"
 
@@ -33,6 +33,7 @@ namespace OpcUaStackClient
 	, sessionService_()
 	, shutdown_(false)
 	, shutdownCond_()
+	, cryptoManager_()
 	{
 	}
 
@@ -41,6 +42,12 @@ namespace OpcUaStackClient
     	if (slotTimerElement_.get() != nullptr) {
     		slotTimerElement_.reset();
     	}
+	}
+
+	void
+	DiscoveryClientRegisteredServers::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
 	}
 
 	void
@@ -64,13 +71,30 @@ namespace OpcUaStackClient
 	bool 
 	DiscoveryClientRegisteredServers::startup(void)
 	{
+		auto sessionStateUpdate = [this](SessionBase& session, SessionServiceStateId sessionState) {
+			if (sessionState != SessionServiceStateId::Established && sessionState == SessionServiceStateId::Disconnected) {
+				return;
+			}
+
+			if (sessionState == SessionServiceStateId::Established) {
+				sendDiscoveryServiceRegisterServer();
+				return;
+			}
+
+			if (shutdown_) {
+				shutdownCond_.conditionValueDec();
+			}
+		};
+
 		// create service set manager
 		SessionServiceConfig sessionServiceConfig;
-		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
-		sessionServiceConfig.sessionServiceIf_ = this;
+		sessionServiceConfig.ioThreadName("DiscoveryClientRegisteredServers");
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
-		sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
-		sessionServiceConfig.session_->reconnectTimeout_ = 0;
+		sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager_);
+		sessionServiceConfig.sessionMode_ = SessionMode::SecureChannel;
+		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
+		sessionServiceConfig.session_->reconnectTimeout(0);
+
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 
@@ -80,11 +104,10 @@ namespace OpcUaStackClient
 		// create discovery service
 		DiscoveryServiceConfig discoveryServiceConfig;
 		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
-		discoveryServiceConfig.discoveryServiceIf_ = this;
 		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
 
 	  	// start timer to check server entries
-	  	slotTimerElement_ = constructSPtr<SlotTimerElement>();
+	  	slotTimerElement_ = boost::make_shared<SlotTimerElement>();
 	  	slotTimerElement_->callback().reset(boost::bind(&DiscoveryClientRegisteredServers::loop, this));
 	  	slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), registerInterval_);
 	  	ioThread_->slotTimer()->start(slotTimerElement_);
@@ -125,8 +148,7 @@ namespace OpcUaStackClient
 		boost::mutex::scoped_lock g(mutex_);
 
 		// check existing registered server entry
-		RegisteredServer::Map::iterator it;
-		it = registeredServerMap_.find(name);
+		auto it = registeredServerMap_.find(name);
 		if (it != registeredServerMap_.end()) {
 			// remove existing registered server entry
 			registeredServerMap_.erase(it);
@@ -142,15 +164,14 @@ namespace OpcUaStackClient
 		boost::mutex::scoped_lock g(mutex_);
 
 		// check existing registered server entry
-		RegisteredServer::Map::iterator it;
-		it = registeredServerMap_.find(name);
+		auto it = registeredServerMap_.find(name);
 		if (it == registeredServerMap_.end()) {
 			return;
 		}
 
 		// set online flag off
-		RegisteredServer::SPtr registeredServer = it->second;
-		registeredServer->isOnline(false);
+		auto registeredServer = it->second;
+		registeredServer->isOnline() = false;
 	}
 
     void
@@ -171,41 +192,33 @@ namespace OpcUaStackClient
     }
 
 	void
-	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
-	{
-		if (sessionState == SS_Connect) {
-			sendDiscoveryServiceRegisterServer();
-			return;
-		}
-
-		if (shutdown_) {
-			shutdownCond_.conditionValueDec();
-		}
-	}
-
-	void
 	DiscoveryClientRegisteredServers::sendDiscoveryServiceRegisterServer(void)
 	{
 		if (registeredServerMap_.size() == 0) {
 			sessionService_->asyncDisconnect();
 		}
 
-		RegisteredServer::Map::iterator it;
-		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
+		for (auto it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
 
-			ServiceTransactionRegisterServer::SPtr trx;
-			trx = constructSPtr<ServiceTransactionRegisterServer>();
-			RegisterServerRequest::SPtr req = trx->request();
+			auto trx = constructSPtr<ServiceTransactionRegisterServer>();
+			auto req = trx->request();
 
 			it->second->copyTo(req->server());
 
+			trx->resultHandler(
+				[this](ServiceTransactionRegisterServer::SPtr& trx) {
+					discoveryServiceRegisterServerResponse(trx);
+				}
+			);
 			discoveryService_->asyncSend(trx);
 		}
 
 	}
 
 	void
-	DiscoveryClientRegisteredServers::discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer)
+	DiscoveryClientRegisteredServers::discoveryServiceRegisterServerResponse(
+		ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer
+	)
 	{
 		if (serviceTransactionRegisterServer->statusCode() != Success) {
 			Log(Error, "receive register server response error")
@@ -221,13 +234,10 @@ namespace OpcUaStackClient
 	{
 		// all server entries must be deregister from dicovery server. We must
 		// disable the isOnline flag
-		RegisteredServer::Map::iterator it;
-		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
+		for (auto it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
 			RegisteredServer::SPtr rs = it->second;
-			rs->isOnline(false);
+			rs->isOnline() = false;
 		}
-
-		;
 	}
 
 }

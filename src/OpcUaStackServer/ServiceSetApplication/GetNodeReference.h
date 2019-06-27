@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,7 +19,6 @@
 #define __OpcUaStackServer_GetNodeReference_h__
 
 #include <vector>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"

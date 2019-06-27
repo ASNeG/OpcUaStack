@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,7 +17,6 @@
 #ifndef __OpcUaStackClient_SubscriptionServiceConfig_h__
 #define __OpcUaStackClient_SubscriptionServiceConfig_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
 #include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
@@ -36,7 +35,9 @@ namespace OpcUaStackClient
 		SubscriptionServiceConfig(void);
 		virtual ~SubscriptionServiceConfig(void);
 
-		SubscriptionServiceIf* subscriptionServiceIf_;
+		DataChangeNotificationHandler dataChangeNotificationHandler_;
+		EventNotificationHandler eventNotificationHandler_;
+		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;
 		uint32_t publishCount_;
 		uint32_t requestTimeout_;
 	};

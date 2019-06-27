@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackCore_OpcUaBaseEnums_h__
 #define __OpcUaStackCore_OpcUaBaseEnums_h__
 
-#include "OpcUaStackCore/Base/os.h"
-
 namespace OpcUaStackCore
 {
 
@@ -35,22 +33,6 @@ namespace OpcUaStackCore
 		RT_ISSUE = 0,
 		RT_RENEW = 1
 	} RequestType;
-
-
-	typedef enum {
-		SN_Unknown,
-		SM_None,
-		SM_Sign,
-		SM_SignAndEncrypt
-	} SecurityMode;
-
-	typedef enum
-	{
-		SP_None,
-		SP_Basic128Rsa15,
-		SP_Basic256,
-		SP_Basic256Sha256
-	} SecurityPolicy;
 
 }
 

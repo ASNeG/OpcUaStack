@@ -100,6 +100,20 @@ namespace OpcUaStackCore
 	  
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
 	  void 
+	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::resultHandler(const ResultHandler& resultHandler)
+	  {
+	  	  resultHandler_ = resultHandler;
+	  }
+		  
+	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
+      typename ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::ResultHandler& 
+      ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::resultHandler(void)
+      {
+          return resultHandler_;
+      }
+	  
+	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
+	  void 
 	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::opcUaBinaryEncodeRequest(std::ostream& os) const
 	  {
 		  request_->opcUaBinaryEncode(os);

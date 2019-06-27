@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,10 +18,8 @@
 #ifndef __OpcUaStackClient_ViewService_h__
 #define __OpcUaStackClient_ViewService_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/ViewServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -38,11 +36,9 @@ namespace OpcUaStackClient
 		~ViewService(void);
 
 		void setConfiguration(
-			Component* componentSession,
-			ViewServiceIf* viewServiceIf
+			Component* componentSession
 		);
 		void componentSession(Component* componentSession);
-		void viewServiceIf(ViewServiceIf* viewServiceIf);
 
 		void syncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
 		void asyncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
@@ -58,8 +54,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
-		ViewServiceIf* viewServiceIf_;
 	};
 
 }

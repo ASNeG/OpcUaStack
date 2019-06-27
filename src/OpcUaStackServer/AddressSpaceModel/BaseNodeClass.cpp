@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 	{
 	}
 
-	BaseNodeClass::BaseNodeClass(NodeClassType nodeClass)
+	BaseNodeClass::BaseNodeClass(NodeClass::Enum nodeClass)
 	: nodeId_()
 	, nodeClass_(nodeClass)
 	, browseName_()
@@ -42,6 +42,34 @@ namespace OpcUaStackServer
 	, userWriteMask_()
 	, forwardNodeSync_()
 	{
+	}
+
+	BaseNodeClass::BaseNodeClass(NodeClass::Enum nodeClass, OpcUaNodeId& nodeId, BaseNodeClass* baseNodeClass)
+	: nodeId_(0)
+	, nodeClass_(nodeClass)
+	, browseName_()
+	, displayName_()
+	, description_()
+	, writeMask_()
+	, userWriteMask_()
+	, forwardNodeSync_()
+	{
+		setNodeId(nodeId);
+
+		OpcUaQualifiedName browseName;
+		if (baseNodeClass->getBrowseName(browseName)) setBrowseName(browseName);
+
+		OpcUaLocalizedText displayName;
+		if (baseNodeClass->getDisplayName(displayName)) setDisplayName(displayName);
+
+		OpcUaLocalizedText description;
+		if (baseNodeClass->getDescription(description)) setDescription(description);
+
+		OpcUaUInt32 writeMask;
+		if (baseNodeClass->getWriteMask()) setWriteMask(writeMask);
+
+		OpcUaUInt32 userWriteMask;
+		if (baseNodeClass->getUserWriteMask()) setUserWriteMask(userWriteMask);
 	}
 
 	BaseNodeClass::~BaseNodeClass(void)

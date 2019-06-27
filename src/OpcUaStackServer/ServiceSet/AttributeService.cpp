@@ -24,9 +24,10 @@
 #include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackCore/Application/ApplicationHWriteContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackCore/ServiceSet/HistoryData.h"
-#include "OpcUaStackCore/ServiceSet/HistoryEvent.h"
-#include "OpcUaStackCore/ServiceSet/ReadEventDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryEvent.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadEventDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
@@ -101,7 +102,7 @@ namespace OpcUaStackServer
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
-		if (readRequest->readValueIdArray()->size() > 1500) { // FIXME: todo
+		if (readRequest->readValueIdArray()->size() > 3000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->send(serviceTransaction);
 			return;
@@ -273,7 +274,7 @@ namespace OpcUaStackServer
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
-		if (writeRequest->writeValueArray()->size() > 1000) {  // FIXME: todo
+		if (writeRequest->writeValueArray()->size() > 3000) {  // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->receive(serviceTransaction);
 			return;
@@ -428,7 +429,8 @@ namespace OpcUaStackServer
 
 		Log(Debug, "attribute service historical read request")
 			.parameter("Trx", serviceTransaction->transactionId())
-			.parameter("NumberNodes", readRequest->nodesToRead()->size());
+			.parameter("NumberNodes", readRequest->nodesToRead()->size())
+			.parameter("ParameterTypeId", readRequest->historyReadDetails()->parameterTypeId());
 
 		// check timestampsToReturn attribute
 		if (readRequest->timestampsToReturn() == TimestampsToReturn_Neither) {
@@ -474,6 +476,7 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		Log(Error, "receive invalid attribute history read details");
 		trx->statusCode(BadServiceUnsupported);
 		trx->componentSession()->send(serviceTransaction);
 	}
@@ -587,7 +590,7 @@ namespace OpcUaStackServer
 			HistoryData::SPtr historyData;
 			readResult->historyData()->parameterTypeId().set((OpcUaUInt32)OpcUaId_HistoryData_Encoding_DefaultBinary);
 			historyData = readResult->historyData()->parameter<HistoryData>();
-			historyData->dataValues(applicationReadContext.dataValueArray_);
+			applicationReadContext.dataValueArray_->copyTo(historyData->dataValues());
 		}
 
 		trx->statusCode(Success);
@@ -704,7 +707,7 @@ namespace OpcUaStackServer
 			HistoryEvent::SPtr historyEvent;
 			readResult->historyData()->parameterTypeId().set((OpcUaUInt32)OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 			historyEvent = readResult->historyData()->parameter<HistoryEvent>();
-			historyEvent->events(applicationReadContext.eventFieldArray_);
+			applicationReadContext.eventFieldArray_->copyTo(historyEvent->events());
 		}
 
 		trx->statusCode(Success);
@@ -768,7 +771,7 @@ namespace OpcUaStackServer
 			updateResponse->results()->push_back(writeResult);
 
 			// check type of history update details
-			ExtensibleParameter::SPtr extensibleParameter;
+			OpcUaExtensibleParameter::SPtr extensibleParameter;
 			updateRequest->historyUpdateDetails()->get(idx, extensibleParameter);
 
 			OpcUaNodeId parameterTypeId;
@@ -792,18 +795,18 @@ namespace OpcUaStackServer
 			}
 
 			// check operation type
-			if (dataDetails->performInsertReplace() != PerformUpdateEnumeration_Insert) {
+			if (dataDetails->performInsertReplace().enumeration() != PerformUpdateType::EnumInsert) {
 				writeResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "history write value error, because invalid operation type")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
 					.parameter("Node", dataDetails->nodeId())
-					.parameter("OperationType", dataDetails->performInsertReplace());
+					.parameter("OperationType", dataDetails->performInsertReplace().toString());
 				continue;
 			}
 
 			// check data array
-			if (dataDetails->updateValue()->size() == 0) {
+			if (dataDetails->updateValues().size() == 0) {
 				writeResult->statusCode(BadNothingToDo);
 				continue;
 			}
@@ -841,7 +844,7 @@ namespace OpcUaStackServer
 			// call forward callback
 			ApplicationHWriteContext applicationWriteContext;
 			applicationWriteContext.nodeId_ = dataDetails->nodeId();
-			applicationWriteContext.dataValueArray_ = dataDetails->updateValue();
+			dataDetails->updateValues().copyTo(*applicationWriteContext.dataValueArray_);
 			applicationWriteContext.statusCode_ = Success;
 			applicationWriteContext.applicationContext_ = forwardNodeSync->writeHService().applicationContext();
 			applicationWriteContext.userContext_ = serviceTransaction->userContext();

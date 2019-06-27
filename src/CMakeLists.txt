@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project	(OpcUaStack3)
+project	(OpcUaStack4)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 11)
 
@@ -10,9 +10,9 @@ set(CMAKE_CXX_STANDARD 11)
 #
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
-set(VERSION_MAJOR "3")
-set(VERSION_MINOR "7")
-set(VERSION_PATCH "1")
+set(VERSION_MAJOR "4" CACHE STRING "major version")
+set(VERSION_MINOR "0" CACHE STRING "minor version")
+set(VERSION_PATCH "0" CACHE STRING "patch version")
 
 set(BOOST_VERSION_MAJOR "1"  CACHE STRING "boost major version")
 set(BOOST_VERSION_MINOR "54" CACHE STRING "boost minor version")
@@ -191,6 +191,36 @@ message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
 # -----------------------------------------------------------------------------
 find_package (Threads)
 
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# build info
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+message(STATUS "Build info")
+message(STATUS "  thread library: ${CMAKE_THREAD_LIBS_INIT}")
+
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# Mosquitto
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+if (DEFINED ENV{USE_MOSQUITTO_CLIENT})
+	message(STATUS "Mosquitto enabled")
+	set(USE_MOSQUITTO_CLIENT $ENV{USE_MOSQUITTO_CLIENT})
+	set(MOSQUITTO_LIBRARIES "mosquitto")
+	add_definitions(-DUSE_MOSQUITTO_CLIENT)
+else()
+        message(STATUS "Mosquitto disabled")
+endif()
+
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
@@ -216,9 +246,9 @@ include(OpcUaStackPubSub/CMakeLists.txt)
 include(OpcUaStackClient/CMakeLists.txt) 
 include(OpcUaStackServer/CMakeLists.txt)
 include(OpcUaServer/CMakeLists.txt)
-include(OpcUaClient/CMakeLists.txt) 
+#include(OpcUaClient/CMakeLists.txt) 
 include(OpcUaProjectBuilder/CMakeLists.txt)
-include(OpcUaEventTypeGenerator/CMakeLists.txt)
+include(OpcUaGenerator/CMakeLists.txt)
 include(cmake/CMakeLists.txt)
 
 

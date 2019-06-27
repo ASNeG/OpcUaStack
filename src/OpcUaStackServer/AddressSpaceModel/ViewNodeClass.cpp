@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,7 @@ namespace OpcUaStackServer
 {
 
 	ViewNodeClass::ViewNodeClass(void)
-	: BaseNodeClass(NodeClassType_View)
+	: BaseNodeClass(NodeClass::EnumView)
 	, containsNoLoops_()
 	, eventNotifier_()
 	{

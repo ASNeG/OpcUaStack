@@ -49,9 +49,9 @@ BOOST_AUTO_TEST_CASE(NodeClass_NodeId)
 BOOST_AUTO_TEST_CASE(NodeClass_NodeClass)
 {
 	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
-	NodeClassType nodeClass1;
-	NodeClassType nodeClass2;
-	boost::optional<NodeClassType&> nodeClass3;
+	NodeClass::Enum nodeClass1;
+	NodeClass::Enum nodeClass2;
+	boost::optional<NodeClass::Enum&> nodeClass3;
 
 	BOOST_REQUIRE(variableNodeClass->unsetNodeClass() == true);
 	BOOST_REQUIRE(variableNodeClass->isPartNodeClass() == true);
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_NodeClass)
 	nodeClass3 = variableNodeClass->getNodeClass();
 	BOOST_REQUIRE(!nodeClass3 == true);
 
-	nodeClass1 = NodeClassType_Object;
+	nodeClass1 = NodeClass::EnumObject;
 	BOOST_REQUIRE(variableNodeClass->setNodeClass(nodeClass1) == true);
 	BOOST_REQUIRE(variableNodeClass->isNullNodeClass() == false);
 	BOOST_REQUIRE(variableNodeClass->getNodeClass(nodeClass2) == true);

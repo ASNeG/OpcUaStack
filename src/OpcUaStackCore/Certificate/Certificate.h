@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -26,7 +26,6 @@
 
 #include <openssl/x509.h>
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/Certificate/CertificateInfo.h"
@@ -67,6 +66,24 @@ namespace OpcUaStackCore
 		);
 		~Certificate(void);
 
+		bool createCertificate(
+			CertificateInfo& info,
+			Identity& subject,
+			RSAKey& rsaKey,
+			bool useCACert = false,
+			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
+		);
+		bool createCertificate(
+			CertificateInfo& info,
+			Identity& subject,
+			PublicKey& subjectPublicKey,
+			Certificate&  issuerCertificate,
+			PrivateKey& issuerPrivateKey,
+			bool useCACert = false,
+			SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
+		);
+
+		X509* getX509(void);
 		bool getSubject(Identity& subject);
 		bool getIssuer(Identity& issuer);
 		bool getInfo(CertificateInfo& info);
@@ -83,10 +100,15 @@ namespace OpcUaStackCore
 		bool fromDERBuf(char* buf, uint32_t bufLen);
 		bool fromDERBuf(MemoryBuffer& derBuf);
 
+		bool isIssuerFrom(Certificate&  certificate);
+
 		uint32_t getDERBufSize(void);
 		PublicKey publicKey(void);
 
 		bool isSelfSigned(void) const;
+		bool verifySignature(Certificate& issuerCertificate) const;
+		bool operator!=(const Certificate& rhs) const;
+		bool operator==(const Certificate& rhs) const;
 
 	  private:
 		X509 *cert_;

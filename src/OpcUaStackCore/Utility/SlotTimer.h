@@ -2,7 +2,6 @@
 #define __OpcUaStackCore_SlotTimer_h__
 
 #include "boost/date_time/posix_time/posix_time.hpp"
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"

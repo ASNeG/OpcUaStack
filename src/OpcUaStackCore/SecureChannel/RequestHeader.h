@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackCore_RequestHeader_h__
 #define __OpcUaStackCore_RequestHeader_h__
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/SessionAuthenticationToken.h"
 
@@ -35,11 +33,11 @@ namespace OpcUaStackCore
 		virtual ~RequestHeader(void);
 
 		OpcUaNodeId& sessionAuthenticationToken(void);
-		void time(const UtcTime& time);
+		void time(const OpcUaUtcTime& time);
 		void time(const boost::posix_time::ptime& time);
-		UtcTime time(void) const;
-		void requestHandle(const IntegerId& requestHandle);
-		IntegerId requestHandle(void) const;
+		OpcUaUtcTime time(void) const;
+		void requestHandle(const OpcUaIntegerId& requestHandle);
+		OpcUaIntegerId requestHandle(void) const;
 		void returnDisagnostics(const OpcUaUInt32& returnDisagnostics);
 		OpcUaUInt32 returnDisagnostics(void) const;
 		void auditEntryId(const std::string& auditEntryId);
@@ -52,8 +50,8 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaNodeId sessionAuthenticationToken_;
-		UtcTime time_;
-		IntegerId requestHandle_;
+		OpcUaUtcTime time_;
+		OpcUaIntegerId requestHandle_;
 		OpcUaUInt32 returnDisagnostics_;
 		OpcUaString auditEntryId_;
 		OpcUaUInt32 timeoutHint_;

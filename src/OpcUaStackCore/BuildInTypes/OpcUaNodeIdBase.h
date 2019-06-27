@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_OpcUaNodeIdBase_h__
@@ -26,8 +26,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaGuid.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
 namespace OpcUaStackCore
 {
@@ -41,7 +40,9 @@ namespace OpcUaStackCore
 	typedef boost::variant<OpcUaNodeIdNullType, OpcUaUInt32,OpcUaString::SPtr,OpcUaGuid::SPtr,OpcUaByteString::SPtr> OpcUaNodeIdValue;
 
 	class DLLEXPORT OpcUaNodeIdBase
-	: public Object
+	: public JsonFormatter
+	, public Object
+
 	{
 	  public:
 	    OpcUaNodeIdBase(void);
@@ -71,6 +72,9 @@ namespace OpcUaStackCore
 
 		void set(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0);
 		void set(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0);
+		void set(const OpcUaString& nodeId, OpcUaUInt16 namespaceIndex = 0);
+		void set(const OpcUaGuid& nodeId, OpcUaUInt16 namespaceIndex = 0);
+		void set(const OpcUaByteString& nodeId, OpcUaUInt16 namespaceIndex = 0);
 		void set(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0);
 		bool get(OpcUaUInt32& nodeId, OpcUaUInt16& namespaceIndex);
 		bool get(std::string& nodeId, OpcUaUInt16& namespaceIndex);
@@ -81,7 +85,7 @@ namespace OpcUaStackCore
 		std::string toString(void) const;
 
 		void copyTo(OpcUaNodeIdBase& opcUaNodeIdBase);
-		void copyFrom(OpcUaNodeIdBase& opcUaNodeIdBase);
+		void copyFrom(const OpcUaNodeIdBase& opcUaNodeIdBase);
 		bool operator!=(const OpcUaNodeIdBase& opcUaNodeId) const; 
 		bool operator==(const OpcUaNodeIdBase& opcUaNodeIdBase) const;
 		bool operator<(const OpcUaNodeIdBase& opcUaNodeIdBase) const;
@@ -98,13 +102,14 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool encode(boost::property_tree::ptree& pt) const;
-		bool decode(boost::property_tree::ptree& pt);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
 	  protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
+
 		OpcUaUInt16 namespaceIndex_;
 		OpcUaNodeIdValue nodeIdValue_;
 

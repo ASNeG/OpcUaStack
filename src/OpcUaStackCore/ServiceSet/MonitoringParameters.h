@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,16 +19,14 @@
 #define __OpcUaStackCore_MonitoringParameters_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT MonitoringParameters
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoringParameters> SPtr;
@@ -40,8 +38,8 @@ namespace OpcUaStackCore
 		OpcUaUInt32 clientHandle(void) const;
 		void samplingInterval(const OpcUaDouble& samplingInterval);
 		OpcUaDouble samplingInterval(void) const;
-		void filter(const ExtensibleParameter filter);
-		ExtensibleParameter filter(void);
+		void filter(OpcUaExtensibleParameter& filter);
+		OpcUaExtensibleParameter& filter(void);
 		void queueSize(const OpcUaUInt32 queueSize);
 		OpcUaUInt32 queueSize(void) const;
 		void discardOldest(const OpcUaBoolean discardOldest);
@@ -50,10 +48,14 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
+	  protected:
+	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+
 	  private:
 		OpcUaUInt32 clientHandle_;
 		OpcUaDouble samplingInterval_;
-		ExtensibleParameter filter_;
+		OpcUaExtensibleParameter filter_;
 		OpcUaUInt32 queueSize_;
 		OpcUaBoolean discardOldest_;
 	};

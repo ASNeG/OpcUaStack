@@ -3,3 +3,8 @@
 {%- block extrahead %}
 <meta name="google-site-verification" content="bUDMPBn4rTuF6NW-6pWLXWjl5q9l3UI83tZVFD6w0Zc" />
 {% endblock %}
+
+{% block rootrellink %}
+    <li><a href="https://asneg.github.io/projects/opcuastack">Project Homepage</a> &raquo;</li>
+    {{ super() }}
+{% endblock %}

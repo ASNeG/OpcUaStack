@@ -47,16 +47,17 @@ BOOST_AUTO_TEST_CASE(OpcUaGuid_string_ptree)
 	std::string str;
 	boost::property_tree::ptree pt;
 	OpcUaGuid value1, value2;
+	Xmlns xmlns;
 
 	value1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
-	value1.encode(pt);
-	value2.decode(pt);
+	value1.xmlEncode(pt, xmlns);
+	value2.xmlDecode(pt, xmlns);
 	str = value2;
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 
 	value1 = "12345678-9abc-def0-1234-56789abcdef0";
-	value1.encode(pt);
-	value2.decode(pt);
+	value1.xmlEncode(pt, xmlns);
+	value2.xmlDecode(pt, xmlns);
 	str = value2;
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 }

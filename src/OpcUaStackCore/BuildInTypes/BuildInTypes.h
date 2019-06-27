@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,16 +34,31 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDiagnosticInfo.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatus.h"
 
 
 namespace OpcUaStackCore
 {
 
-	typedef OpcUaDateTime UtcTime;
-	typedef OpcUaDateTimeArray UtcTimeArray;
-	typedef OpcUaUInt32 IntegerId;
-	typedef OpcUaDouble Duration;
-	typedef OpcUaStringArray LocaleIdArray;
+	typedef OpcUaDateTime OpcUaUtcTime;
+	typedef OpcUaDateTimeArray OpcUaUtcTimeArray;
+	typedef OpcUaUInt16 OpcUaDataSetFieldFlag;
+	typedef OpcUaUInt32 OpcUaCounter;
+	typedef OpcUaUInt32 OpcUaIntegerId;
+	typedef OpcUaUInt32 OpcUaVersionTime;
+	typedef OpcUaUInt32 OpcUaDataSetFieldContentMask;
+	typedef OpcUaUInt32 OpcUaJsonNetworkMessageContentMask;
+	typedef OpcUaUInt32 OpcUaUadpNetworkMessageContentMask;
+	typedef OpcUaUInt32 OpcUaJsonDataSetMessageContentMask;
+	typedef OpcUaUInt32 OpcUaUadpDataSetMessageContentMask;
+	typedef OpcUaUInt32 OpcUaPermissionType;
+	typedef OpcUaDouble OpcUaDuration;
+	typedef OpcUaDoubleArray OpcUaDurationArray;
+	typedef OpcUaString OpcUaNumericRange;
+	typedef OpcUaString OpcUaLocaleId;
+	typedef OpcUaStringArray OpcUaLocaleIdArray;
+	typedef OpcUaByteString OpcUaApplicationInstanceCertificate;
+
 };
 
 #endif

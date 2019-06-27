@@ -24,6 +24,7 @@ add_library(
 target_link_libraries(
     OpcUaStackServer
     OpcUaStackCore
+    ${CMAKE_THREAD_LIBS_INIT}
     ${CMAKE_DL_LIBS}
     ${Boost_LIBRARIES}
 )
@@ -66,6 +67,10 @@ file(GLOB INC_OpcUaStackServer_ServiceManager OpcUaStackServer/ServiceManager/*.
 file(GLOB INC_OpcUaStackServer_ServiceSet OpcUaStackServer/ServiceSet/*.h)
 file(GLOB INC_OpcUaStackServer_ServiceSetApplication OpcUaStackServer/ServiceSetApplication/*.h)
 file(GLOB INC_OpcUaStackServer_ApplicationUtility OpcUaStackServer/ApplicationUtility/*.h)
+file(GLOB INC_OpcUaStackServer_VariableType OpcUaStackServer/VariableType/*.h)
+file(GLOB INC_OpcUaStackServer_ObjectType OpcUaStackServer/ObjectType/*.h)
+file(GLOB INC_OpcUaStackServer_StandardVariableType OpcUaStackServer/StandardVariableType/*.h)
+file(GLOB INC_OpcUaStackServer_StandardObjectType OpcUaStackServer/StandardObjectType/*.h)
 
 
 install(
@@ -131,5 +136,29 @@ install(
 install(
     FILES ${INC_OpcUaStackServer_ApplicationUtility} 
     DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ApplicationUtility
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_VariableType} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/VariableType
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_ObjectType} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ObjectType
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_StandardVariableType} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/StandardVariableType
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_StandardObjectType} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/StandardObjectType
     COMPONENT headers
 )

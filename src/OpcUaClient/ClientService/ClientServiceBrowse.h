@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,6 +18,7 @@
 #ifndef __OpcUaClient_ClientServiceBrowse_h__
 #define __OpcUaClient_ClientServiceBrowse_h__
 
+#include <future>
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
@@ -28,7 +29,7 @@ using namespace OpcUaStackClient;
 namespace OpcUaClient
 {
 
-	class ClientServiceBrowse
+	class DLLEXPORT ClientServiceBrowse
 	: public ClientServiceBase
 	, public ViewServiceBrowseIf
 	{
@@ -53,7 +54,7 @@ namespace OpcUaClient
 		//- ViewServiceBrowseIf -----------------------------------------------
 
       private:
-		ConditionBool browseCompleted_;
+		std::promise<bool> browseCompleted_;
 	};
 
 }

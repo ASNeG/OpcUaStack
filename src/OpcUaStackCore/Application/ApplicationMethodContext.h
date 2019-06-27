@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,12 +18,9 @@
 #ifndef __OpcUaStackCore_ApplicationMethodContext_h__
 #define __OpcUaStackCore_ApplicationMethodContext_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/UserContext.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
 namespace OpcUaStackCore
 {

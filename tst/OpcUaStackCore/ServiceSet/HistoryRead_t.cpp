@@ -1,7 +1,9 @@
 #include "unittest.h"
 #include "boost/asio.hpp"
+#include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/ServiceSet/HistoryReadRequest.h"
 #include "OpcUaStackCore/ServiceSet/HistoryReadResponse.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
@@ -17,6 +19,12 @@ BOOST_AUTO_TEST_SUITE(HistoryRead_)
 BOOST_AUTO_TEST_CASE(HistoryRead_Title)
 {
 	std::cout << "HistoryRead_t" << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(HistoryRead_init)
+{
+	Core core;
+	core.init();
 }
 
 BOOST_AUTO_TEST_CASE(HistoryRead_Request)
@@ -146,7 +154,7 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Request)
 	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
 	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
 	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
-	
+
 	BOOST_REQUIRE(historyReadRequestSPtr->timestampsToReturn() == TimestampsToReturn_Both);
 	BOOST_REQUIRE(historyReadRequestSPtr->releaseContinuationPoints() == true);
 
@@ -209,6 +217,10 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Response)
 	historyReadResultSPtr = constructSPtr<HistoryReadResult>();
 	historyReadResultSPtr->statusCode((OpcUaStatusCode)Success);
 	historyReadResultSPtr->continuationPoint() = "ABC";
+	historyReadResultSPtr->historyData()->parameterTypeId() = OpcUaNodeId(OpcUaId_HistoryData_Encoding_DefaultBinary);
+	HistoryData::SPtr historyData = historyReadResultSPtr->historyData()->parameter<HistoryData>();
+	BOOST_REQUIRE(historyData.get() != nullptr);
+
 	historyReadResponseSPtr = constructSPtr<HistoryReadResponse>();
 	historyReadResponseSPtr->results()->resize(1);
 	historyReadResponseSPtr->results()->set(historyReadResultSPtr);
@@ -227,12 +239,10 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss << "4d 53 47 46 32 00 00 00  d9 7a 25 09 01 00 00 00"
+	ss << "4d 53 47 46 3c 00 00 00  d9 7a 25 09 01 00 00 00"
 	   << "36 00 00 00 04 00 00 00  01 00 9b 02 01 00 00 00"
-	   << "00 00 00 00 03 00 00 00  41 42 43 00 00 00 00 00"
-	   << "00 00";
-
-
+	   << "00 00 00 00 03 00 00 00  41 42 43 01 00 92 02 01"
+	   << "04 00 00 00 00 00 00 00  00 00 00 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader

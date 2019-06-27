@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,6 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/optional/optional.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.h"
-#include "OpcUaStackCore/Base/os.h"
 #include <list>
 #include <vector>
 #include <set>
@@ -45,7 +44,7 @@ namespace OpcUaStackCore
 		virtual ~OpcUaNodeId(void);
 	};
 
-	class OpcUaNodeSPtrLess
+	class DLLEXPORT OpcUaNodeSPtrLess
 	{
 	  public:
 		bool operator()(const OpcUaNodeId::SPtr a, const OpcUaNodeId::SPtr b) const {
@@ -56,9 +55,8 @@ namespace OpcUaStackCore
 		}
 	};
 
-	class OpcUaNodeIdArray
-	: public OpcUaArray<OpcUaNodeId::SPtr
-	, SPtrTypeCoder<OpcUaNodeId> >
+	class DLLEXPORT OpcUaNodeIdArray
+	: public OpcUaArray<OpcUaNodeId::SPtr, SPtrTypeCoder<OpcUaNodeId> >
 	, public Object
 	{
 	  public:
