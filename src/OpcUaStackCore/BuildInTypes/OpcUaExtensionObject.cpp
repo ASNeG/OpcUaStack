@@ -35,7 +35,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::Map OpcUaExtensionObject::extentionObjectMap_;
 
 	bool
-	OpcUaExtensionObject::insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::SPtr epSPtr)
+	OpcUaExtensionObject::insertElement(const OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::SPtr epSPtr)
 	{
 		// check if extension object already exist
 		auto it = extentionObjectMap_.find(opcUaNodeId);
@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaExtensionObject::deleteElement(OpcUaNodeId& opcUaNodeId)
+	OpcUaExtensionObject::deleteElement(const OpcUaNodeId& opcUaNodeId)
 	{
 		// check if extension object exists
 		auto it = extentionObjectMap_.find(opcUaNodeId);
@@ -65,7 +65,7 @@ namespace OpcUaStackCore
 	}
 
 	ExtensionObjectBase::SPtr
-	OpcUaExtensionObject::findElement(OpcUaNodeId& opcUaNodeId)
+	OpcUaExtensionObject::findElement(const OpcUaNodeId& opcUaNodeId)
 	{
 		ExtensionObjectBase::SPtr epSPtr;
 		auto it = extentionObjectMap_.find(opcUaNodeId);

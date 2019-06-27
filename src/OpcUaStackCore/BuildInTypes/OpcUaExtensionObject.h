@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_OpcUaExtensionObject_h__
 
 #include <boost/property_tree/ptree.hpp>
+#include <boost/shared_ptr.hpp>
 #include <map>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
@@ -56,7 +57,7 @@ namespace OpcUaStackCore
 		 *
 		 * @return true, if successful
 		 */
-		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::SPtr epSPtr);
+		static bool insertElement(const OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::SPtr epSPtr);
 
 		/**
 		 * This function delets an existing extension object from the extension map.
@@ -66,7 +67,7 @@ namespace OpcUaStackCore
 		 *
 		 * @return true, if successful
 		 */
-		static bool deleteElement(OpcUaNodeId& opcUaNodeId);
+		static bool deleteElement(const OpcUaNodeId& opcUaNodeId);
 
 		/**
 		 * This function returns an extension object for a specific type.
@@ -76,7 +77,7 @@ namespace OpcUaStackCore
 		 *
 		 * @return true, if successful
 		 */
-		static ExtensionObjectBase::SPtr findElement(OpcUaNodeId& opcUaNodeId);
+		static ExtensionObjectBase::SPtr findElement(const OpcUaNodeId& opcUaNodeId);
 
 		static OpcUaNodeId getBinaryTypeIdFromJsonTypeId(OpcUaNodeId& jsonTypeId);
 
@@ -117,6 +118,12 @@ namespace OpcUaStackCore
 			  OpcUaNodeId opcUaNodeId;
 			  opcUaNodeId.set(nodeId, namespaceIndex);
 			  return registerFactoryElement<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
+		  bool registerFactoryObject(void) {
+			  ExtensionObjectBase::SPtr epSPtr(constructSPtr<T>());
+			  return registerFactoryElement<T>(epSPtr->typeId());
 		  }
 
 		/**
@@ -164,7 +171,7 @@ namespace OpcUaStackCore
 		 *
 		 */
 		template<typename T>
-		  bool registerFactoryElement(OpcUaNodeId& opcUaNodeId) {
+		  bool registerFactoryElement(const OpcUaNodeId& opcUaNodeId) {
 			  ExtensionObjectBase::SPtr epSPtr(constructSPtr<T>());
 
 			  OpcUaNodeId xmlType(epSPtr->xmlTypeId());
