@@ -47,7 +47,6 @@ protected:
 	bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override {
 		bool rc = jsonObjectSPtrDecode(pt, mandatoryObj_, "MandatoryObj");
 		rc &= jsonObjectSPtrDecode(pt, optionalObj_, "OptionalObj", true);
-
 		return rc;
 	}
 
@@ -156,6 +155,7 @@ BOOST_AUTO_TEST_CASE(JsonFormatter_MandatoryObjDecode)
 {
 	pt.put("MandatoryObj.MandatoryNumber", "50");
 	objectJsonFormatter.mandatoryObj_  = boost::make_shared<NumberJsonFormatter>();
+	objectJsonFormatter.optionalObj_  = boost::make_shared<NumberJsonFormatter>();
 	BOOST_REQUIRE(objectJsonFormatter.jsonDecode(pt));
 
 	BOOST_REQUIRE_EQUAL(50, objectJsonFormatter.mandatoryObj_->mandatoryNumber_);

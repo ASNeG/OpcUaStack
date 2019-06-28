@@ -128,20 +128,20 @@ namespace OpcUaStackCore
 		bool optional
 	)
 	{
-		if (valuePtr.get() == nullptr) {
-			if (optional) {
-				return true;
-			} else {
-				Log(Error, std::string(typeid(this).name()) + " json decoder error, because variable is null")
-						.parameter("Element", element);
-				return false;
-			}
+		if (!valuePtr) {
+			Log(Error, std::string(typeid(this).name()) + " json decoder error, because variable is null")
+					.parameter("Element", element);
+			return false;
 		}
 
 		if (!jsonObjectDecode(pt, *valuePtr.get(), element)) {
-			Log(Error, std::string(typeid(this).name()) + " json decoder error")
-				.parameter("Element", element);
-			return false;
+			if (optional) {
+				return true;  // the element can be omitted
+			} else {
+				Log(Error, std::string(typeid(this).name()) + " json decoder error")
+						.parameter("Element", element);
+				return false;
+			}
 		}
 
 		return true;
@@ -257,7 +257,7 @@ namespace OpcUaStackCore
 	) const
 	{
 		// check if array element is null
-		if (valuePtr.get() == nullptr) {
+		if (!valuePtr) {
 			if (optional) {
 				return true; // the element can be ommitted
 			}
@@ -269,7 +269,7 @@ namespace OpcUaStackCore
 		}
 
 		// encode array element
-		if (!jsonArrayEncode(pt, *valuePtr.get(), element, optional)) {
+		if (!jsonArrayEncode(pt, *valuePtr, element, optional)) {
 			Log(Error, std::string(typeid(this).name()) + " json encode error")
 				.parameter("Element", element);
 			return false;
@@ -302,7 +302,7 @@ namespace OpcUaStackCore
 		bool optional
 	)
 	{
-		if (!jsonArrayDecode(pt, *valuePtr.get(), element, optional)) {
+		if (!jsonArrayDecode(pt, *valuePtr, element, optional)) {
 			Log(Error, std::string(typeid(this).name()) + " json decode error")
 				.parameter("Element", element);
 			return false;

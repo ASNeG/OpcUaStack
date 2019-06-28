@@ -513,6 +513,7 @@ namespace OpcUaStackCore
 		rc &= jsonNumberDecode(pt, status, "InnerStatusCode", true, OpcUaUInt32(0));
 		innerStatusCode_ = static_cast<OpcUaStatusCode>(status);
 
+		diagnosticInfo_ = constructSPtr<OpcUaDiagnosticInfo>();
 		rc &= jsonObjectSPtrDecode(pt, diagnosticInfo_, "InnerDiagnosticInfo", true);
 
 		return rc;
