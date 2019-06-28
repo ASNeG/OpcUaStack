@@ -183,7 +183,7 @@ namespace OpcUaStackCore
 
 		void arrayLength(const OpcUaInt32& arrayLength);
 		OpcUaInt32 arrayLength(void);
-		bool isArray(void) const;
+		virtual bool isArray(void) const override;
 		void arrayDimension(const OpcUaArrayDimensionsVec& arrayDimensionsVec);
 		OpcUaArrayDimensionsVec& arrayDimension(void);
 		void variant(const OpcUaVariantValue::Vec& variantValueVec);
@@ -192,7 +192,7 @@ namespace OpcUaStackCore
 		void pushBack(const OpcUaVariantValue& variantValue);
 
 		OpcUaBuildInType variantType(void) const;
-		bool isNull(void) const;
+		virtual bool isNull(void) const override;
 
 		template<typename VAL>
 		  void variant(uint32_t pos, const VAL& val) {
@@ -333,8 +333,8 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
 	protected:
-	    virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const;
-	    virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt);
+	    virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+	    virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
 
 	  private:
 

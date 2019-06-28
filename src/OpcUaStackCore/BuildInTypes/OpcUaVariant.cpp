@@ -376,6 +376,8 @@ namespace OpcUaStackCore
 				OpcUaDiagnosticInfo::SPtr value2 = boost::static_pointer_cast<OpcUaDiagnosticInfo>(opcUaVariantSPtr2.objectSPtr_);
 				return *value1 == *value2;
 			}
+			default:
+				Log(Error, "Type can't be compared").parameter("TypeId", variantType());
 		}
 		return false;
 	}
@@ -549,6 +551,8 @@ namespace OpcUaStackCore
 				return false;
 				//return *value1 < *value2;
 			}
+			default:
+				Log(Error, "Type can't be comapred").parameter("TypeId", variantType());
 		}
 		return false;
 	}
@@ -1056,6 +1060,8 @@ namespace OpcUaStackCore
 				variantValue.variant(value);
 				break;
 			}
+			default:
+				Log(Error, "Type can't be coppied").parameter("TypeId", variantType());
 		}
 	}
 
@@ -1204,6 +1210,8 @@ namespace OpcUaStackCore
 				os << *dataValueSPtr;
 				break;
 			}
+			default:
+				Log(Error, "Type can't be out").parameter("TypeId", variantType());
 		}
 	}
 
@@ -1355,6 +1363,8 @@ namespace OpcUaStackCore
 				dataValueSPtr->opcUaBinaryEncode(os);
 				break;
 			}
+			default:
+				Log(Error, "Type can't be enocoded").parameter("TypeId", variantType);
 		}
 	}
 		
@@ -1589,6 +1599,8 @@ namespace OpcUaStackCore
 				variantValue_ = val;
 				break;
 			}
+			default:
+				Log(Error, "Type can't be deocoded").parameter("TypeId", variantType);
 		}
 	}
 

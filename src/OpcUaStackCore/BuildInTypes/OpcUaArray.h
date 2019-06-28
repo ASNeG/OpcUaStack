@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static bool xmlEncode(
-		      boost::property_tree::ptree& pt,
+			  boost::property_tree::ptree& pt,
 			  T& value,
 			  const std::string& element,
 			  Xmlns& xmlns
@@ -186,7 +186,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static bool xmlEncode(
-		      boost::property_tree::ptree& pt,
+			  boost::property_tree::ptree& pt,
 			  T& value,
 			  const std::string& element,
 			  Xmlns& xmlns
@@ -258,7 +258,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static bool xmlEncode(
-		      boost::property_tree::ptree& pt,
+			  boost::property_tree::ptree& pt,
 			  boost::shared_ptr<T>& value,
 			  const std::string& element,
 			  Xmlns& xmlns
@@ -268,7 +268,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static bool xmlDecode(
-		      boost::property_tree::ptree& pt,
+			  boost::property_tree::ptree& pt,
 			  boost::shared_ptr<T>& value,
 			  const std::string& element,
 			  Xmlns& xmlns
@@ -347,9 +347,9 @@ namespace OpcUaStackCore
 		OpcUaArray<T, CODER>& operator=(const std::vector<T>& other);
 		OpcUaArray<T, CODER>& operator=(const T& other);
 		template<typename V>
-		    OpcUaArray<T, CODER>& operator=(const std::vector<V>& other);
+			OpcUaArray<T, CODER>& operator=(const std::vector<V>& other);
 		template<typename V>
-		    OpcUaArray<T, CODER>& operator=(const V& other);
+			OpcUaArray<T, CODER>& operator=(const V& other);
 
 		void copyTo(OpcUaArray<T, CODER>& array) const;
 		bool operator!=(OpcUaArray<T, CODER>& array);
@@ -387,14 +387,15 @@ namespace OpcUaStackCore
 			Xmlns& xmlns
 		);
 
-	  bool isArray(void) const override;
-	  bool isNull(void) const override;
-      void setNull(void) override;
-      size_t arrayLength(void) const override;
+
+		bool isArray(void) const override;
+		bool isNull(void) const override;
+		void setNull(void) override;
+		size_t arrayLength(void) const override;
 
 	  protected:
-        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
-        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
 	  private:
 		void initArray(void);
@@ -808,9 +809,9 @@ namespace OpcUaStackCore
 		Xmlns& xmlns
 	)
 	{
-        boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
-        if (!tree) return false;
-        return xmlDecode(*tree, listElement, xmlns);
+		boost::optional<boost::property_tree::ptree&> tree = pt.get_child_optional(element);
+		if (!tree) return false;
+		return xmlDecode(*tree, listElement, xmlns);
 	}
 
 	template<typename T, typename CODER>
@@ -854,10 +855,10 @@ namespace OpcUaStackCore
 			return true;
 		}
 
-    	if (actArrayLen_ == 0) {
-    		pt.put_value("__EmptyArray__");
-    		return true;
-    	}
+		if (actArrayLen_ == 0) {
+			pt.put_value("__EmptyArray__");
+			return true;
+		}
 
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
 			if (!CODER::jsonEncode(pt, valueArray_[idx], "")) {

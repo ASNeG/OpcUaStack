@@ -36,8 +36,8 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId(void);
 		~OpcUaExpandedNodeId(void);
 
-		virtual OpcUaByte encodingFlag(void) const;
-		virtual void encodingFlag(OpcUaByte expandedEncodingFlag);
+		virtual OpcUaByte encodingFlag(void) const override;
+		virtual void encodingFlag(OpcUaByte expandedEncodingFlag) override;
 
 		void namespaceUri(OpcUaString& namespaceUri);
 		void namespaceUri(const std::string& namespaceUri);

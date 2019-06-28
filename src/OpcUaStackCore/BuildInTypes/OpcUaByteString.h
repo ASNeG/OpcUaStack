@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 		bool resize(uint32_t size);
 		void reset(void);
 		bool exist(void) const;
-		bool isNull(void) const;
+		bool isNull(void) const override;
 
 		bool fromHexString(const std::string& hexString);
 		std::string toHexString(void) const;
@@ -58,7 +58,7 @@ namespace OpcUaStackCore
 		void fromString(const std::string& string);
 		OpcUaByteString& operator=(const std::string& string); 
 		OpcUaByteString& operator=(const OpcUaByteString& value);
-		operator std::string const (void); 
+		operator std::string (void) const;
 
 		void copyTo(OpcUaByteString& opcUaByteString);
 		bool operator<(const OpcUaByteString& opcUaByteString) const;

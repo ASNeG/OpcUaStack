@@ -133,6 +133,8 @@ namespace OpcUaStackCore
 				result.set<OpcUaBoolean>(lhs.variant()[0] <= rhs.variant()[0]);
 				return true;
 			}
+    		default:
+    			Log(Error, "Wrong operator").parameter("FilterOperatorId", operator_);
     	}
     	return false;
 

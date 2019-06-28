@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 
+
 namespace OpcUaStackCore
 {
 

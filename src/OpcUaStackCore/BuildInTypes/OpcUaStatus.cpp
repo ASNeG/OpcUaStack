@@ -252,7 +252,7 @@ namespace OpcUaStackCore
 
         return true;
     }
-    
+
     
     bool
     OpcUaStatus::jsonEncodeImpl(boost::property_tree::ptree& pt) const

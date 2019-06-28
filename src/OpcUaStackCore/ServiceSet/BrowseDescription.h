@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 		BrowseDirection_Inverse = 1,
 		BrowseDirection_Both = 2
 	} BrowseDirectionEnum;
-	                
+
 	class DLLEXPORT BrowseDescription
 	: public Object
 	, public JsonFormatter
@@ -65,11 +65,11 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 
-     protected:
-		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
-		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
+	protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
 
-	  private:
+	private:
 		OpcUaNodeId::SPtr nodeIdSPtr_;
 		BrowseDirectionEnum browseDirection_;
 		OpcUaNodeId::SPtr referenceTypeIdSPtr_;

@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/ServiceSet/ViewDescription.h"
@@ -104,6 +104,24 @@ namespace OpcUaStackCore
 		viewIdSPtr_->opcUaBinaryDecode(is);
 		timestamp_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, viewVersion_);
+	}
+
+	bool
+	ViewDescription::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		bool rc = jsonObjectSPtrEncode(pt, viewIdSPtr_, "ViewId", true);
+		rc &= jsonObjectEncode(pt, timestamp_, "Timestamp", true);
+		rc &= jsonNumberEncode(pt, viewVersion_, "ViewVersion", true, OpcUaUInt32(0));
+		return rc;
+	}
+
+	bool
+	ViewDescription::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		bool rc = jsonObjectSPtrDecode(pt, viewIdSPtr_, "ViewId", true);
+		rc &= jsonObjectDecode(pt, timestamp_, "Timestamp", true);
+		rc &= jsonNumberDecode(pt, viewVersion_, "ViewVersion", true, OpcUaUInt32(0));
+		return rc;
 	}
 
 }

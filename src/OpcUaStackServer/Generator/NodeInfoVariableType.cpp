@@ -80,7 +80,7 @@ namespace OpcUaStackServer
 			Log(Error, "display name not found")
 			    .parameter("VariableTypeNode", variableTypeNodeId_);
 		}
-		className_ = displayName->text();
+		className_ = displayName->text().value();
 		className_ = boost::to_upper_copy(className_.substr(0,1)) + className_.substr(1);
 
 

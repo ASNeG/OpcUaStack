@@ -139,7 +139,7 @@ namespace OpcUaStackCore
 	        int nread;
 		    char buf[16];
 
-		    for( nread = 0; nread < 16 && ss.get(buf[nread]); nread++ );
+		    for( nread = 0; nread < 16 && ss.get(buf[nread]); nread++ ) continue;
             if( nread == 0 ) break;
 
 			os << std::setw(8) << address;

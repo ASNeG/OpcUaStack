@@ -269,6 +269,8 @@ namespace OpcUaStackCore
 				opcUaNodeIdBase.nodeId(newValue);
 				break;
 			}
+			default:
+				Log(Error, "Unknown type").parameter("TypeId", type);
 		}
 	}
 
@@ -345,6 +347,8 @@ namespace OpcUaStackCore
 				return *value1 < *value2;
 				break;
 			}
+
+			default: Log(Error, "Unknown type").parameter("TypeId", nodeIdType());
 		}
 
 		return false;
@@ -451,6 +455,7 @@ namespace OpcUaStackCore
 				boost::get<OpcUaByteString::SPtr>(nodeIdValue_)->opcUaBinaryEncode(os);
 				break;
 			}
+			default: Log(Error, "Unknown type").parameter("TypeId", nodeIdType());
 		}
 	}
 
@@ -831,7 +836,9 @@ namespace OpcUaStackCore
 				}
 				break;
 			}
+			default: Log(Error, "Unknown type").parameter("TypeId", nodeIdType());
 		}
+
 		return nodeIdStream.str();
 	}
 
