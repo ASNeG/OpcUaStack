@@ -53,11 +53,13 @@ namespace OpcUaStackCore
 	void 
 	RegisterServerResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
+		responseHeaderSPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	RegisterServerResponse::opcUaBinaryDecode(std::istream& is)
 	{
+		responseHeaderSPtr_->opcUaBinaryDecode(is);
 	}
 
 	bool
