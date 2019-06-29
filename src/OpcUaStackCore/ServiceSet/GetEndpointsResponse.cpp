@@ -77,12 +77,12 @@ namespace OpcUaStackCore
 
 	bool
 	GetEndpointsResponse::jsonEncodeImpl(boost::property_tree::ptree &pt) const {
-		return jsonNumberEncode(pt, endpointArraySPtr_, "Endpoints");
+		return jsonObjectSPtrEncode(pt, endpointArraySPtr_, "Endpoints");
 	}
 
 	bool
 	GetEndpointsResponse::jsonDecodeImpl(const boost::property_tree::ptree &pt) {
-		return jsonNumberDecode(pt, endpointArraySPtr_, "Endpoints");
+		return jsonObjectSPtrDecode(pt, endpointArraySPtr_, "Endpoints");
 	}
 
 }
