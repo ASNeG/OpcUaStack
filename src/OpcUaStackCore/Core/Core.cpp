@@ -124,15 +124,11 @@ namespace OpcUaStackCore
 	{
 		OpcUaExtensionObject eo;
 
-		// objects
 		eo.registerFactoryObject<LiteralOperand>();
 		eo.registerFactoryObject<ElementOperand>();
 		eo.registerFactoryObject<AttributeOperand>();
 		eo.registerFactoryObject<SimpleAttributeOperand>();
 		eo.registerFactoryObject<Range>();
-		eo.registerFactoryObject<Range>();
-
-		// binary
 		eo.registerFactoryObject<BuildInfo>();
 		eo.registerFactoryObject<ServerStatusDataType>();
 		eo.registerFactoryObject<ModelChangeStructureDataType>();
@@ -194,13 +190,7 @@ namespace OpcUaStackCore
 		eo.registerFactoryObject<AggregateFilter>();
 		eo.registerFactoryObject<Range>();
 		eo.registerFactoryObject<EUInformation>();
-
-		// xml
-		eo.registerFactoryObject<Argument>();
-		eo.registerFactoryObject<BuildInfo>();
 		eo.registerFactoryObject<EnumValueType>();
-
-		// json
 	}
 
 	void
