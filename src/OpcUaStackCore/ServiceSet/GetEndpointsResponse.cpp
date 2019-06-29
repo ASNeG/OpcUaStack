@@ -12,8 +12,8 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
+*/
 
 #include "OpcUaStackCore/ServiceSet/GetEndpointsResponse.h"
 
@@ -66,15 +66,23 @@ namespace OpcUaStackCore
 	void 
 	GetEndpointsResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		//responseHeader_->opcUaBinaryEncode(os);
 		endpointArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	GetEndpointsResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		//responseHeader_->opcUaBinaryDecode(is);
 		endpointArraySPtr_->opcUaBinaryDecode(is);
+	}
+
+	bool
+	GetEndpointsResponse::jsonEncodeImpl(boost::property_tree::ptree &pt) const {
+		return jsonObjectSPtrEncode(pt, endpointArraySPtr_, "Endpoints");
+	}
+
+	bool
+	GetEndpointsResponse::jsonDecodeImpl(const boost::property_tree::ptree &pt) {
+		return jsonObjectSPtrDecode(pt, endpointArraySPtr_, "Endpoints");
 	}
 
 }

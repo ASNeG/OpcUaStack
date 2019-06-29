@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,8 +12,8 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
+*/
 
 #include "OpcUaStackCore/ServiceSet/FindServersRequest.h"
 
@@ -98,7 +98,6 @@ namespace OpcUaStackCore
 	void 
 	FindServersRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		//requestHeaderSPtr_->opcUaBinaryEncode(os);
 		endpointUrl_.opcUaBinaryEncode(os);
 		localeIdArraySPtr_->opcUaBinaryEncode(os);
 		serverUriArraySPtr_->opcUaBinaryEncode(os);
@@ -107,10 +106,25 @@ namespace OpcUaStackCore
 	void 
 	FindServersRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		//requestHeaderSPtr_->opcUaBinaryDecode(is);
 		endpointUrl_.opcUaBinaryDecode(is);
 		localeIdArraySPtr_->opcUaBinaryDecode(is);
 		serverUriArraySPtr_->opcUaBinaryDecode(is);
+	}
+
+	bool
+	FindServersRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const {
+		bool rc = jsonObjectEncode(pt, endpointUrl_, "EndpointUrl");
+		rc &= jsonObjectSPtrEncode(pt, localeIdArraySPtr_, "LocaleIds");
+		rc &= jsonObjectSPtrEncode(pt, serverUriArraySPtr_, "ServerUris");
+		return rc;
+	}
+
+	bool
+	FindServersRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt) {
+		bool rc = jsonObjectDecode(pt, endpointUrl_, "EndpointUrl");
+		rc &= jsonObjectSPtrDecode(pt, localeIdArraySPtr_, "LocaleIds");
+		rc &= jsonObjectSPtrDecode(pt, serverUriArraySPtr_, "ServerUris");
+		return rc;
 	}
 
 }

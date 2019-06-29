@@ -12,8 +12,8 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
+*/
 
 #ifndef __OpcUaStackCore_GetEndpointsResponse_h__
 #define __OpcUaStackCore_GetEndpointsResponse_h__
@@ -27,6 +27,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT GetEndpointsResponse
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<GetEndpointsResponse> SPtr;
@@ -42,7 +43,12 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
-	  private:
+	protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+
+	private:
 		ResponseHeader::SPtr responseHeader_;
 		EndpointDescriptionArray::SPtr endpointArraySPtr_;
 	};
