@@ -234,6 +234,8 @@ namespace OpcUaStackCore
 		 */
 		bool deregisterFactoryElement(OpcUaNodeId& opcUaNodeId);
 
+		bool deregisterFactoryElements(void);
+
 		/**
 		 * This function is used to create a new extension object. The type of the extension object to be
 		 * created must first be passed with the typeId function. The created extension object can determined

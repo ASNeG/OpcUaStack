@@ -135,6 +135,13 @@ namespace OpcUaStackCore
 		return OpcUaExtensionObject::deleteElement(opcUaNodeId);
 	}
 
+	bool
+	OpcUaExtensionObject::deregisterFactoryElements(void)
+	{
+		extentionObjectMap_.clear();
+		return true;
+	}
+
 	void
 	OpcUaExtensionObject::reset(void)
 	{
