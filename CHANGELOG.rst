@@ -17,6 +17,7 @@
 * Implement enum type code generator #29, by @huebl
 * Processing of type information not possible #22, by @huebl
 * read and write values from xml nodeset #37, by @huebl
+* add JSON mapping into OPC UA services #189 #191 #192 #193 #195 #196, by @huebl, @flipback
 
 **Bugs**:
 
