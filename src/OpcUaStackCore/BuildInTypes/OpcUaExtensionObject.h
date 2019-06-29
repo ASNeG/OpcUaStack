@@ -174,10 +174,14 @@ namespace OpcUaStackCore
 		  bool registerFactoryElement(const OpcUaNodeId& opcUaNodeId) {
 			  ExtensionObjectBase::SPtr epSPtr(constructSPtr<T>());
 
+			  OpcUaNodeId opcUaBinaryType(epSPtr->binaryTypeId());
 			  OpcUaNodeId xmlType(epSPtr->xmlTypeId());
 			  OpcUaNodeId jsonType(epSPtr->jsonTypeId());
 
 			  if (!OpcUaExtensionObject::insertElement(opcUaNodeId, epSPtr)) {
+				  return false;
+			  }
+			  if (!OpcUaExtensionObject::insertElement(opcUaBinaryType, epSPtr)) {
 				  return false;
 			  }
 			  if (!OpcUaExtensionObject::insertElement(xmlType, epSPtr)) {
