@@ -134,7 +134,6 @@ namespace OpcUaStackCore
 		eo.registerFactoryObject<ModelChangeStructureDataType>();
 		eo.registerFactoryObject<RedundantServerDataType>();
 		eo.registerFactoryObject<SamplingIntervalDiagnosticsDataType>();
-		eo.registerFactoryObject<SemanticChangeStructureDataType>();
 		eo.registerFactoryObject<ServiceCounterDataType>();
 		eo.registerFactoryObject<SessionDiagnosticsDataType>();
 		eo.registerFactoryObject<SessionSecurityDiagnosticsDataType>();
@@ -148,10 +147,6 @@ namespace OpcUaStackCore
 		eo.registerFactoryObject<ObjectTypeAttributes>();
 		eo.registerFactoryObject<ReferenceTypeAttributes>();
 		eo.registerFactoryObject<ViewAttributes>();
-		eo.registerFactoryObject<ElementOperand>();
-		eo.registerFactoryObject<LiteralOperand>();
-		eo.registerFactoryObject<AttributeOperand>();
-		eo.registerFactoryObject<SimpleAttributeOperand>();
 		eo.registerFactoryObject<HistoryEvent>();
 		eo.registerFactoryObject<HistoryData>();
 		eo.registerFactoryObject<EventFilter>();
@@ -168,10 +163,8 @@ namespace OpcUaStackCore
 		eo.registerFactoryObject<ReadRawModifiedDetails>();
 		eo.registerFactoryObject<ReadProcessedDetails>();
 		eo.registerFactoryObject<ReadAtTimeDetails>();
-		eo.registerFactoryObject<HistoryData>();
 		eo.registerFactoryObject<HistoryModifiedData>();
 		eo.registerFactoryObject<ModificationInfo>();
-		eo.registerFactoryObject<HistoryEvent>();
 		eo.registerFactoryObject<UpdateDataDetails>();
 		eo.registerFactoryObject<HistoryUpdateDetails>();
 		eo.registerFactoryObject<UpdateStructureDataDetails>();
@@ -179,17 +172,10 @@ namespace OpcUaStackCore
 		eo.registerFactoryObject<DeleteRawModifiedDetails>();
 		eo.registerFactoryObject<DeleteAtTimeDetails>();
 		eo.registerFactoryObject<DeleteEventDetails>();
-		eo.registerFactoryObject<ObjectAttributes>();
 		eo.registerFactoryObject<NodeAttributes>();
 		eo.registerFactoryObject<VariableAttributes>();
 		eo.registerFactoryObject<VariableTypeAttributes>();
-		eo.registerFactoryObject<MethodAttributes>();
-		eo.registerFactoryObject<ObjectTypeAttributes>();
-		eo.registerFactoryObject<DataTypeAttributes>();
-		eo.registerFactoryObject<ReferenceTypeAttributes>();
-		eo.registerFactoryObject<ViewAttributes>();
 		eo.registerFactoryObject<AggregateFilter>();
-		eo.registerFactoryObject<Range>();
 		eo.registerFactoryObject<EUInformation>();
 		eo.registerFactoryObject<EnumValueType>();
 	}
