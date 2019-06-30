@@ -21,6 +21,7 @@
 
 **Bugs**:
 
+* Reconnect after timeout if no entry found in endpoint cache #220, by @huebl
 * Remove duplicate registration of extension objects #219, by @huebl
 * Added server namespace 1 #92, by @huebl
 * OPC UA server chrashes at startup #99, by @huebl
