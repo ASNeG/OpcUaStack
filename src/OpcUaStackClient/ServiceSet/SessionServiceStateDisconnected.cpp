@@ -53,7 +53,13 @@ namespace OpcUaStackClient
 		if (!ctx_->setSessionServiceMode()) {
 			// We did not find an endpoint. After a timeout, a get endpoint request is send again.
 
-			// FIXME: todo
+			// start reconnect timer and delete endpoint description cache entry
+			ctx_->startReconnectTimer();
+			ctx_->endpointDescriptionCache_.deleteEndpointDescription(
+				ctx_->secureChannelClientConfigBackup_->discoveryUrl()
+			);
+
+			return SessionServiceStateId::Disconnected;
 		}
 
 		auto clientConfig = ctx_->secureChannelClientConfig_;
