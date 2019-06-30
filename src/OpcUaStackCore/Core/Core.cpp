@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
@@ -124,67 +125,73 @@ namespace OpcUaStackCore
 	{
 		OpcUaExtensionObject eo;
 
-		eo.registerFactoryObject<LiteralOperand>();
-		eo.registerFactoryObject<ElementOperand>();
-		eo.registerFactoryObject<AttributeOperand>();
-		eo.registerFactoryObject<SimpleAttributeOperand>();
-		eo.registerFactoryObject<Range>();
-		eo.registerFactoryObject<BuildInfo>();
-		eo.registerFactoryObject<ServerStatusDataType>();
-		eo.registerFactoryObject<ModelChangeStructureDataType>();
-		eo.registerFactoryObject<RedundantServerDataType>();
-		eo.registerFactoryObject<SamplingIntervalDiagnosticsDataType>();
-		eo.registerFactoryObject<ServiceCounterDataType>();
-		eo.registerFactoryObject<SessionDiagnosticsDataType>();
-		eo.registerFactoryObject<SessionSecurityDiagnosticsDataType>();
-		eo.registerFactoryObject<StatusResult>();
-		eo.registerFactoryObject<SubscriptionDiagnosticsDataType>();
-		eo.registerFactoryObject<ServerDiagnosticsSummaryDataType>();
-		eo.registerFactoryObject<Argument>();
-		eo.registerFactoryObject<ObjectAttributes>();
-		eo.registerFactoryObject<DataTypeAttributes>();
-		eo.registerFactoryObject<MethodAttributes>();
-		eo.registerFactoryObject<ObjectTypeAttributes>();
-		eo.registerFactoryObject<ReferenceTypeAttributes>();
-		eo.registerFactoryObject<ViewAttributes>();
-		eo.registerFactoryObject<HistoryEvent>();
-		eo.registerFactoryObject<HistoryData>();
-		eo.registerFactoryObject<EventFilter>();
-		eo.registerFactoryObject<AnonymousIdentityToken>();
-		eo.registerFactoryObject<UserNameIdentityToken>();
-		eo.registerFactoryObject<X509IdentityToken>();
-		eo.registerFactoryObject<IssuedIdentityToken>();
-		eo.registerFactoryObject<EventFilterResult>();
-		eo.registerFactoryObject<DataChangeNotification>();
-		eo.registerFactoryObject<StatusChangeNotification>();
-		eo.registerFactoryObject<EventNotificationList>();
-		eo.registerFactoryObject<ReadEventDetails>();
-		eo.registerFactoryObject<HistoryReadDetails>();
-		eo.registerFactoryObject<ReadRawModifiedDetails>();
-		eo.registerFactoryObject<ReadProcessedDetails>();
-		eo.registerFactoryObject<ReadAtTimeDetails>();
-		eo.registerFactoryObject<HistoryModifiedData>();
-		eo.registerFactoryObject<ModificationInfo>();
-		eo.registerFactoryObject<UpdateDataDetails>();
-		eo.registerFactoryObject<HistoryUpdateDetails>();
-		eo.registerFactoryObject<UpdateStructureDataDetails>();
-		eo.registerFactoryObject<UpdateEventDetails>();
-		eo.registerFactoryObject<DeleteRawModifiedDetails>();
-		eo.registerFactoryObject<DeleteAtTimeDetails>();
-		eo.registerFactoryObject<DeleteEventDetails>();
-		eo.registerFactoryObject<NodeAttributes>();
-		eo.registerFactoryObject<VariableAttributes>();
-		eo.registerFactoryObject<VariableTypeAttributes>();
-		eo.registerFactoryObject<AggregateFilter>();
-		eo.registerFactoryObject<EUInformation>();
-		eo.registerFactoryObject<EnumValueType>();
+		bool rc = eo.registerFactoryObject<LiteralOperand>();
+		rc &= eo.registerFactoryObject<ElementOperand>();
+		rc &= eo.registerFactoryObject<AttributeOperand>();
+		rc &= eo.registerFactoryObject<SimpleAttributeOperand>();
+		rc &= eo.registerFactoryObject<Range>();
+		rc &= eo.registerFactoryObject<BuildInfo>();
+		rc &= eo.registerFactoryObject<ServerStatusDataType>();
+		rc &= eo.registerFactoryObject<ModelChangeStructureDataType>();
+		rc &= eo.registerFactoryObject<RedundantServerDataType>();
+		rc &= eo.registerFactoryObject<SamplingIntervalDiagnosticsDataType>();
+		rc &= eo.registerFactoryObject<ServiceCounterDataType>();
+		rc &= eo.registerFactoryObject<SessionDiagnosticsDataType>();
+		rc &= eo.registerFactoryObject<SessionSecurityDiagnosticsDataType>();
+		rc &= eo.registerFactoryObject<StatusResult>();
+		rc &= eo.registerFactoryObject<SubscriptionDiagnosticsDataType>();
+		rc &= eo.registerFactoryObject<ServerDiagnosticsSummaryDataType>();
+		rc &= eo.registerFactoryObject<Argument>();
+		rc &= eo.registerFactoryObject<ObjectAttributes>();
+		rc &= eo.registerFactoryObject<DataTypeAttributes>();
+		rc &= eo.registerFactoryObject<MethodAttributes>();
+		rc &= eo.registerFactoryObject<ObjectTypeAttributes>();
+		rc &= eo.registerFactoryObject<ReferenceTypeAttributes>();
+		rc &= eo.registerFactoryObject<ViewAttributes>();
+		rc &= eo.registerFactoryObject<HistoryEvent>();
+		rc &= eo.registerFactoryObject<HistoryData>();
+		rc &= eo.registerFactoryObject<EventFilter>();
+		rc &= eo.registerFactoryObject<AnonymousIdentityToken>();
+		rc &= eo.registerFactoryObject<UserNameIdentityToken>();
+		rc &= eo.registerFactoryObject<X509IdentityToken>();
+		rc &= eo.registerFactoryObject<IssuedIdentityToken>();
+		rc &= eo.registerFactoryObject<EventFilterResult>();
+		rc &= eo.registerFactoryObject<DataChangeNotification>();
+		rc &= eo.registerFactoryObject<StatusChangeNotification>();
+		rc &= eo.registerFactoryObject<EventNotificationList>();
+		rc &= eo.registerFactoryObject<ReadEventDetails>();
+		rc &= eo.registerFactoryObject<HistoryReadDetails>();
+		rc &= eo.registerFactoryObject<ReadRawModifiedDetails>();
+		rc &= eo.registerFactoryObject<ReadProcessedDetails>();
+		rc &= eo.registerFactoryObject<ReadAtTimeDetails>();
+		rc &= eo.registerFactoryObject<HistoryModifiedData>();
+		rc &= eo.registerFactoryObject<ModificationInfo>();
+		rc &= eo.registerFactoryObject<UpdateDataDetails>();
+		rc &= eo.registerFactoryObject<HistoryUpdateDetails>();
+		rc &= eo.registerFactoryObject<UpdateStructureDataDetails>();
+		rc &= eo.registerFactoryObject<UpdateEventDetails>();
+		rc &= eo.registerFactoryObject<DeleteRawModifiedDetails>();
+		rc &= eo.registerFactoryObject<DeleteAtTimeDetails>();
+		rc &= eo.registerFactoryObject<DeleteEventDetails>();
+		rc &= eo.registerFactoryObject<NodeAttributes>();
+		rc &= eo.registerFactoryObject<VariableAttributes>();
+		rc &= eo.registerFactoryObject<VariableTypeAttributes>();
+		rc &= eo.registerFactoryObject<AggregateFilter>();
+		rc &= eo.registerFactoryObject<EUInformation>();
+		rc &= eo.registerFactoryObject<EnumValueType>();
+
+		if (!rc) {
+			Log(Error, "register extension objects error");
+		}
 	}
 
 	void
 	Core::cleanupExtensionObject(void)
 	{
 		OpcUaExtensionObject eo;
-		eo.deregisterFactoryElements();
+		if (!eo.deregisterFactoryElements()) {
+			Log(Error, "deregister extension objects error");
+		}
 	}
 
 }
