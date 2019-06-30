@@ -314,8 +314,7 @@ namespace OpcUaStackClient
 			);
 			if (endpointDescription.get() == nullptr) {
 				// An endpoint description was not found.
-
-				// FIXME: todo
+				return false;
 			}
 			else {
 				// we found a endpoint description
