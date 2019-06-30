@@ -40,7 +40,7 @@ namespace OpcUaStackCore
 		// check if extension object already exist
 		auto it = extentionObjectMap_.find(opcUaNodeId);
 		if (it != extentionObjectMap_.end()) {
-			Log(Error, "cannot insert new extension object, because object type id already exost")
+			Log(Error, "cannot insert new extension object, because object type id already exist")
 				.parameter("TypeId", opcUaNodeId);
 			return false;
 		}
