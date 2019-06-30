@@ -21,6 +21,7 @@
 
 **Bugs**:
 
+* Remove duplicate registration of extension objects #219, by @huebl
 * Added server namespace 1 #92, by @huebl
 * OPC UA server chrashes at startup #99, by @huebl
 * Ignore optional placeholder element in code generator #78, by @huebl
