@@ -50,7 +50,11 @@ namespace OpcUaStackClient
 
 		// set session service mode
 		//ctx_->secureChannelClientConfigBackup_ = ctx_->secureChannelClientConfig_;
-		ctx_->setSessionServiceMode();
+		if (!ctx_->setSessionServiceMode()) {
+			// We did not find an endpoint. After a timeout, a get endpoint request is send again.
+
+			// FIXME: todo
+		}
 
 		auto clientConfig = ctx_->secureChannelClientConfig_;
 		auto& secureChannelClient = ctx_->secureChannelClient_;
