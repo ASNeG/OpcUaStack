@@ -135,6 +135,7 @@ namespace OpcUaStackCore
 		rc &= eo.registerFactoryObject<ModelChangeStructureDataType>();
 		rc &= eo.registerFactoryObject<RedundantServerDataType>();
 		rc &= eo.registerFactoryObject<SamplingIntervalDiagnosticsDataType>();
+		rc &= eo.registerFactoryObject<SemanticChangeStructureDataType>();
 		rc &= eo.registerFactoryObject<ServiceCounterDataType>();
 		rc &= eo.registerFactoryObject<SessionDiagnosticsDataType>();
 		rc &= eo.registerFactoryObject<SessionSecurityDiagnosticsDataType>();
