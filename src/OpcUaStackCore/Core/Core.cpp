@@ -124,165 +124,81 @@ namespace OpcUaStackCore
 	{
 		OpcUaExtensionObject eo;
 
-		// objects
-		eo.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand);
-		eo.registerFactoryElement<ElementOperand>(OpcUaId_ElementOperand);
-		eo.registerFactoryElement<AttributeOperand>(OpcUaId_AttributeOperand);
-		eo.registerFactoryElement<SimpleAttributeOperand>(OpcUaId_SimpleAttributeOperand);
-		eo.registerFactoryElement<Range>(OpcUaId_Range);
-		eo.registerFactoryElement<Range>(OpcUaId_EUInformation);
-
-		// binary
-		eo.registerFactoryElement<BuildInfo>(OpcUaId_BuildInfo_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ServerStatusDataType>(OpcUaId_ServerStatusDataType_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ModelChangeStructureDataType>(OpcUaId_ModelChangeStructureDataType_Encoding_DefaultBinary);
-		eo.registerFactoryElement<RedundantServerDataType>(OpcUaId_RedundantServerDataType_Encoding_DefaultBinary);
-		eo.registerFactoryElement<SamplingIntervalDiagnosticsDataType>(OpcUaId_SamplingIntervalDiagnosticsDataType_Encoding_DefaultBinary);
-		eo.registerFactoryElement<SemanticChangeStructureDataType>(OpcUaId_SemanticChangeStructureDataType_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ServiceCounterDataType>(OpcUaId_ServiceCounterDataType_Encoding_DefaultBinary);
-		eo.registerFactoryElement<SessionDiagnosticsDataType>(OpcUaId_SessionDiagnosticsDataType_Encoding_DefaultBinary);
-		eo.registerFactoryElement<SessionSecurityDiagnosticsDataType>(OpcUaId_SessionSecurityDiagnosticsDataType_Encoding_DefaultBinary);
-		eo.registerFactoryElement<StatusResult>(OpcUaId_StatusResult_Encoding_DefaultBinary);
-		eo.registerFactoryElement<SubscriptionDiagnosticsDataType>(OpcUaId_SubscriptionDiagnosticsDataType_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ServerDiagnosticsSummaryDataType>(OpcUaId_ServerDiagnosticsSummaryDataType_Encoding_DefaultBinary);
-		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ObjectAttributes>(OpcUaId_ObjectAttributes);
-		eo.registerFactoryElement<DataTypeAttributes>(OpcUaId_DataTypeAttributes);
-		eo.registerFactoryElement<MethodAttributes>(OpcUaId_MethodAttributes);
-		eo.registerFactoryElement<ObjectTypeAttributes>(OpcUaId_ObjectTypeAttributes);
-		eo.registerFactoryElement<ReferenceTypeAttributes>(OpcUaId_ReferenceTypeAttributes);
-		eo.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes);
-		eo.registerFactoryElement<ElementOperand>(OpcUaId_ElementOperand_Encoding_DefaultBinary);
-		eo.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
-		eo.registerFactoryElement<AttributeOperand>(OpcUaId_AttributeOperand_Encoding_DefaultBinary);
-		eo.registerFactoryElement<SimpleAttributeOperand>(OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary);
-		eo.registerFactoryElement<HistoryEvent>(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
-		eo.registerFactoryElement<HistoryData>(OpcUaId_HistoryData_Encoding_DefaultBinary);
-		eo.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
-		eo.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
-		eo.registerFactoryElement<UserNameIdentityToken>(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
-		eo.registerFactoryElement<X509IdentityToken>(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
-		eo.registerFactoryElement<IssuedIdentityToken>(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
-		eo.registerFactoryElement<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
-		eo.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
-		eo.registerFactoryElement<StatusChangeNotification>(OpcUaId_StatusChangeNotification_Encoding_DefaultBinary);
-		eo.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ReadEventDetails>(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<HistoryReadDetails>(OpcUaId_HistoryReadDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ReadProcessedDetails>(OpcUaId_ReadProcessedDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ReadAtTimeDetails>(OpcUaId_ReadAtTimeDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<HistoryData>(OpcUaId_HistoryData_Encoding_DefaultBinary);
-		eo.registerFactoryElement<HistoryModifiedData>(OpcUaId_HistoryModifiedData_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ModificationInfo>(OpcUaId_ModificationInfo_Encoding_DefaultBinary);
-		eo.registerFactoryElement<HistoryEvent>(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
-		eo.registerFactoryElement<UpdateDataDetails>(OpcUaId_UpdateDataDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<HistoryUpdateDetails>(OpcUaId_HistoryUpdateDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<UpdateStructureDataDetails>(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<UpdateEventDetails>(OpcUaId_UpdateEventDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<DeleteRawModifiedDetails>(OpcUaId_DeleteRawModifiedDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<DeleteAtTimeDetails>(OpcUaId_DeleteAtTimeDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<DeleteEventDetails>(OpcUaId_DeleteEventDetails_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ObjectAttributes>(OpcUaId_ObjectAttributes_Encoding_DefaultBinary);
-		eo.registerFactoryElement<NodeAttributes>(OpcUaId_NodeAttributes_Encoding_DefaultBinary);
-		eo.registerFactoryElement<VariableAttributes>(OpcUaId_VariableAttributes_Encoding_DefaultBinary);
-		eo.registerFactoryElement<VariableTypeAttributes>(OpcUaId_VariableTypeAttributes_Encoding_DefaultBinary);
-		eo.registerFactoryElement<MethodAttributes>(OpcUaId_MethodAttributes_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ObjectTypeAttributes>(OpcUaId_ObjectTypeAttributes_Encoding_DefaultBinary);
-		eo.registerFactoryElement<DataTypeAttributes>(OpcUaId_DataTypeAttributes_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ReferenceTypeAttributes>(OpcUaId_ReferenceTypeAttributes_Encoding_DefaultBinary);
-		eo.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes_Encoding_DefaultBinary);
-		eo.registerFactoryElement<AggregateFilter>(OpcUaId_AggregateFilter_Encoding_DefaultBinary);
-		eo.registerFactoryElement<Range>(OpcUaId_Range_Encoding_DefaultBinary);
-		eo.registerFactoryElement<EUInformation>(OpcUaId_EUInformation_Encoding_DefaultBinary);
-
-		// xml
-		eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
-		eo.registerFactoryElement<BuildInfo>(OpcUaId_BuildInfo_Encoding_DefaultXml);
-		eo.registerFactoryElement<EnumValueType>(OpcUaId_EnumValueType_Encoding_DefaultXml);
-
-		// json
+		eo.registerFactoryObject<LiteralOperand>();
+		eo.registerFactoryObject<ElementOperand>();
+		eo.registerFactoryObject<AttributeOperand>();
+		eo.registerFactoryObject<SimpleAttributeOperand>();
+		eo.registerFactoryObject<Range>();
+		eo.registerFactoryObject<BuildInfo>();
+		eo.registerFactoryObject<ServerStatusDataType>();
+		eo.registerFactoryObject<ModelChangeStructureDataType>();
+		eo.registerFactoryObject<RedundantServerDataType>();
+		eo.registerFactoryObject<SamplingIntervalDiagnosticsDataType>();
+		eo.registerFactoryObject<SemanticChangeStructureDataType>();
+		eo.registerFactoryObject<ServiceCounterDataType>();
+		eo.registerFactoryObject<SessionDiagnosticsDataType>();
+		eo.registerFactoryObject<SessionSecurityDiagnosticsDataType>();
+		eo.registerFactoryObject<StatusResult>();
+		eo.registerFactoryObject<SubscriptionDiagnosticsDataType>();
+		eo.registerFactoryObject<ServerDiagnosticsSummaryDataType>();
+		eo.registerFactoryObject<Argument>();
+		eo.registerFactoryObject<ObjectAttributes>();
+		eo.registerFactoryObject<DataTypeAttributes>();
+		eo.registerFactoryObject<MethodAttributes>();
+		eo.registerFactoryObject<ObjectTypeAttributes>();
+		eo.registerFactoryObject<ReferenceTypeAttributes>();
+		eo.registerFactoryObject<ViewAttributes>();
+		eo.registerFactoryObject<ElementOperand>();
+		eo.registerFactoryObject<LiteralOperand>();
+		eo.registerFactoryObject<AttributeOperand>();
+		eo.registerFactoryObject<SimpleAttributeOperand>();
+		eo.registerFactoryObject<HistoryEvent>();
+		eo.registerFactoryObject<HistoryData>();
+		eo.registerFactoryObject<EventFilter>();
+		eo.registerFactoryObject<AnonymousIdentityToken>();
+		eo.registerFactoryObject<UserNameIdentityToken>();
+		eo.registerFactoryObject<X509IdentityToken>();
+		eo.registerFactoryObject<IssuedIdentityToken>();
+		eo.registerFactoryObject<EventFilterResult>();
+		eo.registerFactoryObject<DataChangeNotification>();
+		eo.registerFactoryObject<StatusChangeNotification>();
+		eo.registerFactoryObject<EventNotificationList>();
+		eo.registerFactoryObject<ReadEventDetails>();
+		eo.registerFactoryObject<HistoryReadDetails>();
+		eo.registerFactoryObject<ReadRawModifiedDetails>();
+		eo.registerFactoryObject<ReadProcessedDetails>();
+		eo.registerFactoryObject<ReadAtTimeDetails>();
+		eo.registerFactoryObject<HistoryData>();
+		eo.registerFactoryObject<HistoryModifiedData>();
+		eo.registerFactoryObject<ModificationInfo>();
+		eo.registerFactoryObject<HistoryEvent>();
+		eo.registerFactoryObject<UpdateDataDetails>();
+		eo.registerFactoryObject<HistoryUpdateDetails>();
+		eo.registerFactoryObject<UpdateStructureDataDetails>();
+		eo.registerFactoryObject<UpdateEventDetails>();
+		eo.registerFactoryObject<DeleteRawModifiedDetails>();
+		eo.registerFactoryObject<DeleteAtTimeDetails>();
+		eo.registerFactoryObject<DeleteEventDetails>();
+		eo.registerFactoryObject<ObjectAttributes>();
+		eo.registerFactoryObject<NodeAttributes>();
+		eo.registerFactoryObject<VariableAttributes>();
+		eo.registerFactoryObject<VariableTypeAttributes>();
+		eo.registerFactoryObject<MethodAttributes>();
+		eo.registerFactoryObject<ObjectTypeAttributes>();
+		eo.registerFactoryObject<DataTypeAttributes>();
+		eo.registerFactoryObject<ReferenceTypeAttributes>();
+		eo.registerFactoryObject<ViewAttributes>();
+		eo.registerFactoryObject<AggregateFilter>();
+		eo.registerFactoryObject<Range>();
+		eo.registerFactoryObject<EUInformation>();
+		eo.registerFactoryObject<EnumValueType>();
 	}
 
 	void
 	Core::cleanupExtensionObject(void)
 	{
 		OpcUaExtensionObject eo;
-
-		eo.deregisterFactoryElement(OpcUaId_LiteralOperand);
-		eo.deregisterFactoryElement(OpcUaId_ElementOperand);
-		eo.deregisterFactoryElement(OpcUaId_AttributeOperand);
-		eo.deregisterFactoryElement(OpcUaId_SimpleAttributeOperand);
-		eo.deregisterFactoryElement(OpcUaId_Range);
-
-		// binary
-		eo.deregisterFactoryElement(OpcUaId_BuildInfo_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ServerStatusDataType_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ModelChangeStructureDataType_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_RedundantServerDataType_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_SamplingIntervalDiagnosticsDataType_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_SemanticChangeStructureDataType_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ServiceCounterDataType_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_SessionDiagnosticsDataType_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_SessionSecurityDiagnosticsDataType_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_StatusResult_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_SubscriptionDiagnosticsDataType_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ServerDiagnosticsSummaryDataType_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ObjectAttributes);
-		eo.deregisterFactoryElement(OpcUaId_DataTypeAttributes);
-		eo.deregisterFactoryElement(OpcUaId_MethodAttributes);
-		eo.deregisterFactoryElement(OpcUaId_ObjectTypeAttributes);
-		eo.deregisterFactoryElement(OpcUaId_ReferenceTypeAttributes);
-		eo.deregisterFactoryElement(OpcUaId_ViewAttributes);
-		eo.deregisterFactoryElement(OpcUaId_ElementOperand_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_AttributeOperand_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_HistoryData_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_X509IdentityToken_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_StatusChangeNotification_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_HistoryReadDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ReadProcessedDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ReadAtTimeDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_HistoryData_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_HistoryModifiedData_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ModificationInfo_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_UpdateDataDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_HistoryUpdateDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_UpdateEventDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_DeleteRawModifiedDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_DeleteAtTimeDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_DeleteEventDetails_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ObjectAttributes_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_NodeAttributes_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_VariableAttributes_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_VariableTypeAttributes_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_MethodAttributes_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ObjectTypeAttributes_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_DataTypeAttributes_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ReferenceTypeAttributes_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_ViewAttributes_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_AggregateFilter_Encoding_DefaultBinary);
-		eo.deregisterFactoryElement(OpcUaId_Range_Encoding_DefaultBinary);
-
-		// xml
-		eo.deregisterFactoryElement(OpcUaId_Argument_Encoding_DefaultXml);
-		eo.deregisterFactoryElement(OpcUaId_EnumValueType_Encoding_DefaultXml);
-
-		// json
+		eo.deregisterFactoryElements();
 	}
 
 }
