@@ -282,6 +282,16 @@ namespace OpcUaStackClient
 	}
 
 	SessionServiceStateId
+	SessionServiceStateCreateSession::sessionTimeout(void)
+	{
+		Log(Error, "session timeout event in invalid state; abort")
+			.parameter("SessId", ctx_->id_);
+		std::abort();
+
+		return SessionServiceStateId::CreateSession;
+	}
+
+	SessionServiceStateId
 	SessionServiceStateCreateSession::reconnectTimeout(void)
 	{
 		Log(Error, "reconnect timeout event in invalid state; abort")
