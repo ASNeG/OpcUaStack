@@ -285,20 +285,21 @@ namespace OpcUaStackClient
 		return Success;
 	}
 
-	void
+	bool
 	SessionServiceContext::setSessionServiceMode(void)
 	{
 		secureChannelClientConfig_ = secureChannelClientConfigBackup_;
 		sessionServiceMode_ = SessionServiceMode::Normal;
 
 		// we need the discovery url to send the get endpoint request to
-		// the opc ua server.
+		// the opc ua server. In the other case, a connection can be opened
+		// directly to the endpoint url.
 		if (secureChannelClientConfig_->discoveryUrl().empty()) {
 			Log(Debug, "set session service mode")
 				.parameter("SessId", id_)
 				.parameter("SessServiceMode", "Normal")
 				.parameter("CacheSize", endpointDescriptionCache_.size());
-			return;
+			return true;
 		}
 
 		// Now it is checked if we can use a cache entry
@@ -311,7 +312,11 @@ namespace OpcUaStackClient
 			auto endpointDescription = selectEndpointDescriptionFromCache(
 				endpointDescriptions
 			);
-			if (endpointDescription.get() != nullptr) {
+			if (endpointDescription.get() == nullptr) {
+				// An endpoint description was not found.
+				return false;
+			}
+			else {
 				// we found a endpoint description
 
 				Log(Debug, "set session service mode")
@@ -338,7 +343,7 @@ namespace OpcUaStackClient
 					}
 				}
 
-				return;
+				return true;
 			}
 		}
 
@@ -359,6 +364,8 @@ namespace OpcUaStackClient
 		secureChannelClientConfig_->endpointUrl(secureChannelClientConfig_->discoveryUrl());
 		secureChannelClientConfig_->securityMode(MessageSecurityMode::EnumNone);
 		secureChannelClientConfig_->securityPolicy(SecurityPolicy::EnumNone);
+
+		return true;
 	}
 
 	SessionServiceMode
