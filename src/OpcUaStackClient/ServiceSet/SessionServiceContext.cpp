@@ -49,7 +49,7 @@ namespace OpcUaStackClient
 	, sessionServiceChangeHandler_()
 
 	, ioThread_(ioThread)
-	, slotTimerElement_()
+	, reconnectTimerElement_()
 
 	, sessionTimeout_(0)
 	, maxResponseMessageSize_(0)
@@ -78,9 +78,9 @@ namespace OpcUaStackClient
 			.parameter("SessId", id_)
 			.parameter("Timeout", sessionConfig_->reconnectTimeout());
 
-		slotTimerElement_->expireFromNow(sessionConfig_->reconnectTimeout());
-		slotTimerElement_->callback().reset(boost::bind(&SessionService::reconnectTimeout, sessionService_));
-		ioThread_->slotTimer()->start(slotTimerElement_);
+		reconnectTimerElement_->expireFromNow(sessionConfig_->reconnectTimeout());
+		reconnectTimerElement_->callback().reset(boost::bind(&SessionService::reconnectTimeout, sessionService_));
+		ioThread_->slotTimer()->start(reconnectTimerElement_);
 
 		return true;
 	}
@@ -88,11 +88,11 @@ namespace OpcUaStackClient
 	void
 	SessionServiceContext::stopReconnectTimer(void)
 	{
-		if (slotTimerElement_->isRunning()) {
+		if (reconnectTimerElement_->isRunning()) {
 			Log(Debug, "stop reconnect timer")
 				.parameter("SessId", id_);
 
-			ioThread_->slotTimer()->stop(slotTimerElement_);
+			ioThread_->slotTimer()->stop(reconnectTimerElement_);
 		}
 	}
 

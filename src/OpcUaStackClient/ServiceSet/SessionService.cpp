@@ -34,7 +34,7 @@ namespace OpcUaStackClient
 	, ctx_(new SessionServiceContext(ioThread))
 	{
 		Component::ioThread(ioThread);
-		ctx_->slotTimerElement_ = boost::make_shared<SlotTimerElement>();
+		ctx_->reconnectTimerElement_ = boost::make_shared<SlotTimerElement>();
 		ctx_->ioThread_ = ioThread;
 		ctx_->sessionService_ = this;
 
@@ -52,9 +52,9 @@ namespace OpcUaStackClient
 	SessionService::~SessionService(void)
 	{
 		// stop timer element
-		if (ctx_->slotTimerElement_.get() != nullptr) {
-			ctx_->ioThread_->slotTimer()->stop(ctx_->slotTimerElement_);
-			ctx_->slotTimerElement_.reset();
+		if (ctx_->reconnectTimerElement_.get() != nullptr) {
+			ctx_->ioThread_->slotTimer()->stop(ctx_->reconnectTimerElement_);
+			ctx_->reconnectTimerElement_.reset();
 		}
 
 		delete ctx_;
