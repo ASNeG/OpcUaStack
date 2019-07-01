@@ -50,6 +50,7 @@ namespace OpcUaStackClient
 
 	, ioThread_(ioThread)
 	, reconnectTimerElement_()
+	, sessionTimerElement_()
 
 	, sessionTimeout_(0)
 	, maxResponseMessageSize_(0)
@@ -85,6 +86,24 @@ namespace OpcUaStackClient
 		return true;
 	}
 
+	bool
+	SessionServiceContext::startSessionTimer(uint32_t sessionTimeout)
+	{
+		if (sessionTimeout == 0) {
+			return false;
+		}
+
+		Log(Debug, "start session timer")
+			.parameter("SessId", id_)
+			.parameter("Timeout", sessionConfig_->reconnectTimeout());
+
+		sessionTimerElement_->expireFromNow(sessionTimeout);
+		sessionTimerElement_->callback().reset(boost::bind(&SessionService::sessionTimeout, sessionService_));
+		ioThread_->slotTimer()->start(sessionTimerElement_);
+
+		return true;
+	}
+
 	void
 	SessionServiceContext::stopReconnectTimer(void)
 	{
@@ -93,6 +112,17 @@ namespace OpcUaStackClient
 				.parameter("SessId", id_);
 
 			ioThread_->slotTimer()->stop(reconnectTimerElement_);
+		}
+	}
+
+	void
+	SessionServiceContext::stopSessionTimer(void)
+	{
+		if (sessionTimerElement_->isRunning()) {
+			Log(Debug, "stop session timer")
+				.parameter("SessId", id_);
+
+			ioThread_->slotTimer()->stop(sessionTimerElement_);
 		}
 	}
 

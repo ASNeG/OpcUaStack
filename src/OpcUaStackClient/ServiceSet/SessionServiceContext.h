@@ -51,7 +51,9 @@ namespace OpcUaStackClient
 		~SessionServiceContext(void);
 
 		bool startReconnectTimer(void);
+		bool startSessionTimer(uint32_t sessionTimeout = 60);
 		void stopReconnectTimer(void);
+		void stopSessionTimer(void);
 
 		OpcUaStatusCode sendCreateSessionRequest(
 			SecureChannel* secureChannel
@@ -137,6 +139,7 @@ namespace OpcUaStackClient
 		//
 		IOThread* ioThread_;
 		SlotTimerElement::SPtr reconnectTimerElement_;
+		SlotTimerElement::SPtr sessionTimerElement_;
 
 		//
 		// session lifetime data
