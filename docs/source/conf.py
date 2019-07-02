@@ -46,6 +46,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.githubpages',
     'sphinx.ext.extlinks',
+    'breathe',
+    'exhale'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -138,6 +140,34 @@ latex_documents = [
     (master_doc, 'ASNeGOpcUaStack.tex', 'ASNeG OpcUaStack Documentation',
      'Kai Hübl, Aleksey Timin', 'manual'),
 ]
+
+# Setup breathe extension
+breathe_projects = {
+    project: "./doxyoutput/xml"
+}
+
+breathe_default_project = project
+
+# Setup the exhale extension
+exhale_args = {
+    # These arguments are required
+    "containmentFolder":     "./4_api",
+    "rootFileName":          "library_root.rst",
+    "rootFileTitle":         "Library API",
+    "doxygenStripFromPath":  "..",
+    # Suggested optional arguments
+    "createTreeView":        True,
+    # TIP: if using the sphinx-bootstrap-theme, you need
+    # "treeViewIsBootstrap": True,
+    "exhaleExecutesDoxygen": True,
+    "exhaleDoxygenStdin":    "INPUT = ../../src/"
+}
+
+# Tell sphinx what the primary language being documented is.
+primary_domain = 'cpp'
+
+# Tell sphinx what the pygments highlight language should be.
+highlight_language = 'cpp'
 
 
 # -- Options for manual page output ------------------------------------------
