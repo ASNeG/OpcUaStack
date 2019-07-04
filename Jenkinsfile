@@ -44,6 +44,15 @@ pipeline {
     }
   }
 
+  stage('win_deploy') {
+    when {
+      when 'conditional_win_deploy'
+    }
+    steps {
+      sh 'ssh 127.0.0.1 -l vagrant -p 2222 "cd $BUILDDIRNAME && C:\\build_vs.bat -t tst -B Release -s C:\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
+    }
+  }
+
   post {
     always {
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat core_results.xml > core_results.xml || true'
