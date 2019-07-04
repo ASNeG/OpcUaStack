@@ -136,7 +136,7 @@ namespace OpcUaStackClient
 		// thread and timer
 		//
 		IOThread* ioThread_;
-		SlotTimerElement::SPtr reconnectTimerElement_;
+		SlotTimerElement::SPtr slotTimerElement_;
 
 		//
 		// session lifetime data
