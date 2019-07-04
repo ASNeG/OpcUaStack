@@ -100,16 +100,6 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 
 	void
-	SessionService::sessionTimeout(void)
-	{
-		sm_.event(
-			[this](SessionServiceStateIf* sssif) {
-				return sssif->sessionTimeout();
-			}
-		);
-	}
-
-	void
 	SessionService::reconnectTimeout(void)
 	{
 		asyncConnectInternal();

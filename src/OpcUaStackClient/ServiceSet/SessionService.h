@@ -76,7 +76,6 @@ namespace OpcUaStackClient
 		// - Component -------------------------------------------------------
 
 		void pendingQueueTimeout(Object::SPtr object);
-		void sessionTimeout(void);
 		void reconnectTimeout(void);
 
 	  private:
