@@ -7,7 +7,7 @@ Release 3.8.0
 * add option -j to build.bat to build on several CPUs on Windows #243, by @flipback
 
 **Bugs**:
-
+* Init createAt field in open secure channel response #259, @huebl
 * fix dependence of start\\stop item monitoring on callbacks #133, by @flipback
 
 **Other**:
