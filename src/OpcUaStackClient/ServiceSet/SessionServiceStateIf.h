@@ -83,7 +83,6 @@ namespace OpcUaStackClient
 		//
 		// internal events
 		//
-		virtual SessionServiceStateId sessionTimeout(void) = 0;
 		virtual SessionServiceStateId reconnectTimeout(void) = 0;
 		virtual SessionServiceStateId pendingQueueTimeout(const Object::SPtr& object) = 0;
 

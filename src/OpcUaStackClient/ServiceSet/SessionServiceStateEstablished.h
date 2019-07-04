@@ -58,7 +58,6 @@ namespace OpcUaStackClient
 
 		virtual SessionServiceStateId sendMessageRequest(Message::SPtr message) override;
 
-		virtual SessionServiceStateId sessionTimeout(void) override;
 		virtual SessionServiceStateId reconnectTimeout(void) override;
 		virtual SessionServiceStateId pendingQueueTimeout(const Object::SPtr& object) override;
 
