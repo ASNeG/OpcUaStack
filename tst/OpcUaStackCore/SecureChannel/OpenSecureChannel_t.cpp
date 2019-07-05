@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	SecurityToken::SPtr securityTokenSPtr = constructSPtr<SecurityToken>();
 	securityTokenSPtr->channelId(153451225);
 	securityTokenSPtr->tokenId(1);
-	securityTokenSPtr->createAt().dateTime(ptime);
+	securityTokenSPtr->createAt(OpcUaDateTime(ptime));
 	securityTokenSPtr->revisedLifetime(600000);
 
 	// encode OpenSecureChannel
