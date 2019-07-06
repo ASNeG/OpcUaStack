@@ -1,12 +1,13 @@
 version: '2'
 services:
   asneg-demo:
+    container_name: asne-demo${BUILD_TAG}
     image: asneg/asneg-demo:release-4
     hostname: asneg-demo
     volumes:
       - server_pki:/etc/OpcUaStack/ASNeG-Demo/pki
   stack:
-    container_name: stack-${BUILD_TAG}
+    container_name: stack${BUILD_TAG}
     depends_on:
       - asneg-demo
     hostname: asneg-test

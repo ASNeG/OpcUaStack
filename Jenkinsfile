@@ -47,7 +47,7 @@ pipeline {
         branch 'conditional_win_deploy'
       }
       steps {
-        sh 'ssh 127.0.0.1 -l vagrant -p 2222 "cd $BUILDDIRNAME && C:\\build_vs.bat -t tst -B Release -s C:\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
+        sh 'ssh 127.0.0.1 -l vagrant -p 2222 "cd $BUILDDIRNAME && C:\\build_vs.bat -t local -B Release -i C:\\ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
       }
     }
 
@@ -64,6 +64,7 @@ pipeline {
         thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
         tools: [ BoostTest(pattern: '*_results.xml') ])
 
+        
       sh 'docker-compose down --volumes --rmi local'
     }
   }
