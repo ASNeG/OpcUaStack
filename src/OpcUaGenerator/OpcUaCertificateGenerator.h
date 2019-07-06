@@ -19,6 +19,7 @@
 #define __OpcUaCertificateGenerator_OpcUaCertificateGenerator_h__
 
 #include <stdint.h>
+#include <string>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaCertificateGenerator
@@ -33,7 +34,10 @@ namespace OpcUaCertificateGenerator
 		uint32_t start(int argc, char** argv);
 
 	  private:
-
+		std::string command_ = "";
+		std::string descFile_ = "";
+		bool selfSigned_ = true;
+		bool ca_ = false;
 	};
 
 }

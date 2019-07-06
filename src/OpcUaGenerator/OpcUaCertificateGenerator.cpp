@@ -15,7 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/program_options.hpp>
+#include <iostream>
 #include "OpcUaGenerator/OpcUaCertificateGenerator.h"
+#include "BuildConfig.h"
 
 namespace OpcUaCertificateGenerator
 {
@@ -38,6 +41,65 @@ namespace OpcUaCertificateGenerator
 	uint32_t
 	OpcUaCertificateGenerator::start(int argc, char** argv)
 	{
+		boost::program_options::options_description desc("Allowed options");
+		desc.add_options()
+		    (
+		    	"help",
+				"produce help message"
+		    )
+			(
+				"version",
+				"print version string"
+			)
+			(
+				"command",
+				boost::program_options::value<std::string>()->default_value("create"),
+			    "command: create"
+			)
+		    (
+		    	"descFile",
+				boost::program_options::value<std::string>()->default_value("CertDesc.xml"),
+				"set certificate description file name"
+			)
+			(
+				"selfSigned",
+				boost::program_options::value<bool>()->default_value(true),
+			    "create self signed certificate and keys"
+			)
+			(
+				"ca",
+				boost::program_options::value<bool>()->default_value(false),
+			    "create ca certificate and keys"
+			)
+		;
+
+		boost::program_options::variables_map vm;
+		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+		boost::program_options::notify(vm);
+
+		if (vm.count("help")) {
+		    std::cout << desc << std::endl;
+		    return 1;
+		}
+
+		if (vm.count("version")) {
+		    std::cout << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH <<  std::endl;
+		    return 1;
+		}
+
+		command_ = vm["command"].as<std::string>();
+		descFile_ = vm["descFile"].as<std::string>();
+		selfSigned_ = vm["selfSigned"].as<bool>();
+		ca_ = vm["ca"].as<bool>();
+
+		if (command_ == "create") {
+			// FIXME: todo
+		}
+		else {
+			std::cout << "unknown command " << command_ << std::endl;
+			return 1;
+		}
+
 		return 0;
 	}
 
