@@ -10,7 +10,7 @@ pipeline {
       parallel {
         stage('build_linux') {
           steps {
-            sh 'docker-compose build'
+            sh 'docker-compose build --pull'
             sh 'docker-compose run stack sh build.sh -t tst -j 2 -B Release --test-with-server opc.tcp://asneg-demo:8889 --server-pki-path /tmp/'
           }
         }
@@ -44,7 +44,7 @@ pipeline {
     }
     stage('win_deploy') {
       when {
-        when 'conditional_win_deploy'
+        branch 'conditional_win_deploy'
       }
       steps {
         sh 'ssh 127.0.0.1 -l vagrant -p 2222 "cd $BUILDDIRNAME && C:\\build_vs.bat -t tst -B Release -s C:\\.ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
