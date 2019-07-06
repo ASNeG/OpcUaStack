@@ -259,7 +259,38 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
-# install generators
+# build OpcUaCertificateGenerator
+# 
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+include_directories(
+    ${PROJECT_BINARY_DIR}
+    ${Boost_INCLUDE_DIRS}
+)
+
+file(
+    GLOB OpcUaCertificateGenerator_SRC 
+    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaCertificateGenerator.cpp
+)
+
+
+add_executable(
+    OpcUaCertificateGenerator${VERSION_MAJOR}
+    ${OpcUaCertificateGenerator_SRC}
+    ${PROJECT_BINARY_DIR}
+)
+
+target_link_libraries(
+    OpcUaCertificateGenerator${VERSION_MAJOR}
+    ${CMAKE_DL_LIBS}
+    ${Boost_LIBRARIES}
+    OpcUaStackCore
+)
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# install
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -289,6 +320,12 @@ install(
 
 install(
     TARGETS OpcUaObjectTypeGenerator${VERSION_MAJOR} 
+    DESTINATION /usr/bin
+    COMPONENT tools
+)
+
+install(
+    TARGETS OpcUaCertificateGenerator${VERSION_MAJOR} 
     DESTINATION /usr/bin
     COMPONENT tools
 )
