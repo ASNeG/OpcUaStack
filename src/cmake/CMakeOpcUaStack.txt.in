@@ -24,7 +24,7 @@ message(STATUS "  version major: ${OPCUASTACK_VERSION_MAJOR}")
 message(STATUS "  version minor: ${OPCUASTACK_VERSION_MINOR}")
 message(STATUS "  version patch: ${OPCUASTACK_VERSION_PATCH}")
 message(STATUS "  build time: ${OPCUASTACK_BUILD_TIME}")
-message(STATUS "  build number: ${OPCUASTACK_BUILD_NUMBER")
+message(STATUS "  build number: ${OPCUASTACK_BUILD_NUMBER}")
 message(STATUS "  include directory: ${OPCUASTACK_INCLUDE_DIR}")
 message(STATUS "  libraries: ${OPCUASTACK_LIBRARY_ALL}")
 
