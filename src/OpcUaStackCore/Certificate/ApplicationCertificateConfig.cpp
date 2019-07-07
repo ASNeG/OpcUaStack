@@ -357,7 +357,7 @@ namespace OpcUaStackCore
 		std::vector<std::string>::iterator itDnsName;
 		std::vector<std::string> dnsNames;
 		child->getValues("CertificateSettings.DNSName", dnsNames);
-		if (ipAddresses.size() == 0) {
+		if (dnsNames.size() == 0) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
 				.parameter("ParameterPath", configPrefixApplicationCertificate + std::string(".CertificateSettings.DNSName"));
