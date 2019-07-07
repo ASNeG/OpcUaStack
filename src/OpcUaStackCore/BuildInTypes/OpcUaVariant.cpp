@@ -72,6 +72,7 @@ namespace OpcUaStackCore
 	OpcUaVariantValue::OpcUaVariantValue(const OpcUaVariantValue& value)
 	: variantValue_()
 	{
+		if (value.isNull()) return;
 		const_cast<OpcUaVariantValue*>(&value)->copyTo(*this);
 	}
 
@@ -2010,7 +2011,9 @@ namespace OpcUaStackCore
 		OpcUaVariantValue::Vec::iterator it;
 		for (it = sourceVariantValueVec.begin(); it != sourceVariantValueVec.end(); it++) {
 			OpcUaVariantValue value;
-			it->copyTo(value);
+			if (!it->isNull()) {
+				it->copyTo(value);
+			}
 			destVariantValueVec.push_back(value);
 		}
 
