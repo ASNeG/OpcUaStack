@@ -34,6 +34,8 @@ namespace OpcUaCertificateGenerator
 		uint32_t start(int argc, char** argv);
 
 	  private:
+		uint32_t createCertificate(void);
+
 		std::string command_ = "";
 		std::string descFile_ = "";
 		bool selfSigned_ = true;

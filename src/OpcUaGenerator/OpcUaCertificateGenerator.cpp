@@ -18,7 +18,13 @@
 #include <boost/program_options.hpp>
 #include <iostream>
 #include "OpcUaGenerator/OpcUaCertificateGenerator.h"
+#include "OpcUaStackCore/Certificate/Certificate.h"
+#include "OpcUaStackCore/Certificate/RSAKey.h"
+#include "OpcUaStackCore/Certificate/Identity.h"
+#include "OpcUaStackCore/Certificate/CertificateInfo.h"
 #include "BuildConfig.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaCertificateGenerator
 {
@@ -93,13 +99,77 @@ namespace OpcUaCertificateGenerator
 		ca_ = vm["ca"].as<bool>();
 
 		if (command_ == "create") {
-			// FIXME: todo
+			return createCertificate();
 		}
 		else {
 			std::cout << "unknown command " << command_ << std::endl;
 			return 1;
 		}
 
+		return 0;
+	}
+
+	uint32_t
+	OpcUaCertificateGenerator::createCertificate(void)
+	{
+		bool rc;
+
+		// create new key
+		RSAKey key(2048);
+
+		// create issuer
+		Identity identity;
+		identity.organization("ASNeG");
+		identity.organizationUnit("OPC UA Service Department");
+		identity.commonName("ASNeG-CA");
+		identity.locality("Neukirchen");
+		identity.state("Hessen");
+		identity.country("DE");
+		identity.domainComponent("devel");
+
+		// create certificate info
+		CertificateInfo info;
+		info.clear();
+		info.uri("urn:devel:ASNeG:ASNeG-CA");
+		info.ipAddresses().push_back("127.0.0.1");
+		info.dnsNames().push_back("devel");
+		info.eMail("info@ASNeG.de");
+		info.validTime(
+			boost::posix_time::microsec_clock::universal_time() +
+			boost::posix_time::seconds(3600*24*365*5)
+		);
+		info.serialNumber(time(0));
+		info.validFrom(boost::posix_time::microsec_clock::universal_time());
+
+		// create certificate
+		Certificate certificate;
+		rc = certificate.createCertificate(
+		     info,
+			 identity,
+			 key,
+			 true,
+			 SignatureAlgorithm_Sha256
+		);
+		if (!rc || certificate.isError()) {
+			std::cout << "generate certificate error" << std::endl;
+			return 1;
+		}
+
+		// write certificate to file
+		std::string certFileName = identity.commonName() + ".der";
+		rc = certificate.toDERFile(certFileName);
+		if (!rc || certificate.isError()) {
+			std::cout << "save certificate file error: " << certFileName << std::endl;
+			return 1;
+		}
+
+		// write private key
+		std::string privKeyFileName = identity.commonName()+ ".pem";
+		rc = key.privateKey().toPEMFile(privKeyFileName, nullptr);
+		if (!rc || key.isError()) {
+			std::cout << "save private key file error: " << privKeyFileName << std::endl;
+			return 1;
+		}
 		return 0;
 	}
 
