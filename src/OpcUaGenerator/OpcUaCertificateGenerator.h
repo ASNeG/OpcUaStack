@@ -20,6 +20,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <vector>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaCertificateGenerator
@@ -35,11 +36,30 @@ namespace OpcUaCertificateGenerator
 
 	  private:
 		uint32_t createCertificate(void);
+		uint32_t createCertificateCA(void);
+		bool readCertificateSettings(const std::string& fileName);
 
+		// command line parameters
 		std::string command_ = "";
 		std::string descFile_ = "";
 		bool selfSigned_ = true;
 		bool ca_ = false;
+
+		// cetificate settings
+		std::string organization_ = "";
+		std::string organizationUnit_ = "";
+		std::string commonName_ = "";
+		std::string locality_ = "";
+		std::string state_ = "";
+		std::string country_ = "";
+		std::string domainComponent_ = "";
+		std::string uri_ = "";
+		std::vector<std::string> ipAddresses_;
+		std::vector<std::string> dnsNames_;
+		std::string email_ = "";
+		uint32_t yearsValidFor_ = 5;
+		uint32_t keyLength_ = 2048;
+		std::string certificateType_ = "";
 	};
 
 }
