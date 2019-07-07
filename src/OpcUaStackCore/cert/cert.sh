@@ -1,3 +1,3 @@
 #!/bin/bash
 
-OpcUaCertificateGenerator4
+OpcUaCertificateGenerator4 --descFile=ASNeG-CA.xml --ca=1
