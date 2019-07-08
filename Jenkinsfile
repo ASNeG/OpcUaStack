@@ -42,6 +42,7 @@ pipeline {
         }
       }
     }
+
     stage('win_deploy') {
       when {
         branch 'conditional_win_deploy'
@@ -55,6 +56,14 @@ pipeline {
 
   
   post {
+    fixed {
+      slackSend(color:'#BDFFC3', message:"Build Fixed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.B»
+    }
+
+    failure {
+      slackSend(color:'#FF9FA1', message:"Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.»
+    }
+
     always {
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat core_results.xml > core_results.xml || true'
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat server_results.xml > server_results.xml || true'
@@ -66,6 +75,7 @@ pipeline {
 
         
       sh 'docker-compose down --volumes --rmi local'
+      deleteDirs()
     }
   }
 }
