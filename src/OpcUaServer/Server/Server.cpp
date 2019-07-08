@@ -232,7 +232,8 @@ namespace OpcUaServer
 		std::stringstream confDir;
 
 		version        << "  OpcUaServer version      : "
-			<< VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH;
+			<< VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH
+			<< " (Build #" << BUILD_NUMBER << " " << BUILD_TIME << ")";
 		boostVersion   << "  Boost Library version    : "
 			<< BOOST_VERSION_MAJOR << "." << BOOST_VERSION_MINOR;
 		openSSLVersion << "  Open SSL Library version : "
