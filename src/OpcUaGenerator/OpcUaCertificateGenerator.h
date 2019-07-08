@@ -42,7 +42,6 @@ namespace OpcUaCertificateGenerator
 		// command line parameters
 		std::string command_ = "";
 		std::string descFile_ = "";
-		bool selfSigned_ = true;
 		bool ca_ = false;
 
 		// cetificate settings

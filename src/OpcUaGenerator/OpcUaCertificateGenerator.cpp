@@ -70,11 +70,6 @@ namespace OpcUaCertificateGenerator
 				"set certificate description file name"
 			)
 			(
-				"selfSigned",
-				boost::program_options::value<bool>()->default_value(false),
-			    "create self signed certificate and keys"
-			)
-			(
 				"ca",
 				boost::program_options::value<bool>()->default_value(false),
 			    "create ca certificate and keys"
@@ -97,7 +92,6 @@ namespace OpcUaCertificateGenerator
 
 		command_ = vm["command"].as<std::string>();
 		descFile_ = vm["descFile"].as<std::string>();
-		selfSigned_ = vm["selfSigned"].as<bool>();
 		ca_ = vm["ca"].as<bool>();
 
 		if (command_ == "create") {
@@ -168,7 +162,7 @@ namespace OpcUaCertificateGenerator
 		     info,
 			 identity,
 			 key,
-			 true,
+			 ca_,
 			 SignatureAlgorithm_Sha256
 		);
 		if (!rc || certificate.isError()) {
