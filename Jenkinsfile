@@ -45,7 +45,7 @@ pipeline {
 
     stage('win_deploy') {
       when {
-        branch 'conditional_win_deploy'
+        branch 'Release4'
       }
       steps {
         sh 'ssh 127.0.0.1 -l vagrant -p 2222 "cd $BUILDDIRNAME && C:\\build_vs.bat -t local -B Release -i C:\\ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
