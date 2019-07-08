@@ -43,6 +43,7 @@ namespace OpcUaCertificateGenerator
 		std::string command_ = "";
 		std::string descFile_ = "";
 		bool ca_ = false;
+		std::string issuerCert_  = "";
 
 		// cetificate settings
 		std::string organization_ = "";

@@ -74,6 +74,11 @@ namespace OpcUaCertificateGenerator
 				boost::program_options::value<bool>()->default_value(false),
 			    "create ca certificate and keys"
 			)
+			(
+				"issuerCert",
+				boost::program_options::value<std::string>()->default_value(""),
+			    "issuer certificate file"
+			)
 		;
 
 		boost::program_options::variables_map vm;
@@ -93,6 +98,7 @@ namespace OpcUaCertificateGenerator
 		command_ = vm["command"].as<std::string>();
 		descFile_ = vm["descFile"].as<std::string>();
 		ca_ = vm["ca"].as<bool>();
+		issuerCert_ = vm["issuerCert"].as<std::string>();
 
 		if (command_ == "create") {
 			return createCertificate();
