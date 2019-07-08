@@ -57,11 +57,11 @@ pipeline {
   
   post {
     fixed {
-      slackSend(color:'#BDFFC3', message:"Build Fixed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.B»
+      slackSend(color:'#BDFFC3', message:"Build Fixed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
     }
 
     failure {
-      slackSend(color:'#FF9FA1', message:"Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.»
+      slackSend(color:'#FF9FA1', message:"Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
     }
 
     always {
@@ -72,8 +72,9 @@ pipeline {
       xunit (
         thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
         tools: [ BoostTest(pattern: '*_results.xml') ])
+    }
 
-        
+    cleanup {
       sh 'docker-compose down --volumes --rmi local'
       deleteDirs()
     }
