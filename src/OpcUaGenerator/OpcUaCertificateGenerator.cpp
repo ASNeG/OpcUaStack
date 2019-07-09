@@ -75,9 +75,9 @@ namespace OpcUaCertificateGenerator
 			    "create ca certificate and keys"
 			)
 			(
-				"issuerCert",
+				"issuer",
 				boost::program_options::value<std::string>()->default_value(""),
-			    "issuer certificate file"
+			    "issuer name"
 			)
 		;
 
@@ -98,7 +98,7 @@ namespace OpcUaCertificateGenerator
 		command_ = vm["command"].as<std::string>();
 		descFile_ = vm["descFile"].as<std::string>();
 		ca_ = vm["ca"].as<bool>();
-		issuerCert_ = vm["issuerCert"].as<std::string>();
+		issuer_ = vm["issuer"].as<std::string>();
 
 		if (command_ == "create") {
 			return createCertificate();
@@ -115,6 +115,10 @@ namespace OpcUaCertificateGenerator
 	OpcUaCertificateGenerator::createCertificate(void)
 	{
 		if (!readCertificateSettings(descFile_)) {
+			return 1;
+		}
+
+		if (!readIssuer(issuer_)) {
 			return 1;
 		}
 
@@ -151,13 +155,27 @@ namespace OpcUaCertificateGenerator
 
 		// create certificate
 		Certificate certificate;
-		rc = certificate.createCertificate(
-		     info,
-			 identity,
-			 key,
-			 ca_,
-			 SignatureAlgorithm_Sha256
-		);
+		if (issuer_.empty()) {
+			rc = certificate.createCertificate(
+				info,
+				identity,
+				key,
+				ca_,
+				SignatureAlgorithm_Sha256
+			);
+		}
+		else {
+			auto subjectPublicKey = key.publicKey();
+			rc = certificate.createCertificate(
+				info,
+				identity,
+				subjectPublicKey,
+				issuerCertificate_,
+				issuerPrivateKey_,
+				false,
+				SignatureAlgorithm_Sha256
+			);
+		}
 		if (!rc || certificate.isError()) {
 			std::cout << "generate certificate error" << std::endl;
 			return 1;
@@ -181,6 +199,16 @@ namespace OpcUaCertificateGenerator
 
 		std::cout << "success" << std::endl;
 		return 0;
+	}
+
+	bool
+	OpcUaCertificateGenerator::readIssuer(const std::string& issuer)
+	{
+		if (issuer.empty()) {
+			return true;
+		}
+
+		return true;
 	}
 
 	bool

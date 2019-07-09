@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/Certificate.h"
 
 namespace OpcUaCertificateGenerator
 {
@@ -36,14 +37,14 @@ namespace OpcUaCertificateGenerator
 
 	  private:
 		uint32_t createCertificate(void);
-		uint32_t createCertificate(void);
+		bool readIssuer(const std::string& issuer);
 		bool readCertificateSettings(const std::string& fileName);
 
 		// command line parameters
 		std::string command_ = "";
 		std::string descFile_ = "";
 		bool ca_ = false;
-		std::string issuerCert_  = "";
+		std::string issuer_  = "";
 
 		// cetificate settings
 		std::string organization_ = "";
@@ -60,6 +61,10 @@ namespace OpcUaCertificateGenerator
 		uint32_t yearsValidFor_ = 5;
 		uint32_t keyLength_ = 2048;
 		std::string certificateType_ = "";
+
+		// issuer information
+		OpcUaStackCore::Certificate issuerCertificate_;
+		OpcUaStackCore::PrivateKey issuerPrivateKey_;
 	};
 
 }
