@@ -47,7 +47,7 @@ namespace OpcUaStackCore
 		bool exist(void) const;
 
 		OpcUaString& operator=(const std::string& string); 
-		operator std::string const (void); 
+		operator std::string(void) const;
 
 		void copyTo(OpcUaString& opcUaString);
 		bool operator<(const OpcUaString& opcUaString) const;
