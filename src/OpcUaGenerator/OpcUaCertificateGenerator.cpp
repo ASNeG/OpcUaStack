@@ -114,23 +114,10 @@ namespace OpcUaCertificateGenerator
 	uint32_t
 	OpcUaCertificateGenerator::createCertificate(void)
 	{
-		if (ca_) {
-			if (!readCertificateSettings(descFile_)) {
-				return 1;
-			}
-			return createCertificateCA();
-		}
-		else {
-			std::cout << "command invalid..." << std::endl;
+		if (!readCertificateSettings(descFile_)) {
 			return 1;
 		}
 
-		return 0;
-	}
-
-	uint32_t
-	OpcUaCertificateGenerator::createCertificateCA(void)
-	{
 		Log(Info, "create ca certificate");
 
 		bool rc;

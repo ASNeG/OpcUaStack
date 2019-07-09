@@ -36,7 +36,7 @@ namespace OpcUaCertificateGenerator
 
 	  private:
 		uint32_t createCertificate(void);
-		uint32_t createCertificateCA(void);
+		uint32_t createCertificate(void);
 		bool readCertificateSettings(const std::string& fileName);
 
 		// command line parameters
