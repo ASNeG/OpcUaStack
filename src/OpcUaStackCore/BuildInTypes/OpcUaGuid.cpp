@@ -144,7 +144,7 @@ namespace OpcUaStackCore
 		return *this;
 	}
 
-	OpcUaGuid::operator std::string const (void)
+	OpcUaGuid::operator std::string (void) const
 	{
 		std::string str1, str2, str3, str4, str5;
 

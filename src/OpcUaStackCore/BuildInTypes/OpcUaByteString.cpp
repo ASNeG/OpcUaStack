@@ -172,7 +172,7 @@ namespace OpcUaStackCore
 		return *this;
 	}
 		
-	OpcUaByteString::operator std::string const (void)
+	OpcUaByteString::operator std::string (void) const
 	{
 		if (length_ < 1 || value_ == nullptr) {
 			return std::string();
