@@ -1,10 +1,11 @@
 #include "unittest.h"
 
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
-#include "OpcUaStackServer/ServiceSet/AttributeService.h"
-#include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
+#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/Application/ApplicationHReadContext.h"
 #include "OpcUaStackCore/Core/Core.h"
+#include "OpcUaStackServer/ServiceSet/AttributeService.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 
 
 using namespace OpcUaStackServer;
@@ -24,19 +25,19 @@ struct AttributeServiceFixture
 	AttributeServiceFixture()
 	: core_()
 	, service_()
-	, transaction_(boost::make_shared<ServiceTransactionHistoryRead>())
+	, transaction_(constructSPtr<ServiceTransactionHistoryRead>())
 	, mockComponent_()
 	{
 		core_.init();
 
 
-		auto nodeId1 = boost::make_shared<OpcUaNodeId>(1,1);
-		auto node1 = boost::make_shared<VariableNodeClass>();
+		auto nodeId1 = constructSPtr<OpcUaNodeId>(1,1);
+		auto node1 = constructSPtr<VariableNodeClass>();
 
-		auto informationModel = boost::make_shared<InformationModel>();
+		auto informationModel = constructSPtr<InformationModel>();
 
 
-		auto sync = boost::make_shared<ForwardNodeSync>();
+		auto sync = constructSPtr<ForwardNodeSync>();
 		sync->readHService().setCallback(boost::bind(&AttributeServiceFixture::successCallback, this, _1));
 
 		node1->forwardNodeSync(sync);
@@ -46,9 +47,9 @@ struct AttributeServiceFixture
 
 		transaction_->componentService(&mockComponent_);
 
-		auto nodesToRead = boost::make_shared<HistoryReadValueIdArray>();
+		auto nodesToRead = constructSPtr<HistoryReadValueIdArray>();
 
-		auto nodeToRead = boost::make_shared<HistoryReadValueId>();
+		auto nodeToRead = constructSPtr<HistoryReadValueId>();
 		nodeToRead->nodeId(nodeId1);
 
 		nodesToRead->resize(1);
@@ -57,8 +58,8 @@ struct AttributeServiceFixture
 		transaction_->request()->nodesToRead(nodesToRead);
 		transaction_->componentSession(&mockComponent_);
 
-		auto details = boost::make_shared<ExtensibleParameter>();
-		auto readDetails = boost::make_shared<ReadRawModifiedDetails>();
+		auto details = constructSPtr<ExtensibleParameter>();
+		auto readDetails = constructSPtr<ReadRawModifiedDetails>();
 
 		details->registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		details->parameterTypeId(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
