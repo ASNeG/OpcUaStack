@@ -76,7 +76,7 @@ pipeline {
 
     cleanup {
       sh 'docker-compose down --volumes --rmi local'
-      deleteDirs()
+      deleteDir()
     }
   }
 }
