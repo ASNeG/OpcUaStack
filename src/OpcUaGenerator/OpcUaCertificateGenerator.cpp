@@ -208,6 +208,20 @@ namespace OpcUaCertificateGenerator
 			return true;
 		}
 
+		// read issuer certificate
+		std::string issuerCertificateName = issuer + ".der";
+		if (!issuerCertificate_.fromDERFile(issuerCertificateName)) {
+			std::cout << "read issuer certificate error" << std::endl;
+			return false;
+		}
+
+		// read issuer private key
+		std::string issuerPrivateKeyName = issuer + ".pem";
+		if (!issuerPrivateKey_.fromPEMFile(issuerPrivateKeyName, nullptr)) {
+			std::cout << "read issuer private key error" << std::endl;
+			return false;
+		}
+
 		return true;
 	}
 
