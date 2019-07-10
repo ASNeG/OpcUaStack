@@ -10,7 +10,7 @@ pipeline {
       parallel {
         stage('build_linux') {
           steps {
-            sh 'docker-compose build'
+            sh 'docker-compose build --pull'
             sh 'docker-compose run stack sh build.sh -t tst -j 2 -B Release --test-with-server opc.tcp://asneg-demo:8889 --server-pki-path /tmp/'
           }
         }
@@ -42,9 +42,28 @@ pipeline {
         }
       }
     }
+
+    stage('win_deploy') {
+      when {
+        branch 'Release4'
+      }
+      steps {
+        sh 'ssh 127.0.0.1 -l vagrant -p 2222 "cd $BUILDDIRNAME && C:\\build_vs.bat -t local -B Release -i C:\\ASNeG -vs \\"Visual Studio 15 2017 Win64\\" -j 2"'
+      }
+    }
+
   }
 
+  
   post {
+    fixed {
+      slackSend(color:'#BDFFC3', message:"Build Fixed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+    }
+
+    failure {
+      slackSend(color:'#FF9FA1', message:"Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+    }
+
     always {
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat core_results.xml > core_results.xml || true'
       sh 'docker-compose run -w /OpcUaStack/build_tst_Release stack cat server_results.xml > server_results.xml || true'
@@ -53,8 +72,11 @@ pipeline {
       xunit (
         thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
         tools: [ BoostTest(pattern: '*_results.xml') ])
+    }
 
+    cleanup {
       sh 'docker-compose down --volumes --rmi local'
+      deleteDir()
     }
   }
 }
