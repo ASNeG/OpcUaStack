@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/Base/Log.h"
@@ -517,7 +517,7 @@ namespace OpcUaStackServer
 
 			// find node class instance for the node
 			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(readValueId->nodeId());
-			if (baseNodeClass.get() == nullptr) {
+			if (!baseNodeClass) {
 				readResult->statusCode(BadNodeIdUnknown);
 				Log(Debug, "history read value error, because node not exist in information model")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -528,7 +528,7 @@ namespace OpcUaStackServer
 
 			// check if forward callback exists
 			ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
-			if (forwardNodeSync.get() == nullptr) {
+			if (!forwardNodeSync) {
 				readResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "history read value error, because service not supported (1)")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -536,6 +536,7 @@ namespace OpcUaStackServer
 					.parameter("Node", *readValueId->nodeId());
 				continue;
 			}
+
 			if (!forwardNodeSync->readHService().isCallback()) {
 				readResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "history read value error, because service not supported (2)")
@@ -574,7 +575,7 @@ namespace OpcUaStackServer
 			}
 
 			if (applicationReadContext.statusCode_ != Success) {
-				readResult->statusCode(BadInternalError);
+				readResult->statusCode(applicationReadContext.statusCode_);
 				Log(Debug, "history read value error, because service process failed")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
