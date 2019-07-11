@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/Certificate/RSAKey.h"
 #include "OpcUaStackCore/Certificate/Identity.h"
 #include "OpcUaStackCore/Certificate/CertificateInfo.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "BuildConfig.h"
 
 using namespace OpcUaStackCore;
@@ -236,6 +237,9 @@ namespace OpcUaCertificateGenerator
 			std::cout << "error: " << configXml.errorMessage() << std::endl;
 			return false;
 		}
+
+		// set @HOSTNAME@ alias
+		config.alias("@HOSTNAME@", Environment::hostname());
 
 		// get organization
 		if (!config.getConfigParameter("CertificateSettings.Organization", organization_) == true) {
