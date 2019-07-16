@@ -213,4 +213,18 @@ install(
     COMPONENT headers
 )
 
+#
+# install asneg test certificates
+#
+install(
+    FILES OpcUaStackCore/cert/ASNeG-CA.der
+    DESTINATION ${INSTALL_PREFIX}/share/OpcUaStack${VERSION_MAJOR}/cert/
+    COMPONENT applications
+)
+
+install(
+    FILES OpcUaStackCore/cert/ASNeG-CA.pem
+    DESTINATION ${INSTALL_PREFIX}/share/OpcUaStack${VERSION_MAJOR}/cert/
+    COMPONENT applications
+)
 
