@@ -13,6 +13,27 @@
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
+
+
+   Example: certificate description file
+
+   <CertificateSettings>
+      <Uri>urn:ASNeG.de:ASNeG:ASNeG-CA</Uri>
+      <CommonName>ASNeG-CA</CommonName>
+      <DomainComponent>ASNeG.de</DomainComponent>
+      <Organization>ASNeG</Organization>
+      <OrganizationUnit>OPC UA Service Department</OrganizationUnit>
+      <Locality>Neukirchen</Locality>
+      <State>Hessen</State>
+      <Country>DE</Country>
+      <YearsValidFor>5</YearsValidFor>
+      <KeyLength>2048</KeyLength>
+      <CertificateType>RsaSha256</CertificateType>
+      <IPAddress>ASNeG.de</IPAddress>
+      <DNSName>ASNeG.de</DNSName>
+      <EMail>info@ASNeG.de</EMail>
+   </CertificateSettings>
+
  */
 
 #include <boost/program_options.hpp>
