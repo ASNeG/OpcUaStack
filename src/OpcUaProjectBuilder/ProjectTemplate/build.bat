@@ -21,6 +21,7 @@ set COMMAND="local"
 set STACK_PREFIX=C:\ASNeG
 set VS_GENERATOR=""
 set BUILD_TYPE="Debug"
+set JOBS=1
 set STANDALONE=OFF
 
 :parse
@@ -30,9 +31,9 @@ set STANDALONE=OFF
     if "%~1"=="-t"               set COMMAND=%2
     if "%~1"=="--target"         set COMMAND=%2
 
-    if "%~1"=="/i"               set INSTALL_PREFIX="%~2"
-    if "%~1"=="-i"               set INSTALL_PREFIX="%~2"
-    if "%~1"=="--install-prefix" set INSTALL_PREFIX="%~2"
+    if "%~1"=="/i"               set INSTALL_PREFIX=%~2
+    if "%~1"=="-i"               set INSTALL_PREFIX=%~2
+    if "%~1"=="--install-prefix" set INSTALL_PREFIX=%~2
 
     if "%~1"=="/s"               set STACK_PREFIX="%~2"
     if "%~1"=="-s"               set STACK_PREFIX="%~2"
@@ -45,6 +46,10 @@ set STANDALONE=OFF
     if "%~1"=="/B"               set BUILD_TYPE=%~2
     if "%~1"=="-B"               set BUILD_TYPE=%~2
     if "%~1"=="--build-type"     set BUILD_TYPE=%~2
+
+    if "%~1"=="/j"               set JOBS=%~2
+    if "%~1"=="-j"               set JOBS=%~2
+    if "%~1"=="--jobs"           set JOBS=%~2
     shift
 
     REM flags
@@ -70,35 +75,30 @@ set BUILD_DIR_SUFFIX=%ARCH%_vs%VisualStudioVersion%_%BUILD_TYPE%
 if "%COMMAND%" == "" (
     call:build_local
 	
-	pause
-	goto:eof
+	goto:error_handle
 )
 
 if "%COMMAND%" == "local" (
     call:build_local
 	
-	pause
-	goto:eof
+	goto:error_handle
 )
 
 if "%COMMAND%" == "msi" (
     call:build_msi
 	
-	pause
-	goto:eof
+	goto:error_handle
 )
 
 if "%COMMAND%" == "tst" (
     call:build_tst
 	
-	pause
-	goto:eof
+	goto:error_handle
 )
 
 call:usage
 
-pause
-goto:eof
+goto:error_handle
 
 
 REM ---------------------------------------------------------------------------
@@ -112,7 +112,7 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX% -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX% -H./src/ -B./build_local_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
@@ -120,7 +120,7 @@ REM ---------------------------------------------------------------------------
     
 	set DESTDIR=%INSTALL_PREFIX%
 	%CMAKE% --build build_local_%BUILD_DIR_SUFFIX% --target install --config %BUILD_TYPE%
-goto:eof
+goto:error_handle
 
 REM ---------------------------------------------------------------------------
 REM
@@ -133,13 +133,13 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build OpcUaStack
 	REM
-	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DSTANDALONE=%STANDALONE% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DCPACK_BINARY_MSI=ON -DSTANDALONE=%STANDALONE% -DCMAKE_CXX_FLAGS=/MP%JOBS% -DOPCUASTACK_INSTALL_PREFIX=%STACK_PREFIX%  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./src/ -B./build_msi_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM package OpcUaStack to MSI
 	REM    		
     %CMAKE% --build build_msi_%BUILD_DIR_SUFFIX% --target package --config %BUILD_TYPE%
-goto:eof
+goto:error_handle
 
 REM ---------------------------------------------------------------------------
 REM
@@ -152,13 +152,13 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build unittest
 	REM
-	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX="%STACK_PREFIX%" -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
+	%CMAKE% %VS_GENERATOR% -DOPCUASTACK_INSTALL_PREFIX="%STACK_PREFIX%" -DCMAKE_CXX_FLAGS=/MP%JOBS% -DCMAKE_BUILD_TYPE=%BUILD_TYPE% -H./tst/ -B./build_tst_%BUILD_DIR_SUFFIX%
 
 	REM
 	REM install OpcUaStack
 	REM    
 	%CMAKE% --build build_tst_%BUILD_DIR_SUFFIX% --config %BUILD_TYPE%
-goto:eof
+goto:error_handle
 
 
 REM ---------------------------------------------------------------------------
@@ -183,9 +183,17 @@ REM ---------------------------------------------------------------------------
    echo --vs-generator, -vs, /vs VS_GENERATOR:  is the name of cmake generator
    echo \t witch cmake uses during the building of the project. By default, cmake tries to figure out the generator from the environment.
    echo.
-   echo --build-type, -B, /B BUILD_TYPE:  set the build types (Debug | Release). By default, it is Debug type.
+   echo --build-type, -B, /B BUILD_TYPE:  set the build types Debug or Release. By default, it is Debug type.
    echo.
    echo --standalone, -S, /S:  includes OpcUaStack and its dependencies in MSI package of the application
    echo.
+   echo "--jobs, -j, /j JOB_COUNT: sets the number of the jobs of make"
+   echo.
 
-goto:eof
+goto:error_handle
+
+:error_handle
+
+if errorlevel 1 (
+   exit /b %errorlevel%
+)
