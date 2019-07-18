@@ -23,12 +23,14 @@ for more information. Then type the following command:
 **On Linux** 
 
 ::
+
   $ sh build.sh -t local -i ~/.ASNeG
 	 
 	
 **On Windows**
 
 ::
+
   $ build.bat -t local -i C:\\ASNeG
 
 
@@ -55,6 +57,7 @@ Having installed ProjectName locally, you can run it by using the following comm
 Also you can use Docker without installing any dependencies:
 
 ::
+
   $ docker build -t ProjectName:latest .
   $ docker run -d -p ProjectPort:ProjectPort ProjectName:latest
 
