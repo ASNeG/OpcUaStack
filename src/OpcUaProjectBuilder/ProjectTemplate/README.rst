@@ -62,13 +62,31 @@ Also you can use Docker without installing any dependencies:
   $ docker run -d -p ProjectPort:ProjectPort ProjectName:latest
 
 
+Documentaion
+------------
+
+ProjectName uses `Sphinx`_ to generate its documentation and it is ready for hosting on `RTD`_.
+You can build the documentation locally. For that you should `install Sphinx <http://www.sphinx-doc.org/en/master/usage/installation.html>`_
+on your machine with Pyhton and `Doxygen <http://www.doxygen.nl/manual/install.html>`_ .Then run the following command from the root directory of the project:
+
+::
+
+  $ cd docs
+  $ pip install -r requirements.txt
+  $ make html
+
+The generated HTML files you can find in **build/html** directory.
+
+
 References
 ----------
 
 * `ASNeG OPC UA Stack`_
 * `Hello World Example`_ with ASNeG OPC UA Stack
+* `Sphinx`_ Documentation Generator
 
 
 .. _`ASNeG OPC UA Stack`: https://asneg.github.io/projects/opcuastack
 .. _`Hello World Example`: https://opcuastack.readthedocs.io/en/latest/1_getting_started/hello_world.html
-
+.. _`Sphinx`: http://www.sphinx-doc.org/en/master/
+.. _`RTD`: https://readthedocs.org/
