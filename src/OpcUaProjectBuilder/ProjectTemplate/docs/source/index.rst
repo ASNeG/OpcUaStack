@@ -4,7 +4,7 @@ ProjectName Documentation
 Welcome
 -------
 
-ProjectDescription
+ProjectName is an OPC UA application based on `ASNeG OPC UA Stack`_.
 
 Contents
 --------
@@ -28,3 +28,5 @@ Indices and tables
 .. only:: not builder_html
 
   * :ref:`glossary`
+
+.. _`ASNeG OPC UA Stack`: https://asneg.github.io/projects/opcuastack

@@ -76,7 +76,7 @@ This example is for the default case where the stack and the server are installe
 DEP Packages
 --------------
 
-You can install ProjectName by using a DEP package, which you can download `here <https://github.com/ASNeG/ProjectName/releases/`_ or build yourself by the following command:
+You can install ProjectName by using a DEP package, which you can download `here <https://github.com/ASNeG/ProjectName/releases/>`_ or build yourself by the following command:
 
 ::
 
@@ -98,7 +98,7 @@ ProjectName will be installed as a service, and you can check its status typing:
 RPM Packages
 -------------
 
-Users of RPM distributives can install ProjectName by using an RPM package, which can be downloaded `here <https://github.com/ASNeG/ProjectName/releases/`_ or built by the following command:
+Users of RPM distributives can install ProjectName by using an RPM package, which can be downloaded `here <https://github.com/ASNeG/ProjectName/releases/>`_ or built by the following command:
 
 ::
 
@@ -119,7 +119,7 @@ On Windows, ProjectName can be installed with MSI packages. The MSI packages bel
 OPC UA applications and you would like to update the stack and the dependencies for all of them. The *standalone* package is easy for distribution, so you
 don't need to install anything except ProjectName.
 
-You can download the packages `here <https://github.com/ASNeG/ProjectName/releases/`_ or build them.
+You can download the packages `here <https://github.com/ASNeG/ProjectName/releases/>`_ or build them.
 
 To build the *usual* package, use the command:
 

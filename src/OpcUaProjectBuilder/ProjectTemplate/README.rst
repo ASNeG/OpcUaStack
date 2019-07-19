@@ -1,7 +1,7 @@
 ProjectName
 ===========
 
-ProjectName is an OPC UA application based on `ASNeG OPC UA Stack`_
+ProjectName is an OPC UA application based on `ASNeG OPC UA Stack`_.
 
 
 Requirements
