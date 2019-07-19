@@ -40,7 +40,7 @@ function(SSLDepends nameLib)
     endif()
     if (CPACK_BINARY_DEB)
         LibDepends(${nameLib} OPEN_SSL_SUPPORTED_RELEASES_DEV 1)
-        set(LIST_OF_LIB_VERSIONS_DEV "${FOUT}" PARENT_SCOPE)    
+        set(LIST_OF_LIB_VERSIONS_DEV "${FOUT} | libssl-dev" PARENT_SCOPE)    
     endif()
 endfunction(SSLDepends)
  

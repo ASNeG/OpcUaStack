@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8.9)
 project	(ProjectName)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 11)
-cmake_policy(SET CMP0053 OLD)
 
 
 # ----------------------------------------------------------------------------
@@ -101,6 +100,10 @@ include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERS
 # -----------------------------------------------------------------------------
 set (INSTALL_PREFIX "/usr")        
 if (WIN32)    
+    if (MSVC)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+    endif()
+
     if (CPACK_BINARY_MSI)
         set (INSTALL_PREFIX "./usr")   
     endif()   
