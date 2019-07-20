@@ -148,9 +148,12 @@ namespace OpcUaStackCore
 		void aliasMap(AliasMap& aliasMap);
 		AliasMap& aliasMap(void);
 		void out(std::ostream& os);
+		void outAliasMap(std::ostream& os);
+		void outAll(std::ostream& os);
 
 	  private:
 		void out(std::ostream& os, boost::property_tree::ptree& ptree, uint32_t depth = 0);
+		void out(std::ostream& os, AliasMap& aliasMap);
 		void getValuesFromName(const std::string& valueName, std::vector<std::string>& valueVec);
 		void getChildFromName(const std::string& valueName, std::vector<Config>& valueVec);
 		static void substAlias(std::string& value);

@@ -301,6 +301,19 @@ namespace OpcUaStackCore
 	}
 
 	void
+	Config::outAliasMap(std::ostream& os)
+	{
+		out(os, aliasMap_);
+	}
+
+	void
+	Config::outAll(std::ostream& os)
+	{
+		out(os, child_, 0);
+		out(os, aliasMap_);
+	}
+
+	void
 	Config::out(std::ostream& os,boost::property_tree::ptree& ptree, uint32_t depth)
 	{
 		// create prefix
@@ -310,14 +323,24 @@ namespace OpcUaStackCore
 		}
 
 		// write data
-		boost::property_tree::ptree::iterator it;
-		for (it = ptree.begin(); it != ptree.end(); it++) {
+		for (auto it = ptree.begin(); it != ptree.end(); it++) {
 			boost::optional<std::string> value = it->second.data();
 			if (value) {
 				os << prefix << it->first << " = " << *value << std::endl;
 			}
 
 			out(os, it->second, depth+1);
+		}
+	}
+
+	void
+	Config::out(std::ostream& os, AliasMap& aliasMap)
+	{
+		os << "AliasMap:" << std::endl;
+
+		// write alias map
+		for (auto it = aliasMap.begin(); it != aliasMap.end(); it++) {
+			os << it->first << " = " << it->second << std::endl;
 		}
 	}
 
