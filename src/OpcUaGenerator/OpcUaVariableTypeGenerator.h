@@ -21,9 +21,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackServer;
-
 namespace OpcUaVariableTypeGenerator
 {
 
@@ -42,7 +39,7 @@ namespace OpcUaVariableTypeGenerator
 		bool buildSubTypes_;
 		std::vector<std::string> ignoreVariableTypeNameVec_;
 		std::vector<std::string> variableTypeNameVec_;
-		InformationModel::SPtr informationModel_;
+		OpcUaStackServer::InformationModel::SPtr informationModel_;
 		OpcUaNodeId variableTypeNodeId_;
 
 		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);

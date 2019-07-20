@@ -27,6 +27,8 @@
 #include "OpcUaGenerator/OpcUaVariableTypeGenerator.h"
 #include "BuildConfig.h"
 
+using namespace OpcUaStackServer;
+
 namespace OpcUaVariableTypeGenerator
 {
 
