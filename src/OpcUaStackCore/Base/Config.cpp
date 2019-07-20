@@ -164,6 +164,7 @@ namespace OpcUaStackCore
 		boost::optional<boost::property_tree::ptree&> child = child_.get_child_optional(path);
 		if (!child) return boost::none;
 		Config config(*child);
+		config.aliasMap(aliasMap());
 		return config;
 	}
 
@@ -232,6 +233,7 @@ namespace OpcUaStackCore
 				if (it->second.begin() == it->second.end()) continue;
 
 				Config cfg(it->second);
+				cfg.aliasMap(aliasMap());
 				valueVec.push_back(cfg);
 			}
 		}
@@ -278,6 +280,18 @@ namespace OpcUaStackCore
 		it = aliasMap_.find(aliasName);
 		if (it == aliasMap_.end()) return "";
 		return it->second;
+	}
+
+	void
+	Config::aliasMap(AliasMap& aliasMap)
+	{
+		aliasMap_.insert(aliasMap_.begin(), aliasMap.end());
+	}
+
+	Config::AliasMap&
+	Config::aliasMap(void)
+	{
+		return aliasMap_;
 	}
 
 	void

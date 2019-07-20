@@ -145,6 +145,8 @@ namespace OpcUaStackCore
 		bool aliasExist(const std::string& aliasName);
 		void alias(const std::string& aliasName, const std::string& aliasValue);
 		std::string alias(const std::string& aliasName);
+		void aliasMap(AliasMap& aliasMap);
+		AliasMap& aliasMap(void);
 		void out(std::ostream& os);
 
 	  private:
