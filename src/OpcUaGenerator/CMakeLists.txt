@@ -149,6 +149,7 @@ include_directories(
 file(
     GLOB OpcUaObjectTypeGenerator_SRC 
     ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaObjectTypeGenerator.cpp
+    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaObjectTypeGeneratorMain.cpp
 )
 
 
