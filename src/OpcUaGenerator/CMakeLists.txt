@@ -13,6 +13,7 @@ include_directories(
 file(
     GLOB OpcUaDataTypeGenerator_SRC 
     ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaDataTypeGenerator.cpp
+    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaDataTypeGeneratorMain.cpp
 )
 
 
