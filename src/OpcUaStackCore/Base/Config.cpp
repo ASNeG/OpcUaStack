@@ -164,6 +164,7 @@ namespace OpcUaStackCore
 		boost::optional<boost::property_tree::ptree&> child = child_.get_child_optional(path);
 		if (!child) return boost::none;
 		Config config(*child);
+		config.aliasMap(aliasMap());
 		return config;
 	}
 
@@ -232,6 +233,7 @@ namespace OpcUaStackCore
 				if (it->second.begin() == it->second.end()) continue;
 
 				Config cfg(it->second);
+				cfg.aliasMap(aliasMap());
 				valueVec.push_back(cfg);
 			}
 		}
@@ -281,9 +283,34 @@ namespace OpcUaStackCore
 	}
 
 	void
+	Config::aliasMap(AliasMap& aliasMap)
+	{
+		aliasMap_.insert(aliasMap_.begin(), aliasMap.end());
+	}
+
+	Config::AliasMap&
+	Config::aliasMap(void)
+	{
+		return aliasMap_;
+	}
+
+	void
 	Config::out(std::ostream& os)
 	{
 		out(os, child_, 0);
+	}
+
+	void
+	Config::outAliasMap(std::ostream& os)
+	{
+		out(os, aliasMap_);
+	}
+
+	void
+	Config::outAll(std::ostream& os)
+	{
+		out(os, child_, 0);
+		out(os, aliasMap_);
 	}
 
 	void
@@ -296,14 +323,24 @@ namespace OpcUaStackCore
 		}
 
 		// write data
-		boost::property_tree::ptree::iterator it;
-		for (it = ptree.begin(); it != ptree.end(); it++) {
+		for (auto it = ptree.begin(); it != ptree.end(); it++) {
 			boost::optional<std::string> value = it->second.data();
 			if (value) {
 				os << prefix << it->first << " = " << *value << std::endl;
 			}
 
 			out(os, it->second, depth+1);
+		}
+	}
+
+	void
+	Config::out(std::ostream& os, AliasMap& aliasMap)
+	{
+		os << "AliasMap:" << std::endl;
+
+		// write alias map
+		for (auto it = aliasMap.begin(); it != aliasMap.end(); it++) {
+			os << it->first << " = " << it->second << std::endl;
 		}
 	}
 
