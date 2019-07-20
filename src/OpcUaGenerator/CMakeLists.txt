@@ -82,6 +82,7 @@ include_directories(
 file(
     GLOB OpcUaEventTypeGenerator_SRC 
     ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaEventTypeGenerator.cpp
+    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaEventTypeGeneratorMain.cpp
 )
 
 
