@@ -28,6 +28,9 @@ add_library(
 
 target_link_libraries(
     OpcUaGenerator
+    OpcUaStackCore
+    OpcUaStackClient
+    OpcUaStackServer
     ${CMAKE_DL_LIBS}
     ${CMAKE_THREAD_LIBS_INIT}
     ${Boost_LIBRARIES}
