@@ -374,17 +374,4 @@ namespace OpcUaVariableTypeGenerator
 
 }
 
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-//
-// main application
-//
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-int main(int argc, char** argv)
-{
-	OpcUaVariableTypeGenerator::OpcUaVariableTypeGenerator projectBuilder;
-	return projectBuilder.start(argc, argv);
-}
-
 

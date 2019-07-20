@@ -116,6 +116,7 @@ include_directories(
 file(
     GLOB OpcUaVariableTypeGenerator_SRC 
     ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaVariableTypeGenerator.cpp
+    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaVariableTypeGeneratorMain.cpp
 )
 
 
