@@ -27,6 +27,8 @@
 #include "OpcUaGenerator/OpcUaEnumTypeGenerator.h"
 #include "BuildConfig.h"
 
+using namespace OpcUaStackServer;
+
 namespace OpcUaEnumTypeGenerator
 {
 
