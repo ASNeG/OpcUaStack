@@ -48,6 +48,7 @@ include_directories(
 file(
     GLOB OpcUaEnumTypeGenerator_SRC 
     ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaEnumTypeGenerator.cpp
+    ${PROJECT_SOURCE_DIR}/OpcUaGenerator/OpcUaEnumTypeGeneratorMain.cpp
 )
 
 
