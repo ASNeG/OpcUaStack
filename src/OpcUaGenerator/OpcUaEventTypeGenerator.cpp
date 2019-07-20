@@ -29,7 +29,6 @@
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "BuildConfig.h"
 
-using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
 
 namespace OpcUaEventTypeGenerator

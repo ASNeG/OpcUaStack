@@ -20,10 +20,6 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-
-using namespace OpcUaStackCore;
-using namespace OpcUaStackServer;
-
 namespace OpcUaEventTypeGenerator
 {
 
@@ -44,7 +40,7 @@ namespace OpcUaEventTypeGenerator
 		std::vector<std::string> ignoreEventTypeNameVec_;
 
 		std::vector<std::string> eventTypeNameVec_;
-		InformationModel::SPtr informationModel_;
+		OpcUaStackServer::InformationModel::SPtr informationModel_;
 		OpcUaNodeId eventTypeNodeId_;
 
 		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
