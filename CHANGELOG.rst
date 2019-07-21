@@ -21,7 +21,8 @@
 
 **Bugs**:
 
-# Add type generator library #270, @huebl
+* Add Generator directory to cmake file #272, @huebl
+* Add type generator library #270, @huebl
 * Copy alias map in Config to childs #268, @huebl
 * Init createAt field in open secure channel response #259, @huebl
 * Reconnect after timeout if no entry found in endpoint cache #220, by @huebl

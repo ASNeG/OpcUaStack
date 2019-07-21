@@ -71,6 +71,7 @@ file(GLOB INC_OpcUaStackServer_VariableType OpcUaStackServer/VariableType/*.h)
 file(GLOB INC_OpcUaStackServer_ObjectType OpcUaStackServer/ObjectType/*.h)
 file(GLOB INC_OpcUaStackServer_StandardVariableType OpcUaStackServer/StandardVariableType/*.h)
 file(GLOB INC_OpcUaStackServer_StandardObjectType OpcUaStackServer/StandardObjectType/*.h)
+file(GLOB INC_OpcUaStackServer_Generator OpcUaStackServer/Generator/*.h)
 
 
 install(
@@ -160,5 +161,11 @@ install(
 install(
     FILES ${INC_OpcUaStackServer_StandardObjectType} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/StandardObjectType
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_Generator} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Generator
     COMPONENT headers
 )
