@@ -21,9 +21,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackServer;
-
 namespace OpcUaEnumTypeGenerator
 {
 
@@ -43,7 +40,7 @@ namespace OpcUaEnumTypeGenerator
 		std::vector<std::string> ignoreEnumTypeNameVec_;
 		std::vector<std::string> enumTypeNameVec_;
 		std::string nodeId_;
-		InformationModel::SPtr informationModel_;
+		OpcUaStackServer::InformationModel::SPtr informationModel_;
 		OpcUaNodeId enumTypeNodeId_;
 
 		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);

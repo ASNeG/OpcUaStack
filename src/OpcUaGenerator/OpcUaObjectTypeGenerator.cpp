@@ -27,6 +27,8 @@
 #include "OpcUaGenerator/OpcUaObjectTypeGenerator.h"
 #include "BuildConfig.h"
 
+using namespace OpcUaStackServer;
+
 namespace OpcUaObjectTypeGenerator
 {
 
@@ -373,18 +375,3 @@ namespace OpcUaObjectTypeGenerator
 	}
 
 }
-
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-//
-// main application
-//
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-int main(int argc, char** argv)
-{
-	OpcUaObjectTypeGenerator::OpcUaObjectTypeGenerator projectBuilder;
-	return projectBuilder.start(argc, argv);
-}
-
-

@@ -27,6 +27,8 @@
 #include "OpcUaGenerator/OpcUaVariableTypeGenerator.h"
 #include "BuildConfig.h"
 
+using namespace OpcUaStackServer;
+
 namespace OpcUaVariableTypeGenerator
 {
 
@@ -372,19 +374,6 @@ namespace OpcUaVariableTypeGenerator
 		return 0;
 	}
 
-}
-
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-//
-// main application
-//
-// ----------------------------------------------------------------------------
-// ----------------------------------------------------------------------------
-int main(int argc, char** argv)
-{
-	OpcUaVariableTypeGenerator::OpcUaVariableTypeGenerator projectBuilder;
-	return projectBuilder.start(argc, argv);
 }
 
 
