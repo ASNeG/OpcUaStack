@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -298,8 +298,7 @@ namespace OpcUaStackServer
 	uint16_t 
 	NodeSetNamespace::mapToLocalNamespaceIndex(uint16_t globalNamespaceIndex)
 	{
-		NamespaceIndexMap::iterator it;
-		it = outputNamespaceIndexMap_.find(globalNamespaceIndex);
+		auto it = outputNamespaceIndexMap_.find(globalNamespaceIndex);
 		if (it != outputNamespaceIndexMap_.end()) {
 			return it->second;
 		}
@@ -315,11 +314,30 @@ namespace OpcUaStackServer
 	uint16_t 
 	NodeSetNamespace::mapToGlobalNamespaceIndex(const std::string& namespaceUri)
 	{
-		NamespaceMap::iterator it = globalNamespaceMap_.find(namespaceUri);
+		auto it = globalNamespaceMap_.find(namespaceUri);
 		if (it == globalNamespaceMap_.end()) {
 			return 0xFFFF;
 		}
 		return it->second;
 	}
 
+	void
+	NodeSetNamespace::outGlobalNamespaces(std::ostream& os)
+	{
+		const char* sep = "";
+		for (auto namespaceName : globalNamespaceVec_ ) {
+			os << sep << namespaceName;
+			sep = ", ";
+		}
+	}
+
+	void
+	NodeSetNamespace::outLocalNamespaces(std::ostream& os)
+	{
+		const char* sep = "";
+		for (auto namespaceName : localNamespaceVec_ ) {
+			os << sep << namespaceName;
+			sep = ", ";
+		}
+	}
 }
