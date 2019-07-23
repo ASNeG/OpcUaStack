@@ -48,7 +48,7 @@ namespace OpcUaStackServer
 		bool delLastExistGlobalNamespace(void);
 	
 		NamespaceVec& localNamespaceVec(void);
-		NamespaceVec& globalNamespaceVec(void);
+		static NamespaceVec& globalNamespaceVec(void);
 		uint16_t mapToLocalNamespaceIndex(uint16_t globalNamespaceIndex);
 		uint16_t mapToGlobalNamespaceIndex(const std::string& namespaceUri);
 		uint16_t mapToGlobalNamespaceIndex(uint16_t localNamespaceIndex);
