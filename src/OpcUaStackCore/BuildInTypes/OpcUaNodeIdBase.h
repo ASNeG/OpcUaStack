@@ -75,6 +75,7 @@ namespace OpcUaStackCore
 		void set(const OpcUaString& nodeId, OpcUaUInt16 namespaceIndex = 0);
 		void set(const OpcUaGuid& nodeId, OpcUaUInt16 namespaceIndex = 0);
 		void set(const OpcUaByteString& nodeId, OpcUaUInt16 namespaceIndex = 0);
+		void set(const OpcUaNodeIdNullType& nodeId);
 		void set(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0);
 		bool get(OpcUaUInt32& nodeId, OpcUaUInt16& namespaceIndex);
 		bool get(std::string& nodeId, OpcUaUInt16& namespaceIndex);

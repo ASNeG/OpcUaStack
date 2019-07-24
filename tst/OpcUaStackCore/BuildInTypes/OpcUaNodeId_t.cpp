@@ -33,6 +33,11 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_isdNull)
 	BOOST_REQUIRE(nodeId.isNull() == false);
 	nodeId.setNull();
 	BOOST_REQUIRE(nodeId.isNull() == true);
+
+	nodeId.set("Id", 0);
+	BOOST_REQUIRE(nodeId.isNull() == false);
+	nodeId.set(OpcUaNodeIdNullType());
+	BOOST_REQUIRE(nodeId.isNull() == true);
 }
 
 BOOST_AUTO_TEST_CASE(OpcUaNodeId_two_byte_representation)
