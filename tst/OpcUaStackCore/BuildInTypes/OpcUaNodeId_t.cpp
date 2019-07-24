@@ -25,6 +25,16 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_null)
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 0);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaNodeId_isdNull)
+{
+	OpcUaNodeId nodeId;
+	BOOST_REQUIRE(nodeId.isNull() == true);
+	nodeId.set("Id", 0);
+	BOOST_REQUIRE(nodeId.isNull() == false);
+	nodeId.setNull();
+	BOOST_REQUIRE(nodeId.isNull() == true);
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaNodeId_two_byte_representation)
 {
 	std::stringstream ss;

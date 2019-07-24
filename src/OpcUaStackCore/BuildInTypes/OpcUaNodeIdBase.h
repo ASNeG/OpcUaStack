@@ -89,6 +89,8 @@ namespace OpcUaStackCore
 		bool operator!=(const OpcUaNodeIdBase& opcUaNodeId) const; 
 		bool operator==(const OpcUaNodeIdBase& opcUaNodeIdBase) const;
 		bool operator<(const OpcUaNodeIdBase& opcUaNodeIdBase) const;
+		bool isNull(void) const override;
+	    void setNull(void) override;
 
 
 		virtual OpcUaByte encodingFlag(void) const;
