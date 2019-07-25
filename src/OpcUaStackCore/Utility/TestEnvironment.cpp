@@ -16,7 +16,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-
+#include <cstdlib>
 #include "OpcUaStackCore/Utility/TestEnvironment.h"
 
 namespace OpcUaStackCore
@@ -28,6 +28,34 @@ namespace OpcUaStackCore
 
 	TestEnvironment::~TestEnvironment(void)
 	{
+	}
+
+	bool
+	TestEnvironment::testTrustAllCerts(void)
+	{
+		return getBoolEnv("TEST_TRUST_ALL_CERTS");
+	}
+
+	bool
+	TestEnvironment::testUseASNeGCA(void)
+	{
+		return getBoolEnv("TEST_USE_ASNEG_CA");
+	}
+
+	bool
+	TestEnvironment::testSelgSignedWithASNeGCA(void)
+	{
+		return getBoolEnv("TEST_CREATE_SELF_SIGNED_WITH_ASNEG_CA");
+	}
+
+	bool
+	TestEnvironment::getBoolEnv(const std::string& name)
+	{
+		char* var = std::getenv(name.c_str());
+		if (var != nullptr) {
+			return true;
+		}
+		return false;
 	}
 
 }

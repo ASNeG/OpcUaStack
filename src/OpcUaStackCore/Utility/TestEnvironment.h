@@ -18,24 +18,27 @@
 #ifndef __OpcUaStackCore_TestEnvironment_h__
 #define __OpcUaStackCore_TestEnvironment_h__
 
+#include <string>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
 
 	/**
-	 * Provides parameters for the test environment that are read in via environment variables
+	 * Provides parameters for the test environment that are read in via environment variables.
 	 *
 	 * The following environment variables are evaluated
 	 *
 	 * - TEST_TRUST_ALL_CERTS (Values: undefined, defined)
-	 *   If a foreign certificate  is received, a trust is automatically carries out for the
-	 *   received certificate,
+	 *   If a foreign certificate  is received from a communication partner, a trust is automatically
+	 *   carries out for the received certificate, if the certificate was not jet trusted.
 	 *
 	 * - TEST_USE_ASNEG_CA (Values: undefined, defined)
+	 *   The default ASNeG CA certificate is used for the certificate check.
 	 *
 	 * - TEST_CREATE_SELF_SIGNED_WITH_ASNEG_CA (Value: undefined, defined)
-	 *
+	 *   The self-signed certificates generated at startup time are signed by the default ASNeG
+	 *   CA certificate.
 	 *
 	 */
 	class DLLEXPORT TestEnvironment
@@ -43,6 +46,12 @@ namespace OpcUaStackCore
 	  public:
 		TestEnvironment(void);
 		~TestEnvironment(void);
+
+		static bool testTrustAllCerts(void);
+		static bool testUseASNeGCA(void);
+		static bool testSelgSignedWithASNeGCA(void);
+
+		static bool getBoolEnv(const std::string& name);
 	};
 
 }
