@@ -156,6 +156,12 @@ namespace OpcUaStackCore
 		namespaceIndex_ = namespaceIndex;
 	}
 
+	void
+	OpcUaNodeIdBase::set(const OpcUaNodeIdNullType& nodeId)
+	{
+		setNull();
+	}
+
 	void 
 	OpcUaNodeIdBase::set(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex)
 	{
@@ -353,6 +359,22 @@ namespace OpcUaStackCore
 
 		return false;
 	}
+
+	bool
+	OpcUaNodeIdBase::isNull(void) const
+	{
+		if (nodeIdType() == OpcUaBuildInType_Unknown) {
+			return true;
+		}
+		return false;
+	}
+
+    void
+	OpcUaNodeIdBase::setNull(void)
+    {
+		namespaceIndex_ = 0;
+		nodeIdValue_ = OpcUaNodeIdNullType();
+    }
 
 	OpcUaByte 
 	OpcUaNodeIdBase::encodingFlag(void) const
