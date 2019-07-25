@@ -17,10 +17,12 @@
  */
 
 
+#include "OpcUaStackCore/Utility/TestEnvironment.h"
+
 namespace OpcUaStackCore
 {
 
-	TestTestEnvironment::TestEnvironment(void)
+	TestEnvironment::TestEnvironment(void)
 	{
 	}
 
