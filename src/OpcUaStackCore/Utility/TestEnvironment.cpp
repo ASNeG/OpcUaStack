@@ -17,6 +17,7 @@
  */
 
 #include <cstdlib>
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackCore/Utility/TestEnvironment.h"
 
 namespace OpcUaStackCore
@@ -46,6 +47,32 @@ namespace OpcUaStackCore
 	TestEnvironment::testSelgSignedWithASNeGCA(void)
 	{
 		return getBoolEnv("TEST_CREATE_SELF_SIGNED_WITH_ASNEG_CA");
+	}
+
+	std::string
+	TestEnvironment::serverHostName(void)
+	{
+        char* var = std::getenv("SERVER_HOST_NAME");
+        if (var == nullptr) {
+                return Environment::hostname();
+        }
+        return std::string(var);
+
+	}
+
+	std::string
+	TestEnvironment::serverPkiRootDirectory(void)
+	{
+        char* var = std::getenv("SERVER_PKI_ROOT_DIR");
+        if (var == nullptr) {
+        	char* var = std::getenv("HOME");
+            if (var == nullptr) {
+                return std::string("/");
+            }
+
+            return std::string(var) + std::string("/.ASNeG");
+        }
+        return std::string(var);
 	}
 
 	bool

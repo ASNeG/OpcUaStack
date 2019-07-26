@@ -40,6 +40,14 @@ namespace OpcUaStackCore
 	 *   The self-signed certificates generated at startup time are signed by the default ASNeG
 	 *   CA certificate.
 	 *
+	 * - SERVER_HOST_NAME
+	 *   Name of the server host name to which an OPC UA connection is to be opened. If the
+	 *   environment variable does not exist, the host name of the computer is returned.
+	 *
+	 * - SERVER_PKI_ROOT_DIR
+	 *   Name of the PKI directory in which the OPC UA server manages its certificates. If
+	 *   the environment variable does not exist, the path ${HOME}/.ASNeG is returned,
+	 *
 	 */
 	class DLLEXPORT TestEnvironment
 	{
@@ -50,6 +58,8 @@ namespace OpcUaStackCore
 		static bool testTrustAllCerts(void);
 		static bool testUseASNeGCA(void);
 		static bool testSelgSignedWithASNeGCA(void);
+		static std::string serverHostName(void);
+		static std::string serverPkiRootDirectory(void);
 
 		static bool getBoolEnv(const std::string& name);
 	};
