@@ -40,12 +40,16 @@ namespace OpcUaStackCore
 		Resolver(boost::asio::io_service& io_service);
 		~Resolver(void);
 
+		void ipv6On(bool ipv6On);
+		void ipv4On(bool ipv4On);
 		void getAddrFromUrl(
 			const std::string& urlString,
 			ResponseCallback responseCallback
 		);
 
 	  private:
+		bool ipv4On_ = true;
+		bool ipv6On_ = false;
 		boost::asio::ip::tcp::resolver resolver_;
 	};
 
