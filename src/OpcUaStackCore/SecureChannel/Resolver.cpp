@@ -33,6 +33,18 @@ namespace OpcUaStackCore
 	}
 
 	void
+	Resolver::ipv4On(bool ipv4On)
+	{
+		ipv4On_ = ipv4On;
+	}
+
+	void
+	Resolver::ipv6On(bool ipv6On)
+	{
+		ipv6On_ = ipv6On;
+	}
+
+	void
 	Resolver::getAddrFromUrl(
 		const std::string& urlString,
 		ResponseCallback responseCallback
@@ -56,7 +68,7 @@ namespace OpcUaStackCore
 		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
 		resolver_.async_resolve(
 			query,
-			[self, responseCallback, urlString](
+			[self, responseCallback, urlString, this](
 				const boost::system::error_code& error,
 				boost::asio::ip::tcp::resolver::iterator endpointIterator
 			) {
@@ -72,8 +84,27 @@ namespace OpcUaStackCore
 				}
 
 				// get address
-				addr = (*endpointIterator).endpoint().address();
-				responseCallback(false, addr);
+				boost::asio::ip::tcp::resolver::iterator end;
+				while (endpointIterator != end) {
+					auto address = (*endpointIterator).endpoint().address();
+
+					if (address.is_v4() && ipv4On_) {
+						responseCallback(false, address);
+						return;
+					}
+
+					if (address.is_v6() && ipv6On_) {
+						responseCallback(false, address);
+						return;
+					}
+
+					endpointIterator++;
+				}
+
+				Log(Error, "address resolver error")
+					.parameter("Url", urlString)
+					.parameter("Message", "no address found");
+				responseCallback(true, addr);
 			}
 		);
 	}
