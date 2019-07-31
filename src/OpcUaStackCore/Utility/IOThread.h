@@ -42,6 +42,7 @@ namespace OpcUaStackCore
 		uint32_t numberThreads(void);
 		void numberThreads(uint32_t numberThreads);
 		void threadIdVec(std::vector<std::string>& threadIdVec);
+		boost::shared_ptr<boost::asio::strand> createStrand(void);
 
 		bool startup(void);
 		bool shutdown(void);
