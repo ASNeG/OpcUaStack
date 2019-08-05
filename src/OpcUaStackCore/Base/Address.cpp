@@ -124,11 +124,20 @@ namespace OpcUaStackCore
 		try {
 			io_service ioService;
 			ip::tcp::resolver resolver(ioService);
-			boost::system::error_code ec;
-			for (auto& result : resolver.resolve(hostname, "")) {
-				ipVec.push_back(result.endpoint().address().to_string());
-			}
+			ip::tcp::resolver::query q(hostname, "");
 
+			resolver.async_resolve(q,
+				[hostname, &ipVec](const boost::system::error_code &ec, ip::tcp::resolver::iterator it) {
+
+			   if (!ec) {
+				   ipVec.push_back(it->endpoint().address().to_string());
+			   } else {
+				   Log(Error, "failed resolve host")
+						   .parameter("Hostname", hostname)
+						   .parameter("Error", ec.message());
+			   }
+
+			});
 		} catch (boost::system::system_error &err) {
 			Log(Error, "failed resolve host")
 			    .parameter("Hostname", hostname)
@@ -174,14 +183,20 @@ namespace OpcUaStackCore
 			ip::tcp::endpoint endpoint;
 			endpoint.address(ip4);
 
-			auto dest = resolver.resolve(endpoint);
+			resolver.async_resolve(endpoint,
+					[&hostname, ip](const boost::system::error_code &ec, ip::tcp::resolver::iterator it) {
 
-			if (!dest.empty()) {
-				hostname = dest.begin()->host_name();
-			} else {
-				Log(Error, "Failed to resolve IP")
-						.parameter("IpAddress", ip);
-			}
+				if (!ec) {
+					hostname = it->host_name();
+				} else {
+					Log(Error, "Failed to resolve IP")
+							.parameter("IpAddress", ip)
+							.parameter("Error", ec.message());
+				}
+
+			});
+
+			ioService.run();
 
 
 		} catch (boost::system::system_error& err) {

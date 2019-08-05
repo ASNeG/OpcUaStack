@@ -18,7 +18,7 @@ set(BOOST_VERSION_MAJOR "1"  CACHE STRING "boost major version")
 set(BOOST_VERSION_MINOR "54" CACHE STRING "boost minor version")
 
 set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
-set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")
+set(OPENSSL_VERSION_MINOR "1" CACHE STRING "minor version")
 set(OPENSSL_VERSION_PATCH "0" CACHE STRING "patch version")
 
 
