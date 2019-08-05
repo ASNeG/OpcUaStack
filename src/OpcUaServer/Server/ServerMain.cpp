@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaServer/Server/Server.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Utility/Environment.h"

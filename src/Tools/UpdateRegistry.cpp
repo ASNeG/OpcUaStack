@@ -14,12 +14,15 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-
+#include "OpcUaStackCore/Base/os.h"
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <Windows.h>
 #include <stdint.h>
 #include <sstream>
+#include <winreg.h>
+#include <boost/format.hpp>
 
 class UpdateRegistry
 {
@@ -210,22 +213,18 @@ class UpdateRegistry
 		return val;
 	}
 
-	void log(const std::string& logLevel, const std::string& message)
+	void
+	log(const std::string& logLevel, const std::string& message)
 	{
 		try
 		{
 			SYSTEMTIME oT;
 			::GetLocalTime(&oT);
-			FILE* pLog = NULL;
-			errno_t err = fopen_s(&pLog, "C:\\OpcUaServer.trc", "a");
-			if (pLog == NULL) return;
+			std::ofstream logFile("C:\\OpcUaServer.trc", std::ios_base::app);
 
-			fprintf(pLog,"%s - %02d/%02d/%04d, %02d:%02d:%02d\n    %s\n",
-				logLevel.c_str(),
-				oT.wMonth,oT.wDay,oT.wYear,oT.wHour,oT.wMinute,oT.wSecond,
-				message.c_str()
-			); 
-			fclose(pLog);
+			logFile << boost::format("%s - %02d/%02d/%04d, %02d:%02d:%02d\n    %s\n")
+					   % logLevel % oT.wMonth % oT.wDay % oT.wYear % oT.wHour % oT.wMinute % oT.wSecond % message;
+
 		} catch(...) {}
 	}
 

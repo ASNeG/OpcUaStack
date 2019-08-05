@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceResponse.h"
 
 namespace OpcUaStackCore

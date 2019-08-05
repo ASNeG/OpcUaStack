@@ -49,6 +49,8 @@ if (WIN32)
     	"OpcUaStackPubSub${VERSION_MAJOR}"
     )
 	set(OPCUASTACK_PUBSUB_LIB_NAME OpcUaStackPubSub${VERSION_MAJOR}.lib)
+
+	target_link_libraries(OpcUaStackPubSub wsock32 ws2_32)
 else()
     set(OPCUASTACK_PUBSUB_LIB_NAME libOpcUaStackPubSub.so.${VERSION_MAJOR})
 endif()

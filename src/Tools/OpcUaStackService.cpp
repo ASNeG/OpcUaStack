@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
+
+
 #include <Windows.h>
 #include <iostream>
 #include "OpcUaServer/Service/WindowsService.h"

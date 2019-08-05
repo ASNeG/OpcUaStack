@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/Base/Base64.h"
 #include <string.h>
 

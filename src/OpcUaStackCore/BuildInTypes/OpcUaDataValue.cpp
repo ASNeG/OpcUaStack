@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 
 namespace OpcUaStackCore
 {

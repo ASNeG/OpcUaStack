@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <boost/asio.hpp>
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Address.h"
@@ -118,44 +119,89 @@ namespace OpcUaStackCore
 	void
 	Address::getIpsFromHostname(const std::string& hostname, std::vector<std::string>& ipVec)
 	{
-		struct addrinfo* result;
-		struct addrinfo* res;
+		using namespace boost::asio;
 
-		int32_t error = getaddrinfo(hostname.c_str(), NULL, NULL, &result);
-	    if (error != 0) {
-	    	Log(Error, "getaddrinfo call error");
-	        return;
-	    }
+		try {
+			io_service ioService;
+			ip::tcp::resolver resolver(ioService);
+			boost::system::error_code ec;
+			for (auto& result : resolver.resolve(hostname, "")) {
+				ipVec.push_back(result.endpoint().address().to_string());
+			}
 
-	    for (res = result; res != NULL; res = res->ai_next) {
-	        if (res->ai_addr->sa_family != AF_INET) {
-	    	   continue;
-	        }
-	        if (res->ai_socktype != SOCK_STREAM) {
-	        	continue;
-	        }
-	       	struct sockaddr_in *addr = (struct sockaddr_in *)res->ai_addr;
-	        std::string ip = inet_ntoa(addr->sin_addr);
-	        ipVec.push_back(ip);
-	    }
+		} catch (boost::system::system_error &err) {
+			Log(Error, "failed resolve host")
+			    .parameter("Hostname", hostname)
+			    .parameter("Error", err.what());
+		}
 
-	    freeaddrinfo(result);
+//		struct addrinfo* result;
+//		struct addrinfo* res;
+//
+//		int32_t error = getaddrinfo(hostname.c_str(), NULL, NULL, &result);
+//	    if (error != 0) {
+//	    	Log(Error, "getaddrinfo call error");
+//	        return;
+//	    }
+//
+//	    for (res = result; res != NULL; res = res->ai_next) {
+//	        if (res->ai_addr->sa_family != AF_INET) {
+//	    	   continue;
+//	        }
+//	        if (res->ai_socktype != SOCK_STREAM) {
+//	        	continue;
+//	        }
+//	       	struct sockaddr_in *addr = (struct sockaddr_in *)res->ai_addr;
+//	        std::string ip = inet_ntoa(addr->sin_addr);
+//	        ipVec.push_back(ip);
+//	    }
+//
+//	    freeaddrinfo(result);
+
+
 	}
 
 	void
 	Address::getHostnameFromIp(const std::string& ip, std::string& hostname)
 	{
-		struct sockaddr_in addr;
-		addr.sin_family = AF_INET;
+		using namespace boost::asio;
 
-		char name[2056];
+		try {
+			boost::asio::io_service ioService;
+			ip::tcp::resolver resolver(ioService);
 
-		inet_pton(AF_INET, ip.c_str(), &addr.sin_addr);
-		int32_t error = getnameinfo((struct sockaddr *)&addr, sizeof(addr), name, 2056, NULL, 0, 0);
-	    if (error != 0) {
-	    	Log(Error, "getaddrinfo call error");
-	        return;
-	    }
-	    hostname = name;
+			ip::address_v4 ip4 = ip::address_v4::from_string(ip);
+			ip::tcp::endpoint endpoint;
+			endpoint.address(ip4);
+
+			auto dest = resolver.resolve(endpoint);
+
+			if (!dest.empty()) {
+				hostname = dest.begin()->host_name();
+			} else {
+				Log(Error, "Failed to resolve IP")
+						.parameter("IpAddress", ip);
+			}
+
+
+		} catch (boost::system::system_error& err) {
+			Log(Error, "Failed to resolve IP")
+				.parameter("IpAddress", ip)
+				.parameter("Error", err.what());
+		}
+
+
+//		struct sockaddr_in addr;
+//		addr.sin_family = AF_INET;
+//
+//		char name[2056];
+//
+//		inet_pton(AF_INET, ip.c_str(), &addr.sin_addr);
+//		int32_t error = getnameinfo((struct sockaddr *)&addr, sizeof(addr), name, 2056, NULL, 0, 0);
+//	    if (error != 0) {
+//	    	Log(Error, "getaddrinfo call error");
+//	        return;
+//	    }
+//	    hostname = name;
 	}
 }

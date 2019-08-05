@@ -50,6 +50,8 @@ if (WIN32)
     	"OpcUaStackCore${VERSION_MAJOR}"
     )
 	set(OPCUASTACK_CORE_LIB_NAME OpcUaStackCore${VERSION_MAJOR}.lib)
+
+	target_link_libraries(OpcUaStackCore wsock32 ws2_32)
 else()
     set(OPCUASTACK_CORE_LIB_NAME libOpcUaStackCore.so.${VERSION_MAJOR})
 endif()

@@ -18,12 +18,12 @@
 #ifndef __OpcUaStackCore_OpcUaByteString_h__
 #define __OpcUaStackCore_OpcUaByteString_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
