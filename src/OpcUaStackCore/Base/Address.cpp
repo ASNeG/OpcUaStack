@@ -138,35 +138,14 @@ namespace OpcUaStackCore
 			   }
 
 			});
+
+			ioService.run();
+
 		} catch (boost::system::system_error &err) {
 			Log(Error, "failed resolve host")
 			    .parameter("Hostname", hostname)
 			    .parameter("Error", err.what());
 		}
-
-//		struct addrinfo* result;
-//		struct addrinfo* res;
-//
-//		int32_t error = getaddrinfo(hostname.c_str(), NULL, NULL, &result);
-//	    if (error != 0) {
-//	    	Log(Error, "getaddrinfo call error");
-//	        return;
-//	    }
-//
-//	    for (res = result; res != NULL; res = res->ai_next) {
-//	        if (res->ai_addr->sa_family != AF_INET) {
-//	    	   continue;
-//	        }
-//	        if (res->ai_socktype != SOCK_STREAM) {
-//	        	continue;
-//	        }
-//	       	struct sockaddr_in *addr = (struct sockaddr_in *)res->ai_addr;
-//	        std::string ip = inet_ntoa(addr->sin_addr);
-//	        ipVec.push_back(ip);
-//	    }
-//
-//	    freeaddrinfo(result);
-
 
 	}
 
@@ -205,18 +184,5 @@ namespace OpcUaStackCore
 				.parameter("Error", err.what());
 		}
 
-
-//		struct sockaddr_in addr;
-//		addr.sin_family = AF_INET;
-//
-//		char name[2056];
-//
-//		inet_pton(AF_INET, ip.c_str(), &addr.sin_addr);
-//		int32_t error = getnameinfo((struct sockaddr *)&addr, sizeof(addr), name, 2056, NULL, 0, 0);
-//	    if (error != 0) {
-//	    	Log(Error, "getaddrinfo call error");
-//	        return;
-//	    }
-//	    hostname = name;
 	}
 }
