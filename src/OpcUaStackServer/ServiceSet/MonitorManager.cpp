@@ -235,7 +235,7 @@ namespace OpcUaStackServer
 		// start sample timer
 		SlotTimerElement::SPtr slotTimerElement = monitorItem->slotTimerElement();
 		slotTimerElement->interval(monitorItem->samplingInterval());
-		slotTimerElement->callback().reset(boost::bind(&MonitorManager::sampleTimeout, this, monitorItem));
+		slotTimerElement->timeoutCallback(boost::bind(&MonitorManager::sampleTimeout, this, monitorItem));
 		ioThread_->slotTimer()->start(slotTimerElement);
 
 		Log(Debug, "monitor item create")

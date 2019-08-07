@@ -339,7 +339,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_call_1)
 
 	slotTimerElement = constructSPtr<SlotTimerElement>();
 	slotTimerElement->tick(0);
-	slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)0));
+	slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)0));
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 0);
@@ -361,7 +361,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_call_n)
 	for (uint32_t idx=0; idx<loopCount; idx++) {
 		slotTimerElement = constructSPtr<SlotTimerElement>();
 		slotTimerElement->tick(idx);
-		slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx));
+		slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx));
 		slotTimer.insert(slotTimerElement);
 	}
 
@@ -386,7 +386,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_loop_1)
 	slotTimerTest.callCondition_.condition(0,1);
 	slotTimerElement = constructSPtr<SlotTimerElement>();
 	slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(10));
-	slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)10));
+	slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)10));
 	BOOST_REQUIRE(slotTimerElement->isRunning() == false);
 
 	slotTimer.start(slotTimerElement);
@@ -414,7 +414,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_loop_n)
 	for (uint32_t idx=0; idx<1000; idx++) {
 		slotTimerElement = constructSPtr<SlotTimerElement>();
 		slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(idx+10));
-		slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
+		slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
 		BOOST_REQUIRE(slotTimerElement->isRunning() == false);
 		slotTimer.start(slotTimerElement);
 		BOOST_REQUIRE(slotTimerElement->isRunning() == true);
@@ -440,7 +440,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_loop_n2)
 	for (uint32_t idx=0; idx<1000; idx++) {
 		slotTimerElement = constructSPtr<SlotTimerElement>();
 		slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(idx+10));
-		slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
+		slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
 		BOOST_REQUIRE(slotTimerElement->isRunning() == false);
 		slotTimer.start(slotTimerElement);
 		BOOST_REQUIRE(slotTimerElement->isRunning() == true);
@@ -448,7 +448,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_loop_n2)
 	for (uint32_t idx=0; idx<1000; idx++) {
 		slotTimerElement = constructSPtr<SlotTimerElement>();
 		slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(idx+10));
-		slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
+		slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
 		BOOST_REQUIRE(slotTimerElement->isRunning() == false);
 		slotTimer.start(slotTimerElement);
 		BOOST_REQUIRE(slotTimerElement->isRunning() == true);
@@ -473,7 +473,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_interval)
 	slotTimerTest.callCondition_.condition(0,100);
 	slotTimerElement = constructSPtr<SlotTimerElement>();
 	slotTimerElement->interval(10);
-	slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)0));
+	slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)0));
 	BOOST_REQUIRE(slotTimerElement->isRunning() == false);
 	slotTimer.start(slotTimerElement);
 	BOOST_REQUIRE(slotTimerElement->isRunning() == true);

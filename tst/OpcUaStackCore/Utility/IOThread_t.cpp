@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(IOThread_ExpireFromNow)
 
 	// first test
 	slotTimerElement->expireFromNow(10);
-	slotTimerElement->callback().reset(boost::bind(&IOThreadTest::call, &ioThreadTest, (uint64_t)0));
+	slotTimerElement->timeoutCallback(boost::bind(&IOThreadTest::call, &ioThreadTest, (uint64_t)0));
 
 	ioThreadTest.callCondition_.condition(0,1);
 	ioThread->slotTimer()->start(slotTimerElement);
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(IOThread_ExpireFromNow)
 
 	// second test
 	slotTimerElement->expireFromNow(10);
-	slotTimerElement->callback().reset(boost::bind(&IOThreadTest::call, &ioThreadTest, (uint64_t)0));
+	slotTimerElement->timeoutCallback(boost::bind(&IOThreadTest::call, &ioThreadTest, (uint64_t)0));
 
 	ioThreadTest.callCondition_.condition(0,1);
 	ioThread->slotTimer()->start(slotTimerElement);
