@@ -1,7 +1,26 @@
+/*
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+ */
+
 #ifndef __OpcUaStackCore_SlotTimer_h__
 #define __OpcUaStackCore_SlotTimer_h__
 
-#include "boost/date_time/posix_time/posix_time.hpp"
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/asio/strand.hpp>
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
@@ -14,11 +33,18 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<SlotTimerElement> SPtr;
+		typedef std::function<void (void)> TimeoutCallback;
 
 		SlotTimerElement(void);
 		~SlotTimerElement(void);
 
+		[[deprecated("replaced by timeoutCallback")]]
 		Callback& callback(void);
+		void timeoutCallback(const TimeoutCallback& timeoutCallback);
+		void timeoutCallback(
+			boost::shared_ptr<boost::asio::strand>& strand,
+			const TimeoutCallback& timeoutCallback
+		);
 
 		void expireFromNow(uint32_t msecInterval);
 		void expireTime(boost::posix_time::ptime expireTime, uint32_t msecInterval);
@@ -27,6 +53,8 @@ namespace OpcUaStackCore
 
 		boost::posix_time::ptime expireTime(void);
 		uint32_t interval(void);
+
+		void runTimer(void);
 
 		bool isRunning(void);
 		void tick(uint64_t tick);
@@ -39,7 +67,10 @@ namespace OpcUaStackCore
 		SlotTimerElement::SPtr& last(void);
 
 	  private:
+		boost::shared_ptr<boost::asio::strand> strand_ = nullptr;
+		TimeoutCallback timeoutCallback_ = nullptr;
 		Callback callback_;
+
 		boost::posix_time::ptime expireTime_;
 		uint32_t interval_;
 
