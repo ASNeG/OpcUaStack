@@ -48,7 +48,14 @@ if (WIN32)
     	PROPERTIES OUTPUT_NAME 
     	"OpcUaStackPubSub${VERSION_MAJOR}"
     )
-	set(OPCUASTACK_PUBSUB_LIB_NAME OpcUaStackPubSub${VERSION_MAJOR}.lib)
+
+	if (MSVC)
+		set(OPCUASTACK_PUBSUB_LIB_NAME OpcUaStackPubSub${VERSION_MAJOR}.lib)
+	endif()
+
+	if (MINGW)
+		set(OPCUASTACK_PUBSUB_LIB_NAME libOpcUaStackPubSub${VERSION_MAJOR}.dll.a)
+	endif()
 
 	target_link_libraries(OpcUaStackPubSub wsock32 ws2_32)
 else()
