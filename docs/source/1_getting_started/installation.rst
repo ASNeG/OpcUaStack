@@ -41,7 +41,7 @@ By default, the installation path is $HOME/.ASNeG. You can change it at any mome
   $ sh build.sh -t local -i /path/witch/you/prefer
 
 
-**Windows**
+**Windows (Visual Studio)**
 
 Windows users should install all requirements manually.
 
@@ -59,6 +59,19 @@ By default, the installation path is C:\\ASNeG. You can change it by typing:
 
   $ build.bat -t local -i C:\path\witch\you\prefer
 
+
+**Windows (MinGW)**
+
+The stack can be compiled with MinGW, but there is no build script for it up to now.
+You can build the source with cmake typing the following commands:
+
+::
+  
+  $ mkdir build_mingw
+  $ cd build_mingw
+  $ cmake -G"MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release ..\src
+  $ set DESTDIR=C:\ASNeG
+  $ cmake --build . --target install
 
 
 DEB Packages
