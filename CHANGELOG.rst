@@ -3,6 +3,7 @@
 
 **Features**:
 
+* Replace slot timer callback function by timeoutfunction #285, by @huebl
 * Added historical access vbi interface #155, by @huebl
 * Remove class Pool and PoolBase #118, @huebl
 * Use get endpoint request in opc ua client #112, by @huebl

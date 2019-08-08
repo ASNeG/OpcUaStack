@@ -86,7 +86,7 @@ namespace OpcUaStackPubSub
 
 		// start publish timer loop
 		slotTimerElement_ = constructSPtr<SlotTimerElement>();
-		slotTimerElement_->callback().reset(boost::bind(&NetworkMessageCreator::publish, this));
+		slotTimerElement_->timeoutCallback(boost::bind(&NetworkMessageCreator::publish, this));
 		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), publishInterval_);
 		ioThread_->slotTimer()->start(slotTimerElement_);
 

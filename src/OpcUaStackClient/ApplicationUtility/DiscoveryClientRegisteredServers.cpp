@@ -108,7 +108,7 @@ namespace OpcUaStackClient
 
 	  	// start timer to check server entries
 	  	slotTimerElement_ = boost::make_shared<SlotTimerElement>();
-	  	slotTimerElement_->callback().reset(boost::bind(&DiscoveryClientRegisteredServers::loop, this));
+	  	slotTimerElement_->timeoutCallback(boost::bind(&DiscoveryClientRegisteredServers::loop, this));
 	  	slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), registerInterval_);
 	  	ioThread_->slotTimer()->start(slotTimerElement_);
 
