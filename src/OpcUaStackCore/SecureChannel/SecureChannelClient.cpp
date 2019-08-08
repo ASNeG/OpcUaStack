@@ -15,9 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/shared_ptr.hpp>
+#include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Url.h"
+#include "OpcUaStackCore/Certificate/ValidateCertificate.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackCore/SecureChannel/Resolver.h"
 
 namespace OpcUaStackCore
 {
@@ -33,7 +37,6 @@ namespace OpcUaStackCore
 	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	, secureChannelClientIf_(nullptr)
 	, ioThread_(ioThread)
-	, resolver_(ioThread->ioService()->io_service())
 	, slotTimerElementRenew_(constructSPtr<SlotTimerElement>())
 	, slotTimerElementReconnect_(constructSPtr<SlotTimerElement>())
 	, renewTimeout_(300000)
@@ -58,12 +61,8 @@ namespace OpcUaStackCore
 	}
 
 	SecureChannel*
-	SecureChannelClient::connect(SecureChannelClientConfig::SPtr secureChannelClientConfig)
+	SecureChannelClient::connect(SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
-		// FIXME: only test code
-		// secureChannelClientConfig->secureChannelLog(true);
-
-		applicationCertificate(secureChannelClientConfig->applicationCertificate());
 		cryptoManager(secureChannelClientConfig->cryptoManager());
 
 		if (secureChannelClientIf_ == nullptr) {
@@ -77,10 +76,106 @@ namespace OpcUaStackCore
 		reconnectTimeout_ = secureChannelClientConfig->reconnectTimeout();
 
 		// create new secure channel
-		SecureChannel* secureChannel = new SecureChannel(ioThread_);
+		auto secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelClientConfig;
+
+		// get security settings
+		auto& securitySettings = secureChannel->securitySettings_;
+
+		// get crypto base and store own security policy uri
+		auto cryptoBase = cryptoManager()->get(secureChannelClientConfig->securityPolicy());
+		if (!cryptoBase) {
+			Log(Error, "security policy invalid")
+				.parameter("ChannelId", *secureChannel)
+				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
+				.parameter("SecurityPolicy", secureChannelClientConfig->securityPolicy());
+			return nullptr;
+		}
+		securitySettings.cryptoBase(cryptoBase);
+		securitySettings.ownSecurityPolicyUri() = cryptoManager()->securityPolicy(secureChannelClientConfig->securityPolicy());
+
+		// get own certificate chain
+		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSign ||
+			secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+			securitySettings.ownCertificateChain() = cryptoManager()->applicationCertificate()->certificateChain();
+		}
+
+		if (secureChannelClientConfig->securityMode() == MessageSecurityMode::EnumSignAndEncrypt) {
+			if (secureChannelClientConfig->certificateChain().empty()) {
+
+				// no certificate in certificate chain available. Therefore, we are looking for a
+				// certificate in the certificate store
+
+				bool result = cryptoManager()->certificateManager()->isPartnerCertificateTrusted(
+					secureChannelClientConfig->applicationUri(),
+					securitySettings.partnerCertificateChain()
+				);
+				if (!result) {
+					Log(Error, "partner certificate not found in certificate store")
+						.parameter("ChannelId", *secureChannel)
+						.parameter("ApplicationUri", secureChannelClientConfig->applicationUri())
+						.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl());
+					return nullptr;
+				}
+			}
+			else {
+
+				// a certificate is available in the certificate chain.
+
+				securitySettings.partnerCertificateChain() = secureChannelClientConfig->certificateChain();
+			}
+			securitySettings.partnerCertificateThumbprint() = securitySettings.partnerCertificateChain().getCertificate()->thumbPrint();
+
+			// check certificate
+			auto statusCode = validateCertificateChain(secureChannel, secureChannelClientConfig);
+			if (statusCode != Success) {
+				Log(Error, "partner certificate check error")
+					.parameter("ChannelId", *secureChannel)
+					.parameter("ApplicationUri", secureChannelClientConfig->applicationUri())
+					.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl())
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+				return nullptr;
+			}
+		}
+
+		// connect to opc ua server
 		connect(secureChannel);
 		return secureChannel;
+	}
+
+	OpcUaStatusCode
+	SecureChannelClient::validateCertificateChain(
+		SecureChannel* secureChannel,
+		SecureChannelClientConfig::SPtr& secureChannelClientConfig)
+	{
+		auto& securitySettings = secureChannel->securitySettings_;
+		auto certificateManager = secureChannelClientConfig->cryptoManager()->certificateManager();
+		Url endpointUrl(secureChannelClientConfig->endpointUrl());
+
+		ValidateCertificate validateCertificate;
+		validateCertificate.certificateManager(certificateManager);
+		validateCertificate.hostname(endpointUrl.host());
+		validateCertificate.uri(secureChannelClientConfig->applicationUri());
+
+		auto statusCode = validateCertificate.validateCertificate(
+			securitySettings.partnerCertificateChain()
+		);
+
+		if (statusCode != Success) {
+
+			// on error we save the certificate in the reject folder.
+
+			auto certificate = securitySettings.partnerCertificateChain().getCertificate();
+			std::string certFileName = certificate->thumbPrint().toHexString() + ".der";
+			boost::filesystem::path rejectFilePath(certificateManager->certificateRejectListLocation() + "/" + certFileName);
+			certificateManager->writeCertificate(
+				rejectFilePath.string(),
+				*certificate.get()
+			);
+
+		}
+
+		return statusCode;
 	}
 
 	void SecureChannelClient::disconnect(SecureChannel* secureChannel)
@@ -116,41 +211,31 @@ namespace OpcUaStackCore
 		// get ip address from hostname
 		Url url(config->endpointUrl());
 		secureChannel->partner_.port(url.port());
-		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
-		resolver_.async_resolve(
-			query,
-			boost::bind(
-				&SecureChannelClient::resolveComplete,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::iterator,
-				secureChannel
-			)
+		auto resolver = std::make_shared<Resolver>(ioThread_->ioService()->io_service());
+		resolver->getAddrFromUrl(
+			config->endpointUrl(),
+			[this, secureChannel](bool error, const boost::asio::ip::address addr) {
+				if (error) {
+					Log(Error, "address resolver error")
+						.parameter("ChannelId", *secureChannel)
+						.parameter("EndpointUrl", secureChannel->endpointUrl_);
+
+					reconnect(secureChannel);
+
+					return;
+				}
+				secureChannel->partner_.address(addr);
+				connectToServer(secureChannel);
+			}
 		);
 	}
 
 	void
-	SecureChannelClient::resolveComplete(
-		const boost::system::error_code& error,
-		boost::asio::ip::tcp::resolver::iterator endpointIterator,
-		SecureChannel* secureChannel
-	)
+	SecureChannelClient:: connectToServer(SecureChannel* secureChannel)
 	{
-		Log(Info, "resolver complete");
-
-		if (error) {
-			Log(Error, "address resolver error")
-				.parameter("EndpointUrl", secureChannel->endpointUrl_)
-				.parameter("Message", error.message());
-
-			reconnect(secureChannel);
-
-			return;
-		}
-		secureChannel->partner_.address((*endpointIterator).endpoint().address());
-
 		// open connection from client to server
 		Log(Info, "connect secure channel to server")
+			.parameter("ChannelId", *secureChannel)
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 		secureChannel->state_ = SecureChannel::S_Connecting;
@@ -173,6 +258,7 @@ namespace OpcUaStackCore
 	{
 		if (error) {
 			Log(Info, "cannot connect secure channel to server")
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Address", secureChannel->partner_.address().to_string())
 				.parameter("Port", secureChannel->partner_.port())
 				.parameter("Message", error.message());
@@ -186,6 +272,7 @@ namespace OpcUaStackCore
 		secureChannel->local_ = secureChannel->socket().local_endpoint();
 
 		Log(Info, "secure channel to server connected")
+			.parameter("ChannelId", *secureChannel)
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 
@@ -197,6 +284,11 @@ namespace OpcUaStackCore
 		helloMessage.maxChunkCount(secureChannel->maxChunkCount_);
 		helloMessage.endpointUrl(secureChannel->endpointUrl_);
 
+		Log(Info, "send hello request")
+			.parameter("ChannelId", *secureChannel)
+			.parameter("Address", secureChannel->partner_.address().to_string())
+			.parameter("Port", secureChannel->partner_.port());
+
 		// send hellp message
 		secureChannel->state_ = SecureChannel::S_Hello;
 		asyncWriteHello(secureChannel, helloMessage);
@@ -205,6 +297,11 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::handleRecvAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
 	{
+		Log(Info, "receive acknowledge")
+			.parameter("ChannelId", *secureChannel)
+			.parameter("Address", secureChannel->partner_.address().to_string())
+			.parameter("Port", secureChannel->partner_.port());
+
 		// set acknowledge parameter in secure channel
 		secureChannel->receivedBufferSize_ = acknowledge.receivedBufferSize();
 		secureChannel->sendBufferSize_ = acknowledge.receivedBufferSize();
@@ -247,6 +344,36 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::handleRecvOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
+		// handle partner nonce
+		if (securitySettings.isPartnerEncryptionEnabled()) {
+			char* buf;
+			int32_t len = 0;
+			openSecureChannelResponse.serverNonce((OpcUaByte**)&buf, &len);
+			if (len > 0) {
+				securitySettings.partnerNonce().set(buf, len);
+			}
+		}
+
+		// create symmetric key set
+		if (securitySettings.isPartnerEncryptionEnabled() && securitySettings.isOwnEncryptionEnabled()) {
+			OpcUaStatusCode statusCode = securitySettings.cryptoBase()->deriveChannelKeyset(
+				securitySettings.ownNonce(),
+				securitySettings.partnerNonce(),
+				securitySettings.ownSecurityKeySet(),
+				securitySettings.partnerSecurityKeySet()
+			);
+			if (statusCode != Success) {
+				Log(Error, "create derived channel keyset error")
+					.parameter("ChannelId", *secureChannel)
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
+					.parameter("LocalEndpoint", secureChannel->local_)
+					.parameter("PartnerEndpont", secureChannel->partner_);
+					// FIXME: todo - handle error
+			}
+		}
+
 		// set security parameter
 		SecurityToken::SPtr securityToken = openSecureChannelResponse.securityToken();
 		secureChannel->channelId_ = securityToken->channelId();
@@ -256,7 +383,7 @@ namespace OpcUaStackCore
 
 		// start timer to renew security token
 		slotTimerElementRenew_->expireFromNow(securityToken->revisedLifetime() * 0.75);
-		slotTimerElementRenew_->callback().reset(boost::bind(&SecureChannelClient::renewSecurityToken, this, secureChannel));
+		slotTimerElementRenew_->timeoutCallback(boost::bind(&SecureChannelClient::renewSecurityToken, this, secureChannel));
 		ioThread_->slotTimer()->start(slotTimerElementRenew_);
 
 		// handle new secure channel
@@ -276,6 +403,7 @@ namespace OpcUaStackCore
 	SecureChannelClient::handleDisconnect(SecureChannel* secureChannel)
 	{
 		Log(Info, "secure channel to server closed")
+			.parameter("ChannelId", *secureChannel)
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 
@@ -302,14 +430,15 @@ namespace OpcUaStackCore
 
 		// start reconnect timer
 		if (reconnectTimeout_ == 0) {
-			Log(Info, "secure channel closed")
+			Log(Info, "secure channel delete")
+                                .parameter("ChannelId", *secureChannel)
 				.parameter("Address", secureChannel->partner_.address().to_string())
 				.parameter("Port", secureChannel->partner_.port());
 			delete secureChannel;
 			return;
 		}
 		slotTimerElementReconnect_->expireFromNow(reconnectTimeout_);
-		slotTimerElementReconnect_->callback().reset(boost::bind(&SecureChannelClient::handleReconnect, this, secureChannel));
+		slotTimerElementReconnect_->timeoutCallback(boost::bind(&SecureChannelClient::handleReconnect, this, secureChannel));
 		ioThread_->slotTimer()->start(slotTimerElementReconnect_);
 	}
 

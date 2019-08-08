@@ -16,7 +16,9 @@
  */
 
 #include <boost/thread.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/lexical_cast.hpp>
+
 #include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
 
@@ -110,7 +112,8 @@ namespace OpcUaStackCore
 			}
 		}
 
-		std::cout << logLevel() << " [" << threadId << "] " << message_;
+		boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+		std::cout << now << " " << logLevel() << " [" << threadId << "] " << message_;
 		if  (parameter_ != "") {
 			std::cout << ": " << parameter_;
 		}

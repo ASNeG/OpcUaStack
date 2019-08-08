@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackServer_ReferenceItemMap_h__
 #define __OpcUaStackServer_ReferenceItemMap_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceItem.h"
 
@@ -61,8 +60,16 @@ namespace OpcUaStackServer
 		void clear(void);
 		bool add(ReferenceType referenceType, ReferenceItem::SPtr& referenceItem);
 		bool add(ReferenceType referenceType, bool isForward, const OpcUaNodeId& nodeId);
+		bool add(ReferenceType referenceType, bool isForward, std::vector<OpcUaNodeId>& nodes);
 		bool add(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem);
 		bool add(const OpcUaNodeId& referenceTypeNodeId, bool isForward, const OpcUaNodeId& nodeId);
+		bool add(const OpcUaNodeId& referenceTypeNodeId, bool isForward, std::vector<OpcUaNodeId>& nodes);
+
+		bool exist(OpcUaNodeId& referenceTypeNodeId, bool isForward, OpcUaNodeId& nodeId);
+
+		void get(ReferenceType referenceType, std::vector<bool>& isForwards, std::vector<OpcUaNodeId>& nodes);
+		bool getHasTypeDefinition(OpcUaNodeId& node);
+		bool getHasModellingRule(OpcUaNodeId& node);
 
 		bool remove(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem);
 		bool remove(const OpcUaNodeId& referenceTypeNodeId, const OpcUaNodeId& nodeId);

@@ -6,10 +6,15 @@ using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
 
 
-struct InitMap {
-    InitMap() : map(), refId1(0), refId2(1), refId3(2), refId4(3)
+struct ReferenceItemMapFixture {
+	ReferenceItemMapFixture(void)
+    : map()
+    , refId1(0)
+    , refId2(1)
+    , refId3(2)
+    , refId4(3)
     {
-
+    	BOOST_TEST_MESSAGE("ReferenceItemMapFixture");
     	map.add(ReferenceType::ReferenceType_Organizes, true, refId1);
     	map.add(ReferenceType::ReferenceType_Organizes, true, refId2);
     	map.add(ReferenceType::ReferenceType_Organizes, true, refId3);
@@ -17,7 +22,10 @@ struct InitMap {
     	map.add(ReferenceType::ReferenceType_HasComponent, true, refId4);
     }
 
-    ~InitMap() { }
+    ~ReferenceItemMapFixture(void)
+    {
+    	BOOST_TEST_MESSAGE("~ReferenceItemMapFixture");
+    }
 
     ReferenceItemMap map;
 	OpcUaNodeId refId1;
@@ -27,15 +35,17 @@ struct InitMap {
 };
 
 
-BOOST_FIXTURE_TEST_SUITE(RefernceItemMap_, InitMap)
+BOOST_AUTO_TEST_SUITE(RefernceItemMap_)
 
 BOOST_AUTO_TEST_CASE(RefernceItemMap_)
 {
 	std::cout << "RefernceItemMap_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(RefernceItemMap_equal_range)
+BOOST_FIXTURE_TEST_CASE(RefernceItemMap_equal_range, ReferenceItemMapFixture)
 {
+	BOOST_REQUIRE(map.size() == 4);
+
 	auto it = map.equal_range(OpcUaNodeId(OpcUaId_Organizes));
 
 	BOOST_REQUIRE(it.first != it.second);
@@ -51,7 +61,7 @@ BOOST_AUTO_TEST_CASE(RefernceItemMap_equal_range)
 	BOOST_REQUIRE(it.first == it.second);
 }
 
-BOOST_AUTO_TEST_CASE(RefernceItemMap_iterator)
+BOOST_FIXTURE_TEST_CASE(RefernceItemMap_iterator, ReferenceItemMapFixture)
 {
 	auto it = map.begin();
 
@@ -71,7 +81,7 @@ BOOST_AUTO_TEST_CASE(RefernceItemMap_iterator)
 	BOOST_REQUIRE(map.end() == it);
 }
 
-BOOST_AUTO_TEST_CASE(RefernceItemMap_add_item)
+BOOST_FIXTURE_TEST_CASE(RefernceItemMap_add_item,ReferenceItemMapFixture)
 {
 	ReferenceItemMap map;
 	OpcUaNodeId id(1);
@@ -86,7 +96,7 @@ BOOST_AUTO_TEST_CASE(RefernceItemMap_add_item)
 }
 
 
-BOOST_AUTO_TEST_CASE(RefernceItemMap_remove_item)
+BOOST_FIXTURE_TEST_CASE(RefernceItemMap_remove_item, ReferenceItemMapFixture)
 {
 	auto it = map.begin();
 	BOOST_REQUIRE(map.erase(it));

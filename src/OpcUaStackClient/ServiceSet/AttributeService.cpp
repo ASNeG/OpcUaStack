@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -26,7 +26,6 @@ namespace OpcUaStackClient
 	AttributeService::AttributeService(IOThread* ioThread)
 	: Component()
 	, componentSession_(nullptr)
-	, attributeServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -37,12 +36,10 @@ namespace OpcUaStackClient
 
 	void
 	AttributeService::setConfiguration(
-		Component* componentSession,
-		AttributeServiceIf* attributeServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		attributeServiceIf_ = attributeServiceIf;
 	}
 
 	void 
@@ -52,18 +49,12 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	AttributeService::attributeServiceIf(AttributeServiceIf* attributeServiceIf)
-	{
-		attributeServiceIf_ = attributeServiceIf;
-	}
-
-	void 
 	AttributeService::syncSend(ServiceTransactionRead::SPtr serviceTransactionRead)
 	{
 		serviceTransactionRead->sync(true);
-		serviceTransactionRead->conditionBool().conditionInit();
+		auto future = serviceTransactionRead->promise().get_future();
 		asyncSend(serviceTransactionRead);
-		serviceTransactionRead->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -77,9 +68,9 @@ namespace OpcUaStackClient
 	AttributeService::syncSend(ServiceTransactionWrite::SPtr serviceTransactionWrite)
 	{
 		serviceTransactionWrite->sync(true);
-		serviceTransactionWrite->conditionBool().conditionInit();
+		auto future = serviceTransactionWrite->promise().get_future();
 		asyncSend(serviceTransactionWrite);
-		serviceTransactionWrite->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -93,9 +84,9 @@ namespace OpcUaStackClient
 	AttributeService::syncSend(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
 		serviceTransactionHistoryRead->sync(true);
-		serviceTransactionHistoryRead->conditionBool().conditionInit();
+		auto future = serviceTransactionHistoryRead->promise().get_future();
 		asyncSend(serviceTransactionHistoryRead);
-		serviceTransactionHistoryRead->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -109,9 +100,9 @@ namespace OpcUaStackClient
 	AttributeService::syncSend(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
 	{
 		serviceTransactionHistoryUpdate->sync(true);
-		serviceTransactionHistoryUpdate->conditionBool().conditionInit();
+		auto future = serviceTransactionHistoryUpdate->promise().get_future();
 		asyncSend(serviceTransactionHistoryUpdate);
-		serviceTransactionHistoryUpdate->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -128,7 +119,7 @@ namespace OpcUaStackClient
 		
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 		
@@ -136,37 +127,37 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_ReadResponse_Encoding_DefaultBinary:
 			{
-				if (attributeServiceIf_ != nullptr) {
-					attributeServiceIf_->attributeServiceReadResponse(
-						boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_WriteResponse_Encoding_DefaultBinary:
 			{
-				if (attributeServiceIf_ != nullptr) {
-					attributeServiceIf_->attributeServiceWriteResponse(
-						boost::static_pointer_cast<ServiceTransactionWrite>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionWrite>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_HistoryReadResponse_Encoding_DefaultBinary:
 			{
-				if (attributeServiceIf_ != nullptr) {
-					attributeServiceIf_->attributeServiceHistoryReadResponse(
-						boost::static_pointer_cast<ServiceTransactionHistoryRead>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionHistoryRead>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_HistoryUpdateResponse_Encoding_DefaultBinary:
-				{
-				if (attributeServiceIf_ != nullptr) {
-					attributeServiceIf_->attributeServiceHistoryUpdateResponse(
-						boost::static_pointer_cast<ServiceTransactionHistoryUpdate>(serviceTransaction)
-					);
+			{
+				auto trx = boost::static_pointer_cast<ServiceTransactionHistoryUpdate>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

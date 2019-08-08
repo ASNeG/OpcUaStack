@@ -1,102 +1,164 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: SessionDiagnosticsDataType
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.0.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
-
-   Autor: Samuel Huebl (samuel.huebl@asneg.de)
- */
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
+*/
 
 #ifndef __OpcUaStackCore_SessionDiagnosticsDataType_h__
 #define __OpcUaStackCore_SessionDiagnosticsDataType_h__
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/ServiceCounterDataType.h"
 
 namespace OpcUaStackCore
 {
-
-	class DLLEXPORT SessionDiagnosticsDataType
-	: public Object
-	, public ExtensionObjectBase
-	{
-	  public:
-		typedef boost::shared_ptr<SessionDiagnosticsDataType> SPtr;
-
-		SessionDiagnosticsDataType(void);
-		virtual ~SessionDiagnosticsDataType(void);
-
-		OpcUaNodeId& sessionId(void);
-		void sessionId(OpcUaNodeId sessionId);
-		OpcUaString& sessionName(void);
-		void sessionName(OpcUaString sessionName);
-		ApplicationDescription::SPtr clientDescription(void);
-		void clientDescription(ApplicationDescription::SPtr clientDescription);
-		OpcUaString& serverUri(void);
-		void serverUri(OpcUaString serverUri);
-		OpcUaString& endpointUri(void);
-		void endpointUri(OpcUaString endpointUri);
-		OpcUaStringArray::SPtr localeIds(void);
-		void localeIds(OpcUaStringArray::SPtr localeIds);
-		OpcUaDouble& actualSessionTimeout(void);
-		void actualSessionTimeout(OpcUaDouble actualSessionTimeout);
-		OpcUaUInt32& maxResponseMessageSize(void);
-		void maxResponseMessageSize(OpcUaUInt32 maxResponseMessageSize);
-		OpcUaDateTime& clientConnectionTime(void);
-		void clientConnectionTime(OpcUaDateTime clientConnectionTime);
-		OpcUaDateTime& clientLastContactTime(void);
-		void clientLastContactTime(OpcUaDateTime clientLastContactTime);
-		OpcUaUInt32& currentSubscriptionsCount(void);
-		void currentSubscriptionsCount(OpcUaUInt32 currentSubscriptionsCount);
-		OpcUaUInt32& currentMonitoredItemsCount(void);
-		void currentMonitoredItemsCount(OpcUaUInt32 currentMonitoredItemsCount);
-		OpcUaUInt32& currentPublishRequestsInQueue(void);
-		void currentPublishRequestsInQueue(OpcUaUInt32 currentPublishRequestsInQueue);
-		OpcUaUInt32& currentPublishTimerExpirations(void);
-		void currentPublishTimerExpirations(OpcUaUInt32 currentPublishTimerExpirations);
-
-		void copyTo(SessionDiagnosticsDataType& sessionDiagnosticsDataType);
-		bool operator==(const SessionDiagnosticsDataType& sessionDiagnosticsDataType) const;
-
-		//- ExtensionObjectBase -----------------------------------------------
-		ExtensionObjectBase::SPtr factory(void);
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		void copyTo(ExtensionObjectBase& extensionObjectBase);
-		bool equal(ExtensionObjectBase& extensionObjectBase) const;
-		void out(std::ostream& os);
-		//- ExtensionObjectBase -----------------------------------------------
-
-	  private:
-		OpcUaNodeId sessionId_;
-		OpcUaString sessionName_;
-		ApplicationDescription::SPtr clientDescription_;
-		OpcUaString serverUri_;
-		OpcUaString endpointUri_;
-		OpcUaStringArray::SPtr localeIds_;
-		OpcUaDouble actualSessionTimeout_;
-		OpcUaUInt32 maxResponseMessageSize_;
-		OpcUaDateTime clientConnectionTime_;
-		OpcUaDateTime clientLastContactTime_;
-		OpcUaUInt32 currentSubscriptionsCount_;
-		OpcUaUInt32 currentMonitoredItemsCount_;
-		OpcUaUInt32 currentPublishRequestsInQueue_;
-		OpcUaUInt32 currentPublishTimerExpirations_;
-	};
+    
+    class DLLEXPORT SessionDiagnosticsDataType
+    : public Object
+    , public ExtensionObjectBase
+    {
+      public:
+        typedef boost::shared_ptr<SessionDiagnosticsDataType> SPtr;
+        typedef std::vector<SessionDiagnosticsDataType::SPtr> Vec;
+    
+        SessionDiagnosticsDataType(void);
+        SessionDiagnosticsDataType(const SessionDiagnosticsDataType& value);
+        virtual ~SessionDiagnosticsDataType(void);
+        
+        OpcUaNodeId& sessionId(void);
+        OpcUaString& sessionName(void);
+        ApplicationDescription& clientDescription(void);
+        OpcUaString& serverUri(void);
+        OpcUaString& endpointUrl(void);
+        OpcUaLocaleIdArray& localeIds(void);
+        OpcUaDuration& actualSessionTimeout(void);
+        OpcUaUInt32& maxResponseMessageSize(void);
+        OpcUaUtcTime& clientConnectionTime(void);
+        OpcUaUtcTime& clientLastContactTime(void);
+        OpcUaUInt32& currentSubscriptionsCount(void);
+        OpcUaUInt32& currentMonitoredItemsCount(void);
+        OpcUaUInt32& currentPublishRequestsInQueue(void);
+        ServiceCounterDataType& totalRequestCount(void);
+        OpcUaUInt32& unauthorizedRequestCount(void);
+        ServiceCounterDataType& readCount(void);
+        ServiceCounterDataType& historyReadCount(void);
+        ServiceCounterDataType& writeCount(void);
+        ServiceCounterDataType& historyUpdateCount(void);
+        ServiceCounterDataType& callCount(void);
+        ServiceCounterDataType& createMonitoredItemsCount(void);
+        ServiceCounterDataType& modifyMonitoredItemsCount(void);
+        ServiceCounterDataType& setMonitoringModeCount(void);
+        ServiceCounterDataType& setTriggeringCount(void);
+        ServiceCounterDataType& deleteMonitoredItemsCount(void);
+        ServiceCounterDataType& createSubscriptionCount(void);
+        ServiceCounterDataType& modifySubscriptionCount(void);
+        ServiceCounterDataType& setPublishingModeCount(void);
+        ServiceCounterDataType& publishCount(void);
+        ServiceCounterDataType& republishCount(void);
+        ServiceCounterDataType& transferSubscriptionsCount(void);
+        ServiceCounterDataType& deleteSubscriptionsCount(void);
+        ServiceCounterDataType& addNodesCount(void);
+        ServiceCounterDataType& addReferencesCount(void);
+        ServiceCounterDataType& deleteNodesCount(void);
+        ServiceCounterDataType& deleteReferencesCount(void);
+        ServiceCounterDataType& browseCount(void);
+        ServiceCounterDataType& browseNextCount(void);
+        ServiceCounterDataType& translateBrowsePathsToNodeIdsCount(void);
+        ServiceCounterDataType& queryFirstCount(void);
+        ServiceCounterDataType& queryNextCount(void);
+        ServiceCounterDataType& registerNodesCount(void);
+        ServiceCounterDataType& unregisterNodesCount(void);
+        
+        //- ExtensionObjectBase -----------------------------------------------
+        virtual ExtensionObjectBase::SPtr factory(void) override;
+        virtual std::string namespaceName(void) override;
+        virtual std::string typeName(void) override;
+        virtual OpcUaNodeId typeId(void) override;
+        virtual OpcUaNodeId binaryTypeId(void) override;
+        virtual OpcUaNodeId xmlTypeId(void) override;
+        virtual OpcUaNodeId jsonTypeId(void) override;
+        virtual void opcUaBinaryEncode(std::ostream& os) const override;
+        virtual void opcUaBinaryDecode(std::istream& is) override;
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) override;
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) override;
+        virtual void copyTo(ExtensionObjectBase& extensionObjectBase) override;
+        virtual bool equal(ExtensionObjectBase& extensionObjectBase) const override;
+        virtual void out(std::ostream& os) override;
+        //- ExtensionObjectBase -----------------------------------------------
+        
+        virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+        virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
+        
+        void copyTo(SessionDiagnosticsDataType& value);
+        bool operator==(const SessionDiagnosticsDataType& value);
+        bool operator!=(const SessionDiagnosticsDataType& value);
+        SessionDiagnosticsDataType& operator=(const SessionDiagnosticsDataType& value);
+    
+      private:
+        OpcUaNodeId sessionId_;
+        OpcUaString sessionName_;
+        ApplicationDescription clientDescription_;
+        OpcUaString serverUri_;
+        OpcUaString endpointUrl_;
+        OpcUaLocaleIdArray localeIds_;
+        OpcUaDuration actualSessionTimeout_;
+        OpcUaUInt32 maxResponseMessageSize_;
+        OpcUaUtcTime clientConnectionTime_;
+        OpcUaUtcTime clientLastContactTime_;
+        OpcUaUInt32 currentSubscriptionsCount_;
+        OpcUaUInt32 currentMonitoredItemsCount_;
+        OpcUaUInt32 currentPublishRequestsInQueue_;
+        ServiceCounterDataType totalRequestCount_;
+        OpcUaUInt32 unauthorizedRequestCount_;
+        ServiceCounterDataType readCount_;
+        ServiceCounterDataType historyReadCount_;
+        ServiceCounterDataType writeCount_;
+        ServiceCounterDataType historyUpdateCount_;
+        ServiceCounterDataType callCount_;
+        ServiceCounterDataType createMonitoredItemsCount_;
+        ServiceCounterDataType modifyMonitoredItemsCount_;
+        ServiceCounterDataType setMonitoringModeCount_;
+        ServiceCounterDataType setTriggeringCount_;
+        ServiceCounterDataType deleteMonitoredItemsCount_;
+        ServiceCounterDataType createSubscriptionCount_;
+        ServiceCounterDataType modifySubscriptionCount_;
+        ServiceCounterDataType setPublishingModeCount_;
+        ServiceCounterDataType publishCount_;
+        ServiceCounterDataType republishCount_;
+        ServiceCounterDataType transferSubscriptionsCount_;
+        ServiceCounterDataType deleteSubscriptionsCount_;
+        ServiceCounterDataType addNodesCount_;
+        ServiceCounterDataType addReferencesCount_;
+        ServiceCounterDataType deleteNodesCount_;
+        ServiceCounterDataType deleteReferencesCount_;
+        ServiceCounterDataType browseCount_;
+        ServiceCounterDataType browseNextCount_;
+        ServiceCounterDataType translateBrowsePathsToNodeIdsCount_;
+        ServiceCounterDataType queryFirstCount_;
+        ServiceCounterDataType queryNextCount_;
+        ServiceCounterDataType registerNodesCount_;
+        ServiceCounterDataType unregisterNodesCount_;
+    
+    };
+    
+    class DLLEXPORT SessionDiagnosticsDataTypeArray
+    : public OpcUaArray<SessionDiagnosticsDataType::SPtr, SPtrTypeCoder<SessionDiagnosticsDataType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<SessionDiagnosticsDataTypeArray> SPtr;
+    };
 
 }
 

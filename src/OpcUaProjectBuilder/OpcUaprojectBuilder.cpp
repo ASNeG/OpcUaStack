@@ -258,7 +258,6 @@ namespace OpcUaProjectBuilder
                     if (!createProjectFile(projectPath, content)) return false;
                 }
                 else {
-                    std::cout << "skip subtituting for " << templatePath.string() << std::endl;
                     boost::filesystem::copy_file(templatePath, projectPath, boost::filesystem::copy_option::overwrite_if_exists);
                 }					
 			}

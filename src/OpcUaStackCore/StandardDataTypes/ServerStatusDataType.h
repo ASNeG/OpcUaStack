@@ -1,78 +1,90 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+    DataTypeClass: ServerStatusDataType
 
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
-   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
-   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+    Generated Source Code - please do not change this source code
 
-   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
-   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
-   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+    DataTypeCodeGenerator Version:
+        OpcUaStackCore - 4.0.0
 
-   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
-   im Rahmen der Lizenz finden Sie in der Lizenz.
-
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
+    Autor:     Kai Huebl (kai@huebl-sgh.de)
+*/
 
 #ifndef __OpcUaStackCore_ServerStatusDataType_h__
 #define __OpcUaStackCore_ServerStatusDataType_h__
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/StandardDataTypes/ServerState.h"
 #include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 
 namespace OpcUaStackCore
 {
-
-	class DLLEXPORT ServerStatusDataType
-	: public Object
-	, public ExtensionObjectBase
-	{
-	  public:
-		typedef boost::shared_ptr<ServerStatusDataType> SPtr;
-
-		ServerStatusDataType(void);
-		virtual ~ServerStatusDataType(void);
-
-		OpcUaDateTime& startTime(void);
-		void startTime(OpcUaDateTime startTime);
-		OpcUaDateTime& currentTime(void);
-		void currentTime(OpcUaDateTime currentTime);
-		OpcUaUInt32& serverState(void);
-		void serverState(OpcUaUInt32 serverState);
-		BuildInfo& buildInfo(void);
-		void buildInfo(BuildInfo buildInfo);
-		OpcUaUInt32& secondsTillShutdown(void);
-		void secondsTillShutdown(OpcUaUInt32 secondsTillShutdown);
-		OpcUaLocalizedText& shutdownReason(void);
-		void shutdownReason(OpcUaLocalizedText shutdownReason);
-
-		void copyTo(ServerStatusDataType& serverStatusDataType);
-		bool operator==(const ServerStatusDataType& serverStatusDataType) const;
-
-		//- ExtensionObjectBase -----------------------------------------------
-		ExtensionObjectBase::SPtr factory(void);
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		void copyTo(ExtensionObjectBase& extensionObjectBase);
-		bool equal(ExtensionObjectBase& extensionObjectBase) const;
-		void out(std::ostream& os);
-		//- ExtensionObjectBase -----------------------------------------------
-
-	  private:
-		OpcUaDateTime startTime_;
-		OpcUaDateTime currentTime_;
-		OpcUaUInt32 serverState_;
-		BuildInfo buildInfo_;
-		OpcUaUInt32 secondsTillShutdown_;
-		OpcUaLocalizedText shutdownReason_;
-	};
+    
+    class DLLEXPORT ServerStatusDataType
+    : public Object
+    , public ExtensionObjectBase
+    {
+      public:
+        typedef boost::shared_ptr<ServerStatusDataType> SPtr;
+        typedef std::vector<ServerStatusDataType::SPtr> Vec;
+    
+        ServerStatusDataType(void);
+        ServerStatusDataType(const ServerStatusDataType& value);
+        virtual ~ServerStatusDataType(void);
+        
+        OpcUaUtcTime& startTime(void);
+        OpcUaUtcTime& currentTime(void);
+        ServerState& state(void);
+        BuildInfo& buildInfo(void);
+        OpcUaUInt32& secondsTillShutdown(void);
+        OpcUaLocalizedText& shutdownReason(void);
+        
+        //- ExtensionObjectBase -----------------------------------------------
+        virtual ExtensionObjectBase::SPtr factory(void) override;
+        virtual std::string namespaceName(void) override;
+        virtual std::string typeName(void) override;
+        virtual OpcUaNodeId typeId(void) override;
+        virtual OpcUaNodeId binaryTypeId(void) override;
+        virtual OpcUaNodeId xmlTypeId(void) override;
+        virtual OpcUaNodeId jsonTypeId(void) override;
+        virtual void opcUaBinaryEncode(std::ostream& os) const override;
+        virtual void opcUaBinaryDecode(std::istream& is) override;
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;
+        virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) override;
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;
+        virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) override;
+        virtual void copyTo(ExtensionObjectBase& extensionObjectBase) override;
+        virtual bool equal(ExtensionObjectBase& extensionObjectBase) const override;
+        virtual void out(std::ostream& os) override;
+        //- ExtensionObjectBase -----------------------------------------------
+        
+        virtual bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+        virtual bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
+        
+        void copyTo(ServerStatusDataType& value);
+        bool operator==(const ServerStatusDataType& value);
+        bool operator!=(const ServerStatusDataType& value);
+        ServerStatusDataType& operator=(const ServerStatusDataType& value);
+    
+      private:
+        OpcUaUtcTime startTime_;
+        OpcUaUtcTime currentTime_;
+        ServerState state_;
+        BuildInfo buildInfo_;
+        OpcUaUInt32 secondsTillShutdown_;
+        OpcUaLocalizedText shutdownReason_;
+    
+    };
+    
+    class DLLEXPORT ServerStatusDataTypeArray
+    : public OpcUaArray<ServerStatusDataType::SPtr, SPtrTypeCoder<ServerStatusDataType> >
+    , public Object
+    {
+      public:
+    	   typedef boost::shared_ptr<ServerStatusDataTypeArray> SPtr;
+    };
 
 }
 

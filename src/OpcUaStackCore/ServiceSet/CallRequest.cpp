@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -74,4 +74,17 @@ namespace OpcUaStackCore
 	{
 		callMethodRequestArraySPtr_->opcUaBinaryDecode(is);
 	}
+
+	bool
+	CallRequest::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		return jsonArraySPtrEncode(pt, callMethodRequestArraySPtr_, "MethodsToCall");
+	}
+
+	bool
+	CallRequest::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		return jsonArraySPtrDecode(pt, callMethodRequestArraySPtr_, "MethodsToCall");
+	}
+
 }

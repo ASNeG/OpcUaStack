@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,15 +23,10 @@ namespace OpcUaStackCore
 
 	SecureChannelSecuritySettings::SecureChannelSecuritySettings(void)
 	: cryptoBase_()
-	, partnerCertificate_()
-	, clientNonce_()
-	, serverNonce_()
-	, securityKeySetClient_()
-	, securityKeySetServer_()
-	{
-	}
-
-	SecureChannelSecuritySettings::~SecureChannelSecuritySettings(void)
+	, partnerNonce_()
+	, ownNonce_()
+	, partnerSecurityKeySet_()
+	, ownSecurityKeySet_()
 	{
 	}
 
@@ -41,46 +36,106 @@ namespace OpcUaStackCore
 		cryptoBase_ = cryptoBase;
 	}
 
+	SecureChannelSecuritySettings::~SecureChannelSecuritySettings(void)
+	{
+	}
+
 	CryptoBase::SPtr&
 	SecureChannelSecuritySettings::cryptoBase(void)
 	{
 		return cryptoBase_;
 	}
 
-	void
-	SecureChannelSecuritySettings::partnerCertificate(Certificate::SPtr& partnerCertificate)
+	EndpointDescription::SPtr&
+	SecureChannelSecuritySettings::endpointDescription(void)
 	{
-		partnerCertificate_ = partnerCertificate;
+		return endpointDescription_;
 	}
 
-	Certificate::SPtr&
-	SecureChannelSecuritySettings::partnerCertificate(void)
+	bool
+	SecureChannelSecuritySettings::isOwnEncryptionEnabled(void)
 	{
-		return partnerCertificate_;
+		return ownCertificateChain_.size() > 0;
+
+	}
+
+	bool
+	SecureChannelSecuritySettings::isOwnSignatureEnabled(void)
+	{
+		return partnerCertificateThumbprint_.exist();
+	}
+
+	OpcUaByteString&
+	SecureChannelSecuritySettings::ownCertificateThumbprint(void)
+	{
+		return ownCertificateThumbprint_;
+	}
+
+	OpcUaByteString&
+	SecureChannelSecuritySettings::ownSecurityPolicyUri(void)
+	{
+		return ownSecurityPolicyUri_;
+	}
+
+	CertificateChain&
+	SecureChannelSecuritySettings::ownCertificateChain(void)
+	{
+		return ownCertificateChain_;
 	}
 
 	MemoryBuffer&
-	SecureChannelSecuritySettings::clientNonce(void)
+	SecureChannelSecuritySettings::ownNonce(void)
 	{
-		return clientNonce_;
+		return ownNonce_;
+	}
+
+	SecurityKeySet&
+	SecureChannelSecuritySettings::ownSecurityKeySet(void)
+	{
+		return ownSecurityKeySet_;
+	}
+
+
+	bool
+	SecureChannelSecuritySettings::isPartnerEncryptionEnabled(void)
+	{
+		return ownCertificateThumbprint_.exist();
+	}
+
+	bool
+	SecureChannelSecuritySettings::isPartnerSignatureEnabled(void)
+	{
+		return partnerCertificateChain_.size() > 0;
+	}
+
+	OpcUaByteString&
+	SecureChannelSecuritySettings::partnerCertificateThumbprint(void)
+	{
+		return partnerCertificateThumbprint_;
+	}
+
+	OpcUaByteString&
+	SecureChannelSecuritySettings::partnerSecurityPolicyUri(void)
+	{
+		return partnerSecurityPolicyUri_;
+	}
+
+	CertificateChain&
+	SecureChannelSecuritySettings::partnerCertificateChain(void)
+	{
+		return partnerCertificateChain_;
 	}
 
 	MemoryBuffer&
-	SecureChannelSecuritySettings::serverNonce(void)
+	SecureChannelSecuritySettings::partnerNonce(void)
 	{
-		return serverNonce_;
+		return partnerNonce_;
 	}
 
 	SecurityKeySet&
-	SecureChannelSecuritySettings::securityKeySetClient(void)
+	SecureChannelSecuritySettings::partnerSecurityKeySet(void)
 	{
-		return securityKeySetClient_;
-	}
-
-	SecurityKeySet&
-	SecureChannelSecuritySettings::securityKeySetServer(void)
-	{
-		return securityKeySetServer_;
+		return partnerSecurityKeySet_;
 	}
 
 }

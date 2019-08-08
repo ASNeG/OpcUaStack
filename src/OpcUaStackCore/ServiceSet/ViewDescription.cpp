@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/ServiceSet/ViewDescription.h"
@@ -53,7 +53,7 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	ViewDescription::timestamp(const UtcTime& timestamp)
+	ViewDescription::timestamp(const OpcUaUtcTime& timestamp)
 	{
 		timestamp_ = timestamp;
 	}
@@ -64,7 +64,7 @@ namespace OpcUaStackCore
 		timestamp_.dateTime(timestamp);
 	}
 	
-	UtcTime& 
+	OpcUaUtcTime&
 	ViewDescription::timestamp(void)
 	{
 		return timestamp_;
@@ -82,6 +82,14 @@ namespace OpcUaStackCore
 		return viewVersion_;
 	}
 
+	void
+	ViewDescription::copyTo(ViewDescription& viewDescription)
+	{
+		viewIdSPtr_->copyTo(*viewDescription.viewId().get());
+		timestamp_.copyTo(viewDescription.timestamp());
+		viewDescription.viewVersion(viewVersion_);
+	}
+
 	void 
 	ViewDescription::opcUaBinaryEncode(std::ostream& os) const
 	{
@@ -96,6 +104,24 @@ namespace OpcUaStackCore
 		viewIdSPtr_->opcUaBinaryDecode(is);
 		timestamp_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, viewVersion_);
+	}
+
+	bool
+	ViewDescription::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		bool rc = jsonObjectSPtrEncode(pt, viewIdSPtr_, "ViewId", true);
+		rc &= jsonObjectEncode(pt, timestamp_, "Timestamp", true);
+		rc &= jsonNumberEncode(pt, viewVersion_, "ViewVersion", true, OpcUaUInt32(0));
+		return rc;
+	}
+
+	bool
+	ViewDescription::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		bool rc = jsonObjectSPtrDecode(pt, viewIdSPtr_, "ViewId", true);
+		rc &= jsonObjectDecode(pt, timestamp_, "Timestamp", true);
+		rc &= jsonNumberDecode(pt, viewVersion_, "ViewVersion", true, OpcUaUInt32(0));
+		return rc;
 	}
 
 }

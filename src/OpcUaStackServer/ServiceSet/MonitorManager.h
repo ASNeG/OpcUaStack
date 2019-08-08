@@ -25,7 +25,7 @@
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
-#include "OpcUaStackCore/ServiceSet/MonitoredItemNotification.h"
+#include "OpcUaStackCore/StandardDataTypes/MonitoredItemNotification.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItem.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
@@ -59,8 +59,8 @@ namespace OpcUaStackServer
 		OpcUaStatusCode receive(ServiceTransactionModifyMonitoredItems::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionSetMonitoringMode::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionSetTriggering::SPtr trx);
-		OpcUaStatusCode receive(MonitoredItemNotificationArray::SPtr monitoredItemNotificationArray);
-		OpcUaStatusCode receive(EventFieldListArray::SPtr eventFieldListArray);
+		OpcUaStatusCode receive(MonitoredItemNotificationArray& monitoredItemNotificationArray);
+		OpcUaStatusCode receive(EventFieldListArray& eventFieldListArray);
 
 	  private:
 		OpcUaStatusCode forwardAutorizationCreateMonitoredItem(UserContext::SPtr& userContext, ReadValueId& readValueId);

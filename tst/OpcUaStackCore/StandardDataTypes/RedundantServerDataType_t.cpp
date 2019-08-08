@@ -21,9 +21,9 @@ BOOST_AUTO_TEST_CASE(RedundantServerDataType_encode_decode)
 
 	OpcUaString serverId("12345");
 
-	value1.serverId(serverId);
-	value1.serviceLevel((OpcUaByte)1);
-	value1.serverState((OpcUaUInt32)2);
+	value1.serverId() = serverId;
+	value1.serviceLevel() = (OpcUaByte)1;
+	value1.serverState().enumeration(ServerState::EnumCommunicationFault);
 
 	std::stringstream ss;
 	value1.opcUaBinaryEncode(ss);
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(RedundantServerDataType_encode_decode)
 
 	BOOST_REQUIRE(value2.serverId() == serverId);
 	BOOST_REQUIRE(value2.serviceLevel() == (OpcUaByte)1);
-	BOOST_REQUIRE(value2.serverState() == (OpcUaByte)2);
+	BOOST_REQUIRE(value2.serverState().enumeration() == ServerState::EnumCommunicationFault);
 }
 
 BOOST_AUTO_TEST_CASE(RedundantServerDataType_ExtensionObject)
@@ -47,9 +47,9 @@ BOOST_AUTO_TEST_CASE(RedundantServerDataType_ExtensionObject)
 	OpcUaNodeId typeId;
 	typeId.set(OpcUaId_RedundantServerDataType_Encoding_DefaultBinary);
 	value1.typeId(typeId);
-	value1.parameter<RedundantServerDataType>()->serverId(serverId);
-	value1.parameter<RedundantServerDataType>()->serviceLevel((OpcUaByte)1);
-	value1.parameter<RedundantServerDataType>()->serverState((OpcUaUInt32)2);
+	value1.parameter<RedundantServerDataType>()->serverId() = serverId;
+	value1.parameter<RedundantServerDataType>()->serviceLevel() = (OpcUaByte)1;
+	value1.parameter<RedundantServerDataType>()->serverState().enumeration(ServerState::EnumCommunicationFault);
 
 	std::stringstream ss;
 	value1.opcUaBinaryEncode(ss);
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(RedundantServerDataType_ExtensionObject)
 
 	BOOST_REQUIRE(value2.parameter<RedundantServerDataType>()->serverId() == serverId);
 	BOOST_REQUIRE(value2.parameter<RedundantServerDataType>()->serviceLevel() == (OpcUaByte)1);
-	BOOST_REQUIRE(value2.parameter<RedundantServerDataType>()->serverState() == (OpcUaByte)2);
+	BOOST_REQUIRE(value2.parameter<RedundantServerDataType>()->serverState().enumeration() == ServerState::EnumCommunicationFault);
 }
 
 BOOST_AUTO_TEST_CASE(RedundantServerDataType_ExtensionObject_copyTo)
@@ -73,15 +73,15 @@ BOOST_AUTO_TEST_CASE(RedundantServerDataType_ExtensionObject_copyTo)
 	OpcUaNodeId typeId;
 	typeId.set(OpcUaId_RedundantServerDataType_Encoding_DefaultBinary);
 	value1.typeId(typeId);
-	value1.parameter<RedundantServerDataType>()->serverId(serverId);
-	value1.parameter<RedundantServerDataType>()->serviceLevel((OpcUaByte)1);
-	value1.parameter<RedundantServerDataType>()->serverState((OpcUaUInt32)2);
+	value1.parameter<RedundantServerDataType>()->serverId() = serverId;
+	value1.parameter<RedundantServerDataType>()->serviceLevel() = (OpcUaByte)1;
+	value1.parameter<RedundantServerDataType>()->serverState().enumeration(ServerState::EnumCommunicationFault);
 
 	value1.copyTo(value2);
 
 	BOOST_REQUIRE(value2.parameter<RedundantServerDataType>()->serverId() == serverId);
 	BOOST_REQUIRE(value2.parameter<RedundantServerDataType>()->serviceLevel() == (OpcUaByte)1);
-	BOOST_REQUIRE(value2.parameter<RedundantServerDataType>()->serverState() == (OpcUaByte)2);
+	BOOST_REQUIRE(value2.parameter<RedundantServerDataType>()->serverState().enumeration() == ServerState::EnumCommunicationFault);
 }
 
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,11 +18,7 @@
 #ifndef __OpcUaStackCore_RegisterForwardNodeRequest_h__
 #define __OpcUaStackCore_RegisterForwardNodeRequest_h__
 
-#include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
 
 namespace OpcUaStackCore
@@ -41,6 +37,8 @@ namespace OpcUaStackCore
 		OpcUaNodeIdArray::SPtr nodesToRegister(void) const;
 		void forwardNodeSync(ForwardNodeSync::SPtr forwardInfo);
 		ForwardNodeSync::SPtr forwardNodeSync(void);
+		void applicationContextArray(BaseClassArray::SPtr& applicationContextArray);
+		BaseClassArray::SPtr& applicationContextArray(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -48,6 +46,7 @@ namespace OpcUaStackCore
 	  private:
 		ForwardNodeSync::SPtr forwardNodeSync_;
 		OpcUaNodeIdArray::SPtr nodesToRegisterArraySPtr_;
+		BaseClassArray::SPtr applicationContextArray_;
 	};
 
 }

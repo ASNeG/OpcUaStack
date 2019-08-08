@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,7 +19,7 @@
 #define __OpcUaStackCore_FilterNode_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
-#include "OpcUaStackCore/ServiceSet/ContentFilterElementResult.h"
+#include "OpcUaStackCore/StandardDataTypes/ContentFilterElementResult.h"
 
 namespace OpcUaStackCore
 {

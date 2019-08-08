@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,9 +18,8 @@
 #ifndef __OpcUaStackClient_DiscoveryClientRegisteredServers_h__
 #define __OpcUaStackClient_DiscoveryClientRegisteredServers_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
+#include "OpcUaStackCore/StandardDataTypes/RegisteredServer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
@@ -29,17 +28,18 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	typedef std::map<std::string, RegisteredServer::SPtr> RegisteredServerMap;
+
 	/**
 	 * The discovery client registered server is used to register all endpoints.
 	 */
 	class DLLEXPORT DiscoveryClientRegisteredServers
-	: public SessionServiceIf
-	, public DiscoveryServiceIf
 	{
 	  public:
 		DiscoveryClientRegisteredServers(void);
 	    ~DiscoveryClientRegisteredServers(void);
 
+	    void cryptoManager(CryptoManager::SPtr& cryptoManager);
 	    void ioThread(IOThread::SPtr& ioThread);
 	    void discoveryUri(const std::string& discoveryUri);
 	    void registerInterval(uint32_t registerInterval);
@@ -47,18 +47,19 @@ namespace OpcUaStackClient
 		bool startup(void);
 		void shutdown(void);
 
-		void addRegisteredServer(const std::string& name, RegisteredServer::SPtr& registeredServer);
-		void removeRegisteredServer(const std::string& name);
-
-		//- SessionServiceIf --------------------------------------------------
-		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);
-		//- SessionServiceIf --------------------------------------------------
-
-        //- DiscoveryServiceIf ------------------------------------------------
-        virtual void discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
-        //- DiscoveryServiceIf ------------------------------------------------
+		void addRegisteredServer(
+			const std::string& name,
+			RegisteredServer::SPtr& registeredServer
+		);
+		void removeRegisteredServer(
+			const std::string& name
+		);
 
 	  public:
+		void discoveryServiceRegisterServerResponse(
+			ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer
+		);
+
         void sendDiscoveryServiceRegisterServer(void);
         void deregisterServers(void);
 		void loop(void);
@@ -70,11 +71,12 @@ namespace OpcUaStackClient
 		IOThread::SPtr ioThread_;
 		SlotTimerElement::SPtr slotTimerElement_;
 		boost::mutex mutex_;
-		RegisteredServer::Map registeredServerMap_;
+		RegisteredServerMap registeredServerMap_;
 
 		std::string discoveryUri_;
 		uint32_t registerInterval_;
 
+		CryptoManager::SPtr cryptoManager_;
 		ServiceSetManager serviceSetManager_;
 		SessionService::SPtr sessionService_;
 		DiscoveryService::SPtr discoveryService_;

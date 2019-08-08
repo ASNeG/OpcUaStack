@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -104,16 +104,36 @@ namespace OpcUaServer
 		server_.start();
 
 		// start discovery client
+		discoveryClient_.cryptoManager(server_.cryptoManager());
 		if (!discoveryClient_.startup(*config_)) {
 			return false;
 		}
 
+		// log components
+		std::vector<std::string> componentNameVec;
+		Component::getComponentNames(componentNameVec);
+		std::vector<std::string>::iterator it;
+		for (it = componentNameVec.begin(); it != componentNameVec.end(); it++) {
+			Component* component = Component::getComponent(*it);
+			if (component == nullptr) {
+				Log(Debug, "Component")
+					.parameter("Name", *it);
+				continue;
+			}
+			else {
+				component->logComponent();
+			}
+		}
+
+		Log(Info, "application started...");
 		return true;
 	}
 
 	void
 	Server::stop(void)
 	{
+		Log(Info, "receive stop signal...");
+
 		// shutdown discovery client
 		discoveryClient_.shutdown();
 
@@ -212,7 +232,8 @@ namespace OpcUaServer
 		std::stringstream confDir;
 
 		version        << "  OpcUaServer version      : "
-			<< VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH;
+			<< VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH
+			<< " (Build #" << BUILD_NUMBER << " " << BUILD_TIME << ")";
 		boostVersion   << "  Boost Library version    : "
 			<< BOOST_VERSION_MAJOR << "." << BOOST_VERSION_MINOR;
 		openSSLVersion << "  Open SSL Library version : "

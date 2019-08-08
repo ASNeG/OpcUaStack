@@ -79,4 +79,16 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	ReadResponse::jsonEncodeImpl(boost::property_tree::ptree& pt) const
+	{
+		return jsonArraySPtrEncode(pt, dataValueArraySPtr_, "Results");
+	}
+
+	bool
+	ReadResponse::jsonDecodeImpl(const boost::property_tree::ptree& pt)
+	{
+		return jsonArraySPtrDecode(pt, dataValueArraySPtr_, "Results");
+	}
+
 }

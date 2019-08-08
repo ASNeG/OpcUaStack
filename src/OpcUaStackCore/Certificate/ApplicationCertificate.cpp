@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,34 +31,9 @@ namespace OpcUaStackCore
 {
 
 	ApplicationCertificate::ApplicationCertificate(void)
-	: enable_(false)
-	, certificateTrustListLocation_("")
-	, certificateRejectListLocation_("")
-	, certificateRevocationListLocation_("")
-	, issuersCertificatesLocation_("")
-	, issuersRevocationListLocation_("")
-
-	, serverCertificateFile_("")
-	, privateKeyFile_("")
-
-	, generateCertificate_(true)
-	, uri_("")
-	, commonName_("")
-	, domainComponent_("")
-	, organization_("")
-	, organizationUnit_("")
-	, locality_("")
-	, state_("")
-	, country_("")
-	, yearsValidFor_(5)
-	, keyLength_(2048)
-	, certificateType_("RsaSha256")
-	, ipAddress_()
-	, dnsName_()
-	, email_("")
-
-	, certificate_()
+	: certificateChain_()
 	, privateKey_()
+	, enable_(false)
 	{
 	}
 
@@ -67,51 +42,28 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ApplicationCertificate::init(void)
+	ApplicationCertificate::init(CertificateManager::SPtr& certificateManager)
 	{
-		Log(Info, "init certificate")
-			.parameter("Enable", enable_);
+		assert(certificateManager.get() != nullptr);
 
-		if (!enable_) {
+		CertificateSettings& certificateSettings = certificateManager->certificateSettings();
+
+		Log(Info, "init certificate")
+			.parameter("Enable", certificateSettings.enable());
+
+		enable_ = certificateSettings.enable();
+		if (!certificateSettings.enable()) {
 			// do nothing
 			return true;
 		}
 
-		// check directories. If they not exist create them
-		if (!checkAndCreateDirectory(certificateTrustListLocation_)) {
-			return false;
-		}
-		if (!checkAndCreateDirectory(certificateRejectListLocation_)) {
-			return false;
-		}
-		if (!checkAndCreateDirectory(certificateRevocationListLocation_)) {
-			return false;
-		}
-		if (!checkAndCreateDirectory(issuersCertificatesLocation_)) {
-			return false;
-		}
-		if (!checkAndCreateDirectory(issuersRevocationListLocation_)) {
-			return false;
-		}
-		boost::filesystem::path serverCertificateFile(serverCertificateFile_);
-		if (!checkAndCreateDirectory(serverCertificateFile.parent_path().string())) {
-			return false;
-		}
-		boost::filesystem::path privateKeyFile(privateKeyFile_);
-		if (!checkAndCreateDirectory(privateKeyFile.parent_path().string())) {
-			return false;
-		}
-		if (!setReadOnly(privateKeyFile.parent_path().string())) {
-			return false;
-		}
-
 		// create self signed certificate
-		if (!createSelfSignedCertificate()) {
+		if (!createSelfSignedCertificate(certificateManager)) {
 			return false;
 		}
 
 		// read own certificate and private key
-		if (!readCertificateAndPrivateKey()) {
+		if (!readCertificateAndPrivateKey(certificateManager)) {
 			return false;
 		}
 
@@ -121,15 +73,9 @@ namespace OpcUaStackCore
 	bool
 	ApplicationCertificate::cleanup(void)
 	{
-		certificate_.reset();
+		certificateChain_.clear();
 		privateKey_.reset();
 		return true;
-	}
-
-	void
-	ApplicationCertificate::enable(bool enable)
-	{
-		enable_ = enable;
 	}
 
 	bool
@@ -138,262 +84,10 @@ namespace OpcUaStackCore
 		return enable_;
 	}
 
-	void
-	ApplicationCertificate::certificateTrustListLocation(const std::string& certificateTrustListLocation)
+	CertificateChain&
+	ApplicationCertificate::certificateChain(void)
 	{
-		certificateTrustListLocation_ = certificateTrustListLocation;
-	}
-
-	std::string&
-	ApplicationCertificate::certificateTrustListLocation(void)
-	{
-		return certificateTrustListLocation_;
-	}
-
-	void
-	ApplicationCertificate::certificateRejectListLocation(const std::string& certificateRejectListLocation)
-	{
-		certificateRejectListLocation_ = certificateRejectListLocation;
-	}
-
-	std::string&
-	ApplicationCertificate::certificateRejectListLocation(void)
-	{
-		return certificateRejectListLocation_;
-	}
-
-	void
-	ApplicationCertificate::certificateRevocationListLocation(const std::string& certificateRevocationListLocation)
-	{
-		certificateRevocationListLocation_ = certificateRevocationListLocation;
-	}
-
-	std::string&
-	ApplicationCertificate::certificateRevocationListLocation(void)
-	{
-		return certificateRevocationListLocation_;
-	}
-
-	void
-	ApplicationCertificate::issuersCertificatesLocation(const std::string& issuersCertificatesLocation)
-	{
-		issuersCertificatesLocation_ = issuersCertificatesLocation;
-	}
-
-	std::string&
-	ApplicationCertificate::issuersCertificatesLocation(void)
-	{
-		return issuersCertificatesLocation_;
-	}
-
-	void
-	ApplicationCertificate::issuersRevocationListLocation(const std::string& issuersRevocationListLocation)
-	{
-		issuersRevocationListLocation_ = issuersRevocationListLocation;
-	}
-
-	std::string&
-	ApplicationCertificate::issuersRevocationListLocation(void)
-	{
-		return issuersRevocationListLocation_;
-	}
-
-	void
-	ApplicationCertificate::serverCertificateFile(const std::string& serverCertificateFile)
-	{
-		serverCertificateFile_ = serverCertificateFile;
-	}
-
-	std::string&
-	ApplicationCertificate::serverCertificateFile(void)
-	{
-		return serverCertificateFile_;
-	}
-
-	void
-	ApplicationCertificate::privateKeyFile(const std::string& privateKeyFile)
-	{
-		privateKeyFile_ = privateKeyFile;
-	}
-
-	std::string&
-	ApplicationCertificate::privateKeyFile(void)
-	{
-		return privateKeyFile_;
-	}
-
-	void
-	ApplicationCertificate::generateCertificate(bool generateCertificate)
-	{
-		generateCertificate_ = generateCertificate;
-	}
-
-	bool
-	ApplicationCertificate::generateCertificate(void)
-	{
-		return generateCertificate_;
-	}
-
-	void
-	ApplicationCertificate::uri(const std::string& uri)
-	{
-		uri_ = uri;
-	}
-
-	std::string&
-	ApplicationCertificate::uri(void)
-	{
-		return uri_;
-	}
-
-	void
-	ApplicationCertificate::commonName(const std::string& commonName)
-	{
-		commonName_ = commonName;
-	}
-
-	std::string&
-	ApplicationCertificate::commonName(void)
-	{
-		return commonName_;
-	}
-
-	void
-	ApplicationCertificate::domainComponent(const std::string& domainComponent)
-	{
-		domainComponent_ = domainComponent;
-	}
-
-	std::string&
-	ApplicationCertificate::domainComponent(void)
-	{
-		return domainComponent_;
-	}
-
-	void
-	ApplicationCertificate::organization(const std::string& organization)
-	{
-		organization_ = organization;
-	}
-
-	std::string&
-	ApplicationCertificate::organization(void)
-	{
-		return organization_;
-	}
-
-	void
-	ApplicationCertificate::organizationUnit(const std::string& organizationUnit)
-	{
-		organizationUnit_ = organizationUnit;
-	}
-
-	std::string&
-	ApplicationCertificate::organizationUnit(void)
-	{
-		return organizationUnit_;
-	}
-
-	void
-	ApplicationCertificate::locality(const std::string& locality)
-	{
-		locality_ = locality;
-	}
-
-	std::string&
-	ApplicationCertificate::locality(void)
-	{
-		return locality_;
-	}
-
-	void
-	ApplicationCertificate::state(const std::string& state)
-	{
-		state_ = state;
-	}
-
-	std::string&
-	ApplicationCertificate::state(void)
-	{
-		return state_;
-	}
-
-	void
-	ApplicationCertificate::country(const std::string& country)
-	{
-		country_ = country;
-	}
-
-	std::string&
-	ApplicationCertificate::country(void)
-	{
-		return country_;
-	}
-
-	void
-	ApplicationCertificate::yearsValidFor(uint32_t yearsValidFor)
-	{
-		yearsValidFor_ = yearsValidFor;
-	}
-
-	uint32_t
-	ApplicationCertificate::yearsValidFor(void)
-	{
-		return yearsValidFor_;
-	}
-
-	void
-	ApplicationCertificate::keyLength(uint32_t keyLength)
-	{
-		keyLength_ = keyLength;
-	}
-
-	uint32_t
-	ApplicationCertificate::keyLength(void)
-	{
-		return keyLength_;
-	}
-
-	void
-	ApplicationCertificate::certificateType(const std::string& certificateType)
-	{
-		certificateType_ = certificateType;
-	}
-
-	std::string&
-	ApplicationCertificate::certificateType(void)
-	{
-		return certificateType_;
-	}
-
-	std::vector<std::string>&
-	ApplicationCertificate::ipAddress(void)
-	{
-		return ipAddress_;
-	}
-
-	std::vector<std::string>&
-	ApplicationCertificate::dnsName(void)
-	{
-		return dnsName_;
-	}
-
-	void
-	ApplicationCertificate::email(const std::string& email)
-	{
-		email_ = email;
-	}
-
-	std::string&
-	ApplicationCertificate::email(void)
-	{
-		return email_;
-	}
-
-	Certificate::SPtr&
-	ApplicationCertificate::certificate(void)
-	{
-		return certificate_;
+		return certificateChain_;
 	}
 
 	PrivateKey::SPtr&
@@ -403,119 +97,66 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ApplicationCertificate::checkAndCreateDirectory(const std::string& directory)
+	ApplicationCertificate::createSelfSignedCertificate(
+		CertificateManager::SPtr& certificateManager
+	)
 	{
-		boost::filesystem::path path(directory);
+		CertificateSettings& certificateSettings = certificateManager->certificateSettings();
 
-		// check if directory exist
-		if (boost::filesystem::exists(path)) {
-			return true;
-		}
-
-		// create directory
-		Log(Info, "create certificate directory")
-			.parameter("Directory", directory);
-
-		boost::filesystem::path createPath;
-		boost::filesystem::path::iterator it;
-		for (it = path.begin(); it != path.end(); it++) {
-			std::string str = it->string();
-
-			//createPath.append(str);
-			createPath /= str;
-
-			if (boost::filesystem::exists(createPath)) {
-				continue;
-			}
-
-			boost::system::error_code ec;
-			if (!boost::filesystem::create_directory(createPath, ec)) {
-				Log(Error, "create certificate directory error")
-					.parameter("Directory", createPath.string())
-					.parameter("ErrorCode", ec.message());
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	bool
-	ApplicationCertificate::setReadOnly(const std::string& directory)
-	{
-		boost::filesystem::path path(directory);
-
-		// check if directory exist
-		if (!boost::filesystem::exists(path)) {
-			Log(Error, "directory not exist")
-				.parameter("Directory", directory);
-			return false;
-		}
-
-#if defined (__linux__)
-		// set permissions
-		if (chmod(directory.c_str(), S_IRUSR|S_IWUSR|S_IXUSR) != 0) {
-			Log(Error, "change permission directory error")
-				.parameter("Directory", directory)
-				.parameter("ErrorCode", strerror(errno));
-			return false;
-		}
-#endif
-
-		return true;
-	}
-
-	bool
-	ApplicationCertificate::createSelfSignedCertificate(void)
-	{
 		// check if certificate is enabled
-		if (!enable_) {
+		if (!certificateSettings.enable()) {
 			return true;
 		}
 
 		// check if self signed certificate is enables
-		if (!generateCertificate()) {
+		if (!certificateSettings.generateCertificate()) {
 			return true;
 		}
 
 		// check if private key and certificate exist
-		if (boost::filesystem::exists(serverCertificateFile_) && boost::filesystem::exists(privateKeyFile_)) {
+		if (certificateManager->existOwnCertificate() && certificateManager->existOwnPrivateKey()) {
 			return true;
 		}
 
 		// remove certificate file and private key file
-		boost::filesystem::remove(serverCertificateFile_);
-		boost::filesystem::remove(privateKeyFile_);
+		certificateManager->removeOwnCertificate();
+		certificateManager->removeOwnPrivateKey();
 
 		// --------------------------------------------------------------------
 		// create self signed certificate
 		// --------------------------------------------------------------------
-		RSAKey key(keyLength_);
+		Log(Debug, "create self signed certificate")
+		    .parameter("Uri", certificateSettings.serverUri());
+
+		RSAKey key(certificateSettings.keyLength());
 		if (key.isError()) {
 			key.log(Error, "create RSA key error");
 			return false;
 		}
 
 		Identity identity;
-		identity.organization(organization_);
-		identity.organizationUnit(organizationUnit_);
-		identity.commonName(commonName_);
-		identity.locality(locality_);
-		identity.state(state_);
-		identity.country(country_);
-		identity.domainComponent(domainComponent_);
+		identity.organization(certificateSettings.organization());
+		identity.organizationUnit(certificateSettings.organizationUnit());
+		identity.commonName(certificateSettings.commonName());
+		identity.locality(certificateSettings.locality());
+		identity.state(certificateSettings.state());
+		identity.country(certificateSettings.country());
+		identity.domainComponent(certificateSettings.domainComponent());
 
 		CertificateInfo info;
-		info.uri(uri_);
-		info.ipAddresses() = ipAddress_;
-		info.dnsNames() = dnsName_;
-		info.eMail(email_);
-		info.validTime(boost::posix_time::microsec_clock::local_time() + boost::posix_time::seconds(3600*24*365*yearsValidFor_));
+		info.uri(certificateSettings.serverUri());
+		info.ipAddresses() = certificateSettings.ipAddress();
+		info.dnsNames() = certificateSettings.dnsName();
+		info.eMail(certificateSettings.email());
+		info.validTime(
+			boost::posix_time::microsec_clock::local_time() +
+			boost::posix_time::seconds(3600*24*365*certificateSettings.yearsValidFor())
+		);
 		info.serialNumber(time(0));
 		info.validFrom(boost::posix_time::microsec_clock::local_time());
 
 		SignatureAlgorithm signatureAlgorithm;
-		if (certificateType_ == "RsaMin") {
+		if (certificateSettings.certificateType() == "RsaMin") {
 			signatureAlgorithm = SignatureAlgorithm_Sha1;
 		}
 		else {
@@ -530,15 +171,15 @@ namespace OpcUaStackCore
 		}
 
 		// save self signed cerificate
-		certificate.toDERFile(serverCertificateFile_);
-		if (certificate.isError()) {
-			certificate.log(Error, "save self signed certificate error");
+		if (!certificateManager->writeOwnCertificate(certificate)) {
+			Log(Error, "write own certificate error");
 			return false;
 		}
 
-		// create private key
-		if (!key.privateKey().toPEMFile(privateKeyFile_, nullptr)) {
-			certificate.log(Error, "save private key error");
+		// save private key
+		PrivateKey privateKey = key.privateKey();
+		if (!certificateManager->writeOwnPrivateKey(privateKey)) {
+			Log(Error, "write own private key error");
 			return false;
 		}
 
@@ -546,26 +187,66 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ApplicationCertificate::readCertificateAndPrivateKey(void)
+	ApplicationCertificate::readCertificateAndPrivateKey(
+		CertificateManager::SPtr& certificateManager
+	)
 	{
 		// read certificate from file
-		certificate_ = constructSPtr<Certificate>();
-		if (!certificate_->fromDERFile(serverCertificateFile_)) {
-			certificate_->log(Error, "read certificate error");
-			certificate_.reset();
+		auto certificate = certificateManager->readOwnCertificate();
+		if (certificate.get() == nullptr) {
+			Log(Error, "read own certificate error");
+			return false;
+		}
+
+		// read certificate chain
+		if (!readCertificateChain(certificate, certificateManager)) {
+			Log(Error, "read own certificate chain error");
 			return false;
 		}
 
 		// read private key from file
-		privateKey_ = constructSPtr<PrivateKey>();
-		if (!privateKey_->fromPEMFile(privateKeyFile_, nullptr)) {
-			privateKey_->log(Error, "read private key error");
-			privateKey_.reset();
-			certificate_.reset();
+		privateKey_ = certificateManager->readOwnPrivateKey();
+		if (privateKey_.get() == nullptr) {
+			Log(Error, "read own private key error");
 			return false;
 		}
 
 		return true;
+	}
+
+	bool
+	ApplicationCertificate::readCertificateChain(
+		Certificate::SPtr& certificate,
+		CertificateManager::SPtr& certificateManager)
+	{
+		// added certificate to certificate chain
+		certificateChain_.addCertificate(certificate);
+		if (certificate->isSelfSigned()) {
+			return true;
+		}
+
+		// get issuer from first certificate
+		Identity issuer;
+		if (!certificate->getIssuer(issuer)) {
+			Log(Error, "read issuer from certificate error");
+			return false;
+		}
+
+		// search next issuer certificate in trusted folder
+		certificate = certificateManager->getTrustedCertificate(issuer);
+		if (certificate.get() != nullptr) {
+			certificateChain_.certificateVec().push_back(certificate);
+			return readCertificateChain(certificate, certificateManager);
+		}
+
+		// search next issuer certificate in CA folder
+		certificate = certificateManager->getCACertificate(issuer);
+		if (certificate.get() != nullptr) {
+			certificateChain_.certificateVec().push_back(certificate);
+			return readCertificateChain(certificate, certificateManager);
+		}
+
+		return false;
 	}
 
 }

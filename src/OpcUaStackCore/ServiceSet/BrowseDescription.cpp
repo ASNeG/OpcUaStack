@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/ServiceSet/BrowseDescription.h"
@@ -115,6 +115,17 @@ namespace OpcUaStackCore
 		return resultMask_;
 	}
 
+	void
+	BrowseDescription::copyTo(BrowseDescription& browseDescription)
+	{
+		nodeIdSPtr_->copyTo(*browseDescription.nodeId().get());
+		browseDescription.browseDirection(browseDirection_);
+		referenceTypeIdSPtr_->copyTo(*browseDescription.referenceTypeId().get());
+		browseDescription.includeSubtypes(includeSubtypes_);
+		browseDescription.nodeClassMask(nodeClassMask_);
+		browseDescription.resultMask(resultMask_);
+	}
+
 	void 
 	BrowseDescription::opcUaBinaryEncode(std::ostream& os) const
 	{
@@ -138,5 +149,34 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, nodeClassMask_);
 		OpcUaNumber::opcUaBinaryDecode(is, resultMask_);
 	}
+
+	bool
+	BrowseDescription::jsonEncodeImpl(boost::property_tree::ptree &pt) const {
+		bool rc = jsonObjectSPtrEncode(pt, nodeIdSPtr_, "NodeId");
+		rc &= jsonNumberEncode(pt, (OpcUaUInt32)browseDirection_, "BrowseDirection");
+		rc &= jsonObjectSPtrEncode(pt, referenceTypeIdSPtr_, "ReferenceTypeId", true);
+		rc &= jsonNumberEncode(pt, includeSubtypes_, "IncludeSubtypes");
+		rc &= jsonNumberEncode(pt, nodeClassMask_, "NodeClassMask");
+		rc &= jsonNumberEncode(pt, resultMask_, "ResultMask");
+
+		return rc;
+	}
+
+	bool
+	BrowseDescription::jsonDecodeImpl(const boost::property_tree::ptree &pt) {
+		bool rc = jsonObjectSPtrDecode(pt, nodeIdSPtr_, "NodeId");
+
+		OpcUaUInt32 tmp;
+		rc &= jsonNumberDecode(pt, tmp, "BrowseDirection");
+		browseDirection_ = (BrowseDirectionEnum)tmp;
+
+		rc &= jsonObjectSPtrDecode(pt, referenceTypeIdSPtr_, "ReferenceTypeId", true);
+		rc &= jsonNumberDecode(pt, includeSubtypes_, "IncludeSubtypes");
+		rc &= jsonNumberDecode(pt, nodeClassMask_, "NodeClassMask");
+		rc &= jsonNumberDecode(pt, resultMask_, "ResultMask");
+
+		return rc;
+	}
+
 
 }

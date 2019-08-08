@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,9 +25,8 @@
 namespace OpcUaClient
 {
 
-	class ClientServiceConnect
+	class DLLEXPORT ClientServiceConnect
 	: public ClientServiceBase
-	, public SessionServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<ClientServiceConnect> SPtr;
@@ -39,10 +38,6 @@ namespace OpcUaClient
 		virtual ClientServiceBase::SPtr createClientService(void);
 		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase);
 		//- ClientServiceConnect interface ------------------------------------
-
-		// SessionServiceIf interface -----------------------------------------
-		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);
-		// SessionServiceIf interface -----------------------------------------
 
       private:
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -44,6 +44,13 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncRead(SecureChannel* secureChannel)
 	{
+		// check socket
+		if (secureChannel->closeFlag_) {
+			Log(Debug, "async read failed, because socket is already closed")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
+
 		// read message header
 		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
@@ -73,8 +80,7 @@ namespace OpcUaStackCore
 			LogLevel logLevel = Error;
 			if (secureChannel->state_ == SecureChannel::S_CloseSecureChannel) logLevel = Debug;
 			Log(logLevel, "opc ua secure channel read message header error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			if (!secureChannel->asyncSend_) {
@@ -86,8 +92,7 @@ namespace OpcUaStackCore
 		// partner has closed the connection
 		if (bytes_transfered == 0) {
 			Log(Debug, "opc ua secure channel is closed by partner")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			if (!secureChannel->asyncSend_) {
 				closeChannel(secureChannel, true);
@@ -107,8 +112,7 @@ namespace OpcUaStackCore
 			case MessageType_Unknown:
 			{
 				Log(Error, "opc ua secure channel received unknown message type")
-					.parameter("Local", secureChannel->local_.address().to_string())
-					.parameter("Partner", secureChannel->partner_.address().to_string())
+					.parameter("ChannelId", *secureChannel)
 					.parameter("MessageType", secureChannel->messageHeader_.messageType());
 
 				closeChannel(secureChannel, true);
@@ -157,8 +161,7 @@ namespace OpcUaStackCore
 			default:
 			{
 				Log(Error, "opc ua secure channel received unknown message type")
-					.parameter("Local", secureChannel->local_.address().to_string())
-					.parameter("Partner", secureChannel->partner_.address().to_string())
+					.parameter("ChannelId", *secureChannel)
 					.parameter("MessageType", secureChannel->messageHeader_.messageType());
 
 				closeChannel(secureChannel, true);
@@ -200,8 +203,7 @@ namespace OpcUaStackCore
 		// error accurred
 		if (error) {
 			Log(Error, "opc ua secure channel read hello message error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
@@ -211,8 +213,7 @@ namespace OpcUaStackCore
 		// partner has closed the connection
 		if (bytes_transfered == 0) {
 			Log(Debug, "opc ua secure channel is closed by partner")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -234,8 +235,7 @@ namespace OpcUaStackCore
 	SecureChannelBase::handleRecvHello(SecureChannel* secureChannel, HelloMessage& hello)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadHello no implemented")
-			.parameter("Local", secureChannel->local_.address().to_string())
-			.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 	}
 
@@ -271,6 +271,8 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteHelloComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
+		Log(Debug, "handle write complete - Hello")
+			.parameter("ChannelId", *secureChannel);
 	}
 
 	// ------------------------------------------------------------------------
@@ -306,8 +308,7 @@ namespace OpcUaStackCore
 		// error accurred
 		if (error) {
 			Log(Error, "opc ua secure channel read hello message error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
@@ -317,8 +318,7 @@ namespace OpcUaStackCore
 		// partner has closed the connection
 		if (bytes_transfered == 0) {
 			Log(Debug, "opc ua secure channel is closed by partner")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -340,8 +340,7 @@ namespace OpcUaStackCore
 	SecureChannelBase::handleRecvAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadAcknowledge no implemented")
-			.parameter("Local", secureChannel->local_.address().to_string())
-			.parameter("Partner", secureChannel->partner_.address().to_string());
+			.parameter("ChannelId", *secureChannel);
 	}
 
 	void
@@ -376,6 +375,8 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteAcknowledgeComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
+		Log(Debug, "handle write complete - Acknowledge")
+			.parameter("ChannelId", *secureChannel);
 	}
 
 	// ------------------------------------------------------------------------
@@ -412,11 +413,10 @@ namespace OpcUaStackCore
 
 		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
 
-		// error accurred
+		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelRequest message error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
@@ -426,8 +426,7 @@ namespace OpcUaStackCore
 		// partner has closed the connection
 		if (bytes_transfered == 0) {
 			Log(Debug, "opc ua secure channel is closed by partner")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -438,12 +437,17 @@ namespace OpcUaStackCore
 		// decode second part of message header
 		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
 
-		// decode secure header
-		resultCode = secureChannel->securityHeader_.opcUaBinaryDecode(is);
+		// decode secure header from client
+		resultCode = SecurityHeader::opcUaBinaryDecode(
+			is,
+			secureSettings.partnerSecurityPolicyUri(),
+			secureSettings.partnerCertificateChain(),
+			secureSettings.ownCertificateThumbprint()
+		);
+
 		if (!resultCode) {
 			Log(Debug, "opc ua secure channel security header error")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -452,8 +456,7 @@ namespace OpcUaStackCore
 		// handle security
 		if (secureReceivedOpenSecureChannelRequest(secureChannel) != Success) {
 			Log(Debug, "opc ua secure channel decrypt received message error")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -479,16 +482,6 @@ namespace OpcUaStackCore
 			secureChannel->messageHeader_.channelId()
 		);
 
-		// handle server nonce
-		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
-			char* buf;
-			int32_t len;
-			openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
-			if (len > 0) {
-				secureSettings.clientNonce().set(buf, len);
-			}
-		}
-
 		// process open secure channel request
 		handleRecvOpenSecureChannelRequest(
 			secureChannel,
@@ -507,8 +500,7 @@ namespace OpcUaStackCore
 	)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadOpenSecureChannelRequest not implemented")
-			.parameter("Local", secureChannel->local_.address().to_string())
-			.parameter("Partner", secureChannel->partner_.address().to_string());
+			.parameter("ChannelId", *secureChannel);
 	}
 
 	void
@@ -517,17 +509,14 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
-		assert(applicationCertificate().get() != nullptr);
-		assert(applicationCertificate()->certificate().get() != nullptr);
-
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		// create client nonce
-		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
+		if (secureChannel->securityPolicy_ != SecurityPolicy::EnumNone) {
 			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
-			secureChannel->securitySettings().clientNonce().resize(keyLen);
+			securitySettings.ownNonce().resize(keyLen);
 
-			char* memBuf = secureChannel->securitySettings().clientNonce().memBuf();
+			char* memBuf = securitySettings.ownNonce().memBuf();
 			for (uint32_t idx=0; idx<keyLen; idx++) {
 				memBuf[idx] = rand();
 			}
@@ -542,28 +531,12 @@ namespace OpcUaStackCore
 
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
-		// encode security header
-		SecurityHeader securityHeader;
-		std::string securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
-		switch (secureChannel->securityPolicy_)
-		{
-			case SP_None: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None"; break;
-			case SP_Basic128Rsa15: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15"; break;
-			case SP_Basic256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256"; break;
-			case SP_Basic256Sha256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256"; break;
-		}
-		securityHeader.securityPolicyUri((OpcUaByte*)securityPolicyUri.c_str(), securityPolicyUri.size());
-		if (securityHeader.isSignatureEnabled()) {
-			// FIXME: use sender certificate chain
-			applicationCertificate()->certificate()->toDERBuf(securityHeader.senderCertificate());
-		}
-		if (securityHeader.isEncryptionEnabled()) {
-			assert(securitySettings.partnerCertificate().get() != nullptr);
-
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
-			securityHeader.receiverCertificateThumbprint(thumbPrint);
-		}
-		securityHeader.opcUaBinaryEncode(ios1);
+		SecurityHeader::opcUaBinaryEncode(
+			ios1,
+			securitySettings.ownSecurityPolicyUri(),
+			securitySettings.ownCertificateChain(),
+			securitySettings.partnerCertificateThumbprint()
+		);
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
@@ -595,8 +568,7 @@ namespace OpcUaStackCore
 
 		if (secureSendOpenSecureChannelRequest(plainText, encryptedText, secureChannel) != Success) {
 			Log(Debug, "opc ua secure channel encrypt send message error")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 			return;
 		}
 
@@ -616,6 +588,8 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteOpenSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
+		Log(Debug, "handle write complete - OpenSecureChannelRequest")
+			.parameter("ChannelId", *secureChannel);
 	}
 
 	// ------------------------------------------------------------------------
@@ -651,8 +625,7 @@ namespace OpcUaStackCore
 		// error accurred
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelResponse message error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
@@ -662,8 +635,7 @@ namespace OpcUaStackCore
 		// partner has closed the connection
 		if (bytes_transfered == 0) {
 			Log(Debug, "opc ua secure channel is closed by partner")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -672,10 +644,24 @@ namespace OpcUaStackCore
 		std::iostream is(&secureChannel->recvBuffer_);
 
 		// get channel id
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->channelId_);
+		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
 
-		SecurityHeader securityHeader;
-		securityHeader.opcUaBinaryDecode(is);
+		// decode security header
+		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
+		SecurityHeader::opcUaBinaryDecode(
+			is,
+			secureSettings.partnerSecurityPolicyUri(),
+			secureSettings.partnerCertificateChain(),
+			secureSettings.ownCertificateThumbprint()
+		);
+
+		// handle security
+		if (secureReceivedOpenSecureChannelResponse(secureChannel) != Success) {
+			Log(Debug, "opc ua secure channel decrypt received message error")
+				.parameter("ChannelId", *secureChannel);
+
+			// FIXME: handle error
+		}
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
@@ -708,8 +694,7 @@ namespace OpcUaStackCore
 	)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadOpenSecureChannelResponse no implemented")
-			.parameter("Local", secureChannel->local_.address().to_string())
-			.parameter("Partner", secureChannel->partner_.address().to_string());
+			.parameter("ChannelId", *secureChannel);
 	}
 
 
@@ -727,9 +712,6 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncWriteOpenSecureChannelResponse(SecureChannel* secureChannel)
 	{
-		assert(applicationCertificate().get() != nullptr);
-		assert(applicationCertificate()->certificate().get() != nullptr);
-
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 
 		if (secureChannel->openSecureChannelResponseList_.size() == 0) return;
@@ -739,19 +721,6 @@ namespace OpcUaStackCore
 		openSecureChannelResponse = secureChannel->openSecureChannelResponseList_.front();
 		secureChannel->openSecureChannelResponseList_.pop_front();
 
-		// create server nonce
-		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
-			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
-			secureChannel->securitySettings().serverNonce().resize(keyLen);
-
-			char* memBuf = secureChannel->securitySettings().serverNonce().memBuf();
-			for (uint32_t idx=0; idx<keyLen; idx++) {
-				memBuf[idx] = rand();
-			}
-
-			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
-		}
-
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);
 		boost::asio::streambuf sb2;
@@ -760,20 +729,12 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode security header
-		SecurityHeader& securityHeader = secureChannel->securityHeader_;
-		securityHeader.senderCertificate().reset();
-		if (securityHeader.isSignatureEnabled()) {
-			// FIXME: use sender certificate chain
-			applicationCertificate()->certificate()->toDERBuf(securityHeader.senderCertificate());
-		}
-		securityHeader.receiverCertificateThumbprint().reset();
-		if (securityHeader.isEncryptionEnabled()) {
-			assert(securitySettings.partnerCertificate().get() != nullptr);
-
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
-			securityHeader.receiverCertificateThumbprint(thumbPrint);
-		}
-		securityHeader.opcUaBinaryEncode(ios1);
+		SecurityHeader::opcUaBinaryEncode(
+			ios1,
+			securitySettings.ownSecurityPolicyUri(),
+			securitySettings.ownCertificateChain(),
+			securitySettings.partnerCertificateThumbprint()
+		);
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
@@ -804,8 +765,7 @@ namespace OpcUaStackCore
 
 		if (secureSendOpenSecureChannelResponse(plainText, encryptedText, secureChannel) != Success) {
 			Log(Debug, "opc ua secure channel encrypt send message error")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 			return;
 		}
 
@@ -825,6 +785,9 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteOpenSecureChannelResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
+		Log(Debug, "handle write complete - OpenSecureChannelResponse")
+			.parameter("ChannelId", *secureChannel);
+
 		secureChannel->asyncSend_ = false;
 
 		// the secure channel is closed
@@ -836,8 +799,7 @@ namespace OpcUaStackCore
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel error - handleWriteOpenSecureChannelResponseComplete; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			if (!secureChannel->asyncRecv_) {
@@ -879,11 +841,12 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		secureChannel->secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
+
 		// error accurred
 		if (error) {
 			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
@@ -893,8 +856,7 @@ namespace OpcUaStackCore
 		// partner has closed the connection
 		if (bytes_transfered == 0) {
 			Log(Debug, "opc ua secure channel is closed by partner")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -902,18 +864,35 @@ namespace OpcUaStackCore
 
 		std::iostream is(&secureChannel->recvBuffer_);
 
-		OpcUaUInt32 channelId;
-		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+		// get channel id
+		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
+
+		// get security token
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_);
+
+		// handle security
+		if (secureReceivedMessageRequest(secureChannel) != Success) {
+			Log(Debug, "opc ua decrypt received message error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// encode sequence number
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
+
+		// encode request id
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->requestId_);
+
 		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
 		secureChannel->debugRecvCloseSecureChannelRequest();
 
-		// FIXME: ....
-
 		handleRecvCloseSecureChannelRequest(
 			secureChannel,
-			channelId
+			secureChannel->messageHeader_.channelId()
 		);
 		asyncRead(secureChannel);
 	}
@@ -925,8 +904,7 @@ namespace OpcUaStackCore
 	)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadCloseSecureChannelRequest no implemented")
-			.parameter("Local", secureChannel->local_.address().to_string())
-			.parameter("Partner", secureChannel->partner_.address().to_string());
+			.parameter("ChannelId", *secureChannel);
 	}
 
 	void
@@ -942,16 +920,39 @@ namespace OpcUaStackCore
 		// encode channel id
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
+		// encode token id
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->tokenId_);
+
+		// encode sequence number
+		secureChannel->sendSequenceNumber_++;
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_);
+
+		// encode request id
+		OpcUaNumber::opcUaBinaryEncode(ios1, 0);
+
 		// encode MessageHeader
 		secureChannel->messageHeader_.messageType(MessageType_CloseSecureChannel);
+		secureChannel->messageHeader_.segmentFlag('F');
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
 		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
 
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 
+		// handle security
+		MemoryBuffer plainText(sb2, sb1);
+		MemoryBuffer encryptedText;
+
+		if (secureSendMessageRequest(plainText, encryptedText, secureChannel) != Success) {
+			Log(Debug, "opc ua secure channel encrypt send message error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
+
+		encryptedText.get(secureChannel->sendBuffer_);
+
 		secureChannel->async_write(
-			sb2, sb1,
+			secureChannel->sendBuffer_,
 			boost::bind(
 				&SecureChannelBase::handleWriteCloseSecureChannelRequestComplete,
 				this,
@@ -964,10 +965,12 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteCloseSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
+		Log(Debug, "handle write complete - CloseSecureChannelRequest")
+			.parameter("ChannelId", *secureChannel);
+
 		// interrupts reading loop -> handleDisconnect
 		secureChannel->socket().cancel();
 	}
-
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -1019,8 +1022,7 @@ namespace OpcUaStackCore
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read service message error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			if (!secureChannel->asyncSend_) {
@@ -1032,8 +1034,7 @@ namespace OpcUaStackCore
 		// partner has closed the connection
 		if (bytes_transfered == 0) {
 			Log(Debug, "opc ua secure channel is closed by partner")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			if (!secureChannel->asyncSend_) {
 				closeChannel(secureChannel, true);
@@ -1052,8 +1053,7 @@ namespace OpcUaStackCore
 		// handle security
 		if (secureReceivedMessageRequest(secureChannel) != Success) {
 			Log(Debug, "opc ua decrypt received message error")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -1093,8 +1093,7 @@ namespace OpcUaStackCore
 	SecureChannelBase::handleRecvMessageRequest(SecureChannel* secureChannel)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadMessageRequest no implemented")
-			.parameter("Local", secureChannel->local_.address().to_string())
-			.parameter("Partner", secureChannel->partner_.address().to_string());
+			.parameter("ChannelId", *secureChannel);
 	}
 
 	void
@@ -1171,8 +1170,20 @@ namespace OpcUaStackCore
 			ios.write(bufferPtr,bodySize);
 			secureChannelTransaction->os_.consume(bodySize);
 
+			// handle security
+			MemoryBuffer plainText(sb2, sb1, sb);
+			MemoryBuffer encryptedText;
+
+			if (secureSendMessageRequest(plainText, encryptedText, secureChannel) != Success) {
+				Log(Debug, "opc ua secure channel encrypt send message error")
+					.parameter("ChannelId", *secureChannel);
+				return;
+			}
+
+			encryptedText.get(secureChannel->sendBuffer_);
+
 			secureChannel->async_write(
-				sb2, sb1, sb,
+				secureChannel->sendBuffer_,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageRequestComplete,
 					this,
@@ -1187,8 +1198,20 @@ namespace OpcUaStackCore
 			secureChannel->secureChannelTransactionList_.pop_front();
 			secureChannel->sendFirstSegment_ = true;
 
+			// handle security
+			MemoryBuffer plainText(sb2, sb1, secureChannelTransaction->os_);
+			MemoryBuffer encryptedText;
+
+			if (secureSendMessageRequest(plainText, encryptedText, secureChannel) != Success) {
+				Log(Debug, "opc ua secure channel encrypt send message error")
+					.parameter("ChannelId", *secureChannel);
+				return;
+			}
+
+			encryptedText.get(secureChannel->sendBuffer_);
+
 			secureChannel->async_write(
-				sb2, sb1, secureChannelTransaction->os_,
+				secureChannel->sendBuffer_,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageRequestComplete,
 					this,
@@ -1202,6 +1225,9 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteMessageRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
+		Log(Debug, "handle write complete - MessageRequest")
+			.parameter("ChannelId", *secureChannel);
+
 		secureChannel->asyncSend_ = false;
 
 		// the secure channel is closed
@@ -1213,8 +1239,7 @@ namespace OpcUaStackCore
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
@@ -1266,18 +1291,17 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		secureChannel->asyncRecv_ = false;
-
 		if (secureChannel->isLogging_) {
 			Log(Debug, "asyncReadMessageResponseComplete")
 				.parameter("BytesTransfered", bytes_transfered);
 		}
 
+		secureChannel->asyncRecv_ = false;
+
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read service message error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			if (!secureChannel->asyncSend_) {
@@ -1289,8 +1313,7 @@ namespace OpcUaStackCore
 		// partner has closed the connection
 		if (bytes_transfered == 0) {
 			Log(Debug, "opc ua secure channel is closed by partner")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			if (!secureChannel->asyncSend_) {
 				closeChannel(secureChannel, true);
@@ -1300,9 +1323,20 @@ namespace OpcUaStackCore
 
 		std::iostream ios(&secureChannel->recvBuffer_);
 
-		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->channelId_);
+		// get channel id
+		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(ios);
 
+		// get security token
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->tokenId_);
+
+		// handle security
+		if (secureReceivedMessageResponse(secureChannel) != Success) {
+			Log(Debug, "opc ua decrypt received message error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->recvSequenceNumber_);
@@ -1336,8 +1370,7 @@ namespace OpcUaStackCore
 	SecureChannelBase::handleRecvMessageResponse(SecureChannel* secureChannel)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadMessageResponse no implemented")
-			.parameter("Local", secureChannel->local_.address().to_string())
-			.parameter("Partner", secureChannel->partner_.address().to_string());
+			.parameter("ChannelId", *secureChannel);
 	}
 
 	void
@@ -1420,8 +1453,7 @@ namespace OpcUaStackCore
 
 			if (secureSendMessageResponse(plainText, encryptedText, secureChannel) != Success) {
 				Log(Debug, "opc ua secure channel encrypt send message error")
-					.parameter("Local", secureChannel->local_.address().to_string())
-					.parameter("Partner", secureChannel->partner_.address().to_string());
+					.parameter("ChannelId", *secureChannel);
 				return;
 			}
 
@@ -1450,8 +1482,7 @@ namespace OpcUaStackCore
 
 			if (secureSendMessageResponse(plainText, encryptedText, secureChannel) != Success) {
 				Log(Debug, "opc ua secure channel encrypt send message error")
-					.parameter("Local", secureChannel->local_.address().to_string())
-					.parameter("Partner", secureChannel->partner_.address().to_string());
+					.parameter("ChannelId", *secureChannel);
 				return;
 			}
 
@@ -1476,6 +1507,9 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		Log(Debug, "handle write complete - Message Response")
+			.parameter("ChannelId", *secureChannel);
+
 		secureChannel->asyncSend_ = false;
 
 		// the secure channel is closed
@@ -1489,8 +1523,7 @@ namespace OpcUaStackCore
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel error - handleWriteMessageResponseComplete; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			if (!secureChannel->asyncRecv_) {
@@ -1506,7 +1539,7 @@ namespace OpcUaStackCore
 	SecureChannelBase::handleWriteComplete(SecureChannel* secureChannel)
 	{
 		if (secureChannel->isLogging_) {
-			Log(Debug, "handle write complete");
+			Log(Debug, "handle write complete - handleWriteComplete");
 		}
 
 		if (secureChannel->actSegmentFlag_ == 'F') {
@@ -1524,6 +1557,44 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	void
+	SecureChannelBase::asyncWriteMessageError(
+		SecureChannel* secureChannel,
+		OpcUaUInt32 error,
+		const std::string& reason
+	)
+	{
+		// create error message
+		ErrorMessage errorMessage;
+		errorMessage.error(error);
+		errorMessage.reason(reason);
+
+		// encode error message
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+		errorMessage.opcUaBinaryEncode(ios1);
+
+		// encode message header
+		boost::asio::streambuf sb2;
+		std::iostream ios2(&sb2);
+		secureChannel->messageHeader_.messageType(MessageType_Error);
+		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
+		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+
+		// debug output
+		secureChannel->debugSendHeader(secureChannel->messageHeader_);
+		secureChannel->debugSendError(errorMessage);
+
+		// send error message
+		secureChannel->async_write(
+			sb2,
+			sb1,
+			[this, secureChannel] (const boost::system::error_code& error, std::size_t bytes_transfered) {
+				closeChannel(secureChannel, true);
+			}
+		);
+	}
+
 	void
 	SecureChannelBase::asyncReadError(SecureChannel* secureChannel)
 	{
@@ -1546,8 +1617,7 @@ namespace OpcUaStackCore
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read error message error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("ChannelId", *secureChannel)
 				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
@@ -1557,8 +1627,7 @@ namespace OpcUaStackCore
 		// partner has closed the connection
 		if (bytes_transfered == 0) {
 			Log(Debug, "opc ua secure channel is closed by partner")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
 			return;
@@ -1570,9 +1639,9 @@ namespace OpcUaStackCore
 		errorMessage.opcUaBinaryDecode(is);
 
 		Log(Error, "opc ua secure channel read error message; close channel")
-		    .parameter("Local", secureChannel->local_.address().to_string())
-			.parameter("Partner", secureChannel->partner_.address().to_string())
-			.parameter("Message", OpcUaStatusCodeMap::shortString((OpcUaStatusCode)errorMessage.error()));
+			.parameter("ChannelId", *secureChannel)
+			.parameter("Message", OpcUaStatusCodeMap::shortString((OpcUaStatusCode)errorMessage.error()))
+			.parameter("Reason", errorMessage.reason());
 		closeChannel(secureChannel, true);
 	}
 
@@ -1587,9 +1656,16 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::closeChannel(SecureChannel* secureChannel, bool close)
 	{
+		if (secureChannel->closeFlag_) {
+			return;
+		}
+		secureChannel->closeFlag_ = true;
+
 		Log(Error, "opc ua secure channel close")
-			.parameter("AsyncSend", secureChannel->asyncSend_);
-		if (close) secureChannel->close();
+			.parameter("Id", secureChannel->channelId_)
+			.parameter("AsyncSend", secureChannel->asyncSend_)
+			.parameter("CloseFlag", close);
+		secureChannel->close();
 
 		// cleanup sender
 		if (secureChannel->asyncSend_) {
@@ -1609,6 +1685,7 @@ namespace OpcUaStackCore
 	SecureChannelBase::handleDisconnect(SecureChannel* secureChannel)
 	{
 		Log(Error, "opc ua secure channel error, because handleDisconnect no implemented")
+			.parameter("Id", secureChannel->channelId_)
 			.parameter("Local", secureChannel->local_.address().to_string())
 			.parameter("Partner", secureChannel->partner_.address().to_string());
 	}

@@ -52,6 +52,17 @@ namespace OpcUaStackServer
 		return add(*referenceTypeNodeId, isForward, nodeId);
 	}
 
+	bool
+	ReferenceItemMap::add(ReferenceType referenceType, bool isForward, std::vector<OpcUaNodeId>& nodes)
+	{
+		for (auto& node : nodes) {
+			if (!add(referenceType, isForward, node)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	bool 
 	ReferenceItemMap::add(const OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr& referenceItem)
 	{
@@ -71,6 +82,62 @@ namespace OpcUaStackServer
 		referenceItem->isForward_ = isForward;
 		referenceItem->nodeId_ = nodeId;
 		return add(referenceTypeNodeId, referenceItem);
+	}
+
+	bool
+	ReferenceItemMap::add(const OpcUaNodeId& referenceTypeNodeId, bool isForward, std::vector<OpcUaNodeId>& nodes)
+	{
+		for (auto& node : nodes) {
+			if (!add(referenceTypeNodeId, isForward, node)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	bool
+	ReferenceItemMap::exist(OpcUaNodeId& referenceTypeNodeId, bool isForward, OpcUaNodeId& nodeId)
+	{
+		auto it1 = equal_range(referenceTypeNodeId);
+		for (auto it2 = it1.first; it2 != it1.second; it2++) {
+			auto referenceItem = it2->second;
+			if (referenceItem->isForward_ == isForward && referenceItem->nodeId_ == nodeId) return true;
+		}
+		return false;
+	}
+
+	void
+	ReferenceItemMap::get(ReferenceType referenceType, std::vector<bool>& isForwards, std::vector<OpcUaNodeId>& nodes)
+	{
+		OpcUaNodeId::SPtr referenceTypeNodeId = ReferenceTypeMap::typeNodeId(referenceType);
+		auto it1 = equal_range(*referenceTypeNodeId);
+		for (auto it2 = it1.first; it2 != it1.second; it2++) {
+			auto referenceItem = it2->second;
+			isForwards.push_back(referenceItem->isForward_);
+			nodes.push_back(referenceItem->nodeId_);
+		}
+	}
+
+	bool
+	ReferenceItemMap::getHasTypeDefinition(OpcUaNodeId& node)
+	{
+		std::vector<bool> isForwards;
+		std::vector<OpcUaNodeId> nodes;
+		get(ReferenceType_HasTypeDefinition, isForwards, nodes);
+		if (nodes.size() != 1) return false;
+		node = nodes[0];
+		return true;
+	}
+
+	bool
+	ReferenceItemMap::getHasModellingRule(OpcUaNodeId& node)
+	{
+		std::vector<bool> isForwards;
+		std::vector<OpcUaNodeId> nodes;
+		get(ReferenceType_HasModellingRule, isForwards, nodes);
+		if (nodes.size() != 1) return false;
+		node = nodes[0];
+		return true;
 	}
 
 	bool
@@ -161,10 +228,12 @@ namespace OpcUaStackServer
 
 	size_t
 	ReferenceItemMap::size() const {
-		return std::accumulate(referenceItemMultiMap_.begin(), referenceItemMultiMap_.end(), 0,
-				[](size_t accum, const ReferenceItemMultiMap::value_type& table) {
-			return accum + table.second.size();
-		});
+		return std::accumulate(
+			referenceItemMultiMap_.begin(), referenceItemMultiMap_.end(), 0,
+			[](size_t accum, const ReferenceItemMultiMap::value_type& table) {
+				return accum + table.second.size();
+			}
+		);
 	}
 
 	ReferenceItemMap::const_iterator::const_iterator()

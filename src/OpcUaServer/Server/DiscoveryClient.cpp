@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,11 +31,18 @@ namespace OpcUaServer
 	, discoveryClient_()
 	, discoveryServerUrl_("")
 	, enable_(false)
+	, cryptoManager_()
 	{
 	}
 
 	DiscoveryClient::~DiscoveryClient(void)
 	{
+	}
+
+	void
+	DiscoveryClient::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
 	}
 
 	bool
@@ -85,6 +92,7 @@ namespace OpcUaServer
 		ioThread_->startup();
 
 		discoveryClient_.ioThread(ioThread_);
+		discoveryClient_.cryptoManager(cryptoManager_);
 		discoveryClient_.discoveryUri(discoveryServerUrl_);
 		discoveryClient_.registerInterval(registerInterval_);
 		discoveryClient_.startup();
@@ -203,23 +211,19 @@ namespace OpcUaServer
 			addressList.push_back(url_discoveryUrl.host());
 		}
 
-		// create register Server entrie
+		// create register Server entries
 		RegisteredServer::SPtr registeredServer = constructSPtr<RegisteredServer>();
-		registeredServer->serverUri(applicationUri);
-		registeredServer->productUri(productUri);
+		registeredServer->serverUri() = applicationUri;
+		registeredServer->productUri() = productUri;
 		OpcUaLocalizedText::SPtr serverName = constructSPtr<OpcUaLocalizedText>();
 		serverName->set("en", applicationName);
-		OpcUaLocalizedTextArray::SPtr serverNames = constructSPtr<OpcUaLocalizedTextArray>();
-		serverNames->resize(1);
-		serverNames->push_back(serverName);
-		registeredServer->serverNames(serverNames);
-		registeredServer->serverType(AT_Server);
-		registeredServer->gatewayServerUri(gatewayServerUri);
-		registeredServer->isOnline(true);
+		registeredServer->serverNames().resize(1);
+		registeredServer->serverNames().push_back(serverName);
+		registeredServer->serverType().enumeration(ApplicationType::EnumServer);
+		registeredServer->gatewayServerUri() = gatewayServerUri;
+		registeredServer->isOnline() =  true;
 
-		OpcUaStringArray::SPtr discoveryUrls = constructSPtr<OpcUaStringArray>();
-		discoveryUrls->resize(addressList.size());
-		registeredServer->discoveryUrls(discoveryUrls);
+		registeredServer->discoveryUrls().resize(addressList.size());
 
 		std::vector<std::string>::iterator it;
 		for (it=addressList.begin(); it!=addressList.end(); it++) {
@@ -228,7 +232,7 @@ namespace OpcUaServer
 			OpcUaString::SPtr url = constructSPtr<OpcUaString>();
 			url->value(url_discoveryUrl.url());
 
-			discoveryUrls->push_back(url);
+			registeredServer->discoveryUrls().push_back(url);
 		}
 
 		registeredServerVec_.push_back(registeredServer);

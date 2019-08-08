@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -26,7 +26,6 @@ namespace OpcUaStackClient
 	NodeManagementService::NodeManagementService(IOThread* ioThread)
 	: Component()
 	, componentSession_(nullptr)
-	, nodeManagementServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -37,12 +36,10 @@ namespace OpcUaStackClient
 
 	void
 	NodeManagementService::setConfiguration(
-		Component* componentSession,
-		NodeManagementServiceIf* nodeManagementServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		nodeManagementServiceIf_ = nodeManagementServiceIf;
 	}
 
 	void 
@@ -52,18 +49,12 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	NodeManagementService::nodeManagementServiceIf(NodeManagementServiceIf* nodeManagementServiceIf)
-	{
-		nodeManagementServiceIf_ = nodeManagementServiceIf;
-	}
-
-	void 
 	NodeManagementService::syncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes)
 	{
 		serviceTransactionAddNodes->sync(true);
-		serviceTransactionAddNodes->conditionBool().conditionInit();
+		auto future = serviceTransactionAddNodes->promise().get_future();
 		asyncSend(serviceTransactionAddNodes);
-		serviceTransactionAddNodes->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -77,9 +68,9 @@ namespace OpcUaStackClient
 	NodeManagementService::syncSend(ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences)
 	{
 		serviceTransactionAddReferences->sync(true);
-		serviceTransactionAddReferences->conditionBool().conditionInit();
+		auto future = serviceTransactionAddReferences->promise().get_future();
 		asyncSend(serviceTransactionAddReferences);
-		serviceTransactionAddReferences->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -93,9 +84,9 @@ namespace OpcUaStackClient
 	NodeManagementService::syncSend(ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes)
 	{
 		serviceTransactionDeleteNodes->sync(true);
-		serviceTransactionDeleteNodes->conditionBool().conditionInit();
+		auto future = serviceTransactionDeleteNodes->promise().get_future();
 		asyncSend(serviceTransactionDeleteNodes);
-		serviceTransactionDeleteNodes->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -109,9 +100,9 @@ namespace OpcUaStackClient
 	NodeManagementService::syncSend(ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences)
 	{
 		serviceTransactionDeleteReferences->sync(true);
-		serviceTransactionDeleteReferences->conditionBool().conditionInit();
+		auto future = serviceTransactionDeleteReferences->promise().get_future();
 		asyncSend(serviceTransactionDeleteReferences);
-		serviceTransactionDeleteReferences->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -128,7 +119,7 @@ namespace OpcUaStackClient
 		
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 		
@@ -136,37 +127,37 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_AddNodesResponse_Encoding_DefaultBinary:
 			{
-				if (nodeManagementServiceIf_ != nullptr) {
-					nodeManagementServiceIf_->nodeManagementServiceAddNodesResponse(
-						boost::static_pointer_cast<ServiceTransactionAddNodes>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionAddNodes>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_AddReferencesResponse_Encoding_DefaultBinary:
 			{
-				if (nodeManagementServiceIf_ != nullptr) {
-					nodeManagementServiceIf_->nodeManagementServiceAddReferencesResponse(
-						boost::static_pointer_cast<ServiceTransactionAddReferences>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionAddReferences>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_DeleteNodesResponse_Encoding_DefaultBinary:
 			{
-				if (nodeManagementServiceIf_ != nullptr) {
-					nodeManagementServiceIf_->nodeManagementServiceDeleteNodesResponse(
-						boost::static_pointer_cast<ServiceTransactionDeleteNodes>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionDeleteNodes>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 			case OpcUaId_DeleteReferencesResponse_Encoding_DefaultBinary:
-				{
-				if (nodeManagementServiceIf_ != nullptr) {
-					nodeManagementServiceIf_->nodeManagementServiceDeleteReferencesResponse(
-						boost::static_pointer_cast<ServiceTransactionDeleteReferences>(serviceTransaction)
-					);
+			{
+				auto trx = boost::static_pointer_cast<ServiceTransactionDeleteReferences>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

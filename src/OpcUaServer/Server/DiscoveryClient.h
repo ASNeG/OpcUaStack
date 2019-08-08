@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -27,11 +27,13 @@ using namespace OpcUaStackClient;
 namespace OpcUaServer
 {
 
-	class DiscoveryClient
+	class DLLEXPORT DiscoveryClient
 	{
 	  public:
 		DiscoveryClient(void);
 		~DiscoveryClient(void);
+
+		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 
 		bool startup(Config& config);
 		void shutdown(void);
@@ -54,6 +56,7 @@ namespace OpcUaServer
 		IOThread::SPtr ioThread_;
 		DiscoveryClientRegisteredServers discoveryClient_;
 		RegisteredServer::Vec registeredServerVec_;
+		CryptoManager::SPtr cryptoManager_;
 	};
 
 }

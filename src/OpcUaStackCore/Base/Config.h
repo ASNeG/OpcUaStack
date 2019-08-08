@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,7 +23,6 @@
 #include <boost/lexical_cast.hpp>
 #include <vector>
 #include <map>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ConfigIf.h"
 
 namespace OpcUaStackCore
@@ -146,10 +145,15 @@ namespace OpcUaStackCore
 		bool aliasExist(const std::string& aliasName);
 		void alias(const std::string& aliasName, const std::string& aliasValue);
 		std::string alias(const std::string& aliasName);
+		void aliasMap(AliasMap& aliasMap);
+		AliasMap& aliasMap(void);
 		void out(std::ostream& os);
+		void outAliasMap(std::ostream& os);
+		void outAll(std::ostream& os);
 
 	  private:
 		void out(std::ostream& os, boost::property_tree::ptree& ptree, uint32_t depth = 0);
+		void out(std::ostream& os, AliasMap& aliasMap);
 		void getValuesFromName(const std::string& valueName, std::vector<std::string>& valueVec);
 		void getChildFromName(const std::string& valueName, std::vector<Config>& valueVec);
 		static void substAlias(std::string& value);

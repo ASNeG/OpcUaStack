@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 
 	DiscoveryService::DiscoveryService(void)
 	: discoveryIf_(nullptr)
-	, applicationCertificate_(nullptr)
+	, cryptoManager_(nullptr)
 	, endpointDescriptionArray_()
 	{
 	}
@@ -59,26 +59,21 @@ namespace OpcUaStackServer
 	}
 
 	void
-	DiscoveryService::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	DiscoveryService::cryptoManager(CryptoManager::SPtr& cryptoManager)
 	{
 		Log(Debug, "applicationCertificate");
 
-		assert(applicationCertificate.get() != nullptr);
+		assert(cryptoManager.get() != nullptr);
 
-		applicationCertificate_ = applicationCertificate;
+		cryptoManager_ = cryptoManager;
+		auto applicationCertificate = cryptoManager->applicationCertificate();
 
-		if (!applicationCertificate_->enable()) {
+		if (!applicationCertificate->enable()) {
 			return;
 		}
 
-		Certificate::SPtr& certificate = applicationCertificate->certificate();
-		uint32_t certLen;
-		if (!certificate->toDERBufLen(&certLen)) {
-			return;
-		}
-		char* certBuf = new char[certLen];
-		if (!certificate->toDERBuf(certBuf, &certLen)) {
-			delete [] certBuf;
+		OpcUaByteString certByteString;
+		if (!applicationCertificate->certificateChain().toByteString(certByteString)) {
 			return;
 		}
 
@@ -86,14 +81,12 @@ namespace OpcUaStackServer
 			EndpointDescription::SPtr endpointDescription;
 			endpointDescriptionArray_->get(idx, endpointDescription);
 
-			if (!endpointDescription->needSecurity()) {
-				continue;
-			}
+			//if (!endpointDescription->needSecurity()) {
+			//	continue;
+			//}
 
-			endpointDescription->serverCertificate((const unsigned char*)certBuf, certLen);
+			endpointDescription->serverCertificate() = certByteString;
 		}
-
-		delete [] certBuf;
 	}
 
 	void
@@ -186,7 +179,7 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		Log(Debug, "receive find servers request request");
+		Log(Debug, "receive find servers request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_FindServersResponse_Encoding_DefaultBinary;
 
 		std::iostream is(&secureChannelTransaction->is_);
@@ -218,14 +211,19 @@ namespace OpcUaStackServer
 
 		responseHeader.serviceResult(ctx.statusCode_);
 		if (ctx.statusCode_ == Success) {
-			findServersResponse.servers(ctx.servers_);
+			if (ctx.servers_->size() == 0) {
+				ctx.statusCode_ = BadNotSupported;
+			}
+			else {
+				findServersResponse.servers(ctx.servers_);
+			}
 		}
 
 		responseHeader.opcUaBinaryEncode(os);
 		findServersResponse.opcUaBinaryEncode(os);
 
 		if (discoveryIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = findServersResponse.responseHeader();
+			auto responseHeader = findServersResponse.responseHeader();
 			discoveryIf_->discoveryResponseMessage(responseHeader, secureChannelTransaction);
 		}
 	}
@@ -234,52 +232,6 @@ namespace OpcUaStackServer
 	void
 	DiscoveryService::receive(Message::SPtr message)
 	{
-#if 0
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
-		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>())
-		{
-			case OpcUaId_RegisterServerRequest_Encoding_DefaultBinary:
-				receiveRegisterServerRequest(serviceTransaction);
-				break;
-			default:
-			{
-				Log(Error, "discovery service received unknown message type")
-					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
-
-				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(serviceTransaction);
-				break;
-			}
-		}
-#endif
 	}
-#if 0
-	void
-	DiscoveryService::receiveRegisterServerRequest(ServiceTransaction::SPtr serviceTransaction)
-	{
-		ServiceTransactionRegisterServer::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterServer>(serviceTransaction);
-
-		RegisterServerRequest::SPtr registerServerRequest = trx->request();
-		RegisterServerResponse::SPtr registerServerResponse = trx->response();
-
-		Log(Debug, "discovery service register server request")
-			.parameter("Trx", serviceTransaction->transactionId());
-
-		// check forward callback functions
-		ApplicationRegisterServerContext ctx;
-		ctx.statusCode_ = BadNotSupported;
-		OpcUaStatusCode statusCode = BadNotSupported;
-		if (forwardGlobalSync()->registerServerService().isCallback()) {
-
-			// forward register server request
-			ctx.applicationContext_ = forwardGlobalSync()->registerServerService().applicationContext();
-			registerServerRequest->server().copyTo(ctx.server_);
-			forwardGlobalSync()->registerServerService().callback()(&ctx);
-		}
-
-		trx->statusCode(ctx.statusCode_);
-		trx->componentSession()->send(serviceTransaction);
-	}
-#endif
 
 }

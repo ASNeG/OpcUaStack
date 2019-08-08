@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/Base/Utility.h"
@@ -171,8 +171,8 @@ namespace OpcUaStackCore
 		value(memBuf, memLen);
 		return *this;
 	}
-		
-	OpcUaByteString::operator std::string (void) const
+
+	OpcUaByteString::operator std::string(void) const
 	{
 		if (length_ < 1 || value_ == nullptr) {
 			return std::string();
@@ -267,36 +267,6 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	OpcUaByteString::encode(boost::property_tree::ptree& pt) const
-	{
-		std::string hexString  = "";
-
-		if (length_ > 1) {
-			OpcUaStackCore::byteSequenceToHexString(value_, length_, hexString);
-		}
-
-		pt.put_value<std::string>(hexString);
-
-		return true;
-	}
-
-	bool
-	OpcUaByteString::decode(boost::property_tree::ptree& pt)
-	{
-		std::string hexString;
-		hexString = pt.get_value<std::string>();
-
-		if (hexString.length() < 1) return true;
-		if (hexString.length() % 2 != 0) return false;
-
-		length_ = hexString.length()/2;
-		value_ = (OpcUaByte*)malloc(length_);
-		OpcUaStackCore::hexStringToByteSequence(hexString, value_);
-
-		return true;
-	}
-
-	bool
 	OpcUaByteString::fromHexString(const std::string& hexString)
 	{
 		if (hexString.length() < 1) return true;
@@ -343,7 +313,7 @@ namespace OpcUaStackCore
 				.parameter("Element", element);
 			return false;
 		}
-		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		pt.push_back(std::make_pair(xmlns.addPrefix(element), elementTree));
 		return true;
 	}
 
@@ -399,6 +369,69 @@ namespace OpcUaStackCore
 
 		if (!Base64::decode(sourceValue.c_str(), sourceValue.length(), valueBuf, valueLen)) {
 			Log(Error, "OpcUaByteString xml encoder error - base64 decoder error");
+			delete valueBuf;
+			return false;
+		}
+
+		value(valueBuf, valueLen);
+		delete valueBuf;
+		return true;
+	}
+
+
+
+	bool
+	OpcUaByteString::jsonEncodeImpl(boost::property_tree::ptree& pt) const
+	{
+		OpcUaByte* valueBuf = nullptr;
+		OpcUaInt32 valueLen = 0;
+		value(&valueBuf, &valueLen);
+
+		if (valueLen == 0) {
+			pt.put_value("");
+		}
+		else {
+			uint32_t bufLen = Base64::asciiLen2base64Len(valueLen);
+			if (bufLen == 0) {
+				Log(Error, "OpcUaByteString json encoder error - base64 length error");
+				pt.put_value("");
+				return false;
+			}
+
+			char* buf = (char*) new char[bufLen+1];
+			if (!Base64::encode((const char*)valueBuf, valueLen, buf, bufLen)) {
+				Log(Error, "OpcUaByteString json encoder error - base64 encoder error");
+				delete buf;
+				return false;
+			}
+
+			std::string str(buf, bufLen);
+			pt.put_value(str);
+			delete buf;
+		}
+		return true;
+	}
+
+	bool
+	OpcUaByteString::jsonDecodeImpl(const boost::property_tree::ptree& pt)
+	{
+		std::string sourceValue = pt.get_value<std::string>();
+
+		if (sourceValue.size() == 0) {
+			value("", 0);
+			return true;
+		}
+
+		uint32_t valueLen = Base64::base64Len2asciiLen(sourceValue.length());
+		if (valueLen == 0) {
+			Log(Error, "OpcUaByteString json encoder error - ascii length error");
+			return false;
+		}
+		char* valueBuf = (char*)malloc(valueLen+1);
+		memset(valueBuf, 0x00, valueLen+1);
+
+		if (!Base64::decode(sourceValue.c_str(), sourceValue.length(), valueBuf, valueLen)) {
+			Log(Error, "OpcUaByteString json encoder error - base64 decoder error");
 			delete valueBuf;
 			return false;
 		}

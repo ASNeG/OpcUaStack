@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,7 +19,8 @@
 #ifndef __OpcUaStackCore_SecureChannel_h__
 #define __OpcUaStackCore_SecureChannel_h__
 
-#include "OpcUaStackCore/TCPChannel/TCPConnection.h"
+#include "OpcUaStackCore/BuildInTypes/SecurityPolicy.h"
+#include "OpcUaStackCore/Network/TCPConnection.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/Certificate/SecurityKeySet.h"
@@ -29,8 +30,10 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
+#include "OpcUaStackCore/SecureChannel/ErrorMessage.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
+#include "OpcUaStackCore/StandardDataTypes/MessageSecurityMode.h"
 
 namespace OpcUaStackCore
 {
@@ -54,6 +57,11 @@ namespace OpcUaStackCore
 
 		SecureChannel(IOThread* ioThread);
 		virtual ~SecureChannel(void);
+
+		friend std::ostream& operator<< (std::ostream& os, const SecureChannel& secureChannel) {
+			os << secureChannel.id_ << "-" << secureChannel.channelId_;
+			return os;
+		}
 
 		// --------------------------------------------------------------------
 		//
@@ -79,6 +87,7 @@ namespace OpcUaStackCore
 		void debugSendHeader(MessageHeader& messageHeader);
 		void debugSendHello(HelloMessage& hello);
 		void debugSendAcknowledge(AcknowledgeMessage& acknowledge);
+		void debugSendError(ErrorMessage& error);
 		void debugSendOpenSecureChannelRequest(OpenSecureChannelRequest& openSecureChannelRequest);
 		void debugSendOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse);
 		void debugSendMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction);
@@ -101,8 +110,8 @@ namespace OpcUaStackCore
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
 		MessageHeader messageHeader_;
-		SecurityHeader securityHeader_;
 
+		uint32_t id_;
 		IOThread* ioThread_;
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
@@ -120,7 +129,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 channelId_;
 		OpcUaUInt32 tokenId_;
 		std::vector<OpcUaUInt32> secureTokenVec_;
-		UtcTime createAt_;
+		OpcUaUtcTime createAt_;
 		OpcUaInt32 revisedLifetime_;
 
 		OpcUaNodeId typeId_;
@@ -144,11 +153,12 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxChunkCount_;
 		std::string endpointUrl_;
 
-		SecurityMode securityMode_;
-		SecurityPolicy securityPolicy_;
+		MessageSecurityMode::Enum securityMode_;
+		SecurityPolicy::Enum securityPolicy_;
 
 		Object::SPtr handle_;
 		static OpcUaUInt32 gChannelId_;
+		static uint32_t gId_;
 
 		bool isLogging_;
 

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,10 +20,9 @@
 #define __OpUaStackCore_SecureChannelServerConfig_h__
 
 #include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
-#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
-#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
@@ -43,8 +42,6 @@ namespace OpcUaStackCore
 		EndpointDescription::SPtr& endpointDescription(void);
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
-		ApplicationCertificate::SPtr& applicationCertificate(void);
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		CryptoManager::SPtr& cryptoManager(void);
 
@@ -52,7 +49,6 @@ namespace OpcUaStackCore
 		bool secureChannelLog(void);
 
 	  private:
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;

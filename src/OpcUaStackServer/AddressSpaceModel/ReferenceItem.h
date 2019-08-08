@@ -19,8 +19,6 @@
 #define __OpcUaStackServer_ReferenceItem_h__
 
 #include <vector>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 using namespace OpcUaStackCore;

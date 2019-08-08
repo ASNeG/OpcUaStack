@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,16 +30,36 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::SecureChannelClientConfig(void)
 	: SecureChannelConfig()
 	, endpointUrl_("")
-	, securityMode_(SM_None)
-	, securityPolicy_(SP_None)
+	, discoveryUrl_("")
+	, applicationUri_("")
+	, securityMode_(MessageSecurityMode::EnumNone)
+	, securityPolicy_(SecurityPolicy::EnumNone)
 	, connectTimeout_(0)
 	, renewTimeout_(300000)
 	, reconnectTimeout_(0)
 
-	, applicationCertificate_()
 	, cryptoManager_()
+	, certificateChain_()
 
 	, secureChannelLog_(false)
+	{
+	}
+
+	SecureChannelClientConfig::SecureChannelClientConfig(const SecureChannelClientConfig& secureChannelClientConfig)
+	: SecureChannelConfig(secureChannelClientConfig)
+	, endpointUrl_(secureChannelClientConfig.endpointUrl_)
+	, discoveryUrl_(secureChannelClientConfig.discoveryUrl_)
+	, applicationUri_(secureChannelClientConfig.applicationUri_)
+	, securityMode_(secureChannelClientConfig.securityMode_)
+	, securityPolicy_(secureChannelClientConfig.securityPolicy_)
+	, connectTimeout_(secureChannelClientConfig.connectTimeout_)
+	, renewTimeout_(secureChannelClientConfig.renewTimeout_)
+	, reconnectTimeout_(secureChannelClientConfig.reconnectTimeout_)
+
+	, cryptoManager_(secureChannelClientConfig.cryptoManager_)
+	, certificateChain_(secureChannelClientConfig.certificateChain_)
+
+	, secureChannelLog_(secureChannelClientConfig.secureChannelLog_)
 	{
 	}
 
@@ -60,24 +80,48 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClientConfig::securityMode(SecurityMode securityMode)
+	SecureChannelClientConfig::discoveryUrl(const std::string& discoveryUrl)
+	{
+		discoveryUrl_ = discoveryUrl;
+	}
+
+	std::string&
+	SecureChannelClientConfig::discoveryUrl(void)
+	{
+		return discoveryUrl_;
+	}
+
+	void
+	SecureChannelClientConfig::applicationUri(const std::string& applicationUri)
+	{
+		applicationUri_ = applicationUri;
+	}
+
+	std::string&
+	SecureChannelClientConfig::applicationUri(void)
+	{
+		return applicationUri_;
+	}
+
+	void
+	SecureChannelClientConfig::securityMode(MessageSecurityMode::Enum securityMode)
 	{
 		securityMode_ = securityMode;
 	}
 
-	SecurityMode
+	MessageSecurityMode::Enum
 	SecureChannelClientConfig::securityMode(void)
 	{
 		return securityMode_;
 	}
 
 	void
-	SecureChannelClientConfig::securityPolicy(SecurityPolicy securityPolicy)
+	SecureChannelClientConfig::securityPolicy(SecurityPolicy::Enum securityPolicy)
 	{
 		securityPolicy_ = securityPolicy;
 	}
 
-	SecurityPolicy
+	SecurityPolicy::Enum
 	SecureChannelClientConfig::securityPolicy(void)
 	{
 		return securityPolicy_;
@@ -120,18 +164,6 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClientConfig::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
-	{
-		applicationCertificate_ = applicationCertificate;
-	}
-
-	ApplicationCertificate::SPtr&
-	SecureChannelClientConfig::applicationCertificate(void)
-	{
-		return applicationCertificate_;
-	}
-
-	void
 	SecureChannelClientConfig::cryptoManager(CryptoManager::SPtr& cryptoManager)
 	{
 		cryptoManager_ = cryptoManager;
@@ -153,6 +185,18 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::secureChannelLog(void)
 	{
 		return secureChannelLog_;
+	}
+
+	void
+	SecureChannelClientConfig::certificateChain(CertificateChain& certificateChain)
+	{
+		certificateChain_ = certificateChain;
+	}
+
+	CertificateChain&
+	SecureChannelClientConfig::certificateChain(void)
+	{
+		return certificateChain_;
 	}
 
 }

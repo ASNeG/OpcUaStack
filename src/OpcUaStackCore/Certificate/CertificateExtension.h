@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,7 +20,6 @@
 
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 
 namespace OpcUaStackCore
@@ -32,6 +31,8 @@ namespace OpcUaStackCore
 	  public:
 		CertificateExtension(bool useCACert = false);
 		~CertificateExtension(void);
+
+		static bool isCACert(X509 *cert);
 
 		void clear(void);
 		void basicConstraints(const std::string& basicConstraints);
@@ -51,6 +52,8 @@ namespace OpcUaStackCore
 
 		bool encodeX509(X509 *cert, X509V3_CTX& ctx);
 		bool decodeX509(X509 *cert);
+
+		void logContent(const std::string& message);
 
 	  private:
 		bool encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value);

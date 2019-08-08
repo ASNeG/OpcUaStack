@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,15 +18,12 @@
 #ifndef __OpcUaStackCore_ApplicationHReadEventContext_h__
 #define __OpcUaStackCore_ApplicationHReadEventContext_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/UserContext.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/ServiceSet/TimestampsToReturn.h"
-#include "OpcUaStackCore/ServiceSet/EventFilter.h"
-#include "OpcUaStackCore/ServiceSet/HistoryEventFieldList.h"
+#include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryEventFieldList.h"
 
 namespace OpcUaStackCore
 {
@@ -42,7 +39,7 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime startTime_;		// IN - Start time of variables
 		boost::posix_time::ptime stopTime_;			// IN - stop time of variables
 		TimestampsToReturn timestampsToReturn_;		// IN - what timestamps are to be returned
-		EventFilter::SPtr filter_;					// IN - event filter
+		EventFilter filter_;						// IN - event filter
 		OpcUaBoolean releaseContinuationPoints_;	// IN - info about whether the continous
 													//      point schould be deleted
 		UserContext::SPtr userContext_;				// IN - user context

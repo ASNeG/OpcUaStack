@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,8 +17,8 @@
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
-#include "OpcUaStackCore/ServiceSet/HistoryData.h"
+#include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/HistoryData.h"
 #include "OpcUaClient/ClientCommand/CommandWriteH.h"
 #include "OpcUaClient/ClientService/ClientServiceWriteH.h"
 
@@ -102,19 +102,19 @@ namespace OpcUaClient
 		HistoryUpdateRequest::SPtr req = trx->request();
 
 		req->historyUpdateDetails()->resize(1);
-		ExtensibleParameter::SPtr extensibleParameter = constructSPtr<ExtensibleParameter>();
+		OpcUaExtensibleParameter::SPtr extensibleParameter = constructSPtr<OpcUaExtensibleParameter>();
 		req->historyUpdateDetails()->push_back(extensibleParameter);
 
 		UpdateStructureDataDetails::SPtr updateDetails;
 		extensibleParameter->parameterTypeId().set((OpcUaUInt32)OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 		updateDetails = extensibleParameter->parameter<UpdateStructureDataDetails>();
 
-		updateDetails->nodeId(commandWriteH->nodeId());
-		updateDetails->performInsertReplace(PerformUpdateEnumeration_Insert);
+		updateDetails->nodeId() = commandWriteH->nodeId();
+		updateDetails->performInsertReplace().enumeration(PerformUpdateType::EnumInsert);
 
-		updateDetails->updateValue()->resize(commandWriteH->dataValueVec().size());
+		updateDetails->updateValues().resize(commandWriteH->dataValueVec().size());
 		for (uint32_t idx=0; idx<commandWriteH->dataValueVec().size(); idx++) {
-			updateDetails->updateValue()->push_back(commandWriteH->dataValueVec()[idx]);
+			updateDetails->updateValues().push_back(commandWriteH->dataValueVec()[idx]);
 		}
 
 		// send read history request
@@ -200,19 +200,19 @@ namespace OpcUaClient
 			HistoryUpdateRequest::SPtr req = trx->request();
 
 			req->historyUpdateDetails()->resize(1);
-			ExtensibleParameter::SPtr extensibleParameter = constructSPtr<ExtensibleParameter>();
+			OpcUaExtensibleParameter::SPtr extensibleParameter = constructSPtr<OpcUaExtensibleParameter>();
 			req->historyUpdateDetails()->push_back(extensibleParameter);
 
 			UpdateStructureDataDetails::SPtr updateDetails;
 			extensibleParameter->parameterTypeId().set((OpcUaUInt32)OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 			updateDetails = extensibleParameter->parameter<UpdateStructureDataDetails>();
 
-			updateDetails->nodeId(commandWriteH->nodeId());
-			updateDetails->performInsertReplace(PerformUpdateEnumeration_Insert);
+			updateDetails->nodeId() = commandWriteH->nodeId();
+			updateDetails->performInsertReplace().enumeration(PerformUpdateType::EnumInsert);
 
-			updateDetails->updateValue()->resize(dataValueVec.size());
+			updateDetails->updateValues().resize(dataValueVec.size());
 			for (uint32_t idx=0; idx<dataValueVec.size(); idx++) {
-				updateDetails->updateValue()->push_back(dataValueVec[idx]);
+				updateDetails->updateValues().push_back(dataValueVec[idx]);
 			}
 
 			// send read history request

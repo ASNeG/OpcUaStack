@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -26,7 +26,6 @@ namespace OpcUaStackClient
 	DiscoveryService::DiscoveryService(IOThread* ioThread)
 	: Component()
 	, componentSession_(nullptr)
-	, discoveryServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -37,12 +36,10 @@ namespace OpcUaStackClient
 
 	void
 	DiscoveryService::setConfiguration(
-		Component* componentSession,
-		DiscoveryServiceIf* discoveryServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		discoveryServiceIf_ = discoveryServiceIf;
 	}
 
 	void 
@@ -52,18 +49,12 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	DiscoveryService::discoveryServiceIf(DiscoveryServiceIf* discoveryServiceIf)
-	{
-		discoveryServiceIf_ = discoveryServiceIf;
-	}
-
-	void 
 	DiscoveryService::syncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers)
 	{
 		serviceTransactionFindServers->sync(true);
-		serviceTransactionFindServers->conditionBool().conditionInit();
+		auto future = serviceTransactionFindServers->promise().get_future();
 		asyncSend(serviceTransactionFindServers);
-		serviceTransactionFindServers->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -77,9 +68,9 @@ namespace OpcUaStackClient
 	DiscoveryService::syncSend(ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints)
 	{
 		serviceTransactionGetEndpoints->sync(true);
-		serviceTransactionGetEndpoints->conditionBool().conditionInit();
+		auto future = serviceTransactionGetEndpoints->promise().get_future();
 		asyncSend(serviceTransactionGetEndpoints);
-		serviceTransactionGetEndpoints->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -93,9 +84,9 @@ namespace OpcUaStackClient
 	DiscoveryService::syncSend(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer)
 	{
 		serviceTransactionRegisterServer->sync(true);
-		serviceTransactionRegisterServer->conditionBool().conditionInit();
+		auto future = serviceTransactionRegisterServer->promise().get_future();
 		asyncSend(serviceTransactionRegisterServer);
-		serviceTransactionRegisterServer->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -108,11 +99,11 @@ namespace OpcUaStackClient
 	void 
 	DiscoveryService::receive(Message::SPtr message)
 	{
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 		
@@ -120,30 +111,30 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_FindServersResponse_Encoding_DefaultBinary:
 			{
-				if (discoveryServiceIf_ != nullptr) {
-					discoveryServiceIf_->discoveryServiceFindServersResponse(
-						boost::static_pointer_cast<ServiceTransactionFindServers>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionFindServers>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary:
 			{
-				if (discoveryServiceIf_ != nullptr) {
-					discoveryServiceIf_->discoveryServiceGetEndpointsResponse(
-						boost::static_pointer_cast<ServiceTransactionGetEndpoints>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionGetEndpoints>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_RegisterServerResponse_Encoding_DefaultBinary:
 			{
-				if (discoveryServiceIf_ != nullptr) {
-					discoveryServiceIf_->discoveryServiceRegisterServerResponse(
-						boost::static_pointer_cast<ServiceTransactionRegisterServer>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionRegisterServer>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

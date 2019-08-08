@@ -4,7 +4,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 #include "OpcUaStackCore/ServiceSet/DeleteReferencesRequest.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/ServiceSet/DeleteReferencesResponse.h"
@@ -80,11 +79,11 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 	// add  DeleteReferencesItem node
 	{
 		DeleteReferencesItem::SPtr deleteReferencesItemSPtr = constructSPtr<DeleteReferencesItem>();
-		deleteReferencesItemSPtr->sourceNodeId()->set(11, 130);
-		deleteReferencesItemSPtr->referenceTypeId()->set(12, 130);
-		deleteReferencesItemSPtr->isForward(false);
-		deleteReferencesItemSPtr->targetNodeId()->set(13,130);
-		deleteReferencesItemSPtr->deleteBidirectional(true);
+		deleteReferencesItemSPtr->sourceNodeId().set(11, 130);
+		deleteReferencesItemSPtr->referenceTypeId().set(12, 130);
+		deleteReferencesItemSPtr->isForward() = false;
+		deleteReferencesItemSPtr->targetNodeId().set(13,130);
+		deleteReferencesItemSPtr->deleteBidirectional() = true;
 	
 		deleteReferencesRequestSPtr->referencesToDelete()->set(0, deleteReferencesItemSPtr);
 	}
@@ -172,18 +171,14 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 		BOOST_REQUIRE(deleteReferencesRequestSPtr->referencesToDelete()->get(0, deleteReferencesItemSPtr));
 		BOOST_REQUIRE(deleteReferencesItemSPtr.get() != 0);
 
-		BOOST_REQUIRE(deleteReferencesItemSPtr->sourceNodeId().get() != NULL);
-		BOOST_REQUIRE(deleteReferencesItemSPtr->referenceTypeId().get() != NULL);
-		BOOST_REQUIRE(deleteReferencesItemSPtr->targetNodeId().get() != NULL);
-	
-		BOOST_REQUIRE(deleteReferencesItemSPtr->sourceNodeId()->namespaceIndex() == 130);
-		BOOST_REQUIRE(deleteReferencesItemSPtr->sourceNodeId()->nodeId<OpcUaUInt32>() == 11);
-		BOOST_REQUIRE(deleteReferencesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
-		BOOST_REQUIRE(deleteReferencesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 12);
+		BOOST_REQUIRE(deleteReferencesItemSPtr->sourceNodeId().namespaceIndex() == 130);
+		BOOST_REQUIRE(deleteReferencesItemSPtr->sourceNodeId().nodeId<OpcUaUInt32>() == 11);
+		BOOST_REQUIRE(deleteReferencesItemSPtr->referenceTypeId().namespaceIndex() == 130);
+		BOOST_REQUIRE(deleteReferencesItemSPtr->referenceTypeId().nodeId<OpcUaUInt32>() == 12);
 
 		BOOST_REQUIRE(deleteReferencesItemSPtr->isForward() == false);
-		BOOST_REQUIRE(deleteReferencesItemSPtr->targetNodeId()->namespaceIndex() == 130);
-		BOOST_REQUIRE(deleteReferencesItemSPtr->targetNodeId()->nodeId<OpcUaUInt32>() == 13);		
+		BOOST_REQUIRE(deleteReferencesItemSPtr->targetNodeId().namespaceIndex() == 130);
+		BOOST_REQUIRE(deleteReferencesItemSPtr->targetNodeId().nodeId<OpcUaUInt32>() == 13);
 
 		BOOST_REQUIRE(deleteReferencesItemSPtr->deleteBidirectional() == true);
 	}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,7 +24,7 @@
 namespace OpcUaStackCore
 {
 
-	class NamespaceElement
+	class DLLEXPORT NamespaceElement
 	{
 	  public:
 		typedef std::vector<NamespaceElement> Vec;
@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 		std::string namespaceName_;
 	};
 
-	class VariableElement
+	class DLLEXPORT VariableElement
 	{
 	  public:
 		typedef std::vector<VariableElement> Vec;

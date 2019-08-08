@@ -2,9 +2,11 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/ServiceSet/BrowseNextRequest.h"
 #include "OpcUaStackCore/ServiceSet/BrowseNextResponse.h"
-#include "OpcUaStackCore/ServiceSet/NodeClass.h"
+#include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
+#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
+#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
@@ -215,7 +217,7 @@ BOOST_AUTO_TEST_CASE(BrowseNext_Response)
 	referenceDescriptionSPtr->browseName(browseName);
 	displayName.locale("local");
 	referenceDescriptionSPtr->displayName(displayName);
-	referenceDescriptionSPtr->nodeClass(NodeClassType_DataType);
+	referenceDescriptionSPtr->nodeClass(NodeClass::EnumDataType);
 	referenceDescriptionSPtr->typeDefinition()->namespaceIndex(2);
 	referenceDescriptionSPtr->typeDefinition()->nodeId<OpcUaUInt32>(123);
 	
@@ -300,7 +302,7 @@ BOOST_AUTO_TEST_CASE(BrowseNext_Response)
 	BOOST_REQUIRE(referenceDescriptionSPtr->browseName().name().value() == "ABC");
 	BOOST_REQUIRE(referenceDescriptionSPtr->browseName().namespaceIndex() == 2);
 	BOOST_REQUIRE(referenceDescriptionSPtr->displayName().locale().value() == "local");
-	BOOST_REQUIRE(referenceDescriptionSPtr->nodeClass() == NodeClassType_DataType);
+	BOOST_REQUIRE(referenceDescriptionSPtr->nodeClass() == NodeClass::EnumDataType);
 	BOOST_REQUIRE(referenceDescriptionSPtr->typeDefinition()->namespaceIndex() == 2);
 	BOOST_REQUIRE(referenceDescriptionSPtr->typeDefinition()->nodeId<OpcUaUInt32>() == 123);
 }

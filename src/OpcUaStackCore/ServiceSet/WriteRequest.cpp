@@ -64,4 +64,16 @@ namespace OpcUaStackCore
 		writeValueArraySPtr_->opcUaBinaryDecode(is);
 		return true;
 	}
+
+	bool
+	WriteRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
+	{
+		return jsonArraySPtrEncode(pt, writeValueArraySPtr_, "NodesToWrite");
+	}
+
+	bool
+	WriteRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
+	{
+		return jsonArraySPtrDecode(pt, writeValueArraySPtr_, "NodesToWrite");
+	}
 }

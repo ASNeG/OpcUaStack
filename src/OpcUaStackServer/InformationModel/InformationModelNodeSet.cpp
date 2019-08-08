@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -149,64 +149,67 @@ namespace OpcUaStackServer
 			it0 = namespaceIndexSet.find(nodeId.namespaceIndex());
 			if (it0 == namespaceIndexSet.end()) continue;
 
-			switch (baseNodeClassSPtr->nodeClass().data())
+			NodeClass::Enum nodeClass = baseNodeClassSPtr->nodeClass().data();
+			switch (nodeClass)
 			{
-				case NodeClassType_DataType:
+				case NodeClass::EnumDataType:
 				{
 					DataTypeNodeClass::SPtr dataTypeNodeClass;
 					dataTypeNodeClass = boost::static_pointer_cast<DataTypeNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.dataTypeNodeClassVec().push_back(dataTypeNodeClass);
 					break;
 				}
-				case NodeClassType_Method:
+				case NodeClass::EnumMethod:
 				{
 					MethodNodeClass::SPtr methodNodeClass;
 					methodNodeClass = boost::static_pointer_cast<MethodNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.methodNodeClassVec().push_back(methodNodeClass);
 					break;
 				}
-				case NodeClassType_Object:
+				case NodeClass::EnumObject:
 				{
 					ObjectNodeClass::SPtr objectNodeClass;
 					objectNodeClass = boost::static_pointer_cast<ObjectNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.objectNodeClassVec().push_back(objectNodeClass);
 					break;
 				}
-				case NodeClassType_ObjectType:
+				case NodeClass::EnumObjectType:
 				{
 					ObjectTypeNodeClass::SPtr objectTypeNodeClass;
 					objectTypeNodeClass = boost::static_pointer_cast<ObjectTypeNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.objectTypeNodeClassVec().push_back(objectTypeNodeClass);
 					break;
 				}
-				case NodeClassType_ReferenceType:
+				case NodeClass::EnumReferenceType:
 				{
 					ReferenceTypeNodeClass::SPtr referenceTypeNodeClass;
 					referenceTypeNodeClass = boost::static_pointer_cast<ReferenceTypeNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.referenceTypeNodeClassVec().push_back(referenceTypeNodeClass);
 					break;
 				}
-				case NodeClassType_Variable:
+				case NodeClass::EnumVariable:
 				{
 					VariableNodeClass::SPtr variableNodeClass;
 					variableNodeClass = boost::static_pointer_cast<VariableNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.variableNodeClassVec().push_back(variableNodeClass);
 					break;
 				}
-				case NodeClassType_VariableType:
+				case NodeClass::EnumVariableType:
 				{
 					VariableTypeNodeClass::SPtr variableTypeNodeClass;
 					variableTypeNodeClass = boost::static_pointer_cast<VariableTypeNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.variableTypeNodeClassVec().push_back(variableTypeNodeClass);
 					break;
 				}
-				case NodeClassType_View:
+				case NodeClass::EnumView:
 				{
 					ViewNodeClass::SPtr viewNodeClass;
 					viewNodeClass = boost::static_pointer_cast<ViewNodeClass>(baseNodeClassSPtr);
 					nodeSetBaseParser.viewNodeClassVec().push_back(viewNodeClass);
 					break;
 				}
+				default:
+					Log(Error, "Unknown class").parameter("Class", nodeClass);
 			}
 		}
 

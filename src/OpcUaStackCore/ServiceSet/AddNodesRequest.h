@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,25 +19,15 @@
 #define __OpcUaStackCore_AddNodesRequest_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
-#include "OpcUaStackCore/ServiceSet/AddNodesItem.h"
-#include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
-#include "OpcUaStackCore/ServiceSet/MethodAttributes.h"
-#include "OpcUaStackCore/ServiceSet/ObjectAttributes.h"
-#include "OpcUaStackCore/ServiceSet/ObjectTypeAttributes.h"
-#include "OpcUaStackCore/ServiceSet/ReferenceTypeAttributes.h"
-#include "OpcUaStackCore/ServiceSet/VariableAttributes.h"
-#include "OpcUaStackCore/ServiceSet/VariableTypeAttributes.h"
-#include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
+#include "OpcUaStackCore/StandardDataTypes/AddNodesItem.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT AddNodesRequest
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<AddNodesRequest> SPtr;
@@ -48,8 +38,18 @@ namespace OpcUaStackCore
 		void nodesToAdd(const AddNodesItemArray::SPtr addNodesItemArray);
 		AddNodesItemArray::SPtr nodesToAdd() const;
 
+		void copyTo(AddNodesRequest& addNodesRequest);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+	  protected:
+	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; }
+	    bool jsonDecodeImpl(const boost::property_tree::ptree &pt) { return false; }
 
 	  private:
 		AddNodesItemArray::SPtr addNodesItemArray_;

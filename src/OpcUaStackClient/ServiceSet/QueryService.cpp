@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,7 +25,6 @@ namespace OpcUaStackClient
 
 	QueryService::QueryService(IOThread* ioThread)
 	: componentSession_(nullptr)
-	, queryServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -36,12 +35,10 @@ namespace OpcUaStackClient
 
 	void
 	QueryService::setConfiguration(
-		Component* componentSession,
-		QueryServiceIf* queryServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		queryServiceIf_ = queryServiceIf;
 	}
 
 	void 
@@ -51,18 +48,12 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	QueryService::queryServiceIf(QueryServiceIf* queryServiceIf)
-	{
-		queryServiceIf_ = queryServiceIf;
-	}
-
-	void 
 	QueryService::syncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
 	{
 		serviceTransactionQueryFirst->sync(true);
-		serviceTransactionQueryFirst->conditionBool().conditionInit();
+		auto future = serviceTransactionQueryFirst->promise().get_future();
 		asyncSend(serviceTransactionQueryFirst);
-		serviceTransactionQueryFirst->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -76,9 +67,9 @@ namespace OpcUaStackClient
 	QueryService::syncSend(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
 	{
 		serviceTransactionQueryNext->sync(true);
-		serviceTransactionQueryNext->conditionBool().conditionInit();
+		auto future = serviceTransactionQueryNext->promise().get_future();
 		asyncSend(serviceTransactionQueryNext);
-		serviceTransactionQueryNext->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void
@@ -96,7 +87,7 @@ namespace OpcUaStackClient
 		
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 		
@@ -104,20 +95,20 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_QueryFirstResponse_Encoding_DefaultBinary:
 			{
-				if (queryServiceIf_ != nullptr) {
-					queryServiceIf_->queryServiceQueryFirstResponse(
-						boost::static_pointer_cast<ServiceTransactionQueryFirst>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionQueryFirst>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}
 
 			case OpcUaId_QueryNextResponse_Encoding_DefaultBinary:
 			{
-				if (queryServiceIf_ != nullptr) {
-					queryServiceIf_->queryServiceQueryNextResponse(
-						boost::static_pointer_cast<ServiceTransactionQueryNext>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionQueryNext>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

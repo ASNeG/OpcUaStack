@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackCore_ResponseHeader_h__
 #define __OpcUaStackCore_ResponseHeader_h__
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 
@@ -35,11 +33,11 @@ namespace OpcUaStackCore
 		ResponseHeader(void);
 		virtual ~ResponseHeader(void);
 
-		void time(const UtcTime& time);
+		void time(const OpcUaUtcTime& time);
 		void time(const boost::posix_time::ptime& time);
-		UtcTime time(void) const;
-		void requestHandle(const IntegerId& requestHandle);
-		IntegerId requestHandle(void) const;
+		OpcUaUtcTime time(void) const;
+		void requestHandle(const OpcUaIntegerId& requestHandle);
+		OpcUaIntegerId requestHandle(void) const;
 		void serviceResult(const OpcUaStatusCode& serviceResult);
 		OpcUaStatusCode serviceResult(void) const;
 		void diagnosticInfo(const OpcUaDiagnosticInfo::SPtr& diagnosticInfoSPtr);
@@ -51,8 +49,8 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		UtcTime time_;
-		IntegerId requestHandle_;
+		OpcUaUtcTime time_;
+		OpcUaIntegerId requestHandle_;
 		OpcUaStatusCode serviceResult_;
 		OpcUaDiagnosticInfo::SPtr diagnosticInfoSPtr_;
 		OpcUaStringArray::SPtr stringTableSPtr_;

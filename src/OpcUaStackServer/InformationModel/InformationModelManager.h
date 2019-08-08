@@ -18,8 +18,6 @@
 #ifndef __OpcUaStackServer_InformationModelManager_h__
 #define __OpcUaStackServer_InformationModelManager_h__
 
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
 namespace OpcUaStackServer
@@ -74,7 +72,7 @@ namespace OpcUaStackServer
 		void informationModel(InformationModel::SPtr& informationModel);
 
 		bool addNode(
-			NodeClassType nodeClassType,
+			NodeClass::Enum nodeClassType,
 			AddNodeRule& addNodeRule,
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& nodeId,

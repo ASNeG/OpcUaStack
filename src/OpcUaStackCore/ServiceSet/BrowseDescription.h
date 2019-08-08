@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,9 +19,8 @@
 #define __OpcUaStackCore_BrowseDescritpion_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore
@@ -32,9 +31,10 @@ namespace OpcUaStackCore
 		BrowseDirection_Inverse = 1,
 		BrowseDirection_Both = 2
 	} BrowseDirectionEnum;
-	                
+
 	class DLLEXPORT BrowseDescription
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<BrowseDescription> SPtr;
@@ -55,10 +55,21 @@ namespace OpcUaStackCore
 		void resultMask(const OpcUaUInt32 resultMask);
 		OpcUaUInt32 resultMask(void);
 		
+		void copyTo(BrowseDescription& browseDescription);
+		void out(std::ostream& os) const {};
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 
-	  private:
+	protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+
+	private:
 		OpcUaNodeId::SPtr nodeIdSPtr_;
 		BrowseDirectionEnum browseDirection_;
 		OpcUaNodeId::SPtr referenceTypeIdSPtr_;
@@ -67,7 +78,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 resultMask_;
 	};
 
-	class BrowseDescriptionArray
+	class DLLEXPORT BrowseDescriptionArray
 	: public OpcUaArray<BrowseDescription::SPtr, SPtrTypeCoder<BrowseDescription> >
 	, public Object
 	{

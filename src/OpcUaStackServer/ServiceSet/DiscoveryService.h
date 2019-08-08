@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,12 +18,11 @@
 #ifndef __OpcUaStackServer_DiscoveryService_h__
 #define __OpcUaStackServer_DiscoveryService_h__
 
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/EndpointDescriptionSet.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryIf.h"
@@ -45,7 +44,7 @@ namespace OpcUaStackServer
 
 		void discoveryIf(DiscoveryIf* discoveryIf);
 		void endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet);
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 
 		void getEndpointRequest(
 			RequestHeader::SPtr requestHeader,
@@ -66,7 +65,7 @@ namespace OpcUaStackServer
 
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
-		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoManager::SPtr cryptoManager_;
 		DiscoveryIf* discoveryIf_;
 	};
 

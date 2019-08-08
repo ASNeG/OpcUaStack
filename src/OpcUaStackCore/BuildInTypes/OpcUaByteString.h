@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackCore_OpcUaByteString_h__
@@ -23,13 +23,18 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
+<<<<<<< HEAD
 #include "OpcUaStackCore/Base/ObjectPool.h"
+=======
+#include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
+>>>>>>> Release4
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT OpcUaByteString
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaByteString> SPtr;
@@ -50,7 +55,7 @@ namespace OpcUaStackCore
 		bool resize(uint32_t size);
 		void reset(void);
 		bool exist(void) const;
-		bool isNull(void) const;
+		bool isNull(void) const override;
 
 		bool fromHexString(const std::string& hexString);
 		std::string toHexString(void) const;
@@ -73,18 +78,20 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool encode(boost::property_tree::ptree& pt) const;
-		bool decode(boost::property_tree::ptree& pt);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
-	  private:
+    protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+
+    private:
 		OpcUaInt32 length_;
 		OpcUaByte* value_; 
 	};
 
-	class OpcUaByteStringArray
+	class DLLEXPORT OpcUaByteStringArray
 	: public OpcUaArray<OpcUaByteString::SPtr, SPtrTypeCoder<OpcUaByteString> >
 	{
 	  public:

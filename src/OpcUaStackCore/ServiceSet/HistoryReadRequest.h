@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,19 +19,17 @@
 #define __OpcUaStackCore_HistoryReadRequest_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/HistoryReadValueId.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 #include "OpcUaStackCore/ServiceSet/TimestampsToReturn.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT HistoryReadRequest
-	: public  Object
+	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryReadRequest> SPtr;
@@ -39,8 +37,8 @@ namespace OpcUaStackCore
 		HistoryReadRequest(void);
 		virtual ~HistoryReadRequest(void);
 
-		void historyReadDetails(const ExtensibleParameter::SPtr historyReadDetails);
-		ExtensibleParameter::SPtr historyReadDetails(void) const;
+		void historyReadDetails(const OpcUaExtensibleParameter::SPtr historyReadDetails);
+		OpcUaExtensibleParameter::SPtr historyReadDetails(void) const;
 		void timestampsToReturn(const TimestampsToReturn timestampsToReturn);
 		TimestampsToReturn timestampsToReturn(void);
 		void releaseContinuationPoints(const OpcUaBoolean& releaseContinuationPoints);
@@ -50,10 +48,18 @@ namespace OpcUaStackCore
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+	  protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const;
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt);
 
 	  private:
 		RequestHeader::SPtr requestHeaderSPtr_;
-		ExtensibleParameter::SPtr historyReadDetailsSPtr_;
+		OpcUaExtensibleParameter::SPtr historyReadDetailsSPtr_;
 		TimestampsToReturn timestampsToReturn_;
 		OpcUaBoolean releaseContinuationPoints_;
 		HistoryReadValueIdArray::SPtr nodesToReadArraySPtr_;

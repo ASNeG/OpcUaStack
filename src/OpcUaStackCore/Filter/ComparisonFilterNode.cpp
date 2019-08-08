@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
+   Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru), Kai Huebl (kai@huebl-sgh.de)
  */
 
 
@@ -23,32 +23,32 @@
 namespace OpcUaStackCore
 {
 
-    ComparisonFilterNode::ComparisonFilterNode(OpcUaOperator op, const std::vector<FilterNode::SPtr>& args)
+    ComparisonFilterNode::ComparisonFilterNode(FilterOperator::Enum op, const std::vector<FilterNode::SPtr>& args)
     {
     	operator_ = op;
 
     	switch(operator_) {
-    	case OpcUaOperator::Equals:
-    	case OpcUaOperator::GreaterThan:
-    	case OpcUaOperator::LessThan:
-    	case OpcUaOperator::GreaterThanOrEqual:
-    	case OpcUaOperator::LessThanOrEqual:
-    	{
-			status_ = OpcUaStatusCode::Success;
-			operandStatuses_ = std::vector<OpcUaStatusCode>();
+    		case FilterOperator::EnumEquals:
+    		case FilterOperator::EnumGreaterThan:
+    		case FilterOperator::EnumLessThan:
+    		case FilterOperator::EnumGreaterThanOrEqual:
+    		case FilterOperator::EnumLessThanOrEqual:
+    		{
+    			status_ = OpcUaStatusCode::Success;
+    			operandStatuses_ = std::vector<OpcUaStatusCode>();
 
-			if (args.size() == 2) {
-				arg1_ = args[0];
-				arg2_ = args[1];
-			}
-			else {
-				status_ = OpcUaStatusCode::BadFilterOperandCountMismatch;
-			}
-			break;
-    	}
-    	default:
-    		status_ = OpcUaStatusCode::BadFilterOperatorInvalid;
-    	}
+    			if (args.size() == 2) {
+    				arg1_ = args[0];
+    				arg2_ = args[1];
+    			}
+    			else {
+    				status_ = OpcUaStatusCode::BadFilterOperandCountMismatch;
+    			}
+    			break;
+    		}
+    		default:
+    			status_ = OpcUaStatusCode::BadFilterOperatorInvalid;
+    		}
     }
 
     ComparisonFilterNode::~ComparisonFilterNode()
@@ -108,31 +108,33 @@ namespace OpcUaStackCore
 	{
     	// FIXME: doesn't compare arrays
     	switch (operator_) {
-		case OpcUaOperator::Equals:
-		{
-			result.set<OpcUaBoolean>(lhs.variant()[0] == rhs.variant()[0]);
-			return true;
-		}
-		case OpcUaOperator::GreaterThan:
-		{
-			result.set<OpcUaBoolean>(lhs.variant()[0] > rhs.variant()[0]);
-			return true;
-		}
-		case OpcUaOperator::LessThan:
-		{
-			result.set<OpcUaBoolean>(lhs.variant()[0] < rhs.variant()[0]);
-			return true;
-		}
-		case OpcUaOperator::GreaterThanOrEqual:
-		{
-			result.set<OpcUaBoolean>(lhs.variant()[0] >= rhs.variant()[0]);
-			return true;
-		}
-		case OpcUaOperator::LessThanOrEqual:
-		{
-			result.set<OpcUaBoolean>(lhs.variant()[0] <= rhs.variant()[0]);
-			return true;
-		}
+			case FilterOperator::EnumEquals:
+			{
+				result.set<OpcUaBoolean>(lhs.variant()[0] == rhs.variant()[0]);
+				return true;
+			}
+			case FilterOperator::EnumGreaterThan:
+			{
+				result.set<OpcUaBoolean>(lhs.variant()[0] > rhs.variant()[0]);
+				return true;
+			}
+			case FilterOperator::EnumLessThan:
+			{
+				result.set<OpcUaBoolean>(lhs.variant()[0] < rhs.variant()[0]);
+				return true;
+			}
+			case FilterOperator::EnumGreaterThanOrEqual:
+			{
+				result.set<OpcUaBoolean>(lhs.variant()[0] >= rhs.variant()[0]);
+				return true;
+			}
+			case FilterOperator::EnumLessThanOrEqual:
+			{
+				result.set<OpcUaBoolean>(lhs.variant()[0] <= rhs.variant()[0]);
+				return true;
+			}
+    		default:
+    			Log(Error, "Wrong operator").parameter("FilterOperatorId", operator_);
     	}
     	return false;
 

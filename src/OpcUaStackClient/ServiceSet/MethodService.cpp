@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,7 +25,6 @@ namespace OpcUaStackClient
 
 	MethodService::MethodService(IOThread* ioThread)
 	: componentSession_(nullptr)
-	, methodServiceIf_(nullptr)
 	{
 		Component::ioThread(ioThread);
 	}
@@ -36,12 +35,10 @@ namespace OpcUaStackClient
 
 	void
 	MethodService::setConfiguration(
-		Component* componentSession,
-		MethodServiceIf* methodServiceIf
+		Component* componentSession
 	)
 	{
 		this->componentSession(componentSession);
-		methodServiceIf_ = methodServiceIf;
 	}
 
 	void 
@@ -51,18 +48,12 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	MethodService::methodServiceIf(MethodServiceIf* methodServiceIf)
-	{
-		methodServiceIf_ = methodServiceIf;
-	}
-
-	void 
 	MethodService::syncSend(ServiceTransactionCall::SPtr serviceTransactionCall)
 	{
 		serviceTransactionCall->sync(true);
-		serviceTransactionCall->conditionBool().conditionInit();
+		auto future = serviceTransactionCall->promise().get_future();
 		asyncSend(serviceTransactionCall);
-		serviceTransactionCall->conditionBool().waitForCondition();
+		future.wait();
 	}
 
 	void 
@@ -81,7 +72,7 @@ namespace OpcUaStackClient
 		
 		// check if transaction is synchron
 		if (serviceTransaction->sync()) {
-			serviceTransaction->conditionBool().conditionTrue();
+			serviceTransaction->promise().set_value(true);
 			return;
 		}
 		
@@ -89,10 +80,10 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_CallResponse_Encoding_DefaultBinary:
 			{
-				if (methodServiceIf_ != nullptr) {
-					methodServiceIf_->methodServiceCallResponse(
-						boost::static_pointer_cast<ServiceTransactionCall>(serviceTransaction)
-					);
+				auto trx = boost::static_pointer_cast<ServiceTransactionCall>(serviceTransaction);
+				auto handler = trx->resultHandler();
+				if (handler) {
+					handler(trx);
 				}
 				break;
 			}

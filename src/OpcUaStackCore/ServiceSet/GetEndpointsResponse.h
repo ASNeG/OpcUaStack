@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,17 +12,14 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
- */
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
+*/
 
 #ifndef __OpcUaStackCore_GetEndpointsResponse_h__
 #define __OpcUaStackCore_GetEndpointsResponse_h__
 
 #include <stdint.h>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
 namespace OpcUaStackCore
@@ -30,6 +27,7 @@ namespace OpcUaStackCore
 
 	class DLLEXPORT GetEndpointsResponse
 	: public Object
+	, public JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<GetEndpointsResponse> SPtr;
@@ -39,13 +37,18 @@ namespace OpcUaStackCore
 
 		void responseHeader(const ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void) const;
-		void endpoints(const EndpointDescriptionArray::SPtr endpoints);
-		EndpointDescriptionArray::SPtr endpoints(void) const;
+		void endpoints(const EndpointDescriptionArray::SPtr& endpoints);
+		EndpointDescriptionArray::SPtr& endpoints(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
-	  private:
+	protected:
+		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;
+
+		bool jsonDecodeImpl(const boost::property_tree::ptree &pt) override;
+
+	private:
 		ResponseHeader::SPtr responseHeader_;
 		EndpointDescriptionArray::SPtr endpointArraySPtr_;
 	};

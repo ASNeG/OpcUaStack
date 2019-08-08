@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,8 +23,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
@@ -38,8 +36,8 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId(void);
 		~OpcUaExpandedNodeId(void);
 
-		virtual OpcUaByte encodingFlag(void) const;
-		virtual void encodingFlag(OpcUaByte expandedEncodingFlag);
+		virtual OpcUaByte encodingFlag(void) const override;
+		virtual void encodingFlag(OpcUaByte expandedEncodingFlag) override;
 
 		void namespaceUri(OpcUaString& namespaceUri);
 		void namespaceUri(const std::string& namespaceUri);
@@ -62,11 +60,13 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool encode(boost::property_tree::ptree& pt) const;
-		bool decode(boost::property_tree::ptree& pt);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+
+	  protected:
+        bool jsonEncodeImpl(boost::property_tree::ptree& pt) const override;
+        bool jsonDecodeImpl(const boost::property_tree::ptree& pt) override;
 
 	  private:
 		OpcUaByte expandedEncodingFlag_;
@@ -75,7 +75,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaExpandedNodeIdArray
+	class DLLEXPORT OpcUaExpandedNodeIdArray
 	: public OpcUaArray<OpcUaExpandedNodeId::SPtr, SPtrTypeCoder<OpcUaExpandedNodeId> >
 	{
   	  public:

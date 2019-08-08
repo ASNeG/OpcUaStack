@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackClient_VBIContext_h__
 #define __OpcUaStackClient_VBIContext_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
 using namespace OpcUaStackCore;
@@ -49,10 +48,17 @@ namespace OpcUaStackClient
 		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
 		bool secureChannelLog_;
-		std::string endpointUrl_;
+		std::string endpointUrl_;			//! direct access without get endpoint request.
+		std::string discoveryUrl_;			//! use get endpoint request to find endpoint url. If an
+											//! endpoint url exists, it will be ignored.
+		std::string applicationUri_;		//! needed to detect right certificate, if get endpoint request
+											//! is not used
+		MessageSecurityMode::Enum securityMode_;
+		SecurityPolicy::Enum securityPolicy_;
 		std::string sessionName_;
-		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
+
+		bool deleteEndpointDescriptionCache_;
 	};
 
 
@@ -68,7 +74,6 @@ namespace OpcUaStackClient
 		OpcUaInt32 attributeId_;
 	};
 
-
 	class DLLEXPORT WriteContext
 	{
 	  public:
@@ -79,6 +84,20 @@ namespace OpcUaStackClient
 		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
 		OpcUaInt32 attributeId_;
+	};
+
+	class DLLEXPORT HistoryReadContext
+	{
+	  public:
+		HistoryReadContext(void);
+		~HistoryReadContext(void);
+
+		void reset(void);
+		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
+
+		TimestampsToReturn timestampToReturn_;
+		uint32_t maxNumResultValuesPerNode_;
+		uint32_t maxNumResultValuesPerRequest_;
 	};
 
 	class DLLEXPORT CreateSubscriptionContext
@@ -118,7 +137,7 @@ namespace OpcUaStackClient
 		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
 		OpcUaDouble samplingInterval_;
-		ExtensibleParameter filter_;
+		OpcUaExtensibleParameter filter_;
 		OpcUaUInt32 queueSize_;
 		OpcUaBoolean discardOldest_;
 		OpcUaUInt32 attributeId_;

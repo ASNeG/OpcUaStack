@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -48,13 +48,16 @@ namespace OpcUaStackServer
 		bool delLastExistGlobalNamespace(void);
 	
 		NamespaceVec& localNamespaceVec(void);
-		NamespaceVec& globalNamespaceVec(void);
+		static NamespaceVec& globalNamespaceVec(void);
 		uint16_t mapToLocalNamespaceIndex(uint16_t globalNamespaceIndex);
 		uint16_t mapToGlobalNamespaceIndex(const std::string& namespaceUri);
 		uint16_t mapToGlobalNamespaceIndex(uint16_t localNamespaceIndex);
 
 		static void logGlobalNamespaceIndex(void);
 		void logLocalNamespaceIndex(void);
+
+		static void outGlobalNamespaces(std::ostream& os);
+		void outLocalNamespaces(std::ostream& os);
 
 	  private:
 		static bool startup_;

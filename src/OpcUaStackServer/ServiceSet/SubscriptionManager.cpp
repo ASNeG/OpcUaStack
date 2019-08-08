@@ -96,7 +96,7 @@ namespace OpcUaStackServer
 		// start subscription timer
 		SlotTimerElement::SPtr slotTimerElement = subscription->slotTimerElement();
 		slotTimerElement->interval((uint32_t)publishingInterval);
-		slotTimerElement->callback().reset(boost::bind(&SubscriptionManager::subscriptionPublishTimeout, this, subscription));
+		slotTimerElement->timeoutCallback(boost::bind(&SubscriptionManager::subscriptionPublishTimeout, this, subscription));
 		ioThread_->slotTimer()->start(slotTimerElement);
 
 		// send create subscription response
@@ -127,7 +127,7 @@ namespace OpcUaStackServer
 				if (it != subscriptionMap_.end()) {
 					// stop subscription timer
 					ioThread_->slotTimer()->stop(it->second->slotTimerElement());
-					it->second->slotTimerElement()->callback().reset();
+					it->second->slotTimerElement()->timeoutCallback(nullptr);
 				}
 
 				subscriptionMap_.erase((uint32_t)id);
@@ -232,7 +232,7 @@ namespace OpcUaStackServer
 					.parameter("Subscription", subscription->subscriptionId());
 
 				ioThread_->slotTimer()->stop(subscription->slotTimerElement());
-				subscription->slotTimerElement()->callback().reset();
+				subscription->slotTimerElement()->timeoutCallback(nullptr);
 
 				subscriptionMap_.erase(subscription->subscriptionId());
 				break;

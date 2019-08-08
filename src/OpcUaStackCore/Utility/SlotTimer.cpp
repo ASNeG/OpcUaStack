@@ -1,3 +1,20 @@
+/*
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+ */
+
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 
@@ -26,6 +43,40 @@ namespace OpcUaStackCore
 	SlotTimerElement::callback(void)
 	{
 		return callback_;
+	}
+
+	void
+	SlotTimerElement::timeoutCallback(const TimeoutCallback& timeoutCallback)
+	{
+		timeoutCallback_ = timeoutCallback;
+	}
+
+	void
+	SlotTimerElement::timeoutCallback(
+		boost::shared_ptr<boost::asio::strand>& strand,
+		const TimeoutCallback& timeoutCallback
+	)
+	{
+		strand_ = strand;
+		timeoutCallback_ = timeoutCallback;
+	}
+
+	void
+	SlotTimerElement::runTimer(void)
+	{
+		if (timeoutCallback_) {
+			if (strand_) {
+				strand_->dispatch(
+					[this](){ timeoutCallback_(); }
+				);
+			}
+			else {
+			    timeoutCallback_();
+			}
+		}
+		else {
+			callback_();
+		}
 	}
 
 	void 
@@ -257,7 +308,7 @@ namespace OpcUaStackCore
 			}
 
 			if (mutex != nullptr) mutex->unlock();
-			slotTimerElement->callback()();
+			slotTimerElement->runTimer();
 			if (mutex != nullptr) mutex->lock();
 		}
 
@@ -486,26 +537,36 @@ namespace OpcUaStackCore
 	void 
 	SlotTimer::startSlotTimerLoop(IOService* ioService)
 	{
+		Log(Debug, "slot timer starting");
+
 		running_ = true;
 		ioService_ = ioService;
 		startTime_ = boost::posix_time::microsec_clock::local_time();
 
 		timer_ = new boost::asio::deadline_timer(ioService->io_service(), boost::posix_time::milliseconds(0));
 		timer_->async_wait(boost::bind(&SlotTimer::loop, this, boost::asio::placeholders::error));
+
+		Log(Debug, "slot timer started");
 	}
 		
 	void 
 	SlotTimer::stopSlotTimerLoop(void)
 	{
+		Log(Debug, "slot timer stopping");
+
 		running_ = false;
 		IOService::msecSleep(100);
 		delete timer_;
 		timer_ = nullptr;
+
+		Log(Debug, "slot timer stopped");
 	}
 
 	void
 	SlotTimer::stopSlotTimerLoopSync(void)
 	{
+		Log(Debug, "slot timer stopping");
+
 		mutex_.lock();
 		stopCondition_.initEvent();
 		running_ = false;
@@ -515,6 +576,8 @@ namespace OpcUaStackCore
 		stopCondition_.waitForEvent();
 		delete timer_;
 		timer_ = nullptr;
+
+		Log(Debug, "slot timer stopped");
 	}
 
 	void

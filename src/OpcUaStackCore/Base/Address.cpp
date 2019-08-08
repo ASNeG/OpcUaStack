@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -103,6 +103,16 @@ namespace OpcUaStackCore
         }
 
         for (ifa = ifaddr, n = 0; ifa != NULL; ifa = ifa->ifa_next, n++) {
+
+        	if (ifa->ifa_name != nullptr) {
+        		Log(Debug, "network interface found")
+        		    .parameter("Name", ifa->ifa_name);
+        	}
+
+        	if (ifa->ifa_addr == nullptr) {
+        		continue;
+        	}
+
         	if (ifa->ifa_addr->sa_family != AF_INET) {
         		continue;
         	}

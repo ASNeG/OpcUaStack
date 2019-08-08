@@ -1,3 +1,47 @@
+  Release 4.0.0
+------------------------------------------------------------
+
+**Features**:
+
+* Replace slot timer callback function by timeoutfunction #285, by @huebl
+* Added historical access vbi interface #155, by @huebl
+* Remove class Pool and PoolBase #118, @huebl
+* Use get endpoint request in opc ua client #112, by @huebl
+* Implemented client security #5, by @huebl
+* Server accepted unknown certificates #96, by @huebl
+* Security implementation complicated #95, by @huebl
+* Implement object type code generator #27, by @huebl
+* Implement variable type code generator #26, by @huebl
+* Integrate JSON encoder/decoder #39, by @huebl
+* Rework OpcUaStackCore #47, by @huebl
+* Implement data type code generator #8, by @huebl
+* Implement enum type code generator #29, by @huebl
+* Processing of type information not possible #22, by @huebl
+* read and write values from xml nodeset #37, by @huebl
+* add JSON mapping into OPC UA services #189 #191 #192 #193 #195 #196, by @huebl, @flipback
+
+**Bugs**:
+
+# Add isNull and setNull function to class OpcUaNodeId #278, @huebl
+* Add Generator directory to cmake file #272, @huebl
+* Add type generator library #270, @huebl
+* Copy alias map in Config to childs #268, @huebl
+* Init createAt field in open secure channel response #259, @huebl
+* Reconnect after timeout if no entry found in endpoint cache #220, by @huebl
+* Remove duplicate registration of extension objects #219, by @huebl
+* Added server namespace 1 #92, by @huebl
+* OPC UA server chrashes at startup #99, by @huebl
+* Ignore optional placeholder element in code generator #78, by @huebl
+* Double entry of CTRL C leads to crash #74, by @huebl
+* Error occured during create a new opc ua application server #84, by @huebl
+* Class OpcUaDataValue does not have an "<" operator #54, by @huebl
+* Extensible Parameter us used incorrectly #36, by @huebl
+
+**Documentation**:
+
+* add *Overview* document #184, by @flipback
+* add *Project Roadmap* section #246, by @flipback
+
 Release 3.8.0
 ------------------------------------------------------------
 
@@ -19,6 +63,7 @@ Release 3.8.0
 
 Release 3.7.0 (2019-04-01)
 ------------------------------------------------------------
+
 
 **Features**:
 

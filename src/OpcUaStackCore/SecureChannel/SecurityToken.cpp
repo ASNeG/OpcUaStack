@@ -64,12 +64,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	SecurityToken::createAt(const UtcTime& createAt)
+	SecurityToken::createAt(const OpcUaUtcTime& createAt)
 	{
 		createAt_ = createAt;
 	}
 
-	UtcTime 
+	OpcUaUtcTime
 	SecurityToken::createAt(void) const
 	{
 		return createAt_;

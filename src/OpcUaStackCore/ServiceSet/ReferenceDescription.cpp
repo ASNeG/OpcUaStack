@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/ServiceSet/ReferenceDescription.h"
@@ -106,12 +106,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	ReferenceDescription::nodeClass(const NodeClassType nodeClass)
+	ReferenceDescription::nodeClass(const NodeClass::Enum nodeClass)
 	{
 		nodeClass_ = nodeClass;
 	}
 	
-	NodeClassType 
+	NodeClass::Enum
 	ReferenceDescription::nodeClass(void)
 	{
 		return nodeClass_;
@@ -127,6 +127,18 @@ namespace OpcUaStackCore
 	ReferenceDescription::typeDefinition(void) const
 	{
 		return typeDefinitionSPtr_;
+	}
+
+	void
+	ReferenceDescription::copyTo(ReferenceDescription& referenceDescription)
+	{
+		referenceTypeIdSPtr_->copyTo(*referenceDescription.referenceTypeId().get());
+		referenceDescription.isForward(isForward_);
+		nodeIdSPtr_->copyTo(*referenceDescription.expandedNodeId().get());
+		browseName_.copyTo(referenceDescription.browseName());
+		displayName_.copyTo(referenceDescription.displayName());
+		referenceDescription.nodeClass(nodeClass_);
+		typeDefinitionSPtr_->copyTo(*referenceDescription.typeDefinition().get());
 	}
 
 	void 
@@ -151,8 +163,40 @@ namespace OpcUaStackCore
 		browseName_.opcUaBinaryDecode(is);
 		displayName_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);
-		nodeClass_ = (NodeClassType)tmp;
+		nodeClass_ = (NodeClass::Enum)tmp;
 		typeDefinitionSPtr_->opcUaBinaryDecode(is);
+	}
+
+	bool
+	ReferenceDescription::jsonEncodeImpl(boost::property_tree::ptree &pt) const
+	{
+		bool rc = jsonObjectSPtrEncode(pt, referenceTypeIdSPtr_, "ReferenceTypeId");
+		rc &= jsonNumberEncode(pt, isForward_, "IsForward");
+		rc &= jsonObjectSPtrEncode(pt, nodeIdSPtr_, "NodeId");
+		rc &= jsonObjectEncode(pt, browseName_, "BrowseName", true);
+		rc &= jsonObjectEncode(pt, displayName_, "DisplayName");
+		rc &= jsonNumberEncode(pt, (OpcUaUInt32)nodeClass_, "NodeClass", true, OpcUaUInt32(0));
+		rc &= jsonObjectSPtrEncode(pt, typeDefinitionSPtr_, "TypeDefinition", true);
+
+		return rc;
+	}
+
+	bool
+	ReferenceDescription::jsonDecodeImpl(const boost::property_tree::ptree &pt)
+	{
+		bool rc = jsonObjectSPtrDecode(pt, referenceTypeIdSPtr_, "ReferenceTypeId");
+		rc &= jsonNumberDecode(pt, isForward_, "IsForward");
+		rc &= jsonObjectSPtrDecode(pt, nodeIdSPtr_, "NodeId");
+		rc &= jsonObjectDecode(pt, browseName_, "BrowseName", true);
+		rc &= jsonObjectDecode(pt, displayName_, "DisplayName");
+
+		OpcUaUInt32  tmp;
+		rc &= jsonNumberDecode(pt, tmp, "NodeClass", true, OpcUaUInt32(0));
+		nodeClass_ = (NodeClass::Enum)tmp;
+
+		rc &= jsonObjectSPtrDecode(pt, typeDefinitionSPtr_, "TypeDefinition", true);
+
+		return rc;
 	}
 
 }

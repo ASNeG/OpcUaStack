@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,8 +31,8 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	SessionServiceConfig::SessionServiceConfig(void)
 	: ServiceConfigBase("Session")
-	, mode_(SessionService::M_SecureChannelAndSession)
-	, sessionServiceIf_(nullptr)
+	, sessionMode_(SessionMode::SecureChannelAndSession)
+	, sessionServiceChangeHandler_()
 	, secureChannelClient_(constructSPtr<SecureChannelClientConfig>())
 	, session_(constructSPtr<SessionConfig>())
 	{

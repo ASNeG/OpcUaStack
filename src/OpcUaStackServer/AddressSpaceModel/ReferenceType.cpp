@@ -60,8 +60,8 @@ namespace OpcUaStackServer
 			case ReferenceType_GenerateEvents: return "GenerateEvents";
 			case ReferenceType_AlwaysGeneratesEvent: return "AlwaysGeneratesEvent";
 			case ReferenceType_HierarchicalReferences: return "HierarchicalReferences";
+			default: return "Unknown";
 		}
-		return "Unknown";
 	}
 
 	ReferenceType 
@@ -125,10 +125,12 @@ namespace OpcUaStackServer
 			case ReferenceType_GenerateEvents: return generateEventsTypeNodeId();
 			case ReferenceType_AlwaysGeneratesEvent: return alwaysGeneratesEventTypeNodeId();
 			case ReferenceType_HierarchicalReferences: return hierarchicalReferencesTypeNodeId();
+			default:
+			{
+				OpcUaNodeId::SPtr nodeId;
+				return nodeId;
+			}
 		}
-
-		OpcUaNodeId::SPtr nodeId;
-		return nodeId;
 	}
 
 	ReferenceType 
@@ -152,8 +154,8 @@ namespace OpcUaStackServer
 			case OpcUaId_GeneratesEvent: return ReferenceType_GenerateEvents;
 			case OpcUaId_AlwaysGeneratesEvent: return ReferenceType_AlwaysGeneratesEvent;
 			case OpcUaId_HierarchicalReferences: return ReferenceType_HierarchicalReferences;
+			default: return ReferenceType_Unknown;
 		}
-		return ReferenceType_Unknown;
 	}
 
 	std::string 

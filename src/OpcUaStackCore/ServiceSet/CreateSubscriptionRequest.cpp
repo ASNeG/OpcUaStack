@@ -136,4 +136,31 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, publishingEnabled_);
 		OpcUaNumber::opcUaBinaryDecode(is, priority_);
 	}
+
+	bool
+	CreateSubscriptionRequest::jsonEncodeImpl(boost::property_tree::ptree& pt) const
+	{
+		bool rc = true;
+		rc = rc & jsonNumberEncode(pt, requestedPublishingInterval_, "RequestedPublishingInterval");
+		rc = rc & jsonNumberEncode(pt, requestedLifetimeCount_, "RequestedLifetimeCount");
+		rc = rc & jsonNumberEncode(pt, requestedMaxKeepAliveCount_, "RequestedMaxKeepAliveCount");
+		rc = rc & jsonNumberEncode(pt, maxNotificationsPerPublish_, "MaxNotificationsPerPublish");
+		rc = rc & jsonNumberEncode(pt, publishingEnabled_, "PublishingEnabled");
+		rc = rc & jsonNumberEncode(pt, priority_, "Priority");
+		return rc;
+	}
+
+	bool
+	CreateSubscriptionRequest::jsonDecodeImpl(const boost::property_tree::ptree& pt)
+	{
+		bool rc = true;
+		rc = rc & jsonNumberDecode(pt, requestedPublishingInterval_, "RequestedPublishingInterval", true, (OpcUaDouble)100);
+		rc = rc & jsonNumberDecode(pt, requestedLifetimeCount_, "RequestedLifetimeCount", true, (OpcUaUInt32)2400);
+		rc = rc & jsonNumberDecode(pt, requestedMaxKeepAliveCount_, "RequestedMaxKeepAliveCount", true, (OpcUaUInt32)10);
+		rc = rc & jsonNumberDecode(pt, maxNotificationsPerPublish_, "MaxNotificationsPerPublish", true, (OpcUaUInt32)65536);
+		rc = rc & jsonNumberDecode(pt, publishingEnabled_, "PublishingEnabled", true, (OpcUaBoolean)true);
+		rc = rc & jsonNumberDecode(pt, priority_, "Priority", true, (OpcUaByte)0);
+		return rc;
+	}
+
 }

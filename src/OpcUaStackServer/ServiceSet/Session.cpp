@@ -30,10 +30,10 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
 #include "OpcUaStackCore/Application/ApplicationCloseSessionContext.h"
-#include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/IssuedIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/X509IdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/AnonymousIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/UserNameIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/IssuedIdentityToken.h"
+#include "OpcUaStackCore/StandardDataTypes/X509IdentityToken.h"
 
 using namespace OpcUaStackCore;
 
@@ -68,11 +68,9 @@ namespace OpcUaStackServer
 	, sessionState_(SessionState_Close)
 	, sessionId_(getUniqueSessionId())
 	, authenticationToken_(getUniqueAuthenticationToken())
-	, applicationCertificate_()
 	, endpointDescriptionArray_()
 	, endpointDescription_()
 	, userContext_()
-	, clientCertificate_()
 	{
 		Log(Info, "session construct")
 			.parameter("SessionId", sessionId_)
@@ -90,12 +88,6 @@ namespace OpcUaStackServer
 		for (uint32_t idx=0; idx<32; idx++) {
 			serverNonce_[idx] = (rand() / 256);
 		}
-	}
-
-	void
-	Session::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
-	{
-		applicationCertificate_ = applicationCertificate;
 	}
 
 	void
@@ -143,6 +135,7 @@ namespace OpcUaStackServer
 	void
 	Session::endpointDescription(EndpointDescription::SPtr& endpointDescription)
 	{
+		assert(endpointDescription.get() != nullptr);
 		endpointDescription_ = endpointDescription;
 	}
 
@@ -173,37 +166,31 @@ namespace OpcUaStackServer
 			return BadIdentityTokenInvalid;
 		}
 
-		else {
-			ExtensibleParameter::SPtr parameter = activateSessionRequest.userIdentityToken();
-			if (!parameter->exist()) {
-				// user identity token is invalid
-				Log(Error, "authentication error, because user identity token not exist");
-				return BadIdentityTokenInvalid;
-			}
-			else {
-				OpcUaNodeId typeId = parameter->parameterTypeId();
-				if (typeId == OpcUaNodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary)) {
-					return authenticationAnonymous(activateSessionRequest, parameter);
-				}
-				else if (typeId == OpcUaNodeId(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary)) {
-					return authenticationUserName(activateSessionRequest, parameter);
-				}
-				else if (typeId == OpcUaId_X509IdentityToken_Encoding_DefaultBinary) {
-					return authenticationX509(activateSessionRequest, parameter);
-				}
-				else if (typeId == OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary) {
-					return authenticationIssued(activateSessionRequest, parameter);
-				}
-				else {
-					// user identity token is invalid
-					Log(Error, "authentication error, because unknown authentication type")
-					    .parameter("AuthenticationType", typeId);
-					return BadIdentityTokenInvalid;
-				}
-			}
+		OpcUaExtensibleParameter::SPtr parameter = activateSessionRequest.userIdentityToken();
+		if (!parameter->exist()) {
+			// user identity token is invalid
+			Log(Error, "authentication error, because user identity token not exist");
+			return BadIdentityTokenInvalid;
 		}
 
-		return Success;
+		OpcUaNodeId typeId = parameter->parameterTypeId();
+		if (typeId == OpcUaNodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary)) {
+			return authenticationAnonymous(activateSessionRequest, parameter);
+		}
+		else if (typeId == OpcUaNodeId(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary)) {
+			return authenticationUserName(activateSessionRequest, parameter);
+		}
+		else if (typeId == OpcUaNodeId(OpcUaId_X509IdentityToken_Encoding_DefaultBinary)) {
+			return authenticationX509(activateSessionRequest, parameter);
+		}
+		else if (typeId == OpcUaNodeId(OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary)) {
+			return authenticationIssued(activateSessionRequest, parameter);
+		}
+
+		// user identity token is invalid
+		Log(Error, "authentication error, because unknown authentication type")
+			.parameter("AuthenticationType", typeId);
+		return BadIdentityTokenInvalid;
 	}
 
 	OpcUaStatusCode
@@ -223,16 +210,17 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	Session::authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	Session::authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter)
 	{
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationAnonymous");
 
-		AnonymousIdentityToken::SPtr token = parameter->parameter<AnonymousIdentityToken>();
+		auto token = parameter->parameter<AnonymousIdentityToken>();
 
-		// check token policy
+		// The policy id and the policy type are checked. An endpoint must exist
+		// for this combination in the server configuration file.
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_Anonymous, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumAnonymous, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -254,17 +242,21 @@ namespace OpcUaStackServer
 		if (context.statusCode_ == Success) {
 			userContext_ = context.userContext_;
 		}
+		else {
+			Log(Error, "authentication error in application")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(context.statusCode_));
+		}
 
 		return context.statusCode_;
 	}
 
 	OpcUaStatusCode
-	Session::authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	Session::authenticationUserName(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter)
 	{
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationUserName");
 
-		UserNameIdentityToken::SPtr token = parameter->parameter<UserNameIdentityToken>();
+		auto token = parameter->parameter<UserNameIdentityToken>();
 
 		// check parameter and password
 		if (token->userName().size() == 0) {
@@ -272,9 +264,10 @@ namespace OpcUaStackServer
 			return BadIdentityTokenInvalid;
 		}
 
-		// check token policy
+		// The policy id and the policy type are checked. An endpoint must exist
+		// for this combination in the server configuration file.
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_Username, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumUserName, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -285,7 +278,7 @@ namespace OpcUaStackServer
 			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
 			.parameter("EncyptionAlgorithmus", token->encryptionAlgorithm());
 
-		if (token->encryptionAlgorithm() == "") {
+		if (token->encryptionAlgorithm() == OpcUaString("")) {
 			// we use a plain password
 
 			// create application context
@@ -301,6 +294,10 @@ namespace OpcUaStackServer
 
 			if (context.statusCode_ == Success) {
 				userContext_ = context.userContext_;
+			}
+			else {
+				Log(Error, "authentication error in application")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(context.statusCode_));
 			}
 
 			return context.statusCode_;
@@ -324,7 +321,7 @@ namespace OpcUaStackServer
 		// decrypt password
 		char* encryptedTextBuf;
 		int32_t encryptedTextLen;
-		token->password((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
+		token->password().value((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
 		if (encryptedTextLen <= 0) {
 			Log(Debug, "password format invalid");
 			return BadIdentityTokenRejected;;
@@ -336,8 +333,8 @@ namespace OpcUaStackServer
 		plainTextBuf = plainText.memBuf();
 		plainTextLen = plainText.memLen();
 
-		PrivateKey::SPtr privateKey = applicationCertificate_->privateKey();
-
+		auto privateKey = cryptoManager_->applicationCertificate()->privateKey();
+		cryptoBase->isLogging(true);
 		statusCode = cryptoBase->asymmetricDecrypt(
 			encryptedTextBuf,
 			encryptedTextLen,
@@ -346,14 +343,15 @@ namespace OpcUaStackServer
 			&plainTextLen
 		);
 		if (statusCode != Success) {
-			Log(Debug, "decrypt password error");
+			Log(Debug, "decrypt password error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 			return BadIdentityTokenRejected;;
 		}
 
 		// check decrypted password and server nonce
 		if (memcmp(serverNonce_, &plainTextBuf[plainTextLen-32] , 32) != 0) {
 			Log(Debug, "decrypt password server nonce error");
-				return BadIdentityTokenRejected;;
+			return BadIdentityTokenRejected;;
 		}
 
 		size_t passwordLen = plainTextLen-36;
@@ -362,7 +360,7 @@ namespace OpcUaStackServer
 			return BadIdentityTokenRejected;;
 		}
 
-		token->password((const OpcUaByte*)&plainTextBuf[4], passwordLen);
+		token->password().value((const OpcUaByte*)&plainTextBuf[4], passwordLen);
 
 		// create application context
 		ApplicationAuthenticationContext context;
@@ -382,12 +380,12 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	Session::authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	Session::authenticationX509(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter)
 	{
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationX509");
 
-		X509IdentityToken::SPtr token = parameter->parameter<X509IdentityToken>();
+		auto token = parameter->parameter<X509IdentityToken>();
 
 		// check parameter and password
 		if (token->certificateData().size() == 0) {
@@ -397,13 +395,13 @@ namespace OpcUaStackServer
 
 		// check token policy
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_Certificate, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumCertificate, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
 
 		// get signature data
-		SignatureData::SPtr userTokenSignature = activateSessionRequest.userTokenSignature();
+		auto userTokenSignature = activateSessionRequest.userTokenSignature();
 		if (userTokenSignature.get() == nullptr) {
 			Log(Debug, "missing user token signature")
 				.parameter("PolicyId", token->policyId());
@@ -413,7 +411,8 @@ namespace OpcUaStackServer
 		Log(Debug, "authentication x509")
 		    .parameter("PolicyId", token->policyId())
 			.parameter("CertificateData", token->certificateData())
-			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
+			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
+			.parameter("SignaturAlgorithm", userTokenSignature->algorithm());
 
 		// get cryption base and check cryption alg
 		CryptoBase::SPtr cryptoBase = cryptoManager_->get(userTokenPolicy->securityPolicyUri());
@@ -439,8 +438,6 @@ namespace OpcUaStackServer
 		}
 		PublicKey publicKey = certificate.publicKey();
 
-		// FIXME: certificate must be trusted ...
-
 		// validate signature
 		statusCode = userTokenSignature->verifySignature(
 			certificateText,
@@ -461,17 +458,21 @@ namespace OpcUaStackServer
 		if (context.statusCode_ == Success) {
 			userContext_ = context.userContext_;
 		}
+		else {
+			Log(Error, "authentication error in application")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(context.statusCode_));
+		}
 
 		return context.statusCode_;
 	}
 
 	OpcUaStatusCode
-	Session::authenticationIssued(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	Session::authenticationIssued(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter)
 	{
 		OpcUaStatusCode statusCode;
 		Log(Debug, "Session::authenticationIssued");
 
-		IssuedIdentityToken::SPtr token = parameter->parameter<IssuedIdentityToken>();
+		auto token = parameter->parameter<IssuedIdentityToken>();
 
 		// check parameter and password
 		if (token->tokenData().size() == 0) {
@@ -481,7 +482,7 @@ namespace OpcUaStackServer
 
 		// check token policy
 		UserTokenPolicy::SPtr userTokenPolicy;
-		statusCode = checkUserTokenPolicy(token->policyId(), UserIdentityTokenType_IssuedToken, userTokenPolicy);
+		statusCode = checkUserTokenPolicy(token->policyId(), UserTokenType::EnumIssuedToken, userTokenPolicy);
 		if (statusCode != Success) {
 			return statusCode;
 		}
@@ -509,7 +510,7 @@ namespace OpcUaStackServer
 		// decrypt token data
 		char* encryptedTextBuf;
 		int32_t encryptedTextLen;
-		token->tokenData((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
+		token->tokenData().value((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
 		if (encryptedTextLen <= 0) {
 			Log(Debug, "token data format invalid");
 			return BadIdentityTokenRejected;;
@@ -521,7 +522,7 @@ namespace OpcUaStackServer
 		plainTextBuf = plainText.memBuf();
 		plainTextLen = plainText.memLen();
 
-		PrivateKey::SPtr privateKey = applicationCertificate_->privateKey();
+		auto privateKey = cryptoManager_->applicationCertificate()->privateKey();
 
 		statusCode = cryptoBase->asymmetricDecrypt(
 			encryptedTextBuf,
@@ -540,7 +541,7 @@ namespace OpcUaStackServer
 			Log(Debug, "decrypt token data server nonce error");
 				return BadIdentityTokenRejected;;
 		}
-		token->tokenData((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
+		token->tokenData().value((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
 
 		// create application context
 		ApplicationAuthenticationContext context;
@@ -555,6 +556,10 @@ namespace OpcUaStackServer
 		if (context.statusCode_ == Success) {
 			userContext_ = context.userContext_;
 		}
+		else {
+			Log(Error, "authentication error in application")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(context.statusCode_));
+		}
 
 		return context.statusCode_;
 	}
@@ -562,7 +567,7 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::checkUserTokenPolicy(
 		const std::string& policyId,
-		UserIdentityTokenType userIdentityTokenType,
+		UserTokenType::Enum userIdentityTokenType,
 		UserTokenPolicy::SPtr& userTokenPolicy
 	)
 	{
@@ -571,15 +576,15 @@ namespace OpcUaStackServer
 			return BadIdentityTokenInvalid;
 		}
 
-		if (endpointDescription_->userIdentityTokens().get() == nullptr) {
+		if (endpointDescription_->userIdentityTokens().size() == 0) {
 			Log(Debug, "user identity token not exist");
 			return BadIdentityTokenInvalid;
 		}
 
 		// find related identity token
 		bool found = false;
-		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens()->size(); idx++) {
-			if (!endpointDescription_->userIdentityTokens()->get(idx, userTokenPolicy)) {
+		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens().size(); idx++) {
+			if (!endpointDescription_->userIdentityTokens().get(idx, userTokenPolicy)) {
 				continue;
 			}
 
@@ -611,10 +616,13 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	void
 	Session::createSessionRequest(
-		RequestHeader::SPtr requestHeader,
-		SecureChannelTransaction::SPtr secureChannelTransaction
+		RequestHeader::SPtr& requestHeader,
+		SecureChannel* secureChannel
 	)
 	{
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto& securitySettings = secureChannel->securitySettings();
+
 		createServerNonce();
 
 		OpcUaStatusCode statusCode;
@@ -638,12 +646,23 @@ namespace OpcUaStackServer
 		CreateSessionResponse createSessionResponse;
 		createSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		createSessionResponse.responseHeader()->serviceResult(serviceResult);
+		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 
 		if (createSessionRequest.clientCertificate().exist()) {
-			clientCertificate_.fromDERBuf(
-				createSessionRequest.clientCertificate().memBuf(),
-				createSessionRequest.clientCertificate().size()
-			);
+			CertificateChain partnerCertificateChain;
+
+			if (!partnerCertificateChain.fromByteString(createSessionRequest.clientCertificate())) {
+				Log(Error, "received client certificate error");
+				createSessionRequestError(requestHeader, secureChannelTransaction, BadSecurityChecksFailed);
+				return;
+			}
+
+			// check client certificate
+			if (partnerCertificateChain != securitySettings.partnerCertificateChain()) {
+				Log(Error, "check client certificate error");
+				createSessionRequestError(requestHeader, secureChannelTransaction, BadSecurityChecksFailed);
+				return;
+			}
 		}
 
 		createSessionResponse.sessionId().namespaceIndex(1);
@@ -655,15 +674,16 @@ namespace OpcUaStackServer
 		createSessionResponse.maxRequestMessageSize(0);
 
 		// added server certificate
-		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
-		applicationCertificate_->certificate()->toDERBuf(createSessionResponse.serverCertificate());
+		OpcUaByteString certByteString;
+		cryptoManager_->applicationCertificate()->certificateChain().toByteString(certByteString);
+		createSessionResponse.serverCertificate() = certByteString;
 
-		if (applicationCertificate_.get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
+		if (cryptoManager_->applicationCertificate().get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
 
 			// create server signature
 			MemoryBuffer clientCertificate(createSessionRequest.clientCertificate());
 			MemoryBuffer clientNonce(createSessionRequest.clientNonce());
-			PrivateKey privateKey = *applicationCertificate_->privateKey();
+			PrivateKey privateKey = *cryptoManager_->applicationCertificate()->privateKey();
 			statusCode = createSessionResponse.signatureData()->createSignature(
 				clientCertificate,
 				clientNonce,
@@ -688,6 +708,28 @@ namespace OpcUaStackServer
 		}
 	}
 
+	void
+	Session::createSessionRequestError(
+		RequestHeader::SPtr& requestHeader,
+		SecureChannelTransaction::SPtr secureChannelTransaction,
+		OpcUaStatusCode statusCode
+	)
+	{
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		CreateSessionResponse createSessionResponse;
+		createSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
+		createSessionResponse.responseHeader()->serviceResult(statusCode);
+
+		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
+		createSessionResponse.opcUaBinaryEncode(iosres);
+
+		if (sessionIf_ != nullptr) {
+			ResponseHeader::SPtr responseHeader = createSessionResponse.responseHeader();
+			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
+		}
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -698,9 +740,12 @@ namespace OpcUaStackServer
 	void
 	Session::activateSessionRequest(
 		RequestHeader::SPtr requestHeader,
-		SecureChannelTransaction::SPtr secureChannelTransaction
+		SecureChannel* secureChannel
 	)
 	{
+		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		auto& securitySettings = secureChannel->securitySettings();
+
 		OpcUaStatusCode statusCode;
 
 		Log(Debug, "receive activate session request");
@@ -724,18 +769,15 @@ namespace OpcUaStackServer
 		// check client signature
 		if (secureChannelTransaction->cryptoBase_.get() != nullptr) {
 			// create certificate
-			uint32_t derCertSize = applicationCertificate_->certificate()->getDERBufSize();
-			MemoryBuffer certificate(derCertSize);
-			applicationCertificate_->certificate()->toDERBuf(
-				certificate.memBuf(),
-				&derCertSize
-			);
+			OpcUaByteString certByteString;
+			cryptoManager_->applicationCertificate()->certificateChain().toByteString(certByteString);
+			MemoryBuffer certificate(certByteString);
 
 			// create server nonce
 			MemoryBuffer serverNonce(serverNonce_, 32);
 
 			// verify signature
-			PublicKey publicKey = clientCertificate_.publicKey();
+			auto publicKey = securitySettings.partnerCertificateChain().getCertificate()->publicKey();
 			statusCode = activateSessionRequest.clientSignature()->verifySignature(
 				certificate,
 				serverNonce,
@@ -752,10 +794,10 @@ namespace OpcUaStackServer
 
 		// check username and password
 		statusCode = authentication(activateSessionRequest);
+		createServerNonce();
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
-		createServerNonce();
 		ActivateSessionResponse activateSessionResponse;
 		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		activateSessionResponse.responseHeader()->serviceResult(statusCode);
@@ -769,7 +811,7 @@ namespace OpcUaStackServer
 		//secureChannelTransaction->authenticationToken_ = authenticationToken_;
 
 		if (sessionIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = activateSessionResponse.responseHeader();
+			auto responseHeader = activateSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
 		}
 	}
@@ -830,8 +872,10 @@ namespace OpcUaStackServer
 		closeSessionResponse.opcUaBinaryEncode(iosres);
 
 		// close session
+		Log(Debug, "authentication close session");
 		authenticationCloseSession();
 
+		Log(Debug, "send close session response");
 		if (sessionIf_ != nullptr) {
 			ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
@@ -916,7 +960,7 @@ namespace OpcUaStackServer
 			return;
 		}
 
-		ServiceTransaction::SPtr serviceTransactionSPtr = transactionManagerSPtr_->getTransaction(secureChannelTransaction->requestTypeNodeId_);
+		auto serviceTransactionSPtr = transactionManagerSPtr_->getTransaction(secureChannelTransaction->requestTypeNodeId_);
 		if (serviceTransactionSPtr.get() == nullptr) {
 			Log(Error, "receive invalid message type")
 				.parameter("TypeId", secureChannelTransaction->requestTypeNodeId_);

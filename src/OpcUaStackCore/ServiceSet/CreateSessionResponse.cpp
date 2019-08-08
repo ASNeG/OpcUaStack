@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -65,23 +65,31 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	CreateSessionResponse::receivedSessionTimeout(const Duration receivedSessionTimeout)
+	CreateSessionResponse::receivedSessionTimeout(const OpcUaDuration receivedSessionTimeout)
 	{
 		receivedSessionTimeout_ = receivedSessionTimeout;
 	}
 
-	Duration 
+	OpcUaDuration
 	CreateSessionResponse::receivedSessionTimeout(void) const
 	{
 		return receivedSessionTimeout_;
 	}
 
-	void CreateSessionResponse::serverNonce(const OpcUaByte* buf, OpcUaInt32 bufLen)
+	OpcUaByteString&
+	CreateSessionResponse::serverNonce(void)
+	{
+		return serverNonce_;
+	}
+
+	void
+	CreateSessionResponse::serverNonce(const OpcUaByte* buf, OpcUaInt32 bufLen)
 	{
 		serverNonce_.value(buf, bufLen);
 	}
 	
-	void CreateSessionResponse::serverNonce(OpcUaByte** buf, OpcUaInt32* bufLen) const
+	void
+	CreateSessionResponse::serverNonce(OpcUaByte** buf, OpcUaInt32* bufLen) const
 	{
 		serverNonce_.value(buf, bufLen);
 	}

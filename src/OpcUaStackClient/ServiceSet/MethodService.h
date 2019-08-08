@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,10 +18,8 @@
 #ifndef __OpcUaStackClient_MethodService_h__
 #define __OpcUaStackClient_MethodService_h__
 
-#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/MethodServiceIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -38,11 +36,9 @@ namespace OpcUaStackClient
 		~MethodService(void);
 
 		void setConfiguration(
-			Component* componentSession,
-			MethodServiceIf* methodServiceIf
+			Component* componentSession
 		);
 		void componentSession(Component* componentSession);
-		void methodServiceIf(MethodServiceIf* methodServiceIf);
 
 		void syncSend(ServiceTransactionCall::SPtr serviceTransactionRead);
 		void asyncSend(ServiceTransactionCall::SPtr serviceTransactionRead);
@@ -53,8 +49,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
-		MethodServiceIf* methodServiceIf_;
 	};
 
 }
