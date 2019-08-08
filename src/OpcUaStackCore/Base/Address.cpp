@@ -126,6 +126,9 @@ namespace OpcUaStackCore
 			ip::tcp::resolver resolver(ioService);
 			ip::tcp::resolver::query q(hostname, "");
 
+			// TODO: The asynchronous call is used because the synchronous method
+			// 		 was changed in boost-1.66. Should be refactored when the project stops
+			// 		 supporting the boost versions older 1.66
 			resolver.async_resolve(q,
 				[hostname, &ipVec](const boost::system::error_code &ec, ip::tcp::resolver::iterator it) {
 
@@ -162,6 +165,9 @@ namespace OpcUaStackCore
 			ip::tcp::endpoint endpoint;
 			endpoint.address(ip4);
 
+			// TODO: The asynchronous call is used because the synchronous method
+			// 		 was changed in boost-1.66. Should be refactored when the project stops
+			// 		 supporting the boost versions older 1.66
 			resolver.async_resolve(endpoint,
 					[&hostname, ip](const boost::system::error_code &ec, ip::tcp::resolver::iterator it) {
 
