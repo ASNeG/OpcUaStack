@@ -5,6 +5,7 @@ Release 3.8.0
 
 * add policy id to session config #168, by @huebl
 * add option -j to build.bat to build on several CPUs on Windows #243, by @flipback
+* add MinGW support #289, by @flipback
 
 **Bugs**:
 

@@ -48,7 +48,7 @@ file(
 )
 
 add_library(
-    ProjectName SHARED 
+    ProjectName SHARED
     ${ProjectName_SRC}
 )
 
@@ -61,6 +61,14 @@ target_link_libraries(
     ${OPCUASTACK_LIBRARY_PUBSUB}
     ${Boost_LIBRARIES}
 )
+
+if (WIN32)
+    target_link_libraries(ProjectName wsock32 ws2_32)
+
+    if (MINGW)
+        set(CMAKE_SHARED_LIBRARY_PREFIX "")
+    endif()
+endif()
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
