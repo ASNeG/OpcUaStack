@@ -95,10 +95,10 @@ namespace OpcUaStackCore
 		ioService_->threadIdVec(threadIdVec);
 	}
 
-	boost::shared_ptr<boost::asio::strand>
+	boost::shared_ptr<boost::asio::io_service::strand>
 	IOThread::createStrand(void)
 	{
-		boost::shared_ptr<boost::asio::strand> strand(new boost::asio::strand(ioService_->io_service()));
+		boost::shared_ptr<boost::asio::io_service::strand> strand(new boost::asio::io_service::strand(ioService_->io_service()));
 		return strand;
 	}
 

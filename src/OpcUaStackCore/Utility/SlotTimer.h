@@ -42,7 +42,7 @@ namespace OpcUaStackCore
 		Callback& callback(void);
 		void timeoutCallback(const TimeoutCallback& timeoutCallback);
 		void timeoutCallback(
-			boost::shared_ptr<boost::asio::strand>& strand,
+			boost::shared_ptr<boost::asio::io_service::strand>& strand,
 			const TimeoutCallback& timeoutCallback
 		);
 
@@ -67,7 +67,7 @@ namespace OpcUaStackCore
 		SlotTimerElement::SPtr& last(void);
 
 	  private:
-		boost::shared_ptr<boost::asio::strand> strand_ = nullptr;
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		TimeoutCallback timeoutCallback_ = nullptr;
 		Callback callback_;
 

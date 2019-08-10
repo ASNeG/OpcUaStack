@@ -53,7 +53,7 @@ namespace OpcUaStackCore
 
 	void
 	SlotTimerElement::timeoutCallback(
-		boost::shared_ptr<boost::asio::strand>& strand,
+		boost::shared_ptr<boost::asio::io_service::strand>& strand,
 		const TimeoutCallback& timeoutCallback
 	)
 	{

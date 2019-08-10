@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_IOThread_h__
 
 #include <boost/shared_ptr.hpp>
+#include <boost/asio/strand.hpp>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
@@ -42,7 +43,7 @@ namespace OpcUaStackCore
 		uint32_t numberThreads(void);
 		void numberThreads(uint32_t numberThreads);
 		void threadIdVec(std::vector<std::string>& threadIdVec);
-		boost::shared_ptr<boost::asio::strand> createStrand(void);
+		boost::shared_ptr<boost::asio::io_service::strand> createStrand(void);
 
 		bool startup(void);
 		bool shutdown(void);
