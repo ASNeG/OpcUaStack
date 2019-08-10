@@ -15,8 +15,8 @@
 Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
-#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/Base/Base64.h"
 #include <string.h>
 
@@ -171,7 +171,7 @@ namespace OpcUaStackCore
 		value(memBuf, memLen);
 		return *this;
 	}
-		
+
 	OpcUaByteString::operator std::string(void) const
 	{
 		if (length_ < 1 || value_ == nullptr) {

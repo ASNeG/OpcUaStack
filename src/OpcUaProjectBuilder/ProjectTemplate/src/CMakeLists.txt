@@ -149,16 +149,24 @@ set(CPACK_BINARY_TZ "OFF")
 if (CPACK_BINARY_MSI)
 	set(CPACK_PACKAGE_FILE_NAME "ProjectName-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}")
 
-  set(CPACK_GENERATOR NSIS)
-	set(CPACK_PACKAGE_INSTALL_DIRECTORY "ProjectName")	
-	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
-  set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\\\\\icon\\\\asneg.ico")
-	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg_install.ico")
-	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")	
-  set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+    set(CPACK_GENERATOR NSIS)
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY "ProjectName")
+    set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
+    set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\\\\\icon\\\\asneg.ico")
+    set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg_install.ico")
+    set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")
+    set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 	
 	if (STANDALONE)	
 		set(CPACK_PACKAGE_FILE_NAME "ProjectName-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-Standalone")
+
+        if (MINGW)
+            get_filename_component(MINGW_PATH ${CMAKE_CXX_COMPILER} PATH)
+            file(
+                    GLOB CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS
+                    ${MINGW_PATH}/*.dll
+            )
+        endif(MINGW)
 
 		include (InstallRequiredSystemLibraries)
 		install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${INSTALL_PREFIX}/lib)

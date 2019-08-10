@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,12 +16,16 @@
  */
 
 #ifdef _WIN32
+
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaServer/Service/WindowsService.h"
-#include <iostream>
 #include <stdint.h>
 #include <sstream>
 #include <lmerr.h>
-#include <atlstr.h>
+#include <fstream>
+#include <winreg.h>
+#include <boost/format.hpp>
+
 
 
 // ----------------------------------------------------------------------------
@@ -524,16 +528,22 @@ namespace OpcUaServer
 			return;
 		}
 
+		auto wcharToSting = [](const wchar_t* wstr) {
+			std::wstring ws(wstr);
+			std::string str(ws.begin(), ws.end());
+			return str;
+		};
+
 		std::stringstream ss;
 		ss << "ServiceMain:" << std::endl;
 		for (uint32_t idx=0; idx< argc; idx++) {
-			ss << "P[" << idx << "] = " << CW2A(argv[idx]) << std::endl;
+			ss << "P[" << idx << "] = " << wcharToSting(argv[idx]) << std::endl;
 		}
 	
 		eventLog("Info", ss.str());
 
-		std::string serviceName = CW2A(argv[2]);
-		std::string pathToConfiguration = CW2A(argv[3]);
+		std::string serviceName = wcharToSting(argv[2]);
+		std::string pathToConfiguration = wcharToSting(argv[3]);
 
 		//
 		// This function does not return until the service has stopped. 
@@ -738,7 +748,7 @@ namespace OpcUaServer
 
 			success = false;
 		} else if (rVal == 0) {
-			RegDeleteKeyEx(hSecKey, TEXT("Description"), KEY_WOW64_RES, 0);	
+			RegDeleteKeyEx(hSecKey, TEXT("Description"), KEY_WOW64_32KEY | KEY_WOW64_64KEY, 0);
 		}
 	
 		if (NULL != hSoftKey) {
@@ -756,16 +766,11 @@ namespace OpcUaServer
 		{
 			SYSTEMTIME oT;
 			::GetLocalTime(&oT);
-			FILE* pLog = NULL;
-			errno_t err = fopen_s(&pLog, "C:\\OpcUaServer.trc", "a");
-			if (pLog == NULL) return;
+			std::ofstream logFile("C:\\OpcUaServer.trc", std::ios_base::app);
 
-			fprintf(pLog,"%s - %02d/%02d/%04d, %02d:%02d:%02d\n    %s\n",
-				logLevel.c_str(),
-				oT.wMonth,oT.wDay,oT.wYear,oT.wHour,oT.wMinute,oT.wSecond,
-				message.c_str()
-			); 
-			fclose(pLog);
+			logFile << boost::format("%s - %02d/%02d/%04d, %02d:%02d:%02d\n    %s\n")
+				% logLevel % oT.wMonth % oT.wDay % oT.wYear % oT.wHour % oT.wMinute % oT.wSecond % message;
+
 		} catch(...) {}
 		::LeaveCriticalSection(&criticalSection_);
 	}
@@ -775,32 +780,6 @@ namespace OpcUaServer
 	{
 		log(logLevel, message);
 		return;
-
-		if (message.length() > 2048) {
-			log(logLevel, message);
-			return;
-		}
-
-		HANDLE event = RegisterEventSource(NULL, "OpcUaServer");
-		if (event == NULL) {
-			log(logLevel, message);
-			return;
-		}
-
-		char msg[2048+1];
-		strcpy_s(msg, 2048, message.c_str());
-
-		WORD wtype = EVENTLOG_ERROR_TYPE;
-		if (logLevel == "Error") {
-			wtype = EVENTLOG_ERROR_TYPE;
-		}
-		else if (logLevel == "Info") {
-			wtype = EVENTLOG_WARNING_TYPE;
-		}
-
-		ReportEvent(event, wtype, 0, 0, NULL, 1, 0, (LPCSTR*)&msg, NULL);
-
-		DeregisterEventSource(event);
 	}
 
 }

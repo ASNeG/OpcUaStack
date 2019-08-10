@@ -19,8 +19,7 @@
 #define __OpcUaStackCore_os_h__
 
 #ifdef _WIN32
-	
-	#define _WIN32_WINNT	0x0501
+	#define _WIN32_WINNT	0x0601
 
 	#define DLLEXPORT __declspec(dllexport)
 	#pragma warning(disable:4251)

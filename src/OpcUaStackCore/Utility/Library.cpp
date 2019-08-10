@@ -25,7 +25,7 @@ namespace OpcUaStackCore
 		}
 
 		bool getFunctionPtr(const std::string& functionName, void **ptr) {
-			*ptr = GetProcAddress(handle_, functionName.c_str());
+			*ptr = reinterpret_cast<void*>(GetProcAddress(handle_, functionName.c_str()));
 			if (*ptr == nullptr) return false;
 			return true;
 		}

@@ -18,11 +18,13 @@
 #ifndef __OpcUaStackCore_OpcUaByteString_h__
 #define __OpcUaStackCore_OpcUaByteString_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
+
 
 namespace OpcUaStackCore
 {
@@ -58,7 +60,7 @@ namespace OpcUaStackCore
 		void fromString(const std::string& string);
 		OpcUaByteString& operator=(const std::string& string); 
 		OpcUaByteString& operator=(const OpcUaByteString& value);
-		operator std::string (void) const;
+		operator std::string(void) const;
 
 		void copyTo(OpcUaByteString& opcUaByteString);
 		bool operator<(const OpcUaByteString& opcUaByteString) const;

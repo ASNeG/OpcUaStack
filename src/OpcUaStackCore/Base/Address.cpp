@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <boost/asio.hpp>
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Address.h"
@@ -128,47 +129,76 @@ namespace OpcUaStackCore
 	void
 	Address::getIpsFromHostname(const std::string& hostname, std::vector<std::string>& ipVec)
 	{
-		struct addrinfo* result;
-		struct addrinfo* res;
+		using namespace boost::asio;
 
-		int32_t error = getaddrinfo(hostname.c_str(), NULL, NULL, &result);
-	    if (error != 0) {
-	    	Log(Error, "getaddrinfo call error");
-	        return;
-	    }
+		try {
+			io_service ioService;
+			ip::tcp::resolver resolver(ioService);
+			ip::tcp::resolver::query q(hostname, "");
 
-	    for (res = result; res != NULL; res = res->ai_next) {
-	    	if (res->ai_addr == nullptr) {
-	    		continue;
-	    	}
-	        if (res->ai_addr->sa_family != AF_INET) {
-	    	   continue;
-	        }
-	        if (res->ai_socktype != SOCK_STREAM) {
-	        	continue;
-	        }
-	       	struct sockaddr_in *addr = (struct sockaddr_in *)res->ai_addr;
-	        std::string ip = inet_ntoa(addr->sin_addr);
-	        ipVec.push_back(ip);
-	    }
+			// TODO: The asynchronous call is used because the synchronous method
+			// 		 was changed in boost-1.66. Should be refactored when the project stops
+			// 		 supporting the boost versions older 1.66
+			resolver.async_resolve(q,
+				[hostname, &ipVec](const boost::system::error_code &ec, ip::tcp::resolver::iterator it) {
 
-	    freeaddrinfo(result);
+			   if (!ec) {
+				   ipVec.push_back(it->endpoint().address().to_string());
+			   } else {
+				   Log(Error, "failed resolve host")
+						   .parameter("Hostname", hostname)
+						   .parameter("Error", ec.message());
+			   }
+
+			});
+
+			ioService.run();
+
+		} catch (boost::system::system_error &err) {
+			Log(Error, "failed resolve host")
+			    .parameter("Hostname", hostname)
+			    .parameter("Error", err.what());
+		}
+
 	}
 
 	void
 	Address::getHostnameFromIp(const std::string& ip, std::string& hostname)
 	{
-		struct sockaddr_in addr;
-		addr.sin_family = AF_INET;
+		using namespace boost::asio;
 
-		char name[2056];
+		try {
+			boost::asio::io_service ioService;
+			ip::tcp::resolver resolver(ioService);
 
-		inet_pton(AF_INET, ip.c_str(), &addr.sin_addr);
-		int32_t error = getnameinfo((struct sockaddr *)&addr, sizeof(addr), name, 2056, NULL, 0, 0);
-	    if (error != 0) {
-	    	Log(Error, "getaddrinfo call error");
-	        return;
-	    }
-	    hostname = name;
+			ip::address_v4 ip4 = ip::address_v4::from_string(ip);
+			ip::tcp::endpoint endpoint;
+			endpoint.address(ip4);
+
+			// TODO: The asynchronous call is used because the synchronous method
+			// 		 was changed in boost-1.66. Should be refactored when the project stops
+			// 		 supporting the boost versions older 1.66
+			resolver.async_resolve(endpoint,
+					[&hostname, ip](const boost::system::error_code &ec, ip::tcp::resolver::iterator it) {
+
+				if (!ec) {
+					hostname = it->host_name();
+				} else {
+					Log(Error, "Failed to resolve IP")
+							.parameter("IpAddress", ip)
+							.parameter("Error", ec.message());
+				}
+
+			});
+
+			ioService.run();
+
+
+		} catch (boost::system::system_error& err) {
+			Log(Error, "Failed to resolve IP")
+				.parameter("IpAddress", ip)
+				.parameter("Error", err.what());
+		}
+
 	}
 }
