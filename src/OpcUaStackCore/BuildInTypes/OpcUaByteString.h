@@ -23,11 +23,8 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
-<<<<<<< HEAD
-#include "OpcUaStackCore/Base/ObjectPool.h"
-=======
 #include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
->>>>>>> Release4
+
 
 namespace OpcUaStackCore
 {
