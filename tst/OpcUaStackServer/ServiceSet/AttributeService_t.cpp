@@ -1,7 +1,7 @@
 #include "unittest.h"
 
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
-#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/StandardDataTypes/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/Application/ApplicationHReadContext.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
@@ -38,7 +38,7 @@ struct AttributeServiceFixture
 
 
 		auto sync = constructSPtr<ForwardNodeSync>();
-		sync->readHService().setCallback(boost::bind(&AttributeServiceFixture::successCallback, this, _1));
+		sync->readHService().setCallback(boost::bind(&AttributeServiceFixture::mockCallback, this, _1));
 
 		node1->forwardNodeSync(sync);
 		node1->setNodeId(*nodeId1);
@@ -58,12 +58,11 @@ struct AttributeServiceFixture
 		transaction_->request()->nodesToRead(nodesToRead);
 		transaction_->componentSession(&mockComponent_);
 
-		auto details = constructSPtr<ExtensibleParameter>();
+		auto details = constructSPtr<OpcUaExtensibleParameter>();
 		auto readDetails = constructSPtr<ReadRawModifiedDetails>();
 
-		details->registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
-		details->parameterTypeId(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
-
+		details->parameterTypeId().set(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
+		details->parameter<ReadRawModifiedDetails>().swap(readDetails);
 
 		transaction_->request()->historyReadDetails(details);
 
@@ -76,9 +75,10 @@ struct AttributeServiceFixture
 	}
 
 	void
-	successCallback(ApplicationHReadContext *ctx)
+	mockCallback(ApplicationHReadContext *ctx)
 	{
 		ctx->statusCode_ = expectedStatus_;
+		ctx->dataValueArray_ = constructSPtr<OpcUaDataValueArray>();
 	}
 
 	Core core_;
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(AttributeService_readHistorySuccessResultStatus)
 	expectedStatus_ = OpcUaStatusCode::Success;
 	service_.receive(transaction_);
 
-	HistoryReadResult::SPtr result;
+	auto result = constructSPtr<HistoryReadResult>();
 	transaction_->response()->results()->get(0, result);
 	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, result->statusCode());
 }
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(AttributeService_readHistoryNoDataResultStatus)
 	expectedStatus_ = OpcUaStatusCode::GoodNoData;
 	service_.receive(transaction_);
 
-	HistoryReadResult::SPtr result;
+	auto result = constructSPtr<HistoryReadResult>();
 	transaction_->response()->results()->get(0, result);
 	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::GoodNoData, result->statusCode());
 }
