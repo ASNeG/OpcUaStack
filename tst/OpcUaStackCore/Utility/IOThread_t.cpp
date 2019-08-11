@@ -1,3 +1,5 @@
+#include <boost/make_shared.hpp>
+#include <future>
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
@@ -61,6 +63,46 @@ BOOST_AUTO_TEST_CASE(IOThread_ExpireFromNow)
 
 	BOOST_REQUIRE(ioThread->shutdown() == true);
 }
+
+BOOST_AUTO_TEST_CASE(IOThread_lambda)
+{
+	auto ioThread = boost::make_shared<IOThread>();
+	BOOST_REQUIRE(ioThread->startup() == true);
+
+	std::promise<void> promise;
+	auto future = promise.get_future();
+	ioThread->run(
+		[&promise](void){
+			promise.set_value();
+	    }
+	);
+	future.wait();
+
+	BOOST_REQUIRE(ioThread->shutdown() == true);
+}
+
+BOOST_AUTO_TEST_CASE(IOThread_lambda_strand)
+{
+	auto ioThread = boost::make_shared<IOThread>();
+	ioThread->numberThreads(10);
+	BOOST_REQUIRE(ioThread->startup() == true);
+	auto strand = ioThread->createStrand();
+
+	for (uint32_t idx = 0; idx < 50; idx++) {
+		std::promise<void> promise;
+		auto future = promise.get_future();
+		ioThread->run(
+			strand,
+			[&promise](void){
+				promise.set_value();
+	    	}
+		);
+		future.wait();
+	}
+
+	BOOST_REQUIRE(ioThread->shutdown() == true);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 
