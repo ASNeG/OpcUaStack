@@ -42,7 +42,7 @@ namespace OpcUaStackCore
 		Callback& callback(void);
 		void timeoutCallback(const TimeoutCallback& timeoutCallback);
 		void timeoutCallback(
-			boost::shared_ptr<boost::asio::io_service::strand>& strand,
+			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
 			const TimeoutCallback& timeoutCallback
 		);
 

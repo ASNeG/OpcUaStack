@@ -15,10 +15,21 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Utility/IOThread.h"
 
 namespace OpcUaStackCore
 {
+
+    class AsyncCallbackContext
+    {
+      public:
+	    typedef boost::shared_ptr<AsyncCallbackContext> SPtr;
+
+	    boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
+	    IOThread::AsyncCallback asyncCallback_ = nullptr;
+    };
+
 
 	IOThread::IOThread(void)
 	: ioService_()
@@ -47,6 +58,32 @@ namespace OpcUaStackCore
 		deleteSlotTimer();
 		deleteIOService();
 		return true;
+	}
+
+	void
+	IOThread::run(
+		const AsyncCallback& asyncCallback
+	)
+	{
+		ioService_->run(asyncCallback);
+	}
+
+	void
+	IOThread::run(
+	    const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+		const AsyncCallback& asyncCallback
+	)
+	{
+		auto asyncCallbackContext = boost::make_shared<AsyncCallbackContext>();
+		asyncCallbackContext->strand_ = strand;
+		asyncCallbackContext->asyncCallback_ = asyncCallback;
+		ioService_->run(
+			[this, asyncCallbackContext]() {
+				asyncCallbackContext->strand_->dispatch(
+					asyncCallbackContext->asyncCallback_
+				);
+		    }
+	    );
 	}
 
 	void

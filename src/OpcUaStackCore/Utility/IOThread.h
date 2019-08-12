@@ -33,6 +33,8 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<IOThread> SPtr;
 		typedef std::map<std::string, IOThread::SPtr> Map;
 
+		typedef std::function<void (void)> AsyncCallback;
+
 		IOThread(void);
 		~IOThread(void);
 
@@ -48,11 +50,13 @@ namespace OpcUaStackCore
 		bool startup(void);
 		bool shutdown(void);
 
-		template<typename HANDLER>
-		    void run(HANDLER handler)
-			{
-				ioService_->run(handler);
-			}
+		void run(
+			const AsyncCallback& asyncCallback
+		);
+		void run(
+		    const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+			const AsyncCallback& asyncCallback
+		);
 
 	  private:
 		void createIOService(void);

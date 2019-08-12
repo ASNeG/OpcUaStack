@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,24 +31,45 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<TCPConnector> SPtr;
 
+		typedef std::function<void (const boost::system::error_code& error)> ConnectCompleteCallback;
+
 		TCPConnector(void);
 		~TCPConnector(void);
 
-		template<typename HANDLER>
-		  void async_connect(boost::asio::ip::tcp::socket& socket, boost::asio::ip::address address, uint32_t port, HANDLER handler)
-		  {
-		      boost::asio::ip::tcp::endpoint endpoint;
-			  endpoint.address(address);
-			  endpoint.port((unsigned short)port);
-			  socket.async_connect(endpoint,handler);
-		  }
-	
-		template<typename HANDLER>
-		  void async_connect(boost::asio::ip::tcp::socket& socket, const std::string& addressString, uint32_t port, HANDLER handler)
-		  {
-			  boost::asio::ip::address address(boost::asio::ip::address::from_string(addressString.c_str()));
-			  async_connect(socket, address,port,handler);
-		  }
+		void async_connect(
+			boost::asio::ip::tcp::socket& socket,
+			boost::asio::ip::address address,
+			uint32_t port,
+			const ConnectCompleteCallback& connectCompleteCallback
+		);
+
+		void async_connect(
+			boost::asio::ip::tcp::socket& socket,
+			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+			boost::asio::ip::address address,
+			uint32_t port,
+			const ConnectCompleteCallback& connectCompleteCallback
+		);
+
+		void async_connect(
+			boost::asio::ip::tcp::socket& socket,
+			const std::string& addressString,
+			uint32_t port,
+			const ConnectCompleteCallback& connectCompleteCallback
+		);
+
+		void async_connect(
+			boost::asio::ip::tcp::socket& socket,
+			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+			const std::string& addressString,
+			uint32_t port,
+			const ConnectCompleteCallback& connectCompleteCallback
+		);
+
+	  private:
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
+		ConnectCompleteCallback connectCompleteCallback_ = nullptr;
+
 	};
 
 }

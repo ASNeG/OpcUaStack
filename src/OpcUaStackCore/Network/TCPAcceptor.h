@@ -31,6 +31,8 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<TCPAcceptor> SPtr;
 
+		typedef std::function<void (const boost::system::error_code& error)> AcceptCompleteCallback;
+
 		TCPAcceptor(boost::asio::io_service& io_service, boost::asio::ip::tcp::endpoint& endpoint);
 		TCPAcceptor(boost::asio::io_service& io_service, boost::asio::ip::address& addressString, uint32_t port);
 		TCPAcceptor(boost::asio::io_service& io_service, std::string& addressString, uint32_t port);
@@ -41,15 +43,23 @@ namespace OpcUaStackCore
 		void listen(void);
 		void listen(uint32_t maxConnections);
 
-		template<typename HANDLER>
-		  void async_accept(boost::asio::ip::tcp::socket& socket, HANDLER handler)
-		  {
-			  acceptor_.async_accept(socket,handler);
-		  }
+		void async_accept(
+		    boost::asio::ip::tcp::socket& socket,
+			const AcceptCompleteCallback& acceptCompleteCallback
+		);
+		void async_accept(
+		    boost::asio::ip::tcp::socket& socket,
+			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+			const AcceptCompleteCallback& acceptCompleteCallback
+		);
+
 		void cancel(void);
 		void close(void);
 
 	  private:
+
+		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
+		AcceptCompleteCallback acceptCompleteCallback_ = nullptr;
 		boost::asio::ip::tcp::endpoint endpoint_;
 		boost::asio::ip::tcp::acceptor acceptor_;
 	};

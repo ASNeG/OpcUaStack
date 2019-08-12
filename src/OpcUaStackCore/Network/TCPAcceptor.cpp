@@ -67,6 +67,37 @@ namespace OpcUaStackCore
 	}
 
 	void
+	TCPAcceptor::async_accept(
+	    boost::asio::ip::tcp::socket& socket,
+		const AcceptCompleteCallback& acceptCompleteCallback
+	)
+	{
+		acceptor_.async_accept(socket, acceptCompleteCallback);
+	}
+
+	void
+	TCPAcceptor::async_accept(
+	    boost::asio::ip::tcp::socket& socket,
+		const boost::shared_ptr<boost::asio::io_service::strand>& strand,
+		const AcceptCompleteCallback& acceptCompleteCallback
+	)
+	{
+		strand_ = strand;
+		acceptCompleteCallback_ = acceptCompleteCallback;
+
+		acceptor_.async_accept(
+			socket,
+			[this](const boost::system::error_code& error) {
+				strand_->dispatch(
+					[this, error](void) {
+				    	acceptCompleteCallback_(error);
+				    }
+				);
+		    }
+		);
+	}
+
+	void
 	TCPAcceptor::cancel(void)
 	{
 		acceptor_.cancel();
