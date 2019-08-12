@@ -23,8 +23,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
 #include "OpcUaClient/ClientCommand/CommandBase.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaClient
 {
 
