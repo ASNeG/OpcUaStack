@@ -21,8 +21,6 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaServer/ApplicationLibrary/ApplicationLibrary.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaServer
 {
 

@@ -21,9 +21,6 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientRegisteredServers.h"
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackClient;
-
 namespace OpcUaServer
 {
 
@@ -52,11 +49,11 @@ namespace OpcUaServer
 		std::string discoveryServerUrl_;
 		uint32_t registerInterval_;
 
-		Config* config_;
-		IOThread::SPtr ioThread_;
-		DiscoveryClientRegisteredServers discoveryClient_;
-		RegisteredServer::Vec registeredServerVec_;
-		CryptoManager::SPtr cryptoManager_;
+		OpcUaStackCore::Config* config_;
+		OpcUaStackCore::IOThread::SPtr ioThread_;
+		OpcUaStackClient::DiscoveryClientRegisteredServers discoveryClient_;
+		OpcUaStackCore::RegisteredServer::Vec registeredServerVec_;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 	};
 
 }

@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/Utility/Environment.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackServer;
 
 namespace OpcUaServer
 {

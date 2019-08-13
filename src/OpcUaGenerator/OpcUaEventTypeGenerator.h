@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+
 namespace OpcUaEventTypeGenerator
 {
 
