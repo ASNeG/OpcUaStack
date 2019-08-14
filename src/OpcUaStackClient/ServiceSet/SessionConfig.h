@@ -20,8 +20,6 @@
 #include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
 #include "OpcUaStackCore/Certificate/Certificate.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 
@@ -105,21 +103,21 @@ namespace OpcUaStackClient
 
 		X509Authentication(
 			const std::string& policyId,
-			Certificate::SPtr& certificate,
-			PrivateKey::SPtr& provateKey,
+			OpcUaStackCore::Certificate::SPtr& certificate,
+			OpcUaStackCore::PrivateKey::SPtr& provateKey,
 			const std::string& securityPolicyUri
 		);
 		~X509Authentication(void);
 
-		Certificate::SPtr& certificate(void);
-		PrivateKey::SPtr& privateKey(void);
+		OpcUaStackCore::Certificate::SPtr& certificate(void);
+		OpcUaStackCore::PrivateKey::SPtr& privateKey(void);
 		std::string& securityPolicyUri(void);
 
 	  private:
 		X509Authentication(void);
 
-		Certificate::SPtr certificate_;
-		PrivateKey::SPtr privateKey_;
+		OpcUaStackCore::Certificate::SPtr certificate_;
+		OpcUaStackCore::PrivateKey::SPtr privateKey_;
 		std::string securityPolicyUri_;
 	};
 
@@ -159,8 +157,8 @@ namespace OpcUaStackClient
 		SessionConfig(void);
 		~SessionConfig(void);
 
-		void applicationDescription(ApplicationDescription::SPtr& applicationDescription);
-		ApplicationDescription::SPtr& applicationDescription(void);
+		void applicationDescription(OpcUaStackCore::ApplicationDescription::SPtr& applicationDescription);
+		OpcUaStackCore::ApplicationDescription::SPtr& applicationDescription(void);
 		void sessionName(const std::string& sessionName);
 		std::string& sessionName(void);
 		void requestTimeout(uint32_t requestTimeout);
@@ -193,13 +191,13 @@ namespace OpcUaStackClient
 
 		void authenticationX509(
 			const std::string& policyId,
-			Certificate::SPtr& certificate,
-			PrivateKey::SPtr& privateKey,
+			OpcUaStackCore::Certificate::SPtr& certificate,
+			OpcUaStackCore::PrivateKey::SPtr& privateKey,
 			const std::string& securityPolicyUri
 		);
 		void authenticationX509(
-			Certificate::SPtr& certificate,
-			PrivateKey::SPtr& privateKey,
+			OpcUaStackCore::Certificate::SPtr& certificate,
+			OpcUaStackCore::PrivateKey::SPtr& privateKey,
 			const std::string& securityPolicyUri
 		);
 
@@ -216,7 +214,7 @@ namespace OpcUaStackClient
 
 
 	  private:
-		ApplicationDescription::SPtr applicationDescription_;
+		OpcUaStackCore::ApplicationDescription::SPtr applicationDescription_;
 		std::string sessionName_;
 		uint32_t requestTimeout_;
 		uint32_t sessionTimeout_;

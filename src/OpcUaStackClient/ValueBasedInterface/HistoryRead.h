@@ -24,9 +24,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackClient;
-
 namespace OpcUaStackClient
 {
 
@@ -35,7 +32,7 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<HistoryRead> SPtr;
 		typedef std::function<
-			void (OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValueVec)
+			void (OpcUaStackCore::OpcUaStatusCode statusCode, OpcUaStackCore::OpcUaDataValue::Vec& dataValueVec)
 		> ResultHandler;
 
 		HistoryRead(void);
@@ -45,14 +42,14 @@ namespace OpcUaStackClient
 		void maxNumResultValuesPerRequest(uint32_t maxNumResultValuesPerRequest);
 		void maxNumResultValuesPerNode(uint32_t maxNumResultValuesPerNode);
 
-		OpcUaStatusCode syncHistoryRead(
-			const OpcUaNodeId& nodeId,
+		OpcUaStackCore::OpcUaStatusCode syncHistoryRead(
+			const OpcUaStackCore::OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
-			OpcUaDataValue::Vec& dataValueVec
+			OpcUaStackCore::OpcUaDataValue::Vec& dataValueVec
 		);
 		void asyncHistoryRead(
-			const OpcUaNodeId& nodeId,
+			const OpcUaStackCore::OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
 			const ResultHandler& resultHandler
@@ -63,28 +60,28 @@ namespace OpcUaStackClient
 		void asyncHistoryRead(void);
 		void asyncHistoryReadComplete(
 			bool releaseContinuationPoints,
-			ServiceTransactionHistoryRead::SPtr& trx
+			OpcUaStackCore::ServiceTransactionHistoryRead::SPtr& trx
 		);
 
 		// input parameter
-		OpcUaNodeId nodeId_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
 		boost::posix_time::ptime startTime_;
 		boost::posix_time::ptime endTime_;
 		ResultHandler resultHandler_;
 
 		// output parameter
-		OpcUaDataValue::Vec dataValueVec_;
+		OpcUaStackCore::OpcUaDataValue::Vec dataValueVec_;
 
 		// runtime parameter
 		AttributeService::SPtr attributeService_;
 		bool cancel_;
 		bool releaseContinuationPoint_;
 
-		TimestampsToReturn timestampToReturn_;
+		OpcUaStackCore::TimestampsToReturn timestampToReturn_;
 		uint32_t maxNumResultValuesPerRequest_;
 		uint32_t maxNumResultValuesPerNode_;
 		uint32_t actNumResultValuesPerNode_;
-		OpcUaByteString continuationPoint_;
+		OpcUaStackCore::OpcUaByteString continuationPoint_;
 	};
 
 }

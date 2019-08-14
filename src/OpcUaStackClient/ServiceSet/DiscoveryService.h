@@ -18,41 +18,40 @@
 #ifndef __OpcUaStackClient_DiscoveryService_h__
 #define __OpcUaStackClient_DiscoveryService_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
-
-using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT DiscoveryService
-	: public Component
+	: public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryService> SPtr;
 
-		DiscoveryService(IOThread* ioThread);
+		DiscoveryService(OpcUaStackCore::IOThread* ioThread);
 		~DiscoveryService(void);
 
 		void setConfiguration(
-			Component* componentSession
+			OpcUaStackCore::Component* componentSession
 		);
-		void componentSession(Component* componentSession);
+		void componentSession(OpcUaStackCore::Component* componentSession);
 
-		void syncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
-		void asyncSend(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
-		void syncSend(ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints);
-		void asyncSend(ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints);
-		void syncSend(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
-		void asyncSend(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
+		void syncSend(OpcUaStackCore::ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
+		void asyncSend(OpcUaStackCore::ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
+		void syncSend(OpcUaStackCore::ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints);
+		void asyncSend(OpcUaStackCore::ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints);
+		void syncSend(OpcUaStackCore::ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
+		void asyncSend(OpcUaStackCore::ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		Component* componentSession_;
+		OpcUaStackCore::Component* componentSession_;
 	};
 
 }

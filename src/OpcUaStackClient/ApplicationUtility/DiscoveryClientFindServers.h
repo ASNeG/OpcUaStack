@@ -25,8 +25,6 @@
 #include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 

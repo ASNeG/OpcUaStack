@@ -19,8 +19,6 @@
 
 #include "OpcUaStackCore/Utility/IOThread.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 

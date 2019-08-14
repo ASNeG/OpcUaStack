@@ -19,6 +19,7 @@
 #define __OpcUaStackClient_SubscriptionManager_h__
 
 #include <set>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceBase.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceHandler.h"
 
@@ -32,11 +33,11 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<SubscriptionService> SPtr;
 
-		SubscriptionService(IOThread* ioThread);
+		SubscriptionService(OpcUaStackCore::IOThread* ioThread);
 		virtual ~SubscriptionService(void);
 
 		void setConfiguration(
-			Component* componentSession,
+			OpcUaStackCore::Component* componentSession,
 			const DataChangeNotificationHandler& dataChangeNotificationHandler,
 			const EventNotificationHandler& eventNotificationHandler,
 			const SubscriptionStateUpdateHandler& subscriptionStateUpdateHandler,
@@ -46,46 +47,46 @@ namespace OpcUaStackClient
 		void publishCount(uint32_t publishCount);
 		uint32_t publishCount(void);
 
-		void syncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
-		void asyncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
-		void syncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
-		void asyncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
-		void syncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
-		void asyncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
-		void syncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
-		void asyncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
-		void syncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
-		void asyncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
-		void syncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish);
-		void asyncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish);
-		void syncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
-		void asyncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
+		void syncSend(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
+		void asyncSend(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
+		void syncSend(OpcUaStackCore::ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
+		void asyncSend(OpcUaStackCore::ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
+		void syncSend(OpcUaStackCore::ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
+		void asyncSend(OpcUaStackCore::ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
+		void syncSend(OpcUaStackCore::ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
+		void asyncSend(OpcUaStackCore::ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
+		void syncSend(OpcUaStackCore::ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
+		void asyncSend(OpcUaStackCore::ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
+		void syncSend(OpcUaStackCore::ServiceTransactionPublish::SPtr& serviceTransactionPublish);
+		void asyncSend(OpcUaStackCore::ServiceTransactionPublish::SPtr& serviceTransactionPublish);
+		void syncSend(OpcUaStackCore::ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
+		void asyncSend(OpcUaStackCore::ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
 
 		//- Component -----------------------------------------------------------------
-		virtual void receive(Message::SPtr message);
+		virtual void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	    //- SubscriptionServicePublish ----------------------------------------
-	    virtual void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode);
-	    virtual void subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish);
-	    virtual void subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish);
+	    virtual void subscriptionServiceSetPublishingModeResponse(OpcUaStackCore::ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode);
+	    virtual void subscriptionServicePublishResponse(OpcUaStackCore::ServiceTransactionPublish::SPtr serviceTransactionPublish);
+	    virtual void subscriptionServiceRepublishResponse(OpcUaStackCore::ServiceTransactionRepublish::SPtr serviceTransactionRepublish);
 		//- SubscriptionServicePublishIf --------------------------------------
 
 	  private:
-	    void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
-	    void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+	    void subscriptionServiceCreateSubscriptionResponse(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
+	    void subscriptionServiceDeleteSubscriptionsResponse(OpcUaStackCore::ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
-	    void sendDeleteSubscriptions(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
+	    void sendDeleteSubscriptions(OpcUaStackCore::ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
 	    void createSubscription(uint32_t subscriptionId);
 	    void deleteSubscriptionRequest(uint32_t subscriptionId);
 	    void deleteSubscriptionResponse(uint32_t subscriptionId);
 	    void sendPublishRequests(void);
 
-	    void receivePublishResponse(const PublishResponse::SPtr& publishResponse);
-	    void dataChangeNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter);
-	    void eventNotification(const OpcUaExtensibleParameter::SPtr& extensibleParameter);
+	    void receivePublishResponse(const OpcUaStackCore::PublishResponse::SPtr& publishResponse);
+	    void dataChangeNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
+	    void eventNotification(const OpcUaStackCore::OpcUaExtensibleParameter::SPtr& extensibleParameter);
 
-		DataChangeNotificationHandler dataChangeNotificationHandler_;
+	    DataChangeNotificationHandler dataChangeNotificationHandler_;
 		EventNotificationHandler eventNotificationHandler_;
 		SubscriptionStateUpdateHandler subscriptionStateUpdateHandler_;
 	    uint32_t publishCount_;

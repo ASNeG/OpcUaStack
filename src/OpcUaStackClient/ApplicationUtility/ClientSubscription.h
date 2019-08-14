@@ -27,9 +27,6 @@
 #include <vector>
 #include <stdint.h>
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackClient;
-
 namespace OpcUaStackClient
 {
 

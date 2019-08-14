@@ -21,8 +21,6 @@
 #include "OpcUaStackClient/ServiceSet/QueryService.h"
 #include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 

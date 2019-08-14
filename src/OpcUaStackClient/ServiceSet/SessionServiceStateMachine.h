@@ -21,8 +21,6 @@
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateId.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 

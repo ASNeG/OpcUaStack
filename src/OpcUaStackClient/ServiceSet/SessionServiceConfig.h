@@ -23,8 +23,6 @@
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
 #include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 
@@ -39,7 +37,7 @@ namespace OpcUaStackClient
 
 		SessionMode sessionMode_;
 		SessionServiceChangeHandler sessionServiceChangeHandler_;
-		SecureChannelClientConfig::SPtr secureChannelClient_;
+		OpcUaStackCore::SecureChannelClientConfig::SPtr secureChannelClient_;
 		SessionConfig::SPtr session_;
 	};
 

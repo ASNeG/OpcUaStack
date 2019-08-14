@@ -21,8 +21,6 @@
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient 
 {
 
@@ -30,7 +28,7 @@ namespace OpcUaStackClient
 	{
 	  public:
 		typedef boost::shared_ptr<EndpointDescriptionCache> SPtr;
-		typedef std::map<std::string, EndpointDescriptionArray::SPtr> EndpointDescriptionMap;
+		typedef std::map<std::string, OpcUaStackCore::EndpointDescriptionArray::SPtr> EndpointDescriptionMap;
 
 		EndpointDescriptionCache(void);
 		~EndpointDescriptionCache(void);
@@ -45,12 +43,12 @@ namespace OpcUaStackClient
 		void clear(void);
 		void insertEndpointDescription(
 			const std::string& endpointUrl,
-			EndpointDescriptionArray::SPtr& endpointDescriptionArray
+			OpcUaStackCore::EndpointDescriptionArray::SPtr& endpointDescriptionArray
 		);
 		void deleteEndpointDescription(
 			const std::string& endpointUrl
 		);
-		EndpointDescriptionArray::SPtr getEndpointDescription(
+		OpcUaStackCore::EndpointDescriptionArray::SPtr getEndpointDescription(
 			const std::string& endpointUrl
 		);
 		void getEndpointUrls(std::vector<std::string>& endpointUrls);

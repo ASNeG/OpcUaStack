@@ -23,8 +23,6 @@
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 

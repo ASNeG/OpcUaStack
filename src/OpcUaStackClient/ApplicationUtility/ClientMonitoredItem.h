@@ -26,8 +26,6 @@
 #include "OpcUaStackCore/StandardDataTypes/DataChangeTrigger.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 

@@ -21,40 +21,38 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT AttributeService
-	: public Component
+	: public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<AttributeService> SPtr;
 
-		AttributeService(IOThread* ioThread);
+		AttributeService(OpcUaStackCore::IOThread* ioThread);
 		~AttributeService(void);
 
 		void setConfiguration(
-			Component* componentSession
+			OpcUaStackCore::Component* componentSession
 		);
-		void componentSession(Component* componentSession);
+		void componentSession(OpcUaStackCore::Component* componentSession);
 
-		void syncSend(ServiceTransactionRead::SPtr serviceTransactionRead);
-		void asyncSend(ServiceTransactionRead::SPtr serviceTransactionRead);
-		void syncSend(ServiceTransactionWrite::SPtr serviceTransactionWrite);
-		void asyncSend(ServiceTransactionWrite::SPtr serviceTransactionWrite);
-		void syncSend(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
-		void asyncSend(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
-		void syncSend(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
-		void asyncSend(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
+		void syncSend(OpcUaStackCore::ServiceTransactionRead::SPtr serviceTransactionRead);
+		void asyncSend(OpcUaStackCore::ServiceTransactionRead::SPtr serviceTransactionRead);
+		void syncSend(OpcUaStackCore::ServiceTransactionWrite::SPtr serviceTransactionWrite);
+		void asyncSend(OpcUaStackCore::ServiceTransactionWrite::SPtr serviceTransactionWrite);
+		void syncSend(OpcUaStackCore::ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
+		void asyncSend(OpcUaStackCore::ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
+		void syncSend(OpcUaStackCore::ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
+		void asyncSend(OpcUaStackCore::ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		Component* componentSession_;
+		OpcUaStackCore::Component* componentSession_;
 	};
 
 }

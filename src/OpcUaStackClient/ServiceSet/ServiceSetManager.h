@@ -37,8 +37,6 @@
 #include "OpcUaStackClient/ServiceSet/NodeManagementService.h"
 #include "OpcUaStackClient/ServiceSet/NodeManagementServiceConfig.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 

@@ -21,39 +21,37 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT ViewService
-	: public Component
+	: public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<ViewService> SPtr;
 
-		ViewService(IOThread* ioThread);
+		ViewService(OpcUaStackCore::IOThread* ioThread);
 		~ViewService(void);
 
 		void setConfiguration(
-			Component* componentSession
+			OpcUaStackCore::Component* componentSession
 		);
-		void componentSession(Component* componentSession);
+		void componentSession(OpcUaStackCore::Component* componentSession);
 
-		void syncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
-		void asyncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
-		void syncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
-		void asyncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
-		void syncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds);
-		void asyncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds);
+		void syncSend(OpcUaStackCore::ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
+		void asyncSend(OpcUaStackCore::ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
+		void syncSend(OpcUaStackCore::ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+		void asyncSend(OpcUaStackCore::ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+		void syncSend(OpcUaStackCore::ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds);
+		void asyncSend(OpcUaStackCore::ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds);
 
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		Component* componentSession_;
+		OpcUaStackCore::Component* componentSession_;
 	};
 
 }

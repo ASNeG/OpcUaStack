@@ -22,8 +22,6 @@
 #include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 
@@ -33,8 +31,8 @@ namespace OpcUaStackClient
 		AttributeServiceNodeIf(void) {}
 		virtual ~AttributeServiceNodeIf(void) {}
 
-		virtual void attributeServiceNodeDone(OpcUaStatusCode statusCode) = 0;
-		virtual void attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue) = 0;
+		virtual void attributeServiceNodeDone(OpcUaStackCore::OpcUaStatusCode statusCode) = 0;
+		virtual void attributeServiceNodeResult(OpcUaStackCore::AttributeId attributeId, OpcUaStackCore::OpcUaDataValue::SPtr& dataValue) = 0;
 	};
 
 
@@ -48,44 +46,44 @@ namespace OpcUaStackClient
 
 		void attributeService(AttributeService::SPtr& attributeService);
 		void attributeServiceNodeIf(AttributeServiceNodeIf* attributeServiceNodeIf);
-		void nodeId(OpcUaNodeId& nodeId);
+		void nodeId(OpcUaStackCore::OpcUaNodeId& nodeId);
 		void attributeIds(
-			const AttributeId& attributeId1
+			const OpcUaStackCore::AttributeId& attributeId1
 		);
 		void attributeIds(
-			const AttributeId& attributeId1,
-			const AttributeId& attributeId2
+			const OpcUaStackCore::AttributeId& attributeId1,
+			const OpcUaStackCore::AttributeId& attributeId2
 		);
 		void attributeIds(
-			const AttributeId& attributeId1,
-			const AttributeId& attributeId2,
-			const AttributeId& attributeId3
+			const OpcUaStackCore::AttributeId& attributeId1,
+			const OpcUaStackCore::AttributeId& attributeId2,
+			const OpcUaStackCore::AttributeId& attributeId3
 		);
 		void attributeIds(
-			const AttributeId& attributeId1,
-			const AttributeId& attributeId2,
-			const AttributeId& attributeId3,
-			const AttributeId& attributeId4
+			const OpcUaStackCore::AttributeId& attributeId1,
+			const OpcUaStackCore::AttributeId& attributeId2,
+			const OpcUaStackCore::AttributeId& attributeId3,
+			const OpcUaStackCore::AttributeId& attributeId4
 		);
 		void attributeIds(
-			const AttributeId& attributeId1,
-			const AttributeId& attributeId2,
-			const AttributeId& attributeId3,
-			const AttributeId& attributeId4,
-			const AttributeId& attributeId5
+			const OpcUaStackCore::AttributeId& attributeId1,
+			const OpcUaStackCore::AttributeId& attributeId2,
+			const OpcUaStackCore::AttributeId& attributeId3,
+			const OpcUaStackCore::AttributeId& attributeId4,
+			const OpcUaStackCore::AttributeId& attributeId5
 		);
-		void attributeIds(NodeClass::Enum nodeClassType);
+		void attributeIds(OpcUaStackCore::NodeClass::Enum nodeClassType);
 
 		void asyncReadNode(void);
 
 	  private:
-		void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
+		void attributeServiceReadResponse(OpcUaStackCore::ServiceTransactionRead::SPtr serviceTransactionRead);
 
 		AttributeService::SPtr attributeService_;
 		AttributeServiceNodeIf* attributeServiceNodeIf_;
 
-		OpcUaNodeId nodeId_;
-		std::vector<AttributeId> attributeIdVec_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
+		std::vector<OpcUaStackCore::AttributeId> attributeIdVec_;
 
 	};
 

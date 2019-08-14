@@ -29,8 +29,6 @@
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
 #include "OpcUaStackClient/ServiceSet/EndpointDescriptionCache.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 
@@ -47,67 +45,67 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<SessionServiceContext> SPtr;
 
-		SessionServiceContext(IOThread* ioThread);
+		SessionServiceContext(OpcUaStackCore::IOThread* ioThread);
 		~SessionServiceContext(void);
 
 		bool startReconnectTimer(void);
 		void stopReconnectTimer(void);
 
-		OpcUaStatusCode sendCreateSessionRequest(
-			SecureChannel* secureChannel
+		OpcUaStackCore::OpcUaStatusCode sendCreateSessionRequest(
+			OpcUaStackCore::SecureChannel* secureChannel
 		);
-		OpcUaStatusCode sendActivateSessionRequest(
-			SecureChannel* secureChannel
+		OpcUaStackCore::OpcUaStatusCode sendActivateSessionRequest(
+			OpcUaStackCore::SecureChannel* secureChannel
 		);
-		OpcUaStatusCode sendGetEndpointsRequest(
-				SecureChannel* secureChannel
+		OpcUaStackCore::OpcUaStatusCode sendGetEndpointsRequest(
+			OpcUaStackCore::SecureChannel* secureChannel
 		);
-		OpcUaStatusCode sendCloseSessionRequest(
-			SecureChannel* secureChannel,
+		OpcUaStackCore::OpcUaStatusCode sendCloseSessionRequest(
+			OpcUaStackCore::SecureChannel* secureChannel,
 			bool deleteSubscriptions
 		);
-		OpcUaStatusCode sendCancelRequest(
-			SecureChannel* secureChannel,
+		OpcUaStackCore::OpcUaStatusCode sendCancelRequest(
+			OpcUaStackCore::SecureChannel* secureChannel,
 			uint32_t requestHandle
 		);
 
 		bool setSessionServiceMode(void);
 		SessionServiceMode sessionServiceMode(void);
-		EndpointDescription::SPtr selectEndpointDescriptionFromCache(
-			EndpointDescriptionArray::SPtr& endpointDescriptions
+		OpcUaStackCore::EndpointDescription::SPtr selectEndpointDescriptionFromCache(
+			OpcUaStackCore::EndpointDescriptionArray::SPtr& endpointDescriptions
 		);
 		bool selectUserIdentityTokenFromCache(
-			EndpointDescription::SPtr& endpointDescription
+			OpcUaStackCore::EndpointDescription::SPtr& endpointDescription
 		);
 		bool checkEndpoint(
-			EndpointDescription::SPtr& endpointDescription
+			OpcUaStackCore::EndpointDescription::SPtr& endpointDescription
 		);
 
-		OpcUaStatusCode authentication(
-			ActivateSessionRequest& activateSessionRequest
+		OpcUaStackCore::OpcUaStatusCode authentication(
+			OpcUaStackCore::ActivateSessionRequest& activateSessionRequest
 		);
-		OpcUaStatusCode authenticationAnonymous(
-			ActivateSessionRequest& activateSessionRequest,
+		OpcUaStackCore::OpcUaStatusCode authenticationAnonymous(
+			OpcUaStackCore::ActivateSessionRequest& activateSessionRequest,
 			const std::string& securityPolicyUri,
 			const std::string& policyId
 		);
-		OpcUaStatusCode authenticationUserName(
-			ActivateSessionRequest& activateSessionRequest,
+		OpcUaStackCore::OpcUaStatusCode authenticationUserName(
+			OpcUaStackCore::ActivateSessionRequest& activateSessionRequest,
 			const std::string& securityPolicyUri,
 			const std::string& policyId,
 			const std::string& userName,
 			const std::string& password,
 			const std::string& encryptionAlgorithm
 		);
-		OpcUaStatusCode authenticationX509(
-			ActivateSessionRequest& activateSessionRequest,
+		OpcUaStackCore::OpcUaStatusCode authenticationX509(
+			OpcUaStackCore::ActivateSessionRequest& activateSessionRequest,
 			const std::string& securityPolicyUri,
 			const std::string& policyId,
-			Certificate& certificate,
-			PrivateKey& privateKey
+			OpcUaStackCore::Certificate& certificate,
+			OpcUaStackCore::PrivateKey& privateKey
 		);
-		OpcUaStatusCode authenticationIssued(
-			ActivateSessionRequest& activateSessionRequest,
+		OpcUaStackCore::OpcUaStatusCode authenticationIssued(
+			OpcUaStackCore::ActivateSessionRequest& activateSessionRequest,
 			const std::string& securityPolicyUri,
 			const std::string& policyId,
 			const std::string& tokenData,
@@ -120,9 +118,9 @@ namespace OpcUaStackClient
 		//
 		// secure channel configuration
 		//
-		SecureChannelClientConfig::SPtr secureChannelClientConfig_;
-		SecureChannelClient secureChannelClient_;
-		SecureChannel* secureChannel_;
+		OpcUaStackCore::SecureChannelClientConfig::SPtr secureChannelClientConfig_;
+		OpcUaStackCore::SecureChannelClient secureChannelClient_;
+		OpcUaStackCore::SecureChannel* secureChannel_;
 
 		//
 		// session configuration
@@ -135,26 +133,26 @@ namespace OpcUaStackClient
 		//
 		// thread and timer
 		//
-		IOThread* ioThread_;
-		SlotTimerElement::SPtr slotTimerElement_;
+		OpcUaStackCore::IOThread* ioThread_;
+		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
 		//
 		// session lifetime data
 		//
-		PendingQueue pendingQueue_;				// request pending queue
+		OpcUaStackCore::PendingQueue pendingQueue_;				// request pending queue
 
 		char clientNonce_[32];					// client nonce from create session request
 
-		OpcUaDouble sessionTimeout_;			// session timeout from create session response
-		OpcUaUInt32 maxResponseMessageSize_;	// max response message size from create session response
-		OpcUaNodeId authenticationToken_;		// authentication token from create session response
-		OpcUaByteString serverNonce_;			// server nonce from create session response
-		OpcUaUInt32 requestId_;
-		OpcUaUInt32 requestHandle_;
+		OpcUaStackCore::OpcUaDouble sessionTimeout_;			// session timeout from create session response
+		OpcUaStackCore::OpcUaUInt32 maxResponseMessageSize_;	// max response message size from create session response
+		OpcUaStackCore::OpcUaNodeId authenticationToken_;		// authentication token from create session response
+		OpcUaStackCore::OpcUaByteString serverNonce_;			// server nonce from create session response
+		OpcUaStackCore::OpcUaUInt32 requestId_;
+		OpcUaStackCore::OpcUaUInt32 requestHandle_;
 
 		SessionServiceMode sessionServiceMode_;
 		EndpointDescriptionCache& endpointDescriptionCache_;
-		SecureChannelClientConfig::SPtr secureChannelClientConfigBackup_;
+		OpcUaStackCore::SecureChannelClientConfig::SPtr secureChannelClientConfigBackup_;
 	};
 
 }

@@ -24,9 +24,6 @@
 #include "OpcUaStackClient/ValueBasedInterface/VBITransaction.h"
 #include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackClient;
-
 namespace OpcUaStackClient
 {
 
@@ -57,10 +54,10 @@ namespace OpcUaStackClient
 		// --------------------------------------------------------------------
 		void setSessionChangeHandler(SessionChangeHandler sessionChangeHandler);
 
-		OpcUaStatusCode syncConnect(ConnectContext& connectContext);
+		OpcUaStackCore::OpcUaStatusCode syncConnect(ConnectContext& connectContext);
 		void asyncConnect(ConnectContext& connectContext);
 
-		OpcUaStatusCode syncDisconnect(void);
+		OpcUaStackCore::OpcUaStatusCode syncDisconnect(void);
 		void asyncDisconnect(void);
 
 		void deleteEndpointDescriptionCache(void);
@@ -77,21 +74,21 @@ namespace OpcUaStackClient
 
 		// read
 		ReadContext& defaultReadContext(void);
-		OpcUaStatusCode syncRead(
-			OpcUaNodeId& nodeId,
-			OpcUaDataValue& dataValue
+		OpcUaStackCore::OpcUaStatusCode syncRead(
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaDataValue& dataValue
 		);
-		OpcUaStatusCode syncRead(
-			OpcUaNodeId& nodeId,
-			OpcUaDataValue& dataValue,
+		OpcUaStackCore::OpcUaStatusCode syncRead(
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaDataValue& dataValue,
 			ReadContext& readContext
 		);
 		void asyncRead(
-			OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
 			const VBITransactionRead::VBIResultHandler& resultHandler
 		);
 		void asyncRead(
-			OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
 			const VBITransactionRead::VBIResultHandler& resultHandler,
 			ReadContext& readContext
 		);
@@ -99,50 +96,50 @@ namespace OpcUaStackClient
 
 		// write
 		WriteContext& defaultWriteContext(void);
-		OpcUaStatusCode syncWrite(
-			OpcUaNodeId& nodeId,
-			OpcUaDataValue& dataValue
+		OpcUaStackCore::OpcUaStatusCode syncWrite(
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaDataValue& dataValue
 		);
-		OpcUaStatusCode syncWrite(
-			OpcUaNodeId& nodeId,
-			OpcUaDataValue& dataValue,
+		OpcUaStackCore::OpcUaStatusCode syncWrite(
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaDataValue& dataValue,
 			WriteContext& writeContext
 		);
 		void asyncWrite(
-			OpcUaNodeId& nodeId,
-			OpcUaDataValue& dataValue,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaDataValue& dataValue,
 			const VBITransactionWrite::VBIResultHandler& resultHandler
 		);
 		void asyncWrite(
-			OpcUaNodeId& nodeId,
-			OpcUaDataValue& dataValue,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaDataValue& dataValue,
 			const VBITransactionWrite::VBIResultHandler& resultHandler,
 			WriteContext& writeContext
 		);
 
 		// history read
 		HistoryReadContext& defaultHistoryReadContext(void);
-		OpcUaStatusCode syncHistoryRead(
-			const OpcUaNodeId& nodeId,
+		OpcUaStackCore::OpcUaStatusCode syncHistoryRead(
+			const OpcUaStackCore::OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
-			std::vector<OpcUaDataValue::SPtr>& dataValueVec
+			std::vector<OpcUaStackCore::OpcUaDataValue::SPtr>& dataValueVec
 		);
-		OpcUaStatusCode syncHistoryRead(
-			const OpcUaNodeId& nodeId,
+		OpcUaStackCore::OpcUaStatusCode syncHistoryRead(
+			const OpcUaStackCore::OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
 			HistoryReadContext& historyReadContext,
-			std::vector<OpcUaDataValue::SPtr>& dataValueVec
+			std::vector<OpcUaStackCore::OpcUaDataValue::SPtr>& dataValueVec
 		);
 		void asyncHistoryRead(
-			const OpcUaNodeId& nodeId,
+			const OpcUaStackCore::OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
 			const VBITransactionHistoryRead::VBIResultHandler& resultHandler
 		);
 		void asyncHistoryRead(
-			const OpcUaNodeId& nodeId,
+			const OpcUaStackCore::OpcUaNodeId& nodeId,
 			boost::posix_time::ptime startTime,
 			boost::posix_time::ptime endTime,
 			const VBITransactionHistoryRead::VBIResultHandler& resultHandler,
@@ -165,10 +162,10 @@ namespace OpcUaStackClient
 
 		// create subscription
 		CreateSubscriptionContext& defaultCreateSubscriptionContext(void);
-		OpcUaStatusCode syncCreateSubscription(
+		OpcUaStackCore::OpcUaStatusCode syncCreateSubscription(
 			uint32_t& subscriptionId
 		);
-		OpcUaStatusCode syncCreateSubscription(
+		OpcUaStackCore::OpcUaStatusCode syncCreateSubscription(
 			uint32_t& subscriptionId,
 			CreateSubscriptionContext& createSubscriptionContext
 		);
@@ -182,10 +179,10 @@ namespace OpcUaStackClient
 
 		// delete subscription
 		DeleteSubscriptionContext& defaultDeleteSubscriptionContext(void);
-		OpcUaStatusCode syncDeleteSubscription(
+		OpcUaStackCore::OpcUaStatusCode syncDeleteSubscription(
 			uint32_t subscriptionId
 		);
-		OpcUaStatusCode syncDeleteSubscription(
+		OpcUaStackCore::OpcUaStatusCode syncDeleteSubscription(
 			uint32_t subscriptionId,
 			DeleteSubscriptionContext& deleteSubscriptionContext
 		);
@@ -216,27 +213,27 @@ namespace OpcUaStackClient
 
 		// create monitored item
 		CreateMonitoredItemContext& defaultCreateMonitoredItemContext(void);
-		OpcUaStatusCode syncCreateMonitoredItem(
-			OpcUaNodeId& nodeId,
+		OpcUaStackCore::OpcUaStatusCode syncCreateMonitoredItem(
+			OpcUaStackCore::OpcUaNodeId& nodeId,
 			uint32_t subscriptionId,
 			uint32_t clientHandle,
 			uint32_t& monitoredItemId
 		);
-		OpcUaStatusCode syncCreateMonitoredItem(
-			OpcUaNodeId& nodeId,
+		OpcUaStackCore::OpcUaStatusCode syncCreateMonitoredItem(
+			OpcUaStackCore::OpcUaNodeId& nodeId,
 			uint32_t subscriptionId,
 			uint32_t clientHandle,
 			uint32_t& monitoredItemId,
 			CreateMonitoredItemContext& createMonitoredItemContext
 		);
 		void asyncCreateMonitoredItem(
-			OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
 			uint32_t subscriptionId, uint32_t
 			clientHandle,
 			const VBITransactionCreateMonitoredItem::VBIResultHandler& resultHandler
 		);
 		void asyncCreateMonitoredItem(
-			OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
 			uint32_t subscriptionId,
 			uint32_t clientHandle,
 			const VBITransactionCreateMonitoredItem::VBIResultHandler& resultHandler,
@@ -245,11 +242,11 @@ namespace OpcUaStackClient
 
 		// delete monitored item
 		DeleteMonitoredItemContext& defaultDeleteMonitoredItemContext(void);
-		OpcUaStatusCode syncDeleteMonitoredItem(
+		OpcUaStackCore::OpcUaStatusCode syncDeleteMonitoredItem(
 			uint32_t subscriptionId,
 			uint32_t monitoredItemId
 		);
-		OpcUaStatusCode syncDeleteMonitoredItem(
+		OpcUaStackCore::OpcUaStatusCode syncDeleteMonitoredItem(
 			uint32_t subscriptionId,
 			uint32_t monitoredItemId,
 			DeleteMonitoredItemContext& deleteMonitoredItemContext
@@ -283,7 +280,7 @@ namespace OpcUaStackClient
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
 
-		OpcUaStatusCode syncViewServiceBrowse(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& references);
+		OpcUaStackCore::OpcUaStatusCode syncViewServiceBrowse(OpcUaStackCore::OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& references);
 
 	  private:
 
