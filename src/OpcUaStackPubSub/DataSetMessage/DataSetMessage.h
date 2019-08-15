@@ -25,13 +25,11 @@
 #include "OpcUaStackPubSub/DataSetMessage/DataSetMessageType.h"
 #include "OpcUaStackPubSub/DataSetMessage/DataSetMessageHeader.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT DataSetMessage
-	: public JsonFormatter
+	: public OpcUaStackCore::JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetMessage> SPtr;
@@ -56,9 +54,9 @@ namespace OpcUaStackPubSub
 
 		void out(std::ostream& os) const;
 
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return true; }
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return true; }
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) { return true; }
+		bool xmlEncode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) { return true; }
+		bool xmlDecode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) { return true; }
 
       protected:
         bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; };
@@ -69,8 +67,8 @@ namespace OpcUaStackPubSub
 	};
 
 	class DLLEXPORT DataSetMessageArray
-	: public OpcUaArray<DataSetMessage::SPtr, SPtrTypeCoder<DataSetMessage> >
-	, public Object
+	: public OpcUaStackCore::OpcUaArray<DataSetMessage::SPtr, OpcUaStackCore::SPtrTypeCoder<DataSetMessage> >
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetMessageArray> SPtr;

@@ -23,8 +23,6 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackPubSub
 {
 
@@ -36,8 +34,8 @@ namespace OpcUaStackPubSub
 		DataSetPayloadHeader(void);
 		virtual ~DataSetPayloadHeader(void);
 
-		void dataSetWriterIds(const OpcUaUInt16Array::SPtr& dataSetWriterIds);
-		OpcUaUInt16Array::SPtr& dataSetWriterIds(void);
+		void dataSetWriterIds(const OpcUaStackCore::OpcUaUInt16Array::SPtr& dataSetWriterIds);
+		OpcUaStackCore::OpcUaUInt16Array::SPtr& dataSetWriterIds(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -48,7 +46,7 @@ namespace OpcUaStackPubSub
 		bool dataSetArrayEnabled() const;
 
 	  private:
-		OpcUaUInt16Array::SPtr dataSetWriterIds_;
+		OpcUaStackCore::OpcUaUInt16Array::SPtr dataSetWriterIds_;
 		bool dataSetArrayEnabled_;
 	};
 

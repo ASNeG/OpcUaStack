@@ -24,8 +24,6 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackPubSub/DataSetMessage/DataSetField.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackPubSub
 {
 
@@ -52,8 +50,8 @@ namespace OpcUaStackPubSub
 	};
 
 	class DLLEXPORT DeltaFrameFieldArray
-	: public OpcUaArray<DeltaFrameField::SPtr, SPtrTypeCoder<DeltaFrameField> >
-	, public Object
+	: public OpcUaStackCore::OpcUaArray<DeltaFrameField::SPtr, OpcUaStackCore::SPtrTypeCoder<DeltaFrameField> >
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<DeltaFrameFieldArray> SPtr;
