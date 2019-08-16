@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,8 +23,6 @@
 #include "OpcUaStackPubSub/DataSet/DataSetWriterIf.h"
 #include "OpcUaStackPubSub/Network/NetworkSenderIf.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackPubSub
 {
 	class DLLEXPORT NetworkMessageCreator
@@ -34,13 +32,13 @@ namespace OpcUaStackPubSub
 		NetworkMessageCreator(void);
 		virtual ~NetworkMessageCreator(void);
 
-		void ioThread(IOThread::SPtr& ioThread);
+		void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
 
-		void publishInterval(OpcUaUInt32 publishInterval);
-		OpcUaUInt32 publishInterval() const;
+		void publishInterval(OpcUaStackCore::OpcUaUInt32 publishInterval);
+		OpcUaStackCore::OpcUaUInt32 publishInterval() const;
 
-		void keepAliveTime(OpcUaUInt32 keepAliveTime);
-		OpcUaUInt32 keepAliveTime() const;
+		void keepAliveTime(OpcUaStackCore::OpcUaUInt32 keepAliveTime);
+		OpcUaStackCore::OpcUaUInt32 keepAliveTime() const;
 
 		bool startup(void);
 		bool shutdown(void);
@@ -74,16 +72,16 @@ namespace OpcUaStackPubSub
 		void promotedFieldsEnabled(bool promotedFieldsEabled);
 		bool promotedFieldsEnabled() const;
 
-		void publisherId(OpcUaVariant::SPtr publisherId);
-		OpcUaVariant::SPtr publisherId() const;
+		void publisherId(OpcUaStackCore::OpcUaVariant::SPtr publisherId);
+		OpcUaStackCore::OpcUaVariant::SPtr publisherId() const;
 	  protected:
 		virtual bool publish();
 
 	  private:
-		IOThread::SPtr ioThread_;
-		OpcUaUInt32 publishInterval_;
-		OpcUaUInt32 keepAliveTime_;
-		SlotTimerElement::SPtr slotTimerElement_;
+		OpcUaStackCore::IOThread::SPtr ioThread_;
+		OpcUaStackCore::OpcUaUInt32 publishInterval_;
+		OpcUaStackCore::OpcUaUInt32 keepAliveTime_;
+		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
 
 
@@ -96,7 +94,7 @@ namespace OpcUaStackPubSub
 		bool dataSetClassIdEnabled_;
 		bool promotedFieldsEnabled_;
 
-		OpcUaVariant::SPtr publisherId_;
+		OpcUaStackCore::OpcUaVariant::SPtr publisherId_;
 		DataSetWriterIf::Map dataSetWriterIfMap_;
 		NetworkSenderIf::SPtr networkSender_;
 	};

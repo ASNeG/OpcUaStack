@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -13,17 +13,21 @@
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Aleksey Timin (atimin@gmail.com)
+          Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackPubSub/Network/NetworkMessage.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
 	NetworkMessage::NetworkMessage(void)
-	: networkMessageHeader_(constructSPtr<NetworkMessageHeader>())
-	, dataSetPayloadHeader_(constructSPtr<DataSetPayloadHeader>())
-	, dataSetPayload_(constructSPtr<DataSetPayload>())
+	: networkMessageHeader_(boost::make_shared<NetworkMessageHeader>())
+	, dataSetPayloadHeader_(boost::make_shared<DataSetPayloadHeader>())
+	, dataSetPayload_(boost::make_shared<DataSetPayload>())
 	{
 	}
 

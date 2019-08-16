@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,8 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackPubSub/Network/NetworkMessageProcessor.h"
 #include <algorithm>
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {

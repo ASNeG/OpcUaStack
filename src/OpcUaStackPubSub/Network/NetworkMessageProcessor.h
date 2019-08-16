@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -12,7 +12,8 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+          Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackPubSub_NetworkMessageProcessor_h__
@@ -54,7 +55,7 @@ namespace OpcUaStackPubSub
 			bool operator< (const DataSetReaderKey& other) const;
 
 			uint16_t writerId_;
-			OpcUaVariant publisherId_;
+			OpcUaStackCore::OpcUaVariant publisherId_;
 
 		};
 
@@ -62,8 +63,8 @@ namespace OpcUaStackPubSub
 
 		DataSetReaderIfTree dataSetReaderIfTree_;
 
-		IOThread::SPtr ioThread_;
-		SlotTimerElement::SPtr slotTimerElement_;
+		OpcUaStackCore::IOThread::SPtr ioThread_;
+		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 	};
 
 }
