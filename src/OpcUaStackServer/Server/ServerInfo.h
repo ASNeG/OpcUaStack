@@ -22,8 +22,6 @@
 #include <string>
 #include "OpcUaStackCore/Base/Config.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -35,7 +33,7 @@ namespace OpcUaStackServer
 		ServerInfo(void);
 	    ~ServerInfo(void);
 
-	    bool parse(Config* cfg, const std::string& prefix);
+	    bool parse(OpcUaStackCore::Config* cfg, const std::string& prefix);
 
 	    void serverUri(const std::string& serverUri);
 	    std::string& serverUri(void);
