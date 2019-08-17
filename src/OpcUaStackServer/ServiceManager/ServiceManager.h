@@ -31,8 +31,6 @@
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
