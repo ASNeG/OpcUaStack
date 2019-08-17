@@ -18,6 +18,8 @@
 #include "OpcUaStackServer/InformationModel/MethodMap.h"
 #include "OpcUaStackCore/Base/Log.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

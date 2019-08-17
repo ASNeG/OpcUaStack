@@ -20,8 +20,6 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -31,16 +29,16 @@ namespace OpcUaStackServer
 		MethodId(void);
 		~MethodId(void);
 
-		void methodNodeId(OpcUaNodeId& methodNodeId);
-		OpcUaNodeId& methodNodeId(void);
-		void objectNodeId(OpcUaNodeId& objectNodeId);
-		OpcUaNodeId& objectNodeId(void);
+		void methodNodeId(OpcUaStackCore::OpcUaNodeId& methodNodeId);
+		OpcUaStackCore::OpcUaNodeId& methodNodeId(void);
+		void objectNodeId(OpcUaStackCore::OpcUaNodeId& objectNodeId);
+		OpcUaStackCore::OpcUaNodeId& objectNodeId(void);
 
 		bool operator<(const MethodId& methodId) const;
 
 	  private:
-		OpcUaNodeId methodNodeId_;
-		OpcUaNodeId objectNodeId_;
+		OpcUaStackCore::OpcUaNodeId methodNodeId_;
+		OpcUaStackCore::OpcUaNodeId objectNodeId_;
 
 	};
 

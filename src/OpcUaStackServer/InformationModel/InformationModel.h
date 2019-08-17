@@ -26,8 +26,6 @@
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/MethodMap.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

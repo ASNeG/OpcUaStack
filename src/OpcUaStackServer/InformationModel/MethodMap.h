@@ -23,24 +23,22 @@
 #include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
 #include "OpcUaStackServer/InformationModel/MethodId.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT MethodMap
 	{
 	  public:
-		typedef std::map<MethodId, ForwardMethodSync::SPtr> ForwardMethodSyncMap;
+		typedef std::map<MethodId, OpcUaStackCore::ForwardMethodSync::SPtr> ForwardMethodSyncMap;
 
 		MethodMap(void);
 		~MethodMap(void);
 
 		void clear(void);
-		bool existMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId);
-		bool registerMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId, ForwardMethodSync::SPtr& forwardMethodSync);
-		bool deregisterMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId);
-		ForwardMethodSync::SPtr getMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId);
+		bool existMethod(const OpcUaStackCore::OpcUaNodeId& objectNodeId, const OpcUaStackCore::OpcUaNodeId& methodNodeId);
+		bool registerMethod(const OpcUaStackCore::OpcUaNodeId& objectNodeId, const OpcUaStackCore::OpcUaNodeId& methodNodeId, OpcUaStackCore::ForwardMethodSync::SPtr& forwardMethodSync);
+		bool deregisterMethod(const OpcUaStackCore::OpcUaNodeId& objectNodeId, const OpcUaStackCore::OpcUaNodeId& methodNodeId);
+		OpcUaStackCore::ForwardMethodSync::SPtr getMethod(const OpcUaStackCore::OpcUaNodeId& objectNodeId, const OpcUaStackCore::OpcUaNodeId& methodNodeId);
 
 	  private:
 		ForwardMethodSyncMap forwardMethodSyncMap_;
