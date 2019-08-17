@@ -20,8 +20,6 @@
 
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

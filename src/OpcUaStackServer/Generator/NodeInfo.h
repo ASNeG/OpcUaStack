@@ -21,8 +21,6 @@
 #include "OpcUaStackServer/Generator/NumberNamespaceMap.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

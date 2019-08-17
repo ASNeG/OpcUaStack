@@ -23,8 +23,6 @@
 #include "OpcUaStackServer/Generator/VariableTypeField.h"
 #include "OpcUaStackServer/Generator/MethodTypeField.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

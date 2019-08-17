@@ -21,8 +21,6 @@
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/Generator/NodeInfoEnumType.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

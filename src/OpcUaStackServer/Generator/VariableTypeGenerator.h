@@ -21,8 +21,6 @@
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/Generator/NodeInfoVariableType.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

@@ -22,8 +22,6 @@
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/DataTypeField.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
