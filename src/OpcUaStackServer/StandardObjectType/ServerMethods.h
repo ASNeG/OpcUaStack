@@ -23,13 +23,11 @@
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ServerMethod
-	: public BaseClass
+	: public OpcUaStackCore::BaseClass
 	{
 	  public:
 		typedef boost::shared_ptr<ServerMethod> SPtr;
@@ -46,11 +44,11 @@ namespace OpcUaStackServer
 				methodCallback_.reset(handle);
 			}
 
-		void method(ApplicationMethodContext* applicationMethodContext);
+		void method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
 	  private:
 		std::string name_;
-		Callback methodCallback_;
+		OpcUaStackCore::Callback methodCallback_;
 	};
 
 

@@ -21,8 +21,6 @@
 #include "OpcUaStackServer/StandardVariableType/ServerVariables.h"
 #include "OpcUaStackServer/StandardObjectType/ServerMethods.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
