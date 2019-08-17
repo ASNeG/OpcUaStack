@@ -48,10 +48,13 @@
 
  */
 
+#include <boost/make_shared.hpp>
 #include <boost/date_time/date_facet.hpp>
 #include <locale>
 #include "OpcUaStackServer/NodeSet/NodeSetDefinitionParser.h"
 #include "OpcUaStackCore/Base/Log.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -73,7 +76,7 @@ namespace OpcUaStackServer
 	{
 		// create new structure type definition structure
 		if (structureDefinition.get() == nullptr) {
-			structureDefinition = constructSPtr<StructureDefinitionExpand>();
+			structureDefinition = boost::make_shared<StructureDefinitionExpand>();
 		}
 
 		if (decodeDefinition) {

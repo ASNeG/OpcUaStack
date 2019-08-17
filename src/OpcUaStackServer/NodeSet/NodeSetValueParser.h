@@ -18,12 +18,12 @@
 #ifndef __OpcUaStackServer_NodeSetValueParser_h__
 #define __OpcUaStackServer_NodeSetValueParser_h__
 
+#include <boost/make_shared.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaType.h"
-
-using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -32,10 +32,10 @@ namespace OpcUaStackServer
 	{
 	  public:
 		DataTypeElement(void);
-		DataTypeElement(OpcUaBuildInType buildInType, bool isArray);
+		DataTypeElement(OpcUaStackCore::OpcUaBuildInType buildInType, bool isArray);
 		 ~DataTypeElement(void);
 
-		OpcUaBuildInType buildInType_;
+		OpcUaStackCore::OpcUaBuildInType buildInType_;
 		bool isArray_;
 	};
 
@@ -57,8 +57,8 @@ namespace OpcUaStackServer
 		bool xmlDecodeValue(
 			const std::string& nodeId,
 			boost::property_tree::ptree& ptree,
-			OpcUaVariant& opcUaVariant,
-			Xmlns& xmlns
+			OpcUaStackCore::OpcUaVariant& opcUaVariant,
+			OpcUaStackCore::Xmlns& xmlns
 		);
 
 		template<typename T>
@@ -66,14 +66,14 @@ namespace OpcUaStackServer
 			xmlDecode(
 				DataTypeElement& dataTypeElement,
 				boost::property_tree::ptree& ptreeValue,
-				OpcUaVariant& variant,
+				OpcUaStackCore::OpcUaVariant& variant,
 				const std::string& element,
-				Xmlns& xmlns
+				OpcUaStackCore::Xmlns& xmlns
 			)
 			{
 				bool rc;
 				if (dataTypeElement.isArray_) {
-					OpcUaVariantValue::Vec variantValueVec;
+					OpcUaStackCore::OpcUaVariantValue::Vec variantValueVec;
 					rc = xmlDecode<T>(ptreeValue.front().second, variantValueVec, element, xmlns);
 					if (rc) variant.variant(variantValueVec);
 				}
@@ -90,21 +90,21 @@ namespace OpcUaStackServer
 			xmlDecodeSPtr(
 				DataTypeElement& dataTypeElement,
 				boost::property_tree::ptree& ptreeValue,
-				OpcUaVariant& variant,
+				OpcUaStackCore::OpcUaVariant& variant,
 				const std::string& element,
-				Xmlns& xmlns
+				OpcUaStackCore::Xmlns& xmlns
 			)
 			{
 				bool rc;
 				if (dataTypeElement.isArray_) {
 
 					boost::property_tree::ptree::iterator it;
-					OpcUaVariantValue::Vec variantValueVec;
+					OpcUaStackCore::OpcUaVariantValue::Vec variantValueVec;
 					rc = xmlDecodeSPtr<T>(ptreeValue.front().second, variantValueVec, element, xmlns);
 					if (rc) variant.variant(variantValueVec);
 				}
 				else {
-					typename T::SPtr value = constructSPtr<T>();
+					typename T::SPtr value = boost::make_shared<T>();
 					rc = xmlDecode(ptreeValue.front().second, value, element, xmlns);
 					if (rc) variant.variant(value);
 				}
@@ -114,13 +114,13 @@ namespace OpcUaStackServer
 		template<typename T>
 			bool xmlDecode(
 				boost::property_tree::ptree& ptree,
-				OpcUaVariantValue::Vec& variantValueVec,
+				OpcUaStackCore::OpcUaVariantValue::Vec& variantValueVec,
 				const std::string& element,
-				Xmlns& xmlns
+				OpcUaStackCore::Xmlns& xmlns
 			)
 			{
 				if (ptree.size() == 0) {
-					Log(Error, "tag empty")
+					OpcUaStackCore::Log(OpcUaStackCore::Error, "tag empty")
 						.parameter("Tag", element);
 					return false;
 				}
@@ -130,7 +130,7 @@ namespace OpcUaStackServer
 					std::string tagValue = xmlns.cutPrefix(it->first);
 					if (tagValue == "<xmlattr>") continue;
 					if (tagValue != element) {
-						Log(Error, "Invalid tag")
+						OpcUaStackCore::Log(OpcUaStackCore::Error, "Invalid tag")
 							.parameter("ExpectedTag", element)
 							.parameter("AvailTag", tagValue);
 						return false;
@@ -138,12 +138,12 @@ namespace OpcUaStackServer
 
 					T value;
 					if (!xmlDecode(it->second, value, element, xmlns)) {
-						Log(Error, "decode error")
+						OpcUaStackCore::Log(OpcUaStackCore::Error, "decode error")
 							.parameter("Tag", element);
 						return false;
 					}
 			
-					OpcUaVariantValue variantValue;
+					OpcUaStackCore::OpcUaVariantValue variantValue;
 					variantValue.variant(value);
 					variantValueVec.push_back(variantValue);
 				}
@@ -153,14 +153,14 @@ namespace OpcUaStackServer
 		template<typename T>
 			bool xmlDecodeSPtr(
 				boost::property_tree::ptree& ptree,
-				OpcUaVariantValue::Vec& variantValueVec,
+				OpcUaStackCore::OpcUaVariantValue::Vec& variantValueVec,
 				const std::string& element,
-				Xmlns& xmlns
+				OpcUaStackCore::Xmlns& xmlns
 			)
 			{
 	
 				if (ptree.size() == 0) {
-					Log(Error, "tag empty")
+					OpcUaStackCore::Log(OpcUaStackCore::Error, "tag empty")
 						.parameter("Tag", element);
 					return false;
 				}
@@ -170,20 +170,20 @@ namespace OpcUaStackServer
 					std::string tagValue = xmlns.cutPrefix(it->first);
 					if (tagValue == "<xmlattr>") continue;
 					if (tagValue != element) {
-						Log(Error, "Invalid tag")
+						OpcUaStackCore::Log(OpcUaStackCore::Error, "Invalid tag")
 							.parameter("ExpectedTag", element)
 							.parameter("AvailTag", tagValue);
 						return false;
 					}
 
-					typename T::SPtr value = constructSPtr<T>();
+					typename T::SPtr value = boost::make_shared<T>();
 					if (!xmlDecode(it->second, value, element, xmlns)) {
-						Log(Error, "decode error")
+						OpcUaStackCore::Log(OpcUaStackCore::Error, "decode error")
 							.parameter("Tag", element);
 						return false;
 					}
 			
-					OpcUaVariantValue variantValue;
+					OpcUaStackCore::OpcUaVariantValue variantValue;
 					variantValue.variant(value);
 					variantValueVec.push_back(variantValue);
 				}
@@ -195,14 +195,14 @@ namespace OpcUaStackServer
 				boost::property_tree::ptree& ptree,
 				T& destValue,
 				const std::string& element,
-				Xmlns& xmlns
+				OpcUaStackCore::Xmlns& xmlns
 			)
 			{
 				std::string sourceValue = ptree.get_value<std::string>();
 				try {
 					destValue = boost::lexical_cast<T>(sourceValue);
 				} catch(boost::bad_lexical_cast& e) {
-					Log(Error, "bad_lexical_cast in decode")
+					OpcUaStackCore::Log(OpcUaStackCore::Error, "bad_lexical_cast in decode")
 						.parameter("Tag", element)
 						.parameter("SourceValue", sourceValue)
 						.parameter("What", e.what());
@@ -211,20 +211,20 @@ namespace OpcUaStackServer
 				return true;
 			}
 
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStatusCode& destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaDateTime& destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaDataValue::SPtr destValue, const std::string& element, Xmlns& xmlns);
-		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaDiagnosticInfo::SPtr destValue, const std::string& element, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaStatusCode& destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaBoolean& destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaByte& destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaSByte& destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaDateTime& destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaString::SPtr destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaByteString::SPtr destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaLocalizedText::SPtr destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaGuid::SPtr destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaNodeId::SPtr destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaQualifiedName::SPtr destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaExtensionObject::SPtr destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaDataValue::SPtr destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaDiagnosticInfo::SPtr destValue, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
 
 
 		// --------------------------------------------------------------------------
@@ -237,22 +237,22 @@ namespace OpcUaStackServer
 		bool xmlEncodeValue(
 			const std::string& nodeId,
 			boost::property_tree::ptree& ptree,
-			OpcUaVariant& opcUaVariant,
-			Xmlns& xmlns
+			OpcUaStackCore::OpcUaVariant& opcUaVariant,
+			OpcUaStackCore::Xmlns& xmlns
 		);
 
 		template<typename T>
 			bool 
 			xmlEncode(
 				boost::property_tree::ptree& ptreeValue,
-				OpcUaVariant& variant,
+				OpcUaStackCore::OpcUaVariant& variant,
 				const std::string& element,
-				Xmlns& xmlns
+				OpcUaStackCore::Xmlns& xmlns
 			)
 			{
 				boost::property_tree::ptree ptree;
 				if (variant.isArray()) {
-					OpcUaVariantValue::Vec& variantValueVec = variant.variant();
+					OpcUaStackCore::OpcUaVariantValue::Vec& variantValueVec = variant.variant();
 					if (!xmlEncode<T>(ptree, variantValueVec, element, xmlns)) {
 						return false;
 					}
@@ -262,7 +262,7 @@ namespace OpcUaStackServer
 					value = variant.variant<T>();
 					
 					if (!xmlEncode(ptree, value, element, xmlns)) {
-						Log(Error, "encode error")
+						OpcUaStackCore::Log(OpcUaStackCore::Error, "encode error")
 							.parameter("Tag", element);
 						return false;
 					}
@@ -276,14 +276,14 @@ namespace OpcUaStackServer
 			bool 
 			xmlEncodeSPtr(
 				boost::property_tree::ptree& ptreeValue,
-				OpcUaVariant& variant,
+				OpcUaStackCore::OpcUaVariant& variant,
 				const std::string& element,
-				Xmlns& xmlns
+				OpcUaStackCore::Xmlns& xmlns
 			)
 			{
 				boost::property_tree::ptree ptree;
 				if (variant.isArray()) {
-					OpcUaVariantValue::Vec& variantValueVec = variant.variant();
+					OpcUaStackCore::OpcUaVariantValue::Vec& variantValueVec = variant.variant();
 					if (!xmlEncodeSPtr<T>(ptree, variantValueVec, element, xmlns)) {
 						return false;
 					}
@@ -293,7 +293,7 @@ namespace OpcUaStackServer
 					value = variant.variantSPtr<T>();
 					
 					if (!xmlEncode(ptree, value, element, xmlns)) {
-						Log(Error, "encode error")
+						OpcUaStackCore::Log(OpcUaStackCore::Error, "encode error")
 							.parameter("Tag", element);
 						return false;
 					}
@@ -307,22 +307,22 @@ namespace OpcUaStackServer
 	        bool
 			xmlEncode(
 				boost::property_tree::ptree& ptreeValue,
-				OpcUaVariantValue::Vec& variantValueVec,
+				OpcUaStackCore::OpcUaVariantValue::Vec& variantValueVec,
 				const std::string& element,
-				Xmlns& xmlns
+				OpcUaStackCore::Xmlns& xmlns
 			)
 			{
 				std::string listTag = xmlns.addPrefix("ListOf" + element);
 
 				boost::property_tree::ptree ptree;
-				OpcUaVariantValue::Vec::iterator it;
+				OpcUaStackCore::OpcUaVariantValue::Vec::iterator it;
 				for (it = variantValueVec.begin(); it != variantValueVec.end(); it++) {
 					T value;
 					value = it->variant<T>();
 					
 					boost::property_tree::ptree localPtree;
 					if (!xmlEncode(localPtree, value, element, xmlns)) {
-						Log(Error, "encode error")
+						OpcUaStackCore::Log(OpcUaStackCore::Error, "encode error")
 							.parameter("Tag", element);
 						return false;
 					}
@@ -338,22 +338,22 @@ namespace OpcUaStackServer
 	        bool
 			xmlEncodeSPtr(
 				boost::property_tree::ptree& ptreeValue,
-				OpcUaVariantValue::Vec& variantValueVec,
+				OpcUaStackCore::OpcUaVariantValue::Vec& variantValueVec,
 				const std::string& element,
-				Xmlns& xmlns
+				OpcUaStackCore::Xmlns& xmlns
 			)
 			{
 				std::string listTag = xmlns.addPrefix("ListOf" + element);
 
 				boost::property_tree::ptree ptree;
-				OpcUaVariantValue::Vec::iterator it;
+				OpcUaStackCore::OpcUaVariantValue::Vec::iterator it;
 				for (it = variantValueVec.begin(); it != variantValueVec.end(); it++) {
 					typename T::SPtr value;
 					value = it->variantSPtr<T>();
 					
 					boost::property_tree::ptree localPtree;
 					if (!xmlEncode(localPtree, value, element, xmlns)) {
-						Log(Error, "encode error")
+						OpcUaStackCore::Log(OpcUaStackCore::Error, "encode error")
 							.parameter("Tag", element);
 						return false;
 					}
@@ -370,7 +370,7 @@ namespace OpcUaStackServer
 				boost::property_tree::ptree& ptree,
 				T& value,
 				const std::string& element,
-				Xmlns& xmlns
+				OpcUaStackCore::Xmlns& xmlns
 			)
 			{
 				std::stringstream ss;
@@ -379,20 +379,20 @@ namespace OpcUaStackServer
 				return true;
 			}
 
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStatusCode& value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaDateTime& value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaString::SPtr value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaDataValue::SPtr value, const std::string& element, Xmlns& xmlns);
-		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaDiagnosticInfo::SPtr value, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaStatusCode& value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaBoolean& value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaByte& value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaSByte& value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaDateTime& value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaString::SPtr value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaByteString::SPtr value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaLocalizedText::SPtr value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaGuid::SPtr value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaNodeId::SPtr value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaQualifiedName::SPtr value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaExtensionObject::SPtr value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaDataValue::SPtr value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& ptree, OpcUaStackCore::OpcUaDiagnosticInfo::SPtr value, const std::string& element, OpcUaStackCore::Xmlns& xmlns);
 
 	  private:
 		static void insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement);

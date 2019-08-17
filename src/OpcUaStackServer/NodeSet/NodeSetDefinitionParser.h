@@ -22,8 +22,6 @@
 #include "OpcUaStackCore/StandardDataTypes/EnumDefinitionExpand.h"
 #include "OpcUaStackCore/StandardDataTypes/StructureDefinitionExpand.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -47,7 +45,7 @@ namespace OpcUaStackServer
 		 */
 		bool decode(
 			boost::property_tree::ptree& ptreeValue,
-			StructureDefinitionExpand::SPtr& structureDefinition,
+			OpcUaStackCore::StructureDefinitionExpand::SPtr& structureDefinition,
 			bool decodeDefinition = true
 		);
 
@@ -61,7 +59,7 @@ namespace OpcUaStackServer
 		 * @return true if successful
 		 */
 		bool encode(
-			StructureDefinitionExpand::SPtr& structureDefinition,
+			OpcUaStackCore::StructureDefinitionExpand::SPtr& structureDefinition,
 			boost::property_tree::ptree& ptreeValue,
 			bool encodeDefinition = true
 		);
@@ -77,7 +75,7 @@ namespace OpcUaStackServer
 		 */
 		bool decode(
 			boost::property_tree::ptree& ptreeValue,
-			EnumDefinitionExpand::SPtr& enumDefinition,
+			OpcUaStackCore::EnumDefinitionExpand::SPtr& enumDefinition,
 			bool decodeDefinition = true
 		);
 
@@ -91,7 +89,7 @@ namespace OpcUaStackServer
 		 * @return true if successful
 		 */
 		bool encode(
-			EnumDefinitionExpand::SPtr& enumDefinition,
+			OpcUaStackCore::EnumDefinitionExpand::SPtr& enumDefinition,
 			boost::property_tree::ptree& ptreeValue,
 			bool encodeDefinition = true
 		);
@@ -99,41 +97,41 @@ namespace OpcUaStackServer
 	  private:
 		bool decodeStructureDefinition(
 			boost::property_tree::ptree& ptreeValue,
-			StructureDefinitionExpand::SPtr& structureDefinition
+			OpcUaStackCore::StructureDefinitionExpand::SPtr& structureDefinition
 		);
 
 		bool encodeStructureDefinition(
-			StructureDefinitionExpand::SPtr& structureDefinition,
+			OpcUaStackCore::StructureDefinitionExpand::SPtr& structureDefinition,
 			boost::property_tree::ptree& ptreeValue
 		);
 
 		bool decodeStructureField(
 			boost::property_tree::ptree& ptreeValue,
-			StructureField::SPtr& structureField
+			OpcUaStackCore::StructureField::SPtr& structureField
 		);
 
 		bool encodeStructureField(
-			StructureField::SPtr& structureField,
+			OpcUaStackCore::StructureField::SPtr& structureField,
 			boost::property_tree::ptree& ptreeValue
 		);
 
 		bool decodeEnumDefinition(
 			boost::property_tree::ptree& ptreeValue,
-			EnumDefinitionExpand::SPtr& enumDefinition
+			OpcUaStackCore::EnumDefinitionExpand::SPtr& enumDefinition
 		);
 
 		bool encodeEnumDefinition(
-			EnumDefinitionExpand::SPtr& enumDefinition,
+			OpcUaStackCore::EnumDefinitionExpand::SPtr& enumDefinition,
 			boost::property_tree::ptree& ptreeValue
 		);
 
 		bool decodeEnumField(
 			boost::property_tree::ptree& ptreeValue,
-			EnumField::SPtr& enumField
+			OpcUaStackCore::EnumField::SPtr& enumField
 		);
 
 		bool encodeEnumField(
-			EnumField::SPtr& enumField,
+			OpcUaStackCore::EnumField::SPtr& enumField,
 			boost::property_tree::ptree& ptreeValue
 		);
 

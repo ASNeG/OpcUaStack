@@ -21,8 +21,6 @@
 #include <map>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -32,13 +30,13 @@ namespace OpcUaStackServer
 		NodeSetAlias(void);
 		~NodeSetAlias(void);
 
-		bool aliasExist(const std::string& aliasString, OpcUaNodeId& nodeId);
-		bool insert(const std::string& aliasString, OpcUaNodeId& nodeId);
-		bool map(const std::string& aliasString, OpcUaNodeId& nodeId);
+		bool aliasExist(const std::string& aliasString, OpcUaStackCore::OpcUaNodeId& nodeId);
+		bool insert(const std::string& aliasString, OpcUaStackCore::OpcUaNodeId& nodeId);
+		bool map(const std::string& aliasString, OpcUaStackCore::OpcUaNodeId& nodeId);
 		bool encodeAliases(boost::property_tree::ptree& ptree);
 
 	  private: 
-		typedef std::map<std::string, OpcUaNodeId> AliasMap;
+		typedef std::map<std::string, OpcUaStackCore::OpcUaNodeId> AliasMap;
 		AliasMap aliasMap_;
 	};
 
