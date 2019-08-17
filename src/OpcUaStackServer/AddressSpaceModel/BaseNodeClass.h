@@ -27,8 +27,6 @@
 #include "OpcUaStackServer/AddressSpaceModel/AttributeBase.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceItemMap.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

@@ -22,12 +22,10 @@
 #include <string>
 #include <set>
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
-	typedef std::set<OpcUaNodeId::SPtr, OpcUaNodeSPtrLess> ReferenceTypeNodeIdSet;
+	typedef std::set<OpcUaStackCore::OpcUaNodeId::SPtr, OpcUaStackCore::OpcUaNodeSPtrLess> ReferenceTypeNodeIdSet;
 
 	typedef enum {
 		ReferenceType_Unknown,
@@ -53,43 +51,43 @@ namespace OpcUaStackServer
 	  public:
 		static std::string typeToString(ReferenceType referenceType);
 		static ReferenceType stringToType(std::string referenceTypeString);
-		static ReferenceType nodeIdToReferenceType(OpcUaNodeId& nodeId);
-		static std::string nodeIdToString(OpcUaNodeId& nodeId);
-		static OpcUaNodeId::SPtr stringToNodeId(const std::string& referenceTypeString);
+		static ReferenceType nodeIdToReferenceType(OpcUaStackCore::OpcUaNodeId& nodeId);
+		static std::string nodeIdToString(OpcUaStackCore::OpcUaNodeId& nodeId);
+		static OpcUaStackCore::OpcUaNodeId::SPtr stringToNodeId(const std::string& referenceTypeString);
 
-		static OpcUaNodeId::SPtr typeNodeId(ReferenceType referenceType);
-		static OpcUaNodeId::SPtr hasPropertyTypeNodeId(void);
-		static OpcUaNodeId::SPtr hasComponentTypeNodeId(void);
-		static OpcUaNodeId::SPtr hasModellingRuleTypeNodeId(void);
-		static OpcUaNodeId::SPtr hasTypeDefinitionTypeNodeId(void);
-		static OpcUaNodeId::SPtr hasModelParentTypeNodeId(void);
-		static OpcUaNodeId::SPtr hasEventSourceTypeNodeId(void);
-		static OpcUaNodeId::SPtr hasNotifierTypeNodeId(void);
-		static OpcUaNodeId::SPtr organizesTypeNodeId(void);
-		static OpcUaNodeId::SPtr hasDescriptionTypeNodeId(void);
-		static OpcUaNodeId::SPtr hasEncodingTypeNodeId(void);
-		static OpcUaNodeId::SPtr hasSubtypeTypeNodeId(void);
-		static OpcUaNodeId::SPtr nodeIdTypeNodeId(void);
-		static OpcUaNodeId::SPtr generateEventsTypeNodeId(void);
-		static OpcUaNodeId::SPtr alwaysGeneratesEventTypeNodeId(void);
-		static OpcUaNodeId::SPtr hierarchicalReferencesTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr typeNodeId(ReferenceType referenceType);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasPropertyTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasComponentTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasModellingRuleTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasTypeDefinitionTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasModelParentTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasEventSourceTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasNotifierTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr organizesTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasDescriptionTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasEncodingTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasSubtypeTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr nodeIdTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr generateEventsTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr alwaysGeneratesEventTypeNodeId(void);
+		static OpcUaStackCore::OpcUaNodeId::SPtr hierarchicalReferencesTypeNodeId(void);
 
 	  private:
-		static OpcUaNodeId::SPtr hasPropertyTypeNodeId_;
-		static OpcUaNodeId::SPtr hasComponentTypeNodeId_;
-		static OpcUaNodeId::SPtr hasModellingRuleTypeNodeId_;
-		static OpcUaNodeId::SPtr hasTypeDefinitionTypeNodeId_;
-		static OpcUaNodeId::SPtr hasModelParentTypeNodeId_;
-		static OpcUaNodeId::SPtr hasEventSourceTypeNodeId_;
-		static OpcUaNodeId::SPtr hasNotifierTypeNodeId_;
-		static OpcUaNodeId::SPtr organizesTypeNodeId_;
-		static OpcUaNodeId::SPtr hasDescriptionTypeNodeId_;
-		static OpcUaNodeId::SPtr hasEncodingTypeNodeId_;
-		static OpcUaNodeId::SPtr hasSubtypeTypeNodeId_;
-		static OpcUaNodeId::SPtr nodeIdTypeNodeId_;
-		static OpcUaNodeId::SPtr generateEventsTypeNodeId_;
-		static OpcUaNodeId::SPtr alwaysGeneratesEventTypeNodeId_;
-		static OpcUaNodeId::SPtr hierarchicalReferencesTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasPropertyTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasComponentTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasModellingRuleTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasTypeDefinitionTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasModelParentTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasEventSourceTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasNotifierTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr organizesTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasDescriptionTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasEncodingTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hasSubtypeTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr nodeIdTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr generateEventsTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr alwaysGeneratesEventTypeNodeId_;
+		static OpcUaStackCore::OpcUaNodeId::SPtr hierarchicalReferencesTypeNodeId_;
 
 		static ReferenceTypeNodeIdSet referenceTypeNodeIdSet_;
 	};

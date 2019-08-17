@@ -17,6 +17,8 @@
 
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceItem.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

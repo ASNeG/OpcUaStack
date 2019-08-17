@@ -19,6 +19,8 @@
 #include <numeric>
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceItemMap.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 
