@@ -23,8 +23,6 @@
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

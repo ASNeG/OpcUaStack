@@ -22,8 +22,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

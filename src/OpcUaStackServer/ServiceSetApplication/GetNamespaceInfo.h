@@ -22,8 +22,6 @@
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
