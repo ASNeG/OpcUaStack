@@ -29,8 +29,6 @@
 
 #include <set>
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

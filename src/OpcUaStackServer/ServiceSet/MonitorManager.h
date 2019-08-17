@@ -30,8 +30,6 @@
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

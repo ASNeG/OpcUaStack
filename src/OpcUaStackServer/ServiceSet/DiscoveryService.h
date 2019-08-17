@@ -27,8 +27,6 @@
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryIf.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

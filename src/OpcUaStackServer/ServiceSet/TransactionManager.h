@@ -20,13 +20,11 @@
 
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT TransactionManager
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<TransactionManager> SPtr;
@@ -34,11 +32,11 @@ namespace OpcUaStackServer
 		TransactionManager(void);
 		~TransactionManager(void);
 
-		bool registerTransaction(ServiceTransaction::SPtr serviceTransactionSPtr);
-		ServiceTransaction::SPtr getTransaction(OpcUaNodeId& typeId);
+		bool registerTransaction(OpcUaStackCore::ServiceTransaction::SPtr serviceTransactionSPtr);
+		OpcUaStackCore::ServiceTransaction::SPtr getTransaction(OpcUaStackCore::OpcUaNodeId& typeId);
 
 	  private:
-		typedef std::map<OpcUaNodeId, ServiceTransaction::SPtr> ServiceTransactionMap;
+		typedef std::map<OpcUaStackCore::OpcUaNodeId, OpcUaStackCore::ServiceTransaction::SPtr> ServiceTransactionMap;
 		ServiceTransactionMap serviceTransactionMap_;
 	};
 

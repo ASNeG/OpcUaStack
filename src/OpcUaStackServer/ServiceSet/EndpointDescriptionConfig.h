@@ -23,8 +23,6 @@
 #include "OpcUaStackCore/StandardDataTypes/EndpointDescription.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescriptionSet.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -32,21 +30,21 @@ namespace OpcUaStackServer
 	{
 	  public:
 		static bool endpointDescriptions(
-			EndpointDescriptionSet::SPtr endpointDescriptionSet,
-			const std::string& configPrefix, Config* childConfig,
+			OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet,
+			const std::string& configPrefix, OpcUaStackCore::Config* childConfig,
 			const std::string& configurationFileName
 		);
 		static bool securitySetting(
-			EndpointDescription::SPtr endpointDescription,
+			OpcUaStackCore::EndpointDescription::SPtr endpointDescription,
 			const std::string& configPrefix,
-			Config* config,
+			OpcUaStackCore::Config* config,
 			const std::string& configurationFileName,
-			EndpointDescription::Vec& endpointDescriptionVec
+			OpcUaStackCore::EndpointDescription::Vec& endpointDescriptionVec
 		);
 		static bool userTokenPolicy(
-			EndpointDescription::SPtr endpointDescription,
+			OpcUaStackCore::EndpointDescription::SPtr endpointDescription,
 			const std::string& configPrefix,
-			Config* config,
+			OpcUaStackCore::Config* config,
 			const std::string& configurationFileName
 		);
 	};

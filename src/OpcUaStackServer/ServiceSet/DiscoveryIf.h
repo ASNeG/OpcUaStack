@@ -21,8 +21,6 @@
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

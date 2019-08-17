@@ -21,13 +21,11 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 #include "OpcUaStackServer/ServiceSet/Session.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ChannelSessionHandle
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 
@@ -51,10 +49,10 @@ namespace OpcUaStackServer
 
 		SecureChannelState secureChannelState(void);
 		bool secureChannelIsValid(void);
-		void secureChannel(SecureChannel* secureChannel);
-		SecureChannel* secureChannel(void);
-		void secureChannelServer(SecureChannelServer::SPtr& secureChannelServer);
-		SecureChannelServer::SPtr& secureChannelServer(void);
+		void secureChannel(OpcUaStackCore::SecureChannel* secureChannel);
+		OpcUaStackCore::SecureChannel* secureChannel(void);
+		void secureChannelServer(OpcUaStackCore::SecureChannelServer::SPtr& secureChannelServer);
+		OpcUaStackCore::SecureChannelServer::SPtr& secureChannelServer(void);
 
 		SessionState sessionState(void);
 		bool sessionIsValid(void);
@@ -64,8 +62,8 @@ namespace OpcUaStackServer
 
 	  private:
 		SecureChannelState secureChannelState_;
-		SecureChannel* secureChannel_;
-		SecureChannelServer::SPtr secureChannelServer_;
+		OpcUaStackCore::SecureChannel* secureChannel_;
+		OpcUaStackCore::SecureChannelServer::SPtr secureChannelServer_;
 
 		SessionState sessionState_;
 		Session::SPtr session_;

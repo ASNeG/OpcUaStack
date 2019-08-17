@@ -21,8 +21,6 @@
 #include <list>
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensibleParameter.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -36,12 +34,12 @@ namespace OpcUaStackServer
 
 		void sequenceNumber(uint32_t sequenceNumber);
 		uint32_t sequenceNumber(void);
-		void notification(OpcUaExtensibleParameter::SPtr& notification);
-		OpcUaExtensibleParameter::SPtr notification(void);
+		void notification(OpcUaStackCore::OpcUaExtensibleParameter::SPtr& notification);
+		OpcUaStackCore::OpcUaExtensibleParameter::SPtr notification(void);
 
 	  private:
 		uint32_t sequenceNumber_;
-		OpcUaExtensibleParameter::SPtr notification_;
+		OpcUaStackCore::OpcUaExtensibleParameter::SPtr notification_;
 
 	};
 
@@ -62,21 +60,21 @@ namespace OpcUaStackServer
 		uint32_t maxListSize(void);
 		void addNotification(
 			uint32_t sequenceNumber,
-			OpcUaExtensibleParameter::SPtr& notification
+			OpcUaStackCore::OpcUaExtensibleParameter::SPtr& notification
 		);
 		void deleteNotification(
 			uint32_t sequenceNumber
 		);
 		bool firstNotification(
 			uint32_t& sequenceNumber,
-			OpcUaExtensibleParameter::SPtr& notification
+			OpcUaStackCore::OpcUaExtensibleParameter::SPtr& notification
 		);
 		bool getNotification(
 			uint32_t sequenceNumber,
-			OpcUaExtensibleParameter::SPtr& notification
+			OpcUaStackCore::OpcUaExtensibleParameter::SPtr& notification
 		);
 		void availableSequenceNumbers(
-			OpcUaUInt32Array::SPtr& availableSequenceNumbers
+			OpcUaStackCore::OpcUaUInt32Array::SPtr& availableSequenceNumbers
 		);
 
 	  private:

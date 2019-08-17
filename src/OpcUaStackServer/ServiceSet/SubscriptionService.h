@@ -24,8 +24,6 @@
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/SubscriptionManager.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

@@ -26,8 +26,6 @@
 #include "OpcUaStackCore/StandardDataTypes/MonitoredItemNotification.h"
 #include <list>
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

@@ -21,8 +21,6 @@
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

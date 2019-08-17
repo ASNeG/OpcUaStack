@@ -29,8 +29,6 @@
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include <map>
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

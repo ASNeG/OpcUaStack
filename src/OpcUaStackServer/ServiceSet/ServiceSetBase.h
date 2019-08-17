@@ -25,8 +25,6 @@
 #include "OpcUaStackServer/InformationModel/NamespaceArray.h"
 #include "OpcUaStackServer/InformationModel/ServerArray.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

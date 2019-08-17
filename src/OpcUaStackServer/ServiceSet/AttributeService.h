@@ -23,8 +23,6 @@
 #include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

@@ -33,8 +33,6 @@
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryIf.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
