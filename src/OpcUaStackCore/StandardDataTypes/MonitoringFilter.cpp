@@ -67,7 +67,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     MonitoringFilter::factory(void)
     {
-    	return constructSPtr<MonitoringFilter>();
+    	return boost::make_shared<MonitoringFilter>();
     }
     
     std::string

@@ -157,7 +157,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DiagnosticsLevel::factory(void)
     {
-    	return constructSPtr<DiagnosticsLevel>();
+    	return boost::make_shared<DiagnosticsLevel>();
     }
     
     OpcUaNodeId

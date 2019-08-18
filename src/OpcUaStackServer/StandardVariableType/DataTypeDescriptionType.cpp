@@ -19,9 +19,9 @@ namespace OpcUaStackServer
      */
     DataTypeDescriptionType::DataTypeDescriptionType(void)
     : VariableBase()
-    , dataTypeVersion_Variable_(constructSPtr<ServerVariable>("DataTypeVersion_Variable"))
-    , dictionaryFragment_Variable_(constructSPtr<ServerVariable>("DictionaryFragment_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , dataTypeVersion_Variable_(boost::make_shared<ServerVariable>("DataTypeVersion_Variable"))
+    , dictionaryFragment_Variable_(boost::make_shared<ServerVariable>("DictionaryFragment_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)69);
@@ -35,9 +35,9 @@ namespace OpcUaStackServer
      */
     DataTypeDescriptionType::DataTypeDescriptionType(const DataTypeDescriptionType& value)
     : VariableBase()
-    , dataTypeVersion_Variable_(constructSPtr<ServerVariable>("DataTypeVersion_Variable"))
-    , dictionaryFragment_Variable_(constructSPtr<ServerVariable>("DictionaryFragment_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , dataTypeVersion_Variable_(boost::make_shared<ServerVariable>("DataTypeVersion_Variable"))
+    , dictionaryFragment_Variable_(boost::make_shared<ServerVariable>("DictionaryFragment_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)69);

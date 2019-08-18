@@ -38,7 +38,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceDelay::createClientService(void)
 	{
-		return constructSPtr<ClientServiceDelay>();
+		return boost::make_shared<ClientServiceDelay>();
 	}
 
 	bool

@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     UpdateStructureDataDetails::factory(void)
     {
-    	return constructSPtr<UpdateStructureDataDetails>();
+    	return boost::make_shared<UpdateStructureDataDetails>();
     }
     
     std::string

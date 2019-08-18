@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     StatusChangeNotification::factory(void)
     {
-    	return constructSPtr<StatusChangeNotification>();
+    	return boost::make_shared<StatusChangeNotification>();
     }
     
     std::string

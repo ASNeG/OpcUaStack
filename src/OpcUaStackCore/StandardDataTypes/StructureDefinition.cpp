@@ -105,7 +105,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     StructureDefinition::factory(void)
     {
-    	return constructSPtr<StructureDefinition>();
+    	return boost::make_shared<StructureDefinition>();
     }
     
     std::string

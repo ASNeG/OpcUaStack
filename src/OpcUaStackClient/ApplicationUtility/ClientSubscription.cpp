@@ -174,7 +174,7 @@ namespace OpcUaStackClient
 	{
 		namespaceMap_ = &namespaceMap;
 		state_ = S_Opening;
-		auto trx = constructSPtr<ServiceTransactionCreateSubscription>();
+		auto trx = boost::make_shared<ServiceTransactionCreateSubscription>();
 		trx->resultHandler([this](ServiceTransactionCreateSubscription::SPtr& trx) {
 			subscriptionServiceCreateSubscriptionResponse(trx);
 		});
@@ -189,7 +189,7 @@ namespace OpcUaStackClient
 
 		// delete subscription
 		state_ = S_Closing;
-		auto trx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+		auto trx = boost::make_shared<ServiceTransactionDeleteSubscriptions>();
 		auto req = trx->request();
 		req->subscriptionIds()->resize(1);
 		req->subscriptionIds()->set(0, subscriptionId_);
@@ -256,7 +256,7 @@ namespace OpcUaStackClient
 		if (cmiv.empty()) return;
 
 		// create monitored item transaction
-		auto trx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
+		auto trx = boost::make_shared<ServiceTransactionCreateMonitoredItems>();
 		auto req = trx->request();
 		req->subscriptionId(subscriptionId_);
 		req->itemsToCreate()->resize(cmiv.size());
@@ -286,7 +286,7 @@ namespace OpcUaStackClient
 			    .parameter("NodeId", nodeId.toString())
 			    .parameter("ClientHandle", cmi->clientHandle());
 
-			auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+			auto monitoredItemCreateRequest = boost::make_shared<MonitoredItemCreateRequest>();
 			monitoredItemCreateRequest->itemToMonitor().nodeId()->copyFrom(nodeId);
 			monitoredItemCreateRequest->requestedParameters().clientHandle(cmi->clientHandle());
 			req->itemsToCreate()->push_back(monitoredItemCreateRequest);
@@ -337,7 +337,7 @@ namespace OpcUaStackClient
 		if (cmiv.empty()) return;
 
 		// create monitored item transaction
-		auto trx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
+		auto trx = boost::make_shared<ServiceTransactionDeleteMonitoredItems>();
 		auto req = trx->request();
 		req->subscriptionId(subscriptionId_);
 		req->monitoredItemIds()->resize(cmiv.size());

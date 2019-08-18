@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackCore_OpcUaArray_h__
 #define __OpcUaStackCore_OpcUaArray_h__
 
-
+#include <boost/make_shared.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <stdint.h>
@@ -253,7 +253,7 @@ namespace OpcUaStackCore
 
 		  static void opcUaBinaryDecode(std::istream& is, boost::shared_ptr<T>& value)
 		  {
-			  value = constructSPtr<T>();
+			  value = boost::make_shared<T>();
 			  value->opcUaBinaryDecode(is);
 		  }
 
@@ -274,7 +274,7 @@ namespace OpcUaStackCore
 			  Xmlns& xmlns
 		  )
 		  {
-			  value = constructSPtr<T>();
+			  value = boost::make_shared<T>();
 			  return value->xmlDecode(pt, xmlns);
 		  }
 
@@ -293,13 +293,13 @@ namespace OpcUaStackCore
 			  const std::string& listElement
 		  )
 		  {
-			  value = constructSPtr<T>();
+			  value = boost::make_shared<T>();
 			  return value->jsonDecode(pt);
 		  }
 
 		  static boost::shared_ptr<T> copy( boost::shared_ptr<T>& sourceValue, boost::shared_ptr<T>& destValue)
 		  {
-			  destValue = constructSPtr<T>();
+			  destValue = boost::make_shared<T>();
 			  sourceValue->copyTo(*destValue);
 			  return destValue;
 		  }
@@ -654,7 +654,7 @@ namespace OpcUaStackCore
 		typename std::vector<T>::iterator it;
 		resize(other.size());
 		for (it = other.begin(); it != other.end(); it++) {
-			push_back(constructSPtr<T>(other));
+			push_back(boost::make_shared<T>(other));
 		}
 		return *this;
 	}
@@ -665,7 +665,7 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::operator=(const V& other)
 	{
 		resize(1);
-		set(0, constructSPtr<T>(other));
+		set(0, boost::make_shared<T>(other));
 		return *this;
 	}
 

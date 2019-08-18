@@ -43,9 +43,9 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Attribute_read)
 	BOOST_REQUIRE(attributeService.get() != nullptr);
 
 	// create and send ReadRequest
-	auto trx = constructSPtr<ServiceTransactionRead>();
+	auto trx = boost::make_shared<ServiceTransactionRead>();
 	auto req = trx->request();
-	auto readValueIdSPtr = constructSPtr<ReadValueId>();
+	auto readValueIdSPtr = boost::make_shared<ReadValueId>();
 	readValueIdSPtr->nodeId((OpcUaInt16)0, (OpcUaInt32)2259);
 	readValueIdSPtr->attributeId((OpcUaInt32) 13);
 	readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
@@ -90,11 +90,11 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Attribute_write)
 	BOOST_REQUIRE(attributeService.get() != nullptr);
 
 	// create and send WriteRequest
-	auto trx = constructSPtr<ServiceTransactionWrite>();
+	auto trx = boost::make_shared<ServiceTransactionWrite>();
 	auto req = trx->request();
 
 	OpcUaBoolean value = 1;
-	auto writeValue = constructSPtr<WriteValue>();
+	auto writeValue = boost::make_shared<WriteValue>();
 	writeValue->nodeId()->set("Demo.Static.Scalar.Boolean", 2);
 	writeValue->attributeId((OpcUaInt32) 13);
 	writeValue->dataValue().variant()->set(value);

@@ -145,7 +145,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     PubSubDiagnosticsCounterClassification::factory(void)
     {
-    	return constructSPtr<PubSubDiagnosticsCounterClassification>();
+    	return boost::make_shared<PubSubDiagnosticsCounterClassification>();
     }
     
     OpcUaNodeId

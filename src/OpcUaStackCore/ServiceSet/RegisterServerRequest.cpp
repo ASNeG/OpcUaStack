@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	RegisterServerRequest::RegisterServerRequest(void)
 	: Object()
-	, requestHeaderSPtr_(constructSPtr<RequestHeader>())
+	, requestHeaderSPtr_(boost::make_shared<RequestHeader>())
 	, server_()
 	{
 	}

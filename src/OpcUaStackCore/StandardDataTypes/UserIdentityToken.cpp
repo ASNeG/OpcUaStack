@@ -83,7 +83,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     UserIdentityToken::factory(void)
     {
-    	return constructSPtr<UserIdentityToken>();
+    	return boost::make_shared<UserIdentityToken>();
     }
     
     std::string

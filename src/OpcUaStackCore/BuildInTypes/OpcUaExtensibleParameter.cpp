@@ -65,7 +65,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
 	OpcUaExtensibleParameter::factory(void)
     {
-    	return constructSPtr<OpcUaExtensibleParameter>();
+    	return boost::make_shared<OpcUaExtensibleParameter>();
     }
 
 	std::string

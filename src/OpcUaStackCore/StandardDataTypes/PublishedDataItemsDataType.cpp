@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     PublishedDataItemsDataType::factory(void)
     {
-    	return constructSPtr<PublishedDataItemsDataType>();
+    	return boost::make_shared<PublishedDataItemsDataType>();
     }
     
     std::string

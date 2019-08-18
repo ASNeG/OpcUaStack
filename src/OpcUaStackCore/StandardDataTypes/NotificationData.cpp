@@ -67,7 +67,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     NotificationData::factory(void)
     {
-    	return constructSPtr<NotificationData>();
+    	return boost::make_shared<NotificationData>();
     }
     
     std::string

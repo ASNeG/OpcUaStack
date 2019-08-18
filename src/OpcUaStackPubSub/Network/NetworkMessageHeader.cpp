@@ -36,12 +36,12 @@ namespace OpcUaStackPubSub
 	, extendedFlags2Enabled_(false)
 	, networkMessageType_(NetworkMessageType_DataSetMessage)
 	, promotedFieldsEnabled_(false)
-	, publisherId_(constructSPtr<OpcUaVariant>())
-	, dataSetClassId_(constructSPtr<OpcUaGuid>())
-	, dataSetPayloadHeader_(constructSPtr<DataSetPayloadHeader>())
+	, publisherId_(boost::make_shared<OpcUaVariant>())
+	, dataSetClassId_(boost::make_shared<OpcUaGuid>())
+	, dataSetPayloadHeader_(boost::make_shared<DataSetPayloadHeader>())
 	, timestamp_()
 	, picoSeconds_(0)
-	, promotedFields_(constructSPtr<OpcUaVariantArray>())
+	, promotedFields_(boost::make_shared<OpcUaVariantArray>())
 	{
 	}
 

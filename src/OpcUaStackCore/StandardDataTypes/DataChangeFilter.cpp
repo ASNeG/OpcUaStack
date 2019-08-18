@@ -95,7 +95,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DataChangeFilter::factory(void)
     {
-    	return constructSPtr<DataChangeFilter>();
+    	return boost::make_shared<DataChangeFilter>();
     }
     
     std::string

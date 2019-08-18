@@ -117,7 +117,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     AxisInformation::factory(void)
     {
-    	return constructSPtr<AxisInformation>();
+    	return boost::make_shared<AxisInformation>();
     }
     
     std::string

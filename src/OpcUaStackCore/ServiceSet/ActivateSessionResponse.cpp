@@ -22,10 +22,10 @@ namespace OpcUaStackCore
 
 	ActivateSessionResponse::ActivateSessionResponse(void)
 	: Object()
-	, responseHeader_(constructSPtr<ResponseHeader>())
+	, responseHeader_(boost::make_shared<ResponseHeader>())
 	, serverNonce_()
-	, results_(constructSPtr<OpcUaStatusCodeArray>())
-	, diagnosticInfos_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, results_(boost::make_shared<OpcUaStatusCodeArray>())
+	, diagnosticInfos_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

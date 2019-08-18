@@ -77,7 +77,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     HistoryEvent::factory(void)
     {
-    	return constructSPtr<HistoryEvent>();
+    	return boost::make_shared<HistoryEvent>();
     }
     
     std::string

@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(ApplicationCertificate_init)
 	for (uint32_t idx=0; idx<2; idx++) {
 
 		// create certificate manager
-		CertificateManager::SPtr certificateManager = constructSPtr<CertificateManager>();
+		CertificateManager::SPtr certificateManager = boost::make_shared<CertificateManager>();
 		certificateManager->certificateTrustListLocation("./pki/trusted/certs/");
 		certificateManager->certificateRejectListLocation("./pki/reject/certs/.");
 		certificateManager->certificateRevocationListLocation("./pki/trusted/crl/");
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(ApplicationCertificate_init)
 		certificateSettings.email("info@ASNeG.de");
 
 		// init and cleanup
-		ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+		ApplicationCertificate::SPtr applicationCertificate = boost::make_shared<ApplicationCertificate>();
 		BOOST_REQUIRE(applicationCertificate->init(certificateManager) == true);
 		BOOST_REQUIRE(applicationCertificate->cleanup() == true);
 

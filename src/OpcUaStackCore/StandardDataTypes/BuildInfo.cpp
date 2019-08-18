@@ -127,7 +127,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     BuildInfo::factory(void)
     {
-    	return constructSPtr<BuildInfo>();
+    	return boost::make_shared<BuildInfo>();
     }
     
     std::string

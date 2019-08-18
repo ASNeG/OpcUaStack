@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     KeyValuePair::factory(void)
     {
-    	return constructSPtr<KeyValuePair>();
+    	return boost::make_shared<KeyValuePair>();
     }
     
     std::string

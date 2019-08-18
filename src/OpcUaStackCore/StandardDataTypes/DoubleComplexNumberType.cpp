@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DoubleComplexNumberType::factory(void)
     {
-    	return constructSPtr<DoubleComplexNumberType>();
+    	return boost::make_shared<DoubleComplexNumberType>();
     }
     
     std::string

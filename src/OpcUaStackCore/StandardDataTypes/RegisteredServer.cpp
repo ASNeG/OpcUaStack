@@ -153,7 +153,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     RegisteredServer::factory(void)
     {
-    	return constructSPtr<RegisteredServer>();
+    	return boost::make_shared<RegisteredServer>();
     }
     
     std::string

@@ -127,7 +127,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ServerStatusDataType::factory(void)
     {
-    	return constructSPtr<ServerStatusDataType>();
+    	return boost::make_shared<ServerStatusDataType>();
     }
     
     std::string

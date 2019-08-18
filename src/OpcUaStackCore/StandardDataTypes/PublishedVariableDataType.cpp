@@ -147,7 +147,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     PublishedVariableDataType::factory(void)
     {
-    	return constructSPtr<PublishedVariableDataType>();
+    	return boost::make_shared<PublishedVariableDataType>();
     }
     
     std::string

@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(OpcUaExtensionObject_reset)
 	BOOST_REQUIRE(value.style() == OpcUaExtensionObject::S_None);
 
 	OpcUaByteString::SPtr byteString;
-	byteString = constructSPtr<OpcUaByteString>();
+	byteString = boost::make_shared<OpcUaByteString>();
 	value.byteString(byteString);
 	BOOST_REQUIRE(value.style() == OpcUaExtensionObject::S_ByteString);
 	value.reset();
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(OpcUaExtensionObject_body_byteString)
 	OpcUaExtensionObject value1, value2;
 	OpcUaByteString::SPtr byteString1, byteString2;
 
-	byteString1 = constructSPtr<OpcUaByteString>();
+	byteString1 = boost::make_shared<OpcUaByteString>();
 	byteString1->value(std::string("Dies ist ein ByteString"));
 	value1.typeId(1234);
 	value1.byteString(byteString1);

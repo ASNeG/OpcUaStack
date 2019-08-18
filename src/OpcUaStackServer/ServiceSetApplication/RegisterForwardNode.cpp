@@ -149,9 +149,9 @@ namespace OpcUaStackServer
 		statuses_.clear();
 
 		// create request
-		auto trx = constructSPtr<ServiceTransactionRegisterForwardNode>();
+		auto trx = boost::make_shared<ServiceTransactionRegisterForwardNode>();
 		trx->request()->nodesToRegister()->resize(nodes_.size());
-		for (auto node : nodes_) trx->request()->nodesToRegister()->push_back(constructSPtr<OpcUaNodeId>(node));
+		for (auto node : nodes_) trx->request()->nodesToRegister()->push_back(boost::make_shared<OpcUaNodeId>(node));
 		trx->request()->forwardNodeSync()->updateFrom(forwardNodeSync_);
 
 		// send query to application service

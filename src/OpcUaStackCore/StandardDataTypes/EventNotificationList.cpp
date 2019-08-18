@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     EventNotificationList::factory(void)
     {
-    	return constructSPtr<EventNotificationList>();
+    	return boost::make_shared<EventNotificationList>();
     }
     
     std::string

@@ -19,9 +19,9 @@ namespace OpcUaStackServer
      */
     DataItemType::DataItemType(void)
     : VariableBase()
-    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
-    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , definition_Variable_(boost::make_shared<ServerVariable>("Definition_Variable"))
+    , valuePrecision_Variable_(boost::make_shared<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2365);
@@ -35,9 +35,9 @@ namespace OpcUaStackServer
      */
     DataItemType::DataItemType(const DataItemType& value)
     : VariableBase()
-    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
-    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , definition_Variable_(boost::make_shared<ServerVariable>("Definition_Variable"))
+    , valuePrecision_Variable_(boost::make_shared<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2365);

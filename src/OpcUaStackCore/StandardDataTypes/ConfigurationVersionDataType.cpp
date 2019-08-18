@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ConfigurationVersionDataType::factory(void)
     {
-    	return constructSPtr<ConfigurationVersionDataType>();
+    	return boost::make_shared<ConfigurationVersionDataType>();
     }
     
     std::string

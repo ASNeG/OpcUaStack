@@ -289,7 +289,7 @@ namespace OpcUaStackServer
 				return false;
 			}
 
-			ReferenceItem::SPtr referenceItem = constructSPtr<ReferenceItem>();
+			ReferenceItem::SPtr referenceItem = boost::make_shared<ReferenceItem>();
 			
 			//
 			// attribute reference type (mandatory)
@@ -302,7 +302,7 @@ namespace OpcUaStackServer
 			}
 
 			// check if the reference is included in the alias map 
-			OpcUaNodeId::SPtr referenceTypeNodeId = constructSPtr<OpcUaNodeId>();
+			OpcUaNodeId::SPtr referenceTypeNodeId = boost::make_shared<OpcUaNodeId>();
 			bool alias = nodeSetAlias_.map(*referenceTypeString, *referenceTypeNodeId);
 			
 			// check if the reference is an standard reference type
@@ -399,7 +399,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAObject(boost::property_tree::ptree& ptree)
 	{
-		ObjectNodeClass::SPtr objectNodeClassSPtr = constructSPtr<ObjectNodeClass>();
+		ObjectNodeClass::SPtr objectNodeClassSPtr = boost::make_shared<ObjectNodeClass>();
 
 		//
 		// decode NodeBase 
@@ -435,7 +435,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAObjectType(boost::property_tree::ptree& ptree)
 	{
-		ObjectTypeNodeClass::SPtr objectTypeNodeClassSPtr = constructSPtr<ObjectTypeNodeClass>();
+		ObjectTypeNodeClass::SPtr objectTypeNodeClassSPtr = boost::make_shared<ObjectTypeNodeClass>();
 
 		//
 		// decode NodeBase 
@@ -471,7 +471,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAVariable(boost::property_tree::ptree& ptree)
 	{
-		VariableNodeClass::SPtr variableNodeClassSPtr = constructSPtr<VariableNodeClass>();
+		VariableNodeClass::SPtr variableNodeClassSPtr = boost::make_shared<VariableNodeClass>();
 
 		//
 		// decode NodeBase
@@ -505,7 +505,7 @@ namespace OpcUaStackServer
 		//
 		// decode Value (mandatory)
 		//
-		OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+		OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 		OpcUaDataValue dataValue;
 		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
@@ -610,7 +610,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAVariableType(boost::property_tree::ptree& ptree)
 	{
-		VariableTypeNodeClass::SPtr variableTypeNodeClassSPtr = constructSPtr<VariableTypeNodeClass>();
+		VariableTypeNodeClass::SPtr variableTypeNodeClassSPtr = boost::make_shared<VariableTypeNodeClass>();
 
 		//
 		// decode NodeBase
@@ -640,7 +640,7 @@ namespace OpcUaStackServer
 		//
 		// decode Value (mandatory)
 		//
-		OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+		OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 		OpcUaDataValue dataValue;
 		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
@@ -724,7 +724,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUADataType(boost::property_tree::ptree& ptree)
 	{
-		auto dataTypeNodeClassSPtr = constructSPtr<DataTypeNodeClass>();
+		auto dataTypeNodeClassSPtr = boost::make_shared<DataTypeNodeClass>();
 
 		//
 		// decode NodeBase
@@ -768,7 +768,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAReferenceType(boost::property_tree::ptree& ptree)
 	{
-		ReferenceTypeNodeClass::SPtr referenceTypeNodeClassSPtr = constructSPtr<ReferenceTypeNodeClass>();
+		ReferenceTypeNodeClass::SPtr referenceTypeNodeClassSPtr = boost::make_shared<ReferenceTypeNodeClass>();
 
 		//
 		// decode NodeBase
@@ -831,7 +831,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAMethod(boost::property_tree::ptree& ptree)
 	{
-		MethodNodeClass::SPtr methodeNodeClassSPtr = constructSPtr<MethodNodeClass>();
+		MethodNodeClass::SPtr methodeNodeClassSPtr = boost::make_shared<MethodNodeClass>();
 
 		//
 		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
@@ -845,9 +845,9 @@ namespace OpcUaStackServer
 		//
 		boost::optional<std::string> methodDeclarationId = ptree.get_optional<std::string>("<xmlattr>.MethodDeclarationId");
 		if (methodDeclarationId) {
-			ReferenceItem::SPtr referenceItem = constructSPtr<ReferenceItem>();
+			ReferenceItem::SPtr referenceItem = boost::make_shared<ReferenceItem>();
 
-			OpcUaNodeId::SPtr referenceTypeNodeId = constructSPtr<OpcUaNodeId>();
+			OpcUaNodeId::SPtr referenceTypeNodeId = boost::make_shared<OpcUaNodeId>();
 			referenceTypeNodeId = ReferenceTypeMap::stringToNodeId("HasTypeDefinition");
 			referenceItem->isForward_ = true;
 
@@ -928,7 +928,7 @@ namespace OpcUaStackServer
 
 			// decode enum definition
 
-			auto enumDefinition = constructSPtr<EnumDefinitionExpand>();
+			auto enumDefinition = boost::make_shared<EnumDefinitionExpand>();
 
 			if (!parser.decode(*definitionTree, enumDefinition, false)) {
 				Log(Error, "invalid enum definiton - ignore enum definiton section")
@@ -942,7 +942,7 @@ namespace OpcUaStackServer
 
 			// decode structure definition
 
-			auto structureDefinition = constructSPtr<StructureDefinitionExpand>();
+			auto structureDefinition = boost::make_shared<StructureDefinitionExpand>();
 
 			if (!parser.decode(*definitionTree, structureDefinition, false)) {
 				Log(Error, "invalid structure definiton - ignore structure definiton section")

@@ -125,7 +125,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     BrokerDataSetWriterTransportDataType::factory(void)
     {
-    	return constructSPtr<BrokerDataSetWriterTransportDataType>();
+    	return boost::make_shared<BrokerDataSetWriterTransportDataType>();
     }
     
     std::string

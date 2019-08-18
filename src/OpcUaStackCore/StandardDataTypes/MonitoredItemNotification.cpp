@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     MonitoredItemNotification::factory(void)
     {
-    	return constructSPtr<MonitoredItemNotification>();
+    	return boost::make_shared<MonitoredItemNotification>();
     }
     
     std::string

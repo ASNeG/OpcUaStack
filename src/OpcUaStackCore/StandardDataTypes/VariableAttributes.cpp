@@ -151,7 +151,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     VariableAttributes::factory(void)
     {
-    	return constructSPtr<VariableAttributes>();
+    	return boost::make_shared<VariableAttributes>();
     }
     
     std::string

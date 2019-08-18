@@ -95,7 +95,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ReaderGroupDataType::factory(void)
     {
-    	return constructSPtr<ReaderGroupDataType>();
+    	return boost::make_shared<ReaderGroupDataType>();
     }
     
     std::string

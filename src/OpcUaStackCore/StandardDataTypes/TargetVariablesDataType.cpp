@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     TargetVariablesDataType::factory(void)
     {
-    	return constructSPtr<TargetVariablesDataType>();
+    	return boost::make_shared<TargetVariablesDataType>();
     }
     
     std::string

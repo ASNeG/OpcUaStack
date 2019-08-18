@@ -149,7 +149,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     OverrideValueHandling::factory(void)
     {
-    	return constructSPtr<OverrideValueHandling>();
+    	return boost::make_shared<OverrideValueHandling>();
     }
     
     OpcUaNodeId

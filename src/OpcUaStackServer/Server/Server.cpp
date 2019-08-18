@@ -31,8 +31,8 @@ namespace OpcUaStackServer
 
 	Server::Server(void)
 	: Core()
-	, ioThread_(constructSPtr<IOThread>())
-	, informationModel_(constructSPtr<InformationModel>())
+	, ioThread_(boost::make_shared<IOThread>())
+	, informationModel_(boost::make_shared<InformationModel>())
 	, sessionManager_()
 	, serviceManager_()
 	, applicationManager_()
@@ -273,7 +273,7 @@ namespace OpcUaStackServer
 		{
 			OpcUaDataValue dataValue;
 			informationModel_->getValue(OpcUaId_Server_ServerCapabilities_LocaleIdArray, AttributeId_Value, dataValue);
-			OpcUaString::SPtr stringValue = constructSPtr<OpcUaString>();
+			OpcUaString::SPtr stringValue = boost::make_shared<OpcUaString>();
 			*stringValue = "en";
 			dataValue.variant()->pushBack(stringValue);
 			dataValue.statusCode(Success);
@@ -308,7 +308,7 @@ namespace OpcUaStackServer
 		bool rc;
 
 		// decode endpoint configuration
-		endpointDescriptionSet_ = constructSPtr<EndpointDescriptionSet>();
+		endpointDescriptionSet_ = boost::make_shared<EndpointDescriptionSet>();
 		rc = EndpointDescriptionConfig::endpointDescriptions(
 			endpointDescriptionSet_,
 			"OpcUaServer.Endpoints",
@@ -328,7 +328,7 @@ namespace OpcUaStackServer
 		}
 
 		// decode certificate configuration
-		CertificateManager::SPtr certificateManager = constructSPtr<CertificateManager>();
+		CertificateManager::SPtr certificateManager = boost::make_shared<CertificateManager>();
 		rc = ApplicationCertificateConfig::parse(
 			certificateManager,
 			"OpcUaServer.ServerInfo",
@@ -345,14 +345,14 @@ namespace OpcUaStackServer
 		}
 
 		// create application certificate
-		ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+		ApplicationCertificate::SPtr applicationCertificate = boost::make_shared<ApplicationCertificate>();
 		if (!applicationCertificate->init(certificateManager)) {
 			Log(Error, "init application certificate error");
 			return false;
 		}
 
 		// create crypto manager
-		cryptoManager_ = constructSPtr<CryptoManager>();
+		cryptoManager_ = boost::make_shared<CryptoManager>();
 		cryptoManager_->certificateManager(certificateManager);
 		cryptoManager_->applicationCertificate(applicationCertificate);
 

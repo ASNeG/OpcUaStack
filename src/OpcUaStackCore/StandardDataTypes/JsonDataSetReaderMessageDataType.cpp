@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     JsonDataSetReaderMessageDataType::factory(void)
     {
-    	return constructSPtr<JsonDataSetReaderMessageDataType>();
+    	return boost::make_shared<JsonDataSetReaderMessageDataType>();
     }
     
     std::string

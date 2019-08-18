@@ -60,7 +60,7 @@ namespace OpcUaStackServer
 		resultCode_ = Success;
 
 		// create request
-		auto trx = constructSPtr<ServiceTransactionFireEvent>();
+		auto trx = boost::make_shared<ServiceTransactionFireEvent>();
 		trx->request()->nodeId(node_);
 		trx->request()->eventBase(eventBase_);
 

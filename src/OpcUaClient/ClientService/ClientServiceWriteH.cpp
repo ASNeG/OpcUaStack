@@ -41,7 +41,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceWriteH::createClientService(void)
 	{
-		return constructSPtr<ClientServiceWriteH>();
+		return boost::make_shared<ClientServiceWriteH>();
 	}
 
 	bool
@@ -98,11 +98,11 @@ namespace OpcUaClient
 
 		// create update request
 		ServiceTransactionHistoryUpdate::SPtr trx;
-		trx = constructSPtr<ServiceTransactionHistoryUpdate>();
+		trx = boost::make_shared<ServiceTransactionHistoryUpdate>();
 		HistoryUpdateRequest::SPtr req = trx->request();
 
 		req->historyUpdateDetails()->resize(1);
-		OpcUaExtensibleParameter::SPtr extensibleParameter = constructSPtr<OpcUaExtensibleParameter>();
+		OpcUaExtensibleParameter::SPtr extensibleParameter = boost::make_shared<OpcUaExtensibleParameter>();
 		req->historyUpdateDetails()->push_back(extensibleParameter);
 
 		UpdateStructureDataDetails::SPtr updateDetails;
@@ -196,11 +196,11 @@ namespace OpcUaClient
 
 			// create update request
 			ServiceTransactionHistoryUpdate::SPtr trx;
-			trx = constructSPtr<ServiceTransactionHistoryUpdate>();
+			trx = boost::make_shared<ServiceTransactionHistoryUpdate>();
 			HistoryUpdateRequest::SPtr req = trx->request();
 
 			req->historyUpdateDetails()->resize(1);
-			OpcUaExtensibleParameter::SPtr extensibleParameter = constructSPtr<OpcUaExtensibleParameter>();
+			OpcUaExtensibleParameter::SPtr extensibleParameter = boost::make_shared<OpcUaExtensibleParameter>();
 			req->historyUpdateDetails()->push_back(extensibleParameter);
 
 			UpdateStructureDataDetails::SPtr updateDetails;
@@ -262,7 +262,7 @@ namespace OpcUaClient
 		Log(Debug, "read csv file")
 		    .parameter("CSVFileName", fileName);
 
-		csv_ = constructSPtr<CSV>();
+		csv_ = boost::make_shared<CSV>();
 		bool success = csv_->open(fileName, CSV::M_Read);
 		if (!success) {
 			Log(Error, "open csv file error")
@@ -304,7 +304,7 @@ namespace OpcUaClient
 			//
 			// create new data value entry
 			//
-			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
+			OpcUaDataValue::SPtr dataValue = boost::make_shared<OpcUaDataValue>();
 			dataValueVec.push_back(dataValue);
 
 			// read status code

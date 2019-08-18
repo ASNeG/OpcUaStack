@@ -81,7 +81,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ObjectAttributes::factory(void)
     {
-    	return constructSPtr<ObjectAttributes>();
+    	return boost::make_shared<ObjectAttributes>();
     }
     
     std::string

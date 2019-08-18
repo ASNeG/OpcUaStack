@@ -304,7 +304,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
-		auto openSecureChannelResponse = constructSPtr<OpenSecureChannelResponse>();
+		auto openSecureChannelResponse = boost::make_shared<OpenSecureChannelResponse>();
 		openSecureChannelResponse->responseHeader()->requestHandle(openSecureChannelRequest.requestHeader()->requestHandle());
 		openSecureChannelResponse->responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
 

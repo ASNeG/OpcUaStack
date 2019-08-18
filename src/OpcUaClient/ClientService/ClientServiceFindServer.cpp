@@ -36,7 +36,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceFindServer::createClientService(void)
 	{
-		return constructSPtr<ClientServiceFindServer>();
+		return boost::make_shared<ClientServiceFindServer>();
 	}
 
 	bool
@@ -77,7 +77,7 @@ namespace OpcUaClient
 
 		// create get endpoint request
 		ServiceTransactionFindServers::SPtr trx;
-		trx = constructSPtr<ServiceTransactionFindServers>();
+		trx = boost::make_shared<ServiceTransactionFindServers>();
 		FindServersRequest::SPtr req = trx->request();
 
 		// FIXME: set parameter

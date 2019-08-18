@@ -230,10 +230,10 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_1_equals_true)
 	std::vector<FilterNode::SPtr> args;
 
 	value.set<OpcUaUInt32>(1);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));
 
 	value.set<OpcUaBoolean>(true);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));
 
 
     ComparisonFilterNode equalsOperator(FilterOperator::EnumEquals, args);
@@ -249,10 +249,10 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_true_equals_1)
 	std::vector<FilterNode::SPtr> args;
 
 	value.set<OpcUaBoolean>(true);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));
 
 	value.set<OpcUaUInt32>(1);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));
 
 
     ComparisonFilterNode equalsOperator(FilterOperator::EnumEquals, args);
@@ -268,10 +268,10 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_implicit_cast_fail)
 	std::vector<FilterNode::SPtr> args;
 
 	value.set<OpcUaBoolean>(true);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));
 
 	value.set<OpcUaDateTime>(OpcUaDateTime());
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));
 
 
     ComparisonFilterNode equalsOperator(FilterOperator::EnumEquals, args);

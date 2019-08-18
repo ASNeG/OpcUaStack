@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 
 	FindServersResponse::FindServersResponse(void)
 	: Object()
-	, responseHeaderSPtr_(constructSPtr<ResponseHeader>())
-	, serverArraySPtr_(constructSPtr<ApplicationDescriptionArray>())
+	, responseHeaderSPtr_(boost::make_shared<ResponseHeader>())
+	, serverArraySPtr_(boost::make_shared<ApplicationDescriptionArray>())
 	{
 	}
 

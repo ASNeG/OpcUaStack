@@ -24,13 +24,13 @@ BOOST_AUTO_TEST_CASE(AcknowledgeMessage_encode_decode)
 	// AcknowledgeMessage
 	boost::asio::streambuf sb1;
 	std::iostream ios1(&sb1);
-	acknowledgeMessageSPtr = constructSPtr<AcknowledgeMessage>();
+	acknowledgeMessageSPtr = boost::make_shared<AcknowledgeMessage>();
 	acknowledgeMessageSPtr->opcUaBinaryEncode(ios1);
 
 	// MessageHeader
 	boost::asio::streambuf sb2;
 	std::iostream ios2(&sb2);
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Acknowledge);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -44,9 +44,9 @@ BOOST_AUTO_TEST_CASE(AcknowledgeMessage_encode_decode)
 
 
 	// decode
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios3);
-	acknowledgeMessageSPtr = constructSPtr<AcknowledgeMessage>();
+	acknowledgeMessageSPtr = boost::make_shared<AcknowledgeMessage>();
 	acknowledgeMessageSPtr->opcUaBinaryDecode(ios3);
 
 	BOOST_REQUIRE(messageHeaderSPtr->messageSize() == 28);

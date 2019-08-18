@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	HistoryUpdateRequest::HistoryUpdateRequest(void)
 	: Object()
-	, historyUpdateDetailsSPtr_(constructSPtr<OpcUaExtensibleParameterArray>())
+	, historyUpdateDetailsSPtr_(boost::make_shared<OpcUaExtensibleParameterArray>())
 	{
 	}
 

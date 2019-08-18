@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddReferencesRequest::AddReferencesRequest(void)
-	: addReferencesItemArray_(constructSPtr<AddReferencesItemArray>())
+	: addReferencesItemArray_(boost::make_shared<AddReferencesItemArray>())
 	{
 	}
 

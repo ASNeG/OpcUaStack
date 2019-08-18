@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ReadAtTimeDetails::factory(void)
     {
-    	return constructSPtr<ReadAtTimeDetails>();
+    	return boost::make_shared<ReadAtTimeDetails>();
     }
     
     std::string

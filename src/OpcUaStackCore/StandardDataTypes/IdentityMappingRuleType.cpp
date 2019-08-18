@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     IdentityMappingRuleType::factory(void)
     {
-    	return constructSPtr<IdentityMappingRuleType>();
+    	return boost::make_shared<IdentityMappingRuleType>();
     }
     
     std::string

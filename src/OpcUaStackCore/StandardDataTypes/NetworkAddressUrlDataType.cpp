@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     NetworkAddressUrlDataType::factory(void)
     {
-    	return constructSPtr<NetworkAddressUrlDataType>();
+    	return boost::make_shared<NetworkAddressUrlDataType>();
     }
     
     std::string

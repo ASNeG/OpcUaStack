@@ -73,7 +73,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     Union::factory(void)
     {
-    	return constructSPtr<Union>();
+    	return boost::make_shared<Union>();
     }
     
     std::string

@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: Object()
 	, view_()
 	, requestMaxReferencesPerNode_()
-	, nodesToBrowseArraySPtr_(constructSPtr<BrowseDescriptionArray>())
+	, nodesToBrowseArraySPtr_(boost::make_shared<BrowseDescriptionArray>())
 	{
 	}
 

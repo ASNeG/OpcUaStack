@@ -117,7 +117,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     AggregateConfiguration::factory(void)
     {
-    	return constructSPtr<AggregateConfiguration>();
+    	return boost::make_shared<AggregateConfiguration>();
     }
     
     std::string

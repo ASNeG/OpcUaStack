@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ElementOperand::factory(void)
     {
-    	return constructSPtr<ElementOperand>();
+    	return boost::make_shared<ElementOperand>();
     }
     
     std::string

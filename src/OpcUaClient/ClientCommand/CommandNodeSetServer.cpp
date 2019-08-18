@@ -40,7 +40,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandNodeSetServer::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandNodeSetServer>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandNodeSetServer>();
 		return commandBase;
 	}
 

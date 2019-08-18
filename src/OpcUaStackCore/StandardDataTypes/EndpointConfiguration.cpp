@@ -157,7 +157,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     EndpointConfiguration::factory(void)
     {
-    	return constructSPtr<EndpointConfiguration>();
+    	return boost::make_shared<EndpointConfiguration>();
     }
     
     std::string

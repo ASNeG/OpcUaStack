@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(140);
 	sequenceHeaderSPtr->requestId(90);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -59,12 +59,12 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CancelRequest
-	cancelRequestSPtr = constructSPtr<CancelRequest>();
+	cancelRequestSPtr = boost::make_shared<CancelRequest>();
 	cancelRequestSPtr->requestHandle(4711);
 	cancelRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 140);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 90);
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CancelRequest_Encoding_DefaultBinary);
 
 	// decode CancelRequest
-	cancelRequestSPtr = constructSPtr<CancelRequest>();
+	cancelRequestSPtr = boost::make_shared<CancelRequest>();
 	cancelRequestSPtr->opcUaBinaryDecode(ios);
 }
 
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(140);
 	sequenceHeaderSPtr->requestId(90);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CancelResponse
-	cancelResponseSPtr = constructSPtr<CancelResponse>();
+	cancelResponseSPtr = boost::make_shared<CancelResponse>();
 
 	cancelResponseSPtr->responseHeader()->time(ptime);
 	cancelResponseSPtr->responseHeader()->requestHandle(1);
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	cancelResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 140);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 90);
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CancelResponse_Encoding_DefaultBinary);
 
 	//decode CancelResponse
-	cancelResponseSPtr = constructSPtr<CancelResponse>();
+	cancelResponseSPtr = boost::make_shared<CancelResponse>();
 	cancelResponseSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(cancelResponseSPtr->responseHeader()->time().dateTime() == ptime);

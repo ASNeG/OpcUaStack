@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ComplexNumberType::factory(void)
     {
-    	return constructSPtr<ComplexNumberType>();
+    	return boost::make_shared<ComplexNumberType>();
     }
     
     std::string

@@ -200,7 +200,7 @@ namespace OpcUaStackServer
 			}
 
 			// handle childs of node
-			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
+			browseNames.pathNames()->set(size, boost::make_shared<OpcUaQualifiedName>(browseName));
 			VariableNodeClass::SPtr variableNodeClassChild = readChilds(baseNodeClassChildTemplate, browseNames);
 			if (variableNodeClassChild.get() == nullptr) {
 				Log(Error, "read childs error")
@@ -273,7 +273,7 @@ namespace OpcUaStackServer
 				}
 
 				VariableNodeClass::SPtr variableNode0 = boost::static_pointer_cast<VariableNodeClass>(baseNodeTemplate);
-				variableNode = constructSPtr<VariableNodeClass>(nodeId, *variableNode0.get());
+				variableNode = boost::make_shared<VariableNodeClass>(nodeId, *variableNode0.get());
 
 				variableNode->referenceItemMap().add(
 					ReferenceType_HasTypeDefinition,
@@ -292,7 +292,7 @@ namespace OpcUaStackServer
 			case NodeClass::EnumVariableType:
 			{
 				VariableTypeNodeClass::SPtr variableTypeNode = boost::static_pointer_cast<VariableTypeNodeClass>(baseNodeTemplate);
-				variableNode = constructSPtr<VariableNodeClass>(nodeId, *variableTypeNode.get());
+				variableNode = boost::make_shared<VariableNodeClass>(nodeId, *variableTypeNode.get());
 
 				variableNode->referenceItemMap().add(
 					ReferenceType_HasTypeDefinition,

@@ -159,7 +159,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     SecurityPolicy::factory(void)
     {
-    	return constructSPtr<SecurityPolicy>();
+    	return boost::make_shared<SecurityPolicy>();
     }
     
     OpcUaNodeId

@@ -38,7 +38,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandFindServer::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandFindServer>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandFindServer>();
 		return commandBase;
 	}
 

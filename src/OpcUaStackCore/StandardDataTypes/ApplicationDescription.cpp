@@ -143,7 +143,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ApplicationDescription::factory(void)
     {
-    	return constructSPtr<ApplicationDescription>();
+    	return boost::make_shared<ApplicationDescription>();
     }
     
     std::string

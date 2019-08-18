@@ -76,7 +76,7 @@ namespace OpcUaStackServer
 	BaseNodeClass::SPtr
 	ObjectNodeClass::clone(void)
 	{
-		ObjectNodeClass::SPtr objectNodeClass = constructSPtr<ObjectNodeClass>();
+		ObjectNodeClass::SPtr objectNodeClass = boost::make_shared<ObjectNodeClass>();
 		copyTo(objectNodeClass);
 		return objectNodeClass;
 	}

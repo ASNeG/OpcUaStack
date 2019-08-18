@@ -97,7 +97,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ModelChangeStructureDataType::factory(void)
     {
-    	return constructSPtr<ModelChangeStructureDataType>();
+    	return boost::make_shared<ModelChangeStructureDataType>();
     }
     
     std::string

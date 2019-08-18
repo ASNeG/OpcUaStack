@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpenSecureChannelRequest::OpenSecureChannelRequest(void)
-	: requestHeaderSPtr_(constructSPtr<RequestHeader>())
+	: requestHeaderSPtr_(boost::make_shared<RequestHeader>())
 	, clientProtocolVersion_(0)
 	, requestType_()
 	, securityMode_(MessageSecurityMode::EnumInvalid)

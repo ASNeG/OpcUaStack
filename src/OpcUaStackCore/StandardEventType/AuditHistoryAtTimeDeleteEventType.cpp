@@ -80,7 +80,7 @@ namespace OpcUaStackCore
         uint32_t namespaceIndex;
         AuditHistoryDeleteEventType::mapNamespaceUri();
     
-        OpcUaVariant::SPtr eventTypeVariable = constructSPtr<OpcUaVariant>();
+        OpcUaVariant::SPtr eventTypeVariable = boost::make_shared<OpcUaVariant>();
         eventTypeVariable->setValue(eventVariables_.eventType());
     
         setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventTypeVariable);

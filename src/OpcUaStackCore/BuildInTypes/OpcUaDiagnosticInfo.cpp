@@ -193,7 +193,7 @@ namespace OpcUaStackCore
 			opcUaDiagnosticInfo.setInnerStatusCode(innerStatusCode_);
 		}
 		if (diagnosticInfo_.get() != nullptr) {
-			OpcUaDiagnosticInfo::SPtr tmp = constructSPtr<OpcUaDiagnosticInfo>();
+			OpcUaDiagnosticInfo::SPtr tmp = boost::make_shared<OpcUaDiagnosticInfo>();
 			diagnosticInfo_->copyTo(*tmp);
 			opcUaDiagnosticInfo.diagnosticInfo(tmp);
 		}
@@ -302,7 +302,7 @@ namespace OpcUaStackCore
 			OpcUaNumber::opcUaBinaryDecode(is, tmp); innerStatusCode_ = (OpcUaStatusCode)tmp;
 		}
 		if ((encodingMask & 0x40) == 0x40) {
-			diagnosticInfo_ = constructSPtr<OpcUaDiagnosticInfo>();
+			diagnosticInfo_ = boost::make_shared<OpcUaDiagnosticInfo>();
 			diagnosticInfo_->opcUaBinaryDecode(is);
 		}
 	}
@@ -474,7 +474,7 @@ namespace OpcUaStackCore
 		//
 		tree = pt.get_child_optional(xmlns.addPrefix("InnerDiagnosticInfo"));
 		if (tree) {
-			diagnosticInfo_ = constructSPtr<OpcUaDiagnosticInfo>();
+			diagnosticInfo_ = boost::make_shared<OpcUaDiagnosticInfo>();
 			if (!diagnosticInfo_->xmlDecode(*tree, xmlns)) {
 				Log(Error, "OpcUaDiagnosticInfo decode xml error - element not found")
 					.parameter("Element", "InnerDiagnosticInfo");
@@ -513,7 +513,7 @@ namespace OpcUaStackCore
 		rc &= jsonNumberDecode(pt, status, "InnerStatusCode", true, OpcUaUInt32(0));
 		innerStatusCode_ = static_cast<OpcUaStatusCode>(status);
 
-		diagnosticInfo_ = constructSPtr<OpcUaDiagnosticInfo>();
+		diagnosticInfo_ = boost::make_shared<OpcUaDiagnosticInfo>();
 		rc &= jsonObjectSPtrDecode(pt, diagnosticInfo_, "InnerDiagnosticInfo", true);
 
 		return rc;

@@ -79,8 +79,8 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArraySPtr)
 	std::stringstream ss;
 	OpcUaBooleanArray::SPtr value1, value2;
 
-	value1 = constructSPtr<OpcUaBooleanArray>();
-	value2 = constructSPtr<OpcUaBooleanArray>();
+	value1 = boost::make_shared<OpcUaBooleanArray>();
+	value2 = boost::make_shared<OpcUaBooleanArray>();
 
 	value1->resize(3);
 	value1->set(0, true);

@@ -19,7 +19,7 @@ namespace OpcUaStackServer
      */
     BaseDataVariableType::BaseDataVariableType(void)
     : VariableBase()
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)63);
@@ -31,7 +31,7 @@ namespace OpcUaStackServer
      */
     BaseDataVariableType::BaseDataVariableType(const BaseDataVariableType& value)
     : VariableBase()
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)63);

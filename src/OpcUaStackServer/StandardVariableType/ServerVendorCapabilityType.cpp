@@ -16,7 +16,7 @@ namespace OpcUaStackServer
     
     ServerVendorCapabilityType::ServerVendorCapabilityType(void)
     : VariableBase()
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2137);
@@ -25,7 +25,7 @@ namespace OpcUaStackServer
     
     ServerVendorCapabilityType::ServerVendorCapabilityType(const ServerVendorCapabilityType& value)
     : VariableBase()
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2137);

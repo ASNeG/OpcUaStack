@@ -95,7 +95,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     UABinaryFileDataType::factory(void)
     {
-    	return constructSPtr<UABinaryFileDataType>();
+    	return boost::make_shared<UABinaryFileDataType>();
     }
     
     std::string

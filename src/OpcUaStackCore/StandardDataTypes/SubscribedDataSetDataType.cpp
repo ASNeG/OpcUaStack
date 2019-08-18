@@ -67,7 +67,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     SubscribedDataSetDataType::factory(void)
     {
-    	return constructSPtr<SubscribedDataSetDataType>();
+    	return boost::make_shared<SubscribedDataSetDataType>();
     }
     
     std::string

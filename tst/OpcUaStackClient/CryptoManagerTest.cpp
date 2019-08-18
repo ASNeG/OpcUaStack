@@ -15,14 +15,14 @@ CryptoManagerTest::getInstance(void)
 {
 	// create new crypto manager if necessary
 	if (!cryptoManager_) {
-		cryptoManager_ = constructSPtr<CryptoManager>();
+		cryptoManager_ = boost::make_shared<CryptoManager>();
 	}
 	else {
 		return cryptoManager_;
 	}
 
 	// create certificate manager
-	CertificateManager::SPtr certificateManager = constructSPtr<CertificateManager>();
+	CertificateManager::SPtr certificateManager = boost::make_shared<CertificateManager>();
 	certificateManager->certificateTrustListLocation("./pki/trusted/certs/");
 	certificateManager->certificateRejectListLocation("./pki/reject/certs/.");
 	certificateManager->certificateRevocationListLocation("./pki/trusted/crl/");
@@ -52,7 +52,7 @@ CryptoManagerTest::getInstance(void)
 	certificateSettings.email("info@ASNeG.de");
 
 	// create application certificate
-	ApplicationCertificate::SPtr applicationCertificate = constructSPtr<ApplicationCertificate>();
+	ApplicationCertificate::SPtr applicationCertificate = boost::make_shared<ApplicationCertificate>();
 	if (!applicationCertificate->init(certificateManager)) {
 		cryptoManager_.reset();
 		return cryptoManager_;

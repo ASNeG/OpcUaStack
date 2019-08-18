@@ -381,7 +381,7 @@ namespace OpcUaStackServer
 
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
-			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
+			ss << prefix << ", " << vt->variableName() << "(boost::make_shared<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
 		}
 
 		ss << prefix << "{" << std::endl;
@@ -411,7 +411,7 @@ namespace OpcUaStackServer
 
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
-			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
+			ss << prefix << ", " << vt->variableName() << "(boost::make_shared<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
 		}
 
 		ss << prefix << "{" << std::endl;

@@ -16,15 +16,15 @@ namespace OpcUaStackServer
     
     TwoStateVariableType::TwoStateVariableType(void)
     : VariableBase()
-    , effectiveDisplayName_Variable_(constructSPtr<ServerVariable>("EffectiveDisplayName_Variable"))
-    , effectiveTransitionTime_Variable_(constructSPtr<ServerVariable>("EffectiveTransitionTime_Variable"))
-    , falseState_Variable_(constructSPtr<ServerVariable>("FalseState_Variable"))
-    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
-    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
-    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
-    , transitionTime_Variable_(constructSPtr<ServerVariable>("TransitionTime_Variable"))
-    , trueState_Variable_(constructSPtr<ServerVariable>("TrueState_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , effectiveDisplayName_Variable_(boost::make_shared<ServerVariable>("EffectiveDisplayName_Variable"))
+    , effectiveTransitionTime_Variable_(boost::make_shared<ServerVariable>("EffectiveTransitionTime_Variable"))
+    , falseState_Variable_(boost::make_shared<ServerVariable>("FalseState_Variable"))
+    , id_Variable_(boost::make_shared<ServerVariable>("Id_Variable"))
+    , name_Variable_(boost::make_shared<ServerVariable>("Name_Variable"))
+    , number_Variable_(boost::make_shared<ServerVariable>("Number_Variable"))
+    , transitionTime_Variable_(boost::make_shared<ServerVariable>("TransitionTime_Variable"))
+    , trueState_Variable_(boost::make_shared<ServerVariable>("TrueState_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)8995);
@@ -41,15 +41,15 @@ namespace OpcUaStackServer
     
     TwoStateVariableType::TwoStateVariableType(const TwoStateVariableType& value)
     : VariableBase()
-    , effectiveDisplayName_Variable_(constructSPtr<ServerVariable>("EffectiveDisplayName_Variable"))
-    , effectiveTransitionTime_Variable_(constructSPtr<ServerVariable>("EffectiveTransitionTime_Variable"))
-    , falseState_Variable_(constructSPtr<ServerVariable>("FalseState_Variable"))
-    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
-    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
-    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
-    , transitionTime_Variable_(constructSPtr<ServerVariable>("TransitionTime_Variable"))
-    , trueState_Variable_(constructSPtr<ServerVariable>("TrueState_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , effectiveDisplayName_Variable_(boost::make_shared<ServerVariable>("EffectiveDisplayName_Variable"))
+    , effectiveTransitionTime_Variable_(boost::make_shared<ServerVariable>("EffectiveTransitionTime_Variable"))
+    , falseState_Variable_(boost::make_shared<ServerVariable>("FalseState_Variable"))
+    , id_Variable_(boost::make_shared<ServerVariable>("Id_Variable"))
+    , name_Variable_(boost::make_shared<ServerVariable>("Name_Variable"))
+    , number_Variable_(boost::make_shared<ServerVariable>("Number_Variable"))
+    , transitionTime_Variable_(boost::make_shared<ServerVariable>("TransitionTime_Variable"))
+    , trueState_Variable_(boost::make_shared<ServerVariable>("TrueState_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)8995);

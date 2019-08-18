@@ -28,8 +28,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteReferencesResponse::DeleteReferencesResponse(void)
-	: deleteReferencesResultArraySPtr_(constructSPtr<DeleteReferencesResultArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	: deleteReferencesResultArraySPtr_(boost::make_shared<DeleteReferencesResultArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

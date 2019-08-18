@@ -22,9 +22,9 @@ namespace OpcUaStackCore
 
 	OpenSecureChannelResponse::OpenSecureChannelResponse(void)
 	: Object()
-	, responseHeaderSPtr_(constructSPtr<ResponseHeader>())
+	, responseHeaderSPtr_(boost::make_shared<ResponseHeader>())
 	, serverProtocolVersion_(0)
-	, securityTokenSPtr_(constructSPtr<SecurityToken>())
+	, securityTokenSPtr_(boost::make_shared<SecurityToken>())
 	, serverNonce_()
 	{
 	}

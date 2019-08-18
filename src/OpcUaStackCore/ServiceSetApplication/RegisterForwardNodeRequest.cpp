@@ -30,9 +30,9 @@ namespace OpcUaStackCore
 
 	RegisterForwardNodeRequest::RegisterForwardNodeRequest(void)
 	: Object()
-	, nodesToRegisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
-	, forwardNodeSync_(constructSPtr<ForwardNodeSync>())
-	, applicationContextArray_(constructSPtr<BaseClassArray>())
+	, nodesToRegisterArraySPtr_(boost::make_shared<OpcUaNodeIdArray>())
+	, forwardNodeSync_(boost::make_shared<ForwardNodeSync>())
+	, applicationContextArray_(boost::make_shared<BaseClassArray>())
 	{
 	}
 

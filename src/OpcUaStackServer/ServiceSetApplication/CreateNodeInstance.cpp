@@ -117,7 +117,7 @@ namespace OpcUaStackServer
 		resultCode_ = Success;
 
 		// create response
-		auto trx = constructSPtr<ServiceTransactionCreateNodeInstance>();
+		auto trx = boost::make_shared<ServiceTransactionCreateNodeInstance>();
 		trx->request()->name() = name_;
 		trx->request()->nodeClassType() = nodeClass_;
 		trx->request()->parentNodeId() = parentNodeId_;

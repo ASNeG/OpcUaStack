@@ -38,7 +38,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandSubscriptionStop::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandSubscriptionStop>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandSubscriptionStop>();
 		return commandBase;
 	}
 

@@ -137,7 +137,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     Enumeration::factory(void)
     {
-    	return constructSPtr<Enumeration>();
+    	return boost::make_shared<Enumeration>();
     }
     
     OpcUaNodeId

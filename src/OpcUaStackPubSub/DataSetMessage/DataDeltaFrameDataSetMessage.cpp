@@ -26,7 +26,7 @@ namespace OpcUaStackPubSub
 	DataDeltaFrameDataSetMessage::DataDeltaFrameDataSetMessage(void)
 	: deltaFrameFields_(boost::make_shared<DeltaFrameFieldArray>())
 	{
-		DataSetMessageHeader::SPtr dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
+		DataSetMessageHeader::SPtr dataSetMessageHeader = boost::make_shared<DataSetMessageHeader>();
 		dataSetMessageHeader->fieldEncoding(VariantEncoding);
 		dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
 		dataSetMessageHeader->dataSetFlag2Enabled(true);
@@ -80,7 +80,7 @@ namespace OpcUaStackPubSub
 
 		deltaFrameFields_->resize(fieldCount);
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
-			DeltaFrameField::SPtr deltaFrameField = constructSPtr<DeltaFrameField>();
+			DeltaFrameField::SPtr deltaFrameField = boost::make_shared<DeltaFrameField>();
 
 			deltaFrameField->createObject(dataSetMessageHeader().fieldEncoding());
 			deltaFrameField->opcUaBinaryDecode(is);

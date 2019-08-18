@@ -153,7 +153,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     UserTokenType::factory(void)
     {
-    	return constructSPtr<UserTokenType>();
+    	return boost::make_shared<UserTokenType>();
     }
     
     OpcUaNodeId

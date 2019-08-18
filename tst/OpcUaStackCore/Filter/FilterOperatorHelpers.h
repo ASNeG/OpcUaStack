@@ -82,14 +82,14 @@ public:
 template<typename T1, typename T2>
 static ContentFilterElement::SPtr makeOperatorWith2LitteralOperands(FilterOperator::Enum op, T1 arg1, T2 arg2)
 {
-    ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+    ContentFilterElement::SPtr eqElement = boost::make_shared<ContentFilterElement>();
 
-    OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg1_ = boost::make_shared<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
     BOOST_REQUIRE(arg1_->parameter<LiteralOperand>().get() != nullptr);
     arg1_->parameter<LiteralOperand>()->value().setValue(arg1);
 
-    OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg2_ = boost::make_shared<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
     BOOST_REQUIRE(arg2_->parameter<LiteralOperand>().get() != nullptr);
     arg2_->parameter<LiteralOperand>()->value().setValue(arg2);
@@ -105,13 +105,13 @@ static ContentFilterElement::SPtr makeOperatorWith2LitteralOperands(FilterOperat
 
 static ContentFilterElement::SPtr makeOperatorWith2ElementOperands(FilterOperator::Enum op, int idx1, int idx2)
 {
-    ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+    ContentFilterElement::SPtr eqElement = boost::make_shared<ContentFilterElement>();
 
-    OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg1_ = boost::make_shared<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
     arg1_->parameter<ElementOperand>()->index() = idx1;
 
-    OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg2_ = boost::make_shared<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
     arg2_->parameter<ElementOperand>()->index() = idx2;
 
@@ -126,13 +126,13 @@ static ContentFilterElement::SPtr makeOperatorWith2ElementOperands(FilterOperato
 template<typename T>
 static ContentFilterElement::SPtr makeOperatorWithElementAndLiteralOperands(FilterOperator::Enum op, int idx1, T arg2)
 {
-    ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+    ContentFilterElement::SPtr eqElement = boost::make_shared<ContentFilterElement>();
 
-    OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg1_ = boost::make_shared<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
     arg1_->parameter<ElementOperand>()->index() = idx1;
 
-    OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg2_ = boost::make_shared<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
     arg2_->parameter<LiteralOperand>()->value().set<T>(arg2);
 
@@ -147,14 +147,14 @@ static ContentFilterElement::SPtr makeOperatorWithElementAndLiteralOperands(Filt
 template<typename T>
 static ContentFilterElement::SPtr makeOperatorWithAttributeAndLiteralOperands(FilterOperator::Enum op, AttributeOperand& arg1, T arg2)
 {
-    ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+    ContentFilterElement::SPtr eqElement = boost::make_shared<ContentFilterElement>();
 
-    OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg1_ = boost::make_shared<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_AttributeOperand);
     AttributeOperand::SPtr attr = arg1_->parameter<AttributeOperand>();
     *attr = arg1;
 
-    OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg2_ = boost::make_shared<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
     arg2_->parameter<LiteralOperand>()->value().set<T>(arg2);
 
@@ -170,14 +170,14 @@ static ContentFilterElement::SPtr makeOperatorWithAttributeAndLiteralOperands(Fi
 template<typename T>
 static ContentFilterElement::SPtr makeOperatorWithSimpleAttributeAndLiteralOperands(FilterOperator::Enum op, SimpleAttributeOperand& arg1, T arg2)
 {
-    ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+    ContentFilterElement::SPtr eqElement = boost::make_shared<ContentFilterElement>();
 
-    OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg1_ = boost::make_shared<OpcUaExtensibleParameter>();
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_SimpleAttributeOperand);
     SimpleAttributeOperand::SPtr attr = arg1_->parameter<SimpleAttributeOperand>();
     *attr = arg1;
 
-    OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg2_ = boost::make_shared<OpcUaExtensibleParameter>();
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
     arg2_->parameter<LiteralOperand>()->value().set<T>(arg2);
 
@@ -191,43 +191,43 @@ static ContentFilterElement::SPtr makeOperatorWithSimpleAttributeAndLiteralOpera
 #define MAKE_ONE_LITERAL_ARG(args, arg1) do {\
 	OpcUaVariant value;																\
 	value.setValue(arg1);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
 } while(0)
 
 #define MAKE_TWO_LITERAL_ARGS(args, arg1, arg2) do {\
 	OpcUaVariant value;																\
 	value.setValue(arg1);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
                                                                                     \
 	value.setValue(arg2);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
 } while(0)
 
 #define MAKE_THREE_LITERAL_ARGS(args, arg1, arg2, arg3) do {\
 	OpcUaVariant value;																\
 	value.setValue(arg1);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
                                                                                     \
 	value.setValue(arg2);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
                                                                                     \
 	value.setValue(arg3);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
 } while(0)
 
 #define MAKE_FOUR_LITERAL_ARGS(args, arg1, arg2, arg3, arg4) do {\
 	OpcUaVariant value;																\
 	value.setValue(arg1);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
                                                                                     \
 	value.setValue(arg2);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
                                                                                     \
 	value.setValue(arg3);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
 																					\
 	value.setValue(arg4);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
 } while(0)
 
 #endif /* OPCUASTACKSERVER_SERVICESET_FILTEROPERATORHELPERS_H_ */

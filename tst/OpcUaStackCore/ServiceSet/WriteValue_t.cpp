@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(WriteValue_encode_decode)
 	BOOST_REQUIRE(value2.attributeId() == 13);
 	BOOST_REQUIRE(value2.indexRange() == "TestString");
 	
-	variantSPtr = constructSPtr<OpcUaVariant>();
+	variantSPtr = boost::make_shared<OpcUaVariant>();
 	variantSPtr = value2.dataValue().variant();
 
 	BOOST_REQUIRE(variantSPtr->variantType() == OpcUaBuildInType_OpcUaInt16);

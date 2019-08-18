@@ -149,7 +149,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DataSetOrderingType::factory(void)
     {
-    	return constructSPtr<DataSetOrderingType>();
+    	return boost::make_shared<DataSetOrderingType>();
     }
     
     OpcUaNodeId

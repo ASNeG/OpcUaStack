@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/ConfigXmlManager.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -48,7 +49,7 @@ namespace OpcUaStackCore
 		}
 
 		// read configuration file
-		config = constructSPtr<Config>();
+		config = boost::make_shared<Config>();
 		ConfigXml configXml;
 		if (!configXml.parse(configurationFileName, config.get())) {
 			errorMessage_ = configXml.errorMessage();

@@ -153,7 +153,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     PerformUpdateType::factory(void)
     {
-    	return constructSPtr<PerformUpdateType>();
+    	return boost::make_shared<PerformUpdateType>();
     }
     
     OpcUaNodeId

@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode_encode)
         std::cout << "mapToGlobalNamespaceIndex: " << namespaceIndex << std::endl;
     }
 
-	InformationModel::SPtr informationModel = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel = boost::make_shared<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModel, nodeSetXmlParser);
 	BOOST_REQUIRE(success == true);
 
@@ -472,7 +472,7 @@ BOOST_AUTO_TEST_CASE(NodesetXml_decode)
         std::cout << "mapToGlobalNamespaceIndex: " << namespaceIndex << std::endl;
     }
 
-	InformationModel::SPtr informationModel = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel = boost::make_shared<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModel, nodeSetXmlParser);
 	BOOST_REQUIRE(success == true);
 

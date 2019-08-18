@@ -123,7 +123,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DeleteReferencesItem::factory(void)
     {
-    	return constructSPtr<DeleteReferencesItem>();
+    	return boost::make_shared<DeleteReferencesItem>();
     }
     
     std::string

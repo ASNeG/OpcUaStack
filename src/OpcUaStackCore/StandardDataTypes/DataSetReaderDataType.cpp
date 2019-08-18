@@ -217,7 +217,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DataSetReaderDataType::factory(void)
     {
-    	return constructSPtr<DataSetReaderDataType>();
+    	return boost::make_shared<DataSetReaderDataType>();
     }
     
     std::string

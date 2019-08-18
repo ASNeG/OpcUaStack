@@ -80,7 +80,7 @@ namespace OpcUaStackServer
 		// call methods
 		callResponse->results()->resize(callRequest->methodsToCall()->size());
 		for (uint32_t idx = 0; idx < callRequest->methodsToCall()->size(); idx++) {
-			CallMethodResult::SPtr callMethodResult = constructSPtr<CallMethodResult>();
+			CallMethodResult::SPtr callMethodResult = boost::make_shared<CallMethodResult>();
 			callResponse->results()->set(idx, callMethodResult);
 
 			// determine node information
@@ -156,7 +156,7 @@ namespace OpcUaStackServer
 			applicationMethodContext.objectNodeId_ = *callMethod->objectId();
 			applicationMethodContext.methodNodeId_ = *callMethod->methodId();
 			applicationMethodContext.inputArguments_ = callMethod->inputArguments();
-			applicationMethodContext.outputArguments_ = constructSPtr<OpcUaVariantArray>();
+			applicationMethodContext.outputArguments_ = boost::make_shared<OpcUaVariantArray>();
 			applicationMethodContext.statusCode_ = Success;
 			applicationMethodContext.applicationContext_ = forwardMethodSync->methodService().applicationContext();
 			applicationMethodContext.userContext_ = serviceTransaction->userContext();

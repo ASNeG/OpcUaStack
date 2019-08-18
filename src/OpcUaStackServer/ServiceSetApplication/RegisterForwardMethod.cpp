@@ -68,7 +68,7 @@ namespace OpcUaStackServer
 		resultCode_ = Success;
 
 		// create response
-		auto trx = constructSPtr<ServiceTransactionRegisterForwardMethod>();
+		auto trx = boost::make_shared<ServiceTransactionRegisterForwardMethod>();
 	  	trx->request()->objectNodeId(objectNodeId_);
 	  	trx->request()->methodNodeId(methodNodeId_);
 	  	trx->request()->forwardMethodSync()->updateFrom(forwardMethodSync_);

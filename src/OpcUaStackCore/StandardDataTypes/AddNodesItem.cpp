@@ -143,7 +143,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     AddNodesItem::factory(void)
     {
-    	return constructSPtr<AddNodesItem>();
+    	return boost::make_shared<AddNodesItem>();
     }
     
     std::string

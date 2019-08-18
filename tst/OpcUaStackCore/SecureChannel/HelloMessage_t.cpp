@@ -24,14 +24,14 @@ BOOST_AUTO_TEST_CASE(HelloMessage_encode_decode)
 	// HelloMessage
 	boost::asio::streambuf sb1;
 	std::iostream ios1(&sb1);
-	helloMessageSPtr = constructSPtr<HelloMessage>();
+	helloMessageSPtr = boost::make_shared<HelloMessage>();
 	helloMessageSPtr->endpointUrl("opc.tcp://localhost:4841");
 	helloMessageSPtr->opcUaBinaryEncode(ios1);
 
 	// MessageHeader
 	boost::asio::streambuf sb2;
 	std::iostream ios2(&sb2);
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Hello);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -45,9 +45,9 @@ BOOST_AUTO_TEST_CASE(HelloMessage_encode_decode)
 
 
 	// decode
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios3);
-	helloMessageSPtr = constructSPtr<HelloMessage>();
+	helloMessageSPtr = boost::make_shared<HelloMessage>();
 	helloMessageSPtr->opcUaBinaryDecode(ios3);
 
 	BOOST_REQUIRE(messageHeaderSPtr->messageSize() == 56);

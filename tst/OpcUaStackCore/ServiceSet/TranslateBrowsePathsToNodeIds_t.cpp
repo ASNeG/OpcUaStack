@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Title)
 
 BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 {
-	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
+	RequestHeader::SPtr requestHeader = boost::make_shared<RequestHeader>();
 	std::string str;
 	uint32_t pos;
 	OpcUaNodeId typeId;
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -64,10 +64,10 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build
-	requestSPtr = constructSPtr<TranslateBrowsePathsToNodeIdsRequest>();
+	requestSPtr = boost::make_shared<TranslateBrowsePathsToNodeIdsRequest>();
 
 	// build RequestHeader
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	requestHeader->timeoutHint(300000);
 
 	// build BrowsePath
-	browsePathSPtr = constructSPtr<BrowsePath>();
+	browsePathSPtr = boost::make_shared<BrowsePath>();
 	browsePathSPtr->startingNode()->namespaceIndex(2);
 	browsePathSPtr->startingNode()->nodeId<OpcUaUInt32>(123);
 	browsePathSPtr->relativePath(emptyRelativePath);
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	requestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_TranslateBrowsePathsToNodeIdsRequest_Encoding_DefaultBinary);
 
 	// decode ReadRequest
-	requestSPtr = constructSPtr<TranslateBrowsePathsToNodeIdsRequest>();
+	requestSPtr = boost::make_shared<TranslateBrowsePathsToNodeIdsRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	requestSPtr->opcUaBinaryDecode(ios);
 
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(requestSPtr->browsePaths()->size() == 1);
-	browsePathSPtr = constructSPtr<BrowsePath>();
+	browsePathSPtr = boost::make_shared<BrowsePath>();
 	requestSPtr->browsePaths()->get(browsePathSPtr);
 	BOOST_REQUIRE(browsePathSPtr->startingNode()->namespaceIndex() == 2);
 	BOOST_REQUIRE(browsePathSPtr->startingNode()->nodeId<OpcUaUInt32>() == 123);
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 
 BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 {
-	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
+	ResponseHeader::SPtr responseHeader = boost::make_shared<ResponseHeader>();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -200,7 +200,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	responseSPtr = constructSPtr<TranslateBrowsePathsToNodeIdsResponse>();
+	responseSPtr = boost::make_shared<TranslateBrowsePathsToNodeIdsResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -209,12 +209,12 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	responseHeader->serviceResult(statusCode);
 	
 	// build BrowsePathResult
-	BrowsePathTarget::SPtr browsePathTarget = constructSPtr<BrowsePathTarget>();
+	BrowsePathTarget::SPtr browsePathTarget = boost::make_shared<BrowsePathTarget>();
 	browsePathTarget->targetId()->namespaceIndex(2);
 	browsePathTarget->targetId()->nodeId<OpcUaUInt32>(123);
 	browsePathTarget->remainingPathIndex(321);
 
-	browsePathResultSPtr = constructSPtr<BrowsePathResult>();
+	browsePathResultSPtr = boost::make_shared<BrowsePathResult>();
 	browsePathResultSPtr->statusCode(Success);
 	browsePathResultSPtr->targets()->resize(1);
 	browsePathResultSPtr->targets()->push_back(browsePathTarget);
@@ -226,7 +226,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	responseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -267,7 +267,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_TranslateBrowsePathsToNodeIdsResponse_Encoding_DefaultBinary);
 
 	// decode 
-	responseSPtr = constructSPtr<TranslateBrowsePathsToNodeIdsResponse>();
+	responseSPtr = boost::make_shared<TranslateBrowsePathsToNodeIdsResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	responseSPtr->opcUaBinaryDecode(ios);
 
@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(responseSPtr->results()->size() == 1);
-	browsePathResultSPtr = constructSPtr<BrowsePathResult>();
+	browsePathResultSPtr = boost::make_shared<BrowsePathResult>();
 	responseSPtr->results()->get(browsePathResultSPtr);
 	BOOST_REQUIRE(browsePathResultSPtr->statusCode() == Success);
 

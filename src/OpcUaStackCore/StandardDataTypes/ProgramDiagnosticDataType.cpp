@@ -167,7 +167,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ProgramDiagnosticDataType::factory(void)
     {
-    	return constructSPtr<ProgramDiagnosticDataType>();
+    	return boost::make_shared<ProgramDiagnosticDataType>();
     }
     
     std::string

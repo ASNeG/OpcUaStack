@@ -16,12 +16,12 @@ namespace OpcUaStackServer
     
     SamplingIntervalDiagnosticsArrayType::SamplingIntervalDiagnosticsArrayType(void)
     : VariableBase()
-    , samplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable_(constructSPtr<ServerVariable>("SamplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable"))
-    , samplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("SamplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable"))
-    , samplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("SamplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable"))
-    , samplingIntervalDiagnostics_SamplingInterval_Variable_(constructSPtr<ServerVariable>("SamplingIntervalDiagnostics_SamplingInterval_Variable"))
-    , samplingIntervalDiagnostics_Variable_(constructSPtr<ServerVariable>("SamplingIntervalDiagnostics_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , samplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable_(boost::make_shared<ServerVariable>("SamplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable"))
+    , samplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable_(boost::make_shared<ServerVariable>("SamplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable"))
+    , samplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable_(boost::make_shared<ServerVariable>("SamplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable"))
+    , samplingIntervalDiagnostics_SamplingInterval_Variable_(boost::make_shared<ServerVariable>("SamplingIntervalDiagnostics_SamplingInterval_Variable"))
+    , samplingIntervalDiagnostics_Variable_(boost::make_shared<ServerVariable>("SamplingIntervalDiagnostics_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2164);
@@ -35,12 +35,12 @@ namespace OpcUaStackServer
     
     SamplingIntervalDiagnosticsArrayType::SamplingIntervalDiagnosticsArrayType(const SamplingIntervalDiagnosticsArrayType& value)
     : VariableBase()
-    , samplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable_(constructSPtr<ServerVariable>("SamplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable"))
-    , samplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("SamplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable"))
-    , samplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("SamplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable"))
-    , samplingIntervalDiagnostics_SamplingInterval_Variable_(constructSPtr<ServerVariable>("SamplingIntervalDiagnostics_SamplingInterval_Variable"))
-    , samplingIntervalDiagnostics_Variable_(constructSPtr<ServerVariable>("SamplingIntervalDiagnostics_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , samplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable_(boost::make_shared<ServerVariable>("SamplingIntervalDiagnostics_DisabledMonitoredItemsSamplingCount_Variable"))
+    , samplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable_(boost::make_shared<ServerVariable>("SamplingIntervalDiagnostics_MaxSampledMonitoredItemsCount_Variable"))
+    , samplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable_(boost::make_shared<ServerVariable>("SamplingIntervalDiagnostics_SampledMonitoredItemsCount_Variable"))
+    , samplingIntervalDiagnostics_SamplingInterval_Variable_(boost::make_shared<ServerVariable>("SamplingIntervalDiagnostics_SamplingInterval_Variable"))
+    , samplingIntervalDiagnostics_Variable_(boost::make_shared<ServerVariable>("SamplingIntervalDiagnostics_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2164);

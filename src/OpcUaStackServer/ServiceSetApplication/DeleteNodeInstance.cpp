@@ -52,7 +52,7 @@ namespace OpcUaStackServer
 		resultCode_ = Success;
 
 		// create response
-		auto trx = constructSPtr<ServiceTransactionDelNodeInstance>();
+		auto trx = boost::make_shared<ServiceTransactionDelNodeInstance>();
 	  	trx->request()->nodeId() = node_;
 
 		// send query to application service

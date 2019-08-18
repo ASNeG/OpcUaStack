@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_attribute_operand)
     someAttribute.nodeId() = OpcUaNodeId("someAttribute");
     someAttribute.alias().value("alias");
 
-    RelativePathElement::SPtr tagname = constructSPtr<RelativePathElement>();
+    RelativePathElement::SPtr tagname = boost::make_shared<RelativePathElement>();
     tagname->targetName() = OpcUaQualifiedName("someAttibute");
     someAttribute.browsePath().elements().set(tagname);
 
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_simple_attribute_operand)
 
     someAttribute.typeId() = OpcUaNodeId(OpcUaId_BaseEventType_EventId);
 
-    OpcUaQualifiedName::SPtr tagname = constructSPtr<OpcUaQualifiedName>("someAttibute");
+    OpcUaQualifiedName::SPtr tagname = boost::make_shared<OpcUaQualifiedName>("someAttibute");
     someAttribute.browsePath().set(0, tagname);
 
     someAttribute.attributeId() = 199;
@@ -332,14 +332,14 @@ BOOST_AUTO_TEST_CASE(IsNullFilterNode_supports_IsNullOperator)
 {
     FilterStack stack;
 
-    ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+    ContentFilterElement::SPtr eqElement = boost::make_shared<ContentFilterElement>();
 
 	MockAttribute mockAttrIf;
 	stack.attributeIf(&mockAttrIf);
 	mockAttrIf.expectedResult_ = true; // attribute's value can be get
 	mockAttrIf.expectedValue_.set<OpcUaUInt16>(5);
 
-    OpcUaExtensibleParameter::SPtr arg = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg = boost::make_shared<OpcUaExtensibleParameter>();
 	arg->parameterTypeId().set((OpcUaUInt32)OpcUaId_AttributeOperand);
 	AttributeOperand::SPtr attr = arg->parameter<AttributeOperand>();
 
@@ -445,14 +445,14 @@ BOOST_AUTO_TEST_CASE(IsNullFilterNode_supports_NotOperator)
 {
     FilterStack stack;
 
-    ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+    ContentFilterElement::SPtr eqElement = boost::make_shared<ContentFilterElement>();
 
 	MockAttribute mockAttrIf;
 	stack.attributeIf(&mockAttrIf);
 	mockAttrIf.expectedResult_ = true;
 	mockAttrIf.expectedValue_.set<OpcUaUInt16>(5);
 
-    OpcUaExtensibleParameter::SPtr arg = constructSPtr<OpcUaExtensibleParameter>();
+    OpcUaExtensibleParameter::SPtr arg = boost::make_shared<OpcUaExtensibleParameter>();
 	arg->parameterTypeId().set((OpcUaUInt32)OpcUaId_AttributeOperand);
 	AttributeOperand::SPtr attr = arg->parameter<AttributeOperand>();
 
@@ -473,17 +473,17 @@ BOOST_AUTO_TEST_CASE(IsNullFilterNode_supports_NotOperator)
 BOOST_AUTO_TEST_CASE(FilterStack_supports_BetweenOperator)
 {
     FilterStack stack;
-	ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+	ContentFilterElement::SPtr eqElement = boost::make_shared<ContentFilterElement>();
 
-	OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
+	OpcUaExtensibleParameter::SPtr arg1_ = boost::make_shared<OpcUaExtensibleParameter>();
 	arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
 	arg1_->parameter<LiteralOperand>()->value().setValue(10);
 
-	OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
+	OpcUaExtensibleParameter::SPtr arg2_ = boost::make_shared<OpcUaExtensibleParameter>();
 	arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
 	arg2_->parameter<LiteralOperand>()->value().setValue(20);
 
-	OpcUaExtensibleParameter::SPtr arg3_ = constructSPtr<OpcUaExtensibleParameter>();
+	OpcUaExtensibleParameter::SPtr arg3_ = boost::make_shared<OpcUaExtensibleParameter>();
 	arg3_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
 	arg3_->parameter<LiteralOperand>()->value().setValue(30);
 
@@ -504,17 +504,17 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_BetweenOperator)
 BOOST_AUTO_TEST_CASE(FilterStack_supports_InListOperator)
 {
     FilterStack stack;
-	ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+	ContentFilterElement::SPtr eqElement = boost::make_shared<ContentFilterElement>();
 
-	OpcUaExtensibleParameter::SPtr arg1_ = constructSPtr<OpcUaExtensibleParameter>();
+	OpcUaExtensibleParameter::SPtr arg1_ = boost::make_shared<OpcUaExtensibleParameter>();
 	arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
 	arg1_->parameter<LiteralOperand>()->value().setValue(10);
 
-	OpcUaExtensibleParameter::SPtr arg2_ = constructSPtr<OpcUaExtensibleParameter>();
+	OpcUaExtensibleParameter::SPtr arg2_ = boost::make_shared<OpcUaExtensibleParameter>();
 	arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
 	arg2_->parameter<LiteralOperand>()->value().setValue(20);
 
-	OpcUaExtensibleParameter::SPtr arg3_ = constructSPtr<OpcUaExtensibleParameter>();
+	OpcUaExtensibleParameter::SPtr arg3_ = boost::make_shared<OpcUaExtensibleParameter>();
 	arg3_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
 	arg3_->parameter<LiteralOperand>()->value().setValue(30);
 

@@ -153,7 +153,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ApplicationType::factory(void)
     {
-    	return constructSPtr<ApplicationType>();
+    	return boost::make_shared<ApplicationType>();
     }
     
     OpcUaNodeId

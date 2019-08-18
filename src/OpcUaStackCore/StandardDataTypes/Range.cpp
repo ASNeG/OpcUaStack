@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     Range::factory(void)
     {
-    	return constructSPtr<Range>();
+    	return boost::make_shared<Range>();
     }
     
     std::string

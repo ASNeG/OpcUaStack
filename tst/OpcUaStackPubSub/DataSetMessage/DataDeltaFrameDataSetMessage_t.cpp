@@ -23,10 +23,10 @@ BOOST_AUTO_TEST_CASE(DataDeltaFrameDataSetMessage_encode_decode_variant)
 
 	value1.deltaFrameFields()->resize(10);
 	for (uint32_t idx=0; idx<10; idx++) {
-		OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+		OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 		variant->setValue(OpcUaNodeId(idx));
 
-		DeltaFrameField::SPtr deltaFrameField = constructSPtr<DeltaFrameField>();
+		DeltaFrameField::SPtr deltaFrameField = boost::make_shared<DeltaFrameField>();
 		deltaFrameField->variant(variant);
 		deltaFrameField->fieldIndex(idx+10);
 

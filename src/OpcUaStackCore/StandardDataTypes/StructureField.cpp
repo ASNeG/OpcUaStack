@@ -137,7 +137,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     StructureField::factory(void)
     {
-    	return constructSPtr<StructureField>();
+    	return boost::make_shared<StructureField>();
     }
     
     std::string

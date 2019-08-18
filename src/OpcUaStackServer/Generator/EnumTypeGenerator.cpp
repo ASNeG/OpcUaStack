@@ -773,7 +773,7 @@ namespace OpcUaStackServer
 		ss << prefix << "ExtensionObjectBase::SPtr" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::factory(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "	return constructSPtr<" << nodeInfo_.className() << ">();" << std::endl;
+		ss << prefix << "	return boost::make_shared<" << nodeInfo_.className() << ">();" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

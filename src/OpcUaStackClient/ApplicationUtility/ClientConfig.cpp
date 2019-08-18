@@ -291,7 +291,7 @@ namespace OpcUaStackClient
 
 		std::vector<Config>::iterator it;
 		for (it = childs.begin(); it != childs.end(); it++) {
-			ClientMonitoredItemConfig::SPtr monitoredItem  = constructSPtr<ClientMonitoredItemConfig>();
+			ClientMonitoredItemConfig::SPtr monitoredItem  = boost::make_shared<ClientMonitoredItemConfig>();
 
 			ConfigBase cb(configBase, ".MonitoredItem");
 			if (!monitoredItem->decode(*it, cb)) {
@@ -488,7 +488,7 @@ namespace OpcUaStackClient
 
 		std::vector<Config>::iterator it;
 		for (it = childs.begin(); it != childs.end(); it++) {
-			ClientSubscriptionConfig::SPtr subscription = constructSPtr<ClientSubscriptionConfig>();
+			ClientSubscriptionConfig::SPtr subscription = boost::make_shared<ClientSubscriptionConfig>();
 
 			if (!subscription->decode(*it, configBase)) {
 				return false;

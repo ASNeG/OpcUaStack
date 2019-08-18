@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	RepublishResponse::RepublishResponse(void)
 	: Object()
-	, notificationMessageSPtr_(constructSPtr<NotificationMessage>())
+	, notificationMessageSPtr_(boost::make_shared<NotificationMessage>())
 	{
 	}
 

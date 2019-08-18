@@ -115,7 +115,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     UadpWriterGroupMessageDataType::factory(void)
     {
-    	return constructSPtr<UadpWriterGroupMessageDataType>();
+    	return boost::make_shared<UadpWriterGroupMessageDataType>();
     }
     
     std::string

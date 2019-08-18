@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     BrokerConnectionTransportDataType::factory(void)
     {
-    	return constructSPtr<BrokerConnectionTransportDataType>();
+    	return boost::make_shared<BrokerConnectionTransportDataType>();
     }
     
     std::string

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	TranslateBrowsePathsToNodeIdsRequest::TranslateBrowsePathsToNodeIdsRequest(void)
 	: Object()
-	, browsePathArraySPtr_(constructSPtr<BrowsePathArray>())
+	, browsePathArraySPtr_(boost::make_shared<BrowsePathArray>())
 	{
 	}
 

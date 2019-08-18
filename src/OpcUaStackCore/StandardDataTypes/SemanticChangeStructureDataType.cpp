@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     SemanticChangeStructureDataType::factory(void)
     {
-    	return constructSPtr<SemanticChangeStructureDataType>();
+    	return boost::make_shared<SemanticChangeStructureDataType>();
     }
     
     std::string

@@ -101,7 +101,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ReferenceTypeAttributes::factory(void)
     {
-    	return constructSPtr<ReferenceTypeAttributes>();
+    	return boost::make_shared<ReferenceTypeAttributes>();
     }
     
     std::string

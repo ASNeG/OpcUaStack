@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	RegisterForwardMethodRequest::RegisterForwardMethodRequest(void)
 	: Object()
-	, forwardMethodSync_(constructSPtr<ForwardMethodSync>())
+	, forwardMethodSync_(boost::make_shared<ForwardMethodSync>())
 	, objectNodeId_()
 	, methodNodeId_()
 	{

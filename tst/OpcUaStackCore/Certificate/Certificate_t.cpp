@@ -94,15 +94,15 @@ BOOST_AUTO_TEST_CASE(Certificate__multiple_certificates)
 	identity.country("DE");
 	identity.domainComponent("asneg.de");
 
-	Certificate::SPtr certificate1 = constructSPtr<Certificate>(info, identity, key);
+	Certificate::SPtr certificate1 = boost::make_shared<Certificate>(info, identity, key);
 	BOOST_REQUIRE(certificate1->isError() == false);
 	BOOST_REQUIRE(certificate1->isSelfSigned() == true);
 
-	Certificate::SPtr certificate2 = constructSPtr<Certificate>(info, identity, key);
+	Certificate::SPtr certificate2 = boost::make_shared<Certificate>(info, identity, key);
 	BOOST_REQUIRE(certificate2->isError() == false);
 	BOOST_REQUIRE(certificate2->isSelfSigned() == true);
 
-	Certificate::SPtr certificate3 = constructSPtr<Certificate>(info, identity, key);
+	Certificate::SPtr certificate3 = boost::make_shared<Certificate>(info, identity, key);
 	BOOST_REQUIRE(certificate3->isError() == false);
 	BOOST_REQUIRE(certificate3->isSelfSigned() == true);
 }

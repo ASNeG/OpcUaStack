@@ -153,7 +153,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     EndpointDescription::factory(void)
     {
-    	return constructSPtr<EndpointDescription>();
+    	return boost::make_shared<EndpointDescription>();
     }
     
     std::string

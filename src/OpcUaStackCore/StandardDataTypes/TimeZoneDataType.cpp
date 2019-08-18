@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     TimeZoneDataType::factory(void)
     {
-    	return constructSPtr<TimeZoneDataType>();
+    	return boost::make_shared<TimeZoneDataType>();
     }
     
     std::string

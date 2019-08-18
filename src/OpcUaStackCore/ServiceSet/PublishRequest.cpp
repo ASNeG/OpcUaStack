@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	PublishRequest::PublishRequest(void)
 	: Object()
-	, subscriptionAcknowledgementArraySPtr_(constructSPtr<SubscriptionAcknowledgementArray>())
+	, subscriptionAcknowledgementArraySPtr_(boost::make_shared<SubscriptionAcknowledgementArray>())
 	{
 	}
 

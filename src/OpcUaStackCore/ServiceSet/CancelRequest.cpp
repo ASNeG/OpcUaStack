@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	CancelRequest::CancelRequest(void)
-	: requestHeaderSPtr_(constructSPtr<RequestHeader>())
+	: requestHeaderSPtr_(boost::make_shared<RequestHeader>())
 	, requestHandle_()
 	{
 	}

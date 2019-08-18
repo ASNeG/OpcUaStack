@@ -103,7 +103,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     EnumValueType::factory(void)
     {
-    	return constructSPtr<EnumValueType>();
+    	return boost::make_shared<EnumValueType>();
     }
     
     std::string

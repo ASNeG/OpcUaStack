@@ -44,7 +44,7 @@ namespace OpcUaStackCore
 	, closeFlag_(false)
 	, recvBuffer_()
 	, sendBuffer_()
-	, slotTimerElement_(constructSPtr<SlotTimerElement>())
+	, slotTimerElement_(boost::make_shared<SlotTimerElement>())
 	, timeout_(false)
 	, partner_()
 	, local_()

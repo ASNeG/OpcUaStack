@@ -209,7 +209,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     FilterOperator::factory(void)
     {
-    	return constructSPtr<FilterOperator>();
+    	return boost::make_shared<FilterOperator>();
     }
     
     OpcUaNodeId

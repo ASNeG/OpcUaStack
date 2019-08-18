@@ -36,7 +36,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceWrite::createClientService(void)
 	{
-		return constructSPtr<ClientServiceWrite>();
+		return boost::make_shared<ClientServiceWrite>();
 	}
 
 	bool
@@ -77,11 +77,11 @@ namespace OpcUaClient
 
 		// create read request
 		ServiceTransactionWrite::SPtr trx;
-		trx = constructSPtr<ServiceTransactionWrite>();
+		trx = boost::make_shared<ServiceTransactionWrite>();
 		WriteRequest::SPtr req = trx->request();
 		req->writeValueArray()->resize(commandWrite->nodeIdVec().size());
 		for (uint32_t idx=0; idx<commandWrite->nodeIdVec().size(); idx++) {
-			WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
+			WriteValue::SPtr writeValue = boost::make_shared<WriteValue>();
 			writeValue->nodeId()->copyFrom(*commandWrite->nodeIdVec()[idx]);
 			writeValue->attributeId(commandWrite->attributeIdVec()[idx]);
 			writeValue->dataValue().copyFrom(*commandWrite->dataValueVec()[idx]);

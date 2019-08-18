@@ -387,7 +387,7 @@ namespace OpcUaStackServer
 		//
 		// create new object node and add the attributes
 		//
-		ObjectNodeClass::SPtr objectNodeClass = constructSPtr<ObjectNodeClass>();
+		ObjectNodeClass::SPtr objectNodeClass = boost::make_shared<ObjectNodeClass>();
 		objectNodeClass->setNodeId(nodeId);
 		objectNodeClass->setBrowseName(browseName);
 		objectNodeClass->setDisplayName(displayName);
@@ -529,7 +529,7 @@ namespace OpcUaStackServer
 		//
 		// create new variable node and add the attributes
 		//
-		VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
+		VariableNodeClass::SPtr variableNodeClass = boost::make_shared<VariableNodeClass>();
 		variableNodeClass->setNodeId(nodeId);
 		variableNodeClass->setBrowseName(browseName);
 		variableNodeClass->setDisplayName(displayName);
@@ -657,7 +657,7 @@ namespace OpcUaStackServer
     	//
     	// create method node
     	//
-       	MethodNodeClass::SPtr methodNodeClass = constructSPtr<MethodNodeClass>();
+       	MethodNodeClass::SPtr methodNodeClass = boost::make_shared<MethodNodeClass>();
        	methodNodeClass->setNodeId(nodeId);
        	methodNodeClass->setBrowseName(browseName);
        	methodNodeClass->setDisplayName(displayName);
@@ -709,7 +709,7 @@ namespace OpcUaStackServer
     	//
     	// create object type node
     	//
-       	ObjectTypeNodeClass::SPtr objectTypeNodeClass = constructSPtr<ObjectTypeNodeClass>();
+       	ObjectTypeNodeClass::SPtr objectTypeNodeClass = boost::make_shared<ObjectTypeNodeClass>();
        	objectTypeNodeClass->setNodeId(nodeId);
        	objectTypeNodeClass->setBrowseName(browseName);
        	objectTypeNodeClass->setDisplayName(displayName);
@@ -762,7 +762,7 @@ namespace OpcUaStackServer
 	    //
 	    // create variable type node
 	    //
-	    VariableTypeNodeClass::SPtr variableTypeNodeClass = constructSPtr<VariableTypeNodeClass>();
+	    VariableTypeNodeClass::SPtr variableTypeNodeClass = boost::make_shared<VariableTypeNodeClass>();
 	    variableTypeNodeClass->setNodeId(nodeId);
 	    variableTypeNodeClass->setBrowseName(browseName);
 	    variableTypeNodeClass->setDisplayName(displayName);
@@ -817,7 +817,7 @@ namespace OpcUaStackServer
 	    //
 	    // create data type node
 	    //
-	    DataTypeNodeClass::SPtr dataTypeNodeClass = constructSPtr<DataTypeNodeClass>();
+	    DataTypeNodeClass::SPtr dataTypeNodeClass = boost::make_shared<DataTypeNodeClass>();
 	    dataTypeNodeClass->setNodeId(nodeId);
 	    dataTypeNodeClass->setBrowseName(browseName);
 	    dataTypeNodeClass->setDisplayName(displayName);
@@ -870,7 +870,7 @@ namespace OpcUaStackServer
 	    //
 	    // create reference type node
 	    //
-	    ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = constructSPtr<ReferenceTypeNodeClass>();
+	    ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = boost::make_shared<ReferenceTypeNodeClass>();
 	    referenceTypeNodeClass->setNodeId(nodeId);
 	    referenceTypeNodeClass->setBrowseName(browseName);
 	    referenceTypeNodeClass->setDisplayName(displayName);

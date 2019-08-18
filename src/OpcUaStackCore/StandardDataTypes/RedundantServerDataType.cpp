@@ -97,7 +97,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     RedundantServerDataType::factory(void)
     {
-    	return constructSPtr<RedundantServerDataType>();
+    	return boost::make_shared<RedundantServerDataType>();
     }
     
     std::string

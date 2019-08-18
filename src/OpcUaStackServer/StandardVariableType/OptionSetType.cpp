@@ -16,9 +16,9 @@ namespace OpcUaStackServer
     
     OptionSetType::OptionSetType(void)
     : VariableBase()
-    , bitMask_Variable_(constructSPtr<ServerVariable>("BitMask_Variable"))
-    , optionSetValues_Variable_(constructSPtr<ServerVariable>("OptionSetValues_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , bitMask_Variable_(boost::make_shared<ServerVariable>("BitMask_Variable"))
+    , optionSetValues_Variable_(boost::make_shared<ServerVariable>("OptionSetValues_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)11487);
@@ -29,9 +29,9 @@ namespace OpcUaStackServer
     
     OptionSetType::OptionSetType(const OptionSetType& value)
     : VariableBase()
-    , bitMask_Variable_(constructSPtr<ServerVariable>("BitMask_Variable"))
-    , optionSetValues_Variable_(constructSPtr<ServerVariable>("OptionSetValues_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , bitMask_Variable_(boost::make_shared<ServerVariable>("BitMask_Variable"))
+    , optionSetValues_Variable_(boost::make_shared<ServerVariable>("OptionSetValues_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)11487);

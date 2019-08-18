@@ -167,7 +167,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     FieldMetaData::factory(void)
     {
-    	return constructSPtr<FieldMetaData>();
+    	return boost::make_shared<FieldMetaData>();
     }
     
     std::string

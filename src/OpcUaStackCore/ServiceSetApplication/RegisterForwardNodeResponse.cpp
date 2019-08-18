@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	RegisterForwardNodeResponse::RegisterForwardNodeResponse(void)
 	: Object()
-	, statusCodeArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
+	, statusCodeArraySPtr_(boost::make_shared<OpcUaStatusCodeArray>())
 	{
 	}
 

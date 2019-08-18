@@ -53,7 +53,7 @@ namespace OpcUaClient
 
 			return clientAccessObject;
 		}
-		clientAccessObject = constructSPtr<ClientAccessObject>();
+		clientAccessObject = boost::make_shared<ClientAccessObject>();
 		clientAccessObjectMap_.insert(std::make_pair(clientAccessObjectName, clientAccessObject));
 		return clientAccessObject;
 	}

@@ -211,7 +211,7 @@ namespace OpcUaStackCore
 				browseNameString.append((*it)->name().toStdString());
 			}
 
-			OpcUaQualifiedName::SPtr browseName = constructSPtr<OpcUaQualifiedName>(browseNameString, namespaceIndex);
+			OpcUaQualifiedName::SPtr browseName = boost::make_shared<OpcUaQualifiedName>(browseNameString, namespaceIndex);
 			variant = get(browseName, resultCode);
 
 			if (resultCode == EventResult::Success) {

@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(51);
 	sequenceHeaderSPtr->requestId(1);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	// encode OpenSecureChannel
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x00;
-	openSecureChannelRequestSPtr = constructSPtr<OpenSecureChannelRequest>();
+	openSecureChannelRequestSPtr = boost::make_shared<OpenSecureChannelRequest>();
 	openSecureChannelRequestSPtr->requestHeader()->time(ptime);
 	openSecureChannelRequestSPtr->securityMode(MessageSecurityMode::EnumNone);
 	openSecureChannelRequestSPtr->clientNonce( clientNonce, 1);
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	openSecureChannelRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_OpenSecureChannel);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_OpenSecureChannel);
 	
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	BOOST_REQUIRE(securityPolicyUri1 == OpcUaByteString("http://opcfoundation.org/UA/SecurityPolicy#None"));
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 51);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 1);
@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_OpenSecureChannelRequest_Encoding_DefaultBinary);
 
 	// decode OpenSecureChannel
-	openSecureChannelRequestSPtr = constructSPtr<OpenSecureChannelRequest>();
+	openSecureChannelRequestSPtr = boost::make_shared<OpenSecureChannelRequest>();
 	openSecureChannelRequestSPtr->opcUaBinaryDecode(ios);
 	openSecureChannelRequestSPtr->clientNonce(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(openSecureChannelRequestSPtr->requestHeader()->time().dateTime() == ptime);
@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 		);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(51);
 	sequenceHeaderSPtr->requestId(1);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// security token
-	SecurityToken::SPtr securityTokenSPtr = constructSPtr<SecurityToken>();
+	SecurityToken::SPtr securityTokenSPtr = boost::make_shared<SecurityToken>();
 	securityTokenSPtr->channelId(153451225);
 	securityTokenSPtr->tokenId(1);
 	securityTokenSPtr->createAt(OpcUaDateTime(ptime));
@@ -202,14 +202,14 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	// encode OpenSecureChannel
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x01;
-	openSecureChannelResponseSPtr = constructSPtr<OpenSecureChannelResponse>();
+	openSecureChannelResponseSPtr = boost::make_shared<OpenSecureChannelResponse>();
 	openSecureChannelResponseSPtr->securityToken(securityTokenSPtr);
 	openSecureChannelResponseSPtr->responseHeader()->time(ptime);
 	openSecureChannelResponseSPtr->serverNonce( clientNonce, 1);
 	openSecureChannelResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_OpenSecureChannel);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_OpenSecureChannel);
 	
@@ -253,7 +253,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	BOOST_REQUIRE(securityPolicyUri1 == OpcUaByteString("http://opcfoundation.org/UA/SecurityPolicy#None"));
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 51);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 1);
@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_OpenSecureChannelResponse_Encoding_DefaultBinary);
 
 	// decode OpenSecureChannel
-	openSecureChannelResponseSPtr = constructSPtr<OpenSecureChannelResponse>();
+	openSecureChannelResponseSPtr = boost::make_shared<OpenSecureChannelResponse>();
 	openSecureChannelResponseSPtr->opcUaBinaryDecode(ios);
 	openSecureChannelResponseSPtr->serverNonce(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(openSecureChannelResponseSPtr->securityToken()->channelId() == 153451225);

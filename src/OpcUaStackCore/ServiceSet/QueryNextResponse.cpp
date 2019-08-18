@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	QueryNextResponse::QueryNextResponse(void)
 	: Object()
-	, queryDataSetArraySPtr_(constructSPtr<QueryDataSetArray>())
+	, queryDataSetArraySPtr_(boost::make_shared<QueryDataSetArray>())
 	, revisedContinuationPoint_()
 	{
 	}

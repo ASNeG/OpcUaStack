@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 
 	ReadResponse::ReadResponse(void)
 	: Object()
-	, dataValueArraySPtr_(constructSPtr<OpcUaDataValueArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, dataValueArraySPtr_(boost::make_shared<OpcUaDataValueArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

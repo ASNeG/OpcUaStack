@@ -123,7 +123,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     UserTokenPolicy::factory(void)
     {
-    	return constructSPtr<UserTokenPolicy>();
+    	return boost::make_shared<UserTokenPolicy>();
     }
     
     std::string

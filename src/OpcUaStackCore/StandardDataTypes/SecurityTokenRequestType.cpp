@@ -145,7 +145,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     SecurityTokenRequestType::factory(void)
     {
-    	return constructSPtr<SecurityTokenRequestType>();
+    	return boost::make_shared<SecurityTokenRequestType>();
     }
     
     OpcUaNodeId

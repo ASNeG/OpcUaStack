@@ -95,7 +95,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     PublishedEventsDataType::factory(void)
     {
-    	return constructSPtr<PublishedEventsDataType>();
+    	return boost::make_shared<PublishedEventsDataType>();
     }
     
     std::string

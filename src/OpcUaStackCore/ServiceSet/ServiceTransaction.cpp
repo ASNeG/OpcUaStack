@@ -122,7 +122,7 @@ namespace OpcUaStackCore
 	ServiceTransaction::requestHeader(void)
 	{
 		if (requestHeader_.get() == nullptr) {
-			requestHeader_ = constructSPtr<RequestHeader>();
+			requestHeader_ = boost::make_shared<RequestHeader>();
 		}
 		return requestHeader_;
 	}
@@ -137,7 +137,7 @@ namespace OpcUaStackCore
 	ServiceTransaction::responseHeader(void)
 	{
 		if (responseHeader_.get() == nullptr) {
-			responseHeader_ = constructSPtr<ResponseHeader>();
+			responseHeader_ = boost::make_shared<ResponseHeader>();
 		}
 		return responseHeader_;
 	}

@@ -36,7 +36,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceDisconnect::createClientService(void)
 	{
-		return constructSPtr<ClientServiceDisconnect>();
+		return boost::make_shared<ClientServiceDisconnect>();
 	}
 
 	bool

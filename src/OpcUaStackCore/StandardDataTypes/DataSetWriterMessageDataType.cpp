@@ -67,7 +67,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DataSetWriterMessageDataType::factory(void)
     {
-    	return constructSPtr<DataSetWriterMessageDataType>();
+    	return boost::make_shared<DataSetWriterMessageDataType>();
     }
     
     std::string

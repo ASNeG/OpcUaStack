@@ -80,13 +80,13 @@ namespace OpcUaStackClient
 	void
 	ViewServiceBrowse::asyncBrowse(void)
 	{
-		auto trx = constructSPtr<ServiceTransactionBrowse>();
+		auto trx = boost::make_shared<ServiceTransactionBrowse>();
 		auto req = trx->request();
 
 		req->nodesToBrowse()->resize(nodeIdVec_.size());
 
 		for (uint32_t pos = 0; pos < nodeIdVec_.size(); pos++) {
-			BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
+			BrowseDescription::SPtr browseDescription = boost::make_shared<BrowseDescription>();
 			browseDescription->nodeId(nodeIdVec_[pos]);
 			browseDescription->browseDirection(direction_);
 			browseDescription->nodeClassMask(0xFFFFFFFF);
@@ -187,13 +187,13 @@ namespace OpcUaStackClient
     void
     ViewServiceBrowse::asyncBrowseNext(void)
     {
-    	ServiceTransactionBrowseNext::SPtr trx = constructSPtr<ServiceTransactionBrowseNext>();
+    	ServiceTransactionBrowseNext::SPtr trx = boost::make_shared<ServiceTransactionBrowseNext>();
 		BrowseNextRequest::SPtr req = trx->request();
 
 		req->continuationPoints()->resize(continuationPointVec_.size());
 
 		for (uint32_t pos = 0; pos < continuationPointVec_.size(); pos++) {
-			OpcUaByteString::SPtr continuationPoint = constructSPtr<OpcUaByteString>();
+			OpcUaByteString::SPtr continuationPoint = boost::make_shared<OpcUaByteString>();
 			continuationPoint->fromHexString(continuationPointVec_[pos]);
 			req->continuationPoints()->set(pos, continuationPoint);
 		}
@@ -306,7 +306,7 @@ namespace OpcUaStackClient
 				if (nodeIdVec_.size() >= maxNodesInBrowse_) break;
 
 				OpcUaNodeId tmp = *it;
-				OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+				OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>();
 				nodeId->copyFrom(tmp);
 				nodeIdVec_.push_back(nodeId);
 			}

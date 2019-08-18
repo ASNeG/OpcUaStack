@@ -97,7 +97,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     Annotation::factory(void)
     {
-    	return constructSPtr<Annotation>();
+    	return boost::make_shared<Annotation>();
     }
     
     std::string

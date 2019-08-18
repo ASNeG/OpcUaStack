@@ -93,7 +93,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     OptionSet::factory(void)
     {
-    	return constructSPtr<OptionSet>();
+    	return boost::make_shared<OptionSet>();
     }
     
     std::string

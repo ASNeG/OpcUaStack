@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateDataDetails)
 	UpdateDataDetails details1, details2;
 
 	// encode
-	valueSPtr = constructSPtr<OpcUaDataValue>();;
+	valueSPtr = boost::make_shared<OpcUaDataValue>();;
 	valueSPtr->statusCode((OpcUaStatusCode)Success);
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateDataDetails)
 	BOOST_REQUIRE(details2.performInsertReplace().enumeration() == PerformUpdateType::EnumInsert);
 	
 	BOOST_REQUIRE(details2.updateValues().size() == 1);
-	valueSPtr = constructSPtr<OpcUaDataValue>();;
+	valueSPtr = boost::make_shared<OpcUaDataValue>();;
 	details2.updateValues().get(valueSPtr);
 	BOOST_REQUIRE(valueSPtr->statusCode() == Success);
 }
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateStructureDataDetails)
 	UpdateStructureDataDetails details1, details2;
 
 	// encode
-	valueSPtr = constructSPtr<OpcUaDataValue>();;
+	valueSPtr = boost::make_shared<OpcUaDataValue>();;
 	valueSPtr->statusCode((OpcUaStatusCode)Success);
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateStructureDataDetails)
 	BOOST_REQUIRE(details2.performInsertReplace().enumeration() == PerformUpdateType::EnumInsert);
 	
 	BOOST_REQUIRE(details2.updateValues().size() == 1);
-	valueSPtr = constructSPtr<OpcUaDataValue>();;
+	valueSPtr = boost::make_shared<OpcUaDataValue>();;
 	details2.updateValues().get(valueSPtr);
 	BOOST_REQUIRE(valueSPtr->statusCode() == Success);
 }
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteEventDetails)
 	DeleteEventDetails details1, details2;
 
 	// encode
-	byteStringSPtr = constructSPtr<OpcUaByteString>();
+	byteStringSPtr = boost::make_shared<OpcUaByteString>();
 	byteStringSPtr->value("", 0);
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteEventDetails)
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
 
 	BOOST_REQUIRE(details2.eventIds().size() == 1);
-	byteStringSPtr = constructSPtr<OpcUaByteString>();
+	byteStringSPtr = boost::make_shared<OpcUaByteString>();
 	details2.eventIds().get(0, byteStringSPtr);
 	BOOST_REQUIRE(byteStringSPtr->exist() == true);
 	BOOST_REQUIRE(byteStringSPtr->size() == 0);

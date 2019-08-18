@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     StatusResult::factory(void)
     {
-    	return constructSPtr<StatusResult>();
+    	return boost::make_shared<StatusResult>();
     }
     
     std::string

@@ -157,7 +157,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     BrokerTransportQualityOfService::factory(void)
     {
-    	return constructSPtr<BrokerTransportQualityOfService>();
+    	return boost::make_shared<BrokerTransportQualityOfService>();
     }
     
     OpcUaNodeId

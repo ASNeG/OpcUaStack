@@ -81,7 +81,7 @@ namespace OpcUaStackServer
 				MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
 				createMonitoredItemsRequest->itemsToCreate()->get(idx, monitoredItemCreateRequest);
 				
-				MonitoredItemCreateResult::SPtr monitoredItemCreateResult = constructSPtr<MonitoredItemCreateResult>();
+				MonitoredItemCreateResult::SPtr monitoredItemCreateResult = boost::make_shared<MonitoredItemCreateResult>();
 				createMonitoredItemsResponse->results()->set(idx, monitoredItemCreateResult);
 
 				itemId++;

@@ -74,7 +74,7 @@ namespace OpcUaStackServer
 			.parameter("NumberNodes", size);
 
 		for (uint32_t idx=0; idx<size; idx++) {
-			AddNodesResult::SPtr addNodesResult = constructSPtr<AddNodesResult>();
+			AddNodesResult::SPtr addNodesResult = boost::make_shared<AddNodesResult>();
 			addNodesResponse->results()->set(idx, addNodesResult);
 			
 			AddNodesItem::SPtr addNodesItem;
@@ -232,7 +232,7 @@ namespace OpcUaStackServer
 	)
 	{
 		OpcUaStatusCode statusCode;
-		ObjectNodeClass::SPtr objectNodeClass = constructSPtr<ObjectNodeClass>();
+		ObjectNodeClass::SPtr objectNodeClass = boost::make_shared<ObjectNodeClass>();
 
 		// set base attributes
 		statusCode = addBaseNodeClass(pos, objectNodeClass, addNodesItem, addNodesResult);

@@ -36,7 +36,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceFunction::createClientService(void)
 	{
-		return constructSPtr<ClientServiceFunction>();
+		return boost::make_shared<ClientServiceFunction>();
 	}
 
 	bool
@@ -76,10 +76,10 @@ namespace OpcUaClient
 		}
 
 		// create method request
-		ServiceTransactionCall::SPtr trx = constructSPtr<ServiceTransactionCall>();
+		ServiceTransactionCall::SPtr trx = boost::make_shared<ServiceTransactionCall>();
 		CallRequest::SPtr req = trx->request();
 
-		CallMethodRequest::SPtr callMethodRequest = constructSPtr<CallMethodRequest>();
+		CallMethodRequest::SPtr callMethodRequest = boost::make_shared<CallMethodRequest>();
 		callMethodRequest->objectId()->copyFrom(commandFunction->objectNodeId());
 		callMethodRequest->methodId()->copyFrom(commandFunction->functionNodeId());
 		callMethodRequest->inputArguments()->resize(commandFunction->inputVariantVec().size());

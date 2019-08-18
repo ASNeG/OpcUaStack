@@ -120,7 +120,7 @@ namespace OpcUaStackServer
 		// register forward
 		registerForwardNodeResponse->statusCodeArray()->resize(registerForwardNodeRequest->nodesToRegister()->size());
 		for (uint32_t idx = 0; idx < registerForwardNodeRequest->nodesToRegister()->size(); idx++) {
-			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
+			OpcUaDataValue::SPtr dataValue = boost::make_shared<OpcUaDataValue>();
 			registerForwardNodeResponse->statusCodeArray()->set(idx, Success);
 
 			OpcUaNodeId::SPtr nodeId;
@@ -146,7 +146,7 @@ namespace OpcUaStackServer
 			// create or update forward info
 			ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
 			if (forwardNodeSync.get() == nullptr) {
-				forwardNodeSync = constructSPtr<ForwardNodeSync>();
+				forwardNodeSync = boost::make_shared<ForwardNodeSync>();
 			}
 			forwardNodeSync->updateFrom(*registerForwardNodeRequest->forwardNodeSync());
 			if (applicationContextArray) {
@@ -277,7 +277,7 @@ namespace OpcUaStackServer
 		// get node reference
 		getNodeReferenceResponse->nodeReferenceArray()->resize(getNodeReferenceRequest->nodes()->size());
 		for (uint32_t idx = 0; idx < getNodeReferenceRequest->nodes()->size(); idx++) {
-			NodeReferenceApplication::SPtr nodeReference = constructSPtr<NodeReferenceApplication>();
+			NodeReferenceApplication::SPtr nodeReference = boost::make_shared<NodeReferenceApplication>();
 			nodeReference->statusCode(Success);
 			getNodeReferenceResponse->nodeReferenceArray()->set(idx, nodeReference);
 
@@ -523,7 +523,7 @@ namespace OpcUaStackServer
 		for (uint32_t idx = 0; idx < size; idx++) {
 			BrowseName::SPtr browseName;
 			req->browseNameArray()->get(idx, browseName);
-			NodeIdResult::SPtr nodeIdResult = constructSPtr<NodeIdResult>();
+			NodeIdResult::SPtr nodeIdResult = boost::make_shared<NodeIdResult>();
 
 			getNodeIdFromBrowsePath(browseName, nodeIdResult);
 			res->nodeIdResults()->set(idx, nodeIdResult);

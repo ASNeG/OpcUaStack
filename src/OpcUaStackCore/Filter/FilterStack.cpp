@@ -16,6 +16,7 @@
  */
 
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaTypeConversion.h"
 
@@ -47,9 +48,7 @@ namespace OpcUaStackCore
     , attributeIf_(nullptr)
     , simpleAttributeIf_(nullptr)
     {
-        OpcUaVariant value;
-        value.set<OpcUaBoolean>(true);
-        root_ =  constructSPtr<LiteralFilterNode, OpcUaVariant>(value);
+        root_ =  boost::make_shared<LiteralFilterNode>(OpcUaVariant((OpcUaBoolean)true));
     }
 
     FilterStack::~FilterStack()
@@ -109,7 +108,7 @@ namespace OpcUaStackCore
         ContentFilterElement::SPtr el;
         contentFilter.elements().get(idx, el);
 
-    	OpcUaStatusCodeArray::SPtr operandStatuses = constructSPtr<OpcUaStatusCodeArray>();
+    	OpcUaStatusCodeArray::SPtr operandStatuses = boost::make_shared<OpcUaStatusCodeArray>();
     	operandStatuses->resize(el->filterOperands().size());
 
         std::vector<FilterNode::SPtr> args;
@@ -125,8 +124,8 @@ namespace OpcUaStackCore
             {
             	case OpcUaId_LiteralOperand:
             	{
-            		args.push_back(
-                        constructSPtr<LiteralFilterNode, OpcUaVariant>(operand->parameter<LiteralOperand>()->value()));
+            		OpcUaVariant value = operand->parameter<LiteralOperand>()->value();
+            		args.push_back(boost::make_shared<LiteralFilterNode>(value));
 
             		operandStatuses->push_back(OpcUaStatusCode::Success);
             		break;
@@ -195,7 +194,7 @@ namespace OpcUaStackCore
 
         }
 
-        ContentFilterElementResult::SPtr elementResult = constructSPtr<ContentFilterElementResult>();
+        ContentFilterElementResult::SPtr elementResult = boost::make_shared<ContentFilterElementResult>();
 
         if (!hasOperandError) {
 			switch (el->filterOperator().enumeration()) {
@@ -282,7 +281,7 @@ namespace OpcUaStackCore
         	for (uint32_t j = 0; j < operandStatuses->size(); j++) {
         		OpcUaStatusCode statusCode;
         		operandStatuses->get(j, statusCode);
-        		OpcUaStatus::SPtr status = constructSPtr<OpcUaStatus>();
+        		OpcUaStatus::SPtr status = boost::make_shared<OpcUaStatus>();
         		status->enumeration(statusCode);
         		elementResult->operandStatusCodes().push_back(status);
         	}

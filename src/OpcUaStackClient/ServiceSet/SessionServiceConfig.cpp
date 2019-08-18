@@ -33,8 +33,8 @@ namespace OpcUaStackClient
 	: ServiceConfigBase("Session")
 	, sessionMode_(SessionMode::SecureChannelAndSession)
 	, sessionServiceChangeHandler_()
-	, secureChannelClient_(constructSPtr<SecureChannelClientConfig>())
-	, session_(constructSPtr<SessionConfig>())
+	, secureChannelClient_(boost::make_shared<SecureChannelClientConfig>())
+	, session_(boost::make_shared<SessionConfig>())
 	{
 	}
 

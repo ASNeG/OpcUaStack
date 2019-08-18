@@ -47,7 +47,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandRegisterServer::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandRegisterServer>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandRegisterServer>();
 		return commandBase;
 	}
 

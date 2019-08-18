@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 	std::iostream ios(&sb);
 
 	// encode EndpointDescription
-	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
+	endpointDescriptionSPtr = boost::make_shared<EndpointDescription>();
 	
 	endpointDescriptionSPtr->endpointUrl().value("opt.tcp://localhost:481/0.0.0.0");
 	endpointDescriptionSPtr->server().applicationUri().value("urn:localhost:compyny:Unittest");
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 	endpointDescriptionSPtr->server().applicationName().text("company Unittest");
 	endpointDescriptionSPtr->server().applicationType().enumeration(ApplicationType::EnumServer);
 	endpointDescriptionSPtr->server().discoveryUrls().resize(1);
-	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
+	OpcUaString::SPtr opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->server().discoveryUrls().set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate().value((OpcUaByte*)"0123456789", 10);
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 	endpointDescriptionSPtr->securityPolicyUri().value("http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	endpointDescriptionSPtr->userIdentityTokens().resize(1);
-	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
+	userTokenPolicySPtr = boost::make_shared<UserTokenPolicy>();
 	userTokenPolicySPtr->policyId().value("OpcUaStack");
 	userTokenPolicySPtr->tokenType().enumeration(UserTokenType::EnumAnonymous);
 	endpointDescriptionSPtr->userIdentityTokens().push_back(userTokenPolicySPtr);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode EndpointDescription
-	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
+	endpointDescriptionSPtr = boost::make_shared<EndpointDescription>();
 	endpointDescriptionSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(endpointDescriptionSPtr->endpointUrl().value() == "opt.tcp://localhost:481/0.0.0.0");

@@ -43,19 +43,19 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Method_discovery_GetEndpoints)
 	BOOST_REQUIRE(methodService.get() != nullptr);
 
 	// call method
-	auto inArgument1 = constructSPtr<OpcUaVariant>();
+	auto inArgument1 = boost::make_shared<OpcUaVariant>();
 	inArgument1->set((uint32_t)1);
-	auto inArgument2 = constructSPtr<OpcUaVariant>();
+	auto inArgument2 = boost::make_shared<OpcUaVariant>();
 	inArgument2->set((uint32_t)2);
 
-	auto callMethodRequest = constructSPtr<CallMethodRequest>();
+	auto callMethodRequest = boost::make_shared<CallMethodRequest>();
 	callMethodRequest->objectId()->set("Function" ,6);
 	callMethodRequest->methodId()->set("funcMult" ,6);
 	callMethodRequest->inputArguments()->resize(2);
 	callMethodRequest->inputArguments()->set(0, inArgument1);
 	callMethodRequest->inputArguments()->set(1, inArgument2);
 
-	auto trx = constructSPtr<ServiceTransactionCall>();
+	auto trx = boost::make_shared<ServiceTransactionCall>();
 	auto req = trx->request();
 	req->methodsToCall()->resize(1);
 	req->methodsToCall()->set(0, callMethodRequest);

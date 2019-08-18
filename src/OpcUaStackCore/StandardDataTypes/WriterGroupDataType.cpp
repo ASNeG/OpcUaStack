@@ -145,7 +145,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     WriterGroupDataType::factory(void)
     {
-    	return constructSPtr<WriterGroupDataType>();
+    	return boost::make_shared<WriterGroupDataType>();
     }
     
     std::string

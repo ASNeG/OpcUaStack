@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     XVType::factory(void)
     {
-    	return constructSPtr<XVType>();
+    	return boost::make_shared<XVType>();
     }
     
     std::string

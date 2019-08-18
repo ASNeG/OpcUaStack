@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(Operand_SimpleAttribute)
 	SimpleAttributeOperand simpleAttributeOperand1, simpleAttributeOperand2;
 	
 	// encode
-	qualifiedNameSPtr = constructSPtr<OpcUaQualifiedName>();
+	qualifiedNameSPtr = boost::make_shared<OpcUaQualifiedName>();
 	string.value("ABC");
 	qualifiedNameSPtr->name(string);
 	qualifiedNameSPtr->namespaceIndex(12);
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(Operand_Attribute)
 	attributeOperand1.nodeId().namespaceIndex(123);
 	attributeOperand1.nodeId().nodeId((OpcUaUInt32)11);
 
-	relativePathElementSPtr = constructSPtr<RelativePathElement>();
+	relativePathElementSPtr = boost::make_shared<RelativePathElement>();
 	relativePathElementSPtr->referenceTypeId() = attributeOperand1.nodeId();
 	relativePathElementSPtr->isInverse() = false;
 	relativePathElementSPtr->includeSubtypes() = false;

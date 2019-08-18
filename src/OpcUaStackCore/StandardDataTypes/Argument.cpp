@@ -123,7 +123,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     Argument::factory(void)
     {
-    	return constructSPtr<Argument>();
+    	return boost::make_shared<Argument>();
     }
     
     std::string

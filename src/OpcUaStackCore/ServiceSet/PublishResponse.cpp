@@ -31,11 +31,11 @@ namespace OpcUaStackCore
 	PublishResponse::PublishResponse(void)
 	: Object()
 	, subscriptionId_()
-	, availableSequenceNumberArraySPtr_(constructSPtr<OpcUaUInt32Array>())
+	, availableSequenceNumberArraySPtr_(boost::make_shared<OpcUaUInt32Array>())
 	, moreNotifications_()
-	, notficiationMessageSPtr_(constructSPtr<NotificationMessage>())
-	, statusCodeArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, notficiationMessageSPtr_(boost::make_shared<NotificationMessage>())
+	, statusCodeArraySPtr_(boost::make_shared<OpcUaStatusCodeArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

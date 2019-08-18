@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     LiteralOperand::factory(void)
     {
-    	return constructSPtr<LiteralOperand>();
+    	return boost::make_shared<LiteralOperand>();
     }
     
     std::string

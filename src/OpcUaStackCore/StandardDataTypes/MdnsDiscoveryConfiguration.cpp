@@ -91,7 +91,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     MdnsDiscoveryConfiguration::factory(void)
     {
-    	return constructSPtr<MdnsDiscoveryConfiguration>();
+    	return boost::make_shared<MdnsDiscoveryConfiguration>();
     }
     
     std::string

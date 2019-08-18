@@ -219,7 +219,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SessionConfig::SessionConfig(void)
-	: applicationDescription_(constructSPtr<ApplicationDescription>())
+	: applicationDescription_(boost::make_shared<ApplicationDescription>())
 	, sessionName_("urn:127.0.0.1:ASNeG.de:ASNeG-Client")
 	, sessionTimeout_(3600000)
 	, reconnectTimeout_(5000)

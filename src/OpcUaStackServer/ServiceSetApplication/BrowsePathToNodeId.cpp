@@ -52,7 +52,7 @@ namespace OpcUaStackServer
 	, statuses_()
 	, nodes_()
 	{
-		for (auto& browseName : browseNames) browseNames_.push_back(constructSPtr<BrowseName>(browseName));
+		for (auto& browseName : browseNames) browseNames_.push_back(boost::make_shared<BrowseName>(browseName));
 	}
 
 	BrowsePathToNodeId::~BrowsePathToNodeId(void)
@@ -71,7 +71,7 @@ namespace OpcUaStackServer
 		const OpcUaQualifiedName& pathElement
 	)
 	{
-		browseNames_.push_back(constructSPtr<BrowseName>(nodeId, pathElement));
+		browseNames_.push_back(boost::make_shared<BrowseName>(nodeId, pathElement));
 	}
 
 	void
@@ -81,7 +81,7 @@ namespace OpcUaStackServer
 		const OpcUaQualifiedName& pathElement2
 	)
 	{
-		browseNames_.push_back(constructSPtr<BrowseName>(nodeId, pathElement1, pathElement2));
+		browseNames_.push_back(boost::make_shared<BrowseName>(nodeId, pathElement1, pathElement2));
 	}
 
 	void
@@ -92,7 +92,7 @@ namespace OpcUaStackServer
 		const OpcUaQualifiedName& pathElement3
 	)
 	{
-		browseNames_.push_back(constructSPtr<BrowseName>(nodeId, pathElement1, pathElement2, pathElement3));
+		browseNames_.push_back(boost::make_shared<BrowseName>(nodeId, pathElement1, pathElement2, pathElement3));
 	}
 
 	void
@@ -104,7 +104,7 @@ namespace OpcUaStackServer
 		const OpcUaQualifiedName& pathElement4
 	)
 	{
-		browseNames_.push_back(constructSPtr<BrowseName>(nodeId, pathElement1, pathElement2, pathElement3, pathElement4));
+		browseNames_.push_back(boost::make_shared<BrowseName>(nodeId, pathElement1, pathElement2, pathElement3, pathElement4));
 	}
 
 	void
@@ -117,14 +117,14 @@ namespace OpcUaStackServer
 		const OpcUaQualifiedName& pathElement5
 	)
 	{
-		browseNames_.push_back(constructSPtr<BrowseName>(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5));
+		browseNames_.push_back(boost::make_shared<BrowseName>(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5));
 	}
 
 	bool
 	BrowsePathToNodeId::query(ApplicationServiceIf* applicationServiceIf,bool checkStatusCodeArray)
 	{
 		// create request
-		auto trx = constructSPtr<ServiceTransactionBrowsePathToNodeId>();
+		auto trx = boost::make_shared<ServiceTransactionBrowsePathToNodeId>();
 		trx->request()->browseNameArray()->resize(browseNames_.size());
 		for (auto& browseName : browseNames_) trx->request()->browseNameArray()->push_back(browseName);
 

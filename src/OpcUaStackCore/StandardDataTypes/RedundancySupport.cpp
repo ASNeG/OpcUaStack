@@ -161,7 +161,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     RedundancySupport::factory(void)
     {
-    	return constructSPtr<RedundancySupport>();
+    	return boost::make_shared<RedundancySupport>();
     }
     
     OpcUaNodeId

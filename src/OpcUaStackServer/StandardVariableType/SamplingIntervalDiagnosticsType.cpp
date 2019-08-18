@@ -16,11 +16,11 @@ namespace OpcUaStackServer
     
     SamplingIntervalDiagnosticsType::SamplingIntervalDiagnosticsType(void)
     : VariableBase()
-    , disabledMonitoredItemsSamplingCount_Variable_(constructSPtr<ServerVariable>("DisabledMonitoredItemsSamplingCount_Variable"))
-    , maxSampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("MaxSampledMonitoredItemsCount_Variable"))
-    , sampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("SampledMonitoredItemsCount_Variable"))
-    , samplingInterval_Variable_(constructSPtr<ServerVariable>("SamplingInterval_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , disabledMonitoredItemsSamplingCount_Variable_(boost::make_shared<ServerVariable>("DisabledMonitoredItemsSamplingCount_Variable"))
+    , maxSampledMonitoredItemsCount_Variable_(boost::make_shared<ServerVariable>("MaxSampledMonitoredItemsCount_Variable"))
+    , sampledMonitoredItemsCount_Variable_(boost::make_shared<ServerVariable>("SampledMonitoredItemsCount_Variable"))
+    , samplingInterval_Variable_(boost::make_shared<ServerVariable>("SamplingInterval_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2165);
@@ -33,11 +33,11 @@ namespace OpcUaStackServer
     
     SamplingIntervalDiagnosticsType::SamplingIntervalDiagnosticsType(const SamplingIntervalDiagnosticsType& value)
     : VariableBase()
-    , disabledMonitoredItemsSamplingCount_Variable_(constructSPtr<ServerVariable>("DisabledMonitoredItemsSamplingCount_Variable"))
-    , maxSampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("MaxSampledMonitoredItemsCount_Variable"))
-    , sampledMonitoredItemsCount_Variable_(constructSPtr<ServerVariable>("SampledMonitoredItemsCount_Variable"))
-    , samplingInterval_Variable_(constructSPtr<ServerVariable>("SamplingInterval_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , disabledMonitoredItemsSamplingCount_Variable_(boost::make_shared<ServerVariable>("DisabledMonitoredItemsSamplingCount_Variable"))
+    , maxSampledMonitoredItemsCount_Variable_(boost::make_shared<ServerVariable>("MaxSampledMonitoredItemsCount_Variable"))
+    , sampledMonitoredItemsCount_Variable_(boost::make_shared<ServerVariable>("SampledMonitoredItemsCount_Variable"))
+    , samplingInterval_Variable_(boost::make_shared<ServerVariable>("SamplingInterval_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2165);

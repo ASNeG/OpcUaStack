@@ -41,7 +41,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandNodeSetFilter::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandNodeSetFilter>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandNodeSetFilter>();
 		return commandBase;
 	}
 

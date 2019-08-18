@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_discovery_GetEndpoints
 
 	// create and send GetEndpointsRequest
 	ServiceTransactionGetEndpoints::SPtr trx;
-	trx = constructSPtr<ServiceTransactionGetEndpoints>();
+	trx = boost::make_shared<ServiceTransactionGetEndpoints>();
 	GetEndpointsRequest::SPtr req = trx->request();
 	req->endpointUrl(REAL_SERVER_URI);
 

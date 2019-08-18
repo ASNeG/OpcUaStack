@@ -78,7 +78,7 @@ namespace OpcUaStackCore
 		eventType->getValue(typeNodeId);
 		typeNodeId.namespaceIndex(namespaceIndex);
 
-		OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+		OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 		variant->setValue(typeNodeId);
 		eventType->setValue(typeNodeId);
 
@@ -109,7 +109,7 @@ namespace OpcUaStackCore
 
 		if (browseNameList.empty()) {
 
-			OpcUaQualifiedName::SPtr browseName = constructSPtr<OpcUaQualifiedName>("EMPTY", eventType.namespaceIndex());
+			OpcUaQualifiedName::SPtr browseName = boost::make_shared<OpcUaQualifiedName>("EMPTY", eventType.namespaceIndex());
 			browseNameList.push_back(browseName);
 
 			//Log(Debug, "browse path not exist in event - browse path empty");

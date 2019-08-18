@@ -161,7 +161,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     IdentityCriteriaType::factory(void)
     {
-    	return constructSPtr<IdentityCriteriaType>();
+    	return boost::make_shared<IdentityCriteriaType>();
     }
     
     OpcUaNodeId

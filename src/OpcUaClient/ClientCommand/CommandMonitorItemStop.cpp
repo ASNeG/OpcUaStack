@@ -38,7 +38,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandMonitorItemStop::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandMonitorItemStop>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandMonitorItemStop>();
 		return commandBase;
 	}
 

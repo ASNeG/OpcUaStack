@@ -153,7 +153,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     HistoryUpdateType::factory(void)
     {
-    	return constructSPtr<HistoryUpdateType>();
+    	return boost::make_shared<HistoryUpdateType>();
     }
     
     OpcUaNodeId

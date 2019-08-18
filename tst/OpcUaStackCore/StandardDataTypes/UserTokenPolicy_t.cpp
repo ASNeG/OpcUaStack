@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(UserTokenPolicy_)
 	std::iostream ios(&sb);
 
 	// encode UserTokenPolicy
-	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
+	userTokenPolicySPtr = boost::make_shared<UserTokenPolicy>();
 	userTokenPolicySPtr->policyId().value("OpcUaStack");
 	userTokenPolicySPtr->tokenType().enumeration(UserTokenType::EnumAnonymous);
 	userTokenPolicySPtr->opcUaBinaryEncode(ios);
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(UserTokenPolicy_)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode UserTokenPolicy
-	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
+	userTokenPolicySPtr = boost::make_shared<UserTokenPolicy>();
 	userTokenPolicySPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(userTokenPolicySPtr->policyId().value() == "OpcUaStack");
 	BOOST_REQUIRE(userTokenPolicySPtr->tokenType().enumeration() == UserTokenType::EnumAnonymous);

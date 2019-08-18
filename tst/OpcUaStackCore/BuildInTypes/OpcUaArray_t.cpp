@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_1_element)
 	OpcUaStringArray value1, value2;
 
 	OpcUaString::SPtr value1SPtr;
-	value1SPtr = constructSPtr<OpcUaString>();
+	value1SPtr = boost::make_shared<OpcUaString>();
 	*value1SPtr = std::string("OpcUaString");
 	value1.set(value1SPtr);
 
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_10_element)
 	value1.resize(10);
 	OpcUaString::SPtr value1SPtr;
 	for (uint32_t idx=0; idx<10; idx++) {
-		value1SPtr = constructSPtr<OpcUaString>();
+		value1SPtr = boost::make_shared<OpcUaString>();
 		*value1SPtr = std::string("OpcUaString");
 		value1.set(idx, value1SPtr);
 	}
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_copyTo_string)
 	value1.resize(10);
 	OpcUaString::SPtr value1SPtr;
 	for (uint32_t idx=0; idx<10; idx++) {
-		value1SPtr = constructSPtr<OpcUaString>();
+		value1SPtr = boost::make_shared<OpcUaString>();
 		*value1SPtr = std::string("string1");
 		value1.set(idx, value1SPtr);
 	}
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_copyTo_string)
 	}
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		value1SPtr = constructSPtr<OpcUaString>();
+		value1SPtr = boost::make_shared<OpcUaString>();
 		*value1SPtr = std::string("string2");
 		value1.set(idx, value1SPtr);
 	}

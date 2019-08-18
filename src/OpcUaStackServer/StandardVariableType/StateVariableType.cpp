@@ -16,11 +16,11 @@ namespace OpcUaStackServer
     
     StateVariableType::StateVariableType(void)
     : VariableBase()
-    , effectiveDisplayName_Variable_(constructSPtr<ServerVariable>("EffectiveDisplayName_Variable"))
-    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
-    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
-    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , effectiveDisplayName_Variable_(boost::make_shared<ServerVariable>("EffectiveDisplayName_Variable"))
+    , id_Variable_(boost::make_shared<ServerVariable>("Id_Variable"))
+    , name_Variable_(boost::make_shared<ServerVariable>("Name_Variable"))
+    , number_Variable_(boost::make_shared<ServerVariable>("Number_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2755);
@@ -33,11 +33,11 @@ namespace OpcUaStackServer
     
     StateVariableType::StateVariableType(const StateVariableType& value)
     : VariableBase()
-    , effectiveDisplayName_Variable_(constructSPtr<ServerVariable>("EffectiveDisplayName_Variable"))
-    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
-    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
-    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , effectiveDisplayName_Variable_(boost::make_shared<ServerVariable>("EffectiveDisplayName_Variable"))
+    , id_Variable_(boost::make_shared<ServerVariable>("Id_Variable"))
+    , name_Variable_(boost::make_shared<ServerVariable>("Name_Variable"))
+    , number_Variable_(boost::make_shared<ServerVariable>("Number_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2755);

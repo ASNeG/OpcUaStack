@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
 
@@ -29,7 +30,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	PendingQueueElement::PendingQueueElement(IOService& ioService)
-	: timer_(constructSPtr<Timer>(ioService))
+	: timer_(boost::make_shared<Timer>(ioService))
 	{
 	}
 	
@@ -113,7 +114,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		PendingQueueElement::SPtr pendingQueueElement = constructSPtr<PendingQueueElement>(*ioService_);
+		PendingQueueElement::SPtr pendingQueueElement = boost::make_shared<PendingQueueElement>(*ioService_);
 		pendingQueueElement->key(key);
 		pendingQueueElement->element(object);
 		pendingQueueElement->timer()->callback().reset(boost::bind(&PendingQueue::onTimeout, this, key));

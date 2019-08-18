@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	RegisterServerResponse::RegisterServerResponse(void)
 	: Object()
-	, responseHeaderSPtr_(constructSPtr<ResponseHeader>())
+	, responseHeaderSPtr_(boost::make_shared<ResponseHeader>())
 	{
 	}
 

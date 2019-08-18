@@ -67,7 +67,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     HistoryReadDetails::factory(void)
     {
-    	return constructSPtr<HistoryReadDetails>();
+    	return boost::make_shared<HistoryReadDetails>();
     }
     
     std::string

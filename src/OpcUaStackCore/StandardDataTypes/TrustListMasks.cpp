@@ -161,7 +161,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     TrustListMasks::factory(void)
     {
-    	return constructSPtr<TrustListMasks>();
+    	return boost::make_shared<TrustListMasks>();
     }
     
     OpcUaNodeId

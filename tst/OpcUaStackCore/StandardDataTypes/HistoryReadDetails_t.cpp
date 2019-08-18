@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadProcessedDetails)
 	ReadProcessedDetails details1, details2;
 
 	// encode
-	nodeIdSPtr = constructSPtr<OpcUaNodeId>();
+	nodeIdSPtr = boost::make_shared<OpcUaNodeId>();
 	nodeIdSPtr->namespaceIndex((OpcUaInt16)1);
 	nodeIdSPtr->nodeId<OpcUaUInt32>(123);
 
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadProcessedDetails)
 	BOOST_REQUIRE(details2.processingInterval() == 123);
 
 	BOOST_REQUIRE(details2.aggregateType().size() == 1);
-	nodeIdSPtr = constructSPtr<OpcUaNodeId>();
+	nodeIdSPtr = boost::make_shared<OpcUaNodeId>();
 	details2.aggregateType().get(0, nodeIdSPtr);
 	BOOST_REQUIRE(nodeIdSPtr->namespaceIndex() == 1);
 	BOOST_REQUIRE(nodeIdSPtr->nodeId<OpcUaUInt32>() == 123);

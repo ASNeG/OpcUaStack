@@ -107,7 +107,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     MonitoredItemModifyResult::factory(void)
     {
-    	return constructSPtr<MonitoredItemModifyResult>();
+    	return boost::make_shared<MonitoredItemModifyResult>();
     }
     
     std::string

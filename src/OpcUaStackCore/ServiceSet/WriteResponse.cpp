@@ -32,8 +32,8 @@ namespace OpcUaStackCore
 
 	WriteResponse::WriteResponse(void)
 	: Object()
-	, statusCodeArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, statusCodeArraySPtr_(boost::make_shared<OpcUaStatusCodeArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

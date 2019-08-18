@@ -113,7 +113,7 @@ namespace OpcUaStackServer
 		SubscriptionManager::SPtr subscriptionManager;
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
-			subscriptionManager = constructSPtr<SubscriptionManager>();
+			subscriptionManager = boost::make_shared<SubscriptionManager>();
 			subscriptionManager->ioThread(ioThread());
 			subscriptionManager->informationModel(informationModel_);
 			subscriptionManager->forwardGlobalSync(forwardGlobalSync_);

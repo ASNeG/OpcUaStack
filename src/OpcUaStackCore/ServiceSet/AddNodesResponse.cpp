@@ -28,8 +28,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddNodesResponse::AddNodesResponse(void)
-	: addNodesResultArraySPtr_(constructSPtr<AddNodesResultArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	: addNodesResultArraySPtr_(boost::make_shared<AddNodesResultArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	RegisterNodesRequest::RegisterNodesRequest(void)
 	: Object()
-	, nodesToRegisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
+	, nodesToRegisterArraySPtr_(boost::make_shared<OpcUaNodeIdArray>())
 	{
 	}
 

@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     EnumDefinition::factory(void)
     {
-    	return constructSPtr<EnumDefinition>();
+    	return boost::make_shared<EnumDefinition>();
     }
     
     std::string

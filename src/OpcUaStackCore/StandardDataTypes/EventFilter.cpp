@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     EventFilter::factory(void)
     {
-    	return constructSPtr<EventFilter>();
+    	return boost::make_shared<EventFilter>();
     }
     
     std::string

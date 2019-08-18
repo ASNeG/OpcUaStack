@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	, defaultEncodingId_()
 	, baseDataType_()
 	, structureType_(0)
-	, fields_(constructSPtr<StructureFieldArray>())
+	, fields_(boost::make_shared<StructureFieldArray>())
 	{
 	}
 
@@ -139,7 +139,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::SPtr
 	StructureDefinitionExpand::factory(void)
 	{
-		return constructSPtr<StructureDefinitionExpand>();
+		return boost::make_shared<StructureDefinitionExpand>();
 	}
 
 	OpcUaNodeId

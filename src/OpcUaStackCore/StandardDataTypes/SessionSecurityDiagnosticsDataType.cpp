@@ -157,7 +157,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     SessionSecurityDiagnosticsDataType::factory(void)
     {
-    	return constructSPtr<SessionSecurityDiagnosticsDataType>();
+    	return boost::make_shared<SessionSecurityDiagnosticsDataType>();
     }
     
     std::string

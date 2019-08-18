@@ -41,7 +41,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandBrowse::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandBrowse>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandBrowse>();
 		return commandBase;
 	}
 
@@ -49,7 +49,7 @@ namespace OpcUaClient
 	CommandBrowse::validateCommand(void)
 	{
 		if (nodeIdVec_.size() == 0) {
-			OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+			OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>();
 			nodeId->set((OpcUaUInt32)84, (OpcUaUInt16)0);
 			nodeIdVec_.push_back(nodeId);
 		}
@@ -60,7 +60,7 @@ namespace OpcUaClient
 	CommandBrowse::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
 		if (parameterName == "-NODEID") {
-			OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+			OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>();
 			if (!nodeId->fromString(parameterValue)) {
 				std::stringstream ss;
 				ss << "node id parameter invalid (" << parameterValue << ")";

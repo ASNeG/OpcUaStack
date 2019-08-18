@@ -115,7 +115,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DataSetMetaDataType::factory(void)
     {
-    	return constructSPtr<DataSetMetaDataType>();
+    	return boost::make_shared<DataSetMetaDataType>();
     }
     
     std::string

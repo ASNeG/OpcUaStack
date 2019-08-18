@@ -95,7 +95,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DeleteRawModifiedDetails::factory(void)
     {
-    	return constructSPtr<DeleteRawModifiedDetails>();
+    	return boost::make_shared<DeleteRawModifiedDetails>();
     }
     
     std::string

@@ -93,7 +93,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     SignedSoftwareCertificate::factory(void)
     {
-    	return constructSPtr<SignedSoftwareCertificate>();
+    	return boost::make_shared<SignedSoftwareCertificate>();
     }
     
     std::string

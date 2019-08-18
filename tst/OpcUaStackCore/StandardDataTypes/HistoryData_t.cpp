@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryData)
 	HistoryData data1, data2;
 
 	// encode
-	value = constructSPtr<OpcUaDataValue>();;
+	value = boost::make_shared<OpcUaDataValue>();;
 	value->statusCode((OpcUaStatusCode)Success);
 
 	data1.dataValues().resize(1);
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryData)
 	// decode
 	data2.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(data2.dataValues().size() == 1);
-	value = constructSPtr<OpcUaDataValue>();;
+	value = boost::make_shared<OpcUaDataValue>();;
 	data2.dataValues().get(0, value);
 	BOOST_REQUIRE(value->statusCode() == Success);
 
@@ -52,10 +52,10 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryModifiedData)
 	HistoryModifiedData data1, data2;
 	
 	// encode
-	value = constructSPtr<OpcUaDataValue>();;
+	value = boost::make_shared<OpcUaDataValue>();;
 	value->statusCode((OpcUaStatusCode)Success);
 
-	modificationInfo = constructSPtr<ModificationInfo>();
+	modificationInfo = boost::make_shared<ModificationInfo>();
 	modificationInfo->userName() = OpcUaString("username");
 	modificationInfo->modificationTime() = ptime;
 	modificationInfo->updateType().enumeration(HistoryUpdateType::EnumInsert);
@@ -70,12 +70,12 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryModifiedData)
 	data2.opcUaBinaryDecode(ios);
 	
 	BOOST_REQUIRE(data2.dataValues().size() == 1);
-	value = constructSPtr<OpcUaDataValue>();;
+	value = boost::make_shared<OpcUaDataValue>();;
 	data2.dataValues().get(0, value);
 	BOOST_REQUIRE(value->statusCode() == Success);
 
 	BOOST_REQUIRE(data2.modificationInfos().size() == 1);
-	modificationInfo = constructSPtr<ModificationInfo>();
+	modificationInfo = boost::make_shared<ModificationInfo>();
 	data2.modificationInfos().get(0, modificationInfo);
 	BOOST_REQUIRE(modificationInfo->userName().value() == "username");
 	BOOST_REQUIRE(modificationInfo->modificationTime().dateTime() == ptime);

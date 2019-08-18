@@ -285,7 +285,7 @@ namespace OpcUaStackServer
 			}
 
 			// handle child nodes
-			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
+			browseNames.pathNames()->set(size, boost::make_shared<OpcUaQualifiedName>(browseName));
 			if (!readChilds(baseNodeClassChildTemplate, browseNames)) {
 				Log(Error, "read childs error")
 					.parameter("NodeId", *baseNode->getNodeId())
@@ -313,7 +313,7 @@ namespace OpcUaStackServer
 	bool
 	NodeInfoObjectType::readVariableInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
 	{
-		VariableTypeField::SPtr variableTypeField = constructSPtr<VariableTypeField>();
+		VariableTypeField::SPtr variableTypeField = boost::make_shared<VariableTypeField>();
 
 		Log(Debug, "read variable information")
 			.parameter("NodeId", *baseNode->getNodeId())
@@ -388,7 +388,7 @@ namespace OpcUaStackServer
 	bool
 	NodeInfoObjectType::readMethodInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browsePath)
 	{
-		MethodTypeField::SPtr methodTypeField = constructSPtr<MethodTypeField>();
+		MethodTypeField::SPtr methodTypeField = boost::make_shared<MethodTypeField>();
 
 		Log(Debug, "read method information")
 			.parameter("NodeId", *baseNode->getNodeId())

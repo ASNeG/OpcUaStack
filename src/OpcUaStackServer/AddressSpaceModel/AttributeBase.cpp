@@ -301,7 +301,7 @@ namespace OpcUaStackServer
 				}
 
 				if (!isPartArrayDimensions()) return false;
-				OpcUaUInt32Array::SPtr arrayDimensions = constructSPtr<OpcUaUInt32Array>();
+				OpcUaUInt32Array::SPtr arrayDimensions = boost::make_shared<OpcUaUInt32Array>();
 				arrayDimensions->resize(variant->arrayLength());
 				for (uint32_t idx = 0; idx < variant->arrayLength(); idx++) {
 					OpcUaUInt32 arrayDimension = variant->get<OpcUaUInt32>(idx);

@@ -19,10 +19,10 @@ namespace OpcUaStackServer
      */
     DataTypeDictionaryType::DataTypeDictionaryType(void)
     : VariableBase()
-    , dataTypeVersion_Variable_(constructSPtr<ServerVariable>("DataTypeVersion_Variable"))
-    , deprecated_Variable_(constructSPtr<ServerVariable>("Deprecated_Variable"))
-    , namespaceUri_Variable_(constructSPtr<ServerVariable>("NamespaceUri_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , dataTypeVersion_Variable_(boost::make_shared<ServerVariable>("DataTypeVersion_Variable"))
+    , deprecated_Variable_(boost::make_shared<ServerVariable>("Deprecated_Variable"))
+    , namespaceUri_Variable_(boost::make_shared<ServerVariable>("NamespaceUri_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)72);
@@ -37,10 +37,10 @@ namespace OpcUaStackServer
      */
     DataTypeDictionaryType::DataTypeDictionaryType(const DataTypeDictionaryType& value)
     : VariableBase()
-    , dataTypeVersion_Variable_(constructSPtr<ServerVariable>("DataTypeVersion_Variable"))
-    , deprecated_Variable_(constructSPtr<ServerVariable>("Deprecated_Variable"))
-    , namespaceUri_Variable_(constructSPtr<ServerVariable>("NamespaceUri_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , dataTypeVersion_Variable_(boost::make_shared<ServerVariable>("DataTypeVersion_Variable"))
+    , deprecated_Variable_(boost::make_shared<ServerVariable>("Deprecated_Variable"))
+    , namespaceUri_Variable_(boost::make_shared<ServerVariable>("NamespaceUri_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)72);

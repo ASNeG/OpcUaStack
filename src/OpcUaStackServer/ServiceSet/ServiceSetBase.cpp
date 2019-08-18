@@ -25,8 +25,8 @@ namespace OpcUaStackServer
 	ServiceSetBase::ServiceSetBase(void)
 	: Component()
 	, informationModel_()
-	, namespaceArray_(constructSPtr<NamespaceArray>())
-	, serverArray_(constructSPtr<ServerArray>())
+	, namespaceArray_(boost::make_shared<NamespaceArray>())
+	, serverArray_(boost::make_shared<ServerArray>())
 	, forwardGlobalSync_()
 	{
 	}

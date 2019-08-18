@@ -257,9 +257,9 @@ namespace OpcUaStackClient
 		}
 
 		// create and send ReadRequest
-		auto trx = constructSPtr<VBITransactionRead>();
+		auto trx = boost::make_shared<VBITransactionRead>();
 		auto req = trx->request();
-		auto readValueIdSPtr = constructSPtr<ReadValueId>();
+		auto readValueIdSPtr = boost::make_shared<ReadValueId>();
 		readValueIdSPtr->nodeId()->copyFrom(nodeId);
 		readValueIdSPtr->attributeId(readContext.attributeId_);
 		readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
@@ -300,9 +300,9 @@ namespace OpcUaStackClient
 		}
 
 		// create and send ReadRequest
-		auto trx = constructSPtr<VBITransactionRead>();
+		auto trx = boost::make_shared<VBITransactionRead>();
 		auto req = trx->request();
-		auto readValueIdSPtr = constructSPtr<ReadValueId>();
+		auto readValueIdSPtr = boost::make_shared<ReadValueId>();
 		trx->VBIResultHandler_ = resultHandler;
 		readValueIdSPtr->nodeId()->copyFrom(nodeId);
 		readValueIdSPtr->attributeId(readContext.attributeId_);
@@ -384,10 +384,10 @@ namespace OpcUaStackClient
 		}
 
 		// create and send WriteRequest
-		auto trx = constructSPtr<VBITransactionWrite>();
+		auto trx = boost::make_shared<VBITransactionWrite>();
 		auto req = trx->request();
 
-		auto writeValue = constructSPtr<WriteValue>();
+		auto writeValue = boost::make_shared<WriteValue>();
 		writeValue->nodeId()->copyFrom(nodeId);
 		writeValue->attributeId(writeContext.attributeId_);
 		writeValue->dataValue().copyFrom(dataValue);
@@ -430,11 +430,11 @@ namespace OpcUaStackClient
 		}
 
 		// create and send WriteRequest
-		auto trx = constructSPtr<VBITransactionWrite>();
+		auto trx = boost::make_shared<VBITransactionWrite>();
 		trx->VBIResultHandler_ = resultHandler;
 		auto req = trx->request();
 
-		auto writeValue = constructSPtr<WriteValue>();
+		auto writeValue = boost::make_shared<WriteValue>();
 		writeValue->nodeId()->copyFrom(nodeId);
 		writeValue->attributeId(writeContext.attributeId_);
 		writeValue->dataValue().copyFrom(dataValue);
@@ -654,7 +654,7 @@ namespace OpcUaStackClient
 			assert(subscriptionService_.get() != nullptr);
 		}
 
-		auto trx = constructSPtr<VBITransactionCreateSubscription>();
+		auto trx = boost::make_shared<VBITransactionCreateSubscription>();
 		auto req = trx->request();
 		req->requestedPublishingInterval(createSubscriptionContext.requestedPublishingInterval_);
 		req->requestedLifetimeCount(createSubscriptionContext.requestedLifetimeCount_);
@@ -701,7 +701,7 @@ namespace OpcUaStackClient
 			assert(subscriptionService_.get() != nullptr);
 		}
 
-		auto trx = constructSPtr<VBITransactionCreateSubscription>();
+		auto trx = boost::make_shared<VBITransactionCreateSubscription>();
 		trx->VBIResultHandler_ = resultHandler;
 		auto req = trx->request();
 		req->requestedPublishingInterval(createSubscriptionContext.requestedPublishingInterval_);
@@ -809,7 +809,7 @@ namespace OpcUaStackClient
 			assert(subscriptionService_.get() != nullptr);
 		}
 
-		auto trx = constructSPtr<VBITransactionDeleteSubscription>();
+		auto trx = boost::make_shared<VBITransactionDeleteSubscription>();
 		auto req = trx->request();
 		req->subscriptionIds()->resize(1);
 		req->subscriptionIds()->set(0, subscriptionId);
@@ -851,7 +851,7 @@ namespace OpcUaStackClient
 			assert(subscriptionService_.get() != nullptr);
 		}
 
-		auto trx = constructSPtr<VBITransactionDeleteSubscription>();
+		auto trx = boost::make_shared<VBITransactionDeleteSubscription>();
 		trx->VBIResultHandler_ = resultHandler;
 		auto req = trx->request();
 		req->subscriptionIds()->resize(1);
@@ -947,12 +947,12 @@ namespace OpcUaStackClient
 			assert(monitoredItemService_.get() != nullptr);
 		}
 
-		auto trx = constructSPtr<VBITransactionCreateMonitoredItem>();
+		auto trx = boost::make_shared<VBITransactionCreateMonitoredItem>();
 		CreateMonitoredItemsRequest::SPtr req = trx->request();
 		req->subscriptionId(subscriptionId);
 		req->itemsToCreate()->resize(1);
 
-		auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+		auto monitoredItemCreateRequest = boost::make_shared<MonitoredItemCreateRequest>();
 		monitoredItemCreateRequest->itemToMonitor().nodeId()->copyFrom(nodeId);
 		monitoredItemCreateRequest->itemToMonitor().attributeId(createMonitoredItemContext.attributeId_);
 		monitoredItemCreateRequest->requestedParameters().clientHandle(clientHandle);
@@ -1002,13 +1002,13 @@ namespace OpcUaStackClient
 			assert(monitoredItemService_.get() != nullptr);
 		}
 
-		auto trx = constructSPtr<VBITransactionCreateMonitoredItem>();
+		auto trx = boost::make_shared<VBITransactionCreateMonitoredItem>();
 		trx->VBIResultHandler_ = resultHandler;
 		CreateMonitoredItemsRequest::SPtr req = trx->request();
 		req->subscriptionId(subscriptionId);
 		req->itemsToCreate()->resize(1);
 
-		auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+		auto monitoredItemCreateRequest = boost::make_shared<MonitoredItemCreateRequest>();
 		monitoredItemCreateRequest->itemToMonitor().nodeId()->copyFrom(nodeId);
 		monitoredItemCreateRequest->itemToMonitor().attributeId(createMonitoredItemContext.attributeId_);
 		monitoredItemCreateRequest->requestedParameters().clientHandle(clientHandle);
@@ -1095,7 +1095,7 @@ namespace OpcUaStackClient
 			assert(monitoredItemService_.get() != nullptr);
 		}
 
-		auto trx = constructSPtr<VBITransactionDeleteMonitoredItem>();
+		auto trx = boost::make_shared<VBITransactionDeleteMonitoredItem>();
 		auto req = trx->request();
 		req->subscriptionId(subscriptionId);
 		req->monitoredItemIds()->resize(1);
@@ -1138,7 +1138,7 @@ namespace OpcUaStackClient
 			assert(monitoredItemService_.get() != nullptr);
 		}
 
-		auto trx = constructSPtr<VBITransactionDeleteMonitoredItem>();
+		auto trx = boost::make_shared<VBITransactionDeleteMonitoredItem>();
 		trx->VBIResultHandler_ = resultHandler;
 		auto req = trx->request();
 		req->subscriptionId(subscriptionId);
@@ -1201,11 +1201,11 @@ namespace OpcUaStackClient
 			viewService_ = serviceSetManager_.viewService(sessionService_);
 		}
 
-		ServiceTransactionBrowse::SPtr trx = constructSPtr<ServiceTransactionBrowse>();
+		ServiceTransactionBrowse::SPtr trx = boost::make_shared<ServiceTransactionBrowse>();
 		BrowseRequest::SPtr req = trx->request();
 		req->nodesToBrowse()->resize(1);
 
-		BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
+		BrowseDescription::SPtr browseDescription = boost::make_shared<BrowseDescription>();
 		browseDescription->nodeId(nodeId);
 		browseDescription->browseDirection(BrowseDirection_Forward);
 		browseDescription->nodeClassMask(0xFFFFFFFF);

@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -61,21 +61,21 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build CallRequest
-	callRequestSPtr = constructSPtr<CallRequest>();
+	callRequestSPtr = boost::make_shared<CallRequest>();
 	
 	// build CallMethodRequest
-	variantSPtr = constructSPtr<OpcUaVariant>();
+	variantSPtr = boost::make_shared<OpcUaVariant>();
 	variantSPtr->variant((OpcUaUInt32)2);
 
-	objectIdSPtr = constructSPtr<OpcUaNodeId>();
+	objectIdSPtr = boost::make_shared<OpcUaNodeId>();
 	objectIdSPtr->namespaceIndex(0);
 	objectIdSPtr->nodeId((OpcUaUInt32)2782);
 
-	methodIdSPtr = constructSPtr<OpcUaNodeId>();
+	methodIdSPtr = boost::make_shared<OpcUaNodeId>();
 	methodIdSPtr->namespaceIndex(0);
 	methodIdSPtr->nodeId((OpcUaUInt32)3875);
 	
-	callMethodRequestSPtr = constructSPtr<CallMethodRequest>();
+	callMethodRequestSPtr = boost::make_shared<CallMethodRequest>();
 	callMethodRequestSPtr->objectId(objectIdSPtr);
 	callMethodRequestSPtr->methodId(methodIdSPtr);
 	callMethodRequestSPtr->inputArguments()->set(variantSPtr);
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 	callRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -127,17 +127,17 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CallRequest_Encoding_DefaultBinary);
 
 	// decode CallRequest
-	callRequestSPtr = constructSPtr<CallRequest>();
+	callRequestSPtr = boost::make_shared<CallRequest>();
 	callRequestSPtr->opcUaBinaryDecode(ios);
 	
 	BOOST_REQUIRE(callRequestSPtr->methodsToCall()->size() == 1);
-	callMethodRequestSPtr = constructSPtr<CallMethodRequest>();
+	callMethodRequestSPtr = boost::make_shared<CallMethodRequest>();
 	callRequestSPtr->methodsToCall()->get(callMethodRequestSPtr);
 	BOOST_REQUIRE(callMethodRequestSPtr->objectId()->nodeId<OpcUaUInt32>() == 2782);
 	BOOST_REQUIRE(callMethodRequestSPtr->methodId()->nodeId<OpcUaUInt32>() == 3875);
 	
 	BOOST_REQUIRE(callMethodRequestSPtr->inputArguments()->size() == 1);
-	variantSPtr = constructSPtr<OpcUaVariant>();
+	variantSPtr = boost::make_shared<OpcUaVariant>();
 	callMethodRequestSPtr->inputArguments()->get(variantSPtr);
 	BOOST_REQUIRE(variantSPtr->variant<OpcUaUInt32>() == 2);
 }
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -188,13 +188,13 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build CallResponse
-	callResponseSPtr = constructSPtr<CallResponse>();
+	callResponseSPtr = boost::make_shared<CallResponse>();
 
 	// build CallMethodResult
-	variantSPtr = constructSPtr<OpcUaVariant>();
+	variantSPtr = boost::make_shared<OpcUaVariant>();
 	variantSPtr->variant((OpcUaFloat)321);
 
-	callMethodResultSPtr = constructSPtr<CallMethodResult>();
+	callMethodResultSPtr = boost::make_shared<CallMethodResult>();
 	callMethodResultSPtr->statusCode((OpcUaStatusCode) Success);
 	callMethodResultSPtr->inputArgumentResults()->set((OpcUaStatusCode) Success);
 	callMethodResultSPtr->outputArguments()->set(variantSPtr);
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	callResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -244,11 +244,11 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CallResponse_Encoding_DefaultBinary);
 
 	// decode CallResponse
-	callResponseSPtr = constructSPtr<CallResponse>();
+	callResponseSPtr = boost::make_shared<CallResponse>();
 	callResponseSPtr->opcUaBinaryDecode(ios);
 	
 	BOOST_REQUIRE(callResponseSPtr->results()->size() == 1);
-	callMethodResultSPtr = constructSPtr<CallMethodResult>();
+	callMethodResultSPtr = boost::make_shared<CallMethodResult>();
 	callResponseSPtr->results()->get(callMethodResultSPtr);
 
 	BOOST_REQUIRE(callMethodResultSPtr->statusCode() ==  Success);
@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	BOOST_REQUIRE(statusCode == Success);
 
 	BOOST_REQUIRE(callMethodResultSPtr->outputArguments()->size() == 1);
-	variantSPtr = constructSPtr<OpcUaVariant>();
+	variantSPtr = boost::make_shared<OpcUaVariant>();
 	callMethodResultSPtr->outputArguments()->get(variantSPtr);
 	BOOST_REQUIRE(variantSPtr->variant<OpcUaFloat>() == 321);
 }

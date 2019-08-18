@@ -39,7 +39,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandDelay::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandDelay>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandDelay>();
 		return commandBase;
 	}
 

@@ -81,7 +81,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     X509IdentityToken::factory(void)
     {
-    	return constructSPtr<X509IdentityToken>();
+    	return boost::make_shared<X509IdentityToken>();
     }
     
     std::string

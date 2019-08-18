@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 
 	TransferSubscriptionsResponse::TransferSubscriptionsResponse(void)
 	: Object()
-	, transferResultArraySPtr_(constructSPtr<TransferResultArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, transferResultArraySPtr_(boost::make_shared<TransferResultArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

@@ -310,7 +310,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaGuid)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaGuid::SPtr guidSPtr = constructSPtr<OpcUaGuid>();
+	OpcUaGuid::SPtr guidSPtr = boost::make_shared<OpcUaGuid>();
 
 	*guidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 	value1.variant(guidSPtr);
@@ -328,7 +328,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaXmlElement)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaXmlElement::SPtr xmlElementSPtr = constructSPtr<OpcUaXmlElement>();
+	OpcUaXmlElement::SPtr xmlElementSPtr = boost::make_shared<OpcUaXmlElement>();
 
 	value1.variant(xmlElementSPtr);
 	
@@ -343,9 +343,9 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaNodeId)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaNodeId::SPtr nodeIdSPtr = constructSPtr<OpcUaNodeId>();
+	OpcUaNodeId::SPtr nodeIdSPtr = boost::make_shared<OpcUaNodeId>();
 
-	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
+	OpcUaString::SPtr opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("ABC");
 
 	nodeIdSPtr->namespaceIndex(123);
@@ -365,9 +365,9 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaExpandedNodeId)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaExpandedNodeId::SPtr nodeIdSPtr = constructSPtr<OpcUaExpandedNodeId>();
+	OpcUaExpandedNodeId::SPtr nodeIdSPtr = boost::make_shared<OpcUaExpandedNodeId>();
 
-	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
+	OpcUaString::SPtr opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("ABC");
 
 	nodeIdSPtr->namespaceIndex(123);
@@ -387,7 +387,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaQualifiedName)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaQualifiedName::SPtr qualifiedNameSPtr = constructSPtr<OpcUaQualifiedName>();
+	OpcUaQualifiedName::SPtr qualifiedNameSPtr = boost::make_shared<OpcUaQualifiedName>();
 
 	OpcUaString name;
 	name = "ABC";
@@ -409,7 +409,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaLocalizedText)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaLocalizedText::SPtr localizedTextPtr = constructSPtr<OpcUaLocalizedText>();
+	OpcUaLocalizedText::SPtr localizedTextPtr = boost::make_shared<OpcUaLocalizedText>();
 
 	OpcUaString locale;
 	OpcUaString text;
@@ -433,7 +433,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaString)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaString::SPtr stringSPtr = constructSPtr<OpcUaString>();
+	OpcUaString::SPtr stringSPtr = boost::make_shared<OpcUaString>();
 
 	stringSPtr->value("text");
 	value1.variant(stringSPtr);
@@ -450,7 +450,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaString_copyTo)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaString::SPtr stringSPtr = constructSPtr<OpcUaString>();
+	OpcUaString::SPtr stringSPtr = boost::make_shared<OpcUaString>();
 
 	stringSPtr->value("text");
 	value1.variant(stringSPtr);
@@ -478,7 +478,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaByteString)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaByteString::SPtr byteStringSPtr = constructSPtr<OpcUaByteString>();
+	OpcUaByteString::SPtr byteStringSPtr = boost::make_shared<OpcUaByteString>();
 
 	byteStringSPtr->value("text", 4);
 	value1.variant(byteStringSPtr);
@@ -498,7 +498,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaDataValue)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaDataValue::SPtr dataValueSPtr1 = constructSPtr<OpcUaDataValue>();
+	OpcUaDataValue::SPtr dataValueSPtr1 = boost::make_shared<OpcUaDataValue>();
 
 	dataValueSPtr1->statusCode(Success);
 	dataValueSPtr1->variant()->setValue(OpcUaString("Dies ist ein String"));
@@ -521,7 +521,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaExtensionObject)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaExtensionObject::SPtr extensionObjectSPtr = constructSPtr<OpcUaExtensionObject>();
+	OpcUaExtensionObject::SPtr extensionObjectSPtr = boost::make_shared<OpcUaExtensionObject>();
 
 	value1.variant(extensionObjectSPtr);
 	
@@ -763,17 +763,17 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_array_string)
 	OpcUaVariantValue::Vec variantVec1, variantVec2;
 	OpcUaVariantValue variantValue1, variantValue2;
 	
-	string1 = constructSPtr<OpcUaString>();
+	string1 = boost::make_shared<OpcUaString>();
 	string1->value("Dies ist der erste string");
 	variantValue1.variant(string1);
 	variantVec1.push_back(variantValue1);
 
-	string1 = constructSPtr<OpcUaString>();
+	string1 = boost::make_shared<OpcUaString>();
 	string1->value("Dies ist der zweite string");
 	variantValue1.variant(string1);
 	variantVec1.push_back(variantValue1);
 
-	string1 = constructSPtr<OpcUaString>();
+	string1 = boost::make_shared<OpcUaString>();
 	string1->value("Dies ist der dritte string");
 	variantValue1.variant(string1);
 	variantVec1.push_back(variantValue1);

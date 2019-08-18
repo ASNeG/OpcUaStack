@@ -153,7 +153,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     PubSubState::factory(void)
     {
-    	return constructSPtr<PubSubState>();
+    	return boost::make_shared<PubSubState>();
     }
     
     OpcUaNodeId

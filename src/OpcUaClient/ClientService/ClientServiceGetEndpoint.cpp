@@ -36,7 +36,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceGetEndpoint::createClientService(void)
 	{
-		return constructSPtr<ClientServiceGetEndpoint>();
+		return boost::make_shared<ClientServiceGetEndpoint>();
 	}
 
 	bool
@@ -77,7 +77,7 @@ namespace OpcUaClient
 
 		// create get endpoint request
 		ServiceTransactionGetEndpoints::SPtr trx;
-		trx = constructSPtr<ServiceTransactionGetEndpoints>();
+		trx = boost::make_shared<ServiceTransactionGetEndpoints>();
 		GetEndpointsRequest::SPtr req = trx->request();
 
 		// send read request

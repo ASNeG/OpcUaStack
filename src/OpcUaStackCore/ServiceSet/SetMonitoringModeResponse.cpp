@@ -33,8 +33,8 @@ namespace OpcUaStackCore
 	, resultArraySPtr_()
 	, diagnosticInfoArraySPtr_()
 	{
-		resultArraySPtr_ = constructSPtr<OpcUaStatusCodeArray>();
-		diagnosticInfoArraySPtr_ = constructSPtr<OpcUaDiagnosticInfoArray>();
+		resultArraySPtr_ = boost::make_shared<OpcUaStatusCodeArray>();
+		diagnosticInfoArraySPtr_ = boost::make_shared<OpcUaDiagnosticInfoArray>();
 	}
 
 	SetMonitoringModeResponse::~SetMonitoringModeResponse(void)

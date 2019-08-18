@@ -30,9 +30,9 @@ namespace OpcUaStackCore
 
 	CallMethodRequest::CallMethodRequest(void)
 	: Object()
-	, objectIdSPtr_(constructSPtr<OpcUaNodeId>())
-	, methodIdSPtr_(constructSPtr<OpcUaNodeId>())
-	, inputArgumentArraySPtr_(constructSPtr<OpcUaVariantArray>())
+	, objectIdSPtr_(boost::make_shared<OpcUaNodeId>())
+	, methodIdSPtr_(boost::make_shared<OpcUaNodeId>())
+	, inputArgumentArraySPtr_(boost::make_shared<OpcUaVariantArray>())
 	{
 	}
 

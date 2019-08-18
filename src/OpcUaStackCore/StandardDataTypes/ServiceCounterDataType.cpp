@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ServiceCounterDataType::factory(void)
     {
-    	return constructSPtr<ServiceCounterDataType>();
+    	return boost::make_shared<ServiceCounterDataType>();
     }
     
     std::string

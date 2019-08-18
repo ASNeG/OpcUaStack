@@ -22,7 +22,7 @@ namespace OpcUaStackCore
 
 	CloseSessionResponse::CloseSessionResponse(void)
 	: Object()
-	, responseHeader_(constructSPtr<ResponseHeader>())
+	, responseHeader_(boost::make_shared<ResponseHeader>())
 	{
 	}
 

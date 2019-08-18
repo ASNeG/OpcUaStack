@@ -37,7 +37,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceBrowse::createClientService(void)
 	{
-		return constructSPtr<ClientServiceBrowse>();
+		return boost::make_shared<ClientServiceBrowse>();
 	}
 
 	bool

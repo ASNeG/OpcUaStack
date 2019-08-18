@@ -175,7 +175,7 @@ namespace OpcUaStackCore
 	Certificate::SPtr
 	CertificateManager::readOwnCertificate(void)
 	{
-		auto certificate = constructSPtr<Certificate>();
+		auto certificate = boost::make_shared<Certificate>();
 		if (!certificate->fromDERFile(ownCertificateFile_)) {
 			certificate->log(Error, "read certificate from file error: " + ownCertificateFile_);
 			return nullptr;
@@ -215,7 +215,7 @@ namespace OpcUaStackCore
 	PrivateKey::SPtr
 	CertificateManager::readOwnPrivateKey(void)
 	{
-		auto privateKey = constructSPtr<PrivateKey>();
+		auto privateKey = boost::make_shared<PrivateKey>();
 		if (!privateKey->fromPEMFile(ownPrivateKeyFile_, nullptr)) {
 			privateKey->log(Error, "read private key from file error: " + ownCertificateFile_);
 			return nullptr;
@@ -301,7 +301,7 @@ namespace OpcUaStackCore
 				continue;
 			}
 
-			auto certificate = constructSPtr<Certificate>();
+			auto certificate = boost::make_shared<Certificate>();
 			if (!certificate->fromDERFile(file.path().string())) {
 				certificate->log(Error, "read certificate from file error: " + file.path().string());
 				continue;
@@ -328,7 +328,7 @@ namespace OpcUaStackCore
 				continue;
 			}
 
-			auto certificate = constructSPtr<Certificate>();
+			auto certificate = boost::make_shared<Certificate>();
 			if (!certificate->fromDERFile(file.path().string())) {
 				certificate->log(Error, "read certificate from file error: " + file.path().string());
 				continue;
@@ -366,7 +366,7 @@ namespace OpcUaStackCore
 	Certificate::SPtr
 	CertificateManager::readCertificate(const std::string& fileName)
 	{
-		auto certificate = constructSPtr<Certificate>();
+		auto certificate = boost::make_shared<Certificate>();
 		if (!certificate->fromDERFile(fileName)) {
 			certificate->log(Error, "read certificate from file error: " + fileName);
 				return nullptr;
@@ -455,7 +455,7 @@ namespace OpcUaStackCore
 				continue;
 			}
 
-			auto certificate = constructSPtr<Certificate>();
+			auto certificate = boost::make_shared<Certificate>();
 			if (!certificate->fromDERFile(file.path().string())) {
 				certificate->log(Error, "read certificate from file error: " + file.path().string());
 				continue;

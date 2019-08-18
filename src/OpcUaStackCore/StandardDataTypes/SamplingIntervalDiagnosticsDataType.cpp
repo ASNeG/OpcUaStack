@@ -107,7 +107,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     SamplingIntervalDiagnosticsDataType::factory(void)
     {
-    	return constructSPtr<SamplingIntervalDiagnosticsDataType>();
+    	return boost::make_shared<SamplingIntervalDiagnosticsDataType>();
     }
     
     std::string

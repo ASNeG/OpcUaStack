@@ -93,7 +93,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DeleteNodesItem::factory(void)
     {
-    	return constructSPtr<DeleteNodesItem>();
+    	return boost::make_shared<DeleteNodesItem>();
     }
     
     std::string

@@ -115,7 +115,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ReadRawModifiedDetails::factory(void)
     {
-    	return constructSPtr<ReadRawModifiedDetails>();
+    	return boost::make_shared<ReadRawModifiedDetails>();
     }
     
     std::string

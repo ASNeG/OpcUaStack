@@ -148,12 +148,12 @@ namespace OpcUaStackClient
 	{
 		auto& securitySettings = secureChannel->securitySettings_;
 
-		auto trx = constructSPtr<SecureChannelTransaction>();
+		auto trx = boost::make_shared<SecureChannelTransaction>();
 		trx->requestTypeNodeId_.nodeId(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
 		trx->requestId_ = ++requestId_;
 		std::iostream ios(&trx->os_);
 
-		OpcUaString::SPtr localeIdSPtr = constructSPtr<OpcUaString>();
+		OpcUaString::SPtr localeIdSPtr = boost::make_shared<OpcUaString>();
 		*localeIdSPtr = "en";
 
 		ActivateSessionRequest activateSessionRequest;
@@ -215,7 +215,7 @@ namespace OpcUaStackClient
 			SecureChannel* secureChannel
 	)
 	{
-		auto trx = constructSPtr<SecureChannelTransaction>();
+		auto trx = boost::make_shared<SecureChannelTransaction>();
 		trx->requestTypeNodeId_.nodeId(OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary);
 		trx->requestId_ = ++requestId_;
 		std::iostream ios(&trx->os_);
@@ -236,7 +236,7 @@ namespace OpcUaStackClient
 		bool deleteSubscriptions
 	)
 	{
-		auto trx = constructSPtr<SecureChannelTransaction>();
+		auto trx = boost::make_shared<SecureChannelTransaction>();
 		trx->requestTypeNodeId_.nodeId(OpcUaId_CloseSessionRequest_Encoding_DefaultBinary);
 		trx->requestId_ = ++requestId_;
 		std::iostream ios(&trx->os_);
@@ -265,7 +265,7 @@ namespace OpcUaStackClient
 		uint32_t requestHandle
 	)
 	{
-		auto trx = constructSPtr<SecureChannelTransaction>();
+		auto trx = boost::make_shared<SecureChannelTransaction>();
 		trx->requestTypeNodeId_.nodeId(OpcUaId_CloseSessionRequest_Encoding_DefaultBinary);
 		trx->requestId_ = ++requestId_;
 		std::iostream ios(&trx->os_);

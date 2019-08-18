@@ -38,7 +38,7 @@ namespace OpcUaStackServer
 
 	Subscription::Subscription(void)
 	: subscriptionId_(uniqueSubscriptionId())
-	, slotTimerElement_(constructSPtr<SlotTimerElement>())
+	, slotTimerElement_(boost::make_shared<SlotTimerElement>())
 	, retransmissionQueue_()
 	, monitorManager_()
 	, acknowledgementManager_()
@@ -142,7 +142,7 @@ namespace OpcUaStackServer
 		//
 		// handle event notification
 		//
-		extensibleParameter = constructSPtr<OpcUaExtensibleParameter>();
+		extensibleParameter = boost::make_shared<OpcUaExtensibleParameter>();
 		extensibleParameter->parameterTypeId().nodeId(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 		EventNotificationList::SPtr eventNotificationList = extensibleParameter->parameter<EventNotificationList>();
 		statusCode = monitorManager_.receive(eventNotificationList->events());
@@ -167,7 +167,7 @@ namespace OpcUaStackServer
 		//
 		// handle data change notification
 		//
-		extensibleParameter = constructSPtr<OpcUaExtensibleParameter>();
+		extensibleParameter = boost::make_shared<OpcUaExtensibleParameter>();
 		extensibleParameter->parameterTypeId().nodeId(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		DataChangeNotification::SPtr dataChangeNotification = extensibleParameter->parameter<DataChangeNotification>();
 		

@@ -115,7 +115,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ReadProcessedDetails::factory(void)
     {
-    	return constructSPtr<ReadProcessedDetails>();
+    	return boost::make_shared<ReadProcessedDetails>();
     }
     
     std::string

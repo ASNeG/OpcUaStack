@@ -137,7 +137,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     FieldTargetDataType::factory(void)
     {
-    	return constructSPtr<FieldTargetDataType>();
+    	return boost::make_shared<FieldTargetDataType>();
     }
     
     std::string

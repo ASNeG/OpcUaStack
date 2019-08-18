@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DeleteAtTimeDetails::factory(void)
     {
-    	return constructSPtr<DeleteAtTimeDetails>();
+    	return boost::make_shared<DeleteAtTimeDetails>();
     }
     
     std::string

@@ -55,7 +55,7 @@ namespace OpcUaStackServer
 
 		assert(endpointDescriptionSet.get() != nullptr);
 
-		endpointDescriptionArray_ = constructSPtr<EndpointDescriptionArray>();
+		endpointDescriptionArray_ = boost::make_shared<EndpointDescriptionArray>();
 		endpointDescriptionSet->getEndpoints(endpointDescriptionArray_);
 	}
 

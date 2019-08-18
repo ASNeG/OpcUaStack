@@ -107,7 +107,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ServerOnNetwork::factory(void)
     {
-    	return constructSPtr<ServerOnNetwork>();
+    	return boost::make_shared<ServerOnNetwork>();
     }
     
     std::string

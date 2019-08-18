@@ -71,7 +71,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     AnonymousIdentityToken::factory(void)
     {
-    	return constructSPtr<AnonymousIdentityToken>();
+    	return boost::make_shared<AnonymousIdentityToken>();
     }
     
     std::string

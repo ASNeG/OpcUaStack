@@ -107,7 +107,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DataTypeSchemaHeader::factory(void)
     {
-    	return constructSPtr<DataTypeSchemaHeader>();
+    	return boost::make_shared<DataTypeSchemaHeader>();
     }
     
     std::string

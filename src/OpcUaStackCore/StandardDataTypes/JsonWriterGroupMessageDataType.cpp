@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     JsonWriterGroupMessageDataType::factory(void)
     {
-    	return constructSPtr<JsonWriterGroupMessageDataType>();
+    	return boost::make_shared<JsonWriterGroupMessageDataType>();
     }
     
     std::string

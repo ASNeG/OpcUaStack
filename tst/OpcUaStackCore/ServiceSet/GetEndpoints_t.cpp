@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Title)
 
 BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 {
-	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
+	RequestHeader::SPtr requestHeader = boost::make_shared<RequestHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -62,10 +62,10 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	getEndpointsRequestSPtr = constructSPtr<GetEndpointsRequest>();
+	getEndpointsRequestSPtr = boost::make_shared<GetEndpointsRequest>();
 
 	// build RequestHeader
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	requestHeader->timeoutHint(300000);
 	
 	// build Parameter
-	stringSPtr = constructSPtr<OpcUaString>();
+	stringSPtr = boost::make_shared<OpcUaString>();
 	stringSPtr->value("TestString");
 
 	getEndpointsRequestSPtr->requestHeader()->time(ptime);
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	getEndpointsRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary);
 
 	// decode
-	getEndpointsRequestSPtr = constructSPtr<GetEndpointsRequest>();
+	getEndpointsRequestSPtr = boost::make_shared<GetEndpointsRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	getEndpointsRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 
 BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 {
-	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
+	ResponseHeader::SPtr responseHeader = boost::make_shared<ResponseHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -195,7 +195,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	getEndpointsResponseSPtr = constructSPtr<GetEndpointsResponse>();
+	getEndpointsResponseSPtr = boost::make_shared<GetEndpointsResponse>();
 	getEndpointsResponseSPtr->responseHeader()->time(ptime);
 
 	// build ResponseHeader
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	responseHeader->serviceResult(statusCode);
 
 	// build EndpointDescription
-	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
+	endpointDescriptionSPtr = boost::make_shared<EndpointDescription>();
 	
 	endpointDescriptionSPtr->endpointUrl().value("opt.tcp://localhost:481/0.0.0.0");
 	endpointDescriptionSPtr->server().applicationUri().value("urn:localhost:compyny:Unittest");
@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	endpointDescriptionSPtr->server().applicationName().text("company Unittest");
 	endpointDescriptionSPtr->server().applicationType().enumeration(ApplicationType::EnumServer);
 	endpointDescriptionSPtr->server().discoveryUrls().resize(1);
-	opcUaStringSPtr = constructSPtr<OpcUaString>();
+	opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->server().discoveryUrls().set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate().value((OpcUaByte*)"0123456789", 10);
@@ -231,7 +231,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	endpointDescriptionSPtr->securityPolicyUri().value("http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	endpointDescriptionSPtr->userIdentityTokens().resize(1);
-	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
+	userTokenPolicySPtr = boost::make_shared<UserTokenPolicy>();
 	userTokenPolicySPtr->policyId().value("OpcUaStack");
 	userTokenPolicySPtr->tokenType().enumeration(UserTokenType::EnumAnonymous);
 	endpointDescriptionSPtr->userIdentityTokens().push_back(userTokenPolicySPtr);
@@ -246,7 +246,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	getEndpointsResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -285,7 +285,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -296,7 +296,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -307,7 +307,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
 
 	// decode 
-	getEndpointsResponseSPtr = constructSPtr<GetEndpointsResponse>();
+	getEndpointsResponseSPtr = boost::make_shared<GetEndpointsResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	getEndpointsResponseSPtr->opcUaBinaryDecode(ios);
 
@@ -316,7 +316,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(getEndpointsResponseSPtr->endpoints()->size() == 1);
-	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
+	endpointDescriptionSPtr = boost::make_shared<EndpointDescription>();
 	getEndpointsResponseSPtr->endpoints()->get(endpointDescriptionSPtr);
 
 	BOOST_REQUIRE(endpointDescriptionSPtr->endpointUrl().value() == "opt.tcp://localhost:481/0.0.0.0");

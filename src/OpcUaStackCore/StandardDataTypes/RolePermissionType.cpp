@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     RolePermissionType::factory(void)
     {
-    	return constructSPtr<RolePermissionType>();
+    	return boost::make_shared<RolePermissionType>();
     }
     
     std::string

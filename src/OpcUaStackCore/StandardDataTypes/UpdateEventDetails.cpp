@@ -95,7 +95,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     UpdateEventDetails::factory(void)
     {
-    	return constructSPtr<UpdateEventDetails>();
+    	return boost::make_shared<UpdateEventDetails>();
     }
     
     std::string

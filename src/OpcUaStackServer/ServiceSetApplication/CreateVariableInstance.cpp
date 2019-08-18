@@ -120,7 +120,7 @@ namespace OpcUaStackServer
 		resultCode_ = Success;
 
 		// create response
-		auto trx = constructSPtr<ServiceTransactionCreateVariable>();
+		auto trx = boost::make_shared<ServiceTransactionCreateVariable>();
 		trx->request()->namespaceName(namespaceName_);
 		trx->request()->displayName(displayName_);
 		trx->request()->parentNodeId(parentNodeId_);

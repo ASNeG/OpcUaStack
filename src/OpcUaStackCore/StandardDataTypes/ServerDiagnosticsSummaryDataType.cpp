@@ -187,7 +187,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ServerDiagnosticsSummaryDataType::factory(void)
     {
-    	return constructSPtr<ServerDiagnosticsSummaryDataType>();
+    	return boost::make_shared<ServerDiagnosticsSummaryDataType>();
     }
     
     std::string

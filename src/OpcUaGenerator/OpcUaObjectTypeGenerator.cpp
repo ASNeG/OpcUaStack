@@ -207,7 +207,7 @@ namespace OpcUaObjectTypeGenerator
 	OpcUaObjectTypeGenerator::loadInformationModel(void)
 	{
 		// create a new information model
-		informationModel_ = constructSPtr<InformationModel>();
+		informationModel_ = boost::make_shared<InformationModel>();
 
 		std::vector<std::string>::iterator it;
 		for (it = fileNames_.begin(); it != fileNames_.end(); it++) {

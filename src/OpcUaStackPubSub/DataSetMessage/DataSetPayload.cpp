@@ -108,7 +108,7 @@ namespace OpcUaStackPubSub
 		}
 
 		for (uint32_t idx=0; idx<count_; idx++) {
-			DataSetMessageHeader::SPtr dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
+			DataSetMessageHeader::SPtr dataSetMessageHeader = boost::make_shared<DataSetMessageHeader>();
 			dataSetMessageHeader->opcUaBinaryDecode(is);
 
 			DataSetMessage::SPtr dataSetMessage;
@@ -116,22 +116,22 @@ namespace OpcUaStackPubSub
 			{
 				case DataKeyFrame:
 				{
-					dataSetMessage = constructSPtr<DataKeyFrameDataSetMessage>();
+					dataSetMessage = boost::make_shared<DataKeyFrameDataSetMessage>();
 					break;
 				}
 				case DataDeltaFrame:
 				{
-					dataSetMessage = constructSPtr<DataDeltaFrameDataSetMessage>();
+					dataSetMessage = boost::make_shared<DataDeltaFrameDataSetMessage>();
 					break;
 				}
 				case EventData:
 				{
-					dataSetMessage = constructSPtr<EventDataSetMessage>();
+					dataSetMessage = boost::make_shared<EventDataSetMessage>();
 					break;
 				}
 				case KeepAlive:
 				{
-					dataSetMessage = constructSPtr<KeepAliveMessage>();
+					dataSetMessage = boost::make_shared<KeepAliveMessage>();
 					break;
 				}
 				default:

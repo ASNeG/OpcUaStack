@@ -392,12 +392,12 @@ namespace OpcUaStackServer
 
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
-			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
+			ss << prefix << ", " << vt->variableName() << "(boost::make_shared<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
 		}
 
 		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
 			auto& vt = methodTypeField.second;
-			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerMethod>(\"" << vt->name() << "\"))" << std::endl;
+			ss << prefix << ", " << vt->variableName() << "(boost::make_shared<ServerMethod>(\"" << vt->name() << "\"))" << std::endl;
 		}
 
 		ss << prefix << "{" << std::endl;
@@ -437,12 +437,12 @@ namespace OpcUaStackServer
 
 		for (auto& variableTypeField : nodeInfo_.variableTypeFieldMap()) {
 			auto& vt = variableTypeField.second;
-			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
+			ss << prefix << ", " << vt->variableName() << "(boost::make_shared<ServerVariable>(\"" << vt->name() << "\"))" << std::endl;
 		}
 
 		for (auto& methodTypeField : nodeInfo_.methodTypeFieldMap()) {
 			auto& vt = methodTypeField.second;
-			ss << prefix << ", " << vt->variableName() << "(constructSPtr<ServerMethod>(\"" << vt->name() << "\"))" << std::endl;
+			ss << prefix << ", " << vt->variableName() << "(boost::make_shared<ServerMethod>(\"" << vt->name() << "\"))" << std::endl;
 		}
 
 		ss << prefix << "{" << std::endl;

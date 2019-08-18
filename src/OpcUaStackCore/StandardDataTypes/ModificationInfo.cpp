@@ -97,7 +97,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ModificationInfo::factory(void)
     {
-    	return constructSPtr<ModificationInfo>();
+    	return boost::make_shared<ModificationInfo>();
     }
     
     std::string

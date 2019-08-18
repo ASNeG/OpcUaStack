@@ -88,7 +88,7 @@ namespace OpcUaStackPubSub
 		}
 
 		// start publish timer loop
-		slotTimerElement_ = constructSPtr<SlotTimerElement>();
+		slotTimerElement_ = boost::make_shared<SlotTimerElement>();
 		slotTimerElement_->timeoutCallback(boost::bind(&NetworkMessageCreator::publish, this));
 		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), publishInterval_);
 		ioThread_->slotTimer()->start(slotTimerElement_);
@@ -163,7 +163,7 @@ namespace OpcUaStackPubSub
 		networkMessage.dataSetPayloadHeader()->dataSetArrayEnabled(dataSetArrayEnabled_);
 
 		// Build payload
-		DataSetMessageArray::SPtr messages = constructSPtr<DataSetMessageArray>();
+		DataSetMessageArray::SPtr messages = boost::make_shared<DataSetMessageArray>();
 		messages->resize(dataSetWriterIfMap_.size());
 
 		for(DataSetWriterIf::Map::iterator it = dataSetWriterIfMap_.begin();

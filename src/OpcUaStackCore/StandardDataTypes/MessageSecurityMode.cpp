@@ -153,7 +153,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     MessageSecurityMode::factory(void)
     {
-    	return constructSPtr<MessageSecurityMode>();
+    	return boost::make_shared<MessageSecurityMode>();
     }
     
     OpcUaNodeId

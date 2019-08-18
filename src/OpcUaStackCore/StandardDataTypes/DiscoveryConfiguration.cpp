@@ -73,7 +73,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DiscoveryConfiguration::factory(void)
     {
-    	return constructSPtr<DiscoveryConfiguration>();
+    	return boost::make_shared<DiscoveryConfiguration>();
     }
     
     std::string

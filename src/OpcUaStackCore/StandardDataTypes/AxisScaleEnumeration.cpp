@@ -149,7 +149,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     AxisScaleEnumeration::factory(void)
     {
-    	return constructSPtr<AxisScaleEnumeration>();
+    	return boost::make_shared<AxisScaleEnumeration>();
     }
     
     OpcUaNodeId

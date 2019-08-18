@@ -67,7 +67,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ConnectionTransportDataType::factory(void)
     {
-    	return constructSPtr<ConnectionTransportDataType>();
+    	return boost::make_shared<ConnectionTransportDataType>();
     }
     
     std::string

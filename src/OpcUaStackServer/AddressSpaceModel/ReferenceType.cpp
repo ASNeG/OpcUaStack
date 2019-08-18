@@ -94,7 +94,7 @@ namespace OpcUaStackServer
 		if (referenceType != ReferenceType_Unknown) return typeNodeId(referenceType);
 
 		// parse type nodeid 
-		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+		OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>();
 		if (!nodeId->fromString(referenceTypeString)) {
 			OpcUaNodeId::SPtr nodeIdTmp;
 			return nodeIdTmp;
@@ -174,7 +174,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasPropertyTypeNodeId(void)
 	{
 		if (hasPropertyTypeNodeId_.get() == nullptr) {
-			hasPropertyTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hasPropertyTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hasPropertyTypeNodeId_->nodeId(OpcUaId_HasProperty);
 		}
 		return hasPropertyTypeNodeId_;
@@ -184,7 +184,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasComponentTypeNodeId(void)
 	{
 		if (hasComponentTypeNodeId_.get() == nullptr) {
-			hasComponentTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hasComponentTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hasComponentTypeNodeId_->nodeId(OpcUaId_HasComponent);
 		}
 		return hasComponentTypeNodeId_;
@@ -194,7 +194,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasModellingRuleTypeNodeId(void)
 	{
 		if (hasModellingRuleTypeNodeId_.get() == nullptr) {
-			hasModellingRuleTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hasModellingRuleTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hasModellingRuleTypeNodeId_->nodeId(OpcUaId_HasModellingRule);
 		}
 		return hasModellingRuleTypeNodeId_;
@@ -204,7 +204,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasTypeDefinitionTypeNodeId(void)
 	{
 		if (hasTypeDefinitionTypeNodeId_.get() == nullptr) {
-			hasTypeDefinitionTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hasTypeDefinitionTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hasTypeDefinitionTypeNodeId_->nodeId(OpcUaId_HasTypeDefinition);
 		}
 		return hasTypeDefinitionTypeNodeId_;
@@ -214,7 +214,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasModelParentTypeNodeId(void)
 	{
 		if (hasModelParentTypeNodeId_.get() == nullptr) {
-			hasModelParentTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hasModelParentTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hasModelParentTypeNodeId_->nodeId(OpcUaId_HasModelParent); 
 		}
 		return hasModelParentTypeNodeId_;
@@ -224,7 +224,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasEventSourceTypeNodeId(void)
 	{
 		if (hasEventSourceTypeNodeId_.get() == nullptr) {
-			hasEventSourceTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hasEventSourceTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hasEventSourceTypeNodeId_->nodeId(OpcUaId_HasEventSource);
 		}
 		return hasEventSourceTypeNodeId_;
@@ -234,7 +234,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasNotifierTypeNodeId(void)
 	{
 		if (hasNotifierTypeNodeId_.get() == nullptr) {
-			hasNotifierTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hasNotifierTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hasNotifierTypeNodeId_->nodeId(OpcUaId_HasNotifier);
 		}
 		return hasNotifierTypeNodeId_;
@@ -244,7 +244,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::organizesTypeNodeId(void)
 	{
 		if (organizesTypeNodeId_.get() == nullptr) {
-			organizesTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			organizesTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			organizesTypeNodeId_->nodeId(OpcUaId_Organizes);
 		}
 		return organizesTypeNodeId_;
@@ -254,7 +254,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasDescriptionTypeNodeId(void)
 	{
 		if (hasDescriptionTypeNodeId_.get() == nullptr) {
-			hasDescriptionTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hasDescriptionTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hasDescriptionTypeNodeId_->nodeId(OpcUaId_HasDescription);
 		}
 		return hasDescriptionTypeNodeId_;
@@ -264,7 +264,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasEncodingTypeNodeId(void)
 	{
 		if (hasEncodingTypeNodeId_.get() == nullptr) {
-			hasEncodingTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hasEncodingTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hasEncodingTypeNodeId_->nodeId(OpcUaId_HasEncoding);
 		}
 		return hasEncodingTypeNodeId_;
@@ -274,7 +274,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasSubtypeTypeNodeId(void)
 	{
 		if (hasSubtypeTypeNodeId_.get() == nullptr) {
-			hasSubtypeTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hasSubtypeTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hasSubtypeTypeNodeId_->nodeId(OpcUaId_HasSubtype);
 		}
 		return hasSubtypeTypeNodeId_;
@@ -284,7 +284,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::nodeIdTypeNodeId(void)
 	{
 		if (nodeIdTypeNodeId_.get() == nullptr) {
-			nodeIdTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			nodeIdTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			nodeIdTypeNodeId_->nodeId(OpcUaId_NodeId);
 		}
 		return nodeIdTypeNodeId_;
@@ -294,7 +294,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::generateEventsTypeNodeId(void)
 	{
 		if (generateEventsTypeNodeId_.get() == nullptr) {
-			generateEventsTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			generateEventsTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			generateEventsTypeNodeId_->nodeId(OpcUaId_GeneratesEvent);
 		}
 		return generateEventsTypeNodeId_;
@@ -304,7 +304,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::alwaysGeneratesEventTypeNodeId(void)
 	{
 		if (alwaysGeneratesEventTypeNodeId_.get() == nullptr) {
-			alwaysGeneratesEventTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			alwaysGeneratesEventTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			alwaysGeneratesEventTypeNodeId_->nodeId(OpcUaId_AlwaysGeneratesEvent);
 		}
 		return alwaysGeneratesEventTypeNodeId_;
@@ -314,7 +314,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hierarchicalReferencesTypeNodeId(void)
 	{
 		if (hierarchicalReferencesTypeNodeId_.get() == nullptr) {
-			hierarchicalReferencesTypeNodeId_ = constructSPtr<OpcUaNodeId>();
+			hierarchicalReferencesTypeNodeId_ = boost::make_shared<OpcUaNodeId>();
 			hierarchicalReferencesTypeNodeId_->nodeId(OpcUaId_HierarchicalReferences);
 		}
 		return hierarchicalReferencesTypeNodeId_;

@@ -30,10 +30,10 @@ namespace OpcUaStackCore
 
 	GetEndpointsRequest::GetEndpointsRequest(void)
 	: Object()
-	, requestHeaderSPtr_(constructSPtr<RequestHeader>())
+	, requestHeaderSPtr_(boost::make_shared<RequestHeader>())
 	, endpointUrl_()
-	, localeIdArraySPtr_(constructSPtr<OpcUaStringArray>())
-	, profileUriArraySPtr_(constructSPtr<OpcUaStringArray>())
+	, localeIdArraySPtr_(boost::make_shared<OpcUaStringArray>())
+	, profileUriArraySPtr_(boost::make_shared<OpcUaStringArray>())
 	{
 	}
 

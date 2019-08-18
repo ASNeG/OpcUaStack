@@ -105,7 +105,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     AggregateFilter::factory(void)
     {
-    	return constructSPtr<AggregateFilter>();
+    	return boost::make_shared<AggregateFilter>();
     }
     
     std::string

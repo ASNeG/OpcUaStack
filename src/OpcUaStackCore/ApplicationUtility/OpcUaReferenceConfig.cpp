@@ -234,7 +234,7 @@ namespace OpcUaStackCore
 
 		// add monitored item extension
 		if (service_ == Mon) {
-			OpcUaMonReferenceConfig::SPtr mon = constructSPtr<OpcUaMonReferenceConfig>();
+			OpcUaMonReferenceConfig::SPtr mon = boost::make_shared<OpcUaMonReferenceConfig>();
 			mon->configFileName(configFileName_);
 			mon->elementPrefix(elementPrefix_);
 			extension_ = mon;
@@ -243,7 +243,7 @@ namespace OpcUaStackCore
 
 		// add call item extension
 		if (service_ == Call) {
-			OpcUaCallReferenceConfig::SPtr call = constructSPtr<OpcUaCallReferenceConfig>();
+			OpcUaCallReferenceConfig::SPtr call = boost::make_shared<OpcUaCallReferenceConfig>();
 			call->configFileName(configFileName_);
 			call->elementPrefix(elementPrefix_);
 			extension_ = call;

@@ -123,7 +123,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     NodeAttributes::factory(void)
     {
-    	return constructSPtr<NodeAttributes>();
+    	return boost::make_shared<NodeAttributes>();
     }
     
     std::string

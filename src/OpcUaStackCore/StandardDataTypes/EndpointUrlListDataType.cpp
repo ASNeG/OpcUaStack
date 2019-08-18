@@ -77,7 +77,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     EndpointUrlListDataType::factory(void)
     {
-    	return constructSPtr<EndpointUrlListDataType>();
+    	return boost::make_shared<EndpointUrlListDataType>();
     }
     
     std::string

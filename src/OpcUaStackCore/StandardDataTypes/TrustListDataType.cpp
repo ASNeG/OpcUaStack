@@ -117,7 +117,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     TrustListDataType::factory(void)
     {
-    	return constructSPtr<TrustListDataType>();
+    	return boost::make_shared<TrustListDataType>();
     }
     
     std::string

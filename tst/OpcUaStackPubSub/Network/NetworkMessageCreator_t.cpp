@@ -67,21 +67,21 @@ struct NetworkMessageCreatorFixtures
 {
 	NetworkMessageCreatorFixtures()
 	{
-		dataSetMessage1 = constructSPtr<KeepAliveMessage>();
-		writer1 = constructSPtr<MockDataSetWriter>(dataSetMessage1, true);
+		dataSetMessage1 = boost::make_shared<KeepAliveMessage>();
+		writer1 = boost::make_shared<MockDataSetWriter>(dataSetMessage1, true);
 		writer1->writerId(1);
 
-		dataSetMessage2 = constructSPtr<KeepAliveMessage>();
-		writer2 = constructSPtr<MockDataSetWriter>(dataSetMessage2, true);
+		dataSetMessage2 = boost::make_shared<KeepAliveMessage>();
+		writer2 = boost::make_shared<MockDataSetWriter>(dataSetMessage2, true);
 		writer2->writerId(2);
 
 		creator.registerDataSetWriterIf(writer1);
 		creator.registerDataSetWriterIf(writer2);
 
-		sender = constructSPtr<MockNetworkSender>(true);
+		sender = boost::make_shared<MockNetworkSender>(true);
 		creator.networkSenderIf(sender);
 
-		OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+		OpcUaVariant::SPtr publisherId = boost::make_shared<OpcUaVariant>();
 		publisherId->variant(OpcUaByte(1000));
 		creator.publisherId(publisherId);
 	}
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageCreator_)
 BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_registation, NetworkMessageCreatorFixtures)
 {
 	MockDataSetWriter::SPtr writer3;
-	writer3 = constructSPtr<MockDataSetWriter>(dataSetMessage2, true);
+	writer3 = boost::make_shared<MockDataSetWriter>(dataSetMessage2, true);
 	writer3->writerId(3);
 
 	BOOST_REQUIRE(creator.registerDataSetWriterIf(writer3) == true);
@@ -129,7 +129,7 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_deregistation, NetworkMessageCreat
 
 BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers, NetworkMessageCreatorFixtures)
 {
-	DataSetPayload::SPtr payload = constructSPtr<DataSetPayload>();
+	DataSetPayload::SPtr payload = boost::make_shared<DataSetPayload>();
 	payload->dataSetMessages()->resize(2);
 	payload->dataSetMessages()->push_back(dataSetMessage1);
 	payload->dataSetMessages()->push_back(dataSetMessage2);
@@ -143,7 +143,7 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_datasets_from_1_writer, Ne
 {
 	writer2->publishResult_ = false;
 
-	DataSetPayload::SPtr payload = constructSPtr<DataSetPayload>();
+	DataSetPayload::SPtr payload = boost::make_shared<DataSetPayload>();
 	payload->dataSetMessages()->resize(1);
 	payload->dataSetMessages()->push_back(dataSetMessage1);
 	payload->count(1);
@@ -164,7 +164,7 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_pass_keepAlive2, NetworkMe
 {
 	creator.keepAliveTime(2000);
 
-	DataSetWriterIf::SPtr writer = constructSPtr<MockDataSetWriter>(nullptr, false);
+	DataSetWriterIf::SPtr writer = boost::make_shared<MockDataSetWriter>(nullptr, false);
 	creator.registerDataSetWriterIf(writer);
 
 	BOOST_REQUIRE_EQUAL(2000, writer->keepAliveTime());

@@ -11,26 +11,26 @@ using namespace OpcUaStackServer;
 
 struct InitMonitorManager {
     InitMonitorManager() : mm()
-    , informationModel(constructSPtr<InformationModel>())
-    , ioThread(constructSPtr<IOThread>())
-    , createMonitoredItemTransaction(constructSPtr<ServiceTransactionCreateMonitoredItems>())
+    , informationModel(boost::make_shared<InformationModel>())
+    , ioThread(boost::make_shared<IOThread>())
+    , createMonitoredItemTransaction(boost::make_shared<ServiceTransactionCreateMonitoredItems>())
     , startMonitoredItemCallCount(0)
     , stopMonitoredItemCallCount(0)
     {
 
 		mm.informationModel(informationModel);
 
-		ioThread = constructSPtr<IOThread>();
-		ioThread->slotTimer(constructSPtr<SlotTimer>());
+		ioThread = boost::make_shared<IOThread>();
+		ioThread->slotTimer(boost::make_shared<SlotTimer>());
 		mm.ioThread(ioThread.get());
 
-		nodeToMonitor = constructSPtr<VariableNodeClass>();
+		nodeToMonitor = boost::make_shared<VariableNodeClass>();
 		OpcUaNodeId nodeToMonitorId(0, 0);
 		nodeToMonitor->setNodeId(nodeToMonitorId);
 		OpcUaDataValue value(0);
 		nodeToMonitor->setValue(value);
 
-		sync = constructSPtr<ForwardNodeSync>();
+		sync = boost::make_shared<ForwardNodeSync>();
 		auto startMonitoredItemCallback = Callback(boost::bind(&InitMonitorManager::startMonitored, this, _1));
 		auto stopMonitoredItemCallback = Callback(boost::bind(&InitMonitorManager::stopMonitored, this, _1));
 		sync->monitoredItemStartService().setCallback(startMonitoredItemCallback);
@@ -40,7 +40,7 @@ struct InitMonitorManager {
 
 		informationModel->insert(nodeToMonitor);
 
-		auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+		auto monitoredItemCreateRequest = boost::make_shared<MonitoredItemCreateRequest>();
 
 		ReadValueId readValueId;
 		readValueId.nodeId(0, 0);
@@ -48,7 +48,7 @@ struct InitMonitorManager {
 		monitoredItemCreateRequest->itemToMonitor(readValueId);
 
 
-		auto itemsToCreate = constructSPtr<MonitoredItemCreateRequestArray>();
+		auto itemsToCreate = boost::make_shared<MonitoredItemCreateRequestArray>();
 		itemsToCreate->resize(1);
 		itemsToCreate->push_back(monitoredItemCreateRequest);
 
@@ -71,11 +71,11 @@ struct InitMonitorManager {
 		MonitoredItemCreateResult::SPtr result;
 		response->results()->get(0, result);
 
-		auto ids = constructSPtr<OpcUaUInt32Array>();
+		auto ids = boost::make_shared<OpcUaUInt32Array>();
 		ids->resize(1);
 		ids->push_back(result->monitoredItemId());
 
-	    auto deleteMonitoredItemTransaction = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
+	    auto deleteMonitoredItemTransaction = boost::make_shared<ServiceTransactionDeleteMonitoredItems>();
 		deleteMonitoredItemTransaction->request()->monitoredItemIds(ids);
 
 		return deleteMonitoredItemTransaction;

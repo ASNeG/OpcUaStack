@@ -277,7 +277,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     NodeAttributesMask::factory(void)
     {
-    	return constructSPtr<NodeAttributesMask>();
+    	return boost::make_shared<NodeAttributesMask>();
     }
     
     OpcUaNodeId

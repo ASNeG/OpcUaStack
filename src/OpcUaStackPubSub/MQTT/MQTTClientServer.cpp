@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <iostream>
@@ -371,7 +372,7 @@ namespace OpcUaStackPubSub
 			return  false;
 		}
 
-		MQTTSubscription::SPtr mqttSubscription = constructSPtr<MQTTSubscription>();
+		MQTTSubscription::SPtr mqttSubscription = boost::make_shared<MQTTSubscription>();
 		mqttSubscription->topic(topic);
 		mqttSubscription->mqttSubscriptionIf(mqttSubscribeIf);
 		mqttSubscriptionMap_.insert(std::make_pair(topic, mqttSubscription));
@@ -493,14 +494,14 @@ namespace OpcUaStackPubSub
 
 	MQTTClientServerBase::SPtr constructMQTT(void)
 	{
-		return constructSPtr<MQTTClientServer>();
+		return boost::make_shared<MQTTClientServer>();
 	}
 
 #else
 
 	MQTTClientServerBase::SPtr constructMQTT(void)
 	{
-		return constructSPtr<MQTTClientServerBase>();
+		return boost::make_shared<MQTTClientServerBase>();
 	}
 
 #endif

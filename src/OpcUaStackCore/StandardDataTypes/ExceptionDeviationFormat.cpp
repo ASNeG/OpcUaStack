@@ -157,7 +157,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ExceptionDeviationFormat::factory(void)
     {
-    	return constructSPtr<ExceptionDeviationFormat>();
+    	return boost::make_shared<ExceptionDeviationFormat>();
     }
     
     OpcUaNodeId

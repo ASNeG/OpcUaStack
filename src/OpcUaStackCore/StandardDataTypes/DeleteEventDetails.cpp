@@ -75,7 +75,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DeleteEventDetails::factory(void)
     {
-    	return constructSPtr<DeleteEventDetails>();
+    	return boost::make_shared<DeleteEventDetails>();
     }
     
     std::string

@@ -37,8 +37,8 @@ namespace OpcUaStackCore
 	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	, secureChannelClientIf_(nullptr)
 	, ioThread_(ioThread)
-	, slotTimerElementRenew_(constructSPtr<SlotTimerElement>())
-	, slotTimerElementReconnect_(constructSPtr<SlotTimerElement>())
+	, slotTimerElementRenew_(boost::make_shared<SlotTimerElement>())
+	, slotTimerElementReconnect_(boost::make_shared<SlotTimerElement>())
 	, renewTimeout_(300000)
 	, reconnectTimeout_(0)
 	{

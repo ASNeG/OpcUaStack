@@ -37,7 +37,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandDisconnect::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandDisconnect>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandDisconnect>();
 		return commandBase;
 	}
 

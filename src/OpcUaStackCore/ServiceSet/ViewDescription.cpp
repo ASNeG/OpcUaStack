@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	ViewDescription::ViewDescription(void)
 	: Object()
-	, viewIdSPtr_(constructSPtr<OpcUaNodeId>())
+	, viewIdSPtr_(boost::make_shared<OpcUaNodeId>())
 	, timestamp_()
 	, viewVersion_()
 	{

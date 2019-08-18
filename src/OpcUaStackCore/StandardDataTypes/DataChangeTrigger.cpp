@@ -149,7 +149,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     DataChangeTrigger::factory(void)
     {
-    	return constructSPtr<DataChangeTrigger>();
+    	return boost::make_shared<DataChangeTrigger>();
     }
     
     OpcUaNodeId

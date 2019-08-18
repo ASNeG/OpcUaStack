@@ -457,7 +457,7 @@ namespace OpcUaStackServer
 			}
 
 			// create new variable element
-			VariableElement::SPtr variableElement = constructSPtr<VariableElement>();
+			VariableElement::SPtr variableElement = boost::make_shared<VariableElement>();
 			variableElement->prefix(prefix);
 			variableElement->nodeId(*it);
 			variableElement->browseName(browseName);
@@ -872,7 +872,7 @@ namespace OpcUaStackServer
 		ss << prefix << "    uint32_t namespaceIndex;" << std::endl;
 		ss << prefix << "    " << parentEventTypeName_ << "::mapNamespaceUri();" << std::endl;
 		ss << prefix << std::endl;
-		ss << prefix << "    OpcUaVariant::SPtr eventTypeVariable = constructSPtr<OpcUaVariant>();" << std::endl;
+		ss << prefix << "    OpcUaVariant::SPtr eventTypeVariable = boost::make_shared<OpcUaVariant>();" << std::endl;
 		ss << prefix << "    eventTypeVariable->setValue(eventVariables_.eventType());" << std::endl;
 		ss << prefix << std::endl;
 		ss << prefix << "    setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventTypeVariable);" << std::endl;

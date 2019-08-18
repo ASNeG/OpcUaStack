@@ -16,15 +16,15 @@ namespace OpcUaStackServer
     
     NDimensionArrayItemType::NDimensionArrayItemType(void)
     : VariableBase()
-    , axisDefinition_Variable_(constructSPtr<ServerVariable>("AxisDefinition_Variable"))
-    , axisScaleType_Variable_(constructSPtr<ServerVariable>("AxisScaleType_Variable"))
-    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
-    , eURange_Variable_(constructSPtr<ServerVariable>("EURange_Variable"))
-    , engineeringUnits_Variable_(constructSPtr<ServerVariable>("EngineeringUnits_Variable"))
-    , instrumentRange_Variable_(constructSPtr<ServerVariable>("InstrumentRange_Variable"))
-    , title_Variable_(constructSPtr<ServerVariable>("Title_Variable"))
-    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , axisDefinition_Variable_(boost::make_shared<ServerVariable>("AxisDefinition_Variable"))
+    , axisScaleType_Variable_(boost::make_shared<ServerVariable>("AxisScaleType_Variable"))
+    , definition_Variable_(boost::make_shared<ServerVariable>("Definition_Variable"))
+    , eURange_Variable_(boost::make_shared<ServerVariable>("EURange_Variable"))
+    , engineeringUnits_Variable_(boost::make_shared<ServerVariable>("EngineeringUnits_Variable"))
+    , instrumentRange_Variable_(boost::make_shared<ServerVariable>("InstrumentRange_Variable"))
+    , title_Variable_(boost::make_shared<ServerVariable>("Title_Variable"))
+    , valuePrecision_Variable_(boost::make_shared<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)12068);
@@ -41,15 +41,15 @@ namespace OpcUaStackServer
     
     NDimensionArrayItemType::NDimensionArrayItemType(const NDimensionArrayItemType& value)
     : VariableBase()
-    , axisDefinition_Variable_(constructSPtr<ServerVariable>("AxisDefinition_Variable"))
-    , axisScaleType_Variable_(constructSPtr<ServerVariable>("AxisScaleType_Variable"))
-    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
-    , eURange_Variable_(constructSPtr<ServerVariable>("EURange_Variable"))
-    , engineeringUnits_Variable_(constructSPtr<ServerVariable>("EngineeringUnits_Variable"))
-    , instrumentRange_Variable_(constructSPtr<ServerVariable>("InstrumentRange_Variable"))
-    , title_Variable_(constructSPtr<ServerVariable>("Title_Variable"))
-    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , axisDefinition_Variable_(boost::make_shared<ServerVariable>("AxisDefinition_Variable"))
+    , axisScaleType_Variable_(boost::make_shared<ServerVariable>("AxisScaleType_Variable"))
+    , definition_Variable_(boost::make_shared<ServerVariable>("Definition_Variable"))
+    , eURange_Variable_(boost::make_shared<ServerVariable>("EURange_Variable"))
+    , engineeringUnits_Variable_(boost::make_shared<ServerVariable>("EngineeringUnits_Variable"))
+    , instrumentRange_Variable_(boost::make_shared<ServerVariable>("InstrumentRange_Variable"))
+    , title_Variable_(boost::make_shared<ServerVariable>("Title_Variable"))
+    , valuePrecision_Variable_(boost::make_shared<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)12068);

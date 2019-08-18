@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: Object()
 	, subscriptionId_()
 	, monitoringMode_()
-	, monitoredItemIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())
+	, monitoredItemIdArraySPtr_(boost::make_shared<OpcUaUInt32Array>())
 	{
 	}
 

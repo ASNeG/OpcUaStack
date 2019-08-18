@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	GetNodeReferenceRequest::GetNodeReferenceRequest(void)
 	: Object()
-	, nodes_(constructSPtr<OpcUaNodeIdArray>())
+	, nodes_(boost::make_shared<OpcUaNodeIdArray>())
 	{
 	}
 

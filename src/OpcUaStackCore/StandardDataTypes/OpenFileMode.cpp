@@ -153,7 +153,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     OpenFileMode::factory(void)
     {
-    	return constructSPtr<OpenFileMode>();
+    	return boost::make_shared<OpenFileMode>();
     }
     
     OpcUaNodeId

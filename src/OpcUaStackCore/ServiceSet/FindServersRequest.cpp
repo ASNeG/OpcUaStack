@@ -30,10 +30,10 @@ namespace OpcUaStackCore
 
 	FindServersRequest::FindServersRequest(void)
 	: Object()
-	, requestHeaderSPtr_(constructSPtr<RequestHeader>())
+	, requestHeaderSPtr_(boost::make_shared<RequestHeader>())
 	, endpointUrl_()
-	, localeIdArraySPtr_(constructSPtr<OpcUaStringArray>())
-	, serverUriArraySPtr_(constructSPtr<OpcUaStringArray>())
+	, localeIdArraySPtr_(boost::make_shared<OpcUaStringArray>())
+	, serverUriArraySPtr_(boost::make_shared<OpcUaStringArray>())
 	{
 	}
 

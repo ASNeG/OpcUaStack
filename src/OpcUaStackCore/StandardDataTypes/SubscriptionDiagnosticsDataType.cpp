@@ -377,7 +377,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     SubscriptionDiagnosticsDataType::factory(void)
     {
-    	return constructSPtr<SubscriptionDiagnosticsDataType>();
+    	return boost::make_shared<SubscriptionDiagnosticsDataType>();
     }
     
     std::string

@@ -32,13 +32,13 @@ namespace OpcUaStackCore
 	: Object()
 	, referenceTypeIdSPtr_()
 	, isForward_()
-	, nodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
+	, nodeIdSPtr_(boost::make_shared<OpcUaExpandedNodeId>())
 	, browseName_()
 	, displayName_()
 	, nodeClass_()
-	, typeDefinitionSPtr_(constructSPtr<OpcUaExpandedNodeId>())
+	, typeDefinitionSPtr_(boost::make_shared<OpcUaExpandedNodeId>())
 	{
-		referenceTypeIdSPtr_ = constructSPtr<OpcUaNodeId>();
+		referenceTypeIdSPtr_ = boost::make_shared<OpcUaNodeId>();
 	}
 
 	ReferenceDescription::~ReferenceDescription(void)

@@ -169,7 +169,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ServerState::factory(void)
     {
-    	return constructSPtr<ServerState>();
+    	return boost::make_shared<ServerState>();
     }
     
     OpcUaNodeId

@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     EventFieldList::factory(void)
     {
-    	return constructSPtr<EventFieldList>();
+    	return boost::make_shared<EventFieldList>();
     }
     
     std::string

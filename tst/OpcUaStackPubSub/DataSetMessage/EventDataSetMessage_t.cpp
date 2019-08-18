@@ -23,10 +23,10 @@ BOOST_AUTO_TEST_CASE(EventDataSetMessage_encode_decode_variant)
 
 	value1.dataSetFields()->resize(10);
 	for (uint32_t idx=0; idx<10; idx++) {
-		OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+		OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 		variant->setValue(OpcUaNodeId(idx));
 
-		DataSetField::SPtr dataSetField = constructSPtr<DataSetField>();
+		DataSetField::SPtr dataSetField = boost::make_shared<DataSetField>();
 		dataSetField->variant(variant);
 
 		value1.dataSetFields()->push_back(dataSetField);

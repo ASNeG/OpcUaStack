@@ -107,7 +107,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     EUInformation::factory(void)
     {
-    	return constructSPtr<EUInformation>();
+    	return boost::make_shared<EUInformation>();
     }
     
     std::string

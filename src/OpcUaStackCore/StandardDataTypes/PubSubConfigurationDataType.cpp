@@ -97,7 +97,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     PubSubConfigurationDataType::factory(void)
     {
-    	return constructSPtr<PubSubConfigurationDataType>();
+    	return boost::make_shared<PubSubConfigurationDataType>();
     }
     
     std::string

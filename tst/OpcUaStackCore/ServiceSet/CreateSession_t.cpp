@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(52);
 	sequenceHeaderSPtr->requestId(2);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -61,12 +61,12 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CreateSessionRequest
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x00;
-	createSessionRequestSPtr = constructSPtr<CreateSessionRequest>();
+	createSessionRequestSPtr = boost::make_shared<CreateSessionRequest>();
 	createSessionRequestSPtr->clientDescription()->applicationUri().value("urn:localhost:compyny:Unittest");
 	createSessionRequestSPtr->clientDescription()->productUri().value("urn:company:Unittest");
 	createSessionRequestSPtr->clientDescription()->applicationName().text("company Unittest");
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 	createSessionRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 		BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 52);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 2);
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
 
 	// decode CreateSessionRequest
-	createSessionRequestSPtr = constructSPtr<CreateSessionRequest>();
+	createSessionRequestSPtr = boost::make_shared<CreateSessionRequest>();
 	createSessionRequestSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(createSessionRequestSPtr->clientDescription()->applicationUri().value() == "urn:localhost:compyny:Unittest");
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(52);
 	sequenceHeaderSPtr->requestId(2);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -200,10 +200,10 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CreateSessionResponse
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
-	createSessionResponseSPtr = constructSPtr<CreateSessionResponse>();
+	createSessionResponseSPtr = boost::make_shared<CreateSessionResponse>();
 
 	createSessionResponseSPtr->sessionId().namespaceIndex(1);
 	createSessionResponseSPtr->sessionId().nodeId(1);
@@ -215,14 +215,14 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	createSessionResponseSPtr->serverEndpoints()->resize(3);
 
 
-	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
+	endpointDescriptionSPtr = boost::make_shared<EndpointDescription>();
 	endpointDescriptionSPtr->endpointUrl().value("opt.tcp://localhost:481/0.0.0.0");
 	endpointDescriptionSPtr->server().applicationUri().value("urn:localhost:compyny:Unittest");
 	endpointDescriptionSPtr->server().productUri().value("urn:company:Unittest");
 	endpointDescriptionSPtr->server().applicationName().text("company Unittest");
 	endpointDescriptionSPtr->server().applicationType().enumeration(ApplicationType::EnumServer);
 	endpointDescriptionSPtr->server().discoveryUrls().resize(1);
-	opcUaStringSPtr = constructSPtr<OpcUaString>();
+	opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->server().discoveryUrls().set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate().value((OpcUaByte*)"0123456789", 10);
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	endpointDescriptionSPtr->securityPolicyUri().value("http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	endpointDescriptionSPtr->userIdentityTokens().resize(1);
-	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
+	userTokenPolicySPtr = boost::make_shared<UserTokenPolicy>();
 	userTokenPolicySPtr->policyId().value("OpcUaStack");
 	userTokenPolicySPtr->tokenType().enumeration(UserTokenType::EnumAnonymous);
 	endpointDescriptionSPtr->userIdentityTokens().push_back(userTokenPolicySPtr);
@@ -241,14 +241,14 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	createSessionResponseSPtr->serverEndpoints()->push_back(endpointDescriptionSPtr);
 
 
-	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
+	endpointDescriptionSPtr = boost::make_shared<EndpointDescription>();
 	endpointDescriptionSPtr->endpointUrl().value("opt.tcp://localhost:481/0.0.0.0");
 	endpointDescriptionSPtr->server().applicationUri().value("urn:localhost:compyny:Unittest");
 	endpointDescriptionSPtr->server().productUri().value("urn:company:Unittest");
 	endpointDescriptionSPtr->server().applicationName().text("company Unittest");
 	endpointDescriptionSPtr->server().applicationType().enumeration(ApplicationType::EnumServer);
 	endpointDescriptionSPtr->server().discoveryUrls().resize(1);
-	opcUaStringSPtr = constructSPtr<OpcUaString>();
+	opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->server().discoveryUrls().set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate().value((OpcUaByte*)"0123456789", 10);
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	endpointDescriptionSPtr->securityPolicyUri().value("http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
 
 	endpointDescriptionSPtr->userIdentityTokens().resize(1);
-	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
+	userTokenPolicySPtr = boost::make_shared<UserTokenPolicy>();
 	userTokenPolicySPtr->policyId().value("OpcUaStack");
 	userTokenPolicySPtr->tokenType().enumeration(UserTokenType::EnumAnonymous);
 	endpointDescriptionSPtr->userIdentityTokens().push_back(userTokenPolicySPtr);
@@ -267,14 +267,14 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	createSessionResponseSPtr->serverEndpoints()->push_back(endpointDescriptionSPtr);
 
 
-	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
+	endpointDescriptionSPtr = boost::make_shared<EndpointDescription>();
 	endpointDescriptionSPtr->endpointUrl().value("opt.tcp://localhost:481/0.0.0.0");
 	endpointDescriptionSPtr->server().applicationUri().value("urn:localhost:compyny:Unittest");
 	endpointDescriptionSPtr->server().productUri().value("urn:company:Unittest");
 	endpointDescriptionSPtr->server().applicationName().text("company Unittest");
 	endpointDescriptionSPtr->server().applicationType().enumeration(ApplicationType::EnumServer);
 	endpointDescriptionSPtr->server().discoveryUrls().resize(1);
-	opcUaStringSPtr = constructSPtr<OpcUaString>();
+	opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->server().discoveryUrls().set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate().value((OpcUaByte*)"0123456789", 10);
@@ -282,7 +282,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	endpointDescriptionSPtr->securityPolicyUri().value("http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
 
 	endpointDescriptionSPtr->userIdentityTokens().resize(1);
-	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
+	userTokenPolicySPtr = boost::make_shared<UserTokenPolicy>();
 	userTokenPolicySPtr->policyId().value("OpcUaStack");
 	userTokenPolicySPtr->tokenType().enumeration(UserTokenType::EnumAnonymous);
 	endpointDescriptionSPtr->userIdentityTokens().push_back(userTokenPolicySPtr);
@@ -297,7 +297,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	createSessionResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -382,7 +382,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 		BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -395,7 +395,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 52);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 2);
@@ -406,7 +406,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
 
 	//decode CreateSessionResponse
-	createSessionResponseSPtr = constructSPtr<CreateSessionResponse>();
+	createSessionResponseSPtr = boost::make_shared<CreateSessionResponse>();
 	createSessionResponseSPtr->opcUaBinaryDecode(ios);
 
 	std::string  str = *createSessionResponseSPtr->authenticationToken().nodeId<OpcUaGuid::SPtr>();

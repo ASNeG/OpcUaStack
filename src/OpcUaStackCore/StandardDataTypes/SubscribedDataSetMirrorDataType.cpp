@@ -85,7 +85,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     SubscribedDataSetMirrorDataType::factory(void)
     {
-    	return constructSPtr<SubscribedDataSetMirrorDataType>();
+    	return boost::make_shared<SubscribedDataSetMirrorDataType>();
     }
     
     std::string

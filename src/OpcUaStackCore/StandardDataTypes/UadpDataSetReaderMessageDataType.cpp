@@ -155,7 +155,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     UadpDataSetReaderMessageDataType::factory(void)
     {
-    	return constructSPtr<UadpDataSetReaderMessageDataType>();
+    	return boost::make_shared<UadpDataSetReaderMessageDataType>();
     }
     
     std::string

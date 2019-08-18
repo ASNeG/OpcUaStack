@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     ContentFilterElement::factory(void)
     {
-    	return constructSPtr<ContentFilterElement>();
+    	return boost::make_shared<ContentFilterElement>();
     }
     
     std::string

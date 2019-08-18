@@ -174,7 +174,7 @@ namespace OpcUaStackCore
 				hexString.insert(18, "-");
 				hexString.insert(23, "-");
 
-				OpcUaGuid::SPtr guid = constructSPtr<OpcUaGuid>();
+				OpcUaGuid::SPtr guid = boost::make_shared<OpcUaGuid>();
 
 				if (guid->value(hexString)) {
 					targetVariant.variant(guid);
@@ -225,7 +225,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaNodeId:
 			{
 
-				OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+				OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>();
 				((OpcUaNodeIdBase*)sourceVariant.getSPtr<OpcUaExpandedNodeId>().get())->copyTo((OpcUaNodeId&)*nodeId);
 
 				targetVariant.variant(nodeId);
@@ -268,7 +268,7 @@ namespace OpcUaStackCore
 				std::string guidString =  sourceVariant.getSPtr<OpcUaGuid>()->value();
 				boost::replace_all(guidString, "-", "");
 
-				OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>();
+				OpcUaByteString::SPtr byteString = boost::make_shared<OpcUaByteString>();
 				byteString->fromHexString(guidString);
 
 				targetVariant.variant(byteString);
@@ -346,7 +346,7 @@ namespace OpcUaStackCore
 			{
 			case OpcUaBuildInType_OpcUaExpandedNodeId:
 			{
-				OpcUaExpandedNodeId::SPtr expandedNodeId = constructSPtr<OpcUaExpandedNodeId>();
+				OpcUaExpandedNodeId::SPtr expandedNodeId = boost::make_shared<OpcUaExpandedNodeId>();
 				expandedNodeId->copyFrom(*sourceVariant.getSPtr<OpcUaNodeId>());
 				targetVariant.variant(expandedNodeId);
 				return true;
@@ -437,7 +437,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaDouble: 	return castStringToReal<OpcUaDouble>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaExpandedNodeId:
 			{
-				OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+				OpcUaExpandedNodeId::SPtr value = boost::make_shared<OpcUaExpandedNodeId>();
 				if (value->fromString(sourceVariant.getSPtr<OpcUaString>()->toStdString())) {
 					targetVariant.variant(value);
 					return true;
@@ -449,7 +449,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaFloat: 	return castStringToReal<OpcUaFloat>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaGuid:
 			{
-				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+				OpcUaGuid::SPtr value = boost::make_shared<OpcUaGuid>();
 				if (value->value(sourceVariant.getSPtr<OpcUaString>()->toStdString())) {
 					targetVariant.variant(value);
 					return true;
@@ -463,7 +463,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaInt64:	return castStringToInteger<OpcUaInt64>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaNodeId:
 			{
-				OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+				OpcUaNodeId::SPtr value = boost::make_shared<OpcUaNodeId>();
 				if (value->fromString(sourceVariant.getSPtr<OpcUaString>()->toStdString())) {
 					targetVariant.variant(value);
 					return true;
@@ -475,7 +475,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaSByte:	return castStringToInteger<OpcUaSByte>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaLocalizedText:
 			{
-				OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+				OpcUaLocalizedText::SPtr value = boost::make_shared<OpcUaLocalizedText>();
 				if (value->fromString(sourceVariant.getSPtr<OpcUaString>()->toStdString())) {
 					targetVariant.variant(value);
 					return true;
@@ -485,7 +485,7 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaQualifiedName:
 			{
-				OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+				OpcUaQualifiedName::SPtr value = boost::make_shared<OpcUaQualifiedName>();
 				if (value->fromString(sourceVariant.getSPtr<OpcUaString>()->toStdString())) {
 					targetVariant.variant(value);
 					return true;
@@ -524,7 +524,7 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaLocalizedText:
 			{
-				OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>("", sourceVariant.getSPtr<OpcUaQualifiedName>()->toString());
+				OpcUaLocalizedText::SPtr value = boost::make_shared<OpcUaLocalizedText>("", sourceVariant.getSPtr<OpcUaQualifiedName>()->toString());
 				targetVariant.variant(value);
 				return true;
 			}

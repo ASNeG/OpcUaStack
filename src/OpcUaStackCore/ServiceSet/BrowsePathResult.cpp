@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	BrowsePathResult::BrowsePathResult(void)
 	: Object()
 	, statusCode_()
-	, targetArraySPtr_(constructSPtr<BrowsePathTargetArray>())
+	, targetArraySPtr_(boost::make_shared<BrowsePathTargetArray>())
 	{
 	}
 

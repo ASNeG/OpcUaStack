@@ -44,11 +44,11 @@ BOOST_AUTO_TEST_CASE(UDPConnectionManager_)
 
 BOOST_AUTO_TEST_CASE(UDPConnectionManager_HandleUDPMessage)
 {
-	IOThread::SPtr ioThread = constructSPtr<IOThread>();
+	IOThread::SPtr ioThread = boost::make_shared<IOThread>();
 	ioThread->startup();
 
 	UDPConnectionManager connManager;
-	MockNetworkReceiver::SPtr receiver = constructSPtr<MockNetworkReceiver>();
+	MockNetworkReceiver::SPtr receiver = boost::make_shared<MockNetworkReceiver>();
 
 	connManager.registerReceiverIf(receiver);
 	connManager.ioThread(ioThread);
@@ -65,9 +65,9 @@ BOOST_AUTO_TEST_CASE(UDPConnectionManager_HandleUDPMessage)
 
 	NetworkMessage message;
 	OpcUaUInt16 writerId = 0x100;
-	DataSetMessageArray::SPtr dataSetMessages = constructSPtr<DataSetMessageArray>();
+	DataSetMessageArray::SPtr dataSetMessages = boost::make_shared<DataSetMessageArray>();
 	dataSetMessages->resize(1);
-	dataSetMessages->push_back(constructSPtr<KeepAliveMessage>());
+	dataSetMessages->push_back(boost::make_shared<KeepAliveMessage>());
 
 	message.dataSetPayloadHeader()->dataSetWriterIds()->resize(1);
 	message.dataSetPayloadHeader()->dataSetWriterIds()->push_back(writerId);

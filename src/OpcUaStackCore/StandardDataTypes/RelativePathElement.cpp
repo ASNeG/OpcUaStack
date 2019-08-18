@@ -113,7 +113,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     RelativePathElement::factory(void)
     {
-    	return constructSPtr<RelativePathElement>();
+    	return boost::make_shared<RelativePathElement>();
     }
     
     std::string

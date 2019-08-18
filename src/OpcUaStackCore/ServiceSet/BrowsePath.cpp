@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 	, startingNodeSPtr_()
 	, relativePath_()
 	{
-		startingNodeSPtr_ = constructSPtr<OpcUaNodeId>();
+		startingNodeSPtr_ = boost::make_shared<OpcUaNodeId>();
 	}
 
 	BrowsePath::~BrowsePath(void)

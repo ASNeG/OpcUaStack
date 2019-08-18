@@ -87,7 +87,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     NetworkGroupDataType::factory(void)
     {
-    	return constructSPtr<NetworkGroupDataType>();
+    	return boost::make_shared<NetworkGroupDataType>();
     }
     
     std::string
