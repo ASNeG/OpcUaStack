@@ -26,7 +26,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT VariableBase
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<VariableBase> SPtr;
@@ -40,12 +40,12 @@ namespace OpcUaStackServer
 
 		void variableTypeNamespaceName(const std::string& variableTypeNamespaceName);
 		std::string& variableTypeNamespaceName(void);
-		void variableTypeNodeId(const OpcUaNodeId& variableTypeNodeId);
-		OpcUaNodeId& variableTypeNodeId(void);
+		void variableTypeNodeId(const OpcUaStackCore::OpcUaNodeId& variableTypeNodeId);
+		OpcUaStackCore::OpcUaNodeId& variableTypeNodeId(void);
 
 	  private:
 		std::string variableTypeNamespaceName_;
-		OpcUaNodeId variableTypeNodeId_;
+		OpcUaStackCore::OpcUaNodeId variableTypeNodeId_;
 
 		ServerVariables serverVariables_;
 	};

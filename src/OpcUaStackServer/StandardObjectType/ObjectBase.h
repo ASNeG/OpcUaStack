@@ -25,7 +25,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ObjectBase
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<ObjectBase> SPtr;
@@ -43,12 +43,12 @@ namespace OpcUaStackServer
 
 		void objectTypeNamespaceName(const std::string& objectTypeNamespaceName);
 		std::string& objectTypeNamespaceName(void);
-		void objectTypeNodeId(const OpcUaNodeId& objectTypeNodeId);
-		OpcUaNodeId& objectTypeNodeId(void);
+		void objectTypeNodeId(const OpcUaStackCore::OpcUaNodeId& objectTypeNodeId);
+		OpcUaStackCore::OpcUaNodeId& objectTypeNodeId(void);
 
 	  private:
 		std::string objectTypeNamespaceName_;
-		OpcUaNodeId objectTypeNodeId_;
+		OpcUaStackCore::OpcUaNodeId objectTypeNodeId_;
 
 		ServerMethods serverMethods_;
 		ServerVariables serverVariables_;

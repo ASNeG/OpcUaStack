@@ -19,6 +19,8 @@
 #include "OpcUaStackServer/ServiceSetApplication/CreateObjectInstance.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

@@ -26,7 +26,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT QueryService 
 	: public ServiceSetBase
-	, public Object
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<QueryService> SPtr;
@@ -35,12 +35,12 @@ namespace OpcUaStackServer
 		~QueryService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveQueryFirstRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveQueryNextRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveQueryFirstRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveQueryNextRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 	};
 
 }

@@ -58,20 +58,20 @@ class DLLEXPORT NodeInfoDataType
 	 * @parameter[in] informationModel			opc ua information model
 	 */
 	bool init(
-		const OpcUaNodeId& dataTypeNodeId,
+		const OpcUaStackCore::OpcUaNodeId& dataTypeNodeId,
 		InformationModel::SPtr& informationModel
 	);
 
   private:
 	void setIncludePath(
-		OpcUaNodeId& dataTypeNodeId,
+			OpcUaStackCore::OpcUaNodeId& dataTypeNodeId,
 		const std::string& dataTypeName,
 		NumberNamespaceMap& numberNamespaceMap,
 		DataTypeField::SPtr& dataTypeField,
 		std::set<std::string>& includePathSet
 	);
 
-	StructureDefinitionExpand::SPtr structureDefinition_;	//!< structure definition
+	OpcUaStackCore::StructureDefinitionExpand::SPtr structureDefinition_;	//!< structure definition
 	DataTypeField::Vec dataTypeFieldVec_;
 
 };

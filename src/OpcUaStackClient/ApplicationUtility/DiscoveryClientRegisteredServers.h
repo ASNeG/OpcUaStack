@@ -19,6 +19,7 @@
 #define __OpcUaStackClient_DiscoveryClientRegisteredServers_h__
 
 #include "OpcUaStackCore/Core/Core.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/StandardDataTypes/RegisteredServer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
@@ -26,7 +27,7 @@
 namespace OpcUaStackClient
 {
 
-	typedef std::map<std::string, RegisteredServer::SPtr> RegisteredServerMap;
+	typedef std::map<std::string, OpcUaStackCore::RegisteredServer::SPtr> RegisteredServerMap;
 
 	/**
 	 * The discovery client registered server is used to register all endpoints.
@@ -37,8 +38,8 @@ namespace OpcUaStackClient
 		DiscoveryClientRegisteredServers(void);
 	    ~DiscoveryClientRegisteredServers(void);
 
-	    void cryptoManager(CryptoManager::SPtr& cryptoManager);
-	    void ioThread(IOThread::SPtr& ioThread);
+	    void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
+	    void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
 	    void discoveryUri(const std::string& discoveryUri);
 	    void registerInterval(uint32_t registerInterval);
 
@@ -47,7 +48,7 @@ namespace OpcUaStackClient
 
 		void addRegisteredServer(
 			const std::string& name,
-			RegisteredServer::SPtr& registeredServer
+			OpcUaStackCore::RegisteredServer::SPtr& registeredServer
 		);
 		void removeRegisteredServer(
 			const std::string& name
@@ -55,7 +56,7 @@ namespace OpcUaStackClient
 
 	  public:
 		void discoveryServiceRegisterServerResponse(
-			ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer
+			OpcUaStackCore::ServiceTransactionRegisterServer::SPtr& serviceTransactionRegisterServer
 		);
 
         void sendDiscoveryServiceRegisterServer(void);
@@ -64,17 +65,17 @@ namespace OpcUaStackClient
 		void shutdownLoop(void);
 
 		bool shutdown_;
-		Condition shutdownCond_;
+		OpcUaStackCore::Condition shutdownCond_;
 
-		IOThread::SPtr ioThread_;
-		SlotTimerElement::SPtr slotTimerElement_;
+		OpcUaStackCore::IOThread::SPtr ioThread_;
+		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 		boost::mutex mutex_;
 		RegisteredServerMap registeredServerMap_;
 
 		std::string discoveryUri_;
 		uint32_t registerInterval_;
 
-		CryptoManager::SPtr cryptoManager_;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 		ServiceSetManager serviceSetManager_;
 		SessionService::SPtr sessionService_;
 		DiscoveryService::SPtr discoveryService_;

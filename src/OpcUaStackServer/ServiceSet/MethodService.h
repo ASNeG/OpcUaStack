@@ -26,7 +26,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT MethodService 
 	: public ServiceSetBase
-	, public Object
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<MethodService> SPtr;
@@ -35,15 +35,15 @@ namespace OpcUaStackServer
 		~MethodService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveCallRequest(ServiceTransaction::SPtr serviceTransaction);
-		OpcUaStatusCode forwardAuthorizationMethod(
-			UserContext::SPtr& userContext,
-			OpcUaNodeId& objectNodeId,
-			OpcUaNodeId& funcNodeId
+		void receiveCallRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationMethod(
+			OpcUaStackCore::UserContext::SPtr& userContext,
+			OpcUaStackCore::OpcUaNodeId& objectNodeId,
+			OpcUaStackCore::OpcUaNodeId& funcNodeId
 		);
 	};
 

@@ -32,11 +32,11 @@
 namespace OpcUaStackServer
 {
 
-	typedef std::list<EventFieldList::SPtr> EventFieldListList;
+	typedef std::list<OpcUaStackCore::EventFieldList::SPtr> EventFieldListList;
 
 	class DLLEXPORT EventItem
-	: public Object
-	, public SimpleAttributeIf
+	: public OpcUaStackCore::Object
+	, public OpcUaStackCore::SimpleAttributeIf
 	{
 	  public:
 		typedef boost::shared_ptr<EventItem> SPtr;
@@ -47,52 +47,52 @@ namespace OpcUaStackServer
 		~EventItem(void);
 
 		void informationModel(InformationModel::SPtr& informationModel);
-		void browseName(OpcUaQualifiedName& browseName);
+		void browseName(OpcUaStackCore::OpcUaQualifiedName& browseName);
 
-		OpcUaStatusCode receive(
-			MonitoredItemCreateRequest::SPtr& monitoredItemCreateRequest,
-			MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
+		OpcUaStackCore::OpcUaStatusCode receive(
+			OpcUaStackCore::MonitoredItemCreateRequest::SPtr& monitoredItemCreateRequest,
+			OpcUaStackCore::MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
 		);
-		OpcUaStatusCode receive(
-			EventFieldListArray& eventFieldListArray
+		OpcUaStackCore::OpcUaStatusCode receive(
+			OpcUaStackCore::EventFieldListArray& eventFieldListArray
 		);
 
-		void userContext(UserContext::SPtr& userContext);
-		UserContext::SPtr& userContext(void);
+		void userContext(OpcUaStackCore::UserContext::SPtr& userContext);
+		OpcUaStackCore::UserContext::SPtr& userContext(void);
 		uint32_t size(void);
 		uint32_t eventItemId(void);
 		void erase(void);
 
 		//- Interface SimpleAttributeIf ---------------------------------------
 	    virtual bool getAttribute(
-	        OpcUaNodeId& typeId,
-			std::list<OpcUaQualifiedName::SPtr>& browsePath,
-			OpcUaUInt32 attributeId,
-			OpcUaString& numericRange,
-			OpcUaVariant& value
+	    	OpcUaStackCore::OpcUaNodeId& typeId,
+			std::list<OpcUaStackCore::OpcUaQualifiedName::SPtr>& browsePath,
+			OpcUaStackCore::OpcUaUInt32 attributeId,
+			OpcUaStackCore::OpcUaString& numericRange,
+			OpcUaStackCore::OpcUaVariant& value
 		);
 		//- Interface SimpleAttributeIf ---------------------------------------
 
 	  private:
 		void clear(void);
-		void fireEvent(EventBase::SPtr eventBase);
-		OpcUaStatusCode receive(SimpleAttributeOperandArray& selectClauses, OpcUaStatusArray& statusArray);
+		void fireEvent(OpcUaStackCore::EventBase::SPtr eventBase);
+		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::SimpleAttributeOperandArray& selectClauses, OpcUaStackCore::OpcUaStatusArray& statusArray);
 
-		OpcUaNodeId nodeId_;
-		OpcUaQualifiedName browseName_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
+		OpcUaStackCore::OpcUaQualifiedName browseName_;
 
 		uint32_t eventItemId_;
 		uint32_t clientHandle_;
 		InformationModel::SPtr informationModel_;
-		FilterStack::SPtr whereFilter_;
-		SimpleAttributeOperandArray selectClauses_;
+		OpcUaStackCore::FilterStack::SPtr whereFilter_;
+		OpcUaStackCore::SimpleAttributeOperandArray selectClauses_;
 
-		EventHandler::SPtr eventHandler_;
+		OpcUaStackCore::EventHandler::SPtr eventHandler_;
 		EventFieldListList eventFieldListList_;
 		boost::mutex eventFieldListListMutex_;
 
-		EventBase::SPtr eventBase_;
-		UserContext::SPtr userContext_;
+		OpcUaStackCore::EventBase::SPtr eventBase_;
+		OpcUaStackCore::UserContext::SPtr userContext_;
 	};
 
 }

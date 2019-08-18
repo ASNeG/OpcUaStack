@@ -26,6 +26,7 @@
 #include "OpcUaStackCore/Application/ApplicationFindServerContext.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

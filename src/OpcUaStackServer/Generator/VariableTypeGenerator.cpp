@@ -17,8 +17,11 @@
 
 #include "BuildConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/Generator/VariableTypeGenerator.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

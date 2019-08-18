@@ -29,7 +29,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ServiceSetBase
-	: public Component
+	: public OpcUaStackCore::Component
 	{
 	  public:
 		ServiceSetBase(void);
@@ -39,8 +39,8 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel(void);
 		NamespaceArray::SPtr namespaceArray(void);
 		ServerArray::SPtr serverArray(void);
-		void forwardGlobalSync(ForwardGlobalSync::SPtr forwardGlobalSync);
-		ForwardGlobalSync::SPtr forwardGlobalSync(void);
+		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync);
+		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync(void);
 
 		virtual bool init(void) { return true; }
 		virtual bool shutdown(void) { return true; }
@@ -49,7 +49,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel_;
 		NamespaceArray::SPtr namespaceArray_;
 		ServerArray::SPtr serverArray_; 
-		ForwardGlobalSync::SPtr forwardGlobalSync_;
+		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
 	};
 
 }

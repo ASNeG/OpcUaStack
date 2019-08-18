@@ -19,6 +19,8 @@
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 #include "OpcUaStackCore/Base/Log.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

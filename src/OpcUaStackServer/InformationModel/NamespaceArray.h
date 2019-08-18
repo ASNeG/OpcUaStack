@@ -24,7 +24,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT NamespaceArray
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<NamespaceArray> SPtr;
@@ -40,7 +40,7 @@ namespace OpcUaStackServer
 		bool replaceNamespaceNames(std::vector<std::string>& namespaceNameVec);
 		int32_t getNamespaceIndex(const std::string& namespaceName);
 		std::string getNamespaceName(uint32_t namespaceIndex);
-		bool expandedNodeIdToNodeId(OpcUaExpandedNodeId& expandedNodeId, OpcUaNodeId& nodeId);
+		bool expandedNodeIdToNodeId(OpcUaStackCore::OpcUaExpandedNodeId& expandedNodeId, OpcUaStackCore::OpcUaNodeId& nodeId);
 		bool existNamespaceIndex(uint32_t namespaceIndex);
 		bool existNamespaceName(const std::string& namespaceName);
 

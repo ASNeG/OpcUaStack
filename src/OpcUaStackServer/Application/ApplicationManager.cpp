@@ -18,6 +18,8 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/Application/ApplicationManager.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

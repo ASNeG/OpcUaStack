@@ -21,6 +21,7 @@
 #include "OpcUaStackServer/ServiceSet/ViewService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {

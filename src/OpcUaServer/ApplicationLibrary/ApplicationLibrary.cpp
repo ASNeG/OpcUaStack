@@ -19,6 +19,7 @@
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaServer/ApplicationLibrary/ApplicationLibrary.h"
 
+using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
 
 namespace OpcUaServer

@@ -29,7 +29,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT SubscriptionService 
 	: public ServiceSetBase
-	, public Object
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<SubscriptionService> SPtr;
@@ -41,25 +41,25 @@ namespace OpcUaStackServer
 		bool init(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
 		 // subscription
-		void receiveCreateSubscriptionRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveDeleteSubscriptionsRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveModifySubscriptionRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receivePublishRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveRepublishRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveSetPublishingModeRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveTransferSubscriptionsRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateSubscriptionRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveDeleteSubscriptionsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveModifySubscriptionRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receivePublishRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveRepublishRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveSetPublishingModeRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveTransferSubscriptionsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
 		// monitored item
-		void receiveCreateMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveDeleteMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveModifyMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveSetMonitoringModeRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveSetTriggeringRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateMonitoredItemsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveDeleteMonitoredItemsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveModifyMonitoredItemsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveSetMonitoringModeRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveSetTriggeringRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
 		SubscriptionManagerMap subscriptionManagerMap_;
 	};

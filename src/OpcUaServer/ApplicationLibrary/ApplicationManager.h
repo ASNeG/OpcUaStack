@@ -33,12 +33,12 @@ namespace OpcUaServer
 		bool startup(void);
 		bool shutdown(void);
 
-		void config(Config& config);
-		Config& config(void);
+		void config(OpcUaStackCore::Config& config);
+		OpcUaStackCore::Config& config(void);
 		ApplicationLibrary::Map& applicationLibraryMap(void);
 
 	  private:
-		Config* config_;
+		OpcUaStackCore::Config* config_;
 		ApplicationLibrary::Map applicationLibraryMap_;
 	};
 

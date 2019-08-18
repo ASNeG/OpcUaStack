@@ -51,11 +51,11 @@ class DLLEXPORT NodeInfoVariableType
 	 * @parameter[in] informationModel			opc ua information model
 	 */
 	bool init(
-		const OpcUaNodeId& variableTypeNodeId,
+		const OpcUaStackCore::OpcUaNodeId& variableTypeNodeId,
 		InformationModel::SPtr& informationModel
 	);
 
-	OpcUaNodeId& variableTypeNodeId(void);
+	OpcUaStackCore::OpcUaNodeId& variableTypeNodeId(void);
 	std::string& variableTypeNamespaceName(void);
 	std::string& className(void);
 	std::string& namespaceName(void);
@@ -63,17 +63,17 @@ class DLLEXPORT NodeInfoVariableType
 	std::string& description(void);
 	VariableTypeField::Map& variableTypeFieldMap(void);
 
-	std::string getIdentifierAsString(OpcUaNodeId& nodeId);
+	std::string getIdentifierAsString(OpcUaStackCore::OpcUaNodeId& nodeId);
 
   private:
-	bool readValues(const OpcUaNodeId& variableTypeNodeId);
-	bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
-	bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
+	bool readValues(const OpcUaStackCore::OpcUaNodeId& variableTypeNodeId);
+	bool readChilds(const BaseNodeClass::SPtr& baseNode, OpcUaStackCore::BrowseName& browseName);
+	bool readNodeInfo(const BaseNodeClass::SPtr& baseNode, OpcUaStackCore::BrowseName& browseName);
 
 	NumberNamespaceMap numberNamespaceMap_;
-	OpcUaNodeId variableTypeNodeId_;
+	OpcUaStackCore::OpcUaNodeId variableTypeNodeId_;
 	std::string variableTypeNamespaceName_;
-	OpcUaNodeId parentVariableTypeNodeId_;
+	OpcUaStackCore::OpcUaNodeId parentVariableTypeNodeId_;
 	InformationModel::SPtr informationModel_;
 
 	BaseNodeClass::SPtr baseNode_;

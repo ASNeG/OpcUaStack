@@ -25,7 +25,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT NodeReferenceApplication
-	: public NodeReference
+	: public OpcUaStackCore::NodeReference
 	{
 	  public:
 		typedef boost::shared_ptr<NodeReferenceApplication> SPtr;

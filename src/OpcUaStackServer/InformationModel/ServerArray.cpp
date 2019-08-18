@@ -18,6 +18,8 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/InformationModel/ServerArray.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

@@ -38,38 +38,38 @@ namespace OpcUaStackServer
 		ObjectInstanceBuilder(void);
 		~ObjectInstanceBuilder(void);
 
-		OpcUaStatusCode createObjectInstance(
+		OpcUaStackCore::OpcUaStatusCode createObjectInstance(
 			InformationModel::SPtr& informationModel,
 			const std::string& namespaceName,
-			const OpcUaLocalizedText& displayName,
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& referenceTypeNodeId,
+			const OpcUaStackCore::OpcUaLocalizedText& displayName,
+			OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId,
 			ObjectBase::SPtr& objectBase
 		);
 
 	  private:
 		bool getNamespaceIndex(const std::string& namespaceName);
 		ObjectNodeClass::SPtr readObjects(
-			const OpcUaNodeId& parentNodeId,
-			const OpcUaNodeId& objectTypeNodeId
+			const OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			const OpcUaStackCore::OpcUaNodeId& objectTypeNodeId
 		);
 		BaseNodeClass::SPtr readChilds(
-			const OpcUaNodeId& parentNodeId,
+			const OpcUaStackCore::OpcUaNodeId& parentNodeId,
 			const BaseNodeClass::SPtr& baseNodeTemplate,
-			BrowseName& browseName
+			OpcUaStackCore::BrowseName& browseName
 		);
 		ObjectNodeClass::SPtr createObjectInstance(
 			const BaseNodeClass::SPtr& baseNodeTemplate,
-			BrowseName& browseName
+			OpcUaStackCore::BrowseName& browseName
 		);
 		VariableNodeClass::SPtr createVariableInstance(
 			const BaseNodeClass::SPtr& baseNodeTemplate,
-			BrowseName& browseName
+			OpcUaStackCore::BrowseName& browseName
 		);
 		MethodNodeClass::SPtr createMethodInstance(
-			const OpcUaNodeId& parentNodeId,
+			const OpcUaStackCore::OpcUaNodeId& parentNodeId,
 			const BaseNodeClass::SPtr& baseNodeTemplate,
-			BrowseName& browseName
+			OpcUaStackCore::BrowseName& browseName
 		);
 
 		InformationModel::SPtr informationModel_;

@@ -42,7 +42,7 @@ namespace OpcUaStackServer
 
 		bool init(SessionManager& sessionManager);
 		bool informatinModel(InformationModel::SPtr informatinModel);
-		bool ioThread(IOThread* ioThread);
+		bool ioThread(OpcUaStackCore::IOThread* ioThread);
 		bool init(void);
 		bool shutdown(void);
 
@@ -52,7 +52,7 @@ namespace OpcUaStackServer
 	  private:
 		void initForwardGlobalSync(void);
 
-		ForwardGlobalSync::SPtr forwardGlobalSync_;
+		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
 
 		TransactionManager::SPtr transactionManager_;
 		AttributeService::SPtr attributeService_;

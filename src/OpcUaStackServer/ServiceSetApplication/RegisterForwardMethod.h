@@ -19,6 +19,7 @@
 #define __OpcUaStackServer_RegisterForwardMethod_h__
 
 #include <vector>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
@@ -31,27 +32,27 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<RegisterForwardMethod> SPtr;
 
 		RegisterForwardMethod(void);
-		RegisterForwardMethod(const OpcUaNodeId& objectNodeId, const OpcUaNodeId& methodNodeId);
+		RegisterForwardMethod(const OpcUaStackCore::OpcUaNodeId& objectNodeId, const OpcUaStackCore::OpcUaNodeId& methodNodeId);
 		virtual ~RegisterForwardMethod(void);
 
-		void objectNodeId(const OpcUaNodeId& objectNodeId);
-		void methodNodeId(const OpcUaNodeId& methodNodeId);
-		void setMethodCallback(Callback& callback);
+		void objectNodeId(const OpcUaStackCore::OpcUaNodeId& objectNodeId);
+		void methodNodeId(const OpcUaStackCore::OpcUaNodeId& methodNodeId);
+		void setMethodCallback(OpcUaStackCore::Callback& callback);
 		template<typename T>
 		  void setMethodCallback(T handler) {
-			  Callback callback;
+			  OpcUaStackCore::Callback callback;
 			  callback.reset(handler);
 			  setMethodCallback(callback);
 		  }
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
-		OpcUaStatusCode resultCode(void);
+		OpcUaStackCore::OpcUaStatusCode resultCode(void);
 
 	  private:
-		OpcUaNodeId objectNodeId_;
-		OpcUaNodeId methodNodeId_;
-		ForwardMethodSync forwardMethodSync_;
-		OpcUaStatusCode resultCode_;
+		OpcUaStackCore::OpcUaNodeId objectNodeId_;
+		OpcUaStackCore::OpcUaNodeId methodNodeId_;
+		OpcUaStackCore::ForwardMethodSync forwardMethodSync_;
+		OpcUaStackCore::OpcUaStatusCode resultCode_;
 	};
 
 }

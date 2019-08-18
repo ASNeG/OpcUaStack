@@ -30,7 +30,7 @@ namespace OpcUaServer
 {
 
 	class DLLEXPORT ApplicationLibrary
-	: public  Object
+	: public  OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<ApplicationLibrary> SPtr;

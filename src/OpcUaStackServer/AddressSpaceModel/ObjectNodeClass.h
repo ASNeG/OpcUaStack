@@ -31,8 +31,8 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<ObjectNodeClass> SPtr;
 
 		ObjectNodeClass(void);
-		ObjectNodeClass(OpcUaNodeId& nodeId, ObjectNodeClass& objectNodeClass);
-		ObjectNodeClass(OpcUaNodeId& nodeId, ObjectTypeNodeClass& objectTypeNodeClass);
+		ObjectNodeClass(OpcUaStackCore::OpcUaNodeId& nodeId, ObjectNodeClass& objectNodeClass);
+		ObjectNodeClass(OpcUaStackCore::OpcUaNodeId& nodeId, ObjectTypeNodeClass& objectTypeNodeClass);
 		~ObjectNodeClass(void);
 
 		EventNotifierAttribute& eventNotifier(void);

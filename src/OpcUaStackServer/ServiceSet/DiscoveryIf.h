@@ -32,8 +32,8 @@ namespace OpcUaStackServer
 		virtual ~DiscoveryIf(void) {}
 
 		virtual void discoveryResponseMessage(
-			ResponseHeader::SPtr& responseHeader,
-			SecureChannelTransaction::SPtr& secureChannelTransaction
+			OpcUaStackCore::ResponseHeader::SPtr& responseHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr& secureChannelTransaction
 		) = 0;
 	};
 

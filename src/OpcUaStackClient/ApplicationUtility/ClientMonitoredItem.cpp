@@ -18,6 +18,8 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ApplicationUtility/ClientMonitoredItem.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackClient
 {
 

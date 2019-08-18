@@ -19,6 +19,7 @@
 #define __OpcUaStackServer_CreateNodeInstance_h__
 
 #include <vector>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
@@ -34,39 +35,39 @@ namespace OpcUaStackServer
 		CreateNodeInstance(void);
 		CreateNodeInstance(
 			const std::string& name,
-			const NodeClass::Enum nodeClassType,
-			const OpcUaNodeId& parentNodeId,
-			const OpcUaNodeId& nodeId,
-			const OpcUaLocalizedText& displayName,
-			const OpcUaQualifiedName& browseName,
-			const OpcUaNodeId& referenceNodeId,
-			const OpcUaNodeId& typeNodeId
+			const OpcUaStackCore::NodeClass::Enum nodeClassType,
+			const OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			const OpcUaStackCore::OpcUaNodeId& nodeId,
+			const OpcUaStackCore::OpcUaLocalizedText& displayName,
+			const OpcUaStackCore::OpcUaQualifiedName& browseName,
+			const OpcUaStackCore::OpcUaNodeId& referenceNodeId,
+			const OpcUaStackCore::OpcUaNodeId& typeNodeId
 		);
 		virtual ~CreateNodeInstance(void);
 
 		void name(const std::string& name);
-		void nodeClassType(NodeClass::Enum nodeClassType);
-		void parentNodeId(const OpcUaNodeId& parentNodeId);
-		void nodeId(const OpcUaNodeId& nodeId);
-		void displayName(const OpcUaLocalizedText& displayName);
-		void browseName(const OpcUaQualifiedName& browseName);
-		void referenceNodeId(const OpcUaNodeId& referenceNodeId);
-		void typeNodeId(const OpcUaNodeId& typeNodeId);
+		void nodeClassType(OpcUaStackCore::NodeClass::Enum nodeClassType);
+		void parentNodeId(const OpcUaStackCore::OpcUaNodeId& parentNodeId);
+		void nodeId(const OpcUaStackCore::OpcUaNodeId& nodeId);
+		void displayName(const OpcUaStackCore::OpcUaLocalizedText& displayName);
+		void browseName(const OpcUaStackCore::OpcUaQualifiedName& browseName);
+		void referenceNodeId(const OpcUaStackCore::OpcUaNodeId& referenceNodeId);
+		void typeNodeId(const OpcUaStackCore::OpcUaNodeId& typeNodeId);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
-		OpcUaStatusCode resultCode(void);
+		OpcUaStackCore::OpcUaStatusCode resultCode(void);
 
 	  private:
 		std::string name_;
-		NodeClass::Enum nodeClass_;
-		OpcUaNodeId parentNodeId_;
-		OpcUaNodeId nodeId_;
-		OpcUaLocalizedText displayName_;
-		OpcUaQualifiedName browseName_;
-		OpcUaNodeId referenceNodeId_;
-		OpcUaNodeId typeNodeId_;			// optional
+		OpcUaStackCore::NodeClass::Enum nodeClass_;
+		OpcUaStackCore::OpcUaNodeId parentNodeId_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
+		OpcUaStackCore::OpcUaLocalizedText displayName_;
+		OpcUaStackCore::OpcUaQualifiedName browseName_;
+		OpcUaStackCore::OpcUaNodeId referenceNodeId_;
+		OpcUaStackCore::OpcUaNodeId typeNodeId_;			// optional
 
-		OpcUaStatusCode resultCode_;
+		OpcUaStackCore::OpcUaStatusCode resultCode_;
 	};
 
 }

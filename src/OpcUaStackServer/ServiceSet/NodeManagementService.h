@@ -28,7 +28,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT NodeManagementService 
 	: public ServiceSetBase
-	, public Object
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<NodeManagementService> SPtr;
@@ -37,38 +37,38 @@ namespace OpcUaStackServer
 		~NodeManagementService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveAddNodesRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveAddReferencesRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveDeleteNodesRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveDeleteReferencesRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveAddNodesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveAddReferencesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveDeleteNodesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveDeleteReferencesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
-		OpcUaStatusCode addNodeAndReference(
+		OpcUaStackCore::OpcUaStatusCode addNodeAndReference(
 			BaseNodeClass::SPtr baseNodeClass,
-			AddNodesItem::SPtr& addNodesItem
+			OpcUaStackCore::AddNodesItem::SPtr& addNodesItem
 		);
-		OpcUaStatusCode addNode(
+		OpcUaStackCore::OpcUaStatusCode addNode(
 			uint32_t,
 			BaseNodeClass::SPtr baseNodeClass
 		);
-		OpcUaStatusCode addNode(
+		OpcUaStackCore::OpcUaStatusCode addNode(
 			uint32_t pos,
-			AddNodesItem::SPtr addNodesItem,
-			AddNodesResult::SPtr addNodesResult
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
 		);
-		OpcUaStatusCode addBaseNodeClass(
+		OpcUaStackCore::OpcUaStatusCode addBaseNodeClass(
 			uint32_t pos,
 			BaseNodeClass::SPtr baseNodeClass,
-			AddNodesItem::SPtr addNodesItem,
-			AddNodesResult::SPtr addNodesResult
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
 		);
-		OpcUaStatusCode addNodeObject(
+		OpcUaStackCore::OpcUaStatusCode addNodeObject(
 			uint32_t pos,
-			AddNodesItem::SPtr addNodesItem,
-			AddNodesResult::SPtr addNodesResult
+			OpcUaStackCore::AddNodesItem::SPtr addNodesItem,
+			OpcUaStackCore::AddNodesResult::SPtr addNodesResult
 		);
 	};
 

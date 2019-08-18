@@ -29,7 +29,7 @@
 namespace OpcUaStackServer
 {
 
-	typedef std::list<MonitoredItemNotification::SPtr> MonitorItemList;
+	typedef std::list<OpcUaStackCore::MonitoredItemNotification::SPtr> MonitorItemList;
 	typedef enum
 	{
 		Ok,
@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 	} SampleResult;
 
 	class DLLEXPORT MonitorItem
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitorItem> SPtr;
@@ -45,8 +45,8 @@ namespace OpcUaStackServer
 		MonitorItem(void);
 		~MonitorItem(void);
 
-		OpcUaStatusCode receive(BaseNodeClass::SPtr baseNodeClass, MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest);
-		OpcUaStatusCode receive(MonitoredItemNotificationArray& monitoredItemNotificationArray);
+		OpcUaStackCore::OpcUaStatusCode receive(BaseNodeClass::SPtr baseNodeClass, OpcUaStackCore::MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest);
+		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::MonitoredItemNotificationArray& monitoredItemNotificationArray);
 
 		uint32_t monitorItemId(void);
 		uint32_t samplingInterval(void);
@@ -55,16 +55,16 @@ namespace OpcUaStackServer
 		uint32_t size(void);
 		BaseNodeClass::SPtr baseNodeClass(void);
 
-		SlotTimerElement::SPtr slotTimerElement(void);
-		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest(void);
-		void userContext(UserContext::SPtr& userContext);
-		UserContext::SPtr& userContext(void);
+		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement(void);
+		OpcUaStackCore::MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest(void);
+		void userContext(OpcUaStackCore::UserContext::SPtr& userContext);
+		OpcUaStackCore::UserContext::SPtr& userContext(void);
 
 		SampleResult sample(void);
 
 	  private:
-		void monitorItemListPushBack(MonitoredItemNotification::SPtr monitoredItemNotification);
-		bool dataChange(MonitoredItemNotification::SPtr monitoredItemNotiication, Attribute* attribute);
+		void monitorItemListPushBack(OpcUaStackCore::MonitoredItemNotification::SPtr monitoredItemNotification);
+		bool dataChange(OpcUaStackCore::MonitoredItemNotification::SPtr monitoredItemNotiication, Attribute* attribute);
 
 		uint32_t monitorItemId_;
 		uint32_t samplingInterval_;
@@ -72,15 +72,15 @@ namespace OpcUaStackServer
 		bool discardOldest_;
 		uint32_t clientHandle_;
 
-		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest_;
+		OpcUaStackCore::MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest_;
 		MonitorItemList monitorItemList_;
 
-		UserContext::SPtr userContext_;
+		OpcUaStackCore::UserContext::SPtr userContext_;
 		BaseNodeClass::WPtr baseNodeClass_;
 		Attribute* attribute_;
-		OpcUaDataValue dataValue_;
+		OpcUaStackCore::OpcUaDataValue dataValue_;
 
-		SlotTimerElement::SPtr slotTimerElement_;
+		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 	};
 
 	typedef std::map<uint32_t, MonitorItem::SPtr> MonitorItemMap;

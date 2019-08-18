@@ -35,27 +35,27 @@ namespace OpcUaStackServer
 		VariableInstanceBuilder(void);
 		~VariableInstanceBuilder(void);
 
-		OpcUaStatusCode createVariableInstance(
+		OpcUaStackCore::OpcUaStatusCode createVariableInstance(
 			InformationModel::SPtr& informationModel,
 			const std::string& namespaceName,
-			const OpcUaLocalizedText& displayName,
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& referenceTypeNodeId,
+			const OpcUaStackCore::OpcUaLocalizedText& displayName,
+			OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId,
 			VariableBase::SPtr& variableBase
 		);
 
 	  private:
 		bool getNamespaceIndex(const std::string& namespaceName);
 		VariableNodeClass::SPtr readValues(
-			const OpcUaNodeId& variableTypeNodeId
+			const OpcUaStackCore::OpcUaNodeId& variableTypeNodeId
 		);
 		VariableNodeClass::SPtr readChilds(
 			const BaseNodeClass::SPtr& baseNodeTemplate,
-			BrowseName& browseName
+			OpcUaStackCore::BrowseName& browseName
 		);
 		VariableNodeClass::SPtr createVariableInstance(
 			const BaseNodeClass::SPtr& baseNodeTemplate,
-			BrowseName& browseName
+			OpcUaStackCore::BrowseName& browseName
 		);
 
 		InformationModel::SPtr informationModel_;

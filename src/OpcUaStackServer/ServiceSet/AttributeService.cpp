@@ -31,6 +31,8 @@
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

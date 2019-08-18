@@ -23,8 +23,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
 #include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -41,10 +39,10 @@ namespace OpcUaStackServer
 		Attribute(void);
 		virtual ~Attribute(void);
 
-		virtual OpcUaUInt32 id(void) = 0;
+		virtual OpcUaStackCore::OpcUaUInt32 id(void) = 0;
 		virtual std::string name(void) = 0;
 		virtual std::string description(void);
-		virtual OpcUaBuildInType type(void) = 0;
+		virtual OpcUaStackCore::OpcUaBuildInType type(void) = 0;
 		virtual bool exist(void) = 0;
 		virtual void exist(bool exist) = 0;
 		virtual Attribute* clone(void) = 0;
@@ -123,7 +121,7 @@ namespace OpcUaStackServer
 	  };
 
 
-    template<typename DATATYPE, OpcUaUInt32 id_, OpcUaBuildInType type_>
+    template<typename DATATYPE, OpcUaStackCore::OpcUaUInt32 id_, OpcUaStackCore::OpcUaBuildInType type_>
 	  class DLLEXPORT AttributeMeta
 	  : public AttributeData<DATATYPE>
 	  {
@@ -139,45 +137,45 @@ namespace OpcUaStackServer
 			virtual ~AttributeMeta(void) 
 			{}
 
-			OpcUaUInt32 id(void) {
+			OpcUaStackCore::OpcUaUInt32 id(void) {
 				return id_;
 			}
 
 			std::string name(void) {
 				switch (id_)
 				{
-					case AttributeId_AccessLevel: return "AccessLevel";
-					case AttributeId_ArrayDimensions: return "ArrayDimensions";
-					case AttributeId_BrowseName: return "BrowseName";
-					case AttributeId_ContainsNoLoops: return "ContainsNoLoops";
-					case AttributeId_DataType: return "DataType";
-					case AttributeId_Description: return "Description";
-					case AttributeId_DisplayName: return "DisplayName";
-					case AttributeId_EventNotifier: return "EventNotifier";
-					case AttributeId_Executable: return "Executable";
-					case AttributeId_Historizing: return "Historizing";
-					case AttributeId_InverseName: return "InverseName";
-					case AttributeId_IsAbstract: return "IsAbstrace";
-					case AttributeId_MinimumSamplingInterval: return "MinimumSamplingInterval";
-					case AttributeId_NodeClass: return "NodeClass";
-					case AttributeId_NodeId: return "NodeId";
-					case AttributeId_Symmetric: return "Symmetric";
-					case AttributeId_UserAccessLevel: return "UserAccessLevel";
-					case AttributeId_UserExecutable: return "UserExecutable";
-					case AttributeId_UserWriteMask: return "UserWriteMask";
-					case AttributeId_Value: return "Value";
-					case AttributeId_ValueRank: return "ValueRank";
-					case AttributeId_WriteMask: return "WriteMask";
-					case AttributeId_DataTypeDefinition: return "DataTypeDefinition";
-					case AttributeId_RolePermissions: return "RolePermissions";
-					case AttributeId_UserRolePermissions: return "UserRolePermissions";
-					case AttributeId_AccessRestrictions: return "AccessRestrictions";
-					case AttributeId_AccessLevelEx: return "AccessLevelEx";
+					case OpcUaStackCore::AttributeId_AccessLevel: return "AccessLevel";
+					case OpcUaStackCore::AttributeId_ArrayDimensions: return "ArrayDimensions";
+					case OpcUaStackCore::AttributeId_BrowseName: return "BrowseName";
+					case OpcUaStackCore::AttributeId_ContainsNoLoops: return "ContainsNoLoops";
+					case OpcUaStackCore::AttributeId_DataType: return "DataType";
+					case OpcUaStackCore::AttributeId_Description: return "Description";
+					case OpcUaStackCore::AttributeId_DisplayName: return "DisplayName";
+					case OpcUaStackCore::AttributeId_EventNotifier: return "EventNotifier";
+					case OpcUaStackCore::AttributeId_Executable: return "Executable";
+					case OpcUaStackCore::AttributeId_Historizing: return "Historizing";
+					case OpcUaStackCore::AttributeId_InverseName: return "InverseName";
+					case OpcUaStackCore::AttributeId_IsAbstract: return "IsAbstrace";
+					case OpcUaStackCore::AttributeId_MinimumSamplingInterval: return "MinimumSamplingInterval";
+					case OpcUaStackCore::AttributeId_NodeClass: return "NodeClass";
+					case OpcUaStackCore::AttributeId_NodeId: return "NodeId";
+					case OpcUaStackCore::AttributeId_Symmetric: return "Symmetric";
+					case OpcUaStackCore::AttributeId_UserAccessLevel: return "UserAccessLevel";
+					case OpcUaStackCore::AttributeId_UserExecutable: return "UserExecutable";
+					case OpcUaStackCore::AttributeId_UserWriteMask: return "UserWriteMask";
+					case OpcUaStackCore::AttributeId_Value: return "Value";
+					case OpcUaStackCore::AttributeId_ValueRank: return "ValueRank";
+					case OpcUaStackCore::AttributeId_WriteMask: return "WriteMask";
+					case OpcUaStackCore::AttributeId_DataTypeDefinition: return "DataTypeDefinition";
+					case OpcUaStackCore::AttributeId_RolePermissions: return "RolePermissions";
+					case OpcUaStackCore::AttributeId_UserRolePermissions: return "UserRolePermissions";
+					case OpcUaStackCore::AttributeId_AccessRestrictions: return "AccessRestrictions";
+					case OpcUaStackCore::AttributeId_AccessLevelEx: return "AccessLevelEx";
 					default: return "Unknown";
 				}
 			}
 
-			OpcUaBuildInType type(void) {
+			OpcUaStackCore::OpcUaBuildInType type(void) {
 				return type_;
 			}
 
@@ -199,35 +197,35 @@ namespace OpcUaStackServer
 			}
 	  };
 
-	  typedef AttributeMeta<OpcUaByte, AttributeId_AccessLevel, OpcUaBuildInType_OpcUaUInt32> AccessLevelAttribute;
-	  typedef AttributeMeta<OpcUaNodeId, AttributeId_NodeId, OpcUaBuildInType_OpcUaNodeId> NodeIdAttribute;
-	  typedef AttributeMeta<NodeClass::Enum, AttributeId_NodeClass, OpcUaBuildInType_OpcUaUInt32> NodeClassAttribute;
-	  typedef AttributeMeta<OpcUaQualifiedName, AttributeId_BrowseName, OpcUaBuildInType_OpcUaQualifiedName> BrowseNameAttribute;
-	  typedef AttributeMeta<OpcUaLocalizedText, AttributeId_DisplayName, OpcUaBuildInType_OpcUaLocalizedText> DisplayNameAttribute;
-	  typedef AttributeMeta<OpcUaLocalizedText, AttributeId_Description, OpcUaBuildInType_OpcUaLocalizedText> DescriptionAttribute;
-	  typedef AttributeMeta<OpcUaUInt32, AttributeId_WriteMask, OpcUaBuildInType_OpcUaUInt32> WriteMaskAttribute;
-	  typedef AttributeMeta<OpcUaUInt32, AttributeId_UserWriteMask, OpcUaBuildInType_OpcUaUInt32> UserWriteMaskAttribute;
-	  typedef AttributeMeta<OpcUaBoolean, AttributeId_IsAbstract, OpcUaBuildInType_OpcUaBoolean> IsAbstractAttribute;
-	  typedef AttributeMeta<OpcUaBoolean, AttributeId_Symmetric, OpcUaBuildInType_OpcUaBoolean> SymmetricAttribute;
-	  typedef AttributeMeta<OpcUaLocalizedText, AttributeId_InverseName, OpcUaBuildInType_OpcUaLocalizedText> InverseNameAttribute;
-	  typedef AttributeMeta<OpcUaBoolean, AttributeId_ContainsNoLoops, OpcUaBuildInType_OpcUaBoolean> ContainsNoLoopsAttribute;
-	  typedef AttributeMeta<OpcUaByte, AttributeId_EventNotifier, OpcUaBuildInType_OpcUaByte> EventNotifierAttribute;
-	  typedef AttributeMeta<OpcUaDataValue, AttributeId_Value, OpcUaBuildInType_OpcUaDataValue> ValueAttribute;
-	  typedef AttributeMeta<OpcUaInt32, AttributeId_ValueRank, OpcUaBuildInType_OpcUaInt32> ValueRankAttribute;
-	  typedef AttributeMeta<OpcUaUInt32Array, AttributeId_ArrayDimensions, OpcUaBuildInType_OpcUaUInt32> ArrayDimensionsAttribute;
-	  typedef AttributeMeta<OpcUaDouble, AttributeId_MinimumSamplingInterval, OpcUaBuildInType_OpcUaDouble> MinimumSamplingIntervalAttribute;
-	  typedef AttributeMeta<OpcUaBoolean, AttributeId_Historizing, OpcUaBuildInType_OpcUaBoolean> HistorizingAttribute;
-	  typedef AttributeMeta<OpcUaNodeId, AttributeId_DataType, OpcUaBuildInType_OpcUaNodeId> DataTypeAttribute;
-	  typedef AttributeMeta<OpcUaBoolean, AttributeId_Executable, OpcUaBuildInType_OpcUaBoolean> ExecutableAttribute;
-	  typedef AttributeMeta<OpcUaBoolean, AttributeId_UserExecutable, OpcUaBuildInType_OpcUaBoolean> UserExecutableAttribute;
-	  typedef AttributeMeta<OpcUaByte, AttributeId_UserAccessLevel, OpcUaBuildInType_OpcUaByte> UserAccessLevelAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_AccessLevel, OpcUaStackCore::OpcUaBuildInType_OpcUaUInt32> AccessLevelAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaNodeId, OpcUaStackCore::AttributeId_NodeId, OpcUaStackCore::OpcUaBuildInType_OpcUaNodeId> NodeIdAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::NodeClass::Enum, OpcUaStackCore::AttributeId_NodeClass, OpcUaStackCore::OpcUaBuildInType_OpcUaUInt32> NodeClassAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaQualifiedName, OpcUaStackCore::AttributeId_BrowseName, OpcUaStackCore::OpcUaBuildInType_OpcUaQualifiedName> BrowseNameAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaLocalizedText, OpcUaStackCore::AttributeId_DisplayName, OpcUaStackCore::OpcUaBuildInType_OpcUaLocalizedText> DisplayNameAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaLocalizedText, OpcUaStackCore::AttributeId_Description, OpcUaStackCore::OpcUaBuildInType_OpcUaLocalizedText> DescriptionAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaUInt32, OpcUaStackCore::AttributeId_WriteMask, OpcUaStackCore::OpcUaBuildInType_OpcUaUInt32> WriteMaskAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaUInt32, OpcUaStackCore::AttributeId_UserWriteMask, OpcUaStackCore::OpcUaBuildInType_OpcUaUInt32> UserWriteMaskAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaBoolean, OpcUaStackCore::AttributeId_IsAbstract, OpcUaStackCore::OpcUaBuildInType_OpcUaBoolean> IsAbstractAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaBoolean, OpcUaStackCore::AttributeId_Symmetric, OpcUaStackCore::OpcUaBuildInType_OpcUaBoolean> SymmetricAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaLocalizedText, OpcUaStackCore::AttributeId_InverseName, OpcUaStackCore::OpcUaBuildInType_OpcUaLocalizedText> InverseNameAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaBoolean, OpcUaStackCore::AttributeId_ContainsNoLoops, OpcUaStackCore::OpcUaBuildInType_OpcUaBoolean> ContainsNoLoopsAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_EventNotifier, OpcUaStackCore::OpcUaBuildInType_OpcUaByte> EventNotifierAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaDataValue, OpcUaStackCore::AttributeId_Value, OpcUaStackCore::OpcUaBuildInType_OpcUaDataValue> ValueAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaInt32, OpcUaStackCore::AttributeId_ValueRank, OpcUaStackCore::OpcUaBuildInType_OpcUaInt32> ValueRankAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaUInt32Array, OpcUaStackCore::AttributeId_ArrayDimensions, OpcUaStackCore::OpcUaBuildInType_OpcUaUInt32> ArrayDimensionsAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaDouble, OpcUaStackCore::AttributeId_MinimumSamplingInterval, OpcUaStackCore::OpcUaBuildInType_OpcUaDouble> MinimumSamplingIntervalAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaBoolean, OpcUaStackCore::AttributeId_Historizing, OpcUaStackCore::OpcUaBuildInType_OpcUaBoolean> HistorizingAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaNodeId, OpcUaStackCore::AttributeId_DataType, OpcUaStackCore::OpcUaBuildInType_OpcUaNodeId> DataTypeAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaBoolean, OpcUaStackCore::AttributeId_Executable, OpcUaStackCore::OpcUaBuildInType_OpcUaBoolean> ExecutableAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaBoolean, OpcUaStackCore::AttributeId_UserExecutable, OpcUaStackCore::OpcUaBuildInType_OpcUaBoolean> UserExecutableAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_UserAccessLevel, OpcUaStackCore::OpcUaBuildInType_OpcUaByte> UserAccessLevelAttribute;
 
 	  // FIXME: todo
-	  typedef AttributeMeta<OpcUaByte, AttributeId_DataTypeDefinition, OpcUaBuildInType_OpcUaExtensionObject> DataTypeDefinitionAttribute;
-	  typedef AttributeMeta<OpcUaByte, AttributeId_RolePermissions, OpcUaBuildInType_OpcUaExtensionObject> RolePermissionsAttribute;
-	  typedef AttributeMeta<OpcUaByte, AttributeId_UserRolePermissions, OpcUaBuildInType_OpcUaExtensionObject> UserRolePermissionsAttribute;
-	  typedef AttributeMeta<OpcUaByte, AttributeId_AccessRestrictions, OpcUaBuildInType_OpcUaExtensionObject> AccessRestrictionsAttribute;
-	  typedef AttributeMeta<OpcUaByte, AttributeId_AccessLevelEx, OpcUaBuildInType_OpcUaExtensionObject> AccessLevelExAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_DataTypeDefinition, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> DataTypeDefinitionAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_RolePermissions, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> RolePermissionsAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_UserRolePermissions, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> UserRolePermissionsAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_AccessRestrictions, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> AccessRestrictionsAttribute;
+	  typedef AttributeMeta<OpcUaStackCore::OpcUaByte, OpcUaStackCore::AttributeId_AccessLevelEx, OpcUaStackCore::OpcUaBuildInType_OpcUaExtensionObject> AccessLevelExAttribute;
 
 }
 

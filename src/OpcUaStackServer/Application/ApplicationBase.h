@@ -21,13 +21,11 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ApplicationBase
-	: public Component
+	: public OpcUaStackCore::Component
 	{
 	  public:
 		ApplicationBase(void);

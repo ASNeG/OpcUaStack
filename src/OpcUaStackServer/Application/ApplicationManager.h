@@ -24,8 +24,6 @@
 #include "OpcUaStackServer/Application/ReloadIf.h"
 #include "OpcUaStackServer/Application/Application.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -35,7 +33,7 @@ namespace OpcUaStackServer
 		ApplicationManager(void);
 		~ApplicationManager(void);
 
-		void cryptoManager(CryptoManager::SPtr& cryptoManager);
+		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 
 		bool registerApplication(
 			const std::string& applicationName,
@@ -46,7 +44,7 @@ namespace OpcUaStackServer
 			const std::string& applicationName
 		);
 		void serviceComponent(
-			Component* serviceComponent
+			OpcUaStackCore::Component* serviceComponent
 		);
 
 		bool startup(void);
@@ -54,9 +52,9 @@ namespace OpcUaStackServer
 
 	  private:
 		Application::Map applicationMap_;
-		Component* serviceComponent_;
+		OpcUaStackCore::Component* serviceComponent_;
 
-		CryptoManager::SPtr cryptoManager_;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 	};
 
 }

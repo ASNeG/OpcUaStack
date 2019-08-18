@@ -77,14 +77,14 @@ class DLLEXPORT NodeInfo
 	 *
 	 * @return data type node identifier
 	 */
-	OpcUaNodeId dataTypeNodeId(void);
+	OpcUaStackCore::OpcUaNodeId dataTypeNodeId(void);
 
 	/**
 	 * Getter function
 	 *
 	 * @return data type node identifier of parent
 	 */
-	OpcUaNodeId parentDataTypeNodeId(void);
+	OpcUaStackCore::OpcUaNodeId parentDataTypeNodeId(void);
 
 	/**
 	 * Getter function
@@ -182,21 +182,21 @@ class DLLEXPORT NodeInfo
 	 *
 	 * @return default binary encoding node identifier
 	 */
-	OpcUaNodeId& defaultBinaryNodeId(void);
+	OpcUaStackCore::OpcUaNodeId& defaultBinaryNodeId(void);
 
 	/**
 	 * results the default XML encoding node identifier
 	 *
 	 * @return default XML encoding node identifier
 	 */
-	OpcUaNodeId& defaultXMLNodeId(void);
+	OpcUaStackCore::OpcUaNodeId& defaultXMLNodeId(void);
 
 	/**
 	 * results the default JSON encoding node identifier
 	 *
 	 * @return default JSON encoding node identifier
 	 */
-	OpcUaNodeId& defaultJSONNodeId(void);
+	OpcUaStackCore::OpcUaNodeId& defaultJSONNodeId(void);
 
 	/**
 	 * Getter function
@@ -212,7 +212,7 @@ class DLLEXPORT NodeInfo
 	 * @parameter[in] informationModel			opc ua information model
 	 */
 	bool init(
-		const OpcUaNodeId& dataTypeNodeId,
+		const OpcUaStackCore::OpcUaNodeId& dataTypeNodeId,
 		InformationModel::SPtr& informationModel
 	);
 
@@ -223,7 +223,7 @@ class DLLEXPORT NodeInfo
 	 *
 	 * @return C++ representation of the node identifier
 	 */
-	std::string getIdentifierAsString(OpcUaNodeId& nodeId);
+	std::string getIdentifierAsString(OpcUaStackCore::OpcUaNodeId& nodeId);
 
 	/**
 	 * This function results the namespace name from a given node identifier
@@ -232,7 +232,7 @@ class DLLEXPORT NodeInfo
 	 *
 	 * @return namespace name of the data type node identifier
 	 */
-	std::string getNamespaceName(OpcUaNodeId& nodeId);
+	std::string getNamespaceName(OpcUaStackCore::OpcUaNodeId& nodeId);
 
 
   private:
@@ -240,8 +240,8 @@ class DLLEXPORT NodeInfo
 	InformationModel::SPtr informationModel_;	//!< opc ua information model
 
 	std::string dataTypeNamespaceName_;			//!< name of data type namespace
-	OpcUaNodeId dataTypeNodeId_;				//!< data type node identifier
-	OpcUaNodeId parentDataTypeNodeId_;			//!< data type node identifier of parent
+	OpcUaStackCore::OpcUaNodeId dataTypeNodeId_;				//!< data type node identifier
+	OpcUaStackCore::OpcUaNodeId parentDataTypeNodeId_;			//!< data type node identifier of parent
 	BaseNodeClass::SPtr baseNode_;				//!< pointer to node
 	BaseNodeClass::SPtr parentBaseNode_;		//!< pointer to node of parent
 	std::string namespaceName_;					//!< namespace name
@@ -254,9 +254,9 @@ class DLLEXPORT NodeInfo
 	bool parentIsStructureType_;				//!< if parent node is from type StructureType
 	bool isAbstract_;							//!< if node is abstract data type
 	bool parentIsAbstract_;						//!< if parent node is abstract data type
-	OpcUaNodeId defaultBinaryNodeId_;			//!< default binary encoding node identifier
-	OpcUaNodeId defaultXMLNodeId_;				//!< default xml encoding node identifier
-	OpcUaNodeId defaultJSONNodeId_;				//!< default json encoding node identifier
+	OpcUaStackCore::OpcUaNodeId defaultBinaryNodeId_;			//!< default binary encoding node identifier
+	OpcUaStackCore::OpcUaNodeId defaultXMLNodeId_;				//!< default xml encoding node identifier
+	OpcUaStackCore::OpcUaNodeId defaultJSONNodeId_;				//!< default json encoding node identifier
 	std::string description_;					//!< node description
 };
 

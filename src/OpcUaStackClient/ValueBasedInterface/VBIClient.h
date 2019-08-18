@@ -19,6 +19,7 @@
 #define __OpcUaStackClient_VBIClient_h__
 
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include "OpcUaStackCore/BuildInTypes/OpcUaBuildInTypes.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIContext.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBITransaction.h"
@@ -40,7 +41,7 @@ namespace OpcUaStackClient
 			void (SubscriptionState subscriptionState, uint32_t subscriptionId)
 		> SubscriptionChangeHandler;
 		typedef std::function<
-			void (OpcUaUInt32 clientHandle, OpcUaDataValue& dataValue)
+			void (OpcUaStackCore::OpcUaUInt32 clientHandle, OpcUaStackCore::OpcUaDataValue& dataValue)
 		> DataChangeHandler;
 
 		void ioThreadName(const std::string& ioThreadName);
@@ -280,27 +281,27 @@ namespace OpcUaStackClient
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
 
-		OpcUaStackCore::OpcUaStatusCode syncViewServiceBrowse(OpcUaStackCore::OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& references);
+		OpcUaStackCore::OpcUaStatusCode syncViewServiceBrowse(OpcUaStackCore::OpcUaNodeId::SPtr& nodeId, OpcUaStackCore::ReferenceDescriptionArray::SPtr& references);
 
 	  private:
 
-        void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
-		void attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite);
-		void attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
-		void attributeServiceHistoryUpdateResponse(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
+        void attributeServiceReadResponse(OpcUaStackCore::ServiceTransactionRead::SPtr serviceTransactionRead);
+		void attributeServiceWriteResponse(OpcUaStackCore::ServiceTransactionWrite::SPtr serviceTransactionWrite);
+		void attributeServiceHistoryReadResponse(OpcUaStackCore::ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
+		void attributeServiceHistoryUpdateResponse(OpcUaStackCore::ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
 
-		void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
-		void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
-		void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
-		void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
-		void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
+		void subscriptionServiceCreateSubscriptionResponse(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
+		void subscriptionServiceModifySubscriptionResponse(OpcUaStackCore::ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
+		void subscriptionServiceTransferSubscriptionsResponse(OpcUaStackCore::ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
+		void subscriptionServiceDeleteSubscriptionsResponse(OpcUaStackCore::ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+		void dataChangeNotification(const OpcUaStackCore::MonitoredItemNotification::SPtr& monitoredItem);
 	    void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
 
-	    void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
-	    void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
-	    void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
-	    void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
-	    void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+	    void monitoredItemServiceCreateMonitoredItemsResponse(OpcUaStackCore::ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
+	    void monitoredItemServiceDeleteMonitoredItemsResponse(OpcUaStackCore::ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
+	    void monitoredItemServiceModifyMonitoredItemsResponse(OpcUaStackCore::ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
+	    void monitoredItemServiceSetMonitoringModeResponse(OpcUaStackCore::ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
+	    void monitoredItemServiceSetTriggeringResponse(OpcUaStackCore::ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
 
 		ServiceSetManager serviceSetManager_;
 		std::string ioThreadName_;

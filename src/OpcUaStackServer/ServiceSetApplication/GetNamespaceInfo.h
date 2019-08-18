@@ -34,14 +34,14 @@ namespace OpcUaStackServer
 		virtual ~GetNamespaceInfo(void);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
-		OpcUaStatusCode resultCode(void);
+		OpcUaStackCore::OpcUaStatusCode resultCode(void);
 
 		int32_t getNamespaceIndex(const std::string& namespaceUri);
 
 	  private:
-		OpcUaStatusCode resultCode_;
-		NamespaceInfoResponse::Index2NamespaceMap index2NamespaceMap_;
-		NamespaceInfoResponse::Namespace2IndexMap namespace2IndexMap_;
+		OpcUaStackCore::OpcUaStatusCode resultCode_;
+		OpcUaStackCore::NamespaceInfoResponse::Index2NamespaceMap index2NamespaceMap_;
+		OpcUaStackCore::NamespaceInfoResponse::Namespace2IndexMap namespace2IndexMap_;
 	};
 
 }

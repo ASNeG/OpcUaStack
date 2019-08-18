@@ -23,6 +23,8 @@
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItemId.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

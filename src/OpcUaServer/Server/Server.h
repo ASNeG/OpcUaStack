@@ -49,9 +49,9 @@ namespace OpcUaServer
 		void logServerInfo(void);
 
 		std::string configurationFile_;
-		Config* config_;
+		OpcUaStackCore::Config* config_;
 		OpcUaStackServer::Server server_;
-		FileLogger fileLogger_;
+		OpcUaStackCore::FileLogger fileLogger_;
 
 		OpcUaStackServer::ReloadIf* reloadIf_;
 		DiscoveryClient discoveryClient_;

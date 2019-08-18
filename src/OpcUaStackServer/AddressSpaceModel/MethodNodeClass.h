@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<MethodNodeClass> SPtr;
 
 		MethodNodeClass(void);
-		MethodNodeClass(OpcUaNodeId& nodeId, MethodNodeClass& methodNodeClass);
+		MethodNodeClass(OpcUaStackCore::OpcUaNodeId& nodeId, MethodNodeClass& methodNodeClass);
 		~MethodNodeClass(void);
 
 		ExecutableAttribute& executable(void);
@@ -49,7 +49,7 @@ namespace OpcUaStackServer
 		UserExecutableAttribute userExecutable_;
 
 		// standard properties - all optional
-		OpcUaString nodeVersion_;  
+		OpcUaStackCore::OpcUaString nodeVersion_;
 		//FIXME ArgumentArray inputArguments_;
 		//FIXME ArgumentArray outputArguments_;
 	};

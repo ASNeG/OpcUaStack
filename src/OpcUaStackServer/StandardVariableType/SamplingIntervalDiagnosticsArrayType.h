@@ -14,6 +14,8 @@
 
 #include "OpcUaStackServer/StandardVariableType/VariableBase.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
    

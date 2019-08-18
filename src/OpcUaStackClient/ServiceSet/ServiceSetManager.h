@@ -49,7 +49,7 @@ namespace OpcUaStackClient
 		void start(void) {}
 		void stop(void) {}
 
-		void registerIOThread(const std::string ioThreadName, IOThread::SPtr ioThread);
+		void registerIOThread(const std::string ioThreadName, OpcUaStackCore::IOThread::SPtr ioThread);
 		void deregisterIOThread(const std::string ioThreadName);
 
 		// session
@@ -134,11 +134,11 @@ namespace OpcUaStackClient
 		);
 
 	  private:
-		IOThread::SPtr getIOThread(const std::string ioThreadName);
+		OpcUaStackCore::IOThread::SPtr getIOThread(const std::string ioThreadName);
 		void createIOThread(const std::string ioThreadName);
 		void destroyIOThread(const std::string ioThreadName);
 
-		IOThread::Map ioThreadMap_;
+		OpcUaStackCore::IOThread::Map ioThreadMap_;
 	};
 
 }

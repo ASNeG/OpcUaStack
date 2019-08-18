@@ -32,11 +32,11 @@
 namespace OpcUaStackServer
 {
 
-	typedef std::list<ServiceTransactionPublish::SPtr> ServiceTransactionPublishList; 
+	typedef std::list<OpcUaStackCore::ServiceTransactionPublish::SPtr> ServiceTransactionPublishList;
 	typedef std::list<uint32_t> SubscriptionIdList;
 
 	class DLLEXPORT SubscriptionManager
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<SubscriptionManager> SPtr;
@@ -44,30 +44,30 @@ namespace OpcUaStackServer
 		SubscriptionManager(void);
 		~SubscriptionManager(void);
 
-		void ioThread(IOThread* ioThread);
+		void ioThread(OpcUaStackCore::IOThread* ioThread);
 		void informationModel(InformationModel::SPtr informationModel);
-		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
+		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
 		void sessionId(uint32_t sessionId);
 
-		OpcUaStatusCode receive(ServiceTransactionCreateSubscription::SPtr trx);
-		OpcUaStatusCode receive(ServiceTransactionDeleteSubscriptions::SPtr trx);
-		OpcUaStatusCode receive(ServiceTransactionPublish::SPtr trx);
+		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr trx);
+		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::ServiceTransactionDeleteSubscriptions::SPtr trx);
+		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::ServiceTransactionPublish::SPtr trx);
 
-		OpcUaStatusCode receive(ServiceTransactionCreateMonitoredItems::SPtr trx);
-		OpcUaStatusCode receive(ServiceTransactionDeleteMonitoredItems::SPtr trx);
-		OpcUaStatusCode receive(ServiceTransactionModifyMonitoredItems::SPtr trx);
-		OpcUaStatusCode receive(ServiceTransactionSetMonitoringMode::SPtr trx);
-		OpcUaStatusCode receive(ServiceTransactionSetTriggering::SPtr trx);
+		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::ServiceTransactionCreateMonitoredItems::SPtr trx);
+		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::ServiceTransactionDeleteMonitoredItems::SPtr trx);
+		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::ServiceTransactionModifyMonitoredItems::SPtr trx);
+		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::ServiceTransactionSetMonitoringMode::SPtr trx);
+		OpcUaStackCore::OpcUaStatusCode receive(OpcUaStackCore::ServiceTransactionSetTriggering::SPtr trx);
 
 		size_t size(void);
 
 	  private:
 		void subscriptionPublishTimeout(Subscription::SPtr subscription);
-		OpcUaStatusCode receiveAcknowledgement(uint32_t subscriptionId, uint32_t acknowledgmentNumber);
+		OpcUaStackCore::OpcUaStatusCode receiveAcknowledgement(uint32_t subscriptionId, uint32_t acknowledgmentNumber);
 
-		IOThread* ioThread_;
+		OpcUaStackCore::IOThread* ioThread_;
 		InformationModel::SPtr informationModel_;
-		ForwardGlobalSync::SPtr forwardGlobalSync_;
+		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
 		SubscriptionMap subscriptionMap_;
 		uint32_t sessionId_;
 

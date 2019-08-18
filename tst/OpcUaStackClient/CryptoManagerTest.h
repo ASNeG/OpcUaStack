@@ -3,8 +3,6 @@
 
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 
-using namespace OpcUaStackCore;
-
 class CryptoManagerTest
 {
   public:

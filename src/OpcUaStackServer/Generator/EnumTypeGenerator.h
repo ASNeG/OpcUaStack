@@ -86,7 +86,7 @@ namespace OpcUaStackServer
 		 *
 		 * @return true if successful
 		 */
-		bool generate(const OpcUaNodeId& enumType);
+		bool generate(const OpcUaStackCore::OpcUaNodeId& enumType);
 
 	  private:
 

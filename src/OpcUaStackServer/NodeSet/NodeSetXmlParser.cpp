@@ -23,6 +23,8 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

@@ -22,6 +22,8 @@
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

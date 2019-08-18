@@ -21,6 +21,8 @@
 #include "OpcUaStackServer/ServiceSet/NodeManagementService.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

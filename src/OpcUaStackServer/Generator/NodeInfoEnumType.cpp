@@ -20,6 +20,8 @@
 #include "OpcUaStackServer/Generator/NodeInfoEnumType.h"
 #include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

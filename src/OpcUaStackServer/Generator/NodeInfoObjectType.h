@@ -51,11 +51,11 @@ class DLLEXPORT NodeInfoObjectType
 	 * @parameter[in] informationModel			opc ua information model
 	 */
 	bool init(
-		const OpcUaNodeId& objectTypeNodeId,
+		const OpcUaStackCore::OpcUaNodeId& objectTypeNodeId,
 		InformationModel::SPtr& informationModel
 	);
 
-	OpcUaNodeId& objectTypeNodeId(void);
+	OpcUaStackCore::OpcUaNodeId& objectTypeNodeId(void);
 	std::string& objectTypeNamespaceName(void);
 	std::string& className(void);
 	std::string& namespaceName(void);
@@ -64,20 +64,20 @@ class DLLEXPORT NodeInfoObjectType
 	VariableTypeField::Map& variableTypeFieldMap(void);
 	MethodTypeField::Map& methodTypeFieldMap(void);
 
-	std::string getIdentifierAsString(OpcUaNodeId& nodeId);
+	std::string getIdentifierAsString(OpcUaStackCore::OpcUaNodeId& nodeId);
 
   private:
-	bool readNodes(const OpcUaNodeId& objectTypeNodeId);
-	bool readChilds(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
-	bool readObjectTypeInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
-	bool readObjectInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
-	bool readVariableInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
-	bool readMethodInfo(const BaseNodeClass::SPtr& baseNode, BrowseName& browseName);
+	bool readNodes(const OpcUaStackCore::OpcUaNodeId& objectTypeNodeId);
+	bool readChilds(const BaseNodeClass::SPtr& baseNode, OpcUaStackCore::BrowseName& browseName);
+	bool readObjectTypeInfo(const BaseNodeClass::SPtr& baseNode, OpcUaStackCore::BrowseName& browseName);
+	bool readObjectInfo(const BaseNodeClass::SPtr& baseNode, OpcUaStackCore::BrowseName& browseName);
+	bool readVariableInfo(const BaseNodeClass::SPtr& baseNode, OpcUaStackCore::BrowseName& browseName);
+	bool readMethodInfo(const BaseNodeClass::SPtr& baseNode, OpcUaStackCore::BrowseName& browseName);
 
 	NumberNamespaceMap numberNamespaceMap_;
-	OpcUaNodeId objectTypeNodeId_;
+	OpcUaStackCore::OpcUaNodeId objectTypeNodeId_;
 	std::string objectTypeNamespaceName_;
-	OpcUaNodeId parentObjectTypeNodeId_;
+	OpcUaStackCore::OpcUaNodeId parentObjectTypeNodeId_;
 	InformationModel::SPtr informationModel_;
 
 	BaseNodeClass::SPtr baseNode_;

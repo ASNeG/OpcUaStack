@@ -44,10 +44,10 @@ namespace OpcUaStackServer
 		void stop(void);
 
 		InformationModel::SPtr getInformationModel(void);
-		IOThread* ioThread(void);
+		OpcUaStackCore::IOThread* ioThread(void);
 		ApplicationManager& applicationManager(void);
 		ServiceManager& serviceManager(void);
-		CryptoManager::SPtr& cryptoManager(void);
+		OpcUaStackCore::CryptoManager::SPtr& cryptoManager(void);
 
 	  private:
 		bool readInformationModel(void);
@@ -61,10 +61,10 @@ namespace OpcUaStackServer
 		bool shutdownSession(void);
 		bool initApplication(void);
 
-		EndpointDescriptionSet::SPtr endpointDescriptionSet_;
-		CryptoManager::SPtr cryptoManager_;
+		OpcUaStackCore::EndpointDescriptionSet::SPtr endpointDescriptionSet_;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 
-		IOThread::SPtr ioThread_;
+		OpcUaStackCore::IOThread::SPtr ioThread_;
 		InformationModel::SPtr informationModel_;
 		SessionManager sessionManager_;
 		ServiceManager serviceManager_;

@@ -31,7 +31,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT BaseNodeClass
-	: public Object
+	: public OpcUaStackCore::Object
 	, public AttributeBase
 	{
 	  public: 
@@ -40,8 +40,8 @@ namespace OpcUaStackServer
 		typedef std::vector<BaseNodeClass::SPtr> Vec;
 
 		BaseNodeClass(void);
-		BaseNodeClass(NodeClass::Enum nodeClass);
-		BaseNodeClass(NodeClass::Enum nodeClass, OpcUaNodeId& nodeId, BaseNodeClass* baseNodeClass);
+		BaseNodeClass(OpcUaStackCore::NodeClass::Enum nodeClass);
+		BaseNodeClass(OpcUaStackCore::NodeClass::Enum nodeClass, OpcUaStackCore::OpcUaNodeId& nodeId, BaseNodeClass* baseNodeClass);
 		virtual ~BaseNodeClass(void);
 
 		NodeIdAttribute& nodeId(void);
@@ -66,8 +66,8 @@ namespace OpcUaStackServer
 		void copyTo(BaseNodeClass& baseNodeClass);
 		virtual BaseNodeClass::SPtr clone(void) = 0;
 
-		void forwardNodeSync(ForwardNodeSync::SPtr forwardInfo);
-		ForwardNodeSync::SPtr forwardNodeSync(void);
+		void forwardNodeSync(OpcUaStackCore::ForwardNodeSync::SPtr forwardInfo);
+		OpcUaStackCore::ForwardNodeSync::SPtr forwardNodeSync(void);
 
 	  private:
 		NodeIdAttribute nodeId_;
@@ -80,7 +80,7 @@ namespace OpcUaStackServer
 
 		ReferenceItemMap referenceItemMap_;
 
-		ForwardNodeSync::SPtr forwardNodeSync_;
+		OpcUaStackCore::ForwardNodeSync::SPtr forwardNodeSync_;
 	};
 
 }

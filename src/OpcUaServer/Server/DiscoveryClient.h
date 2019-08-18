@@ -30,13 +30,13 @@ namespace OpcUaServer
 		DiscoveryClient(void);
 		~DiscoveryClient(void);
 
-		void cryptoManager(CryptoManager::SPtr& cryptoManager);
+		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 
-		bool startup(Config& config);
+		bool startup(OpcUaStackCore::Config& config);
 		void shutdown(void);
 		
 	  private:
-		bool parseEndpointConfiguration(Config& config);
+		bool parseEndpointConfiguration(OpcUaStackCore::Config& config);
 		bool createRegisteredServers(
 			const std::string& applicationUri,
 			const std::string& productUri,
