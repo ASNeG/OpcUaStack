@@ -2,6 +2,7 @@
 #include "OpcUaStackClient/CryptoManagerTest.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
+using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
 #ifdef REAL_SERVER

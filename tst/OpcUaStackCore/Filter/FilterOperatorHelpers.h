@@ -15,6 +15,8 @@
 
 #include "OpcUaStackCore/Filter/FilterStack.h"
 
+using namespace OpcUaStackCore;
+
 class MockAttribute : public AttributeIf {
 public:
     virtual bool getAttribute(

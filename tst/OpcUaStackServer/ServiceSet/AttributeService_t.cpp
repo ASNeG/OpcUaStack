@@ -7,7 +7,7 @@
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 
-
+using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
 
 class MockComponent

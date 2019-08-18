@@ -4,6 +4,7 @@
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 
+using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
 
 BOOST_AUTO_TEST_SUITE(MonitoredItem_)

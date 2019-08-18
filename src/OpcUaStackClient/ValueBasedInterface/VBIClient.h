@@ -19,7 +19,6 @@
 #define __OpcUaStackClient_VBIClient_h__
 
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include "OpcUaStackCore/BuildInTypes/OpcUaBuildInTypes.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIContext.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBITransaction.h"

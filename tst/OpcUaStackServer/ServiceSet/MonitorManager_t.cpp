@@ -5,6 +5,7 @@
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStartContext.h"
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStopContext.h"
 
+using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
 
 
