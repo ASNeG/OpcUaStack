@@ -25,7 +25,6 @@
 #include <iostream>
 #include <vector>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
 #include "OpcUaStackCore/BuildInTypes/Json.h"

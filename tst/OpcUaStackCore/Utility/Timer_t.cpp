@@ -2,7 +2,6 @@
 #include "OpcUaStackCore/Utility/Timer.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 
 using namespace OpcUaStackCore;
 

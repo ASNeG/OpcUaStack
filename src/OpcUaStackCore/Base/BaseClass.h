@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_BaseClass_h__
 #define __OpcUaStackCore_BaseClass_h__
 
+#include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore

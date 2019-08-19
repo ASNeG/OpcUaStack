@@ -21,6 +21,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <iostream>
 #include <stdint.h>
+#include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumberTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 

@@ -17,7 +17,6 @@
 
 #include <boost/shared_ptr.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientCommand/CommandConnect.h"
 #include "OpcUaClient/ClientService/ClientServiceConnect.h"
 

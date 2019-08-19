@@ -14,7 +14,6 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/StandardDataTypes/DataTypeDescription.h"
 #include "OpcUaStackCore/StandardDataTypes/EnumDefinition.h"

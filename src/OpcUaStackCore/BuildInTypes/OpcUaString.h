@@ -20,6 +20,7 @@
 
 #include <string>
 #include <stdint.h>
+#include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"

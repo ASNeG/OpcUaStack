@@ -16,7 +16,6 @@
  */
 
 #include <boost/make_shared.hpp>
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
 
 namespace OpcUaStackCore
