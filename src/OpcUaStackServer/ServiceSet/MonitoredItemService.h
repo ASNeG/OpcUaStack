@@ -21,14 +21,12 @@
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT MonitoredItemService 
 	: public ServiceSetBase
-	, public Object
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoredItemService> SPtr;
@@ -37,15 +35,15 @@ namespace OpcUaStackServer
 		~MonitoredItemService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveCreateMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveDeleteMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveModifyMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveSetmonitoringModeRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveSetTriggeringRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateMonitoredItemsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveDeleteMonitoredItemsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveModifyMonitoredItemsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveSetmonitoringModeRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveSetTriggeringRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
 	};
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include "OpcUaStackPubSub/DataSetMessage/DataSetPayloadHeader.h"
 
+using namespace OpcUaStackCore;
 using namespace OpcUaStackPubSub;
 
 BOOST_AUTO_TEST_SUITE(DataSetPayloadHeader_)

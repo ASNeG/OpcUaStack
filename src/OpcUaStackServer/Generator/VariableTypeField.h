@@ -23,8 +23,6 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -56,8 +54,8 @@ class DLLEXPORT VariableTypeField
 	std::string& functionName(void);
 	void dataTypeNamespaceName(const std::string& dataTypeNamespaceName);
 	std::string& dataTypeNamespaceName(void);
-	void dataTypeNodeId(const OpcUaNodeId& dataTypeNodeId);
-	OpcUaNodeId& dataTypeNodeId(void);
+	void dataTypeNodeId(const OpcUaStackCore::OpcUaNodeId& dataTypeNodeId);
+	OpcUaStackCore::OpcUaNodeId& dataTypeNodeId(void);
 	void dataTypeName(const std::string& dataTypeName);
 	std::string& dataTypeName(void);
 	void dataTypeDescription(const std::string& dataTypeDescription);
@@ -70,7 +68,7 @@ class DLLEXPORT VariableTypeField
 	std::string variableName_;
 	std::string functionName_;
 	std::string dataTypeNamespaceName_;
-	OpcUaNodeId dataTypeNodeId_;
+	OpcUaStackCore::OpcUaNodeId dataTypeNodeId_;
 	std::string dataTypeName_;
 	std::string dataTypeDescription_;
 	bool isArray_;

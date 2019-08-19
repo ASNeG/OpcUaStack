@@ -23,6 +23,8 @@
 #include "OpcUaStackCore/ServiceSet/CancelResponse.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

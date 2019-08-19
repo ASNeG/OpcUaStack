@@ -39,8 +39,8 @@ namespace OpcUaStackPubSub
 		void writerId(uint32_t readerId);
 		uint32_t writerId(void) const;
 
-		void publisherId(OpcUaVariant::SPtr publisherId);
-		OpcUaVariant::SPtr publisherId() const;
+		void publisherId(OpcUaStackCore::OpcUaVariant::SPtr publisherId);
+		OpcUaStackCore::OpcUaVariant::SPtr publisherId() const;
 
 		void messageReceiveTimeout(uint32_t messageReceiveTimeout);
 		uint32_t messageReceiveTimeout() const;
@@ -50,7 +50,7 @@ namespace OpcUaStackPubSub
 
 	  private:
 		uint32_t writerId_;
-		OpcUaVariant::SPtr publisherId_;
+		OpcUaStackCore::OpcUaVariant::SPtr publisherId_;
 		uint32_t messageReceiveTimeout_;
 	};
 

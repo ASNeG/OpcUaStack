@@ -22,8 +22,6 @@
 #include <map>
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
-using namespace OpcUaStackClient;
-
 namespace OpcUaClient
 {
 

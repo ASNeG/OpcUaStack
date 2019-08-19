@@ -40,13 +40,13 @@ namespace OpcUaVariableTypeGenerator
 		std::vector<std::string> ignoreVariableTypeNameVec_;
 		std::vector<std::string> variableTypeNameVec_;
 		OpcUaStackServer::InformationModel::SPtr informationModel_;
-		OpcUaNodeId variableTypeNodeId_;
+		OpcUaStackCore::OpcUaNodeId variableTypeNodeId_;
 
-		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
+		bool findNodeId(const std::string& eventTypeName, const OpcUaStackCore::OpcUaNodeId& nodeId);
 		int32_t loadInformationModel(void);
 		int32_t generateVariableTypeSource(void);
 		int32_t buildAllSubTypes(void);
-		int32_t findAllSubTypes(const OpcUaNodeId& variableTypeNodeId);
+		int32_t findAllSubTypes(const OpcUaStackCore::OpcUaNodeId& variableTypeNodeId);
 	};
 
 }

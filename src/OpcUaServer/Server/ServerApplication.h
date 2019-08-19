@@ -22,13 +22,11 @@
 #include "OpcUaServer/Interface/ServerApplicationIf.h"
 #include "OpcUaServer/Server/Server.h"
 
-using namespace OpcUaStackServer;
-
 namespace OpcUaServer
 {
 	class DLLEXPORT ServerApplication
 	: public ServerApplicationIf
-	, public ReloadIf
+	, public OpcUaStackServer::ReloadIf
 	{
 	  public:
 		ServerApplication(void);

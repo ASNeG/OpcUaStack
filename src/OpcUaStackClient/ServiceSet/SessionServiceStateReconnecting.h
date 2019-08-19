@@ -17,6 +17,7 @@
 #ifndef __OpcUaStackClient_SessionServiceStateReconnecting_h__
 #define __OpcUaStackClient_SessionServiceStateReconnecting_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateIf.h"
 
 namespace OpcUaStackClient
@@ -33,33 +34,33 @@ namespace OpcUaStackClient
 		virtual SessionServiceStateId asyncDisconnect(bool deleteSubscriptions) override;
 		virtual SessionServiceStateId asyncCancel(uint32_t requestHandle) override;
 
-		virtual SessionServiceStateId handleConnect(SecureChannel* secureChannel) override;
-		virtual SessionServiceStateId handleDisconnect(SecureChannel* secureChannel) override;
+		virtual SessionServiceStateId handleConnect(OpcUaStackCore::SecureChannel* secureChannel) override;
+		virtual SessionServiceStateId handleDisconnect(OpcUaStackCore::SecureChannel* secureChannel) override;
 		virtual SessionServiceStateId recvCreateSessionResponse(
-			SecureChannel* secureChannel,
-			const ResponseHeader::SPtr& responseHeader
+			OpcUaStackCore::SecureChannel* secureChannel,
+			const OpcUaStackCore::ResponseHeader::SPtr& responseHeader
 		) override;
 		virtual SessionServiceStateId recvActivateSessionResponse(
-			SecureChannel* secureChannel,
-			const ResponseHeader::SPtr& responseHeader
+			OpcUaStackCore::SecureChannel* secureChannel,
+			const OpcUaStackCore::ResponseHeader::SPtr& responseHeader
 		) override;
 		virtual SessionServiceStateId recvGetEndpointsResponse(
-			SecureChannel* secureChannel,
-			const ResponseHeader::SPtr& responseHeader
+			OpcUaStackCore::SecureChannel* secureChannel,
+			const OpcUaStackCore::ResponseHeader::SPtr& responseHeader
 		) override;
 		virtual SessionServiceStateId recvCloseSessionResponse(
-			SecureChannel* secureChannel,
-			const ResponseHeader::SPtr& responseHeader
+			OpcUaStackCore::SecureChannel* secureChannel,
+			const OpcUaStackCore::ResponseHeader::SPtr& responseHeader
 		) override;
 		virtual SessionServiceStateId recvMessageResponse(
-			SecureChannel* secureChannel,
-			const ResponseHeader::SPtr& responseHeader
+			OpcUaStackCore::SecureChannel* secureChannel,
+			const OpcUaStackCore::ResponseHeader::SPtr& responseHeader
 		) override;
 
-		virtual SessionServiceStateId sendMessageRequest(Message::SPtr message) override;
+		virtual SessionServiceStateId sendMessageRequest(OpcUaStackCore::Message::SPtr message) override;
 
 		virtual SessionServiceStateId reconnectTimeout(void) override;
-		virtual SessionServiceStateId pendingQueueTimeout(const Object::SPtr& object) override;
+		virtual SessionServiceStateId pendingQueueTimeout(const OpcUaStackCore::Object::SPtr& object) override;
 	};
 
 }

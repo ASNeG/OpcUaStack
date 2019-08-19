@@ -21,8 +21,6 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/ApplicationUtility/ApplicationConfigIf.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 

@@ -23,6 +23,7 @@
 #include "OpcUaStackClient/ValueBasedInterface/HistoryRead.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 namespace OpcUaStackClient
 {

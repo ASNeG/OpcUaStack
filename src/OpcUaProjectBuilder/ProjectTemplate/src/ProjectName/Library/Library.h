@@ -20,9 +20,6 @@
 
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackServer;
-
 namespace ProjectName
 {
 

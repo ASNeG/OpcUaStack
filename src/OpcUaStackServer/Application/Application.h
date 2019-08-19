@@ -29,7 +29,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT Application
 	: public ApplicationBase
-	, public Object
+	, public OpcUaStackCore::Object
 	, public ApplicationServiceIf
 	{
 	  public:
@@ -50,29 +50,29 @@ namespace OpcUaStackServer
 		ApplicationIf* applicationIf(void);
 		void reloadIf(ReloadIf* reloadIf);
 		void applicationName(const std::string& applicationName);
-		void serviceComponent(Component* serviceComponent);
+		void serviceComponent(OpcUaStackCore::Component* serviceComponent);
 
 		bool startup(void);
 		bool shutdown(void);
 
 		//- Component -----------------------------------------------------------------
-		virtual void receive(Message::SPtr message);
+		virtual void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 		//- ApplicationServiceIf ------------------------------------------------------
-		virtual void send(ServiceTransaction::SPtr serviceTransaction);
-		virtual void sendSync(ServiceTransaction::SPtr serviceTransaction);
+		virtual void send(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		virtual void sendSync(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		virtual void reload(void);
 		//- ApplicationServiceIf ------------------------------------------------------
 
 	  private:
-		void updateServiceTransactionRequest(ServiceTransaction::SPtr serviceTransaction);
+		void updateServiceTransactionRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
 		State state_;
 		ApplicationIf* applicationIf_;
 		ReloadIf* reloadIf_;
 		std::string applicationName_;
-		Component* serviceComponent_;
+		OpcUaStackCore::Component* serviceComponent_;
 	};
 
 }

@@ -23,7 +23,6 @@
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
 
-
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer

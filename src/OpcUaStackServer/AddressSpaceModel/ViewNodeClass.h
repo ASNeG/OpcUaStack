@@ -48,8 +48,8 @@ namespace OpcUaStackServer
 		EventNotifierAttribute eventNotifier_;
 
 		// standard properties
-		OpcUaString nodeVersion_;  // optional
-		OpcUaUInt32 viewVersion_; // optional
+		OpcUaStackCore::OpcUaString nodeVersion_;  // optional
+		OpcUaStackCore::OpcUaUInt32 viewVersion_; // optional
 	};
 
 }

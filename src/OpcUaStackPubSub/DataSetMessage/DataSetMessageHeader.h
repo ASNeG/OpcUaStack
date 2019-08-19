@@ -25,13 +25,11 @@
 #include "OpcUaStackPubSub/DataSetMessage/DataSetMessageType.h"
 #include "OpcUaStackPubSub/DataSetMessage/FieldEncoding.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT DataSetMessageHeader
-	: public JsonFormatter
+	: public OpcUaStackCore::JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetMessageHeader> SPtr;
@@ -58,18 +56,18 @@ namespace OpcUaStackPubSub
 		DataSetMessageType messageType(void);
 		void picoSecondsEnabled(bool enabled);
 		bool picoSecondsEnabled(void);
-		void dataMessageSequenceNumber(OpcUaUInt16 dataMessageSequenceNumber);
-		OpcUaUInt16 dataMessageSequenceNumber(void);
-		void timestamp(OpcUaDateTime timestamp);
-		OpcUaDateTime timestamp(void);
-		void picoSeconds(OpcUaUInt16 picoSeconds);
-		OpcUaUInt16 picoSeconds(void);
-		void statusCode(OpcUaUInt16 statusCode);
-		OpcUaUInt16 statusCode(void);
-		void configurationVersionMajorVersion(OpcUaUInt32 configurationVersionMajorVersion);
-		OpcUaUInt32 configurationVersionMajorVersion(void);
-		void configurationVersionMinorVersion(OpcUaUInt32 configurationVersionMinorVersion);
-		OpcUaUInt32 configurationVersionMinorVersion(void);
+		void dataMessageSequenceNumber(OpcUaStackCore::OpcUaUInt16 dataMessageSequenceNumber);
+		OpcUaStackCore::OpcUaUInt16 dataMessageSequenceNumber(void);
+		void timestamp(OpcUaStackCore::OpcUaDateTime timestamp);
+		OpcUaStackCore::OpcUaDateTime timestamp(void);
+		void picoSeconds(OpcUaStackCore::OpcUaUInt16 picoSeconds);
+		OpcUaStackCore::OpcUaUInt16 picoSeconds(void);
+		void statusCode(OpcUaStackCore::OpcUaUInt16 statusCode);
+		OpcUaStackCore::OpcUaUInt16 statusCode(void);
+		void configurationVersionMajorVersion(OpcUaStackCore::OpcUaUInt32 configurationVersionMajorVersion);
+		OpcUaStackCore::OpcUaUInt32 configurationVersionMajorVersion(void);
+		void configurationVersionMinorVersion(OpcUaStackCore::OpcUaUInt32 configurationVersionMinorVersion);
+		OpcUaStackCore::OpcUaUInt32 configurationVersionMinorVersion(void);
 
 		void copyTo(DataSetMessageHeader& dataSetMessageHeader);
 		bool operator==(const DataSetMessageHeader& other) const;
@@ -77,10 +75,10 @@ namespace OpcUaStackPubSub
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) { return false; }
 
 	  protected:
 	    bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; };
@@ -97,18 +95,18 @@ namespace OpcUaStackPubSub
 		DataSetMessageType messageType_;
 		bool picoSecondsEnabled_;
 
-		OpcUaUInt16 dataMessageSequenceNumber_;
-		OpcUaDateTime timestamp_;
-		OpcUaUInt16 picoSeconds_;
-		OpcUaUInt16 statusCode_;
-		OpcUaUInt32 configurationVersionMajorVersion_;
-		OpcUaUInt32 configurationVersionMinorVersion_;
+		OpcUaStackCore::OpcUaUInt16 dataMessageSequenceNumber_;
+		OpcUaStackCore::OpcUaDateTime timestamp_;
+		OpcUaStackCore::OpcUaUInt16 picoSeconds_;
+		OpcUaStackCore::OpcUaUInt16 statusCode_;
+		OpcUaStackCore::OpcUaUInt32 configurationVersionMajorVersion_;
+		OpcUaStackCore::OpcUaUInt32 configurationVersionMinorVersion_;
 
 	};
 
 	class DLLEXPORT DataSetMessageHeaderArray
-	: public OpcUaArray<DataSetMessageHeader::SPtr, SPtrTypeCoder<DataSetMessageHeader> >
-	, public Object
+	: public OpcUaStackCore::OpcUaArray<DataSetMessageHeader::SPtr, OpcUaStackCore::SPtrTypeCoder<DataSetMessageHeader> >
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetMessageHeaderArray> SPtr;

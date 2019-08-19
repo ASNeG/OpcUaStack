@@ -22,14 +22,12 @@
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ApplicationService
 	: public ServiceSetBase
-	, public Object
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<ApplicationService> SPtr;
@@ -38,22 +36,22 @@ namespace OpcUaStackServer
 		~ApplicationService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveRegisterForwardNodeRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveRegisterForwardMethodRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveRegisterForwardGlobalRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveGetNodeReferenceRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveNamespaceInfoRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveCreateNodeInstanceRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveDelNodeInstanceRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveFireEventRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveBrowsePathToNodeIdRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveCreateVariableRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveCreateObjectRequest(ServiceTransaction::SPtr serviceTransaction);
-		void getNodeIdFromBrowsePath(BrowseName::SPtr& browseName, NodeIdResult::SPtr& nodeIdResult);
+		void receiveRegisterForwardNodeRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveRegisterForwardMethodRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveRegisterForwardGlobalRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveGetNodeReferenceRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveNamespaceInfoRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateNodeInstanceRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveDelNodeInstanceRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveFireEventRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveBrowsePathToNodeIdRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateVariableRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateObjectRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void getNodeIdFromBrowsePath(OpcUaStackCore::BrowseName::SPtr& browseName, OpcUaStackCore::NodeIdResult::SPtr& nodeIdResult);
 	};
 
 }

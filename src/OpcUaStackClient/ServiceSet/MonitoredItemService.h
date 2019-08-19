@@ -21,41 +21,39 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 	class DLLEXPORT MonitoredItemService
-	: public Component
+	: public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoredItemService> SPtr;
 
-		MonitoredItemService(IOThread* ioThread);
+		MonitoredItemService(OpcUaStackCore::IOThread* ioThread);
 		~MonitoredItemService(void);
 
 		void setConfiguration(
-			Component* componentSession
+			OpcUaStackCore::Component* componentSession
 		);
-		void componentSession(Component* componentSession);
+		void componentSession(OpcUaStackCore::Component* componentSession);
 
-		void syncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
-		void asyncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
-		void syncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
-		void asyncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
-		void syncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
-		void asyncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
-		void syncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
-		void asyncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
-		void syncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
-		void asyncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+		void syncSend(OpcUaStackCore::ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
+		void asyncSend(OpcUaStackCore::ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
+		void syncSend(OpcUaStackCore::ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
+		void asyncSend(OpcUaStackCore::ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
+		void syncSend(OpcUaStackCore::ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
+		void asyncSend(OpcUaStackCore::ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
+		void syncSend(OpcUaStackCore::ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
+		void asyncSend(OpcUaStackCore::ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
+		void syncSend(OpcUaStackCore::ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+		void asyncSend(OpcUaStackCore::ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		Component* componentSession_;
+		OpcUaStackCore::Component* componentSession_;
 	};
 
 }

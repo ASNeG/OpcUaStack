@@ -21,8 +21,6 @@
 #include "OpcUaStackCore/StandardDataTypes/MonitoredItemNotification.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFieldList.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 
@@ -32,11 +30,11 @@ namespace OpcUaStackClient
 	} SubscriptionState;
 
 	typedef std::function<
-		void (const MonitoredItemNotification::SPtr& monitoredItem)
+		void (const OpcUaStackCore::MonitoredItemNotification::SPtr& monitoredItem)
 	> DataChangeNotificationHandler;
 
 	typedef std::function<
-		void (const EventFieldList::SPtr& eventFieldList)
+		void (const OpcUaStackCore::EventFieldList::SPtr& eventFieldList)
 	> EventNotificationHandler;
 
 	typedef std::function<

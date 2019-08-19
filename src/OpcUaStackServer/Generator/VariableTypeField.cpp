@@ -17,6 +17,8 @@
 
 #include <OpcUaStackServer/Generator/VariableTypeField.h>
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

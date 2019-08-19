@@ -20,6 +20,8 @@
 #include "OpcUaStackServer/Generator/EnumTypeGenerator.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

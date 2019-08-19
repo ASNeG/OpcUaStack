@@ -40,13 +40,13 @@ namespace OpcUaObjectTypeGenerator
 		std::vector<std::string> ignoreObjectTypeNameVec_;
 		std::vector<std::string> objectTypeNameVec_;
 		OpcUaStackServer::InformationModel::SPtr informationModel_;
-		OpcUaNodeId objectTypeNodeId_;
+		OpcUaStackCore::OpcUaNodeId objectTypeNodeId_;
 
-		bool findNodeId(const std::string& objectTypeName, const OpcUaNodeId& nodeId);
+		bool findNodeId(const std::string& objectTypeName, const OpcUaStackCore::OpcUaNodeId& nodeId);
 		int32_t loadInformationModel(void);
 		int32_t generateObjectTypeSource(void);
 		int32_t buildAllSubTypes(void);
-		int32_t findAllSubTypes(const OpcUaNodeId& objectTypeNodeId);
+		int32_t findAllSubTypes(const OpcUaStackCore::OpcUaNodeId& objectTypeNodeId);
 	};
 
 }

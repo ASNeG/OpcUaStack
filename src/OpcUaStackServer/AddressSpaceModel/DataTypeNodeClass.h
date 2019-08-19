@@ -20,8 +20,6 @@
 
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -42,18 +40,18 @@ namespace OpcUaStackServer
 		void copyTo(DataTypeNodeClass& dataTypeNodeClass);
 		BaseNodeClass::SPtr clone(void);
 
-		void dataTypeDefinition(Object::SPtr dataTypeDefinition);
-		Object::SPtr& dataTypeDefinition(void);
+		void dataTypeDefinition(OpcUaStackCore::Object::SPtr dataTypeDefinition);
+		OpcUaStackCore::Object::SPtr& dataTypeDefinition(void);
 
 	  private:
 		// attributes mandatory
 		IsAbstractAttribute isAbstract_;
 
 		// additional properties
-		Object::SPtr dataTypeDefinition_;
+		OpcUaStackCore::Object::SPtr dataTypeDefinition_;
 
 		// standard properties - all optional
-		OpcUaString nodeVersion_;
+		OpcUaStackCore::OpcUaString nodeVersion_;
 	};
 
 }

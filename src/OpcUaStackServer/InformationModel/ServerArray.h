@@ -20,13 +20,11 @@
 
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ServerArray
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<ServerArray> SPtr;

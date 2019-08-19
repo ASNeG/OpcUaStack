@@ -21,8 +21,6 @@
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/Generator/NodeInfoObjectType.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -88,7 +86,7 @@ namespace OpcUaStackServer
 		 *
 		 * @return true if successful
 		 */
-		bool generate(const OpcUaNodeId& objectType);
+		bool generate(const OpcUaStackCore::OpcUaNodeId& objectType);
 
 	  private:
 		//

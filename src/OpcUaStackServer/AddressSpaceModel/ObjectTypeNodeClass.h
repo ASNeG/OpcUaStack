@@ -45,7 +45,7 @@ namespace OpcUaStackServer
 		  IsAbstractAttribute isAbstract_;
 
 		// standard properties
-		OpcUaString::SPtr nodeVersion_;  // optional
+		OpcUaStackCore::OpcUaString::SPtr nodeVersion_;  // optional
 		// FIXME: Image icon_;	// optional
 	};
 

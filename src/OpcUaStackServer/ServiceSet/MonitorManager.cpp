@@ -25,6 +25,8 @@
 #include "OpcUaStackServer/ServiceSet/MonitorManager.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

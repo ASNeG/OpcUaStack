@@ -23,14 +23,12 @@
 #include "OpcUaStackCore/StandardDataTypes/UpdateStructureDataDetails.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT AttributeService 
 	: public ServiceSetBase
-	, public Object
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<AttributeService> SPtr;
@@ -39,42 +37,42 @@ namespace OpcUaStackServer
 		~AttributeService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveReadRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveReadRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void forwardRead(
-			UserContext::SPtr& userContext,
+			OpcUaStackCore::UserContext::SPtr& userContext,
 			BaseNodeClass::SPtr baseNodeClass,
-			ReadRequest::SPtr readRequest,
-			ReadValueId::SPtr readValueId
+			OpcUaStackCore::ReadRequest::SPtr readRequest,
+			OpcUaStackCore::ReadValueId::SPtr readValueId
 		);
-		OpcUaStatusCode forwardAuthorizationRead(UserContext::SPtr& userContext, ReadValueId::SPtr& readValueId);
-		void receiveWriteRequest(ServiceTransaction::SPtr serviceTransaction);
-		OpcUaStatusCode forwardWrite(
-			UserContext::SPtr& userContext,
+		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationRead(OpcUaStackCore::UserContext::SPtr& userContext, OpcUaStackCore::ReadValueId::SPtr& readValueId);
+		void receiveWriteRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		OpcUaStackCore::OpcUaStatusCode forwardWrite(
+			OpcUaStackCore::UserContext::SPtr& userContext,
 			BaseNodeClass::SPtr baseNodeClass,
-			WriteRequest::SPtr writeRequest,
-			WriteValue::SPtr writeValue
+			OpcUaStackCore::WriteRequest::SPtr writeRequest,
+			OpcUaStackCore::WriteValue::SPtr writeValue
 		);
-		OpcUaStatusCode forwardAuthorizationWrite(UserContext::SPtr& userContext, WriteValue::SPtr& writeValue);
-		void receiveHistoryReadRequest(ServiceTransaction::SPtr serviceTransaction);
+		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationWrite(OpcUaStackCore::UserContext::SPtr& userContext, OpcUaStackCore::WriteValue::SPtr& writeValue);
+		void receiveHistoryReadRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		void receiveHistoryReadRawRequest(
-			ServiceTransaction::SPtr& serviceTransaction,
-			ServiceTransactionHistoryRead::SPtr& trx,
-			HistoryReadRequest::SPtr readRequest,
-			HistoryReadResponse::SPtr readResponse
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction,
+			OpcUaStackCore::ServiceTransactionHistoryRead::SPtr& trx,
+			OpcUaStackCore::HistoryReadRequest::SPtr readRequest,
+			OpcUaStackCore::HistoryReadResponse::SPtr readResponse
 		);
 		void receiveHistoryReadEventRequest(
-			ServiceTransaction::SPtr& serviceTransaction,
-			ServiceTransactionHistoryRead::SPtr& trx,
-			HistoryReadRequest::SPtr readRequest,
-			HistoryReadResponse::SPtr readResponse
+			OpcUaStackCore::ServiceTransaction::SPtr& serviceTransaction,
+			OpcUaStackCore::ServiceTransactionHistoryRead::SPtr& trx,
+			OpcUaStackCore::HistoryReadRequest::SPtr readRequest,
+			OpcUaStackCore::HistoryReadResponse::SPtr readResponse
 		);
-		OpcUaStatusCode forwardAuthorizationHistoricalRead(UserContext::SPtr& userContext, HistoryReadValueId::SPtr& readValueId);
-		void receiveHistoryUpdateRequest(ServiceTransaction::SPtr serviceTransaction);
-		OpcUaStatusCode forwardAuthorizationHistoricalWrite(UserContext::SPtr& userContext, UpdateStructureDataDetails::SPtr& updateStructureDataDetails);
+		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationHistoricalRead(OpcUaStackCore::UserContext::SPtr& userContext, OpcUaStackCore::HistoryReadValueId::SPtr& readValueId);
+		void receiveHistoryUpdateRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		OpcUaStackCore::OpcUaStatusCode forwardAuthorizationHistoricalWrite(OpcUaStackCore::UserContext::SPtr& userContext, OpcUaStackCore::UpdateStructureDataDetails::SPtr& updateStructureDataDetails);
 	};
 
 }

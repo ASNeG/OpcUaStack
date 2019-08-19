@@ -31,8 +31,6 @@
 #include "OpcUaStackClient/ServiceSet/SessionServiceHandler.h"
 #include "OpcUaStackClient/ServiceSet/EndpointDescriptionCache.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 
@@ -40,42 +38,42 @@ namespace OpcUaStackClient
 
 	class DLLEXPORT SessionService
 	: public SessionBase
-	, public Component
-	, public SecureChannelClientIf
+	, public OpcUaStackCore::Component
+	, public OpcUaStackCore::SecureChannelClientIf
 	{
 	  public:
 		typedef boost::shared_ptr<SessionService> SPtr;
 
-		SessionService(IOThread* ioThread);
+		SessionService(OpcUaStackCore::IOThread* ioThread);
 		~SessionService(void);
 
 		void setConfiguration(
 			SessionMode sessionMode,
 			SessionServiceChangeHandler& sessionServiceChangeHandler,
-			SecureChannelClientConfig::SPtr& secureChannelClientConfig,
+			OpcUaStackCore::SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 			SessionConfig::SPtr& sessionConfig
 		);
 		void updateEndpointUrl(const std::string& endpointUrl);
 
 		void asyncConnect(void);
-		OpcUaStatusCode syncConnect(void);
+		OpcUaStackCore::OpcUaStatusCode syncConnect(void);
 		void asyncDisconnect(bool deleteSubscriptions = true);
-		OpcUaStatusCode syncDisconnect(bool deleteSubscriptions = true);
+		OpcUaStackCore::OpcUaStatusCode syncDisconnect(bool deleteSubscriptions = true);
 		void asyncCancel(uint32_t requestHandle);
 
 		EndpointDescriptionCache& getEndpointDescriptionCache(void);
 
 		//- SecureChannelClientIf ---------------------------------------------
-		virtual void handleConnect(SecureChannel* secureChannel);
-		virtual void handleDisconnect(SecureChannel* secureChannel);
-		virtual void handleMessageResponse(SecureChannel* secureChannel);
+		virtual void handleConnect(OpcUaStackCore::SecureChannel* secureChannel);
+		virtual void handleDisconnect(OpcUaStackCore::SecureChannel* secureChannel);
+		virtual void handleMessageResponse(OpcUaStackCore::SecureChannel* secureChannel);
 		//- SecureChannelClientIf ---------------------------------------------
 
 		// - Component -------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		// - Component -------------------------------------------------------
 
-		void pendingQueueTimeout(Object::SPtr object);
+		void pendingQueueTimeout(OpcUaStackCore::Object::SPtr object);
 		void reconnectTimeout(void);
 
 	  private:

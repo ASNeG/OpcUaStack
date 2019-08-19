@@ -21,8 +21,6 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 
@@ -30,13 +28,13 @@ namespace OpcUaStackClient
 	{
 	  public:
 		virtual ~SubscriptionServicePublishIf(void) {}
-		virtual void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode) {};
-		virtual void subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish) {};
-		virtual void subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish) {};
+		virtual void subscriptionServiceSetPublishingModeResponse(OpcUaStackCore::ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode) {};
+		virtual void subscriptionServicePublishResponse(OpcUaStackCore::ServiceTransactionPublish::SPtr serviceTransactionPublish) {};
+		virtual void subscriptionServiceRepublishResponse(OpcUaStackCore::ServiceTransactionRepublish::SPtr serviceTransactionRepublish) {};
 	};
 
 	class DLLEXPORT SubscriptionServiceBase
-	: public Component
+	: public OpcUaStackCore::Component
 	{
 	  public:
 		boost::shared_ptr<SubscriptionServiceBase> SPtr;
@@ -44,30 +42,30 @@ namespace OpcUaStackClient
 		SubscriptionServiceBase(void);
 		~SubscriptionServiceBase(void);
 
-		virtual void componentSession(Component* componentSession);
+		virtual void componentSession(OpcUaStackCore::Component* componentSession);
 		void subscriptionServicePublishIf(SubscriptionServicePublishIf* subscriptionServicePublishIf);
 
-		void syncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
-		void asyncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
-		void syncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
-		void asyncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
-		void syncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
-		void asyncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
-		void syncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
-		void asyncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
-		void syncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
-		void asyncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
-		void syncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish);
-		void asyncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish);
-		void syncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
-		void asyncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
+		void syncSend(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
+		void asyncSend(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
+		void syncSend(OpcUaStackCore::ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
+		void asyncSend(OpcUaStackCore::ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
+		void syncSend(OpcUaStackCore::ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
+		void asyncSend(OpcUaStackCore::ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
+		void syncSend(OpcUaStackCore::ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
+		void asyncSend(OpcUaStackCore::ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
+		void syncSend(OpcUaStackCore::ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
+		void asyncSend(OpcUaStackCore::ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
+		void syncSend(OpcUaStackCore::ServiceTransactionPublish::SPtr& serviceTransactionPublish);
+		void asyncSend(OpcUaStackCore::ServiceTransactionPublish::SPtr& serviceTransactionPublish);
+		void syncSend(OpcUaStackCore::ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
+		void asyncSend(OpcUaStackCore::ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
 
 		//- Component -----------------------------------------------------------------
-		virtual void receive(Message::SPtr message);
+		virtual void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		Component* componentSession_;
+		OpcUaStackCore::Component* componentSession_;
 		SubscriptionServicePublishIf* subscriptionServicePublishIf_;
 	};
 

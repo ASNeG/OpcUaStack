@@ -32,9 +32,6 @@
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 
-
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -49,7 +46,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT Session
 	: public OpcUaStackCore::Object
-	, public Component
+	, public OpcUaStackCore::Component
 	{
 	  public:
 		Session(void);
@@ -57,92 +54,92 @@ namespace OpcUaStackServer
 
 		typedef boost::shared_ptr<Session> SPtr;
 
-		void cryptoManager(CryptoManager::SPtr& cryptoManager);
+		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManager);
-		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
+		void forwardGlobalSync(OpcUaStackCore::ForwardGlobalSync::SPtr& forwardGlobalSync);
 
 		void sessionIf(SessionIf* sessionIf);
-		OpcUaUInt32 sessionId(void);
-		OpcUaUInt32 authenticationToken(void);
+		OpcUaStackCore::OpcUaUInt32 sessionId(void);
+		OpcUaStackCore::OpcUaUInt32 authenticationToken(void);
 
 		void createSessionRequest(
-			RequestHeader::SPtr& requestHeader,
-			SecureChannel* secureChannel
+			OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+			OpcUaStackCore::SecureChannel* secureChannel
 		);
 		void activateSessionRequest(
-			RequestHeader::SPtr requestHeader,
-			SecureChannel* secureChannel
+			OpcUaStackCore::RequestHeader::SPtr requestHeader,
+			OpcUaStackCore::SecureChannel* secureChannel
 		);
 		void closeSessionRequest(
-			RequestHeader::SPtr requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction
+			OpcUaStackCore::RequestHeader::SPtr requestHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 		void cancelRequest(
-			RequestHeader::SPtr requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction
+			OpcUaStackCore::RequestHeader::SPtr requestHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 		void messageRequest(
-			RequestHeader::SPtr requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction
+			OpcUaStackCore::RequestHeader::SPtr requestHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 
-		void endpointDescription(EndpointDescription::SPtr& endpointDescription);
-		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
+		void endpointDescription(OpcUaStackCore::EndpointDescription::SPtr& endpointDescription);
+		void endpointDescriptionArray(OpcUaStackCore::EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 
 		// - Component -------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		// - Component -------------------------------------------------------
 
 	  private:
 		void createServerNonce(void);
 
-		OpcUaStatusCode authentication(ActivateSessionRequest& activateSessionRequest);
-		OpcUaStatusCode authenticationCloseSession(void);
-		OpcUaStatusCode authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter);
-		OpcUaStatusCode authenticationUserName(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter);
-		OpcUaStatusCode authenticationX509(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter);
-		OpcUaStatusCode authenticationIssued(ActivateSessionRequest& activateSessionRequest, OpcUaExtensibleParameter::SPtr& parameter);
-		OpcUaStatusCode checkUserTokenPolicy(const std::string& policyId, UserTokenType::Enum tokenType, UserTokenPolicy::SPtr& userTokenPolicy);
+		OpcUaStackCore::OpcUaStatusCode authentication(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest);
+		OpcUaStackCore::OpcUaStatusCode authenticationCloseSession(void);
+		OpcUaStackCore::OpcUaStatusCode authenticationAnonymous(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest, OpcUaStackCore::OpcUaExtensibleParameter::SPtr& parameter);
+		OpcUaStackCore::OpcUaStatusCode authenticationUserName(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest, OpcUaStackCore::OpcUaExtensibleParameter::SPtr& parameter);
+		OpcUaStackCore::OpcUaStatusCode authenticationX509(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest, OpcUaStackCore::OpcUaExtensibleParameter::SPtr& parameter);
+		OpcUaStackCore::OpcUaStatusCode authenticationIssued(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest, OpcUaStackCore::OpcUaExtensibleParameter::SPtr& parameter);
+		OpcUaStackCore::OpcUaStatusCode checkUserTokenPolicy(const std::string& policyId, OpcUaStackCore::UserTokenType::Enum tokenType, OpcUaStackCore::UserTokenPolicy::SPtr& userTokenPolicy);
 
 		void createSessionRequestError(
-			RequestHeader::SPtr& requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction,
-			OpcUaStatusCode statusCode
+			OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction,
+			OpcUaStackCore::OpcUaStatusCode statusCode
 		);
 		void activateSessionRequestError(
-			RequestHeader::SPtr& requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction,
-			OpcUaStatusCode statusCode,
+			OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction,
+			OpcUaStackCore::OpcUaStatusCode statusCode,
 			bool deleteSession = true
 		);
 		void cancelRequestError(
-			RequestHeader::SPtr& requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction,
-			OpcUaStatusCode statusCode
+			OpcUaStackCore::RequestHeader::SPtr& requestHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction,
+			OpcUaStackCore::OpcUaStatusCode statusCode
 		);
 		void messageRequestError(
-			SecureChannelTransaction::SPtr secureChannelTransaction,
-			OpcUaStatusCode statusCode
+			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction,
+			OpcUaStackCore::OpcUaStatusCode statusCode
 		);
 
 		static boost::mutex mutex_;
-		static OpcUaUInt32 uniqueSessionId_;
-		static OpcUaUInt32 uniqueAuthenticationToken_;
-		static OpcUaUInt32 getUniqueSessionId(void);
-		static OpcUaUInt32 getUniqueAuthenticationToken(void);
+		static OpcUaStackCore::OpcUaUInt32 uniqueSessionId_;
+		static OpcUaStackCore::OpcUaUInt32 uniqueAuthenticationToken_;
+		static OpcUaStackCore::OpcUaUInt32 getUniqueSessionId(void);
+		static OpcUaStackCore::OpcUaUInt32 getUniqueAuthenticationToken(void);
 
-		OpcUaUInt32 sessionId_;
-		OpcUaUInt32 authenticationToken_;
+		OpcUaStackCore::OpcUaUInt32 sessionId_;
+		OpcUaStackCore::OpcUaUInt32 authenticationToken_;
 		SessionState sessionState_;
 		SessionIf* sessionIf_;
-		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
-		EndpointDescription::SPtr endpointDescription_;
-		CryptoManager::SPtr cryptoManager_;
+		OpcUaStackCore::EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		OpcUaStackCore::EndpointDescription::SPtr endpointDescription_;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 
-		ForwardGlobalSync::SPtr forwardGlobalSync_;
+		OpcUaStackCore::ForwardGlobalSync::SPtr forwardGlobalSync_;
 		TransactionManager::SPtr transactionManagerSPtr_;
 
-		UserContext::SPtr userContext_;
+		OpcUaStackCore::UserContext::SPtr userContext_;
 		char serverNonce_[32];
 	};
 

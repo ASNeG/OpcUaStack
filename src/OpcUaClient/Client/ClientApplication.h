@@ -21,8 +21,6 @@
 #include <stdint.h>
 #include "OpcUaStackCore/Core/Core.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaClient
 {
 

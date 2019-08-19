@@ -15,13 +15,16 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackPubSub/DataSetMessage/EventDataSetMessage.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
 	EventDataSetMessage::EventDataSetMessage(void)
-	: dataSetFields_(constructSPtr<DataSetFieldArray>())
+	: dataSetFields_(boost::make_shared<DataSetFieldArray>())
 	, fieldEncoding_(VariantEncoding)
 	{
 		DataSetMessageHeader::SPtr dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();

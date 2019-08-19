@@ -21,8 +21,6 @@
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -32,8 +30,8 @@ namespace OpcUaStackServer
 		ApplicationServiceIf(void) {}
 		virtual ~ApplicationServiceIf(void) {}
 
-		virtual void send(ServiceTransaction::SPtr serviceTransaction) = 0;
-		virtual void sendSync(ServiceTransaction::SPtr serviceTransaction) = 0;
+		virtual void send(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction) = 0;
+		virtual void sendSync(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction) = 0;
 		virtual void reload(void) {}
 	};
 

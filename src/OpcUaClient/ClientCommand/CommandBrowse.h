@@ -23,9 +23,6 @@
 #include "OpcUaClient/ClientCommand/CommandBase.h"
 #include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackClient;
-
 namespace OpcUaClient
 {
 

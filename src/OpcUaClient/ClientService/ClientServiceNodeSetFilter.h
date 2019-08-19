@@ -28,8 +28,6 @@
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
-using namespace OpcUaStackServer;
-
 namespace OpcUaClient
 {
 

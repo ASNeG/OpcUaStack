@@ -21,34 +21,32 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT MethodService
-	: public Component
+	: public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<MethodService> SPtr;
 
-		MethodService(IOThread* ioThread);
+		MethodService(OpcUaStackCore::IOThread* ioThread);
 		~MethodService(void);
 
 		void setConfiguration(
-			Component* componentSession
+			OpcUaStackCore::Component* componentSession
 		);
-		void componentSession(Component* componentSession);
+		void componentSession(OpcUaStackCore::Component* componentSession);
 
-		void syncSend(ServiceTransactionCall::SPtr serviceTransactionRead);
-		void asyncSend(ServiceTransactionCall::SPtr serviceTransactionRead);
+		void syncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
+		void asyncSend(OpcUaStackCore::ServiceTransactionCall::SPtr serviceTransactionRead);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		Component* componentSession_;
+		OpcUaStackCore::Component* componentSession_;
 	};
 
 }

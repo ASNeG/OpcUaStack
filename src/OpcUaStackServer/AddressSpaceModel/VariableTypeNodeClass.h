@@ -59,7 +59,7 @@ namespace OpcUaStackServer
 		ArrayDimensionsAttribute arrayDimensions_;
 
 		// standard properties - all optional
-		OpcUaString nodeVersion_;  
+		OpcUaStackCore::OpcUaString nodeVersion_;
 	};
 
 }

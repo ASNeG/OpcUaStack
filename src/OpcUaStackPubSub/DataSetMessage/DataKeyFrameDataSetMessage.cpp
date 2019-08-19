@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,14 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackPubSub/DataSetMessage/DataKeyFrameDataSetMessage.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
 	DataKeyFrameDataSetMessage::DataKeyFrameDataSetMessage(void)
 	: DataSetMessage()
-	, dataSetFields_(constructSPtr<DataSetFieldArray>())
+	, dataSetFields_(boost::make_shared<DataSetFieldArray>())
 	{
 		DataSetMessageHeader::SPtr dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
 		dataSetMessageHeader->fieldEncoding(VariantEncoding);

@@ -21,29 +21,27 @@
 #include <vector>
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ReferenceItem
-	: public Object
+	: public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<ReferenceItem> SPtr;
 		typedef std::vector<ReferenceItem::SPtr> Vec;
 
 		ReferenceItem(void);
-		ReferenceItem(const bool& isForward, const OpcUaNodeId& nodeId);
-		ReferenceItem(const OpcUaNodeId& typeId, const bool& isForward, const OpcUaNodeId& nodeId);
+		ReferenceItem(const bool& isForward, const OpcUaStackCore::OpcUaNodeId& nodeId);
+		ReferenceItem(const OpcUaStackCore::OpcUaNodeId& typeId, const bool& isForward, const OpcUaStackCore::OpcUaNodeId& nodeId);
 		~ReferenceItem(void);
 
 		void copyTo(ReferenceItem::SPtr& referenceItem);
 		void copyTo(ReferenceItem& referenceItem);
 		bool operator==(const ReferenceItem& referenceItem);
 
-		OpcUaNodeId typeId_;
-		OpcUaNodeId nodeId_;
+		OpcUaStackCore::OpcUaNodeId typeId_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
 		bool isForward_;
 
 	};

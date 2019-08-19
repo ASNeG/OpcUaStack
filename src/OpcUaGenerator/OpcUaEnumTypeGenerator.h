@@ -41,14 +41,14 @@ namespace OpcUaEnumTypeGenerator
 		std::vector<std::string> enumTypeNameVec_;
 		std::string nodeId_;
 		OpcUaStackServer::InformationModel::SPtr informationModel_;
-		OpcUaNodeId enumTypeNodeId_;
+		OpcUaStackCore::OpcUaNodeId enumTypeNodeId_;
 
-		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
-		bool existNodeId(const OpcUaNodeId& nodeId);
+		bool findNodeId(const std::string& eventTypeName, const OpcUaStackCore::OpcUaNodeId& nodeId);
+		bool existNodeId(const OpcUaStackCore::OpcUaNodeId& nodeId);
 		int32_t loadInformationModel(void);
 		int32_t generateEnumTypeSource(void);
 		int32_t buildAllSubTypes(void);
-		int32_t findAllSubTypes(const OpcUaNodeId& eventTypeNodeId);
+		int32_t findAllSubTypes(const OpcUaStackCore::OpcUaNodeId& eventTypeNodeId);
 	};
 
 }

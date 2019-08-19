@@ -24,7 +24,6 @@
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 
-
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer

@@ -40,13 +40,13 @@ namespace OpcUaDataTypeGenerator
 		std::vector<std::string> ignoreDataTypeNameVec_;
 		std::vector<std::string> dataTypeNameVec_;
 		OpcUaStackServer::InformationModel::SPtr informationModel_;
-		OpcUaNodeId dataTypeNodeId_;
+		OpcUaStackCore::OpcUaNodeId dataTypeNodeId_;
 
-		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
+		bool findNodeId(const std::string& eventTypeName, const OpcUaStackCore::OpcUaNodeId& nodeId);
 		int32_t loadInformationModel(void);
 		int32_t generateDataTypeSource(void);
 		int32_t buildAllSubTypes(void);
-		int32_t findAllSubTypes(const OpcUaNodeId& eventTypeNodeId);
+		int32_t findAllSubTypes(const OpcUaStackCore::OpcUaNodeId& eventTypeNodeId);
 	};
 
 }

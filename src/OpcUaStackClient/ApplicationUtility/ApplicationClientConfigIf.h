@@ -20,8 +20,6 @@
 
 #include "OpcUaStackCore/ApplicationUtility/ApplicationConfigIf.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 

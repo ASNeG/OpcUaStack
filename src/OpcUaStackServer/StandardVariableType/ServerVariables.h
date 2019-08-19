@@ -27,7 +27,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ServerVariable
-	: public BaseClass
+	: public OpcUaStackCore::BaseClass
 	{
 	  public:
 		typedef boost::shared_ptr<ServerVariable> SPtr;
@@ -41,8 +41,8 @@ namespace OpcUaStackServer
 		void baseNode(const BaseNodeClass::WPtr& baseNode);
 		BaseNodeClass::WPtr& baseNode(void);
 
-		bool setDataValue(const OpcUaDataValue& dataValue);
-		bool getDataValue(OpcUaDataValue& dataValue);
+		bool setDataValue(const OpcUaStackCore::OpcUaDataValue& dataValue);
+		bool getDataValue(OpcUaStackCore::OpcUaDataValue& dataValue);
 
 	  private:
 		std::string name_;

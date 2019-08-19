@@ -19,6 +19,8 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include <boost/algorithm/string/predicate.hpp>
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

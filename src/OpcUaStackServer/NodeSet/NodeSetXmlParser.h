@@ -84,14 +84,14 @@ namespace OpcUaStackServer
 
 		bool encodeDataTypeDefinition(DataTypeNodeClass::SPtr& dataTypeNodeClass, boost::property_tree::ptree& ptree);
 
-		bool uint32ArrayToString(std::string& value, OpcUaUInt32Array& array);
-		bool stringToNodeId(const std::string& nodeIdString, OpcUaNodeId& nodeId);
+		bool uint32ArrayToString(std::string& value, OpcUaStackCore::OpcUaUInt32Array& array);
+		bool stringToNodeId(const std::string& nodeIdString, OpcUaStackCore::OpcUaNodeId& nodeId);
 		bool isProperty(VariableNodeClass::SPtr& variableNodeClassSPtr);
 
 		bool enableDefinition_;
 		NodeSetAlias nodeSetAlias_;
 		NodeSetValueParser nodeSetValueParser_;
-		Xmlns xmlns_;
+		OpcUaStackCore::Xmlns xmlns_;
 		NodeSetNamespace nodeSetNamespace_;
 	};
 

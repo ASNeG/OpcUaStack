@@ -21,13 +21,11 @@
 #include "OpcUaStackCore/ServiceSetApplication/NodeReference.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT NodeReferenceApplication
-	: public NodeReference
+	: public OpcUaStackCore::NodeReference
 	{
 	  public:
 		typedef boost::shared_ptr<NodeReferenceApplication> SPtr;

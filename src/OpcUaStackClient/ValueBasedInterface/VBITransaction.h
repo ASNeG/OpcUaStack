@@ -20,8 +20,6 @@
 
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
-using namespace OpcUaStackClient;
-
 namespace OpcUaStackClient
 {
 
@@ -33,12 +31,12 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	class DLLEXPORT VBITransactionRead
-	: public ServiceTransactionRead
+	: public OpcUaStackCore::ServiceTransactionRead
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionRead> SPtr;
 		typedef std::function<
-			void(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
+			void(OpcUaStackCore::OpcUaStatusCode statusCode, OpcUaStackCore::OpcUaNodeId& nodeId, OpcUaStackCore::OpcUaDataValue& dataValue)
 		> VBIResultHandler;
 
 		VBITransactionRead(void);
@@ -48,11 +46,11 @@ namespace OpcUaStackClient
 	};
 
 	class DLLEXPORT VBITransactionWrite
-	: public ServiceTransactionWrite
+	: public OpcUaStackCore::ServiceTransactionWrite
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionWrite> SPtr;
-		typedef std::function<void(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId)> VBIResultHandler;
+		typedef std::function<void(OpcUaStackCore::OpcUaStatusCode statusCode, OpcUaStackCore::OpcUaNodeId& nodeId)> VBIResultHandler;
 
 		VBITransactionWrite(void);
 		virtual ~VBITransactionWrite(void);
@@ -61,12 +59,12 @@ namespace OpcUaStackClient
 	};
 
 	class DLLEXPORT VBITransactionHistoryRead
-	: public ServiceTransactionHistoryRead
+	: public OpcUaStackCore::ServiceTransactionHistoryRead
 	{
 	  public:
-		typedef boost::shared_ptr<ServiceTransactionHistoryRead> SPtr;
+		typedef boost::shared_ptr<VBITransactionHistoryRead> SPtr;
 		typedef std::function<
-			void(OpcUaStatusCode statusCode, OpcUaDataValue::Vec& dataValueVec)
+			void(OpcUaStackCore::OpcUaStatusCode statusCode, OpcUaStackCore::OpcUaDataValue::Vec& dataValueVec)
 		> VBIResultHandler;
 
 		VBITransactionHistoryRead(void);
@@ -83,11 +81,11 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	class DLLEXPORT VBITransactionCreateSubscription
-	: public ServiceTransactionCreateSubscription
+	: public OpcUaStackCore::ServiceTransactionCreateSubscription
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionCreateSubscription> SPtr;
-		typedef std::function<void(OpcUaStatusCode statusCode, uint32_t subscriptionId)> VBIResultHandler;
+		typedef std::function<void(OpcUaStackCore::OpcUaStatusCode statusCode, uint32_t subscriptionId)> VBIResultHandler;
 
 		VBITransactionCreateSubscription(void);
 		virtual ~VBITransactionCreateSubscription(void);
@@ -96,11 +94,11 @@ namespace OpcUaStackClient
 	};
 
 	class DLLEXPORT VBITransactionDeleteSubscription
-	: public ServiceTransactionDeleteSubscriptions
+	: public OpcUaStackCore::ServiceTransactionDeleteSubscriptions
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionDeleteSubscription> SPtr;
-		typedef std::function<void(OpcUaStatusCode statusCode, uint32_t subscriptionId)> VBIResultHandler;
+		typedef std::function<void(OpcUaStackCore::OpcUaStatusCode statusCode, uint32_t subscriptionId)> VBIResultHandler;
 
 		VBITransactionDeleteSubscription(void);
 		virtual ~VBITransactionDeleteSubscription(void);
@@ -117,11 +115,11 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	class DLLEXPORT VBITransactionCreateMonitoredItem
-	: public ServiceTransactionCreateMonitoredItems
+	: public OpcUaStackCore::ServiceTransactionCreateMonitoredItems
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionCreateMonitoredItem> SPtr;
-		typedef std::function<void(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, uint32_t monitoredItemId)> VBIResultHandler;
+		typedef std::function<void(OpcUaStackCore::OpcUaStatusCode statusCode, OpcUaStackCore::OpcUaNodeId& nodeId, uint32_t monitoredItemId)> VBIResultHandler;
 
 		VBITransactionCreateMonitoredItem(void);
 		virtual ~VBITransactionCreateMonitoredItem(void);
@@ -130,11 +128,11 @@ namespace OpcUaStackClient
 	};
 
 	class DLLEXPORT VBITransactionDeleteMonitoredItem
-	: public ServiceTransactionDeleteMonitoredItems
+	: public OpcUaStackCore::ServiceTransactionDeleteMonitoredItems
 	{
 	  public:
 		typedef boost::shared_ptr<VBITransactionDeleteMonitoredItem> SPtr;
-		typedef std::function<void(OpcUaStatusCode statusCode, uint32_t subscriptionId, uint32_t monitoredItemId)> VBIResultHandler;
+		typedef std::function<void(OpcUaStackCore::OpcUaStatusCode statusCode, uint32_t subscriptionId, uint32_t monitoredItemId)> VBIResultHandler;
 
 		VBITransactionDeleteMonitoredItem(void);
 		virtual ~VBITransactionDeleteMonitoredItem(void);

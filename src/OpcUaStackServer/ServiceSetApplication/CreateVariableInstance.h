@@ -23,8 +23,6 @@
 #include "OpcUaStackCore/StandardDataTypes/NodeClass.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -36,34 +34,34 @@ namespace OpcUaStackServer
 		CreateVariableInstance(void);
 		CreateVariableInstance(
 			const std::string& namespaceName,
-			const OpcUaLocalizedText& displayName,
-			const OpcUaNodeId& parentNodeId,
-			const OpcUaNodeId& referenceTypeNodeId,
-			Object::SPtr& variableInstance
+			const OpcUaStackCore::OpcUaLocalizedText& displayName,
+			const OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			const OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId,
+			OpcUaStackCore::Object::SPtr& variableInstance
 		);
 		virtual ~CreateVariableInstance(void);
 
 		void namespaceName(const std::string& namespaceName);
 		std::string& namespaceName(void);
-		void displayName(const OpcUaLocalizedText& displayName);
-		OpcUaLocalizedText& displayName(void);
-		void parentNodeId(const OpcUaNodeId& parentNodeId);
-		OpcUaNodeId& parentnodeId(void);
-		void referenceTypeNodeId(const OpcUaNodeId& referenceTypeNodeId);
-		OpcUaNodeId& referenceTypeNodeId(void);
-		void variableInstance(Object::SPtr& variableInstance);
-		Object::SPtr& variableInstace(void);
+		void displayName(const OpcUaStackCore::OpcUaLocalizedText& displayName);
+		OpcUaStackCore::OpcUaLocalizedText& displayName(void);
+		void parentNodeId(const OpcUaStackCore::OpcUaNodeId& parentNodeId);
+		OpcUaStackCore::OpcUaNodeId& parentnodeId(void);
+		void referenceTypeNodeId(const OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId);
+		OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId(void);
+		void variableInstance(OpcUaStackCore::Object::SPtr& variableInstance);
+		OpcUaStackCore::Object::SPtr& variableInstace(void);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
-		OpcUaStatusCode resultCode(void);
+		OpcUaStackCore::OpcUaStatusCode resultCode(void);
 
 	  private:
 		std::string namespaceName_;
-		OpcUaLocalizedText displayName_;
-		OpcUaNodeId parentNodeId_;
-		OpcUaNodeId referenceTypeNodeId_;
-		Object::SPtr variableInstance_;
-		OpcUaStatusCode resultCode_;
+		OpcUaStackCore::OpcUaLocalizedText displayName_;
+		OpcUaStackCore::OpcUaNodeId parentNodeId_;
+		OpcUaStackCore::OpcUaNodeId referenceTypeNodeId_;
+		OpcUaStackCore::Object::SPtr variableInstance_;
+		OpcUaStackCore::OpcUaStatusCode resultCode_;
 	};
 
 }

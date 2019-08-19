@@ -21,9 +21,6 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackClient/ApplicationUtility/DiscoveryClientRegisteredServers.h"
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackClient;
-
 namespace OpcUaServer
 {
 
@@ -33,13 +30,13 @@ namespace OpcUaServer
 		DiscoveryClient(void);
 		~DiscoveryClient(void);
 
-		void cryptoManager(CryptoManager::SPtr& cryptoManager);
+		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 
-		bool startup(Config& config);
+		bool startup(OpcUaStackCore::Config& config);
 		void shutdown(void);
 		
 	  private:
-		bool parseEndpointConfiguration(Config& config);
+		bool parseEndpointConfiguration(OpcUaStackCore::Config& config);
 		bool createRegisteredServers(
 			const std::string& applicationUri,
 			const std::string& productUri,
@@ -52,11 +49,11 @@ namespace OpcUaServer
 		std::string discoveryServerUrl_;
 		uint32_t registerInterval_;
 
-		Config* config_;
-		IOThread::SPtr ioThread_;
-		DiscoveryClientRegisteredServers discoveryClient_;
-		RegisteredServer::Vec registeredServerVec_;
-		CryptoManager::SPtr cryptoManager_;
+		OpcUaStackCore::Config* config_;
+		OpcUaStackCore::IOThread::SPtr ioThread_;
+		OpcUaStackClient::DiscoveryClientRegisteredServers discoveryClient_;
+		OpcUaStackCore::RegisteredServer::Vec registeredServerVec_;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 	};
 
 }

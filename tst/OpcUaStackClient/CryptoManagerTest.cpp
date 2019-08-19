@@ -4,6 +4,8 @@
 #include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackClient/CryptoManagerTest.h"
 
+using namespace OpcUaStackCore;
+
 CryptoManager::SPtr CryptoManagerTest::cryptoManager_ = nullptr;
 const std::string CryptoManagerTest::clientCertificateName_ = "./pki/own/certs/ASNeG-Test.der";
 const std::string CryptoManagerTest::serverCertificateName_ = CryptoManagerTest::getServerPkiRootDir() + "/etc/OpcUaStack/ASNeG-Demo/pki/own/certs/ASNeG-Demo.der";

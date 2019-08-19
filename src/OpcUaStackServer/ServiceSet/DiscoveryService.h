@@ -27,14 +27,12 @@
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryIf.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT DiscoveryService 
 	: public ServiceSetBase
-	, public Object
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryService> SPtr;
@@ -43,29 +41,29 @@ namespace OpcUaStackServer
 		~DiscoveryService(void);
 
 		void discoveryIf(DiscoveryIf* discoveryIf);
-		void endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet);
-		void cryptoManager(CryptoManager::SPtr& cryptoManager);
+		void endpointDescriptionSet(OpcUaStackCore::EndpointDescriptionSet::SPtr& endpointDescriptionSet);
+		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
 
 		void getEndpointRequest(
-			RequestHeader::SPtr requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction
+			OpcUaStackCore::RequestHeader::SPtr requestHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 		void registerServerRequest(
-			RequestHeader::SPtr requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction
+			OpcUaStackCore::RequestHeader::SPtr requestHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 		void findServersRequest(
-			RequestHeader::SPtr requestHeader,
-			SecureChannelTransaction::SPtr secureChannelTransaction
+			OpcUaStackCore::RequestHeader::SPtr requestHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
-		CryptoManager::SPtr cryptoManager_;
+		OpcUaStackCore::EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 		DiscoveryIf* discoveryIf_;
 	};
 

@@ -24,13 +24,11 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackPubSub/DataSetMessage/FieldEncoding.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT DataSetField
-	: public JsonFormatter
+	: public OpcUaStackCore::JsonFormatter
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetField> SPtr;
@@ -44,22 +42,22 @@ namespace OpcUaStackPubSub
 		bool exist(void);
 		void createObject(FieldEncoding dataType);
 
-		void variant(OpcUaVariant::SPtr& variant);
-		OpcUaVariant::SPtr variant(void);
-		void dataValue(OpcUaDataValue::SPtr& dataValue);
-		OpcUaDataValue::SPtr dataValue(void);
+		void variant(OpcUaStackCore::OpcUaVariant::SPtr& variant);
+		OpcUaStackCore::OpcUaVariant::SPtr variant(void);
+		void dataValue(OpcUaStackCore::OpcUaDataValue::SPtr& dataValue);
+		OpcUaStackCore::OpcUaDataValue::SPtr dataValue(void);
 		// FIXME: meta data ....
-		Object::SPtr& object(void);
+		OpcUaStackCore::Object::SPtr& object(void);
 
 		void copyTo(DataSetField& dataSetField);
 		void out(std::ostream& os) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
-		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) { return false; }
+		bool xmlEncode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, OpcUaStackCore::Xmlns& xmlns) { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt, OpcUaStackCore::Xmlns& xmlns) { return false; }
 
       protected:
         bool jsonEncodeImpl(boost::property_tree::ptree &pt) const { return false; };
@@ -67,12 +65,12 @@ namespace OpcUaStackPubSub
 
       private:
 		FieldEncoding dataType_;
-		Object::SPtr object_;
+		OpcUaStackCore::Object::SPtr object_;
 	};
 
 	class DLLEXPORT DataSetFieldArray
-	: public OpcUaArray<DataSetField::SPtr, SPtrTypeCoder<DataSetField> >
-	, public Object
+	: public OpcUaStackCore::OpcUaArray<DataSetField::SPtr, OpcUaStackCore::SPtrTypeCoder<DataSetField> >
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetFieldArray> SPtr;

@@ -18,6 +18,7 @@
 #include <boost/make_shared.hpp>
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {

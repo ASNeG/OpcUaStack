@@ -21,14 +21,12 @@
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ViewService 
 	: public ServiceSetBase
-	, public Object
+	, public OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<ViewService> SPtr;
@@ -37,21 +35,21 @@ namespace OpcUaStackServer
 		~ViewService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveBrowseRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveBrowseNextRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveTranslateBrowsePathsToNodeIdsRequest(ServiceTransaction::SPtr serviceTransaction);
-		void receiveRegisterNodesRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveBrowseRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveBrowseNextRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveTranslateBrowsePathsToNodeIdsRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		void receiveRegisterNodesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 
-		typedef std::vector<ReferenceDescription::SPtr> ReferenceDescriptionVec;
-		OpcUaStatusCode browseNode(BrowseDescription::SPtr& browseDescription, ReferenceDescriptionVec& referenceDescriptionVec);
-		OpcUaStatusCode hashSubtype(BaseNodeClass::SPtr baseNodeClass, BrowseDescription::SPtr browseDescription, uint32_t hopCounter = 25);
-		OpcUaStatusCode checkReferenceType(OpcUaNodeId& referenceTypeNodeId, BrowseDescription::SPtr& browseDescription);
-		void receiveUnregisterNodesRequest(ServiceTransaction::SPtr serviceTransaction);
-		bool getNodeFromPathElement(OpcUaNodeId& nodeId, OpcUaQualifiedName& pathElement);
+		typedef std::vector<OpcUaStackCore::ReferenceDescription::SPtr> ReferenceDescriptionVec;
+		OpcUaStackCore::OpcUaStatusCode browseNode(OpcUaStackCore::BrowseDescription::SPtr& browseDescription, ReferenceDescriptionVec& referenceDescriptionVec);
+		OpcUaStackCore::OpcUaStatusCode hashSubtype(BaseNodeClass::SPtr baseNodeClass, OpcUaStackCore::BrowseDescription::SPtr browseDescription, uint32_t hopCounter = 25);
+		OpcUaStackCore::OpcUaStatusCode checkReferenceType(OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId, OpcUaStackCore::BrowseDescription::SPtr& browseDescription);
+		void receiveUnregisterNodesRequest(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
+		bool getNodeFromPathElement(OpcUaStackCore::OpcUaNodeId& nodeId, OpcUaStackCore::OpcUaQualifiedName& pathElement);
 	};
 
 }

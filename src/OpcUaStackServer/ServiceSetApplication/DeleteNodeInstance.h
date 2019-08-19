@@ -19,10 +19,9 @@
 #define __OpcUaStackServer_DeleteNodeInstance_h__
 
 #include <vector>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
-
-using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -33,17 +32,17 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<DeleteNodeInstance> SPtr;
 
 		DeleteNodeInstance(void);
-		DeleteNodeInstance(const OpcUaNodeId& nodeId);
+		DeleteNodeInstance(const OpcUaStackCore::OpcUaNodeId& nodeId);
 		virtual ~DeleteNodeInstance(void);
 
-		void node(const OpcUaNodeId& node);
+		void node(const OpcUaStackCore::OpcUaNodeId& node);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
-		OpcUaStatusCode resultCode(void);
+		OpcUaStackCore::OpcUaStatusCode resultCode(void);
 
 	  private:
-		OpcUaNodeId node_;
-		OpcUaStatusCode resultCode_;
+		OpcUaStackCore::OpcUaNodeId node_;
+		OpcUaStackCore::OpcUaStatusCode resultCode_;
 	};
 
 }

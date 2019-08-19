@@ -24,8 +24,6 @@
 #include "OpcUaStackClient/ServiceSet/SessionServiceIf.h"
 #include <iostream>
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 

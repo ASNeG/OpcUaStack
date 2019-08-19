@@ -3,15 +3,13 @@
 
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 
-using namespace OpcUaStackCore;
-
 class CryptoManagerTest
 {
   public:
 	static const std::string clientCertificateName_;
 	static const std::string serverCertificateName_;
 
-	static const CryptoManager::SPtr& getInstance(void);
+	static const OpcUaStackCore::CryptoManager::SPtr& getInstance(void);
 	static void delInstance(void);
 
 	static void trustedClientServerCertificates(void);
@@ -25,7 +23,7 @@ class CryptoManagerTest
 	static std::string getServerPkiRootDir(void);
 
   private:
-	static CryptoManager::SPtr cryptoManager_;
+	static OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 };
 
 #endif

@@ -17,6 +17,8 @@
 
 #include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"
 
+using namespace OpcUaStackCore;
+
 namespace OpcUaStackServer
 {
 

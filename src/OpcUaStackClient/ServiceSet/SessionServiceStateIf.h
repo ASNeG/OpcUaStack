@@ -22,8 +22,6 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackClient/ServiceSet/SessionServiceStateId.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 
@@ -52,39 +50,39 @@ namespace OpcUaStackClient
 		//
 		// events from secure channel server
 		//
-		virtual SessionServiceStateId handleConnect(SecureChannel* secureChannel) = 0;
-		virtual SessionServiceStateId handleDisconnect(SecureChannel* secureChannel) = 0;
+		virtual SessionServiceStateId handleConnect(OpcUaStackCore::SecureChannel* secureChannel) = 0;
+		virtual SessionServiceStateId handleDisconnect(OpcUaStackCore::SecureChannel* secureChannel) = 0;
 		virtual SessionServiceStateId recvCreateSessionResponse(
-			SecureChannel* secureChannel,
-			const ResponseHeader::SPtr& responseHeader
+			OpcUaStackCore::SecureChannel* secureChannel,
+			const OpcUaStackCore::ResponseHeader::SPtr& responseHeader
 		) = 0;
 		virtual SessionServiceStateId recvActivateSessionResponse(
-			SecureChannel* secureChannel,
-			const ResponseHeader::SPtr& responseHeader
+			OpcUaStackCore::SecureChannel* secureChannel,
+			const OpcUaStackCore::ResponseHeader::SPtr& responseHeader
 		) = 0;
 		virtual SessionServiceStateId recvGetEndpointsResponse(
-			SecureChannel* secureChannel,
-			const ResponseHeader::SPtr& responseHeader
+			OpcUaStackCore::SecureChannel* secureChannel,
+			const OpcUaStackCore::ResponseHeader::SPtr& responseHeader
 		) = 0;
 		virtual SessionServiceStateId recvCloseSessionResponse(
-			SecureChannel* secureChannel,
-			const ResponseHeader::SPtr& responseHeader
+			OpcUaStackCore::SecureChannel* secureChannel,
+			const OpcUaStackCore::ResponseHeader::SPtr& responseHeader
 		) = 0;
 		virtual SessionServiceStateId recvMessageResponse(
-			SecureChannel* secureChannel,
-			const ResponseHeader::SPtr& responseHeader
+			OpcUaStackCore::SecureChannel* secureChannel,
+			const OpcUaStackCore::ResponseHeader::SPtr& responseHeader
 		) = 0;
 
 		//
 		// event to send a message to a opc ua server
 		//
-		virtual SessionServiceStateId sendMessageRequest(Message::SPtr message) = 0;
+		virtual SessionServiceStateId sendMessageRequest(OpcUaStackCore::Message::SPtr message) = 0;
 
 		//
 		// internal events
 		//
 		virtual SessionServiceStateId reconnectTimeout(void) = 0;
-		virtual SessionServiceStateId pendingQueueTimeout(const Object::SPtr& object) = 0;
+		virtual SessionServiceStateId pendingQueueTimeout(const OpcUaStackCore::Object::SPtr& object) = 0;
 
 	  protected:
 		SessionServiceContext* ctx_;

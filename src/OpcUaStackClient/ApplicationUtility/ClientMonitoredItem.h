@@ -26,8 +26,6 @@
 #include "OpcUaStackCore/StandardDataTypes/DataChangeTrigger.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 
@@ -52,10 +50,10 @@ namespace OpcUaStackClient
 		void samplingInterval(uint32_t samplingInterval);
 		uint32_t queueSize(void);
 		void queueSize(uint32_t queueSize);
-		DataChangeTrigger dataChangeFilter(void);
-		void dataChangeFilter(DataChangeTrigger dataChangeFilter);
-		OpcUaNodeId& nodeId(void);
-		void nodeId(OpcUaNodeId& nodeId);
+		OpcUaStackCore::DataChangeTrigger dataChangeFilter(void);
+		void dataChangeFilter(OpcUaStackCore::DataChangeTrigger dataChangeFilter);
+		OpcUaStackCore::OpcUaNodeId& nodeId(void);
+		void nodeId(OpcUaStackCore::OpcUaNodeId& nodeId);
 		void clientHandle(uint32_t clientHandle);
 		uint32_t clientHandle(void);
 
@@ -65,23 +63,23 @@ namespace OpcUaStackClient
 		boost::posix_time::ptime reconnectTime(void);
 		void monitoredItemId(uint32_t monitoredItemId);
 		uint32_t monitoredItemId(void);
-		void context(Object::SPtr& context);
-		Object::SPtr& context(void);
+		void context(OpcUaStackCore::Object::SPtr& context);
+		OpcUaStackCore::Object::SPtr& context(void);
 
 	  private:
 
 	    // configuration data
 		uint32_t samplingInterval_;
 		uint32_t queueSize_;
-		OpcUaNodeId nodeId_;
-		DataChangeTrigger dataChangeFilter_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
+		OpcUaStackCore::DataChangeTrigger dataChangeFilter_;
 		uint32_t clientHandle_;
 
 		// runtime data
 		State state_;
 		boost::posix_time::ptime reconnectTime_;
 		uint32_t monitoredItemId_;
-		Object::SPtr context_;
+		OpcUaStackCore::Object::SPtr context_;
 	};
 
 }

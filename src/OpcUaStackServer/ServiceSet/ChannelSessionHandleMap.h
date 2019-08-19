@@ -33,14 +33,14 @@ namespace OpcUaStackServer
 		~ChannelSessionHandleMap(void);
 
 		ChannelSessionHandle::SPtr createSecureChannel(
-			SecureChannelServer::SPtr& secureChannelServer,
-			SecureChannel* secureChannel
+			OpcUaStackCore::SecureChannelServer::SPtr& secureChannelServer,
+			OpcUaStackCore::SecureChannel* secureChannel
 		);
-		void deleteSecureChannel(SecureChannel* secureChannel);
-		void getSecureChannelList(std::vector<SecureChannel*>& secureChannelList);
+		void deleteSecureChannel(OpcUaStackCore::SecureChannel* secureChannel);
+		void getSecureChannelList(std::vector<OpcUaStackCore::SecureChannel*>& secureChannelList);
 		uint32_t secureChannelSize(void);
 
-		ChannelSessionHandle::SPtr createSession(Session::SPtr& session, SecureChannel* secureChannel);
+		ChannelSessionHandle::SPtr createSession(Session::SPtr& session, OpcUaStackCore::SecureChannel* secureChannel);
 		void deleteSession(Session::SPtr& session);
 		void deleteSession(uint32_t authenticationToken);
 		uint32_t sessionSize(void);

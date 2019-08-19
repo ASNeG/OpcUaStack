@@ -26,37 +26,34 @@
 
 #include <map>
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackServer;
-
 namespace OpcUaServer
 {
 
 	class DLLEXPORT ApplicationLibrary
-	: public  Object
+	: public  OpcUaStackCore::Object
 	{
 	  public:
 		typedef boost::shared_ptr<ApplicationLibrary> SPtr;
 		typedef std::map<std::string, ApplicationLibrary::SPtr> Map;
-		typedef void InitFunction(ApplicationIf**);
+		typedef void InitFunction(OpcUaStackServer::ApplicationIf**);
 
 		ApplicationLibrary(void);
 		~ApplicationLibrary(void);
 
-		void applicationInfo(const ApplicationInfo& applicationInfo);
-		ApplicationInfo& applicationInfo(void);
+		void applicationInfo(const OpcUaStackServer::ApplicationInfo& applicationInfo);
+		OpcUaStackServer::ApplicationInfo& applicationInfo(void);
 		InitFunction* initFunction(void);
-		ApplicationIf* applicationIf(void);
+		OpcUaStackServer::ApplicationIf* applicationIf(void);
 		std::string version(void);
 
 		bool startup(void);
 		bool shutdown(void);
 
 	  private:
-		ApplicationInfo applicationInfo_;
+		OpcUaStackServer::ApplicationInfo applicationInfo_;
 		InitFunction* initFunction_;
 		DynamicLibrary dynamicLibrary_;
-		ApplicationIf* applicationIf_;
+		OpcUaStackServer::ApplicationIf* applicationIf_;
 	};
 
 }

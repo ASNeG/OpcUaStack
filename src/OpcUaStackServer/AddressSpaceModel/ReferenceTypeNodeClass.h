@@ -53,7 +53,7 @@ namespace OpcUaStackServer
 		InverseNameAttribute inverseName_;
 
 		// standard properties
-		OpcUaString nodeVersion_;  // optional
+		OpcUaStackCore::OpcUaString nodeVersion_;  // optional
 	};
 
 }

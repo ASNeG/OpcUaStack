@@ -27,14 +27,14 @@ namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT UDPConnectionManager 
-        : public ConnectionManagerBase	{
+    : public ConnectionManagerBase	{
 	  public:
 		typedef boost::shared_ptr<UDPConnectionManager> SPtr;
 
 		UDPConnectionManager(void);
 		virtual ~UDPConnectionManager(void);
 
-		void ioThread(IOThread::SPtr& ioThread);
+		void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
 		void address(const std::string& address);
 		std::string address() const;
 
@@ -51,8 +51,8 @@ namespace OpcUaStackPubSub
 		std::string address_;
 		uint16_t port_;
 
-		IOThread::SPtr ioThread_;
-		UDPServer server_;
+		OpcUaStackCore::IOThread::SPtr ioThread_;
+		OpcUaStackCore::UDPServer server_;
 		boost::asio::streambuf is_;
 
 		boost::array<char, 256> serverRecvBuf_;

@@ -28,8 +28,6 @@
 
 #include <string>
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaServer
 {
 
@@ -39,7 +37,7 @@ namespace OpcUaServer
 		Server(void);
 		~Server(void);
 
-		void reloadIf(ReloadIf* reloadIf);
+		void reloadIf(OpcUaStackServer::ReloadIf* reloadIf);
 		bool startup(const std::string& configurationFile);
 		bool start(void);
 		void stop(void);
@@ -51,11 +49,11 @@ namespace OpcUaServer
 		void logServerInfo(void);
 
 		std::string configurationFile_;
-		Config* config_;
+		OpcUaStackCore::Config* config_;
 		OpcUaStackServer::Server server_;
-		FileLogger fileLogger_;
+		OpcUaStackCore::FileLogger fileLogger_;
 
-		ReloadIf* reloadIf_;
+		OpcUaStackServer::ReloadIf* reloadIf_;
 		DiscoveryClient discoveryClient_;
 		ApplicationManager applicationManager_;
 	};

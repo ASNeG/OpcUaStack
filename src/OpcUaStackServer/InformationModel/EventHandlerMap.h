@@ -22,25 +22,23 @@
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/EventType/EventHandlerBase.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT EventHandlerMap
 	{
 	  public:
-		typedef std::multimap<OpcUaNodeId, EventHandlerBase::SPtr> EventHandlerBaseMap;
+		typedef std::multimap<OpcUaStackCore::OpcUaNodeId, OpcUaStackCore::EventHandlerBase::SPtr> EventHandlerBaseMap;
 
 		EventHandlerMap(void);
 		~EventHandlerMap(void);
 
 		boost::mutex& mutex(void);
 		void clear(void);
-		bool existEvent(OpcUaNodeId& nodeId);
-		bool registerEvent(OpcUaNodeId& nodeId, EventHandlerBase::SPtr& eventHandlerBase);
-		bool deregisterEvent(OpcUaNodeId& nodeId, uint32_t eventId);
-		void getEvent(OpcUaNodeId& nodeId, EventHandlerBase::Vec& eventHandlerBaseVec);
+		bool existEvent(OpcUaStackCore::OpcUaNodeId& nodeId);
+		bool registerEvent(OpcUaStackCore::OpcUaNodeId& nodeId, OpcUaStackCore::EventHandlerBase::SPtr& eventHandlerBase);
+		bool deregisterEvent(OpcUaStackCore::OpcUaNodeId& nodeId, uint32_t eventId);
+		void getEvent(OpcUaStackCore::OpcUaNodeId& nodeId, OpcUaStackCore::EventHandlerBase::Vec& eventHandlerBaseVec);
 
 	  private:
 		EventHandlerBaseMap eventHandlerBaseMap_;

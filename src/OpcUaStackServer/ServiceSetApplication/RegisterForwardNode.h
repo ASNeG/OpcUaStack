@@ -22,8 +22,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -33,84 +31,84 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<RegisterForwardNode> SPtr;
 
 		RegisterForwardNode(void);
-		RegisterForwardNode(const OpcUaNodeId& node);
-		RegisterForwardNode(const std::vector<OpcUaNodeId>& nodes);
-		RegisterForwardNode(std::initializer_list<OpcUaNodeId> nodes);
+		RegisterForwardNode(const OpcUaStackCore::OpcUaNodeId& node);
+		RegisterForwardNode(const std::vector<OpcUaStackCore::OpcUaNodeId>& nodes);
+		RegisterForwardNode(std::initializer_list<OpcUaStackCore::OpcUaNodeId> nodes);
 		virtual ~RegisterForwardNode(void);
 
-		void addNode(const OpcUaNodeId& node);
-		void addNodes(const std::vector<OpcUaNodeId>& nodes);
-		void node(const OpcUaNodeId& node);
-		void nodes(const std::vector<OpcUaNodeId>& nodes);
-		std::vector<OpcUaNodeId>& nodes(void);
+		void addNode(const OpcUaStackCore::OpcUaNodeId& node);
+		void addNodes(const std::vector<OpcUaStackCore::OpcUaNodeId>& nodes);
+		void node(const OpcUaStackCore::OpcUaNodeId& node);
+		void nodes(const std::vector<OpcUaStackCore::OpcUaNodeId>& nodes);
+		std::vector<OpcUaStackCore::OpcUaNodeId>& nodes(void);
 
-		void setReadCallback(Callback& callback);
+		void setReadCallback(OpcUaStackCore::Callback& callback);
 		template<typename T>
 		  void setReadCallback(T handler) {
-			  Callback callback;
+			  OpcUaStackCore::Callback callback;
 			  callback.reset(handler);
 			  setReadCallback(callback);
 		  }
-		void setWriteCallback(Callback& callback);
+		void setWriteCallback(OpcUaStackCore::Callback& callback);
 		template<typename T>
 		  void setWriteCallback(T handler) {
-			  Callback callback;
+			  OpcUaStackCore::Callback callback;
 			  callback.reset(handler);
 			  setWriteCallback(callback);
 		  }
-		void setReadHCallback(Callback& callback);
+		void setReadHCallback(OpcUaStackCore::Callback& callback);
 		template<typename T>
 		  void setReadHCallback(T handler) {
-			  Callback callback;
+			  OpcUaStackCore::Callback callback;
 			  callback.reset(handler);
 			  setReadHCallback(callback);
 		  }
-		void setReadHECallback(Callback& callback);
+		void setReadHECallback(OpcUaStackCore::Callback& callback);
 		template<typename T>
 		  void setReadHECallback(T handler) {
-			  Callback callback;
+			  OpcUaStackCore::Callback callback;
 			  callback.reset(handler);
 			  setReadHECallback(callback);
 		  }
-		void setWriteHCallback(Callback& callback);
+		void setWriteHCallback(OpcUaStackCore::Callback& callback);
 		template<typename T>
 		  void setWriteHCallback(T handler) {
-			  Callback callback;
+		  	  OpcUaStackCore::Callback callback;
 			  callback.reset(handler);
 			  setReadHCallback(callback);
 		  }
-		void setMethodCallback(Callback& callback);
+		void setMethodCallback(OpcUaStackCore::Callback& callback);
 		template<typename T>
 		  void setMethodCallback(T handler) {
-			  Callback callback;
+			  OpcUaStackCore::Callback callback;
 			  callback.reset(handler);
 			  setMethodCallback(callback);
 		  }
-		void setMonitoredItemStartCallback(Callback& callback);
+		void setMonitoredItemStartCallback(OpcUaStackCore::Callback& callback);
 		template<typename T>
 		  void setMonitoredItemStartCallback(T handler) {
-			  Callback callback;
+			  OpcUaStackCore::Callback callback;
 			  callback.reset(handler);
 			  setMonitoredItemStartCallback(callback);
 		  }
-		void setMonitoredItemStopCallback(Callback& callback);
+		void setMonitoredItemStopCallback(OpcUaStackCore::Callback& callback);
 		template<typename T>
 		  void setMonitoredItemStopCallback(T handler) {
-			  Callback callback;
+			  OpcUaStackCore::Callback callback;
 			  callback.reset(handler);
 			  setMonitoredItemStopCallback(callback);
 		  }
 
 		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
-		OpcUaStatusCode resultCode(void);
+		OpcUaStackCore::OpcUaStatusCode resultCode(void);
 
-		std::vector<OpcUaStatusCode>& statuses(void);
+		std::vector<OpcUaStackCore::OpcUaStatusCode>& statuses(void);
 
 	  private:
-		std::vector<OpcUaNodeId> nodes_;
-		ForwardNodeSync forwardNodeSync_;
-		OpcUaStatusCode resultCode_;
-		std::vector<OpcUaStatusCode> statuses_;
+		std::vector<OpcUaStackCore::OpcUaNodeId> nodes_;
+		OpcUaStackCore::ForwardNodeSync forwardNodeSync_;
+		OpcUaStackCore::OpcUaStatusCode resultCode_;
+		std::vector<OpcUaStackCore::OpcUaStatusCode> statuses_;
 	};
 
 }

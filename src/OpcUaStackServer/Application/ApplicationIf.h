@@ -37,18 +37,18 @@ namespace OpcUaStackServer
 
 		void applicationServiceIf(ApplicationServiceIf* applicationServiceIf);
 		ApplicationServiceIf& applicationServiceIf(void);
-		void config(Config* config);
-		Config* config(void);
+		void config(OpcUaStackCore::Config* config);
+		OpcUaStackCore::Config* config(void);
 		void applicationInfo(ApplicationInfo* applicationInfo);
 		ApplicationInfo* applicationInfo(void);
-		void cryptoManager(const CryptoManager::SPtr& cryptoManager);
-		CryptoManager::SPtr& cryptoManager(void);
+		void cryptoManager(const OpcUaStackCore::CryptoManager::SPtr& cryptoManager);
+		OpcUaStackCore::CryptoManager::SPtr& cryptoManager(void);
 
 	  private:
 		ApplicationServiceIf* applicationServiceIf_;
-		Config* config_;
+		OpcUaStackCore::Config* config_;
 		ApplicationInfo* applicationInfo_;
-		CryptoManager::SPtr cryptoManager_;
+		OpcUaStackCore::CryptoManager::SPtr cryptoManager_;
 	};
 
 
@@ -60,17 +60,17 @@ namespace OpcUaStackServer
 
 		virtual bool startup(void) = 0;
 		virtual bool shutdown(void) = 0;
-		virtual void receive(ServiceTransaction::SPtr serviceTransaction);
+		virtual void receive(OpcUaStackCore::ServiceTransaction::SPtr serviceTransaction);
 		virtual std::string version(void);
 
 		void service(ApplicationServiceIf* applicationServiceIf);
 		ApplicationServiceIf& service(void);
-		void config(Config* config);
-		Config* config(void);
+		void config(OpcUaStackCore::Config* config);
+		OpcUaStackCore::Config* config(void);
 		void applicationInfo(ApplicationInfo* applicationInfo);
 		ApplicationInfo* applicationInfo(void);
-		void cryptoManager(CryptoManager::SPtr cryptoManager);
-		CryptoManager::SPtr& cryptoManager(void);
+		void cryptoManager(OpcUaStackCore::CryptoManager::SPtr cryptoManager);
+		OpcUaStackCore::CryptoManager::SPtr& cryptoManager(void);
 		void applicationData(ApplicationData::SPtr& applicationData);
 		ApplicationData::SPtr& applicationData(void);
 

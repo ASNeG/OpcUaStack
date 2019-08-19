@@ -33,7 +33,7 @@ namespace OpcUaStackServer
 
     	AddNodeRule(void);
     	AddNodeRule(AddNodeRule& addNodeRule);
-    	AddNodeRule(AddNodeRule& addNodeRule, OpcUaLocalizedText& displayName);
+    	AddNodeRule(AddNodeRule& addNodeRule, OpcUaStackCore::OpcUaLocalizedText& displayName);
     	~AddNodeRule(void);
 
     	void informationModel(InformationModel::SPtr& informationModel);
@@ -41,15 +41,15 @@ namespace OpcUaStackServer
     	void nodeIdMode(NodeIdMode nodeIdMode);
     	NodeIdMode nodeIdMode(void);
     	void displayPath(const std::string& displayPath);
-    	void displayPath(OpcUaNodeId& nodeId);
+    	void displayPath(OpcUaStackCore::OpcUaNodeId& nodeId);
     	std::string& displayPath(void);
-    	void displayName(OpcUaLocalizedText& displayName);
+    	void displayName(OpcUaStackCore::OpcUaLocalizedText& displayName);
     	void delemiter(const std::string& delemiter);
     	std::string& delemiter(void);
     	void createOptionalPlaceholder(bool createOptionalPlaceholder);
     	bool createOptionalPlaceholder(void);
 
-    	OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
+    	OpcUaStackCore::OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
 
       private:
     	std::string displayPath_;
@@ -72,79 +72,79 @@ namespace OpcUaStackServer
 		void informationModel(InformationModel::SPtr& informationModel);
 
 		bool addNode(
-			NodeClass::Enum nodeClassType,
+			OpcUaStackCore::NodeClass::Enum nodeClassType,
 			AddNodeRule& addNodeRule,
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName,
-			OpcUaNodeId& referenceNodeId,
-			OpcUaNodeId& typeNodeId
+			OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaLocalizedText& displayName,
+			OpcUaStackCore::OpcUaQualifiedName& browseName,
+			OpcUaStackCore::OpcUaNodeId& referenceNodeId,
+			OpcUaStackCore::OpcUaNodeId& typeNodeId
 		);
 
 		bool addObjectNode(
 			AddNodeRule& addNodeRule,
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName,
-			OpcUaNodeId& referenceNodeId,
-			OpcUaNodeId& typeNodeId
+			OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaLocalizedText& displayName,
+			OpcUaStackCore::OpcUaQualifiedName& browseName,
+			OpcUaStackCore::OpcUaNodeId& referenceNodeId,
+			OpcUaStackCore::OpcUaNodeId& typeNodeId
 		);
 
 		bool addVariableNode(
 			AddNodeRule& addNodeRule,
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName,
-			OpcUaNodeId& referenceNodeId,
-			OpcUaNodeId& typeNodeId
+			OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaLocalizedText& displayName,
+			OpcUaStackCore::OpcUaQualifiedName& browseName,
+			OpcUaStackCore::OpcUaNodeId& referenceNodeId,
+			OpcUaStackCore::OpcUaNodeId& typeNodeId
 		);
 
 		bool addMethodNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName
+		    OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaLocalizedText& displayName,
+			OpcUaStackCore::OpcUaQualifiedName& browseName
 		);
 
 		bool addObjectTypeNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName
+			OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaLocalizedText& displayName,
+			OpcUaStackCore::OpcUaQualifiedName& browseName
 		);
 
 		bool addVariableTypeNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName
+			OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaLocalizedText& displayName,
+			OpcUaStackCore::OpcUaQualifiedName& browseName
 		);
 
 		bool addDataTypeNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName
+			OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaLocalizedText& displayName,
+			OpcUaStackCore::OpcUaQualifiedName& browseName
 		);
 
 		bool addReferenceTypeNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName
+			OpcUaStackCore::OpcUaNodeId& parentNodeId,
+			OpcUaStackCore::OpcUaNodeId& nodeId,
+			OpcUaStackCore::OpcUaLocalizedText& displayName,
+			OpcUaStackCore::OpcUaQualifiedName& browseName
 		);
 
 		bool delNode(
-			OpcUaNodeId& nodeId
+			OpcUaStackCore::OpcUaNodeId& nodeId
 		);
 
 		bool delReference(
-			OpcUaNodeId& sourceNodeId,
-			OpcUaNodeId& referenceTypeNodeId,
-			OpcUaNodeId& targetNodeId
+			OpcUaStackCore::OpcUaNodeId& sourceNodeId,
+			OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId,
+			OpcUaStackCore::OpcUaNodeId& targetNodeId
 		);
 
 	  private:
@@ -157,19 +157,19 @@ namespace OpcUaStackServer
 			AddNodeRule& addNodeRule,
 			BaseNodeClass::SPtr& parentNodeClass,
 			BaseNodeClass::SPtr& cloneBaseNodeClass,
-			OpcUaNodeId& referenceTypeNodeId
+			OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId
 		);
 		bool addVariableNode(
 			AddNodeRule& addNodeRule,
 			BaseNodeClass::SPtr& parentNodeClass,
 			BaseNodeClass::SPtr& cloneBaseNodeClass,
-			OpcUaNodeId& referenceTypeNodeId
+			OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId
 		);
 		bool addMethodNode(
 			AddNodeRule& addNodeRule,
 			BaseNodeClass::SPtr& parentNodeClass,
 			BaseNodeClass::SPtr& cloneBaseNodeClass,
-			OpcUaNodeId& referenceTypeNodeId
+			OpcUaStackCore::OpcUaNodeId& referenceTypeNodeId
 		);
 
 		bool isOptionalPlaceholder(

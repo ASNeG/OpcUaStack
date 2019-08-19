@@ -21,8 +21,6 @@
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -34,8 +32,8 @@ namespace OpcUaStackServer
 		virtual ~DiscoveryIf(void) {}
 
 		virtual void discoveryResponseMessage(
-			ResponseHeader::SPtr& responseHeader,
-			SecureChannelTransaction::SPtr& secureChannelTransaction
+			OpcUaStackCore::ResponseHeader::SPtr& responseHeader,
+			OpcUaStackCore::SecureChannelTransaction::SPtr& secureChannelTransaction
 		) = 0;
 	};
 

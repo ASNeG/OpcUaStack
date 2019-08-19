@@ -25,13 +25,11 @@
 #include "OpcUaStackCore/StandardDataTypes/ApplicationDescription.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackClient
 {
 
 	typedef std::function<
-		void (OpcUaStatusCode statusCode, ApplicationDescription::Vec& applicationDescriptionVec)
+		void (OpcUaStackCore::OpcUaStatusCode statusCode, OpcUaStackCore::ApplicationDescription::Vec& applicationDescriptionVec)
 	> FindServerHandler;
 
 	class DLLEXPORT DiscoveryClientFindServers
@@ -42,7 +40,7 @@ namespace OpcUaStackClient
 		DiscoveryClientFindServers(void);
 	    ~DiscoveryClientFindServers(void);
 
-	    void ioThread(IOThread::SPtr& ioThread);
+	    void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
 	    void discoveryUri(const std::string& discoveryUri);
 
 		bool startup(void);
@@ -55,12 +53,12 @@ namespace OpcUaStackClient
 
 	  public:
 		void discoveryServiceFindServersResponse(
-			ServiceTransactionFindServers::SPtr& serviceTransactionFindServers
+			OpcUaStackCore::ServiceTransactionFindServers::SPtr& serviceTransactionFindServers
 		);
 
         void sendFindServersRequest(void);
 
-		IOThread::SPtr ioThread_;
+        OpcUaStackCore::IOThread::SPtr ioThread_;
 		std::string discoveryUri_;
 
 		ServiceSetManager serviceSetManager_;
@@ -70,8 +68,8 @@ namespace OpcUaStackClient
 		std::string serverUri_;
 		FindServerHandler resultHandler_;
 
-		ApplicationDescription::Vec findResults_;
-		OpcUaStatusCode findStatusCode_;
+		OpcUaStackCore::ApplicationDescription::Vec findResults_;
+		OpcUaStackCore::OpcUaStatusCode findStatusCode_;
 
 		bool shutdown_;
 		std::promise<void> shutdownProm_;

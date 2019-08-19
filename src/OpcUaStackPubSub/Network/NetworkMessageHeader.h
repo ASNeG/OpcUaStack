@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,7 +24,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackPubSub/DataSetMessage/DataSetPayloadHeader.h"
 
-using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
@@ -55,8 +54,8 @@ namespace OpcUaStackPubSub
 		NetworkMessageHeader(void);
 		~NetworkMessageHeader(void);
 
-		void UADPVersion(OpcUaByte UADPVersion);
-		OpcUaByte UADPVersion() const;
+		void UADPVersion(OpcUaStackCore::OpcUaByte UADPVersion);
+		OpcUaStackCore::OpcUaByte UADPVersion() const;
 
 		void publisherIdEnabled(bool publisherIdEnabled);
 		bool publisherIdEnabled() const;
@@ -94,23 +93,23 @@ namespace OpcUaStackPubSub
 		void promotedFieldsEnabled(bool promotedFieldsEnabled);
 		bool promotedFieldsEnabled() const;
 
-		void dataSetClassId(OpcUaGuid::SPtr dataSetClassId);
-		OpcUaGuid::SPtr dataSetClassId() const;
+		void dataSetClassId(OpcUaStackCore::OpcUaGuid::SPtr dataSetClassId);
+		OpcUaStackCore::OpcUaGuid::SPtr dataSetClassId() const;
 
-		void publisherId(OpcUaVariant::SPtr publisherId);
-		OpcUaVariant::SPtr publisherId() const;
+		void publisherId(OpcUaStackCore::OpcUaVariant::SPtr publisherId);
+		OpcUaStackCore::OpcUaVariant::SPtr publisherId() const;
 
 		void dataSetPayloadHeader(DataSetPayloadHeader::SPtr header);
 		DataSetPayloadHeader::SPtr dataSetPayloadHeader() const;
 
-		void timestamp(OpcUaDateTime timestamp);
-		OpcUaDateTime timestamp() const;
+		void timestamp(OpcUaStackCore::OpcUaDateTime timestamp);
+		OpcUaStackCore::OpcUaDateTime timestamp() const;
 
-		void picoSeconds(OpcUaInt16 picoSeconds);
-		OpcUaInt16 picoSeconds() const;
+		void picoSeconds(OpcUaStackCore::OpcUaInt16 picoSeconds);
+		OpcUaStackCore::OpcUaInt16 picoSeconds() const;
 
-		void promotedFields(OpcUaVariantArray::SPtr promotedFields);
-		OpcUaVariantArray::SPtr promotedFields() const;
+		void promotedFields(OpcUaStackCore::OpcUaVariantArray::SPtr promotedFields);
+		OpcUaStackCore::OpcUaVariantArray::SPtr promotedFields() const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -118,7 +117,7 @@ namespace OpcUaStackPubSub
 		bool operator==(const NetworkMessageHeader& other) const;
 
 	  private:
-		OpcUaByte UADPVersion_;
+		OpcUaStackCore::OpcUaByte UADPVersion_;
 		bool publisherIdEnabled_;
 		bool dataSetArrayEnabled_;
 		bool dataSetWriterIdEnabled_;
@@ -132,13 +131,13 @@ namespace OpcUaStackPubSub
 		NetworkMessageType networkMessageType_;
 		bool promotedFieldsEnabled_;
 
-		OpcUaVariant::SPtr publisherId_;
-		OpcUaGuid::SPtr dataSetClassId_;
+		OpcUaStackCore::OpcUaVariant::SPtr publisherId_;
+		OpcUaStackCore::OpcUaGuid::SPtr dataSetClassId_;
 		DataSetPayloadHeader::SPtr dataSetPayloadHeader_;
-		OpcUaDateTime timestamp_;
-		OpcUaInt16 picoSeconds_;
+		OpcUaStackCore::OpcUaDateTime timestamp_;
+		OpcUaStackCore::OpcUaInt16 picoSeconds_;
 
-		OpcUaVariantArray::SPtr promotedFields_;
+		OpcUaStackCore::OpcUaVariantArray::SPtr promotedFields_;
 	};
 
 }

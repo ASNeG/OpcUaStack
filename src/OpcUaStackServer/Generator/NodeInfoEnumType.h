@@ -22,8 +22,6 @@
 #include "OpcUaStackServer/Generator/NodeInfo.h"
 #include "OpcUaStackServer/Generator/EnumTypeField.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -59,10 +57,10 @@ class DLLEXPORT NodeInfoEnumType
 	 * @parameter[in] enumTypeNodeId			opc ua enum type node identifier
 	 * @parameter[in] informationModel			opc ua information model
 	 */
-	bool init(const OpcUaNodeId& enumTypeNodeId, InformationModel::SPtr& informationModel);
+	bool init(const OpcUaStackCore::OpcUaNodeId& enumTypeNodeId, InformationModel::SPtr& informationModel);
 
   private:
-	EnumDefinitionExpand::SPtr enumDefinition_;		//!< enum definition
+	OpcUaStackCore::EnumDefinitionExpand::SPtr enumDefinition_;		//!< enum definition
 	EnumTypeField::Vec enumTypeFieldVec_;
 
 };

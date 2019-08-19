@@ -27,9 +27,6 @@
 #include <vector>
 #include <stdint.h>
 
-using namespace OpcUaStackCore;
-using namespace OpcUaStackClient;
-
 namespace OpcUaStackClient
 {
 
@@ -39,7 +36,7 @@ namespace OpcUaStackClient
 		ClientSubscriptionIf(void) {}
 		virtual ~ClientSubscriptionIf(void) {}
 
-		virtual void dataChangeNotification(ClientMonitoredItem::SPtr& clientMonitoredItem, OpcUaDataValue& dataValue) = 0;
+		virtual void dataChangeNotification(ClientMonitoredItem::SPtr& clientMonitoredItem, OpcUaStackCore::OpcUaDataValue& dataValue) = 0;
 	};
 
 
@@ -62,8 +59,8 @@ namespace OpcUaStackClient
 		ClientSubscription(void);
 		~ClientSubscription(void);
 
-		void ioThread(IOThread::SPtr& ioThread);
-		IOThread::SPtr& ioThread(void);
+		void ioThread(OpcUaStackCore::IOThread::SPtr& ioThread);
+		OpcUaStackCore::IOThread::SPtr& ioThread(void);
 		std::string id(void);
 		void id(const std::string& id);
 		uint32_t publishingInterval(void);
@@ -86,19 +83,19 @@ namespace OpcUaStackClient
 		void close(void);
 		void error(void);
 
-	    void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
-	    void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
-	    void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
-	    void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+	    void subscriptionServiceCreateSubscriptionResponse(OpcUaStackCore::ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
+	    void subscriptionServiceModifySubscriptionResponse(OpcUaStackCore::ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
+	    void subscriptionServiceTransferSubscriptionsResponse(OpcUaStackCore::ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
+	    void subscriptionServiceDeleteSubscriptionsResponse(OpcUaStackCore::ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
-		void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
+		void dataChangeNotification(const OpcUaStackCore::MonitoredItemNotification::SPtr& monitoredItem);
 		void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
 
-	    void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
-	    void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
-	    void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
-	    void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
-	    void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+	    void monitoredItemServiceCreateMonitoredItemsResponse(OpcUaStackCore::ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
+	    void monitoredItemServiceDeleteMonitoredItemsResponse(OpcUaStackCore::ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
+	    void monitoredItemServiceModifyMonitoredItemsResponse(OpcUaStackCore::ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
+	    void monitoredItemServiceSetMonitoringModeResponse(OpcUaStackCore::ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
+	    void monitoredItemServiceSetTriggeringResponse(OpcUaStackCore::ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
 
 	  private:
 		void init(void);
@@ -107,7 +104,7 @@ namespace OpcUaStackClient
 		void deleteMonitoredItems(void);
 
 		// configuration parameters
-		IOThread::SPtr ioThread_;
+		OpcUaStackCore::IOThread::SPtr ioThread_;
 		std::string id_;
 		uint32_t publishingInterval_;
 		uint32_t livetimeCount_;

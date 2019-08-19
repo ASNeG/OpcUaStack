@@ -18,43 +18,42 @@
 #ifndef __OpcUaStackClient_NodeManagementService_h__
 #define __OpcUaStackClient_NodeManagementService_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/NodeManagementServiceTransaction.h"
-
-using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient 
 {
 
 	class DLLEXPORT NodeManagementService
-	: public Component
+	: public OpcUaStackCore::Component
 	{
 	  public:
 		typedef boost::shared_ptr<NodeManagementService> SPtr;
 
-		NodeManagementService(IOThread* ioThread);
+		NodeManagementService(OpcUaStackCore::IOThread* ioThread);
 		~NodeManagementService(void);
 
 		void setConfiguration(
-			Component* componentSession
+			OpcUaStackCore::Component* componentSession
 		);
-		void componentSession(Component* componentSession);
+		void componentSession(OpcUaStackCore::Component* componentSession);
 
-		void syncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes);
-		void asyncSend(ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes);
-		void syncSend(ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences);
-		void asyncSend(ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences);
-		void syncSend(ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes);
-		void asyncSend(ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes);
-		void syncSend(ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences);
-		void asyncSend(ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences);
+		void syncSend(OpcUaStackCore::ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes);
+		void asyncSend(OpcUaStackCore::ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes);
+		void syncSend(OpcUaStackCore::ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences);
+		void asyncSend(OpcUaStackCore::ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences);
+		void syncSend(OpcUaStackCore::ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes);
+		void asyncSend(OpcUaStackCore::ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes);
+		void syncSend(OpcUaStackCore::ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences);
+		void asyncSend(OpcUaStackCore::ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		void receive(OpcUaStackCore::Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		Component* componentSession_;
+		OpcUaStackCore::Component* componentSession_;
 	};
 
 }

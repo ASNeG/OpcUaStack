@@ -21,8 +21,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
 
-using namespace OpcUaStackCore;
-
 namespace OpcUaStackServer
 {
 
@@ -38,10 +36,10 @@ class DLLEXPORT NodeElement
 	void log(void);
 	void prefix(const std::string& prefix);
 	std::string prefix(void);
-	void nodeId(const OpcUaNodeId& nodeId);
-	OpcUaNodeId& nodeId(void);
-	void browseName(const OpcUaQualifiedName& browseName);
-	OpcUaQualifiedName& browseName(void);
+	void nodeId(const OpcUaStackCore::OpcUaNodeId& nodeId);
+	OpcUaStackCore::OpcUaNodeId& nodeId(void);
+	void browseName(const OpcUaStackCore::OpcUaQualifiedName& browseName);
+	OpcUaStackCore::OpcUaQualifiedName& browseName(void);
 	void fullName(const std::string& fullName);
 	std::string& fullName(void);
 	void globalVariableName(const std::string& globalVariableName);
@@ -55,8 +53,8 @@ class DLLEXPORT NodeElement
 
   private:
 	std::string prefix_;
-	OpcUaNodeId nodeId_;
-	OpcUaQualifiedName browseName_;
+	OpcUaStackCore::OpcUaNodeId nodeId_;
+	OpcUaStackCore::OpcUaQualifiedName browseName_;
 	std::string fullName_;
 	std::string globalVariableName_;
 	std::string localVariableName_;
