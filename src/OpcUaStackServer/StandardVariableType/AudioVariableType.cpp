@@ -16,10 +16,10 @@ namespace OpcUaStackServer
     
     AudioVariableType::AudioVariableType(void)
     : VariableBase()
-    , agencyId_Variable_(constructSPtr<ServerVariable>("AgencyId_Variable"))
-    , listId_Variable_(constructSPtr<ServerVariable>("ListId_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
-    , versionId_Variable_(constructSPtr<ServerVariable>("VersionId_Variable"))
+    , agencyId_Variable_(boost::make_shared<ServerVariable>("AgencyId_Variable"))
+    , listId_Variable_(boost::make_shared<ServerVariable>("ListId_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
+    , versionId_Variable_(boost::make_shared<ServerVariable>("VersionId_Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)17986);
@@ -31,10 +31,10 @@ namespace OpcUaStackServer
     
     AudioVariableType::AudioVariableType(const AudioVariableType& value)
     : VariableBase()
-    , agencyId_Variable_(constructSPtr<ServerVariable>("AgencyId_Variable"))
-    , listId_Variable_(constructSPtr<ServerVariable>("ListId_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
-    , versionId_Variable_(constructSPtr<ServerVariable>("VersionId_Variable"))
+    , agencyId_Variable_(boost::make_shared<ServerVariable>("AgencyId_Variable"))
+    , listId_Variable_(boost::make_shared<ServerVariable>("ListId_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
+    , versionId_Variable_(boost::make_shared<ServerVariable>("VersionId_Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)17986);

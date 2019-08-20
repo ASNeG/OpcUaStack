@@ -18,7 +18,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandWriteH.h"
 
 using namespace OpcUaStackCore;
@@ -44,7 +44,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandWriteH::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandWriteH>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandWriteH>();
 		return commandBase;
 	}
 
@@ -105,7 +105,7 @@ namespace OpcUaClient
 				return false;
 			}
 
-			actDataValue_ = constructSPtr<OpcUaDataValue>();
+			actDataValue_ = boost::make_shared<OpcUaDataValue>();
 			OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
 			actDataValue_->variant()->copyFrom(variant);
 			actDataValue_->sourceTimestamp(dateTime);

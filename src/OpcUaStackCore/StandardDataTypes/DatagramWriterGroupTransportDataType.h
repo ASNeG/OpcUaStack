@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.0.0
+        OpcUaStackCore - 4.1.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
@@ -14,7 +14,6 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/StandardDataTypes/WriterGroupTransportDataType.h"
 

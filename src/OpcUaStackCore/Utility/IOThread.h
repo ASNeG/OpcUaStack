@@ -20,7 +20,6 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/asio/strand.hpp>
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 

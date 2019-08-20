@@ -841,7 +841,7 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		secureChannel->secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
+		secureChannel->secureChannelTransaction_ = boost::make_shared<SecureChannelTransaction>();
 
 		// error accurred
 		if (error) {
@@ -989,7 +989,7 @@ namespace OpcUaStackCore
 		secureChannel->recvFirstSegment_ = false;
 		if (secureChannel->secureChannelTransaction_.get() == nullptr) {
 			secureChannel->recvFirstSegment_ = true;
-			secureChannel->secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
+			secureChannel->secureChannelTransaction_ = boost::make_shared<SecureChannelTransaction>();
 		}
 
 		secureChannel->asyncRecv_ = true;
@@ -1267,7 +1267,7 @@ namespace OpcUaStackCore
 		secureChannel->recvFirstSegment_ = false;
 		if (secureChannel->secureChannelTransaction_.get() == nullptr) {
 			secureChannel->recvFirstSegment_ = true;
-			secureChannel->secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
+			secureChannel->secureChannelTransaction_ = boost::make_shared<SecureChannelTransaction>();
 		}
 
 		secureChannel->asyncRecv_ = true;
@@ -1426,7 +1426,7 @@ namespace OpcUaStackCore
 		}
 
 		// encode MessageHeader
-		MessageHeader::SPtr messageHeaderSPtr = constructSPtr<MessageHeader>();
+		MessageHeader::SPtr messageHeaderSPtr = boost::make_shared<MessageHeader>();
 		messageHeaderSPtr->messageType(MessageType_Message);
 		messageHeaderSPtr->segmentFlag(secureChannel->actSegmentFlag_);
 		messageHeaderSPtr->messageSize(packetSize);

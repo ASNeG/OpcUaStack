@@ -27,7 +27,7 @@ namespace OpcUaStackPubSub
 	: dataSetFields_(boost::make_shared<DataSetFieldArray>())
 	, fieldEncoding_(VariantEncoding)
 	{
-		DataSetMessageHeader::SPtr dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
+		DataSetMessageHeader::SPtr dataSetMessageHeader = boost::make_shared<DataSetMessageHeader>();
 		dataSetMessageHeader->fieldEncoding(VariantEncoding);
 		dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
 		dataSetMessageHeader->dataSetFlag2Enabled(true);
@@ -70,7 +70,7 @@ namespace OpcUaStackPubSub
 
 		dataSetFields_->resize(fieldCount);
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
-			DataSetField::SPtr dataSetField = constructSPtr<DataSetField>();
+			DataSetField::SPtr dataSetField = boost::make_shared<DataSetField>();
 
 			dataSetField->createObject(VariantEncoding);
 			dataSetField->opcUaBinaryDecode(is);

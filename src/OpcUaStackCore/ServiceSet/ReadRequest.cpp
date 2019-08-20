@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 	, JsonFormatter()
 	, maxAge_()
 	, timestampsToReturn_()
-	, readValueIdArraySPtr_(constructSPtr<ReadValueIdArray>())
+	, readValueIdArraySPtr_(boost::make_shared<ReadValueIdArray>())
 	{
 	}
 

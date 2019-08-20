@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 	GetNamespaceInfo::query(ApplicationServiceIf* applicationServiceIf)
 	{
 		// create request
-		auto trx = constructSPtr<ServiceTransactionNamespaceInfo>();
+		auto trx = boost::make_shared<ServiceTransactionNamespaceInfo>();
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);

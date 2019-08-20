@@ -23,17 +23,17 @@ namespace OpcUaStackServer
 {
 
 	ServiceManager::ServiceManager(void)
-	: transactionManager_(constructSPtr<TransactionManager>())
-	, attributeService_(constructSPtr<AttributeService>())
-	, methodService_(constructSPtr<MethodService>())
-	, monitoredItemService_(constructSPtr<MonitoredItemService>())
-	, nodeManagementService_(constructSPtr<NodeManagementService>())
-	, queryService_(constructSPtr<QueryService>())
-	, subscriptionService_(constructSPtr<SubscriptionService>())
-	, viewService_(constructSPtr<ViewService>())
-	, applicationService_(constructSPtr<ApplicationService>())
-	, discoveryService_(constructSPtr<DiscoveryService>())
-	, forwardGlobalSync_(constructSPtr<ForwardGlobalSync>())
+	: transactionManager_(boost::make_shared<TransactionManager>())
+	, attributeService_(boost::make_shared<AttributeService>())
+	, methodService_(boost::make_shared<MethodService>())
+	, monitoredItemService_(boost::make_shared<MonitoredItemService>())
+	, nodeManagementService_(boost::make_shared<NodeManagementService>())
+	, queryService_(boost::make_shared<QueryService>())
+	, subscriptionService_(boost::make_shared<SubscriptionService>())
+	, viewService_(boost::make_shared<ViewService>())
+	, applicationService_(boost::make_shared<ApplicationService>())
+	, discoveryService_(boost::make_shared<DiscoveryService>())
+	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
 		attributeService_->componentName("AttributeService");
 		methodService_->componentName("MethodService");
@@ -77,10 +77,10 @@ namespace OpcUaStackServer
 		ServiceTransactionHistoryRead::name("HistoryRead");
 		ServiceTransactionHistoryUpdate::name("HistoryUpdate");
 
-		ServiceTransactionRead::SPtr serviceTransactionRead = constructSPtr<ServiceTransactionRead>();
-		ServiceTransactionWrite::SPtr serviceTransactionWrite = constructSPtr<ServiceTransactionWrite>();
-		ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead = constructSPtr<ServiceTransactionHistoryRead>();
-		ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate = constructSPtr<ServiceTransactionHistoryUpdate>();
+		ServiceTransactionRead::SPtr serviceTransactionRead = boost::make_shared<ServiceTransactionRead>();
+		ServiceTransactionWrite::SPtr serviceTransactionWrite = boost::make_shared<ServiceTransactionWrite>();
+		ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead = boost::make_shared<ServiceTransactionHistoryRead>();
+		ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate = boost::make_shared<ServiceTransactionHistoryUpdate>();
 
 		serviceTransactionRead->componentService(&*attributeService_);
 		serviceTransactionWrite->componentService(&*attributeService_);
@@ -98,7 +98,7 @@ namespace OpcUaStackServer
 		//
 		ServiceTransactionCall::name("Call");
 
-		ServiceTransactionCall::SPtr serviceTransactionCall = constructSPtr<ServiceTransactionCall>();
+		ServiceTransactionCall::SPtr serviceTransactionCall = boost::make_shared<ServiceTransactionCall>();
 
 		serviceTransactionCall->componentService(&*methodService_);
 
@@ -113,10 +113,10 @@ namespace OpcUaStackServer
 		ServiceTransactionDeleteNodes::name("DeleteNodes");
 		ServiceTransactionDeleteReferences::name("DeleteReferences");
 
-		ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes = constructSPtr<ServiceTransactionAddNodes>();
-		ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences = constructSPtr<ServiceTransactionAddReferences>();
-		ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes = constructSPtr<ServiceTransactionDeleteNodes>();
-		ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences = constructSPtr<ServiceTransactionDeleteReferences>();
+		ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes = boost::make_shared<ServiceTransactionAddNodes>();
+		ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences = boost::make_shared<ServiceTransactionAddReferences>();
+		ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes = boost::make_shared<ServiceTransactionDeleteNodes>();
+		ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences = boost::make_shared<ServiceTransactionDeleteReferences>();
 
 		serviceTransactionAddNodes->componentService(&*nodeManagementService_);
 		serviceTransactionAddReferences->componentService(&*nodeManagementService_);
@@ -140,13 +140,13 @@ namespace OpcUaStackServer
 		ServiceTransactionSetPublishingMode::name("SetPublishingMode");
 		ServiceTransactionTransferSubscriptions::name("TransferSubscription");
 
-		ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription = constructSPtr<ServiceTransactionCreateSubscription>();
-		ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions = constructSPtr<ServiceTransactionDeleteSubscriptions>();
-		ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription = constructSPtr<ServiceTransactionModifySubscription>();
-		ServiceTransactionPublish::SPtr serviceTransactionPublish = constructSPtr<ServiceTransactionPublish>();
-		ServiceTransactionRepublish::SPtr serviceTransactionRepublish = constructSPtr<ServiceTransactionRepublish>();
-		ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode = constructSPtr<ServiceTransactionSetPublishingMode>();
-		ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions = constructSPtr<ServiceTransactionTransferSubscriptions>();
+		ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription = boost::make_shared<ServiceTransactionCreateSubscription>();
+		ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions = boost::make_shared<ServiceTransactionDeleteSubscriptions>();
+		ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription = boost::make_shared<ServiceTransactionModifySubscription>();
+		ServiceTransactionPublish::SPtr serviceTransactionPublish = boost::make_shared<ServiceTransactionPublish>();
+		ServiceTransactionRepublish::SPtr serviceTransactionRepublish = boost::make_shared<ServiceTransactionRepublish>();
+		ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode = boost::make_shared<ServiceTransactionSetPublishingMode>();
+		ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions = boost::make_shared<ServiceTransactionTransferSubscriptions>();
 
 		serviceTransactionCreateSubscription->componentService(&*subscriptionService_);
 		serviceTransactionDeleteSubscriptions->componentService(&*subscriptionService_);
@@ -175,11 +175,11 @@ namespace OpcUaStackServer
 		ServiceTransactionSetTriggering::name("SetTriggering");
 
 
-		ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems = constructSPtr<ServiceTransactionCreateMonitoredItems>();
-		ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
-		ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems = constructSPtr<ServiceTransactionModifyMonitoredItems>();
-		ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode = constructSPtr<ServiceTransactionSetMonitoringMode>();
-		ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering = constructSPtr<ServiceTransactionSetTriggering>();
+		ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems = boost::make_shared<ServiceTransactionCreateMonitoredItems>();
+		ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems = boost::make_shared<ServiceTransactionDeleteMonitoredItems>();
+		ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems = boost::make_shared<ServiceTransactionModifyMonitoredItems>();
+		ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode = boost::make_shared<ServiceTransactionSetMonitoringMode>();
+		ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering = boost::make_shared<ServiceTransactionSetTriggering>();
 
 		serviceTransactionCreateMonitoredItems->componentService(&*subscriptionService_);
 		serviceTransactionDeleteMonitoredItems->componentService(&*subscriptionService_);
@@ -203,11 +203,11 @@ namespace OpcUaStackServer
 		ServiceTransactionRegisterNodes::name("RegisterNodes");
 		ServiceTransactionUnregisterNodes::name("UnregisterNodes");
 
-		ServiceTransactionBrowse::SPtr serviceTransactionBrowse = constructSPtr<ServiceTransactionBrowse>();
-		ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext = constructSPtr<ServiceTransactionBrowseNext>();
-		ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds = constructSPtr<ServiceTransactionTranslateBrowsePathsToNodeIds>();
-		ServiceTransactionRegisterNodes::SPtr serviceTransactionRegisterNodes = constructSPtr<ServiceTransactionRegisterNodes>();
-		ServiceTransactionUnregisterNodes::SPtr serviceTransactionUnregisterNodes = constructSPtr<ServiceTransactionUnregisterNodes>();
+		ServiceTransactionBrowse::SPtr serviceTransactionBrowse = boost::make_shared<ServiceTransactionBrowse>();
+		ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext = boost::make_shared<ServiceTransactionBrowseNext>();
+		ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds = boost::make_shared<ServiceTransactionTranslateBrowsePathsToNodeIds>();
+		ServiceTransactionRegisterNodes::SPtr serviceTransactionRegisterNodes = boost::make_shared<ServiceTransactionRegisterNodes>();
+		ServiceTransactionUnregisterNodes::SPtr serviceTransactionUnregisterNodes = boost::make_shared<ServiceTransactionUnregisterNodes>();
 
 		serviceTransactionBrowse->componentService(&*viewService_);
 		serviceTransactionBrowseNext->componentService(&*viewService_);
@@ -226,7 +226,7 @@ namespace OpcUaStackServer
 		//
 		ServiceTransactionRegisterServer::name("RegisterServer");
 
-		ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer = constructSPtr<ServiceTransactionRegisterServer>();
+		ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer = boost::make_shared<ServiceTransactionRegisterServer>();
 
 		serviceTransactionRegisterServer->componentService(&*discoveryService_);
 
@@ -239,9 +239,9 @@ namespace OpcUaStackServer
 		ServiceTransactionRegisterForwardMethod::name("RegisterForwardMethod");
 		ServiceTransactionRegisterForwardGlobal::name("RegisterForwardGlobal");
 
-		ServiceTransactionRegisterForwardNode::SPtr serviceTransactionRegisterForwardNode = constructSPtr<ServiceTransactionRegisterForwardNode>();
-		ServiceTransactionRegisterForwardMethod::SPtr serviceTransactionRegisterForwardMethod = constructSPtr<ServiceTransactionRegisterForwardMethod>();
-		ServiceTransactionRegisterForwardGlobal::SPtr serviceTransactionRegisterForwardGlobal = constructSPtr<ServiceTransactionRegisterForwardGlobal>();
+		ServiceTransactionRegisterForwardNode::SPtr serviceTransactionRegisterForwardNode = boost::make_shared<ServiceTransactionRegisterForwardNode>();
+		ServiceTransactionRegisterForwardMethod::SPtr serviceTransactionRegisterForwardMethod = boost::make_shared<ServiceTransactionRegisterForwardMethod>();
+		ServiceTransactionRegisterForwardGlobal::SPtr serviceTransactionRegisterForwardGlobal = boost::make_shared<ServiceTransactionRegisterForwardGlobal>();
 
 		serviceTransactionRegisterForwardNode->componentService(&*applicationService_);
 		serviceTransactionRegisterForwardMethod->componentService(&*applicationService_);

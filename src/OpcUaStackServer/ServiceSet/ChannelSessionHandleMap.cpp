@@ -38,7 +38,7 @@ namespace OpcUaStackServer
 		SecureChannel* secureChannel)
 	{
 		// create new channel session handle
-		ChannelSessionHandle::SPtr channelSessionHandle = constructSPtr<ChannelSessionHandle>();
+		ChannelSessionHandle::SPtr channelSessionHandle = boost::make_shared<ChannelSessionHandle>();
 		channelSessionHandle->secureChannel(secureChannel);
 		channelSessionHandle->secureChannelServer(secureChannelServer);
 

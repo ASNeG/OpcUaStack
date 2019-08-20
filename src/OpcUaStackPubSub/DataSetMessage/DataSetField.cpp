@@ -64,13 +64,13 @@ namespace OpcUaStackPubSub
 		{
 			case VariantEncoding:
 			{
-				object_ = constructSPtr<OpcUaVariant>();
+				object_ = boost::make_shared<OpcUaVariant>();
 				dataType_ = dataType;
 				break;
 			}
 			case DataValueEncoding:
 			{
-				object_ = constructSPtr<OpcUaDataValue>();
+				object_ = boost::make_shared<OpcUaDataValue>();
 				dataType_ = dataType;
 				break;
 			}

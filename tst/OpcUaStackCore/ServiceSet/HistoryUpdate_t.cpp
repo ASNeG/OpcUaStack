@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Title)
 
 BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 {
-	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
+	RequestHeader::SPtr requestHeader = boost::make_shared<RequestHeader>();
 	std::string str;
 	uint32_t pos;
 	OpcUaNodeId typeId;
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -60,10 +60,10 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build
-	historyUpdateRequestSPtr = constructSPtr<HistoryUpdateRequest>();
+	historyUpdateRequestSPtr = boost::make_shared<HistoryUpdateRequest>();
 
 	// build RequestHeader
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 	historyUpdateRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_HistoryUpdateRequest_Encoding_DefaultBinary);
 
 	// decode ReadRequest
-	historyUpdateRequestSPtr = constructSPtr<HistoryUpdateRequest>();
+	historyUpdateRequestSPtr = boost::make_shared<HistoryUpdateRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	historyUpdateRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 
 BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 {
-	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
+	ResponseHeader::SPtr responseHeader = boost::make_shared<ResponseHeader>();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	historyUpdateResponseSPtr = constructSPtr<HistoryUpdateResponse>();
+	historyUpdateResponseSPtr = boost::make_shared<HistoryUpdateResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	
 	// build HistoryUpdateResult
 	statusCode = Success;
-	historyUpdateResultSPtr = constructSPtr<HistoryUpdateResult>();
+	historyUpdateResultSPtr = boost::make_shared<HistoryUpdateResult>();
 	historyUpdateResultSPtr->statusCode((OpcUaStatusCode)Success);
 	historyUpdateResultSPtr->operationResults()->set(statusCode);
 
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	historyUpdateResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_HistoryUpdateResponse_Encoding_DefaultBinary);
 
 	// decode 
-	historyUpdateResponseSPtr = constructSPtr<HistoryUpdateResponse>();
+	historyUpdateResponseSPtr = boost::make_shared<HistoryUpdateResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	historyUpdateResponseSPtr->opcUaBinaryDecode(ios);
 
@@ -248,7 +248,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(historyUpdateResponseSPtr->results()->size() == 1);
-	historyUpdateResultSPtr = constructSPtr<HistoryUpdateResult>();
+	historyUpdateResultSPtr = boost::make_shared<HistoryUpdateResult>();
 	historyUpdateResponseSPtr->results()->get(historyUpdateResultSPtr);
 	BOOST_REQUIRE(historyUpdateResultSPtr->statusCode() == Success);
 	

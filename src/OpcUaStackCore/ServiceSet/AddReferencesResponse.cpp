@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	AddReferencesResponse::AddReferencesResponse(void)
 	: Object()
-	, addReferencesResultArraySPtr_(constructSPtr<AddReferencesResultArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, addReferencesResultArraySPtr_(boost::make_shared<AddReferencesResultArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

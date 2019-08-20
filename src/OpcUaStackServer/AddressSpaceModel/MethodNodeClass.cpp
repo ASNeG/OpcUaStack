@@ -87,7 +87,7 @@ namespace OpcUaStackServer
 	BaseNodeClass::SPtr
 	MethodNodeClass::clone(void)
 	{
-		MethodNodeClass::SPtr methodNodeClass = constructSPtr<MethodNodeClass>();
+		MethodNodeClass::SPtr methodNodeClass = boost::make_shared<MethodNodeClass>();
 		copyTo(methodNodeClass);
 		return methodNodeClass;
 	}

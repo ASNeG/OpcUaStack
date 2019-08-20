@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(ConnectionManagerBase_)
 BOOST_AUTO_TEST_CASE(ConnectionManagerBase__registration)
 {
 	MockConnectionManagerBase connectionManager;
-	MockNetworkReceiver::SPtr reciever = constructSPtr<MockNetworkReceiver>();
+	MockNetworkReceiver::SPtr reciever = boost::make_shared<MockNetworkReceiver>();
 
 	BOOST_REQUIRE(connectionManager.registerReceiverIf(reciever));
 	BOOST_REQUIRE(connectionManager.registerReceiverIf(reciever) == false);
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(ConnectionManagerBase__registration)
 BOOST_AUTO_TEST_CASE(ConnectionManagerBase_deregistration)
 {
 	MockConnectionManagerBase connectionManager;
-	MockNetworkReceiver::SPtr reciever = constructSPtr<MockNetworkReceiver>();
+	MockNetworkReceiver::SPtr reciever = boost::make_shared<MockNetworkReceiver>();
 
 	BOOST_REQUIRE(connectionManager.registerReceiverIf(reciever));
 

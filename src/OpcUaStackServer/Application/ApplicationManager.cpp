@@ -54,7 +54,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		Application::SPtr application = constructSPtr<Application>();
+		Application::SPtr application = boost::make_shared<Application>();
 		application->applicationIf(applicationIf);
 		application->reloadIf(reloadIf);
 		application->applicationName(applicationName);

@@ -23,15 +23,15 @@ namespace OpcUaStackCore
 
 	CreateSessionResponse::CreateSessionResponse(void)
 	: Object()
-	, responseHeader_(constructSPtr<ResponseHeader>())
+	, responseHeader_(boost::make_shared<ResponseHeader>())
 	, sessionId_()
 	, authenticationToken_()
 	, receivedSessionTimeout_()
 	, serverNonce_()
 	, serverCertificate_()
-	, serverEndpoints_(constructSPtr<EndpointDescriptionArray>())
+	, serverEndpoints_(boost::make_shared<EndpointDescriptionArray>())
 	, serverSoftwareCertificate_()
-	, signatureData_(constructSPtr<SignatureData>())
+	, signatureData_(boost::make_shared<SignatureData>())
 	, maxRequestMessageSize_(65536)
 	{
 	}

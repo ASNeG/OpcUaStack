@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	TransferSubscriptionsRequest::TransferSubscriptionsRequest(void)
 	: Object()
-	, subscriptionIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())
+	, subscriptionIdArraySPtr_(boost::make_shared<OpcUaUInt32Array>())
 	, sendInitialValues_()
 	{
 	}

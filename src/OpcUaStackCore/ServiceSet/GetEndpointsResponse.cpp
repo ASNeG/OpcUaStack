@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 
 	GetEndpointsResponse::GetEndpointsResponse(void)
 	: Object()
-	, responseHeader_(constructSPtr<ResponseHeader>())
-	, endpointArraySPtr_(constructSPtr<EndpointDescriptionArray>())
+	, responseHeader_(boost::make_shared<ResponseHeader>())
+	, endpointArraySPtr_(boost::make_shared<EndpointDescriptionArray>())
 	{
 	}
 

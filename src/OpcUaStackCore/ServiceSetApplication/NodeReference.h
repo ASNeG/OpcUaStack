@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_NodeReference_h__
 #define __OpcUaStackCore_NodeReference_h__
 
+#include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/JsonFormatter.h"
 

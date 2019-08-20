@@ -19,7 +19,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandRegisterServer.h"
 
 using namespace OpcUaStackCore;
@@ -47,7 +47,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandRegisterServer::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandRegisterServer>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandRegisterServer>();
 		return commandBase;
 	}
 

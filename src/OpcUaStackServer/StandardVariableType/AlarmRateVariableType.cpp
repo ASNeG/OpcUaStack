@@ -16,8 +16,8 @@ namespace OpcUaStackServer
     
     AlarmRateVariableType::AlarmRateVariableType(void)
     : VariableBase()
-    , rate_Variable_(constructSPtr<ServerVariable>("Rate_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , rate_Variable_(boost::make_shared<ServerVariable>("Rate_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)17277);
@@ -27,8 +27,8 @@ namespace OpcUaStackServer
     
     AlarmRateVariableType::AlarmRateVariableType(const AlarmRateVariableType& value)
     : VariableBase()
-    , rate_Variable_(constructSPtr<ServerVariable>("Rate_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , rate_Variable_(boost::make_shared<ServerVariable>("Rate_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)17277);

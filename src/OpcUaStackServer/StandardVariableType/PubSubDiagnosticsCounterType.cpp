@@ -16,11 +16,11 @@ namespace OpcUaStackServer
     
     PubSubDiagnosticsCounterType::PubSubDiagnosticsCounterType(void)
     : VariableBase()
-    , active_Variable_(constructSPtr<ServerVariable>("Active_Variable"))
-    , classification_Variable_(constructSPtr<ServerVariable>("Classification_Variable"))
-    , diagnosticsLevel_Variable_(constructSPtr<ServerVariable>("DiagnosticsLevel_Variable"))
-    , timeFirstChange_Variable_(constructSPtr<ServerVariable>("TimeFirstChange_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , active_Variable_(boost::make_shared<ServerVariable>("Active_Variable"))
+    , classification_Variable_(boost::make_shared<ServerVariable>("Classification_Variable"))
+    , diagnosticsLevel_Variable_(boost::make_shared<ServerVariable>("DiagnosticsLevel_Variable"))
+    , timeFirstChange_Variable_(boost::make_shared<ServerVariable>("TimeFirstChange_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)19725);
@@ -33,11 +33,11 @@ namespace OpcUaStackServer
     
     PubSubDiagnosticsCounterType::PubSubDiagnosticsCounterType(const PubSubDiagnosticsCounterType& value)
     : VariableBase()
-    , active_Variable_(constructSPtr<ServerVariable>("Active_Variable"))
-    , classification_Variable_(constructSPtr<ServerVariable>("Classification_Variable"))
-    , diagnosticsLevel_Variable_(constructSPtr<ServerVariable>("DiagnosticsLevel_Variable"))
-    , timeFirstChange_Variable_(constructSPtr<ServerVariable>("TimeFirstChange_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , active_Variable_(boost::make_shared<ServerVariable>("Active_Variable"))
+    , classification_Variable_(boost::make_shared<ServerVariable>("Classification_Variable"))
+    , diagnosticsLevel_Variable_(boost::make_shared<ServerVariable>("DiagnosticsLevel_Variable"))
+    , timeFirstChange_Variable_(boost::make_shared<ServerVariable>("TimeFirstChange_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)19725);

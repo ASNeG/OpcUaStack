@@ -145,7 +145,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     OpcUaStatus::factory(void)
     {
-    	return constructSPtr<OpcUaStatus>();
+    	return boost::make_shared<OpcUaStatus>();
     }
     
     OpcUaNodeId

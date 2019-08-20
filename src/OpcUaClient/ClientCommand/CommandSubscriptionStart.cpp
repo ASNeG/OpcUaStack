@@ -18,7 +18,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandSubscriptionStart.h"
 
 using namespace OpcUaStackCore;
@@ -38,7 +38,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandSubscriptionStart::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandSubscriptionStart>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandSubscriptionStart>();
 		return commandBase;
 	}
 

@@ -24,7 +24,7 @@ using namespace OpcUaStackCore;
 			eventVariables_.registerEventVariable("Variable1", OpcUaBuildInType_OpcUaDouble);
 			eventVariables_.registerEventVariable("Variable2", OpcUaBuildInType_OpcUaDouble);
 
-			OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr eventType = boost::make_shared<OpcUaVariant>();
 			eventType->setValue(OpcUaNodeId((OpcUaUInt32)10000));
 			eventVariables_.setValue("EventType", eventType);
 			eventVariables_.namespaceIndex(0);
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(CustomerEventType_)
 
 BOOST_AUTO_TEST_CASE(CustomerEventType_construct_destruct)
 {
-	CustomerEventType::SPtr customerEventType = constructSPtr<CustomerEventType>();
+	CustomerEventType::SPtr customerEventType = boost::make_shared<CustomerEventType>();
 }
 
 BOOST_AUTO_TEST_CASE(CustomerEventType_success)
@@ -128,15 +128,15 @@ BOOST_AUTO_TEST_CASE(CustomerEventType_success)
 
 	CustomerEventType customerEventType;
 
-	variant = constructSPtr<OpcUaVariant>();
+	variant = boost::make_shared<OpcUaVariant>();
 	variant->setValue(OpcUaLocalizedText("de", "Dies ist eine Event Message"));
 	BOOST_REQUIRE(customerEventType.message(variant) == true);
 
-	variant = constructSPtr<OpcUaVariant>();
+	variant = boost::make_shared<OpcUaVariant>();
 	variant->setValue((OpcUaDouble)123);
 	BOOST_REQUIRE(customerEventType.variable1(variant) == true);
 
-	variant = constructSPtr<OpcUaVariant>();
+	variant = boost::make_shared<OpcUaVariant>();
 	variant->setValue((OpcUaDouble)456);
 	BOOST_REQUIRE(customerEventType.variable2(variant) == true);
 
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(CustomerEventType_success)
 	// find message (BaseEventType)
 	eventType.set((OpcUaUInt32)2041);
 	browseNameList.clear();
-	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Message"));
+	browseNameList.push_back(boost::make_shared<OpcUaQualifiedName>("Message"));
 	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
 	BOOST_REQUIRE(variant.get() != nullptr);
 	BOOST_REQUIRE(variant->getValue(localizedText) == true);
@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE(CustomerEventType_success)
 	// find variable1 (BaseEventType)
 	eventType.set((OpcUaUInt32)2041);
 	browseNameList.clear();
-	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Variable1", 1));
+	browseNameList.push_back(boost::make_shared<OpcUaQualifiedName>("Variable1", 1));
 	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
 	BOOST_REQUIRE(variant.get() != nullptr);
 	BOOST_REQUIRE(variant->getValue(doubleValue) == true);
@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(CustomerEventType_success)
 	// find variable2 (BaseEventType)
 	eventType.set((OpcUaUInt32)2041);
 	browseNameList.clear();
-	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Variable2", 1));
+	browseNameList.push_back(boost::make_shared<OpcUaQualifiedName>("Variable2", 1));
 	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
 	BOOST_REQUIRE(variant.get() != nullptr);
 	BOOST_REQUIRE(variant->getValue(doubleValue) == true);
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(CustomerEventType_success)
 	// find variable1 (CustomerEventType)
 	eventType.set((OpcUaUInt32)10000, 1);
 	browseNameList.clear();
-	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Variable1", 1));
+	browseNameList.push_back(boost::make_shared<OpcUaQualifiedName>("Variable1", 1));
 	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
 	BOOST_REQUIRE(variant.get() != nullptr);
 	BOOST_REQUIRE(variant->getValue(doubleValue) == true);
@@ -191,7 +191,7 @@ BOOST_AUTO_TEST_CASE(CustomerEventType_success)
 	// find variable2 (CustomerEventType)
 	eventType.set((OpcUaUInt32)10000, 1);
 	browseNameList.clear();
-	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Variable2", 1));
+	browseNameList.push_back(boost::make_shared<OpcUaQualifiedName>("Variable2", 1));
 	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
 	BOOST_REQUIRE(variant.get() != nullptr);
 	BOOST_REQUIRE(variant->getValue(doubleValue) == true);

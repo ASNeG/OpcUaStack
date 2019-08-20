@@ -57,7 +57,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		OpcUaString::SPtr stringValue = constructSPtr<OpcUaString>();
+		OpcUaString::SPtr stringValue = boost::make_shared<OpcUaString>();
 		*stringValue = serverName;
 		dataValue.variant()->pushBack(stringValue);
 		dataValue.statusCode(Success);

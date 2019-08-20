@@ -18,7 +18,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandWrite.h"
 
 using namespace OpcUaStackCore;
@@ -41,7 +41,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandWrite::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandWrite>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandWrite>();
 		return commandBase;
 	}
 
@@ -69,7 +69,7 @@ namespace OpcUaClient
 	CommandWrite::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
 		if (parameterName == "-NODEID") {
-			OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+			OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>();
 			if (!nodeId->fromString(parameterValue)) {
 				std::stringstream ss;
 				ss << "node id parameter invalid (" << parameterValue << ")";
@@ -88,7 +88,7 @@ namespace OpcUaClient
 				return false;
 			}
 
-			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
+			OpcUaDataValue::SPtr dataValue = boost::make_shared<OpcUaDataValue>();
 			OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
 			dataValue->variant()->copyFrom(variant);
 			dataValue->sourceTimestamp(dateTime);

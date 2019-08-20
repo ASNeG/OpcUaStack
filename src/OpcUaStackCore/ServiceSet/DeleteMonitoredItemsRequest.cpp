@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	DeleteMonitoredItemsRequest::DeleteMonitoredItemsRequest(void)
 	: Object()
 	, subscriptionId_()
-	, monitoredItemIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())
+	, monitoredItemIdArraySPtr_(boost::make_shared<OpcUaUInt32Array>())
 	{
 	}
 

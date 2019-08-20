@@ -1,4 +1,5 @@
 #include "unittest.h"
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
@@ -42,7 +43,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_insert_tick_0)
 	SlotTimerElement::SPtr slotTimerElement;
 	SlotTimer slotTimer;
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(0);
 	slotTimer.insert(slotTimerElement);
 
@@ -55,7 +56,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_insert_tick_254)
 	SlotTimerElement::SPtr slotTimerElement;
 	SlotTimer slotTimer;
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(254);
 	slotTimer.insert(slotTimerElement);
 
@@ -68,7 +69,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_insert_tick_255)
 	SlotTimerElement::SPtr slotTimerElement;
 	SlotTimer slotTimer;
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(255);
 	slotTimer.insert(slotTimerElement);
 
@@ -81,7 +82,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_insert_tick_509)
 	SlotTimerElement::SPtr slotTimerElement;
 	SlotTimer slotTimer;
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(509);
 	slotTimer.insert(slotTimerElement);
 
@@ -94,7 +95,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_insert_tick_510)
 	SlotTimerElement::SPtr slotTimerElement;
 	SlotTimer slotTimer;
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(510);
 	slotTimer.insert(slotTimerElement);
 
@@ -108,7 +109,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_insert_array1)
 	SlotTimer slotTimer;
 
 	for (uint32_t idx=0; idx<255; idx++) {
-		slotTimerElement = constructSPtr<SlotTimerElement>();
+		slotTimerElement = boost::make_shared<SlotTimerElement>();
 		slotTimerElement->tick(idx);
 		slotTimer.insert(slotTimerElement);
 
@@ -124,7 +125,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_insert_array2)
 	SlotTimer slotTimer;
 
 	for (uint32_t idx=260; idx<270; idx++) {
-		slotTimerElement = constructSPtr<SlotTimerElement>();
+		slotTimerElement = boost::make_shared<SlotTimerElement>();
 		slotTimerElement->tick(idx);
 		slotTimer.insert(slotTimerElement);
 
@@ -140,7 +141,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_remove_array1)
 	SlotTimer slotTimer;
 
 	for (uint32_t idx=0; idx<255; idx++) {
-		slotTimerElement[idx] = constructSPtr<SlotTimerElement>();
+		slotTimerElement[idx] = boost::make_shared<SlotTimerElement>();
 		slotTimerElement[idx]->tick(idx);
 		slotTimer.insert(slotTimerElement[idx]);
 
@@ -162,7 +163,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_remove_array2)
 	SlotTimer slotTimer;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		slotTimerElement[idx] = constructSPtr<SlotTimerElement>();
+		slotTimerElement[idx] = boost::make_shared<SlotTimerElement>();
 		slotTimerElement[idx]->tick(idx+260);
 		slotTimer.insert(slotTimerElement[idx]);
 
@@ -183,7 +184,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_same_tick)
 	SlotTimer slotTimer;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		slotTimerElement[idx] = constructSPtr<SlotTimerElement>();
+		slotTimerElement[idx] = boost::make_shared<SlotTimerElement>();
 		slotTimerElement[idx]->tick(0);
 		slotTimer.insert(slotTimerElement[idx]);
 
@@ -207,43 +208,43 @@ BOOST_AUTO_TEST_CASE(SlotTimer_actSlot_50_insert)
 		BOOST_REQUIRE(slotTimer.run() == idx+1);
 	}
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(0);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 50);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(50);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 50);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(51);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 51);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(254);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 254);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(255);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 0);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(304);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 49);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(305);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 1);
@@ -259,19 +260,19 @@ BOOST_AUTO_TEST_CASE(SlotTimer_actSlot_255_insert)
 		BOOST_REQUIRE(slotTimer.run() == idx+1);
 	}
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(0);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 0);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(255);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 0);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(256);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
@@ -287,43 +288,43 @@ BOOST_AUTO_TEST_CASE(SlotTimer_actSlot_305_insert)
 		BOOST_REQUIRE(slotTimer.run() == idx+1);
 	}
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(255);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 50);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(50+255);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 50);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(51+255);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 51);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(254+255);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 254);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(255+255);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 0);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(304+255);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 0);
 	BOOST_REQUIRE(SLOT_NUMBER(slotTimerElement->handle()) == 49);
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(305+255);
 	slotTimer.insert(slotTimerElement);
 	BOOST_REQUIRE(ARRAY_NUMBER(slotTimerElement->handle()) == 1);
@@ -337,7 +338,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_call_1)
 	SlotTimerElement::SPtr slotTimerElement;
 	SlotTimer slotTimer;
 
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->tick(0);
 	slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)0));
 	slotTimer.insert(slotTimerElement);
@@ -359,7 +360,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_call_n)
 	SlotTimer slotTimer;
 
 	for (uint32_t idx=0; idx<loopCount; idx++) {
-		slotTimerElement = constructSPtr<SlotTimerElement>();
+		slotTimerElement = boost::make_shared<SlotTimerElement>();
 		slotTimerElement->tick(idx);
 		slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx));
 		slotTimer.insert(slotTimerElement);
@@ -384,7 +385,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_loop_1)
 	slotTimer.startSlotTimerLoop(&ioService);
 
 	slotTimerTest.callCondition_.condition(0,1);
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(10));
 	slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)10));
 	BOOST_REQUIRE(slotTimerElement->isRunning() == false);
@@ -412,7 +413,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_loop_n)
 
 	slotTimerTest.callCondition_.condition(0,1000);
 	for (uint32_t idx=0; idx<1000; idx++) {
-		slotTimerElement = constructSPtr<SlotTimerElement>();
+		slotTimerElement = boost::make_shared<SlotTimerElement>();
 		slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(idx+10));
 		slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
 		BOOST_REQUIRE(slotTimerElement->isRunning() == false);
@@ -438,7 +439,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_loop_n2)
 
 	slotTimerTest.callCondition_.condition(0,2000);
 	for (uint32_t idx=0; idx<1000; idx++) {
-		slotTimerElement = constructSPtr<SlotTimerElement>();
+		slotTimerElement = boost::make_shared<SlotTimerElement>();
 		slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(idx+10));
 		slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
 		BOOST_REQUIRE(slotTimerElement->isRunning() == false);
@@ -446,7 +447,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_loop_n2)
 		BOOST_REQUIRE(slotTimerElement->isRunning() == true);
 	}
 	for (uint32_t idx=0; idx<1000; idx++) {
-		slotTimerElement = constructSPtr<SlotTimerElement>();
+		slotTimerElement = boost::make_shared<SlotTimerElement>();
 		slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(idx+10));
 		slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
 		BOOST_REQUIRE(slotTimerElement->isRunning() == false);
@@ -471,7 +472,7 @@ BOOST_AUTO_TEST_CASE(SlotTimer_interval)
 	slotTimer.startSlotTimerLoop(&ioService);
 
 	slotTimerTest.callCondition_.condition(0,100);
-	slotTimerElement = constructSPtr<SlotTimerElement>();
+	slotTimerElement = boost::make_shared<SlotTimerElement>();
 	slotTimerElement->interval(10);
 	slotTimerElement->timeoutCallback(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)0));
 	BOOST_REQUIRE(slotTimerElement->isRunning() == false);

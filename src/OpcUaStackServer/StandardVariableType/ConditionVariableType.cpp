@@ -16,8 +16,8 @@ namespace OpcUaStackServer
     
     ConditionVariableType::ConditionVariableType(void)
     : VariableBase()
-    , sourceTimestamp_Variable_(constructSPtr<ServerVariable>("SourceTimestamp_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , sourceTimestamp_Variable_(boost::make_shared<ServerVariable>("SourceTimestamp_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)9002);
@@ -27,8 +27,8 @@ namespace OpcUaStackServer
     
     ConditionVariableType::ConditionVariableType(const ConditionVariableType& value)
     : VariableBase()
-    , sourceTimestamp_Variable_(constructSPtr<ServerVariable>("SourceTimestamp_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , sourceTimestamp_Variable_(boost::make_shared<ServerVariable>("SourceTimestamp_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)9002);

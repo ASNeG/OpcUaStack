@@ -18,7 +18,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandGetEndpoint.h"
 
 using namespace OpcUaStackCore;
@@ -38,7 +38,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandGetEndpoint::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandGetEndpoint>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandGetEndpoint>();
 		return commandBase;
 	}
 

@@ -33,9 +33,9 @@ namespace OpcUaStackCore
 	CallMethodResult::CallMethodResult(void)
 	: Object()
 	, statusCode_()
-	, inputArgumentResultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
-	, inputArgumentDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
-	, outputArgumentArraySPtr_(constructSPtr<OpcUaVariantArray>())
+	, inputArgumentResultArraySPtr_(boost::make_shared<OpcUaStatusCodeArray>())
+	, inputArgumentDiagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
+	, outputArgumentArraySPtr_(boost::make_shared<OpcUaVariantArray>())
 	{
 	}
 

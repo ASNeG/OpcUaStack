@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_)
 #define SHOULD_NOT_CONVERT_PTR(sourceType, targetType) do {\
 	OpcUaTypeConversion converter; \
 	OpcUaVariant value1;\
-	value1.variant(constructSPtr<sourceType>()); \
+	value1.variant(boost::make_shared<sourceType>()); \
 	OpcUaVariant value2; \
 															  \
 	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_##sourceType, OpcUaBuildInType_##targetType)); \
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Byte)
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_ByteString)
 {
 	const std::string guidString = "\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37\x38";
-	OpcUaByteString::SPtr bString = constructSPtr<OpcUaByteString>(guidString);
+	OpcUaByteString::SPtr bString = boost::make_shared<OpcUaByteString>(guidString);
 
 	SHOULD_HAVE_RANK			(OpcUaByteString, 18);
 	SHOULD_NOT_CONVERT_PTR		(OpcUaByteString, OpcUaBoolean);
@@ -224,11 +224,11 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_ByteString)
 	OpcUaVariant value1;
 	OpcUaVariant value2;
 
-	OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>("\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37\x38\x39");
+	OpcUaByteString::SPtr byteString = boost::make_shared<OpcUaByteString>("\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37\x38\x39");
 	value1.variant(byteString);
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaGuid, value2));
 
-	byteString = constructSPtr<OpcUaByteString>("\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37");
+	byteString = boost::make_shared<OpcUaByteString>("\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37");
 	value1.variant(byteString);
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaGuid, value2));
 }
@@ -324,7 +324,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_OpcUaExpandedNodeId)
 {
 	OpcUaTypeConversion converter;
 
-	OpcUaExpandedNodeId::SPtr expandedNodeId = constructSPtr<OpcUaExpandedNodeId>();
+	OpcUaExpandedNodeId::SPtr expandedNodeId = boost::make_shared<OpcUaExpandedNodeId>();
 
 	expandedNodeId->nodeId<OpcUaUInt32>(1000);
 	expandedNodeId->namespaceUri("uri://test.namespace.org");
@@ -413,7 +413,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Float)
 
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Guid)
 {
-	OpcUaGuid::SPtr guid = constructSPtr<OpcUaGuid>();
+	OpcUaGuid::SPtr guid = boost::make_shared<OpcUaGuid>();
 	guid->value("01020304-1112-2122-3132-333435363738");
 
 	SHOULD_HAVE_RANK			(OpcUaGuid, 12);
@@ -590,7 +590,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Int64)
 
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_NodeId)
 {
-	OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>(1000, 1);
+	OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>(1000, 1);
 
 	SHOULD_HAVE_RANK			(OpcUaNodeId, 15);
 	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaBoolean);
@@ -697,7 +697,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_StatusCode)
 #define SHOULD_CONVERT_STR(convType, targetType, sourceValue, targetValue) do {\
 	OpcUaTypeConversion converter; \
 	OpcUaVariant value1;\
-	value1.variant(constructSPtr<OpcUaString>(sourceValue)); \
+	value1.variant(boost::make_shared<OpcUaString>(sourceValue)); \
 	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE_EQUAL(convType, converter.conversionType(OpcUaBuildInType_OpcUaString, OpcUaBuildInType_##targetType)); \
@@ -708,7 +708,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_StatusCode)
 #define SHOULD_NOT_CONVERT_STR(targetType, sourceValue) do {\
 	OpcUaTypeConversion converter; \
 	OpcUaVariant value1;\
-	value1.variant(constructSPtr<OpcUaString>(sourceValue)); \
+	value1.variant(boost::make_shared<OpcUaString>(sourceValue)); \
 	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
@@ -717,7 +717,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_StatusCode)
 #define SHOULD_CONVERT_STR_PTR(convType, targetType, sourceValue, targetValue) do {\
 	OpcUaTypeConversion converter; \
 	OpcUaVariant value1;\
-	value1.variant(constructSPtr<OpcUaString>(sourceValue)); \
+	value1.variant(boost::make_shared<OpcUaString>(sourceValue)); \
 	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE_EQUAL(convType, converter.conversionType(OpcUaBuildInType_OpcUaString, OpcUaBuildInType_##targetType)); \
@@ -727,7 +727,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_StatusCode)
 
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_String)
 {
-	OpcUaString::SPtr string = constructSPtr<OpcUaString>("The String.");
+	OpcUaString::SPtr string = boost::make_shared<OpcUaString>("The String.");
 
 	SHOULD_HAVE_RANK			(OpcUaGuid, 12);
 
@@ -821,7 +821,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_String)
 
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_LocalizedText)
 {
-	OpcUaLocalizedText::SPtr localizedText = constructSPtr<OpcUaLocalizedText>("ru", "Какой-то текст на русском.");
+	OpcUaLocalizedText::SPtr localizedText = boost::make_shared<OpcUaLocalizedText>("ru", "Какой-то текст на русском.");
 
 	SHOULD_HAVE_RANK			(OpcUaLocalizedText, 16);
 	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaBoolean);
@@ -852,7 +852,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_LocalizedText)
 
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_QualifiedName)
 {
-	OpcUaQualifiedName::SPtr qualifiedName = constructSPtr<OpcUaQualifiedName>("qualifiedName");
+	OpcUaQualifiedName::SPtr qualifiedName = boost::make_shared<OpcUaQualifiedName>("qualifiedName");
 
 	SHOULD_HAVE_RANK			(OpcUaQualifiedName, 17);
 	SHOULD_NOT_CONVERT_PTR		(OpcUaQualifiedName, OpcUaBoolean);
@@ -1031,7 +1031,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_UInt64)
 
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_XmlElement)
 {
-	OpcUaXmlElement::SPtr xmlElement = constructSPtr<OpcUaXmlElement>();
+	OpcUaXmlElement::SPtr xmlElement = boost::make_shared<OpcUaXmlElement>();
 
 
 	SHOULD_HAVE_RANK			(OpcUaXmlElement, 20);

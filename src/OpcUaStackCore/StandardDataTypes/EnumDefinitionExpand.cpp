@@ -25,7 +25,7 @@ namespace OpcUaStackCore
 	EnumDefinitionExpand::EnumDefinitionExpand(void)
 	: DataTypeDefinition()
 	, name_("")
-	, enumFields_(constructSPtr<EnumFieldArray>())
+	, enumFields_(boost::make_shared<EnumFieldArray>())
 	{
 	}
 
@@ -83,7 +83,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::SPtr
 	EnumDefinitionExpand::factory(void)
 	{
-		return constructSPtr<EnumDefinitionExpand>();
+		return boost::make_shared<EnumDefinitionExpand>();
 	}
 
 	OpcUaNodeId

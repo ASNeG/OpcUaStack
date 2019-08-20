@@ -34,7 +34,7 @@ namespace @ProjectNamespace@
 	ExtensionObjectBase::SPtr
 	@ClassName@::factory(void)
 	{
-		@ClassName@::SPtr @className@ = constructSPtr<@ClassName@>();
+		@ClassName@::SPtr @className@ = boost::make_shared<@ClassName@>();
 		return @className@;
 	}
 

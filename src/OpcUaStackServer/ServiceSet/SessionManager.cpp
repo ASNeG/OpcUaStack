@@ -110,14 +110,14 @@ namespace OpcUaStackServer
 			endpointDescriptionSet_->getEndpoints(endpointUrl, endpointDescriptionArray);
 
 			// create secure channel server configuration
-			auto secureChannelServerConfig = constructSPtr<SecureChannelServerConfig>();
+			auto secureChannelServerConfig = boost::make_shared<SecureChannelServerConfig>();
 			secureChannelServerConfig->endpointDescriptionArray(endpointDescriptionArray);
 			secureChannelServerConfig->endpointUrl(endpointUrl);
 			secureChannelServerConfig->secureChannelLog(secureChannelLog);
 			secureChannelServerConfig->cryptoManager(cryptoManager_);
 
 			// create new secure channel
-			auto secureChannelServer = constructSPtr<SecureChannelServer>(ioThread_);
+			auto secureChannelServer = boost::make_shared<SecureChannelServer>(ioThread_);
 			secureChannelServer->secureChannelServerIf(this);
 
 			// open server socket
@@ -212,7 +212,7 @@ namespace OpcUaStackServer
 
 		// decode request header
 		std::iostream ios(&secureChannel->secureChannelTransaction_->is_);
-		auto requestHeader = constructSPtr<RequestHeader>();
+		auto requestHeader = boost::make_shared<RequestHeader>();
 		requestHeader->opcUaBinaryDecode(ios);
 
 		// process request
@@ -277,7 +277,7 @@ namespace OpcUaStackServer
 		auto endpointDescriptionArray = secureChannelServerConfig->endpointDescriptionArray();
 
 		// create new session
-		Session::SPtr session = constructSPtr<Session>();
+		Session::SPtr session = boost::make_shared<Session>();
 		session->ioThread(ioThread_);
 		session->sessionIf(this);
 		session->cryptoManager(cryptoManager_);

@@ -96,7 +96,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ApplicationIf::ApplicationIf(void)
-	: applicationData_(constructSPtr<ApplicationData>())
+	: applicationData_(boost::make_shared<ApplicationData>())
 	{
 	}
 

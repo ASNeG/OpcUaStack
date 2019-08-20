@@ -102,9 +102,9 @@ namespace OpcUaStackServer
 		nodeReferences_.clear();
 
 		// create request
-		auto trx = constructSPtr<ServiceTransactionGetNodeReference>();
+		auto trx = boost::make_shared<ServiceTransactionGetNodeReference>();
 		trx->request()->nodes()->resize(nodes_.size());
-		for (auto node : nodes_) trx->request()->nodes()->push_back(constructSPtr<OpcUaNodeId>(node));
+		for (auto node : nodes_) trx->request()->nodes()->push_back(boost::make_shared<OpcUaNodeId>(node));
 
 		// send query to application service
 		applicationServiceIf->sendSync(trx);

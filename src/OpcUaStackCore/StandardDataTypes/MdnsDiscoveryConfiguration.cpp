@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.0.0
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -91,7 +91,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     MdnsDiscoveryConfiguration::factory(void)
     {
-    	return constructSPtr<MdnsDiscoveryConfiguration>();
+    	return boost::make_shared<MdnsDiscoveryConfiguration>();
     }
     
     std::string

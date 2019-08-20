@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	QueryFirstRequest::QueryFirstRequest(void)
 	: Object()
 	, view_()
-	, nodeTypeArraySPtr_(constructSPtr<NodeTypeDescriptionArray>())
+	, nodeTypeArraySPtr_(boost::make_shared<NodeTypeDescriptionArray>())
 	, filter_()
 	, maxDataSetsToReturn_()
 	, maxReferencesToReturn_()

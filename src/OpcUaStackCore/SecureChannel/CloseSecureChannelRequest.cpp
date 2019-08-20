@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	CloseSecureChannelRequest::CloseSecureChannelRequest(void)
-	: requestHeaderSPtr_(constructSPtr<RequestHeader>())
+	: requestHeaderSPtr_(boost::make_shared<RequestHeader>())
 	, secureChannelId_()
 	{
 	}

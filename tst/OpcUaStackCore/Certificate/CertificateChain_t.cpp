@@ -29,7 +29,7 @@ Certificate::SPtr createCertificate(void)
 	identity.country("DE");
 	identity.domainComponent("asneg.de");
 
-	return constructSPtr<Certificate>(info, identity, key);
+	return boost::make_shared<Certificate>(info, identity, key);
 }
 
 BOOST_AUTO_TEST_CASE(CertificateChain_)

@@ -22,7 +22,6 @@
 #include <boost/asio/strand.hpp>
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/Callback.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
 

@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
@@ -45,7 +44,7 @@ namespace OpcUaClient
 	, attributeService_()
 	, baseNodeClass_()
 	, readNodeId_()
-	, informationModel_(constructSPtr<InformationModel>())
+	, informationModel_(boost::make_shared<InformationModel>())
 	, nodeSetNamespace_()
 	, browseStatusCode_(Success)
 	, readStatusCode_(Success)
@@ -60,7 +59,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceNodeSetFilter::createClientService(void)
 	{
-		return constructSPtr<ClientServiceNodeSetFilter>();
+		return boost::make_shared<ClientServiceNodeSetFilter>();
 	}
 
 	bool
@@ -180,7 +179,7 @@ namespace OpcUaClient
 
 			// add reference to node
 			if (statusCode == Success) {
-				ReferenceItem::SPtr referenceItem = constructSPtr<ReferenceItem>();
+				ReferenceItem::SPtr referenceItem = boost::make_shared<ReferenceItem>();
 
 				referenceItem->nodeId_.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
 				referenceItem->nodeId_.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
@@ -213,42 +212,42 @@ namespace OpcUaClient
 		{
 			case NodeClass::EnumObject:
 			{
-				baseNodeClass_ = constructSPtr<ObjectNodeClass>();
+				baseNodeClass_ = boost::make_shared<ObjectNodeClass>();
 				break;
 			}
 			case NodeClass::EnumVariable:
 			{
-				baseNodeClass_ = constructSPtr<VariableNodeClass>();
+				baseNodeClass_ = boost::make_shared<VariableNodeClass>();
 				break;
 			}
 			case NodeClass::EnumMethod:
 			{
-				baseNodeClass_ = constructSPtr<MethodNodeClass>();
+				baseNodeClass_ = boost::make_shared<MethodNodeClass>();
 				break;
 			}
 			case NodeClass::EnumObjectType:
 			{
-				baseNodeClass_ = constructSPtr<ObjectTypeNodeClass>();
+				baseNodeClass_ = boost::make_shared<ObjectTypeNodeClass>();
 				break;
 			}
 			case NodeClass::EnumVariableType:
 			{
-				baseNodeClass_ = constructSPtr<VariableTypeNodeClass>();
+				baseNodeClass_ = boost::make_shared<VariableTypeNodeClass>();
 				break;
 			}
 			case NodeClass::EnumReferenceType:
 			{
-				baseNodeClass_ = constructSPtr<ReferenceTypeNodeClass>();
+				baseNodeClass_ = boost::make_shared<ReferenceTypeNodeClass>();
 				break;
 			}
 			case NodeClass::EnumDataType:
 			{
-				baseNodeClass_ = constructSPtr<DataTypeNodeClass>();
+				baseNodeClass_ = boost::make_shared<DataTypeNodeClass>();
 				break;
 			}
 			case NodeClass::EnumView:
 			{
-				baseNodeClass_ = constructSPtr<ViewNodeClass>();
+				baseNodeClass_ = boost::make_shared<ViewNodeClass>();
 				break;
 			}
 			default:
@@ -388,7 +387,7 @@ namespace OpcUaClient
 	bool
 	ClientServiceNodeSetFilter::createRootNode(OpcUaNodeId& rootNodeId)
 	{
-		baseNodeClass_ = constructSPtr<ObjectNodeClass>();
+		baseNodeClass_ = boost::make_shared<ObjectNodeClass>();
 
 		baseNodeClass_->setNodeId(rootNodeId);
 		OpcUaQualifiedName browseName("Root");

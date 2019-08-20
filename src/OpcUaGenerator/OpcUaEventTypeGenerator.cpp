@@ -175,7 +175,7 @@ namespace OpcUaEventTypeGenerator
 	    }
 
 	    // init information model
-		informationModel_ = constructSPtr<InformationModel>();
+		informationModel_ = boost::make_shared<InformationModel>();
 		if (!InformationModelNodeSet::initial(informationModel_, nodeSetXmlParser)) {
 			std::cout << "init information model error" << std::endl;
 			return -3;

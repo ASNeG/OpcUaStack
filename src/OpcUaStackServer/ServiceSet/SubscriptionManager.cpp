@@ -72,7 +72,7 @@ namespace OpcUaStackServer
 		CreateSubscriptionRequest::SPtr createSubscriptionRequest = trx->request();
 		CreateSubscriptionResponse::SPtr createSubscriptionResponse = trx->response();
 
-		Subscription::SPtr subscription = constructSPtr<Subscription>();
+		Subscription::SPtr subscription = boost::make_shared<Subscription>();
 		subscription->ioThread(ioThread_);
 		subscription->informationModel(informationModel_);
 		subscription->forwardGlobalSync(forwardGlobalSync_);

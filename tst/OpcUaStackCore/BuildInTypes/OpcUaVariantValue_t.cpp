@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariantValue_uint32_copyTo)
 
 BOOST_AUTO_TEST_CASE(OpcUaVariantValue_localizedText_copyTo)
 {
-	OpcUaLocalizedText::SPtr localizedTextSPtr1 = constructSPtr<OpcUaLocalizedText>();
+	OpcUaLocalizedText::SPtr localizedTextSPtr1 = boost::make_shared<OpcUaLocalizedText>();
 	OpcUaLocalizedText::SPtr localizedTextSPtr2;
 
 	localizedTextSPtr1->locale("de");

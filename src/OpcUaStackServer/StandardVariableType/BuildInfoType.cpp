@@ -16,13 +16,13 @@ namespace OpcUaStackServer
     
     BuildInfoType::BuildInfoType(void)
     : VariableBase()
-    , buildDate_Variable_(constructSPtr<ServerVariable>("BuildDate_Variable"))
-    , buildNumber_Variable_(constructSPtr<ServerVariable>("BuildNumber_Variable"))
-    , manufacturerName_Variable_(constructSPtr<ServerVariable>("ManufacturerName_Variable"))
-    , productName_Variable_(constructSPtr<ServerVariable>("ProductName_Variable"))
-    , productUri_Variable_(constructSPtr<ServerVariable>("ProductUri_Variable"))
-    , softwareVersion_Variable_(constructSPtr<ServerVariable>("SoftwareVersion_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , buildDate_Variable_(boost::make_shared<ServerVariable>("BuildDate_Variable"))
+    , buildNumber_Variable_(boost::make_shared<ServerVariable>("BuildNumber_Variable"))
+    , manufacturerName_Variable_(boost::make_shared<ServerVariable>("ManufacturerName_Variable"))
+    , productName_Variable_(boost::make_shared<ServerVariable>("ProductName_Variable"))
+    , productUri_Variable_(boost::make_shared<ServerVariable>("ProductUri_Variable"))
+    , softwareVersion_Variable_(boost::make_shared<ServerVariable>("SoftwareVersion_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)3051);
@@ -37,13 +37,13 @@ namespace OpcUaStackServer
     
     BuildInfoType::BuildInfoType(const BuildInfoType& value)
     : VariableBase()
-    , buildDate_Variable_(constructSPtr<ServerVariable>("BuildDate_Variable"))
-    , buildNumber_Variable_(constructSPtr<ServerVariable>("BuildNumber_Variable"))
-    , manufacturerName_Variable_(constructSPtr<ServerVariable>("ManufacturerName_Variable"))
-    , productName_Variable_(constructSPtr<ServerVariable>("ProductName_Variable"))
-    , productUri_Variable_(constructSPtr<ServerVariable>("ProductUri_Variable"))
-    , softwareVersion_Variable_(constructSPtr<ServerVariable>("SoftwareVersion_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , buildDate_Variable_(boost::make_shared<ServerVariable>("BuildDate_Variable"))
+    , buildNumber_Variable_(boost::make_shared<ServerVariable>("BuildNumber_Variable"))
+    , manufacturerName_Variable_(boost::make_shared<ServerVariable>("ManufacturerName_Variable"))
+    , productName_Variable_(boost::make_shared<ServerVariable>("ProductName_Variable"))
+    , productUri_Variable_(boost::make_shared<ServerVariable>("ProductUri_Variable"))
+    , softwareVersion_Variable_(boost::make_shared<ServerVariable>("SoftwareVersion_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)3051);

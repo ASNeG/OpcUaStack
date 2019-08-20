@@ -68,11 +68,11 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints, 
 	BOOST_REQUIRE(viewService.get() != nullptr);
 
 	// call view
-	ServiceTransactionBrowse::SPtr trx = constructSPtr<ServiceTransactionBrowse>();
+	ServiceTransactionBrowse::SPtr trx = boost::make_shared<ServiceTransactionBrowse>();
 	BrowseRequest::SPtr req = trx->request();
 	req->nodesToBrowse()->resize(1);
 
-	BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
+	BrowseDescription::SPtr browseDescription = boost::make_shared<BrowseDescription>();
 	browseDescription->nodeId()->set(84, 0);
 	browseDescription->browseDirection(BrowseDirection_Both);
 	browseDescription->nodeClassMask(0xFFFFFFFF);

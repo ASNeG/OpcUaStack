@@ -16,10 +16,10 @@ namespace OpcUaStackServer
     
     FileDirectoryType::FileDirectoryType(void)
     : ObjectBase()
-    , createDirectory_Method_(constructSPtr<ServerMethod>("CreateDirectory_Method"))
-    , createFile_Method_(constructSPtr<ServerMethod>("CreateFile_Method"))
-    , delete_Method_(constructSPtr<ServerMethod>("Delete_Method"))
-    , moveOrCopy_Method_(constructSPtr<ServerMethod>("MoveOrCopy_Method"))
+    , createDirectory_Method_(boost::make_shared<ServerMethod>("CreateDirectory_Method"))
+    , createFile_Method_(boost::make_shared<ServerMethod>("CreateFile_Method"))
+    , delete_Method_(boost::make_shared<ServerMethod>("Delete_Method"))
+    , moveOrCopy_Method_(boost::make_shared<ServerMethod>("MoveOrCopy_Method"))
     {
         objectTypeNamespaceName("http://opcfoundation.org/UA/");
         objectTypeNodeId((OpcUaUInt32)13353);
@@ -35,10 +35,10 @@ namespace OpcUaStackServer
     
     FileDirectoryType::FileDirectoryType(const FileDirectoryType& value)
     : ObjectBase()
-    , createDirectory_Method_(constructSPtr<ServerMethod>("CreateDirectory_Method"))
-    , createFile_Method_(constructSPtr<ServerMethod>("CreateFile_Method"))
-    , delete_Method_(constructSPtr<ServerMethod>("Delete_Method"))
-    , moveOrCopy_Method_(constructSPtr<ServerMethod>("MoveOrCopy_Method"))
+    , createDirectory_Method_(boost::make_shared<ServerMethod>("CreateDirectory_Method"))
+    , createFile_Method_(boost::make_shared<ServerMethod>("CreateFile_Method"))
+    , delete_Method_(boost::make_shared<ServerMethod>("Delete_Method"))
+    , moveOrCopy_Method_(boost::make_shared<ServerMethod>("MoveOrCopy_Method"))
     {
         objectTypeNamespaceName("http://opcfoundation.org/UA/");
         objectTypeNodeId((OpcUaUInt32)13353);

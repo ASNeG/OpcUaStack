@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: Object()
 	, statusCode_()
 	, continuationPoint_()
-	, historyData_(constructSPtr<OpcUaExtensibleParameter>())
+	, historyData_(boost::make_shared<OpcUaExtensibleParameter>())
 	{
 	}
 

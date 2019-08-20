@@ -85,7 +85,7 @@ namespace OpcUaStackCore
 				   return epSPtr;
 			   }
 
-			   typename T::SPtr epSPtr = constructSPtr<T>();
+			   typename T::SPtr epSPtr = boost::make_shared<T>();
 			   eoSPtr_ = epSPtr;
 			   return epSPtr;
 		   }

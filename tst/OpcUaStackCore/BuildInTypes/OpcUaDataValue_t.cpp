@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_copyTo_string)
 	sourceTimestamp.dateTime(ptime1);
 	serverTimestamp.dateTime(ptime2);
 
-	strValue1 = constructSPtr<OpcUaString>();
+	strValue1 = boost::make_shared<OpcUaString>();
 	strValue1->value("Text1");
 	value1.variant()->variant(strValue1);
 	value1.statusCode((OpcUaStatusCode)12);
@@ -296,17 +296,17 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_string_array_with_timestamp)
 	OpcUaVariantValue::Vec variantVec1, variantVec2;
 	OpcUaVariantValue variantValue1, variantValue2;
 
-	string1 = constructSPtr<OpcUaString>();
+	string1 = boost::make_shared<OpcUaString>();
 	string1->value("Dies ist der erste String");
 	variantValue1.variant(string1);
 	variantVec1.push_back(variantValue1);
 
-	string1 = constructSPtr<OpcUaString>();
+	string1 = boost::make_shared<OpcUaString>();
 	string1->value("Dies ist der zweite String");
 	variantValue1.variant(string1);
 	variantVec1.push_back(variantValue1);
 
-	string1 = constructSPtr<OpcUaString>();
+	string1 = boost::make_shared<OpcUaString>();
 	string1->value("Dies ist der dritte String");
 	variantValue1.variant(string1);
 	variantVec1.push_back(variantValue1);

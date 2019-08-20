@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientCommand/CommandRead.h"
 #include "OpcUaClient/ClientService/ClientServiceRead.h"
 
@@ -36,7 +35,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceRead::createClientService(void)
 	{
-		return constructSPtr<ClientServiceRead>();
+		return boost::make_shared<ClientServiceRead>();
 	}
 
 	bool
@@ -77,11 +76,11 @@ namespace OpcUaClient
 
 		// create read request
 		ServiceTransactionRead::SPtr trx;
-		trx = constructSPtr<ServiceTransactionRead>();
+		trx = boost::make_shared<ServiceTransactionRead>();
 		ReadRequest::SPtr req = trx->request();
 		req->readValueIdArray()->resize(commandRead->nodeIdVec().size());
 		for (uint32_t idx=0; idx<commandRead->nodeIdVec().size(); idx++) {
-			ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
+			ReadValueId::SPtr readValueIdSPtr = boost::make_shared<ReadValueId>();
 			readValueIdSPtr->nodeId()->copyFrom(*commandRead->nodeIdVec()[idx]);
 			readValueIdSPtr->attributeId(commandRead->attributeIdVec()[idx]);
 			readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);

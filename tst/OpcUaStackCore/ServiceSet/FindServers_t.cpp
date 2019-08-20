@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -59,14 +59,14 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	findServersRequestSPtr = constructSPtr<FindServersRequest>();
+	findServersRequestSPtr = boost::make_shared<FindServersRequest>();
 
 	// build RequestHeader
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	// build Parameter
-	stringSPtr = constructSPtr<OpcUaString>();
+	stringSPtr = boost::make_shared<OpcUaString>();
 	stringSPtr->value("TestString");
 
 	findServersRequestSPtr->endpointUrl("EndpointUrl");
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	findServersRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_FindServersRequest_Encoding_DefaultBinary);
 
 	// decode
-	findServersRequestSPtr = constructSPtr<FindServersRequest>();
+	findServersRequestSPtr = boost::make_shared<FindServersRequest>();
 	findServersRequestSPtr->opcUaBinaryDecode(ios);
 	
 	BOOST_REQUIRE(findServersRequestSPtr->endpointUrl().value() == "EndpointUrl");
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -178,16 +178,16 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	findServersResponseSPtr = constructSPtr<FindServersResponse>();
+	findServersResponseSPtr = boost::make_shared<FindServersResponse>();
 
 	// build ApplicationDescription
-	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
+	applicationDescriptionSPtr = boost::make_shared<ApplicationDescription>();
 	applicationDescriptionSPtr->applicationUri().value("urn:localhost:compyny:Unittest");
 	applicationDescriptionSPtr->productUri().value("urn:company:Unittest");
 	applicationDescriptionSPtr->applicationName().text("company Unittest");
 	applicationDescriptionSPtr->applicationType().enumeration(ApplicationType::EnumServer);
 	applicationDescriptionSPtr->discoveryUrls().resize(1);
-	opcUaStringSPtr = constructSPtr<OpcUaString>();
+	opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	applicationDescriptionSPtr->discoveryUrls().set(0, opcUaStringSPtr);
 	
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	findServersResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -244,11 +244,11 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_FindServersResponse_Encoding_DefaultBinary);
 
 	// decode 
-	findServersResponseSPtr = constructSPtr<FindServersResponse>();
+	findServersResponseSPtr = boost::make_shared<FindServersResponse>();
 	findServersResponseSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(findServersResponseSPtr->servers()->size() == 1);
-	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
+	applicationDescriptionSPtr = boost::make_shared<ApplicationDescription>();
 	findServersResponseSPtr->servers()->get(applicationDescriptionSPtr);
 	BOOST_REQUIRE(applicationDescriptionSPtr->applicationUri().value() == "urn:localhost:compyny:Unittest");
 	BOOST_REQUIRE(applicationDescriptionSPtr->productUri().value() == "urn:company:Unittest");

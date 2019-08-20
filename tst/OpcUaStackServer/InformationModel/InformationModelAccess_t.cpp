@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getRootNode)
 	bool success;
 	OpcUaNodeId nodeId;
 	BaseNodeClass::SPtr baseNodeClass;
-	InformationModel::SPtr informationModel = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel = boost::make_shared<InformationModel>();
 	InformationModelAccess informationModelAccess;
 	informationModelAccess.informationModel(informationModel);
 
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getRootNode)
 	BOOST_REQUIRE(success == false);
 
 	// add root node to information model
-	baseNodeClass = constructSPtr<ObjectNodeClass>();
+	baseNodeClass = boost::make_shared<ObjectNodeClass>();
 	nodeId.set(OpcUaId_RootFolder);
 	baseNodeClass->setNodeId(nodeId);
 	informationModel->insert(baseNodeClass);
@@ -51,18 +51,18 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getChild)
 	BaseNodeClass::SPtr typeNodeClass;
 	BaseNodeClass::SPtr baseNodeClass;
 	BaseNodeClass::Vec baseNodeClassVec;
-	InformationModel::SPtr informationModel = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel = boost::make_shared<InformationModel>();
 	InformationModelAccess informationModelAccess;
 	informationModelAccess.informationModel(informationModel);
 
 	// add root node to information model
-	rootNodeClass = constructSPtr<ObjectNodeClass>();
+	rootNodeClass = boost::make_shared<ObjectNodeClass>();
 	nodeId.set(OpcUaId_RootFolder);
 	rootNodeClass->setNodeId(nodeId);
 	informationModel->insert(rootNodeClass);
 
 	// add variable type node to information model
-	typeNodeClass = constructSPtr<VariableTypeNodeClass>();
+	typeNodeClass = boost::make_shared<VariableTypeNodeClass>();
 	nodeId.set("MyType");
 	typeNodeClass->setNodeId(nodeId);
 	informationModel->insert(typeNodeClass);
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getChild)
 	for (uint32_t idx=0; idx<10; idx++) {
 		std::stringstream nodeName;
 		nodeName << "MyVariable" << idx;
-		baseNodeClass = constructSPtr<VariableNodeClass>();
+		baseNodeClass = boost::make_shared<VariableNodeClass>();
 		nodeId.set(nodeName.str());
 		baseNodeClass->setNodeId(nodeId);
 		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, *typeNodeClass->getNodeId());
@@ -128,18 +128,18 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getParent)
 	BaseNodeClass::SPtr typeNodeClass;
 	BaseNodeClass::SPtr baseNodeClass;
 	BaseNodeClass::Vec baseNodeClassVec;
-	InformationModel::SPtr informationModel = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel = boost::make_shared<InformationModel>();
 	InformationModelAccess informationModelAccess;
 	informationModelAccess.informationModel(informationModel);
 
 	// add root node to information model
-	rootNodeClass = constructSPtr<ObjectNodeClass>();
+	rootNodeClass = boost::make_shared<ObjectNodeClass>();
 	nodeId.set(OpcUaId_RootFolder);
 	rootNodeClass->setNodeId(nodeId);
 	informationModel->insert(rootNodeClass);
 
 	// add variable type node to information model
-	typeNodeClass = constructSPtr<VariableTypeNodeClass>();
+	typeNodeClass = boost::make_shared<VariableTypeNodeClass>();
 	nodeId.set("MyType");
 	typeNodeClass->setNodeId(nodeId);
 	informationModel->insert(typeNodeClass);
@@ -148,7 +148,7 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getParent)
 	for (uint32_t idx=0; idx<10; idx++) {
 		std::stringstream nodeName;
 		nodeName << "MyVariable" << idx;
-		baseNodeClass = constructSPtr<VariableNodeClass>();
+		baseNodeClass = boost::make_shared<VariableNodeClass>();
 		nodeId.set(nodeName.str());
 		baseNodeClass->setNodeId(nodeId);
 		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, *typeNodeClass->getNodeId());
@@ -183,12 +183,12 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getSurrogateParentNode)
 	std::vector<OpcUaNodeId> referenceTypeNodeIdVec;
 	ReferenceItem::Vec referenceItemVec;
 
-	InformationModel::SPtr informationModel = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel = boost::make_shared<InformationModel>();
 	InformationModelAccess informationModelAccess;
 	informationModelAccess.informationModel(informationModel);
 
 	// add objects node to information model
-	objectsNodeClass = constructSPtr<ObjectNodeClass>();
+	objectsNodeClass = boost::make_shared<ObjectNodeClass>();
 	nodeId.set(OpcUaId_ObjectsFolder);
 	objectsNodeClass->setNodeId(nodeId);
 	informationModel->insert(objectsNodeClass);
@@ -219,26 +219,26 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getType)
 	BaseNodeClass::SPtr objectTypeNodeClass;
 	BaseNodeClass::SPtr baseObjectTypeNodeClass;
 
-	InformationModel::SPtr informationModel = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel = boost::make_shared<InformationModel>();
 	InformationModelAccess informationModelAccess;
 	informationModelAccess.informationModel(informationModel);
 
 
 	// add base object type node
-	baseObjectTypeNodeClass = constructSPtr<ObjectNodeClass>();
+	baseObjectTypeNodeClass = boost::make_shared<ObjectNodeClass>();
 	subTypeNodeId.set(OpcUaId_BaseObjectType);
 	baseObjectTypeNodeClass->setNodeId(subTypeNodeId);
 	informationModel->insert(baseObjectTypeNodeClass);
 
 	// add object type node
-	objectTypeNodeClass = constructSPtr<ObjectNodeClass>();
+	objectTypeNodeClass = boost::make_shared<ObjectNodeClass>();
 	typeNodeId.set(OpcUaId_ObjectTypesFolder);
 	objectTypeNodeClass->setNodeId(typeNodeId);
 	objectTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, subTypeNodeId);
 	informationModel->insert(objectTypeNodeClass);
 
 	// add objects node to information model
-	objectsNodeClass = constructSPtr<ObjectNodeClass>();
+	objectsNodeClass = boost::make_shared<ObjectNodeClass>();
 	nodeId.set(OpcUaId_ObjectsFolder);
 	objectsNodeClass->setNodeId(nodeId);
 	objectsNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
@@ -260,26 +260,26 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getSubType)
 	BaseNodeClass::SPtr objectTypeNodeClass;
 	BaseNodeClass::SPtr baseObjectTypeNodeClass;
 
-	InformationModel::SPtr informationModel = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel = boost::make_shared<InformationModel>();
 	InformationModelAccess informationModelAccess;
 	informationModelAccess.informationModel(informationModel);
 
 
 	// add base object type node
-	baseObjectTypeNodeClass = constructSPtr<ObjectNodeClass>();
+	baseObjectTypeNodeClass = boost::make_shared<ObjectNodeClass>();
 	subTypeNodeId.set(OpcUaId_BaseObjectType);
 	baseObjectTypeNodeClass->setNodeId(subTypeNodeId);
 	informationModel->insert(baseObjectTypeNodeClass);
 
 	// add object type node
-	objectTypeNodeClass = constructSPtr<ObjectNodeClass>();
+	objectTypeNodeClass = boost::make_shared<ObjectNodeClass>();
 	typeNodeId.set(OpcUaId_ObjectTypesFolder);
 	objectTypeNodeClass->setNodeId(typeNodeId);
 	objectTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, subTypeNodeId);
 	informationModel->insert(objectTypeNodeClass);
 
 	// add objects node to information model
-	objectsNodeClass = constructSPtr<ObjectNodeClass>();
+	objectsNodeClass = boost::make_shared<ObjectNodeClass>();
 	nodeId.set(OpcUaId_ObjectsFolder);
 	objectsNodeClass->setNodeId(nodeId);
 	objectsNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
@@ -300,37 +300,37 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_merge)
 	BaseNodeClass::SPtr objectsNodeClass;
 	BaseNodeClass::SPtr baseNodeClass;
 
-	InformationModel::SPtr informationModel1 = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel1 = boost::make_shared<InformationModel>();
 	InformationModelAccess informationModelAccess1;
 	informationModelAccess1.informationModel(informationModel1);
 
-	InformationModel::SPtr informationModel2 = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel2 = boost::make_shared<InformationModel>();
 	InformationModelAccess informationModelAccess2;
 	informationModelAccess2.informationModel(informationModel2);
 
 	// add object type node
-	baseNodeClass = constructSPtr<ObjectNodeClass>();
+	baseNodeClass = boost::make_shared<ObjectNodeClass>();
 	objectsNodeId.set(OpcUaId_ObjectTypesFolder);
 	baseNodeClass->setNodeId(objectsNodeId);
 	informationModel2->insert(baseNodeClass);
 
-	baseNodeClass = constructSPtr<ObjectNodeClass>();
+	baseNodeClass = boost::make_shared<ObjectNodeClass>();
 	objectsNodeId.set(OpcUaId_ObjectTypesFolder);
 	baseNodeClass->setNodeId(objectsNodeId);
 	informationModel1->insert(baseNodeClass);
 
-	objectsNodeClass = constructSPtr<ObjectNodeClass>();
+	objectsNodeClass = boost::make_shared<ObjectNodeClass>();
 	objectsNodeId.set(OpcUaId_ObjectsFolder);
 	objectsNodeClass->setNodeId(objectsNodeId);
 	informationModel2->insert(objectsNodeClass);
 
-	objectsNodeClass = constructSPtr<ObjectNodeClass>();
+	objectsNodeClass = boost::make_shared<ObjectNodeClass>();
 	objectsNodeId.set(OpcUaId_ObjectsFolder);
 	objectsNodeClass->setNodeId(objectsNodeId);
 	informationModel1->insert(objectsNodeClass);
 
 	// add variable type node to information model 1
-	baseNodeClass = constructSPtr<VariableTypeNodeClass>();
+	baseNodeClass = boost::make_shared<VariableTypeNodeClass>();
 	typeNodeId.set("MyType", 1);
 	baseNodeClass->setNodeId(typeNodeId);
 	baseNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, objectsNodeId);
@@ -340,7 +340,7 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_merge)
 	for (uint32_t idx=0; idx<20; idx++) {
 		std::stringstream nodeName;
 		nodeName << "MyVariable" << idx;
-		baseNodeClass = constructSPtr<VariableNodeClass>();
+		baseNodeClass = boost::make_shared<VariableNodeClass>();
 		nodeId.set(nodeName.str(), 1);
 		baseNodeClass->setNodeId(nodeId);
 		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
@@ -374,37 +374,37 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_merge_with_surrogate_parent)
 	BaseNodeClass::SPtr objectsNodeClass;
 	BaseNodeClass::SPtr baseNodeClass;
 
-	InformationModel::SPtr informationModel1 = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel1 = boost::make_shared<InformationModel>();
 	InformationModelAccess informationModelAccess1;
 	informationModelAccess1.informationModel(informationModel1);
 
-	InformationModel::SPtr informationModel2 = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModel2 = boost::make_shared<InformationModel>();
 	InformationModelAccess informationModelAccess2;
 	informationModelAccess2.informationModel(informationModel2);
 
 	// add object type node
-	baseNodeClass = constructSPtr<ObjectNodeClass>();
+	baseNodeClass = boost::make_shared<ObjectNodeClass>();
 	objectsNodeId.set(OpcUaId_ObjectTypesFolder);
 	baseNodeClass->setNodeId(objectsNodeId);
 	informationModel2->insert(baseNodeClass);
 
-	baseNodeClass = constructSPtr<ObjectNodeClass>();
+	baseNodeClass = boost::make_shared<ObjectNodeClass>();
 	objectsNodeId.set(OpcUaId_ObjectTypesFolder);
 	baseNodeClass->setNodeId(objectsNodeId);
 	informationModel1->insert(baseNodeClass);
 
-	objectsNodeClass = constructSPtr<ObjectNodeClass>();
+	objectsNodeClass = boost::make_shared<ObjectNodeClass>();
 	objectsNodeId.set(OpcUaId_ObjectsFolder);
 	objectsNodeClass->setNodeId(objectsNodeId);
 	informationModel2->insert(objectsNodeClass);
 
-	objectsNodeClass = constructSPtr<ObjectNodeClass>();
+	objectsNodeClass = boost::make_shared<ObjectNodeClass>();
 	objectsNodeId.set(OpcUaId_ObjectsFolder);
 	objectsNodeClass->setNodeId(objectsNodeId);
 	informationModel1->insert(objectsNodeClass);
 
 	// add variable type node to information model 1
-	baseNodeClass = constructSPtr<VariableTypeNodeClass>();
+	baseNodeClass = boost::make_shared<VariableTypeNodeClass>();
 	typeNodeId.set("MyType", 1);
 	baseNodeClass->setNodeId(typeNodeId);
 	baseNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, objectsNodeId);
@@ -414,7 +414,7 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_merge_with_surrogate_parent)
 	for (uint32_t idx=0; idx<20; idx++) {
 		std::stringstream nodeName;
 		nodeName << "MyVariable" << idx;
-		baseNodeClass = constructSPtr<VariableNodeClass>();
+		baseNodeClass = boost::make_shared<VariableNodeClass>();
 		nodeId.set(nodeName.str(), 1);
 		baseNodeClass->setNodeId(nodeId);
 		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
@@ -430,7 +430,7 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_merge_with_surrogate_parent)
 
 		std::stringstream nodeName;
 		nodeName << "MyVariableWithoutParent" << idx;
-		baseNodeClass = constructSPtr<VariableNodeClass>();
+		baseNodeClass = boost::make_shared<VariableNodeClass>();
 		nodeId.set(nodeName.str(), 1);
 		baseNodeClass->setNodeId(nodeId);
 		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);

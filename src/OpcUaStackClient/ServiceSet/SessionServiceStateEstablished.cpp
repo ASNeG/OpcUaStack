@@ -269,7 +269,7 @@ namespace OpcUaStackClient
 			}
 		}
 
-		auto secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
+		auto secureChannelTransaction = boost::make_shared<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_ = serviceTransaction->nodeTypeRequest();
 		secureChannelTransaction->requestId_ = requestId;
 		std::iostream ios(&secureChannelTransaction->os_);

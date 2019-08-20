@@ -204,13 +204,13 @@ namespace OpcUaStackClient
 	AttributeServiceNode::asyncReadNode(void)
 	{
 		// create read transaction
-		auto trx = constructSPtr<ServiceTransactionRead>();
+		auto trx = boost::make_shared<ServiceTransactionRead>();
 		auto req = trx->request();
 
 		// create read request
 		req->readValueIdArray()->resize(attributeIdVec_.size());
 		for (auto it = attributeIdVec_.begin(); it != attributeIdVec_.end(); it++) {
-			ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
+			ReadValueId::SPtr readValueIdSPtr = boost::make_shared<ReadValueId>();
 			readValueIdSPtr->nodeId()->copyFrom(nodeId_);
 			readValueIdSPtr->attributeId((OpcUaInt32)*it);
 			readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);

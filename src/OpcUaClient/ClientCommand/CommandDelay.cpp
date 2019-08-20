@@ -18,7 +18,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandDelay.h"
 
 using namespace OpcUaStackCore;
@@ -39,7 +39,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandDelay::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandDelay>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandDelay>();
 		return commandBase;
 	}
 

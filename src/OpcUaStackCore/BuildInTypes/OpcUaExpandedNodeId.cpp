@@ -465,7 +465,7 @@ namespace OpcUaStackCore
 			posEnd = nodeIdString.length();
 
 			try {
-				OpcUaString::SPtr value = constructSPtr<OpcUaString>();
+				OpcUaString::SPtr value = boost::make_shared<OpcUaString>();
 				*value = nodeIdString.substr(posBegin, posEnd-posBegin);
 				nodeId(value);
 			} catch (boost::bad_lexical_cast&)
@@ -485,7 +485,7 @@ namespace OpcUaStackCore
 			posEnd = nodeIdString.length();
 
 			try {
-				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+				OpcUaGuid::SPtr value = boost::make_shared<OpcUaGuid>();
 				*value = nodeIdString.substr(posBegin, posEnd-posBegin);
 				nodeId(value);
 			} catch (boost::bad_lexical_cast&)

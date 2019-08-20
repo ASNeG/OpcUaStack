@@ -16,16 +16,16 @@ namespace OpcUaStackServer
     
     SessionSecurityDiagnosticsType::SessionSecurityDiagnosticsType(void)
     : VariableBase()
-    , authenticationMechanism_Variable_(constructSPtr<ServerVariable>("AuthenticationMechanism_Variable"))
-    , clientCertificate_Variable_(constructSPtr<ServerVariable>("ClientCertificate_Variable"))
-    , clientUserIdHistory_Variable_(constructSPtr<ServerVariable>("ClientUserIdHistory_Variable"))
-    , clientUserIdOfSession_Variable_(constructSPtr<ServerVariable>("ClientUserIdOfSession_Variable"))
-    , encoding_Variable_(constructSPtr<ServerVariable>("Encoding_Variable"))
-    , securityMode_Variable_(constructSPtr<ServerVariable>("SecurityMode_Variable"))
-    , securityPolicyUri_Variable_(constructSPtr<ServerVariable>("SecurityPolicyUri_Variable"))
-    , sessionId_Variable_(constructSPtr<ServerVariable>("SessionId_Variable"))
-    , transportProtocol_Variable_(constructSPtr<ServerVariable>("TransportProtocol_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , authenticationMechanism_Variable_(boost::make_shared<ServerVariable>("AuthenticationMechanism_Variable"))
+    , clientCertificate_Variable_(boost::make_shared<ServerVariable>("ClientCertificate_Variable"))
+    , clientUserIdHistory_Variable_(boost::make_shared<ServerVariable>("ClientUserIdHistory_Variable"))
+    , clientUserIdOfSession_Variable_(boost::make_shared<ServerVariable>("ClientUserIdOfSession_Variable"))
+    , encoding_Variable_(boost::make_shared<ServerVariable>("Encoding_Variable"))
+    , securityMode_Variable_(boost::make_shared<ServerVariable>("SecurityMode_Variable"))
+    , securityPolicyUri_Variable_(boost::make_shared<ServerVariable>("SecurityPolicyUri_Variable"))
+    , sessionId_Variable_(boost::make_shared<ServerVariable>("SessionId_Variable"))
+    , transportProtocol_Variable_(boost::make_shared<ServerVariable>("TransportProtocol_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2244);
@@ -43,16 +43,16 @@ namespace OpcUaStackServer
     
     SessionSecurityDiagnosticsType::SessionSecurityDiagnosticsType(const SessionSecurityDiagnosticsType& value)
     : VariableBase()
-    , authenticationMechanism_Variable_(constructSPtr<ServerVariable>("AuthenticationMechanism_Variable"))
-    , clientCertificate_Variable_(constructSPtr<ServerVariable>("ClientCertificate_Variable"))
-    , clientUserIdHistory_Variable_(constructSPtr<ServerVariable>("ClientUserIdHistory_Variable"))
-    , clientUserIdOfSession_Variable_(constructSPtr<ServerVariable>("ClientUserIdOfSession_Variable"))
-    , encoding_Variable_(constructSPtr<ServerVariable>("Encoding_Variable"))
-    , securityMode_Variable_(constructSPtr<ServerVariable>("SecurityMode_Variable"))
-    , securityPolicyUri_Variable_(constructSPtr<ServerVariable>("SecurityPolicyUri_Variable"))
-    , sessionId_Variable_(constructSPtr<ServerVariable>("SessionId_Variable"))
-    , transportProtocol_Variable_(constructSPtr<ServerVariable>("TransportProtocol_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , authenticationMechanism_Variable_(boost::make_shared<ServerVariable>("AuthenticationMechanism_Variable"))
+    , clientCertificate_Variable_(boost::make_shared<ServerVariable>("ClientCertificate_Variable"))
+    , clientUserIdHistory_Variable_(boost::make_shared<ServerVariable>("ClientUserIdHistory_Variable"))
+    , clientUserIdOfSession_Variable_(boost::make_shared<ServerVariable>("ClientUserIdOfSession_Variable"))
+    , encoding_Variable_(boost::make_shared<ServerVariable>("Encoding_Variable"))
+    , securityMode_Variable_(boost::make_shared<ServerVariable>("SecurityMode_Variable"))
+    , securityPolicyUri_Variable_(boost::make_shared<ServerVariable>("SecurityPolicyUri_Variable"))
+    , sessionId_Variable_(boost::make_shared<ServerVariable>("SessionId_Variable"))
+    , transportProtocol_Variable_(boost::make_shared<ServerVariable>("TransportProtocol_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2244);

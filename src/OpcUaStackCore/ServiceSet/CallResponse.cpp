@@ -30,9 +30,9 @@ namespace OpcUaStackCore
 
 	CallResponse::CallResponse(void)
 	: Object()
-	, responseHeaderSPtr_(constructSPtr<ResponseHeader>())
-	, callMethodResultArraySPtr_(constructSPtr<CallMethodResultArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, responseHeaderSPtr_(boost::make_shared<ResponseHeader>())
+	, callMethodResultArraySPtr_(boost::make_shared<CallMethodResultArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

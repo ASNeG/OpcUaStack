@@ -17,7 +17,7 @@
  */
 
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandDisconnect.h"
 
 using namespace OpcUaStackCore;
@@ -37,7 +37,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandDisconnect::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandDisconnect>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandDisconnect>();
 		return commandBase;
 	}
 

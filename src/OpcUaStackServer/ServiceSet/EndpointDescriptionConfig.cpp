@@ -57,7 +57,7 @@ namespace OpcUaStackServer
 		for (auto it = endpointDescriptionVec.begin(); it != endpointDescriptionVec.end(); it++) {
 		    Config* config = &*it; 
 
-			EndpointDescription::SPtr endpointDescription = constructSPtr<EndpointDescription>();
+			EndpointDescription::SPtr endpointDescription = boost::make_shared<EndpointDescription>();
 
 			// read endpoint url
 			if (config->getConfigParameter("EndpointUrl", stringValue) == false) {
@@ -133,7 +133,7 @@ namespace OpcUaStackServer
 			}
 			endpointDescription->server().discoveryUrls().resize(discoveryUrls.size());
 			for (std::vector<std::string>::iterator it = discoveryUrls.begin(); it != discoveryUrls.end(); it++) {
-				OpcUaString::SPtr url = constructSPtr<OpcUaString>();
+				OpcUaString::SPtr url = boost::make_shared<OpcUaString>();
 				*url = *it;
 				endpointDescription->server().discoveryUrls().push_back(url);
 			}
@@ -244,7 +244,7 @@ namespace OpcUaStackServer
 
 		std::vector<Config>::iterator it;
 		for (it = configVec.begin(); it != configVec.end(); it++) {
-			EndpointDescription::SPtr endpointDescriptionTmp = constructSPtr<EndpointDescription>();
+			EndpointDescription::SPtr endpointDescriptionTmp = boost::make_shared<EndpointDescription>();
 			endpointDescription->copyTo(*endpointDescriptionTmp);
 			std::string stringValue;
 
@@ -343,7 +343,7 @@ namespace OpcUaStackServer
 		UserTokenPolicyArray& userTokenPolicyArray = endpointDescription->userIdentityTokens();
 		userTokenPolicyArray.resize(userTokenPolicyVec.size());
 		for (it = userTokenPolicyVec.begin(); it != userTokenPolicyVec.end(); it++) {
-			UserTokenPolicy::SPtr userTokenPolicy = constructSPtr<UserTokenPolicy>();
+			UserTokenPolicy::SPtr userTokenPolicy = boost::make_shared<UserTokenPolicy>();
 			userTokenPolicyArray.set(idx, userTokenPolicy);
 			idx++;
 

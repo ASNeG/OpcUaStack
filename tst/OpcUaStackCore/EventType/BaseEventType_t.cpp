@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_setter_error)
 	BaseEventType baseEventType;
 
 	// invalid type
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaString("String"));
 	BOOST_REQUIRE(baseEventType.eventId(value) == false);
 }
@@ -32,39 +32,39 @@ BOOST_AUTO_TEST_CASE(BaseEventType_setter_ok)
 	OpcUaVariant::SPtr value;
 	BaseEventType baseEventType;
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaByteString("ByteString"));
 	BOOST_REQUIRE(baseEventType.eventId(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaNodeId(1));
 	BOOST_REQUIRE(baseEventType.eventType(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaString("String"));
 	BOOST_REQUIRE(baseEventType.sourceName(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaDateTime(now));
 	BOOST_REQUIRE(baseEventType.localTime(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaLocalizedText("de", "text"));
 	BOOST_REQUIRE(baseEventType.message(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaDateTime(now));
 	BOOST_REQUIRE(baseEventType.receiveTime(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue((OpcUaUInt16)1);
 	BOOST_REQUIRE(baseEventType.severity(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaNodeId(2));
 	BOOST_REQUIRE(baseEventType.sourceNode(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaDateTime(now));
 	BOOST_REQUIRE(baseEventType.time(value) == true);
 }
@@ -75,39 +75,39 @@ BOOST_AUTO_TEST_CASE(BaseEventType_getter_ok)
 	OpcUaVariant::SPtr value;
 	BaseEventType baseEventType;
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaByteString("ByteString"));
 	BOOST_REQUIRE(baseEventType.eventId(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaNodeId(1));
 	BOOST_REQUIRE(baseEventType.eventType(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaString("String"));
 	BOOST_REQUIRE(baseEventType.sourceName(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaDateTime(now));
 	BOOST_REQUIRE(baseEventType.localTime(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaLocalizedText("de", "text"));
 	BOOST_REQUIRE(baseEventType.message(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaDateTime(now));
 	BOOST_REQUIRE(baseEventType.receiveTime(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue((OpcUaUInt16)1);
 	BOOST_REQUIRE(baseEventType.severity(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaNodeId(2));
 	BOOST_REQUIRE(baseEventType.sourceNode(value) == true);
 
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaDateTime(now));
 	BOOST_REQUIRE(baseEventType.time(value) == true);
 
@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_typeId_unknwon)
 	OpcUaNodeId eventType("Unknown");
 	bool eventFound = false;
 	std::list<OpcUaQualifiedName::SPtr> browseNameList;
-	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Unknown"));
+	browseNameList.push_back(boost::make_shared<OpcUaQualifiedName>("Unknown"));
 	bool error = false;
 	OpcUaVariant::SPtr variant;
 	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::BadEventTypeNotExist);
@@ -257,7 +257,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_browsName_unknwon)
 	OpcUaNodeId eventType((OpcUaUInt32)2041);
 	bool eventFound = false;
 	std::list<OpcUaQualifiedName::SPtr> browseNameList;
-	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Unknown"));
+	browseNameList.push_back(boost::make_shared<OpcUaQualifiedName>("Unknown"));
 	bool error = false;
 	OpcUaVariant::SPtr variant;
 	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::BadValueNotExist);
@@ -286,7 +286,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_variant_not_exist)
 	OpcUaNodeId eventType((OpcUaUInt32)2041);
 	bool eventFound = false;
 	std::list<OpcUaQualifiedName::SPtr> browseNameList;
-	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("EventId"));
+	browseNameList.push_back(boost::make_shared<OpcUaQualifiedName>("EventId"));
 	bool error = false;
 	OpcUaVariant::SPtr variant;
 	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::BadValueNotExist);
@@ -302,7 +302,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_variant_success)
 	//
 	// set event id
 	//
-	value = constructSPtr<OpcUaVariant>();
+	value = boost::make_shared<OpcUaVariant>();
 	value->setValue(OpcUaByteString("ByteString"));
 	BOOST_REQUIRE(baseEventType.eventId(value) == true);
 
@@ -324,7 +324,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_variant_success)
 	OpcUaNodeId eventType((OpcUaUInt32)2041);
 	bool eventFound = false;
 	std::list<OpcUaQualifiedName::SPtr> browseNameList;
-	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("EventId"));
+	browseNameList.push_back(boost::make_shared<OpcUaQualifiedName>("EventId"));
 	bool error = false;
 	OpcUaVariant::SPtr variant;
 	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);

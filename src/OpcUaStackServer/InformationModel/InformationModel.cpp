@@ -135,7 +135,7 @@ namespace OpcUaStackServer
 						continue;
 					}
 
-					ReferenceItem::SPtr referenceItemForward = constructSPtr<ReferenceItem>();
+					ReferenceItem::SPtr referenceItemForward = boost::make_shared<ReferenceItem>();
 					referenceItemForward->isForward_ = false;
 					baseNodeClass->nodeId().data().copyTo(referenceItemForward->nodeId_);
 
@@ -150,7 +150,7 @@ namespace OpcUaStackServer
 						continue;
 					}
 
-					ReferenceItem::SPtr referenceItemForward = constructSPtr<ReferenceItem>();
+					ReferenceItem::SPtr referenceItemForward = boost::make_shared<ReferenceItem>();
 					referenceItemForward->isForward_ = true;
 					baseNodeClass->nodeId().data().copyTo(referenceItemForward->nodeId_);
 

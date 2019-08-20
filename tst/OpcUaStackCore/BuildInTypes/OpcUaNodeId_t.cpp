@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaString_SPtr)
 	std::stringstream ss;
 	OpcUaNodeId value1, value2;
 	
-	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
+	OpcUaString::SPtr opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("Dies ist ein String");
 
 	value1.namespaceIndex(123);
@@ -163,7 +163,7 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaString_SPtr_ptree)
 	OpcUaNodeId value1, value2;
 	Xmlns xmlns;
 
-	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
+	OpcUaString::SPtr opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("Dies ist ein String");
 
 	value1.namespaceIndex(123);
@@ -183,7 +183,7 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaGuid_SPtr)
 	std::stringstream ss;
 	OpcUaNodeId value1, value2;
 	
-	OpcUaGuid::SPtr opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	OpcUaGuid::SPtr opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
 	value1.namespaceIndex(123);
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaGuid_SPtr_ptree)
 	OpcUaNodeId value1, value2;
 	Xmlns xmlns;
 
-	OpcUaGuid::SPtr opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	OpcUaGuid::SPtr opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
 	value1.namespaceIndex(123);
@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaByteString_SPtr)
 	std::stringstream ss;
 	OpcUaNodeId value1, value2;
 	
-	OpcUaByteString::SPtr opcUaByteStringSPtr = constructSPtr<OpcUaByteString>();
+	OpcUaByteString::SPtr opcUaByteStringSPtr = boost::make_shared<OpcUaByteString>();
 	opcUaByteStringSPtr->value("0123456789", 10);
 
 	value1.namespaceIndex(123);
@@ -262,7 +262,7 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_copyTo2)
 	OpcUaNodeId opcUaNodeId1, opcUaNodeId2;
 	OpcUaString::SPtr opcUaString1, opcUaString2;
 
-	opcUaString1 = constructSPtr<OpcUaString>();
+	opcUaString1 = boost::make_shared<OpcUaString>();
 	opcUaString1->value("ABC");
 
 	opcUaNodeId1.namespaceIndex(4711);
@@ -306,21 +306,21 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_map_OpcUaUInt32)
 	opcUaNodeIdMap.insert(std::make_pair(opcUaNodeId1, 34567));
 	
 	// insert: opcUaString
-	opcUaString1 = constructSPtr<OpcUaString>();
+	opcUaString1 = boost::make_shared<OpcUaString>();
 	opcUaString1->value("ABC");
 	opcUaNodeId1.namespaceIndex(4712);
 	opcUaNodeId1.nodeId(opcUaString1);
 	opcUaNodeIdMap.insert(std::make_pair(opcUaNodeId1, 45678));
 
 	// insert: opcUaByteString
-	opcUaByteString1 = constructSPtr<OpcUaByteString>();
+	opcUaByteString1 = boost::make_shared<OpcUaByteString>();
 	opcUaByteString1->value("0123456789", 10);
 	opcUaNodeId1.namespaceIndex(4713);
 	opcUaNodeId1.nodeId(opcUaByteString1);
 	opcUaNodeIdMap.insert(std::make_pair(opcUaNodeId1, 5678));
 
 	// insert: opcUaGuid
-	opcUaGuid1 = constructSPtr<OpcUaGuid>();
+	opcUaGuid1 = boost::make_shared<OpcUaGuid>();
 	*opcUaGuid1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 	opcUaNodeId1.namespaceIndex(4714);
 	opcUaNodeId1.nodeId(opcUaGuid1);
@@ -337,7 +337,7 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_map_OpcUaUInt32)
 	BOOST_REQUIRE(it->second == 34567);
 
 	// find: opcUaString
-	opcUaString2 = constructSPtr<OpcUaString>();
+	opcUaString2 = boost::make_shared<OpcUaString>();
 	opcUaString2->value("ABC");
 	opcUaNodeId2.namespaceIndex(4712);
 	opcUaNodeId2.nodeId(opcUaString1);
@@ -348,7 +348,7 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_map_OpcUaUInt32)
 	BOOST_REQUIRE(it->second == 45678);
 
 	// find: opcUaByteString
-	opcUaByteString2 = constructSPtr<OpcUaByteString>();
+	opcUaByteString2 = boost::make_shared<OpcUaByteString>();
 	opcUaByteString2->value("0123456789", 10);
 	opcUaNodeId2.namespaceIndex(4713);
 	opcUaNodeId2.nodeId(opcUaByteString2);
@@ -361,7 +361,7 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_map_OpcUaUInt32)
 	BOOST_REQUIRE(it->second == 5678);
 
 	// find: opcUaGuid
-	opcUaGuid2 = constructSPtr<OpcUaGuid>();
+	opcUaGuid2 = boost::make_shared<OpcUaGuid>();
 	*opcUaGuid2 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 	opcUaNodeId2.namespaceIndex(4714);
 	opcUaNodeId2.nodeId(opcUaGuid2);

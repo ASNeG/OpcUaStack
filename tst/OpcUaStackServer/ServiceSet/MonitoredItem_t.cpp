@@ -16,10 +16,10 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_)
 
 BOOST_AUTO_TEST_CASE(MonitoredItem_minimalSamplingInterval)
 {
-    MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+    MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = boost::make_shared<MonitoredItemCreateRequest>();
     monitoredItemCreateRequest->requestedParameters().samplingInterval(100);
 
-    BaseNodeClass::SPtr valueNode = constructSPtr<VariableNodeClass>();
+    BaseNodeClass::SPtr valueNode = boost::make_shared<VariableNodeClass>();
 
     OpcUaDouble minValue = 200;
     valueNode->setMinimumSamplingInterval(minValue);
@@ -32,10 +32,10 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_minimalSamplingInterval)
 
 BOOST_AUTO_TEST_CASE(MonitoredItem_minimalSamplingIntervalNull)
 {
-    MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+    MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = boost::make_shared<MonitoredItemCreateRequest>();
     monitoredItemCreateRequest->requestedParameters().samplingInterval(100);
 
-    BaseNodeClass::SPtr valueNode = constructSPtr<VariableNodeClass>();
+    BaseNodeClass::SPtr valueNode = boost::make_shared<VariableNodeClass>();
 
     MonitorItem item;
     item.receive(valueNode, monitoredItemCreateRequest);
@@ -45,10 +45,10 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_minimalSamplingIntervalNull)
 
 BOOST_AUTO_TEST_CASE(MonitoredItem_minimalSamplingIntervalNotExist)
 {
-    MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+    MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = boost::make_shared<MonitoredItemCreateRequest>();
     monitoredItemCreateRequest->requestedParameters().samplingInterval(100);
 
-    BaseNodeClass::SPtr valueNode = constructSPtr<ObjectNodeClass>();
+    BaseNodeClass::SPtr valueNode = boost::make_shared<ObjectNodeClass>();
 
     MonitorItem item;
     item.receive(valueNode, monitoredItemCreateRequest);

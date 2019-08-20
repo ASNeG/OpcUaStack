@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	BrowsePathTarget::BrowsePathTarget(void)
 	: Object()
-	, targetIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
+	, targetIdSPtr_(boost::make_shared<OpcUaExpandedNodeId>())
 	, remainingPathIndex_()
 	{
 	}

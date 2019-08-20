@@ -61,7 +61,7 @@ namespace OpcUaStackServer
 	BaseNodeClass::SPtr
 	DataTypeNodeClass::clone(void)
 	{
-		DataTypeNodeClass::SPtr dataTypeNodeClass = constructSPtr<DataTypeNodeClass>();
+		DataTypeNodeClass::SPtr dataTypeNodeClass = boost::make_shared<DataTypeNodeClass>();
 		copyTo(dataTypeNodeClass);
 		return dataTypeNodeClass;
 	}

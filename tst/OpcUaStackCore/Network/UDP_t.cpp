@@ -1,6 +1,7 @@
 #include "unittest.h"
 
 #include <iostream>
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Network/UDPClient.h"
 #include "OpcUaStackCore/Network/UDPServer.h"
 #include "OpcUaStackCore/Network/UDPTestHandler.h"
@@ -20,7 +21,7 @@ BOOST_AUTO_TEST_CASE(UDP_)
 
 BOOST_AUTO_TEST_CASE(UDP_construct_destruct)
 {
-	IOThread::SPtr ioThread = constructSPtr<IOThread>();
+	IOThread::SPtr ioThread = boost::make_shared<IOThread>();
 	ioThread->startup();
 
 	// create UDP server
@@ -50,7 +51,7 @@ BOOST_AUTO_TEST_CASE(UDP_construct_send_and_receive)
 	UDPTestHandler clientTestHandler;
 	UDPTestHandler serverTestHandler;
 
-	IOThread::SPtr ioThread = constructSPtr<IOThread>();
+	IOThread::SPtr ioThread = boost::make_shared<IOThread>();
 	ioThread->startup();
 
 	// create UDP server
@@ -138,7 +139,7 @@ BOOST_AUTO_TEST_CASE(UDP_construct_receive_buffer_is_lager)
 	UDPTestHandler clientTestHandler;
 	UDPTestHandler serverTestHandler;
 
-	IOThread::SPtr ioThread = constructSPtr<IOThread>();
+	IOThread::SPtr ioThread = boost::make_shared<IOThread>();
 	ioThread->startup();
 
 	// create UDP server
@@ -197,7 +198,7 @@ BOOST_AUTO_TEST_CASE(UDP_construct_receive_buffer_is_smaller)
 	UDPTestHandler clientTestHandler;
 	UDPTestHandler serverTestHandler;
 
-	IOThread::SPtr ioThread = constructSPtr<IOThread>();
+	IOThread::SPtr ioThread = boost::make_shared<IOThread>();
 	ioThread->startup();
 
 	// create UDP server

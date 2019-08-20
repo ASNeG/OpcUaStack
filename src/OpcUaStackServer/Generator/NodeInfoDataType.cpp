@@ -87,7 +87,7 @@ namespace OpcUaStackServer
 			structureDefinition_->fields()->get(idx, structureField);
 
 
-			DataTypeField::SPtr dataTypeField = constructSPtr<DataTypeField>();
+			DataTypeField::SPtr dataTypeField = boost::make_shared<DataTypeField>();
 			OpcUaNodeId dataTypeNodeId = structureField->dataType();
 
 			// added name

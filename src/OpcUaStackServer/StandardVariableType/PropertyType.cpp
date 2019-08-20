@@ -19,7 +19,7 @@ namespace OpcUaStackServer
      */
     PropertyType::PropertyType(void)
     : VariableBase()
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)68);
@@ -31,7 +31,7 @@ namespace OpcUaStackServer
      */
     PropertyType::PropertyType(const PropertyType& value)
     : VariableBase()
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)68);

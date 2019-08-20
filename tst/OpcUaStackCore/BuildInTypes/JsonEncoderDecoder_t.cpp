@@ -494,7 +494,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_DiagnosticInfo_nested)
 	OpcUaDiagnosticInfo value1, value2;
 	OpcUaDiagnosticInfo::SPtr nested1, nested2;
 
-	nested1 = constructSPtr<OpcUaDiagnosticInfo>();
+	nested1 = boost::make_shared<OpcUaDiagnosticInfo>();
 	nested1->setSymbolicId(111);
 	nested1->setNamespaceUri(111);
 	nested1->setAdditionalInfo(OpcUaString("AdditionalInfo111"));
@@ -713,7 +713,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_String)
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
-	OpcUaString::SPtr string1 = constructSPtr<OpcUaString>();
+	OpcUaString::SPtr string1 = boost::make_shared<OpcUaString>();
 	string1->value("Das ist ein String xxxx");
 	value1.variant(string1);
 	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantString") == true);
@@ -752,7 +752,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ByteString)
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
-	OpcUaByteString::SPtr byteString1 = constructSPtr<OpcUaByteString>();
+	OpcUaByteString::SPtr byteString1 = boost::make_shared<OpcUaByteString>();
 	byteString1->value("Das ist ein ByteString xxxx");
 	value1.variant(byteString1);
 	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantByteString") == true);
@@ -772,7 +772,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Guid)
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
-	OpcUaGuid::SPtr guid1 = constructSPtr<OpcUaGuid>();
+	OpcUaGuid::SPtr guid1 = boost::make_shared<OpcUaGuid>();
 	*guid1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 	value1.variant(guid1);
 	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantGuid") == true);
@@ -793,7 +793,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_NodeId)
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
-	OpcUaNodeId::SPtr nodeId1 = constructSPtr<OpcUaNodeId>();
+	OpcUaNodeId::SPtr nodeId1 = boost::make_shared<OpcUaNodeId>();
 	nodeId1->set(4711,4712);
 	value1.variant(nodeId1);
 	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantNodeId") == true);
@@ -813,7 +813,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ExpandedNodeId)
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
-	OpcUaExpandedNodeId::SPtr expandedNodeId1 = constructSPtr<OpcUaExpandedNodeId>();
+	OpcUaExpandedNodeId::SPtr expandedNodeId1 = boost::make_shared<OpcUaExpandedNodeId>();
 	expandedNodeId1->set(4711, 4712);
 	expandedNodeId1->serverIndex(4713);
 	value1.variant(expandedNodeId1);
@@ -835,7 +835,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_QualifiedName)
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
-	OpcUaQualifiedName::SPtr qualifiedName1 = constructSPtr<OpcUaQualifiedName>();
+	OpcUaQualifiedName::SPtr qualifiedName1 = boost::make_shared<OpcUaQualifiedName>();
 	qualifiedName1->set("Name", 4712);
 	value1.variant(qualifiedName1);
 	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantQulifiedName") == true);
@@ -855,7 +855,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_LocalizedText)
 	ConfigJson json;
 	OpcUaVariant value1, value2;
 
-	OpcUaLocalizedText::SPtr localizedText1 = constructSPtr<OpcUaLocalizedText>();
+	OpcUaLocalizedText::SPtr localizedText1 = boost::make_shared<OpcUaLocalizedText>();
 	localizedText1->set("de", "Name");
 	value1.variant(localizedText1);
 	BOOST_REQUIRE(value1.jsonEncode(pt, "OpcUaVariantLocalizedText") == true);
@@ -880,7 +880,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_ExtensionObject)
 	OpcUaVariant value1, value2;
 	Argument::SPtr argument1, argument2;
 
-	OpcUaExtensionObject::SPtr extentionObject1 = constructSPtr<OpcUaExtensionObject>();
+	OpcUaExtensionObject::SPtr extentionObject1 = boost::make_shared<OpcUaExtensionObject>();
 	argument1 = extentionObject1->parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
 	argument1->name().value("ArgumentName");
 	argument1->dataType().set("NodeName", 23);
@@ -914,7 +914,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_DataValue)
 	OpcUaDataValue::SPtr dataValue1, dataValue2;
 	OpcUaVariant value1, value2;
 
-	dataValue1 = constructSPtr<OpcUaDataValue>();
+	dataValue1 = boost::make_shared<OpcUaDataValue>();
 	dataValue1->variant()->set((OpcUaInt32)12345);
 	dataValue1->statusCode(BadNoData);
 	dataValue1->sourceTimestamp(OpcUaDateTime(now));
@@ -945,12 +945,12 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_DiagnosticInfo)
 	OpcUaDiagnosticInfo::SPtr nested1, nested2;
 	OpcUaVariant value1, value2;
 
-	nested1 = constructSPtr<OpcUaDiagnosticInfo>();
+	nested1 = boost::make_shared<OpcUaDiagnosticInfo>();
 	nested1->setSymbolicId(111);
 	nested1->setNamespaceUri(111);
 	nested1->setAdditionalInfo(OpcUaString("AdditionalInfo111"));
 
-	diagnosticInfo1 = constructSPtr<OpcUaDiagnosticInfo>();
+	diagnosticInfo1 = boost::make_shared<OpcUaDiagnosticInfo>();
 	diagnosticInfo1->setSymbolicId(123);
 	diagnosticInfo1->setNamespaceUri(456);
 	diagnosticInfo1->setAdditionalInfo(OpcUaString("AdditionalInfo"));
@@ -1233,7 +1233,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_String)
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		OpcUaString::SPtr string = constructSPtr<OpcUaString>();
+		OpcUaString::SPtr string = boost::make_shared<OpcUaString>();
 		string->value("Das ist ein ByteString");
 		value1.pushBack(string);
 	}
@@ -1256,7 +1256,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_ByteString)
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>();
+		OpcUaByteString::SPtr byteString = boost::make_shared<OpcUaByteString>();
 		byteString->value("Das ist ein ByteString");
 		value1.pushBack(byteString);
 	}
@@ -1279,7 +1279,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_Guid)
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		OpcUaGuid::SPtr guid = constructSPtr<OpcUaGuid>();
+		OpcUaGuid::SPtr guid = boost::make_shared<OpcUaGuid>();
 		*guid = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 		value1.pushBack(guid);
 	}
@@ -1302,7 +1302,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_NodeId)
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+		OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>();
 		nodeId->set(4711, 4712);
 		value1.pushBack(nodeId);
 	}
@@ -1325,7 +1325,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_ExpandedNodeId)
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		OpcUaExpandedNodeId::SPtr expandedNodeId = constructSPtr<OpcUaExpandedNodeId>();
+		OpcUaExpandedNodeId::SPtr expandedNodeId = boost::make_shared<OpcUaExpandedNodeId>();
 		expandedNodeId->set(4711, 4712);
 		expandedNodeId->serverIndex(4713);
 		value1.pushBack(expandedNodeId);
@@ -1338,7 +1338,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_ExpandedNodeId)
 
 	BOOST_REQUIRE(value2.jsonDecode(pt, "OpcUaVariantExpandedNodeIdArray") == true);
 	for (uint32_t idx=0; idx<10; idx++) {
-		OpcUaExpandedNodeId::SPtr expandedNodeId = constructSPtr<OpcUaExpandedNodeId>();
+		OpcUaExpandedNodeId::SPtr expandedNodeId = boost::make_shared<OpcUaExpandedNodeId>();
 		expandedNodeId->set(4711, 4712);
 		expandedNodeId->serverIndex(4713);
 
@@ -1353,7 +1353,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_QualifiedName)
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		OpcUaQualifiedName::SPtr qualifiedName = constructSPtr<OpcUaQualifiedName>();
+		OpcUaQualifiedName::SPtr qualifiedName = boost::make_shared<OpcUaQualifiedName>();
 		qualifiedName->set("String", 4711);
 		value1.pushBack(qualifiedName);
 	}
@@ -1376,7 +1376,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_LocalizedText)
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		OpcUaLocalizedText::SPtr localizedText = constructSPtr<OpcUaLocalizedText>();
+		OpcUaLocalizedText::SPtr localizedText = boost::make_shared<OpcUaLocalizedText>();
 		localizedText->set("de", "TextString");
 		value1.pushBack(localizedText);
 	}
@@ -1400,7 +1400,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_OpcUaVariant_Array_ExtensionObject)
 
 	for (uint32_t idx=0; idx<10; idx++) {
 		Argument::SPtr argument;
-		OpcUaExtensionObject::SPtr extentionObject = constructSPtr<OpcUaExtensionObject>();
+		OpcUaExtensionObject::SPtr extentionObject = boost::make_shared<OpcUaExtensionObject>();
 		argument = extentionObject->parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
 		argument->name().value("ArgumentName");
 		argument->dataType().set("NodeName", 23);
@@ -1439,7 +1439,7 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_Array_DataValue)
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		dataValue1 = constructSPtr<OpcUaDataValue>();
+		dataValue1 = boost::make_shared<OpcUaDataValue>();
 		dataValue1->variant()->set((OpcUaInt32)12345);
 		dataValue1->statusCode(BadNoData);
 		dataValue1->sourceTimestamp(OpcUaDateTime(now));
@@ -1474,12 +1474,12 @@ BOOST_AUTO_TEST_CASE(JsonEncoderDecoder_Variant_Array_DiagnosticInfo)
 	OpcUaVariant value1, value2;
 
 	for (uint32_t idx=0; idx<10; idx++) {
-		nested1 = constructSPtr<OpcUaDiagnosticInfo>();
+		nested1 = boost::make_shared<OpcUaDiagnosticInfo>();
 		nested1->setSymbolicId(111);
 		nested1->setNamespaceUri(111);
 		nested1->setAdditionalInfo(OpcUaString("AdditionalInfo111"));
 
-		diagnosticInfo1 = constructSPtr<OpcUaDiagnosticInfo>();
+		diagnosticInfo1 = boost::make_shared<OpcUaDiagnosticInfo>();
 		diagnosticInfo1->setSymbolicId(123);
 		diagnosticInfo1->setNamespaceUri(456);
 		diagnosticInfo1->setAdditionalInfo(OpcUaString("AdditionalInfo"));

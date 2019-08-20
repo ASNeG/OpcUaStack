@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientCommand/CommandFindServer.h"
 #include "OpcUaClient/ClientService/ClientServiceFindServer.h"
 
@@ -36,7 +35,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceFindServer::createClientService(void)
 	{
-		return constructSPtr<ClientServiceFindServer>();
+		return boost::make_shared<ClientServiceFindServer>();
 	}
 
 	bool
@@ -77,7 +76,7 @@ namespace OpcUaClient
 
 		// create get endpoint request
 		ServiceTransactionFindServers::SPtr trx;
-		trx = constructSPtr<ServiceTransactionFindServers>();
+		trx = boost::make_shared<ServiceTransactionFindServers>();
 		FindServersRequest::SPtr req = trx->request();
 
 		// FIXME: set parameter

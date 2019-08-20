@@ -34,8 +34,8 @@ namespace OpcUaStackCore
 	, operationResultArraySPtr_()
 	, diagnosticInfoArraySPtr_()
 	{
-		operationResultArraySPtr_ = constructSPtr<OpcUaStatusCodeArray>();
-		diagnosticInfoArraySPtr_ = constructSPtr<OpcUaDiagnosticInfoArray>();
+		operationResultArraySPtr_ = boost::make_shared<OpcUaStatusCodeArray>();
+		diagnosticInfoArraySPtr_ = boost::make_shared<OpcUaDiagnosticInfoArray>();
 	}
 
 	HistoryUpdateResult::~HistoryUpdateResult(void)

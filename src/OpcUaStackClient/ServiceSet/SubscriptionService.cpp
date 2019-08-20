@@ -345,7 +345,7 @@ namespace OpcUaStackClient
     {
     	if (subscriptionSet_.size() == 0) return;
     	while (actPublishCount_ < publishCount_) {
-    		ServiceTransactionPublish::SPtr trx = constructSPtr<ServiceTransactionPublish>();
+    		ServiceTransactionPublish::SPtr trx = boost::make_shared<ServiceTransactionPublish>();
     		trx->requestTimeout(requestTimeout_);
     		SubscriptionServiceBase::asyncSend(trx);
 

@@ -22,7 +22,7 @@ namespace OpcUaStackCore
 
 	CancelResponse::CancelResponse(void)
 	: Object()
-	, responseHeader_(constructSPtr<ResponseHeader>())
+	, responseHeader_(boost::make_shared<ResponseHeader>())
 	{
 	}
 

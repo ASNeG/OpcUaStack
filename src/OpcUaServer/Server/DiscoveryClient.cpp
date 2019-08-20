@@ -88,7 +88,7 @@ namespace OpcUaServer
 		//
 		// startup discovery client service process
 		//
-		ioThread_ = constructSPtr<IOThread>();
+		ioThread_ = boost::make_shared<IOThread>();
 		ioThread_->startup();
 
 		discoveryClient_.ioThread(ioThread_);
@@ -212,10 +212,10 @@ namespace OpcUaServer
 		}
 
 		// create register Server entries
-		RegisteredServer::SPtr registeredServer = constructSPtr<RegisteredServer>();
+		RegisteredServer::SPtr registeredServer = boost::make_shared<RegisteredServer>();
 		registeredServer->serverUri() = applicationUri;
 		registeredServer->productUri() = productUri;
-		OpcUaLocalizedText::SPtr serverName = constructSPtr<OpcUaLocalizedText>();
+		OpcUaLocalizedText::SPtr serverName = boost::make_shared<OpcUaLocalizedText>();
 		serverName->set("en", applicationName);
 		registeredServer->serverNames().resize(1);
 		registeredServer->serverNames().push_back(serverName);
@@ -229,7 +229,7 @@ namespace OpcUaServer
 		for (it=addressList.begin(); it!=addressList.end(); it++) {
 
 			url_discoveryUrl.host(*it);
-			OpcUaString::SPtr url = constructSPtr<OpcUaString>();
+			OpcUaString::SPtr url = boost::make_shared<OpcUaString>();
 			url->value(url_discoveryUrl.url());
 
 			registeredServer->discoveryUrls().push_back(url);

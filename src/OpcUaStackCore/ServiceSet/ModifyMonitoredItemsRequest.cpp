@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: Object()
 	, subscriptionId_()
 	, timestampsToReturn_()
-	, itemsToModifyArraySPtr_(constructSPtr<MonitoredItemModifyRequestArray>())
+	, itemsToModifyArraySPtr_(boost::make_shared<MonitoredItemModifyRequestArray>())
 	{
 	}
 

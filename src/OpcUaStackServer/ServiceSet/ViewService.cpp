@@ -74,7 +74,7 @@ namespace OpcUaStackServer
 			.parameter("Trx", serviceTransaction->transactionId())
 			.parameter("NumberNodes", nodes);
 
-		BrowseResultArray::SPtr browseResultArray = constructSPtr<BrowseResultArray>();
+		BrowseResultArray::SPtr browseResultArray = boost::make_shared<BrowseResultArray>();
 		browseResponse->results(browseResultArray);
 		browseResultArray->resize(nodes);
 
@@ -82,7 +82,7 @@ namespace OpcUaStackServer
 			BrowseDescription::SPtr browseDescription;
 			browseRequest->nodesToBrowse()->get(idx, browseDescription);
 
-			BrowseResult::SPtr browseResult = constructSPtr<BrowseResult>();
+			BrowseResult::SPtr browseResult = boost::make_shared<BrowseResult>();
 			browseResultArray->set(idx, browseResult);
 
 			ReferenceDescriptionVec::iterator it;
@@ -90,7 +90,7 @@ namespace OpcUaStackServer
 			OpcUaStatusCode statusCode = browseNode(browseDescription, referenceDescriptionVec); 
 			browseResult->statusCode(statusCode);
 
-			ReferenceDescriptionArray::SPtr referenceDescriptionArray = constructSPtr<ReferenceDescriptionArray>();
+			ReferenceDescriptionArray::SPtr referenceDescriptionArray = boost::make_shared<ReferenceDescriptionArray>();
 			referenceDescriptionArray->resize(referenceDescriptionVec.size());
 			browseResult->references(referenceDescriptionArray);
 			for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
@@ -157,7 +157,7 @@ namespace OpcUaStackServer
 			OpcUaNodeId::SPtr actualNode = browsePath->startingNode();
 			RelativePath* relativePath = &browsePath->relativePath();
 
-			BrowsePathResult::SPtr result = constructSPtr<BrowsePathResult>();
+			BrowsePathResult::SPtr result = boost::make_shared<BrowsePathResult>();
 			result->statusCode(Success);
 			response->results()->push_back(result);
 
@@ -190,9 +190,9 @@ namespace OpcUaStackServer
 			if (result->statusCode() == Success) {
 				result->targets()->resize(1);
 
-				BrowsePathTarget::SPtr browsePathTarget = constructSPtr<BrowsePathTarget>();
+				BrowsePathTarget::SPtr browsePathTarget = boost::make_shared<BrowsePathTarget>();
 
-				OpcUaExpandedNodeId::SPtr targetNodeId = constructSPtr<OpcUaExpandedNodeId>();
+				OpcUaExpandedNodeId::SPtr targetNodeId = boost::make_shared<OpcUaExpandedNodeId>();
 				actualNode->copyTo(*targetNodeId);
 
 				browsePathTarget->tragetId(targetNodeId);
@@ -258,10 +258,10 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			ReferenceDescription::SPtr referenceDescription = constructSPtr<ReferenceDescription>();
+			ReferenceDescription::SPtr referenceDescription = boost::make_shared<ReferenceDescription>();
 			referenceDescriptionVec.push_back(referenceDescription);
 
-			OpcUaExpandedNodeId::SPtr targetNodeId = constructSPtr<OpcUaExpandedNodeId>();
+			OpcUaExpandedNodeId::SPtr targetNodeId = boost::make_shared<OpcUaExpandedNodeId>();
 			baseNodeClassTarget->nodeId().data().copyTo(*targetNodeId);
 			referenceDescription->expandedNodeId(targetNodeId);
 			referenceTypeNodeId.copyTo(*referenceDescription->referenceTypeId());

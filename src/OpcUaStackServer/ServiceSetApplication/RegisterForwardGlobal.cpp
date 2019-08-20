@@ -94,7 +94,7 @@ namespace OpcUaStackServer
 		resultCode_ = Success;
 
 		// create request
-		auto trx = constructSPtr<ServiceTransactionRegisterForwardGlobal>();
+		auto trx = boost::make_shared<ServiceTransactionRegisterForwardGlobal>();
 		trx->request()->forwardGlobalSync()->updateFrom(forwardGlobalSync_);
 
 		// send query to application service

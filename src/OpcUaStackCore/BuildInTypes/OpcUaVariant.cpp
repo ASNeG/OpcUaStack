@@ -771,7 +771,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaGuid:
 			{
-				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+				OpcUaGuid::SPtr value = boost::make_shared<OpcUaGuid>();
 				if (!value->value(string)) {
 					Log(Error, "invalid guid value")
 						.parameter("Value", string);
@@ -782,7 +782,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaByteString:
 			{
-				OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+				OpcUaByteString::SPtr value = boost::make_shared<OpcUaByteString>();
 				if (!value->fromHexString(string)) {
 					Log(Error, "invalid hex string value")
 						.parameter("Value", string);
@@ -793,7 +793,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaString:
 			{
-				OpcUaString::SPtr value = constructSPtr<OpcUaString>();
+				OpcUaString::SPtr value = boost::make_shared<OpcUaString>();
 				value->value(string);
 				variant(value);
 				break;
@@ -807,7 +807,7 @@ namespace OpcUaStackCore
 
 			case  OpcUaBuildInType_OpcUaNodeId:
 			{
-				OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+				OpcUaNodeId::SPtr value = boost::make_shared<OpcUaNodeId>();
 				if (!value->fromString(string)) {
 					Log(Error, "invalid node id value")
 						.parameter("Value", string);
@@ -823,7 +823,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaQualifiedName:
 			{
-				OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+				OpcUaQualifiedName::SPtr value = boost::make_shared<OpcUaQualifiedName>();
 				if (!value->fromString(string)) {
 					Log(Error, "invalid qualified name value")
 						.parameter("Value", string);
@@ -834,7 +834,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaLocalizedText:
 			{
-				OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+				OpcUaLocalizedText::SPtr value = boost::make_shared<OpcUaLocalizedText>();
 				if (!value->fromString(string)) {
 					Log(Error, "invalid localized text value")
 						.parameter("Value", string);
@@ -968,7 +968,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaGuid:
 			{
-				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+				OpcUaGuid::SPtr value = boost::make_shared<OpcUaGuid>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaGuid::SPtr opcUaGuidSPtr = boost::static_pointer_cast<OpcUaGuid>(opcUaVariantSPtr.objectSPtr_);
 				opcUaGuidSPtr->copyTo(*value);
@@ -977,7 +977,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaByteString:
 			{
-				OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+				OpcUaByteString::SPtr value = boost::make_shared<OpcUaByteString>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaByteString::SPtr opcUaByteStringSPtr = boost::static_pointer_cast<OpcUaByteString>(opcUaVariantSPtr.objectSPtr_);
 				opcUaByteStringSPtr->copyTo(*value);
@@ -986,7 +986,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaString:
 			{
-				OpcUaString::SPtr value = constructSPtr<OpcUaString>();
+				OpcUaString::SPtr value = boost::make_shared<OpcUaString>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaString::SPtr opcUaStringSPtr = boost::static_pointer_cast<OpcUaString>(opcUaVariantSPtr.objectSPtr_);
 				opcUaStringSPtr->copyTo(*value);
@@ -1000,7 +1000,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaNodeId:
 			{
-				OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+				OpcUaNodeId::SPtr value = boost::make_shared<OpcUaNodeId>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaNodeId::SPtr opcUaNodeIdSPtr = boost::static_pointer_cast<OpcUaNodeId>(opcUaVariantSPtr.objectSPtr_);
 				opcUaNodeIdSPtr->copyTo(*value);
@@ -1009,7 +1009,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaExpandedNodeId:
 			{
-				OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+				OpcUaExpandedNodeId::SPtr value = boost::make_shared<OpcUaExpandedNodeId>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = boost::static_pointer_cast<OpcUaExpandedNodeId>(opcUaVariantSPtr.objectSPtr_);
 				opcUaExpandedNodeIdSPtr->copyTo(*value);
@@ -1018,7 +1018,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaQualifiedName:
 			{
-				OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+				OpcUaQualifiedName::SPtr value = boost::make_shared<OpcUaQualifiedName>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = boost::static_pointer_cast<OpcUaQualifiedName>(opcUaVariantSPtr.objectSPtr_);
 				opcUaQualifiedNameSPtr->copyTo(*value);
@@ -1027,7 +1027,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaLocalizedText:
 			{
-				OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+				OpcUaLocalizedText::SPtr value = boost::make_shared<OpcUaLocalizedText>();
 				OpcUaVariantSPtr opcUaVariantSPtr = boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = boost::static_pointer_cast<OpcUaLocalizedText>(opcUaVariantSPtr.objectSPtr_);
 				opcUaLocalizedTextSPtr->copyTo(*value);
@@ -1036,7 +1036,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaExtensionObject:
 			{
-				OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
+				OpcUaExtensionObject::SPtr value = boost::make_shared<OpcUaExtensionObject>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = boost::static_pointer_cast<OpcUaExtensionObject>(opcUaVariantSPtr.objectSPtr_);
 				opcUaExtensionObjectSPtr->copyTo(*value);
@@ -1045,7 +1045,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaDataValue:
 			{
-				OpcUaDataValue::SPtr value = constructSPtr<OpcUaDataValue>();
+				OpcUaDataValue::SPtr value = boost::make_shared<OpcUaDataValue>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaDataValue::SPtr dataValueSPtr = boost::static_pointer_cast<OpcUaDataValue>(opcUaVariantSPtr.objectSPtr_);
 				dataValueSPtr->copyTo(*value);
@@ -1054,7 +1054,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaDiagnosticInfo:
 			{
-				OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
+				OpcUaDiagnosticInfo::SPtr value = boost::make_shared<OpcUaDiagnosticInfo>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaDiagnosticInfo::SPtr dataValueSPtr = boost::static_pointer_cast<OpcUaDiagnosticInfo>(opcUaVariantSPtr.objectSPtr_);
 				dataValueSPtr->copyTo(*value);
@@ -1483,7 +1483,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaGuid::SPtr opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+				OpcUaGuid::SPtr opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 				opcUaGuidSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaGuidSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaGuid;
@@ -1494,7 +1494,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaByteString::SPtr opcUaByteStringSPtr = constructSPtr<OpcUaByteString>();
+				OpcUaByteString::SPtr opcUaByteStringSPtr = boost::make_shared<OpcUaByteString>();
 				opcUaByteStringSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaByteStringSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaByteString;
@@ -1505,7 +1505,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
+				OpcUaString::SPtr opcUaStringSPtr = boost::make_shared<OpcUaString>();
 				opcUaStringSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaStringSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaString;
@@ -1516,7 +1516,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaXmlElement::SPtr opcUaXmlElementSPtr = constructSPtr<OpcUaXmlElement>();
+				OpcUaXmlElement::SPtr opcUaXmlElementSPtr = boost::make_shared<OpcUaXmlElement>();
 				opcUaXmlElementSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaXmlElementSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaXmlElement;
@@ -1527,7 +1527,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaNodeId::SPtr opcUaNodeIdSPtr = constructSPtr<OpcUaNodeId>();
+				OpcUaNodeId::SPtr opcUaNodeIdSPtr = boost::make_shared<OpcUaNodeId>();
 				opcUaNodeIdSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaNodeIdSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaNodeId;
@@ -1538,7 +1538,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = constructSPtr<OpcUaExpandedNodeId>();
+				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = boost::make_shared<OpcUaExpandedNodeId>();
 				opcUaExpandedNodeIdSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaExpandedNodeIdSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaExpandedNodeId;
@@ -1549,7 +1549,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = constructSPtr<OpcUaQualifiedName>();
+				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = boost::make_shared<OpcUaQualifiedName>();
 				opcUaQualifiedNameSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaQualifiedNameSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaQualifiedName;
@@ -1560,7 +1560,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = constructSPtr<OpcUaLocalizedText>();
+				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = boost::make_shared<OpcUaLocalizedText>();
 				opcUaLocalizedTextSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaLocalizedTextSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaLocalizedText;
@@ -1571,7 +1571,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = constructSPtr<OpcUaExtensionObject>();
+				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = boost::make_shared<OpcUaExtensionObject>();
 				opcUaExtensionObjectSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaExtensionObjectSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaExtensionObject;
@@ -1582,7 +1582,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaDataValue::SPtr dataValueSPtr = constructSPtr<OpcUaDataValue>();
+				OpcUaDataValue::SPtr dataValueSPtr = boost::make_shared<OpcUaDataValue>();
 				dataValueSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = dataValueSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaDataValue;
@@ -1593,7 +1593,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaDiagnosticInfo::SPtr diagnosticInfoSPtr = constructSPtr<OpcUaDiagnosticInfo>();
+				OpcUaDiagnosticInfo::SPtr diagnosticInfoSPtr = boost::make_shared<OpcUaDiagnosticInfo>();
 				diagnosticInfoSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = diagnosticInfoSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaDiagnosticInfo;
@@ -2178,7 +2178,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaString& value)
 	{
-		OpcUaString::SPtr tmpValue = constructSPtr<OpcUaString>();
+		OpcUaString::SPtr tmpValue = boost::make_shared<OpcUaString>();
 		const_cast<OpcUaString*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -2192,7 +2192,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaGuid& value)
 	{
-		OpcUaGuid::SPtr tmpValue = constructSPtr<OpcUaGuid>();
+		OpcUaGuid::SPtr tmpValue = boost::make_shared<OpcUaGuid>();
 		const_cast<OpcUaGuid*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -2200,7 +2200,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaByteString& value)
 	{
-		OpcUaByteString::SPtr tmpValue = constructSPtr<OpcUaByteString>();
+		OpcUaByteString::SPtr tmpValue = boost::make_shared<OpcUaByteString>();
 		const_cast<OpcUaByteString*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -2208,7 +2208,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaXmlElement& value)
 	{
-		OpcUaXmlElement::SPtr tmpValue = constructSPtr<OpcUaXmlElement>();
+		OpcUaXmlElement::SPtr tmpValue = boost::make_shared<OpcUaXmlElement>();
 		const_cast<OpcUaXmlElement*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -2216,7 +2216,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaNodeId& value)
 	{
-		OpcUaNodeId::SPtr tmpValue = constructSPtr<OpcUaNodeId>();
+		OpcUaNodeId::SPtr tmpValue = boost::make_shared<OpcUaNodeId>();
 		const_cast<OpcUaNodeId*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -2224,7 +2224,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaExpandedNodeId& value)
 	{
-		OpcUaExpandedNodeId::SPtr tmpValue = constructSPtr<OpcUaExpandedNodeId>();
+		OpcUaExpandedNodeId::SPtr tmpValue = boost::make_shared<OpcUaExpandedNodeId>();
 		const_cast<OpcUaExpandedNodeId*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -2238,7 +2238,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaQualifiedName& value)
 	{
-		OpcUaQualifiedName::SPtr tmpValue = constructSPtr<OpcUaQualifiedName>();
+		OpcUaQualifiedName::SPtr tmpValue = boost::make_shared<OpcUaQualifiedName>();
 		const_cast<OpcUaQualifiedName*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -2246,7 +2246,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaLocalizedText& value)
 	{
-		OpcUaLocalizedText::SPtr tmpValue = constructSPtr<OpcUaLocalizedText>();
+		OpcUaLocalizedText::SPtr tmpValue = boost::make_shared<OpcUaLocalizedText>();
 		const_cast<OpcUaLocalizedText*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -2254,7 +2254,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaExtensionObject& value)
 	{
-		OpcUaExtensionObject::SPtr tmpValue = constructSPtr<OpcUaExtensionObject>();
+		OpcUaExtensionObject::SPtr tmpValue = boost::make_shared<OpcUaExtensionObject>();
 		const_cast<OpcUaExtensionObject*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -2262,7 +2262,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaDataValue& value)
 	{
-		OpcUaDataValue::SPtr tmpValue = constructSPtr<OpcUaDataValue>();
+		OpcUaDataValue::SPtr tmpValue = boost::make_shared<OpcUaDataValue>();
 		const_cast<OpcUaDataValue*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -2270,7 +2270,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaVariant::setValue(const OpcUaDiagnosticInfo& value)
 	{
-		OpcUaDiagnosticInfo::SPtr tmpValue = constructSPtr<OpcUaDiagnosticInfo>();
+		OpcUaDiagnosticInfo::SPtr tmpValue = boost::make_shared<OpcUaDiagnosticInfo>();
 		const_cast<OpcUaDiagnosticInfo*>(&value)->copyTo(*tmpValue);
 		variant(tmpValue);
 	}
@@ -4173,7 +4173,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		OpcUaString::SPtr value = constructSPtr<OpcUaString>();
+		OpcUaString::SPtr value = boost::make_shared<OpcUaString>();
 		if (!value->xmlDecode(pt, xmlns)) {
 			Log(Error, "OpcUaVariant xml decode error")
 				.parameter("Element", element)
@@ -4195,7 +4195,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "String");
 				return false;
 			}
-			OpcUaString::SPtr value = constructSPtr<OpcUaString>();
+			OpcUaString::SPtr value = boost::make_shared<OpcUaString>();
 			if (!value->xmlDecode(it->second, xmlns)) {
 				Log(Error, "OpcUaVariant xml decode error")
 					.parameter("Element", element)
@@ -4248,7 +4248,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeByteStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+		OpcUaByteString::SPtr value = boost::make_shared<OpcUaByteString>();
 		if (!value->xmlDecode(pt, xmlns)) {
 			Log(Error, "OpcUaVariant xml decode error")
 				.parameter("Element", element)
@@ -4270,7 +4270,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "ByteString");
 				return false;
 			}
-			OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+			OpcUaByteString::SPtr value = boost::make_shared<OpcUaByteString>();
 			if (!value->xmlDecode(it->second, xmlns)) {
 				Log(Error, "OpcUaVariant xml decode error")
 					.parameter("Element", element)
@@ -4323,7 +4323,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeGuidScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+		OpcUaGuid::SPtr value = boost::make_shared<OpcUaGuid>();
 		if (!value->xmlDecode(pt, xmlns)) {
 			Log(Error, "OpcUaVariant xml decode error")
 				.parameter("Element", element)
@@ -4345,7 +4345,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "Guid");
 				return false;
 			}
-			OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+			OpcUaGuid::SPtr value = boost::make_shared<OpcUaGuid>();
 			if (!value->xmlDecode(it->second, xmlns)) {
 				Log(Error, "OpcUaVariant xml decode error")
 					.parameter("Element", element)
@@ -4398,7 +4398,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+		OpcUaNodeId::SPtr value = boost::make_shared<OpcUaNodeId>();
 		if (!value->xmlDecode(pt, xmlns)) {
 			Log(Error, "OpcUaVariant xml decode error")
 				.parameter("Element", element)
@@ -4420,7 +4420,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "NodeId");
 				return false;
 			}
-			OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+			OpcUaNodeId::SPtr value = boost::make_shared<OpcUaNodeId>();
 			if (!value->xmlDecode(it->second, xmlns)) {
 				Log(Error, "OpcUaVariant xml decode error")
 					.parameter("Element", element)
@@ -4473,7 +4473,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeExpandedNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+		OpcUaExpandedNodeId::SPtr value = boost::make_shared<OpcUaExpandedNodeId>();
 		if (!value->xmlDecode(pt, xmlns)) {
 			Log(Error, "OpcUaVariant xml decode error")
 				.parameter("Element", element)
@@ -4495,7 +4495,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "ExpandedNodeId");
 				return false;
 			}
-			OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+			OpcUaExpandedNodeId::SPtr value = boost::make_shared<OpcUaExpandedNodeId>();
 			if (!value->xmlDecode(it->second, xmlns)) {
 				Log(Error, "OpcUaVariant xml decode error")
 					.parameter("Element", element)
@@ -4548,7 +4548,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeQualifiedNameScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+		OpcUaQualifiedName::SPtr value = boost::make_shared<OpcUaQualifiedName>();
 		if (!value->xmlDecode(pt, xmlns)) {
 			Log(Error, "OpcUaVariant xml decode error")
 				.parameter("Element", element)
@@ -4570,7 +4570,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "QualifiedName");
 				return false;
 			}
-			OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+			OpcUaQualifiedName::SPtr value = boost::make_shared<OpcUaQualifiedName>();
 			if (!value->xmlDecode(it->second, xmlns)) {
 				Log(Error, "OpcUaVariant xml decode error")
 					.parameter("Element", element)
@@ -4623,7 +4623,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeLocalizedTextScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+		OpcUaLocalizedText::SPtr value = boost::make_shared<OpcUaLocalizedText>();
 		if (!value->xmlDecode(pt, xmlns)) {
 			Log(Error, "OpcUaVariant xml decode error")
 				.parameter("Element", element)
@@ -4645,7 +4645,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "LocalizedText");
 				return false;
 			}
-			OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+			OpcUaLocalizedText::SPtr value = boost::make_shared<OpcUaLocalizedText>();
 			if (!value->xmlDecode(it->second, xmlns)) {
 				Log(Error, "OpcUaVariant xml decode error")
 					.parameter("Element", element)
@@ -4698,7 +4698,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeExtensionObjectScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
+		OpcUaExtensionObject::SPtr value = boost::make_shared<OpcUaExtensionObject>();
 		if (!value->xmlDecode(pt, xmlns)) {
 			Log(Error, "OpcUaVariant xml decode error")
 				.parameter("Element", element)
@@ -4720,7 +4720,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "ExtensionObject");
 				return false;
 			}
-			OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
+			OpcUaExtensionObject::SPtr value = boost::make_shared<OpcUaExtensionObject>();
 			if (!value->xmlDecode(it->second, xmlns)) {
 				Log(Error, "OpcUaVariant xml decode error")
 					.parameter("Element", element)
@@ -4772,7 +4772,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeDataValueScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		OpcUaDataValue::SPtr value = constructSPtr<OpcUaDataValue>();
+		OpcUaDataValue::SPtr value = boost::make_shared<OpcUaDataValue>();
 		if (!value->xmlDecode(pt, xmlns)) {
 			Log(Error, "OpcUaVariant xml decode error")
 				.parameter("Element", element)
@@ -4794,7 +4794,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "DataValue");
 				return false;
 			}
-			OpcUaDataValue::SPtr value = constructSPtr<OpcUaDataValue>();
+			OpcUaDataValue::SPtr value = boost::make_shared<OpcUaDataValue>();
 			if (!value->xmlDecode(it->second, xmlns)) {
 				Log(Error, "OpcUaVariant xml decode error")
 					.parameter("Element", element)
@@ -4846,7 +4846,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeDiagnosticInfoScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
+		OpcUaDiagnosticInfo::SPtr value = boost::make_shared<OpcUaDiagnosticInfo>();
 		if (!value->xmlDecode(pt, xmlns)) {
 			Log(Error, "OpcUaVariant xml decode error")
 				.parameter("Element", element)
@@ -4868,7 +4868,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "DiagnosticInfo");
 				return false;
 			}
-			OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
+			OpcUaDiagnosticInfo::SPtr value = boost::make_shared<OpcUaDiagnosticInfo>();
 			if (!value->xmlDecode(it->second, xmlns)) {
 				Log(Error, "OpcUaVariant xml decode error")
 					.parameter("Element", element)
@@ -5772,7 +5772,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeStringScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		OpcUaString::SPtr value = constructSPtr<OpcUaString>();
+		OpcUaString::SPtr value = boost::make_shared<OpcUaString>();
 		if (!value->jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
@@ -5793,7 +5793,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "OpcUaString");
 				return false;
 			}
-			OpcUaString::SPtr value = constructSPtr<OpcUaString>();
+			OpcUaString::SPtr value = boost::make_shared<OpcUaString>();
 			if (!value->jsonDecode(it->second)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5843,7 +5843,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeByteStringScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+		OpcUaByteString::SPtr value = boost::make_shared<OpcUaByteString>();
 		if (!value->jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
@@ -5864,7 +5864,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "OpcUaByteString");
 				return false;
 			}
-			OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+			OpcUaByteString::SPtr value = boost::make_shared<OpcUaByteString>();
 			if (!value->jsonDecode(it->second)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5914,7 +5914,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeGuidScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+		OpcUaGuid::SPtr value = boost::make_shared<OpcUaGuid>();
 		if (!value->jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
@@ -5935,7 +5935,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "OpcUaGuid");
 				return false;
 			}
-			OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+			OpcUaGuid::SPtr value = boost::make_shared<OpcUaGuid>();
 			if (!value->jsonDecode(it->second)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -5985,7 +5985,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeNodeIdScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+		OpcUaNodeId::SPtr value = boost::make_shared<OpcUaNodeId>();
 		if (!value->jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
@@ -6006,7 +6006,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "OpcUaNodeId");
 				return false;
 			}
-			OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+			OpcUaNodeId::SPtr value = boost::make_shared<OpcUaNodeId>();
 			if (!value->jsonDecode(it->second)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6056,7 +6056,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeExpandedNodeIdScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+		OpcUaExpandedNodeId::SPtr value = boost::make_shared<OpcUaExpandedNodeId>();
 		if (!value->jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
@@ -6077,7 +6077,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "OpcUaExpandedNodeId");
 				return false;
 			}
-			OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+			OpcUaExpandedNodeId::SPtr value = boost::make_shared<OpcUaExpandedNodeId>();
 			if (!value->jsonDecode(it->second)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6127,7 +6127,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeQualifiedNameScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+		OpcUaQualifiedName::SPtr value = boost::make_shared<OpcUaQualifiedName>();
 		if (!value->jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
@@ -6148,7 +6148,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "OpcUaQualifiedName");
 				return false;
 			}
-			OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+			OpcUaQualifiedName::SPtr value = boost::make_shared<OpcUaQualifiedName>();
 			if (!value->jsonDecode(it->second)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6198,7 +6198,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeLocalizedTextScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+		OpcUaLocalizedText::SPtr value = boost::make_shared<OpcUaLocalizedText>();
 		if (!value->jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
@@ -6219,7 +6219,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "OpcUaLocalizedText");
 				return false;
 			}
-			OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+			OpcUaLocalizedText::SPtr value = boost::make_shared<OpcUaLocalizedText>();
 			if (!value->jsonDecode(it->second)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6269,7 +6269,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeExtensionObjectScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
+		OpcUaExtensionObject::SPtr value = boost::make_shared<OpcUaExtensionObject>();
 		if (!value->jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
@@ -6290,7 +6290,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "OpcUaExtensionObject");
 				return false;
 			}
-			OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
+			OpcUaExtensionObject::SPtr value = boost::make_shared<OpcUaExtensionObject>();
 			if (!value->jsonDecode(it->second)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6340,7 +6340,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeDataValueScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		OpcUaDataValue::SPtr value = constructSPtr<OpcUaDataValue>();
+		OpcUaDataValue::SPtr value = boost::make_shared<OpcUaDataValue>();
 		if (!value->jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
@@ -6361,7 +6361,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "OpcUaDataValue");
 				return false;
 			}
-			OpcUaDataValue::SPtr value = constructSPtr<OpcUaDataValue>();
+			OpcUaDataValue::SPtr value = boost::make_shared<OpcUaDataValue>();
 			if (!value->jsonDecode(it->second)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")
@@ -6411,7 +6411,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::jsonDecodeDiagnosticInfoScalar(const boost::property_tree::ptree& pt, const std::string& element)
 	{
-		OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
+		OpcUaDiagnosticInfo::SPtr value = boost::make_shared<OpcUaDiagnosticInfo>();
 		if (!value->jsonDecode(pt)) {
 			Log(Error, "OpcUaVariant json decode error")
 				.parameter("Element", element)
@@ -6432,7 +6432,7 @@ namespace OpcUaStackCore
 					.parameter("DataType", "OpcUaDiagnosticInfo");
 				return false;
 			}
-			OpcUaDiagnosticInfo::SPtr value = constructSPtr<OpcUaDiagnosticInfo>();
+			OpcUaDiagnosticInfo::SPtr value = boost::make_shared<OpcUaDiagnosticInfo>();
 			if (!value->jsonDecode(it->second)) {
 				Log(Error, "OpcUaVariant json decode error")
 					.parameter("Element", "Body")

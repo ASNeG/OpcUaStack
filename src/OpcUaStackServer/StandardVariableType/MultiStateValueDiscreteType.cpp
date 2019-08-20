@@ -16,11 +16,11 @@ namespace OpcUaStackServer
     
     MultiStateValueDiscreteType::MultiStateValueDiscreteType(void)
     : VariableBase()
-    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
-    , enumValues_Variable_(constructSPtr<ServerVariable>("EnumValues_Variable"))
-    , valueAsText_Variable_(constructSPtr<ServerVariable>("ValueAsText_Variable"))
-    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , definition_Variable_(boost::make_shared<ServerVariable>("Definition_Variable"))
+    , enumValues_Variable_(boost::make_shared<ServerVariable>("EnumValues_Variable"))
+    , valueAsText_Variable_(boost::make_shared<ServerVariable>("ValueAsText_Variable"))
+    , valuePrecision_Variable_(boost::make_shared<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)11238);
@@ -33,11 +33,11 @@ namespace OpcUaStackServer
     
     MultiStateValueDiscreteType::MultiStateValueDiscreteType(const MultiStateValueDiscreteType& value)
     : VariableBase()
-    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
-    , enumValues_Variable_(constructSPtr<ServerVariable>("EnumValues_Variable"))
-    , valueAsText_Variable_(constructSPtr<ServerVariable>("ValueAsText_Variable"))
-    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , definition_Variable_(boost::make_shared<ServerVariable>("Definition_Variable"))
+    , enumValues_Variable_(boost::make_shared<ServerVariable>("EnumValues_Variable"))
+    , valueAsText_Variable_(boost::make_shared<ServerVariable>("ValueAsText_Variable"))
+    , valuePrecision_Variable_(boost::make_shared<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)11238);

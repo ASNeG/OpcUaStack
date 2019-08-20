@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientCommand/CommandWrite.h"
 #include "OpcUaClient/ClientService/ClientServiceWrite.h"
 
@@ -36,7 +35,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceWrite::createClientService(void)
 	{
-		return constructSPtr<ClientServiceWrite>();
+		return boost::make_shared<ClientServiceWrite>();
 	}
 
 	bool
@@ -77,11 +76,11 @@ namespace OpcUaClient
 
 		// create read request
 		ServiceTransactionWrite::SPtr trx;
-		trx = constructSPtr<ServiceTransactionWrite>();
+		trx = boost::make_shared<ServiceTransactionWrite>();
 		WriteRequest::SPtr req = trx->request();
 		req->writeValueArray()->resize(commandWrite->nodeIdVec().size());
 		for (uint32_t idx=0; idx<commandWrite->nodeIdVec().size(); idx++) {
-			WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
+			WriteValue::SPtr writeValue = boost::make_shared<WriteValue>();
 			writeValue->nodeId()->copyFrom(*commandWrite->nodeIdVec()[idx]);
 			writeValue->attributeId(commandWrite->attributeIdVec()[idx]);
 			writeValue->dataValue().copyFrom(*commandWrite->dataValueVec()[idx]);

@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	CloseSessionRequest::CloseSessionRequest(void)
-	: requestHeaderSPtr_(constructSPtr<RequestHeader>())
+	: requestHeaderSPtr_(boost::make_shared<RequestHeader>())
 	, deleteSubscriptions_()
 	{
 	}

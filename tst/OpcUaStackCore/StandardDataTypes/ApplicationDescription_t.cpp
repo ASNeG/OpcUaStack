@@ -24,13 +24,13 @@ BOOST_AUTO_TEST_CASE(ApplicationDescription_)
 	std::iostream ios(&sb);
 
 	// encode ApplicationDescription
-	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
+	applicationDescriptionSPtr = boost::make_shared<ApplicationDescription>();
 	applicationDescriptionSPtr->applicationUri().value("urn:localhost:compyny:Unittest");
 	applicationDescriptionSPtr->productUri().value("urn:company:Unittest");
 	applicationDescriptionSPtr->applicationName().text("company Unittest");
 	applicationDescriptionSPtr->applicationType().enumeration(ApplicationType::EnumServer);
 	applicationDescriptionSPtr->discoveryUrls().resize(1);
-	opcUaStringSPtr = constructSPtr<OpcUaString>();
+	opcUaStringSPtr = boost::make_shared<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	applicationDescriptionSPtr->discoveryUrls().set(0, opcUaStringSPtr);
 	applicationDescriptionSPtr->opcUaBinaryEncode(ios);
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(ApplicationDescription_)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode ApplicationDescription
-	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
+	applicationDescriptionSPtr = boost::make_shared<ApplicationDescription>();
 	applicationDescriptionSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(applicationDescriptionSPtr->applicationUri().value() == "urn:localhost:compyny:Unittest");
 	BOOST_REQUIRE(applicationDescriptionSPtr->productUri().value() == "urn:company:Unittest");

@@ -122,7 +122,7 @@ namespace OpcUaStackCore
 
 		template<typename T>
 		  bool registerFactoryObject(void) {
-			  ExtensionObjectBase::SPtr epSPtr(constructSPtr<T>());
+			  ExtensionObjectBase::SPtr epSPtr(boost::make_shared<T>());
 			  return registerFactoryElement<T>(epSPtr->typeId());
 		  }
 
@@ -172,7 +172,7 @@ namespace OpcUaStackCore
 		 */
 		template<typename T>
 		  bool registerFactoryElement(const OpcUaNodeId& opcUaNodeId) {
-			  ExtensionObjectBase::SPtr epSPtr(constructSPtr<T>());
+			  ExtensionObjectBase::SPtr epSPtr(boost::make_shared<T>());
 
 			  OpcUaNodeId opcUaBinaryType(epSPtr->binaryTypeId());
 			  OpcUaNodeId xmlType(epSPtr->xmlTypeId());
@@ -296,7 +296,7 @@ namespace OpcUaStackCore
 				   return epSPtr;
 			   }
 
-			   typename T::SPtr epSPtr = constructSPtr<T>();
+			   typename T::SPtr epSPtr = boost::make_shared<T>();
 			   style_ = S_Type;
 			   epSPtr_ = epSPtr;
 			   return epSPtr;

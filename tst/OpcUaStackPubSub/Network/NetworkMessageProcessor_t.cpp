@@ -59,10 +59,10 @@ struct NetworkMessageProcessorFixtures
 {
 	NetworkMessageProcessorFixtures()
 	{
-		readerPub1Id1N1 = constructSPtr<MockDataSetReader>();
-		readerPub1Id1N2 = constructSPtr<MockDataSetReader>();
-		readerPub1Id2N1 = constructSPtr<MockDataSetReader>();
-		readerPub2Id1N1 = constructSPtr<MockDataSetReader>();
+		readerPub1Id1N1 = boost::make_shared<MockDataSetReader>();
+		readerPub1Id1N2 = boost::make_shared<MockDataSetReader>();
+		readerPub1Id2N1 = boost::make_shared<MockDataSetReader>();
+		readerPub2Id1N1 = boost::make_shared<MockDataSetReader>();
 
 		readerPub1Id1N1->publisherId()->setValue(OpcUaUInt16(1));
 		readerPub1Id1N2->publisherId()->setValue(OpcUaUInt16(1));
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageProcessor_registration)
 {
 	NetworkMessageProcessor processor;
 
-	MockDataSetReader::SPtr reader1 = constructSPtr<MockDataSetReader>();
+	MockDataSetReader::SPtr reader1 = boost::make_shared<MockDataSetReader>();
 	reader1->publisherId()->setValue(OpcUaUInt32(1));
 	reader1->writerId(1);
 
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageProcessor_deregistration)
 {
 	NetworkMessageProcessor processor;
 
-	MockDataSetReader::SPtr reader1 = constructSPtr<MockDataSetReader>();
+	MockDataSetReader::SPtr reader1 = boost::make_shared<MockDataSetReader>();
 	reader1->publisherId()->setValue(OpcUaUInt32(1));
 	reader1->writerId(1);
 	processor.registerDataSetReaderIf(reader1);
@@ -129,7 +129,7 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageProcessor_filter1, NetworkMessageProcessor
 	OpcUaVariant publisherId  = *readerPub1Id1N1->publisherId();
 	networkMessage.networkMessageHeader()->publisherId()->copyFrom(publisherId);
 
-	KeepAliveMessage::SPtr dataSetMessage = constructSPtr<KeepAliveMessage>();
+	KeepAliveMessage::SPtr dataSetMessage = boost::make_shared<KeepAliveMessage>();
 
 	DataSetPayloadHeader::SPtr dataSetPayloadHeader = networkMessage.dataSetPayloadHeader();
 	dataSetPayloadHeader->dataSetWriterIds()->resize(1);

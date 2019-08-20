@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Subscriptionsubscription_create_d
 	subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	auto subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
+	auto subCreateTrx = boost::make_shared<ServiceTransactionCreateSubscription>();
 	auto subCreateReq = subCreateTrx->request();
 	auto subCreateRes = subCreateTrx->response();
 	subscriptionService->syncSend(subCreateTrx);
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Subscriptionsubscription_create_d
 	uint32_t subscriptionId = subCreateRes->subscriptionId();
 
 	// delete subscription
-	auto subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+	auto subDeleteTrx = boost::make_shared<ServiceTransactionDeleteSubscriptions>();
 	auto subDeleteReq = subDeleteTrx->request();
 	auto subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);

@@ -79,7 +79,7 @@ namespace OpcUaStackServer
 			EnumField::SPtr enumField;
 			enumDefinition_->enumFields()->get(idx, enumField);
 
-			EnumTypeField::SPtr enumTypeField = constructSPtr<EnumTypeField>();
+			EnumTypeField::SPtr enumTypeField = boost::make_shared<EnumTypeField>();
 
 			// added name
 			enumTypeField->name(enumField->name().toStdString());

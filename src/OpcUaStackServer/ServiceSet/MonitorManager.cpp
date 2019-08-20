@@ -175,7 +175,7 @@ namespace OpcUaStackServer
 		OpcUaStatusCode statusCode;
 
 		MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
-		monitoredItemCreateResult = constructSPtr<MonitoredItemCreateResult>();
+		monitoredItemCreateResult = boost::make_shared<MonitoredItemCreateResult>();
 		createMonitorItemResponse->results()->set(idx, monitoredItemCreateResult);
 
 		// get request parameter
@@ -211,7 +211,7 @@ namespace OpcUaStackServer
 		}
 
 		// create new monitor item
-		MonitorItem::SPtr monitorItem = constructSPtr<MonitorItem>();
+		MonitorItem::SPtr monitorItem = boost::make_shared<MonitorItem>();
 		monitorItem->userContext(serviceTransaction->userContext());
 		statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
 
@@ -259,7 +259,7 @@ namespace OpcUaStackServer
 		OpcUaStatusCode statusCode;
 
 		MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
-		monitoredItemCreateResult = constructSPtr<MonitoredItemCreateResult>();
+		monitoredItemCreateResult = boost::make_shared<MonitoredItemCreateResult>();
 		createMonitorItemResponse->results()->set(idx, monitoredItemCreateResult);
 
 		// get request parameter
@@ -289,7 +289,7 @@ namespace OpcUaStackServer
 		baseNodeClass->getBrowseName(browseName);
 
 		// create new event item
-		EventItem::SPtr eventItem = constructSPtr<EventItem>();
+		EventItem::SPtr eventItem = boost::make_shared<EventItem>();
 		eventItem->userContext(serviceTransaction->userContext());
 		eventItem->informationModel(informationModel_);
 		eventItem->browseName(browseName);
@@ -534,7 +534,7 @@ namespace OpcUaStackServer
 		monitoredItemIds_.insert(std::make_pair(baseNodeClass->nodeId().data(), monitoredItemIds));
 
 		// create node reference
-		NodeReferenceApplication::SPtr nodeReference = constructSPtr<NodeReferenceApplication>();
+		NodeReferenceApplication::SPtr nodeReference = boost::make_shared<NodeReferenceApplication>();
 		nodeReference->statusCode(Success);
 		nodeReference->baseNodeClass(baseNodeClass);
 
@@ -585,7 +585,7 @@ namespace OpcUaStackServer
 		}
 
 		// create node reference
-		NodeReferenceApplication::SPtr nodeReference = constructSPtr<NodeReferenceApplication>();
+		NodeReferenceApplication::SPtr nodeReference = boost::make_shared<NodeReferenceApplication>();
 		nodeReference->statusCode(Success);
 		nodeReference->baseNodeClass(baseNodeClass);
 

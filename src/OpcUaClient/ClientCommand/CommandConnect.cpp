@@ -17,7 +17,7 @@
  */
 
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandConnect.h"
 
 using namespace OpcUaStackCore;
@@ -39,7 +39,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandConnect::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandConnect>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandConnect>();
 		return commandBase;
 	}
 

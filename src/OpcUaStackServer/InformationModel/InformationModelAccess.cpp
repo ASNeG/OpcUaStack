@@ -494,7 +494,7 @@ namespace OpcUaStackServer
 		}
 
 		// surrogate parent does not exist. Create a surrogate parent
-		baseNodeClass = constructSPtr<ObjectNodeClass>();
+		baseNodeClass = boost::make_shared<ObjectNodeClass>();
 		baseNodeClass->setNodeId(nodeId);
 		OpcUaQualifiedName browseName("SurrogateParent");
 		baseNodeClass->setBrowseName(browseName);
@@ -1348,10 +1348,10 @@ namespace OpcUaStackServer
 				baseNodeClass->referenceItemMap().remove(referenceTypeNodeId, referenceItem);
 
 				// add reference between node and new parent
-				referenceItem = constructSPtr<ReferenceItem>(true, *baseNodeClass->getNodeId());
+				referenceItem = boost::make_shared<ReferenceItem>(true, *baseNodeClass->getNodeId());
 				surrogateParentNode->referenceItemMap().add(ReferenceType_HasComponent, referenceItem);
 
-				referenceItem = constructSPtr<ReferenceItem>(false, *surrogateParentNode->getNodeId());
+				referenceItem = boost::make_shared<ReferenceItem>(false, *surrogateParentNode->getNodeId());
 				baseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, referenceItem);
 			}
 		}

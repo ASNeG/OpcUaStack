@@ -19,7 +19,6 @@
 #define __OpcUaServer_ApplicationLibrary_h__
 
 #include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/Application/ApplicationInfo.h"
 #include "OpcUaServer/ApplicationLibrary/DynamicLibrary.h"

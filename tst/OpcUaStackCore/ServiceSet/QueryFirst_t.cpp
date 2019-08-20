@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Title)
 
 BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 {
-	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
+	RequestHeader::SPtr requestHeader = boost::make_shared<RequestHeader>();
 	std::string str;
 	uint32_t pos;
 	OpcUaNodeId typeId;
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -66,10 +66,10 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build
-	queryFirstRequestSPtr = constructSPtr<QueryFirstRequest>();
+	queryFirstRequestSPtr = boost::make_shared<QueryFirstRequest>();
 
 	// build RequestHeader
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
@@ -80,13 +80,13 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	requestHeader->timeoutHint(300000);
 
 	// build QueryDataDescription
-	queryDataDescriptionSPtr = constructSPtr<QueryDataDescription>();
+	queryDataDescriptionSPtr = boost::make_shared<QueryDataDescription>();
 	queryDataDescriptionSPtr->relativePath(emptyRelativePath);
 	queryDataDescriptionSPtr->attributeId(123);
 	queryDataDescriptionSPtr->indexRange("1:3");
 	
 	// build NodeTypeDefinition
-	nodeTypeDescriptionSPtr = constructSPtr<NodeTypeDescription>();
+	nodeTypeDescriptionSPtr = boost::make_shared<NodeTypeDescription>();
 	nodeTypeDescriptionSPtr->typeDefinitionNode()->namespaceIndex(2);
 	nodeTypeDescriptionSPtr->typeDefinitionNode()->nodeId<OpcUaUInt32>(123);
 	nodeTypeDescriptionSPtr->includeSubtypes(true);
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	queryFirstRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_QueryFirstRequest_Encoding_DefaultBinary);
 
 	// decode ReadRequest
-	queryFirstRequestSPtr = constructSPtr<QueryFirstRequest>();
+	queryFirstRequestSPtr = boost::make_shared<QueryFirstRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	queryFirstRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -172,14 +172,14 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	BOOST_REQUIRE(queryFirstRequestSPtr->view().viewVersion() == 2);
 	
 	BOOST_REQUIRE(queryFirstRequestSPtr->nodeTypes()->size() == 1);
-	nodeTypeDescriptionSPtr = constructSPtr<NodeTypeDescription>();
+	nodeTypeDescriptionSPtr = boost::make_shared<NodeTypeDescription>();
 	queryFirstRequestSPtr->nodeTypes()->get(nodeTypeDescriptionSPtr);
 	BOOST_REQUIRE(nodeTypeDescriptionSPtr->typeDefinitionNode()->namespaceIndex() == 2);
 	BOOST_REQUIRE(nodeTypeDescriptionSPtr->typeDefinitionNode()->nodeId<OpcUaUInt32>() == 123);
 	BOOST_REQUIRE(nodeTypeDescriptionSPtr->includeSubtypes() == true);
 
 	BOOST_REQUIRE(nodeTypeDescriptionSPtr->dataToReturn()->size() == 1);
-	queryDataDescriptionSPtr = constructSPtr<QueryDataDescription>();
+	queryDataDescriptionSPtr = boost::make_shared<QueryDataDescription>();
 	nodeTypeDescriptionSPtr->dataToReturn()->get(queryDataDescriptionSPtr);
 	BOOST_REQUIRE(queryDataDescriptionSPtr->relativePath().elements().size() == 0);
 	BOOST_REQUIRE(queryDataDescriptionSPtr->attributeId() == 123);
@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 
 BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 {
-	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
+	ResponseHeader::SPtr responseHeader = boost::make_shared<ResponseHeader>();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	queryFirstResponseSPtr = constructSPtr<QueryFirstResponse>();
+	queryFirstResponseSPtr = boost::make_shared<QueryFirstResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -249,14 +249,14 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	responseHeader->serviceResult(statusCode);
 	
 	// build QueryDataSet
-	queryDataSetSPtr = constructSPtr<QueryDataSet>();
+	queryDataSetSPtr = boost::make_shared<QueryDataSet>();
 	queryDataSetSPtr->nodeId()->namespaceIndex(2);
 	queryDataSetSPtr->nodeId()->nodeId<OpcUaUInt32>(123);
 	queryDataSetSPtr->typeDefinitionNode()->namespaceIndex(2);
 	queryDataSetSPtr->typeDefinitionNode()->nodeId<OpcUaUInt32>(123);
 
 	// build ParsingResult
-	parsingResultSPtr = constructSPtr<ParsingResult>();
+	parsingResultSPtr = boost::make_shared<ParsingResult>();
 	parsingResultSPtr->statusCode(Success);
 	
 	// build Parameter
@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	queryFirstResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -291,7 +291,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -302,7 +302,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_QueryFirstResponse_Encoding_DefaultBinary);
 
 	// decode 
-	queryFirstResponseSPtr = constructSPtr<QueryFirstResponse>();
+	queryFirstResponseSPtr = boost::make_shared<QueryFirstResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	queryFirstResponseSPtr->opcUaBinaryDecode(ios);
 
@@ -322,7 +322,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(queryFirstResponseSPtr->queryDataSets()->size() == 1);
-	queryDataSetSPtr = constructSPtr<QueryDataSet>();
+	queryDataSetSPtr = boost::make_shared<QueryDataSet>();
 	queryFirstResponseSPtr->queryDataSets()->get(queryDataSetSPtr);
 	BOOST_REQUIRE(queryDataSetSPtr->nodeId()->namespaceIndex() == 2);
 	BOOST_REQUIRE(queryDataSetSPtr->nodeId()->nodeId<OpcUaUInt32>() == 123);
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	BOOST_REQUIRE(queryFirstResponseSPtr->continuationPoint().size() == 0);
 
 	BOOST_REQUIRE(queryFirstResponseSPtr->parsingResults()->size() == 1);
-	parsingResultSPtr = constructSPtr<ParsingResult>();
+	parsingResultSPtr = boost::make_shared<ParsingResult>();
 	queryFirstResponseSPtr->parsingResults()->get(parsingResultSPtr);
 	BOOST_REQUIRE(parsingResultSPtr->statusCode() == Success);
 	BOOST_REQUIRE(parsingResultSPtr->dataStatusCodes()->size() == 0);

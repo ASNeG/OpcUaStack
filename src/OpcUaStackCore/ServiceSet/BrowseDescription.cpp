@@ -30,9 +30,9 @@ namespace OpcUaStackCore
 
 	BrowseDescription::BrowseDescription(void)
 	: Object()
-	, nodeIdSPtr_(constructSPtr<OpcUaNodeId>())
+	, nodeIdSPtr_(boost::make_shared<OpcUaNodeId>())
 	, browseDirection_()
-	, referenceTypeIdSPtr_(constructSPtr<OpcUaNodeId>())
+	, referenceTypeIdSPtr_(boost::make_shared<OpcUaNodeId>())
 	, includeSubtypes_()
 	, nodeClassMask_()
 	, resultMask_()

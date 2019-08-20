@@ -34,7 +34,7 @@ namespace OpcUaStackServer
 	, informationModel_()
 	, whereFilter_()
 	, selectClauses_()
-	, eventHandler_(constructSPtr<EventHandler>())
+	, eventHandler_(boost::make_shared<EventHandler>())
 	, nodeId_()
 	, browseName_()
 	, eventFieldListList_()
@@ -89,7 +89,7 @@ namespace OpcUaStackServer
 		// create event filter result
 		//EventFilterResult::SPtr eventFilterResult = monitoredItemCreateResult->filterResult().parameter<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
 
-		EventFilterResult::SPtr eventFilterResult = constructSPtr<EventFilterResult>();
+		EventFilterResult::SPtr eventFilterResult = boost::make_shared<EventFilterResult>();
 
 		// select clause
 		SimpleAttributeOperandArray& selectClauses = eventFilter->selectClauses();
@@ -101,7 +101,7 @@ namespace OpcUaStackServer
 		}
 
 		// construct where filter
-		whereFilter_ = constructSPtr<FilterStack>();
+		whereFilter_ = boost::make_shared<FilterStack>();
 		whereFilter_->simpleAttributeIf(this);
 		if (eventFilter->whereClause().elements().size() != 0) {
 			bool whereFilterIsValid = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
@@ -176,7 +176,7 @@ namespace OpcUaStackServer
 			OpcUaByteString byteString;
 			byteString.value((char*)&time, sizeof(boost::posix_time::ptime));
 
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(byteString);
 
 			baseEventType->eventId(variant);
@@ -184,42 +184,42 @@ namespace OpcUaStackServer
 
 		// set source node id if necessary
 		if (baseEventType->sourceNode().get() == nullptr) {
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(nodeId_);
 			baseEventType->sourceNode(variant);
 		}
 
 		// set source name if necessary
 		if (baseEventType->sourceName().get() == nullptr) {
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(browseName_.name());
 			baseEventType->sourceName(variant);
 		}
 
 		// set time if necessary
 		if (baseEventType->time().get() == nullptr) {
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(OpcUaDateTime(now));
 			baseEventType->time(variant);
 		}
 
 		// set receive time if necessary
 		if (baseEventType->time().get() == nullptr) {
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(OpcUaDateTime(now));
 			baseEventType->receiveTime(variant);
 		}
 
 		// set message if necessary
 		if (baseEventType->time().get() == nullptr) {
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(OpcUaLocalizedText("", browseName_.name().toStdString()));
 			baseEventType->message(variant);
 		}
 
 		// set severity if necessary
 		if (baseEventType->time().get() == nullptr) {
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue((OpcUaUInt16)100);
 			baseEventType->severity(variant);
 		}
@@ -239,7 +239,7 @@ namespace OpcUaStackServer
 		}
 
 		// process where clause
-		EventFieldList::SPtr eventFieldList = constructSPtr<EventFieldList>();
+		EventFieldList::SPtr eventFieldList = boost::make_shared<EventFieldList>();
 		eventFieldList->clientHandle() = clientHandle_;
 		eventFieldList->eventFields().resize(selectClauses_.size());
 
@@ -267,7 +267,7 @@ namespace OpcUaStackServer
 
 			// insert variant into event field list
 			if (resultCode != EventResult::Success) {
-				value = constructSPtr<OpcUaVariant>();
+				value = boost::make_shared<OpcUaVariant>();
 			}
 			else {
 			}
@@ -308,7 +308,7 @@ namespace OpcUaStackServer
 		for (uint32_t idx=0; idx<selectClauses.size(); idx++) {
 			// FIXME: check if attributes exist in type system
 
-			OpcUaStatus::SPtr status = constructSPtr<OpcUaStatus>();
+			OpcUaStatus::SPtr status = boost::make_shared<OpcUaStatus>();
 			status->enumeration(Success);
 			statusArray.set(idx, status);
 		}

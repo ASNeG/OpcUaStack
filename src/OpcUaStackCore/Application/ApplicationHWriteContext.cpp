@@ -23,7 +23,7 @@ namespace OpcUaStackCore
 	ApplicationHWriteContext::ApplicationHWriteContext(void)
 	: applicationContext_()
 	, nodeId_()
-	, dataValueArray_(constructSPtr<OpcUaDataValueArray>())
+	, dataValueArray_(boost::make_shared<OpcUaDataValueArray>())
 	, statusCode_(Success)
 	, userContext_()
 	{

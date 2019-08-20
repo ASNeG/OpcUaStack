@@ -30,9 +30,9 @@ namespace OpcUaStackCore
 
 	QueryDataSet::QueryDataSet(void)
 	: Object()
-	, nodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
-	, typeDefinitionNodeSPtr_(constructSPtr<OpcUaExpandedNodeId>())
-	, valueArraySPtr_(constructSPtr<OpcUaVariantArray>())
+	, nodeIdSPtr_(boost::make_shared<OpcUaExpandedNodeId>())
+	, typeDefinitionNodeSPtr_(boost::make_shared<OpcUaExpandedNodeId>())
+	, valueArraySPtr_(boost::make_shared<OpcUaVariantArray>())
 	{
 	}
 

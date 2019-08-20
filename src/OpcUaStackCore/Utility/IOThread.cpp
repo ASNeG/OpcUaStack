@@ -145,7 +145,7 @@ namespace OpcUaStackCore
 		if (ioService_.get() != nullptr) return;
 
 		ioServiceCreateFlag_ = true;
-		ioService_ = constructSPtr<IOService>();
+		ioService_ = boost::make_shared<IOService>();
 		ioService_->start(numberThreads_);
 	}
 
@@ -164,7 +164,7 @@ namespace OpcUaStackCore
 		if (slotTimer_.get() != nullptr) return;
 
 		slotTimerCreateFlag_ = true;
-		slotTimer_ = constructSPtr<SlotTimer>();
+		slotTimer_ = boost::make_shared<SlotTimer>();
 		slotTimer_->startSlotTimerLoop(ioService_.get());
 	}
 

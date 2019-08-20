@@ -25,19 +25,19 @@ struct AttributeServiceFixture
 	AttributeServiceFixture()
 	: core_()
 	, service_()
-	, transaction_(constructSPtr<ServiceTransactionHistoryRead>())
+	, transaction_(boost::make_shared<ServiceTransactionHistoryRead>())
 	, mockComponent_()
 	{
 		core_.init();
 
 
-		auto nodeId1 = constructSPtr<OpcUaNodeId>(1,1);
-		auto node1 = constructSPtr<VariableNodeClass>();
+		auto nodeId1 = boost::make_shared<OpcUaNodeId>(1,1);
+		auto node1 = boost::make_shared<VariableNodeClass>();
 
-		auto informationModel = constructSPtr<InformationModel>();
+		auto informationModel = boost::make_shared<InformationModel>();
 
 
-		auto sync = constructSPtr<ForwardNodeSync>();
+		auto sync = boost::make_shared<ForwardNodeSync>();
 		sync->readHService().setCallback(boost::bind(&AttributeServiceFixture::mockCallback, this, _1));
 
 		node1->forwardNodeSync(sync);
@@ -47,9 +47,9 @@ struct AttributeServiceFixture
 
 		transaction_->componentService(&mockComponent_);
 
-		auto nodesToRead = constructSPtr<HistoryReadValueIdArray>();
+		auto nodesToRead = boost::make_shared<HistoryReadValueIdArray>();
 
-		auto nodeToRead = constructSPtr<HistoryReadValueId>();
+		auto nodeToRead = boost::make_shared<HistoryReadValueId>();
 		nodeToRead->nodeId(nodeId1);
 
 		nodesToRead->resize(1);
@@ -58,8 +58,8 @@ struct AttributeServiceFixture
 		transaction_->request()->nodesToRead(nodesToRead);
 		transaction_->componentSession(&mockComponent_);
 
-		auto details = constructSPtr<OpcUaExtensibleParameter>();
-		auto readDetails = constructSPtr<ReadRawModifiedDetails>();
+		auto details = boost::make_shared<OpcUaExtensibleParameter>();
+		auto readDetails = boost::make_shared<ReadRawModifiedDetails>();
 
 		details->parameterTypeId().set(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
 		details->parameter<ReadRawModifiedDetails>().swap(readDetails);
@@ -78,7 +78,7 @@ struct AttributeServiceFixture
 	mockCallback(ApplicationHReadContext *ctx)
 	{
 		ctx->statusCode_ = expectedStatus_;
-		ctx->dataValueArray_ = constructSPtr<OpcUaDataValueArray>();
+		ctx->dataValueArray_ = boost::make_shared<OpcUaDataValueArray>();
 	}
 
 	Core core_;
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(AttributeService_readHistorySuccessResultStatus)
 	expectedStatus_ = OpcUaStatusCode::Success;
 	service_.receive(transaction_);
 
-	auto result = constructSPtr<HistoryReadResult>();
+	auto result = boost::make_shared<HistoryReadResult>();
 	transaction_->response()->results()->get(0, result);
 	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::Success, result->statusCode());
 }
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(AttributeService_readHistoryNoDataResultStatus)
 	expectedStatus_ = OpcUaStatusCode::GoodNoData;
 	service_.receive(transaction_);
 
-	auto result = constructSPtr<HistoryReadResult>();
+	auto result = boost::make_shared<HistoryReadResult>();
 	transaction_->response()->results()->get(0, result);
 	BOOST_REQUIRE_EQUAL(OpcUaStatusCode::GoodNoData, result->statusCode());
 }

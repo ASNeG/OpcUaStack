@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 
 	GetNodeReferenceResponse::GetNodeReferenceResponse(void)
 	: Object()
-	, nodeReferenceArray_(constructSPtr<NodeReferenceArray>())
+	, nodeReferenceArray_(boost::make_shared<NodeReferenceArray>())
 	{
 	}
 

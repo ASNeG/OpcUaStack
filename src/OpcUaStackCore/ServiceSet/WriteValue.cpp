@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 	, indexRange_()
 	, dataValue_()
 	{
-		nodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
+		nodeIdSPtr_ = boost::make_shared<OpcUaNodeId>();
 	}
 
 	WriteValue::~WriteValue(void)

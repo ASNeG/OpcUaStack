@@ -32,8 +32,8 @@ namespace OpcUaStackCore
 	: Object()
 	, subscriptionId_()
 	, triggeringItemId_()
-	, linksToAddArraySPtr_(constructSPtr<OpcUaUInt32Array>())
-	, linksToRemoveArraySPtr_(constructSPtr<OpcUaUInt32Array>())
+	, linksToAddArraySPtr_(boost::make_shared<OpcUaUInt32Array>())
+	, linksToRemoveArraySPtr_(boost::make_shared<OpcUaUInt32Array>())
 	{
 	}
 

@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 
 	TranslateBrowsePathsToNodeIdsResponse::TranslateBrowsePathsToNodeIdsResponse(void)
 	: Object()
-	, resultArraySPtr_(constructSPtr<BrowsePathResultArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, resultArraySPtr_(boost::make_shared<BrowsePathResultArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

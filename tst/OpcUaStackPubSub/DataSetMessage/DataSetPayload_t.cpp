@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode_keepalive)
 
 	value1.dataSetMessages()->resize(2);
 	for (uint32_t idx=0; idx<2; idx++) {
-		KeepAliveMessage::SPtr dataSetMessage = constructSPtr<KeepAliveMessage>();
+		KeepAliveMessage::SPtr dataSetMessage = boost::make_shared<KeepAliveMessage>();
 		dataSetMessage->sequenceNumber(idx);
 		value1.dataSetMessages()->push_back(dataSetMessage);
 	}
@@ -61,15 +61,15 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode_data_key)
 
 	value1.dataSetMessages()->resize(2);
 	for (uint32_t idx=0; idx<2; idx++) {
-		DataKeyFrameDataSetMessage::SPtr dataSetMessage = constructSPtr<DataKeyFrameDataSetMessage>();
+		DataKeyFrameDataSetMessage::SPtr dataSetMessage = boost::make_shared<DataKeyFrameDataSetMessage>();
 		dataSetMessage->sequenceNumber(idx);
 
 		dataSetMessage->dataSetFields()->resize(10);
 		for (uint32_t idx=0; idx<10; idx++) {
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(OpcUaNodeId(idx));
 
-			DataSetField::SPtr dataSetField = constructSPtr<DataSetField>();
+			DataSetField::SPtr dataSetField = boost::make_shared<DataSetField>();
 			dataSetField->variant(variant);
 
 			dataSetMessage->dataSetFields()->push_back(dataSetField);
@@ -114,15 +114,15 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode_data_delta)
 
 	value1.dataSetMessages()->resize(2);
 	for (uint32_t idx=0; idx<2; idx++) {
-		DataDeltaFrameDataSetMessage::SPtr dataSetMessage = constructSPtr<DataDeltaFrameDataSetMessage>();
+		DataDeltaFrameDataSetMessage::SPtr dataSetMessage = boost::make_shared<DataDeltaFrameDataSetMessage>();
 		dataSetMessage->sequenceNumber(idx);
 
 		dataSetMessage->deltaFrameFields()->resize(10);
 		for (uint32_t idx=0; idx<10; idx++) {
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(OpcUaNodeId(idx));
 
-			DeltaFrameField::SPtr deltaFrameField = constructSPtr<DeltaFrameField>();
+			DeltaFrameField::SPtr deltaFrameField = boost::make_shared<DeltaFrameField>();
 			deltaFrameField->variant(variant);
 			deltaFrameField->fieldIndex(idx+10);
 
@@ -169,15 +169,15 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode_event)
 
 	value1.dataSetMessages()->resize(2);
 	for (uint32_t idx=0; idx<2; idx++) {
-		EventDataSetMessage::SPtr dataSetMessage = constructSPtr<EventDataSetMessage>();
+		EventDataSetMessage::SPtr dataSetMessage = boost::make_shared<EventDataSetMessage>();
 		dataSetMessage->sequenceNumber(idx);
 
 		dataSetMessage->dataSetFields()->resize(10);
 		for (uint32_t idx=0; idx<10; idx++) {
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			variant->setValue(OpcUaNodeId(idx));
 
-			DataSetField::SPtr dataSetField = constructSPtr<DataSetField>();
+			DataSetField::SPtr dataSetField = boost::make_shared<DataSetField>();
 			dataSetField->variant(variant);
 
 			dataSetMessage->dataSetFields()->push_back(dataSetField);

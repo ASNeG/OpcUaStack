@@ -225,7 +225,7 @@ namespace OpcUaStackCore
 		if (style_ == S_ByteString) {
 			if (byteString_.get() == nullptr) return;
 			typeId_.copyTo(extensionObject.typeId());
-			OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>();
+			OpcUaByteString::SPtr byteString = boost::make_shared<OpcUaByteString>();
 			byteString_->copyTo(*byteString);
 			extensionObject.byteString(byteString);
 		}
@@ -342,7 +342,7 @@ namespace OpcUaStackCore
 			// Extension object unknown - read extension data as raw byte string
 
 			style_ = S_ByteString;
-			byteString_ = constructSPtr<OpcUaByteString>();
+			byteString_ = boost::make_shared<OpcUaByteString>();
 			byteString_->opcUaBinaryDecode(is);
 
 			return;

@@ -153,7 +153,7 @@ namespace OpcUaStackClient
 	void
 	DiscoveryClientFindServers::sendFindServersRequest(void)
 	{
-		auto trx = constructSPtr<ServiceTransactionFindServers>();
+		auto trx = boost::make_shared<ServiceTransactionFindServers>();
 		auto req = trx->request();
 
 		auto serverUris = boost::make_shared<OpcUaStringArray>();

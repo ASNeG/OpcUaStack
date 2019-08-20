@@ -132,7 +132,7 @@ namespace OpcUaStackServer
 		OpcUaExtensibleParameter::SPtr& notification
 	)
 	{
-		AcknowledgementElement::SPtr acknowledgementElement = constructSPtr<AcknowledgementElement>();
+		AcknowledgementElement::SPtr acknowledgementElement = boost::make_shared<AcknowledgementElement>();
 		acknowledgementElement->sequenceNumber(sequenceNumber);
 		acknowledgementElement->notification(notification);
 		acknowledgementList_.push_back(acknowledgementElement);

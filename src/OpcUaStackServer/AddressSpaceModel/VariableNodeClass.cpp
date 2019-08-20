@@ -233,7 +233,7 @@ namespace OpcUaStackServer
 	BaseNodeClass::SPtr
 	VariableNodeClass::clone(void)
 	{
-		VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
+		VariableNodeClass::SPtr variableNodeClass = boost::make_shared<VariableNodeClass>();
 		copyTo(variableNodeClass);
 		return variableNodeClass;
 	}

@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 
 	BrowseResponse::BrowseResponse(void)
 	: Object()
-	, resultArraySPtr_(constructSPtr<BrowseResultArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, resultArraySPtr_(boost::make_shared<BrowseResultArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

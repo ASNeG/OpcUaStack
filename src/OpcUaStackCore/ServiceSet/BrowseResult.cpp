@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: Object()
 	, statusCode_()
 	, continuationPoint_()
-	, referenceArraySPtr_(constructSPtr<ReferenceDescriptionArray>())
+	, referenceArraySPtr_(boost::make_shared<ReferenceDescriptionArray>())
 	{
 	}
 

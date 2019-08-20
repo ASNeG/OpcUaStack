@@ -70,7 +70,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	BrowsePathToNodeIdResponse::BrowsePathToNodeIdResponse(void)
 	: Object()
-	, nodeIdResults_(constructSPtr<NodeIdResultArray>())
+	, nodeIdResults_(boost::make_shared<NodeIdResultArray>())
 	{
 	}
 

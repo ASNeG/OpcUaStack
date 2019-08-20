@@ -113,7 +113,7 @@ namespace OpcUaStackServer
 		// read values
 		readResponse->dataValueArray()->resize(readRequest->readValueIdArray()->size());
 		for (uint32_t idx = 0; idx < readRequest->readValueIdArray()->size(); idx++) {
-			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
+			OpcUaDataValue::SPtr dataValue = boost::make_shared<OpcUaDataValue>();
 			readResponse->dataValueArray()->set(idx, dataValue);
 
 			// determine node information
@@ -500,7 +500,7 @@ namespace OpcUaStackServer
 		// read values
 		readResponse->results()->resize(readRequest->nodesToRead()->size());
 		for (uint32_t idx = 0; idx < readRequest->nodesToRead()->size(); idx++) {
-			HistoryReadResult::SPtr readResult = constructSPtr<HistoryReadResult>();
+			HistoryReadResult::SPtr readResult = boost::make_shared<HistoryReadResult>();
 			readResponse->results()->set(idx, readResult);
 
 			// determine node information
@@ -617,7 +617,7 @@ namespace OpcUaStackServer
 		// read values
 		readResponse->results()->resize(readRequest->nodesToRead()->size());
 		for (uint32_t idx = 0; idx < readRequest->nodesToRead()->size(); idx++) {
-			HistoryReadResult::SPtr readResult = constructSPtr<HistoryReadResult>();
+			HistoryReadResult::SPtr readResult = boost::make_shared<HistoryReadResult>();
 			readResponse->results()->set(idx, readResult);
 
 			// determine node information
@@ -770,7 +770,7 @@ namespace OpcUaStackServer
 		for (uint32_t idx=0; idx<updateRequest->historyUpdateDetails()->size(); idx++) {
 
 			// create result package
-			HistoryUpdateResult::SPtr writeResult = constructSPtr<HistoryUpdateResult>();
+			HistoryUpdateResult::SPtr writeResult = boost::make_shared<HistoryUpdateResult>();
 			updateResponse->results()->push_back(writeResult);
 
 			// check type of history update details

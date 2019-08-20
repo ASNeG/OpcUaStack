@@ -127,7 +127,7 @@ namespace OpcUaStackServer
 	{
 		// create new enum type definition structure
 		if (enumDefinition.get() == nullptr) {
-			enumDefinition = constructSPtr<EnumDefinitionExpand>();
+			enumDefinition = boost::make_shared<EnumDefinitionExpand>();
 		}
 
 		if (decodeDefinition) {
@@ -209,7 +209,7 @@ namespace OpcUaStackServer
 		for (it = ptreeValue.begin(); it != ptreeValue.end(); it++) {
 			if (it->first != "Field") continue;
 
-			StructureField::SPtr structureField = constructSPtr<StructureField>();
+			StructureField::SPtr structureField = boost::make_shared<StructureField>();
 			if (!decodeStructureField(it->second, structureField)) {
 				return false;
 			}
@@ -388,7 +388,7 @@ namespace OpcUaStackServer
 		for (it = ptreeValue.begin(); it != ptreeValue.end(); it++) {
 			if (it->first != "Field") continue;
 
-			EnumField::SPtr enumField = constructSPtr<EnumField>();
+			EnumField::SPtr enumField = boost::make_shared<EnumField>();
 			if (!decodeEnumField(it->second, enumField)) {
 				return false;
 			}

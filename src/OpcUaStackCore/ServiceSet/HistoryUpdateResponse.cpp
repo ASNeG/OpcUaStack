@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 
 	HistoryUpdateResponse::HistoryUpdateResponse(void)
 	: Object()
-	, resultArraySPtr_(constructSPtr<HistoryUpdateResultArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, resultArraySPtr_(boost::make_shared<HistoryUpdateResultArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

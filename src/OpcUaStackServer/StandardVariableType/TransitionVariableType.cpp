@@ -16,12 +16,12 @@ namespace OpcUaStackServer
     
     TransitionVariableType::TransitionVariableType(void)
     : VariableBase()
-    , effectiveTransitionTime_Variable_(constructSPtr<ServerVariable>("EffectiveTransitionTime_Variable"))
-    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
-    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
-    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
-    , transitionTime_Variable_(constructSPtr<ServerVariable>("TransitionTime_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , effectiveTransitionTime_Variable_(boost::make_shared<ServerVariable>("EffectiveTransitionTime_Variable"))
+    , id_Variable_(boost::make_shared<ServerVariable>("Id_Variable"))
+    , name_Variable_(boost::make_shared<ServerVariable>("Name_Variable"))
+    , number_Variable_(boost::make_shared<ServerVariable>("Number_Variable"))
+    , transitionTime_Variable_(boost::make_shared<ServerVariable>("TransitionTime_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2762);
@@ -35,12 +35,12 @@ namespace OpcUaStackServer
     
     TransitionVariableType::TransitionVariableType(const TransitionVariableType& value)
     : VariableBase()
-    , effectiveTransitionTime_Variable_(constructSPtr<ServerVariable>("EffectiveTransitionTime_Variable"))
-    , id_Variable_(constructSPtr<ServerVariable>("Id_Variable"))
-    , name_Variable_(constructSPtr<ServerVariable>("Name_Variable"))
-    , number_Variable_(constructSPtr<ServerVariable>("Number_Variable"))
-    , transitionTime_Variable_(constructSPtr<ServerVariable>("TransitionTime_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , effectiveTransitionTime_Variable_(boost::make_shared<ServerVariable>("EffectiveTransitionTime_Variable"))
+    , id_Variable_(boost::make_shared<ServerVariable>("Id_Variable"))
+    , name_Variable_(boost::make_shared<ServerVariable>("Name_Variable"))
+    , number_Variable_(boost::make_shared<ServerVariable>("Number_Variable"))
+    , transitionTime_Variable_(boost::make_shared<ServerVariable>("TransitionTime_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2762);

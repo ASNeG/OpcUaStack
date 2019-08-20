@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.0.0
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -133,7 +133,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     AddReferencesItem::factory(void)
     {
-    	return constructSPtr<AddReferencesItem>();
+    	return boost::make_shared<AddReferencesItem>();
     }
     
     std::string

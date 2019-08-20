@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,7 +16,6 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackClient/ApplicationUtility/ClientConfig.h"
 
 using namespace OpcUaStackCore;
@@ -291,7 +290,7 @@ namespace OpcUaStackClient
 
 		std::vector<Config>::iterator it;
 		for (it = childs.begin(); it != childs.end(); it++) {
-			ClientMonitoredItemConfig::SPtr monitoredItem  = constructSPtr<ClientMonitoredItemConfig>();
+			ClientMonitoredItemConfig::SPtr monitoredItem  = boost::make_shared<ClientMonitoredItemConfig>();
 
 			ConfigBase cb(configBase, ".MonitoredItem");
 			if (!monitoredItem->decode(*it, cb)) {
@@ -488,7 +487,7 @@ namespace OpcUaStackClient
 
 		std::vector<Config>::iterator it;
 		for (it = childs.begin(); it != childs.end(); it++) {
-			ClientSubscriptionConfig::SPtr subscription = constructSPtr<ClientSubscriptionConfig>();
+			ClientSubscriptionConfig::SPtr subscription = boost::make_shared<ClientSubscriptionConfig>();
 
 			if (!subscription->decode(*it, configBase)) {
 				return false;

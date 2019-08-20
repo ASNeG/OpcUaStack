@@ -1,8 +1,9 @@
 #include "unittest.h"
-#include "OpcUaStackCore/Utility/PendingQueue.h"
+#include <boost/make_shared.hpp>
+#include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Utility/PendingQueue.h"
 #include <iostream>
 
 using namespace OpcUaStackCore;
@@ -53,7 +54,7 @@ BOOST_AUTO_TEST_CASE(PendingQueue_pending_queue_element_1)
 
 	PendingQueueTest pendingQueueTest;
 
-	PendingQueueElement::SPtr pqe = constructSPtr<PendingQueueElement>(ioService);
+	PendingQueueElement::SPtr pqe = boost::make_shared<PendingQueueElement>(ioService);
 	pqe->timer()->callback().reset(boost::bind(&PendingQueueTest::onTimeout0, &pendingQueueTest));
 	pqe->timer()->start(1000);
 	pqe->timer()->stop();
@@ -68,7 +69,7 @@ BOOST_AUTO_TEST_CASE(PendingQueue_pending_queue_element_2)
 
 	PendingQueueTest pendingQueueTest;
 
-	PendingQueueElement::SPtr pqe = constructSPtr<PendingQueueElement>(ioService);
+	PendingQueueElement::SPtr pqe = boost::make_shared<PendingQueueElement>(ioService);
 	pqe->timer()->callback().reset(boost::bind(&PendingQueueTest::onTimeout0, &pendingQueueTest));
 
 	pendingQueueTest.onTimeoutCondition_.condition(0, 1);
@@ -89,7 +90,7 @@ BOOST_AUTO_TEST_CASE(PendingQueue_insert_remove)
 	PendingQueue pendingQueue(ioService);
 	pendingQueue.timeoutCallback().reset(boost::bind(&PendingQueueTest::onTimeout, &pendingQueueTest, _1));
 
-	Object::SPtr objectSPtr1(constructSPtr<MyQueueElement>());
+	Object::SPtr objectSPtr1(boost::make_shared<MyQueueElement>());
 	Object::SPtr objectSPtr2;
 
 	for (uint32_t idx=0; idx <10; idx++) {
@@ -115,7 +116,7 @@ BOOST_AUTO_TEST_CASE(PendingQueue_insert_expire_remove)
 	PendingQueue pendingQueue(ioService);
 	pendingQueue.timeoutCallback().reset(boost::bind(&PendingQueueTest::onTimeout, &pendingQueueTest, _1));
 
-	Object::SPtr objectSPtr1(constructSPtr<MyQueueElement>());
+	Object::SPtr objectSPtr1(boost::make_shared<MyQueueElement>());
 	Object::SPtr objectSPtr2;
 
 	pendingQueueTest.onTimeoutCondition_.condition(0, 1); 

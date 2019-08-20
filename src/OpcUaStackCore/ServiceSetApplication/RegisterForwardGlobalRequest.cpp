@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	RegisterForwardGlobalRequest::RegisterForwardGlobalRequest(void)
 	: Object()
-	, forwardGlobalSync_(constructSPtr<ForwardGlobalSync>())
+	, forwardGlobalSync_(boost::make_shared<ForwardGlobalSync>())
 	{
 	}
 

@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_)
 
 BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 {
-	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
+	RequestHeader::SPtr requestHeader = boost::make_shared<RequestHeader>();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(52);
 	sequenceHeaderSPtr->requestId(2);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -60,12 +60,12 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode DeleteNodesRequest
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x00;
-	deleteNodesRequestSPtr = constructSPtr<DeleteNodesRequest>();
+	deleteNodesRequestSPtr = boost::make_shared<DeleteNodesRequest>();
 
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
 	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 
 	// add DeleteNodesItem node
 	{
-		DeleteNodesItem::SPtr deleteNodesItemSPtr = constructSPtr<DeleteNodesItem>();
+		DeleteNodesItem::SPtr deleteNodesItemSPtr = boost::make_shared<DeleteNodesItem>();
 		deleteNodesItemSPtr->nodeId().set(11, 130);
 		deleteNodesItemSPtr->deleteTargetReferences() = true;
 
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 	deleteNodesRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
     */
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 52);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 2);
@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_DeleteNodesRequest_Encoding_DefaultBinary);
 
 	// decode DeleteNodesRequest
-	deleteNodesRequestSPtr = constructSPtr<DeleteNodesRequest>();
+	deleteNodesRequestSPtr = boost::make_shared<DeleteNodesRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	deleteNodesRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 
 BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 {
-	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
+	ResponseHeader::SPtr responseHeader = boost::make_shared<ResponseHeader>();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(53);
 	sequenceHeaderSPtr->requestId(3);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -216,16 +216,16 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode DeleteNodesResponse
-	deleteNodesResponseSPtr = constructSPtr<DeleteNodesResponse>();
+	deleteNodesResponseSPtr = boost::make_shared<DeleteNodesResponse>();
 
 	responseHeader->time(ptime);
 	responseHeader->requestHandle(1);
 	responseHeader->serviceResult(Success);
 
-	DeleteNodesResultArray::SPtr deleteNodesResultArraySPtr = constructSPtr<DeleteNodesResultArray>();
+	DeleteNodesResultArray::SPtr deleteNodesResultArraySPtr = boost::make_shared<DeleteNodesResultArray>();
 	deleteNodesResultArraySPtr->resize(1);
 	{
-		DeleteNodesResult::SPtr deleteNodesResultSPtr = constructSPtr<DeleteNodesResult>();
+		DeleteNodesResult::SPtr deleteNodesResultSPtr = boost::make_shared<DeleteNodesResult>();
 		deleteNodesResultSPtr->statusCode(Success);
 		deleteNodesResultArraySPtr->set(0, deleteNodesResultSPtr);		
 	}
@@ -236,7 +236,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	deleteNodesResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 
 	
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -269,7 +269,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 53);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 3);
@@ -280,7 +280,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_DeleteNodesResponse_Encoding_DefaultBinary);
 
 	//decode DeleteNodesResponse
-	deleteNodesResponseSPtr = constructSPtr<DeleteNodesResponse>();
+	deleteNodesResponseSPtr = boost::make_shared<DeleteNodesResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	deleteNodesResponseSPtr->opcUaBinaryDecode(ios);
 

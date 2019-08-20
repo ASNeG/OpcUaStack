@@ -48,9 +48,9 @@ BOOST_AUTO_TEST_CASE(NetworkMessage_encode_decode_1dataSetMessage)
 {
 	NetworkMessage message;
 	OpcUaUInt16 writerId = 0x100;
-	DataSetMessageArray::SPtr dataSetMessages = constructSPtr<DataSetMessageArray>();
+	DataSetMessageArray::SPtr dataSetMessages = boost::make_shared<DataSetMessageArray>();
 	dataSetMessages->resize(1);
-	dataSetMessages->push_back(constructSPtr<KeepAliveMessage>());
+	dataSetMessages->push_back(boost::make_shared<KeepAliveMessage>());
 
 	message.dataSetPayloadHeader()->dataSetWriterIds()->resize(1);
 	message.dataSetPayloadHeader()->dataSetWriterIds()->push_back(writerId);
@@ -64,10 +64,10 @@ BOOST_AUTO_TEST_CASE(NetworkMessage_encode_decode_2dataSetMessage)
 {
 	NetworkMessage message;
 	OpcUaUInt16 writerId = 0x100;
-	DataSetMessageArray::SPtr dataSetMessages = constructSPtr<DataSetMessageArray>();
+	DataSetMessageArray::SPtr dataSetMessages = boost::make_shared<DataSetMessageArray>();
 	dataSetMessages->resize(2);
-	dataSetMessages->push_back(constructSPtr<KeepAliveMessage>());
-	dataSetMessages->push_back(constructSPtr<KeepAliveMessage>());
+	dataSetMessages->push_back(boost::make_shared<KeepAliveMessage>());
+	dataSetMessages->push_back(boost::make_shared<KeepAliveMessage>());
 
 	message.dataSetPayloadHeader()->dataSetWriterIds()->resize(2);
 	message.dataSetPayloadHeader()->dataSetWriterIds()->push_back(writerId);

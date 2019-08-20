@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 	, indexRange_()
 	, dataEncoding_()
 	{
-		nodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
+		nodeIdSPtr_ = boost::make_shared<OpcUaNodeId>();
 	}
 
 	ReadValueId::~ReadValueId(void)

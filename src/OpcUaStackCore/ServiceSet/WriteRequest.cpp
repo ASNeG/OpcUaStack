@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	WriteRequest::WriteRequest(void)
 	: Object()
-	, writeValueArraySPtr_(constructSPtr<WriteValueArray>())
+	, writeValueArraySPtr_(boost::make_shared<WriteValueArray>())
 	{
 	}
 

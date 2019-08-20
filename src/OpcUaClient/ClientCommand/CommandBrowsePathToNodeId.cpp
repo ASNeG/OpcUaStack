@@ -18,7 +18,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandBrowsePathToNodeId.h"
 
 using namespace OpcUaStackCore;
@@ -40,7 +40,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandBrowsePathToNodeId::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandBrowsePathToNodeId>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandBrowsePathToNodeId>();
 		return commandBase;
 	}
 
@@ -67,7 +67,7 @@ namespace OpcUaClient
 	CommandBrowsePathToNodeId::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
 		if (parameterName == "-NODEID") {
-			OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+			OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>();
 			if (!nodeId->fromString(parameterValue)) {
 				std::stringstream ss;
 				ss << "node id parameter invalid (" << parameterValue << ")";

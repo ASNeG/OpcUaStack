@@ -16,10 +16,10 @@ namespace OpcUaStackServer
     
     MultiStateDiscreteType::MultiStateDiscreteType(void)
     : VariableBase()
-    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
-    , enumStrings_Variable_(constructSPtr<ServerVariable>("EnumStrings_Variable"))
-    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , definition_Variable_(boost::make_shared<ServerVariable>("Definition_Variable"))
+    , enumStrings_Variable_(boost::make_shared<ServerVariable>("EnumStrings_Variable"))
+    , valuePrecision_Variable_(boost::make_shared<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2376);
@@ -31,10 +31,10 @@ namespace OpcUaStackServer
     
     MultiStateDiscreteType::MultiStateDiscreteType(const MultiStateDiscreteType& value)
     : VariableBase()
-    , definition_Variable_(constructSPtr<ServerVariable>("Definition_Variable"))
-    , enumStrings_Variable_(constructSPtr<ServerVariable>("EnumStrings_Variable"))
-    , valuePrecision_Variable_(constructSPtr<ServerVariable>("ValuePrecision_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , definition_Variable_(boost::make_shared<ServerVariable>("Definition_Variable"))
+    , enumStrings_Variable_(boost::make_shared<ServerVariable>("EnumStrings_Variable"))
+    , valuePrecision_Variable_(boost::make_shared<ServerVariable>("ValuePrecision_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)2376);

@@ -200,7 +200,7 @@ namespace OpcUaStackClient
 
 		for (auto it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
 
-			auto trx = constructSPtr<ServiceTransactionRegisterServer>();
+			auto trx = boost::make_shared<ServiceTransactionRegisterServer>();
 			auto req = trx->request();
 
 			it->second->copyTo(req->server());

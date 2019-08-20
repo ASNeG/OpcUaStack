@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientCommand/CommandBrowsePathToNodeId.h"
 #include "OpcUaClient/ClientService/ClientServiceBrowsePathToNodeId.h"
 
@@ -36,7 +35,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceBrowsePathToNodeId::createClientService(void)
 	{
-		return constructSPtr<ClientServiceBrowsePathToNodeId>();
+		return boost::make_shared<ClientServiceBrowsePathToNodeId>();
 	}
 
 	bool
@@ -77,12 +76,12 @@ namespace OpcUaClient
 
 		// create browse path to node id request
 		ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr trx;
-		trx = constructSPtr<ServiceTransactionTranslateBrowsePathsToNodeIds>();
+		trx = boost::make_shared<ServiceTransactionTranslateBrowsePathsToNodeIds>();
 		TranslateBrowsePathsToNodeIdsRequest::SPtr req = trx->request();
 		req->browsePaths()->resize(1);
 
 		BrowsePath::SPtr browsePath;
-		browsePath = constructSPtr<BrowsePath>();
+		browsePath = boost::make_shared<BrowsePath>();
 		req->browsePaths()->push_back(browsePath);
 		browsePath->startingNode(commandBrowsePathToNodeId->nodeId());
 
@@ -93,7 +92,7 @@ namespace OpcUaClient
 			 it++)
 		{
 			RelativePathElement::SPtr element;
-			element = constructSPtr<RelativePathElement>();
+			element = boost::make_shared<RelativePathElement>();
 			browsePath->relativePath().elements().push_back(element);
 			element->targetName() = *it;
 		}

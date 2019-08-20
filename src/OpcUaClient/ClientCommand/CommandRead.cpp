@@ -18,7 +18,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandRead.h"
 
 using namespace OpcUaStackCore;
@@ -40,7 +40,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandRead::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandRead>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandRead>();
 		return commandBase;
 	}
 
@@ -60,7 +60,7 @@ namespace OpcUaClient
 	CommandRead::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
 		if (parameterName == "-NODEID") {
-			OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+			OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>();
 			if (!nodeId->fromString(parameterValue)) {
 				std::stringstream ss;
 				ss << "node id parameter invalid (" << parameterValue << ")";

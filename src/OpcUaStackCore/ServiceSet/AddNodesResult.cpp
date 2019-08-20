@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	: statusCode_()
 	, addedNodeIdSPtr_()
 	{
-		addedNodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
+		addedNodeIdSPtr_ = boost::make_shared<OpcUaNodeId>();
 	}
 
 	AddNodesResult::~AddNodesResult(void)

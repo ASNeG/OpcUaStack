@@ -244,7 +244,7 @@ namespace OpcUaStackServer
 			}
 
 			// handle childs of node
-			browseNames.pathNames()->set(size, constructSPtr<OpcUaQualifiedName>(browseName));
+			browseNames.pathNames()->set(size, boost::make_shared<OpcUaQualifiedName>(browseName));
 			BaseNodeClass::SPtr nodeClassChild = readChilds(*nodeClass->getNodeId(), baseNodeClassChildTemplate, browseNames);
 			if (nodeClassChild.get() == nullptr) {
 				Log(Error, "read childs error")
@@ -311,7 +311,7 @@ namespace OpcUaStackServer
 				}
 
 				ObjectNodeClass::SPtr objectNode0 = boost::static_pointer_cast<ObjectNodeClass>(baseNodeTemplate);
-				objectNode = constructSPtr<ObjectNodeClass>(nodeId, *objectNode0.get());
+				objectNode = boost::make_shared<ObjectNodeClass>(nodeId, *objectNode0.get());
 
 				objectNode->referenceItemMap().add(
 					ReferenceType_HasTypeDefinition,
@@ -330,7 +330,7 @@ namespace OpcUaStackServer
 			case NodeClass::EnumObjectType:
 			{
 				ObjectTypeNodeClass::SPtr objectTypeNode = boost::static_pointer_cast<ObjectTypeNodeClass>(baseNodeTemplate);
-				objectNode = constructSPtr<ObjectNodeClass>(nodeId, *objectTypeNode.get());
+				objectNode = boost::make_shared<ObjectNodeClass>(nodeId, *objectTypeNode.get());
 
 				objectNode->referenceItemMap().add(
 					ReferenceType_HasTypeDefinition,
@@ -423,7 +423,7 @@ namespace OpcUaStackServer
 				}
 
 				VariableNodeClass::SPtr variableNode0 = boost::static_pointer_cast<VariableNodeClass>(baseNodeTemplate);
-				variableNode = constructSPtr<VariableNodeClass>(nodeId, *variableNode0.get());
+				variableNode = boost::make_shared<VariableNodeClass>(nodeId, *variableNode0.get());
 
 				variableNode->referenceItemMap().add(
 					ReferenceType_HasTypeDefinition,
@@ -485,10 +485,10 @@ namespace OpcUaStackServer
 		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
 
 		MethodNodeClass::SPtr methodNode0 = boost::static_pointer_cast<MethodNodeClass>(baseNodeTemplate);
-		methodNode = constructSPtr<MethodNodeClass>(nodeId, *methodNode0.get());
+		methodNode = boost::make_shared<MethodNodeClass>(nodeId, *methodNode0.get());
 
 		// register method callback
-		ForwardMethodSync::SPtr forwardMethodSync = constructSPtr<ForwardMethodSync>();
+		ForwardMethodSync::SPtr forwardMethodSync = boost::make_shared<ForwardMethodSync>();
 		forwardMethodSync->methodService().setCallback(boost::bind(&ServerMethod::method, serverMethod.get(), _1));
 		informationModel_->methodMap().registerMethod(
 			parentNodeId,

@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Title)
 
 BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 {
-	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
+	RequestHeader::SPtr requestHeader = boost::make_shared<RequestHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaUInt32 monitoredItemId;
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -60,10 +60,10 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build DeleteMonitoredItemsRequest
-	deleteMonitoredItemsRequestSPtr = constructSPtr<DeleteMonitoredItemsRequest>();
+	deleteMonitoredItemsRequestSPtr = boost::make_shared<DeleteMonitoredItemsRequest>();
 
 	// build RequestHeader
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 	deleteMonitoredItemsRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_DeleteMonitoredItemsRequest_Encoding_DefaultBinary);
 
 	// decode
-	deleteMonitoredItemsRequestSPtr = constructSPtr<DeleteMonitoredItemsRequest>();
+	deleteMonitoredItemsRequestSPtr = boost::make_shared<DeleteMonitoredItemsRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	deleteMonitoredItemsRequestSPtr->opcUaBinaryDecode(ios);
 	
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 
 BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Response)
 {
-	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
+	ResponseHeader::SPtr responseHeader = boost::make_shared<ResponseHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build DeleteMonitoredItemsResponse
-	deleteMonitoredItemsResponseSPtr = constructSPtr<DeleteMonitoredItemsResponse>();
+	deleteMonitoredItemsResponseSPtr = boost::make_shared<DeleteMonitoredItemsResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Response)
 	deleteMonitoredItemsResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -234,7 +234,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_DeleteMonitoredItemsResponse_Encoding_DefaultBinary);
 
 	// decode 
-	deleteMonitoredItemsResponseSPtr = constructSPtr<DeleteMonitoredItemsResponse>();
+	deleteMonitoredItemsResponseSPtr = boost::make_shared<DeleteMonitoredItemsResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	deleteMonitoredItemsResponseSPtr->opcUaBinaryDecode(ios);
 

@@ -18,7 +18,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandNodeSetFilter.h"
 
 using namespace OpcUaStackCore;
@@ -41,7 +41,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandNodeSetFilter::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandNodeSetFilter>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandNodeSetFilter>();
 		return commandBase;
 	}
 

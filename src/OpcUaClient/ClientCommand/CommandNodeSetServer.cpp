@@ -18,7 +18,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandNodeSetServer.h"
 
 using namespace OpcUaStackCore;
@@ -40,7 +40,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandNodeSetServer::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandNodeSetServer>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandNodeSetServer>();
 		return commandBase;
 	}
 

@@ -153,7 +153,6 @@ namespace OpcUaStackServer
 		ss << std::endl;
 		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
-		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
 
 		//
@@ -534,7 +533,7 @@ namespace OpcUaStackServer
 
 			std::string variableContent = "";
 			if (dataTypeField->smartpointer() == true) {
-				variableContent = "constructSPtr<" + dataTypeField->variableTypeWithoutPtr() + ">()";
+				variableContent = "boost::make_shared<" + dataTypeField->variableTypeWithoutPtr() + ">()";
 			}
 
 			ss << prefix << ", " << dataTypeField->variableName() << "(" << variableContent << ")" << std::endl;
@@ -568,7 +567,7 @@ namespace OpcUaStackServer
 
 			std::string variableContent = "";
 			if (dataTypeField->smartpointer() == true) {
-				variableContent = "constructSPtr<" + dataTypeField->variableTypeWithoutPtr() + ">()";
+				variableContent = "boost::make_shared<" + dataTypeField->variableTypeWithoutPtr() + ">()";
 			}
 
 			ss << prefix << ", " << dataTypeField->variableName() << "(" << variableContent << ")" << std::endl;
@@ -755,7 +754,7 @@ namespace OpcUaStackServer
 		ss << prefix << "ExtensionObjectBase::SPtr" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::factory(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "	return constructSPtr<" << nodeInfo_.className() << ">();" << std::endl;
+		ss << prefix << "	return boost::make_shared<" << nodeInfo_.className() << ">();" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

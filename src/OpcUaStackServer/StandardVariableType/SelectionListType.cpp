@@ -16,10 +16,10 @@ namespace OpcUaStackServer
     
     SelectionListType::SelectionListType(void)
     : VariableBase()
-    , restrictToList_Variable_(constructSPtr<ServerVariable>("RestrictToList_Variable"))
-    , selectionDescriptions_Variable_(constructSPtr<ServerVariable>("SelectionDescriptions_Variable"))
-    , selections_Variable_(constructSPtr<ServerVariable>("Selections_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , restrictToList_Variable_(boost::make_shared<ServerVariable>("RestrictToList_Variable"))
+    , selectionDescriptions_Variable_(boost::make_shared<ServerVariable>("SelectionDescriptions_Variable"))
+    , selections_Variable_(boost::make_shared<ServerVariable>("Selections_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)16309);
@@ -31,10 +31,10 @@ namespace OpcUaStackServer
     
     SelectionListType::SelectionListType(const SelectionListType& value)
     : VariableBase()
-    , restrictToList_Variable_(constructSPtr<ServerVariable>("RestrictToList_Variable"))
-    , selectionDescriptions_Variable_(constructSPtr<ServerVariable>("SelectionDescriptions_Variable"))
-    , selections_Variable_(constructSPtr<ServerVariable>("Selections_Variable"))
-    , variable_(constructSPtr<ServerVariable>("Variable"))
+    , restrictToList_Variable_(boost::make_shared<ServerVariable>("RestrictToList_Variable"))
+    , selectionDescriptions_Variable_(boost::make_shared<ServerVariable>("SelectionDescriptions_Variable"))
+    , selections_Variable_(boost::make_shared<ServerVariable>("Selections_Variable"))
+    , variable_(boost::make_shared<ServerVariable>("Variable"))
     {
         variableTypeNamespaceName("http://opcfoundation.org/UA/");
         variableTypeNodeId((OpcUaUInt32)16309);

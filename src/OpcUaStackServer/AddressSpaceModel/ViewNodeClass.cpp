@@ -74,7 +74,7 @@ namespace OpcUaStackServer
 	BaseNodeClass::SPtr
 	ViewNodeClass::clone(void)
 	{
-		ViewNodeClass::SPtr viewNodeClass = constructSPtr<ViewNodeClass>();
+		ViewNodeClass::SPtr viewNodeClass = boost::make_shared<ViewNodeClass>();
 		copyTo(viewNodeClass);
 		return viewNodeClass;
 	}

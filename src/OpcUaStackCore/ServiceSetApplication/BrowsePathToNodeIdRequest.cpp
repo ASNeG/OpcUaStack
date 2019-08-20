@@ -23,7 +23,7 @@ namespace OpcUaStackCore
 
 	BrowsePathToNodeIdRequest::BrowsePathToNodeIdRequest(void)
 	: Object()
-	, browseNameArray_(constructSPtr<BrowseNameArray>())
+	, browseNameArray_(boost::make_shared<BrowseNameArray>())
 	{
 	}
 
@@ -57,7 +57,7 @@ namespace OpcUaStackCore
 		const OpcUaQualifiedName& pathElement
 	)
 	{
-		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		BrowseName::SPtr browseName = boost::make_shared<BrowseName>();
 		browseName->set(nodeId, pathElement);
 		browseNameArray_->push_back(browseName);
 	}
@@ -69,7 +69,7 @@ namespace OpcUaStackCore
 		const OpcUaQualifiedName& pathElement2
 	)
 	{
-		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		BrowseName::SPtr browseName = boost::make_shared<BrowseName>();
 		browseName->set(nodeId, pathElement1, pathElement2);
 		browseNameArray_->push_back(browseName);
 	}
@@ -82,7 +82,7 @@ namespace OpcUaStackCore
 		const OpcUaQualifiedName& pathElement3
 	)
 	{
-		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		BrowseName::SPtr browseName = boost::make_shared<BrowseName>();
 		browseName->set(nodeId, pathElement1, pathElement2, pathElement3);
 		browseNameArray_->push_back(browseName);
 	}
@@ -96,7 +96,7 @@ namespace OpcUaStackCore
 		const OpcUaQualifiedName& pathElement4
 	)
 	{
-		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		BrowseName::SPtr browseName = boost::make_shared<BrowseName>();
 		browseName->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4);
 		browseNameArray_->push_back(browseName);
 	}
@@ -111,7 +111,7 @@ namespace OpcUaStackCore
 		const OpcUaQualifiedName& pathElement5
 	)
 	{
-		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		BrowseName::SPtr browseName = boost::make_shared<BrowseName>();
 		browseName->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5);
 		browseNameArray_->push_back(browseName);
 	}

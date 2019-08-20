@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
 using namespace OpcUaStackCore;
@@ -53,7 +52,7 @@ namespace OpcUaClient
 
 			return clientAccessObject;
 		}
-		clientAccessObject = constructSPtr<ClientAccessObject>();
+		clientAccessObject = boost::make_shared<ClientAccessObject>();
 		clientAccessObjectMap_.insert(std::make_pair(clientAccessObjectName, clientAccessObject));
 		return clientAccessObject;
 	}

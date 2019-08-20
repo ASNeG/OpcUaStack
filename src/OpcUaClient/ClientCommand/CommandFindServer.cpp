@@ -1,6 +1,6 @@
 
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,7 +18,6 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientCommand/CommandFindServer.h"
 
 using namespace OpcUaStackCore;
@@ -38,7 +37,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandFindServer::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandFindServer>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandFindServer>();
 		return commandBase;
 	}
 

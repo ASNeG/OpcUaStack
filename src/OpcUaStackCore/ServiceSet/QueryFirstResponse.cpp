@@ -30,10 +30,10 @@ namespace OpcUaStackCore
 
 	QueryFirstResponse::QueryFirstResponse(void)
 	: Object()
-	, queryDataSetArraySPtr_(constructSPtr<QueryDataSetArray>())
+	, queryDataSetArraySPtr_(boost::make_shared<QueryDataSetArray>())
 	, continuationPoint_()
-	, parsingResultArraySPtr_(constructSPtr<ParsingResultArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, parsingResultArraySPtr_(boost::make_shared<ParsingResultArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	, filterResult_()
 	{
 	}

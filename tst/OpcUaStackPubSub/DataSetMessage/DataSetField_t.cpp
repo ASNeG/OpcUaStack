@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(DataSetField_encode_decode_variant)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 
-	variant1 = constructSPtr<OpcUaVariant>();
+	variant1 = boost::make_shared<OpcUaVariant>();
 	variant1->setValue(OpcUaNodeId(4711));
 	value1.variant(variant1);
 
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(DataSetField_encode_decode_dataValue)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 
-	dataValue1 = constructSPtr<OpcUaDataValue>();
+	dataValue1 = boost::make_shared<OpcUaDataValue>();
 	dataValue1->statusCode(BadOutOfMemory);
 	dataValue1->variant()->setValue(OpcUaNodeId(4711));
 

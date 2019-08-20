@@ -118,7 +118,7 @@ namespace OpcUaServer
 			}
 
 			// create application library instance
-			ApplicationLibrary::SPtr applicationLibrary = constructSPtr<ApplicationLibrary>();
+			ApplicationLibrary::SPtr applicationLibrary = boost::make_shared<ApplicationLibrary>();
 			applicationLibrary->applicationInfo(applicationInfo);
 			if (!applicationLibrary->startup()) {
 				return false;

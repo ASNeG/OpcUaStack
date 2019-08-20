@@ -62,7 +62,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_create_delete, G
 	auto subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	auto subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
+	auto subCreateTrx = boost::make_shared<ServiceTransactionCreateSubscription>();
 	auto subCreateReq = subCreateTrx->request();
 	auto subCreateRes = subCreateTrx->response();
 	subscriptionService->syncSend(subCreateTrx);
@@ -75,12 +75,12 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_create_delete, G
 	monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
-	auto monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
+	auto monCreateTrx = boost::make_shared<ServiceTransactionCreateMonitoredItems>();
 	auto monCreateReq = monCreateTrx->request();
 	auto monCreateRes = monCreateTrx->response();
 	monCreateReq->subscriptionId(subscriptionId);
 
-	auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+	auto monitoredItemCreateRequest = boost::make_shared<MonitoredItemCreateRequest>();
 	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(2258,0);
 	monitoredItemCreateRequest->requestedParameters().clientHandle(2258);
 
@@ -100,7 +100,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_create_delete, G
 
 
 	// delete monitored item
-	auto monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
+	auto monDeleteTrx = boost::make_shared<ServiceTransactionDeleteMonitoredItems>();
 	auto monDeleteReq = monDeleteTrx->request();
 	monDeleteReq->subscriptionId(subscriptionId);
 
@@ -117,7 +117,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_create_delete, G
 	BOOST_REQUIRE(statusCode == Success);
 
 	// delete subscription
-	auto subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+	auto subDeleteTrx = boost::make_shared<ServiceTransactionDeleteSubscriptions>();
 	auto subDeleteReq = subDeleteTrx->request();
 	auto subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
@@ -171,7 +171,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_data_change, GVa
 	subscriptionService = serviceSetManager.subscriptionService(sessionService, subscriptionServiceConfig);
 
 	// create subscription
-	auto subCreateTrx = constructSPtr<ServiceTransactionCreateSubscription>();
+	auto subCreateTrx = boost::make_shared<ServiceTransactionCreateSubscription>();
 	auto subCreateReq = subCreateTrx->request();
 	auto subCreateRes = subCreateTrx->response();
 	subscriptionService->syncSend(subCreateTrx);
@@ -183,12 +183,12 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_data_change, GVa
 	auto monitoredItemService = serviceSetManager.monitoredItemService(sessionService, monitoredItemServiceConfig);
 
 	// create monitored item
-	auto monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
+	auto monCreateTrx = boost::make_shared<ServiceTransactionCreateMonitoredItems>();
 	auto monCreateReq = monCreateTrx->request();
 	auto monCreateRes = monCreateTrx->response();
 	monCreateReq->subscriptionId(subscriptionId);
 
-	auto monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+	auto monitoredItemCreateRequest = boost::make_shared<MonitoredItemCreateRequest>();
 	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(218,3);
 	monitoredItemCreateRequest->requestedParameters().clientHandle(218);
 
@@ -215,7 +215,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_data_change, GVa
 
 
 	// delete monitored item
-	auto monDeleteTrx = constructSPtr<ServiceTransactionDeleteMonitoredItems>();
+	auto monDeleteTrx = boost::make_shared<ServiceTransactionDeleteMonitoredItems>();
 	auto monDeleteReq = monDeleteTrx->request();
 	monDeleteReq->subscriptionId(subscriptionId);
 
@@ -232,7 +232,7 @@ BOOST_FIXTURE_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_data_change, GVa
 	BOOST_REQUIRE(statusCode == Success);
 
 	// delete subscription
-	auto subDeleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
+	auto subDeleteTrx = boost::make_shared<ServiceTransactionDeleteSubscriptions>();
 	auto subDeleteReq = subDeleteTrx->request();
 	auto subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);

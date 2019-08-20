@@ -18,7 +18,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
+
 #include "OpcUaClient/ClientCommand/CommandFunction.h"
 
 using namespace OpcUaStackCore;
@@ -41,7 +41,7 @@ namespace OpcUaClient
 	CommandBase::SPtr
 	CommandFunction::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandFunction>();
+		CommandBase::SPtr commandBase = boost::make_shared<CommandFunction>();
 		return commandBase;
 	}
 
@@ -85,7 +85,7 @@ namespace OpcUaClient
 			}
 		}
 		else if (parameterName == "-INPUTVALUE") {
-			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr variant = boost::make_shared<OpcUaVariant>();
 			if (!variant->fromString(parameterValue)) {
 				std::stringstream ss;
 				ss << "input value parameter invalid (" << parameterValue << ")";

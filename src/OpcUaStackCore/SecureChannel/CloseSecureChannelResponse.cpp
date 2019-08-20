@@ -22,7 +22,7 @@ namespace OpcUaStackCore
 
 	CloseSecureChannelResponse::CloseSecureChannelResponse(void)
 	: Object()
-	, responseHeaderSPtr_(constructSPtr<ResponseHeader>())
+	, responseHeaderSPtr_(boost::make_shared<ResponseHeader>())
 	{
 	}
 		

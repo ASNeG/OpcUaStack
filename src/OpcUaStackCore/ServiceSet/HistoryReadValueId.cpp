@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	HistoryReadValueId::HistoryReadValueId(void)
 	: Object()
-	, nodeIdSPtr_(constructSPtr<OpcUaNodeId>())
+	, nodeIdSPtr_(boost::make_shared<OpcUaNodeId>())
 	, indexRange_()
 	, dataEncoding_()
 	, continuationPoint_()

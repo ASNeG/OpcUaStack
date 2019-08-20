@@ -31,8 +31,8 @@ namespace OpcUaStackCore
 
 	DeleteMonitoredItemsResponse::DeleteMonitoredItemsResponse(void)
 	: Object()
-	, resultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
-	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, resultArraySPtr_(boost::make_shared<OpcUaStatusCodeArray>())
+	, diagnosticInfoArraySPtr_(boost::make_shared<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

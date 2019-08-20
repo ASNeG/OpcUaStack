@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
 
 	header.publisherIdType(PublisherIdType_UInt16);
 
-	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	OpcUaVariant::SPtr publisherId = boost::make_shared<OpcUaVariant>();
 	publisherId->set<OpcUaUInt16>(0x23);
 	header.publisherId(publisherId);
 
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
 	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x100);
 	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x090);
 
-	OpcUaGuid::SPtr classId = constructSPtr<OpcUaGuid>();
+	OpcUaGuid::SPtr classId = boost::make_shared<OpcUaGuid>();
 	classId->value("12345678-9ABC-DEF0-1234-56789ABCDEF0");
 	header.dataSetClassId(classId);
 
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherId)
 	NetworkMessageHeader header;
 	header.publisherIdEnabled(true);
 
-	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	OpcUaVariant::SPtr publisherId = boost::make_shared<OpcUaVariant>();
 	publisherId->set<OpcUaByte>(0x23);
 	header.publisherId(publisherId);
 
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_Uint16)
 	header.publisherIdEnabled(true);
 	header.publisherIdType(PublisherIdType_UInt16);
 
-	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	OpcUaVariant::SPtr publisherId = boost::make_shared<OpcUaVariant>();
 	publisherId->set<OpcUaUInt16>(0x1234);
 	header.publisherId(publisherId);
 
@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_Uint32)
 	header.publisherIdEnabled(true);
 	header.publisherIdType(PublisherIdType_UInt32);
 
-	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	OpcUaVariant::SPtr publisherId = boost::make_shared<OpcUaVariant>();
 	publisherId->set<OpcUaUInt32>(0x12345678);
 	header.publisherId(publisherId);
 
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_Uint64)
 	header.publisherIdEnabled(true);
 	header.publisherIdType(PublisherIdType_UInt64);
 
-	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	OpcUaVariant::SPtr publisherId = boost::make_shared<OpcUaVariant>();
 	publisherId->set<OpcUaUInt64>(0x123456780a0b0c0d);
 	header.publisherId(publisherId);
 
@@ -200,7 +200,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_GUID)
 	header.publisherIdEnabled(true);
 	header.publisherIdType(PublisherIdType_Guid);
 
-	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	OpcUaVariant::SPtr publisherId = boost::make_shared<OpcUaVariant>();
 	OpcUaGuid guid;
 	guid.value("12345678-9ABC-DEF0-1234-56789ABCDEF0");
 	publisherId->setValue(guid);
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_String)
 	header.publisherIdEnabled(true);
 	header.publisherIdType(PublisherIdType_String);
 
-	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	OpcUaVariant::SPtr publisherId = boost::make_shared<OpcUaVariant>();
 	publisherId->setValue(OpcUaString("StringID"));
 	header.publisherId(publisherId);
 
@@ -226,7 +226,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_dataSetClassIdEnabled)
 {
 	NetworkMessageHeader header;
 
-	OpcUaGuid::SPtr classId = constructSPtr<OpcUaGuid>();
+	OpcUaGuid::SPtr classId = boost::make_shared<OpcUaGuid>();
 	classId->value("12345678-9ABC-DEF0-1234-56789ABCDEF0");
 	header.dataSetClassId(classId);
 

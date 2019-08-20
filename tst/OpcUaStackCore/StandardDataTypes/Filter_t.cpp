@@ -59,22 +59,22 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	typeId.nodeId((OpcUaUInt32)321);
 
 	string = "ABC";
-	qualifiedNameSPtr = constructSPtr<OpcUaQualifiedName>();
+	qualifiedNameSPtr = boost::make_shared<OpcUaQualifiedName>();
 	qualifiedNameSPtr->namespaceIndex(123),
 	qualifiedNameSPtr->name(string);
 
-	simpleAttributeOperandSPtr = constructSPtr<SimpleAttributeOperand>();
+	simpleAttributeOperandSPtr = boost::make_shared<SimpleAttributeOperand>();
 	simpleAttributeOperandSPtr->typeDefinitionId() = OpcUaNodeId(typeId);
 	simpleAttributeOperandSPtr->browsePath().set(qualifiedNameSPtr);
 	simpleAttributeOperandSPtr->attributeId() = ((OpcUaUInt32)123);
 	simpleAttributeOperandSPtr->indexRange().value("1:2");
 
-	filterOperandSPtr = constructSPtr<OpcUaExtensibleParameter>();
+	filterOperandSPtr = boost::make_shared<OpcUaExtensibleParameter>();
 	filterOperandSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand_Encoding_DefaultBinary);
 	elementOperandSPtr = filterOperandSPtr->parameter<ElementOperand>();
 	elementOperandSPtr->index() = ((OpcUaUInt32)123);
 
-	contentFilterElementSPtr = constructSPtr<ContentFilterElement>();
+	contentFilterElementSPtr = boost::make_shared<ContentFilterElement>();
 	contentFilterElementSPtr->filterOperator().enumeration(FilterOperator::EnumAnd);
 	contentFilterElementSPtr->filterOperands().set(filterOperandSPtr);
 
@@ -118,11 +118,11 @@ BOOST_AUTO_TEST_CASE(Filter_EventResult)
 	EventFilterResult eventFilterResult1, eventFilterResult2;
 
 	// encode
-	eventFilterResult1.selectClauseResults().set(constructSPtr<OpcUaStatus>(Success));
+	eventFilterResult1.selectClauseResults().set(boost::make_shared<OpcUaStatus>(Success));
 	
-	elementResultSPtr = constructSPtr<ContentFilterElementResult>();
+	elementResultSPtr = boost::make_shared<ContentFilterElementResult>();
 	elementResultSPtr->statusCode().enumeration(Success);
-	elementResultSPtr->operandStatusCodes().set(constructSPtr<OpcUaStatus>(Success));
+	elementResultSPtr->operandStatusCodes().set(boost::make_shared<OpcUaStatus>(Success));
 	eventFilterResult1.whereClauseResult().elementResults().set(elementResultSPtr);
 	
 	eventFilterResult1.opcUaBinaryEncode(ios);
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(Filter_EventResult)
 	BOOST_REQUIRE(statusCode1->enumeration() == Success);
 
 	BOOST_REQUIRE(eventFilterResult2.whereClauseResult().elementResults().size() == 1);
-	elementResultSPtr = constructSPtr<ContentFilterElementResult>();
+	elementResultSPtr = boost::make_shared<ContentFilterElementResult>();
 	eventFilterResult2.whereClauseResult().elementResults().get(elementResultSPtr);
 	BOOST_REQUIRE(elementResultSPtr->statusCode().enumeration() == Success);
 

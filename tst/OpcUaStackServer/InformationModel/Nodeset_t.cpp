@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_New_Node_And_New_Namespace)
 	success = nodeSetXmlParserRead1.decode(configXmlRead1.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead1 = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModelRead1 = boost::make_shared<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead1, nodeSetXmlParserRead1);
 	BOOST_REQUIRE(success == true);
 
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_New_Node_And_New_Namespace)
 		std::stringstream nodeName;
 		nodeName << "MyVariable" << idx;
 
-		baseNodeClass = constructSPtr<VariableNodeClass>();
+		baseNodeClass = boost::make_shared<VariableNodeClass>();
 		nodeId.set(nodeName.str(), namespaceIndex);
 		baseNodeClass->setNodeId(nodeId);
 
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_with_parent_node)
 	success = nodeSetXmlParserRead1.decode(configXmlRead1.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead1 = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModelRead1 = boost::make_shared<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead1, nodeSetXmlParserRead1);
 	BOOST_REQUIRE(success == true);
 
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_with_parent_node)
 	success = nodeSetXmlParserRead2.decode(configXmlRead2.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead2 = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModelRead2 = boost::make_shared<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead2, nodeSetXmlParserRead2);
 	BOOST_REQUIRE(success == true);
 
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_without_parent_node)
 	success = nodeSetXmlParserRead1.decode(configXmlRead1.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead1 = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModelRead1 = boost::make_shared<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead1, nodeSetXmlParserRead1);
 	BOOST_REQUIRE(success == true);
 
@@ -188,7 +188,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_without_parent_node)
 	success = nodeSetXmlParserRead2.decode(configXmlRead2.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead2 = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModelRead2 = boost::make_shared<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead2, nodeSetXmlParserRead2);
 	BOOST_REQUIRE(success == true);
 
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_Remove)
 	success = nodeSetXmlParserRead.decode(configXmlRead.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModelRead = boost::make_shared<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead, nodeSetXmlParserRead);
 	BOOST_REQUIRE(success == true);
 
@@ -282,7 +282,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_ParentChange)
 	success = nodeSetXmlParserRead.decode(configXmlRead.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead = constructSPtr<InformationModel>();
+	InformationModel::SPtr informationModelRead = boost::make_shared<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead, nodeSetXmlParserRead);
 	BOOST_REQUIRE(success == true);
 

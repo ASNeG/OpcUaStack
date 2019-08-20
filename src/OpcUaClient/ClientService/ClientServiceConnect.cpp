@@ -17,7 +17,6 @@
 
 #include <boost/shared_ptr.hpp>
 #include <sstream>
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientCommand/CommandConnect.h"
 #include "OpcUaClient/ClientService/ClientServiceConnect.h"
 
@@ -38,7 +37,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceConnect::createClientService(void)
 	{
-		return constructSPtr<ClientServiceConnect>();
+		return boost::make_shared<ClientServiceConnect>();
 	}
 
 	bool

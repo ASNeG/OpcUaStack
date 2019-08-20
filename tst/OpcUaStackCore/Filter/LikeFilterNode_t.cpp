@@ -1,4 +1,5 @@
 #include "unittest.h"
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Filter/LikeFilterNode.h"
 #include "OpcUaStackCore/Filter/LiteralFilterNode.h"
 
@@ -16,8 +17,8 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_)
 	OpcUaVariant str, pat; \
 	str.setValue(OpcUaString(string)); \
 	pat.setValue(OpcUaString(pattern)); \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str)); \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pat)); \
+	args.push_back(boost::make_shared<LiteralFilterNode>(str)); \
+	args.push_back(boost::make_shared<LiteralFilterNode>(pat)); \
 	LikeFilterNode likeOperator(args); \
 	BOOST_REQUIRE(likeOperator.status() == OpcUaStatusCode::Success); \
 	OpcUaVariant operatorResult; \
@@ -30,8 +31,8 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_)
 	OpcUaVariant str, pat; \
 	str.setValue(OpcUaString(string)); \
 	pat.setValue(OpcUaString(pattern)); \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str)); \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pat)); \
+	args.push_back(boost::make_shared<LiteralFilterNode>(str)); \
+	args.push_back(boost::make_shared<LiteralFilterNode>(pat)); \
 	LikeFilterNode likeOperator(args); \
 	BOOST_REQUIRE(likeOperator.status() == OpcUaStatusCode::Success); \
 	OpcUaVariant operatorResult; \
@@ -126,8 +127,8 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_use_conversion)
     str.setValue(OpcUaInt32(1));
     pattern.setValue(OpcUaBoolean(true));
 
-    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str));
-    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pattern));
+    args.push_back(boost::make_shared<LiteralFilterNode>(str));
+    args.push_back(boost::make_shared<LiteralFilterNode>(pattern));
 
     LikeFilterNode likeOperator(args);
 
@@ -144,8 +145,8 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_bad_conversion1)
     str.setValue(OpcUaStatusCode(1));
     pattern.setValue(OpcUaBoolean(true));
 
-    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str));
-    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pattern));
+    args.push_back(boost::make_shared<LiteralFilterNode>(str));
+    args.push_back(boost::make_shared<LiteralFilterNode>(pattern));
 
 
     LikeFilterNode likeOperator(args);
@@ -162,8 +163,8 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_bad_conversion2)
     str.setValue(OpcUaBoolean(true));
     pattern.setValue(OpcUaStatusCode(1));
 
-    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str));
-    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pattern));
+    args.push_back(boost::make_shared<LiteralFilterNode>(str));
+    args.push_back(boost::make_shared<LiteralFilterNode>(pattern));
 
 
     LikeFilterNode likeOperator(args);

@@ -15,7 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientCommand/CommandBrowse.h"
 #include "OpcUaClient/ClientService/ClientServiceBrowse.h"
 
@@ -37,7 +36,7 @@ namespace OpcUaClient
 	ClientServiceBase::SPtr
 	ClientServiceBrowse::createClientService(void)
 	{
-		return constructSPtr<ClientServiceBrowse>();
+		return boost::make_shared<ClientServiceBrowse>();
 	}
 
 	bool

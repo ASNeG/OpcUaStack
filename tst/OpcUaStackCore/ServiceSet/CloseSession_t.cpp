@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(140);
 	sequenceHeaderSPtr->requestId(90);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -59,9 +59,9 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CloseSessionRequest
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
+	opcUaGuidSPtr = boost::make_shared<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
-	closeSessionRequestSPtr = constructSPtr<CloseSessionRequest>();
+	closeSessionRequestSPtr = boost::make_shared<CloseSessionRequest>();
 
 	closeSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
 	closeSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 	closeSessionRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 140);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 90);
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CloseSessionRequest_Encoding_DefaultBinary);
 
 	// decode CloseSessionRequest
-	closeSessionRequestSPtr = constructSPtr<CloseSessionRequest>();
+	closeSessionRequestSPtr = boost::make_shared<CloseSessionRequest>();
 	closeSessionRequestSPtr->requestHeader()->opcUaBinaryDecode(ios);
 	closeSessionRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -163,7 +163,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(140);
 	sequenceHeaderSPtr->requestId(90);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -173,12 +173,12 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CloseSessionResponse
-	closeSessionResponseSPtr = constructSPtr<CloseSessionResponse>();
+	closeSessionResponseSPtr = boost::make_shared<CloseSessionResponse>();
 
 	closeSessionResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = constructSPtr<MessageHeader>();
+	messageHeaderSPtr = boost::make_shared<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
+	sequenceHeaderSPtr = boost::make_shared<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 140);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 90);
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CloseSessionResponse_Encoding_DefaultBinary);
 
 	//decode CloseSessionResponse
-	closeSessionResponseSPtr = constructSPtr<CloseSessionResponse>();
+	closeSessionResponseSPtr = boost::make_shared<CloseSessionResponse>();
 	closeSessionResponseSPtr->opcUaBinaryDecode(ios);
 }
 

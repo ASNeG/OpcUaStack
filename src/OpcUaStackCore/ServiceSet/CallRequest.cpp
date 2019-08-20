@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 
 	CallRequest::CallRequest(void)
 	: Object()
-	, requestHeaderSPtr_(constructSPtr<RequestHeader>())
-	, callMethodRequestArraySPtr_(constructSPtr<CallMethodRequestArray>())
+	, requestHeaderSPtr_(boost::make_shared<RequestHeader>())
+	, callMethodRequestArraySPtr_(boost::make_shared<CallMethodRequestArray>())
 	{
 	}
 

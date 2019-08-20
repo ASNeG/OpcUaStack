@@ -30,9 +30,9 @@ namespace OpcUaStackCore
 
 	NodeTypeDescription::NodeTypeDescription(void)
 	: Object()
-	, typeDefinitionNodeSPtr_(constructSPtr<OpcUaExpandedNodeId>())
+	, typeDefinitionNodeSPtr_(boost::make_shared<OpcUaExpandedNodeId>())
 	, includeSubtypes_()
-	, dataToReturnArraySPtr_(constructSPtr<QueryDataDescriptionArray>())
+	, dataToReturnArraySPtr_(boost::make_shared<QueryDataDescriptionArray>())
 	{
 	}
 

@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	UnregisterNodesRequest::UnregisterNodesRequest(void)
 	: Object()
-	, nodesToUnregisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
+	, nodesToUnregisterArraySPtr_(boost::make_shared<OpcUaNodeIdArray>())
 	{
 	}
 

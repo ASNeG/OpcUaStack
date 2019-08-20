@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.0.0
+        OpcUaStackCore - 4.1.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -105,7 +105,7 @@ namespace OpcUaStackCore
     ExtensionObjectBase::SPtr
     UadpDataSetWriterMessageDataType::factory(void)
     {
-    	return constructSPtr<UadpDataSetWriterMessageDataType>();
+    	return boost::make_shared<UadpDataSetWriterMessageDataType>();
     }
     
     std::string

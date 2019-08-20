@@ -33,8 +33,8 @@ namespace OpcUaStackCore
 	, statusCodeArraySPtr_()
 	, diagnosticInfoArraySPtr_()
 	{
-		statusCodeArraySPtr_ = constructSPtr<OpcUaStatusCodeArray>();
-		diagnosticInfoArraySPtr_ = constructSPtr<OpcUaDiagnosticInfoArray>();
+		statusCodeArraySPtr_ = boost::make_shared<OpcUaStatusCodeArray>();
+		diagnosticInfoArraySPtr_ = boost::make_shared<OpcUaDiagnosticInfoArray>();
 	}
 
 	SetPublishingModeResponse::~SetPublishingModeResponse(void)

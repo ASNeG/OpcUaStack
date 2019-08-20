@@ -72,39 +72,39 @@ namespace OpcUaClient
 	ClientApplication::run(uint32_t argc, char** argv)
 	{
 		// register command in command factory
-		CommandParser::addCommand("CONNECT", constructSPtr<CommandConnect>());
-		CommandParser::addCommand("DISCONNECT", constructSPtr<CommandDisconnect>());
-		CommandParser::addCommand("READ", constructSPtr<CommandRead>());
-		CommandParser::addCommand("WRITE", constructSPtr<CommandWrite>());
-		CommandParser::addCommand("READH", constructSPtr<CommandReadH>());
-		CommandParser::addCommand("WRITEH", constructSPtr<CommandWriteH>());
-		CommandParser::addCommand("DELAY", constructSPtr<CommandDelay>());
-		CommandParser::addCommand("NODESETSERVER", constructSPtr<CommandNodeSetServer>());
-		CommandParser::addCommand("NODESETFILTER", constructSPtr<CommandNodeSetFilter>());
-		CommandParser::addCommand("BROWSE", constructSPtr<CommandBrowse>());
-		CommandParser::addCommand("FUNCTION", constructSPtr<CommandFunction>());
-		CommandParser::addCommand("BROWSEPATHTONODEID", constructSPtr<CommandBrowsePathToNodeId>());
-		CommandParser::addCommand("GETENDPOINT", constructSPtr<CommandGetEndpoint>());
-		CommandParser::addCommand("FINDSERVER", constructSPtr<CommandFindServer>());
-		CommandParser::addCommand("REGISTERSERVER", constructSPtr<CommandRegisterServer>());
+		CommandParser::addCommand("CONNECT", boost::make_shared<CommandConnect>());
+		CommandParser::addCommand("DISCONNECT", boost::make_shared<CommandDisconnect>());
+		CommandParser::addCommand("READ", boost::make_shared<CommandRead>());
+		CommandParser::addCommand("WRITE", boost::make_shared<CommandWrite>());
+		CommandParser::addCommand("READH", boost::make_shared<CommandReadH>());
+		CommandParser::addCommand("WRITEH", boost::make_shared<CommandWriteH>());
+		CommandParser::addCommand("DELAY", boost::make_shared<CommandDelay>());
+		CommandParser::addCommand("NODESETSERVER", boost::make_shared<CommandNodeSetServer>());
+		CommandParser::addCommand("NODESETFILTER", boost::make_shared<CommandNodeSetFilter>());
+		CommandParser::addCommand("BROWSE", boost::make_shared<CommandBrowse>());
+		CommandParser::addCommand("FUNCTION", boost::make_shared<CommandFunction>());
+		CommandParser::addCommand("BROWSEPATHTONODEID", boost::make_shared<CommandBrowsePathToNodeId>());
+		CommandParser::addCommand("GETENDPOINT", boost::make_shared<CommandGetEndpoint>());
+		CommandParser::addCommand("FINDSERVER", boost::make_shared<CommandFindServer>());
+		CommandParser::addCommand("REGISTERSERVER", boost::make_shared<CommandRegisterServer>());
 
 
 		// register service in service factory
-		ClientServiceExecute::addClientService(CommandBase::Cmd_Connect, constructSPtr<ClientServiceConnect>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_Disconnect, constructSPtr<ClientServiceDisconnect>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_Read, constructSPtr<ClientServiceRead>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_ReadH, constructSPtr<ClientServiceReadH>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_Write, constructSPtr<ClientServiceWrite>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_WriteH, constructSPtr<ClientServiceWriteH>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_Delay, constructSPtr<ClientServiceDelay>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_NodeSetServer, constructSPtr<ClientServiceNodeSetServer>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_NodeSetFilter, constructSPtr<ClientServiceNodeSetFilter>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_Browse, constructSPtr<ClientServiceBrowse>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_Function, constructSPtr<ClientServiceFunction>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_BrowsePathToNodeId, constructSPtr<ClientServiceBrowsePathToNodeId>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_GetEndpoint, constructSPtr<ClientServiceGetEndpoint>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_FindServer, constructSPtr<ClientServiceFindServer>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_RegisterServer, constructSPtr<ClientServiceRegisterServer>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_Connect, boost::make_shared<ClientServiceConnect>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_Disconnect, boost::make_shared<ClientServiceDisconnect>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_Read, boost::make_shared<ClientServiceRead>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_ReadH, boost::make_shared<ClientServiceReadH>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_Write, boost::make_shared<ClientServiceWrite>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_WriteH, boost::make_shared<ClientServiceWriteH>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_Delay, boost::make_shared<ClientServiceDelay>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_NodeSetServer, boost::make_shared<ClientServiceNodeSetServer>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_NodeSetFilter, boost::make_shared<ClientServiceNodeSetFilter>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_Browse, boost::make_shared<ClientServiceBrowse>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_Function, boost::make_shared<ClientServiceFunction>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_BrowsePathToNodeId, boost::make_shared<ClientServiceBrowsePathToNodeId>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_GetEndpoint, boost::make_shared<ClientServiceGetEndpoint>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_FindServer, boost::make_shared<ClientServiceFindServer>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_RegisterServer, boost::make_shared<ClientServiceRegisterServer>());
 
 		// parse command line
 		CommandParser commandParser;

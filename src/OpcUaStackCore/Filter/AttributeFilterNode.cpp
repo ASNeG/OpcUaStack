@@ -45,7 +45,7 @@ namespace OpcUaStackCore
     , numericRange_(numericRange)
     , operandStatuses_(0)
     {
-        browsePath_ = constructSPtr<RelativePath>(browsePath);
+        browsePath_ = boost::make_shared<RelativePath>(browsePath);
 
         //FIXME: Check arguments
         status_ = OpcUaStatusCode::Success;

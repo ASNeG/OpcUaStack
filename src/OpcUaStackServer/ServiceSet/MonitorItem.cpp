@@ -35,7 +35,7 @@ namespace OpcUaStackServer
 	, baseNodeClass_()
 	, attribute_(nullptr)
 	, dataValue_()
-	, slotTimerElement_(constructSPtr<SlotTimerElement>())
+	, slotTimerElement_(boost::make_shared<SlotTimerElement>())
 	, userContext_()
 	{
 	}
@@ -125,7 +125,7 @@ namespace OpcUaStackServer
 			return BadNodeIdUnknown;
 		}
 
-		MonitoredItemNotification::SPtr monitoredItemNotification = constructSPtr<MonitoredItemNotification>();
+		MonitoredItemNotification::SPtr monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
 		if (attribute_->exist() == false) {
 			Log(Debug, "read value error, because value not exist")
 				.parameter("Node", monitoredItemCreateRequest->itemToMonitor().nodeId())
@@ -177,7 +177,7 @@ namespace OpcUaStackServer
 			if (dataValue_.statusCode() == BadNodeClassInvalid) return NodeNoLongerExist;
 
 			// insert notification into queue
-			MonitoredItemNotification::SPtr monitoredItemNotification = constructSPtr<MonitoredItemNotification>();
+			MonitoredItemNotification::SPtr monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
 			monitoredItemNotification->value().statusCode(BadNodeClassInvalid);
 			monitorItemListPushBack(monitoredItemNotification);
 			return NodeNoLongerExist;
@@ -188,7 +188,7 @@ namespace OpcUaStackServer
 		// check wheater an event schould be generated
 		if (!AttributeAccess::trigger(dataValue_, *attribute_)) return Ok; 
 		
-		MonitoredItemNotification::SPtr monitoredItemNotification = constructSPtr<MonitoredItemNotification>();
+		MonitoredItemNotification::SPtr monitoredItemNotification = boost::make_shared<MonitoredItemNotification>();
 		if (!AttributeAccess::copy(*attribute_, monitoredItemNotification->value())) {
 			// data value is not available
 			if (dataValue_.statusCode() == BadDataUnavailable) return Ok;

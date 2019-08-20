@@ -30,10 +30,10 @@ namespace OpcUaStackCore
 
 	HistoryReadRequest::HistoryReadRequest(void)
 	: Object()
-	, historyReadDetailsSPtr_(constructSPtr<OpcUaExtensibleParameter>())
+	, historyReadDetailsSPtr_(boost::make_shared<OpcUaExtensibleParameter>())
 	, timestampsToReturn_()
 	, releaseContinuationPoints_()
-	, nodesToReadArraySPtr_(constructSPtr<HistoryReadValueIdArray>())
+	, nodesToReadArraySPtr_(boost::make_shared<HistoryReadValueIdArray>())
 	{
 	}
 

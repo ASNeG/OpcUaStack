@@ -53,8 +53,8 @@ namespace OpcUaStackCore
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
 	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::ServiceTransactionTemplate(void)
 	  : ServiceTransaction(REQID, RESID)
-	  , request_(constructSPtr<REQTYPE>())
-	  , response_(constructSPtr<RESTYPE>())
+	  , request_(boost::make_shared<REQTYPE>())
+	  , response_(boost::make_shared<RESTYPE>())
 	  {
 	  }
 
@@ -67,7 +67,7 @@ namespace OpcUaStackCore
 	  ServiceTransaction::SPtr 
 	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::constructTransaction(void) 
 	  {
-		  return constructSPtr<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> >();
+		  return boost::make_shared<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> >();
 	  }
 
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
