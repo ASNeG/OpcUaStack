@@ -1,7 +1,9 @@
 #include "unittest.h"
-#include "OpcUaStackCore/Utility/Timer.h"
+#include <boost/make_shared.hpp>
+#include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
+#include "OpcUaStackCore/Utility/Timer.h"
 
 using namespace OpcUaStackCore;
 
@@ -168,7 +170,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_stop_remove_parameter)
 
 	TimerTestObject::SPtr timerTestObject(boost::make_shared<TimerTestObject>());
 	TimerTest timerTest;
-	Timer::SPtr timer = boost::make_shared<Timer>(ioService);;
+	auto timer = boost::make_shared<Timer>(ioService);;
 	timer->callback().reset(boost::bind(&TimerTest::onTimeoutParameter, &timerTest, timerTestObject));
 
 	timerTest.onTimeoutParameterCondition_.condition(0, 1);

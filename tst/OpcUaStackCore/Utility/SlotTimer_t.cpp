@@ -1,4 +1,5 @@
 #include "unittest.h"
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"

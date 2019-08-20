@@ -1,6 +1,7 @@
 #ifndef OPCUASTACKCORE_FILTER_FILTEROPERATORHELPERS_H_
 #define OPCUASTACKCORE_FILTER_FILTEROPERATORHELPERS_H_
 
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilterResult.h"
 #include "OpcUaStackCore/StandardDataTypes/EventFilter.h"
@@ -191,43 +192,43 @@ static ContentFilterElement::SPtr makeOperatorWithSimpleAttributeAndLiteralOpera
 #define MAKE_ONE_LITERAL_ARG(args, arg1) do {\
 	OpcUaVariant value;																\
 	value.setValue(arg1);                                                           \
-	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode>(value));          \
 } while(0)
 
 #define MAKE_TWO_LITERAL_ARGS(args, arg1, arg2) do {\
 	OpcUaVariant value;																\
 	value.setValue(arg1);                                                           \
-	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode>(value));          \
                                                                                     \
 	value.setValue(arg2);                                                           \
-	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode>(value));          \
 } while(0)
 
 #define MAKE_THREE_LITERAL_ARGS(args, arg1, arg2, arg3) do {\
 	OpcUaVariant value;																\
 	value.setValue(arg1);                                                           \
-	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode>(value));          \
                                                                                     \
 	value.setValue(arg2);                                                           \
-	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode>(value));          \
                                                                                     \
 	value.setValue(arg3);                                                           \
-	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode>(value));          \
 } while(0)
 
 #define MAKE_FOUR_LITERAL_ARGS(args, arg1, arg2, arg3, arg4) do {\
 	OpcUaVariant value;																\
 	value.setValue(arg1);                                                           \
-	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode>(value));          \
                                                                                     \
 	value.setValue(arg2);                                                           \
-	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode>(value));          \
                                                                                     \
 	value.setValue(arg3);                                                           \
-	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode>(value));          \
 																					\
 	value.setValue(arg4);                                                           \
-	args.push_back(boost::make_shared<LiteralFilterNode, OpcUaVariant>(value));          \
+	args.push_back(boost::make_shared<LiteralFilterNode>(value));          \
 } while(0)
 
 #endif /* OPCUASTACKSERVER_SERVICESET_FILTEROPERATORHELPERS_H_ */

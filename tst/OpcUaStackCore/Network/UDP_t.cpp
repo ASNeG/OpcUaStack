@@ -1,6 +1,7 @@
 #include "unittest.h"
 
 #include <iostream>
+#include <boost/make_shared.hpp>
 #include "OpcUaStackCore/Network/UDPClient.h"
 #include "OpcUaStackCore/Network/UDPServer.h"
 #include "OpcUaStackCore/Network/UDPTestHandler.h"

@@ -1,7 +1,9 @@
 #include "unittest.h"
-#include "OpcUaStackCore/Utility/PendingQueue.h"
+#include <boost/make_shared.hpp>
+#include "OpcUaStackCore/Base/Object.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
+#include "OpcUaStackCore/Utility/PendingQueue.h"
 #include <iostream>
 
 using namespace OpcUaStackCore;
