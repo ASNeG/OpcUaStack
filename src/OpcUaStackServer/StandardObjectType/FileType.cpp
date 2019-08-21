@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -44,7 +44,6 @@ namespace OpcUaStackServer
         setServerMethod(read_Method_);
         setServerMethod(setPosition_Method_);
         setServerMethod(write_Method_);
-
         close_Method_->registerMethod(boost::bind(&FileType::call_Close_Method, this, _1));
         getPosition_Method_->registerMethod(boost::bind(&FileType::call_GetPosition_Method, this, _1));
         open_Method_->registerMethod(boost::bind(&FileType::call_Open_Method, this, _1));
@@ -52,7 +51,7 @@ namespace OpcUaStackServer
         setPosition_Method_->registerMethod(boost::bind(&FileType::call_SetPosition_Method, this, _1));
         write_Method_->registerMethod(boost::bind(&FileType::call_Write_Method, this, _1));
     }
-
+    
     /**
      * An object that represents a file that can be accessed via the server.
      */
@@ -83,6 +82,12 @@ namespace OpcUaStackServer
         setServerMethod(read_Method_);
         setServerMethod(setPosition_Method_);
         setServerMethod(write_Method_);
+        close_Method_->registerMethod(boost::bind(&FileType::call_Close_Method, this, _1));
+        getPosition_Method_->registerMethod(boost::bind(&FileType::call_GetPosition_Method, this, _1));
+        open_Method_->registerMethod(boost::bind(&FileType::call_Open_Method, this, _1));
+        read_Method_->registerMethod(boost::bind(&FileType::call_Read_Method, this, _1));
+        setPosition_Method_->registerMethod(boost::bind(&FileType::call_SetPosition_Method, this, _1));
+        write_Method_->registerMethod(boost::bind(&FileType::call_Write_Method, this, _1));
     }
     
     FileType::~FileType(void)
@@ -212,7 +217,6 @@ namespace OpcUaStackServer
     void
     FileType::call_Close_Method(ApplicationMethodContext* applicationMethodContext)
     {
-    	std::cout << "FileType::call_Close_Method" << std::endl;
         applicationMethodContext->statusCode_ = BadNotSupported;
     }
 
