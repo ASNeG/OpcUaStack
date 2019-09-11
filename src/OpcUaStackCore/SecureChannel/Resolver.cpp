@@ -87,6 +87,8 @@ namespace OpcUaStackCore
 				boost::asio::ip::tcp::resolver::iterator end;
 				while (endpointIterator != end) {
 					auto address = (*endpointIterator).endpoint().address();
+					Log(Debug, "adress resolv")
+					    .parameter("Address", address.to_string());
 
 					if (address.is_v4() && ipv4On_) {
 						responseCallback(false, address);

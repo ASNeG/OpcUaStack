@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     VariableTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor:     Kai Huebl (kai@huebl-sgh.de)
 */
@@ -13,8 +13,6 @@
 #define __OpcUaStackServer_PubSubDiagnosticsCounterType_h__
 
 #include "OpcUaStackServer/StandardVariableType/VariableBase.h"
-
-using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
