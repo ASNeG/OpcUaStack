@@ -29,7 +29,7 @@ namespace OpcUaClient
 
 	class DLLEXPORT ClientServiceBrowse
 	: public ClientServiceBase
-	, public ViewServiceBrowseIf
+	, public OpcUaStackClient::ViewServiceBrowseIf
 	{
 	  public:
 		typedef boost::shared_ptr<ClientServiceBrowse> SPtr;
@@ -43,11 +43,13 @@ namespace OpcUaClient
 		//- ClientServiceBrowse interface ---------------------------------------
 
 		//- ViewServiceBrowseIf -----------------------------------------------
-		virtual void viewServiceBrowseDone(OpcUaStatusCode statusCode);
+		virtual void viewServiceBrowseDone(
+			OpcUaStackCore::OpcUaStatusCode statusCode
+		);
 		virtual void viewServiceBrowseResult(
-			OpcUaStatusCode statusCode,
-			OpcUaNodeId::SPtr& nodeId,
-			ReferenceDescription::Vec& referenceDescriptionVec
+			OpcUaStackCore::OpcUaStatusCode statusCode,
+			OpcUaStackCore::OpcUaNodeId::SPtr& nodeId,
+			OpcUaStackCore::ReferenceDescription::Vec& referenceDescriptionVec
 		);
 		//- ViewServiceBrowseIf -----------------------------------------------
 

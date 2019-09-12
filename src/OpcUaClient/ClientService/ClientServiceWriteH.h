@@ -49,18 +49,22 @@ namespace OpcUaClient
 
       private:
 		bool write(
-			AttributeService::SPtr& attributeService,
+			OpcUaStackClient::AttributeService::SPtr& attributeService,
 			CommandWriteH::SPtr& commandWriteH
 		);
 		bool writeCSV(
-			AttributeService::SPtr& attributeService,
+			OpcUaStackClient::AttributeService::SPtr& attributeService,
 			CommandWriteH::SPtr& commandWriteH
 		);
 		bool openCSVFile(const std::string& fileName);
 		bool closeCSVFile(void);
-		bool readCSVLines(const std::string& fileName, OpcUaBuildInType valueType, OpcUaDataValue::Vec& dataValueVec);
+		bool readCSVLines(
+			const std::string& fileName,
+			OpcUaStackCore::OpcUaBuildInType valueType,
+			OpcUaStackCore::OpcUaDataValue::Vec& dataValueVec
+		);
 
-		CSV::SPtr csv_;
+		OpcUaStackCore::CSV::SPtr csv_;
 	};
 
 }

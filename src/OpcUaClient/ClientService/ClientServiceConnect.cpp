@@ -21,6 +21,7 @@
 #include "OpcUaClient/ClientService/ClientServiceConnect.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {

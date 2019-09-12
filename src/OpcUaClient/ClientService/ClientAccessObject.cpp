@@ -17,6 +17,7 @@
 
 #include "OpcUaClient/ClientService/ClientAccessObject.h"
 
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {

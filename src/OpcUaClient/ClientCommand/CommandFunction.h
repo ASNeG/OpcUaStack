@@ -42,14 +42,14 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandFunction interface ---------------------------------------------
 
-		OpcUaNodeId& functionNodeId(void);
-		OpcUaNodeId& objectNodeId(void);
-		OpcUaVariant::Vec& inputVariantVec(void);
+		OpcUaStackCore::OpcUaNodeId& functionNodeId(void);
+		OpcUaStackCore::OpcUaNodeId& objectNodeId(void);
+		OpcUaStackCore::OpcUaVariant::Vec& inputVariantVec(void);
 
 	  private:
-		OpcUaNodeId functionNodeId_;
-		OpcUaNodeId objectNodeId_;
-		OpcUaVariant::Vec inputVariantVec_;
+		OpcUaStackCore::OpcUaNodeId functionNodeId_;
+		OpcUaStackCore::OpcUaNodeId objectNodeId_;
+		OpcUaStackCore::OpcUaVariant::Vec inputVariantVec_;
 	};
 
 }

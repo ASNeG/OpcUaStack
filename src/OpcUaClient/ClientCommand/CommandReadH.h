@@ -48,10 +48,10 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandReadH interface ---------------------------------------------
 
-		OpcUaNodeId::Vec& nodeIdVec(void);
+		OpcUaStackCore::OpcUaNodeId::Vec& nodeIdVec(void);
 		boost::posix_time::ptime& startTime(void);
 		boost::posix_time::ptime& endTime(void);
-		TimestampsToReturn timestampsToReturn(void);
+		OpcUaStackCore::TimestampsToReturn timestampsToReturn(void);
 		uint32_t maxNumResultValuesPerNode(void);
 		uint32_t maxNumRequests(void);
 		void maxNumRequestsDec(void);
@@ -61,10 +61,10 @@ namespace OpcUaClient
 		void outputType(OutputType outputType);
 
 	  private:
-		OpcUaNodeId::Vec nodeIdVec_;
+		OpcUaStackCore::OpcUaNodeId::Vec nodeIdVec_;
 		boost::posix_time::ptime startTime_;
 		boost::posix_time::ptime endTime_;
-		TimestampsToReturn timestampsToReturn_;
+		OpcUaStackCore::TimestampsToReturn timestampsToReturn_;
 		uint32_t maxNumResultValuesPerNode_;
 		int32_t maxNumRequests_;
 
