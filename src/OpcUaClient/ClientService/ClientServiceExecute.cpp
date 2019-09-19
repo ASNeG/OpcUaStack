@@ -72,15 +72,10 @@ namespace OpcUaClient
 	bool
 	ClientServiceExecute::run(CommandBase::Vec& commandBaseVec)
 	{
-		uint32_t idx = 0;
-		while (idx < commandBaseVec.size())
-		{
-			CommandBase::SPtr commandBase = commandBaseVec[idx];
-
+		for (auto commandBase : commandBaseVec) {
 			// find factory element
-			ClientServiceBase::SPtr clientServiceBase;
-			clientServiceBase = getClientService(commandBase->cmd());
-			if (clientServiceBase.get() == NULL) {
+			auto clientServiceBase = getClientService(commandBase->cmd());
+			if (!clientServiceBase) {
 				std::stringstream ss;
 				ss << "the client service for the command " << commandBase->command() << " is unknown";
 				errorString(ss.str());
@@ -95,8 +90,6 @@ namespace OpcUaClient
 				errorString(ss.str());
 				return false;
 			}
-
-			idx++;
 		}
 
 		return true;
