@@ -75,8 +75,10 @@ namespace OpcUaStackClient
 		void attributeIds(OpcUaStackCore::NodeClass::Enum nodeClassType);
 
 		void asyncReadNode(void);
+		void syncReadNode(void);
 
 	  private:
+		OpcUaStackCore::ServiceTransactionRead::SPtr createTransaction(void);
 		void attributeServiceReadResponse(OpcUaStackCore::ServiceTransactionRead::SPtr serviceTransactionRead);
 
 		AttributeService::SPtr attributeService_;

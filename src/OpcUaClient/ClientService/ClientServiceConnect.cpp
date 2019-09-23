@@ -78,9 +78,9 @@ namespace OpcUaClient
 		}
 
 		// create session
-		if (clientAccessObject->sessionService_.get() == nullptr) {
+		if (!clientAccessObject->sessionService_) {
 			clientAccessObject->sessionService_ = clientAccessObject->serviceSetManager_.sessionService(sessionServiceConfig);
-			if (clientAccessObject->sessionService_.get() == nullptr) {
+			if (!clientAccessObject->sessionService_.get()) {
 				std::stringstream ss;
 				ss << "create session service failed for session " << commandConnect->session();
 				errorMessage(ss.str());

@@ -200,8 +200,8 @@ namespace OpcUaStackClient
 		}
 	}
 
-	void
-	AttributeServiceNode::asyncReadNode(void)
+	ServiceTransactionRead::SPtr
+	AttributeServiceNode::createTransaction(void)
 	{
 		// create read transaction
 		auto trx = boost::make_shared<ServiceTransactionRead>();
@@ -210,12 +210,21 @@ namespace OpcUaStackClient
 		// create read request
 		req->readValueIdArray()->resize(attributeIdVec_.size());
 		for (auto it = attributeIdVec_.begin(); it != attributeIdVec_.end(); it++) {
-			ReadValueId::SPtr readValueIdSPtr = boost::make_shared<ReadValueId>();
+			auto readValueIdSPtr = boost::make_shared<ReadValueId>();
 			readValueIdSPtr->nodeId()->copyFrom(nodeId_);
 			readValueIdSPtr->attributeId((OpcUaInt32)*it);
 			readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 			req->readValueIdArray()->push_back(readValueIdSPtr);
 		}
+
+		return trx;
+	}
+
+	void
+	AttributeServiceNode::asyncReadNode(void)
+	{
+		// create read transaction
+		auto trx = createTransaction();
 
 		// send read request
 		trx->resultHandler(
@@ -224,6 +233,19 @@ namespace OpcUaStackClient
 			}
 		);
 		attributeService_->asyncSend(trx);
+	}
+
+	void
+	AttributeServiceNode::syncReadNode(void)
+	{
+		// create read transaction
+		auto trx = createTransaction();
+
+		// send read request
+		attributeService_->syncSend(trx);
+
+		// handle response
+		attributeServiceReadResponse(trx);
 	}
 
 	void
