@@ -20,6 +20,7 @@
 
 #include <boost/thread/mutex.hpp>
 #include <map>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/InformationModel/EventHandlerMap.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
 #include "OpcUaStackCore/EventType/EventBase.h"

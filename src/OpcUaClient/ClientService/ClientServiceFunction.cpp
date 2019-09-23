@@ -19,6 +19,7 @@
 #include "OpcUaClient/ClientService/ClientServiceFunction.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {

@@ -33,7 +33,7 @@ namespace OpcUaClient
 		int run(uint32_t argc, char** argv);
 
 	  private:
-		Core core_;
+		OpcUaStackCore::Core core_;
 	};
 
 }

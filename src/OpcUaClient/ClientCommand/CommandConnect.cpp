@@ -16,11 +16,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/make_shared.hpp>
 #include <sstream>
 
 #include "OpcUaClient/ClientCommand/CommandConnect.h"
-
-using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {

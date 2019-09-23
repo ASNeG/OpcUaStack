@@ -32,6 +32,8 @@
 #include "OpcUaClient/ClientService/ClientServiceNodeSetServer.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
+using namespace OpcUaStackServer;
 
 namespace OpcUaClient
 {

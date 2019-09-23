@@ -17,10 +17,12 @@
 
 #include <boost/shared_ptr.hpp>
 #include <sstream>
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaClient/ClientCommand/CommandConnect.h"
 #include "OpcUaClient/ClientService/ClientServiceConnect.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {
@@ -43,12 +45,11 @@ namespace OpcUaClient
 	bool
 	ClientServiceConnect::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
-		CommandConnect::SPtr commandConnect = boost::static_pointer_cast<CommandConnect>(commandBase);
+		auto commandConnect = boost::static_pointer_cast<CommandConnect>(commandBase);
 
 		// create new or get existing client object
-		ClientAccessObject::SPtr clientAccessObject;
-		clientAccessObject = clientServiceManager.getOrCreateClientAccessObject(commandConnect->session());
-		if (clientAccessObject.get() == nullptr) {
+		auto clientAccessObject = clientServiceManager.getOrCreateClientAccessObject(commandConnect->session());
+		if (!clientAccessObject) {
 			std::stringstream ss;
 			ss << "create client access object failed for session " << commandConnect->session();
 			errorMessage(ss.str());
@@ -59,11 +60,17 @@ namespace OpcUaClient
 			// FIXME: todo
 		};
 
+		//
+		// create crypto manager
+		//
+		auto cryptoManager = boost::make_shared<CryptoManager>();
+
 		// set secure channel configuration
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(commandConnect->endpointUrl());
 		sessionServiceConfig.session_->sessionName(commandConnect->session());
 		sessionServiceConfig.sessionServiceChangeHandler_ = sessionStateUpdate;
+		sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager);
 
 		// check if session must be activated
 		if (!commandConnect->activateSession()) {

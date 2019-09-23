@@ -27,7 +27,7 @@
 namespace OpcUaClient
 {
 
-	class DLLEXPORTCommandWriteH
+	class DLLEXPORT CommandWriteH
 	: public CommandBase
 	{
 	  public:
@@ -48,20 +48,20 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandWriteH interface ---------------------------------------------
 
-		OpcUaNodeId& nodeId(void);
-		OpcUaDataValue::Vec& dataValueVec(void);
+		OpcUaStackCore::OpcUaNodeId& nodeId(void);
+		OpcUaStackCore::OpcUaDataValue::Vec& dataValueVec(void);
 
 		std::string& csvFileName(void);
 		InputType inputType(void);
-		OpcUaBuildInType valueType(void);
+		OpcUaStackCore::OpcUaBuildInType valueType(void);
 
 	  private:
-		OpcUaNodeId nodeId_;
-		OpcUaDataValue::Vec dataValueVec_;
-		OpcUaDataValue::SPtr actDataValue_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
+		OpcUaStackCore::OpcUaDataValue::Vec dataValueVec_;
+		OpcUaStackCore::OpcUaDataValue::SPtr actDataValue_;
 
 		std::string csvFileName_;
-		OpcUaBuildInType valueType_;
+		OpcUaStackCore::OpcUaBuildInType valueType_;
 		InputType inputType_;
 	};
 

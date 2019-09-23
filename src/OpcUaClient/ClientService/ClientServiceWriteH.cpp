@@ -24,6 +24,7 @@
 #define MAXValuesPerRequest		1000
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {

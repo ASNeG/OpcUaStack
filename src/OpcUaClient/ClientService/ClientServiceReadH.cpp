@@ -22,6 +22,7 @@
 #include "OpcUaClient/ClientService/ClientServiceReadH.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {

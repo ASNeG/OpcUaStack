@@ -42,13 +42,13 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandWrite interface ---------------------------------------------
 
-		OpcUaNodeId::Vec& nodeIdVec(void);
-		OpcUaDataValue::Vec& dataValueVec(void);
+		OpcUaStackCore::OpcUaNodeId::Vec& nodeIdVec(void);
+		OpcUaStackCore::OpcUaDataValue::Vec& dataValueVec(void);
 		std::vector<uint32_t>& attributeIdVec(void);
 
 	  private:
-		OpcUaNodeId::Vec nodeIdVec_;
-		OpcUaDataValue::Vec dataValueVec_;
+		OpcUaStackCore::OpcUaNodeId::Vec nodeIdVec_;
+		OpcUaStackCore::OpcUaDataValue::Vec dataValueVec_;
 		std::vector<uint32_t> attributeIdVec_;
 	};
 

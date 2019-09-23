@@ -42,13 +42,13 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandBrowse interface ---------------------------------------------
 
-		OpcUaNodeId::Vec& nodeIdVec(void);
-		BrowseDirectionEnum direction(void);
+		OpcUaStackCore::OpcUaNodeId::Vec& nodeIdVec(void);
+		OpcUaStackCore::BrowseDirectionEnum direction(void);
 		bool recursive(void);
 
 	  private:
-		OpcUaNodeId::Vec nodeIdVec_;
-		BrowseDirectionEnum direction_;
+		OpcUaStackCore::OpcUaNodeId::Vec nodeIdVec_;
+		OpcUaStackCore::BrowseDirectionEnum direction_;
 		bool recursive_;
 	};
 

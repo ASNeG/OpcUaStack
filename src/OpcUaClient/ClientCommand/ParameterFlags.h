@@ -20,6 +20,7 @@
 
 #include <stdint.h>
 #include <map>
+#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaClient
 {

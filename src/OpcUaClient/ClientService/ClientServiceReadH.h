@@ -41,7 +41,7 @@ namespace OpcUaClient
 		ReadNextNode(void) {}
 		~ReadNextNode(void) {}
 
-		OpcUaNodeId nodeId_;
+		OpcUaStackCore::OpcUaNodeId nodeId_;
 		std::string continousPoint_;
 	};
 
@@ -69,29 +69,29 @@ namespace OpcUaClient
 
       private:
 		bool hRead(
-			AttributeService::SPtr& attributeService,
+			OpcUaStackClient::AttributeService::SPtr& attributeService,
 			CommandReadH::SPtr& commandReadH
 		);
 		bool hReadNext(
-			AttributeService::SPtr& attributeService,
+			OpcUaStackClient::AttributeService::SPtr& attributeService,
 			CommandReadH::SPtr& commandReadH,
 			ReadNextNode::Vec& readNextNodeVec
 		);
 		bool hDelete(
-			AttributeService::SPtr& attributeService,
+			OpcUaStackClient::AttributeService::SPtr& attributeService,
 			CommandReadH::SPtr& commandReadH,
 			ReadNextNode::Vec& readNextNodeVec
 		);
 		bool output(
-			OpcUaDataValue& dataValue,
+			OpcUaStackCore::OpcUaDataValue& dataValue,
 			CommandReadH::SPtr& commandReadH
 		);
 		bool outputCSV(
-			OpcUaDataValue& dataValue,
+			OpcUaStackCore::OpcUaDataValue& dataValue,
 			CommandReadH::SPtr& commandReadH
 		);
 
-		CSV::SPtr csv_;
+		OpcUaStackCore::CSV::SPtr csv_;
 	};
 
 }

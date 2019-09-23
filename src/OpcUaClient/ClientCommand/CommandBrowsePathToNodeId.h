@@ -42,12 +42,12 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandBrowsePathToNodeId interface ---------------------------------------------
 
-		OpcUaNodeId::SPtr& nodeId(void);
-		std::vector<OpcUaQualifiedName>& browseNameVec(void);
+		OpcUaStackCore::OpcUaNodeId::SPtr& nodeId(void);
+		std::vector<OpcUaStackCore::OpcUaQualifiedName>& browseNameVec(void);
 
 	  private:
-		OpcUaNodeId::SPtr nodeId_;
-		std::vector<OpcUaQualifiedName> browseNameVec_;
+		OpcUaStackCore::OpcUaNodeId::SPtr nodeId_;
+		std::vector<OpcUaStackCore::OpcUaQualifiedName> browseNameVec_;
 	};
 
 }
