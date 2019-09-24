@@ -68,14 +68,13 @@ namespace OpcUaClient
 	ClientServiceNodeSetServer::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
 		OpcUaStatusCode statusCode;
-		CommandNodeSetServer::SPtr commandNodeSetServer = boost::static_pointer_cast<CommandNodeSetServer>(commandBase);
+		auto commandNodeSetServer = boost::static_pointer_cast<CommandNodeSetServer>(commandBase);
 
 		auto future = browseCompleted_.get_future();
 
 		// create new or get existing client object
-		ClientAccessObject::SPtr clientAccessObject;
-		clientAccessObject = clientServiceManager.getClientAccessObject(commandNodeSetServer->session());
-		if (clientAccessObject.get() == nullptr) {
+		auto clientAccessObject = clientServiceManager.getClientAccessObject(commandNodeSetServer->session());
+		if (!clientAccessObject) {
 			std::stringstream ss;
 			ss << "get client access object failed:"
 			   << " Session=" << commandNodeSetServer->session();
@@ -84,7 +83,7 @@ namespace OpcUaClient
 		}
 
 		// check session
-		if (clientAccessObject->sessionService_.get() == nullptr) {
+		if (!clientAccessObject->sessionService_) {
 			std::stringstream ss;
 			ss << "session object not exist: "
 			   << " Session=" << commandNodeSetServer->session();
@@ -93,7 +92,7 @@ namespace OpcUaClient
 
 		// get or create attribute service
 		attributeService_ = clientAccessObject->getOrCreateAttributeService();
-		if (attributeService_.get() == nullptr) {
+		if (!attributeService_) {
 			std::stringstream ss;
 			ss << "get client attribute service failed"
 			   << " Session=" << commandNodeSetServer->session();
@@ -102,9 +101,8 @@ namespace OpcUaClient
 		}
 
 		// get or create view service
-		ViewService::SPtr viewService;
-		viewService = clientAccessObject->createViewService();
-		if (viewService.get() == nullptr) {
+		auto viewService = clientAccessObject->createViewService();
+		if (!viewService) {
 			std::stringstream ss;
 			ss << "get client view service failed"
 			   << " Session=" << commandNodeSetServer->session();
@@ -139,7 +137,7 @@ namespace OpcUaClient
 
 		// browse opc ua server information model
 		OpcUaNodeId::Vec nodeIdVec;
-		OpcUaNodeId::SPtr nodeId = boost::make_shared<OpcUaNodeId>();
+		auto nodeId = boost::make_shared<OpcUaNodeId>();
 		nodeId->copyFrom(rootNodeId);
 		nodeIdVec.push_back(nodeId);
 		commandNodeSetServer->validateCommand();
@@ -227,9 +225,8 @@ namespace OpcUaClient
 		}
 
 		// get node from information model
-		BaseNodeClass::SPtr baseNodeClass;
-		baseNodeClass = informationModel_->find(nodeId);
-		if (baseNodeClass.get() == nullptr) {
+		auto baseNodeClass = informationModel_->find(nodeId);
+		if (!baseNodeClass) {
 			Log(Error, "node id not exist in browse request")
 				.parameter("NodeId", nodeId->toString());
 			return;
@@ -252,7 +249,7 @@ namespace OpcUaClient
 			}
 
 			// add reference to node
-			ReferenceItem::SPtr referenceItem = boost::make_shared<ReferenceItem>();
+			auto referenceItem = boost::make_shared<ReferenceItem>();
 
 			referenceItem->nodeId_.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
 			referenceItem->nodeId_.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
@@ -277,8 +274,8 @@ namespace OpcUaClient
 	)
 	{
 		// check if node already exist
-		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(readNodeId_);
-		if (baseNodeClass.get() != nullptr) return BadNodeIdExists;
+		auto baseNodeClass = informationModel_->find(readNodeId_);
+		if (baseNodeClass) return BadNodeIdExists;
 
 		switch (nodeClassType)
 		{
@@ -340,11 +337,7 @@ namespace OpcUaClient
 		attributeServiceNode.attributeServiceNodeIf(this);
 
 		// send read node request
-		auto future = readCompleted_.get_future();
-		attributeServiceNode.asyncReadNode();
-
-		// wait for the end of the read node request
-		future.wait();
+		attributeServiceNode.syncReadNode();
 
 		// insert new node
 		if (readStatusCode_ == Success) {
@@ -384,11 +377,9 @@ namespace OpcUaClient
 		attributeServiceNode.attributeServiceNodeIf(this);
 
 		// send read node request
-		auto future = readCompleted_.get_future();
-		attributeServiceNode.asyncReadNode();
+		attributeServiceNode.syncReadNode();
 
 		// wait for the end of the read node request
-		future.wait();
 		if (readStatusCode_ != Success) return readStatusCode_;
 		return readNamespaceArrayStatusCode_;
 	}
@@ -402,7 +393,6 @@ namespace OpcUaClient
 				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 		}
 		readStatusCode_ = statusCode;
-		readCompleted_.set_value(true);
 	}
 
 	void
