@@ -158,6 +158,16 @@ namespace OpcUaStackCore
 		cfg->getValues(valueName, valueVec);
 	}
 
+	bool
+	Config::existChild(const std::string& path)
+	{
+		auto config = getChild(path);
+		if (!config) {
+			return false;
+		}
+		return true;
+	}
+
 	boost::optional<Config>
 	Config::getChild(const std::string& path)
 	{
