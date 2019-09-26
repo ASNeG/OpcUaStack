@@ -20,7 +20,7 @@
 
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
-#include "OpcUaStackCore/Core/FileLogger.h"
+#include "OpcUaStackCore/Logging/FileLogger.h"
 #include "OpcUaStackServer/Server/Server.h"
 #include "OpcUaStackServer/Application/ReloadIf.h"
 #include "OpcUaServer/Server/DiscoveryClient.h"
