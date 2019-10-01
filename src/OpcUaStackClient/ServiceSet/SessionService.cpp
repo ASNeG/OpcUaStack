@@ -113,8 +113,13 @@ namespace OpcUaStackClient
 		mode_ = mode;
 		sessionServiceIf_ = sessionServiceIf;
 		secureChannelClientConfig_ = secureChannelClientConfig;
-		if (mode_ != M_SecureChannel) {
+
+		if (mode_ == M_SecureChannelAndSession) {
 			sessionConfig_ = sessionConfig;
+
+			// Either the session timer or the open secure channel timer is used. Never both.
+			if (sessionConfig_->requestTimeout() != 0) {
+				secureChannelClientConfig_->reconnectTimeout(0);			}
 		}
 	}
 
