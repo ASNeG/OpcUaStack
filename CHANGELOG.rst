@@ -12,6 +12,7 @@ Release 3.8.0
 * fix initializing createAt field in open secure channel response #259, @huebl
 * fix dependence of start\\stop item monitoring on callbacks #133, by @flipback
 * fix overwriting result status in HistoryRead service #182, by @flipback
+* fix reconnect timer crash in session service #302, by @huebl
 
 **Other**:
 
