@@ -75,6 +75,13 @@ namespace OpcUaStackClient
 		ctx_->secureChannelClientConfigBackup_ = secureChannelClientConfig;
 		ctx_->sessionConfig_ = sessionConfig;
 
+		if (ctx_->sessionMode_ == SessionMode::SecureChannelAndSession) {
+			// Either the session timer or the open secure channel timer is used. Never both.
+			if (ctx_->sessionConfig_->reconnectTimeout() > 0) {
+				ctx_->secureChannelClientConfig_->reconnectTimeout(0);
+			}
+		}
+
 		sm_.setSessionServiceName(sessionConfig->sessionName());
 		sm_.setUpdateCallback(
 			[this](SessionServiceStateId state) {
@@ -149,7 +156,10 @@ namespace OpcUaStackClient
 		);
 
 		future.wait();
-		return future.get();
+		auto statusCode = future.get();
+
+		sm_.setUpdateCallback(nullptr);
+		return statusCode;
 	}
 
 	void
