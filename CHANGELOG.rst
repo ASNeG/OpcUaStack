@@ -22,7 +22,8 @@
 
 **Bugs**:
 
-# Add isNull and setNull function to class OpcUaNodeId #278, @huebl
+* fix reconnect timer crash in session service #302, by @huebl
+* Add isNull and setNull function to class OpcUaNodeId #278, @huebl
 * Add Generator directory to cmake file #272, @huebl
 * Add type generator library #270, @huebl
 * Copy alias map in Config to childs #268, @huebl
