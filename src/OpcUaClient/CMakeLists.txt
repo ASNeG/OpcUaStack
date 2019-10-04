@@ -60,3 +60,15 @@ install(
     DESTINATION ${INSTALL_PREFIX}/bin
     COMPONENT libraries
 )
+
+install(
+    DIRECTORY DESTINATION 
+    /var/log/OpcUaStack/OpcUaClient
+)
+
+install(
+    FILES ${PROJECT_SOURCE_DIR}/OpcUaClient/Config/OpcUaClient.xml 
+    DESTINATION /etc/OpcUaStack/OpcUaClient/
+    
+)
+

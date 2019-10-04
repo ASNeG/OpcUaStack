@@ -17,9 +17,11 @@
  */
 
 #include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
 #include <iostream>
 #include <sstream>
 #include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaClient/ClientCommand/CommandParser.h"
 
 using namespace OpcUaStackCore;
@@ -265,6 +267,17 @@ namespace OpcUaClient
 	CommandParser::readConfigFile(void)
 	{
 		config_ = Config::instance();
+
+		// set configuration alias names
+		auto configFileName = configFileName_;
+		if (configFileName_.empty()) {
+			configFileName = "./";
+		}
+		std::string configFilePath = boost::filesystem::path(configFileName).parent_path().string();
+		Environment::confDir(configFilePath);
+
+		config_->alias("@CONF_DIR@", Environment::confDir());
+		config_->alias("@HOSTNAME@", Environment::hostname());
 
 		// check if configuration file name exist
 		if (configFileName_.empty()) {

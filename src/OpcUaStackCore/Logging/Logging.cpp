@@ -84,7 +84,7 @@ namespace OpcUaStackCore
 		// read log file name
 		std::string logFileName;
 		config->getConfigParameter("LogFileName", logFileName, "");
-		if (logFileName == "") logFileName = "OpcUaServer.log";
+		if (logFileName == "") logFileName = defaultLogFile_;
 		fileLogger->logFileName(logFileName);
 
 		// read max log file number
