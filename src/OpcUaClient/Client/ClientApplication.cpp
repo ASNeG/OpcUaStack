@@ -16,6 +16,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Logging/Logging.h"
 #include "OpcUaClient/Client/ClientApplication.h"
 #include "OpcUaClient/ClientCommand/CommandParser.h"
 #include "OpcUaClient/ClientService/ClientServiceExecute.h"
@@ -53,6 +54,8 @@
 #include "OpcUaClient/ClientService/ClientServiceGetEndpoint.h"
 #include "OpcUaClient/ClientService/ClientServiceFindServer.h"
 #include "OpcUaClient/ClientService/ClientServiceRegisterServer.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
@@ -113,6 +116,10 @@ namespace OpcUaClient
 			std::cerr << commandParser.errorString() << std::endl;
 			return -1;
 		}
+
+		// init logging
+		auto *logIf = Logging::startupLogging(commandParser.config(), "OpcUaClient.Logging");
+		OpcUaStackCore::Log::logIf(logIf);
 
 		// execute commands from command line line
 		ClientServiceExecute clientServiceExecute;
