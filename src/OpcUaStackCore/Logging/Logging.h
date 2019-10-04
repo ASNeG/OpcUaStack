@@ -31,6 +31,10 @@ namespace OpcUaStackCore
 		Logging(void);
 		virtual ~Logging(void);
 
+		static void defaultLogFile(
+			const std::string& defaultLogFile
+		);
+
 		static LogIf* startupLogging(
 			OpcUaStackCore::Config* config,
 			const std::string& prefix
@@ -52,6 +56,8 @@ namespace OpcUaStackCore
 		static LogIf* startupStdoutLogger(
 			boost::optional<Config>& config
 		);
+
+		static std::string defaultLogFile_;
 	};
 
 }

@@ -23,12 +23,20 @@
 namespace OpcUaStackCore
 {
 
+	std::string Logging::defaultLogFile_ = "OpcUaServer.log";
+
 	Logging::Logging(void)
 	{
 	}
 
 	Logging::~Logging(void)
 	{
+	}
+
+	void
+	Logging::defaultLogFile(const std::string& defaultLogFile)
+	{
+		defaultLogFile_ = defaultLogFile;
 	}
 
 	LogIf*
@@ -62,7 +70,7 @@ namespace OpcUaStackCore
 
 		// use default file logger
 		auto defaultLogger = new FileLogger();
-		defaultLogger->logFileName("OpcUaServer.log");
+		defaultLogger->logFileName(defaultLogFile_);
 		return defaultLogger;
 	}
 

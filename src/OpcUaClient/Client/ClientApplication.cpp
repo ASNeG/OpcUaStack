@@ -118,6 +118,7 @@ namespace OpcUaClient
 		}
 
 		// init logging
+		Logging::defaultLogFile("OpcUaClient.log");
 		auto *logIf = Logging::startupLogging(commandParser.config(), "OpcUaClient.Logging");
 		OpcUaStackCore::Log::logIf(logIf);
 
