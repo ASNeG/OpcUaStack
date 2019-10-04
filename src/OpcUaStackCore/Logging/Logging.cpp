@@ -37,20 +37,28 @@ namespace OpcUaStackCore
 		const std::string& prefix
 	)
 	{
+		assert(config != nullptr);
+
 		// handle file logger configuration if exist
 		auto fileLogger = config->getChild(prefix + std::string(".FileLogger"));
-		auto logIfFileLogger = startupFileLogger(fileLogger);
-		if (logIfFileLogger != nullptr) return logIfFileLogger;
+		if (fileLogger) {
+			auto logIfFileLogger = startupFileLogger(fileLogger);
+			if (logIfFileLogger != nullptr) return logIfFileLogger;
+		}
 
 		// handle stdout logger if exist
 		auto stdoutLogger = config->getChild(prefix + std::string(".StdoutLogger"));
-		auto logIfStdoutLogger = startupStdoutLogger(stdoutLogger);
-		if (logIfStdoutLogger != nullptr) return logIfStdoutLogger;
+		if (stdoutLogger) {
+			auto logIfStdoutLogger = startupStdoutLogger(stdoutLogger);
+			if (logIfStdoutLogger != nullptr) return logIfStdoutLogger;
+		}
 
 		// handle stderr logger if exist
 		auto stderrLogger = config->getChild(prefix + std::string(".StderrLogger"));
-		auto logIfSterrLogger = startupStderrLogger(stdoutLogger);
-		if (logIfSterrLogger != nullptr) return logIfSterrLogger;
+		if (stderrLogger) {
+			auto logIfSterrLogger = startupStderrLogger(stdoutLogger);
+			if (logIfSterrLogger != nullptr) return logIfSterrLogger;
+		}
 
 		// use default file logger
 		auto defaultLogger = new FileLogger();
