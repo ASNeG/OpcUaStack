@@ -17,7 +17,7 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem.hpp>
-#include "OpcUaStackCore/Core/FileLogger.h"
+#include "OpcUaStackCore/Logging/FileLogger.h"
 #include <iostream>
 
 namespace OpcUaStackCore

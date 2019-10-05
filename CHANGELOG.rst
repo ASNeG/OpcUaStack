@@ -3,6 +3,7 @@
 
 **Features**:
 
+* Add configuration file to opc ua client application #301, by @huebl
 * Replace slot timer callback function by timeoutfunction #285, by @huebl
 * Added historical access vbi interface #155, by @huebl
 * Remove class Pool and PoolBase #118, @huebl

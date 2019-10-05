@@ -77,6 +77,7 @@ file(GLOB INC_OpcUaStackCore_BuildInTypes OpcUaStackCore/BuildInTypes/*.h)
 file(GLOB INC_OpcUaStackCore_Component OpcUaStackCore/Component/*.h)
 file(GLOB INC_OpcUaStackCore_Certificate OpcUaStackCore/Certificate/*.h)
 file(GLOB INC_OpcUaStackCore_Core OpcUaStackCore/Core/*.h)
+file(GLOB INC_OpcUaStackCore_Logging OpcUaStackCore/Logging/*.h)
 file(GLOB INC_OpcUaStackCore_SecureChannel OpcUaStackCore/SecureChannel/*.h)
 file(GLOB INC_OpcUaStackCore_ServiceSet OpcUaStackCore/ServiceSet/*.h OpcUaStackCore/ServiceSet/*.txx)
 file(GLOB INC_OpcUaStackCore_ServiceSetApplication OpcUaStackCore/ServiceSetApplication/*.h)
@@ -128,6 +129,12 @@ install(
 install(
     FILES ${INC_OpcUaStackCore_Core} 
     DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Core
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackCore_Logging} 
+    DESTINATION ${INSTALL_PREFIX}/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Logging
     COMPONENT headers
 )
 

@@ -58,6 +58,7 @@ namespace OpcUaStackCore
 		boost::optional<std::string> getValue(const std::string& path);
 		std::string getValue(const std::string& path, const std::string& defaultValue);
 		void getValues(const std::string& path, std::vector<std::string>& valueVec);
+		bool existChild(const std::string& path);
 		boost::optional<Config> getChild(const std::string& path);
 		void getChilds(const std::string& path, std::vector<Config>& configVec);
 

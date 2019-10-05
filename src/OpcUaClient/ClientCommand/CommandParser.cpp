@@ -1,6 +1,6 @@
 
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,10 +17,14 @@
  */
 
 #include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
 #include <iostream>
 #include <sstream>
+#include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaClient/ClientCommand/CommandParser.h"
 
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
@@ -65,6 +69,8 @@ namespace OpcUaClient
 	CommandParser::CommandParser(void)
 	: actualCommandBase_()
 	, session_("OpcUaClient")
+	, configFileName_("")
+	, config_(nullptr)
 	{
 	}
 
@@ -81,8 +87,27 @@ namespace OpcUaClient
 			return false;
 		}
 
+		// The first parameter can be a configuration file
+		uint32_t startPos = 1;
+		if (argv[startPos][0] != '-') {
+			configFileName_ = argv[1];
+			startPos++;
+
+			// check number of parameters in command line
+			if (argc < 3) {
+				errorString("command must have at least one parameter");
+				return false;
+			}
+		}
+
+		// read configuration file
+		if (!readConfigFile()) {
+			errorString("read configuration file error");
+			return false;
+		}
+
 		// check first parameter
-		std::string para = argv[1];
+		std::string para = argv[startPos];
 		boost::algorithm::trim(para);
 		if (
 		    boost::algorithm::to_upper_copy(para) != "-COMMAND" &&
@@ -95,7 +120,7 @@ namespace OpcUaClient
 
 		// read all parameters from command line
 		bool parseParameter = false;
-		for (uint32_t idx=1; idx<argc; idx++) {
+		for (uint32_t idx=startPos; idx<argc; idx++) {
 			std::string para = argv[idx];
 			boost::algorithm::trim(para);
 
@@ -238,11 +263,44 @@ namespace OpcUaClient
 		return true;
 	}
 
+	bool
+	CommandParser::readConfigFile(void)
+	{
+		config_ = Config::instance();
+
+		// set configuration alias names
+		auto configFileName = configFileName_;
+		if (configFileName_.empty()) {
+			configFileName = "./";
+		}
+		std::string configFilePath = boost::filesystem::path(configFileName).parent_path().string();
+		Environment::confDir(configFilePath);
+
+		config_->alias("@CONF_DIR@", Environment::confDir());
+		config_->alias("@HOSTNAME@", Environment::hostname());
+
+		// check if configuration file name exist
+		if (configFileName_.empty()) {
+			return true;
+		}
+
+		// read configuration file
+		ConfigXml configXml;
+		if (!configXml.parse(configFileName_, true)) {
+			std::stringstream ss;
+			ss << "read configuration error: " << configXml.errorMessage();
+			errorString(ss.str());
+			return false;
+		}
+
+		return true;
+	}
+
 	void
 	CommandParser::help(const std::string& command)
 	{
 		std::cout
-		  << "OpcUaClient (-help [<CommandName>]) | (-Command <CommandName> [-<ParameterName> <ParameterVariable>]*)*\n"
+		  << "OpcUaClient [<ConfigFile>] (-help [<CommandName>]) | (-Command <CommandName> [-<ParameterName> <ParameterVariable>]*)*\n"
 		  << "\n"
 		  << "Commands:\n";
 
@@ -267,6 +325,16 @@ namespace OpcUaClient
 		return errorString_;
 	}
 
+	std::string
+	CommandParser::configFileName(void)
+	{
+		return configFileName_;
+	}
 
+	Config*
+	CommandParser::config(void)
+	{
+		return config_;
+	}
 
 }
