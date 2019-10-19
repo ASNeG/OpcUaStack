@@ -145,7 +145,7 @@ but the stack's API. It cab be useful when your application should create some
 
   CreateNodeInstance createNodeInstance(
     "DynamicVariable",                            // name
-    NodeClassType_Variable,                       // node class
+    NodeClass::Enum::EnumVariabl,                 // node class
     OpcUaNodeId(85),                              // parent node id (Objects)
     OpcUaNodeId("Dynamic", 1),                    // node id
     OpcUaLocalizedText("en", "DynamicVariable"),  // display name

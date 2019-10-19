@@ -55,11 +55,11 @@ in configuration file **OpcUaServer.xml**:
 
   <Endpoints>
     <EndpointDescription>
-      <EndpointUrl>opc.tcp://0.0.0.0:8888</EndpointUrl>
-      <ApplicationUri>urn:0.0.0.0:ASNeG:helloworld</ApplicationUri>
+      <EndpointUrl>opc.tcp://@HOSTNAME@:8888</EndpointUrl>
+      <ApplicationUri>urn:@HOSTNAME@:ASNeG:helloworld</ApplicationUri>
       <ProductUri>urn:ASNeG:helloworld</ProductUri>
       <ApplicationName>helloworld</ApplicationName>
-      <DiscoveryUrl>opc.tcp://0.0.0.0:8888</DiscoveryUrl>
+      <DiscoveryUrl>opc.tcp://@HOSTNAME@:8888</DiscoveryUrl>
 
       <SecuritySetting>
         <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
