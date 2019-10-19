@@ -11,9 +11,9 @@ Source Code
 In order to compile and install the stack from the source code, you should meet
 the following requirements:
 
-* Compiler with C++11 support
-* CMake >= 2.8.9
-* Boost >= 1.54
+* Compiler with C++17 support (we test only GCC, Clang and Visual Studio)
+* CMake >= 3.5
+* Boost >= 1.58
 * OpenSSL >= 1.0.0
 
 
