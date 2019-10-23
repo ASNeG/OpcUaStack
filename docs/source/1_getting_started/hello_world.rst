@@ -27,7 +27,7 @@ Just type in your console:
 
 ::
 
-    $ OpcUaProjectBuilder3 helloworld "My First OPC UA Application" 8888
+    $ OpcUaProjectBuilder4 helloworld "My First OPC UA Application" 8888
 
 The builder has created a C++ project in folder **helloworld**, which is ready
 to be compiled and run as an OPC UA server on 8888 TCP\\IP port.
@@ -203,7 +203,7 @@ On Windows:
 
 ::
 
-	$ build.bat -t local -i path\to\install
+  $ build.bat -t local -i path\to\install
 
 If you've installed the stack locally, you should use option `-s` to point the directory
 with the stack:
@@ -218,7 +218,7 @@ On Windows:
 
 ::
 
-	$ build.bat -t local -i path\to\install -s C:\ASNeG
+  $ build.bat -t local -i path\to\install -s C:\ASNeG
 
 The application will be built as a shared library and copied with its
 configuration into the installation directory.
@@ -232,7 +232,7 @@ On Linux:
 
     $ export PATH=$PATH:path/to/install/usr/bin
     $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:path/to/install/usr/lib/
-    $ OpcUaServer3 ./etc/OpcUaStack/helloworld/OpcUaServer.xml
+    $ OpcUaServer4 ./etc/OpcUaStack/helloworld/OpcUaServer.xml
 
 
 On Windows:
@@ -240,7 +240,7 @@ On Windows:
 ::
 
     $ set PATH=%PATH%;\path\to\insstall\usr\lib\
-    $ OpcUaServer3 etc\OpcUaStack\helloworld\OpcUaServer.xml
+    $ OpcUaServer4 CONSOLE etc\OpcUaStack\helloworld\OpcUaServer.xml
 
 
 We need to determine, where the shared library is, by using the environment
