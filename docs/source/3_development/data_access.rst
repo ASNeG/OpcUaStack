@@ -7,7 +7,7 @@ Every OPC UA application is created to provide some data to its clients. In this
 we're going to learn how OPC UA server stores data and provide access to it.
 Also we'll show you how you can organize the access data by using ASNeG OPC UA Stack.
 
-Some basic conceptions related to the tutorial were described in :ref:`hello_world`.
+Some basic conceptions related to the tutorial were described in :ref:`hello_world_server`.
 It'd be easier to understand the following text if you take a look at this document before.
 
 You can download the source code of the tutorial from
@@ -47,7 +47,7 @@ namespace. Usually namespaces of *NodeId* and *BrowseName* are the same, but
 the OPC UA Specfication does not demand it.
 
 OK. There are a lot of information here and we need an example to explain
-it. In our example :ref:`hello_world` we created a folder for our string message:
+it. In our example :ref:`hello_world_server` we created a folder for our string message:
 
 .. code-block:: xml
 
@@ -91,7 +91,7 @@ To store data witch can be read\\written by the client, OPC UA server has a spec
 node type :term:`Variable`. It has :term:`Attriubte` *Value* where :term:`Variable`
 stores a data value of some type.
 
-From our example :ref:`hello_world`:
+From our example :ref:`hello_world_server`:
 
 .. code-block:: xml
 
@@ -236,7 +236,7 @@ The stack can notify a user application if some :term:`Attribute` of a :term:`No
 has been read or written by the OPC UA client. For that we have to create
 handler-methods and register them in the stack as callbacks.
 
-Let's do it in a new application (see :ref:`hello_world` if don't know how to
+Let's do it in a new application (see :ref:`hello_world_server` if don't know how to
 create an application):
 
 .. code-block:: cpp

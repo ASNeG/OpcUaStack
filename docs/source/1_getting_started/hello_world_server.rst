@@ -1,13 +1,13 @@
-.. _hello_world:
+.. _hello_world_server:
 
-Hello, World of OPC UA!
-===========================
+Hello, World of OPC UA! Server part.
+====================================
 
 This is the simplest example of an OPC UA application based on ASNeG OPC UA Stack.
 The example will help you to understand the basic OPC UA conceptions and make your first OPC UA server.
 Here we are going to output a greeting message which will be available from other OPC UA client.
 
-You can download the source code of the example from :download:`here <helloworld.zip>`.
+You can download the source code of the example from :download:`here <hello_world_server.zip>`.
 
 Requirements
 ---------------------------
@@ -15,7 +15,6 @@ Requirements
 In order to start this tutorial you need to have the following stuff:
 
 1. Windows or Linux machine with the installed stack (see :doc:`installation <installation>`  if you don't have it yet.)
-2. A text editor
 3. An OPC UA client to test the app. In the tutorial I will use `OPC UA Expert`_.
 
 

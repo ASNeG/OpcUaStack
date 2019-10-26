@@ -333,6 +333,6 @@ References
 ---------------------------
 
 * `ASNeG OPC UA Designer`_
-* :ref:`hello_world`
+* :ref:`hello_world_server`
 
 .. _ASNeG OPC UA Designer: https://github.com/ASNeG/OpcUaDesigner

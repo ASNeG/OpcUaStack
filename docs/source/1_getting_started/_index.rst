@@ -5,4 +5,5 @@ Getting Started
 
   overview
   installation
-  hello_world
+  hello_world_server
+  hello_world_client
