@@ -41,7 +41,8 @@ namespace OpcUaStackClient
 		assert(ctx_ != nullptr);
 
 		Log(Warning, "async connect event in invalid state; ignore event")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Connect");
 
 		return SessionServiceStateId::Connecting;
 	}
@@ -128,7 +129,8 @@ namespace OpcUaStackClient
 	)
 	{
 		Log(Warning, "create session response event in invalid state; ignore event")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Connect");
 
 		return SessionServiceStateId::Connecting;
 	}
@@ -140,7 +142,8 @@ namespace OpcUaStackClient
 	)
 	{
 		Log(Warning, "activate session response event in invalid state; ignore event")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Connect");
 
 		return SessionServiceStateId::Connecting;
 	}
@@ -152,7 +155,8 @@ namespace OpcUaStackClient
 	)
 	{
 		Log(Warning, "get endpoints response event in invalid state; ignore event")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Connect");
 
 		return SessionServiceStateId::Connecting;
 	}
@@ -164,7 +168,8 @@ namespace OpcUaStackClient
 	)
 	{
 		Log(Warning, "close session response event in invalid state; ignore event")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Connect");
 
 		return SessionServiceStateId::Connecting;
 	}
@@ -176,7 +181,8 @@ namespace OpcUaStackClient
 	)
 	{
 		Log(Warning, "message response event in invalid state; ignore event")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Connect");
 
 		return SessionServiceStateId::Connecting;
 	}
@@ -188,7 +194,8 @@ namespace OpcUaStackClient
 		assert(message.get() != nullptr);
 
 		Log(Warning, "message request event in invalid state")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Connect");
 
 		auto serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 
@@ -204,7 +211,8 @@ namespace OpcUaStackClient
 	SessionServiceStateConnecting::reconnectTimeout(void)
 	{
 		Log(Error, "reconnect timeout event in invalid state; abort")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Connect");
 		std::abort();
 
 		return SessionServiceStateId::Connecting;
@@ -214,7 +222,8 @@ namespace OpcUaStackClient
 	SessionServiceStateConnecting::pendingQueueTimeout(const Object::SPtr& object)
 	{
 		Log(Error, "pending queue timeout event in invalid state; abort")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Connect");
 		std::abort();
 
 		return SessionServiceStateId::Connecting;

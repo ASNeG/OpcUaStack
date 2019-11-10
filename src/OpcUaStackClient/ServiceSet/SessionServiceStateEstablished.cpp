@@ -43,7 +43,8 @@ namespace OpcUaStackClient
 		assert(ctx_ != nullptr);
 
 		Log(Warning, "async connect event in invalid state; ignore event")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Established");
 
 		return SessionServiceStateId::Established;
 	}
@@ -91,7 +92,8 @@ namespace OpcUaStackClient
 	SessionServiceStateEstablished::handleConnect(SecureChannel* secureChannel)
 	{
 		Log(Error, "handle connect event in invalid state; abort")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Established");
 		std::abort();
 
 		return SessionServiceStateId::Established;
@@ -111,7 +113,7 @@ namespace OpcUaStackClient
 		// start reconnect timer
 		ctx_->startReconnectTimer();
 
-		return SessionServiceStateId::Error;
+		return SessionServiceStateId::Disconnected;
 	}
 
 	SessionServiceStateId
@@ -124,6 +126,7 @@ namespace OpcUaStackClient
 
 		Log(Warning, "create session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Established")
 			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
 
 		// remove all requests from pending queue
@@ -145,6 +148,7 @@ namespace OpcUaStackClient
 
 		Log(Warning, "activate session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Established")
 			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
 
 		// remove all requests from pending queue
@@ -163,7 +167,8 @@ namespace OpcUaStackClient
 	)
 	{
 		Log(Warning, "get endpoints response event in invalid state; ignore event")
-			.parameter("SessId", ctx_->id_);
+			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Established");
 
 		return SessionServiceStateId::Established;
 	}
@@ -178,6 +183,7 @@ namespace OpcUaStackClient
 
 		Log(Warning, "receive close session response in invalid state; close secure channel")
 			.parameter("SessId", ctx_->id_)
+			.parameter("State", "Established")
 			.parameter("ResultStatus", OpcUaStatusCodeMap::shortString(responseHeader->serviceResult()));
 
 		// remove all requests from pending queue
