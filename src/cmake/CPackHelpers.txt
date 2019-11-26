@@ -28,19 +28,16 @@ function(SSLDepends nameLib)
     LibDepends(${nameLib} OPEN_SSL_SUPPORTED_RELEASES_BIN 0)    
     if (CPACK_BINARY_RPM) 
         set(LIST_OF_LIB_VERSIONS_BIN "(${FOUT})" PARENT_SCOPE)    
+
+        LibDepends("${nameLib}-" OPEN_SSL_SUPPORTED_RELEASES_BIN 1)
+        set(LIST_OF_LIB_VERSIONS_DEV "(${FOUT})" PARENT_SCOPE)    
     endif()
 
     if (CPACK_BINARY_DEB)
         set(LIST_OF_LIB_VERSIONS_BIN "${FOUT}" PARENT_SCOPE)    
-    endif()
-    
-    if (CPACK_BINARY_RPM) 
-        LibDepends("${nameLib}-" OPEN_SSL_SUPPORTED_RELEASES_BIN 1)
-        set(LIST_OF_LIB_VERSIONS_DEV "(${FOUT})" PARENT_SCOPE)    
-    endif()
-    if (CPACK_BINARY_DEB)
+
         LibDepends(${nameLib} OPEN_SSL_SUPPORTED_RELEASES_DEV 1)
-        set(LIST_OF_LIB_VERSIONS_DEV "${FOUT}" PARENT_SCOPE)    
+        set(LIST_OF_LIB_VERSIONS_DEV "libssl-dev | ${FOUT}" PARENT_SCOPE)    
     endif()
 endfunction(SSLDepends)
  
