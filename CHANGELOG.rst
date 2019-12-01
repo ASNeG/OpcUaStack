@@ -4,6 +4,7 @@ Release 3.8.1
 **Bugs**:
 
 * fix libssl-dev dependency for dev DEB package #314, by @flipback
+* fix conflict of URLs discovery server and application endpoint #310, by @flipback
 
 Release 3.8.0 (2019-10-14)
 ------------------------------------------------------------
