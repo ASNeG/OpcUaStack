@@ -68,21 +68,6 @@ namespace OpcUaServer
 			return false;
 		}
 
-		// check if the DiscoveryUrl matches EndPointUrls
-		boost::optional<Config> endPointsConfig = config.getChild("OpcUaServer.Endpoints");
-		std::vector<Config> endPointsConfigVec;
-		endPointsConfig->getChilds("EndpointDescription", endPointsConfigVec);
-		for (auto &endPoint : endPointsConfigVec) {
-			auto endPointUrl = endPoint.getChild("EndpointUrl")->getValue();
-			if (endPointUrl == discoveryServerUrl_) {
-				Log(Error, "endpoint URL of DiscoveryServer cannot equal the application's endpoint URL")
-					.parameter("DiscoveryServerUrl", discoveryServerUrl_)
-					.parameter("Application EndPointUrl", endPointUrl);
-
-				return false;
-			}
-		}
-
 		// get element register interval url
 		dicoveryServerConfig->getConfigParameter("RegisterInterval", registerInterval_, "40000");
 
