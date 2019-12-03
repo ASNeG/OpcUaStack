@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackCore/Base/Log.h"
@@ -71,6 +71,9 @@ namespace OpcUaStackClient
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
 		sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
 		sessionServiceConfig.session_->reconnectTimeout_ = 0;
+		sessionServiceConfig.secureChannelClient_->applicationCertificate(applicationCertificate_);
+		sessionServiceConfig.secureChannelClient_->cryptoManager(cryptoManager_);
+
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 
@@ -186,18 +189,16 @@ namespace OpcUaStackClient
 	void
 	DiscoveryClientRegisteredServers::sendDiscoveryServiceRegisterServer(void)
 	{
-		if (registeredServerMap_.size() == 0) {
+		if (registeredServerMap_.empty()) {
 			sessionService_->asyncDisconnect();
 		}
 
-		RegisteredServer::Map::iterator it;
-		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
-
+		for (auto& entry : registeredServerMap_) {
 			ServiceTransactionRegisterServer::SPtr trx;
 			trx = constructSPtr<ServiceTransactionRegisterServer>();
 			RegisterServerRequest::SPtr req = trx->request();
 
-			it->second->copyTo(req->server());
+			entry.second->copyTo(req->server());
 
 			discoveryService_->asyncSend(trx);
 		}
@@ -221,13 +222,19 @@ namespace OpcUaStackClient
 	{
 		// all server entries must be deregister from dicovery server. We must
 		// disable the isOnline flag
-		RegisteredServer::Map::iterator it;
-		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
-			RegisteredServer::SPtr rs = it->second;
+		for (auto& entry : registeredServerMap_) {
+			RegisteredServer::SPtr rs = entry.second;
 			rs->isOnline(false);
 		}
+	}
 
-		;
+	void DiscoveryClientRegisteredServers::applicationCertificate(
+			const ApplicationCertificate::SPtr &applicationCertificate) {
+		applicationCertificate_ = applicationCertificate;
+	}
+
+	void DiscoveryClientRegisteredServers::cryptoManager(const CryptoManager::SPtr &cryptoManager) {
+		cryptoManager_ = cryptoManager;
 	}
 
 }
