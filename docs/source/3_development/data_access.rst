@@ -146,15 +146,15 @@ but the stack's API. It cab be useful when your application should create some
   CreateNodeInstance createNodeInstance(
     "DynamicVariable",                            // name
     NodeClassType_Variable,                       // node class
-    OpcUaNodeId(85),                              // parent node id (Objects)
+    OpcUaNodeId(85),                              // parent node id (folder Objects)
     OpcUaNodeId("Dynamic", 1),                    // node id
     OpcUaLocalizedText("en", "DynamicVariable"),  // display name
     OpcUaQualifiedName("DynamicVariable", 1),     // browse name
-    OpcUaNodeId(47),                              // reference type id
-    OpcUaNodeId(62)                               // type node id
+    OpcUaNodeId(47),                              // reference type id (HasComponent)
+    OpcUaNodeId(62)                               // type definition node id (BaseVariableType)
   );
 
-  if (!createNodeInstance.query(applicationServiceIf_)) {
+  if (!createNodeInstance.query(&this->service())) {
     std::cout << "createNodeInstance response error" << std::endl;
     return;
   }
@@ -166,7 +166,7 @@ Of course sometimes we need to delete :term:`Node`:
 
   DeleteNodeInstance deleteNodeInstance(OpcUaNodeId("Dynamic", 1));
 
-  if (!deleteNodeInstance.query(applicationServiceIf_)) {
+  if (!deleteNodeInstance.query(&this->service())) {
     std::cout << "deleteNodeInstance response error" << std::endl;
     return;
   }
