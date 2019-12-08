@@ -240,7 +240,7 @@ On Windows:
 ::
 
     $ set PATH=%PATH%;\path\to\insstall\usr\lib\
-    $ OpcUaServer4 CONSOLE etc\OpcUaStack\helloworld\OpcUaServer.xml
+    $ OpcUaServer4 CONSOLE path\to\install\etc\OpcUaStack\helloworld\OpcUaServer.xml
 
 
 We need to determine, where the shared library is, by using the environment
