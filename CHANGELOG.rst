@@ -8,6 +8,10 @@ Release 3.8.1
 * fix crash of discovery client, #322, by @flipback
 * fix ip address for hostname #317, by @huebl, @flipback
 
+**Documentation**
+
+* improve documentation #241 #264 #318, by @flipback 
+
 Release 3.8.0 (2019-10-14)
 ------------------------------------------------------------
 

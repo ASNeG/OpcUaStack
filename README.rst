@@ -64,12 +64,26 @@ ready to be compiled and installed. Below there is an example for local installa
 
 The user application is installed in directory $HOME/.ASNeG or C:\ASNeG by default. And you can run it by using OPC UA Server:
 
+On Linux
+
 ::
 
-  $ OpcUaServer3 $HOME/install/etc/OpcUaStack/MyProject/OpcUaServer.xml
+  $ export PATH=$PATH:$HOME/.ASNeG/usr/bin
+  $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.ASNeG/usr/lib/
+  $ OpcUaServer3 $HOME/.ASNeG/etc/OpcUaStack/MyProject/OpcUaServer.xml
+
+On Windows
+
+::
+
+  $ set PATH=%PATH%;C:\ASNeG\usr\lib\
+  $ set PATH=%PATH%;C:\ASNeG\usr\bin\
+  $ OpcUaServer3 CONSOLE C:\ASNeG\etc\OpcUaStack\MyProject\OpcUaServer.xml
+
 
 The server reads the setting from file **OpcUaServer.xml** and runs the user application.
 Now the application is available via OPC UA protocol on port 9012.
+
 
 For more information about how to write your own OPC UA client server application see example_ and ASNeG-Demo_.
 

@@ -203,7 +203,7 @@ On Windows:
 
 ::
 
-	$ build.bat -t local -i path\to\install
+  $ build.bat -t local -i path\to\install
 
 If you've installed the stack locally, you should use option `-s` to point the directory
 with the stack:
@@ -218,7 +218,7 @@ On Windows:
 
 ::
 
-	$ build.bat -t local -i path\to\install -s C:\ASNeG
+  $ build.bat -t local -i path\to\install -s C:\ASNeG
 
 The application will be built as a shared library and copied with its
 configuration into the installation directory.
@@ -239,8 +239,9 @@ On Windows:
 
 ::
 
-    $ set PATH=%PATH%;\path\to\insstall\usr\lib\
-    $ OpcUaServer3 etc\OpcUaStack\helloworld\OpcUaServer.xml
+    $ set PATH=%PATH%;\path\to\install\usr\lib\
+    $ set PATH=%PATH%;\path\to\install\usr\bin\
+    $ OpcUaServer3 CONSOLE path\to\install\etc\OpcUaStack\helloworld\OpcUaServer.xml
 
 
 We need to determine, where the shared library is, by using the environment
