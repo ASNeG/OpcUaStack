@@ -75,12 +75,16 @@ On Linux
 
 ::
 
+  $ export PATH=$PATH:$HOME/.ASNeG/usr/bin
+  $ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/.ASNeG/usr/lib/
   $ OpcUaServer4 $HOME/.ASNeG/etc/OpcUaStack/MyProject/OpcUaServer.xml
 
 On Windows
 
 ::
 
+  $ set PATH=%PATH%;C:\ASNeG\usr\lib\
+  $ set PATH=%PATH%;C:\ASNeG\usr\bin\
   $ OpcUaServer4 CONSOLE C:\ASNeG\etc\OpcUaStack\MyProject\OpcUaServer.xml
 
 
