@@ -52,6 +52,10 @@ Release 3.8.1
 * fix libssl-dev dependency for dev DEB package #314, by @flipback
 * fix defaul endpoint URL #310, by @flipback
 
+**Documentation**
+
+* improve documentation #241 #264 #318, by @flipback 
+
 Release 3.8.0 (2019-10-14)
 ------------------------------------------------------------
 
