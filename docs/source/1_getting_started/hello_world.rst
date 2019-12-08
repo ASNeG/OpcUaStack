@@ -239,7 +239,8 @@ On Windows:
 
 ::
 
-    $ set PATH=%PATH%;\path\to\insstall\usr\lib\
+    $ set PATH=%PATH%;\path\to\install\usr\lib\
+    $ set PATH=%PATH%;\path\to\install\usr\bin\
     $ OpcUaServer3 CONSOLE path\to\install\etc\OpcUaStack\helloworld\OpcUaServer.xml
 
 
