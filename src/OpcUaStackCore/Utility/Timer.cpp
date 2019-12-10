@@ -12,7 +12,7 @@ namespace OpcUaStackCore
 	
 	Timer::~Timer(void)
 	{
-		callback_.reset();
+		timerCallback_ = nullptr;
 	}
 
 	bool 
@@ -50,10 +50,16 @@ namespace OpcUaStackCore
 		stop();
 	}
 
-	Callback& 
-	Timer::callback(void)
+	Timer::TimerCallback&
+	Timer::timerCallback(void)
 	{
-		return callback_;
+		return timerCallback_;
+	}
+
+	void
+	Timer::timerCallback(TimerCallback& timerCallback)
+	{
+		timerCallback_ = timerCallback;
 	}
 
 	void 
@@ -65,7 +71,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		callback_();
+		timerCallback_();
 
 		running_ = false;
 		selfObjectSPtr_.reset();

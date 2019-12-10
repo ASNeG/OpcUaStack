@@ -54,9 +54,15 @@ namespace OpcUaStackServer
 	}
 
 	void
+	ServerMethod::registerMethod(ApplicationCallback::Method methodCallback)
+	{
+		methodCallback_ = methodCallback;
+	}
+
+	void
 	ServerMethod::method(ApplicationMethodContext* applicationMethodContext)
 	{
-		if (!methodCallback_.exist()) {
+		if (!methodCallback_) {
 			applicationMethodContext->statusCode_ = BadNotSupported;
 			return;
 		}

@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackServer_ApplicationServiceIf_h__
 #define __OpcUaStackServer_ApplicationServiceIf_h__
 
-#include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 
 namespace OpcUaStackServer

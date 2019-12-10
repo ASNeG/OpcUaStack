@@ -88,7 +88,7 @@ namespace OpcUaStackCore
 
 	PendingQueue::~PendingQueue(void)
 	{
-		timeoutCallback_.reset();
+		timeoutCallback_ = nullptr;
 		pendingQueueMap_.clear();
 	}
 
@@ -98,10 +98,10 @@ namespace OpcUaStackCore
 		ioService_ = &ioService;
 	}
 
-	Callback& 
-	PendingQueue::timeoutCallback(void)
+	void
+	PendingQueue::timeoutCallback(PendingQueue::TimeoutCallback timeoutCallback)
 	{
-		return timeoutCallback_;
+		timeoutCallback_ = timeoutCallback;
 	}
 
 	bool 
@@ -113,10 +113,11 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		Timer::TimerCallback timerCallback = boost::bind(&PendingQueue::onTimeout, this, key);
 		PendingQueueElement::SPtr pendingQueueElement = boost::make_shared<PendingQueueElement>(*ioService_);
 		pendingQueueElement->key(key);
 		pendingQueueElement->element(object);
-		pendingQueueElement->timer()->callback().reset(boost::bind(&PendingQueue::onTimeout, this, key));
+		pendingQueueElement->timer()->timerCallback(timerCallback);
 		pendingQueueMap_.insert(std::make_pair(key, pendingQueueElement));
 
 		pendingQueueElement->timer()->start(pendingQueueElement->timer(), timeoutMSec);
@@ -151,8 +152,7 @@ namespace OpcUaStackCore
 	void 
 	PendingQueue::onTimeout(uint32_t key)
 	{
-		PendingQueueMap::iterator it;
-		it = pendingQueueMap_.find(key);
+		auto it = pendingQueueMap_.find(key);
 		if (it == pendingQueueMap_.end()) {
 			return;
 		}

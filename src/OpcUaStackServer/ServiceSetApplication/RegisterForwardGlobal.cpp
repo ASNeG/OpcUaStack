@@ -35,55 +35,73 @@ namespace OpcUaStackServer
 	}
 
 	void
-	RegisterForwardGlobal::setRegisterServerCallback(Callback& callback)
+	RegisterForwardGlobal::setRegisterServerCallback(
+		ApplicationCallback::RegisterServer callback
+	)
 	{
 		forwardGlobalSync_.registerServerService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardGlobal::setFindServersCallback(Callback& callback)
+	RegisterForwardGlobal::setFindServersCallback(
+		ApplicationCallback::FindServer callback
+	)
 	{
 		forwardGlobalSync_.findServersService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardGlobal::setEventItemStartCallback(Callback& callback)
+	RegisterForwardGlobal::setEventItemStartCallback(
+		ApplicationCallback::EventItemStart callback
+	)
 	{
 		forwardGlobalSync_.eventItemStartService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardGlobal::setEventItemStopCallback(Callback& callback)
+	RegisterForwardGlobal::setEventItemStopCallback(
+		ApplicationCallback::EventItemStop callback
+	)
 	{
 		forwardGlobalSync_.eventItemStopService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardGlobal::setAuthenticationCallback(Callback& callback)
+	RegisterForwardGlobal::setAuthenticationCallback(
+		ApplicationCallback::Authentication callback
+	)
 	{
 		forwardGlobalSync_.authenticationService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardGlobal::setAutorizationCallback(Callback& callback)
+	RegisterForwardGlobal::setAutorizationCallback(
+		ApplicationCallback::Autorization callback
+	)
 	{
 		forwardGlobalSync_.autorizationService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardGlobal::setCloseSessionCallback(Callback& callback)
+	RegisterForwardGlobal::setCloseSessionCallback(
+		ApplicationCallback::CloseSession callback
+	)
 	{
 		forwardGlobalSync_.closeSessionService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardGlobal::setNodeNewCallback(Callback& callback)
+	RegisterForwardGlobal::setNodeNewCallback(
+		ApplicationCallback::NodeNew callback
+	)
 	{
 		forwardGlobalSync_.nodeNewService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardGlobal::setNodeDeleteCallback(Callback& callback)
+	RegisterForwardGlobal::setNodeDeleteCallback(
+		ApplicationCallback::NodeDelete callback
+	)
 	{
 		forwardGlobalSync_.nodeDeleteService().setCallback(callback);
 	}

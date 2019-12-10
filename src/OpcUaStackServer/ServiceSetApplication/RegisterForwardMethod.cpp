@@ -57,7 +57,7 @@ namespace OpcUaStackServer
 	}
 
 	void
-	RegisterForwardMethod::setMethodCallback(Callback& callback)
+	RegisterForwardMethod::setMethodCallback(ApplicationCallback::Method callback)
 	{
 		forwardMethodSync_.methodService().setCallback(callback);
 	}

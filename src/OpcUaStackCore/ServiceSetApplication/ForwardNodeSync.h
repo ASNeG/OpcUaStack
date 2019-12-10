@@ -19,6 +19,15 @@
 #define __OpcUaStackCore_ForwardNodeSync_h__
 
 #include "OpcUaStackCore/ServiceSetApplication/ForwardCallback.h"
+#include "OpcUaStackCore/Application/ApplicationCallback.h"
+#include "OpcUaStackCore/Application/ApplicationReadContext.h"
+#include "OpcUaStackCore/Application/ApplicationHReadContext.h"
+#include "OpcUaStackCore/Application/ApplicationHReadEventContext.h"
+#include "OpcUaStackCore/Application/ApplicationWriteContext.h"
+#include "OpcUaStackCore/Application/ApplicationHWriteContext.h"
+#include "OpcUaStackCore/Application/ApplicationMethodContext.h"
+#include "OpcUaStackCore/Application/ApplicationMonitoredItemStartContext.h"
+#include "OpcUaStackCore/Application/ApplicationMonitoredItemStopContext.h"
 
 namespace OpcUaStackCore
 {
@@ -27,34 +36,34 @@ namespace OpcUaStackCore
 	: public  Object
 	{
 	  public:
-		typedef boost::shared_ptr<ForwardNodeSync> SPtr;
+		using SPtr = boost::shared_ptr<ForwardNodeSync>;
 
 		ForwardNodeSync(void);
 		virtual ~ForwardNodeSync(void);
 
-		ForwardCallback& readService(void);
-		ForwardCallback& readHService(void);
-		ForwardCallback& readHEService(void);
-		ForwardCallback& writeService(void);
-		ForwardCallback& writeHService(void);
-		ForwardCallback& methodService(void);
-		ForwardCallback& monitoredItemStartService(void);
-		ForwardCallback& monitoredItemStopService(void);
+		ForwardCallback<ApplicationCallback::Read>& readService(void);
+		ForwardCallback<ApplicationCallback::HRead>& readHService(void);
+		ForwardCallback<ApplicationCallback::HERead>& readHEService(void);
+		ForwardCallback<ApplicationCallback::Write>& writeService(void);
+		ForwardCallback<ApplicationCallback::HWrite>& writeHService(void);
+		ForwardCallback<ApplicationCallback::Method>& methodService(void);
+		ForwardCallback<ApplicationCallback::MonitoredItemStart>& monitoredItemStartService(void);
+		ForwardCallback<ApplicationCallback::MonitoredItemStop>& monitoredItemStopService(void);
 
 		void updateFrom(ForwardNodeSync& forwardInfoSync);
 
 	  private:
 		// attribute service
-		ForwardCallback readService_;
-		ForwardCallback readHService_;
-		ForwardCallback readHEService_;
-		ForwardCallback writeService_;
-		ForwardCallback writeHService_;
-		ForwardCallback monitoredItemStartService_;
-		ForwardCallback monitoredItemStopService_;
+		ForwardCallback<ApplicationCallback::Read> readService_;
+		ForwardCallback<ApplicationCallback::HRead> readHService_;
+		ForwardCallback<ApplicationCallback::HERead> readHEService_;
+		ForwardCallback<ApplicationCallback::Write> writeService_;
+		ForwardCallback<ApplicationCallback::HWrite> writeHService_;
+		ForwardCallback<ApplicationCallback::MonitoredItemStart> monitoredItemStartService_;
+		ForwardCallback<ApplicationCallback::MonitoredItemStop> monitoredItemStopService_;
 
 		// method service
-		ForwardCallback methodService_;
+		ForwardCallback<ApplicationCallback::Method> methodService_;
 	};
 
 }

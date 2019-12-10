@@ -39,12 +39,6 @@ namespace OpcUaStackCore
 	{
 	}
 
-	Callback& 
-	SlotTimerElement::callback(void)
-	{
-		return callback_;
-	}
-
 	void
 	SlotTimerElement::timeoutCallback(const TimeoutCallback& timeoutCallback)
 	{
@@ -73,9 +67,6 @@ namespace OpcUaStackCore
 			else {
 			    timeoutCallback_();
 			}
-		}
-		else {
-			callback_();
 		}
 	}
 

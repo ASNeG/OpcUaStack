@@ -23,7 +23,6 @@ namespace OpcUaStackCore
 
 	EventHandler::EventHandler(void)
 	: EventHandlerBase()
-	, callback_()
 	{
 	}
 
@@ -32,15 +31,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	EventHandler::callback(Callback& callback)
+	EventHandler::eventCallback(EventCallback& eventCallback)
 	{
-		callback_ = callback;
+		eventCallback_ = eventCallback;
 	}
 
-	Callback&
-	EventHandler::callback(void)
+	EventHandler::EventCallback
+	EventHandler::eventCallback(void)
 	{
-		return callback_;
+		return eventCallback_;
 	}
 
 	// ------------------------------------------------------------------------
@@ -53,11 +52,11 @@ namespace OpcUaStackCore
 	bool
 	EventHandler::fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase)
 	{
-		if (!callback_.exist()) {
+		if (!eventCallback_) {
 			return false;
 		}
 
-		callback_(eventBase);
+		eventCallback_(eventBase);
 		return true;
 	}
 

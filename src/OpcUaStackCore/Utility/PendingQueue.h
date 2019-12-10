@@ -19,7 +19,6 @@
 #define __OpcUaStackCore_PendingQueue_h__
 
 #include "OpcUaStackCore/Base/Object.h"
-#include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Utility/Timer.h"
 
 namespace OpcUaStackCore
@@ -51,13 +50,14 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<PendingQueue> SPtr;
+		using TimeoutCallback = std::function<void (Object::SPtr&)>;
 
 		PendingQueue(void);
 		PendingQueue(IOService& ioService);
 		~PendingQueue(void);
 
 		void ioService(IOService& ioService);
-		Callback& timeoutCallback(void);
+		void timeoutCallback(const TimeoutCallback timeoutCallback);
 
 		bool insert(uint32_t key, Object::SPtr object, uint32_t timeoutMSec);
 		Object::SPtr remove(uint32_t key);
@@ -70,7 +70,7 @@ namespace OpcUaStackCore
 		IOService* ioService_;
 		typedef std::map<uint32_t, PendingQueueElement::SPtr> PendingQueueMap;
 		PendingQueueMap pendingQueueMap_;
-		Callback timeoutCallback_;
+		TimeoutCallback timeoutCallback_;
 	};
 
 }

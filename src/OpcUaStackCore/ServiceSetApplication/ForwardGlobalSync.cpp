@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -37,55 +37,55 @@ namespace OpcUaStackCore
 	{
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::RegisterServer>&
 	ForwardGlobalSync::registerServerService(void)
 	{
 		return registerServerService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::FindServer>&
 	ForwardGlobalSync::findServersService(void)
 	{
 		return findServersService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::EventItemStart>&
 	ForwardGlobalSync::eventItemStartService(void)
 	{
 		return eventItemStartService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::EventItemStop>&
 	ForwardGlobalSync::eventItemStopService(void)
 	{
 		return eventItemStopService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::Authentication>&
 	ForwardGlobalSync::authenticationService(void)
 	{
 		return authenticationService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::Autorization>&
 	ForwardGlobalSync::autorizationService(void)
 	{
 		return autorizationService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::CloseSession>&
 	ForwardGlobalSync::closeSessionService(void)
 	{
 		return closeSessionService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::NodeNew>&
 	ForwardGlobalSync::nodeNewService(void)
 	{
 		return nodeNewService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::NodeDelete>&
 	ForwardGlobalSync::nodeDeleteService(void)
 	{
 		return nodeDeleteService_;

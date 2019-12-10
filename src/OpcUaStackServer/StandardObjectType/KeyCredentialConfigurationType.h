@@ -61,11 +61,11 @@ namespace OpcUaStackServer
         bool get_ServiceStatus_Variable(OpcUaDataValue& dataValue);
         bool set_ServiceStatus_Variable(const OpcUaDataValue& dataValue);
 
-        virtual void call_DeleteCredential_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_DeleteCredential_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_GetEncryptingKey_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_GetEncryptingKey_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_UpdateCredential_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_UpdateCredential_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerVariable::SPtr endpointUrls_Variable_;

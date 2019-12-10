@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackClient_ClientSubscription_h__
 #define __OpcUaStackClient_ClientSubscription_h__
 
-#include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 #include "OpcUaStackClient/ApplicationUtility/ClientMonitoredItem.h"

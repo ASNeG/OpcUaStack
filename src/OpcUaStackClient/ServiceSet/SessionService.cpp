@@ -40,7 +40,7 @@ namespace OpcUaStackClient
 
 		// init pending queue callback
 		ctx_->pendingQueue_.ioService(*ioThread->ioService().get());
-		ctx_->pendingQueue_.timeoutCallback().reset(
+		ctx_->pendingQueue_.timeoutCallback(
 			boost::bind(&SessionService::pendingQueueTimeout, this, _1)
 		);
 
