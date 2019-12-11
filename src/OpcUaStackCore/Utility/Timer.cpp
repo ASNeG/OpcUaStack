@@ -57,7 +57,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	Timer::timerCallback(TimerCallback& timerCallback)
+	Timer::timerCallback(const TimerCallback& timerCallback)
 	{
 		timerCallback_ = timerCallback;
 	}

@@ -22,7 +22,7 @@ namespace OpcUaStackCore
 		void stop(void);
 
 		TimerCallback& timerCallback(void);
-		void timerCallback(TimerCallback& timerCallback);
+		void timerCallback(const TimerCallback& timerCallback);
 
 	  private:
 		void onTimeout(const boost::system::error_code& errorcode);
