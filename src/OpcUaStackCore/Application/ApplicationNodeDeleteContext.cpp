@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,30 +15,19 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
+#include "OpcUaStackCore/Application/ApplicationNodeDeleteContext.h"
 
 namespace OpcUaStackCore
 {
 
-	ForwardMethodSync::ForwardMethodSync(void)
-	: methodService_()
+	ApplicationNodeDeleteContext::ApplicationNodeDeleteContext(void)
+	: applicationContext_()
+	, nodeId_()
 	{
 	}
 
-	ForwardMethodSync::~ForwardMethodSync(void)
+	ApplicationNodeDeleteContext::~ApplicationNodeDeleteContext(void)
 	{
-	}
-
-	ForwardCallback<ApplicationCallback::Method>&
-	ForwardMethodSync::methodService(void)
-	{
-		return methodService_;
-	}
-
-	void
-	ForwardMethodSync::updateFrom(ForwardMethodSync& forwardCallbackSync)
-	{
-		methodService_.updateFrom(forwardCallbackSync.methodService());
 	}
 
 }

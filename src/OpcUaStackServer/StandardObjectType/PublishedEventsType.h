@@ -77,11 +77,11 @@ namespace OpcUaStackServer
         bool get_SelectedFields_Variable(OpcUaDataValue& dataValue);
         bool set_SelectedFields_Variable(const OpcUaDataValue& dataValue);
 
-        virtual void call_ExtensionFields_AddExtensionField_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_ExtensionFields_AddExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_ExtensionFields_RemoveExtensionField_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_ExtensionFields_RemoveExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
-        virtual void call_ModifyFieldSelection_Method(ApplicationMethodContext* applicationMethodContext);
+        virtual void call_ModifyFieldSelection_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
     
       private:
         ServerVariable::SPtr configurationVersion_Variable_;

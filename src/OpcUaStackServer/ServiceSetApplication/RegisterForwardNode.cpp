@@ -93,49 +93,65 @@ namespace OpcUaStackServer
 	}
 
 	void
-	RegisterForwardNode::setReadCallback(Callback& callback)
+	RegisterForwardNode::setReadCallback(
+		ApplicationCallback::Read callback
+	)
 	{
 		forwardNodeSync_.readService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardNode::setWriteCallback(Callback& callback)
+	RegisterForwardNode::setWriteCallback(
+		ApplicationCallback::Write callback
+	)
 	{
 		forwardNodeSync_.writeService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardNode::setReadHCallback(Callback& callback)
+	RegisterForwardNode::setReadHCallback(
+		ApplicationCallback::HRead callback
+	)
 	{
 		forwardNodeSync_.readHService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardNode::setReadHECallback(Callback& callback)
+	RegisterForwardNode::setReadHECallback(
+		ApplicationCallback::HERead callback
+	)
 	{
 		forwardNodeSync_.readHEService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardNode::setWriteHCallback(Callback& callback)
+	RegisterForwardNode::setWriteHCallback(
+		ApplicationCallback::HWrite callback
+	)
 	{
 		forwardNodeSync_.writeHService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardNode::setMethodCallback(Callback& callback)
+	RegisterForwardNode::setMethodCallback(
+		ApplicationCallback::Method callback
+	)
 	{
 		forwardNodeSync_.methodService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardNode::setMonitoredItemStartCallback(Callback& callback)
+	RegisterForwardNode::setMonitoredItemStartCallback(
+		ApplicationCallback::MonitoredItemStart callback
+	)
 	{
 		forwardNodeSync_.monitoredItemStartService().setCallback(callback);
 	}
 
 	void
-	RegisterForwardNode::setMonitoredItemStopCallback(Callback& callback)
+	RegisterForwardNode::setMonitoredItemStopCallback(
+		ApplicationCallback::MonitoredItemStop callback
+	)
 	{
 		forwardNodeSync_.monitoredItemStopService().setCallback(callback);
 	}

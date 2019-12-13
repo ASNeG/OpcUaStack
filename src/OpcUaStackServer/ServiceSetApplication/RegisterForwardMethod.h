@@ -21,6 +21,7 @@
 #include <vector>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/Application/ApplicationCallback.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
 namespace OpcUaStackServer
@@ -37,13 +38,7 @@ namespace OpcUaStackServer
 
 		void objectNodeId(const OpcUaStackCore::OpcUaNodeId& objectNodeId);
 		void methodNodeId(const OpcUaStackCore::OpcUaNodeId& methodNodeId);
-		void setMethodCallback(OpcUaStackCore::Callback& callback);
-		template<typename T>
-		  void setMethodCallback(T handler) {
-			  OpcUaStackCore::Callback callback;
-			  callback.reset(handler);
-			  setMethodCallback(callback);
-		  }
+		void setMethodCallback(OpcUaStackCore::ApplicationCallback::Method callback);
 
 		bool query(ApplicationServiceIf* applicationServiceIf);
 		OpcUaStackCore::OpcUaStatusCode resultCode(void);

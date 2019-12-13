@@ -21,7 +21,6 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/asio/strand.hpp>
 #include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
 
@@ -37,8 +36,6 @@ namespace OpcUaStackCore
 		SlotTimerElement(void);
 		~SlotTimerElement(void);
 
-		[[deprecated("replaced by timeoutCallback")]]
-		Callback& callback(void);
 		void timeoutCallback(const TimeoutCallback& timeoutCallback);
 		void timeoutCallback(
 			const boost::shared_ptr<boost::asio::io_service::strand>& strand,
@@ -68,7 +65,6 @@ namespace OpcUaStackCore
 	  private:
 		boost::shared_ptr<boost::asio::io_service::strand> strand_ = nullptr;
 		TimeoutCallback timeoutCallback_ = nullptr;
-		Callback callback_;
 
 		boost::posix_time::ptime expireTime_;
 		uint32_t interval_;

@@ -19,7 +19,6 @@
 #define __OpcUaStackCore_EventHandlerBase_h__
 
 #include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/EventType/EventBase.h"
 
 namespace OpcUaStackCore

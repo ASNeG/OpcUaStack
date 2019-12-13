@@ -18,7 +18,9 @@
 #ifndef __OpcUaStackCore_ForwardMethodSync_h__
 #define __OpcUaStackCore_ForwardMethodSync_h__
 
+#include "OpcUaStackCore/Application/ApplicationCallback.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardCallback.h"
+#include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 
 namespace OpcUaStackCore
 {
@@ -27,17 +29,17 @@ namespace OpcUaStackCore
 	: public  Object
 	{
 	  public:
-		typedef boost::shared_ptr<ForwardMethodSync> SPtr;
+		using SPtr = boost::shared_ptr<ForwardMethodSync>;
 
 		ForwardMethodSync(void);
 		virtual ~ForwardMethodSync(void);
 
-		ForwardCallback& methodService(void);
+		ForwardCallback<ApplicationCallback::Method>& methodService(void);
 
 		void updateFrom(ForwardMethodSync& forwardInfoSync);
 
 	  private:
-		ForwardCallback methodService_;
+		ForwardCallback<ApplicationCallback::Method> methodService_;
 	};
 
 }

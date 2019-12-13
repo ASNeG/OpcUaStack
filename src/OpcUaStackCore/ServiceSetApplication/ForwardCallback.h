@@ -19,42 +19,83 @@
 #define __OpcUaStackCore_ForwardCallback_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
-#include "OpcUaStackCore/Base/Callback.h"
-
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ForwardCallback
-	{
-	  public:
-		typedef boost::shared_ptr<ForwardCallback> SPtr;
+    template<typename CallbackFunction>
+	  class DLLEXPORT ForwardCallback
+	  {
+	    public:
+		  typedef boost::shared_ptr<ForwardCallback> SPtr;
 
-		ForwardCallback(void);
-		~ForwardCallback(void);
-
-		void updateFrom(ForwardCallback& forwardInfo);
-		void setCallback(Callback& callback);
-		template<typename T>
-		  void setCallback(T handler) {
-			  Callback callback;
-			  callback.reset(handler);
-			  setCallback(callback);
+		  ForwardCallback(void)
+		  {
 		  }
-		void unsetCallback(void);
-		bool isCallback(void);
-		bool usedCallback(void);
-		Callback& callback(void);
 
-		void applicationContext(BaseClass::SPtr& applicationContext);
-		BaseClass::SPtr& applicationContext(void);
+		  ~ForwardCallback(void)
+		  {
+		  }
 
-	  private:
-		bool callbackFlag_;
-		bool usedCallbackFlag_;
-		Callback callback_;
-		BaseClass::SPtr applicationContext_;
-	};
+		  void updateFrom(ForwardCallback& forwardInfo)
+		  {
+				// set or unset callback
+				if (forwardInfo.usedCallback()) {
+					if (forwardInfo.isCallback()) {
+						setCallback(forwardInfo.callback());
+						applicationContext_ = forwardInfo.applicationContext();
+					}
+					else {
+						unsetCallback();
+						applicationContext_.reset();
+					}
+				}
+		  }
+
+		  void setCallback(CallbackFunction callback)
+		  {
+				callback_ = callback;
+				callbackFlag_ = true;
+				usedCallbackFlag_ = true;
+		  }
+
+		  void unsetCallback(void)
+		  {
+			  callbackFlag_ = false;
+			  usedCallbackFlag_ = true;
+		  }
+
+		  bool isCallback(void)
+		  {
+			  return callbackFlag_;
+		  }
+
+		  bool usedCallback(void)
+		  {
+			  return usedCallbackFlag_;
+		  }
+
+		  CallbackFunction callback(void)
+		  {
+			  return callback_;
+		  }
+
+		  void applicationContext(BaseClass::SPtr& applicationContext)
+		  {
+			  applicationContext_ = applicationContext;
+		  }
+
+		  BaseClass::SPtr& applicationContext(void)
+		  {
+			  return applicationContext_;
+		  }
+
+	    private:
+		  bool callbackFlag_ = false;
+		  bool usedCallbackFlag_ = false;
+		  CallbackFunction callback_ = nullptr;
+		  BaseClass::SPtr applicationContext_ = nullptr;
+	  };
 
 }
 

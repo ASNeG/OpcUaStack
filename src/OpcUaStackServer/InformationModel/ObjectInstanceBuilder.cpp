@@ -55,9 +55,9 @@ namespace OpcUaStackServer
 		informationModel_ = informationModel;
 		objectBase_ = objectBase;
 
-		// get namespace index
+		// get namespace index for the new object instance
 		if (!getNamespaceIndex(namespaceName)) {
-			Log(Error, "get namesapce index error")
+			Log(Error, "get namespace index error")
 				.parameter("NamespaceName", namespaceName);
 			return BadInternalError;
 		}
@@ -73,14 +73,15 @@ namespace OpcUaStackServer
 		objectBase->objectTypeNodeId().namespaceIndex(namespaceIndex);
 
 		// get parent node class
-		BaseNodeClass::SPtr parentBaseNode = informationModel_->find(parentNodeId);
+		auto parentBaseNode = informationModel_->find(parentNodeId);
 		if (parentBaseNode.get() == nullptr) {
 			Log(Error, "parent node id do not exist")
 				.parameter("ParentNodeId", parentNodeId);
 			return BadInternalError;
 		}
 
-		ObjectNodeClass::SPtr objectNodeClass = readObjects(parentNodeId, objectBase->objectTypeNodeId());
+		// create object node from object type node id
+		auto objectNodeClass = createObject(parentNodeId, objectBase->objectTypeNodeId());
 		if (objectNodeClass.get() == nullptr) {
 			Log(Error, "create object type error")
 				.parameter("ObjectTypeNodeId", objectBase->objectTypeNodeId());
@@ -115,7 +116,7 @@ namespace OpcUaStackServer
 	}
 
 	ObjectNodeClass::SPtr
-	ObjectInstanceBuilder::readObjects(
+	ObjectInstanceBuilder::createObject(
 		const OpcUaNodeId& parentNodeId,
 		const OpcUaNodeId& objectTypeNodeId
 	)
@@ -123,11 +124,9 @@ namespace OpcUaStackServer
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
 
-		//
-		// find node in opc ua information model
-		//
-		BaseNodeClass::SPtr baseNodeTemplate = informationModel_->find(objectTypeNodeId);
-		if (baseNodeTemplate.get() == nullptr) {
+		// find object type node in opc ua information model
+		auto objectTypeBaseNode = informationModel_->find(objectTypeNodeId);
+		if (objectTypeBaseNode.get() == nullptr) {
 			Log(Error, "object type node identifier not exist in information model")
 				.parameter("ObjectTypeNode", objectTypeNodeId);
 			ObjectNodeClass::SPtr objectNodeClass;
@@ -136,7 +135,7 @@ namespace OpcUaStackServer
 
 		BrowseName browseName(objectTypeNodeId);
 		browseName.pathNames()->resize(10);
-		BaseNodeClass::SPtr objectNodeClass = readChilds(parentNodeId, baseNodeTemplate, browseName);
+		auto objectNodeClass = createNodeAndClilds(parentNodeId, objectTypeBaseNode, browseName);
 		if (objectNodeClass.get() == nullptr) {
 			Log(Error, "read childs error")
 				.parameter("ObjectTypeNodeId", objectTypeNodeId);
@@ -144,25 +143,27 @@ namespace OpcUaStackServer
 			return objectNodeClass;
 		}
 
-		if (objectTypeNodeId == OpcUaNodeId(58)) {
+		if (objectTypeNodeId == OpcUaNodeId(OpcUaId_BaseObjectType)) {
+			// There is nothing left to do. We are now iterating through the
+			// object hierarchy.
 			return boost::static_pointer_cast<ObjectNodeClass>(objectNodeClass);
 		}
 
 		// find parent node identifier
 		OpcUaNodeId parentObjectTypeNodeId;
-		if (!ima.getSubType(baseNodeTemplate, parentObjectTypeNodeId)) {
+		if (!ima.getSubType(objectTypeBaseNode, parentObjectTypeNodeId)) {
 			Log(Error, "parent object type node identifier do not not exist in information model")
 				.parameter("ObjectTypeNodeId", objectTypeNodeId)
-				.parameter("DisplayName", *baseNodeTemplate->getDisplayName());
+				.parameter("DisplayName", *objectTypeBaseNode->getDisplayName());
 			ObjectNodeClass::SPtr objectNodeClass;
 			return objectNodeClass;
 		}
 
-		return readObjects(parentNodeId, parentObjectTypeNodeId);
+		return createObject(parentNodeId, parentObjectTypeNodeId);
 	}
 
 	BaseNodeClass::SPtr
-	ObjectInstanceBuilder::readChilds(
+	ObjectInstanceBuilder::createNodeAndClilds(
 		const OpcUaNodeId& parentNodeId,
 		const BaseNodeClass::SPtr& baseNodeTemplate,
 		BrowseName& browseNames
@@ -232,9 +233,9 @@ namespace OpcUaStackServer
 		size_t size = browseNames.pathNames()->size();
 		for (uint32_t idx = 0; idx < childBaseNodeClassVec.size(); idx++) {
 			// ignore HasSubType references
-			if (referenceTypeNodeIdVec[idx] == OpcUaNodeId(45)) continue;
+			if (referenceTypeNodeIdVec[idx] == OpcUaNodeId(OpcUaId_HasSubtype)) continue;
 
-			BaseNodeClass::SPtr baseNodeClassChildTemplate = childBaseNodeClassVec[idx];
+			auto baseNodeClassChildTemplate = childBaseNodeClassVec[idx];
 			OpcUaQualifiedName browseName = *childBaseNodeClassVec[idx]->getBrowseName();
 
 			// only nodes with modelling rules are allowed
@@ -245,7 +246,7 @@ namespace OpcUaStackServer
 
 			// handle childs of node
 			browseNames.pathNames()->set(size, boost::make_shared<OpcUaQualifiedName>(browseName));
-			BaseNodeClass::SPtr nodeClassChild = readChilds(*nodeClass->getNodeId(), baseNodeClassChildTemplate, browseNames);
+			BaseNodeClass::SPtr nodeClassChild = createNodeAndClilds(*nodeClass->getNodeId(), baseNodeClassChildTemplate, browseNames);
 			if (nodeClassChild.get() == nullptr) {
 				Log(Error, "read childs error")
 					.parameter("NodeId", *baseNodeTemplate->getNodeId())
@@ -301,7 +302,7 @@ namespace OpcUaStackServer
 				OpcUaNodeId typeDefintionNode;
 				baseNodeTemplate->referenceItemMap().getHasTypeDefinition(typeDefintionNode);
 
-				BaseNodeClass::SPtr objectTypeNode = informationModel_->find(typeDefintionNode);
+				auto objectTypeNode = informationModel_->find(typeDefintionNode);
 				if (objectTypeNode.get() == nullptr) {
 					Log(Error, "object type definition node not found in information model")
 						.parameter("ObjectTypeNode", typeDefintionNode)
@@ -310,7 +311,7 @@ namespace OpcUaStackServer
 					return objectNode;
 				}
 
-				ObjectNodeClass::SPtr objectNode0 = boost::static_pointer_cast<ObjectNodeClass>(baseNodeTemplate);
+				auto objectNode0 = boost::static_pointer_cast<ObjectNodeClass>(baseNodeTemplate);
 				objectNode = boost::make_shared<ObjectNodeClass>(nodeId, *objectNode0.get());
 
 				objectNode->referenceItemMap().add(
@@ -329,7 +330,7 @@ namespace OpcUaStackServer
 			}
 			case NodeClass::EnumObjectType:
 			{
-				ObjectTypeNodeClass::SPtr objectTypeNode = boost::static_pointer_cast<ObjectTypeNodeClass>(baseNodeTemplate);
+				auto objectTypeNode = boost::static_pointer_cast<ObjectTypeNodeClass>(baseNodeTemplate);
 				objectNode = boost::make_shared<ObjectNodeClass>(nodeId, *objectTypeNode.get());
 
 				objectNode->referenceItemMap().add(
@@ -398,7 +399,7 @@ namespace OpcUaStackServer
 			}
 
 			// check if variable node already exist
-			BaseNodeClass::SPtr node = serverVariable->baseNode().lock();
+			auto node = serverVariable->baseNode().lock();
 			if (node.get() != nullptr) return boost::static_pointer_cast<VariableNodeClass>(node);
 		}
 
@@ -422,7 +423,7 @@ namespace OpcUaStackServer
 					return variableNode;
 				}
 
-				VariableNodeClass::SPtr variableNode0 = boost::static_pointer_cast<VariableNodeClass>(baseNodeTemplate);
+				auto variableNode0 = boost::static_pointer_cast<VariableNodeClass>(baseNodeTemplate);
 				variableNode = boost::make_shared<VariableNodeClass>(nodeId, *variableNode0.get());
 
 				variableNode->referenceItemMap().add(
@@ -472,7 +473,7 @@ namespace OpcUaStackServer
 		std::string methodName = browsePath.stringId("Method");
 
 		// find server variable
-		ServerMethod::SPtr serverMethod = objectBase_->getServerMethod(methodName);
+		auto serverMethod = objectBase_->getServerMethod(methodName);
 		if (serverMethod.get() == nullptr) {
 			Log(Error, "server method do not exist")
 				.parameter("MethodName", methodName);
@@ -482,13 +483,13 @@ namespace OpcUaStackServer
 		// create object instance
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
-		OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex_);
+		auto nodeId = ima.createUniqueNodeId(namespaceIndex_);
 
-		MethodNodeClass::SPtr methodNode0 = boost::static_pointer_cast<MethodNodeClass>(baseNodeTemplate);
+		auto methodNode0 = boost::static_pointer_cast<MethodNodeClass>(baseNodeTemplate);
 		methodNode = boost::make_shared<MethodNodeClass>(nodeId, *methodNode0.get());
 
 		// register method callback
-		ForwardMethodSync::SPtr forwardMethodSync = boost::make_shared<ForwardMethodSync>();
+		auto forwardMethodSync = boost::make_shared<ForwardMethodSync>();
 		forwardMethodSync->methodService().setCallback(boost::bind(&ServerMethod::method, serverMethod.get(), _1));
 		informationModel_->methodMap().registerMethod(
 			parentNodeId,

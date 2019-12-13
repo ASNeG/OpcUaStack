@@ -31,8 +31,12 @@ struct InitMonitorManager {
 		nodeToMonitor->setValue(value);
 
 		sync = boost::make_shared<ForwardNodeSync>();
-		auto startMonitoredItemCallback = Callback(boost::bind(&InitMonitorManager::startMonitored, this, _1));
-		auto stopMonitoredItemCallback = Callback(boost::bind(&InitMonitorManager::stopMonitored, this, _1));
+		auto startMonitoredItemCallback = [this](ApplicationMonitoredItemStartContext* context) {
+			startMonitored(context);
+		};
+		auto stopMonitoredItemCallback = [this](ApplicationMonitoredItemStopContext* context) {
+			stopMonitored(context);
+		};
 		sync->monitoredItemStartService().setCallback(startMonitoredItemCallback);
 		sync->monitoredItemStopService().setCallback(stopMonitoredItemCallback);
 

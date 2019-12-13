@@ -20,7 +20,7 @@
 
 #include <map>
 #include "OpcUaStackCore/Base/BaseClass.h"
-#include "OpcUaStackCore/Base/Callback.h"
+#include "OpcUaStackCore/Application/ApplicationCallback.h"
 #include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 
 namespace OpcUaStackServer
@@ -38,17 +38,12 @@ namespace OpcUaStackServer
 
 		void name(const std::string& name);
 		std::string& name(void);
-		template<typename T>
-		    void registerMethod(T handle)
-			{
-				methodCallback_.reset(handle);
-			}
-
+		void registerMethod(OpcUaStackCore::ApplicationCallback::Method methodCallback);
 		void method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext);
 
 	  private:
 		std::string name_;
-		OpcUaStackCore::Callback methodCallback_;
+		OpcUaStackCore::ApplicationCallback::Method methodCallback_;
 	};
 
 

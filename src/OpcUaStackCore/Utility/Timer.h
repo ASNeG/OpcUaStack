@@ -3,7 +3,6 @@
 
 #include <boost/asio.hpp>
 #include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackCore/Base/Callback.h"
 
 namespace OpcUaStackCore
 {
@@ -11,7 +10,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT Timer
 	{
 	  public:
-		typedef boost::shared_ptr<Timer> SPtr;
+		using SPtr = boost::shared_ptr<Timer>;
+		using TimerCallback = std::function<void (void)>;
 
 	    Timer(IOService& ioService);
 		~Timer(void);
@@ -21,13 +21,14 @@ namespace OpcUaStackCore
 		void stop(SPtr selfObjectSPtr);
 		void stop(void);
 
-		Callback& callback(void);
+		TimerCallback& timerCallback(void);
+		void timerCallback(const TimerCallback& timerCallback);
 
 	  private:
 		void onTimeout(const boost::system::error_code& errorcode);
 		bool running_;
 
-		Callback callback_;
+		TimerCallback timerCallback_ = nullptr;
 		boost::asio::deadline_timer timer_;
 		SPtr selfObjectSPtr_;
 	};

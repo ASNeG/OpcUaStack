@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -36,49 +36,49 @@ namespace OpcUaStackCore
 	{
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::Read>&
 	ForwardNodeSync::readService(void)
 	{
 		return readService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::HRead>&
 	ForwardNodeSync::readHService(void)
 	{
 		return readHService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::HERead>&
 	ForwardNodeSync::readHEService(void)
 	{
 		return readHEService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::Write>&
 	ForwardNodeSync::writeService(void)
 	{
 		return writeService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::HWrite>&
 	ForwardNodeSync::writeHService(void)
 	{
 		return writeHService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::Method>&
 	ForwardNodeSync::methodService(void)
 	{
 		return methodService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::MonitoredItemStart>&
 	ForwardNodeSync::monitoredItemStartService(void)
 	{
 		return monitoredItemStartService_;
 	}
 
-	ForwardCallback&
+	ForwardCallback<ApplicationCallback::MonitoredItemStop>&
 	ForwardNodeSync::monitoredItemStopService(void)
 	{
 		return monitoredItemStopService_;

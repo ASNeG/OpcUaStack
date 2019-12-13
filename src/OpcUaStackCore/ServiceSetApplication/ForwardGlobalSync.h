@@ -19,6 +19,16 @@
 #define __OpcUaStackCore_ForwardGlobalSync_h__
 
 #include "OpcUaStackCore/ServiceSetApplication/ForwardCallback.h"
+#include "OpcUaStackCore/Application/ApplicationCallback.h"
+#include "OpcUaStackCore/Application/ApplicationRegisterServerContext.h"
+#include "OpcUaStackCore/Application/ApplicationFindServerContext.h"
+#include "OpcUaStackCore/Application/ApplicationEventItemStartContext.h"
+#include "OpcUaStackCore/Application/ApplicationEventItemStopContext.h"
+#include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
+#include "OpcUaStackCore/Application/ApplicationAutorizationContext.h"
+#include "OpcUaStackCore/Application/ApplicationCloseSessionContext.h"
+#include "OpcUaStackCore/Application/ApplicationNodeNewContext.h"
+#include "OpcUaStackCore/Application/ApplicationNodeDeleteContext.h"
 
 namespace OpcUaStackCore
 {
@@ -27,40 +37,40 @@ namespace OpcUaStackCore
 	: public Object
 	{
 	  public:
-		typedef boost::shared_ptr<ForwardGlobalSync> SPtr;
+		using SPtr = boost::shared_ptr<ForwardGlobalSync>;
 
 		ForwardGlobalSync(void);
 		virtual ~ForwardGlobalSync(void);
 
-		ForwardCallback& registerServerService(void);
-		ForwardCallback& findServersService(void);
-		ForwardCallback& eventItemStartService(void);
-		ForwardCallback& eventItemStopService(void);
-		ForwardCallback& authenticationService(void);
-		ForwardCallback& autorizationService(void);
-		ForwardCallback& closeSessionService(void);
-		ForwardCallback& nodeNewService(void);
-		ForwardCallback& nodeDeleteService(void);
+		ForwardCallback<ApplicationCallback::RegisterServer>& registerServerService(void);
+		ForwardCallback<ApplicationCallback::FindServer>& findServersService(void);
+		ForwardCallback<ApplicationCallback::EventItemStart>& eventItemStartService(void);
+		ForwardCallback<ApplicationCallback::EventItemStop>& eventItemStopService(void);
+		ForwardCallback<ApplicationCallback::Authentication>& authenticationService(void);
+		ForwardCallback<ApplicationCallback::Autorization>& autorizationService(void);
+		ForwardCallback<ApplicationCallback::CloseSession>& closeSessionService(void);
+		ForwardCallback<ApplicationCallback::NodeNew>& nodeNewService(void);
+		ForwardCallback<ApplicationCallback::NodeDelete>& nodeDeleteService(void);
 
 		void updateFrom(ForwardGlobalSync& forwardGlobalSync);
 
 	  private:
 		// discovery service
-		ForwardCallback registerServerService_;
-		ForwardCallback findServersService_;
+		ForwardCallback<ApplicationCallback::RegisterServer> registerServerService_;
+		ForwardCallback<ApplicationCallback::FindServer> findServersService_;
 
 		// event service
-		ForwardCallback eventItemStartService_;
-		ForwardCallback eventItemStopService_;
+		ForwardCallback<ApplicationCallback::EventItemStart> eventItemStartService_;
+		ForwardCallback<ApplicationCallback::EventItemStop> eventItemStopService_;
 
 		// authentication and authorization
-		ForwardCallback authenticationService_;
-		ForwardCallback autorizationService_;
-		ForwardCallback closeSessionService_;
+		ForwardCallback<ApplicationCallback::Authentication> authenticationService_;
+		ForwardCallback<ApplicationCallback::Autorization> autorizationService_;
+		ForwardCallback<ApplicationCallback::CloseSession> closeSessionService_;
 
 		// node service
-		ForwardCallback nodeNewService_;
-		ForwardCallback nodeDeleteService_;
+		ForwardCallback<ApplicationCallback::NodeNew> nodeNewService_;
+		ForwardCallback<ApplicationCallback::NodeDelete> nodeDeleteService_;
 	};
 
 }

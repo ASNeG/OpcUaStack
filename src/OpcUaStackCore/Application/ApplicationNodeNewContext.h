@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,30 +15,25 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
+#ifndef __OpcUaStackCore_ApplicationNodeNewContext_h__
+#define __OpcUaStackCore_ApplicationNodeNewContext_h__
+
+#include "OpcUaStackCore/Base/BaseClass.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 
 namespace OpcUaStackCore
 {
 
-	ForwardMethodSync::ForwardMethodSync(void)
-	: methodService_()
+	class DLLEXPORT ApplicationNodeNewContext
 	{
-	}
+	  public:
+		ApplicationNodeNewContext(void);
+		~ApplicationNodeNewContext(void);
 
-	ForwardMethodSync::~ForwardMethodSync(void)
-	{
-	}
-
-	ForwardCallback<ApplicationCallback::Method>&
-	ForwardMethodSync::methodService(void)
-	{
-		return methodService_;
-	}
-
-	void
-	ForwardMethodSync::updateFrom(ForwardMethodSync& forwardCallbackSync)
-	{
-		methodService_.updateFrom(forwardCallbackSync.methodService());
-	}
+		BaseClass::SPtr applicationContext_;	// IN - application context from register call
+		OpcUaNodeId nodeId_;					// IN - node id to be created
+	};
 
 }
+
+#endif

@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_stop)
 
 	TimerTest timerTest;
 	Timer timer(ioService);
-	timer.callback().reset(boost::bind(&TimerTest::onTimeout, &timerTest));
+	timer.timerCallback(boost::bind(&TimerTest::onTimeout, &timerTest));
 
 	timerTest.onTimeoutCondition_.condition(0, 1);
 	timer.start(1000);
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_stopSPtr)
 
 	TimerTest timerTest;
 	Timer::SPtr timer = boost::make_shared<Timer>(ioService);
-	timer->callback().reset(boost::bind(&TimerTest::onTimeout, &timerTest));
+	timer->timerCallback(boost::bind(&TimerTest::onTimeout, &timerTest));
 
 	timerTest.onTimeoutCondition_.condition(0, 1);
 	timer->start(1000);
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_expire_stop)
 
 	TimerTest timerTest;
 	Timer timer(ioService);
-	timer.callback().reset(boost::bind(&TimerTest::onTimeout, &timerTest));
+	timer.timerCallback(boost::bind(&TimerTest::onTimeout, &timerTest));
 
 	timerTest.onTimeoutCondition_.condition(0, 1);
 	timer.start(10);
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_expire_stop_sptr)
 
 	TimerTest timerTest;
 	Timer::SPtr timer = boost::make_shared<Timer>(ioService);
-	timer->callback().reset(boost::bind(&TimerTest::onTimeout, &timerTest));
+	timer->timerCallback(boost::bind(&TimerTest::onTimeout, &timerTest));
 
 	timerTest.onTimeoutCondition_.condition(0, 1);
 	timer->start(10);
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_stop_remove)
 
 	TimerTest timerTest;
 	Timer::SPtr timer = boost::make_shared<Timer>(ioService);;
-	timer->callback().reset(boost::bind(&TimerTest::onTimeout, &timerTest));
+	timer->timerCallback(boost::bind(&TimerTest::onTimeout, &timerTest));
 
 	timerTest.onTimeoutCondition_.condition(0, 1);
 	timer->start(1000);
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_expire_stop_sptr_parameter)
 	TimerTestObject::SPtr timerTestObject(boost::make_shared<TimerTestObject>());
 	TimerTest timerTest;
 	Timer::SPtr timer = boost::make_shared<Timer>(ioService);;
-	timer->callback().reset(boost::bind(&TimerTest::onTimeoutParameter, &timerTest, timerTestObject));
+	timer->timerCallback(boost::bind(&TimerTest::onTimeoutParameter, &timerTest, timerTestObject));
 
 	timerTest.onTimeoutParameterCondition_.condition(0, 1);
 	timer->start(10);
@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_stop_remove_parameter)
 	TimerTestObject::SPtr timerTestObject(boost::make_shared<TimerTestObject>());
 	TimerTest timerTest;
 	auto timer = boost::make_shared<Timer>(ioService);;
-	timer->callback().reset(boost::bind(&TimerTest::onTimeoutParameter, &timerTest, timerTestObject));
+	timer->timerCallback(boost::bind(&TimerTest::onTimeoutParameter, &timerTest, timerTestObject));
 
 	timerTest.onTimeoutParameterCondition_.condition(0, 1);
 	timer->start(1000);

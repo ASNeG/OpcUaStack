@@ -219,19 +219,19 @@ namespace OpcUaStackServer
     }
 
     void
-    PublishedEventsType::call_ExtensionFields_AddExtensionField_Method(ApplicationMethodContext* applicationMethodContext)
+    PublishedEventsType::call_ExtensionFields_AddExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext)
     {
         applicationMethodContext->statusCode_ = BadNotSupported;
     }
 
     void
-    PublishedEventsType::call_ExtensionFields_RemoveExtensionField_Method(ApplicationMethodContext* applicationMethodContext)
+    PublishedEventsType::call_ExtensionFields_RemoveExtensionField_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext)
     {
         applicationMethodContext->statusCode_ = BadNotSupported;
     }
 
     void
-    PublishedEventsType::call_ModifyFieldSelection_Method(ApplicationMethodContext* applicationMethodContext)
+    PublishedEventsType::call_ModifyFieldSelection_Method(OpcUaStackCore::ApplicationMethodContext* applicationMethodContext)
     {
         applicationMethodContext->statusCode_ = BadNotSupported;
     }

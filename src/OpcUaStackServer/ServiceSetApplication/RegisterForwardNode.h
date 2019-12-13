@@ -20,6 +20,7 @@
 
 #include <vector>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/Application/ApplicationCallback.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
 namespace OpcUaStackServer
@@ -42,62 +43,30 @@ namespace OpcUaStackServer
 		void nodes(const std::vector<OpcUaStackCore::OpcUaNodeId>& nodes);
 		std::vector<OpcUaStackCore::OpcUaNodeId>& nodes(void);
 
-		void setReadCallback(OpcUaStackCore::Callback& callback);
-		template<typename T>
-		  void setReadCallback(T handler) {
-			  OpcUaStackCore::Callback callback;
-			  callback.reset(handler);
-			  setReadCallback(callback);
-		  }
-		void setWriteCallback(OpcUaStackCore::Callback& callback);
-		template<typename T>
-		  void setWriteCallback(T handler) {
-			  OpcUaStackCore::Callback callback;
-			  callback.reset(handler);
-			  setWriteCallback(callback);
-		  }
-		void setReadHCallback(OpcUaStackCore::Callback& callback);
-		template<typename T>
-		  void setReadHCallback(T handler) {
-			  OpcUaStackCore::Callback callback;
-			  callback.reset(handler);
-			  setReadHCallback(callback);
-		  }
-		void setReadHECallback(OpcUaStackCore::Callback& callback);
-		template<typename T>
-		  void setReadHECallback(T handler) {
-			  OpcUaStackCore::Callback callback;
-			  callback.reset(handler);
-			  setReadHECallback(callback);
-		  }
-		void setWriteHCallback(OpcUaStackCore::Callback& callback);
-		template<typename T>
-		  void setWriteHCallback(T handler) {
-		  	  OpcUaStackCore::Callback callback;
-			  callback.reset(handler);
-			  setReadHCallback(callback);
-		  }
-		void setMethodCallback(OpcUaStackCore::Callback& callback);
-		template<typename T>
-		  void setMethodCallback(T handler) {
-			  OpcUaStackCore::Callback callback;
-			  callback.reset(handler);
-			  setMethodCallback(callback);
-		  }
-		void setMonitoredItemStartCallback(OpcUaStackCore::Callback& callback);
-		template<typename T>
-		  void setMonitoredItemStartCallback(T handler) {
-			  OpcUaStackCore::Callback callback;
-			  callback.reset(handler);
-			  setMonitoredItemStartCallback(callback);
-		  }
-		void setMonitoredItemStopCallback(OpcUaStackCore::Callback& callback);
-		template<typename T>
-		  void setMonitoredItemStopCallback(T handler) {
-			  OpcUaStackCore::Callback callback;
-			  callback.reset(handler);
-			  setMonitoredItemStopCallback(callback);
-		  }
+		void setReadCallback(
+			OpcUaStackCore::ApplicationCallback::Read callback
+		);
+		void setWriteCallback(
+			OpcUaStackCore::ApplicationCallback::Write callback
+		);
+		void setReadHCallback(
+			OpcUaStackCore::ApplicationCallback::HRead callback
+		);
+		void setReadHECallback(
+			OpcUaStackCore::ApplicationCallback::HERead callback
+		);
+		void setWriteHCallback(
+			OpcUaStackCore::ApplicationCallback::HWrite callback
+		);
+		void setMethodCallback(
+			OpcUaStackCore::ApplicationCallback::Method callback
+		);
+		void setMonitoredItemStartCallback(
+			OpcUaStackCore::ApplicationCallback::MonitoredItemStart callback
+		);
+		void setMonitoredItemStopCallback(
+			OpcUaStackCore::ApplicationCallback::MonitoredItemStop callback
+		);
 
 		bool query(ApplicationServiceIf* applicationServiceIf, bool checkStatusCodeArray = false);
 		OpcUaStackCore::OpcUaStatusCode resultCode(void);
