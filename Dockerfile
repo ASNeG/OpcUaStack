@@ -13,6 +13,4 @@ WORKDIR /OpcUaStack
 
 # Build
 RUN sh build.sh -t local -i / -j 2 -B Release
-
-# Clean build files
-RUN sh build.sh -t clean
+    && sh build.sh -t clean
