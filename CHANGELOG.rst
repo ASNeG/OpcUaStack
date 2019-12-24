@@ -4,6 +4,7 @@ Release 3.8.2
 **Bugs**
 
 * fix depdendecy name of -dev.deb #332, by @ninja777-bg
+* make boost and openssl dependencies strict #333, by @flipback
 
 Release 3.8.1 (2019-12-08)
 ------------------------------------------------------------
