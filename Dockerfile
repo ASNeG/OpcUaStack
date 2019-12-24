@@ -12,5 +12,5 @@ ADD / /OpcUaStack
 WORKDIR /OpcUaStack
 
 # Build
-RUN sh build.sh -t local -i / -j 2 -B Release
+RUN sh build.sh -t local -i / -j 2 -B Release \
     && sh build.sh -t clean
