@@ -44,14 +44,14 @@ namespace OpcUaStackCore
 			  BigEndian,
 		  } NumberByteOrder;
 
-		  static void opcUaBinaryEncode(std::ostream& os, T& value)
+		  static bool opcUaBinaryEncode(std::ostream& os, T& value)
 		  {
-			  ByteOrder<T>::opcUaBinaryEncodeNumberLE(os, value);
+			  return ByteOrder<T>::opcUaBinaryEncodeNumberLE(os, value);
 		  }
 
-		  static void opcUaBinaryDecode(std::istream& is, T& value)
+		  static bool opcUaBinaryDecode(std::istream& is, T& value)
 		  {
-			  ByteOrder<T>::opcUaBinaryDecodeNumberLE(is, value);
+			  return ByteOrder<T>::opcUaBinaryDecodeNumberLE(is, value);
 		  }
 
 		  static bool xmlEncode(
@@ -108,14 +108,14 @@ namespace OpcUaStackCore
 	class ClassTypeCoder
 	{
 	  public:
-		  static void opcUaBinaryEncode(std::ostream& os, T& value) 
+		  static bool opcUaBinaryEncode(std::ostream& os, T& value)
 		  {
-			  value.opcUaBinaryEncode(os);
+			  return value.opcUaBinaryEncode(os);
 		  }
 
-		  static void opcUaBinaryDecode(std::istream& is, T& value)
+		  static bool opcUaBinaryDecode(std::istream& is, T& value)
 		  {
-			  value.opcUaBinaryDecode(is);
+			  return value.opcUaBinaryDecode(is);
 		  }
 
 		  static bool xmlEncode(
@@ -171,17 +171,21 @@ namespace OpcUaStackCore
 	class EnumTypeCoder
 	{
 	  public:
-		  static void opcUaBinaryEncode(std::ostream& os, T& value) 
+		  static bool opcUaBinaryEncode(std::ostream& os, T& value)
 		  {
 			  int32_t v = value;
-			  ByteOrder<int32_t>::opcUaBinaryEncodeNumberLE(os, v);
+			  return ByteOrder<int32_t>::opcUaBinaryEncodeNumberLE(os, v);
 		  }
 
-		  static void opcUaBinaryDecode(std::istream& is, T& value)
+		  static bool opcUaBinaryDecode(std::istream& is, T& value)
 		  {
+			  bool rc = true;
+
 			  int32_t v = 0;
-			  ByteOrder<int32_t>::opcUaBinaryDecodeNumberLE(is, v);
-			  value = (T)v;
+			  rc &= ByteOrder<int32_t>::opcUaBinaryDecodeNumberLE(is, v);
+			  if (rc) value = (T)v;
+
+			  return rc;
 		  }
 
 		  static bool xmlEncode(
@@ -245,15 +249,15 @@ namespace OpcUaStackCore
 	class SPtrTypeCoder
 	{
 	  public:
-		  static void opcUaBinaryEncode(std::ostream& os, boost::shared_ptr<T>& value) 
+		  static bool opcUaBinaryEncode(std::ostream& os, boost::shared_ptr<T>& value)
 		  {
-			  value->opcUaBinaryEncode(os);
+			  return value->opcUaBinaryEncode(os);
 		  }
 
-		  static void opcUaBinaryDecode(std::istream& is, boost::shared_ptr<T>& value)
+		  static bool opcUaBinaryDecode(std::istream& is, boost::shared_ptr<T>& value)
 		  {
 			  value = boost::make_shared<T>();
-			  value->opcUaBinaryDecode(is);
+			  return value->opcUaBinaryDecode(is);
 		  }
 
 		  static bool xmlEncode(
@@ -360,8 +364,8 @@ namespace OpcUaStackCore
 			return os;
 		}
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 		bool xmlEncode(
 			boost::property_tree::ptree& pt,
@@ -725,31 +729,39 @@ namespace OpcUaStackCore
 	}
 
 	template<typename T, typename CODER>
-	void 
+	bool
 	OpcUaArray<T, CODER>::opcUaBinaryEncode(std::ostream& os) const
 	{
-		ByteOrder<uint32_t>::opcUaBinaryEncodeNumberLE(os, static_cast<uint32_t>(actArrayLen_));
+		bool rc = true;
+
+		rc &= ByteOrder<uint32_t>::opcUaBinaryEncodeNumberLE(os, static_cast<uint32_t>(actArrayLen_));
 		for (size_t idx=0; idx<actArrayLen_; idx++) {
-			CODER::opcUaBinaryEncode(os, valueArray_[idx]);
+			rc &= CODER::opcUaBinaryEncode(os, valueArray_[idx]);
 		}
+
+		return rc;
 	}
 	
 	template<typename T, typename CODER>
-	void 
+	bool
 	OpcUaArray<T, CODER>::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		int32_t arrayLength = 0;
-		ByteOrder<int32_t>::opcUaBinaryDecodeNumberLE(is, arrayLength);
+		rc &= ByteOrder<int32_t>::opcUaBinaryDecodeNumberLE(is, arrayLength);
 		if (arrayLength <= 0) {
-			return;
+			return rc;
 		}
 
 		resize(arrayLength);
 		for (int32_t idx=0; idx<arrayLength; idx++) {
 			T value;
-			CODER::opcUaBinaryDecode(is, value);
+			rc &= CODER::opcUaBinaryDecode(is, value);
 			push_back(value);
 		}
+
+		return rc;
 	}
 
 	template<typename T, typename CODER>

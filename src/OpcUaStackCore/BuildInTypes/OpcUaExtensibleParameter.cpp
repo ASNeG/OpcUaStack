@@ -98,46 +98,57 @@ namespace OpcUaStackCore
     	return OpcUaNodeId(0,0);
     }
 
-    void
+    bool
 	OpcUaExtensibleParameter::opcUaBinaryEncode(std::ostream& os) const
     {
+    	bool rc = true;
+
     	if (eoSPtr_.get() == nullptr) {
-			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-    		return;
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+    		return rc;
     	}
 
     	parameterTypeId_.opcUaBinaryEncode(os);
-    	OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
+    	rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
 
 		boost::asio::streambuf sb;
 		std::ostream osb(&sb);
-		eoSPtr_->opcUaBinaryEncode(osb);
+		rc &= eoSPtr_->opcUaBinaryEncode(osb);
 
 		OpcUaUInt32 bufferLength = OpcUaStackCore::count(sb);
-		OpcUaNumber::opcUaBinaryEncode(os, bufferLength);
-		os << osb.rdbuf();
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, bufferLength);
+		if (rc) {
+			os << osb.rdbuf();
+		    if (!os.good()) return false;
+		}
+		return rc;
     }
 
-    void
+    bool
 	OpcUaExtensibleParameter::opcUaBinaryDecode(std::istream& is)
     {
-    	OpcUaByte encodingMask;
-    	parameterTypeId_.opcUaBinaryDecode(is);
+    	bool rc = true;
 
-    	OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
+    	OpcUaByte encodingMask;
+    	rc &= parameterTypeId_.opcUaBinaryDecode(is);
+
+    	rc &= OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
     	if (encodingMask == 0x00) {
-    		return;
+    		return rc;
     	}
 
     	OpcUaUInt32 bufferLength;
-    	OpcUaNumber::opcUaBinaryDecode(is, bufferLength);
+    	rc &= OpcUaNumber::opcUaBinaryDecode(is, bufferLength);
 
-    	OpcUaExtensionObject eo(parameterTypeId_);
-    	if (!eo.createObject()) return;
-    	eoSPtr_ = eo.get();
-    	eoSPtr_->opcUaBinaryDecode(is);
+    	if (rc) {
+    		OpcUaExtensionObject eo(parameterTypeId_);
+    		if (!eo.createObject()) return rc;
+    		eoSPtr_ = eo.get();
+    		rc &= eoSPtr_->opcUaBinaryDecode(is);
+    	}
+    	return rc;
     }
 
     bool

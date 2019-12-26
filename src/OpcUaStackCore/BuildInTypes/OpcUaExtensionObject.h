@@ -386,14 +386,14 @@ namespace OpcUaStackCore
 		 *
 		 * @param[out] os					output stream for binary output
 		 */
-		void opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryEncode(std::ostream& os) const;
 
 		/**
 		 * Function to decode the binary format to the structure data
 		 *OpcUaExtensionObject(void);
 		 * @param[in] is					input stream for binary input
 		 */
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryDecode(std::istream& is);
 
 		/**
 		 * Function to encode the structure data to a xml tree format.

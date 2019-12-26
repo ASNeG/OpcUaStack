@@ -279,60 +279,68 @@ namespace OpcUaStackCore
 		}
 	}
 
-	void 
+	bool
 	OpcUaExtensionObject::opcUaBinaryEncode(std::ostream& os) const
 	{
+		bool rc = true;
+
 		if (style_ == S_None) {
-			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
 		}
 
 		else if (style_ == S_ByteString) {
 			if (byteString_.get() == nullptr) {
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
 			}
 
 			else {
-				typeId_.opcUaBinaryEncode(os);
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
-				byteString_->opcUaBinaryEncode(os);
+				rc &= typeId_.opcUaBinaryEncode(os);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
+				rc &= byteString_->opcUaBinaryEncode(os);
 			}
 		}
 
 		else {
 			if(epSPtr_.get() == NULL)
 			{
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
 			} else {
-				typeId_.opcUaBinaryEncode(os);
-				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
+				rc &= typeId_.opcUaBinaryEncode(os);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
 
 				boost::asio::streambuf sb;
 				std::ostream osb(&sb);
-				epSPtr_->opcUaBinaryEncode(osb);
+				rc &= epSPtr_->opcUaBinaryEncode(osb);
 
 				OpcUaUInt32 bufferLength = OpcUaStackCore::count(sb);
-				OpcUaNumber::opcUaBinaryEncode(os, bufferLength);
-				os << osb.rdbuf();
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, bufferLength);
+				if (rc) {
+				    os << osb.rdbuf();
+				    rc = os.good();
+				}
 			}
 		}
+		return rc;
 	}
 		
-	void 
+	bool
 	OpcUaExtensionObject::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaByte encodingMask;
-		typeId_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
+		rc &= typeId_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
 
 		if (encodingMask == 0x00) {
 			style_ = S_None;
-			return;
+			return rc;
 		}
 
 		ExtensionObjectBase::Map::iterator it;
@@ -343,16 +351,18 @@ namespace OpcUaStackCore
 
 			style_ = S_ByteString;
 			byteString_ = boost::make_shared<OpcUaByteString>();
-			byteString_->opcUaBinaryDecode(is);
+			rc &= byteString_->opcUaBinaryDecode(is);
 
-			return;
+			return rc;
 		}
 
 		style_ = S_Type;
 		OpcUaUInt32 bufferLength;
-		OpcUaNumber::opcUaBinaryDecode(is, bufferLength);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, bufferLength);
 		epSPtr_ = it->second->factory();
-		epSPtr_->opcUaBinaryDecode(is);
+		rc &= epSPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 	
 	bool

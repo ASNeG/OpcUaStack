@@ -255,16 +255,16 @@ namespace OpcUaStackCore
 		return !exist();
 	}
 
-	void 
+	bool
 	OpcUaDateTime::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, dateTime_);
+		return OpcUaNumber::opcUaBinaryEncode(os, dateTime_);
 	}
 
-	void 
+	bool
 	OpcUaDateTime::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, dateTime_);
+		return OpcUaNumber::opcUaBinaryDecode(is, dateTime_);
 	}
 
 	void 

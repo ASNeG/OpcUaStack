@@ -56,8 +56,8 @@ namespace OpcUaStackCore
         virtual OpcUaNodeId binaryTypeId(void) override ;
         virtual OpcUaNodeId xmlTypeId(void) override ;
         virtual OpcUaNodeId jsonTypeId(void) override ;
-        virtual void opcUaBinaryEncode(std::ostream& os) const override;
-        virtual void opcUaBinaryDecode(std::istream& is) override;
+        virtual bool opcUaBinaryEncode(std::ostream& os) const override;
+        virtual bool opcUaBinaryDecode(std::istream& is) override;
         virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;
         virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) override;
         virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;

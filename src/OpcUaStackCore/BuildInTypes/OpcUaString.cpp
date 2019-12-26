@@ -151,34 +151,43 @@ namespace OpcUaStackCore
 		}
 	}
 
-	void 
+	bool
 	OpcUaString::opcUaBinaryEncode(std::ostream& os) const
 	{
+		bool rc = true;
+
 		if (!exist_) {
-			OpcUaNumber::opcUaBinaryEncode(os, (const OpcUaInt32)-1);
-			return;
+			rc &= OpcUaNumber::opcUaBinaryEncode(os, (const OpcUaInt32)-1);
+			return rc;
 		}
 
-		OpcUaNumber::opcUaBinaryEncode(os, (const OpcUaInt32)value_.size());
-		os.write(value_.c_str(), value_.size());
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, (const OpcUaInt32)value_.size());
+		if (rc) {
+		    os.write(value_.c_str(), value_.size());
+		    rc = os.good();
+		}
+
+		return rc;
 	}
 		
-	void 
+	bool
 	OpcUaString::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaInt32 length = 0;
-		OpcUaNumber::opcUaBinaryDecode(is, length);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, length);
 
 		if (length < 0) {
 			value_ = "";
 			exist_ = false;
-			return;
+			return rc;
 		}
 
 		if (length == 0) {
 			value_ = "";
 			exist_ = true;
-			return;
+			return rc;
 		}
 
 		value_ = "";
@@ -188,16 +197,24 @@ namespace OpcUaStackCore
 		uint32_t sizeToRead;
 		do 
 		{
-			sizeToRead = MAX_STREAMBUF_SIZE;
-			if (length < MAX_STREAMBUF_SIZE) {
-				sizeToRead = length;
+			if (rc) {
+			    sizeToRead = MAX_STREAMBUF_SIZE;
+			    if (length < MAX_STREAMBUF_SIZE) {
+				    sizeToRead = length;
+			    }
+
+			    is.read(buf, sizeToRead);
+			    rc = is.good();
+			    value_.append(buf, sizeToRead);
+
+			    length -= sizeToRead;
 			}
-
-			is.read(buf, sizeToRead);
-			value_.append(buf, sizeToRead);
-
-			length -= sizeToRead;
+			else {
+				length = 0;
+			}
 		} while (length > 0);
+
+		return rc;
 	}
 
 	bool

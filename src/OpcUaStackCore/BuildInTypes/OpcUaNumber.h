@@ -128,131 +128,131 @@ namespace OpcUaStackCore
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaBoolean& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaBoolean& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaBoolean& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaBoolean& value);
 
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaBooleanArray& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaBooleanArray& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaBooleanArray::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaBooleanArray::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaBooleanArray& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaBooleanArray& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaBooleanArray::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaBooleanArray::SPtr& value);
 
 		//
 		// SByte
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaSByte& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaSByte& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaSByte& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaSByte& value);
 	
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaSByteArray& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaSByteArray& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaSByteArray::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaSByteArray::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaSByteArray& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaSByteArray& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaSByteArray::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaSByteArray::SPtr& value);
 
 
 		//
 		// Byte
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaByte& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaByte& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaByte& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaByte& value);
 	
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaByteArray& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaByteArray& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaByteArray::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaByteArray::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaByteArray& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaByteArray& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaByteArray::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaByteArray::SPtr& value);
 
 
 		//
 		// Int16
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt16& value, bool littleEndian=true);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt16& value, bool littleEndian=true);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaInt16& value, bool littleEndian=true);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaInt16& value, bool littleEndian=true);
 	
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt16Array& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt16Array& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt16Array::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt16Array::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaInt16Array& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaInt16Array& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaInt16Array::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaInt16Array::SPtr& value);
 	
 
 		//
 		// UInt16
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16& value, bool littleEndian=true);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt16& value, bool littleEndian=true);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16& value, bool littleEndian=true);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaUInt16& value, bool littleEndian=true);
 
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16Array& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt16Array& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16Array::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt16Array::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16Array& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaUInt16Array& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16Array::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaUInt16Array::SPtr& value);
 	
 
 		//
 		// Int32
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt32& value, bool littleEndian=true);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt32& value, bool littleEndian=true);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaInt32& value, bool littleEndian=true);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaInt32& value, bool littleEndian=true);
 	
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt32Array& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt32Array& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt32Array::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt32Array::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaInt32Array& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaInt32Array& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaInt32Array::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaInt32Array::SPtr& value);
 
 	
 		//
 		// UInt32
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32& value, bool littleEndian=true);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt32& value, bool littleEndian=true);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32& value, bool littleEndian=true);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaUInt32& value, bool littleEndian=true);
 	
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32Array& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt32Array& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32Array::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt32Array::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32Array& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaUInt32Array& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32Array::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaUInt32Array::SPtr& value);
 
 	
 		//
 		// Int64
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt64& value, bool littleEndian=true);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt64& value, bool littleEndian=true);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaInt64& value, bool littleEndian=true);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaInt64& value, bool littleEndian=true);
 	
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt64Array& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt64Array& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt64Array::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt64Array::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaInt64Array& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaInt64Array& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaInt64Array::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaInt64Array::SPtr& value);
 	
 		//
 		// UInt64
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64& value, bool littleEndian=true);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt64& value, bool littleEndian=true);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64& value, bool littleEndian=true);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaUInt64& value, bool littleEndian=true);
 	
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64Array& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt64Array& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64Array::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt64Array::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64Array& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaUInt64Array& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64Array::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaUInt64Array::SPtr& value);
 
 	
 		//
 		// Float
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaFloat& value, bool littleEndian=true);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaFloat& value, bool littleEndian=true);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaFloat& value, bool littleEndian=true);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaFloat& value, bool littleEndian=true);
 
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaFloatArray& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaFloatArray& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaFloatArray::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaFloatArray::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaFloatArray& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaFloatArray& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaFloatArray::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaFloatArray::SPtr& value);
 
 	
 		//
 		// Double
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaDouble& value, bool littleEndian=true);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaDouble& value, bool littleEndian=true);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaDouble& value, bool littleEndian=true);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaDouble& value, bool littleEndian=true);
 	
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaDoubleArray& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaDoubleArray& value);
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaDoubleArray::SPtr& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaDoubleArray::SPtr& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaDoubleArray& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaDoubleArray& value);
+		static bool opcUaBinaryEncode(std::ostream& os, const OpcUaDoubleArray::SPtr& value);
+		static bool opcUaBinaryDecode(std::istream& is, OpcUaDoubleArray::SPtr& value);
 
 	};
 };

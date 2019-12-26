@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -29,16 +29,18 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaBoolean& value)
 	{
 		os.write((char*)&value, 1);
+		return os.good();
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaBoolean& value)
 	{	
 		is.read((char*)&value, 1);
+		return is.good();
 	}
 
 	// ------------------------------------------------------------------------
@@ -48,28 +50,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaBooleanArray& value)
 	{
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaBooleanArray& value)
 	{	
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaBooleanArray::SPtr& value)
 	{
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaBooleanArray::SPtr& value)
 	{	
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 
@@ -80,16 +82,18 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaSByte& value)
 	{	
 		os.write((char*)&value, 1);
+		return os.good();
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaSByte& value)
 	{	
 		is.read((char*)&value, 1);
+		return is.good();
 	}
 
 	// ------------------------------------------------------------------------
@@ -99,28 +103,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaSByteArray& value)
 	{	
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaSByteArray& value)
 	{	
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaSByteArray::SPtr& value)
 	{	
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaSByteArray::SPtr& value)
 	{	
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 	// ------------------------------------------------------------------------
@@ -130,16 +134,18 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaByte& value)
 	{	
 		os.write((char*)&value, 1);
+		return os.good();
 	}
 
-	void
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaByte& value)
 	{	
 		is.read((char*)&value, 1);
+		return is.good();
 	}
 
 
@@ -150,28 +156,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaByteArray& value)
 	{	
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 
-	void
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaByteArray& value)
 	{	
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaByteArray::SPtr& value)
 	{	
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 
-	void
+    bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaByteArray::SPtr& value)
 	{	
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 	// ------------------------------------------------------------------------
@@ -181,25 +187,25 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt16& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaInt16>::opcUaBinaryEncodeNumberLE(os, value);
+			return ByteOrder<OpcUaInt16>::opcUaBinaryEncodeNumberLE(os, value);
 		}
 		else {
-			ByteOrder<OpcUaInt16>::opcUaBinaryEncodeNumberBE(os, value);
+			return ByteOrder<OpcUaInt16>::opcUaBinaryEncodeNumberBE(os, value);
 		}
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt16& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaInt16>::opcUaBinaryDecodeNumberLE(is, value);
+			return ByteOrder<OpcUaInt16>::opcUaBinaryDecodeNumberLE(is, value);
 		}
 		else {
-			ByteOrder<OpcUaInt16>::opcUaBinaryDecodeNumberBE(is, value);
+			return ByteOrder<OpcUaInt16>::opcUaBinaryDecodeNumberBE(is, value);
 		}
 	}
 
@@ -211,28 +217,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt16Array& value)
 	{	
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt16Array& value)
 	{	
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt16Array::SPtr& value)
 	{	
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt16Array::SPtr& value)
 	{	
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 
@@ -243,25 +249,25 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaUInt16>::opcUaBinaryEncodeNumberLE(os, value);
+			return ByteOrder<OpcUaUInt16>::opcUaBinaryEncodeNumberLE(os, value);
 		}
 		else {
-			ByteOrder<OpcUaUInt16>::opcUaBinaryEncodeNumberBE(os, value);
+			return ByteOrder<OpcUaUInt16>::opcUaBinaryEncodeNumberBE(os, value);
 		}
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt16& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaUInt16>::opcUaBinaryDecodeNumberLE(is, value);
+			return ByteOrder<OpcUaUInt16>::opcUaBinaryDecodeNumberLE(is, value);
 		}
 		else {
-			ByteOrder<OpcUaUInt16>::opcUaBinaryDecodeNumberBE(is, value);
+			return ByteOrder<OpcUaUInt16>::opcUaBinaryDecodeNumberBE(is, value);
 		}
 	}
 
@@ -273,28 +279,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16Array& value)
 	{	
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt16Array& value)
 	{	
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16Array::SPtr& value)
 	{	
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt16Array::SPtr& value)
 	{	
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 	// ------------------------------------------------------------------------
@@ -304,25 +310,25 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt32& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaInt32>::opcUaBinaryEncodeNumberLE(os, value);
+			return ByteOrder<OpcUaInt32>::opcUaBinaryEncodeNumberLE(os, value);
 		}
 		else {
-			ByteOrder<OpcUaInt32>::opcUaBinaryEncodeNumberBE(os, value);
+			return ByteOrder<OpcUaInt32>::opcUaBinaryEncodeNumberBE(os, value);
 		}
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt32& value, bool littleEndian)
 	{
 		if (littleEndian) {
-			ByteOrder<OpcUaInt32>::opcUaBinaryDecodeNumberLE(is, value);
+			return ByteOrder<OpcUaInt32>::opcUaBinaryDecodeNumberLE(is, value);
 		}
 		else {
-			ByteOrder<OpcUaInt32>::opcUaBinaryDecodeNumberBE(is, value);
+			return ByteOrder<OpcUaInt32>::opcUaBinaryDecodeNumberBE(is, value);
 		}
 	}
 
@@ -334,28 +340,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt32Array& value)
 	{	
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt32Array& value)
 	{
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt32Array::SPtr& value)
 	{	
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt32Array::SPtr& value)
 	{
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 	// ------------------------------------------------------------------------
@@ -365,25 +371,25 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumberLE(os, value);
+			return ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumberLE(os, value);
 		}
 		else {
-			ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumberBE(os, value);
+			return ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumberBE(os, value);
 		}
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt32& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaUInt32>::opcUaBinaryDecodeNumberLE(is, value);
+			return ByteOrder<OpcUaUInt32>::opcUaBinaryDecodeNumberLE(is, value);
 		}
 		else {
-			ByteOrder<OpcUaUInt32>::opcUaBinaryDecodeNumberBE(is, value);
+			return ByteOrder<OpcUaUInt32>::opcUaBinaryDecodeNumberBE(is, value);
 		}
 	}
 
@@ -395,28 +401,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32Array& value)
 	{	
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt32Array& value)
 	{	
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32Array::SPtr& value)
 	{	
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt32Array::SPtr& value)
 	{	
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 
@@ -427,25 +433,25 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt64& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaInt64>::opcUaBinaryEncodeNumberLE(os, value);
+			return ByteOrder<OpcUaInt64>::opcUaBinaryEncodeNumberLE(os, value);
 		}
 		else {
-			ByteOrder<OpcUaInt64>::opcUaBinaryEncodeNumberBE(os, value);
+			return ByteOrder<OpcUaInt64>::opcUaBinaryEncodeNumberBE(os, value);
 		}
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt64& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaInt64>::opcUaBinaryDecodeNumberLE(is, value);
+			return ByteOrder<OpcUaInt64>::opcUaBinaryDecodeNumberLE(is, value);
 		}
 		else {
-			ByteOrder<OpcUaInt64>::opcUaBinaryDecodeNumberBE(is, value);
+			return ByteOrder<OpcUaInt64>::opcUaBinaryDecodeNumberBE(is, value);
 		}
 	}
 
@@ -456,28 +462,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt64Array& value)
 	{	
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt64Array& value)
 	{	
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt64Array::SPtr& value)
 	{	
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt64Array::SPtr& value)
 	{	
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 
@@ -488,25 +494,25 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaUInt64>::opcUaBinaryEncodeNumberLE(os, value);
+			return ByteOrder<OpcUaUInt64>::opcUaBinaryEncodeNumberLE(os, value);
 		}
 		else {
-			ByteOrder<OpcUaUInt64>::opcUaBinaryEncodeNumberBE(os, value);
+			return ByteOrder<OpcUaUInt64>::opcUaBinaryEncodeNumberBE(os, value);
 		}
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt64& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaUInt64>::opcUaBinaryDecodeNumberLE(is, value);
+			return ByteOrder<OpcUaUInt64>::opcUaBinaryDecodeNumberLE(is, value);
 		}
 		else {
-			ByteOrder<OpcUaUInt64>::opcUaBinaryDecodeNumberBE(is, value);
+			return ByteOrder<OpcUaUInt64>::opcUaBinaryDecodeNumberBE(is, value);
 		}
 	}
 
@@ -518,28 +524,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64Array& value)
 	{	
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt64Array& value)
 	{	
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64Array::SPtr& value)
 	{	
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt64Array::SPtr& value)
 	{	
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 
@@ -550,25 +556,25 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaFloat& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaFloat>::opcUaBinaryEncodeNumberLE(os, value);
+			return ByteOrder<OpcUaFloat>::opcUaBinaryEncodeNumberLE(os, value);
 		}
 		else {
-			ByteOrder<OpcUaFloat>::opcUaBinaryEncodeNumberBE(os, value);
+			return ByteOrder<OpcUaFloat>::opcUaBinaryEncodeNumberBE(os, value);
 		}
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaFloat& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaFloat>::opcUaBinaryDecodeNumberLE(is, value);
+			return ByteOrder<OpcUaFloat>::opcUaBinaryDecodeNumberLE(is, value);
 		}
 		else {
-			ByteOrder<OpcUaFloat>::opcUaBinaryDecodeNumberBE(is, value);
+			return ByteOrder<OpcUaFloat>::opcUaBinaryDecodeNumberBE(is, value);
 		}
 	}
 
@@ -579,28 +585,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaFloatArray& value)
 	{	
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaFloatArray& value)
 	{	
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaFloatArray::SPtr& value)
 	{	
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaFloatArray::SPtr& value)
 	{	
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 
@@ -611,25 +617,25 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaDouble& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaDouble>::opcUaBinaryEncodeNumberLE(os, value);
+			return ByteOrder<OpcUaDouble>::opcUaBinaryEncodeNumberLE(os, value);
 		}
 		else {
-			ByteOrder<OpcUaDouble>::opcUaBinaryEncodeNumberBE(os, value);
+			return ByteOrder<OpcUaDouble>::opcUaBinaryEncodeNumberBE(os, value);
 		}
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaDouble& value, bool littleEndian)
 	{	
 		if (littleEndian) {
-			ByteOrder<OpcUaDouble>::opcUaBinaryDecodeNumberLE(is, value);
+			return ByteOrder<OpcUaDouble>::opcUaBinaryDecodeNumberLE(is, value);
 		}
 		else {
-			ByteOrder<OpcUaDouble>::opcUaBinaryDecodeNumberBE(is, value);
+			return ByteOrder<OpcUaDouble>::opcUaBinaryDecodeNumberBE(is, value);
 		}
 	}
 
@@ -640,28 +646,28 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaDoubleArray& value)
 	{	
-		value.opcUaBinaryEncode(os);
+		return value.opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaDoubleArray& value)
 	{	
-		value.opcUaBinaryDecode(is);
+		return value.opcUaBinaryDecode(is);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaDoubleArray::SPtr& value)
 	{	
-		value->opcUaBinaryEncode(os);
+		return value->opcUaBinaryEncode(os);
 	}
 
-	void 
+	bool
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaDoubleArray::SPtr& value)
 	{	
-		value->opcUaBinaryDecode(is);
+		return value->opcUaBinaryDecode(is);
 	}
 
 
