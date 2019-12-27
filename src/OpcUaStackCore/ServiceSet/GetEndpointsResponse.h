@@ -40,8 +40,8 @@ namespace OpcUaStackCore
 		void endpoints(const EndpointDescriptionArray::SPtr& endpoints);
 		EndpointDescriptionArray::SPtr& endpoints(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	protected:
 		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const override;

@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -182,7 +182,7 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15087, 0);
     }
     
-    void
+    bool
     ApplicationDescription::opcUaBinaryEncode(std::ostream& os) const
     {
         applicationUri_.opcUaBinaryEncode(os);
@@ -192,9 +192,10 @@ namespace OpcUaStackCore
         gatewayServerUri_.opcUaBinaryEncode(os);
         discoveryProfileUri_.opcUaBinaryEncode(os);
         discoveryUrls_.opcUaBinaryEncode(os);
+        return true;
     }
     
-    void
+    bool
     ApplicationDescription::opcUaBinaryDecode(std::istream& is)
     {
         applicationUri_.opcUaBinaryDecode(is);
@@ -204,6 +205,7 @@ namespace OpcUaStackCore
         gatewayServerUri_.opcUaBinaryDecode(is);
         discoveryProfileUri_.opcUaBinaryDecode(is);
         discoveryUrls_.opcUaBinaryDecode(is);
+        return true;
     }
     
     bool

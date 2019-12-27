@@ -36,8 +36,8 @@ namespace OpcUaStackCore
 		void subscriptionAcknowledgements(const SubscriptionAcknowledgementArray::SPtr subscriptionAcknowledgements);
 		SubscriptionAcknowledgementArray::SPtr subscriptionAcknowledgements(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		SubscriptionAcknowledgementArray::SPtr subscriptionAcknowledgementArraySPtr_;

@@ -95,20 +95,28 @@ namespace OpcUaStackCore
 		return profileUriArraySPtr_;
 	}
 
-	void 
+	bool
 	GetEndpointsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		endpointUrl_.opcUaBinaryEncode(os);
-		localeIdArraySPtr_->opcUaBinaryEncode(os);
-		profileUriArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= endpointUrl_.opcUaBinaryEncode(os);
+		rc &= localeIdArraySPtr_->opcUaBinaryEncode(os);
+		rc &= profileUriArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	GetEndpointsRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		endpointUrl_.opcUaBinaryDecode(is);
-		localeIdArraySPtr_->opcUaBinaryDecode(is);
-		profileUriArraySPtr_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= endpointUrl_.opcUaBinaryDecode(is);
+		rc &= localeIdArraySPtr_->opcUaBinaryDecode(is);
+		rc &= profileUriArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

@@ -95,20 +95,28 @@ namespace OpcUaStackCore
 		return serverUriArraySPtr_;
 	}
 
-	void 
+	bool
 	FindServersRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		endpointUrl_.opcUaBinaryEncode(os);
-		localeIdArraySPtr_->opcUaBinaryEncode(os);
-		serverUriArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= endpointUrl_.opcUaBinaryEncode(os);
+		rc &= localeIdArraySPtr_->opcUaBinaryEncode(os);
+		rc &= serverUriArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	FindServersRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		endpointUrl_.opcUaBinaryDecode(is);
-		localeIdArraySPtr_->opcUaBinaryDecode(is);
-		serverUriArraySPtr_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= endpointUrl_.opcUaBinaryDecode(is);
+		rc &= localeIdArraySPtr_->opcUaBinaryDecode(is);
+		rc &= serverUriArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

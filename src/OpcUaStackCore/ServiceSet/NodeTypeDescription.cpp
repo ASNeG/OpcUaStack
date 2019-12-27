@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -77,20 +77,28 @@ namespace OpcUaStackCore
 		return dataToReturnArraySPtr_;
 	}
 
-	void 
+	bool
 	NodeTypeDescription::opcUaBinaryEncode(std::ostream& os) const
 	{
-		typeDefinitionNodeSPtr_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, includeSubtypes_);
-		dataToReturnArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= typeDefinitionNodeSPtr_->opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, includeSubtypes_);
+		rc &= dataToReturnArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	NodeTypeDescription::opcUaBinaryDecode(std::istream& is)
 	{
-		typeDefinitionNodeSPtr_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, includeSubtypes_);
-		dataToReturnArraySPtr_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= typeDefinitionNodeSPtr_->opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, includeSubtypes_);
+		rc &= dataToReturnArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 }

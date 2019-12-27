@@ -40,8 +40,8 @@ namespace OpcUaStackCore
 		void monitoredItemIds(const OpcUaUInt32Array::SPtr monitoredItemIds);
 		OpcUaUInt32Array::SPtr monitoredItemIds(void) const;
 		
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  protected:
 		bool jsonEncodeImpl(boost::property_tree::ptree &pt) const;

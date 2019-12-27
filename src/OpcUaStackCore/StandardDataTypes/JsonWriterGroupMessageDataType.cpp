@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -114,18 +114,20 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16393, 0);
     }
     
-    void
+    bool
     JsonWriterGroupMessageDataType::opcUaBinaryEncode(std::ostream& os) const
     {
         WriterGroupMessageDataType::opcUaBinaryEncode(os);
         OpcUaNumber::opcUaBinaryEncode(os,networkMessageContentMask_);
+        return true;
     }
     
-    void
+    bool
     JsonWriterGroupMessageDataType::opcUaBinaryDecode(std::istream& is)
     {
         WriterGroupMessageDataType::opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
+        return true;
     }
     
     bool

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -63,17 +63,25 @@ namespace OpcUaStackCore
 		return revisedContinuationPoint_;
 	}
 	
-	void 
+	bool
 	QueryNextResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		queryDataSetArraySPtr_->opcUaBinaryEncode(os);
-		revisedContinuationPoint_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= queryDataSetArraySPtr_->opcUaBinaryEncode(os);
+		rc &= revisedContinuationPoint_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	QueryNextResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		queryDataSetArraySPtr_->opcUaBinaryDecode(is);
-		revisedContinuationPoint_.opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= queryDataSetArraySPtr_->opcUaBinaryDecode(is);
+		rc &= revisedContinuationPoint_.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 }

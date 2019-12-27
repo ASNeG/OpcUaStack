@@ -1,7 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
-
-   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Copyright 2015-2019 Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
    Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
 
@@ -102,23 +100,31 @@ namespace OpcUaStackCore
 		return filterResult_;
 	}
 	
-	void 
+	bool
 	QueryFirstResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		queryDataSetArraySPtr_->opcUaBinaryEncode(os);
-		continuationPoint_.opcUaBinaryEncode(os);
-		parsingResultArraySPtr_->opcUaBinaryEncode(os);
-		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
-		filterResult_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= queryDataSetArraySPtr_->opcUaBinaryEncode(os);
+		rc &= continuationPoint_.opcUaBinaryEncode(os);
+		rc &= parsingResultArraySPtr_->opcUaBinaryEncode(os);
+		rc &= diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+		rc &= filterResult_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	QueryFirstResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		queryDataSetArraySPtr_->opcUaBinaryDecode(is);
-		continuationPoint_.opcUaBinaryDecode(is);
-		parsingResultArraySPtr_->opcUaBinaryDecode(is);
-		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
-		filterResult_.opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= queryDataSetArraySPtr_->opcUaBinaryDecode(is);
+		rc &= continuationPoint_.opcUaBinaryDecode(is);
+		rc &= parsingResultArraySPtr_->opcUaBinaryDecode(is);
+		rc &= diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+		rc &= filterResult_.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 }

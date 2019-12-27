@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -416,7 +416,7 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15372, 0);
     }
     
-    void
+    bool
     SubscriptionDiagnosticsDataType::opcUaBinaryEncode(std::ostream& os) const
     {
         sessionId_.opcUaBinaryEncode(os);
@@ -450,9 +450,10 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryEncode(os,monitoringQueueOverflowCount_);
         OpcUaNumber::opcUaBinaryEncode(os,nextSequenceNumber_);
         OpcUaNumber::opcUaBinaryEncode(os,eventQueueOverFlowCount_);
+        return true;
     }
     
-    void
+    bool
     SubscriptionDiagnosticsDataType::opcUaBinaryDecode(std::istream& is)
     {
         sessionId_.opcUaBinaryDecode(is);
@@ -486,6 +487,7 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,monitoringQueueOverflowCount_);
         OpcUaNumber::opcUaBinaryDecode(is,nextSequenceNumber_);
         OpcUaNumber::opcUaBinaryDecode(is,eventQueueOverFlowCount_);
+        return true;
     }
     
     bool

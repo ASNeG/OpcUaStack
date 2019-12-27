@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -144,7 +144,7 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16391, 0);
     }
     
-    void
+    bool
     UadpDataSetWriterMessageDataType::opcUaBinaryEncode(std::ostream& os) const
     {
         DataSetWriterMessageDataType::opcUaBinaryEncode(os);
@@ -152,9 +152,10 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryEncode(os,configuredSize_);
         OpcUaNumber::opcUaBinaryEncode(os,networkMessageNumber_);
         OpcUaNumber::opcUaBinaryEncode(os,dataSetOffset_);
+        return true;
     }
     
-    void
+    bool
     UadpDataSetWriterMessageDataType::opcUaBinaryDecode(std::istream& is)
     {
         DataSetWriterMessageDataType::opcUaBinaryDecode(is);
@@ -162,6 +163,7 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,configuredSize_);
         OpcUaNumber::opcUaBinaryDecode(is,networkMessageNumber_);
         OpcUaNumber::opcUaBinaryDecode(is,dataSetOffset_);
+        return true;
     }
     
     bool

@@ -76,22 +76,30 @@ namespace OpcUaStackCore
 		return requestedParameters_;
 	}
 
-	void 
+	bool
 	MonitoredItemCreateRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		itemToMonitor_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)monitoringMode_);
-		requestedParameters_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= itemToMonitor_.opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)monitoringMode_);
+		rc &= requestedParameters_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	MonitoredItemCreateRequest::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaUInt32 tmp;
-		itemToMonitor_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		rc &= itemToMonitor_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		monitoringMode_ = (MonitoringMode)tmp;
-		requestedParameters_.opcUaBinaryDecode(is);
+		rc &= requestedParameters_.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

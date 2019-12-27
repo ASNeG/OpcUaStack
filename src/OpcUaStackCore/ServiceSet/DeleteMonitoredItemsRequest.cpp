@@ -63,18 +63,26 @@ namespace OpcUaStackCore
 		return monitoredItemIdArraySPtr_;
 	}
 	
-	void 
+	bool
 	DeleteMonitoredItemsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
-		monitoredItemIdArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
+		rc &= monitoredItemIdArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	DeleteMonitoredItemsRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
-		monitoredItemIdArraySPtr_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
+		rc &= monitoredItemIdArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

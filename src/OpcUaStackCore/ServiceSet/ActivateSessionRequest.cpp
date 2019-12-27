@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -106,24 +106,32 @@ namespace OpcUaStackCore
 		return userTokenSignature_;
 	}
 
-	void 
+	bool
 	ActivateSessionRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		clientSignature_->opcUaBinaryEncode(os);
-		signedSoftwareCertificate_->opcUaBinaryEncode(os);
-		localeIds_->opcUaBinaryEncode(os);
-		userIdentityToken_->opcUaBinaryEncode(os);
-		userTokenSignature_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= clientSignature_->opcUaBinaryEncode(os);
+		rc &= signedSoftwareCertificate_->opcUaBinaryEncode(os);
+		rc &= localeIds_->opcUaBinaryEncode(os);
+		rc &= userIdentityToken_->opcUaBinaryEncode(os);
+		rc &= userTokenSignature_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 
-	void 
+	bool
 	ActivateSessionRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		clientSignature_->opcUaBinaryDecode(is);
-		signedSoftwareCertificate_->opcUaBinaryDecode(is);
-		localeIds_->opcUaBinaryDecode(is);
-		userIdentityToken_->opcUaBinaryDecode(is);
-		userTokenSignature_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= clientSignature_->opcUaBinaryDecode(is);
+		rc &= signedSoftwareCertificate_->opcUaBinaryDecode(is);
+		rc &= localeIds_->opcUaBinaryDecode(is);
+		rc &= userIdentityToken_->opcUaBinaryDecode(is);
+		rc &= userTokenSignature_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 }

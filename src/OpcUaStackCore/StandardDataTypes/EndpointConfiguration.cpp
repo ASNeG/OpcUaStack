@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -196,7 +196,7 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15199, 0);
     }
     
-    void
+    bool
     EndpointConfiguration::opcUaBinaryEncode(std::ostream& os) const
     {
         OpcUaNumber::opcUaBinaryEncode(os,operationTimeout_);
@@ -208,9 +208,10 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryEncode(os,maxBufferSize_);
         OpcUaNumber::opcUaBinaryEncode(os,channelLifetime_);
         OpcUaNumber::opcUaBinaryEncode(os,securityTokenLifetime_);
+        return true;
     }
     
-    void
+    bool
     EndpointConfiguration::opcUaBinaryDecode(std::istream& is)
     {
         OpcUaNumber::opcUaBinaryDecode(is,operationTimeout_);
@@ -222,6 +223,7 @@ namespace OpcUaStackCore
         OpcUaNumber::opcUaBinaryDecode(is,maxBufferSize_);
         OpcUaNumber::opcUaBinaryDecode(is,channelLifetime_);
         OpcUaNumber::opcUaBinaryDecode(is,securityTokenLifetime_);
+        return true;
     }
     
     bool

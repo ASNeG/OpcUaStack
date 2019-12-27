@@ -129,22 +129,30 @@ namespace OpcUaStackCore
 		dataEncoding_.copyTo(readValueId.dataEncoding());
 	}
 
-	void 
+	bool
 	ReadValueId::opcUaBinaryEncode(std::ostream& os) const
 	{
-		nodeIdSPtr_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, attributeId_);
-		indexRange_.opcUaBinaryEncode(os);
-		dataEncoding_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= nodeIdSPtr_->opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, attributeId_);
+		rc &= indexRange_.opcUaBinaryEncode(os);
+		rc &= dataEncoding_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	ReadValueId::opcUaBinaryDecode(std::istream& is)
 	{
-		nodeIdSPtr_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, attributeId_);
-		indexRange_.opcUaBinaryDecode(is);
-		dataEncoding_.opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= nodeIdSPtr_->opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, attributeId_);
+		rc &= indexRange_.opcUaBinaryDecode(is);
+		rc &= dataEncoding_.opcUaBinaryDecode(is);
+
+		return true;
 	}
 
 	bool

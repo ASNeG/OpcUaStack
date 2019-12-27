@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -90,20 +90,28 @@ namespace OpcUaStackCore
 		viewDescription.viewVersion(viewVersion_);
 	}
 
-	void 
+	bool
 	ViewDescription::opcUaBinaryEncode(std::ostream& os) const
 	{
-		viewIdSPtr_->opcUaBinaryEncode(os);
-		timestamp_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, viewVersion_);
+		bool rc = true;
+
+		rc &= viewIdSPtr_->opcUaBinaryEncode(os);
+		rc &= timestamp_.opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, viewVersion_);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	ViewDescription::opcUaBinaryDecode(std::istream& is)
 	{
-		viewIdSPtr_->opcUaBinaryDecode(is);
-		timestamp_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, viewVersion_);
+		bool rc = true;
+
+		rc &= viewIdSPtr_->opcUaBinaryDecode(is);
+		rc &= timestamp_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, viewVersion_);
+
+		return rc;
 	}
 
 	bool

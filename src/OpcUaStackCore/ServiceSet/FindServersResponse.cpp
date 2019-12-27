@@ -63,16 +63,16 @@ namespace OpcUaStackCore
 		return serverArraySPtr_;
 	}
 
-	void 
+	bool
 	FindServersResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		serverArraySPtr_->opcUaBinaryEncode(os);
+		return serverArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	FindServersResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		serverArraySPtr_->opcUaBinaryDecode(is);
+		return serverArraySPtr_->opcUaBinaryDecode(is);
 	}
 
 	bool

@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -134,22 +134,24 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15294, 0);
     }
     
-    void
+    bool
     DataChangeFilter::opcUaBinaryEncode(std::ostream& os) const
     {
         MonitoringFilter::opcUaBinaryEncode(os);
         trigger_.opcUaBinaryEncode(os);
         OpcUaNumber::opcUaBinaryEncode(os,deadbandType_);
         OpcUaNumber::opcUaBinaryEncode(os,deadbandValue_);
+        return true;
     }
     
-    void
+    bool
     DataChangeFilter::opcUaBinaryDecode(std::istream& is)
     {
         MonitoringFilter::opcUaBinaryDecode(is);
         trigger_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,deadbandType_);
         OpcUaNumber::opcUaBinaryDecode(is,deadbandValue_);
+        return true;
     }
     
     bool

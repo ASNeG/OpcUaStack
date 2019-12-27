@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -124,20 +124,22 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15726, 0);
     }
     
-    void
+    bool
     BrokerConnectionTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
         ConnectionTransportDataType::opcUaBinaryEncode(os);
         resourceUri_.opcUaBinaryEncode(os);
         authenticationProfileUri_.opcUaBinaryEncode(os);
+        return true;
     }
     
-    void
+    bool
     BrokerConnectionTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
         ConnectionTransportDataType::opcUaBinaryDecode(is);
         resourceUri_.opcUaBinaryDecode(is);
         authenticationProfileUri_.opcUaBinaryDecode(is);
+        return true;
     }
     
     bool

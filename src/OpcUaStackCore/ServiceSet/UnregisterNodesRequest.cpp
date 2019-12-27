@@ -50,16 +50,16 @@ namespace OpcUaStackCore
 		return nodesToUnregisterArraySPtr_;
 	}
 
-	void 
+	bool
 	UnregisterNodesRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		nodesToUnregisterArraySPtr_->opcUaBinaryEncode(os);	
+		return nodesToUnregisterArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	UnregisterNodesRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		nodesToUnregisterArraySPtr_->opcUaBinaryDecode(is);
+		return nodesToUnregisterArraySPtr_->opcUaBinaryDecode(is);
 	}
 
 	bool

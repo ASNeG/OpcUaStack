@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -154,7 +154,7 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)16526, 0);
     }
     
-    void
+    bool
     BrokerDataSetReaderTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
         DataSetReaderTransportDataType::opcUaBinaryEncode(os);
@@ -163,9 +163,10 @@ namespace OpcUaStackCore
         authenticationProfileUri_.opcUaBinaryEncode(os);
         requestedDeliveryGuarantee_.opcUaBinaryEncode(os);
         metaDataQueueName_.opcUaBinaryEncode(os);
+        return true;
     }
     
-    void
+    bool
     BrokerDataSetReaderTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
         DataSetReaderTransportDataType::opcUaBinaryDecode(is);
@@ -174,6 +175,7 @@ namespace OpcUaStackCore
         authenticationProfileUri_.opcUaBinaryDecode(is);
         requestedDeliveryGuarantee_.opcUaBinaryDecode(is);
         metaDataQueueName_.opcUaBinaryDecode(is);
+        return true;
     }
     
     bool

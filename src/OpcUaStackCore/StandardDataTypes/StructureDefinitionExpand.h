@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -61,8 +61,8 @@ namespace OpcUaStackCore
 		virtual ExtensionObjectBase::SPtr factory(void) override;
 		virtual OpcUaNodeId binaryTypeId(void) override;
 		virtual OpcUaNodeId xmlTypeId(void) override;
-		virtual void opcUaBinaryEncode(std::ostream& os) const override;
-		virtual void opcUaBinaryDecode(std::istream& is) override;
+		virtual bool opcUaBinaryEncode(std::ostream& os) const override;
+		virtual bool opcUaBinaryDecode(std::istream& is) override;
 		virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
 		virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -89,21 +89,29 @@ namespace OpcUaStackCore
 		return linksToRemoveArraySPtr_;
 	}
 	
-	void 
+	bool
 	SetTriggeringRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
-		OpcUaNumber::opcUaBinaryEncode(os, triggeringItemId_);
-		linksToAddArraySPtr_->opcUaBinaryEncode(os);
-		linksToRemoveArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, triggeringItemId_);
+		rc &= linksToAddArraySPtr_->opcUaBinaryEncode(os);
+		rc &= linksToRemoveArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	SetTriggeringRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
-		OpcUaNumber::opcUaBinaryDecode(is, triggeringItemId_);
-		linksToAddArraySPtr_->opcUaBinaryDecode(is);
-		linksToRemoveArraySPtr_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, triggeringItemId_);
+		rc &= linksToAddArraySPtr_->opcUaBinaryDecode(is);
+		rc &= linksToRemoveArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -115,26 +115,34 @@ namespace OpcUaStackCore
 		return priority_;
 	}
 	
-	void 
+	bool
 	CreateSubscriptionRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, requestedPublishingInterval_);
-		OpcUaNumber::opcUaBinaryEncode(os, requestedLifetimeCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, requestedMaxKeepAliveCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, maxNotificationsPerPublish_);
-		OpcUaNumber::opcUaBinaryEncode(os, publishingEnabled_);
-		OpcUaNumber::opcUaBinaryEncode(os, priority_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, requestedPublishingInterval_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, requestedLifetimeCount_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, requestedMaxKeepAliveCount_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, maxNotificationsPerPublish_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, publishingEnabled_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, priority_);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	CreateSubscriptionRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, requestedPublishingInterval_);
-		OpcUaNumber::opcUaBinaryDecode(is, requestedLifetimeCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, requestedMaxKeepAliveCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, maxNotificationsPerPublish_);
-		OpcUaNumber::opcUaBinaryDecode(is, publishingEnabled_);
-		OpcUaNumber::opcUaBinaryDecode(is, priority_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, requestedPublishingInterval_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, requestedLifetimeCount_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, requestedMaxKeepAliveCount_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, maxNotificationsPerPublish_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, publishingEnabled_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, priority_);
+
+		return rc;
 	}
 
 	bool

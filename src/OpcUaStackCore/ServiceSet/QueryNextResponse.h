@@ -39,8 +39,8 @@ namespace OpcUaStackCore
 		void revisedContinuationPoint(const OpcUaByteString& revisedContinuationPoint);
 		OpcUaByteString& revisedContinuationPoint(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		QueryDataSetArray::SPtr queryDataSetArraySPtr_;

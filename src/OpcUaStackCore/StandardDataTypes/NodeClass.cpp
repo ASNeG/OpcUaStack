@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     EnumTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -212,16 +212,18 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)257,0);
     }
     
-    void
+    bool
     NodeClass::opcUaBinaryEncode(std::ostream& os) const
     {
         OpcUaNumber::opcUaBinaryEncode(os, value_);
+        return true;
     }
     
-    void
+    bool
     NodeClass::opcUaBinaryDecode(std::istream& is)
     {
         OpcUaNumber::opcUaBinaryDecode(is, value_);
+        return true;
     }
     
     bool

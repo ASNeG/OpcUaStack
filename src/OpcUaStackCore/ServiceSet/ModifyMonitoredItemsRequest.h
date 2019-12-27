@@ -42,8 +42,8 @@ namespace OpcUaStackCore
 		void itemsToModify(const MonitoredItemModifyRequestArray::SPtr itemsToModify);
 		MonitoredItemModifyRequestArray::SPtr itemsToModify(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		OpcUaUInt32 subscriptionId_;

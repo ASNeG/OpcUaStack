@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -89,21 +89,29 @@ namespace OpcUaStackCore
 		return removeDiagnosticInfoArraySPtr_;
 	}
 
-	void 
+	bool
 	SetTriggeringResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		addResultArraySPtr_->opcUaBinaryEncode(os);
-		addDiagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
-		removeResultArraySPtr_->opcUaBinaryEncode(os);
-		removeDiagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= addResultArraySPtr_->opcUaBinaryEncode(os);
+		rc &= addDiagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+		rc &= removeResultArraySPtr_->opcUaBinaryEncode(os);
+		rc &= removeDiagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	SetTriggeringResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		addResultArraySPtr_->opcUaBinaryDecode(is);
-		addDiagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
-		removeResultArraySPtr_->opcUaBinaryDecode(is);
-		removeDiagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= addResultArraySPtr_->opcUaBinaryDecode(is);
+		rc &= addDiagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+		rc &= removeResultArraySPtr_->opcUaBinaryDecode(is);
+		rc &= removeDiagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 }

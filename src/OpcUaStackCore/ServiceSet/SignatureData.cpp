@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -328,18 +328,26 @@ namespace OpcUaStackCore
 		return algorithm_.value();
 	}
 
-	void 
+	bool
 	SignatureData::opcUaBinaryEncode(std::ostream& os) const
 	{
-		algorithm_.opcUaBinaryEncode(os);
-		signature_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= algorithm_.opcUaBinaryEncode(os);
+		rc &= signature_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 
-	void 
+	bool
 	SignatureData::opcUaBinaryDecode(std::istream& is)
 	{
-		algorithm_.opcUaBinaryDecode(is);
-		signature_.opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= algorithm_.opcUaBinaryDecode(is);
+		rc &= signature_.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 }

@@ -43,8 +43,8 @@ namespace OpcUaStackCore
 		void removeDiagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr removeDiagnosticInfos);
 		OpcUaDiagnosticInfoArray::SPtr removeDiagnosticInfos(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		OpcUaStatusCodeArray::SPtr addResultArraySPtr_;

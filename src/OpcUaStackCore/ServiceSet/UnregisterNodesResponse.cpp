@@ -36,14 +36,16 @@ namespace OpcUaStackCore
 	{
 	}
 
-	void 
+	bool
 	UnregisterNodesResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
+		return true;
 	}
 	
-	void 
+	bool
 	UnregisterNodesResponse::opcUaBinaryDecode(std::istream& is)
 	{
+		return true;
 	}
 
 	bool

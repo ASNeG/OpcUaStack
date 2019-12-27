@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -103,23 +103,31 @@ namespace OpcUaStackCore
 		return maxReferencesToReturn_;
 	}
 
-	void 
+	bool
 	QueryFirstRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		view_.opcUaBinaryEncode(os);
-		nodeTypeArraySPtr_->opcUaBinaryEncode(os);
-		filter_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, maxDataSetsToReturn_);
-		OpcUaNumber::opcUaBinaryEncode(os, maxReferencesToReturn_);
+		bool rc = true;
+
+		rc &= view_.opcUaBinaryEncode(os);
+		rc &= nodeTypeArraySPtr_->opcUaBinaryEncode(os);
+		rc &= filter_.opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, maxDataSetsToReturn_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, maxReferencesToReturn_);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	QueryFirstRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		view_.opcUaBinaryDecode(is);
-		nodeTypeArraySPtr_->opcUaBinaryDecode(is);
-		filter_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, maxDataSetsToReturn_);
-		OpcUaNumber::opcUaBinaryDecode(is, maxReferencesToReturn_);
+		bool rc = true;
+
+		rc &= view_.opcUaBinaryDecode(is);
+		rc &= nodeTypeArraySPtr_->opcUaBinaryDecode(is);
+		rc &= filter_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, maxDataSetsToReturn_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, maxReferencesToReturn_);
+
+		return rc;
 	}
 }

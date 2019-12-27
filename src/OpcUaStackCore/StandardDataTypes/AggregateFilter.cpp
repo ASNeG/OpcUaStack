@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -144,7 +144,7 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15312, 0);
     }
     
-    void
+    bool
     AggregateFilter::opcUaBinaryEncode(std::ostream& os) const
     {
         MonitoringFilter::opcUaBinaryEncode(os);
@@ -152,9 +152,10 @@ namespace OpcUaStackCore
         aggregateType_.opcUaBinaryEncode(os);
         OpcUaNumber::opcUaBinaryEncode(os,processingInterval_);
         aggregateConfiguration_.opcUaBinaryEncode(os);
+        return true;
     }
     
-    void
+    bool
     AggregateFilter::opcUaBinaryDecode(std::istream& is)
     {
         MonitoringFilter::opcUaBinaryDecode(is);
@@ -162,6 +163,7 @@ namespace OpcUaStackCore
         aggregateType_.opcUaBinaryDecode(is);
         OpcUaNumber::opcUaBinaryDecode(is,processingInterval_);
         aggregateConfiguration_.opcUaBinaryDecode(is);
+        return true;
     }
     
     bool

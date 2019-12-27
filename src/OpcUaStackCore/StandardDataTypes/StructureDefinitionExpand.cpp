@@ -1,5 +1,5 @@
 /*
-   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -154,22 +154,30 @@ namespace OpcUaStackCore
 		return OpcUaNodeId((OpcUaUInt32)OpcUaId_StructureDefinition_Encoding_DefaultXml);
 	}
 
-	void
+	bool
 	StructureDefinitionExpand::opcUaBinaryEncode(std::ostream& os) const
 	{
-		defaultEncodingId_.opcUaBinaryEncode(os);
-		baseDataType_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, structureType_);
-		fields_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= defaultEncodingId_.opcUaBinaryEncode(os);
+		rc &= baseDataType_.opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, structureType_);
+		rc &= fields_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 
-	void
+	bool
 	StructureDefinitionExpand::opcUaBinaryDecode(std::istream& is)
 	{
-		defaultEncodingId_.opcUaBinaryDecode(is);
-		baseDataType_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, structureType_);
-		fields_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= defaultEncodingId_.opcUaBinaryDecode(is);
+		rc &= baseDataType_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, structureType_);
+		rc &= fields_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

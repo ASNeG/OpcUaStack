@@ -166,32 +166,40 @@ namespace OpcUaStackCore
 		return maxRequestMessageSize_;
 	}
 
-	void 
+	bool
 	CreateSessionResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		sessionId_.opcUaBinaryEncode(os);
-		authenticationToken_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, receivedSessionTimeout_);
-		serverNonce_.opcUaBinaryEncode(os);
-		serverCertificate_.opcUaBinaryEncode(os);
-		serverEndpoints_->opcUaBinaryEncode(os);
-		serverSoftwareCertificate_.opcUaBinaryEncode(os);
-		signatureData_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, maxRequestMessageSize_);
+		bool rc = true;
+
+		rc &= sessionId_.opcUaBinaryEncode(os);
+		rc &= authenticationToken_.opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, receivedSessionTimeout_);
+		rc &= serverNonce_.opcUaBinaryEncode(os);
+		rc &= serverCertificate_.opcUaBinaryEncode(os);
+		rc &= serverEndpoints_->opcUaBinaryEncode(os);
+		rc &= serverSoftwareCertificate_.opcUaBinaryEncode(os);
+		rc &= signatureData_->opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, maxRequestMessageSize_);
+
+		return rc;
 	}
 
-	void 
+	bool
 	CreateSessionResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		sessionId_.opcUaBinaryDecode(is);
-		authenticationToken_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, receivedSessionTimeout_);
-		serverNonce_.opcUaBinaryDecode(is);
-		serverCertificate_.opcUaBinaryDecode(is);
-		serverEndpoints_->opcUaBinaryDecode(is);
-		serverSoftwareCertificate_.opcUaBinaryDecode(is);
-		signatureData_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, maxRequestMessageSize_);
+		bool rc = true;
+
+		rc &= sessionId_.opcUaBinaryDecode(is);
+		rc &= authenticationToken_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, receivedSessionTimeout_);
+		rc &= serverNonce_.opcUaBinaryDecode(is);
+		rc &= serverCertificate_.opcUaBinaryDecode(is);
+		rc &= serverEndpoints_->opcUaBinaryDecode(is);
+		rc &= serverSoftwareCertificate_.opcUaBinaryDecode(is);
+		rc &= signatureData_->opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, maxRequestMessageSize_);
+
+		return rc;
 	}
 
 }

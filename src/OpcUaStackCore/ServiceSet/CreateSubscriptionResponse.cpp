@@ -89,22 +89,30 @@ namespace OpcUaStackCore
 		return revisedMaxKeepAliveCount_;
 	}
 
-	void 
+	bool
 	CreateSubscriptionResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
-		OpcUaNumber::opcUaBinaryEncode(os, revisedPublishingInterval_);
-		OpcUaNumber::opcUaBinaryEncode(os, revisedLifetimeCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, revisedMaxKeepAliveCount_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, revisedPublishingInterval_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, revisedLifetimeCount_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, revisedMaxKeepAliveCount_);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	CreateSubscriptionResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
-		OpcUaNumber::opcUaBinaryDecode(is, revisedPublishingInterval_);
-		OpcUaNumber::opcUaBinaryDecode(is, revisedLifetimeCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, revisedMaxKeepAliveCount_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, revisedPublishingInterval_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, revisedLifetimeCount_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, revisedMaxKeepAliveCount_);
+
+		return rc;
 	}
 
 	bool

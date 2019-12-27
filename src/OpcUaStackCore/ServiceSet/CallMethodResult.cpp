@@ -100,24 +100,32 @@ namespace OpcUaStackCore
 		outputArgumentArraySPtr_->copyTo(*callMethodResult.outputArguments().get());
 	}
 
-	void 
+	bool
 	CallMethodResult::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, statusCode_);
-		inputArgumentResultArraySPtr_->opcUaBinaryEncode(os);
-		inputArgumentDiagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
-		outputArgumentArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, statusCode_);
+		rc &= inputArgumentResultArraySPtr_->opcUaBinaryEncode(os);
+		rc &= inputArgumentDiagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+		rc &= outputArgumentArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	CallMethodResult::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		OpcUaInt32 tmp;
-		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		statusCode_ = (OpcUaStatusCode)tmp;
-		inputArgumentResultArraySPtr_->opcUaBinaryDecode(is);
-		inputArgumentDiagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
-		outputArgumentArraySPtr_->opcUaBinaryDecode(is);
+		rc &= inputArgumentResultArraySPtr_->opcUaBinaryDecode(is);
+		rc &= inputArgumentDiagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+		rc &= outputArgumentArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

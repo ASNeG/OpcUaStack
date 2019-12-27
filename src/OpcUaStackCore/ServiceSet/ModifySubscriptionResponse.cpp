@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -76,19 +76,27 @@ namespace OpcUaStackCore
 		return revisedMaxKeepAliveCount_;
 	}
 
-	void 
+	bool
 	ModifySubscriptionResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, revisedPublishingInterval_);
-		OpcUaNumber::opcUaBinaryEncode(os, revisedLifetimeCount_);
-		OpcUaNumber::opcUaBinaryEncode(os, revisedMaxKeepAliveCount_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, revisedPublishingInterval_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, revisedLifetimeCount_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, revisedMaxKeepAliveCount_);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	ModifySubscriptionResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, revisedPublishingInterval_);
-		OpcUaNumber::opcUaBinaryDecode(is, revisedLifetimeCount_);
-		OpcUaNumber::opcUaBinaryDecode(is, revisedMaxKeepAliveCount_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, revisedPublishingInterval_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, revisedLifetimeCount_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, revisedMaxKeepAliveCount_);
+
+		return rc;
 	}
 }

@@ -37,8 +37,8 @@ namespace OpcUaStackCore
 		void referencesToDelete(const DeleteReferencesItemArray::SPtr deleteReferencesItemArray);
 		DeleteReferencesItemArray::SPtr referencesToDelete() const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }

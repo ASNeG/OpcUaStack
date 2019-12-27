@@ -4,7 +4,7 @@
     Generated Source Code - please do not change this source code
 
     DataTypeCodeGenerator Version:
-        OpcUaStackCore - 4.1.0
+        OpcUaStackCore - 4.0.0
 
     Autor: Kai Huebl (kai@huebl-sgh.de)
 */
@@ -156,7 +156,7 @@ namespace OpcUaStackCore
     	return OpcUaNodeId((OpcUaUInt32)15044, 0);
     }
     
-    void
+    bool
     TrustListDataType::opcUaBinaryEncode(std::ostream& os) const
     {
         OpcUaNumber::opcUaBinaryEncode(os,specifiedLists_);
@@ -164,9 +164,10 @@ namespace OpcUaStackCore
         trustedCrls_.opcUaBinaryEncode(os);
         issuerCertificates_.opcUaBinaryEncode(os);
         issuerCrls_.opcUaBinaryEncode(os);
+        return true;
     }
     
-    void
+    bool
     TrustListDataType::opcUaBinaryDecode(std::istream& is)
     {
         OpcUaNumber::opcUaBinaryDecode(is,specifiedLists_);
@@ -174,6 +175,7 @@ namespace OpcUaStackCore
         trustedCrls_.opcUaBinaryDecode(is);
         issuerCertificates_.opcUaBinaryDecode(is);
         issuerCrls_.opcUaBinaryDecode(is);
+        return true;
     }
     
     bool

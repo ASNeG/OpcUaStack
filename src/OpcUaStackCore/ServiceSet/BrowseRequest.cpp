@@ -76,20 +76,28 @@ namespace OpcUaStackCore
 		return nodesToBrowseArraySPtr_;
 	}
 
-	void 
+	bool
 	BrowseRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		view_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, requestMaxReferencesPerNode_);
-		nodesToBrowseArraySPtr_->opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= view_.opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, requestMaxReferencesPerNode_);
+		rc &= nodesToBrowseArraySPtr_->opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	BrowseRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		view_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, requestMaxReferencesPerNode_);
-		nodesToBrowseArraySPtr_->opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= view_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, requestMaxReferencesPerNode_);
+		rc &= nodesToBrowseArraySPtr_->opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 	bool

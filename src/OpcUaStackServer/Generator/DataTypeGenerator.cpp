@@ -273,8 +273,8 @@ namespace OpcUaStackServer
 		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void) override;" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId xmlTypeId(void) override;" << std::endl;
 		ss << prefix << "virtual OpcUaNodeId jsonTypeId(void) override;" << std::endl;
-		ss << prefix << "virtual void opcUaBinaryEncode(std::ostream& os) const override;" << std::endl;
-		ss << prefix << "virtual void opcUaBinaryDecode(std::istream& is) override;" << std::endl;
+		ss << prefix << "virtual bool opcUaBinaryEncode(std::ostream& os) const override;" << std::endl;
+		ss << prefix << "virtual bool opcUaBinaryDecode(std::istream& is) override;" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;" << std::endl;
 		ss << prefix << "virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) override;" << std::endl;
 		ss << prefix << "virtual bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) override;" << std::endl;
@@ -874,7 +874,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
-		ss << prefix << "void" << std::endl;
+		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryEncode(std::ostream& os) const" << std::endl;
 		ss << prefix << "{" << std::endl;
 
@@ -898,6 +898,7 @@ namespace OpcUaStackServer
 			}
 		}
 
+		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -910,7 +911,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
-		ss << prefix << "void" << std::endl;
+		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryDecode(std::istream& is)" << std::endl;
 		ss << prefix << "{" << std::endl;
 
@@ -933,6 +934,7 @@ namespace OpcUaStackServer
 			}
 		}
 
+		ss << prefix << "    return true;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

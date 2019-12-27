@@ -63,16 +63,16 @@ namespace OpcUaStackCore
 		return callMethodRequestArraySPtr_;
 	}
 	
-	void 
+	bool
 	CallRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		callMethodRequestArraySPtr_->opcUaBinaryEncode(os);
+		return callMethodRequestArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	CallRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		callMethodRequestArraySPtr_->opcUaBinaryDecode(is);
+		return callMethodRequestArraySPtr_->opcUaBinaryDecode(is);
 	}
 
 	bool
