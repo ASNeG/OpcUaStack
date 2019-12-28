@@ -86,22 +86,30 @@ namespace OpcUaStackCore
 		return revisedLifetime_;
 	}
 
-	void 
+	bool
 	SecurityToken::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, channelId_);
-		OpcUaNumber::opcUaBinaryEncode(os, tokenId_);
-		createAt_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, revisedLifetime_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, channelId_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, tokenId_);
+		rc &= createAt_.opcUaBinaryEncode(os);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, revisedLifetime_);
+
+		return rc;
 	}
 
-	void 
+	bool
 	SecurityToken::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, channelId_);
-		OpcUaNumber::opcUaBinaryDecode(is, tokenId_);
-		createAt_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, revisedLifetime_);
+		bool rc;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, channelId_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, tokenId_);
+		rc &= createAt_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, revisedLifetime_);
+
+		return rc;
 	}
 
 

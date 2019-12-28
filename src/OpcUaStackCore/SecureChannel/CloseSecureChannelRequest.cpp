@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -61,18 +61,26 @@ namespace OpcUaStackCore
 		secureChannelId_.value(buf, bufLen);
 	}
 
-	void 
+	bool
 	CloseSecureChannelRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
-		secureChannelId_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= requestHeaderSPtr_->opcUaBinaryEncode(os);
+		rc &= secureChannelId_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 
-	void 
+	bool
 	CloseSecureChannelRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
-		secureChannelId_.opcUaBinaryDecode(is);
+		bool rc = true;
+
+		rc &= requestHeaderSPtr_->opcUaBinaryDecode(is);
+		rc &= secureChannelId_.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 }

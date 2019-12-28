@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -87,7 +87,7 @@ namespace OpcUaStackCore
 		return channelId_;
 	}
 
-	void 
+	bool
 	MessageHeader::opcUaBinaryEncode(std::ostream& os, bool full) const
 	{
 		switch (messageType_) 
@@ -95,53 +95,63 @@ namespace OpcUaStackCore
 			case MessageType_Hello:
 			{
 				os.write("HEL",3);
+				if (!os.good()) return false;
 				break;
 			}
 			case MessageType_Acknowledge:
 			{
 				os.write("ACK",3);
+				if (!os.good()) return false;
 				break;
 			}
 			case MessageType_Error:
 			{
 				os.write("ERR",3);
+				if (!os.good()) return false;
 				break;
 			}
 			case MessageType_OpenSecureChannel:
 			{
 				os.write("OPN", 3);
+				if (!os.good()) return false;
 				break;
 			}
 			case MessageType_CloseSecureChannel:
 			{
 				os.write("CLO", 3);
+				if (!os.good()) return false;
 				break;
 			}
 			case MessageType_Message:
 			{
 				os.write("MSG", 3);
+				if (!os.good()) return false;
 				break;
 			}
 			default:
 			{
 				os.write("XXX", 3);
+				if (!os.good()) return false;
 			}
 		}
 		os.write(&segmentFlag_, 1);
-		OpcUaNumber::opcUaBinaryEncode(os, messageSize_);
+		if (!os.good()) return false;
+		if (!OpcUaNumber::opcUaBinaryEncode(os, messageSize_)) return false;
 
 		if (full) {
-			OpcUaNumber::opcUaBinaryEncode(os, channelId_);
+			if (!OpcUaNumber::opcUaBinaryEncode(os, channelId_)) return false;
 		}
+
+		return true;
 	}
 
-	void
+	bool
 	MessageHeader::opcUaBinaryEncodeChannelId(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, channelId_);
+		return OpcUaNumber::opcUaBinaryEncode(os, channelId_);
 	}
 		
-	void 
+	bool
 	MessageHeader::opcUaBinaryDecode(std::istream& is, bool full)
 	{
 		is.read(messageTypeString_, 3);
@@ -169,17 +179,20 @@ namespace OpcUaStackCore
 		}
 			
 		is.read(&segmentFlag_, 1);
+		if (!is.good()) return false;
 
-		OpcUaNumber::opcUaBinaryDecode(is, messageSize_);
+		if (!OpcUaNumber::opcUaBinaryDecode(is, messageSize_)) return false;
 
 		if (full) {
-			OpcUaNumber::opcUaBinaryDecode(is, channelId_);
+			if (!OpcUaNumber::opcUaBinaryDecode(is, channelId_)) return false;
 		}
+
+		return true;
 	}
 
-	void
+	bool
 	MessageHeader::opcUaBinaryDecodeChannelId(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, channelId_);
+		return OpcUaNumber::opcUaBinaryDecode(is, channelId_);
 	}
 }

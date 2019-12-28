@@ -45,8 +45,8 @@ namespace OpcUaStackCore
 		void timeoutHint(const OpcUaUInt32& timeoutHint);
 		OpcUaUInt32 timeoutHint(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		OpcUaNodeId sessionAuthenticationToken_;

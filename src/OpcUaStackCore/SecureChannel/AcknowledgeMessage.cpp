@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -93,24 +93,32 @@ namespace OpcUaStackCore
 		return maxChunkCount_;
 	}
 
-	void 
+	bool
 	AcknowledgeMessage::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, protocolVersion_);
-		OpcUaNumber::opcUaBinaryEncode(os, receivedBufferSize_);
-		OpcUaNumber::opcUaBinaryEncode(os, sendBufferSize_);
-		OpcUaNumber::opcUaBinaryEncode(os, maxMessageSize_);
-		OpcUaNumber::opcUaBinaryEncode(os, maxChunkCount_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, protocolVersion_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, receivedBufferSize_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, sendBufferSize_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, maxMessageSize_);
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, maxChunkCount_);
+
+		return rc;
 	}
 
-	void 
+	bool
 	AcknowledgeMessage::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaNumber::opcUaBinaryDecode(is, protocolVersion_);
-		OpcUaNumber::opcUaBinaryDecode(is, receivedBufferSize_);
-		OpcUaNumber::opcUaBinaryDecode(is, sendBufferSize_);
-		OpcUaNumber::opcUaBinaryDecode(is, maxMessageSize_);
-		OpcUaNumber::opcUaBinaryDecode(is, maxChunkCount_);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, protocolVersion_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, receivedBufferSize_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, sendBufferSize_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, maxMessageSize_);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, maxChunkCount_);
+
+		return rc;
 	}
 
 }

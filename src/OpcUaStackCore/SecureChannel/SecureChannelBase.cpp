@@ -75,7 +75,7 @@ namespace OpcUaStackCore
 	{
 		secureChannel->asyncRecv_ = false;
 
-		// error accurred
+		// error occurred
 		if (error) {
 			LogLevel logLevel = Error;
 			if (secureChannel->state_ == SecureChannel::S_CloseSecureChannel) logLevel = Debug;
@@ -102,7 +102,14 @@ namespace OpcUaStackCore
 
 		// decode message header
 		std::iostream is(&secureChannel->recvBuffer_);
-		secureChannel->messageHeader_.opcUaBinaryDecode(is);
+		if (!secureChannel->messageHeader_.opcUaBinaryDecode(is)) {
+			Log(Debug, "opc ua secure channel decode message header error")
+				.parameter("ChannelId", *secureChannel)
+				.parameter("MessageType", secureChannel->messageHeader_.messageType());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// debug output
 		secureChannel->debugRecvHeader(secureChannel->messageHeader_);
@@ -221,7 +228,13 @@ namespace OpcUaStackCore
 
 		std::iostream is(&secureChannel->recvBuffer_);
 		HelloMessage hello;
-		hello.opcUaBinaryDecode(is);
+		if (!hello.opcUaBinaryDecode(is)) {
+			Log(Debug, "opc ua secure channel decode hello message error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
@@ -326,7 +339,13 @@ namespace OpcUaStackCore
 
 		std::iostream is(&secureChannel->recvBuffer_);
 		AcknowledgeMessage acknowledge;
-		acknowledge.opcUaBinaryDecode(is);
+		if (!acknowledge.opcUaBinaryDecode(is)) {
+			Log(Debug, "opc ua secure channel decode acknowlege message error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
@@ -435,7 +454,12 @@ namespace OpcUaStackCore
 		std::iostream is(&secureChannel->recvBuffer_);
 
 		// decode second part of message header
-		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
+		if (!secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is)) {
+			Log(Debug, "opc ua secure channel decode channel id error");
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// decode secure header from client
 		resultCode = SecurityHeader::opcUaBinaryDecode(
@@ -446,7 +470,7 @@ namespace OpcUaStackCore
 		);
 
 		if (!resultCode) {
-			Log(Debug, "opc ua secure channel security header error")
+			Log(Debug, "opc ua secure channel decode security header error")
 				.parameter("ChannelId", *secureChannel);
 
 			closeChannel(secureChannel, true);
@@ -462,18 +486,44 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// encode sequence number
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
+		// decode sequence number
+		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_)) {
+			Log(Debug, "opc ua secure channel decode sequence number error")
+				.parameter("ChannelId", *secureChannel);
 
-		// encode request id
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvRequestId_);
+			closeChannel(secureChannel, true);
+			return;
+		}
 
-		// encode type id
+		// decode request id
+		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvRequestId_)) {
+			Log(Debug, "opc ua secure channel decode request id error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// decode type id
 		OpcUaNodeId typeIdRequest;
-		typeIdRequest.opcUaBinaryDecode(is);
+		if (!typeIdRequest.opcUaBinaryDecode(is)) {
+			Log(Debug, "opc ua secure channel decode type id error")
+				.parameter("ChannelId", *secureChannel);
 
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// decode open secure channel request
 		OpenSecureChannelRequest openSecureChannelRequest;
-		openSecureChannelRequest.opcUaBinaryDecode(is);
+		if (!openSecureChannelRequest.opcUaBinaryDecode(is)) {
+			Log(Debug, "opc ua secure channel decode open secure channel request error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
 		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
@@ -529,34 +579,63 @@ namespace OpcUaStackCore
 		boost::asio::streambuf sb2;
 		std::iostream ios2(&sb2);
 
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
+		// encode channel id
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_)) {
+			Log(Debug, "opc ua secure channel encode channel id error");
+			return;
+		}
 
-		SecurityHeader::opcUaBinaryEncode(
-			ios1,
-			securitySettings.ownSecurityPolicyUri(),
-			securitySettings.ownCertificateChain(),
-			securitySettings.partnerCertificateThumbprint()
-		);
+		// encode security header
+		if (!SecurityHeader::opcUaBinaryEncode(
+			   ios1,
+			   securitySettings.ownSecurityPolicyUri(),
+			   securitySettings.ownCertificateChain(),
+			   securitySettings.partnerCertificateThumbprint())
+		) {
+			Log(Debug, "opc ua secure channel encode security header error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_)) {
+			Log(Debug, "opc ua secure channel encode sequence number error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode request id
 		secureChannel->sendRequestId_++;
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendRequestId_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendRequestId_)) {
+			Log(Debug, "opc ua secure channel encode request id error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode request type id
 		OpcUaNodeId typeIdRequest;
 		typeIdRequest.nodeId(OpcUaId_OpenSecureChannelRequest_Encoding_DefaultBinary);
-		typeIdRequest.opcUaBinaryEncode(ios1);
+		if (!typeIdRequest.opcUaBinaryEncode(ios1)) {
+			Log(Debug, "opc ua secure channel encode request type error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode open secure channel request
-		openSecureChannelRequest.opcUaBinaryEncode(ios1);
+		if (!openSecureChannelRequest.opcUaBinaryEncode(ios1)) {
+			Log(Debug, "opc ua secure channel encode open secure channel request error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		secureChannel->messageHeader_.messageType(MessageType_OpenSecureChannel);
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
-		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+		if (!secureChannel->messageHeader_.opcUaBinaryEncode(ios2)) {
+			Log(Debug, "opc ua secure channel encode message header error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
@@ -644,7 +723,12 @@ namespace OpcUaStackCore
 		std::iostream is(&secureChannel->recvBuffer_);
 
 		// get channel id
-		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
+		if (!secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is)) {
+			Log(Debug, "opc ua secure channel decode channel id error");
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// decode security header
 		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
@@ -664,10 +748,22 @@ namespace OpcUaStackCore
 		}
 
 		// encode sequence number
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
+		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_)) {
+			Log(Debug, "opc ua secure channel decode sequence number error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvRequestId_);
+		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvRequestId_)) {
+			Log(Debug, "opc ua secure channel decode request id error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// encode type id
 		OpcUaNodeId typeIdResponse;
@@ -726,34 +822,65 @@ namespace OpcUaStackCore
 		boost::asio::streambuf sb2;
 		std::iostream ios2(&sb2);
 
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
+		// encode channel id
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_)) {
+			Log(Debug, "opc ua secure channel encode channel id error");
+			return;
+		}
 
 		// encode security header
-		SecurityHeader::opcUaBinaryEncode(
-			ios1,
-			securitySettings.ownSecurityPolicyUri(),
-			securitySettings.ownCertificateChain(),
-			securitySettings.partnerCertificateThumbprint()
-		);
+		if (!SecurityHeader::opcUaBinaryEncode(
+			    ios1,
+			    securitySettings.ownSecurityPolicyUri(),
+			    securitySettings.ownCertificateChain(),
+			    securitySettings.partnerCertificateThumbprint()
+		    )
+		) {
+			Log(Debug, "opc ua secure channel encode security header error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_)) {
+			Log(Debug, "opc ua secure channel encode sequence number error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->recvRequestId_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->recvRequestId_)) {
+			Log(Debug, "opc ua secure channel encode request id error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode response type id
 		OpcUaNodeId typeIdResponse;
 		typeIdResponse.nodeId(OpcUaId_OpenSecureChannelResponse_Encoding_DefaultBinary);
-		typeIdResponse.opcUaBinaryEncode(ios1);
+		if (!typeIdResponse.opcUaBinaryEncode(ios1)) {
+			Log(Debug, "opc ua secure channel encode response type error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
-		openSecureChannelResponse->opcUaBinaryEncode(ios1);
+		// encode open secure channel response
+		if (!openSecureChannelResponse->opcUaBinaryEncode(ios1)) {
+			Log(Debug, "opc ua secure channel encode open secure channel response error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
+		// encode message header
 		secureChannel->messageHeader_.messageType(MessageType_OpenSecureChannel);
 		secureChannel->messageHeader_.segmentFlag('F');
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
-		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+		if (!secureChannel->messageHeader_.opcUaBinaryEncode(ios2)) {
+			Log(Debug, "opc ua secure channel encode message header error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
@@ -843,7 +970,7 @@ namespace OpcUaStackCore
 	{
 		secureChannel->secureChannelTransaction_ = boost::make_shared<SecureChannelTransaction>();
 
-		// error accurred
+		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
 				.parameter("ChannelId", *secureChannel)
@@ -865,10 +992,21 @@ namespace OpcUaStackCore
 		std::iostream is(&secureChannel->recvBuffer_);
 
 		// get channel id
-		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
+		if (!secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is)) {
+			Log(Debug, "opc ua secure channel decode channel id error");
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// get security token
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_);
+		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_)) {
+			Log(Debug, "opc ua secure channel decode security token error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// handle security
 		if (secureReceivedMessageRequest(secureChannel) != Success) {
@@ -880,10 +1018,22 @@ namespace OpcUaStackCore
 		}
 
 		// encode sequence number
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
+		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_)) {
+			Log(Debug, "opc ua secure channel decode sequence number error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->requestId_);
+		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->requestId_)) {
+			Log(Debug, "opc ua secure channel decode request id error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		consumeAll(secureChannel->recvBuffer_);
 
@@ -918,23 +1068,42 @@ namespace OpcUaStackCore
 		std::iostream ios2(&sb2);
 
 		// encode channel id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_)) {
+			Log(Debug, "opc ua secure channel encode channel id error");
+			return;
+		}
 
 		// encode token id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->tokenId_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->tokenId_)) {
+			Log(Debug, "opc ua secure channel encode token id error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_)) {
+			Log(Debug, "opc ua secure channel encode sequence number error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryEncode(ios1, 0);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, 0)) {
+			Log(Debug, "opc ua secure channel encode request id error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
-		// encode MessageHeader
+		// encode message header
 		secureChannel->messageHeader_.messageType(MessageType_CloseSecureChannel);
 		secureChannel->messageHeader_.segmentFlag('F');
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
-		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+		if (!secureChannel->messageHeader_.opcUaBinaryEncode(ios2)) {
+			Log(Debug, "opc ua secure channel encode message header error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
@@ -1045,10 +1214,21 @@ namespace OpcUaStackCore
 		std::iostream is(&secureChannel->recvBuffer_);
 
 		// get channel id
-		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
+		if (!secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is)) {
+			Log(Debug, "opc ua secure channel decode channel id error");
+
+			closeChannel(secureChannel);
+			return;
+		}
 
 		// get security token
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_);
+		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_)) {
+			Log(Debug, "opc ua secure channel decode security token error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// handle security
 		if (secureReceivedMessageRequest(secureChannel) != Success) {
@@ -1059,15 +1239,33 @@ namespace OpcUaStackCore
 			return;
 		}
 
-
 		// encode sequence number
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
+		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_)) {
+			Log(Debug, "opc ua secure channel decode sequence number error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->requestId_);
+		if (!OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->requestId_)) {
+			Log(Debug, "opc ua secure channel decode sequence request id error")
+				.parameter("ChannelId", *secureChannel);
 
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// encode request type id
 		if (secureChannel->recvFirstSegment_) {
-			secureChannel->secureChannelTransaction_->requestTypeNodeId_.opcUaBinaryDecode(is);
+			if (!secureChannel->secureChannelTransaction_->requestTypeNodeId_.opcUaBinaryDecode(is)) {
+				Log(Debug, "opc ua secure channel decode request type error")
+					.parameter("ChannelId", *secureChannel);
+
+				closeChannel(secureChannel, true);
+				return;
+			}
 		}
 
 		secureChannel->secureChannelTransaction_->isAppend(secureChannel->recvBuffer_);
@@ -1120,21 +1318,41 @@ namespace OpcUaStackCore
 		std::iostream ios2(&sb2);
 
 		// encode channel id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_)) {
+			Log(Debug, "opc ua secure channel encode channel id error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode token id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->tokenId_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->tokenId_)) {
+			Log(Debug, "opc ua secure channel encode token id error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_)) {
+			Log(Debug, "opc ua secure channel encode sequence number error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelTransaction->requestId_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelTransaction->requestId_)) {
+			Log(Debug, "opc ua secure channel encode request id error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode message type id
 		if (secureChannel->sendFirstSegment_) {
-			secureChannelTransaction->requestTypeNodeId_.opcUaBinaryEncode(ios1);
+			if (!secureChannelTransaction->requestTypeNodeId_.opcUaBinaryEncode(ios1)) {
+				Log(Debug, "opc ua secure channel encode message type error")
+					.parameter("ChannelId", *secureChannel);
+				return;
+			}
 		}
 
 		// calculate packet size
@@ -1324,10 +1542,21 @@ namespace OpcUaStackCore
 		std::iostream ios(&secureChannel->recvBuffer_);
 
 		// get channel id
-		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(ios);
+		if (!secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(ios)) {
+			Log(Debug, "opc ua secure channel decode channel id error");
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// get security token
-		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->tokenId_);
+		if (!OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->tokenId_)) {
+			Log(Debug, "opc ua secure channel decode token id error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// handle security
 		if (secureReceivedMessageResponse(secureChannel) != Success) {
@@ -1339,13 +1568,32 @@ namespace OpcUaStackCore
 		}
 
 		// encode sequence number
-		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->recvSequenceNumber_);
+		if (!OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->recvSequenceNumber_)) {
+			Log(Debug, "opc ua secure channel decode sequence number error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->secureChannelTransaction_->requestId_);
+		if (!OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->secureChannelTransaction_->requestId_)) {
+			Log(Debug, "opc ua secure channel decode request id error")
+				.parameter("ChannelId", *secureChannel);
 
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// encode decode response type id
 		if (secureChannel->recvFirstSegment_) {
-			secureChannel->secureChannelTransaction_->responseTypeNodeId_.opcUaBinaryDecode(ios);
+			if (!secureChannel->secureChannelTransaction_->responseTypeNodeId_.opcUaBinaryDecode(ios)) {
+				Log(Debug, "opc ua secure channel decode response type id error")
+					.parameter("ChannelId", *secureChannel);
+
+				closeChannel(secureChannel, true);
+				return;
+			}
 		}
 
 		secureChannel->secureChannelTransaction_->isAppend(secureChannel->recvBuffer_);
@@ -1397,21 +1645,40 @@ namespace OpcUaStackCore
 		std::iostream ios2(&sb2);
 
 		// encode channel id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_)) {
+			Log(Debug, "opc ua secure channel encode channel id error");
+			return;
+		}
 
 		// encode token id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelTransaction->securityTokenId_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelTransaction->securityTokenId_)) {
+			Log(Debug, "opc ua secure channel encode token id error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_)) {
+			Log(Debug, "opc ua secure channel encode sequence number error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelTransaction->requestId_);
+		if (!OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelTransaction->requestId_)) {
+			Log(Debug, "opc ua secure channel encode request id error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
-		// encode message type id
+		// encode response type id
 		if (secureChannel->sendFirstSegment_) {
-			secureChannelTransaction->responseTypeNodeId_.opcUaBinaryEncode(ios1);
+			if (!secureChannelTransaction->responseTypeNodeId_.opcUaBinaryEncode(ios1)) {
+				Log(Debug, "opc ua secure channel encode response type id error")
+					.parameter("ChannelId", *secureChannel);
+				return;
+			}
 		}
 
 		// calculate packet size
@@ -1430,7 +1697,11 @@ namespace OpcUaStackCore
 		messageHeaderSPtr->messageType(MessageType_Message);
 		messageHeaderSPtr->segmentFlag(secureChannel->actSegmentFlag_);
 		messageHeaderSPtr->messageSize(packetSize);
-		messageHeaderSPtr->opcUaBinaryEncode(ios2);
+		if (!messageHeaderSPtr->opcUaBinaryEncode(ios2)) {
+			Log(Debug, "opc ua secure channel encode message header error")
+				.parameter("ChannelId", *secureChannel);
+			return;
+		}
 
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
@@ -1633,10 +1904,16 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// encode error message
+		// decode error message
 		std::iostream is(&secureChannel->recvBuffer_);
 		ErrorMessage errorMessage;
-		errorMessage.opcUaBinaryDecode(is);
+		if (!errorMessage.opcUaBinaryDecode(is)) {
+			Log(Debug, "opc ua secure channel decode error message error")
+				.parameter("ChannelId", *secureChannel);
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		Log(Error, "opc ua secure channel read error message; close channel")
 			.parameter("ChannelId", *secureChannel)
