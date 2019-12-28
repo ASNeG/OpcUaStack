@@ -623,11 +623,6 @@ namespace OpcUaStackServer
 		auto secureChannelTransaction = secureChannel->secureChannelTransaction_;
 		auto& securitySettings = secureChannel->securitySettings();
 
-		createServerNonce();
-
-		OpcUaStatusCode statusCode;
-		OpcUaStatusCode serviceResult = Success;
-
 		Log(Debug, "receive create session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CreateSessionResponse_Encoding_DefaultBinary;
 
@@ -637,17 +632,23 @@ namespace OpcUaStackServer
 			// FIXME: handle error ...
 		}
 
+		// decode create session request
 		std::iostream ios(&secureChannelTransaction->is_);
 		CreateSessionRequest createSessionRequest;
-		createSessionRequest.opcUaBinaryDecode(ios);
+		if (!createSessionRequest.opcUaBinaryDecode(ios)) {
+			Log(Error, "decode create session request error");
+			createSessionRequestError(requestHeader, secureChannelTransaction, BadInvalidArgument);
+			return;
+		}
 
+		// create session response
 		std::iostream iosres(&secureChannelTransaction->os_);
-
 		CreateSessionResponse createSessionResponse;
 		createSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
-		createSessionResponse.responseHeader()->serviceResult(serviceResult);
+		createSessionResponse.responseHeader()->serviceResult(Success);
 		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 
+		// check certificate if exist
 		if (createSessionRequest.clientCertificate().exist()) {
 			CertificateChain partnerCertificateChain;
 
@@ -684,7 +685,7 @@ namespace OpcUaStackServer
 			MemoryBuffer clientCertificate(createSessionRequest.clientCertificate());
 			MemoryBuffer clientNonce(createSessionRequest.clientNonce());
 			PrivateKey privateKey = *cryptoManager_->applicationCertificate()->privateKey();
-			statusCode = createSessionResponse.signatureData()->createSignature(
+			auto statusCode = createSessionResponse.signatureData()->createSignature(
 				clientCertificate,
 				clientNonce,
 				privateKey,
@@ -697,13 +698,23 @@ namespace OpcUaStackServer
 			}
 		}
 
-		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
-		createSessionResponse.opcUaBinaryEncode(iosres);
+		// encode create session response
+		if (!createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode response header error");
+			createSessionRequestError(requestHeader, secureChannelTransaction, BadInternalError);
+			return;
+		}
+		if (!createSessionResponse.opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode create session response error");
+			createSessionRequestError(requestHeader, secureChannelTransaction, BadInternalError);
+			return;
+		}
 
 		sessionState_ = SessionState_CreateSessionResponse;
 
+		// send create session response
 		if (sessionIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = createSessionResponse.responseHeader();
+			auto responseHeader = createSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
 		}
 	}
@@ -717,15 +728,24 @@ namespace OpcUaStackServer
 	{
 		std::iostream iosres(&secureChannelTransaction->os_);
 
+		// create session response
 		CreateSessionResponse createSessionResponse;
 		createSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		createSessionResponse.responseHeader()->serviceResult(statusCode);
 
-		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
-		createSessionResponse.opcUaBinaryEncode(iosres);
+		// ancode create session response
+		if (!createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode response header error - ignore create session response");
+			return;
+		}
+		if (!createSessionResponse.opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode create session response error - ignore create session response");
+			return;
+		}
 
+		// send create session response
 		if (sessionIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = createSessionResponse.responseHeader();
+			auto responseHeader = createSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
 		}
 	}
@@ -755,10 +775,16 @@ namespace OpcUaStackServer
 		//        the session has a new secure channel
 
 
+		// decode activate session request
 		std::iostream ios(&secureChannelTransaction->is_);
 		ActivateSessionRequest activateSessionRequest;
-		activateSessionRequest.opcUaBinaryDecode(ios);
+		if (!activateSessionRequest.opcUaBinaryDecode(ios)) {
+			Log(Error, "decode create session request error");
+			activateSessionRequestError(requestHeader, secureChannelTransaction, BadInvalidArgument);
+			return;
+		}
 
+		// check session state
 		if (sessionState_ != SessionState_CreateSessionResponse && sessionState_ != SessionState_Ready) {
 			Log(Error, "receive activate session request in invalid state")
 				.parameter("SessionState", sessionState_);
@@ -798,18 +824,29 @@ namespace OpcUaStackServer
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
+		// create activate session response
 		ActivateSessionResponse activateSessionResponse;
 		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		activateSessionResponse.responseHeader()->serviceResult(statusCode);
 		activateSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 
-		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
-		activateSessionResponse.opcUaBinaryEncode(iosres);
+		// encode activate session response
+		if (!activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode response header error");
+			activateSessionRequestError(requestHeader, secureChannelTransaction, BadInternalError);
+			return;
+		}
+		if (!activateSessionResponse.opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode activate session response error");
+			activateSessionRequestError(requestHeader, secureChannelTransaction, BadInternalError);
+			return;
+		}
 
 		sessionState_ = SessionState_Ready;
 
 		//secureChannelTransaction->authenticationToken_ = authenticationToken_;
 
+		// send activate session response
 		if (sessionIf_ != nullptr) {
 			auto responseHeader = activateSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
@@ -826,15 +863,24 @@ namespace OpcUaStackServer
 	{
 		std::iostream iosres(&secureChannelTransaction->os_);
 
+		// create activate session response
 		ActivateSessionResponse activateSessionResponse;
 		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		activateSessionResponse.responseHeader()->serviceResult(statusCode);
 
-		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
-		activateSessionResponse.opcUaBinaryEncode(iosres);
+		// encode activate session response
+		if (!activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode response header error - ignore activate session response");
+			return;
+		}
+		if (!activateSessionResponse.opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode activate session response error - ignore activate session response");
+			return;
+		}
 
+		// send activate session response
 		if (sessionIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = activateSessionResponse.responseHeader();
+			auto responseHeader = activateSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
 			if (deleteSession) {
 				sessionIf_->deleteSession(authenticationToken_);
@@ -858,23 +904,35 @@ namespace OpcUaStackServer
 		Log(Debug, "receive close session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CloseSessionResponse_Encoding_DefaultBinary;
 
+		// decode close session request
 		std::iostream ios(&secureChannelTransaction->is_);
 		CloseSessionRequest closeSessionRequest;
-		closeSessionRequest.opcUaBinaryDecode(ios);
+		if (!closeSessionRequest.opcUaBinaryDecode(ios)) {
+			Log(Error, "decode close session request error");
+		}
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
+		// create close session response
 		CloseSessionResponse closeSessionResponse;
 		closeSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		closeSessionResponse.responseHeader()->serviceResult(Success);
 
-		closeSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
-		closeSessionResponse.opcUaBinaryEncode(iosres);
+		// encode close session response
+		if (!closeSessionResponse.responseHeader()->opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode response header error - ignore close session response");
+			return;
+		}
+		if (!closeSessionResponse.opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode close session response error - ignore close session response");
+			return;
+		}
 
 		// close session
 		Log(Debug, "authentication close session");
 		authenticationCloseSession();
 
+		// send close session response
 		Log(Debug, "send close session response");
 		if (sessionIf_ != nullptr) {
 			ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
@@ -901,10 +959,14 @@ namespace OpcUaStackServer
 		Log(Debug, "receive cancel request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CancelResponse_Encoding_DefaultBinary;
 
+		// decode cancel request
 		std::iostream ios(&secureChannelTransaction->is_);
 		CancelRequest cancelRequest;
-		cancelRequest.opcUaBinaryDecode(ios);
+		if (!cancelRequest.opcUaBinaryDecode(ios)) {
+			Log(Error, "decode cancel request error");
+		}
 
+		// send response
 		cancelRequestError(requestHeader, secureChannelTransaction, BadNotImplemented);
 	}
 
@@ -917,15 +979,22 @@ namespace OpcUaStackServer
 	{
 		std::iostream iosres(&secureChannelTransaction->os_);
 
+		// create cancel response
 		CancelResponse cancelResponse;
 		cancelResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		cancelResponse.responseHeader()->serviceResult(statusCode);
 
-		cancelResponse.responseHeader()->opcUaBinaryEncode(iosres);
-		cancelResponse.opcUaBinaryEncode(iosres);
+		// encode cancel response
+		if (!cancelResponse.responseHeader()->opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode response header error - ignore cancel response");
+		}
+		if (!cancelResponse.opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode cancel response error - ignore cancel response");
+		}
 
+		// send cancel response
 		if (sessionIf_ != nullptr) {
-			ResponseHeader::SPtr responseHeader = cancelResponse.responseHeader();
+			auto responseHeader = cancelResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
 		}
 	}
@@ -955,14 +1024,17 @@ namespace OpcUaStackServer
 		}
 
 		if (transactionManagerSPtr_.get() == nullptr) {
-			Log(Error, "transaction manager empty");
+			Log(Error, "transaction manager empty - ignore message request");
 			// ignore request - we cannot generate a response
 			return;
 		}
 
-		auto serviceTransactionSPtr = transactionManagerSPtr_->getTransaction(secureChannelTransaction->requestTypeNodeId_);
+		// add parameter to service transaction
+		auto serviceTransactionSPtr = transactionManagerSPtr_->getTransaction(
+			secureChannelTransaction->requestTypeNodeId_
+		);
 		if (serviceTransactionSPtr.get() == nullptr) {
-			Log(Error, "receive invalid message type")
+			Log(Error, "receive invalid message type - ignore message request")
 				.parameter("TypeId", secureChannelTransaction->requestTypeNodeId_);
 			// ignore request - we cannot generate a response
 			return;
@@ -975,11 +1047,14 @@ namespace OpcUaStackServer
 		serviceTransactionSPtr->handle(handle);
 		// FIXME: serviceTransactionSPtr->channelId(secureChannelTransaction->channelId_);
 
+		// decode request
 		std::iostream ios(&secureChannelTransaction->is_);
 		serviceTransactionSPtr->requestHeader(requestHeader);
-		//OpcUaStackCore::dumpHex(sb);
-		serviceTransactionSPtr->opcUaBinaryDecodeRequest(ios);
-		//OpcUaStackCore::dumpHex(sb);
+		if (!serviceTransactionSPtr->opcUaBinaryDecodeRequest(ios)) {
+			Log(Error, "decode message request error - ignore message request");
+			return;
+		}
+
 		serviceTransactionSPtr->requestId_ = secureChannelTransaction->requestId_;
 		serviceTransactionSPtr->statusCode(Success);
 
@@ -988,6 +1063,7 @@ namespace OpcUaStackServer
 			.parameter("TypeId", serviceTransactionSPtr->requestName())
 			.parameter("RequestId", serviceTransactionSPtr->requestId_);
 
+		// send message request to service component
 		serviceTransactionSPtr->componentService()->send(serviceTransactionSPtr);
 	}
 
@@ -1020,9 +1096,17 @@ namespace OpcUaStackServer
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
-		responseHeader->opcUaBinaryEncode(iosres);
-		serviceTransactionSPtr->opcUaBinaryEncodeResponse(iosres);
+		// encode message response
+		if (!responseHeader->opcUaBinaryEncode(iosres)) {
+			Log(Error, "encode response header error - ignore message request");
+			return;
+		}
+		if (!serviceTransactionSPtr->opcUaBinaryEncodeResponse(iosres)) {
+			Log(Error, "encode message response error - ignore message request");
+			return;
+		}
 
+		// send message response
 		if (sessionIf_ != nullptr) {
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
 		}

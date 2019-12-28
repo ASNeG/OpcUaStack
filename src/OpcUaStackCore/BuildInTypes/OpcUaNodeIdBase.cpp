@@ -396,7 +396,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaNodeIdBase::opcUaBinaryEncode(std::ostream& os) const
 	{
-		bool rc;
+		bool rc = true;
 
 		OpcUaBuildInType type =  nodeIdType();
 		OpcUaByte ef = encodingFlag();
@@ -424,7 +424,7 @@ namespace OpcUaStackCore
 
 				OpcUaByte encodingMask = 0x00+ef;
 				rc &= OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
-				rc &=  OpcUaNumber::opcUaBinaryEncode(os, (OpcUaStackCore::OpcUaByte)identifier);
+				rc &= OpcUaNumber::opcUaBinaryEncode(os, (OpcUaStackCore::OpcUaByte)identifier);
 				return rc;
 			}
 		}
