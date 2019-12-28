@@ -40,8 +40,8 @@ namespace OpcUaStackCore
 		void applicationContextArray(BaseClassArray::SPtr& applicationContextArray);
 		BaseClassArray::SPtr& applicationContextArray(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		ForwardNodeSync::SPtr forwardNodeSync_;

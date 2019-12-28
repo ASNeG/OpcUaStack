@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -52,16 +52,16 @@ namespace OpcUaStackCore
 		return nodesToRegisterArraySPtr_;
 	}
 
-	void 
+	bool
 	RegisterForwardNodeRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		nodesToRegisterArraySPtr_->opcUaBinaryEncode(os);	
+		return nodesToRegisterArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
-	void 
+	bool
 	RegisterForwardNodeRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		nodesToRegisterArraySPtr_->opcUaBinaryDecode(is);
+		return nodesToRegisterArraySPtr_->opcUaBinaryDecode(is);
 	}
 
 	void

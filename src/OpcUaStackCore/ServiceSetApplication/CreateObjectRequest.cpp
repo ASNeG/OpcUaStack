@@ -97,14 +97,16 @@ namespace OpcUaStackCore
     	return objectInstance_;
     }
 
-	void
+	bool
 	CreateObjectRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
+		return false;
 	}
 
-	void
+	bool
 	CreateObjectRequest::opcUaBinaryDecode(std::istream& is)
 	{
+		return false;
 	}
 
 }

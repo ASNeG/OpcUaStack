@@ -38,8 +38,8 @@ namespace OpcUaStackCore
 		void nodeId(OpcUaNodeId& nodeId);
 		OpcUaNodeId& nodeId(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		EventBase::SPtr eventBase_;

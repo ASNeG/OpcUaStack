@@ -35,8 +35,8 @@ namespace OpcUaStackCore
 		void forwardGlobalSync(ForwardGlobalSync::SPtr forwardGlobalSync);
 		ForwardGlobalSync::SPtr forwardGlobalSync(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		ForwardGlobalSync::SPtr forwardGlobalSync_;

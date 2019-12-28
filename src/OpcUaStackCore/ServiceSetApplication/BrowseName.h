@@ -117,8 +117,8 @@ namespace OpcUaStackCore
 
 		std::string stringId(const std::string& suffix);
 
-		void opcUaBinaryEncode(std::ostream& os) const {}
-		void opcUaBinaryDecode(std::istream& is) {}
+		bool opcUaBinaryEncode(std::ostream& os) const { return false; }
+		bool opcUaBinaryDecode(std::istream& is) { return false; }
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }
 		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) { return false; }

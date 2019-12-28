@@ -44,8 +44,8 @@ namespace OpcUaStackCore
         void variableInstance(Object::SPtr& variableInstance);
         Object::SPtr& variableInstance(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		std::string namespaceName_;

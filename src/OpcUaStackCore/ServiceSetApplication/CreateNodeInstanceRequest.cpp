@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2019 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -93,30 +93,38 @@ namespace OpcUaStackCore
 		return typeNodeId_;
 	}
 
-	void 
+	bool
 	CreateNodeInstanceRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaNumber::opcUaBinaryEncode(os, (uint32_t)nodeClassType_);
-		parentNodeId_.opcUaBinaryEncode(os);
-		nodeId_.opcUaBinaryEncode(os);
-		displayName_.opcUaBinaryEncode(os);
-		browseName_.opcUaBinaryEncode(os);
-		referenceNodeId_.opcUaBinaryEncode(os);
-		typeNodeId_.opcUaBinaryEncode(os);
+		bool rc = true;
+
+		rc &= OpcUaNumber::opcUaBinaryEncode(os, (uint32_t)nodeClassType_);
+		rc &= parentNodeId_.opcUaBinaryEncode(os);
+		rc &= nodeId_.opcUaBinaryEncode(os);
+		rc &= displayName_.opcUaBinaryEncode(os);
+		rc &= browseName_.opcUaBinaryEncode(os);
+		rc &= referenceNodeId_.opcUaBinaryEncode(os);
+		rc &= typeNodeId_.opcUaBinaryEncode(os);
+
+		return rc;
 	}
 	
-	void 
+	bool
 	CreateNodeInstanceRequest::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		uint32_t tmp;
-		OpcUaNumber::opcUaBinaryDecode(is, tmp);
-		nodeClassType_ = (NodeClass::Enum)tmp;
-		parentNodeId_.opcUaBinaryDecode(is);
-		nodeId_.opcUaBinaryDecode(is);
-		displayName_.opcUaBinaryDecode(is);
-		browseName_.opcUaBinaryDecode(is);
-		referenceNodeId_.opcUaBinaryDecode(is);
-		typeNodeId_.opcUaBinaryDecode(is);
+		rc &= OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		rc &= nodeClassType_ = (NodeClass::Enum)tmp;
+		rc &= parentNodeId_.opcUaBinaryDecode(is);
+		rc &= nodeId_.opcUaBinaryDecode(is);
+		rc &= displayName_.opcUaBinaryDecode(is);
+		rc &= browseName_.opcUaBinaryDecode(is);
+		rc &= referenceNodeId_.opcUaBinaryDecode(is);
+		rc &= typeNodeId_.opcUaBinaryDecode(is);
+
+		return rc;
 	}
 
 
