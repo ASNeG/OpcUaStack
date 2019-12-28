@@ -888,8 +888,7 @@ namespace OpcUaStackServer
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryEncode(std::ostream& os) const" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    OpcUaNumber::opcUaBinaryEncode(os, value_);" << std::endl;
-		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "    return OpcUaNumber::opcUaBinaryEncode(os, value_);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -905,8 +904,7 @@ namespace OpcUaStackServer
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryDecode(std::istream& is)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is, value_);" << std::endl;
-		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "    return OpcUaNumber::opcUaBinaryDecode(is, value_);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();

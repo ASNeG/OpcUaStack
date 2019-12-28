@@ -877,9 +877,11 @@ namespace OpcUaStackServer
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryEncode(std::ostream& os) const" << std::endl;
 		ss << prefix << "{" << std::endl;
+		ss << prefix << "    bool rc = true;" << std::endl;
+		ss << prefix << std::endl;
 
 		if (nodeInfo_.parentClassName() != "Structure") {
-			ss << prefix << "    " << nodeInfo_.parentClassName() << "::opcUaBinaryEncode(os);" << std::endl;
+			ss << prefix << "    rc &= " << nodeInfo_.parentClassName() << "::opcUaBinaryEncode(os);" << std::endl;
 		}
 
 		DataTypeField::Vec::iterator it;
@@ -891,14 +893,14 @@ namespace OpcUaStackServer
 			switch (dataTypeField->type())
 			{
 				case DataTypeField::NumberType:
-					ss << prefix << "    OpcUaNumber::opcUaBinaryEncode(os," << dataTypeField->variableName() << ");" << std::endl;
+					ss << prefix << "    rc &= OpcUaNumber::opcUaBinaryEncode(os," << dataTypeField->variableName() << ");" << std::endl;
 					break;
 				default:
-					ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryEncode(os);" << std::endl;
+					ss << prefix << "    rc &= " << dataTypeField->variableName() << ".opcUaBinaryEncode(os);" << std::endl;
 			}
 		}
 
-		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "    return rc;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -914,9 +916,11 @@ namespace OpcUaStackServer
 		ss << prefix << "bool" << std::endl;
 		ss << prefix << nodeInfo_.className() << "::opcUaBinaryDecode(std::istream& is)" << std::endl;
 		ss << prefix << "{" << std::endl;
+		ss << prefix << "    bool rc = true;" << std::endl;
+		ss << prefix << std::endl;
 
 		if (nodeInfo_.parentClassName() != "Structure") {
-			ss << prefix << "    " << nodeInfo_.parentClassName() << "::opcUaBinaryDecode(is);" << std::endl;
+			ss << prefix << "    rc &= " << nodeInfo_.parentClassName() << "::opcUaBinaryDecode(is);" << std::endl;
 		}
 
 		DataTypeField::Vec::iterator it;
@@ -927,14 +931,14 @@ namespace OpcUaStackServer
 			switch (dataTypeField->type())
 			{
 				case DataTypeField::NumberType:
-					ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is," << dataTypeField->variableName() << ");" << std::endl;
+					ss << prefix << "    rc &= OpcUaNumber::opcUaBinaryDecode(is," << dataTypeField->variableName() << ");" << std::endl;
 					break;
 				default:
-					ss << prefix << "    " << dataTypeField->variableName() << ".opcUaBinaryDecode(is);" << std::endl;
+					ss << prefix << "    rc &= " << dataTypeField->variableName() << ".opcUaBinaryDecode(is);" << std::endl;
 			}
 		}
 
-		ss << prefix << "    return true;" << std::endl;
+		ss << prefix << "    return rc;" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
