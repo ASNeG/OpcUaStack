@@ -109,13 +109,17 @@ namespace OpcUaStackCore
     bool
     PublishedDataSetSourceDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        return true;
+        bool rc = true;
+    
+        return rc;
     }
     
     bool
     PublishedDataSetSourceDataType::opcUaBinaryDecode(std::istream& is)
     {
-        return true;
+        bool rc = true;
+    
+        return rc;
     }
     
     bool

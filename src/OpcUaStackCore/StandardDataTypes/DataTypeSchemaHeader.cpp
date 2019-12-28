@@ -149,21 +149,25 @@ namespace OpcUaStackCore
     bool
     DataTypeSchemaHeader::opcUaBinaryEncode(std::ostream& os) const
     {
-        namespaces_.opcUaBinaryEncode(os);
-        structureDataTypes_.opcUaBinaryEncode(os);
-        enumDataTypes_.opcUaBinaryEncode(os);
-        simpleDataTypes_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= namespaces_.opcUaBinaryEncode(os);
+        rc &= structureDataTypes_.opcUaBinaryEncode(os);
+        rc &= enumDataTypes_.opcUaBinaryEncode(os);
+        rc &= simpleDataTypes_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     DataTypeSchemaHeader::opcUaBinaryDecode(std::istream& is)
     {
-        namespaces_.opcUaBinaryDecode(is);
-        structureDataTypes_.opcUaBinaryDecode(is);
-        enumDataTypes_.opcUaBinaryDecode(is);
-        simpleDataTypes_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= namespaces_.opcUaBinaryDecode(is);
+        rc &= structureDataTypes_.opcUaBinaryDecode(is);
+        rc &= enumDataTypes_.opcUaBinaryDecode(is);
+        rc &= simpleDataTypes_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

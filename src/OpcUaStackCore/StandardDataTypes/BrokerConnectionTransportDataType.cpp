@@ -127,19 +127,23 @@ namespace OpcUaStackCore
     bool
     BrokerConnectionTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        ConnectionTransportDataType::opcUaBinaryEncode(os);
-        resourceUri_.opcUaBinaryEncode(os);
-        authenticationProfileUri_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= ConnectionTransportDataType::opcUaBinaryEncode(os);
+        rc &= resourceUri_.opcUaBinaryEncode(os);
+        rc &= authenticationProfileUri_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     BrokerConnectionTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
-        ConnectionTransportDataType::opcUaBinaryDecode(is);
-        resourceUri_.opcUaBinaryDecode(is);
-        authenticationProfileUri_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= ConnectionTransportDataType::opcUaBinaryDecode(is);
+        rc &= resourceUri_.opcUaBinaryDecode(is);
+        rc &= authenticationProfileUri_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -185,27 +185,31 @@ namespace OpcUaStackCore
     bool
     ApplicationDescription::opcUaBinaryEncode(std::ostream& os) const
     {
-        applicationUri_.opcUaBinaryEncode(os);
-        productUri_.opcUaBinaryEncode(os);
-        applicationName_.opcUaBinaryEncode(os);
-        applicationType_.opcUaBinaryEncode(os);
-        gatewayServerUri_.opcUaBinaryEncode(os);
-        discoveryProfileUri_.opcUaBinaryEncode(os);
-        discoveryUrls_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= applicationUri_.opcUaBinaryEncode(os);
+        rc &= productUri_.opcUaBinaryEncode(os);
+        rc &= applicationName_.opcUaBinaryEncode(os);
+        rc &= applicationType_.opcUaBinaryEncode(os);
+        rc &= gatewayServerUri_.opcUaBinaryEncode(os);
+        rc &= discoveryProfileUri_.opcUaBinaryEncode(os);
+        rc &= discoveryUrls_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     ApplicationDescription::opcUaBinaryDecode(std::istream& is)
     {
-        applicationUri_.opcUaBinaryDecode(is);
-        productUri_.opcUaBinaryDecode(is);
-        applicationName_.opcUaBinaryDecode(is);
-        applicationType_.opcUaBinaryDecode(is);
-        gatewayServerUri_.opcUaBinaryDecode(is);
-        discoveryProfileUri_.opcUaBinaryDecode(is);
-        discoveryUrls_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= applicationUri_.opcUaBinaryDecode(is);
+        rc &= productUri_.opcUaBinaryDecode(is);
+        rc &= applicationName_.opcUaBinaryDecode(is);
+        rc &= applicationType_.opcUaBinaryDecode(is);
+        rc &= gatewayServerUri_.opcUaBinaryDecode(is);
+        rc &= discoveryProfileUri_.opcUaBinaryDecode(is);
+        rc &= discoveryUrls_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

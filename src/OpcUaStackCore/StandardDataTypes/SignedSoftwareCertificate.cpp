@@ -135,17 +135,21 @@ namespace OpcUaStackCore
     bool
     SignedSoftwareCertificate::opcUaBinaryEncode(std::ostream& os) const
     {
-        certificateData_.opcUaBinaryEncode(os);
-        signature_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= certificateData_.opcUaBinaryEncode(os);
+        rc &= signature_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     SignedSoftwareCertificate::opcUaBinaryDecode(std::istream& is)
     {
-        certificateData_.opcUaBinaryDecode(is);
-        signature_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= certificateData_.opcUaBinaryDecode(is);
+        rc &= signature_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

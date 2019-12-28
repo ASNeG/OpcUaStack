@@ -199,31 +199,35 @@ namespace OpcUaStackCore
     bool
     SessionSecurityDiagnosticsDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        sessionId_.opcUaBinaryEncode(os);
-        clientUserIdOfSession_.opcUaBinaryEncode(os);
-        clientUserIdHistory_.opcUaBinaryEncode(os);
-        authenticationMechanism_.opcUaBinaryEncode(os);
-        encoding_.opcUaBinaryEncode(os);
-        transportProtocol_.opcUaBinaryEncode(os);
-        securityMode_.opcUaBinaryEncode(os);
-        securityPolicyUri_.opcUaBinaryEncode(os);
-        clientCertificate_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= sessionId_.opcUaBinaryEncode(os);
+        rc &= clientUserIdOfSession_.opcUaBinaryEncode(os);
+        rc &= clientUserIdHistory_.opcUaBinaryEncode(os);
+        rc &= authenticationMechanism_.opcUaBinaryEncode(os);
+        rc &= encoding_.opcUaBinaryEncode(os);
+        rc &= transportProtocol_.opcUaBinaryEncode(os);
+        rc &= securityMode_.opcUaBinaryEncode(os);
+        rc &= securityPolicyUri_.opcUaBinaryEncode(os);
+        rc &= clientCertificate_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     SessionSecurityDiagnosticsDataType::opcUaBinaryDecode(std::istream& is)
     {
-        sessionId_.opcUaBinaryDecode(is);
-        clientUserIdOfSession_.opcUaBinaryDecode(is);
-        clientUserIdHistory_.opcUaBinaryDecode(is);
-        authenticationMechanism_.opcUaBinaryDecode(is);
-        encoding_.opcUaBinaryDecode(is);
-        transportProtocol_.opcUaBinaryDecode(is);
-        securityMode_.opcUaBinaryDecode(is);
-        securityPolicyUri_.opcUaBinaryDecode(is);
-        clientCertificate_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= sessionId_.opcUaBinaryDecode(is);
+        rc &= clientUserIdOfSession_.opcUaBinaryDecode(is);
+        rc &= clientUserIdHistory_.opcUaBinaryDecode(is);
+        rc &= authenticationMechanism_.opcUaBinaryDecode(is);
+        rc &= encoding_.opcUaBinaryDecode(is);
+        rc &= transportProtocol_.opcUaBinaryDecode(is);
+        rc &= securityMode_.opcUaBinaryDecode(is);
+        rc &= securityPolicyUri_.opcUaBinaryDecode(is);
+        rc &= clientCertificate_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

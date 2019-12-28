@@ -165,23 +165,27 @@ namespace OpcUaStackCore
     bool
     Argument::opcUaBinaryEncode(std::ostream& os) const
     {
-        name_.opcUaBinaryEncode(os);
-        dataType_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,valueRank_);
-        arrayDimensions_.opcUaBinaryEncode(os);
-        description_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryEncode(os);
+        rc &= dataType_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,valueRank_);
+        rc &= arrayDimensions_.opcUaBinaryEncode(os);
+        rc &= description_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     Argument::opcUaBinaryDecode(std::istream& is)
     {
-        name_.opcUaBinaryDecode(is);
-        dataType_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
-        arrayDimensions_.opcUaBinaryDecode(is);
-        description_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryDecode(is);
+        rc &= dataType_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
+        rc &= arrayDimensions_.opcUaBinaryDecode(is);
+        rc &= description_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

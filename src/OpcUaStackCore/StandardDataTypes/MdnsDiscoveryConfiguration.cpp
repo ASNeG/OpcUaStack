@@ -133,19 +133,23 @@ namespace OpcUaStackCore
     bool
     MdnsDiscoveryConfiguration::opcUaBinaryEncode(std::ostream& os) const
     {
-        DiscoveryConfiguration::opcUaBinaryEncode(os);
-        mdnsServerName_.opcUaBinaryEncode(os);
-        serverCapabilities_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= DiscoveryConfiguration::opcUaBinaryEncode(os);
+        rc &= mdnsServerName_.opcUaBinaryEncode(os);
+        rc &= serverCapabilities_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     MdnsDiscoveryConfiguration::opcUaBinaryDecode(std::istream& is)
     {
-        DiscoveryConfiguration::opcUaBinaryDecode(is);
-        mdnsServerName_.opcUaBinaryDecode(is);
-        serverCapabilities_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= DiscoveryConfiguration::opcUaBinaryDecode(is);
+        rc &= mdnsServerName_.opcUaBinaryDecode(is);
+        rc &= serverCapabilities_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

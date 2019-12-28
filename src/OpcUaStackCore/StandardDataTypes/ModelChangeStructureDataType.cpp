@@ -139,19 +139,23 @@ namespace OpcUaStackCore
     bool
     ModelChangeStructureDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        affected_.opcUaBinaryEncode(os);
-        affectedType_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,verb_);
-        return true;
+        bool rc = true;
+    
+        rc &= affected_.opcUaBinaryEncode(os);
+        rc &= affectedType_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,verb_);
+        return rc;
     }
     
     bool
     ModelChangeStructureDataType::opcUaBinaryDecode(std::istream& is)
     {
-        affected_.opcUaBinaryDecode(is);
-        affectedType_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,verb_);
-        return true;
+        bool rc = true;
+    
+        rc &= affected_.opcUaBinaryDecode(is);
+        rc &= affectedType_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,verb_);
+        return rc;
     }
     
     bool

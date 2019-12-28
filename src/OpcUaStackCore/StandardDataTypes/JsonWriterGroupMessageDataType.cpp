@@ -117,17 +117,21 @@ namespace OpcUaStackCore
     bool
     JsonWriterGroupMessageDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        WriterGroupMessageDataType::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,networkMessageContentMask_);
-        return true;
+        bool rc = true;
+    
+        rc &= WriterGroupMessageDataType::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,networkMessageContentMask_);
+        return rc;
     }
     
     bool
     JsonWriterGroupMessageDataType::opcUaBinaryDecode(std::istream& is)
     {
-        WriterGroupMessageDataType::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
-        return true;
+        bool rc = true;
+    
+        rc &= WriterGroupMessageDataType::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
+        return rc;
     }
     
     bool

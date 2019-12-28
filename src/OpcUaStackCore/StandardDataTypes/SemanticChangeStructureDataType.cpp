@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     SemanticChangeStructureDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        affected_.opcUaBinaryEncode(os);
-        affectedType_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= affected_.opcUaBinaryEncode(os);
+        rc &= affectedType_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     SemanticChangeStructureDataType::opcUaBinaryDecode(std::istream& is)
     {
-        affected_.opcUaBinaryDecode(is);
-        affectedType_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= affected_.opcUaBinaryDecode(is);
+        rc &= affectedType_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -203,15 +203,13 @@ namespace OpcUaStackCore
     bool
     IdentityCriteriaType::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os, value_);
-        return true;
+        return OpcUaNumber::opcUaBinaryEncode(os, value_);
     }
     
     bool
     IdentityCriteriaType::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is, value_);
-        return true;
+        return OpcUaNumber::opcUaBinaryDecode(is, value_);
     }
     
     bool

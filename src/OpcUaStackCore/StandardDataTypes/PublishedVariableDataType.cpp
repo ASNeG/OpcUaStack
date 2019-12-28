@@ -189,29 +189,33 @@ namespace OpcUaStackCore
     bool
     PublishedVariableDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        publishedVariable_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,attributeId_);
-        OpcUaNumber::opcUaBinaryEncode(os,samplingIntervalHint_);
-        OpcUaNumber::opcUaBinaryEncode(os,deadbandType_);
-        OpcUaNumber::opcUaBinaryEncode(os,deadbandValue_);
-        indexRange_.opcUaBinaryEncode(os);
-        substituteValue_.opcUaBinaryEncode(os);
-        metaDataProperties_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= publishedVariable_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,attributeId_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,samplingIntervalHint_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,deadbandType_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,deadbandValue_);
+        rc &= indexRange_.opcUaBinaryEncode(os);
+        rc &= substituteValue_.opcUaBinaryEncode(os);
+        rc &= metaDataProperties_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     PublishedVariableDataType::opcUaBinaryDecode(std::istream& is)
     {
-        publishedVariable_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
-        OpcUaNumber::opcUaBinaryDecode(is,samplingIntervalHint_);
-        OpcUaNumber::opcUaBinaryDecode(is,deadbandType_);
-        OpcUaNumber::opcUaBinaryDecode(is,deadbandValue_);
-        indexRange_.opcUaBinaryDecode(is);
-        substituteValue_.opcUaBinaryDecode(is);
-        metaDataProperties_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= publishedVariable_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,samplingIntervalHint_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,deadbandType_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,deadbandValue_);
+        rc &= indexRange_.opcUaBinaryDecode(is);
+        rc &= substituteValue_.opcUaBinaryDecode(is);
+        rc &= metaDataProperties_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

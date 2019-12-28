@@ -137,21 +137,25 @@ namespace OpcUaStackCore
     bool
     UABinaryFileDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataTypeSchemaHeader::opcUaBinaryEncode(os);
-        schemaLocation_.opcUaBinaryEncode(os);
-        fileHeader_.opcUaBinaryEncode(os);
-        body_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= DataTypeSchemaHeader::opcUaBinaryEncode(os);
+        rc &= schemaLocation_.opcUaBinaryEncode(os);
+        rc &= fileHeader_.opcUaBinaryEncode(os);
+        rc &= body_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     UABinaryFileDataType::opcUaBinaryDecode(std::istream& is)
     {
-        DataTypeSchemaHeader::opcUaBinaryDecode(is);
-        schemaLocation_.opcUaBinaryDecode(is);
-        fileHeader_.opcUaBinaryDecode(is);
-        body_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= DataTypeSchemaHeader::opcUaBinaryDecode(is);
+        rc &= schemaLocation_.opcUaBinaryDecode(is);
+        rc &= fileHeader_.opcUaBinaryDecode(is);
+        rc &= body_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

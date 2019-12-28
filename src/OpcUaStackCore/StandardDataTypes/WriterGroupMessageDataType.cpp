@@ -109,13 +109,17 @@ namespace OpcUaStackCore
     bool
     WriterGroupMessageDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        return true;
+        bool rc = true;
+    
+        return rc;
     }
     
     bool
     WriterGroupMessageDataType::opcUaBinaryDecode(std::istream& is)
     {
-        return true;
+        bool rc = true;
+    
+        return rc;
     }
     
     bool

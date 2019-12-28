@@ -147,23 +147,27 @@ namespace OpcUaStackCore
     bool
     ReadEventDetails::opcUaBinaryEncode(std::ostream& os) const
     {
-        HistoryReadDetails::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,numValuesPerNode_);
-        startTime_.opcUaBinaryEncode(os);
-        endTime_.opcUaBinaryEncode(os);
-        filter_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryReadDetails::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,numValuesPerNode_);
+        rc &= startTime_.opcUaBinaryEncode(os);
+        rc &= endTime_.opcUaBinaryEncode(os);
+        rc &= filter_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     ReadEventDetails::opcUaBinaryDecode(std::istream& is)
     {
-        HistoryReadDetails::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,numValuesPerNode_);
-        startTime_.opcUaBinaryDecode(is);
-        endTime_.opcUaBinaryDecode(is);
-        filter_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryReadDetails::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,numValuesPerNode_);
+        rc &= startTime_.opcUaBinaryDecode(is);
+        rc &= endTime_.opcUaBinaryDecode(is);
+        rc &= filter_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

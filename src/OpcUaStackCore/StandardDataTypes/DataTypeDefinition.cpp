@@ -109,13 +109,17 @@ namespace OpcUaStackCore
     bool
     DataTypeDefinition::opcUaBinaryEncode(std::ostream& os) const
     {
-        return true;
+        bool rc = true;
+    
+        return rc;
     }
     
     bool
     DataTypeDefinition::opcUaBinaryDecode(std::istream& is)
     {
-        return true;
+        bool rc = true;
+    
+        return rc;
     }
     
     bool

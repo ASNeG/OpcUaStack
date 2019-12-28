@@ -137,21 +137,25 @@ namespace OpcUaStackCore
     bool
     PublishedEventsDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        PublishedDataSetSourceDataType::opcUaBinaryEncode(os);
-        eventNotifier_.opcUaBinaryEncode(os);
-        selectedFields_.opcUaBinaryEncode(os);
-        filter_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= PublishedDataSetSourceDataType::opcUaBinaryEncode(os);
+        rc &= eventNotifier_.opcUaBinaryEncode(os);
+        rc &= selectedFields_.opcUaBinaryEncode(os);
+        rc &= filter_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     PublishedEventsDataType::opcUaBinaryDecode(std::istream& is)
     {
-        PublishedDataSetSourceDataType::opcUaBinaryDecode(is);
-        eventNotifier_.opcUaBinaryDecode(is);
-        selectedFields_.opcUaBinaryDecode(is);
-        filter_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= PublishedDataSetSourceDataType::opcUaBinaryDecode(is);
+        rc &= eventNotifier_.opcUaBinaryDecode(is);
+        rc &= selectedFields_.opcUaBinaryDecode(is);
+        rc &= filter_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

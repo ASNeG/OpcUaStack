@@ -195,15 +195,13 @@ namespace OpcUaStackCore
     bool
     MessageSecurityMode::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os, value_);
-        return true;
+        return OpcUaNumber::opcUaBinaryEncode(os, value_);
     }
     
     bool
     MessageSecurityMode::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is, value_);
-        return true;
+        return OpcUaNumber::opcUaBinaryDecode(is, value_);
     }
     
     bool

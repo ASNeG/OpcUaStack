@@ -157,25 +157,29 @@ namespace OpcUaStackCore
     bool
     UadpWriterGroupMessageDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        WriterGroupMessageDataType::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,groupVersion_);
-        dataSetOrdering_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,networkMessageContentMask_);
-        OpcUaNumber::opcUaBinaryEncode(os,samplingOffset_);
-        publishingOffset_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= WriterGroupMessageDataType::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,groupVersion_);
+        rc &= dataSetOrdering_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,networkMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,samplingOffset_);
+        rc &= publishingOffset_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     UadpWriterGroupMessageDataType::opcUaBinaryDecode(std::istream& is)
     {
-        WriterGroupMessageDataType::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,groupVersion_);
-        dataSetOrdering_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
-        OpcUaNumber::opcUaBinaryDecode(is,samplingOffset_);
-        publishingOffset_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= WriterGroupMessageDataType::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,groupVersion_);
+        rc &= dataSetOrdering_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,networkMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,samplingOffset_);
+        rc &= publishingOffset_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

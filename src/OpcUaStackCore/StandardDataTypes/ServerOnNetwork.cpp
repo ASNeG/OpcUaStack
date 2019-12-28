@@ -149,21 +149,25 @@ namespace OpcUaStackCore
     bool
     ServerOnNetwork::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,recordId_);
-        serverName_.opcUaBinaryEncode(os);
-        discoveryUrl_.opcUaBinaryEncode(os);
-        serverCapabilities_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,recordId_);
+        rc &= serverName_.opcUaBinaryEncode(os);
+        rc &= discoveryUrl_.opcUaBinaryEncode(os);
+        rc &= serverCapabilities_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     ServerOnNetwork::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,recordId_);
-        serverName_.opcUaBinaryDecode(is);
-        discoveryUrl_.opcUaBinaryDecode(is);
-        serverCapabilities_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,recordId_);
+        rc &= serverName_.opcUaBinaryDecode(is);
+        rc &= discoveryUrl_.opcUaBinaryDecode(is);
+        rc &= serverCapabilities_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

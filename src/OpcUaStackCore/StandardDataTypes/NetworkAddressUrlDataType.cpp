@@ -117,17 +117,21 @@ namespace OpcUaStackCore
     bool
     NetworkAddressUrlDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        NetworkAddressDataType::opcUaBinaryEncode(os);
-        url_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= NetworkAddressDataType::opcUaBinaryEncode(os);
+        rc &= url_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     NetworkAddressUrlDataType::opcUaBinaryDecode(std::istream& is)
     {
-        NetworkAddressDataType::opcUaBinaryDecode(is);
-        url_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= NetworkAddressDataType::opcUaBinaryDecode(is);
+        rc &= url_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -149,21 +149,25 @@ namespace OpcUaStackCore
     bool
     SamplingIntervalDiagnosticsDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,samplingInterval_);
-        OpcUaNumber::opcUaBinaryEncode(os,monitoredItemCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,maxMonitoredItemCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,disabledMonitoredItemCount_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,samplingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,monitoredItemCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxMonitoredItemCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,disabledMonitoredItemCount_);
+        return rc;
     }
     
     bool
     SamplingIntervalDiagnosticsDataType::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,samplingInterval_);
-        OpcUaNumber::opcUaBinaryDecode(is,monitoredItemCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,maxMonitoredItemCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,disabledMonitoredItemCount_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,samplingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,monitoredItemCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxMonitoredItemCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,disabledMonitoredItemCount_);
+        return rc;
     }
     
     bool

@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     RolePermissionType::opcUaBinaryEncode(std::ostream& os) const
     {
-        roleId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,permissions_);
-        return true;
+        bool rc = true;
+    
+        rc &= roleId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,permissions_);
+        return rc;
     }
     
     bool
     RolePermissionType::opcUaBinaryDecode(std::istream& is)
     {
-        roleId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,permissions_);
-        return true;
+        bool rc = true;
+    
+        rc &= roleId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,permissions_);
+        return rc;
     }
     
     bool

@@ -139,19 +139,23 @@ namespace OpcUaStackCore
     bool
     ModificationInfo::opcUaBinaryEncode(std::ostream& os) const
     {
-        modificationTime_.opcUaBinaryEncode(os);
-        updateType_.opcUaBinaryEncode(os);
-        userName_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= modificationTime_.opcUaBinaryEncode(os);
+        rc &= updateType_.opcUaBinaryEncode(os);
+        rc &= userName_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     ModificationInfo::opcUaBinaryDecode(std::istream& is)
     {
-        modificationTime_.opcUaBinaryDecode(is);
-        updateType_.opcUaBinaryDecode(is);
-        userName_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= modificationTime_.opcUaBinaryDecode(is);
+        rc &= updateType_.opcUaBinaryDecode(is);
+        rc &= userName_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

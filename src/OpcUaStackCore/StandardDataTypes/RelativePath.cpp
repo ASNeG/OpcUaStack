@@ -125,15 +125,19 @@ namespace OpcUaStackCore
     bool
     RelativePath::opcUaBinaryEncode(std::ostream& os) const
     {
-        elements_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= elements_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     RelativePath::opcUaBinaryDecode(std::istream& is)
     {
-        elements_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= elements_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

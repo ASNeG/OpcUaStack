@@ -127,19 +127,23 @@ namespace OpcUaStackCore
     bool
     ReadAtTimeDetails::opcUaBinaryEncode(std::ostream& os) const
     {
-        HistoryReadDetails::opcUaBinaryEncode(os);
-        reqTimes_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,useSimpleBounds_);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryReadDetails::opcUaBinaryEncode(os);
+        rc &= reqTimes_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,useSimpleBounds_);
+        return rc;
     }
     
     bool
     ReadAtTimeDetails::opcUaBinaryDecode(std::istream& is)
     {
-        HistoryReadDetails::opcUaBinaryDecode(is);
-        reqTimes_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,useSimpleBounds_);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryReadDetails::opcUaBinaryDecode(is);
+        rc &= reqTimes_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,useSimpleBounds_);
+        return rc;
     }
     
     bool

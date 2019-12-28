@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     XVType::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,x_);
-        OpcUaNumber::opcUaBinaryEncode(os,value_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,x_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,value_);
+        return rc;
     }
     
     bool
     XVType::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,x_);
-        OpcUaNumber::opcUaBinaryDecode(is,value_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,x_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,value_);
+        return rc;
     }
     
     bool

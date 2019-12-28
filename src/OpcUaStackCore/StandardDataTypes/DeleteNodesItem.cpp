@@ -135,17 +135,21 @@ namespace OpcUaStackCore
     bool
     DeleteNodesItem::opcUaBinaryEncode(std::ostream& os) const
     {
-        nodeId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,deleteTargetReferences_);
-        return true;
+        bool rc = true;
+    
+        rc &= nodeId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,deleteTargetReferences_);
+        return rc;
     }
     
     bool
     DeleteNodesItem::opcUaBinaryDecode(std::istream& is)
     {
-        nodeId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,deleteTargetReferences_);
-        return true;
+        bool rc = true;
+    
+        rc &= nodeId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,deleteTargetReferences_);
+        return rc;
     }
     
     bool

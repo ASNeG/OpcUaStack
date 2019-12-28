@@ -119,15 +119,19 @@ namespace OpcUaStackCore
     bool
     HistoryData::opcUaBinaryEncode(std::ostream& os) const
     {
-        dataValues_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= dataValues_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     HistoryData::opcUaBinaryDecode(std::istream& is)
     {
-        dataValues_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= dataValues_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

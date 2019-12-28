@@ -139,19 +139,23 @@ namespace OpcUaStackCore
     bool
     RedundantServerDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        serverId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,serviceLevel_);
-        serverState_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= serverId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,serviceLevel_);
+        rc &= serverState_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     RedundantServerDataType::opcUaBinaryDecode(std::istream& is)
     {
-        serverId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,serviceLevel_);
-        serverState_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= serverId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,serviceLevel_);
+        rc &= serverState_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

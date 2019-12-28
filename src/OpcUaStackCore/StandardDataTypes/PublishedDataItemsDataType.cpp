@@ -117,17 +117,21 @@ namespace OpcUaStackCore
     bool
     PublishedDataItemsDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        PublishedDataSetSourceDataType::opcUaBinaryEncode(os);
-        publishedData_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= PublishedDataSetSourceDataType::opcUaBinaryEncode(os);
+        rc &= publishedData_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     PublishedDataItemsDataType::opcUaBinaryDecode(std::istream& is)
     {
-        PublishedDataSetSourceDataType::opcUaBinaryDecode(is);
-        publishedData_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= PublishedDataSetSourceDataType::opcUaBinaryDecode(is);
+        rc &= publishedData_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

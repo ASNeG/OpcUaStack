@@ -109,13 +109,17 @@ namespace OpcUaStackCore
     bool
     ReaderGroupTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        return true;
+        bool rc = true;
+    
+        return rc;
     }
     
     bool
     ReaderGroupTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
-        return true;
+        bool rc = true;
+    
+        return rc;
     }
     
     bool

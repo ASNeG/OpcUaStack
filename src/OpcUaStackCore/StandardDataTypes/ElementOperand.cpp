@@ -117,17 +117,21 @@ namespace OpcUaStackCore
     bool
     ElementOperand::opcUaBinaryEncode(std::ostream& os) const
     {
-        FilterOperand::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,index_);
-        return true;
+        bool rc = true;
+    
+        rc &= FilterOperand::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,index_);
+        return rc;
     }
     
     bool
     ElementOperand::opcUaBinaryDecode(std::istream& is)
     {
-        FilterOperand::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,index_);
-        return true;
+        bool rc = true;
+    
+        rc &= FilterOperand::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,index_);
+        return rc;
     }
     
     bool

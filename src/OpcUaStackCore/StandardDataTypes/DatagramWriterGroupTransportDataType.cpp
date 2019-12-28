@@ -127,19 +127,23 @@ namespace OpcUaStackCore
     bool
     DatagramWriterGroupTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        WriterGroupTransportDataType::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,messageRepeatCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,messageRepeatDelay_);
-        return true;
+        bool rc = true;
+    
+        rc &= WriterGroupTransportDataType::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,messageRepeatCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,messageRepeatDelay_);
+        return rc;
     }
     
     bool
     DatagramWriterGroupTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
-        WriterGroupTransportDataType::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,messageRepeatCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,messageRepeatDelay_);
-        return true;
+        bool rc = true;
+    
+        rc &= WriterGroupTransportDataType::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,messageRepeatCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,messageRepeatDelay_);
+        return rc;
     }
     
     bool

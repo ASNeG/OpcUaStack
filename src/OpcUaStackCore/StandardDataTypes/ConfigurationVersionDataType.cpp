@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     ConfigurationVersionDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,majorVersion_);
-        OpcUaNumber::opcUaBinaryEncode(os,minorVersion_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,majorVersion_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,minorVersion_);
+        return rc;
     }
     
     bool
     ConfigurationVersionDataType::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,majorVersion_);
-        OpcUaNumber::opcUaBinaryDecode(is,minorVersion_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,majorVersion_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,minorVersion_);
+        return rc;
     }
     
     bool

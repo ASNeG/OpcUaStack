@@ -147,23 +147,27 @@ namespace OpcUaStackCore
     bool
     UadpDataSetWriterMessageDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataSetWriterMessageDataType::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetMessageContentMask_);
-        OpcUaNumber::opcUaBinaryEncode(os,configuredSize_);
-        OpcUaNumber::opcUaBinaryEncode(os,networkMessageNumber_);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetOffset_);
-        return true;
+        bool rc = true;
+    
+        rc &= DataSetWriterMessageDataType::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,configuredSize_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,networkMessageNumber_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetOffset_);
+        return rc;
     }
     
     bool
     UadpDataSetWriterMessageDataType::opcUaBinaryDecode(std::istream& is)
     {
-        DataSetWriterMessageDataType::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
-        OpcUaNumber::opcUaBinaryDecode(is,configuredSize_);
-        OpcUaNumber::opcUaBinaryDecode(is,networkMessageNumber_);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetOffset_);
-        return true;
+        bool rc = true;
+    
+        rc &= DataSetWriterMessageDataType::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetMessageContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,configuredSize_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,networkMessageNumber_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetOffset_);
+        return rc;
     }
     
     bool

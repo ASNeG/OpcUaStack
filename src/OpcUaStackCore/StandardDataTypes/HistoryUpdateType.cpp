@@ -195,15 +195,13 @@ namespace OpcUaStackCore
     bool
     HistoryUpdateType::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os, value_);
-        return true;
+        return OpcUaNumber::opcUaBinaryEncode(os, value_);
     }
     
     bool
     HistoryUpdateType::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is, value_);
-        return true;
+        return OpcUaNumber::opcUaBinaryDecode(is, value_);
     }
     
     bool

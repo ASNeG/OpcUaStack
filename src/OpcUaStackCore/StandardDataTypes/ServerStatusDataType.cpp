@@ -169,25 +169,29 @@ namespace OpcUaStackCore
     bool
     ServerStatusDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        startTime_.opcUaBinaryEncode(os);
-        currentTime_.opcUaBinaryEncode(os);
-        state_.opcUaBinaryEncode(os);
-        buildInfo_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,secondsTillShutdown_);
-        shutdownReason_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= startTime_.opcUaBinaryEncode(os);
+        rc &= currentTime_.opcUaBinaryEncode(os);
+        rc &= state_.opcUaBinaryEncode(os);
+        rc &= buildInfo_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,secondsTillShutdown_);
+        rc &= shutdownReason_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     ServerStatusDataType::opcUaBinaryDecode(std::istream& is)
     {
-        startTime_.opcUaBinaryDecode(is);
-        currentTime_.opcUaBinaryDecode(is);
-        state_.opcUaBinaryDecode(is);
-        buildInfo_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,secondsTillShutdown_);
-        shutdownReason_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= startTime_.opcUaBinaryDecode(is);
+        rc &= currentTime_.opcUaBinaryDecode(is);
+        rc &= state_.opcUaBinaryDecode(is);
+        rc &= buildInfo_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,secondsTillShutdown_);
+        rc &= shutdownReason_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     ServiceCounterDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,totalCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,errorCount_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,totalCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,errorCount_);
+        return rc;
     }
     
     bool
     ServiceCounterDataType::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,totalCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,errorCount_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,totalCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,errorCount_);
+        return rc;
     }
     
     bool

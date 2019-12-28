@@ -187,31 +187,35 @@ namespace OpcUaStackCore
     bool
     WriterGroupDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        PubSubGroupDataType::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,writerGroupId_);
-        OpcUaNumber::opcUaBinaryEncode(os,publishingInterval_);
-        OpcUaNumber::opcUaBinaryEncode(os,keepAliveTime_);
-        OpcUaNumber::opcUaBinaryEncode(os,priority_);
-        localeIds_.opcUaBinaryEncode(os);
-        transportSettings_.opcUaBinaryEncode(os);
-        messageSettings_.opcUaBinaryEncode(os);
-        dataSetWriters_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= PubSubGroupDataType::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,writerGroupId_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,publishingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,keepAliveTime_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,priority_);
+        rc &= localeIds_.opcUaBinaryEncode(os);
+        rc &= transportSettings_.opcUaBinaryEncode(os);
+        rc &= messageSettings_.opcUaBinaryEncode(os);
+        rc &= dataSetWriters_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     WriterGroupDataType::opcUaBinaryDecode(std::istream& is)
     {
-        PubSubGroupDataType::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,writerGroupId_);
-        OpcUaNumber::opcUaBinaryDecode(is,publishingInterval_);
-        OpcUaNumber::opcUaBinaryDecode(is,keepAliveTime_);
-        OpcUaNumber::opcUaBinaryDecode(is,priority_);
-        localeIds_.opcUaBinaryDecode(is);
-        transportSettings_.opcUaBinaryDecode(is);
-        messageSettings_.opcUaBinaryDecode(is);
-        dataSetWriters_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= PubSubGroupDataType::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,writerGroupId_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,publishingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,keepAliveTime_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,priority_);
+        rc &= localeIds_.opcUaBinaryDecode(is);
+        rc &= transportSettings_.opcUaBinaryDecode(is);
+        rc &= messageSettings_.opcUaBinaryDecode(is);
+        rc &= dataSetWriters_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

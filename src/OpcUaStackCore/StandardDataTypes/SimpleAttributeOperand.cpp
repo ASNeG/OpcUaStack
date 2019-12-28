@@ -147,23 +147,27 @@ namespace OpcUaStackCore
     bool
     SimpleAttributeOperand::opcUaBinaryEncode(std::ostream& os) const
     {
-        FilterOperand::opcUaBinaryEncode(os);
-        typeDefinitionId_.opcUaBinaryEncode(os);
-        browsePath_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,attributeId_);
-        indexRange_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= FilterOperand::opcUaBinaryEncode(os);
+        rc &= typeDefinitionId_.opcUaBinaryEncode(os);
+        rc &= browsePath_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,attributeId_);
+        rc &= indexRange_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     SimpleAttributeOperand::opcUaBinaryDecode(std::istream& is)
     {
-        FilterOperand::opcUaBinaryDecode(is);
-        typeDefinitionId_.opcUaBinaryDecode(is);
-        browsePath_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
-        indexRange_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= FilterOperand::opcUaBinaryDecode(is);
+        rc &= typeDefinitionId_.opcUaBinaryDecode(is);
+        rc &= browsePath_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,attributeId_);
+        rc &= indexRange_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

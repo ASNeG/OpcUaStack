@@ -139,19 +139,23 @@ namespace OpcUaStackCore
     bool
     Annotation::opcUaBinaryEncode(std::ostream& os) const
     {
-        message_.opcUaBinaryEncode(os);
-        userName_.opcUaBinaryEncode(os);
-        annotationTime_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= message_.opcUaBinaryEncode(os);
+        rc &= userName_.opcUaBinaryEncode(os);
+        rc &= annotationTime_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     Annotation::opcUaBinaryDecode(std::istream& is)
     {
-        message_.opcUaBinaryDecode(is);
-        userName_.opcUaBinaryDecode(is);
-        annotationTime_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= message_.opcUaBinaryDecode(is);
+        rc &= userName_.opcUaBinaryDecode(is);
+        rc &= annotationTime_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

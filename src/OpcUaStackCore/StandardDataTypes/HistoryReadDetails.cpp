@@ -109,13 +109,17 @@ namespace OpcUaStackCore
     bool
     HistoryReadDetails::opcUaBinaryEncode(std::ostream& os) const
     {
-        return true;
+        bool rc = true;
+    
+        return rc;
     }
     
     bool
     HistoryReadDetails::opcUaBinaryDecode(std::istream& is)
     {
-        return true;
+        bool rc = true;
+    
+        return rc;
     }
     
     bool

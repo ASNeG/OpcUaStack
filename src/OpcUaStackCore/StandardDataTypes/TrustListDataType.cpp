@@ -159,23 +159,27 @@ namespace OpcUaStackCore
     bool
     TrustListDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,specifiedLists_);
-        trustedCertificates_.opcUaBinaryEncode(os);
-        trustedCrls_.opcUaBinaryEncode(os);
-        issuerCertificates_.opcUaBinaryEncode(os);
-        issuerCrls_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,specifiedLists_);
+        rc &= trustedCertificates_.opcUaBinaryEncode(os);
+        rc &= trustedCrls_.opcUaBinaryEncode(os);
+        rc &= issuerCertificates_.opcUaBinaryEncode(os);
+        rc &= issuerCrls_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     TrustListDataType::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,specifiedLists_);
-        trustedCertificates_.opcUaBinaryDecode(is);
-        trustedCrls_.opcUaBinaryDecode(is);
-        issuerCertificates_.opcUaBinaryDecode(is);
-        issuerCrls_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,specifiedLists_);
+        rc &= trustedCertificates_.opcUaBinaryDecode(is);
+        rc &= trustedCrls_.opcUaBinaryDecode(is);
+        rc &= issuerCertificates_.opcUaBinaryDecode(is);
+        rc &= issuerCrls_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

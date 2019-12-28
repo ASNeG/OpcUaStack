@@ -117,17 +117,21 @@ namespace OpcUaStackCore
     bool
     DatagramConnectionTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        ConnectionTransportDataType::opcUaBinaryEncode(os);
-        discoveryAddress_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= ConnectionTransportDataType::opcUaBinaryEncode(os);
+        rc &= discoveryAddress_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     DatagramConnectionTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
-        ConnectionTransportDataType::opcUaBinaryDecode(is);
-        discoveryAddress_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= ConnectionTransportDataType::opcUaBinaryDecode(is);
+        rc &= discoveryAddress_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

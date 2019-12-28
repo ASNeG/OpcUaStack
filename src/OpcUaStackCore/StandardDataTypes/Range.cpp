@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     Range::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,low_);
-        OpcUaNumber::opcUaBinaryEncode(os,high_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,low_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,high_);
+        return rc;
     }
     
     bool
     Range::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,low_);
-        OpcUaNumber::opcUaBinaryDecode(is,high_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,low_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,high_);
+        return rc;
     }
     
     bool

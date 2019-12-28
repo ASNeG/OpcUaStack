@@ -137,21 +137,25 @@ namespace OpcUaStackCore
     bool
     AggregateFilterResult::opcUaBinaryEncode(std::ostream& os) const
     {
-        MonitoringFilterResult::opcUaBinaryEncode(os);
-        revisedStartTime_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,revisedProcessingInterval_);
-        revisedAggregateConfiguration_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= MonitoringFilterResult::opcUaBinaryEncode(os);
+        rc &= revisedStartTime_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,revisedProcessingInterval_);
+        rc &= revisedAggregateConfiguration_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     AggregateFilterResult::opcUaBinaryDecode(std::istream& is)
     {
-        MonitoringFilterResult::opcUaBinaryDecode(is);
-        revisedStartTime_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,revisedProcessingInterval_);
-        revisedAggregateConfiguration_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= MonitoringFilterResult::opcUaBinaryDecode(is);
+        rc &= revisedStartTime_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,revisedProcessingInterval_);
+        rc &= revisedAggregateConfiguration_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

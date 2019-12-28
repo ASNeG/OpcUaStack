@@ -419,75 +419,79 @@ namespace OpcUaStackCore
     bool
     SubscriptionDiagnosticsDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        sessionId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,subscriptionId_);
-        OpcUaNumber::opcUaBinaryEncode(os,priority_);
-        OpcUaNumber::opcUaBinaryEncode(os,publishingInterval_);
-        OpcUaNumber::opcUaBinaryEncode(os,maxKeepAliveCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,maxLifetimeCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,maxNotificationsPerPublish_);
-        OpcUaNumber::opcUaBinaryEncode(os,publishingEnabled_);
-        OpcUaNumber::opcUaBinaryEncode(os,modifyCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,enableCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,disableCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,republishRequestCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,republishMessageRequestCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,republishMessageCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,transferRequestCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,transferredToAltClientCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,transferredToSameClientCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,publishRequestCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,dataChangeNotificationsCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,eventNotificationsCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,notificationsCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,latePublishRequestCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,currentKeepAliveCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,currentLifetimeCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,unacknowledgedMessageCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,discardedMessageCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,monitoredItemCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,disabledMonitoredItemCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,monitoringQueueOverflowCount_);
-        OpcUaNumber::opcUaBinaryEncode(os,nextSequenceNumber_);
-        OpcUaNumber::opcUaBinaryEncode(os,eventQueueOverFlowCount_);
-        return true;
+        bool rc = true;
+    
+        rc &= sessionId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,subscriptionId_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,priority_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,publishingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxKeepAliveCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxLifetimeCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxNotificationsPerPublish_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,publishingEnabled_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,modifyCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,enableCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,disableCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,republishRequestCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,republishMessageRequestCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,republishMessageCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,transferRequestCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,transferredToAltClientCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,transferredToSameClientCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,publishRequestCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataChangeNotificationsCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,eventNotificationsCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,notificationsCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,latePublishRequestCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,currentKeepAliveCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,currentLifetimeCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,unacknowledgedMessageCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,discardedMessageCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,monitoredItemCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,disabledMonitoredItemCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,monitoringQueueOverflowCount_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,nextSequenceNumber_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,eventQueueOverFlowCount_);
+        return rc;
     }
     
     bool
     SubscriptionDiagnosticsDataType::opcUaBinaryDecode(std::istream& is)
     {
-        sessionId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,subscriptionId_);
-        OpcUaNumber::opcUaBinaryDecode(is,priority_);
-        OpcUaNumber::opcUaBinaryDecode(is,publishingInterval_);
-        OpcUaNumber::opcUaBinaryDecode(is,maxKeepAliveCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,maxLifetimeCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,maxNotificationsPerPublish_);
-        OpcUaNumber::opcUaBinaryDecode(is,publishingEnabled_);
-        OpcUaNumber::opcUaBinaryDecode(is,modifyCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,enableCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,disableCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,republishRequestCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,republishMessageRequestCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,republishMessageCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,transferRequestCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,transferredToAltClientCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,transferredToSameClientCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,publishRequestCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,dataChangeNotificationsCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,eventNotificationsCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,notificationsCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,latePublishRequestCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,currentKeepAliveCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,currentLifetimeCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,unacknowledgedMessageCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,discardedMessageCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,monitoredItemCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,disabledMonitoredItemCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,monitoringQueueOverflowCount_);
-        OpcUaNumber::opcUaBinaryDecode(is,nextSequenceNumber_);
-        OpcUaNumber::opcUaBinaryDecode(is,eventQueueOverFlowCount_);
-        return true;
+        bool rc = true;
+    
+        rc &= sessionId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,subscriptionId_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,priority_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,publishingInterval_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxKeepAliveCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxLifetimeCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxNotificationsPerPublish_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,publishingEnabled_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,modifyCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,enableCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,disableCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,republishRequestCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,republishMessageRequestCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,republishMessageCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,transferRequestCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,transferredToAltClientCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,transferredToSameClientCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,publishRequestCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataChangeNotificationsCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,eventNotificationsCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,notificationsCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,latePublishRequestCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,currentKeepAliveCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,currentLifetimeCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,unacknowledgedMessageCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,discardedMessageCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,monitoredItemCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,disabledMonitoredItemCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,monitoringQueueOverflowCount_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,nextSequenceNumber_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,eventQueueOverFlowCount_);
+        return rc;
     }
     
     bool

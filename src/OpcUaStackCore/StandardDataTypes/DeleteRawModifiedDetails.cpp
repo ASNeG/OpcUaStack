@@ -137,21 +137,25 @@ namespace OpcUaStackCore
     bool
     DeleteRawModifiedDetails::opcUaBinaryEncode(std::ostream& os) const
     {
-        HistoryUpdateDetails::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,isDeleteModified_);
-        startTime_.opcUaBinaryEncode(os);
-        endTime_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryUpdateDetails::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,isDeleteModified_);
+        rc &= startTime_.opcUaBinaryEncode(os);
+        rc &= endTime_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     DeleteRawModifiedDetails::opcUaBinaryDecode(std::istream& is)
     {
-        HistoryUpdateDetails::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,isDeleteModified_);
-        startTime_.opcUaBinaryDecode(is);
-        endTime_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryUpdateDetails::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,isDeleteModified_);
+        rc &= startTime_.opcUaBinaryDecode(is);
+        rc &= endTime_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

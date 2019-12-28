@@ -199,31 +199,35 @@ namespace OpcUaStackCore
     bool
     EndpointConfiguration::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,operationTimeout_);
-        OpcUaNumber::opcUaBinaryEncode(os,useBinaryEncoding_);
-        OpcUaNumber::opcUaBinaryEncode(os,maxStringLength_);
-        OpcUaNumber::opcUaBinaryEncode(os,maxByteStringLength_);
-        OpcUaNumber::opcUaBinaryEncode(os,maxArrayLength_);
-        OpcUaNumber::opcUaBinaryEncode(os,maxMessageSize_);
-        OpcUaNumber::opcUaBinaryEncode(os,maxBufferSize_);
-        OpcUaNumber::opcUaBinaryEncode(os,channelLifetime_);
-        OpcUaNumber::opcUaBinaryEncode(os,securityTokenLifetime_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,operationTimeout_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,useBinaryEncoding_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxStringLength_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxByteStringLength_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxArrayLength_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxMessageSize_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxBufferSize_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,channelLifetime_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,securityTokenLifetime_);
+        return rc;
     }
     
     bool
     EndpointConfiguration::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,operationTimeout_);
-        OpcUaNumber::opcUaBinaryDecode(is,useBinaryEncoding_);
-        OpcUaNumber::opcUaBinaryDecode(is,maxStringLength_);
-        OpcUaNumber::opcUaBinaryDecode(is,maxByteStringLength_);
-        OpcUaNumber::opcUaBinaryDecode(is,maxArrayLength_);
-        OpcUaNumber::opcUaBinaryDecode(is,maxMessageSize_);
-        OpcUaNumber::opcUaBinaryDecode(is,maxBufferSize_);
-        OpcUaNumber::opcUaBinaryDecode(is,channelLifetime_);
-        OpcUaNumber::opcUaBinaryDecode(is,securityTokenLifetime_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,operationTimeout_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,useBinaryEncoding_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxStringLength_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxByteStringLength_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxArrayLength_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxMessageSize_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxBufferSize_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,channelLifetime_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,securityTokenLifetime_);
+        return rc;
     }
     
     bool

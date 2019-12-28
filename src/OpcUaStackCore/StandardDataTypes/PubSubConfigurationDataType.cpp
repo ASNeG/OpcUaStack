@@ -139,19 +139,23 @@ namespace OpcUaStackCore
     bool
     PubSubConfigurationDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        publishedDataSets_.opcUaBinaryEncode(os);
-        connections_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,enabled_);
-        return true;
+        bool rc = true;
+    
+        rc &= publishedDataSets_.opcUaBinaryEncode(os);
+        rc &= connections_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,enabled_);
+        return rc;
     }
     
     bool
     PubSubConfigurationDataType::opcUaBinaryDecode(std::istream& is)
     {
-        publishedDataSets_.opcUaBinaryDecode(is);
-        connections_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,enabled_);
-        return true;
+        bool rc = true;
+    
+        rc &= publishedDataSets_.opcUaBinaryDecode(is);
+        rc &= connections_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,enabled_);
+        return rc;
     }
     
     bool

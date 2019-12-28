@@ -155,21 +155,25 @@ namespace OpcUaStackCore
     bool
     RelativePathElement::opcUaBinaryEncode(std::ostream& os) const
     {
-        referenceTypeId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,isInverse_);
-        OpcUaNumber::opcUaBinaryEncode(os,includeSubtypes_);
-        targetName_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= referenceTypeId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,isInverse_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,includeSubtypes_);
+        rc &= targetName_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     RelativePathElement::opcUaBinaryDecode(std::istream& is)
     {
-        referenceTypeId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,isInverse_);
-        OpcUaNumber::opcUaBinaryDecode(is,includeSubtypes_);
-        targetName_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= referenceTypeId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,isInverse_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,includeSubtypes_);
+        rc &= targetName_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     TimeZoneDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,offset_);
-        OpcUaNumber::opcUaBinaryEncode(os,daylightSavingInOffset_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,offset_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,daylightSavingInOffset_);
+        return rc;
     }
     
     bool
     TimeZoneDataType::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,offset_);
-        OpcUaNumber::opcUaBinaryDecode(is,daylightSavingInOffset_);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,offset_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,daylightSavingInOffset_);
+        return rc;
     }
     
     bool

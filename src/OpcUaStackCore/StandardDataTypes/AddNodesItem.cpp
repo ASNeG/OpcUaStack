@@ -185,27 +185,31 @@ namespace OpcUaStackCore
     bool
     AddNodesItem::opcUaBinaryEncode(std::ostream& os) const
     {
-        parentNodeId_.opcUaBinaryEncode(os);
-        referenceTypeId_.opcUaBinaryEncode(os);
-        requestedNewNodeId_.opcUaBinaryEncode(os);
-        browseName_.opcUaBinaryEncode(os);
-        nodeClass_.opcUaBinaryEncode(os);
-        nodeAttributes_.opcUaBinaryEncode(os);
-        typeDefinition_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= parentNodeId_.opcUaBinaryEncode(os);
+        rc &= referenceTypeId_.opcUaBinaryEncode(os);
+        rc &= requestedNewNodeId_.opcUaBinaryEncode(os);
+        rc &= browseName_.opcUaBinaryEncode(os);
+        rc &= nodeClass_.opcUaBinaryEncode(os);
+        rc &= nodeAttributes_.opcUaBinaryEncode(os);
+        rc &= typeDefinition_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     AddNodesItem::opcUaBinaryDecode(std::istream& is)
     {
-        parentNodeId_.opcUaBinaryDecode(is);
-        referenceTypeId_.opcUaBinaryDecode(is);
-        requestedNewNodeId_.opcUaBinaryDecode(is);
-        browseName_.opcUaBinaryDecode(is);
-        nodeClass_.opcUaBinaryDecode(is);
-        nodeAttributes_.opcUaBinaryDecode(is);
-        typeDefinition_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= parentNodeId_.opcUaBinaryDecode(is);
+        rc &= referenceTypeId_.opcUaBinaryDecode(is);
+        rc &= requestedNewNodeId_.opcUaBinaryDecode(is);
+        rc &= browseName_.opcUaBinaryDecode(is);
+        rc &= nodeClass_.opcUaBinaryDecode(is);
+        rc &= nodeAttributes_.opcUaBinaryDecode(is);
+        rc &= typeDefinition_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

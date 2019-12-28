@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     IdentityMappingRuleType::opcUaBinaryEncode(std::ostream& os) const
     {
-        criteriaType_.opcUaBinaryEncode(os);
-        criteria_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= criteriaType_.opcUaBinaryEncode(os);
+        rc &= criteria_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     IdentityMappingRuleType::opcUaBinaryDecode(std::istream& is)
     {
-        criteriaType_.opcUaBinaryDecode(is);
-        criteria_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= criteriaType_.opcUaBinaryDecode(is);
+        rc &= criteria_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

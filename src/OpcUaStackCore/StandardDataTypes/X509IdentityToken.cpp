@@ -123,17 +123,21 @@ namespace OpcUaStackCore
     bool
     X509IdentityToken::opcUaBinaryEncode(std::ostream& os) const
     {
-        UserIdentityToken::opcUaBinaryEncode(os);
-        certificateData_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= UserIdentityToken::opcUaBinaryEncode(os);
+        rc &= certificateData_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     X509IdentityToken::opcUaBinaryDecode(std::istream& is)
     {
-        UserIdentityToken::opcUaBinaryDecode(is);
-        certificateData_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= UserIdentityToken::opcUaBinaryDecode(is);
+        rc &= certificateData_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

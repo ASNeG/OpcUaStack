@@ -179,27 +179,31 @@ namespace OpcUaStackCore
     bool
     StructureField::opcUaBinaryEncode(std::ostream& os) const
     {
-        name_.opcUaBinaryEncode(os);
-        description_.opcUaBinaryEncode(os);
-        dataType_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,valueRank_);
-        arrayDimensions_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,maxStringLength_);
-        OpcUaNumber::opcUaBinaryEncode(os,isOptional_);
-        return true;
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryEncode(os);
+        rc &= description_.opcUaBinaryEncode(os);
+        rc &= dataType_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,valueRank_);
+        rc &= arrayDimensions_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxStringLength_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,isOptional_);
+        return rc;
     }
     
     bool
     StructureField::opcUaBinaryDecode(std::istream& is)
     {
-        name_.opcUaBinaryDecode(is);
-        description_.opcUaBinaryDecode(is);
-        dataType_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
-        arrayDimensions_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,maxStringLength_);
-        OpcUaNumber::opcUaBinaryDecode(is,isOptional_);
-        return true;
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryDecode(is);
+        rc &= description_.opcUaBinaryDecode(is);
+        rc &= dataType_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
+        rc &= arrayDimensions_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxStringLength_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,isOptional_);
+        return rc;
     }
     
     bool

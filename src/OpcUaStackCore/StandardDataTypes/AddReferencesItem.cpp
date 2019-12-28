@@ -175,25 +175,29 @@ namespace OpcUaStackCore
     bool
     AddReferencesItem::opcUaBinaryEncode(std::ostream& os) const
     {
-        sourceNodeId_.opcUaBinaryEncode(os);
-        referenceTypeId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,isForward_);
-        targetServerUri_.opcUaBinaryEncode(os);
-        targetNodeId_.opcUaBinaryEncode(os);
-        targetNodeClass_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= sourceNodeId_.opcUaBinaryEncode(os);
+        rc &= referenceTypeId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,isForward_);
+        rc &= targetServerUri_.opcUaBinaryEncode(os);
+        rc &= targetNodeId_.opcUaBinaryEncode(os);
+        rc &= targetNodeClass_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     AddReferencesItem::opcUaBinaryDecode(std::istream& is)
     {
-        sourceNodeId_.opcUaBinaryDecode(is);
-        referenceTypeId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,isForward_);
-        targetServerUri_.opcUaBinaryDecode(is);
-        targetNodeId_.opcUaBinaryDecode(is);
-        targetNodeClass_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= sourceNodeId_.opcUaBinaryDecode(is);
+        rc &= referenceTypeId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,isForward_);
+        rc &= targetServerUri_.opcUaBinaryDecode(is);
+        rc &= targetNodeId_.opcUaBinaryDecode(is);
+        rc &= targetNodeClass_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -119,15 +119,19 @@ namespace OpcUaStackCore
     bool
     EndpointUrlListDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        endpointUrlList_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= endpointUrlList_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     EndpointUrlListDataType::opcUaBinaryDecode(std::istream& is)
     {
-        endpointUrlList_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= endpointUrlList_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

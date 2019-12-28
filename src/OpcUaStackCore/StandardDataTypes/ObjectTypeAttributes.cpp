@@ -123,17 +123,21 @@ namespace OpcUaStackCore
     bool
     ObjectTypeAttributes::opcUaBinaryEncode(std::ostream& os) const
     {
-        NodeAttributes::opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,isAbstract_);
-        return true;
+        bool rc = true;
+    
+        rc &= NodeAttributes::opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,isAbstract_);
+        return rc;
     }
     
     bool
     ObjectTypeAttributes::opcUaBinaryDecode(std::istream& is)
     {
-        NodeAttributes::opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,isAbstract_);
-        return true;
+        bool rc = true;
+    
+        rc &= NodeAttributes::opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,isAbstract_);
+        return rc;
     }
     
     bool

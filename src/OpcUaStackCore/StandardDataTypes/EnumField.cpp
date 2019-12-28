@@ -117,17 +117,21 @@ namespace OpcUaStackCore
     bool
     EnumField::opcUaBinaryEncode(std::ostream& os) const
     {
-        EnumValueType::opcUaBinaryEncode(os);
-        name_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= EnumValueType::opcUaBinaryEncode(os);
+        rc &= name_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     EnumField::opcUaBinaryDecode(std::istream& is)
     {
-        EnumValueType::opcUaBinaryDecode(is);
-        name_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= EnumValueType::opcUaBinaryDecode(is);
+        rc &= name_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

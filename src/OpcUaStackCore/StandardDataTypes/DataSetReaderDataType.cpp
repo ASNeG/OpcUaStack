@@ -259,43 +259,47 @@ namespace OpcUaStackCore
     bool
     DataSetReaderDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        name_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,enabled_);
-        publisherId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,writerGroupId_);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetWriterId_);
-        dataSetMetaData_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,dataSetFieldContentMask_);
-        OpcUaNumber::opcUaBinaryEncode(os,messageReceiveTimeout_);
-        securityMode_.opcUaBinaryEncode(os);
-        securityGroupId_.opcUaBinaryEncode(os);
-        securityKeyServices_.opcUaBinaryEncode(os);
-        dataSetReaderProperties_.opcUaBinaryEncode(os);
-        transportSettings_.opcUaBinaryEncode(os);
-        messageSettings_.opcUaBinaryEncode(os);
-        subscribedDataSet_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,enabled_);
+        rc &= publisherId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,writerGroupId_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetWriterId_);
+        rc &= dataSetMetaData_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,dataSetFieldContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,messageReceiveTimeout_);
+        rc &= securityMode_.opcUaBinaryEncode(os);
+        rc &= securityGroupId_.opcUaBinaryEncode(os);
+        rc &= securityKeyServices_.opcUaBinaryEncode(os);
+        rc &= dataSetReaderProperties_.opcUaBinaryEncode(os);
+        rc &= transportSettings_.opcUaBinaryEncode(os);
+        rc &= messageSettings_.opcUaBinaryEncode(os);
+        rc &= subscribedDataSet_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     DataSetReaderDataType::opcUaBinaryDecode(std::istream& is)
     {
-        name_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,enabled_);
-        publisherId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,writerGroupId_);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetWriterId_);
-        dataSetMetaData_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,dataSetFieldContentMask_);
-        OpcUaNumber::opcUaBinaryDecode(is,messageReceiveTimeout_);
-        securityMode_.opcUaBinaryDecode(is);
-        securityGroupId_.opcUaBinaryDecode(is);
-        securityKeyServices_.opcUaBinaryDecode(is);
-        dataSetReaderProperties_.opcUaBinaryDecode(is);
-        transportSettings_.opcUaBinaryDecode(is);
-        messageSettings_.opcUaBinaryDecode(is);
-        subscribedDataSet_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,enabled_);
+        rc &= publisherId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,writerGroupId_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetWriterId_);
+        rc &= dataSetMetaData_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,dataSetFieldContentMask_);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,messageReceiveTimeout_);
+        rc &= securityMode_.opcUaBinaryDecode(is);
+        rc &= securityGroupId_.opcUaBinaryDecode(is);
+        rc &= securityKeyServices_.opcUaBinaryDecode(is);
+        rc &= dataSetReaderProperties_.opcUaBinaryDecode(is);
+        rc &= transportSettings_.opcUaBinaryDecode(is);
+        rc &= messageSettings_.opcUaBinaryDecode(is);
+        rc &= subscribedDataSet_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     DataTypeDescription::opcUaBinaryEncode(std::ostream& os) const
     {
-        dataTypeId_.opcUaBinaryEncode(os);
-        name_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= dataTypeId_.opcUaBinaryEncode(os);
+        rc &= name_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     DataTypeDescription::opcUaBinaryDecode(std::istream& is)
     {
-        dataTypeId_.opcUaBinaryDecode(is);
-        name_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= dataTypeId_.opcUaBinaryDecode(is);
+        rc &= name_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

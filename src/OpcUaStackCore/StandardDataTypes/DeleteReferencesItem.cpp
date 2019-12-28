@@ -165,23 +165,27 @@ namespace OpcUaStackCore
     bool
     DeleteReferencesItem::opcUaBinaryEncode(std::ostream& os) const
     {
-        sourceNodeId_.opcUaBinaryEncode(os);
-        referenceTypeId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,isForward_);
-        targetNodeId_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,deleteBidirectional_);
-        return true;
+        bool rc = true;
+    
+        rc &= sourceNodeId_.opcUaBinaryEncode(os);
+        rc &= referenceTypeId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,isForward_);
+        rc &= targetNodeId_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,deleteBidirectional_);
+        return rc;
     }
     
     bool
     DeleteReferencesItem::opcUaBinaryDecode(std::istream& is)
     {
-        sourceNodeId_.opcUaBinaryDecode(is);
-        referenceTypeId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,isForward_);
-        targetNodeId_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,deleteBidirectional_);
-        return true;
+        bool rc = true;
+    
+        rc &= sourceNodeId_.opcUaBinaryDecode(is);
+        rc &= referenceTypeId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,isForward_);
+        rc &= targetNodeId_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,deleteBidirectional_);
+        return rc;
     }
     
     bool

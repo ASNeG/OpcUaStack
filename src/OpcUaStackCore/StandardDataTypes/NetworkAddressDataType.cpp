@@ -119,15 +119,19 @@ namespace OpcUaStackCore
     bool
     NetworkAddressDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        networkInterface_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= networkInterface_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     NetworkAddressDataType::opcUaBinaryDecode(std::istream& is)
     {
-        networkInterface_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= networkInterface_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

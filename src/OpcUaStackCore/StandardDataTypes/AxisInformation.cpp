@@ -159,23 +159,27 @@ namespace OpcUaStackCore
     bool
     AxisInformation::opcUaBinaryEncode(std::ostream& os) const
     {
-        engineeringUnits_.opcUaBinaryEncode(os);
-        eURange_.opcUaBinaryEncode(os);
-        title_.opcUaBinaryEncode(os);
-        axisScaleType_.opcUaBinaryEncode(os);
-        axisSteps_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= engineeringUnits_.opcUaBinaryEncode(os);
+        rc &= eURange_.opcUaBinaryEncode(os);
+        rc &= title_.opcUaBinaryEncode(os);
+        rc &= axisScaleType_.opcUaBinaryEncode(os);
+        rc &= axisSteps_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     AxisInformation::opcUaBinaryDecode(std::istream& is)
     {
-        engineeringUnits_.opcUaBinaryDecode(is);
-        eURange_.opcUaBinaryDecode(is);
-        title_.opcUaBinaryDecode(is);
-        axisScaleType_.opcUaBinaryDecode(is);
-        axisSteps_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= engineeringUnits_.opcUaBinaryDecode(is);
+        rc &= eURange_.opcUaBinaryDecode(is);
+        rc &= title_.opcUaBinaryDecode(is);
+        rc &= axisScaleType_.opcUaBinaryDecode(is);
+        rc &= axisSteps_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

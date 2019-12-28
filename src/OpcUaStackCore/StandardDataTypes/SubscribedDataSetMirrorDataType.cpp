@@ -127,19 +127,23 @@ namespace OpcUaStackCore
     bool
     SubscribedDataSetMirrorDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        SubscribedDataSetDataType::opcUaBinaryEncode(os);
-        parentNodeName_.opcUaBinaryEncode(os);
-        rolePermissions_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= SubscribedDataSetDataType::opcUaBinaryEncode(os);
+        rc &= parentNodeName_.opcUaBinaryEncode(os);
+        rc &= rolePermissions_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     SubscribedDataSetMirrorDataType::opcUaBinaryDecode(std::istream& is)
     {
-        SubscribedDataSetDataType::opcUaBinaryDecode(is);
-        parentNodeName_.opcUaBinaryDecode(is);
-        rolePermissions_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= SubscribedDataSetDataType::opcUaBinaryDecode(is);
+        rc &= parentNodeName_.opcUaBinaryDecode(is);
+        rc &= rolePermissions_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

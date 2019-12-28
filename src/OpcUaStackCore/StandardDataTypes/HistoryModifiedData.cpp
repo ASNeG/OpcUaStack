@@ -117,17 +117,21 @@ namespace OpcUaStackCore
     bool
     HistoryModifiedData::opcUaBinaryEncode(std::ostream& os) const
     {
-        HistoryData::opcUaBinaryEncode(os);
-        modificationInfos_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryData::opcUaBinaryEncode(os);
+        rc &= modificationInfos_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     HistoryModifiedData::opcUaBinaryDecode(std::istream& is)
     {
-        HistoryData::opcUaBinaryDecode(is);
-        modificationInfos_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryData::opcUaBinaryDecode(is);
+        rc &= modificationInfos_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

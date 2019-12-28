@@ -125,15 +125,19 @@ namespace OpcUaStackCore
     bool
     UserIdentityToken::opcUaBinaryEncode(std::ostream& os) const
     {
-        policyId_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= policyId_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     UserIdentityToken::opcUaBinaryDecode(std::istream& is)
     {
-        policyId_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= policyId_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     KeyValuePair::opcUaBinaryEncode(std::ostream& os) const
     {
-        key_.opcUaBinaryEncode(os);
-        value_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= key_.opcUaBinaryEncode(os);
+        rc &= value_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     KeyValuePair::opcUaBinaryDecode(std::istream& is)
     {
-        key_.opcUaBinaryDecode(is);
-        value_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= key_.opcUaBinaryDecode(is);
+        rc &= value_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

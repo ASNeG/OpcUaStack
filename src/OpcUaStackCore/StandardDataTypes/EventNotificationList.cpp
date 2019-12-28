@@ -117,17 +117,21 @@ namespace OpcUaStackCore
     bool
     EventNotificationList::opcUaBinaryEncode(std::ostream& os) const
     {
-        NotificationData::opcUaBinaryEncode(os);
-        events_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= NotificationData::opcUaBinaryEncode(os);
+        rc &= events_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     EventNotificationList::opcUaBinaryDecode(std::istream& is)
     {
-        NotificationData::opcUaBinaryDecode(is);
-        events_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= NotificationData::opcUaBinaryDecode(is);
+        rc &= events_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

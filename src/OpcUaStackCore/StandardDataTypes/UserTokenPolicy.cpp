@@ -165,23 +165,27 @@ namespace OpcUaStackCore
     bool
     UserTokenPolicy::opcUaBinaryEncode(std::ostream& os) const
     {
-        policyId_.opcUaBinaryEncode(os);
-        tokenType_.opcUaBinaryEncode(os);
-        issuedTokenType_.opcUaBinaryEncode(os);
-        issuerEndpointUrl_.opcUaBinaryEncode(os);
-        securityPolicyUri_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= policyId_.opcUaBinaryEncode(os);
+        rc &= tokenType_.opcUaBinaryEncode(os);
+        rc &= issuedTokenType_.opcUaBinaryEncode(os);
+        rc &= issuerEndpointUrl_.opcUaBinaryEncode(os);
+        rc &= securityPolicyUri_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     UserTokenPolicy::opcUaBinaryDecode(std::istream& is)
     {
-        policyId_.opcUaBinaryDecode(is);
-        tokenType_.opcUaBinaryDecode(is);
-        issuedTokenType_.opcUaBinaryDecode(is);
-        issuerEndpointUrl_.opcUaBinaryDecode(is);
-        securityPolicyUri_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= policyId_.opcUaBinaryDecode(is);
+        rc &= tokenType_.opcUaBinaryDecode(is);
+        rc &= issuedTokenType_.opcUaBinaryDecode(is);
+        rc &= issuerEndpointUrl_.opcUaBinaryDecode(is);
+        rc &= securityPolicyUri_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

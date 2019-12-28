@@ -127,19 +127,23 @@ namespace OpcUaStackCore
     bool
     StatusChangeNotification::opcUaBinaryEncode(std::ostream& os) const
     {
-        NotificationData::opcUaBinaryEncode(os);
-        status_.opcUaBinaryEncode(os);
-        diagnosticInfo_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= NotificationData::opcUaBinaryEncode(os);
+        rc &= status_.opcUaBinaryEncode(os);
+        rc &= diagnosticInfo_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     StatusChangeNotification::opcUaBinaryDecode(std::istream& is)
     {
-        NotificationData::opcUaBinaryDecode(is);
-        status_.opcUaBinaryDecode(is);
-        diagnosticInfo_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= NotificationData::opcUaBinaryDecode(is);
+        rc &= status_.opcUaBinaryDecode(is);
+        rc &= diagnosticInfo_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

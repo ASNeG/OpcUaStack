@@ -179,27 +179,31 @@ namespace OpcUaStackCore
     bool
     PubSubGroupDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        name_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,enabled_);
-        securityMode_.opcUaBinaryEncode(os);
-        securityGroupId_.opcUaBinaryEncode(os);
-        securityKeyServices_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,maxNetworkMessageSize_);
-        groupProperties_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,enabled_);
+        rc &= securityMode_.opcUaBinaryEncode(os);
+        rc &= securityGroupId_.opcUaBinaryEncode(os);
+        rc &= securityKeyServices_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,maxNetworkMessageSize_);
+        rc &= groupProperties_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     PubSubGroupDataType::opcUaBinaryDecode(std::istream& is)
     {
-        name_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,enabled_);
-        securityMode_.opcUaBinaryDecode(is);
-        securityGroupId_.opcUaBinaryDecode(is);
-        securityKeyServices_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,maxNetworkMessageSize_);
-        groupProperties_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= name_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,enabled_);
+        rc &= securityMode_.opcUaBinaryDecode(is);
+        rc &= securityGroupId_.opcUaBinaryDecode(is);
+        rc &= securityKeyServices_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,maxNetworkMessageSize_);
+        rc &= groupProperties_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

@@ -137,21 +137,25 @@ namespace OpcUaStackCore
     bool
     UpdateEventDetails::opcUaBinaryEncode(std::ostream& os) const
     {
-        HistoryUpdateDetails::opcUaBinaryEncode(os);
-        performInsertReplace_.opcUaBinaryEncode(os);
-        filter_.opcUaBinaryEncode(os);
-        eventData_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryUpdateDetails::opcUaBinaryEncode(os);
+        rc &= performInsertReplace_.opcUaBinaryEncode(os);
+        rc &= filter_.opcUaBinaryEncode(os);
+        rc &= eventData_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     UpdateEventDetails::opcUaBinaryDecode(std::istream& is)
     {
-        HistoryUpdateDetails::opcUaBinaryDecode(is);
-        performInsertReplace_.opcUaBinaryDecode(is);
-        filter_.opcUaBinaryDecode(is);
-        eventData_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryUpdateDetails::opcUaBinaryDecode(is);
+        rc &= performInsertReplace_.opcUaBinaryDecode(is);
+        rc &= filter_.opcUaBinaryDecode(is);
+        rc &= eventData_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

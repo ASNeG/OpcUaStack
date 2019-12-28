@@ -149,21 +149,25 @@ namespace OpcUaStackCore
     bool
     EUInformation::opcUaBinaryEncode(std::ostream& os) const
     {
-        namespaceUri_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,unitId_);
-        displayName_.opcUaBinaryEncode(os);
-        description_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= namespaceUri_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,unitId_);
+        rc &= displayName_.opcUaBinaryEncode(os);
+        rc &= description_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     EUInformation::opcUaBinaryDecode(std::istream& is)
     {
-        namespaceUri_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,unitId_);
-        displayName_.opcUaBinaryDecode(is);
-        description_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= namespaceUri_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,unitId_);
+        rc &= displayName_.opcUaBinaryDecode(is);
+        rc &= description_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

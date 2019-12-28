@@ -135,17 +135,21 @@ namespace OpcUaStackCore
     bool
     OptionSet::opcUaBinaryEncode(std::ostream& os) const
     {
-        value_.opcUaBinaryEncode(os);
-        validBits_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= value_.opcUaBinaryEncode(os);
+        rc &= validBits_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     OptionSet::opcUaBinaryDecode(std::istream& is)
     {
-        value_.opcUaBinaryDecode(is);
-        validBits_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= value_.opcUaBinaryDecode(is);
+        rc &= validBits_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

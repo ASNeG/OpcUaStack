@@ -157,25 +157,29 @@ namespace OpcUaStackCore
     bool
     ReadProcessedDetails::opcUaBinaryEncode(std::ostream& os) const
     {
-        HistoryReadDetails::opcUaBinaryEncode(os);
-        startTime_.opcUaBinaryEncode(os);
-        endTime_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,processingInterval_);
-        aggregateType_.opcUaBinaryEncode(os);
-        aggregateConfiguration_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryReadDetails::opcUaBinaryEncode(os);
+        rc &= startTime_.opcUaBinaryEncode(os);
+        rc &= endTime_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,processingInterval_);
+        rc &= aggregateType_.opcUaBinaryEncode(os);
+        rc &= aggregateConfiguration_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     ReadProcessedDetails::opcUaBinaryDecode(std::istream& is)
     {
-        HistoryReadDetails::opcUaBinaryDecode(is);
-        startTime_.opcUaBinaryDecode(is);
-        endTime_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,processingInterval_);
-        aggregateType_.opcUaBinaryDecode(is);
-        aggregateConfiguration_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryReadDetails::opcUaBinaryDecode(is);
+        rc &= startTime_.opcUaBinaryDecode(is);
+        rc &= endTime_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,processingInterval_);
+        rc &= aggregateType_.opcUaBinaryDecode(is);
+        rc &= aggregateConfiguration_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

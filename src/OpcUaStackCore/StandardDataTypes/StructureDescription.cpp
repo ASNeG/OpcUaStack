@@ -117,17 +117,21 @@ namespace OpcUaStackCore
     bool
     StructureDescription::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataTypeDescription::opcUaBinaryEncode(os);
-        structureDefinition_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= DataTypeDescription::opcUaBinaryEncode(os);
+        rc &= structureDefinition_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     StructureDescription::opcUaBinaryDecode(std::istream& is)
     {
-        DataTypeDescription::opcUaBinaryDecode(is);
-        structureDefinition_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= DataTypeDescription::opcUaBinaryDecode(is);
+        rc &= structureDefinition_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

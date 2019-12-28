@@ -129,17 +129,21 @@ namespace OpcUaStackCore
     bool
     EventFieldList::opcUaBinaryEncode(std::ostream& os) const
     {
-        OpcUaNumber::opcUaBinaryEncode(os,clientHandle_);
-        eventFields_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,clientHandle_);
+        rc &= eventFields_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     EventFieldList::opcUaBinaryDecode(std::istream& is)
     {
-        OpcUaNumber::opcUaBinaryDecode(is,clientHandle_);
-        eventFields_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,clientHandle_);
+        rc &= eventFields_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

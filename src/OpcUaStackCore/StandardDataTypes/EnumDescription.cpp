@@ -127,19 +127,23 @@ namespace OpcUaStackCore
     bool
     EnumDescription::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataTypeDescription::opcUaBinaryEncode(os);
-        enumDefinition_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,builtInType_);
-        return true;
+        bool rc = true;
+    
+        rc &= DataTypeDescription::opcUaBinaryEncode(os);
+        rc &= enumDefinition_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,builtInType_);
+        return rc;
     }
     
     bool
     EnumDescription::opcUaBinaryDecode(std::istream& is)
     {
-        DataTypeDescription::opcUaBinaryDecode(is);
-        enumDefinition_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,builtInType_);
-        return true;
+        bool rc = true;
+    
+        rc &= DataTypeDescription::opcUaBinaryDecode(is);
+        rc &= enumDefinition_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,builtInType_);
+        return rc;
     }
     
     bool

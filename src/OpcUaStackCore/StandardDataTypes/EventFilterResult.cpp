@@ -137,21 +137,25 @@ namespace OpcUaStackCore
     bool
     EventFilterResult::opcUaBinaryEncode(std::ostream& os) const
     {
-        MonitoringFilterResult::opcUaBinaryEncode(os);
-        selectClauseResults_.opcUaBinaryEncode(os);
-        selectClauseDiagnosticInfos_.opcUaBinaryEncode(os);
-        whereClauseResult_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= MonitoringFilterResult::opcUaBinaryEncode(os);
+        rc &= selectClauseResults_.opcUaBinaryEncode(os);
+        rc &= selectClauseDiagnosticInfos_.opcUaBinaryEncode(os);
+        rc &= whereClauseResult_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     EventFilterResult::opcUaBinaryDecode(std::istream& is)
     {
-        MonitoringFilterResult::opcUaBinaryDecode(is);
-        selectClauseResults_.opcUaBinaryDecode(is);
-        selectClauseDiagnosticInfos_.opcUaBinaryDecode(is);
-        whereClauseResult_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= MonitoringFilterResult::opcUaBinaryDecode(is);
+        rc &= selectClauseResults_.opcUaBinaryDecode(is);
+        rc &= selectClauseDiagnosticInfos_.opcUaBinaryDecode(is);
+        rc &= whereClauseResult_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

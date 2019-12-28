@@ -157,25 +157,29 @@ namespace OpcUaStackCore
     bool
     BrokerDataSetReaderTransportDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        DataSetReaderTransportDataType::opcUaBinaryEncode(os);
-        queueName_.opcUaBinaryEncode(os);
-        resourceUri_.opcUaBinaryEncode(os);
-        authenticationProfileUri_.opcUaBinaryEncode(os);
-        requestedDeliveryGuarantee_.opcUaBinaryEncode(os);
-        metaDataQueueName_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= DataSetReaderTransportDataType::opcUaBinaryEncode(os);
+        rc &= queueName_.opcUaBinaryEncode(os);
+        rc &= resourceUri_.opcUaBinaryEncode(os);
+        rc &= authenticationProfileUri_.opcUaBinaryEncode(os);
+        rc &= requestedDeliveryGuarantee_.opcUaBinaryEncode(os);
+        rc &= metaDataQueueName_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     BrokerDataSetReaderTransportDataType::opcUaBinaryDecode(std::istream& is)
     {
-        DataSetReaderTransportDataType::opcUaBinaryDecode(is);
-        queueName_.opcUaBinaryDecode(is);
-        resourceUri_.opcUaBinaryDecode(is);
-        authenticationProfileUri_.opcUaBinaryDecode(is);
-        requestedDeliveryGuarantee_.opcUaBinaryDecode(is);
-        metaDataQueueName_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= DataSetReaderTransportDataType::opcUaBinaryDecode(is);
+        rc &= queueName_.opcUaBinaryDecode(is);
+        rc &= resourceUri_.opcUaBinaryDecode(is);
+        rc &= authenticationProfileUri_.opcUaBinaryDecode(is);
+        rc &= requestedDeliveryGuarantee_.opcUaBinaryDecode(is);
+        rc &= metaDataQueueName_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

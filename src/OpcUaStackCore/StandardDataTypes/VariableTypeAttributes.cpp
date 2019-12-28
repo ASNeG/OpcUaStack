@@ -163,25 +163,29 @@ namespace OpcUaStackCore
     bool
     VariableTypeAttributes::opcUaBinaryEncode(std::ostream& os) const
     {
-        NodeAttributes::opcUaBinaryEncode(os);
-        value_.opcUaBinaryEncode(os);
-        dataType_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,valueRank_);
-        arrayDimensions_.opcUaBinaryEncode(os);
-        OpcUaNumber::opcUaBinaryEncode(os,isAbstract_);
-        return true;
+        bool rc = true;
+    
+        rc &= NodeAttributes::opcUaBinaryEncode(os);
+        rc &= value_.opcUaBinaryEncode(os);
+        rc &= dataType_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,valueRank_);
+        rc &= arrayDimensions_.opcUaBinaryEncode(os);
+        rc &= OpcUaNumber::opcUaBinaryEncode(os,isAbstract_);
+        return rc;
     }
     
     bool
     VariableTypeAttributes::opcUaBinaryDecode(std::istream& is)
     {
-        NodeAttributes::opcUaBinaryDecode(is);
-        value_.opcUaBinaryDecode(is);
-        dataType_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
-        arrayDimensions_.opcUaBinaryDecode(is);
-        OpcUaNumber::opcUaBinaryDecode(is,isAbstract_);
-        return true;
+        bool rc = true;
+    
+        rc &= NodeAttributes::opcUaBinaryDecode(is);
+        rc &= value_.opcUaBinaryDecode(is);
+        rc &= dataType_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,valueRank_);
+        rc &= arrayDimensions_.opcUaBinaryDecode(is);
+        rc &= OpcUaNumber::opcUaBinaryDecode(is,isAbstract_);
+        return rc;
     }
     
     bool

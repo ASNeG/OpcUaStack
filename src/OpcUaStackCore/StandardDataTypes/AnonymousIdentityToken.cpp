@@ -113,15 +113,19 @@ namespace OpcUaStackCore
     bool
     AnonymousIdentityToken::opcUaBinaryEncode(std::ostream& os) const
     {
-        UserIdentityToken::opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= UserIdentityToken::opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     AnonymousIdentityToken::opcUaBinaryDecode(std::istream& is)
     {
-        UserIdentityToken::opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= UserIdentityToken::opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

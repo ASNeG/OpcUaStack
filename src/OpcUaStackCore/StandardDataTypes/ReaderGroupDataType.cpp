@@ -137,21 +137,25 @@ namespace OpcUaStackCore
     bool
     ReaderGroupDataType::opcUaBinaryEncode(std::ostream& os) const
     {
-        PubSubGroupDataType::opcUaBinaryEncode(os);
-        transportSettings_.opcUaBinaryEncode(os);
-        messageSettings_.opcUaBinaryEncode(os);
-        dataSetReaders_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= PubSubGroupDataType::opcUaBinaryEncode(os);
+        rc &= transportSettings_.opcUaBinaryEncode(os);
+        rc &= messageSettings_.opcUaBinaryEncode(os);
+        rc &= dataSetReaders_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     ReaderGroupDataType::opcUaBinaryDecode(std::istream& is)
     {
-        PubSubGroupDataType::opcUaBinaryDecode(is);
-        transportSettings_.opcUaBinaryDecode(is);
-        messageSettings_.opcUaBinaryDecode(is);
-        dataSetReaders_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= PubSubGroupDataType::opcUaBinaryDecode(is);
+        rc &= transportSettings_.opcUaBinaryDecode(is);
+        rc &= messageSettings_.opcUaBinaryDecode(is);
+        rc &= dataSetReaders_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

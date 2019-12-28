@@ -143,21 +143,25 @@ namespace OpcUaStackCore
     bool
     UserNameIdentityToken::opcUaBinaryEncode(std::ostream& os) const
     {
-        UserIdentityToken::opcUaBinaryEncode(os);
-        userName_.opcUaBinaryEncode(os);
-        password_.opcUaBinaryEncode(os);
-        encryptionAlgorithm_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= UserIdentityToken::opcUaBinaryEncode(os);
+        rc &= userName_.opcUaBinaryEncode(os);
+        rc &= password_.opcUaBinaryEncode(os);
+        rc &= encryptionAlgorithm_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     UserNameIdentityToken::opcUaBinaryDecode(std::istream& is)
     {
-        UserIdentityToken::opcUaBinaryDecode(is);
-        userName_.opcUaBinaryDecode(is);
-        password_.opcUaBinaryDecode(is);
-        encryptionAlgorithm_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= UserIdentityToken::opcUaBinaryDecode(is);
+        rc &= userName_.opcUaBinaryDecode(is);
+        rc &= password_.opcUaBinaryDecode(is);
+        rc &= encryptionAlgorithm_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool

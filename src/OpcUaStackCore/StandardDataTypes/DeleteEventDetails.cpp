@@ -117,17 +117,21 @@ namespace OpcUaStackCore
     bool
     DeleteEventDetails::opcUaBinaryEncode(std::ostream& os) const
     {
-        HistoryUpdateDetails::opcUaBinaryEncode(os);
-        eventIds_.opcUaBinaryEncode(os);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryUpdateDetails::opcUaBinaryEncode(os);
+        rc &= eventIds_.opcUaBinaryEncode(os);
+        return rc;
     }
     
     bool
     DeleteEventDetails::opcUaBinaryDecode(std::istream& is)
     {
-        HistoryUpdateDetails::opcUaBinaryDecode(is);
-        eventIds_.opcUaBinaryDecode(is);
-        return true;
+        bool rc = true;
+    
+        rc &= HistoryUpdateDetails::opcUaBinaryDecode(is);
+        rc &= eventIds_.opcUaBinaryDecode(is);
+        return rc;
     }
     
     bool
