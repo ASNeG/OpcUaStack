@@ -143,54 +143,62 @@ namespace OpcUaStackPubSub
 		// FIXME: todo
 	}
 
-	void
+	bool
 	DataSetField::opcUaBinaryEncode(std::ostream& os) const
 	{
+		bool rc = true;
+
 		switch (dataType_)
 		{
 			case VariantEncoding:
 			{
 				OpcUaVariant::SPtr variant = boost::static_pointer_cast<OpcUaVariant>(object_);
-				variant->opcUaBinaryEncode(os);
+				rc &= variant->opcUaBinaryEncode(os);
 				break;
 			}
 			case DataValueEncoding:
 			{
 				OpcUaDataValue::SPtr dataValue = boost::static_pointer_cast<OpcUaDataValue>(object_);
-				dataValue->opcUaBinaryEncode(os);
+				rc &= dataValue->opcUaBinaryEncode(os);
 				break;
 			}
 			case RawDataEncoding: // FIXME: todo
 			default:
 			{
-				return;
+				return rc;
 			}
 		}
+
+		return rc;
 	}
 
-	void
+	bool
 	DataSetField::opcUaBinaryDecode(std::istream& is)
 	{
+		bool rc = true;
+
 		switch (dataType_)
 		{
 			case VariantEncoding:
 			{
 				OpcUaVariant::SPtr variant = boost::static_pointer_cast<OpcUaVariant>(object_);
-				variant->opcUaBinaryDecode(is);
+				rc &= variant->opcUaBinaryDecode(is);
 				break;
 			}
 			case DataValueEncoding:
 			{
 				OpcUaDataValue::SPtr dataValue = boost::static_pointer_cast<OpcUaDataValue>(object_);
-				dataValue->opcUaBinaryDecode(is);
+				rc &= dataValue->opcUaBinaryDecode(is);
 				break;
 			}
 			case RawDataEncoding: // FIXME: todo
 			default:
 			{
-				return;
+				return rc;
 			}
 		}
+
+		return rc;
 	}
 
 }

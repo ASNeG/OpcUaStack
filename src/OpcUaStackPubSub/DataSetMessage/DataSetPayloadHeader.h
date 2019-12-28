@@ -37,8 +37,8 @@ namespace OpcUaStackPubSub
 		void dataSetWriterIds(const OpcUaStackCore::OpcUaUInt16Array::SPtr& dataSetWriterIds);
 		OpcUaStackCore::OpcUaUInt16Array::SPtr& dataSetWriterIds(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 		bool operator==(const DataSetPayloadHeader& other) const;
 
