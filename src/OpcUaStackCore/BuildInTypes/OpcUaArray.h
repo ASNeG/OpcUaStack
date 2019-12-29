@@ -322,11 +322,38 @@ namespace OpcUaStackCore
 	: public JsonFormatter
 	{
 	  public:
+
 		OpcUaArray(size_t maxArrayLen = 1);
 		OpcUaArray(const OpcUaArray<T, CODER>& other);
 		OpcUaArray(const std::vector<T>& other);
 		OpcUaArray(const T& other);
 		~OpcUaArray(void); 
+
+		//
+		// iterator class
+		//
+		class iterator;
+		iterator begin(void);
+		iterator end(void);
+		class iterator {
+		  public:
+			friend class OpcUaArray<T, CODER>;
+
+			iterator(void);
+			iterator(int32_t actIndex, OpcUaArray<T, CODER>* arrayRef);
+			~iterator(void);
+
+			iterator operator++(int);
+			iterator& operator++(void);
+			T& operator*(void);
+			T* operator->(void);
+			bool operator==(const iterator& rhs) const;
+			bool operator!=(const iterator& rhs) const;
+
+		  private:
+			int32_t actIndex_ = -1;
+			OpcUaArray<T, CODER>* arrayRef_ = nullptr;
+		};
 
 		void resize(size_t maxArrayLen);
 		size_t size(void) const;
@@ -901,6 +928,95 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::isArray(void) const
 	{
 		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// implementation iterator functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	template<typename T, typename CODER>
+	typename OpcUaArray<T, CODER>::iterator
+	OpcUaArray<T, CODER>::begin(void)
+	{
+		return iterator(0, this);
+	}
+
+	template<typename T, typename CODER>
+	typename OpcUaArray<T, CODER>::iterator
+	OpcUaArray<T, CODER>::end(void)
+	{
+		return iterator(-1, this);
+	}
+
+	template<typename T, typename CODER>
+	OpcUaArray<T, CODER>::iterator::iterator(int32_t actIndex, OpcUaArray<T, CODER>* arrayRef)
+	{
+		arrayRef_ = arrayRef;
+		if (arrayRef_->actArrayLen_ <= 0 || actIndex >= arrayRef_->actArrayLen_ ) {
+			actIndex_ = -1;
+		}
+		else {
+			actIndex_ = actIndex;
+		}
+	}
+
+	template<typename T, typename CODER>
+	OpcUaArray<T, CODER>::iterator::~iterator(void)
+	{
+		arrayRef_ = nullptr;
+		actIndex_ = -1;
+	}
+
+
+	template<typename T, typename CODER>
+	typename OpcUaArray<T, CODER>::iterator
+	OpcUaArray<T, CODER>::iterator::operator++(int)
+	{
+		iterator it(actIndex_, arrayRef_);
+		++(*this);
+		return it;
+	}
+
+	template<typename T, typename CODER>
+	typename OpcUaArray<T, CODER>::iterator::iterator&
+	OpcUaArray<T, CODER>::iterator::operator++(void)
+	{
+		actIndex_++;
+		if (actIndex_ >= arrayRef_->actArrayLen_) {
+			actIndex_ = -1;
+		}
+		return *this;
+	}
+
+	template<typename T, typename CODER>
+	T&
+	OpcUaArray<T, CODER>::iterator::operator*(void)
+	{
+		return arrayRef_->valueArray_[actIndex_];
+	}
+
+	template<typename T, typename CODER>
+	T*
+	OpcUaArray<T, CODER>::iterator::operator->(void)
+	{
+		return &arrayRef_->valueArray_[actIndex_];
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::iterator::operator==(const iterator& rhs) const
+	{
+		return actIndex_ == rhs.actIndex_;
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::iterator::operator!=(const iterator& rhs) const
+	{
+		return actIndex_ != rhs.actIndex_;
 	}
 
 }
